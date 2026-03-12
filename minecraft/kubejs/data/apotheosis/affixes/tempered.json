@@ -1,0 +1,24 @@
+{
+  "_comment": "T2+ armor bonus",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.armor",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": {
+      "min": 2,
+      "max": 3
+    },
+    "RARE": {
+      "min": 3,
+      "max": 5
+    }
+  },
+  "types": {
+    "set": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  }
+}

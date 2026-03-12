@@ -1,0 +1,20 @@
+{
+  "name": "Apotheosis Gems",
+  "icon": "minecraft:amethyst_shard",
+  "category": "icraft:loot",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Apotheosis gems slot into socketed equipment to provide permanent stat bonuses. Socket count is determined by the affix tier of the item \u2014 Common items have 0 sockets, Legendary items can have up to 4.$(br2)Gems come in 5 quality tiers: $(bold)Flawed \u2192 Chipped \u2192 Normal \u2192 Flawless \u2192 Perfect.$(/bold) Higher quality means stronger bonuses."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Where Gems Come From$(/bold)$(br2)Gem quality scales with boss tier:$(br2)$(li)T1 bosses + Overworld chests \u2192 Flawed, Chipped$(li)T2 bosses + Dimensional chests \u2192 Normal, Flawless$(li)T3 bosses + Nether/Abyss chests \u2192 Flawless, Perfect$(li)T4 bosses + End chests \u2192 Perfect$(br2)Gems can also drop from loot boxes at the appropriate tier."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Gem Cutting Table$(/bold)$(br2)The Gem Cutting Table (Apotheosis) allows upgrading gems by combining multiples:$(br2)$(li)3 Flawed \u2192 1 Chipped$(li)3 Chipped \u2192 1 Normal$(li)3 Normal \u2192 1 Flawless$(li)3 Flawless \u2192 1 Perfect$(br2)The table itself is Tier 2 gated (requires a T2 token to craft). Gem cutting is mid-game-accessible."
+    }
+  ]
+}

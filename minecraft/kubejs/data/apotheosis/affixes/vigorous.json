@@ -1,0 +1,28 @@
+{
+  "_comment": "+2-6 max HP",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.max_health",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": {
+      "min": 2,
+      "max": 4
+    },
+    "RARE": {
+      "min": 4,
+      "max": 5
+    },
+    "EPIC": {
+      "min": 5,
+      "max": 6
+    }
+  },
+  "types": {
+    "set": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  }
+}

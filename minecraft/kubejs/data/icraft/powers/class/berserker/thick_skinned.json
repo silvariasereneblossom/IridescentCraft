@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Thick Skinned",
+  "description": "+10% armor effectiveness from worn armor.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "multiply_base",
+      "value": 0.1
+    }
+  ]
+}

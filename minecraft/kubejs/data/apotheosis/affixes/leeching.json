@@ -1,0 +1,23 @@
+{
+  "_comment": "2-5% life steal",
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:life_steal",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": {
+      "min": 0.02,
+      "max": 0.03
+    },
+    "RARE": {
+      "min": 0.03,
+      "max": 0.05
+    }
+  },
+  "types": {
+    "set": [
+      "sword",
+      "axe",
+      "trident"
+    ]
+  }
+}

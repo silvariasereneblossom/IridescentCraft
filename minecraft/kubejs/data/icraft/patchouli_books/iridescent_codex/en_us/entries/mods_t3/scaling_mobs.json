@@ -1,0 +1,25 @@
+{
+  "name": "Scaling Mobs & Champions",
+  "icon": "minecraft:zombie_head",
+  "category": "icraft:mods_t3",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "ScalingMobs and Champions Unofficial create the dimension-based difficulty scaling that defines IridescentCraft's threat progression."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)ScalingMobs:$(/bold) Applies per-dimension multipliers to mob HP, damage, speed, and armor. These are not flat increases \u2014 they are dimension-specific tuning. A T3 Nether blaze is categorically harder than a T1 Overworld blaze.$(br2)$(bold)Champions:$(/bold) ~8% of all mobs are Champions (elite variants). Higher rates in harder dimensions. Champion rank determines affix count (1\u20134)."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Improved Mobs:$(/bold) Uses PLAYERMEAN mode \u2014 mob stats scale to the average player's gear level. On a server, this prevents one endgame player from making the world trivial for new players.$(br2)$(bold)Dynamic Difficulty:$(/bold) Scales over time and per-dimension based on how long players have spent there. A base you've lived in for days is more dangerous than one you just entered."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)No book.$(/bold) Scaling Mobs and Champions Unofficial are configured specifically for this pack \u2014 see the $(bold)Systems$(/bold) chapter for how difficulty scaling and Champion affixes work in IridescentCraft."
+    }
+  ],
+  "flag": "icraft:stage_tier_3"
+}

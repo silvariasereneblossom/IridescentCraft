@@ -1,0 +1,27 @@
+{
+  "_comment": "Wither on hit",
+  "type": "apotheosis:mob_effect",
+  "mob_effect": "minecraft:wither",
+  "target": "user_target",
+  "values": {
+    "UNCOMMON": {
+      "min": 0.05,
+      "max": 0.08
+    },
+    "RARE": {
+      "min": 0.08,
+      "max": 0.12
+    },
+    "EPIC": {
+      "min": 0.12,
+      "max": 0.15
+    }
+  },
+  "types": {
+    "set": [
+      "sword",
+      "axe",
+      "trident"
+    ]
+  }
+}

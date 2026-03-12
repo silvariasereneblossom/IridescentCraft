@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Fortress Vitality",
+  "description": "Massively increased max HP (+20%).",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "operation": "multiply_base",
+      "value": 0.2
+    }
+  ]
+}

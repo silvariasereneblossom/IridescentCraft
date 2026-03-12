@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Dark Pact",
+  "description": "+15% damage dealt by tamed/summoned entities.",
+  "modifiers": [
+    {
+      "attribute": "puffish_attributes:tamed_damage",
+      "operation": "multiply_base",
+      "value": 0.15
+    }
+  ]
+}

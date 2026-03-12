@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Fortune's Favor",
+  "description": "+1 Luck (affects loot table bonus rolls).",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.luck",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}
