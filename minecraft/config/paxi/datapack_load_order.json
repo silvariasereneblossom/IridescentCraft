@@ -1,12 +1,12 @@
 {
   "loadOrder": [
-    "iridescent_codex",
-    "icraft_skills",
-    "icraft_apotheosis_affixes",
-    "icraft_botania_overrides",
-    "iridescent_classes",
-    "iridescent_races",
-    "improvedmobs_datapack",
-    "champions_datapack"
+    "iridescent_codex.zip",
+    "icraft_skills.zip",
+    "icraft_apotheosis_affixes.zip",
+    "icraft_botania_overrides.zip",
+    "iridescent_classes.zip",
+    "iridescent_races.zip",
+    "improvedmobs_datapack.zip",
+    "champions_datapack.zip"
   ]
 }
