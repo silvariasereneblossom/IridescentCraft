@@ -9,7 +9,7 @@
 	#Adjust the difficulty level in the Abyss by entering a numerical value between 0 and 5. Choose 0 for very easy and 5 for ultra hardcore. This modification will impact the strength of entities, influence mob spawn rates, and determine the speed at which a player succumbs to infection.
 	Difficulty = 3.0
 	#Enable the Guide Book to be automatically provided to each player upon their first join. When enabled, every new player will receive a guide book specifically designed for the Abyss.
-	GuideBook = true
+	GuideBook = false
 	#If set to true, particle generation will be reduced, leading to an overall improvement in performance.
 	PotatoParticles = false
 	#If set to true, internal post shaders will be reduced, resulting in improved performance.
