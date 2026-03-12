@@ -28,20 +28,61 @@ ServerEvents.recipes(event => {
 })
 
 // ── First-Join Book Suppression ───────────────────────────────────────────────
-// Mods that inject books directly into inventory bypass pickedUpItem.
-// Use inventoryChanged to catch all additions regardless of method.
-// Item IDs marked TODO need confirmation via /kubejs hand in-game.
+// Suppress unwanted mod books from inventory. Uses both exact ID matching
+// and pattern matching to catch books even if exact IDs are unknown.
 
+// Exact item IDs to suppress (add confirmed IDs here)
 const SUPPRESSED_BOOKS = [
-  'terramity:guidebook',        // TODO: confirm with /kubejs hand
-  'epicfight:skill_book',       // TODO: confirm — Combatant's Companion
-  'primalmagick:grimoire'       // TODO: confirm — Runic Grimoire
+  'terramity:guidebook',
+  'terramity:terramity_guidebook',
+  'simplyswords:runic_grimoire',
+  'epicfight:skill_book',
+  'primalmagick:grimoire',
+  'primalmagick:grimoire_creative',
+  'ars_nouveau:worn_notebook',
+  'theabyss:the_abyss_guidebook'
 ]
 
+// Suppress any patchouli:guide_book that isn't our codex
+// Also suppress items matching book-like patterns from known mod namespaces
+const BOOK_NAMESPACES = [
+  'terramity', 'simplyswords', 'epicfight', 'primalmagick',
+  'theabyss', 'celestial'
+]
+
+const BOOK_KEYWORDS = ['book', 'grimoire', 'guide', 'notebook', 'tome', 'manual']
+
 PlayerEvents.inventoryChanged(event => {
-  const id = event.item.id
+  const item = event.item
+  const id = item.id
+
+  // Suppress exact matches
   if (SUPPRESSED_BOOKS.includes(id)) {
-    event.item.count = 0
-    console.log('[IridescentCraft] Suppressed mod book: ' + id + ' from ' + event.player.username)
+    item.count = 0
+    console.log('[IridescentCraft] Suppressed book (exact): ' + id)
+    return
+  }
+
+  // Suppress non-codex Patchouli guide books
+  if (id === 'patchouli:guide_book') {
+    let nbt = item.nbt
+    if (nbt && nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') {
+      console.log('[IridescentCraft] Suppressed patchouli book: ' + (nbt.getString('patchouli:book') || 'unknown'))
+      item.count = 0
+      return
+    }
+  }
+
+  // Suppress book-like items from known mod namespaces
+  let ns = id.split(':')[0]
+  let name = id.split(':')[1] || ''
+  if (BOOK_NAMESPACES.includes(ns)) {
+    for (let kw of BOOK_KEYWORDS) {
+      if (name.indexOf(kw) !== -1) {
+        item.count = 0
+        console.log('[IridescentCraft] Suppressed book (pattern): ' + id)
+        return
+      }
+    }
   }
 })
