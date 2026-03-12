@@ -2821,3 +2821,122 @@
 		enabled = true
 		"origins_gender:female" = true
 
+	[origins."icraft:paladin"]
+		enabled = true
+		"icraft:class/paladin/hp_modifier" = true
+		"icraft:class/paladin/holy_armor" = true
+		"icraft:class/paladin/divine_resilience" = true
+		"icraft:class/paladin/healing_aura" = true
+
+	[origins."icraft:faefolk"]
+		enabled = true
+		"icraft:race/faefolk/slow_fall" = true
+		"icraft:race/faefolk/nature_magic" = true
+		"icraft:race/faefolk/iron_weakness" = true
+		"icraft:race/faefolk/fragile" = true
+
+	[origins."icraft:revenant"]
+		enabled = true
+		"icraft:race/revenant/night_vision" = true
+		"icraft:race/revenant/dark_power" = true
+		"icraft:race/revenant/sunlight_weakness" = true
+		"icraft:race/revenant/healing_penalty" = true
+
+	[origins."icraft:human"]
+		enabled = true
+		"icraft:race/human/xp_bonus" = true
+		"icraft:race/human/versatile" = true
+
+	[origins."icraft:wanderer"]
+		enabled = true
+		"icraft:class/wanderer/hp_modifier" = true
+		"icraft:class/wanderer/jack_of_all_trades" = true
+		"icraft:class/wanderer/wanderlust" = true
+		"icraft:class/wanderer/adaptable" = true
+
+	[origins."icraft:halfling"]
+		enabled = true
+		"icraft:race/halfling/lucky" = true
+		"icraft:race/halfling/food_efficiency" = true
+		"icraft:race/halfling/small_penalty" = true
+
+	[origins."icraft:samurai"]
+		enabled = true
+		"icraft:class/samurai/hp_modifier" = true
+		"icraft:class/samurai/evasive_stance" = true
+		"icraft:class/samurai/bushido" = true
+		"icraft:class/samurai/focus" = true
+
+	[origins."icraft:void_summoner"]
+		enabled = true
+		"icraft:class/void_summoner/hp_modifier" = true
+		"icraft:class/void_summoner/dark_pact" = true
+		"icraft:class/void_summoner/soul_tether" = true
+		"icraft:class/void_summoner/shadow_cloak" = true
+		"icraft:class/void_summoner/glass_cannon_tag" = true
+
+	[origins."icraft:vanguard"]
+		enabled = true
+		"icraft:class/vanguard/hp_modifier" = true
+		"icraft:class/vanguard/damage_penalty" = true
+		"icraft:class/vanguard/fortress" = true
+		"icraft:class/vanguard/immovable" = true
+		"icraft:class/vanguard/guardian" = true
+
+	[origins."icraft:berserker"]
+		enabled = true
+		"icraft:class/berserker/hp_modifier" = true
+		"icraft:class/berserker/weapon_affinity" = true
+		"icraft:class/berserker/blood_fury" = true
+		"icraft:class/berserker/thick_skinned" = true
+		"icraft:class/berserker/battle_trance" = true
+
+	[origins."icraft:orc"]
+		enabled = true
+		"icraft:race/orc/attack_speed" = true
+		"icraft:race/orc/knockback" = true
+		"icraft:race/orc/hunger_drain" = true
+
+	[origins."icraft:ranger"]
+		enabled = true
+		"icraft:class/ranger/hp_modifier" = true
+		"icraft:class/ranger/swift" = true
+		"icraft:class/ranger/eagle_eye" = true
+		"icraft:class/ranger/glass_cannon" = true
+		"icraft:class/ranger/glass_cannon_tag" = true
+
+	[origins."icraft:artificer"]
+		enabled = true
+		"icraft:class/artificer/crafting_mastery" = true
+		"icraft:class/artificer/engineer_speed" = true
+		"icraft:class/artificer/resourceful" = true
+
+	[origins."icraft:archmage"]
+		enabled = true
+		"icraft:class/archmage/hp_modifier" = true
+		"icraft:class/archmage/arcane_power" = true
+		"icraft:class/archmage/glass_frame" = true
+		"icraft:class/archmage/mana_attunement" = true
+		"icraft:class/archmage/glass_cannon_tag" = true
+
+	[origins."icraft:dwarf"]
+		enabled = true
+		"icraft:race/dwarf/mining_speed" = true
+		"icraft:race/dwarf/sturdy" = true
+		"icraft:race/dwarf/fire_resist" = true
+		"icraft:race/dwarf/slow" = true
+
+	[origins."icraft:battlemage"]
+		enabled = true
+		"icraft:class/battlemage/hp_modifier" = true
+		"icraft:class/battlemage/arcane_strikes" = true
+		"icraft:class/battlemage/spell_armor" = true
+		"icraft:class/battlemage/mana_shield" = true
+
+	[origins."icraft:elf"]
+		enabled = true
+		"icraft:race/elf/night_vision" = true
+		"icraft:race/elf/swift" = true
+		"icraft:race/elf/hunger_penalty" = true
+		"icraft:race/elf/fragile" = true
+
