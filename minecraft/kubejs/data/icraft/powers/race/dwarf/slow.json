@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Short Legs",
+  "description": "-5% movement speed.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.movement_speed",
+      "operation": "multiply_base",
+      "value": -0.05
+    }
+  ]
+}

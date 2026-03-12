@@ -1,0 +1,23 @@
+{
+  "_comment": "T4+ anti-tank damage",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "EPIC": {
+      "min": 0.2,
+      "max": 0.25
+    },
+    "MYTHIC": {
+      "min": 0.25,
+      "max": 0.3
+    }
+  },
+  "types": {
+    "set": [
+      "sword",
+      "axe",
+      "trident"
+    ]
+  }
+}

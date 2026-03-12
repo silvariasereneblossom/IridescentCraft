@@ -1,0 +1,28 @@
+{
+  "_comment": "+1-4 armor toughness",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.armor_toughness",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": {
+      "min": 1,
+      "max": 2
+    },
+    "RARE": {
+      "min": 2,
+      "max": 3
+    },
+    "EPIC": {
+      "min": 3,
+      "max": 4
+    }
+  },
+  "types": {
+    "set": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  }
+}

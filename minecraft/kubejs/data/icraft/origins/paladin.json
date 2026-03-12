@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:class/paladin/hp_modifier",
+    "icraft:class/paladin/holy_armor",
+    "icraft:class/paladin/divine_resilience",
+    "icraft:class/paladin/healing_aura"
+  ],
+  "icon": {
+    "item": "minecraft:golden_sword"
+  },
+  "order": 5,
+  "impact": 2,
+  "name": "Paladin",
+  "description": "Holy warrior and support. +10% HP, strong armor bonuses. Self-sustaining tank with group utility and healing."
+}

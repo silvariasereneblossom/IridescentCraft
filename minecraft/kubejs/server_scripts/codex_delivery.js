@@ -28,16 +28,20 @@ ServerEvents.recipes(event => {
 })
 
 // ── First-Join Book Suppression ───────────────────────────────────────────────
-// These mods have no accessible config toggle for first-join book giving.
+// Mods that inject books directly into inventory bypass pickedUpItem.
+// Use inventoryChanged to catch all additions regardless of method.
 // Item IDs marked TODO need confirmation via /kubejs hand in-game.
 
-PlayerEvents.pickedUpItem(event => {
-  const id = event.item.item.id
-  if (
-    id === 'terramity:guidebook'              || // TODO: confirm with /kubejs hand
-    id === 'epicfight:skill_book'             || // TODO: confirm — Combatant's Companion
-    id === 'primalmagick:grimoire'               // TODO: confirm — Runic Grimoire
-  ) {
-    event.item.item.count = 0
+const SUPPRESSED_BOOKS = [
+  'terramity:guidebook',        // TODO: confirm with /kubejs hand
+  'epicfight:skill_book',       // TODO: confirm — Combatant's Companion
+  'primalmagick:grimoire'       // TODO: confirm — Runic Grimoire
+]
+
+PlayerEvents.inventoryChanged(event => {
+  const id = event.item.id
+  if (SUPPRESSED_BOOKS.includes(id)) {
+    event.item.count = 0
+    console.log('[IridescentCraft] Suppressed mod book: ' + id + ' from ' + event.player.username)
   }
 })

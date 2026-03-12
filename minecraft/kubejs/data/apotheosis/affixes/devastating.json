@@ -1,0 +1,27 @@
+{
+  "_comment": "+20-40% melee damage",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "RARE": {
+      "min": 0.2,
+      "max": 0.28
+    },
+    "EPIC": {
+      "min": 0.28,
+      "max": 0.35
+    },
+    "MYTHIC": {
+      "min": 0.35,
+      "max": 0.4
+    }
+  },
+  "types": {
+    "set": [
+      "sword",
+      "axe",
+      "trident"
+    ]
+  }
+}

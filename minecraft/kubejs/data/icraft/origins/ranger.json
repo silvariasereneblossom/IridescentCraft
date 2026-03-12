@@ -1,0 +1,16 @@
+{
+  "powers": [
+    "icraft:class/ranger/hp_modifier",
+    "icraft:class/ranger/swift",
+    "icraft:class/ranger/eagle_eye",
+    "icraft:class/ranger/glass_cannon",
+    "icraft:class/ranger/glass_cannon_tag"
+  ],
+  "icon": {
+    "item": "minecraft:bow"
+  },
+  "order": 7,
+  "impact": 3,
+  "name": "Ranger",
+  "description": "Mobile glass cannon. -20% HP, half equipment HP effectiveness. Maximum ranged damage, extreme mobility, paper-thin defenses."
+}

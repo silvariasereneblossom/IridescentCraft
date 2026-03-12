@@ -1,0 +1,27 @@
+{
+  "name": "Archmage",
+  "icon": "minecraft:blaze_rod",
+  "category": "icraft:classes",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Ultimate glass cannon spellcaster. Maximum spell damage. The squishiest class in the game.$(/italic)$(br2)HP Modifier: -20%  |  Equipment HP: Half effectiveness$(br)$(bold)Weapon Affinities:$(/bold) Spells (large bonus), all weapon types (significant penalty)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Arcane Mastery$(/bold) \u2014 +25% spell damage, +15% cast speed, -10% mana cost.$(br2)$(bold)Spell Penetration$(/bold) \u2014 Spells ignore 20% magic resistance. Against magic shields: +30% damage.$(br2)$(bold)Glass Cannon$(/bold) \u2014 For every 10% max HP missing: +3% spell damage (max +30% at 0 HP). No defensive benefit \u2014 pure offense."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities (cont.)",
+      "text": "$(bold)Mana Well$(/bold) \u2014 +30% max mana, +20% mana regen. Above 80% mana: +5% spell damage.$(br2)$(bold)Chain Reaction$(/bold) \u2014 Spell kill: 25% chance to fire a free 50% damage copy at a nearby enemy. Cannot chain off itself."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Active Ability",
+      "text": "Active: $(bold)Arcane Annihilation$(/bold)$(br)For 8s: spells deal +50% damage, cost 0 mana, have no cooldown. After: lose 25% current mana, no mana regen for 5s. 120s cooldown."
+    }
+  ]
+}

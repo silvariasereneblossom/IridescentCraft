@@ -1,0 +1,17 @@
+{
+  "type": "origins:conditioned_attribute",
+  "name": "Shadow Strike",
+  "description": "+10% damage in darkness.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": 0.1
+    }
+  ],
+  "condition": {
+    "type": "origins:brightness",
+    "comparison": "<=",
+    "compare_to": 0.3
+  }
+}
