@@ -1,0 +1,6 @@
+mods/*.jar
+resourcepacks/
+shaderpacks/
+saves/
+*.zip
+*.rar

@@ -1,0 +1,69 @@
+{
+  "backups": [
+    {
+      "worldName": "New World",
+      "createTime": 1772233200925,
+      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\SilvieTech Alpha Version Server Test\\minecraft\\backups\\2026-2-27_18-0-0.zip",
+      "size": 22458042,
+      "ratio": 0.93575925,
+      "sha1": "1a6d3fbcfdab7e7278303e20e3488f6a69862a6e",
+      "preview": "",
+      "snapshot": false,
+      "backupName": "automated",
+      "backupFormat": "ZIP",
+      "complete": true
+    },
+    {
+      "worldName": "New World",
+      "createTime": 1772926201361,
+      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\SilvieTech Alpha Version Server Test\\minecraft\\backups\\2026-3-7_18-30-0.zip",
+      "size": 3497217,
+      "ratio": 0.7124751,
+      "sha1": "e99503372b8d9f3884a27b7f008d8d4d0c0d7cb2",
+      "preview": "",
+      "snapshot": false,
+      "backupName": "automated",
+      "backupFormat": "ZIP",
+      "complete": true
+    },
+    {
+      "worldName": "New World",
+      "createTime": 1772928001226,
+      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\SilvieTech Alpha Version Server Test\\minecraft\\backups\\2026-3-7_19-0-0.zip",
+      "size": 16482359,
+      "ratio": 0.7963688,
+      "sha1": "f1d1fad906857e569a2010b56e6cf2da3141bbee",
+      "preview": "",
+      "snapshot": false,
+      "backupName": "automated",
+      "backupFormat": "ZIP",
+      "complete": true
+    },
+    {
+      "worldName": "New World",
+      "createTime": 1773109802302,
+      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\SilvieTech Alpha Version Server Test\\minecraft\\backups\\2026-3-9_22-30-0.zip",
+      "size": 14721871,
+      "ratio": 0.8023306,
+      "sha1": "206a0cfc7a93a5e9bc7b0be91619ab7d112c6d46",
+      "preview": "",
+      "snapshot": false,
+      "backupName": "automated",
+      "backupFormat": "ZIP",
+      "complete": true
+    },
+    {
+      "worldName": "New World",
+      "createTime": 1773216002134,
+      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\SilvieTech Alpha Version Server Test\\minecraft\\backups\\2026-3-11_4-0-0.zip",
+      "size": 3641761,
+      "ratio": 0.70448357,
+      "sha1": "bf2c8f06cf7acad311458d4b480cb32b75e8ef01",
+      "preview": "",
+      "snapshot": false,
+      "backupName": "automated",
+      "backupFormat": "ZIP",
+      "complete": true
+    }
+  ]
+}

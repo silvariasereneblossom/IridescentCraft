@@ -1,0 +1,6 @@
+#674 minecraft:flower_forest
+#010 minecraft:forest
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#5FF minecraft:river
+#2CF biomesoplenty:shrubland

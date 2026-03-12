@@ -1,0 +1,8 @@
+#735 biomesoplenty:coniferous_forest
+#6D4 biomesoplenty:field
+#010 minecraft:forest
+#467 biomesoplenty:highland
+#056 biomesoplenty:maple_woods
+#5FF minecraft:river
+#108 biomesoplenty:seasonal_forest
+#169 minecraft:taiga

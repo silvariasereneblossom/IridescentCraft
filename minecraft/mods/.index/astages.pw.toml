@@ -1,0 +1,16 @@
+filename = 'astages-2.0.0-alpha.6-1.20.1-all.jar'
+name = 'AStages'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'alpha'
+
+[download]
+hash = 'c0a5ad0afd2de04702efbac65424c933ffb44008'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7633904
+project-id = 1120180

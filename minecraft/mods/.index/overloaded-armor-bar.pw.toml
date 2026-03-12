@@ -1,0 +1,16 @@
+filename = 'overloadedarmorbar-1.20.1-1.jar'
+name = 'Overloaded Armor Bar'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '78be460fbca8978ab3ac8f81f28f1ced832ce80a'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 4631133
+project-id = 314002

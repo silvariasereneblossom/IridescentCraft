@@ -1,0 +1,8 @@
+#056 biomesoplenty:maple_woods
+#2D6 minecraft:meadow
+#73A minecraft:old_growth_pine_taiga
+#60C minecraft:old_growth_spruce_taiga
+#5FF minecraft:river
+#3AE biomesoplenty:snowblossom_grove
+#340 minecraft:snowy_taiga
+#169 minecraft:taiga

@@ -1,0 +1,9 @@
+#556 minecraft:beach
+#47F minecraft:birch_forest
+#02B biomesoplenty:cherry_blossom_grove
+#3DE minecraft:deep_ocean
+#67B biomesoplenty:grassland
+#20D biomesoplenty:marsh
+#515 biomesoplenty:mystic_grove
+#4F1 minecraft:ocean
+#2BB biomesoplenty:wetland

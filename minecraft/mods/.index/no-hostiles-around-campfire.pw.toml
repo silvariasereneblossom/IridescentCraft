@@ -1,0 +1,16 @@
+filename = 'nohostilesaroundcampfire-1.20.1-7.2.jar'
+name = 'No Hostiles Around Campfire'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge', 'quilt', 'fabric' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '3bc11ac1a98c776948dfa291ed2ecf579063604f'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6185486
+project-id = 347394

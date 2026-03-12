@@ -1,0 +1,28 @@
+{
+  "_comment": "+3-10% speed",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "COMMON": {
+      "min": 0.03,
+      "max": 0.05
+    },
+    "UNCOMMON": {
+      "min": 0.05,
+      "max": 0.08
+    },
+    "RARE": {
+      "min": 0.08,
+      "max": 0.1
+    }
+  },
+  "types": {
+    "set": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  }
+}

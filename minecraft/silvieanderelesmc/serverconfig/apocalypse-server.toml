@@ -1,0 +1,9 @@
+
+[difficulty]
+	#This is the amount of time that must pass before a player's difficulty starts increasing. Only relevant for players that join a world or server for the first time. A value of 1 is equal to a whole Minecraft day.
+	#Range: 0.0 ~ 1000.0
+	defaultPlayerGracePeriod = 1.0
+	#The default max difficulty for players. Only relevant for players that join a world or server for the first time.
+	#Range: 0.0 ~ 100000.0
+	defaultPlayerMaxDifficulty = 150.0
+

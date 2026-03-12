@@ -1,0 +1,16 @@
+filename = 'The_Undergarden-1.20.1-0.8.14.jar'
+name = 'The Undergarden'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'beta'
+
+[download]
+hash = 'd823f6da5ea81ee09df8038dc5645986b184a451'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5182632
+project-id = 379849

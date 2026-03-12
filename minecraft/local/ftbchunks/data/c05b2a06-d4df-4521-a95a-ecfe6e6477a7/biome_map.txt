@@ -1,0 +1,12 @@
+#4F9 minecraft:dark_forest
+#4CA minecraft:dripstone_caves
+#266 biomesoplenty:floodplain
+#763 biomesoplenty:fungal_jungle
+#467 biomesoplenty:highland
+#4B0 minecraft:jungle
+#2D6 minecraft:meadow
+#68B biomesoplenty:rainforest
+#5F6 biomesoplenty:rocky_rainforest
+#14C biomesoplenty:spider_nest
+#30B biomesoplenty:volcanic_plains
+#7CC biomesoplenty:volcano

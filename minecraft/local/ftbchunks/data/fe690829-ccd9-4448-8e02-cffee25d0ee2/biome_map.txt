@@ -1,0 +1,9 @@
+#02B biomesoplenty:cherry_blossom_grove
+#34D minecraft:deep_lukewarm_ocean
+#3DE minecraft:deep_ocean
+#79A minecraft:lukewarm_ocean
+#4F1 minecraft:ocean
+#1DF minecraft:old_growth_birch_forest
+#3DC minecraft:plains
+#68B biomesoplenty:rainforest
+#3AF minecraft:sparse_jungle

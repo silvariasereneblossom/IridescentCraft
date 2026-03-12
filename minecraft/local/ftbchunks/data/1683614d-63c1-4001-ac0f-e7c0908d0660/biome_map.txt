@@ -1,0 +1,15 @@
+#47F minecraft:birch_forest
+#4F9 minecraft:dark_forest
+#34D minecraft:deep_lukewarm_ocean
+#3DE minecraft:deep_ocean
+#4CA minecraft:dripstone_caves
+#010 minecraft:forest
+#79A minecraft:lukewarm_ocean
+#515 biomesoplenty:mystic_grove
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#68B biomesoplenty:rainforest
+#5FF minecraft:river
+#2CF biomesoplenty:shrubland
+#14C biomesoplenty:spider_nest
+#152 minecraft:windswept_forest

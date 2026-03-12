@@ -1,0 +1,16 @@
+{
+  "name": "Runic Grimoire",
+  "icon": "minecraft:book",
+  "category": "icraft:mods_t1",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Runic Grimoire is a magic reference book covering runic magic systems in this pack. It documents rune inscription, runic tool upgrades, and enchantment interactions through the runic system."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Note:$(/bold) If this is Primal Magic's Grimoire, it covers the full Thaumaturgy system \u2014 research, wand crafting, Vis management, and ritual circles.$(br2)The Grimoire is craftable if lost \u2014 check JEI for the recipe under its mod tab."
+    }
+  ]
+}

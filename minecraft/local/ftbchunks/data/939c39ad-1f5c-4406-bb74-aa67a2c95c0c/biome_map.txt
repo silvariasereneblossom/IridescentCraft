@@ -1,0 +1,8 @@
+#3FF ars_nouveau:archwood_forest
+#460 minecraft:cherry_grove
+#010 minecraft:forest
+#508 minecraft:frozen_peaks
+#286 minecraft:grove
+#51E minecraft:jagged_peaks
+#524 minecraft:snowy_slopes
+#421 minecraft:stony_peaks

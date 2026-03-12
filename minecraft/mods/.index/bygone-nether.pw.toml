@@ -1,0 +1,16 @@
+filename = 'bygonenether-1.3.2-1.20.x.jar'
+name = 'Bygone Nether'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '529e31d2877b87a8bf006f590513a33ab6b73171'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 4747444
+project-id = 576124

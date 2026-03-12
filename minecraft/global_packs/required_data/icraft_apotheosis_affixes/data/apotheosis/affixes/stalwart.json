@@ -1,0 +1,28 @@
+{
+  "_comment": "Knockback resist",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.knockback_resistance",
+  "operation": "ADDITION",
+  "values": {
+    "COMMON": {
+      "min": 0.05,
+      "max": 0.1
+    },
+    "UNCOMMON": {
+      "min": 0.1,
+      "max": 0.2
+    },
+    "RARE": {
+      "min": 0.2,
+      "max": 0.3
+    }
+  },
+  "types": {
+    "set": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  }
+}

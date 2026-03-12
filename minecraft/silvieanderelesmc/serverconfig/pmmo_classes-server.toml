@@ -1,0 +1,30 @@
+
+["Primary Classes"]
+	#The number of classes a player can have at one time. Allowed values: 1 or 2.
+	#Range: 1 ~ 2
+	numClassesAllowed = 2
+	#The highest level a class can reach.
+	#Range: > 1
+	maxLevelAllowed = 4
+	#The level you must reach in your first primary class before you can take a second primary class.
+	#If this is set to three then once you reach level three in your first primary class you can learn a second class.
+	#This is only active if the number of classes allowed is two.
+	#Range: 1 ~ 4
+	secondClassLevelReq = 3
+
+["Sub Classes"]
+	#The level you must reach in a primary class before you can take a subclass for that class.
+	#If this is set to two then once you reach level two in a primary class you can learn a subclass.
+	#Range: 1 ~ 4
+	subClassLevelReq = 2
+
+["Ascended Classes"]
+	#Ascended classes are classes that are granted to the player based on the two other classes they obtain.
+	#Those two classes determine which unique ascended class you get. 
+	#If ascended classes should be granted to the player.
+	ascendedClassesActive = true
+	#The level the two primary classes must be before the ascended class is granted.
+	#If this is set to 4 then when both of your primary classes reach level 4 you will be granted the ascended class.
+	#Range: 1 ~ 4
+	ascendedClassLevelReq = 4
+

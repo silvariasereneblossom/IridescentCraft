@@ -1,0 +1,20 @@
+{
+  "name": "Botania",
+  "icon": "botania:manasteel_ingot",
+  "category": "icraft:mods_t1",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Botania is the primary Tier 1 magic mod. Mana generation, magical flowers, and the Mana Pool."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Role in the pack:$(/bold) Your first mana system. Manasteel is the T1 magic material ceiling. Botania's Orechid has been modified to produce Osmium and Diamond Ore (gated by available mana cost).$(br2)$(bold)Key IridescentCraft interactions:$(/bold) Botania mana tools are affected by Faefolk's Nature Magic racial (+15% effectiveness). The Lexica Botania is the in-mod documentation \u2014 read it."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier gating:$(/bold) Terrasteel and Elementium are T3 materials in this pack \u2014 crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1\u2013T2 ceiling.$(br2)$(bold)Gaia Guardian:$(/bold) Summoned boss, T3 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. Scales progressively."
+    }
+  ]
+}

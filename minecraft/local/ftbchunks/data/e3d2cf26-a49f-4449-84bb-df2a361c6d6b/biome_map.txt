@@ -1,0 +1,5 @@
+#556 minecraft:beach
+#3DE minecraft:deep_ocean
+#646 biomesoplenty:dune_beach
+#4F1 minecraft:ocean
+#2CF biomesoplenty:shrubland

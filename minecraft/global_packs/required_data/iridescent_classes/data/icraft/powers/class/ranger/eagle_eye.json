@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Eagle Eye",
+  "description": "+20% projectile damage (via Apothic Attributes if available).",
+  "modifiers": [
+    {
+      "attribute": "puffish_attributes:ranged_damage",
+      "operation": "multiply_base",
+      "value": 0.2
+    }
+  ]
+}

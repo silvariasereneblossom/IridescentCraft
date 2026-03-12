@@ -1,0 +1,12 @@
+
+#ExtraStorage's config
+[crafters]
+	#Indicates the minimum level of energy that the crafter consumes
+	#Range: 1 ~ 1000
+	base_energy = 15
+	#Include the amount of patterns in the crafter in your power consumption
+	include_pattern_energy = true
+	#The crafter's speed is limited to the number of available slots in the inventory it is connected to.
+	#https://github.com/Edivad99/ExtraStorage/issues/55
+	uniformly_distribute_processing = false
+

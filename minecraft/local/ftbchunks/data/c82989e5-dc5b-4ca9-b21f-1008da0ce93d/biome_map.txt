@@ -1,0 +1,16 @@
+#556 minecraft:beach
+#02B biomesoplenty:cherry_blossom_grove
+#674 minecraft:flower_forest
+#010 minecraft:forest
+#67B biomesoplenty:grassland
+#65C biomesoplenty:lavender_field
+#79A minecraft:lukewarm_ocean
+#515 biomesoplenty:mystic_grove
+#4F1 minecraft:ocean
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#698 biomesoplenty:redwood_forest
+#5FF minecraft:river
+#274 biomesoplenty:scrubland
+#2CF biomesoplenty:shrubland
+#7F2 biomesoplenty:woodland

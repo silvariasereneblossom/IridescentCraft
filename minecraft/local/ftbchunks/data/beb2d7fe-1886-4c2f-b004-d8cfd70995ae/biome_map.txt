@@ -1,0 +1,8 @@
+#2A2 biomesoplenty:auroral_garden
+#3D6 minecraft:cold_ocean
+#6D4 biomesoplenty:field
+#292 minecraft:frozen_ocean
+#1AB biomesoplenty:ominous_woods
+#5FF minecraft:river
+#72D minecraft:snowy_beach
+#68C biomesoplenty:snowy_coniferous_forest

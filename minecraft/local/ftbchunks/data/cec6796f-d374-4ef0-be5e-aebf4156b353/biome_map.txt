@@ -1,0 +1,11 @@
+#460 minecraft:cherry_grove
+#010 minecraft:forest
+#508 minecraft:frozen_peaks
+#467 biomesoplenty:highland
+#35F biomesoplenty:jacaranda_glade
+#294 biomesoplenty:jade_cliffs
+#51E minecraft:jagged_peaks
+#65C biomesoplenty:lavender_field
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#524 minecraft:snowy_slopes

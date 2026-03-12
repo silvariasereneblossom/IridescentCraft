@@ -1,0 +1,12 @@
+{
+	version: 1
+	uuid: "c118564da9b64a3a8550e721176c2184"
+	name: "Myuke_#c118564d"
+	lock: false
+	rewards_blocked: false
+	task_progress: { }
+	started: { }
+	completed: { }
+	claimed_rewards: { }
+	player_data: { }
+}

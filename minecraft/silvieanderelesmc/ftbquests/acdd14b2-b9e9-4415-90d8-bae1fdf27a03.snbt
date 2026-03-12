@@ -1,0 +1,12 @@
+{
+	version: 1
+	uuid: "acdd14b2b9e9441590d8bae1fdf27a03"
+	name: "silvieserene_s_Party#acdd14b2"
+	lock: false
+	rewards_blocked: false
+	task_progress: { }
+	started: { }
+	completed: { }
+	claimed_rewards: { }
+	player_data: { }
+}

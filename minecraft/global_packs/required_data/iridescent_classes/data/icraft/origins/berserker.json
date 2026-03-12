@@ -1,0 +1,16 @@
+{
+  "powers": [
+    "icraft:class/berserker/hp_modifier",
+    "icraft:class/berserker/weapon_affinity",
+    "icraft:class/berserker/blood_fury",
+    "icraft:class/berserker/thick_skinned",
+    "icraft:class/berserker/battle_trance"
+  ],
+  "icon": {
+    "item": "minecraft:netherite_axe"
+  },
+  "order": 1,
+  "impact": 2,
+  "name": "Berserker",
+  "description": "Sustained melee damage dealer. Gets stronger as HP drops. Axes deal +15% damage, bows/magic deal less. The \"I don't need to dodge, I need to hit harder\" class."
+}

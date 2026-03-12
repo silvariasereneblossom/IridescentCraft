@@ -1,0 +1,12 @@
+#232 biomesoplenty:dead_forest
+#292 minecraft:frozen_ocean
+#3A0 minecraft:frozen_river
+#0AF biomesoplenty:glowing_grotto
+#498 minecraft:lush_caves
+#0D2 biomesoplenty:old_growth_dead_forest
+#553 terralith:siberian_taiga
+#72D minecraft:snowy_beach
+#68C biomesoplenty:snowy_coniferous_forest
+#4ED biomesoplenty:snowy_maple_woods
+#169 minecraft:taiga
+#653 terralith:wintry_lowlands

@@ -1,0 +1,9 @@
+#556 minecraft:beach
+#010 minecraft:forest
+#4B0 minecraft:jungle
+#552 biomesoplenty:old_growth_woodland
+#3DC minecraft:plains
+#5FF minecraft:river
+#67B minecraft:savanna
+#274 biomesoplenty:scrubland
+#7F2 biomesoplenty:woodland

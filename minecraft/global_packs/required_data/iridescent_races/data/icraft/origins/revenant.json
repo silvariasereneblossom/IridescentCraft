@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:race/revenant/night_vision",
+    "icraft:race/revenant/dark_power",
+    "icraft:race/revenant/sunlight_weakness",
+    "icraft:race/revenant/healing_penalty"
+  ],
+  "icon": {
+    "item": "minecraft:skeleton_skull"
+  },
+  "order": 6,
+  "impact": 2,
+  "name": "Undead (Revenant)",
+  "description": "Dark and cursed. Night vision, +10% damage in darkness. Take damage in sunlight without helmet, -20% healing from food/potions."
+}

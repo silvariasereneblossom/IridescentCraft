@@ -1,0 +1,29 @@
+
+[Modifiers]
+	#Use True to enable increasing difficulty by in game time.
+	#Warning: using /time set command will change the difficulty!
+	#KEPT ENABLED but values reduced significantly since ScalingMobs
+	#also does time-based scaling. Combined effect should be gentle.
+	Enable = true
+	#Use True to enable increasing mobs' health by time.
+	"Enable Health Changes by Time" = true
+	#Very small add per 5 min — ScalingMobs is the primary time scaler
+	"Health Modifier(add)" = 0.0005
+	#Tiny multiplicative — compounds gently
+	"Health Modifier(multiply)" = 0.0005
+	"Health Modifier(multiply_base )" = 0.0
+	"Enable Damage Changes by Time" = true
+	"Damage Modifier(add)" = 0.0
+	#Reduced from 0.03 to 0.01 — ScalingMobs handles primary damage scaling
+	"Damage Modifier(multiply)" = 0.01
+	"Damage Modifier(multiply_base)" = 0.0
+	"Enable Armor Changes by Time" = true
+	"Armor Modifier(add)" = 0.0
+	#Reduced from 0.01 to 0.005
+	"Armor Modifier(multiply)" = 0.005
+	"Armor Modifier(multiply_base)" = 0.0
+	"Enable Armor Toughness Changes by Time" = true
+	"Armor Toughness Modifier(add)" = 0.0
+	"Armor Toughness Modifier(multiply)" = 0.0
+	"Armor Toughness Modifier(multiply_base)" = 0.0
+

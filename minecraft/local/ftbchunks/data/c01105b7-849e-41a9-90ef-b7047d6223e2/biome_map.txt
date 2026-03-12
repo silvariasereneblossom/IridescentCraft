@@ -1,0 +1,16 @@
+#147 terralith:ashen_savanna
+#05B minecraft:bamboo_jungle
+#184 terralith:brushland
+#694 terralith:cave/deep_caves
+#1A6 terralith:cave/granite_caves
+#63B terralith:cave/thermal_caves
+#2DC minecraft:deep_dark
+#4B0 minecraft:jungle
+#498 minecraft:lush_caves
+#5FF minecraft:river
+#307 terralith:rocky_jungle
+#3AF minecraft:sparse_jungle
+#421 minecraft:stony_peaks
+#297 terralith:tropical_jungle
+#7B6 terralith:volcanic_crater
+#28B terralith:volcanic_peaks

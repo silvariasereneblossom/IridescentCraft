@@ -1,0 +1,53 @@
+
+#Manage the difficulty settings of the server
+[difficulty]
+	#Enable per-player difficulty settings. Players will be able to set their own personnal difficulty with /my-difficulty. This will force the vanilla difficulty to hard (which should not impact the actual difficulty of the game), but the serverDifficulty will be used as default player difficulty.
+	perPlayer = true
+	#The minimum difficulty a player can set for themselves.
+	minPlayer = "normal"
+	#The maximum difficulty a player can set for themselves.
+	maxPlayer = "apocalyptic"
+	#Enable/Disable the difficulty lock. This will prevent players from downgrading their difficulty. By default the value is expert, meaning that players can only downgrade between peaceful to hard, but higher difficulties can only be upgraded. Leave empty to disable the lock.
+	enableDifficultyLockFrom = "expert"
+	#Enable/Disable the soft-hardcore mechanics. This is disabled by default. It will make it so that if you die repeatedly, and the health penaly is applied to the player, once they reach the minimum health, they will be forced to forever spectate.
+	softHardcore = false
+
+#Enable/Disable, or change specific mechanics kick off
+[mechanics]
+	#This mechanics makes you respawn with less hunger to prevent suicide-feeding.
+	hungerNerf = "expert"
+	#Prevent player of that difficulty from sleeping. Forces players to have to survive the night and various events from other mods.
+	noSleep = "expert"
+	#This is a purge that happens at the beginning of the night, to prevent the MC 1.18+ large cave population from hoarding the mob cap and preventing surface mobs.
+	dimensionToNightPurge = ["minecraft:overworld"]
+	#Which dimension should have custom sleep mechanics? This mechanic checks if every players that are allowed to sleep are sleeping (otherwise you would be waiting for players who cannot sleep) and force the sleep when the conditions are met. It is compatible with the gamerule PlayerSleepingPercentage.
+	dimensionToFixSleep = ["minecraft:overworld"]
+	#The respawn distance for each difficulty. The default is 0, which means you will respawn at the spawnpoint. The order is: peaceful to apocalypse. The respawn distance is the maximum distance from the spawnpoint. This setting forces you to build an infrastructure to get back to your base.
+	respawnDistancePerDiff = [0, 0, 0, 0, 0, 100, 500]
+	#The health penalty for each difficulty. The default is 0, which means you will respawn with full health. The order is: peaceful to apocalypse. This is a penalty to your max health when you die. This setting makes you more self-conscious about the risk you will take as they have permanent consequences. Think of it as as a soft-hardcore system.
+	healthDeathPenaltyPerDiff = [0, 0, 0, 0, 0, 0, 0]
+	#How low can your health go? This is the minimum health you can have when you die
+	healthDeathPenaltyMinimum = 8
+
+#Enable/Disable, or change specific bonuses for difficulties
+[bonuses]
+	#The luck bonus for each difficulty. The default is 0, which means you will have no luck bonus. The order is: peaceful to apocalypse. This setting makes it more worth it to take risk when using high difficulty (Use the Useful Luck mod !)
+	luckPerDiff = [0, 0, 0, 0, 1, 3, 6]
+	#The damage multiplicator bonus for each difficulty. The default is 1.0, which means you will have no damage bonus. The order is: peaceful to apocalypse. This setting encourages a high risk high reward fighting style, where high difficulty makes you more fragile but also more powerful. This is a good way to make the game more challenging without making it impossible.
+	damagePerDiff = [1.0, 1.0, 1.0, 1.0, 1.25, 1.5, 2.0]
+	#The xp drop multiplicator bonus for each difficulty. The default is 1.0, which means you will have no xp drop bonus. The order is: peaceful to apocalypse.
+	xpDropPerDiff = [1.0, 1.0, 1.0, 1.0, 1.25, 2.0, 3.0]
+
+#Customize additional spawning rules for mobs.
+[spawn]
+	#List of mobs that only spawn on normal difficulty and above.
+	normalMobs = ["example:some_normal_mobs"]
+	#List of mobs that only spawn on hard difficulty and above.
+	hardMobs = ["example:some_hard_mobs"]
+	#List of mobs that only spawn on expert difficulty and above.
+	expertMobs = ["example:some_expert_mobs"]
+	#List of mobs that only spawn on nightmare difficulty and above.
+	nightmareMobs = ["example:some_nightmare_mobs"]
+	#List of mobs that only spawn on apocalyptic difficulty.
+	apocalypticMobs = ["example:some_apocalyptic_mobs"]
+

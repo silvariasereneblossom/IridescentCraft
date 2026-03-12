@@ -1,0 +1,28 @@
+{
+  "_comment": "+5-15% XP",
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:experience",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "COMMON": {
+      "min": 0.05,
+      "max": 0.08
+    },
+    "UNCOMMON": {
+      "min": 0.08,
+      "max": 0.12
+    },
+    "RARE": {
+      "min": 0.12,
+      "max": 0.15
+    }
+  },
+  "types": {
+    "set": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  }
+}

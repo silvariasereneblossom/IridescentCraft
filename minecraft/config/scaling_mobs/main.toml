@@ -1,0 +1,86 @@
+
+[Misc]
+	#The amount by which mobs scale, per Minecraft day
+	#Range: 0.0 ~ Infinity
+	"Scaling Speed" = 1.0
+	#If true, mob stats will increase exponentially
+	"Use Exponential Scaling" = false
+	#After this day in the Minecraft world, all hostile mobs will be immune to burning in daylight
+	#Range: > 0
+	"Mobs Stop Burning on Day" = 100
+	#A list of mobs that will scale, even if they're not monsters
+	"Mob Whitelist" = []
+	#A list of mobs that will not scale, even if they're monsters
+	"Mob Blacklist" = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:elder_guardian", "minecraft:warden", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
+	#Players with lower scale will receive a higher boost to their stats
+	#Setting this to 0 disables the feature
+	#Range: 0.0 ~ Infinity
+	"Player Scale Favor" = 0.0
+	#If true, mob scaling speed will increase with more players in the world, up to 2x with 5 players
+	#Scaling will also cease if no players are on the server
+	"Scale with Player Count" = false
+
+[Health]
+	#The decimal amount that hostile mobs' health increase per day
+	#Range: 0.0 ~ Infinity
+	"Health Scale Rate" = 0.05
+	#The decimal amount of the mobs' base health in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Health Base" = 1.0
+	#The maximum amount that hostile mobs' damage can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Health" = 3.0
+
+[Damage]
+	#The decimal amount that hostile mobs' damage increase per day
+	#Range: 0.0 ~ Infinity
+	"Damage Scale Rate" = 0.15
+	#The decimal amount of the mobs' base damage in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Damage Base" = 1.0
+	#The maximum amount that hostile mobs' damage can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Damage" = 2.5
+
+[Speed]
+	#The decimal amount that hostile mobs' speed increase per day
+	#Range: 0.0 ~ Infinity
+	"Speed Scale Rate" = 0.001
+	#The decimal amount of the mobs' base speed in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Speed Base" = 0.0
+	#The maximum amount that hostile mobs' speed can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Speed" = 1.15
+
+["Armor Piercing"]
+	#The decimal amount of increase to mobs' damage that ignores armor per day
+	#Range: 0.0 ~ Infinity
+	"Armor Piercing Scale Rate" = 0.005
+	#The decimal amount of mobs' damage that ignores armor in the beginning
+	#Range: 0.0 ~ Infinity
+	"Armor Piercing Base" = 0.05
+	#The maximum amount of increase to mobs' damage that ignores armor
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Armor Piercing" = 0.3
+
+[Drops]
+	#The decimal amount of increase to mobs' drops per day
+	#Range: 0.0 ~ Infinity
+	"Mob Drops Scaling Rate" = 0.0
+	#The decimal amount of mobs' drops in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Drops Base" = 0.0
+	#The maximum amount of increase to mobs' drops
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Mob Drops" = 0.0
+	#The decimal amount of increase to mobs' XP drops per day
+	#Range: 0.0 ~ Infinity
+	"Mob XP Scaling Rate" = 0.03
+	#The decimal amount of mobs' XP drops in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob XP Base" = 0.0
+	#The maximum amount of increase to mobs' XP drops
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Mob XP" = 200.0
+

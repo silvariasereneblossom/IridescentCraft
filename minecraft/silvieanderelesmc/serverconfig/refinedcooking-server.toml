@@ -1,0 +1,11 @@
+
+[kitchenStation]
+	#The energy used by the Kitchen Station
+	#Range: > 0
+	usage = 1
+
+[kitchenAccessPoint]
+	#The energy used by the Kitchen Access Point
+	#Range: > 0
+	usage = 1
+

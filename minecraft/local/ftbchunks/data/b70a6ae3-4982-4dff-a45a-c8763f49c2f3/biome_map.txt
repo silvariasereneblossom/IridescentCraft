@@ -1,0 +1,13 @@
+#47F minecraft:birch_forest
+#420 biomesoplenty:clover_patch
+#4F9 minecraft:dark_forest
+#508 minecraft:frozen_peaks
+#67B biomesoplenty:grassland
+#286 minecraft:grove
+#467 biomesoplenty:highland
+#351 biomesoplenty:highland_moor
+#51E minecraft:jagged_peaks
+#515 biomesoplenty:mystic_grove
+#1DF minecraft:old_growth_birch_forest
+#5FF minecraft:river
+#51A minecraft:stony_shore

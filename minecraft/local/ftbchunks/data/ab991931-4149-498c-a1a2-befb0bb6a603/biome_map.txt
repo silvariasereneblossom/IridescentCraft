@@ -1,0 +1,10 @@
+#3FF ars_nouveau:archwood_forest
+#556 minecraft:beach
+#02B biomesoplenty:cherry_blossom_grove
+#3DE minecraft:deep_ocean
+#515 biomesoplenty:mystic_grove
+#4F1 minecraft:ocean
+#5FF minecraft:river
+#204 biomesoplenty:rocky_shrubland
+#2CF biomesoplenty:shrubland
+#51A minecraft:stony_shore

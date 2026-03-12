@@ -1,0 +1,12 @@
+{
+	version: 1
+	uuid: "8a11a35f44a94cfe9b3fbc54a38f2b60"
+	name: "Aria_Steele#8a11a35f"
+	lock: false
+	rewards_blocked: false
+	task_progress: { }
+	started: { }
+	completed: { }
+	claimed_rewards: { }
+	player_data: { }
+}

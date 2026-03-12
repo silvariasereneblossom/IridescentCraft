@@ -1,0 +1,1458 @@
+{
+	// Lock item list
+	lockItemList: [
+		{
+			item: "minecraft:anvil",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:chipped_anvil",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:damaged_anvil",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:brewing_stand",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				},
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:enchanting_table",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:beacon",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:end_crystal",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				},
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:ender_chest",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:respawn_anchor",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:white_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:light_gray_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:gray_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:black_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:brown_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:red_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:orange_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:yellow_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:lime_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:green_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:cyan_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:light_blue_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:blue_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:purple_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:magenta_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:pink_shulker_box",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:dragon_egg",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:wither_skeleton_skull",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				},
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:lodestone",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:smithing_table",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:grindstone",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:cartography_table",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:stonecutter",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:smoker",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:blast_furnace",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:loom",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:name_tag",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 10
+				}
+			]
+		},
+		{
+			item: "minecraft:fishing_rod",
+			aptitudes: [
+				{
+					aptitude: "Luck",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:bone_meal",
+			aptitudes: [
+				{
+					aptitude: "Luck",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:shears",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:lead",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:spyglass",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				},
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:brush",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:fire_charge",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:flint_and_steel",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:redstone",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:redstone_torch",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:repeater",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:comparator",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:writable_book",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:written_book",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:tnt",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:lectern",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				},
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:ender_pearl",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:ender_eye",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:bow",
+			aptitudes: [
+				{
+					aptitude: "Dexterity",
+					level: 1
+				},
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:crossbow",
+			aptitudes: [
+				{
+					aptitude: "Dexterity",
+					level: 1
+				},
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:saddle",
+			aptitudes: [
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:elytra",
+			aptitudes: [
+				{
+					aptitude: "Dexterity",
+					level: 30
+				}
+			]
+		},
+		{
+			item: "minecraft:firework_rocket",
+			aptitudes: [
+				{
+					aptitude: "Dexterity",
+					level: 1
+				},
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:experience_bottle",
+			aptitudes: [
+				{
+					aptitude: "Magic",
+					level: 1
+				},
+				{
+					aptitude: "Luck",
+					level: 10
+				}
+			]
+		},
+		{
+			item: "minecraft:wheat_seeds",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:cocoa_beans",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:pumpkin_seeds",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:melon_seeds",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:beetroot_seeds",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:torchflower_seeds",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:pitcher_pod",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:glow_berries",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:sweet_berries",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:nether_wart",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 10
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:egg",
+			aptitudes: [
+				{
+					aptitude: "Constitution",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:frogspawn",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				},
+				{
+					aptitude: "Constitution",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:turtle_egg",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				},
+				{
+					aptitude: "Constitution",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:sniffer_egg",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				},
+				{
+					aptitude: "Constitution",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:oak_sapling",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:spruce_sapling",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:birch_sapling",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:jungle_sapling",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:acacia_sapling",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:dark_oak_sapling",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:mangrove_propagule",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:cherry_sapling",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:azalea",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:flowering_azalea",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:brown_mushroom",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:red_mushroom",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:crimson_fungus",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:warped_fungus",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:bamboo",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:sugar_cane",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:cactus",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:chorus_plant",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:chorus_flower",
+			aptitudes: [
+				{
+					aptitude: "Intelligence",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:shield",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Constitution",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:chainmail_helmet",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:chainmail_chestplate",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:chainmail_leggings",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:chainmail_boots",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_helmet",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_chestplate",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_leggings",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_boots",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_helmet",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_chestplate",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_leggings",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_boots",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_helmet",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_chestplate",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_leggings",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_boots",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_helmet",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_chestplate",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_leggings",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_boots",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:turtle_helmet",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_horse_armor",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_horse_armor",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_horse_armor",
+			aptitudes: [
+				{
+					aptitude: "Defense",
+					level: 1
+				},
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:totem_of_undying",
+			aptitudes: [
+				{
+					aptitude: "Constitution",
+					level: 1
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:trident",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				},
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_hoe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_shovel",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_pickaxe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_axe",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				},
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:iron_sword",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_hoe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_shovel",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_pickaxe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_axe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				},
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:golden_sword",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_hoe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_shovel",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_pickaxe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_axe",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				},
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:diamond_sword",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_hoe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_shovel",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_pickaxe",
+			aptitudes: [
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_axe",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				},
+				{
+					aptitude: "Building",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:netherite_sword",
+			aptitudes: [
+				{
+					aptitude: "Strength",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:honey_bottle",
+			aptitudes: [
+				{
+					aptitude: "Constitution",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:potion",
+			aptitudes: [
+				{
+					aptitude: "Luck",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:splash_potion",
+			aptitudes: [
+				{
+					aptitude: "Luck",
+					level: 1
+				},
+				{
+					aptitude: "Dexterity",
+					level: 1
+				}
+			]
+		},
+		{
+			item: "minecraft:lingering_potion",
+			aptitudes: [
+				{
+					aptitude: "Luck",
+					level: 1
+				},
+				{
+					aptitude: "Magic",
+					level: 1
+				}
+			]
+		}
+	]
+}

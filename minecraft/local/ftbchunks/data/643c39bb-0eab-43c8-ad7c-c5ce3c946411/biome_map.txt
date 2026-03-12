@@ -1,0 +1,8 @@
+#47F minecraft:birch_forest
+#010 minecraft:forest
+#467 biomesoplenty:highland
+#351 biomesoplenty:highland_moor
+#2D6 minecraft:meadow
+#1DF minecraft:old_growth_birch_forest
+#204 biomesoplenty:rocky_shrubland
+#7F2 biomesoplenty:woodland

@@ -1,0 +1,6 @@
+#6F6 minecraft:badlands
+#7F0 biomesoplenty:dryland
+#614 minecraft:eroded_badlands
+#51A minecraft:stony_shore
+#2B7 minecraft:warm_ocean
+#5DF biomesoplenty:wasteland

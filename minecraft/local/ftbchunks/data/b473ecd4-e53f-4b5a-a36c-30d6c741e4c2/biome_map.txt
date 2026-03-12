@@ -1,0 +1,11 @@
+#735 biomesoplenty:coniferous_forest
+#6D4 biomesoplenty:field
+#67F biomesoplenty:fir_clearing
+#010 minecraft:forest
+#1AB biomesoplenty:ominous_woods
+#3DC minecraft:plains
+#5FF minecraft:river
+#02B biomesoplenty:wetland
+#152 minecraft:windswept_forest
+#05C minecraft:windswept_gravelly_hills
+#4C3 minecraft:windswept_hills

@@ -1,0 +1,23 @@
+
+[balancing]
+	#mod.scena.config.balancing.blacklist-random-ticking-blocks.comment
+	blacklist-random-ticking-blocks = false
+	#mod.scena.config.balancing.enable-compatibility-mode.comment
+	enable-compatibility-mode = false
+	#mod.scena.config.balancing.bit-bag-stack-size.comment
+	#Range: > 64
+	bit-bag-stack-size = 512
+	#mod.scena.config.balancing.change-tracker-size.comment
+	#Range: 10 ~ 40
+	change-tracker-size = 20
+	#mod.scena.config.balancing.delete-excess-bits.comment
+	delete-excess-bits = true
+	#mod.scena.config.balancing.light-factor-multiplier.comment
+	#Range: 0.0 ~ 4096.0
+	light-factor-multiplier = 1.0
+
+[style]
+	#mod.scena.config.style.bit-size.comment
+	#Allowed Values: ONE_SIXTEENTH, ONE_EIGHT, ONE_QUARTER, ONE_HALF, ONE
+	bit-size = "ONE_SIXTEENTH"
+
