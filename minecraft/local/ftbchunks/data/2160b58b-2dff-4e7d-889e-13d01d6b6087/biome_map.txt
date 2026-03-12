@@ -1,0 +1,9 @@
+#556 minecraft:beach
+#010 minecraft:forest
+#79A minecraft:lukewarm_ocean
+#47F biomesoplenty:mediterranean_forest
+#3DC minecraft:plains
+#698 biomesoplenty:redwood_forest
+#5FF minecraft:river
+#67B minecraft:savanna
+#7F2 biomesoplenty:woodland

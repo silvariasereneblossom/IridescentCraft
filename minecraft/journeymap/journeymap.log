@@ -39,3 +39,17 @@ CoreProperties{state=Valid, file=journeymap.core.config, configVersion=5.10.3, v
 [01:02:33] [Render thread/TRACE] [ThemeLoader] Initializing themes ...
 [01:02:33] [Render thread/INFO] [ThemeLoader] Preloaded theme textures: 73
 [01:02:33] [Render thread/INFO] [JourneymapClient] postInitialize EXIT, elapsed count 1 avg 164.82ms
+[01:08:52] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[01:12:24] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for create
+[01:12:24] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for biomesoplenty
+[01:12:24] [Render thread/INFO] [WaypointStore] Loaded 1 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World (1)\waypoints
+[01:12:24] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World (1)\overworld. Memory: 8192MB total, 2484MB free 
+[01:12:27] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/cardinal.png
+[01:12:27] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[01:12:27] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/emptytexture.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[01:12:28] [Render thread/INFO] [ChatLog] JourneyMap: Press [J]
+[01:12:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/minnow.png
+[01:12:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/bluegill.png
+[01:12:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/carp.png
+[01:12:37] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\offline\minecraft:overworld
+[01:13:50] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
