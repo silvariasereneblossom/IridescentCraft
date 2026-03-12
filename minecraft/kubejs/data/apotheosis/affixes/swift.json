@@ -1,0 +1,27 @@
+{
+  "_comment": "+5-15% attack speed",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "COMMON": {
+      "min": 0.05,
+      "max": 0.08
+    },
+    "UNCOMMON": {
+      "min": 0.08,
+      "max": 0.12
+    },
+    "RARE": {
+      "min": 0.12,
+      "max": 0.15
+    }
+  },
+  "types": {
+    "set": [
+      "sword",
+      "axe",
+      "trident"
+    ]
+  }
+}

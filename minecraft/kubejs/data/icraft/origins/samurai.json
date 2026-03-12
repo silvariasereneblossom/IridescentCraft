@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:class/samurai/hp_modifier",
+    "icraft:class/samurai/evasive_stance",
+    "icraft:class/samurai/bushido",
+    "icraft:class/samurai/focus"
+  ],
+  "icon": {
+    "item": "simplyswords:iron_katana"
+  },
+  "order": 2,
+  "impact": 2,
+  "name": "Samurai",
+  "description": "Versatile melee/ranged hybrid. Katanas +12%, bows +10%. Rewards switching between melee and ranged constantly."
+}

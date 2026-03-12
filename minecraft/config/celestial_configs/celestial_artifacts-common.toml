@@ -751,7 +751,7 @@
 	#Range: 0 ~ 100
 	amethystReinforceEffect = 1
 	#If true, Hierloom Necklace and Catastrophe Scroll will be given to new players
-	giveItemsOnStart = true
+	giveItemsOnStart = false
 	#If true, Catastrophe Scroll will be directly equipped onto new players
 	catastropheScrollStart = false
 	#If true, Catastrophe Scroll cannot be unequipped once equipped

@@ -1,0 +1,24 @@
+{
+  "name": "Your First Hour",
+  "icon": "minecraft:iron_sword",
+  "category": "icraft:welcome",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)What To Do First$(/bold)$(br2)$(li)$(bold)Select your Race and Class.$(/bold) These are the most impactful decisions you'll make early. See the Classes & Races chapter.$(li)$(bold)Open FTB Quests.$(/bold) The Welcome chapter gives you 3 skill points for free \u2014 just for going through it.$(li)$(bold)Find food.$(/bold) Hunger Overhaul makes food drain faster. Diverse food gives you max HP bonuses via Spice of Life."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(li)$(bold)Avoid enchanting table anxiety.$(/bold) Apotheosis completely reworks enchanting. Your bookshelf setup determines what enchants are available \u2014 more and better bookshelves unlock better enchants. No Tier 1 rush needed.$(li)$(bold)Don't expect diamonds in chests.$(/bold) They've been removed from all Overworld structure loot. Diamonds are a Tier 2 material \u2014 you'll earn them, not find them.$(li)$(bold)Explore structures.$(/bold) Tier 1 token fragments drop from Overworld dungeon chests. Collect 5 for a full token."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)What To Ignore For Now$(/bold)$(br2)$(li)The Nether \u2014 it's Tier 3. The portal won't activate until you're ready.$(li)The End \u2014 it's Tier 4.$(li)Twilight Forest \u2014 it's Tier 2 content. You can enter, but mobs will hurt.$(li)Refined Storage \u2014 it's Tier 3.$(li)Mekanism \u2014 it's Tier 3\u20134.$(br2)This doesn't mean you can't look. It means the pack is balanced around those tiers."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Waystones$(/bold)$(br2)Waystones generate naturally in all dimensions. They're your free fast-travel network. Activating a waystone registers it permanently \u2014 teleporting between them costs nothing.$(br2)$(bold)Crafting a waystone$(/bold) is intentionally expensive at all tiers, requiring rare boss drop materials. Natural generation handles your travel needs. Crafting is for establishing outposts far from natural spawns."
+    }
+  ]
+}

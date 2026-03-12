@@ -1,0 +1,24 @@
+{
+  "_comment": "T3+ max HP",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.max_health",
+  "operation": "ADDITION",
+  "values": {
+    "RARE": {
+      "min": 5,
+      "max": 7
+    },
+    "EPIC": {
+      "min": 7,
+      "max": 10
+    }
+  },
+  "types": {
+    "set": [
+      "helmet",
+      "chestplate",
+      "leggings",
+      "boots"
+    ]
+  }
+}

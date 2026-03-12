@@ -1,0 +1,16 @@
+{
+  "powers": [
+    "icraft:class/void_summoner/hp_modifier",
+    "icraft:class/void_summoner/dark_pact",
+    "icraft:class/void_summoner/soul_tether",
+    "icraft:class/void_summoner/shadow_cloak",
+    "icraft:class/void_summoner/glass_cannon_tag"
+  ],
+  "icon": {
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "order": 10,
+  "impact": 3,
+  "name": "Void Summoner",
+  "description": "The puppet master. -10% HP, half equipment HP. Commands minions, drains life through them. Vulnerable alone, devastating with an army."
+}

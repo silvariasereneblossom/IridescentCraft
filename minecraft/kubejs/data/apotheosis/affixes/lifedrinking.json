@@ -1,0 +1,23 @@
+{
+  "_comment": "T3+ life steal",
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:life_steal",
+  "operation": "ADDITION",
+  "values": {
+    "RARE": {
+      "min": 0.05,
+      "max": 0.07
+    },
+    "EPIC": {
+      "min": 0.07,
+      "max": 0.1
+    }
+  },
+  "types": {
+    "set": [
+      "sword",
+      "axe",
+      "trident"
+    ]
+  }
+}

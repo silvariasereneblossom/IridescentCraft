@@ -1,0 +1,16 @@
+{
+  "powers": [
+    "icraft:class/archmage/hp_modifier",
+    "icraft:class/archmage/arcane_power",
+    "icraft:class/archmage/glass_frame",
+    "icraft:class/archmage/mana_attunement",
+    "icraft:class/archmage/glass_cannon_tag"
+  ],
+  "icon": {
+    "item": "minecraft:enchanted_book"
+  },
+  "order": 8,
+  "impact": 3,
+  "name": "Archmage",
+  "description": "Ultimate glass cannon spellcaster. -20% HP, half equipment HP. Maximum spell damage, absolute minimum survivability."
+}

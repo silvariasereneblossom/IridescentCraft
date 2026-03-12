@@ -1,0 +1,23 @@
+{
+  "_comment": "T2+ crit chance",
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:critical_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "UNCOMMON": {
+      "min": 0.1,
+      "max": 0.12
+    },
+    "RARE": {
+      "min": 0.12,
+      "max": 0.15
+    }
+  },
+  "types": {
+    "set": [
+      "sword",
+      "axe",
+      "trident"
+    ]
+  }
+}

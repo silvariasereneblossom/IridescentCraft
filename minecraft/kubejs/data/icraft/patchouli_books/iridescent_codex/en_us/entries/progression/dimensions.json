@@ -1,0 +1,24 @@
+{
+  "name": "Dimensional Progression",
+  "icon": "minecraft:ender_pearl",
+  "category": "icraft:progression",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)A critical difference from vanilla:$(bold)$(br2)The $(bold)Nether is Tier 3$(/bold) content. The $(bold)End is Tier 4$(/bold) content.$(br2)Nether portals require a Tier 3 progression token to activate. End portals require a stabilized Eye of Ender recipe gated to Tier 4. This is intentional \u2014 both dimensions are significantly more dangerous than their vanilla equivalents in this pack."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier 2 Dimensions$(/bold)$(br2)$(bold)Twilight Forest$(/bold) \u2014 Dense, dark, ambush-heavy. Bosses guard progression. Home of the first Simply Swords uniques.$(br2)$(bold)Blue Skies$(/bold) (Everbright + Everdawn) \u2014 Elemental combat. Mobs deal elemental damage that bypasses standard armor.$(br2)$(bold)The Aether$(/bold) \u2014 Aerial warfare. Vertical combat, thin platforms, falling is lethal. Ranged builds shine here."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier 3 Dimensions$(/bold)$(br2)$(bold)The Undergarden$(/bold) \u2014 Toxic attrition. Constant poison pressure, environmental hazards. Survival builds matter.$(br2)$(bold)Deeper and Darker$(/bold) \u2014 Horror survival. Noise attracts mobs. Sculk mechanics. Stealth has value here.$(br2)$(bold)The Nether$(/bold) \u2014 Relentless aggression. Everything is permanently aggro. Piglins hunt in packs.$(br2)$(bold)The Abyss: The Other Side$(/bold) \u2014 Optional Tier 3 dimension."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier 4 Dimensions$(/bold)$(br2)$(bold)Deep Aether$(/bold) \u2014 Ascension trial. Combines aerial combat with elite mob AI. Celestial Events every 20 minutes empower all mobs.$(br2)$(bold)The End$(/bold) \u2014 Three escalating zones: Outer Islands \u2192 Deep End / End Cities \u2192 Dragon's Domain. Difficulty increases sharply between zones. The End is designed to kill you. $(italic)Prepare accordingly.$(/italic)"
+    }
+  ]
+}

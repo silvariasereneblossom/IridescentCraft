@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Intimidating Presence",
+  "description": "+10% attack knockback.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_knockback",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}
