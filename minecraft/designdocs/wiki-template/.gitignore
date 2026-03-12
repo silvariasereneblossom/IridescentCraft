@@ -1,0 +1,20 @@
+# Claude Code
+.claude/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Scratch files
+scratch/
+
+# Environment files
+.env
+.env.local
