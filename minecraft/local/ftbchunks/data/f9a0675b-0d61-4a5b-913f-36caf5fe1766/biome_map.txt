@@ -1,0 +1,5 @@
+#735 biomesoplenty:coniferous_forest
+#6AF biomesoplenty:crag
+#294 biomesoplenty:jade_cliffs
+#51E minecraft:jagged_peaks
+#4FE biomesoplenty:prairie
