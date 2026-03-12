@@ -1,0 +1,3 @@
+#6AF biomesoplenty:crag
+#508 minecraft:frozen_peaks
+#524 minecraft:snowy_slopes
