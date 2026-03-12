@@ -1,0 +1,7 @@
+{
+  "type": "origins:exhaust",
+  "name": "Ravenous",
+  "description": "+15% hunger drain.",
+  "interval": 160,
+  "exhaustion": 0.3
+}

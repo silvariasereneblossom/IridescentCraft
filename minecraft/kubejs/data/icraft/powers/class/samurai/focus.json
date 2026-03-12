@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Focus",
+  "description": "Not attacking for 3 seconds grants 'Focused': next attack deals +30% damage with +20% crit chance."
+}

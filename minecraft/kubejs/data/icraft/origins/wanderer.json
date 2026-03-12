@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:class/wanderer/hp_modifier",
+    "icraft:class/wanderer/jack_of_all_trades",
+    "icraft:class/wanderer/wanderlust",
+    "icraft:class/wanderer/adaptable"
+  ],
+  "icon": {
+    "item": "minecraft:compass"
+  },
+  "order": 4,
+  "impact": 1,
+  "name": "Wanderer",
+  "description": "Jack of all trades. No penalties, small bonuses to everything. Benefits from using many different systems and playstyles."
+}

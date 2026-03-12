@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:class/battlemage/hp_modifier",
+    "icraft:class/battlemage/arcane_strikes",
+    "icraft:class/battlemage/spell_armor",
+    "icraft:class/battlemage/mana_shield"
+  ],
+  "icon": {
+    "item": "minecraft:blaze_rod"
+  },
+  "order": 3,
+  "impact": 2,
+  "name": "Battlemage",
+  "description": "Warrior who weaves spells into melee combat. Swords +10%, magic staves +10%. Melee hits enhance spell power, spells enhance melee hits."
+}

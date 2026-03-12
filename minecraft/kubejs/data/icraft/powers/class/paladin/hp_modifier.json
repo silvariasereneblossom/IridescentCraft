@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Divine Vitality",
+  "description": "Increased max HP (+10%).",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "operation": "multiply_base",
+      "value": 0.1
+    }
+  ]
+}
