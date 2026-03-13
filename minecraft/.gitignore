@@ -6,4 +6,5 @@ shaderpacks/
 saves/
 *.zip
 !global_packs/required_data/*.zip
+!config/paxi/pridepack8.0.1.zip
 *.rar
