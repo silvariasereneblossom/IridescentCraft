@@ -28417,3 +28417,78 @@ A recipe category must be registered in order to use this recipe type.
 [13Mar2026 01:02:45.290] [VoiceChatPacketProcessingThread/INFO] [voicechat/]: [voicechat] Player 2426cde1-5c0c-469e-9ab2-9755826352e7 timed out
 [13Mar2026 01:02:45.290] [VoiceChatPacketProcessingThread/INFO] [voicechat/]: [voicechat] Reconnecting player silvieserene
 [13Mar2026 01:02:45.291] [VoiceChatPacketProcessingThread/INFO] [voicechat/]: [voicechat] Sent secret to silvieserene
+[13Mar2026 01:02:50.306] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: terramity:terramity_guidebook
+[13Mar2026 01:02:50.307] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: simplyswords:runic_grimoire
+[13Mar2026 01:02:50.307] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: footwork:combat_manual
+[13Mar2026 01:02:50.320] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: terramity:terramity_guidebook
+[13Mar2026 01:02:50.320] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: simplyswords:runic_grimoire
+[13Mar2026 01:02:50.321] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: footwork:combat_manual
+[13Mar2026 01:02:50.326] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: silvieserene lost connection: Disconnected
+[13Mar2026 01:02:50.326] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene left the game
+[13Mar2026 01:02:50.332] [Server thread/INFO] [voicechat/]: [voicechat] Disconnecting client silvieserene
+[13Mar2026 01:02:50.395] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[13Mar2026 01:02:50.406] [Server thread/INFO] [fastsuite/]: Constructed recipe list for minecraft:crafting in 6.869 ms. 15717/16284 recipes are parallelized.
+[13Mar2026 01:02:50.407] [Immersive Optimization Worker/INFO] [Immersive Optimization/]: Shutting down Immersive Optimization worker
+[13Mar2026 01:02:50.431] [Server thread/INFO] [net.creeperhost.ftbbackups.FTBBackups/]: Shutdown Complete
+[13Mar2026 01:02:50.433] [Config file watcher thread/INFO] [portb.configlib.ConfigLib/]: Watcher has shut down
+[13Mar2026 01:02:50.448] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[13Mar2026 01:02:50.448] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[13Mar2026 01:02:50.448] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[13Mar2026 01:02:51.132] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.133] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.133] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.134] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.809] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[13Mar2026 01:02:55.139] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/twilightforest:twilight_forest
+[13Mar2026 01:02:55.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/mahoutsukai:reality_marble
+[13Mar2026 01:02:55.143] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[13Mar2026 01:02:55.148] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/irons_spellbooks:pocket_dimension
+[13Mar2026 01:02:55.150] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:frost_world
+[13Mar2026 01:02:55.151] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/aether:the_aether
+[13Mar2026 01:02:55.153] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[13Mar2026 01:02:55.155] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everbright
+[13Mar2026 01:02:55.156] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everdawn
+[13Mar2026 01:02:55.158] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:spectral_world
+[13Mar2026 01:02:55.159] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:the_abyss
+[13Mar2026 01:02:55.162] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/deeperdarker:otherside
+[13Mar2026 01:02:55.163] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:pocket_dimension
+[13Mar2026 01:02:55.164] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/undergarden:undergarden
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (twilight_forest): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (reality_marble): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (frost_world): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_aether): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everbright): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everdawn): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (spectral_world): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_abyss): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (otherside): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (undergarden): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:adaptable]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:arctic]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:dampening]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:desecrating]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:enkindling]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:hasty]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:infested]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:knocking]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:lively]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:magnetic]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:molten]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:paralyzing]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:plagued]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:reflective]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:shielding]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:wounding]
+[13Mar2026 01:02:55.877] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.client.server.IntegratedServer@562f8c4a
+[13Mar2026 01:02:55.882] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
+[13Mar2026 01:02:55.882] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
+[13Mar2026 01:02:55.888] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
+[13Mar2026 01:02:55.889] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
+[13Mar2026 01:02:55.945] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[13Mar2026 01:02:56.031] [Render thread/INFO] [FTB Chunks/]: Shutting down map thread

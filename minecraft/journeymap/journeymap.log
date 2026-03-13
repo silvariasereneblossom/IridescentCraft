@@ -53,3 +53,4 @@ CoreProperties{state=Valid, file=journeymap.core.config, configVersion=5.10.3, v
 [01:01:49] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/perch.png
 [01:01:49] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/bluegill.png
 [01:02:36] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\offline\minecraft:overworld
+[01:02:55] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs

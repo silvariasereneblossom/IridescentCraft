@@ -94371,3 +94371,406 @@ A recipe category must be registered in order to use this recipe type.
 [13Mar2026 01:02:45.291] [VoiceChatPacketProcessingThread/DEBUG] [voicechat/]: [voicechat] Synchronizing 1 volume categories with silvieserene
 [13Mar2026 01:02:45.291] [VoiceChatPacketProcessingThread/INFO] [voicechat/]: [voicechat] Sent secret to silvieserene
 [13Mar2026 01:02:45.292] [VoiceChatPacketProcessingThread/DEBUG] [voicechat/]: [voicechat] Set state of 2426cde1-5c0c-469e-9ab2-9755826352e7 to disconnected: {disabled=true, disconnected=true, uuid=2426cde1-5c0c-469e-9ab2-9755826352e7, name=silvieserene, group=null}
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.305] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: terramity:terramity_guidebook
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.306] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: simplyswords:runic_grimoire
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from com.mojang.brigadier.CommandDispatcher [CommandDispatcher.java:264]
+[13Mar2026 01:02:50.307] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: footwork:combat_manual
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.319] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: terramity:terramity_guidebook
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: simplyswords:runic_grimoire
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.320] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.321] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#70: [IridescentCraft] Suppressed patchouli book: footwork:combat_manual
+[13Mar2026 01:02:50.323] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.323] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.323] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.323] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.323] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.323] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.323] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.324] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.324] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.324] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.324] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.324] [Server thread/DEBUG] [portb.biggerstacks.util.ItemStackSizeHelper/]: Stack size ruleset is somehow null, using fallback logic. Called from null
+[13Mar2026 01:02:50.326] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: silvieserene lost connection: Disconnected
+[13Mar2026 01:02:50.326] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene left the game
+[13Mar2026 01:02:50.332] [Server thread/DEBUG] [voicechat/]: [voicechat] Removing state of silvieserene
+[13Mar2026 01:02:50.332] [Server thread/INFO] [voicechat/]: [voicechat] Disconnecting client silvieserene
+[13Mar2026 01:02:50.395] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[13Mar2026 01:02:50.406] [Server thread/INFO] [fastsuite/]: Constructed recipe list for minecraft:crafting in 6.869 ms. 15717/16284 recipes are parallelized.
+[13Mar2026 01:02:50.407] [Immersive Optimization Worker/INFO] [Immersive Optimization/]: Shutting down Immersive Optimization worker
+[13Mar2026 01:02:50.431] [Server thread/INFO] [net.creeperhost.ftbbackups.FTBBackups/]: Shutdown Complete
+[13Mar2026 01:02:50.433] [Config file watcher thread/INFO] [portb.configlib.ConfigLib/]: Watcher has shut down
+[13Mar2026 01:02:50.437] [Server thread/DEBUG] [lain.mods.cos.init.forge.ForgeCosmeticArmorReworked/]: Server is stopping... try to save all still loaded CosmeticArmor data
+[13Mar2026 01:02:50.448] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[13Mar2026 01:02:50.448] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[13Mar2026 01:02:50.448] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[13Mar2026 01:02:51.132] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.133] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.133] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.134] [Worker-Main-34/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[13Mar2026 01:02:51.809] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[13Mar2026 01:02:55.139] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/twilightforest:twilight_forest
+[13Mar2026 01:02:55.141] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/mahoutsukai:reality_marble
+[13Mar2026 01:02:55.143] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[13Mar2026 01:02:55.148] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/irons_spellbooks:pocket_dimension
+[13Mar2026 01:02:55.150] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:frost_world
+[13Mar2026 01:02:55.151] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/aether:the_aether
+[13Mar2026 01:02:55.153] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[13Mar2026 01:02:55.155] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everbright
+[13Mar2026 01:02:55.156] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everdawn
+[13Mar2026 01:02:55.158] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:spectral_world
+[13Mar2026 01:02:55.159] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:the_abyss
+[13Mar2026 01:02:55.162] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/deeperdarker:otherside
+[13Mar2026 01:02:55.163] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:pocket_dimension
+[13Mar2026 01:02:55.164] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/undergarden:undergarden
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Starting registry save
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: aether:moa_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:custom_stat
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:fluid_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: mekanism:gas
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/material_rule
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/structure_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: lithostitched:processor_condition_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:position_source_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:height_provider_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: corgilib:condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:mounted_fluid_storage_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_biome_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: forge:global_loot_modifier_serializers
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:loot_condition_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: aether:advancement_sound_override
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:recipe_serializer
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:frog_variant
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:banner_pattern
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/feature_size_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_damage_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:point_of_interest_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:loot_pool_entry_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/block_state_provider_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/chunk_generator
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: corgilib:blending_function
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:loot_function_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:loot_score_provider_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/tree_decorator_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:schedule
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/material_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:villager_profession
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:potion
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:block_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_block_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_modifier
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:recipe_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/feature
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:cat_variant
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: corgilib:villager_trades_item_listing
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:pos_rule_test
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: mekanism:infuse_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_bientity_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:loot_nbt_provider_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:biome_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/placement_modifier_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:potato_projectile/render_mode
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:display_source
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/structure_piece
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:particle_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:game_event
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:arm_interaction_point_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/root_placer_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: crafttweaker:condition_serializer
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:global_power_set
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:painting_variant
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:block
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:item_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_entity_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:fan_processing_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:rule_test
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_fluid_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: lithostitched:modifier_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: lithostitched:modifier_predicate_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_item_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:command_argument_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:item
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:block_entity_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/foliage_placer_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:stat_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:block_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:attribute
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:rule_block_entity_modifier
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/density_function_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: crafttweaker:transformer_serializer
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:fluid
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:item_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/structure_pool_element
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:activity
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:bientity_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: twilightforest:tiny_bird_variant
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:instrument
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:decorated_pot_patterns
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:power_factory
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:entity_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:mob_effect
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:entity_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:float_provider_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: mekanism:pigment
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:chunk_status
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:enchantment
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/structure_processor
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: lithostitched:placement_condition_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_item_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:potato_projectile/block_hit_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:entity_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:item_attribute_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_block_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:int_provider_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_bientity_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/structure_placement
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:mounted_item_storage_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:potato_projectile/entity_hit_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:menu
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/trunk_placer_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:creative_mode_tab
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/carver
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_power
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:configured_entity_action
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:loot_number_provider_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:sound_event
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:display_target
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:worldgen/biome_source
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:villager_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: forge:fluid_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:block_predicate_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: forge:entity_data_serializers
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:modifier
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:sensor_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:bientity_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: twilightforest:dwarf_rabbit_variant
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: create:contraption_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: botania:brews
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: minecraft:memory_module_type
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: mekanism:slurry
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving registry: apoli:damage_condition
+[13Mar2026 01:02:55.169] [Server thread/DEBUG] [FabricRegistrySync/]: Not saving empty registry data
+[13Mar2026 01:02:55.210] [Server thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: Gathering id map for writing to world save New World
+[13Mar2026 01:02:55.275] [Server thread/DEBUG] [net.minecraftforge.common.ForgeHooks/WP]: ID Map collection complete New World
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (twilight_forest): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (reality_marble): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (frost_world): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_aether): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everbright): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everdawn): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (spectral_world): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_abyss): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (otherside): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (undergarden): All chunks are saved
+[13Mar2026 01:02:55.470] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[13Mar2026 01:02:55.470] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for minecraft:overworld
+[13Mar2026 01:02:55.470] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for minecraft:overworld
+[13Mar2026 01:02:55.470] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.471] [Server thread/DEBUG] [jmi/]: all overlays removed
+[13Mar2026 01:02:55.542] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for twilightforest:twilight_forest_type
+[13Mar2026 01:02:55.542] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for twilightforest:twilight_forest_type
+[13Mar2026 01:02:55.543] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.545] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for mahoutsukai:reality_marble
+[13Mar2026 01:02:55.545] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for mahoutsukai:reality_marble
+[13Mar2026 01:02:55.545] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.545] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for minecraft:the_end
+[13Mar2026 01:02:55.545] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for minecraft:the_end
+[13Mar2026 01:02:55.545] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for irons_spellbooks:pocket_dimension_type
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for irons_spellbooks:pocket_dimension_type
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for theabyss:frost_world
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for theabyss:frost_world
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for aether:the_aether
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for aether:the_aether
+[13Mar2026 01:02:55.549] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.550] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for minecraft:the_nether
+[13Mar2026 01:02:55.550] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for minecraft:the_nether
+[13Mar2026 01:02:55.550] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.550] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for blue_skies:everbright
+[13Mar2026 01:02:55.550] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for blue_skies:everbright
+[13Mar2026 01:02:55.550] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.551] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for blue_skies:everdawn
+[13Mar2026 01:02:55.551] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for blue_skies:everdawn
+[13Mar2026 01:02:55.551] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.551] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for theabyss:spectral_world
+[13Mar2026 01:02:55.551] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for theabyss:spectral_world
+[13Mar2026 01:02:55.551] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.552] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for theabyss:the_abyss
+[13Mar2026 01:02:55.552] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for theabyss:the_abyss
+[13Mar2026 01:02:55.552] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.552] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for deeperdarker:otherside
+[13Mar2026 01:02:55.552] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for deeperdarker:otherside
+[13Mar2026 01:02:55.552] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.553] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for theabyss:pocket_dimension
+[13Mar2026 01:02:55.553] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for theabyss:pocket_dimension
+[13Mar2026 01:02:55.553] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.554] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Redstone Network Space for undergarden:undergarden
+[13Mar2026 01:02:55.554] [Server thread/DEBUG] [com.simibubi.create.Create/]: Removed Kinetic Network Space for undergarden:undergarden
+[13Mar2026 01:02:55.554] [Server thread/DEBUG] [voicechat/]: [voicechat] Sent own state to server: disabled=true
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:adaptable]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:arctic]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:dampening]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:desecrating]
+[13Mar2026 01:02:55.685] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:enkindling]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:hasty]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:infested]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:knocking]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:lively]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:magnetic]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:molten]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:paralyzing]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:plagued]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:reflective]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:shielding]
+[13Mar2026 01:02:55.686] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:wounding]
+[13Mar2026 01:02:55.877] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.client.server.IntegratedServer@562f8c4a
+[13Mar2026 01:02:55.877] [Server thread/DEBUG] [FluxNetworks/]: FluxNetworkData has been unloaded
+[13Mar2026 01:02:55.882] [Server thread/DEBUG] [SpectreLib/CONFIG]: Unloading server configs
+[13Mar2026 01:02:55.882] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
+[13Mar2026 01:02:55.882] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
+[13Mar2026 01:02:55.883] [Server thread/DEBUG] [net.minecraftforge.fml.config.ConfigTracker/CONFIG]: Unloading configs type SERVER
+[13Mar2026 01:02:55.888] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
+[13Mar2026 01:02:55.889] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
+[13Mar2026 01:02:55.889] [Server thread/DEBUG] [FluxNetworks/]: Server config loaded
+[13Mar2026 01:02:55.945] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[13Mar2026 01:02:56.030] [Worker-Main-33/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-33 shutdown
+[13Mar2026 01:02:56.030] [Worker-Main-35/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-35 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-28/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-28 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-26/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-26 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-27/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-27 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-30/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-30 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-36/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-36 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-34/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-34 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-29/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-29 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-31/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-31 shutdown
+[13Mar2026 01:02:56.031] [Worker-Main-32/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-32 shutdown
+[13Mar2026 01:02:56.031] [Render thread/INFO] [FTB Chunks/]: Shutting down map thread
