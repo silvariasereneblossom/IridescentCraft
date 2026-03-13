@@ -31,12 +31,16 @@ ServerEvents.recipes(event => {
 // Suppress unwanted mod books from inventory. Uses both exact ID matching
 // and pattern matching to catch books even if exact IDs are unknown.
 
-// Exact item IDs to suppress (add confirmed IDs here)
+// Exact item IDs to suppress (add confirmed IDs here via /kubejs hand)
 const SUPPRESSED_BOOKS = [
   'terramity:guidebook',
   'terramity:terramity_guidebook',
+  'terramity:guide_book',
   'simplyswords:runic_grimoire',
+  'simplyswords:runic_tablet',
   'epicfight:skill_book',
+  'epicfight:combat_book',
+  'epicfight:combatants_companion',
   'primalmagick:grimoire',
   'primalmagick:grimoire_creative',
   'ars_nouveau:worn_notebook',
@@ -47,10 +51,13 @@ const SUPPRESSED_BOOKS = [
 // Also suppress items matching book-like patterns from known mod namespaces
 const BOOK_NAMESPACES = [
   'terramity', 'simplyswords', 'epicfight', 'primalmagick',
-  'theabyss', 'celestial'
+  'theabyss', 'celestial', 'ars_nouveau'
 ]
 
-const BOOK_KEYWORDS = ['book', 'grimoire', 'guide', 'notebook', 'tome', 'manual']
+const BOOK_KEYWORDS = [
+  'book', 'grimoire', 'guide', 'notebook', 'tome', 'manual',
+  'companion', 'codex', 'journal', 'tablet', 'compendium'
+]
 
 PlayerEvents.inventoryChanged(event => {
   const item = event.item

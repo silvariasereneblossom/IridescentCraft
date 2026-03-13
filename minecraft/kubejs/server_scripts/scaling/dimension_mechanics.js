@@ -372,14 +372,21 @@ PlayerEvents.tick(event => {
 })
 
 // Clear Void Corruption when leaving the End
-PlayerEvents.changeDimension(event => {
-  let player = event.player
-  if (event.fromDimension === 'minecraft:the_end') {
-    if (player.persistentData.contains('icraft_void_corruption')) {
-      player.persistentData.remove('icraft_void_corruption')
-      // Remove attribute modifier
-      player.removeAttribute('minecraft:generic.max_health', 'icraft_void_corruption_hp')
-      player.tell('§aVoid Corruption cleansed.')
+// Uses tick-based dimension tracking since PlayerEvents.changeDimension doesn't exist in KubeJS 6.x
+ServerEvents.tick(event => {
+  if (event.server.tickCount % 20 !== 0) return // Check once per second
+  event.server.players.forEach(player => {
+    let currentDim = player.level.dimension
+    let lastDim = player.persistentData.getString('icraft_last_dimension')
+    if (lastDim && lastDim !== currentDim && lastDim === 'minecraft:the_end') {
+      if (player.persistentData.contains('icraft_void_corruption')) {
+        player.persistentData.remove('icraft_void_corruption')
+        try {
+          player.removeAttribute('minecraft:generic.max_health', 'icraft_void_corruption_hp')
+        } catch(e) {}
+        player.tell('\u00a7aVoid Corruption cleansed.')
+      }
     }
-  }
+    player.persistentData.putString('icraft_last_dimension', currentDim)
+  })
 })

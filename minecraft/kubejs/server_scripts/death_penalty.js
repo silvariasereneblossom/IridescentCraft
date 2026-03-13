@@ -52,8 +52,9 @@ const ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 // SECTION 1: DEATH EVENT — Apply durability loss
 // =============================================================================
 
-PlayerEvents.death(event => {
-  const player = event.player
+EntityEvents.death(event => {
+  if (!event.entity.player) return
+  const player = event.entity
   const dimId = player.level.dimension.toString()
 
   // Get loss percentage for this dimension
@@ -253,15 +254,8 @@ PlayerEvents.inventoryChanged(event => {
 // Add "(Broken)" to broken item tooltips with red text.
 // =============================================================================
 
-ItemEvents.tooltip(event => {
-  // Register for all items — the handler checks NBT
-  event.addAdvanced('*', (stack, advanced, text) => {
-    if (!stack.isEmpty && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG)) {
-      text.add(1, Text.red(Text.of('✘ BROKEN').bold()))
-      text.add(2, Text.gray('Repair at an anvil to restore functionality'))
-    }
-  })
-})
+// NOTE: Tooltip rendering moved to client_scripts/broken_tooltip.js
+// ItemEvents.tooltip is a client-side event and cannot run in server_scripts
 
 
 // =============================================================================
