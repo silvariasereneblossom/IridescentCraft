@@ -1,0 +1,11 @@
+#232 biomesoplenty:dead_forest
+#6D4 biomesoplenty:field
+#251 biomesoplenty:forested_field
+#0AF biomesoplenty:glowing_grotto
+#056 biomesoplenty:maple_woods
+#0D2 biomesoplenty:old_growth_dead_forest
+#73A minecraft:old_growth_pine_taiga
+#60C minecraft:old_growth_spruce_taiga
+#5FF minecraft:river
+#4ED biomesoplenty:snowy_maple_woods
+#169 minecraft:taiga
