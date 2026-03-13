@@ -1,0 +1,70 @@
+# IridescentCraft Wiki
+
+Living documentation for IridescentCraft, a progression-focused expert-lite Minecraft 1.20.1 Forge modpack with 420+ mods.
+
+---
+
+## Sections
+
+### Design
+The canonical design reference for all modpack systems.
+
+- [Master Design Document](design/master.md) — Complete system specifications (Parts I-XII)
+- [Design Changelog](design/changelog.md) — Tracked changes to design across sessions
+
+### Progression
+- [Progression Overview](progression/overview.md) — Tier system, dimension gates, unlock paths
+
+### Classes & Races
+- [Classes & Races Overview](classes/overview.md) — 10 classes, 7+ races, glass cannon mechanics
+
+### Systems
+- [Systems Overview](systems/overview.md) — Death penalty, scaling, enchantments, affixes, skills, loot, food
+
+### KubeJS & Technical
+- [KubeJS Overview](kubejs/overview.md) — Script reference, event compatibility, datapack loading
+
+### Mods
+- [Mod Overview](mods/overview.md) — Key mods by tier, config changes
+
+### Known Issues
+- [Issue Tracker](known-issues/tracker.md) — Active bugs, testing needed, resolved
+
+### Meta
+- [Style Guide](meta/style-guide.md) — Writing conventions for wiki pages
+
+---
+
+## Implementation Status
+
+| System | Status | Notes |
+|--------|--------|-------|
+| Tier gating (AStages) | Implemented | Scripts in place, needs in-game API verification |
+| Dimension scaling | Implemented | `dimension_scaling.js` |
+| Death penalty | Implemented | `death_penalty.js` |
+| Loot tables (LootJS) | Implemented | `loot_tables.js` |
+| Skill trees (Pufferfish) | Implemented | Datapack + `skill_effects.js` (34% placeholder effects) |
+| Custom enchantments | Implemented | `custom_enchantments.js` + `enchant_effects.js` (24 enchants) |
+| Apotheosis affixes | Partially implemented | 30 JSON + 15 event-driven of ~95 total |
+| Class respec | Implemented | `class_respec.js` |
+| Equipment HP halving | Implemented | `equipment_hp_halving.js` |
+| FTB Quests | Not started | Quest book needs in-game GUI editor |
+| Patchouli Codex | In progress | Zip datapack created, testing Paxi loading |
+| Book suppression | In progress | Broad pattern matching, needs item ID verification |
+| Endgame loops (Part VIII) | Not started | Oblivion's Rift, Mythic gear, Compendium |
+| Prestige/Ascension (Part IX) | Not started | 5 ascension levels |
+| Loot table overhaul | Not started | 20+ structure mods need tier-appropriate loot |
+| Villager trade rework | Not started | Remove enchanted books, add XP trades |
+
+---
+
+## Quick Reference
+
+| Resource | Location |
+|----------|----------|
+| Game Instance | `C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\` |
+| Linux Dev | `/root/IridescentCraft/minecraft/` |
+| GitHub Repo | synced via GitHub Desktop |
+| Design Docs (original) | `designdocs/master_design_document IridescentCraft.docx` |
+| KubeJS Logs | `logs/kubejs/server.log` |
+| Game Logs | `logs/latest.log` |
