@@ -32,6 +32,7 @@ The canonical design reference for all modpack systems.
 
 ### Meta
 - [Style Guide](meta/style-guide.md) — Writing conventions for wiki pages
+- [License](LICENSE.md) — Standard's Petty Software License v2.0
 
 ---
 
