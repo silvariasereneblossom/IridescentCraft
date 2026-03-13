@@ -3,4 +3,6 @@ resourcepacks/
 shaderpacks/
 saves/
 *.zip
+!global_packs/required_data/*.zip
 *.rar
+
