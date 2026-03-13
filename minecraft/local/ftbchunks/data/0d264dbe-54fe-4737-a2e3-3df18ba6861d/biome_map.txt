@@ -1,0 +1,12 @@
+#4DF biomesoplenty:aspen_glade
+#460 minecraft:cherry_grove
+#735 biomesoplenty:coniferous_forest
+#67F biomesoplenty:fir_clearing
+#010 minecraft:forest
+#2D6 minecraft:meadow
+#1DF minecraft:old_growth_birch_forest
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#5FF minecraft:river
+#14C biomesoplenty:spider_nest
+#169 minecraft:taiga

@@ -18,6 +18,8 @@
 #0C7797 alexsmobs:bison_carpet
 #AD7F75 alexsmobs:bison_fur_block
 #AC9CC9 create:black_seat
+#A8E5E5 mekanism:block_salt
+#D0FD32 quark:blossom_log
 #45C81B minecraft:blue_orchid
 #206096 quark:bonded_leather
 #6043EF minecraft:brain_coral_fan
@@ -38,6 +40,7 @@
 #4341EF minecraft:cobbled_deepslate_stairs
 #058353 minecraft:cobblestone
 #74DB3C minecraft:cobblestone_wall
+#6E76AF minecraft:copper_ore
 #CC07F6 minecraft:cornflower
 #B2A2E1 minecraft:dandelion
 #AF03B5 minecraft:dark_oak_fence
@@ -60,6 +63,7 @@
 #4FA7D0 minecraft:dirt_path
 #009B14 minecraft:farmland
 #FC7434 biomesoplenty:flowering_oak_leaves
+#5A75B0 minecraft:glow_lichen
 #2C1BE1 minecraft:gold_block
 #060B35 minecraft:granite
 #3F84B7 minecraft:grass_block
@@ -77,6 +81,7 @@
 #7FCA6F minecraft:jungle_slab
 #86FFFF minecraft:jungle_stairs
 #3CAD79 minecraft:lantern
+#EA439B minecraft:lapis_ore
 #0E02C5 minecraft:lightning_rod
 #7482E4 minecraft:lilac
 #DFD691 minecraft:lily_pad
