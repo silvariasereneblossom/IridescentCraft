@@ -1,0 +1,7 @@
+#3D6 minecraft:cold_ocean
+#735 biomesoplenty:coniferous_forest
+#646 biomesoplenty:dune_beach
+#005 biomesoplenty:gravel_beach
+#4F1 minecraft:ocean
+#4FE biomesoplenty:prairie
+#5FF minecraft:river
