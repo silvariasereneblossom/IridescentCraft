@@ -1,0 +1,8 @@
+#460 minecraft:cherry_grove
+#508 minecraft:frozen_peaks
+#294 biomesoplenty:jade_cliffs
+#65C biomesoplenty:lavender_field
+#5F0 biomesoplenty:pasture
+#5FF minecraft:river
+#524 minecraft:snowy_slopes
+#774 minecraft:sunflower_plains
