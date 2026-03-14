@@ -1,0 +1,7 @@
+#460 minecraft:cherry_grove
+#735 biomesoplenty:coniferous_forest
+#010 minecraft:forest
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#5FF minecraft:river
+#774 minecraft:sunflower_plains
