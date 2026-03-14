@@ -1,0 +1,10 @@
+#47F minecraft:birch_forest
+#460 minecraft:cherry_grove
+#010 minecraft:forest
+#286 minecraft:grove
+#294 biomesoplenty:jade_cliffs
+#2D6 minecraft:meadow
+#1DF minecraft:old_growth_birch_forest
+#482 biomesoplenty:overgrown_greens
+#3DC minecraft:plains
+#698 biomesoplenty:redwood_forest
