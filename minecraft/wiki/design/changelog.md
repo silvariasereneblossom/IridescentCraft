@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-14 — Batch implementation pass
+
+- Codex fully working: 11 categories, 80 entries, formatted, advancement-gated (T2+)
+- Mod book suppression working: `/clear` with NBT matching for 9+ mod books
+- LootJS loot overhaul fixed: `setCount()` API corrected, 35+ structure mods covered
+- Apotheosis affixes complete: 142 JSON files (was 30), covering all tiers/dimensions/bosses
+- Mob equipment scaling fixed: `setItemSlot` API (was `setArmorSlot`)
+- Origins++ overlap: investigated, no removals needed
+- Diagnostic scripts disabled, KubeJS event errors all resolved
+
 ## 2026-03-14 — Three-prompt character creation (Origin / Race / Class)
 
 - Updated master design doc: character system now has four layers instead of three

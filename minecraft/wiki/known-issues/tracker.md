@@ -2,16 +2,11 @@
 
 ## Active Issues
 
-### Codex Formatting Pass Needed
-- **Status:** Low priority
-- **Symptom:** Codex text content needs a formatting/polish pass across all entries
-- **Note:** Categories and entries all load correctly. Just needs prose cleanup.
-
 ### Three-Prompt Character Creation
 - **Status:** Working as intended (confirmed 2026-03-14)
 - **Design:** Three sequential prompts on first join: Origin (Origins++) → Race (7 icraft) → Class (10 icraft)
 - **Implementation:** Layer ordering via `order` field (0, 1, 2). Default Origins layer re-enabled.
-- **TODO:** Remove Origins++ origins that overlap with icraft custom races
+- **Origins++ overlap:** Investigated — no removals needed. Zero name collisions, separate layers.
 
 
 ## Needs Testing
@@ -20,10 +15,24 @@
 - [ ] Simply Swords unique weapon IDs — 6 Abyss weapons unverified
 - [ ] Origins `action_on_callback` syntax for glass cannon auto-tagging
 - [ ] Iron's Spells attribute names for skill effects
-- [ ] Apotheosis affix JSON schema compatibility
+- [ ] Apotheosis affix JSON schema compatibility (142 affixes deployed, untested)
 - [ ] Custom enchantment registration via Apotheosis
+- [ ] Mob equipment setItemSlot API — fixed, needs in-game verification
 
 ## Resolved
+
+### Mob Equipment API Fixed (2026-03-14)
+- **Fix:** Replaced `setArmorSlot`/`getArmorSlot` with `setItemSlot`/`getItemBySlot` (KubeJS 6.x API). Fixes log spam.
+
+### Codex Formatting + Advancement Gating (2026-03-14)
+- **Fix:** All 80 entries formatted with tier color macros, $(thing)/(item)/(warn)/(note) markup. Fixed unclosed tags.
+- T2+ categories and entries gated via `advancement` field (not `flag`).
+
+### Apotheosis Affixes Complete (2026-03-14)
+- **Fix:** 112 new affix JSONs added (30→142 total). Covers all tiers, dimensions, bosses, equipment types.
+
+### Origins++ Overlap Investigated (2026-03-14)
+- **Result:** No removals needed. Zero name collisions with icraft races, different layers.
 
 ### Patchouli Codex Working (2026-03-14)
 - **Fix:** Multiple issues resolved over ~10 iterations:
