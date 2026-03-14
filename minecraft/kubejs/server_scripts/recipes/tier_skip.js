@@ -185,31 +185,9 @@ ServerEvents.recipes(event => {
     }).id('kubejs:ultimate_reforging_token')
 
     // =====================================================================
-    // SECTION 5: WAYSTONE CORE CRAFTING
-    // Design doc Section 16: Waystones are mid-game investment,
-    // not free fast travel from day 1.
+    // SECTION 5: WAYSTONE RECIPES — MOVED
+    // Now in waystone_recipes.js (boss-material gated, all variants)
     // =====================================================================
-
-    event.shaped('kubejs:waystone_core', [
-        'EPE',
-        'PDP',
-        'EPE'
-    ], {
-        E: 'minecraft:ender_pearl',
-        P: '#forge:ingots/steel',
-        D: 'minecraft:diamond'
-    }).id('kubejs:waystone_core')
-
-    // Override default waystone recipe to require our custom core
-    event.remove({ output: 'waystones:waystone' })
-    event.shaped('waystones:waystone', [
-        'SSS',
-        'SCS',
-        'SSS'
-    ], {
-        S: 'minecraft:stone_bricks',
-        C: 'kubejs:waystone_core'
-    }).id('kubejs:waystone_with_core')
 
     // =====================================================================
     // SECTION 6: BOSS MATERIAL PROCESSING
