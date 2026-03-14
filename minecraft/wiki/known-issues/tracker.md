@@ -2,19 +2,10 @@
 
 ## Active Issues
 
-### Patchouli Codex — "Invalid Book" Error
-- **Status:** Multiple fixes deployed, awaiting test (2026-03-14)
-- **Symptom:** Right-clicking the Iridescent Codex shows "invalid book" error
-- **Root cause:** Patchouli 1.20+ requires `use_resource_pack: true` and content in `assets/`, not `data/`. Mod JAR approach kept failing.
-- **Fix (latest):** Moved to external `patchouli_books/` folder which Patchouli reads directly. Codex JAR stripped to advancements only.
-- **Verification:** Pull, create new world, right-click codex. Should open with 11 categories.
-
-### Mod Books in Inventory on Join
-- **Status:** Fix v2 deployed, awaiting test (2026-03-14)
-- **Symptom:** Terramity, Simply Swords (Runic Grimoire), and other mod guidebooks appear in inventory
-- **Root cause:** Mods inject books via mechanisms that may bypass `inventoryChanged` or fire before scripts load
-- **Fix v2:** `codex_delivery.js` now uses direct slot clearing (`inv.setItem(slot, Item.empty)`) instead of `item.count = 0`. Added 60-second periodic inventory sweep on `ServerEvents.tick` to catch delayed injections.
-- **Note:** Exact item IDs still need `/kubejs hand` verification. Pattern matching provides fallback.
+### Codex Formatting Pass Needed
+- **Status:** Low priority
+- **Symptom:** Codex text content needs a formatting/polish pass across all entries
+- **Note:** Categories and entries all load correctly. Just needs prose cleanup.
 
 ### Three-Prompt Character Creation
 - **Status:** Working as intended (confirmed 2026-03-14)
@@ -22,11 +13,6 @@
 - **Implementation:** Layer ordering via `order` field (0, 1, 2). Default Origins layer re-enabled.
 - **TODO:** Remove Origins++ origins that overlap with icraft custom races
 
-### Book Suppression Item IDs Unverified
-- **Status:** Needs in-game testing
-- Current IDs in `codex_delivery.js` are best guesses
-- Use `/kubejs hand` while holding each mod book to get exact item IDs
-- Pattern matching provides broad coverage as fallback
 
 ## Needs Testing
 
@@ -39,18 +25,25 @@
 
 ## Resolved
 
+### Patchouli Codex Working (2026-03-14)
+- **Fix:** Multiple issues resolved over ~10 iterations:
+  - Mod JAR with `use_resource_pack: true`, content in both `data/` and `assets/`
+  - `flag` fields removed (Patchouli flags are config flags, not advancements)
+  - Categories use `icraft:` namespace, landing text shortened, progress bar disabled
+  - Book ID: `icraft:iridescent_codex`, delivered via `codex_delivery.js`
+
+### Mod Book Suppression Working (2026-03-14)
+- **Fix:** `/clear` commands with NBT matching for patchouli books. Runs every 1s for first 10s after login, then every 10s for 2 min. KubeJS inventory slot manipulation is broken — only `/clear` works.
+- Suppressed: terramity, simplyswords, footwork, ars_nouveau, irons_spellbooks, thermal, botania, create, theabyss
+
 ### LootJS setCount() API Error (2026-03-14)
-- **Fix:** `LootEntry.of(item).setCount([min, max])` is not valid in LootJS 2.13.1. Changed to `LootEntry.of(item, [min, max])`. All 15 occurrences in `lootjs_overhaul.js` fixed.
+- **Fix:** `LootEntry.of(item, [min, max])` instead of `.setCount()`. 15 occurrences fixed.
 
 ### Diagnostic Scripts Disabled (2026-03-14)
-- **Fix:** `loot_discovery.js` (99% of server.log — 18k lines) and `registry_verify.js` disabled. Job done.
+- **Fix:** `loot_discovery.js` and `registry_verify.js` disabled.
 
-### KubeJS Script Errors — Resolved (2026-03-14)
-- `PlayerEvents.death` — no active code uses this (already worked around)
-- `ItemEvents.tooltip` — already correctly in `client_scripts/broken_tooltip.js`
-- `AStagesEvents` — never used in active code
-- `PlayerEvents.changeDimension` — already worked around with tick-based tracking
-- `MoreJS` — `villager_trades.js` already `.disabled`
+### KubeJS Script Errors — All Resolved (2026-03-14)
+- All 5 reported errors were already handled via workarounds or correct placement.
 
 ### Paxi Not Loading Datapacks (2026-03-12)
 - **Fix:** Discovered Paxi only loads zips. Created zip versions of all datapacks.

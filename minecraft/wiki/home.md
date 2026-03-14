@@ -43,15 +43,15 @@ The canonical design reference for all modpack systems.
 | Tier gating (AStages) | Implemented | Scripts in place, needs in-game API verification |
 | Dimension scaling | Implemented | `dimension_scaling.js` |
 | Death penalty | Implemented | `death_penalty.js` |
-| Loot tables (LootJS) | Implemented | `loot_tables.js` |
+| Loot tables (LootJS) | Implemented | `lootjs_overhaul.js` (setCount API fixed) |
 | Skill trees (Pufferfish) | Implemented | Datapack + `skill_effects.js` (34% placeholder effects) |
 | Custom enchantments | Implemented | `custom_enchantments.js` + `enchant_effects.js` (24 enchants) |
 | Apotheosis affixes | Partially implemented | 30 JSON + 15 event-driven of ~95 total |
 | Class respec | Implemented | `class_respec.js` |
 | Equipment HP halving | Implemented | `equipment_hp_halving.js` |
 | FTB Quests | Not started | Quest book needs in-game GUI editor |
-| Patchouli Codex | In progress | Zip datapack created, testing Paxi loading |
-| Book suppression | In progress | Broad pattern matching, needs item ID verification |
+| Patchouli Codex | Working | 11 categories, 80 entries. Needs formatting pass |
+| Book suppression | Working | `/clear` with NBT matching, 9 mod books suppressed |
 | Endgame loops (Part VIII) | Not started | Oblivion's Rift, Mythic gear, Compendium |
 | Prestige/Ascension (Part IX) | Not started | 5 ascension levels |
 | Loot table overhaul | Not started | 20+ structure mods need tier-appropriate loot |
