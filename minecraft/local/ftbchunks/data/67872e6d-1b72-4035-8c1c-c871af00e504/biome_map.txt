@@ -1,0 +1,9 @@
+#460 minecraft:cherry_grove
+#735 biomesoplenty:coniferous_forest
+#67F biomesoplenty:fir_clearing
+#010 minecraft:forest
+#2D6 minecraft:meadow
+#5F0 biomesoplenty:pasture
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#5FF minecraft:river
