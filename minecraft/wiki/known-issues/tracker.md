@@ -16,11 +16,11 @@
 - **Fix:** `codex_delivery.js` rewritten with broad suppression: exact IDs + Patchouli NBT check + namespace+keyword pattern matching
 - **Note:** Exact item IDs still need `/kubejs hand` verification in-game. Pattern matching should catch most cases.
 
-### Duplicate Class/Race Selection Prompt
-- **Status:** Fix deployed, awaiting test (2026-03-13)
-- **Symptom:** Class and race selection screens appeared twice on first join
-- **Root cause:** Origin layers in different namespaces (`icraft` vs `gh_classes`/`gh_races`) create separate prompts, not overrides. The `gh_classes` and `gh_races` layers were empty with `"replace": true` but still showed.
-- **Fix:** Deleted `kubejs/data/gh_classes/origin_layers/class.json` and `kubejs/data/gh_races/origin_layers/race.json`
+### Three-Prompt Character Creation
+- **Status:** Working as intended (confirmed 2026-03-14)
+- **Design:** Three sequential prompts on first join: Origin (Origins++ defaults) → Race (7 icraft races) → Class (10 icraft classes)
+- **Implementation:** Layer ordering via `order` field in origin_layers (0, 1, 2). Default Origins layer re-enabled with `replace: false` to preserve Origins++ origins.
+- **Previous issue:** Duplicate prompts from conflicting namespaces — resolved by consolidating layers into the classes JAR with explicit ordering
 
 ### KubeJS Script Errors (5 remaining)
 - **Status:** Known, not yet fixed

@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-14 — Three-prompt character creation (Origin / Race / Class)
+
+- Updated master design doc: character system now has four layers instead of three
+- Origin (Origins++ defaults) is now the first selection prompt — species-level identity
+- Race (7 custom icraft races) is the second prompt — stat modifiers and thematic flavor
+- Class (10 icraft combat roles) is the third prompt — combat role and glass cannon status
+- This three-layer approach emerged from in-game testing and creates more build diversity
+- Re-enabled the default Origins layer to allow Origins++ origin selection
+- Updated wiki classes/overview.md to reflect the new structure
+
 ## 2026-03-13 — Wiki creation and initial conversion
 
 - Converted master design document from `.docx` to `wiki/design/master.md`

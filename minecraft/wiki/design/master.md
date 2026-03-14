@@ -453,18 +453,24 @@ Gems
 Require boss materials to craft
 Tiered by boss source (early bosses → weak gems, endgame bosses → legendary gems)
 
-Three layered systems:
+Four layered systems, with the first three presented as sequential character creation prompts on first join:
 
 SystemRoleWhen Active
-Origins / Origins++ / Origins Overhaul
-Race — innate traits, abilities, tradeoffs
+Origins++ (Origin layer)
+Origin — species-level traits from Origins++ (148 origins with unique abilities, tradeoffs, and playstyle modifiers)
 
-Character creation (Tier 1)
+Character creation prompt 1 (Tier 1)
 
-Gods and Heroes RPG Classes
-Class — combat role definition
+Origins (Race layer, icraft namespace)
+Race — 7 custom races (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant) with innate stat modifiers and thematic abilities
 
-Unlocked early, develops over time
+Character creation prompt 2 (Tier 1)
+
+Iridescent Classes (Class layer, icraft namespace)
+Class — 10 combat roles (Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner)
+
+Character creation prompt 3 (Tier 1)
+
 Pufferfish’s Skills (+ AStages bridge)
 Skill Points — stat investment trees
 
@@ -475,9 +481,16 @@ Provides stat scaling (HP, damage, speed) via leveling
 XP curve is flattened but high — ~1000–2000 XP per level
 Works alongside Pufferfish’s Skills (different systems — JLF is passive leveling, Pufferfish is active investment)
 
+Three-Prompt Character Creation
+On first join, players see three sequential selection screens:
+1. **Origin** (Origins++ defaults) — Species-level identity with unique abilities and tradeoffs (e.g., Avian gets flight but takes more damage; Blazeborn has fire immunity but water hurts)
+2. **Race** (IridescentCraft custom) — One of 7 races providing stat modifiers and thematic flavor
+3. **Class** (IridescentCraft custom) — One of 10 combat roles defining playstyle, HP tier, and glass cannon status
+
+This three-layer approach is intentional — Origin provides broad species fantasy, Race adds stat identity, and Class defines combat role. The separation creates more build diversity than a two-layer system.
+
 Origins
-Ungated — early flight from Origins is intentional Tradeoffs built into each Origin balance innate power
-Example: Avian gets flight but takes more damage; Blazeborn has fire immunity but water hurts
+Ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power.
 
 Role: Major progression system. Food diversity = HP bonuses = survival in harder dimensions.
 

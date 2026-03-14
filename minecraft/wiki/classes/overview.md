@@ -1,15 +1,25 @@
-# Classes & Races Overview
+# Classes, Races & Origins Overview
 
-Three layered character systems define player builds.
+Four layered character systems define player builds, with the first three presented as sequential prompts on first join.
 
 ## Systems
 
-| System | Role | When Active |
-|--------|------|-------------|
-| Origins / Origins++ | Race — innate traits, abilities, tradeoffs | Character creation (Tier 1) |
-| Gods and Heroes RPG Classes | Class — combat role definition | Unlocked early, develops over time |
-| Pufferfish's Skills (+ AStages bridge) | Skill Points — stat investment trees | Earned through progression |
-| JustLevelingFork | Passive stat scaling via XP leveling | Always active |
+| System | Layer | Role | When Active |
+|--------|-------|------|-------------|
+| Origins++ | Origin | Species-level identity — unique abilities and tradeoffs (148 origins) | Character creation prompt 1 |
+| Origins (icraft) | Race | 7 custom races — stat modifiers and thematic flavor | Character creation prompt 2 |
+| Iridescent Classes (icraft) | Class | 10 combat roles — playstyle, HP tier, glass cannon | Character creation prompt 3 |
+| Pufferfish's Skills (+ AStages bridge) | — | Skill Points — stat investment trees | Earned through progression |
+| JustLevelingFork | — | Passive stat scaling via XP leveling | Always active |
+
+## Three-Prompt Character Creation
+
+On first join, players choose in order:
+1. **Origin** — Broad species fantasy from Origins++ (e.g., Avian, Blazeborn, Merling)
+2. **Race** — IridescentCraft race with stat identity (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant)
+3. **Class** — Combat role (Berserker, Samurai, Battlemage, etc.)
+
+This creates more build diversity than a two-layer system — Origin provides the species fantasy, Race adds stat flavor, and Class defines combat role.
 
 ## 10 Classes
 
@@ -63,7 +73,11 @@ Implemented via `class_respec.js`. Class Altar item + 3 recipe variants (one per
 
 ## Race System
 
-Uses Origins mod. Races are ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power.
+7 custom races implemented as an Origins layer in the `icraft` namespace. Races provide stat modifiers and thematic identity, separate from the Origins++ origin selection.
+
+## Origin System
+
+Uses Origins++ mod defaults. Origins are ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power (e.g., Avian gets flight but takes more damage).
 
 ## Related Pages
 
