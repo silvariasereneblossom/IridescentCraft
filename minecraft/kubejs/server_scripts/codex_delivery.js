@@ -59,37 +59,54 @@ const BOOK_KEYWORDS = [
   'companion', 'codex', 'journal', 'tablet', 'compendium'
 ]
 
-PlayerEvents.inventoryChanged(event => {
-  const item = event.item
-  const id = item.id
-
-  // Suppress exact matches
-  if (SUPPRESSED_BOOKS.includes(id)) {
-    item.count = 0
-    console.log('[IridescentCraft] Suppressed book (exact): ' + id)
-    return
-  }
-
-  // Suppress non-codex Patchouli guide books
+// Helper: check if an item should be suppressed
+function shouldSuppressBook(id, item) {
+  if (SUPPRESSED_BOOKS.includes(id)) return 'exact'
   if (id === 'patchouli:guide_book') {
     let nbt = item.nbt
-    if (nbt && nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') {
-      console.log('[IridescentCraft] Suppressed patchouli book: ' + (nbt.getString('patchouli:book') || 'unknown'))
-      item.count = 0
-      return
-    }
+    if (nbt && nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') return 'patchouli'
   }
-
-  // Suppress book-like items from known mod namespaces
   let ns = id.split(':')[0]
   let name = id.split(':')[1] || ''
   if (BOOK_NAMESPACES.includes(ns)) {
     for (let kw of BOOK_KEYWORDS) {
-      if (name.indexOf(kw) !== -1) {
-        item.count = 0
-        console.log('[IridescentCraft] Suppressed book (pattern): ' + id)
-        return
-      }
+      if (name.indexOf(kw) !== -1) return 'pattern'
     }
   }
+  return null
+}
+
+// Suppress on inventory change (catches most cases)
+PlayerEvents.inventoryChanged(event => {
+  const item = event.item
+  const reason = shouldSuppressBook(item.id, item)
+  if (reason) {
+    item.count = 0
+    console.log('[IridescentCraft] Suppressed book (' + reason + '): ' + item.id)
+  }
+})
+
+// Periodic sweep for books injected by delayed mod logic (runs first 60s after join)
+PlayerEvents.loggedIn(event => {
+  const player = event.player
+  player.persistentData.putInt('icraft_book_sweep_ticks', 1200) // 60 seconds
+})
+
+ServerEvents.tick(event => {
+  if (event.server.tickCount % 20 !== 0) return // check once per second
+  event.server.players.forEach(player => {
+    let sweepTicks = player.persistentData.getInt('icraft_book_sweep_ticks')
+    if (sweepTicks <= 0) return
+    player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - 20)
+    let inv = player.inventory
+    for (let i = 0; i < inv.size; i++) {
+      let stack = inv.getItem(i)
+      if (stack.isEmpty()) continue
+      let reason = shouldSuppressBook(stack.id, stack)
+      if (reason) {
+        console.log('[IridescentCraft] Sweep suppressed book (' + reason + '): ' + stack.id)
+        inv.setItem(i, Item.empty)
+      }
+    }
+  })
 })

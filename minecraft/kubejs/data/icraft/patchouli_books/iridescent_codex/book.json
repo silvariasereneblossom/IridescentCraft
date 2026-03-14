@@ -1,7 +1,7 @@
 {
   "name": "The Iridescent Codex",
   "landing_text": "A comprehensive reference for the world of IridescentCraft. Here you will find everything you need to understand the tier system, your class, the skills at your disposal, the mods that shape this world, and the bosses that stand between you and ascension.$(br2)$(italic)Chapters expand as you grow in power.$(/italic)",
-  "subtitle": "Progression · Systems · Lore",
+  "subtitle": "Progression \u00b7 Systems \u00b7 Lore",
   "creative_tab": "misc",
   "model": "patchouli:book_brown",
   "book_texture": "patchouli:textures/gui/book_brown.png",
@@ -30,5 +30,6 @@
     "$(end)": "$(/color)",
     "$(warn)": "$(#c0392b)",
     "$(note)": "$(#666666)"
-  }
+  },
+  "use_resource_pack": true
 }
