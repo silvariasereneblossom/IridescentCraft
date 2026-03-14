@@ -2,7 +2,7 @@
 // IRIDESCENT CODEX — First-Join Delivery & Book Suppression
 // =============================================================================
 
-const CODEX_NBT = '{"patchouli:book":"patchouli:iridescent_codex"}'
+const CODEX_NBT = '{"patchouli:book":"icraft:iridescent_codex"}'
 
 // ── First-Join Delivery ───────────────────────────────────────────────────────
 
@@ -59,7 +59,7 @@ function shouldSuppressBook(id, item) {
   if (SUPPRESSED_BOOKS.includes(id)) return 'exact'
   if (id === 'patchouli:guide_book') {
     let nbt = item.nbt
-    if (!nbt || nbt.getString('patchouli:book') !== 'patchouli:iridescent_codex') return 'patchouli'
+    if (!nbt || nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') return 'patchouli'
     return null
   }
   let ns = id.split(':')[0]
