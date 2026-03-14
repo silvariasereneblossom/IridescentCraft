@@ -14,7 +14,6 @@ PlayerEvents.loggedIn(event => {
     player.tell('\u00a76[The Iridescent Codex]\u00a7r has been added to your inventory.')
     player.tell('Right-click to open. It covers every system, class, and mod in this pack.')
   }
-  // Always reset sweep timer on login
   player.persistentData.putInt('icraft_book_sweep_ticks', 1200)
   console.log('[IridescentCraft] loggedIn fired for ' + player.username + ', sweep armed')
 })
@@ -29,8 +28,23 @@ ServerEvents.recipes(event => {
 })
 
 // ── Book Suppression ────────────────────────────────────────────────────────
+// Uses /clear commands exclusively since inventory slot manipulation is broken.
+// Patchouli books from other mods share the patchouli:guide_book item ID
+// but have different NBT. We clear each known mod book by NBT.
 
-const SUPPRESSED_BOOKS = [
+// Known patchouli book NBT values to suppress
+const PATCHOULI_BOOKS_TO_CLEAR = [
+  'terramity:terramity_guidebook',
+  'simplyswords:runic_grimoire',
+  'ars_nouveau:worn_notebook',
+  'irons_spellbooks:irons_spellbooks',
+  'thermal:guidebook',
+  'botania:lexicon',
+  'create:book'
+]
+
+// Non-patchouli book item IDs to suppress
+const OTHER_BOOKS_TO_CLEAR = [
   'terramity:guidebook',
   'terramity:terramity_guidebook',
   'terramity:guide_book',
@@ -45,111 +59,42 @@ const SUPPRESSED_BOOKS = [
   'theabyss:the_abyss_guidebook'
 ]
 
-const BOOK_NAMESPACES = [
-  'terramity', 'simplyswords', 'epicfight', 'primalmagick',
-  'theabyss', 'celestial', 'ars_nouveau'
-]
+// Run all clear commands for a player
+function clearModBooks(player) {
+  let name = player.username
 
-const BOOK_KEYWORDS = [
-  'book', 'grimoire', 'guide', 'notebook', 'tome', 'manual',
-  'companion', 'codex', 'journal', 'tablet', 'compendium'
-]
+  // Clear known patchouli guide books by NBT
+  PATCHOULI_BOOKS_TO_CLEAR.forEach(bookId => {
+    player.server.runCommandSilent(
+      'clear ' + name + ' patchouli:guide_book{patchouli:book:"' + bookId + '"} 64'
+    )
+  })
 
-function shouldSuppressBook(id, item) {
-  if (SUPPRESSED_BOOKS.includes(id)) return 'exact'
-  if (id === 'patchouli:guide_book') {
-    let nbt = item.nbt
-    if (!nbt || nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') return 'patchouli'
-    return null
-  }
-  let ns = id.split(':')[0]
-  let name = id.split(':')[1] || ''
-  if (BOOK_NAMESPACES.includes(ns)) {
-    for (let kw of BOOK_KEYWORDS) {
-      if (name.indexOf(kw) !== -1) return 'pattern'
-    }
-  }
-  return null
+  // Clear non-patchouli mod books by item ID
+  OTHER_BOOKS_TO_CLEAR.forEach(bookId => {
+    player.server.runCommandSilent('clear ' + name + ' ' + bookId + ' 64')
+  })
 }
 
-// Suppress on inventory change — mark items for sweep removal
-// (direct slot clearing doesn't work reliably in inventoryChanged)
-PlayerEvents.inventoryChanged(event => {
-  const item = event.item
-  const reason = shouldSuppressBook(item.id, item)
-  if (reason) {
-    // Flag for immediate sweep on next tick
-    event.player.persistentData.putBoolean('icraft_needs_book_sweep', true)
-    console.log('[IridescentCraft] Detected book (' + reason + '): ' + item.id)
-  }
-})
-
-// Periodic sweep — scans and removes suppressed books from player inventories
-// Uses multiple removal strategies since direct slot manipulation is unreliable
+// Sweep: runs every second for first 5 minutes + 60s after each login
 ServerEvents.tick(event => {
   let tick = event.server.tickCount
-  if (tick % 20 !== 0) return // check every second
+  if (tick % 20 !== 0) return
 
   if (tick === 20) {
-    console.log('[IridescentCraft] Book sweep active')
+    console.log('[IridescentCraft] Book sweep active — clearing mod books every 1s for 5 min')
   }
 
-  let globalSweep = tick < 6000 // first 5 minutes
+  let globalSweep = tick < 6000
 
   event.server.players.forEach(player => {
     let perPlayerSweep = player.persistentData.getInt('icraft_book_sweep_ticks') > 0
-    let needsImmediate = player.persistentData.getBoolean('icraft_needs_book_sweep')
-
     if (perPlayerSweep) {
       player.persistentData.putInt('icraft_book_sweep_ticks',
         player.persistentData.getInt('icraft_book_sweep_ticks') - 20)
     }
-    if (needsImmediate) {
-      player.persistentData.putBoolean('icraft_needs_book_sweep', false)
-    }
 
-    if (!globalSweep && !perPlayerSweep && !needsImmediate) return
-
-    // Scan and remove using /clear command with exact item matching
-    SUPPRESSED_BOOKS.forEach(bookId => {
-      player.server.runCommandSilent('clear ' + player.username + ' ' + bookId + ' 64')
-    })
-
-    // Clear non-codex patchouli guide books using NBT exclusion
-    // We can't use /clear with NBT negation, so scan manually
-    let inv = player.inventory
-    let removed = false
-    for (let i = 0; i < inv.size; i++) {
-      let stack = inv.getItem(i)
-      if (stack.isEmpty()) continue
-      if (stack.id === 'patchouli:guide_book') {
-        let nbt = stack.nbt
-        if (!nbt || nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') {
-          let bookName = nbt ? nbt.getString('patchouli:book') : 'unknown'
-          console.log('[IridescentCraft] Removing patchouli book: ' + bookName + ' slot ' + i)
-          // Try multiple removal approaches
-          stack.count = 0
-          inv.setItem(i, stack)
-          removed = true
-        }
-      }
-      // Also check namespace+keyword pattern
-      let ns = stack.id.split(':')[0]
-      let name = stack.id.split(':')[1] || ''
-      if (BOOK_NAMESPACES.includes(ns)) {
-        for (let kw of BOOK_KEYWORDS) {
-          if (name.indexOf(kw) !== -1) {
-            console.log('[IridescentCraft] Removing pattern book: ' + stack.id + ' slot ' + i)
-            player.server.runCommandSilent('clear ' + player.username + ' ' + stack.id + ' 64')
-            removed = true
-            break
-          }
-        }
-      }
-    }
-    if (removed) {
-      // Force inventory sync
-      player.inventory.setChanged()
-    }
+    if (!globalSweep && !perPlayerSweep) return
+    clearModBooks(player)
   })
 })
