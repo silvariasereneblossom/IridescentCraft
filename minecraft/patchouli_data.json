@@ -169,7 +169,10 @@
       "completedManualQuests": []
     },
     "icraft:iridescent_codex": {
-      "viewedEntries": [],
+      "viewedEntries": [
+        "icraft:loot/boss_materials",
+        "icraft:loot/rift_economy"
+      ],
       "bookmarks": [],
       "completedManualQuests": []
     },

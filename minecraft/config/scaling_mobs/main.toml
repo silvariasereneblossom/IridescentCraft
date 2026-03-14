@@ -1,349 +1,86 @@
-# =============================================================================
-# IridescentCraft — ScalingMobs Per-Dimension Configuration
-# Design doc: wiki/design/master.md "Scaling Configuration" (lines 350-401)
-#
-# Each [[health]]/[[damage]]/[[speed]] section targets specific dimensions
-# using dimensionFilter. scalingType = "CONSTANT" with start = bonus fraction
-# means a flat multiplier applied at all times.
-#
-# HP/Damage multipliers from design doc quick-reference:
-#   Overworld:      1.0x (baseline, no modifier needed)
-#   Twilight:       1.5x
-#   Blue Skies:     2.0x
-#   Aether:         2.5x
-#   Undergarden:    3.0x
-#   Deeper Darker:  3.5x
-#   Nether:         4.0x
-#   Deep Aether:    5.0x
-#   End:            6.0x (single dimension — zone scaling done via KubeJS)
-#
-# Speed multipliers from detailed section (lines 1140-1347):
-#   Overworld: 1.0x, Twilight/BS: 1.05x, Aether: 1.08x,
-#   UG/DD: 1.10x, Nether: 1.12x, DA/End: 1.15x
-#
-# "start" = bonus as fraction of base (addOnTopOfDefault = true).
-#   1.5x total → start = 0.5 (adds 50% of base)
-#   2.0x total → start = 1.0 (adds 100% of base)
-#   etc.
-#
-# Boss blacklist prevents double-scaling with Progressive Bosses.
-# =============================================================================
 
-healthAddOnTopOfDefault = true
-damageAddOnTopOfDefault = true
-speedAddOnTopOfDefault = true
+[Misc]
+	#The amount by which mobs scale, per Minecraft day
+	#Range: 0.0 ~ Infinity
+	"Scaling Speed" = 1.0
+	#Players with lower scale will receive a higher boost to their stats
+	#Setting this to 0 disables the feature
+	#Range: 0.0 ~ Infinity
+	"Player Scale Favor" = 10.0
+	#If true, mob stats will increase exponentially
+	"Use Exponential Scaling" = false
+	#If true, mob scaling speed will increase with more players in the world, up to 2x with 5 players
+	#Scaling will also cease if no players are on the server
+	"Scale with Player Count" = true
+	#After this day in the Minecraft world, all hostile mobs will be immune to burning in daylight
+	#Range: > 0
+	"Mobs Stop Burning on Day" = 7
+	#A list of mobs that will scale, even if they're not monsters
+	"Mob Whitelist" = []
+	#A list of mobs that will not scale, even if they're monsters
+	"Mob Blacklist" = []
 
-# ── MOB BLACKLIST (same across all sections) ──
-# Defined per-section via mobFilter since it's per-modifier.
+[Health]
+	#The decimal amount that hostile mobs' health increase per day
+	#Range: 0.0 ~ Infinity
+	"Health Scale Rate" = 0.03
+	#The decimal amount of the mobs' base health in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Health Base" = 0.0
+	#The maximum amount that hostile mobs' damage can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Health" = +inf
 
-# =============================================================================
-# OVERWORLD — 1.0x baseline (no modifiers needed)
-# =============================================================================
+[Damage]
+	#The decimal amount that hostile mobs' damage increase per day
+	#Range: 0.0 ~ Infinity
+	"Damage Scale Rate" = 0.03
+	#The decimal amount of the mobs' base damage in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Damage Base" = 0.0
+	#The maximum amount that hostile mobs' damage can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Damage" = +inf
 
-# =============================================================================
-# TWILIGHT FOREST — 1.5x HP, 1.5x Damage, 1.05x Speed
-# =============================================================================
+[Speed]
+	#The decimal amount that hostile mobs' speed increase per day
+	#Range: 0.0 ~ Infinity
+	"Speed Scale Rate" = 0.005
+	#The decimal amount of the mobs' base speed in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Speed Base" = 0.0
+	#The maximum amount that hostile mobs' speed can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Speed" = 1.0
 
-[[health]]
-  start = 0.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["twilightforest:twilight_forest"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
+["Armor Piercing"]
+	#The decimal amount of increase to mobs' damage that ignores armor per day
+	#Range: 0.0 ~ Infinity
+	"Armor Piercing Scale Rate" = 0.01
+	#The decimal amount of mobs' damage that ignores armor in the beginning
+	#Range: 0.0 ~ Infinity
+	"Armor Piercing Base" = 0.0
+	#The maximum amount of increase to mobs' damage that ignores armor
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Armor Piercing" = 1.0
 
-[[damage]]
-  start = 0.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["twilightforest:twilight_forest"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
+[Drops]
+	#The decimal amount of increase to mobs' drops per day
+	#Range: 0.0 ~ Infinity
+	"Mob Drops Scaling Rate" = 0.05
+	#The decimal amount of mobs' drops in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Drops Base" = 0.0
+	#The maximum amount of increase to mobs' drops
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Mob Drops" = 400.0
+	#The decimal amount of increase to mobs' XP drops per day
+	#Range: 0.0 ~ Infinity
+	"Mob XP Scaling Rate" = 0.05
+	#The decimal amount of mobs' XP drops in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob XP Base" = 0.0
+	#The maximum amount of increase to mobs' XP drops
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Mob XP" = 400.0
 
-[[speed]]
-  start = 0.05
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["twilightforest:twilight_forest"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# BLUE SKIES — 2.0x HP, 2.0x Damage, 1.05x Speed
-# =============================================================================
-
-[[health]]
-  start = 1.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["blue_skies:everbright", "blue_skies:everdawn"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 1.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["blue_skies:everbright", "blue_skies:everdawn"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.05
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["blue_skies:everbright", "blue_skies:everdawn"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# AETHER — 2.5x HP, 2.5x Damage, 1.08x Speed
-# =============================================================================
-
-[[health]]
-  start = 1.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["aether:the_aether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 1.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["aether:the_aether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.08
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["aether:the_aether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# UNDERGARDEN — 3.0x HP, 3.0x Damage, 1.10x Speed
-# =============================================================================
-
-[[health]]
-  start = 2.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["undergarden:undergarden"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 2.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["undergarden:undergarden"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.10
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["undergarden:undergarden"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# DEEPER AND DARKER — 3.5x HP, 3.5x Damage, 1.10x Speed
-# =============================================================================
-
-[[health]]
-  start = 2.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["deeperdarker:otherside"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 2.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["deeperdarker:otherside"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.10
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["deeperdarker:otherside"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# THE ABYSS — 3.5x HP, 3.5x Damage, 1.10x Speed (Optional Tier 3)
-# Design doc: Dimension Config section — same as Deeper Darker
-# =============================================================================
-
-[[health]]
-  start = 2.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["theabyss:the_abyss"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 2.5
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["theabyss:the_abyss"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.10
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["theabyss:the_abyss"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# NETHER — 4.0x HP, 4.0x Damage, 1.12x Speed
-# =============================================================================
-
-[[health]]
-  start = 3.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["minecraft:the_nether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 3.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["minecraft:the_nether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.12
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["minecraft:the_nether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# DEEP AETHER — 5.0x HP, 5.0x Damage, 1.15x Speed
-# =============================================================================
-
-[[health]]
-  start = 4.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["deep_aether:the_aether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 4.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["deep_aether:the_aether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.15
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["deep_aether:the_aether"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-# =============================================================================
-# THE END — 6.0x HP, 6.0x Damage, 1.15x Speed
-# (Base End multiplier; zone scaling 6.0-10.0x handled via KubeJS biome checks)
-# =============================================================================
-
-[[health]]
-  start = 5.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["minecraft:the_end"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[damage]]
-  start = 5.0
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["minecraft:the_end"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
-
-[[speed]]
-  start = 0.15
-  scalingType = "CONSTANT"
-  scalingFactor = "DAYS"
-  timeWhenActive = "BOTH"
-  dimensionFilterType = "INCLUDE"
-  dimensionFilter = ["minecraft:the_end"]
-  mobFilterType = "EXCLUDE"
-  mobFilter = ["minecraft:ender_dragon", "minecraft:wither", "minecraft:warden", "minecraft:elder_guardian", "twilightforest:naga", "twilightforest:lich", "twilightforest:hydra", "twilightforest:ur_ghast", "twilightforest:knight_phantom", "twilightforest:snow_queen", "twilightforest:minoshroom", "twilightforest:alpha_yeti", "blue_skies:summoner", "blue_skies:alchemist", "blue_skies:starlit_crusher", "blue_skies:arachnarch", "aether:slider", "aether:valkyrie_queen", "aether:sun_spirit", "deep_aether:eots_controller", "undergarden:forgotten_guardian", "undergarden:forgotten", "deeperdarker:stalker", "deeperdarker:shattered", "deeperdarker:shriek_worm", "deeperdarker:sculk_centipede", "cataclysm:netherite_monstrosity", "cataclysm:ignis", "cataclysm:ender_guardian", "cataclysm:ancient_remnant", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ignited_revenant", "botania:doppleganger", "meetyourfight:swampjaw", "meetyourfight:bellringer", "meetyourfight:dame_fortuna", "meetyourfight:rosalyne", "mutantmonsters:mutant_zombie", "mutantmonsters:mutant_skeleton", "mutantmonsters:mutant_creeper", "mutantmonsters:mutant_enderman", "stalwart_dungeons:shelterer", "stalwart_dungeons:nether_keeper", "stalwart_dungeons:awful_ghast", "stalwart_dungeons:incomplete_wither", "keebsz:tower_guardian", "irons_spellbooks:dead_king", "irons_spellbooks:fire_boss", "irons_spellbooks:citadel_keeper", "theabyss:soul_guard", "theabyss:ice_knight", "ub:sorcerer", "ub:storm", "majestic_menaces:teikoku_senshi"]
