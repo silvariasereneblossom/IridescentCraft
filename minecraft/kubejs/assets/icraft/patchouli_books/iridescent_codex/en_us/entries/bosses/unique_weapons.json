@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Simply Swords$(/thing) unique weapons are the best weapons in the pack. They are $(bold)boss-drop-only$(/bold) — not craftable, not tradeable, not found in chests. Each is matched to a specific boss thematically.$(br2)$(bold)42 unique weapons$(/bold) exist across all 4 tiers. Drop chances range from 8% (rarest) to 25% (Ender Dragon's $(item)Waking Lichblade$(/item)). On average, expect 6–8 kills to guarantee a drop."
+      "text": "$(thing)Simply Swords$() unique weapons are the best weapons in the pack. They are $(bold)boss-drop-only$() — not craftable, not tradeable, not found in chests. Each is matched to a specific boss thematically.$(br2)$(bold)42 unique weapons$() exist across all 4 tiers. Drop chances range from 8% (rarest) to 25% (Ender Dragon's $(item)Waking Lichblade$()). On average, expect 6–8 kills to guarantee a drop."
     },
     {
       "type": "patchouli:text",
       "title": "Tier 2 Uniques",
-      "text": "$(li)Twilight Forest: $(item)Tempest$(/item), $(item)Soulrender$(/item), $(item)Emberblade$(/item), $(item)Whisperwind$(/item), $(item)Enigma$(/item), $(item)Frostfall$(/item), $(item)Icewhisper$(/item)$(li)Blue Skies: Hiveheart, Toxic Longsword, Stars Edge, Waxweaver$(li)Aether: Thunderbrand, Caelestis, Sunfire"
+      "text": "$(li)Twilight Forest: $(item)Tempest$(), $(item)Soulrender$(), $(item)Emberblade$(), $(item)Whisperwind$(), $(item)Enigma$(), $(item)Frostfall$(), $(item)Icewhisper$()$(li)Blue Skies: Hiveheart, Toxic Longsword, Stars Edge, Waxweaver$(li)Aether: Thunderbrand, Caelestis, Sunfire"
     },
     {
       "type": "patchouli:text",
       "title": "Tier 3 Uniques",
-      "text": "$(li)Meet Your Fight: $(item)Harbinger$(/item), $(item)Hearthflame$(/item), $(item)Magiscythe$(/item), $(item)Magispear$(/item)$(li)Cataclysm: Brimstone Claymore, Molten Edge, Shadowsting, Livyatan, Twisted Blade, Emberlash, Arcanethyst, Awakened Lichblade$(li)Undergarden: Bramblethorn$(li)D&D: Soulstealer, Soulpyre$(li)Vanilla: $(item)Soulkeeper$(/item) (Wither), $(item)Stormbringer$(/item) (Warden)$(li)Botania: $(item)Magiblade$(/item)$(li)Abyss: Watching Warglaive, Void Saber, Dormant Relic, Tidebreaker, Runic Edge, Searing Light"
+      "text": "$(li)Meet Your Fight: $(item)Harbinger$(), $(item)Hearthflame$(), $(item)Magiscythe$(), $(item)Magispear$()$(li)Cataclysm: Brimstone Claymore, Molten Edge, Shadowsting, Livyatan, Twisted Blade, Emberlash, Arcanethyst, Awakened Lichblade$(li)Undergarden: Bramblethorn$(li)D&D: Soulstealer, Soulpyre$(li)Vanilla: $(item)Soulkeeper$() (Wither), $(item)Stormbringer$() (Warden)$(li)Botania: $(item)Magiblade$()$(li)Abyss: Watching Warglaive, Void Saber, Dormant Relic, Tidebreaker, Runic Edge, Searing Light"
     },
     {
       "type": "patchouli:text",
       "title": "Tier 4 Uniques",
-      "text": "$(li)Ender Dragon: $(item)Waking Lichblade$(/item) (25%)$(li)Ultimate Bosses: $(item)Mjolnir$(/item), $(item)Storm's Edge$(/item)$(li)Deep Aether: $(item)Flamewind$(/item)$(br2)$(bold)Build note:$(/bold) Unique weapons do not have an enchanting penalty — they can be enchanted normally via $(thing)Apotheosis$(/thing). Affix reforging also works. A late-game unique weapon with excellent affixes and level 5 enchants is the strongest possible item in the pack."
+      "text": "$(li)Ender Dragon: $(item)Waking Lichblade$() (25%)$(li)Ultimate Bosses: $(item)Mjolnir$(), $(item)Storm's Edge$()$(li)Deep Aether: $(item)Flamewind$()$(br2)$(bold)Build note:$() Unique weapons do not have an enchanting penalty — they can be enchanted normally via $(thing)Apotheosis$(). Affix reforging also works. A late-game unique weapon with excellent affixes and level 5 enchants is the strongest possible item in the pack."
     }
   ]
 }

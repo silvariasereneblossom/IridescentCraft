@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Key systems covered:$(/bold) Directional attacks, stamina management, weapon type advantages, and how class abilities interact with the combat system.$(br2)If lost, check JEI for the crafting recipe \u2014 the book is craftable and not a one-time reward."
+      "text": "$(bold)Key systems covered:$() Directional attacks, stamina management, weapon type advantages, and how class abilities interact with the combat system.$(br2)If lost, check JEI for the crafting recipe \u2014 the book is craftable and not a one-time reward."
     }
   ]
 }

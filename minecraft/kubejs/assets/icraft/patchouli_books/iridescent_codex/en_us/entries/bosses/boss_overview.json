@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Bosses are the pinnacle of $(thing)IridescentCraft$(/thing)'s combat. They are $(bold)not$(/bold) optional — the best weapons in the pack drop only from them. Each tier has required progression bosses and optional trophy bosses.$(br2)$(bold)Simply Swords unique weapons$(/bold) are boss-drop-only. Every one of the 42 uniques is matched to a specific boss. You cannot craft them, trade for them, or find them in chests."
+      "text": "Bosses are the pinnacle of $(thing)IridescentCraft$()'s combat. They are $(bold)not$() optional — the best weapons in the pack drop only from them. Each tier has required progression bosses and optional trophy bosses.$(br2)$(bold)Simply Swords unique weapons$() are boss-drop-only. Every one of the 42 uniques is matched to a specific boss. You cannot craft them, trade for them, or find them in chests."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Boss Mods Active$(/bold)$(br2)$(li)$(bold)Brutal Bosses$(/bold) — Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$(/bold) — Named $(t3)T3$(end) superbosses (Swampjaw, Bellringer, Dame Fortuna, Rosalyne)$(li)$(bold)Mutant Monsters$(/bold) — Overworld + dimensional mutant variants$(li)$(bold)Cataclysm$(/bold) — T3–$(t4)T4$(end) ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$(/bold) — $(t4)T4$(end) optional superbosses$(li)$(bold)Stalwart Dungeons$(/bold) — $(t3)T3$(end) dungeon bosses$(li)$(bold)Iron's Spellbooks$(/bold) — Boss spellcasters in all tiers"
+      "text": "$(bold)Boss Mods Active$()$(br2)$(li)$(bold)Brutal Bosses$() — Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$() — Named $(t3)T3$() superbosses (Swampjaw, Bellringer, Dame Fortuna, Rosalyne)$(li)$(bold)Mutant Monsters$() — Overworld + dimensional mutant variants$(li)$(bold)Cataclysm$() — T3–$(t4)T4$() ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$() — $(t4)T4$() optional superbosses$(li)$(bold)Stalwart Dungeons$() — $(t3)T3$() dungeon bosses$(li)$(bold)Iron's Spellbooks$() — Boss spellcasters in all tiers"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Progressive Bosses$(/bold)$(br2)Summoned and repeatable bosses (Wither, Ender Dragon, Botania Gaia Guardian) scale with how many times they have been killed. Each kill increases their HP and damage, up to a hard cap.$(br2)$(bold)Structure-spawned bosses$(/bold) do NOT scale progressively — they are the same difficulty every time. Only intentionally summoned bosses escalate."
+      "text": "$(bold)Progressive Bosses$()$(br2)Summoned and repeatable bosses (Wither, Ender Dragon, Botania Gaia Guardian) scale with how many times they have been killed. Each kill increases their HP and damage, up to a hard cap.$(br2)$(bold)Structure-spawned bosses$() do NOT scale progressively — they are the same difficulty every time. Only intentionally summoned bosses escalate."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Token Drops$(/bold)$(br2)All bosses drop tier tokens — the number increases with boss tier and difficulty:$(br2)$(li)$(t1)T1$(end) bosses: 1–2 tier tokens$(li)$(t2)T2$(end) bosses: 1–3 tier tokens$(li)$(t3)T3$(end) bosses: 2–4 tier tokens$(li)$(t4)T4$(end) bosses: 4–6 tier tokens$(br2)Boss materials are unique crafting components dropped alongside tokens. They are used in endgame recipes and waystone construction."
+      "text": "$(bold)Token Drops$()$(br2)All bosses drop tier tokens — the number increases with boss tier and difficulty:$(br2)$(li)$(t1)T1$() bosses: 1–2 tier tokens$(li)$(t2)T2$() bosses: 1–3 tier tokens$(li)$(t3)T3$() bosses: 2–4 tier tokens$(li)$(t4)T4$() bosses: 4–6 tier tokens$(br2)Boss materials are unique crafting components dropped alongside tokens. They are used in endgame recipes and waystone construction."
     }
   ]
 }

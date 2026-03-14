@@ -6,20 +6,20 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Forbidden & Arcanus provides $(t3)T3$(end) dark magic, new materials, and the Arcane Crystal crafting system."
+      "text": "Forbidden & Arcanus provides $(t3)T3$() dark magic, new materials, and the Arcane Crystal crafting system."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Arcane Crystals are a unique $(t3)T3$(end) crafting material used in several cross-mod recipes. The mod's Runic Ritual system supplements Occultism for advanced $(t3)T3$(end) magic crafting.$(br2)$(bold)Mundabitur Dust:$(/bold) Key material for $(t3)T3$(end) $(thing)Archmage$(/thing) and $(thing)Battlemage$(/thing) gear enhancement paths."
+      "text": "$(bold)Role in the pack:$() Arcane Crystals are a unique $(t3)T3$() crafting material used in several cross-mod recipes. The mod's Runic Ritual system supplements Occultism for advanced $(t3)T3$() magic crafting.$(br2)$(bold)Mundabitur Dust:$() Key material for $(t3)T3$() $(thing)Archmage$() and $(thing)Battlemage$() gear enhancement paths."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Stellarite:$(/bold) $(t4)T4$(end) material from Forbidden & Arcanus. Requires deep $(t3)T3$(end) investment to produce. Used in several $(t4)T4$(end) endgame recipes."
+      "text": "$(bold)Stellarite:$() $(t4)T4$() material from Forbidden & Arcanus. Requires deep $(t3)T3$() investment to produce. Used in several $(t4)T4$() endgame recipes."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "forbidden_arcanus:tome_of_arcana",
-      "text": "Craft the $(bold)Tome of Arcana$(/bold) for the full Forbidden & Arcanus reference — Arcana magic, cursed items, and Corruptus lore."
+      "text": "Craft the $(bold)Tome of Arcana$() for the full Forbidden & Arcanus reference — Arcana magic, cursed items, and Corruptus lore."
     }
   ],
   "advancement": "icraft:stage_tier_3"

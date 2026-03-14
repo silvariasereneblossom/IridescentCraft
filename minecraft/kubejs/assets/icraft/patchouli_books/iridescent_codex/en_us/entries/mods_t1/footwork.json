@@ -10,12 +10,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Footwork is available from $(t1)T1$(end) and changes how every combat encounter feels. Dodge rolling costs stamina and has a cooldown — positioning and timing matter.$(br2)$(bold)Class synergy:$(/bold) $(thing)Ranger$(/thing) and $(thing)Samurai$(/thing) classes benefit most from Footwork's mobility options. $(thing)Berserker$(/thing) and $(thing)Vanguard$(/thing) can use it defensively to close gaps or disengage."
+      "text": "$(bold)Role in the pack:$() Footwork is available from $(t1)T1$() and changes how every combat encounter feels. Dodge rolling costs stamina and has a cooldown — positioning and timing matter.$(br2)$(bold)Class synergy:$() $(thing)Ranger$() and $(thing)Samurai$() classes benefit most from Footwork's mobility options. $(thing)Berserker$() and $(thing)Vanguard$() can use it defensively to close gaps or disengage."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "footwork:combat_manual",
-      "text": "Craft the $(bold)Combatant's Companion$(/bold) for the full Footwork reference — dodge mechanics, stamina management, keybinds, and advanced movement techniques."
+      "text": "Craft the $(bold)Combatant's Companion$() for the full Footwork reference — dodge mechanics, stamina management, keybinds, and advanced movement techniques."
     }
   ]
 }

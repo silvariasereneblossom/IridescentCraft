@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)IridescentCraft$(/thing) adds $(bold)24 custom enchantments$(/bold) beyond the $(thing)Apotheosis$(/thing) and vanilla pools. These are registered as real enchantments and work with all Apotheosis systems (affix reforging, gem sockets, etc.).$(br2)The enchantments are organized into five thematic groups."
+      "text": "$(thing)IridescentCraft$() adds $(bold)24 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools. These are registered as real enchantments and work with all Apotheosis systems (affix reforging, gem sockets, etc.).$(br2)The enchantments are organized into five thematic groups."
     },
     {
       "type": "patchouli:text",
       "title": "Dimensional Survival",
-      "text": "$(bold)Heatward$(/bold) — Fire/lava resistance scaling with level$(br)$(bold)Voidward$(/bold) — Void damage reduction$(br)$(bold)Depthstrider$(/bold) — Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$(/bold) — Cold/height environment resistance$(br)$(bold)Warp Shield$(/bold) — Teleportation effect resistance$(br2)$(italic)These are essential for $(t3)Tier 3$(end)+ dimensional content.$(/italic)"
+      "text": "$(bold)Heatward$() — Fire/lava resistance scaling with level$(br)$(bold)Voidward$() — Void damage reduction$(br)$(bold)Depthstrider$() — Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$() — Cold/height environment resistance$(br)$(bold)Warp Shield$() — Teleportation effect resistance$(br2)$(italic)These are essential for $(t3)Tier 3$()+ dimensional content.$()"
     },
     {
       "type": "patchouli:text",
       "title": "Resource & Combat Enchants",
-      "text": "$(bold)Prospector$(/bold) — Passive ore detection$(br)$(bold)Lumberjack$(/bold) — Tree-felling radius$(br)$(bold)Reaping$(/bold) — Auto-replant on harvest$(br2)$(bold)Momentum$(/bold) — Movement-speed-scales damage$(br)$(bold)Adrenaline$(/bold) — Low-HP damage boost$(br)$(bold)Titan Slayer$(/bold) — Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$(/bold) — AoE slow/weaken on hit$(br)$(bold)Adaptive$(/bold) — Resistance to most-recently-received damage type"
+      "text": "$(bold)Prospector$() — Passive ore detection$(br)$(bold)Lumberjack$() — Tree-felling radius$(br)$(bold)Reaping$() — Auto-replant on harvest$(br2)$(bold)Momentum$() — Movement-speed-scales damage$(br)$(bold)Adrenaline$() — Low-HP damage boost$(br)$(bold)Titan Slayer$() — Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$() — AoE slow/weaken on hit$(br)$(bold)Adaptive$() — Resistance to most-recently-received damage type"
     },
     {
       "type": "patchouli:text",
       "title": "Anti-Boss, Path Synergy & Utility",
-      "text": "$(bold)Boss Ward$(/bold) — Damage reduction from boss entities$(br)$(bold)Steadfast$(/bold) — Knockback immunity$(br)$(bold)Nemesis$(/bold) — Tracks kills, damage bonus vs previously-fought bosses$(br2)$(bold)Mana Temper$(/bold) — Spells power up weapon$(br)$(bold)RF Capacitance$(/bold) — Stored RF boosts damage$(br)$(bold)Convergence$(/bold) — Bonus when tech+magic gear worn together$(br2)$(bold)Magnetism$(/bold) — Item pickup radius$(br)$(bold)Last Stand$(/bold) — On near-death: burst damage$(br)$(bold)Vitality$(/bold) — Max HP boost$(br)$(bold)Phalanx$(/bold) — Group defense aura$(br)$(bold)Quick Draw$(/bold) — Offhand swap speed"
+      "text": "$(bold)Boss Ward$() — Damage reduction from boss entities$(br)$(bold)Steadfast$() — Knockback immunity$(br)$(bold)Nemesis$() — Tracks kills, damage bonus vs previously-fought bosses$(br2)$(bold)Mana Temper$() — Spells power up weapon$(br)$(bold)RF Capacitance$() — Stored RF boosts damage$(br)$(bold)Convergence$() — Bonus when tech+magic gear worn together$(br2)$(bold)Magnetism$() — Item pickup radius$(br)$(bold)Last Stand$() — On near-death: burst damage$(br)$(bold)Vitality$() — Max HP boost$(br)$(bold)Phalanx$() — Group defense aura$(br)$(bold)Quick Draw$() — Offhand swap speed"
     }
   ]
 }

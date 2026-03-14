@@ -6,15 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Tier tokens are the primary currency of the progression system. They are used in tier-gated crafting recipes and as quest rewards for gate quests.$(br2)$(bold)Four token tiers:$(/bold) $(t1)Tier 1$(end) (iron-colored) · $(t2)Tier 2$(end) (steel-blue) · $(t3)Tier 3$(end) (amethyst) · $(t4)Tier 4$(end) (gold)$(br2)$(bold)Token fragments$(/bold) drop from structure chests. Collect $(bold)5 fragments$(/bold) to craft a full token."
+      "text": "Tier tokens are the primary currency of the progression system. They are used in tier-gated crafting recipes and as quest rewards for gate quests.$(br2)$(bold)Four token tiers:$() $(t1)Tier 1$() (iron-colored) · $(t2)Tier 2$() (steel-blue) · $(t3)Tier 3$() (amethyst) · $(t4)Tier 4$() (gold)$(br2)$(bold)Token fragments$() drop from structure chests. Collect $(bold)5 fragments$() to craft a full token."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where Tokens Come From$(/bold)$(br2)$(li)$(bold)Structure chests$(/bold) — fragments and full tokens in dungeon loot$(li)$(bold)Boss kills$(/bold) — 1–4 tokens depending on tier and boss$(li)$(bold)Quest rewards$(/bold) — gate quests grant 3–5 full tokens$(li)$(bold)Transmutation recipes$(/bold) — 8 lower-tier tokens → 1 higher-tier token$(br2)Tokens are $(italic)not$(/italic) required to advance tiers — completing a quest path does that automatically. Tokens are for crafting."
+      "text": "$(bold)Where Tokens Come From$()$(br2)$(li)$(bold)Structure chests$() — fragments and full tokens in dungeon loot$(li)$(bold)Boss kills$() — 1–4 tokens depending on tier and boss$(li)$(bold)Quest rewards$() — gate quests grant 3–5 full tokens$(li)$(bold)Transmutation recipes$() — 8 lower-tier tokens → 1 higher-tier token$(br2)Tokens are $(italic)not$() required to advance tiers — completing a quest path does that automatically. Tokens are for crafting."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)What Tokens Buy$(/bold)$(br2)Tier tokens are consumed in recipes for:$(br2)$(li)Tier-gated crafting stations (e.g. $(thing)Apotheosis$(/thing) Gem Cutting Table requires $(t2)T2$(end) tokens)$(li)Waystone construction$(li)$(thing)Class Altar$(/thing) construction$(li)Reforging tokens (basic, advanced, ultimate)$(li)Advanced cross-mod alloy recipes$(br2)They are not currency — they are a crafting material. You will not accumulate excess if you play actively."
+      "text": "$(bold)What Tokens Buy$()$(br2)Tier tokens are consumed in recipes for:$(br2)$(li)Tier-gated crafting stations (e.g. $(thing)Apotheosis$() Gem Cutting Table requires $(t2)T2$() tokens)$(li)Waystone construction$(li)$(thing)Class Altar$() construction$(li)Reforging tokens (basic, advanced, ultimate)$(li)Advanced cross-mod alloy recipes$(br2)They are not currency — they are a crafting material. You will not accumulate excess if you play actively."
     }
   ]
 }

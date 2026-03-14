@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)IridescentCraft$(/thing) is a progression-focused, expert-lite modpack for Minecraft 1.20.1 (Forge). The central fantasy is simple: $(bold)you become absurdly powerful — but the world scales harder.$(/bold)$(br2)You will start in a familiar Overworld. You will end fighting gods in shattered dimensions with gear forged from the bones of things that should not exist. The journey between those two points is what this pack is about."
+      "text": "$(thing)IridescentCraft$() is a progression-focused, expert-lite modpack for Minecraft 1.20.1 (Forge). The central fantasy is simple: $(bold)you become absurdly powerful — but the world scales harder.$()$(br2)You will start in a familiar Overworld. You will end fighting gods in shattered dimensions with gear forged from the bones of things that should not exist. The journey between those two points is what this pack is about."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Design Pillars$(/bold)$(br2)$(li)Open early game. Progressive gates. Earned power.$(li)Every gate is solvable via tech, magic, or hybrid — your choice.$(li)Gates are $(italic)when$(/italic) you unlock things, not $(italic)whether.$(/italic)$(li)Bosses are the pinnacle. The best weapons come from them.$(li)Dying is a cost, not a catastrophe.$(li)Play your way. No mandatory path."
+      "text": "$(bold)Design Pillars$()$(br2)$(li)Open early game. Progressive gates. Earned power.$(li)Every gate is solvable via tech, magic, or hybrid — your choice.$(li)Gates are $(italic)when$() you unlock things, not $(italic)whether.$()$(li)Bosses are the pinnacle. The best weapons come from them.$(li)Dying is a cost, not a catastrophe.$(li)Play your way. No mandatory path."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)What Makes This Different$(/bold)$(br2)You will not find diamonds in Overworld chests. The Nether is $(t3)Tier 3$(end) content. The End requires $(t4)Tier 4$(end) preparation.$(br2)Mobs scale by dimension — not just by number, but by behavior, abilities, and environmental mechanics. A $(t1)Tier 1$(end) zombie and a $(t4)Tier 4$(end) End zombie are categorically different threats.$(br2)This book is your guide to all of it."
+      "text": "$(bold)What Makes This Different$()$(br2)You will not find diamonds in Overworld chests. The Nether is $(t3)Tier 3$() content. The End requires $(t4)Tier 4$() preparation.$(br2)Mobs scale by dimension — not just by number, but by behavior, abilities, and environmental mechanics. A $(t1)Tier 1$() zombie and a $(t4)Tier 4$() End zombie are categorically different threats.$(br2)This book is your guide to all of it."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)First Steps$(/bold)$(br2)$(li)Open your $(thing)FTB Quests$(/thing) book (key: $(k:key.inventory)) — it is your primary progression tracker.$(li)Select a Race when prompted (or open Origins menu).$(li)Select a Class via the Class selection screen.$(li)Open your Skills menu (default key: $(bold)K$(/bold)).$(li)Find a waystone — they are your fast travel network.$(br2)The quest book rewards skill points. This Codex explains what those points do."
+      "text": "$(bold)First Steps$()$(br2)$(li)Open your $(thing)FTB Quests$() book (key: $(k:key.inventory)) — it is your primary progression tracker.$(li)Select a Race when prompted (or open Origins menu).$(li)Select a Class via the Class selection screen.$(li)Open your Skills menu (default key: $(bold)K$()).$(li)Find a waystone — they are your fast travel network.$(br2)The quest book rewards skill points. This Codex explains what those points do."
     }
   ]
 }
