@@ -76,25 +76,22 @@ function clearModBooks(player) {
   })
 }
 
-// Sweep: runs every second for first 5 minutes + 60s after each login
+// Sweep: aggressive for first 10s after login (every 1s), then every 10s for 2 min
 ServerEvents.tick(event => {
   let tick = event.server.tickCount
-  if (tick % 20 !== 0) return
-
-  if (tick === 20) {
-    console.log('[IridescentCraft] Book sweep active — clearing mod books every 1s for 5 min')
-  }
-
-  let globalSweep = tick < 6000
 
   event.server.players.forEach(player => {
-    let perPlayerSweep = player.persistentData.getInt('icraft_book_sweep_ticks') > 0
-    if (perPlayerSweep) {
-      player.persistentData.putInt('icraft_book_sweep_ticks',
-        player.persistentData.getInt('icraft_book_sweep_ticks') - 20)
-    }
+    let sweepTicks = player.persistentData.getInt('icraft_book_sweep_ticks')
+    if (sweepTicks <= 0) return
 
-    if (!globalSweep && !perPlayerSweep) return
+    // First 10 seconds (200 ticks): clear every second
+    // After that: clear every 10 seconds
+    let aggressive = sweepTicks > 1000 // 1200 - 200 = first 10s
+    let interval = aggressive ? 20 : 200
+
+    if (tick % interval !== 0) return
+
+    player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - interval)
     clearModBooks(player)
   })
 })
