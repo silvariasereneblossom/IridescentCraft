@@ -179,7 +179,7 @@ function equipMob(entity, config) {
     if (config.enchantLevel > 0 && rng() < 0.5) {
       enchantItem(weaponItem, config.enchantLevel)
     }
-    entity.setItemInHand('main_hand', weaponItem)
+    entity.setItemSlot('mainhand', weaponItem)
 
     // Armor — full set or random pieces
     let fullSet = rng() < config.fullSetChance
@@ -187,22 +187,22 @@ function equipMob(entity, config) {
     if (fullSet || rng() < 0.6) {
       let h = Item.of(pick(config.helmets))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(h, config.enchantLevel)
-      entity.setArmorSlot(3, h) // head
+      entity.setItemSlot('head', h)
     }
     if (fullSet || rng() < 0.5) {
       let c = Item.of(pick(config.chests))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(c, config.enchantLevel)
-      entity.setArmorSlot(2, c) // chest
+      entity.setItemSlot('chest', c)
     }
     if (fullSet || rng() < 0.4) {
       let l = Item.of(pick(config.legs))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(l, config.enchantLevel)
-      entity.setArmorSlot(1, l) // legs
+      entity.setItemSlot('legs', l)
     }
     if (fullSet || rng() < 0.4) {
       let b = Item.of(pick(config.boots))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(b, config.enchantLevel)
-      entity.setArmorSlot(0, b) // feet
+      entity.setItemSlot('feet', b)
     }
   } catch(e) {
     // Silently fail if API methods don't match — prevents tick spam
@@ -226,7 +226,7 @@ function hasExistingGear(entity) {
   // Check if mob already has non-air items in equipment slots
   try {
     let mainhand = entity.mainHandItem
-    let chest = entity.getArmorSlot(2) // chestplate
+    let chest = entity.getItemBySlot('chest')
     return (mainhand && !mainhand.isEmpty()) || (chest && !chest.isEmpty())
   } catch(e) {
     return false

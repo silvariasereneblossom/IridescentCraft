@@ -6,15 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Tier 1 bosses are found in Overworld structures. They are manageable in iron/copper gear but require active dodging. None drop Simply Swords uniques \u2014 those begin at Tier 2."
+      "text": "$(t1)Tier 1$(end) bosses are found in Overworld structures. They are manageable in iron/copper gear but require active dodging. None drop $(thing)Simply Swords$(/thing) uniques — those begin at $(t2)Tier 2$(end)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mutant Zombie$(/bold) (Mutant Monsters)$(br)Overworld, structures and open world. Drops: Mutant Zombie Chunks, Tier 1 tokens.$(br2)$(bold)Mutant Skeleton$(/bold) (Mutant Monsters)$(br)Overworld. Drops: Mutant Skeleton Shards, Tier 1 tokens.$(br2)$(bold)Mutant Spider$(/bold) (Mutant Monsters)$(br)Overworld. Drops: Mutant Spider Eyes, Tier 1 tokens."
+      "text": "$(bold)Mutant Zombie$(/bold) (Mutant Monsters)$(br)Overworld, structures and open world. Drops: Mutant Zombie Chunks, $(t1)Tier 1$(end) tokens.$(br2)$(bold)Mutant Skeleton$(/bold) (Mutant Monsters)$(br)Overworld. Drops: Mutant Skeleton Shards, $(t1)Tier 1$(end) tokens.$(br2)$(bold)Mutant Spider$(/bold) (Mutant Monsters)$(br)Overworld. Drops: Mutant Spider Eyes, $(t1)Tier 1$(end) tokens."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Iron's Spellbooks Mini-Bosses$(/bold)$(br)Archevoker, Cryomancer, Necromancer, Pyromancer appear in Overworld structures and villages. 25% chance for Tier 2 token peek.$(br2)$(bold)Brutal Bosses (Overworld)$(/bold)$(br)Champion-level mobs guarding Overworld dungeons. Variable drops. Tier 1 tokens guaranteed."
+      "text": "$(bold)Iron's Spellbooks Mini-Bosses$(/bold)$(br)Archevoker, Cryomancer, Necromancer, Pyromancer appear in Overworld structures and villages. 25% chance for $(t2)Tier 2$(end) token peek.$(br2)$(bold)Brutal Bosses (Overworld)$(/bold)$(br)Champion-level mobs guarding Overworld dungeons. Variable drops. $(t1)Tier 1$(end) tokens guaranteed."
     }
   ]
 }

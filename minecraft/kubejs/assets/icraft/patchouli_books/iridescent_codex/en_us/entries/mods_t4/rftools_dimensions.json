@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "RFTools Dimensions enables custom dimension creation \u2014 the backbone for Oblivion's Rift."
+      "text": "RFTools Dimensions enables custom dimension creation — the backbone for $(thing)Oblivion's Rift$(/thing)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Oblivion's Rift (the primary endgame loop) uses RFTools Dimensions to generate procedural dungeon dimensions. Each Rift run is a unique dimension.$(br2)$(bold)Rift Keystone:$(/bold) Required to open a Rift portal. Crafted from Rift Shards (endgame currency) + boss materials."
+      "text": "$(bold)Role in the pack:$(/bold) $(thing)Oblivion's Rift$(/thing) (the primary endgame loop) uses RFTools Dimensions to generate procedural dungeon dimensions. Each Rift run is a unique dimension.$(br2)$(bold)Rift Keystone:$(/bold) Required to open a Rift portal. Crafted from $(thing)Rift Shards$(/thing) (endgame currency) + boss materials."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,8 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$(/bold) RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(/bold). The Dimension Builder and Dimlet system are the core loop \u2014 craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder."
+      "text": "$(bold)No book needed.$(/bold) RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(/bold). The Dimension Builder and Dimlet system are the core loop — craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder."
     }
-  ]
+  ],
+  "advancement": "icraft:stage_tier_4"
 }

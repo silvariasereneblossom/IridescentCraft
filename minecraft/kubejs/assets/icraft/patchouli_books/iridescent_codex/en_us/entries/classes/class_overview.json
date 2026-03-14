@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your class defines your combat role. It modifies your HP, your weapon effectiveness, and grants you passive abilities and one active skill. Classes are implemented via the $(bold)Origins$(/bold) system as a separate layer from your Race.$(br2)There are $(bold)10 classes$(/bold). All are viable. The pack does not have a 'best' class \u2014 it has classes that match different playstyles."
+      "text": "Your class defines your combat role. It modifies your HP, your weapon effectiveness, and grants you passive abilities and one active skill. Classes are implemented via the $(bold)Origins$(/bold) system as a separate layer from your Race.$(br2)There are $(bold)10 classes$(/bold). All are viable. The pack does not have a 'best' class — it has classes that match different playstyles."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Respeccing Your Class$(/bold)$(br2)Classes can be changed at a $(bold)Class Altar$(/bold) \u2014 a craftable station requiring a tier-appropriate boss drop + 30 XP levels. You do not lose skill points when you respec your class. The altar can be shared between players on a server.$(br2)$(bold)Races are permanent.$(/bold) Your race is chosen at character creation and cannot be changed."
+      "text": "$(bold)Respeccing Your Class$(/bold)$(br2)Classes can be changed at a $(bold)Class Altar$(/bold) — a craftable station requiring a tier-appropriate boss drop + 30 XP levels. You do not lose skill points when you respec your class. The altar can be shared between players on a server.$(br2)$(bold)Races are permanent.$(/bold) Your race is chosen at character creation and cannot be changed."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Three Layers of Identity$(/bold)$(br2)$(bold)Race$(/bold) \u2014 What you ARE. Innate traits, mild tradeoffs. Permanent.$(br)$(bold)Class$(/bold) \u2014 What you DO. Combat role, HP modifier, weapon affinities, active ability. Respec-able.$(br)$(bold)Skills$(/bold) \u2014 How you INVEST. Cumulative bonuses across six trees. Respec costs 5 levels per point.$(br2)These three layers stack additively. A Berserker/Orc with Warfare tree investment is a very different character from a Berserker/Elf."
+      "text": "$(bold)Three Layers of Identity$(/bold)$(br2)$(bold)Race$(/bold) — What you ARE. Innate traits, mild tradeoffs. Permanent.$(br)$(bold)Class$(/bold) — What you DO. Combat role, HP modifier, weapon affinities, active ability. Respec-able.$(br)$(bold)Skills$(/bold) — How you INVEST. Cumulative bonuses across six trees. Respec costs 5 levels per point.$(br2)These three layers stack additively. A $(thing)Berserker$(/thing)/$(thing)Orc$(/thing) with Warfare tree investment is a very different character from a Berserker/$(thing)Elf$(/thing)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)The 'Half Equipment HP' Rule$(/bold)$(br2)Ranger, Archmage, and Void Summoner receive only 50% effectiveness from all equipment-sourced max HP bonuses. This includes Vitality enchant, HP affixes, and armor attribute modifiers.$(br2)$(italic)Does not affect$(/italic) base HP, Spice of Life food HP, or JustLevelingFork level-up HP. Glass cannon classes have a lower HP ceiling \u2014 but they're still rewarded for investing in food diversity and leveling."
+      "text": "$(bold)The 'Half Equipment HP' Rule$(/bold)$(br2)$(thing)Ranger$(/thing), $(thing)Archmage$(/thing), and $(thing)Void Summoner$(/thing) receive only 50% effectiveness from all equipment-sourced max HP bonuses. This includes Vitality enchant, HP affixes, and armor attribute modifiers.$(br2)$(italic)Does not affect$(/italic) base HP, Spice of Life food HP, or JustLevelingFork level-up HP. Glass cannon classes have a lower HP ceiling — but they're still rewarded for investing in food diversity and leveling."
     }
   ]
 }

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Origins is the framework behind IridescentCraft's class and race system."
+      "text": "Origins is the framework behind $(thing)IridescentCraft$(/thing)'s class and race system."
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Limitations to know:$(/bold) Origins powers are applied on equip/select. If you change server settings or add mods mid-play, Origins may need a reset. Use /origin set command if your class/race appears broken.$(br2)$(bold)Race is permanent.$(/bold) Class respec uses the Class Altar."
+      "text": "$(bold)Limitations to know:$(/bold) Origins powers are applied on equip/select. If you change server settings or add mods mid-play, Origins may need a reset. Use /origin set command if your class/race appears broken.$(br2)$(bold)Race is permanent.$(/bold) Class respec uses the $(thing)Class Altar$(/thing)."
     }
   ]
 }

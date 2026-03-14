@@ -11,12 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Holy Aura$(/bold) \u2014 Nearby allies within 8 blocks: +5% DR, +1 HP/5s regen. Strongest Paladin aura applies in group.$(br2)$(bold)Divine Resilience$(/bold) \u2014 +15% effectiveness from all healing. Self-healing from combat sources +10%.$(br2)$(bold)Consecrated Ground$(/bold) \u2014 Standing still 3+ seconds: 4-block Consecrated Ground. Allies: +10% DR. Undead: 2 damage/s."
+      "text": "$(bold)Holy Aura$(/bold) — Nearby allies within 8 blocks: +5% DR, +1 HP/5s regen. Strongest $(thing)Paladin$(/thing) aura applies in group.$(br2)$(bold)Divine Resilience$(/bold) — +15% effectiveness from all healing. Self-healing from combat sources +10%.$(br2)$(bold)Consecrated Ground$(/bold) — Standing still 3+ seconds: 4-block Consecrated Ground. Allies: +10% DR. Undead: 2 damage/s."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Shield of Faith$(/bold) \u2014 20% of blocked damage converts to heal over 5s. Blocking a killing blow: 30% chance to fully negate it (once per 5 min).$(br2)$(bold)Smite$(/bold) \u2014 +20% damage vs undead, demons, void entities. Kills on these emit a 2 HP heal pulse to nearby allies."
+      "text": "$(bold)Shield of Faith$(/bold) — 20% of blocked damage converts to heal over 5s. Blocking a killing blow: 30% chance to fully negate it (once per 5 min).$(br2)$(bold)Smite$(/bold) — +20% damage vs undead, demons, void entities. Kills on these emit a 2 HP heal pulse to nearby allies."
     },
     {
       "type": "patchouli:text",

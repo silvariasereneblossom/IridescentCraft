@@ -6,19 +6,20 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Refined Storage is the primary T3 digital storage and autocrafting system."
+      "text": "Refined Storage is the primary $(t3)T3$(end) digital storage and autocrafting system."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Dual-path recipes:$(/bold) IridescentCraft adds a dual-path recipe system for RS components. Tech path uses Mekanism/Thermal materials. Magic path uses Botania/Ars Nouveau materials. Hybrid path (both) gives double yield.$(br2)$(bold)T4 upgrade:$(/bold) Advanced RS components (Disk Drives, Pattern Encoders for complex autocrafting) are T4 content. Basic storage is T3."
+      "text": "$(bold)Dual-path recipes:$(/bold) $(thing)IridescentCraft$(/thing) adds a dual-path recipe system for RS components. Tech path uses Mekanism/Thermal materials. Magic path uses Botania/Ars Nouveau materials. Hybrid path (both) gives double yield.$(br2)$(bold)T4 upgrade:$(/bold) Advanced RS components (Disk Drives, Pattern Encoders for complex autocrafting) are $(t4)T4$(end) content. Basic storage is T3."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Setup recommendation:$(/bold) Build RS alongside your Mekanism ore processing chain. The autocrafting capability transforms T3 progression speed significantly."
+      "text": "$(bold)Setup recommendation:$(/bold) Build RS alongside your Mekanism ore processing chain. The autocrafting capability transforms $(t3)T3$(end) progression speed significantly."
     },
     {
       "type": "patchouli:text",
       "text": "$(bold)No book needed.$(/bold) Refined Storage is documented at $(bold)refinedmods.com/refined-storage$(/bold). In-game, JEI covers all crafting recipes. The system is largely intuitive once the Controller and Disk Drive are placed."
     }
-  ]
+  ],
+  "advancement": "icraft:stage_tier_3"
 }

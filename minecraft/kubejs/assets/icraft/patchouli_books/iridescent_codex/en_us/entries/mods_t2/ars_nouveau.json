@@ -6,20 +6,21 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Ars Nouveau is the primary Tier 2 magic mod. Customizable spell glyphs, familiars, and magical automation."
+      "text": "Ars Nouveau is the primary $(t2)Tier 2$(end) magic mod. Customizable spell glyphs, familiars, and magical automation."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Ars Nouveau is the Battlemage and Archmage's natural home at Tier 2. The glyph-based spell system allows building custom spells tailored to your class's strengths.$(br2)$(bold)Source generation:$(/bold) Ars Nouveau uses Source as its resource. Source Jars and Sourcelinks are the T2 mana automation backbone."
+      "text": "$(bold)Role in the pack:$(/bold) Ars Nouveau is the $(thing)Battlemage$(/thing) and $(thing)Archmage$(/thing)'s natural home at $(t2)Tier 2$(end). The glyph-based spell system allows building custom spells tailored to your class's strengths.$(br2)$(bold)Source generation:$(/bold) Ars Nouveau uses Source as its resource. Source Jars and Sourcelinks are the $(t2)T2$(end) mana automation backbone."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Faefolk synergy:$(/bold) +10% spell power from the Nature Magic racial. Ars Nouveau's nature-flavored spells benefit the most.$(br2)$(bold)What unlocks at T2:$(/bold) Full spellbook access, Bookwyrm familiar, Drygmy for mob farming, Whirlisprig for crop automation. These become available once you have T2 stage."
+      "text": "$(bold)Faefolk synergy:$(/bold) +10% spell power from the Nature Magic racial. Ars Nouveau's nature-flavored spells benefit the most.$(br2)$(bold)What unlocks at T2:$(/bold) Full spellbook access, Bookwyrm familiar, Drygmy for mob farming, Whirlisprig for crop automation. These become available once you have $(t2)T2$(end) stage."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "ars_nouveau:worn_notebook",
-      "text": "Craft the $(bold)Worn Notebook$(/bold) for the full Ars Nouveau reference \u2014 every glyph, every augment, familiar guides, and automation setups."
+      "text": "Craft the $(bold)Worn Notebook$(/bold) for the full Ars Nouveau reference — every glyph, every augment, familiar guides, and automation setups."
     }
-  ]
+  ],
+  "advancement": "icraft:stage_tier_2"
 }

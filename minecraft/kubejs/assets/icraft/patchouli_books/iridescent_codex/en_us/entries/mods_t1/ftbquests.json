@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your progression tracker, guide, and reward system. The quest book is not optional \u2014 it is how you advance tiers."
+      "text": "Your progression tracker, guide, and reward system. The quest book is not optional — it is how you advance tiers."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Opening:$(/bold) Default key $(bold)P$(/bold) or click the shield icon in the HUD.$(br2)$(bold)Nine chapters:$(/bold) Welcome \u00b7 Tier 1\u20134 \u00b7 Crucible \u00b7 Community \u00b7 Prestige \u00b7 Classes & Skills.$(br2)$(bold)Five paths per tier:$(/bold) Grinding, Magic, Combat, Exploration, Engineering. Complete any one to advance."
+      "text": "$(bold)Opening:$(/bold) Default key $(bold)P$(/bold) or click the shield icon in the HUD.$(br2)$(bold)Nine chapters:$(/bold) Welcome · $(t1)Tier 1$(end)–$(t4)4$(end) · Crucible · Community · Prestige · Classes & Skills.$(br2)$(bold)Five paths per tier:$(/bold) Grinding, Magic, Combat, Exploration, Engineering. Complete any one to advance."
     },
     {
       "type": "patchouli:text",

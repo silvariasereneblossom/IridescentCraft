@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Keep inventory is on.$(/bold) You will never lose items on death.$(br2)However, death costs you $(bold)equipment durability$(/bold). How much depends on where you die:$(br2)$(li)Overworld: ~10% durability loss$(li)Tier 2 dimensions: ~15% loss$(li)Tier 3 (Nether, Abyss, Undergarden): ~20% loss$(li)Tier 4 (End, Deep Aether): ~25% loss"
+      "text": "$(bold)Keep inventory is on.$(/bold) You will never lose items on death.$(br2)However, death costs you $(bold)equipment durability$(/bold). How much depends on where you die:$(br2)$(li)Overworld: ~10% durability loss$(li)$(t2)Tier 2$(end) dimensions: ~15% loss$(li)$(t3)Tier 3$(end) (Nether, Abyss, Undergarden): ~20% loss$(li)$(t4)Tier 4$(end) (End, Deep Aether): ~25% loss"
     },
     {
       "type": "patchouli:text",
@@ -14,11 +14,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Soulbound Enchantment$(/bold)$(br2)Soulbound (repurposed from Ensorcellation) is the ultimate insurance: items with Soulbound III are completely immune to the death durability penalty.$(br2)Soulbound is a $(bold)treasure enchantment$(/bold) \u2014 it cannot be obtained through an enchanting table. It drops only from high-tier structures and boss kills. It is rare by design.$(br2)$(bold)Soulbound I\u2013II$(/bold) reduce durability loss (50% and 75% reduction respectively)."
+      "text": "$(bold)Soulbound Enchantment$(/bold)$(br2)$(thing)Soulbound$(/thing) (repurposed from Ensorcellation) is the ultimate insurance: items with Soulbound III are completely immune to the death durability penalty.$(br2)Soulbound is a $(bold)treasure enchantment$(/bold) — it cannot be obtained through an enchanting table. It drops only from high-tier structures and boss kills. It is rare by design.$(br2)$(bold)Soulbound I–II$(/bold) reduce durability loss (50% and 75% reduction respectively)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Wanderer Race Bonus$(/bold)$(br2)The Wanderer class has a $(bold)Survivor$(/bold) passive that reduces all death durability loss by 25%. Combined with Soulbound II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$(/bold) also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically."
+      "text": "$(bold)Wanderer Race Bonus$(/bold)$(br2)The Wanderer class has a $(bold)Survivor$(/bold) passive that reduces all death durability loss by 25%. Combined with $(thing)Soulbound$(/thing) II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$(/bold) also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically."
     }
   ]
 }

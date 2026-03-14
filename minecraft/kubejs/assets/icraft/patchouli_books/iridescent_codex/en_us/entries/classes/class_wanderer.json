@@ -11,12 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Adaptable$(/bold) \u2014 Every 30 min of playtime: +1% to a random stat (max 10 stacks). Stacks persist through death.$(br2)$(bold)Worldly$(/bold) \u2014 +5% damage in any dimension spent 30+ minutes in. Stacks across dimensions \u2014 a Wanderer who's explored everywhere is the most consistent damage dealer late-game.$(br2)$(bold)Resourceful$(/bold) \u2014 +15% XP gained, +10% loot quantity. The passive income class."
+      "text": "$(bold)Adaptable$(/bold) — Every 30 min of playtime: +1% to a random stat (max 10 stacks). Stacks persist through death.$(br2)$(bold)Worldly$(/bold) — +5% damage in any dimension spent 30+ minutes in. Stacks across dimensions — a $(thing)Wanderer$(/thing) who's explored everywhere is the most consistent damage dealer late-game.$(br2)$(bold)Resourceful$(/bold) — +15% XP gained, +10% loot quantity. The passive income class."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Jack of All Trades$(/bold) \u2014 Wearing armor from 2+ different material types: +5% all stats per unique material (max +20% at 4 types).$(br2)$(bold)Survivor$(/bold) \u2014 +25% reduced death durability penalty. +20% reduced anvil repair costs."
+      "text": "$(bold)Jack of All Trades$(/bold) — Wearing armor from 2+ different material types: +5% all stats per unique material (max +20% at 4 types).$(br2)$(bold)Survivor$(/bold) — +25% reduced death durability penalty. +20% reduced anvil repair costs."
     },
     {
       "type": "patchouli:text",

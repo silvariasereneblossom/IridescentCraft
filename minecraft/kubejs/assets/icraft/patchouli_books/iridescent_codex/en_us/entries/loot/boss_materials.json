@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Boss materials are unique crafting components dropped only by specific bosses. They are used in:$(br2)$(li)Waystone construction (expensive by design)$(li)Class Altar construction$(li)Tier 4 advanced recipes$(li)Mythic infusion (endgame)$(br2)Unlike tokens, boss materials are $(italic)not$(/italic) interchangeable between bosses. Each boss's material has specific uses."
+      "text": "Boss materials are unique crafting components dropped only by specific bosses. They are used in:$(br2)$(li)Waystone construction (expensive by design)$(li)$(thing)Class Altar$(/thing) construction$(li)$(t4)Tier 4$(end) advanced recipes$(li)Mythic infusion (endgame)$(br2)Unlike tokens, boss materials are $(italic)not$(/italic) interchangeable between bosses. Each boss's material has specific uses."
     },
     {
       "type": "patchouli:text",
       "title": "T2 Boss Materials",
-      "text": "$(bold)Naga Scale$(/bold) \u2014 Twilight Forest Naga. Used in Tier 2 armor crafting recipes.$(br2)$(bold)Lich Soul$(/bold) \u2014 Lich. Used in necromantic recipes, Occultism preparations.$(br2)$(bold)Hydra Fang$(/bold) \u2014 Hydra. Used in melee weapon enhancement recipes.$(br2)$(bold)Ur-Ghast Tear$(/bold) \u2014 Ur-Ghast. Used in aerial mobility items."
+      "text": "$(bold)Naga Scale$(/bold) — Twilight Forest Naga. Used in $(t2)Tier 2$(end) armor crafting recipes.$(br2)$(bold)Lich Soul$(/bold) — Lich. Used in necromantic recipes, Occultism preparations.$(br2)$(bold)Hydra Fang$(/bold) — Hydra. Used in melee weapon enhancement recipes.$(br2)$(bold)Ur-Ghast Tear$(/bold) — Ur-Ghast. Used in aerial mobility items."
     },
     {
       "type": "patchouli:text",
       "title": "T3 Boss Materials",
-      "text": "$(bold)Harbinger Eye$(/bold) \u2014 Cataclysm: The Harbinger. High-value T3 crafting material.$(br2)$(bold)Ignis Core$(/bold) \u2014 Cataclysm: Ignis. Used in fire-themed T3+ recipes.$(br2)$(bold)Nether Soul Fragment$(/bold) \u2014 Wither Skeletons (rare). Used in Stalwart Dungeons preps.$(br2)$(bold)Gaia Spirit Fragment$(/bold) \u2014 Botania Gaia Guardian. Required for Mahou Tsukai initiation."
+      "text": "$(bold)Harbinger Eye$(/bold) — Cataclysm: The Harbinger. High-value $(t3)T3$(end) crafting material.$(br2)$(bold)Ignis Core$(/bold) — Cataclysm: Ignis. Used in fire-themed T3+ recipes.$(br2)$(bold)Nether Soul Fragment$(/bold) — Wither Skeletons (rare). Used in Stalwart Dungeons preps.$(br2)$(bold)Gaia Spirit Fragment$(/bold) — Botania Gaia Guardian. Required for Mahou Tsukai initiation."
     },
     {
       "type": "patchouli:text",
       "title": "T4 Boss Materials",
-      "text": "$(bold)Dragon Heart$(/bold) \u2014 Ender Dragon. Used in ultimate crafting recipes, Mythic infusion base.$(br2)$(bold)Dragon Scale$(/bold) \u2014 Ender Dragon. Used in Tier 4 armor crafting.$(br2)$(bold)Void Essence$(/bold) \u2014 Rare Enderman drop. Used in Void Summoner builds.$(br2)$(bold)Wither Bone$(/bold) \u2014 Wither. Used in Stalwart Dungeons and necromantic recipes."
+      "text": "$(bold)Dragon Heart$(/bold) — Ender Dragon. Used in ultimate crafting recipes, Mythic infusion base.$(br2)$(bold)Dragon Scale$(/bold) — Ender Dragon. Used in $(t4)Tier 4$(end) armor crafting.$(br2)$(bold)Void Essence$(/bold) — Rare Enderman drop. Used in $(thing)Void Summoner$(/thing) builds.$(br2)$(bold)Wither Bone$(/bold) — Wither. Used in Stalwart Dungeons and necromantic recipes."
     }
   ]
 }
