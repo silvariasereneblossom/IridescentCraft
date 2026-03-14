@@ -25,6 +25,19 @@
       "backupName": "automated",
       "backupFormat": "ZIP",
       "complete": true
+    },
+    {
+      "worldName": "New World",
+      "createTime": 1773493201182,
+      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\IridescentCraft\\minecraft\\backups\\2026-3-14_9-0-0.zip",
+      "size": 3421391,
+      "ratio": 0.7308652,
+      "sha1": "070a03d7e5497d1ca956897791c147f0f8c2975e",
+      "preview": "",
+      "snapshot": false,
+      "backupName": "automated",
+      "backupFormat": "ZIP",
+      "complete": true
     }
   ]
 }

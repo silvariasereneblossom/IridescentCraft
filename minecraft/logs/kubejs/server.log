@@ -1,68 +1,73 @@
-[08:41:26] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[08:41:26] [INIT] Loaded plugins:
-[08:41:26] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[08:41:26] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[08:41:26] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[08:41:26] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[08:41:26] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[08:41:26] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
-[08:41:26] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[08:41:26] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[08:41:26] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[08:41:26] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[08:41:26] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[08:41:26] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[08:41:26] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[08:41:26] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[08:41:26] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[08:41:26] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[08:41:26] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[08:41:27] [INFO] affixes/affix_effects.js#295: [IridescentCraft] affix_effects.js loaded — boss/dimensional/complex affix effects
-[08:41:27] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.002 s
-[08:41:27] [INFO] Loaded script server_scripts:astages/dimension_gates.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:astages/item_gates.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:astages/ore_gates.js in 0.002 s
-[08:41:27] [INFO] Loaded script server_scripts:astages/recipe_gates.js in 0.0 s
-[08:41:27] [INFO] class/equipment_hp_halving.js#155: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
-[08:41:27] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:codex_delivery.js in 0.0 s
-[08:41:27] [INFO] Loaded script server_scripts:death_penalty.js in 0.001 s
-[08:41:27] [INFO] enchantments/enchant_effects.js#503: [IridescentCraft] enchant_effects.js loaded — 24 custom enchantment effects
-[08:41:27] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.003 s
-[08:41:27] [INFO] example.js#5: Hello, World! (Loaded server scripts)
-[08:41:27] [INFO] Loaded script server_scripts:example.js in 0.0 s
-[08:41:27] [INFO] gates/milestone_detection.js#301: [IridescentCraft] Milestone detection loaded
-[08:41:27] [INFO] gates/milestone_detection.js#302:   Tier 2: Boss kill / Thermal Frame / All T2 dims visited
-[08:41:27] [INFO] gates/milestone_detection.js#303:   Tier 3: Boss kill / Mekanism Casing / All T3 dims visited
-[08:41:27] [INFO] gates/milestone_detection.js#304:   Tier 4: Dragon/Gaia kill / Ultimate Circuit
-[08:41:27] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.002 s
-[08:41:27] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.002 s
-[08:41:27] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
-[08:41:27] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:recipes/tier_skip.js in 0.0 s
-[08:41:27] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.0 s
-[08:41:27] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.0 s
-[08:41:27] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:scaling/dimension_scaling.js in 0.001 s
-[08:41:27] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.0 s
-[08:41:27] [INFO] skills/skill_effects.js#326: [IridescentCraft] skill_effects.js Phase 2 loaded — 16 active effects, 6 informational
-[08:41:27] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.001 s
-[08:41:27] [INFO] Loaded 23/23 KubeJS server scripts in 0.028 s with 0 errors and 0 warnings
-[08:41:27] [INFO] Scripts loaded
-[08:41:27] [INFO] Initializing recipe event...
-[08:41:27] [WARN] Due to the way Minecraft resource loading works, KubeJS' server.log may not contain everything that happened in your server scripts on initial world creation.
-[08:41:27] [WARN] You can still see the full log (including past reloads) in your latest.log file.
-[08:42:26] [INFO] Server resource reload complete!
-[08:43:13] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object NeocrorinesEntity['Necroth'/291, l='ServerLevel[New World]', x=-1266.87, y=-41.27, z=-1410.91].
-[08:43:43] [INFO] death_penalty.js#267: [IridescentCraft] keepInventory enabled — death penalty handles consequences
-[08:43:49] [INFO] codex_delivery.js#94: [IridescentCraft] Book sweep active — scanning every 2s for 5 minutes
-[08:43:55] [INFO] codex_delivery.js#19: [IridescentCraft] loggedIn fired for silvieserene, sweep armed
-[08:43:55] [INFO] gates/milestone_detection.js#297: [IridescentCraft] Granted tier_1 to new player: silvieserene
-[08:44:17] [INFO] codex_delivery.js#81: [IridescentCraft] Suppressed (patchouli): patchouli:guide_book slot 37
-[08:44:17] [INFO] codex_delivery.js#81: [IridescentCraft] Suppressed (patchouli): patchouli:guide_book slot 38
-[08:44:17] [INFO] codex_delivery.js#81: [IridescentCraft] Suppressed (patchouli): patchouli:guide_book slot 39
-[08:45:22] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Slime['Slime'/1962, l='ServerLevel[New World]', x=-1272.50, y=-36.00, z=-1770.50].
-[08:45:34] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Zombie['Zombie'/2204, l='ServerLevel[New World]', x=-1238.50, y=38.00, z=-1484.50].
-[08:45:36] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Zombie['Zombie'/2263, l='ServerLevel[New World]', x=-1216.50, y=36.00, z=-1500.50].
+[08:56:37] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[08:56:37] [INIT] Loaded plugins:
+[08:56:37] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[08:56:37] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[08:56:37] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[08:56:37] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[08:56:37] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[08:56:37] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
+[08:56:37] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[08:56:37] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[08:56:37] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[08:56:37] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[08:56:37] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[08:56:37] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[08:56:37] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[08:56:37] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[08:56:37] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[08:56:37] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[08:56:37] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[08:56:37] [INFO] affixes/affix_effects.js#295: [IridescentCraft] affix_effects.js loaded — boss/dimensional/complex affix effects
+[08:56:37] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.002 s
+[08:56:37] [INFO] Loaded script server_scripts:astages/dimension_gates.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:astages/item_gates.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:astages/ore_gates.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:astages/recipe_gates.js in 0.001 s
+[08:56:37] [INFO] class/equipment_hp_halving.js#155: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
+[08:56:37] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:codex_delivery.js in 0.0 s
+[08:56:37] [INFO] Loaded script server_scripts:death_penalty.js in 0.001 s
+[08:56:37] [INFO] enchantments/enchant_effects.js#503: [IridescentCraft] enchant_effects.js loaded — 24 custom enchantment effects
+[08:56:37] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.003 s
+[08:56:37] [INFO] example.js#5: Hello, World! (Loaded server scripts)
+[08:56:37] [INFO] Loaded script server_scripts:example.js in 0.0 s
+[08:56:37] [INFO] gates/milestone_detection.js#301: [IridescentCraft] Milestone detection loaded
+[08:56:37] [INFO] gates/milestone_detection.js#302:   Tier 2: Boss kill / Thermal Frame / All T2 dims visited
+[08:56:37] [INFO] gates/milestone_detection.js#303:   Tier 3: Boss kill / Mekanism Casing / All T3 dims visited
+[08:56:37] [INFO] gates/milestone_detection.js#304:   Tier 4: Dragon/Gaia kill / Ultimate Circuit
+[08:56:37] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.003 s
+[08:56:37] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.002 s
+[08:56:37] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
+[08:56:37] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:recipes/tier_skip.js in 0.0 s
+[08:56:37] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.0 s
+[08:56:37] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.0 s
+[08:56:37] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.001 s
+[08:56:37] [INFO] Loaded script server_scripts:scaling/dimension_scaling.js in 0.0 s
+[08:56:37] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.001 s
+[08:56:37] [INFO] skills/skill_effects.js#326: [IridescentCraft] skill_effects.js Phase 2 loaded — 16 active effects, 6 informational
+[08:56:37] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.001 s
+[08:56:37] [INFO] Loaded 23/23 KubeJS server scripts in 0.028 s with 0 errors and 0 warnings
+[08:56:37] [INFO] Scripts loaded
+[08:56:37] [INFO] Initializing recipe event...
+[08:56:37] [WARN] Due to the way Minecraft resource loading works, KubeJS' server.log may not contain everything that happened in your server scripts on initial world creation.
+[08:56:37] [WARN] You can still see the full log (including past reloads) in your latest.log file.
+[08:57:25] [INFO] Server resource reload complete!
+[08:57:41] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Pillager['Pillager'/307, l='ServerLevel[New World]', x=-796.44, y=104.00, z=-800.56].
+[08:57:45] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Vindicator['Vindicator'/377, l='ServerLevel[New World]', x=-800.61, y=104.00, z=-796.50].
+[08:57:45] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Pillager['Pillager'/382, l='ServerLevel[New World]', x=-806.49, y=104.00, z=-805.46].
+[08:58:16] [INFO] death_penalty.js#267: [IridescentCraft] keepInventory enabled — death penalty handles consequences
+[08:58:17] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Skeleton['Tower Guardian'/669, l='ServerLevel[New World]', x=-831.50, y=49.00, z=-607.52].
+[08:58:20] [INFO] codex_delivery.js#94: [IridescentCraft] Book sweep active
+[08:58:27] [INFO] codex_delivery.js#19: [IridescentCraft] loggedIn fired for silvieserene, sweep armed
+[08:58:27] [INFO] gates/milestone_detection.js#297: [IridescentCraft] Granted tier_1 to new player: silvieserene
+[08:58:29] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object EchoBugEntity['Echo Bug'/695, l='ServerLevel[New World]', x=-900.64, y=-16.50, z=-884.12].
+[08:58:49] [INFO] codex_delivery.js#83: [IridescentCraft] Detected book (patchouli): patchouli:guide_book
+[08:58:49] [INFO] codex_delivery.js#83: [IridescentCraft] Detected book (patchouli): patchouli:guide_book
+[08:58:49] [INFO] codex_delivery.js#83: [IridescentCraft] Detected book (patchouli): patchouli:guide_book
+[08:58:55] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Slime['Slime'/1992, l='ServerLevel[New World]', x=-950.50, y=-46.00, z=-692.50].
+[09:00:09] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object ThewolfEntity['The Wolf'/2145, l='ServerLevel[New World]', x=-682.50, y=97.00, z=-659.50].
+[09:00:09] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object DirewolfEntity['Direwolf'/2153, l='ServerLevel[New World]', x=-760.50, y=38.00, z=-734.50].
+[09:00:10] [INFO] scaling/mob_equipment.js#209: [IridescentCraft] mob_equipment: Cannot find function setArmorSlot in object Zombie['Zombie'/2183, l='ServerLevel[New World]', x=-721.50, y=30.00, z=-704.50].

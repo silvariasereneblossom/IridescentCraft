@@ -1,0 +1,13 @@
+#674 minecraft:flower_forest
+#010 minecraft:forest
+#65C biomesoplenty:lavender_field
+#2D6 minecraft:meadow
+#47F biomesoplenty:mediterranean_forest
+#5A5 biomesoplenty:orchard
+#5F0 biomesoplenty:pasture
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#5FF minecraft:river
+#67B minecraft:savanna
+#706 minecraft:savanna_plateau
+#7F2 biomesoplenty:woodland
