@@ -1,0 +1,136 @@
+// =============================================================================
+// ENDGAME ITEM REGISTRATION — Oblivion's Rift & Mythic Gear System
+// Place in: kubejs/startup_scripts/endgame_items.js
+// Must be in startup_scripts/ (requires game restart to apply)
+//
+// Design Doc: Part II — Oblivion's Rift (Loop 1), Mythic Gear Chase (Loop 2)
+//
+// NOTE: The following items are already registered in custom_items.js:
+//   kubejs:rift_shard, kubejs:void_fragment, kubejs:rift_keystone
+// Do NOT duplicate them here.
+// =============================================================================
+
+StartupEvents.registry('item', event => {
+
+    // =========================================================================
+    // RIFT-EXCLUSIVE DROP MATERIALS
+    // Obtained only inside Oblivion's Rift from floor guardians and mobs
+    // =========================================================================
+
+    event.create('kubejs:rift_core')
+        .displayName('Rift Core')
+        .tooltip('§5A solidified nexus of dimensional energy')
+        .tooltip('§7Dropped by Floor 25+ guardians in the Rift')
+        .tooltip('§8Ultimate Mythic crafting material')
+        .maxStackSize(16)
+        .rarity('epic')
+
+    event.create('kubejs:primordial_essence')
+        .displayName('Primordial Essence')
+        .tooltip('§5Concentrated energy from before creation')
+        .tooltip('§7Dropped by Floor 15+ guardians in the Rift')
+        .tooltip('§8Used for Mythic III+ infusion and reforging')
+        .maxStackSize(64)
+        .rarity('epic')
+
+    event.create('kubejs:rift_gem')
+        .displayName('Rift Gem')
+        .tooltip('§dA gem crystallized from pure Rift energy')
+        .tooltip('§7Dropped by Floor 10+ guardians (30% chance)')
+        .tooltip('§8Best-in-slot Apotheosis socket gem')
+        .maxStackSize(16)
+        .rarity('epic')
+
+    event.create('kubejs:rift_blueprint')
+        .displayName('Rift Blueprint')
+        .tooltip('§dAncient schematics from the deepest Rift floors')
+        .tooltip('§7Dropped by Floor 20+ guardians (10% chance)')
+        .tooltip('§8Unlocks unique Mythic crafting recipes')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    // =========================================================================
+    // MYTHIC FORGE CRAFTING STATION
+    // The endgame workbench for all Mythic enhancements
+    // =========================================================================
+
+    event.create('kubejs:mythic_forge')
+        .displayName('Mythic Forge')
+        .tooltip('§5An ancient forge resonating with Rift energy')
+        .tooltip('§7Place in a crafting grid with Rift materials')
+        .tooltip('§7to create Mythic-tier enhancements')
+        .tooltip('§8Crafted from Rift materials + Mekanism components')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    // =========================================================================
+    // MYTHIC INFUSION CATALYSTS
+    // Tiered catalysts that represent each Mythic enhancement level
+    // Used as recipe intermediates — craft catalyst, then apply to gear
+    // =========================================================================
+
+    event.create('kubejs:mythic_catalyst_1')
+        .displayName('Mythic Catalyst I')
+        .tooltip('§dInfuses gear with Mythic I enhancement')
+        .tooltip('§7+3% effectiveness')
+        .tooltip('§8Apply to any T4 weapon or armor piece')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:mythic_catalyst_2')
+        .displayName('Mythic Catalyst II')
+        .tooltip('§dInfuses gear with Mythic II enhancement')
+        .tooltip('§7+3% effectiveness (6% cumulative)')
+        .tooltip('§8Apply to any T4 weapon or armor piece')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:mythic_catalyst_3')
+        .displayName('Mythic Catalyst III')
+        .tooltip('§dInfuses gear with Mythic III enhancement')
+        .tooltip('§7+2% effectiveness (8% cumulative)')
+        .tooltip('§8Apply to any T4 weapon or armor piece')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:mythic_catalyst_4')
+        .displayName('Mythic Catalyst IV')
+        .tooltip('§dInfuses gear with Mythic IV enhancement')
+        .tooltip('§7+2% effectiveness (10% cumulative)')
+        .tooltip('§8Apply to any T4 weapon or armor piece')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:mythic_catalyst_5')
+        .displayName('Mythic Catalyst V')
+        .tooltip('§dInfuses gear with Mythic V enhancement')
+        .tooltip('§7+2% effectiveness (12% cumulative)')
+        .tooltip('§8Apply to any T4 weapon or armor piece')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    // =========================================================================
+    // VOID COFFER — Rift banking item
+    // Used between floors to bank items safely
+    // =========================================================================
+
+    event.create('kubejs:void_coffer')
+        .displayName('Void Coffer')
+        .tooltip('§8A container woven from Rift fabric')
+        .tooltip('§7Use between Rift floors to bank items safely')
+        .tooltip('§7Banked items survive death in the Rift')
+        .maxStackSize(1)
+        .rarity('rare')
+
+    // =========================================================================
+    // REFORGE TOKEN — used for Mythic Reforging (affix reroll)
+    // =========================================================================
+
+    event.create('kubejs:mythic_reforge_token')
+        .displayName('Mythic Reforge Token')
+        .tooltip('§dReroll a single affix on a piece of gear')
+        .tooltip('§7Rerolled affix guaranteed same rarity or higher')
+        .tooltip('§8Cost: 3 Primordial Essences + 15 levels')
+        .maxStackSize(16)
+        .rarity('epic')
+})
