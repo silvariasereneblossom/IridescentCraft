@@ -21,6 +21,5 @@
       "recipe": "mahoutsukai:mahou_tsukai_guidebook",
       "text": "Craft the $(bold)Mahou Tsukai Guidebook$(/bold) for the full reference \u2014 magic circle construction, spell research, and the Mahou stat system."
     }
-  ],
-  "flag": "icraft:stage_tier_4"
+  ]
 }

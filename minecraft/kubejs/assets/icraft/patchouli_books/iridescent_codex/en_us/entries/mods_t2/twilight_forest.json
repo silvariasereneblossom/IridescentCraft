@@ -20,6 +20,5 @@
       "type": "patchouli:text",
       "text": "$(bold)No guide book.$(/bold) Twilight Forest is largely self-guided \u2014 each biome leads naturally to the next boss. The $(bold)Magic Map$(/bold) (crafted from a map + 4 diamonds) reveals the full dimension layout and boss locations."
     }
-  ],
-  "flag": "icraft:stage_tier_2"
+  ]
 }

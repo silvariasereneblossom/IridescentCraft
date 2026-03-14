@@ -20,6 +20,5 @@
       "type": "patchouli:text",
       "text": "$(bold)No book needed.$(/bold) Mekanism Generators and Tools are documented alongside the core mod at $(bold)mekanismmod.com$(/bold). Focus on the Fission Reactor and Fusion Reactor at T4 \u2014 both require significant infrastructure."
     }
-  ],
-  "flag": "icraft:stage_tier_4"
+  ]
 }

@@ -3,7 +3,6 @@
   "icon": "minecraft:shield",
   "category": "icraft:skills",
   "sortnum": 4,
-  "flag": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",

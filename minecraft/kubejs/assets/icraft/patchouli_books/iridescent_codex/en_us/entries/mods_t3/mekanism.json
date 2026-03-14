@@ -20,6 +20,5 @@
       "type": "patchouli:text",
       "text": "$(bold)No book needed.$(/bold) Mekanism is documented via JEI and the $(bold)Mekanism wiki$(/bold) (mekanismmod.com). In-game, hover any machine in JEI and press $(bold)R$(/bold) for recipes, $(bold)U$(/bold) for uses."
     }
-  ],
-  "flag": "icraft:stage_tier_3"
+  ]
 }

@@ -3,7 +3,6 @@
   "icon": "minecraft:experience_bottle",
   "category": "icraft:skills",
   "sortnum": 0,
-  "flag": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",

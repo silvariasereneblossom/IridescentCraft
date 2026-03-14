@@ -21,6 +21,5 @@
       "recipe": "occultism:dictionary_of_spirits",
       "text": "Craft the $(bold)Dictionary of Spirits$(/bold) for the full Occultism reference \u2014 ritual circles, spirit summoning, djinn work orders, and storage systems."
     }
-  ],
-  "flag": "icraft:stage_tier_3"
+  ]
 }

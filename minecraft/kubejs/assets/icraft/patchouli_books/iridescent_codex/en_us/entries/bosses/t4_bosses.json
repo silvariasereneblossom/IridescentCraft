@@ -16,6 +16,5 @@
       "type": "patchouli:text",
       "text": "$(bold)Deep Aether Boss$(/bold) \u2014 EOTS Controller. Drops: $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%), T4 boss materials.$(br2)$(bold)The Abyss Bosses$(/bold) \u2014 6 bosses across the Abyss: The Other Side dimension. $(warn)Note: 6 Abyss weapon IDs are pending in-game registry verification. Drop chances are live but weapon IDs may need correction.$(/warn)$(br2)$(bold)Stalwart Dungeons T3+$(/bold) \u2014 Shelterer, Nether Keeper, Awful Ghast."
     }
-  ],
-  "flag": "icraft:stage_tier_4"
+  ]
 }

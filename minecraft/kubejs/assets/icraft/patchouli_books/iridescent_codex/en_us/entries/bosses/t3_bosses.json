@@ -16,6 +16,5 @@
       "type": "patchouli:text",
       "text": "$(bold)Cataclysm Bosses$(/bold)$(br)Netherite Monstrosity, Ignis, The Harbinger, The Leviathan, Maledictus \u2014 5 ultra-bosses in massive Cataclysm structures. Each drops a unique weapon and boss material. The hardest T3 content.$(br2)$(bold)Warden$(/bold) (Vanilla)$(br)Deep Dark. Drops: $(l:icraft:bosses/unique_weapons)Stormbringer$(/l) (20%).$(br2)$(bold)Botania Gaia Guardian$(/bold) \u2014 Summoned. Drops: $(l:icraft:bosses/unique_weapons)Magiblade$(/l) (20%), Gaia Spirit Fragment. Scales progressively."
     }
-  ],
-  "flag": "icraft:stage_tier_3"
+  ]
 }

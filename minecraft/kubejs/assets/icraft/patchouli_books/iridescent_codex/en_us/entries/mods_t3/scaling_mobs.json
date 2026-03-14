@@ -20,6 +20,5 @@
       "type": "patchouli:text",
       "text": "$(bold)No book.$(/bold) Scaling Mobs and Champions Unofficial are configured specifically for this pack \u2014 see the $(bold)Systems$(/bold) chapter for how difficulty scaling and Champion affixes work in IridescentCraft."
     }
-  ],
-  "flag": "icraft:stage_tier_3"
+  ]
 }

@@ -21,6 +21,5 @@
       "recipe": "ars_nouveau:worn_notebook",
       "text": "Craft the $(bold)Worn Notebook$(/bold) for the full Ars Nouveau reference \u2014 every glyph, every augment, familiar guides, and automation setups."
     }
-  ],
-  "flag": "icraft:stage_tier_2"
+  ]
 }
