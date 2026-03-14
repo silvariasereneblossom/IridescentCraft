@@ -1,0 +1,10 @@
+#3FF ars_nouveau:archwood_forest
+#460 minecraft:cherry_grove
+#010 minecraft:forest
+#286 minecraft:grove
+#467 biomesoplenty:highland
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#698 biomesoplenty:redwood_forest
+#51A minecraft:stony_shore
