@@ -64,7 +64,7 @@ function shouldSuppressBook(id, item) {
   if (SUPPRESSED_BOOKS.includes(id)) return 'exact'
   if (id === 'patchouli:guide_book') {
     let nbt = item.nbt
-    if (nbt && nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') return 'patchouli'
+    if (!nbt || nbt.getString('patchouli:book') !== 'icraft:iridescent_codex') return 'patchouli'
   }
   let ns = id.split(':')[0]
   let name = id.split(':')[1] || ''
@@ -81,8 +81,11 @@ PlayerEvents.inventoryChanged(event => {
   const item = event.item
   const reason = shouldSuppressBook(item.id, item)
   if (reason) {
-    item.count = 0
-    console.log('[IridescentCraft] Suppressed book (' + reason + '): ' + item.id)
+    // event.item.count = 0 may not work — clear the slot directly
+    let inv = event.player.inventory
+    let slot = event.slot
+    inv.setItem(slot, Item.empty)
+    console.log('[IridescentCraft] Suppressed book (' + reason + '): ' + item.id + ' from slot ' + slot)
   }
 })
 

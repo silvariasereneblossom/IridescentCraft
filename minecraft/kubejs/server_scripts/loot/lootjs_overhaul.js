@@ -221,22 +221,22 @@ LootJS.modifiers(event => {
   // --- Meet Your Fight bosses (T2-T3) ---
   event
     .addEntityLootModifier('meetyourfight:swampjaw')
-    .addLoot(LootEntry.of('kubejs:tier2_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier2_token', [2, 4]))
     .dropExperience(100)
 
   event
     .addEntityLootModifier('meetyourfight:bellringer')
-    .addLoot(LootEntry.of('kubejs:tier2_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier2_token', [2, 4]))
     .dropExperience(100)
 
   event
     .addEntityLootModifier('meetyourfight:dame_fortuna')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([1, 3]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [1, 3]))
     .dropExperience(200)
 
   event
     .addEntityLootModifier('meetyourfight:rosalyne')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([1, 3]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [1, 3]))
     .dropExperience(200)
 
   // --- Mutant Monsters (T2-T3) ---
@@ -249,45 +249,45 @@ LootJS.modifiers(event => {
   mutantBosses.forEach(boss => {
     event
       .addEntityLootModifier(boss)
-      .addLoot(LootEntry.of('kubejs:tier2_token').setCount([2, 3]))
+      .addLoot(LootEntry.of('kubejs:tier2_token', [2, 3]))
       .dropExperience(150)
   })
 
   // --- Stalwart Dungeons bosses (T2-T3) ---
   event
     .addEntityLootModifier('stalwart_dungeons:shelterer')
-    .addLoot(LootEntry.of('kubejs:tier2_token').setCount([3, 5]))
+    .addLoot(LootEntry.of('kubejs:tier2_token', [3, 5]))
     .dropExperience(200)
 
   event
     .addEntityLootModifier('stalwart_dungeons:nether_keeper')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [2, 4]))
     .dropExperience(300)
 
   event
     .addEntityLootModifier('stalwart_dungeons:awful_ghast')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [2, 4]))
     .dropExperience(250)
 
   // --- Keebsz Tower Guardian (T2) — uses loot TABLE, not entity type ---
   event
     .addLootTableModifier('keebsz:entities/tower_guardian')
-    .addLoot(LootEntry.of('kubejs:tier2_token').setCount([3, 5]))
+    .addLoot(LootEntry.of('kubejs:tier2_token', [3, 5]))
 
   // --- Iron's Spellbooks bosses (T2-T3) ---
   event
     .addEntityLootModifier('irons_spellbooks:dead_king')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [2, 4]))
     .dropExperience(400)
 
   event
     .addEntityLootModifier('irons_spellbooks:fire_boss')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([1, 3]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [1, 3]))
     .dropExperience(250)
 
   event
     .addEntityLootModifier('irons_spellbooks:citadel_keeper')
-    .addLoot(LootEntry.of('kubejs:tier2_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier2_token', [2, 4]))
     .dropExperience(200)
 
   // --- The Abyss bosses (T3) ---
@@ -299,23 +299,23 @@ LootJS.modifiers(event => {
   abyssBosses.forEach(boss => {
     event
       .addEntityLootModifier(boss)
-      .addLoot(LootEntry.of('kubejs:tier3_token').setCount([1, 3]))
+      .addLoot(LootEntry.of('kubejs:tier3_token', [1, 3]))
       .dropExperience(200)
   })
 
   // --- Ultimate Bosses (T3) — uses loot TABLES, not entity types ---
   event
     .addLootTableModifier('ub:entities/sorcerer')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [2, 4]))
 
   event
     .addLootTableModifier('ub:entities/storm')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [2, 4]))
 
   // --- Majestic Menaces (T3) ---
   event
     .addEntityLootModifier('majestic_menaces:teikoku_senshi')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([2, 4]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [2, 4]))
     .dropExperience(350)
 
   // =========================================================================
@@ -448,7 +448,7 @@ LootJS.modifiers(event => {
   event.addEntityLootModifier('minecraft:blaze')
     .addLoot(LootEntry.of('kubejs:condensed_blaze_essence').when(c => c.randomChance(0.08)))
   event.addEntityLootModifier('minecraft:elder_guardian')
-    .addLoot(LootEntry.of('kubejs:tier2_token').setCount([1, 2]))
+    .addLoot(LootEntry.of('kubejs:tier2_token', [1, 2]))
   event.addEntityLootModifier('minecraft:enderman')
     .addLoot(LootEntry.of('kubejs:void_essence').when(c => c.randomChance(0.02)))
   event.addEntityLootModifier('minecraft:wither_skeleton')
@@ -456,7 +456,7 @@ LootJS.modifiers(event => {
 
   // --- Stalwart Dungeons mini-bosses (T3) ---
   event.addEntityLootModifier('stalwart_dungeons:incomplete_wither')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([1, 2]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [1, 2]))
   event.addEntityLootModifier('stalwart_dungeons:giddy_blaze')
     .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.20)))
   event.addEntityLootModifier('stalwart_dungeons:reinforced_blaze')
@@ -472,7 +472,7 @@ LootJS.modifiers(event => {
       .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.25)))
   })
   event.addEntityLootModifier('irons_spellbooks:fire_boss')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([1, 2]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [1, 2]))
 
   // --- Mutant Monsters extras ---
   event.addEntityLootModifier('mutantmonsters:mutant_snow_golem')
@@ -484,7 +484,7 @@ LootJS.modifiers(event => {
   event.addEntityLootModifier('deeperdarker:sculk_centipede')
     .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.25)))
   event.addEntityLootModifier('deeperdarker:shriek_worm')
-    .addLoot(LootEntry.of('kubejs:tier3_token').setCount([1, 2]))
+    .addLoot(LootEntry.of('kubejs:tier3_token', [1, 2]))
 
   // --- Twilight Forest: Minoshroom (T2 mini-boss) ---
   event.addEntityLootModifier('twilightforest:minoshroom')
@@ -506,9 +506,9 @@ LootJS.modifiers(event => {
   ]
   t2BossesForPeek.forEach(boss => {
     event.addEntityLootModifier(boss)
-      .addLoot(LootEntry.of('mekanism:ingot_osmium').setCount([1, 2])
+      .addLoot(LootEntry.of('mekanism:ingot_osmium', [1, 2])
         .when(c => c.randomChance(0.08)))
-      .addLoot(LootEntry.of('thermal:steel_ingot').setCount([1, 3])
+      .addLoot(LootEntry.of('thermal:steel_ingot', [1, 3])
         .when(c => c.randomChance(0.10)))
   })
 
@@ -525,7 +525,7 @@ LootJS.modifiers(event => {
     event.addEntityLootModifier(boss)
       .addLoot(LootEntry.of('minecraft:ancient_debris')
         .when(c => c.randomChance(0.06)))
-      .addLoot(LootEntry.of('botania:life_essence').setCount([1, 2])
+      .addLoot(LootEntry.of('botania:life_essence', [1, 2])
         .when(c => c.randomChance(0.08)))
   })
 
