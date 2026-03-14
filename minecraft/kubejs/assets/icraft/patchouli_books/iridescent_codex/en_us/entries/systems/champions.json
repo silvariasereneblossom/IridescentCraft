@@ -6,15 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Champions$(/thing) (via Champions Unofficial) are elite mob variants that spawn at approximately $(bold)8% base rate$(/bold) across all dimensions. They glow, have custom affixes, and are significantly more dangerous than standard mobs.$(br2)Champions are the primary source of good early affix items. Killing one is always worth the effort."
+      "text": "$(thing)Champions$() (via Champions Unofficial) are elite mob variants that spawn at approximately $(bold)8% base rate$() across all dimensions. They glow, have custom affixes, and are significantly more dangerous than standard mobs.$(br2)Champions are the primary source of good early affix items. Killing one is always worth the effort."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Champion Ranks$(/bold)$(br2)$(bold)Rank 1 (Common)$(/bold) — 1 affix. Slightly buffed stats.$(br)$(bold)Rank 2 (Elite)$(/bold) — 2 affixes. Noticeably stronger.$(br)$(bold)Rank 3 (Champion)$(/bold) — 3 affixes. Serious threat. Good loot.$(br)$(bold)Rank 4 (Legendary)$(/bold) — 4 affixes. Boss-level threat. Excellent loot.$(br2)Higher ranks are rarer. Rank 4 $(thing)Champions$(/thing) are uncommon enough to be memorable encounters."
+      "text": "$(bold)Champion Ranks$()$(br2)$(bold)Rank 1 (Common)$() — 1 affix. Slightly buffed stats.$(br)$(bold)Rank 2 (Elite)$() — 2 affixes. Noticeably stronger.$(br)$(bold)Rank 3 (Champion)$() — 3 affixes. Serious threat. Good loot.$(br)$(bold)Rank 4 (Legendary)$() — 4 affixes. Boss-level threat. Excellent loot.$(br2)Higher ranks are rarer. Rank 4 $(thing)Champions$() are uncommon enough to be memorable encounters."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Affix Pool$(/bold)$(br2)$(thing)Champions$(/thing) draw from 16 built-in affixes plus 5 custom $(thing)IridescentCraft$(/thing) affixes. Some affix combinations are extremely dangerous — for example, Commanding (buffs nearby mobs) combined with Summoning (spawns reinforcements) in a cave.$(br2)$(bold)Anti-cheese note:$(/bold) Champions are designed to not be kitable with basic ranged attacks. Magnetic and Leaping affixes exist specifically to punish pure-range cheese strategies."
+      "text": "$(bold)Affix Pool$()$(br2)$(thing)Champions$() draw from 16 built-in affixes plus 5 custom $(thing)IridescentCraft$() affixes. Some affix combinations are extremely dangerous — for example, Commanding (buffs nearby mobs) combined with Summoning (spawns reinforcements) in a cave.$(br2)$(bold)Anti-cheese note:$() Champions are designed to not be kitable with basic ranged attacks. Magnetic and Leaping affixes exist specifically to punish pure-range cheese strategies."
     }
   ]
 }

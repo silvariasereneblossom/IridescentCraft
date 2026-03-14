@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The Aether is an aerial $(t2)T2$(end) dimension. Vertical combat, boss dungeons, and unique Aether materials."
+      "text": "The Aether is an aerial $(t2)T2$() dimension. Vertical combat, boss dungeons, and unique Aether materials."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Three major bosses (Slider, Valkyrie Queen, Sun Spirit) each drop $(thing)Simply Swords$(/thing) uniques. The Aether introduces aerial combat as the primary challenge.$(br2)$(bold)Mechanics:$(/bold) Falling damage is doubled in the Aether. No natural regen while airborne. $(thing)Ranger$(/thing) class is especially effective here."
+      "text": "$(bold)Role in the pack:$() Three major bosses (Slider, Valkyrie Queen, Sun Spirit) each drop $(thing)Simply Swords$() uniques. The Aether introduces aerial combat as the primary challenge.$(br2)$(bold)Mechanics:$() Falling damage is doubled in the Aether. No natural regen while airborne. $(thing)Ranger$() class is especially effective here."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Materials:$(/bold) Zanite, Gravitite, and Ambrosium are Aether-native materials. Gravitite armor has a natural levitation effect — useful but costs you ground stability."
+      "text": "$(bold)Materials:$() Zanite, Gravitite, and Ambrosium are Aether-native materials. Gravitite armor has a natural levitation effect — useful but costs you ground stability."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$(/bold) The Aether is exploration-driven — the Silver Dungeon, Gold Dungeon, and Obsidian Pinnacle each have discoverable lore. The $(bold)Book of Lore$(/bold) found in dungeons provides in-world narrative context."
+      "text": "$(bold)No guide book.$() The Aether is exploration-driven — the Silver Dungeon, Gold Dungeon, and Obsidian Pinnacle each have discoverable lore. The $(bold)Book of Lore$() found in dungeons provides in-world narrative context."
     }
   ],
   "advancement": "icraft:stage_tier_2"

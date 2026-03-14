@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Thermal is the primary $(t2)Tier 2$(end) tech mod. Ore processing, machines, and Steel production."
+      "text": "Thermal is the primary $(t2)Tier 2$() tech mod. Ore processing, machines, and Steel production."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Steel is the $(t2)T2$(end) baseline material. Thermal Smeltery produces Steel Ingots efficiently. The Series covers Energy, Dynamics (pipes/ducts), and Cultivation (farming machines).$(br2)$(bold)Ore processing:$(/bold) $(t2)Tier 2$(end) marks the start of ore doubling and tripling. A Thermal Smeltery + Pulverizer setup yields 2–3 ingots per ore."
+      "text": "$(bold)Role in the pack:$() Steel is the $(t2)T2$() baseline material. Thermal Smeltery produces Steel Ingots efficiently. The Series covers Energy, Dynamics (pipes/ducts), and Cultivation (farming machines).$(br2)$(bold)Ore processing:$() $(t2)Tier 2$() marks the start of ore doubling and tripling. A Thermal Smeltery + Pulverizer setup yields 2–3 ingots per ore."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Material relevance:$(/bold) Signalum, Lumium, and Enderium are $(t2)Tier 2$(end)–$(t3)3$(end) Thermal alloys. Enderium is a $(t3)T3$(end) material in this pack.$(br2)$(bold)Artificer synergy:$(/bold) Efficient Engineering passive boosts all Thermal machine speeds. A $(t2)T2$(end) Artificer with good Skill investment is significantly ahead on material production."
+      "text": "$(bold)Material relevance:$() Signalum, Lumium, and Enderium are $(t2)Tier 2$()–$(t3)3$() Thermal alloys. Enderium is a $(t3)T3$() material in this pack.$(br2)$(bold)Artificer synergy:$() Efficient Engineering passive boosts all Thermal machine speeds. A $(t2)T2$() Artificer with good Skill investment is significantly ahead on material production."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No book needed.$(/bold) Thermal Series is fully documented in JEI — every machine recipe, augment slot, and component is listed. The $(bold)Thermal Manual$(/bold) item provides in-game tooltips when held."
+      "text": "$(bold)No book needed.$() Thermal Series is fully documented in JEI — every machine recipe, augment slot, and component is listed. The $(bold)Thermal Manual$() item provides in-game tooltips when held."
     }
   ],
   "advancement": "icraft:stage_tier_2"

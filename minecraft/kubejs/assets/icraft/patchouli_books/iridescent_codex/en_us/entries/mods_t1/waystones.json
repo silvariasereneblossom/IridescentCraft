@@ -10,11 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Natural generation:$(/bold) Waystones generate naturally in all villages, most structures, and many dimensional spawn points. You don't need to build them — explore to discover them.$(br2)$(bold)Crafting waystones:$(/bold) Intentionally expensive. Requires rare boss materials. Designed for establishing outposts far from natural spawns."
+      "text": "$(bold)Natural generation:$() Waystones generate naturally in all villages, most structures, and many dimensional spawn points. You don't need to build them — explore to discover them.$(br2)$(bold)Crafting waystones:$() Intentionally expensive. Requires rare boss materials. Designed for establishing outposts far from natural spawns."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Waystone recipes in this pack:$(/bold) All crafted waystones require a boss drop material appropriate to the tier of the dimension you're placing them in. You can't build a $(t4)T4$(end) outpost waystone with $(t1)T1$(end) materials.$(br2)$(bold)Warp Scroll:$(/bold) Single-use teleport to any activated waystone. Craftable from iron + paper. Good emergency tool."
+      "text": "$(bold)Waystone recipes in this pack:$() All crafted waystones require a boss drop material appropriate to the tier of the dimension you're placing them in. You can't build a $(t4)T4$() outpost waystone with $(t1)T1$() materials.$(br2)$(bold)Warp Scroll:$() Single-use teleport to any activated waystone. Craftable from iron + paper. Good emergency tool."
     }
   ]
 }
