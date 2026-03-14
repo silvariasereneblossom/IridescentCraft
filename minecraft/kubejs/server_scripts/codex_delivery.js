@@ -60,20 +60,32 @@ const OTHER_BOOKS_TO_CLEAR = [
 ]
 
 // Run all clear commands for a player
-function clearModBooks(player) {
+function clearModBooks(player, doLog) {
   let name = player.username
+  let cleared = 0
 
   // Clear known patchouli guide books by NBT
   PATCHOULI_BOOKS_TO_CLEAR.forEach(bookId => {
-    player.server.runCommandSilent(
-      'clear ' + name + ' patchouli:guide_book{patchouli:book:"' + bookId + '"} 64'
-    )
+    let cmd = 'clear ' + name + ' patchouli:guide_book{"patchouli:book":"' + bookId + '"} 64'
+    let result = player.server.runCommandSilent(cmd)
+    if (result > 0) {
+      console.log('[IridescentCraft] Cleared patchouli book: ' + bookId + ' (' + result + ' items)')
+      cleared += result
+    }
   })
 
   // Clear non-patchouli mod books by item ID
   OTHER_BOOKS_TO_CLEAR.forEach(bookId => {
-    player.server.runCommandSilent('clear ' + name + ' ' + bookId + ' 64')
+    let result = player.server.runCommandSilent('clear ' + name + ' ' + bookId + ' 64')
+    if (result > 0) {
+      console.log('[IridescentCraft] Cleared mod book: ' + bookId + ' (' + result + ' items)')
+      cleared += result
+    }
   })
+
+  if (doLog && cleared === 0) {
+    console.log('[IridescentCraft] Sweep ran for ' + name + ' — no books found')
+  }
 }
 
 // Sweep: aggressive for first 10s after login (every 1s), then every 10s for 2 min
@@ -92,6 +104,6 @@ ServerEvents.tick(event => {
     if (tick % interval !== 0) return
 
     player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - interval)
-    clearModBooks(player)
+    clearModBooks(player, aggressive)
   })
 })
