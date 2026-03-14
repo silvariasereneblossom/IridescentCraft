@@ -72,6 +72,7 @@
 #D04965 create:light_blue_seat
 #20915B create:light_blue_toolbox
 #DFD691 minecraft:lily_pad
+#EA63C2 lootr:lootr_chest
 #0889A3 delightful:mini_melon
 #8A7583 minecraft:moss_block
 #5A981B minecraft:moss_carpet
