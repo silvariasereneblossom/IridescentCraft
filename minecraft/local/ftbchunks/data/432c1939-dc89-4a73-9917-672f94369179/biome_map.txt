@@ -1,0 +1,8 @@
+#79A minecraft:lukewarm_ocean
+#4F1 minecraft:ocean
+#1DF minecraft:old_growth_birch_forest
+#482 biomesoplenty:overgrown_greens
+#68B biomesoplenty:rainforest
+#5F6 biomesoplenty:rocky_rainforest
+#3AF minecraft:sparse_jungle
+#51A minecraft:stony_shore
