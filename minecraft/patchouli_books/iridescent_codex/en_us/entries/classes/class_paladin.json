@@ -1,0 +1,27 @@
+{
+  "name": "Paladin",
+  "icon": "minecraft:golden_chestplate",
+  "category": "patchouli:classes",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Tank/Support/Healer. Self-sustaining with group utility. The 'I keep everyone alive' class.$(/italic)$(br2)HP Modifier: +10%  |  Equipment HP: Normal$(br)$(bold)Weapon Affinities:$(/bold) Swords and shields (bonus)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Holy Aura$(/bold) \u2014 Nearby allies within 8 blocks: +5% DR, +1 HP/5s regen. Strongest Paladin aura applies in group.$(br2)$(bold)Divine Resilience$(/bold) \u2014 +15% effectiveness from all healing. Self-healing from combat sources +10%.$(br2)$(bold)Consecrated Ground$(/bold) \u2014 Standing still 3+ seconds: 4-block Consecrated Ground. Allies: +10% DR. Undead: 2 damage/s."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities (cont.)",
+      "text": "$(bold)Shield of Faith$(/bold) \u2014 20% of blocked damage converts to heal over 5s. Blocking a killing blow: 30% chance to fully negate it (once per 5 min).$(br2)$(bold)Smite$(/bold) \u2014 +20% damage vs undead, demons, void entities. Kills on these emit a 2 HP heal pulse to nearby allies."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Active Ability",
+      "text": "Active: $(bold)Lay on Hands$(/bold)$(br)Instantly heal self or ally for 30% of Paladin's max HP. Removes all negative status effects. Target gains +20% DR for 5s. 90s cooldown."
+    }
+  ]
+}

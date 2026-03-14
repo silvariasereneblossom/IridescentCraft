@@ -1,0 +1,24 @@
+{
+  "name": "Death Penalty System",
+  "icon": "minecraft:respawn_anchor",
+  "category": "patchouli:systems",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Keep inventory is on.$(/bold) You will never lose items on death.$(br2)However, death costs you $(bold)equipment durability$(/bold). How much depends on where you die:$(br2)$(li)Overworld: ~10% durability loss$(li)Tier 2 dimensions: ~15% loss$(li)Tier 3 (Nether, Abyss, Undergarden): ~20% loss$(li)Tier 4 (End, Deep Aether): ~25% loss"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Item Inertness$(/bold)$(br2)When an item reaches 0 durability it becomes $(bold)inert$(/bold): it stays in your inventory, displays at 0 durability, but provides no stats or function. It cannot break further.$(br2)To restore an inert item: repair it at an anvil (costs materials + XP), or use a Mending enchant in future combat. Inert items are $(italic)not$(/italic) destroyed. No item is ever permanently lost to durability."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Soulbound Enchantment$(/bold)$(br2)Soulbound (repurposed from Ensorcellation) is the ultimate insurance: items with Soulbound III are completely immune to the death durability penalty.$(br2)Soulbound is a $(bold)treasure enchantment$(/bold) \u2014 it cannot be obtained through an enchanting table. It drops only from high-tier structures and boss kills. It is rare by design.$(br2)$(bold)Soulbound I\u2013II$(/bold) reduce durability loss (50% and 75% reduction respectively)."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Wanderer Race Bonus$(/bold)$(br2)The Wanderer class has a $(bold)Survivor$(/bold) passive that reduces all death durability loss by 25%. Combined with Soulbound II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$(/bold) also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically."
+    }
+  ]
+}

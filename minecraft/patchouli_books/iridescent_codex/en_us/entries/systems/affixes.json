@@ -1,0 +1,27 @@
+{
+  "name": "Apotheosis Affixes",
+  "icon": "minecraft:diamond_chestplate",
+  "category": "patchouli:systems",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Apotheosis affixes are random modifiers that appear on weapons and armor dropped by mobs and bosses. IridescentCraft adds $(bold)30 custom affix entries$(/bold) on top of Apotheosis's built-in pool.$(br2)Affixes also provide $(bold)gem sockets$(/bold). Higher-rarity affixed items have more sockets. $(l:icraft:loot/gems)See the Gems entry$(/l) for socket details."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Affix Tiers",
+      "text": "$(bold)Common$(/bold) \u2014 Available Tier 1+. Mild bonuses. 0\u20131 sockets.$(br)$(bold)Uncommon$(/bold) \u2014 Available Tier 2+. Moderate bonuses. 1\u20132 sockets.$(br)$(bold)Rare$(/bold) \u2014 Available Tier 2+. Strong bonuses. 2 sockets.$(br)$(bold)Epic$(/bold) \u2014 Available Tier 3+. Very strong bonuses. 2\u20133 sockets.$(br)$(bold)Legendary$(/bold) \u2014 Available Tier 4. Exceptional bonuses. 3\u20134 sockets.$(br)$(bold)Mythic$(/bold) \u2014 Post-endgame Rift infusion only. Maximum bonuses. 4 sockets."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Reforging",
+      "text": "Apotheosis's Reforging Station allows replacing an item's affixes with newly-rolled ones. IridescentCraft adds three reforge token tiers that control the minimum affix quality:$(br2)$(bold)Basic Reforging Token$(/bold) \u2014 minimum Uncommon$(br)$(bold)Advanced Reforging Token$(/bold) \u2014 minimum Rare$(br)$(bold)Ultimate Reforging Token$(/bold) \u2014 minimum Epic$(br2)Tokens are crafted from boss materials. See $(l:icraft:loot/token_system)Tier Tokens$(/l) for recipes."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Champion Affixes",
+      "text": "Champions are elite mob variants (glowing) with special abilities. IridescentCraft adds 5 custom Champion affixes beyond the built-in 16:$(br2)$(bold)Commanding$(/bold) \u2014 buffs nearby mobs$(br)$(bold)Draining$(/bold) \u2014 leeches your mana/XP on hit$(br)$(bold)Hexing$(/bold) \u2014 applies random debuffs$(br)$(bold)Leaping$(/bold) \u2014 closes distance instantly$(br)$(bold)Summoning$(/bold) \u2014 spawns reinforcements$(br2)Champions spawn at ~8% base rate and scale to higher rates in harder dimensions."
+    }
+  ]
+}

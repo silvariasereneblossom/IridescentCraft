@@ -1,0 +1,12 @@
+{
+  "name": "Orc",
+  "icon": "minecraft:iron_axe",
+  "category": "patchouli:classes",
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Aggressive, hungry, and hits like a falling anvil. Orcs excel in sustained melee at the cost of resource drain.$(/italic)$(br2)$(bold)Racial Traits:$(/bold)$(br2)$(bold)Ferocity$(/bold) \u2014 +12% attack speed. Pairs extremely well with Berserker's Blood Fury.$(br2)$(bold)Knockback Mastery$(/bold) \u2014 +30% knockback dealt. Enemies you hit stagger further. Useful for crowd control.$(br2)$(bold)Hunger Drain$(/bold) \u2014 +35% food drain rate. The highest penalty in the pack. Always eat before fights.$(br2)$(bold)Brutish$(/bold) \u2014 Immunity to Weakness potion effect. Resistance to Slowness is halved in duration."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Ranger",
+  "icon": "minecraft:bow",
+  "category": "patchouli:classes",
+  "sortnum": 7,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Mobile glass cannon. Maximum ranged damage. Paper-thin defenses. Don't get hit.$(/italic)$(br2)HP Modifier: -20%  |  Equipment HP: Half effectiveness$(br)$(bold)Weapon Affinities:$(/bold) Bows/crossbows (large bonus), melee (significant penalty)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Eagle Eye$(/bold) \u2014 +30% projectile velocity, +20% accuracy, arrows travel 50% further.$(br2)$(bold)Predator's Mark$(/bold) \u2014 Ranged hit marks enemy for 8s: +10% damage from all sources (including allies). One mark at a time.$(br2)$(bold)Fleet-Footed$(/bold) \u2014 +12% speed. +20% speed for 3s after hitting a ranged attack. -20% speed for 3s when hit in melee."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities (cont.)",
+      "text": "$(bold)Windborne$(/bold) \u2014 +20% damage while airborne, +10% damage while sprinting. -10% damage while standing still.$(br2)$(bold)Headhunter$(/bold) \u2014 +15% ranged crit chance, +25% ranged crit damage. Crits have 20% chance to refund the arrow."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Active Ability",
+      "text": "Active: $(bold)Rain of Arrows$(/bold)$(br)Instantly fire 8 arrows in a spread. Each at 75% weapon damage. All arrows apply Predator's Mark. 40s cooldown."
+    }
+  ]
+}

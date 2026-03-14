@@ -1,0 +1,16 @@
+{
+  "name": "Combatant's Companion",
+  "icon": "minecraft:iron_sword",
+  "category": "patchouli:mods_t1",
+  "sortnum": 12,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Combatant's Companion is a combat guide book covering the advanced combat systems active in this pack \u2014 likely from Epic Fight or Better Combat. It documents attack combos, dodge mechanics, weapon stances, and skill interactions."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Key systems covered:$(/bold) Directional attacks, stamina management, weapon type advantages, and how class abilities interact with the combat system.$(br2)If lost, check JEI for the crafting recipe \u2014 the book is craftable and not a one-time reward."
+    }
+  ]
+}

@@ -1,0 +1,20 @@
+{
+  "name": "Tier Skipping",
+  "icon": "minecraft:blaze_rod",
+  "category": "patchouli:progression",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Intentional Early Access$(/bold)$(br2)The pack is designed to let skilled players $(italic)bend$(/italic) the tier system \u2014 not break it. Getting one or two next-tier items early is a feature. Fully bypassing a tier is a bug.$(br2)Two legitimate methods exist for early access to next-tier materials:"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Method 1: Transmutation$(/bold)$(br2)KubeJS recipes allow expensive conversion of current-tier materials into small amounts of next-tier materials:$(br2)32\u201364 current-tier ingots \u2192 1 next-tier ingot$(br2)Available through Create mixing, Thermal smelting, or Botania infusion. Intentionally inefficient \u2014 this provides a taste, not a full unlock. A Tier 2 player might build $(italic)one$(/italic) Mekanism machine from transmuted osmium."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Method 2: Boss Drop Peeks$(/bold)$(br2)Current-tier bosses have a 5\u201315% chance to drop 1\u20133 next-tier materials:$(br2)$(li)Twilight Forest bosses \u2192 osmium, steel$(li)Tier 3 bosses \u2192 ancient debris, Gaia spirit fragments$(br2)This rewards boss hunting without breaking the gate. A Tier 2 player who kills many Twilight bosses might accumulate enough osmium to build something interesting \u2014 but not a factory."
+    }
+  ]
+}

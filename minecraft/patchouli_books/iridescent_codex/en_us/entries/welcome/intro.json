@@ -1,0 +1,24 @@
+{
+  "name": "Welcome to IridescentCraft",
+  "icon": "minecraft:book",
+  "category": "patchouli:welcome",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "IridescentCraft is a progression-focused, expert-lite modpack for Minecraft 1.20.1 (Forge). The central fantasy is simple: $(bold)you become absurdly powerful \u2014 but the world scales harder.$(/bold)$(br2)You will start in a familiar Overworld. You will end fighting gods in shattered dimensions with gear forged from the bones of things that should not exist. The journey between those two points is what this pack is about."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Design Pillars$(/bold)$(br2)$(li)Open early game. Progressive gates. Earned power.$(li)Every gate is solvable via tech, magic, or hybrid \u2014 your choice.$(li)Gates are $(italic)when$(/italic) you unlock things, not $(italic)whether.$(/italic)$(li)Bosses are the pinnacle. The best weapons come from them.$(li)Dying is a cost, not a catastrophe.$(li)Play your way. No mandatory path."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)What Makes This Different$(/bold)$(br2)You will not find diamonds in Overworld chests. The Nether is Tier 3 content. The End requires Tier 4 preparation.$(br2)Mobs scale by dimension \u2014 not just by number, but by behavior, abilities, and environmental mechanics. A Tier 1 zombie and a Tier 4 End zombie are categorically different threats.$(br2)This book is your guide to all of it."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)First Steps$(/bold)$(br2)$(li)Open your FTB Quests book (key: $(k:key.inventory)) \u2014 it is your primary progression tracker.$(li)Select a Race when prompted (or open Origins menu).$(li)Select a Class via the Class selection screen.$(li)Open your Skills menu (default key: $(bold)K$(/bold)).$(li)Find a waystone \u2014 they are your fast travel network.$(br2)The quest book rewards skill points. This Codex explains what those points do."
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "name": "Custom Enchantments",
+  "icon": "minecraft:enchanted_book",
+  "category": "patchouli:systems",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "IridescentCraft adds $(bold)24 custom enchantments$(/bold) beyond the Apotheosis and vanilla pools. These are registered as real enchantments and work with all Apotheosis systems (affix reforging, gem sockets, etc.).$(br2)The enchantments are organized into five thematic groups."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Dimensional Survival",
+      "text": "$(bold)Heatward$(/bold) \u2014 Fire/lava resistance scaling with level$(br)$(bold)Voidward$(/bold) \u2014 Void damage reduction$(br)$(bold)Depthstrider$(/bold) \u2014 Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$(/bold) \u2014 Cold/height environment resistance$(br)$(bold)Warp Shield$(/bold) \u2014 Teleportation effect resistance$(br2)$(italic)These are essential for Tier 3+ dimensional content.$(/italic)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Resource & Combat Enchants",
+      "text": "$(bold)Prospector$(/bold) \u2014 Passive ore detection$(br)$(bold)Lumberjack$(/bold) \u2014 Tree-felling radius$(br)$(bold)Reaping$(/bold) \u2014 Auto-replant on harvest$(br2)$(bold)Momentum$(/bold) \u2014 Movement-speed-scales damage$(br)$(bold)Adrenaline$(/bold) \u2014 Low-HP damage boost$(br)$(bold)Titan Slayer$(/bold) \u2014 Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$(/bold) \u2014 AoE slow/weaken on hit$(br)$(bold)Adaptive$(/bold) \u2014 Resistance to most-recently-received damage type"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Anti-Boss, Path Synergy & Utility",
+      "text": "$(bold)Boss Ward$(/bold) \u2014 Damage reduction from boss entities$(br)$(bold)Steadfast$(/bold) \u2014 Knockback immunity$(br)$(bold)Nemesis$(/bold) \u2014 Tracks kills, damage bonus vs previously-fought bosses$(br2)$(bold)Mana Temper$(/bold) \u2014 Spells power up weapon$(br)$(bold)RF Capacitance$(/bold) \u2014 Stored RF boosts damage$(br)$(bold)Convergence$(/bold) \u2014 Bonus when tech+magic gear worn together$(br2)$(bold)Magnetism$(/bold) \u2014 Item pickup radius$(br)$(bold)Last Stand$(/bold) \u2014 On near-death: burst damage$(br)$(bold)Vitality$(/bold) \u2014 Max HP boost$(br)$(bold)Phalanx$(/bold) \u2014 Group defense aura$(br)$(bold)Quick Draw$(/bold) \u2014 Offhand swap speed"
+    }
+  ]
+}

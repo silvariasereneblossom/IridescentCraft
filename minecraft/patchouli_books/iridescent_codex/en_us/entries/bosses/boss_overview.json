@@ -1,0 +1,25 @@
+{
+  "name": "Boss System Overview",
+  "icon": "minecraft:wither_skeleton_skull",
+  "category": "patchouli:bosses",
+  "sortnum": 0,
+  "flag": "icraft:stage_tier_2",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Bosses are the pinnacle of IridescentCraft's combat. They are $(bold)not$(/bold) optional \u2014 the best weapons in the pack drop only from them. Each tier has required progression bosses and optional trophy bosses.$(br2)$(bold)Simply Swords unique weapons$(/bold) are boss-drop-only. Every one of the 42 uniques is matched to a specific boss. You cannot craft them, trade for them, or find them in chests."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Boss Mods Active$(/bold)$(br2)$(li)$(bold)Brutal Bosses$(/bold) \u2014 Structure-guarding mini-bosses, all tiers$(li)$(bold)Meet Your Fight$(/bold) \u2014 Named T3 superbosses (Swampjaw, Bellringer, Dame Fortuna, Rosalyne)$(li)$(bold)Mutant Monsters$(/bold) \u2014 Overworld + dimensional mutant variants$(li)$(bold)Cataclysm$(/bold) \u2014 T3\u2013T4 ultra-bosses in massive structures$(li)$(bold)Ultimate Bosses$(/bold) \u2014 T4 optional superbosses$(li)$(bold)Stalwart Dungeons$(/bold) \u2014 T3 dungeon bosses$(li)$(bold)Iron's Spellbooks$(/bold) \u2014 Boss spellcasters in all tiers"
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Progressive Bosses$(/bold)$(br2)Summoned and repeatable bosses (Wither, Ender Dragon, Botania Gaia Guardian) scale with how many times they have been killed. Each kill increases their HP and damage, up to a hard cap.$(br2)$(bold)Structure-spawned bosses$(/bold) do NOT scale progressively \u2014 they are the same difficulty every time. Only intentionally summoned bosses escalate."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Token Drops$(/bold)$(br2)All bosses drop tier tokens \u2014 the number increases with boss tier and difficulty:$(br2)$(li)T1 bosses: 1\u20132 tier tokens$(li)T2 bosses: 1\u20133 tier tokens$(li)T3 bosses: 2\u20134 tier tokens$(li)T4 bosses: 4\u20136 tier tokens$(br2)Boss materials are unique crafting components dropped alongside tokens. They are used in endgame recipes and waystone construction."
+    }
+  ]
+}

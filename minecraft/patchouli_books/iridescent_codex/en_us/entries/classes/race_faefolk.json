@@ -1,0 +1,12 @@
+{
+  "name": "Faefolk",
+  "icon": "minecraft:pink_petals",
+  "category": "patchouli:classes",
+  "sortnum": 17,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Attuned to nature magic and wind. Faefolk are ideal for Botania and Ars Nouveau paths but are weakened by iron.$(/italic)$(br2)$(bold)Racial Traits:$(/bold)$(br2)$(bold)Nature Magic$(/bold) \u2014 +15% effectiveness with Botania mana tools. +10% Ars Nouveau spell power.$(br2)$(bold)Slow Fall$(/bold) \u2014 Permanent Slow Falling. Fall damage reduced by 60%. Feather Fall still stacks.$(br2)$(bold)Iron Weakness$(/bold) \u2014 Iron armor and iron tools deal/protect 15% less effectively when worn/held by Faefolk.$(br2)$(bold)Fragile$(/bold) \u2014 -10% armor effectiveness from all armor. Even more fragile than Elves."
+    }
+  ]
+}
