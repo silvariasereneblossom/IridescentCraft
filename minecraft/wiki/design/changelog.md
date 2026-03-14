@@ -4,6 +4,15 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-14 — Final implementation push
+
+- Endgame loops: Rift Shards, Mythic Forge, 12 endgame items, boss Rift drops, Compendium tracking
+- Prestige/Ascension: 5 levels, multiplicative mob scaling, player stat bonuses, Ascension Beacon
+- Villager trade rework: Forge VillagerTradesEvent, books/diamond gear removed, XP trades added
+- Waystone recipes: All variants gated behind boss drops
+- Cross-mod recipe audit: 30+ tier-breaking recipes blocked (Create, Thermal, Mekanism, etc.)
+- Mod configs: ScalingMobs per-dimension, Champions 15% base, Apotheosis corrections
+
 ## 2026-03-14 — Batch implementation pass
 
 - Codex fully working: 11 categories, 80 entries, formatted, advancement-gated (T2+)

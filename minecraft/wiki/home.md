@@ -52,10 +52,13 @@ The canonical design reference for all modpack systems.
 | FTB Quests | Not started | Quest book needs in-game GUI editor |
 | Patchouli Codex | Working | 11 categories, 80 entries. Formatted, advancement-gated |
 | Book suppression | Working | `/clear` with NBT matching, 9 mod books suppressed |
-| Endgame loops (Part VIII) | Not started | Oblivion's Rift, Mythic gear, Compendium |
-| Prestige/Ascension (Part IX) | Not started | 5 ascension levels |
+| Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
+| Prestige/Ascension (Part IX) | Implemented | 5 ascension levels, mob scaling, stat bonuses, `!ascend` |
 | Loot table overhaul | Implemented | `lootjs_overhaul.js` — 35+ structure mods, boss drops, tier tokens |
-| Villager trade rework | Not started | Remove enchanted books, add XP trades |
+| Villager trade rework | Implemented | Forge VillagerTradesEvent — books removed, XP trades added |
+| Waystone recipes | Implemented | Boss-drop gated crafting, all variants |
+| Cross-mod recipe audit | Implemented | 30+ tier-breaking recipes blocked across 8 mods |
+| Mod config audit | Implemented | ScalingMobs, Champions, Apotheosis configs aligned to design |
 
 ---
 
