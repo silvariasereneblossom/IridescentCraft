@@ -1,7 +1,7 @@
 {
   "name": "The Four Tiers",
   "icon": "minecraft:nether_star",
-  "category": "patchouli:progression",
+  "category": "progression",
   "sortnum": 0,
   "pages": [
     {

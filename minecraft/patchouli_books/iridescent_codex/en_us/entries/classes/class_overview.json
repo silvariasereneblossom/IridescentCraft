@@ -1,7 +1,7 @@
 {
   "name": "The Class System",
   "icon": "minecraft:diamond_sword",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 0,
   "pages": [
     {

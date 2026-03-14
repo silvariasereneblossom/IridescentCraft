@@ -1,7 +1,7 @@
 {
   "name": "Warfare Tree",
   "icon": "minecraft:iron_sword",
-  "category": "patchouli:skills",
+  "category": "skills",
   "sortnum": 1,
   "flag": "icraft:stage_tier_2",
   "pages": [

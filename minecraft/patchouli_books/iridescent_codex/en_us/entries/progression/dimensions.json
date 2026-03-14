@@ -1,7 +1,7 @@
 {
   "name": "Dimensional Progression",
   "icon": "minecraft:ender_pearl",
-  "category": "patchouli:progression",
+  "category": "progression",
   "sortnum": 3,
   "pages": [
     {

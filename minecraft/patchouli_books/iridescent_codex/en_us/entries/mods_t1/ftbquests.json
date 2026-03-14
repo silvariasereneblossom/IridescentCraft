@@ -1,7 +1,7 @@
 {
   "name": "FTB Quests",
   "icon": "minecraft:map",
-  "category": "patchouli:mods_t1",
+  "category": "mods_t1",
   "sortnum": 7,
   "pages": [
     {

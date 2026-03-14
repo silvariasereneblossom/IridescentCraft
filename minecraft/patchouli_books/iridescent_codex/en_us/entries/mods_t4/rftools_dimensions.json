@@ -1,7 +1,7 @@
 {
   "name": "RFTools Dimensions",
   "icon": "rftools:dimension_editor",
-  "category": "patchouli:mods_t4",
+  "category": "mods_t4",
   "sortnum": 2,
   "pages": [
     {

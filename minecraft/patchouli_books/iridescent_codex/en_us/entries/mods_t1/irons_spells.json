@@ -1,7 +1,7 @@
 {
   "name": "Iron's Spellbooks",
   "icon": "irons_spellbooks:fire_spell_book",
-  "category": "patchouli:mods_t1",
+  "category": "mods_t1",
   "sortnum": 2,
   "pages": [
     {

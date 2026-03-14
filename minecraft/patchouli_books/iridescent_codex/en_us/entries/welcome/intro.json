@@ -1,7 +1,7 @@
 {
   "name": "Welcome to IridescentCraft",
   "icon": "minecraft:book",
-  "category": "patchouli:welcome",
+  "category": "welcome",
   "sortnum": 0,
   "pages": [
     {

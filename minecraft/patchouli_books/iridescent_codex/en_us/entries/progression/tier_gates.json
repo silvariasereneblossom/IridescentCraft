@@ -1,7 +1,7 @@
 {
   "name": "Unlocking Tiers",
   "icon": "kubejs:tier2_token",
-  "category": "patchouli:progression",
+  "category": "progression",
   "sortnum": 1,
   "pages": [
     {

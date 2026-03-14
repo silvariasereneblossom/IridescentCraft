@@ -1,7 +1,7 @@
 {
   "name": "Tier Tokens",
   "icon": "kubejs:tier1_token",
-  "category": "patchouli:loot",
+  "category": "loot",
   "sortnum": 0,
   "pages": [
     {

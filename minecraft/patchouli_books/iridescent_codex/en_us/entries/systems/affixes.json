@@ -1,7 +1,7 @@
 {
   "name": "Apotheosis Affixes",
   "icon": "minecraft:diamond_chestplate",
-  "category": "patchouli:systems",
+  "category": "systems",
   "sortnum": 2,
   "pages": [
     {

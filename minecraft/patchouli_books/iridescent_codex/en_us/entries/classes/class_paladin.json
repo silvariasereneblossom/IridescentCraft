@@ -1,7 +1,7 @@
 {
   "name": "Paladin",
   "icon": "minecraft:golden_chestplate",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 5,
   "pages": [
     {

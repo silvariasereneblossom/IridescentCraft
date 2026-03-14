@@ -1,7 +1,7 @@
 {
   "name": "Ars Nouveau",
   "icon": "ars_nouveau:spell_book_1",
-  "category": "patchouli:mods_t2",
+  "category": "mods_t2",
   "sortnum": 1,
   "pages": [
     {

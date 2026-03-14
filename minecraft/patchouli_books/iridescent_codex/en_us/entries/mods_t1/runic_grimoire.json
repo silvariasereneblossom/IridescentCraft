@@ -1,7 +1,7 @@
 {
   "name": "Runic Grimoire",
   "icon": "minecraft:book",
-  "category": "patchouli:mods_t1",
+  "category": "mods_t1",
   "sortnum": 13,
   "pages": [
     {

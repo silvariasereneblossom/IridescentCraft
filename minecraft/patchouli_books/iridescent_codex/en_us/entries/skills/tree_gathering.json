@@ -1,7 +1,7 @@
 {
   "name": "Gathering Tree",
   "icon": "minecraft:diamond_pickaxe",
-  "category": "patchouli:skills",
+  "category": "skills",
   "sortnum": 5,
   "flag": "icraft:stage_tier_2",
   "pages": [

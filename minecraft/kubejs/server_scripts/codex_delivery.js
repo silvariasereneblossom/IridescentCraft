@@ -2,7 +2,6 @@
 // IRIDESCENT CODEX — First-Join Delivery & Book Suppression
 // =============================================================================
 
-// NBT key is "patchouli:book" — Patchouli 1.20.1 Forge (quoted key with colon).
 const CODEX_NBT = '{"patchouli:book":"patchouli:iridescent_codex"}'
 
 // ── First-Join Delivery ───────────────────────────────────────────────────────
@@ -14,10 +13,10 @@ PlayerEvents.loggedIn(event => {
     player.persistentData.putBoolean('icraft_codex_given', true)
     player.tell('\u00a76[The Iridescent Codex]\u00a7r has been added to your inventory.')
     player.tell('Right-click to open. It covers every system, class, and mod in this pack.')
-    console.log('[IridescentCraft] Codex delivered to ' + player.username)
   }
-  // Start book sweep timer
+  // Always reset sweep timer on login
   player.persistentData.putInt('icraft_book_sweep_ticks', 1200)
+  console.log('[IridescentCraft] loggedIn fired for ' + player.username + ', sweep armed')
 })
 
 // ── Backup Recovery Recipe ────────────────────────────────────────────────────
@@ -30,10 +29,7 @@ ServerEvents.recipes(event => {
 })
 
 // ── Book Suppression ────────────────────────────────────────────────────────
-// Suppress unwanted mod books from inventory. Uses exact ID matching,
-// Patchouli NBT check, and namespace+keyword pattern matching.
 
-// Exact item IDs to suppress (add confirmed IDs here via /kubejs hand)
 const SUPPRESSED_BOOKS = [
   'terramity:guidebook',
   'terramity:terramity_guidebook',
@@ -64,7 +60,7 @@ function shouldSuppressBook(id, item) {
   if (id === 'patchouli:guide_book') {
     let nbt = item.nbt
     if (!nbt || nbt.getString('patchouli:book') !== 'patchouli:iridescent_codex') return 'patchouli'
-    return null // this is our codex, don't suppress
+    return null
   }
   let ns = id.split(':')[0]
   let name = id.split(':')[1] || ''
@@ -76,39 +72,48 @@ function shouldSuppressBook(id, item) {
   return null
 }
 
-// Remove a suppressed item from a specific slot
-function clearSlot(player, slotIndex) {
-  // KubeJS 6.x: use the container's setItem with an empty ItemStack
-  let container = player.inventory
-  container.setItem(slotIndex, Item.of('minecraft:air'))
-}
-
 // Suppress on inventory change
 PlayerEvents.inventoryChanged(event => {
   const item = event.item
   const reason = shouldSuppressBook(item.id, item)
   if (reason) {
-    let slot = event.slot
-    clearSlot(event.player, slot)
-    console.log('[IridescentCraft] Suppressed book (' + reason + '): ' + item.id + ' slot ' + slot)
+    event.player.inventory.setItem(event.slot, Item.of('minecraft:air'))
+    console.log('[IridescentCraft] Suppressed (' + reason + '): ' + item.id + ' slot ' + event.slot)
   }
 })
 
-// Periodic sweep for books injected by delayed mod logic (first 60s after join)
+// Periodic sweep — runs for ALL players during first 5 minutes of server uptime
+// AND for 60s after each player login (via persistentData timer)
+// This catches books injected by mods that bypass inventoryChanged
 ServerEvents.tick(event => {
-  if (event.server.tickCount % 20 !== 0) return
+  let tick = event.server.tickCount
+  if (tick % 40 !== 0) return // check every 2 seconds
+
+  // Log once at startup to confirm sweep is running
+  if (tick === 40) {
+    console.log('[IridescentCraft] Book sweep active — scanning every 2s for 5 minutes')
+  }
+
+  // Stop global sweep after 5 minutes (6000 ticks)
+  let globalSweep = tick < 6000
+
   event.server.players.forEach(player => {
-    let sweepTicks = player.persistentData.getInt('icraft_book_sweep_ticks')
-    if (sweepTicks <= 0) return
-    player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - 20)
+    let perPlayerSweep = player.persistentData.getInt('icraft_book_sweep_ticks') > 0
+    if (perPlayerSweep) {
+      player.persistentData.putInt('icraft_book_sweep_ticks',
+        player.persistentData.getInt('icraft_book_sweep_ticks') - 40)
+    }
+
+    if (!globalSweep && !perPlayerSweep) return
+
     let inv = player.inventory
     for (let i = 0; i < inv.size; i++) {
       let stack = inv.getItem(i)
       if (stack.isEmpty()) continue
       let reason = shouldSuppressBook(stack.id, stack)
       if (reason) {
-        console.log('[IridescentCraft] Sweep suppressed (' + reason + '): ' + stack.id + ' slot ' + i)
-        clearSlot(player, i)
+        console.log('[IridescentCraft] Sweep removed (' + reason + '): ' + stack.id + ' slot ' + i + ' from ' + player.username)
+        inv.setItem(i, Item.of('minecraft:air'))
       }
     }
   })

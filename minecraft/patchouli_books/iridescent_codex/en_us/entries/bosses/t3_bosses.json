@@ -1,7 +1,7 @@
 {
   "name": "Tier 3 Bosses",
   "icon": "minecraft:netherite_sword",
-  "category": "patchouli:bosses",
+  "category": "bosses",
   "sortnum": 3,
   "pages": [
     {

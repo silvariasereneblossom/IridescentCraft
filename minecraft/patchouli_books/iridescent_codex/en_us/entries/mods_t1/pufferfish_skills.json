@@ -1,7 +1,7 @@
 {
   "name": "Pufferfish's Skills",
   "icon": "minecraft:experience_bottle",
-  "category": "patchouli:mods_t1",
+  "category": "mods_t1",
   "sortnum": 5,
   "pages": [
     {

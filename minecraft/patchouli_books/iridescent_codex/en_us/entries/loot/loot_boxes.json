@@ -1,7 +1,7 @@
 {
   "name": "Loot Boxes",
   "icon": "kubejs:iron_loot_box",
-  "category": "patchouli:loot",
+  "category": "loot",
   "sortnum": 1,
   "pages": [
     {

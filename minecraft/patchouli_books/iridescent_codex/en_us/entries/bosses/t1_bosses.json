@@ -1,7 +1,7 @@
 {
   "name": "Tier 1 Bosses",
   "icon": "minecraft:iron_sword",
-  "category": "patchouli:bosses",
+  "category": "bosses",
   "sortnum": 1,
   "pages": [
     {

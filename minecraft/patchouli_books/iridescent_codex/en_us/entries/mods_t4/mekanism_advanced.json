@@ -1,7 +1,7 @@
 {
   "name": "Mekanism Advanced (T4)",
   "icon": "mekanism:mekasuit_bodyarmor",
-  "category": "patchouli:mods_t4",
+  "category": "mods_t4",
   "sortnum": 0,
   "pages": [
     {

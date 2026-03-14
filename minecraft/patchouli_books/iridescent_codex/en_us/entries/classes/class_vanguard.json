@@ -1,7 +1,7 @@
 {
   "name": "Vanguard",
   "icon": "minecraft:shield",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 6,
   "pages": [
     {

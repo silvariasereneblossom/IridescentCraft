@@ -1,7 +1,7 @@
 {
   "name": "Apotheosis Gems",
   "icon": "minecraft:amethyst_shard",
-  "category": "patchouli:loot",
+  "category": "loot",
   "sortnum": 2,
   "pages": [
     {

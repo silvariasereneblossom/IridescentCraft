@@ -1,7 +1,7 @@
 {
   "name": "Orc",
   "icon": "minecraft:iron_axe",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 15,
   "pages": [
     {

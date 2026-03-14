@@ -1,7 +1,7 @@
 {
   "name": "Create",
   "icon": "create:cogwheel",
-  "category": "patchouli:mods_t1",
+  "category": "mods_t1",
   "sortnum": 0,
   "pages": [
     {

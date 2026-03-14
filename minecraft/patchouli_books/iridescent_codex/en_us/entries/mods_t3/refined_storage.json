@@ -1,7 +1,7 @@
 {
   "name": "Refined Storage",
   "icon": "refinedstorage:controller",
-  "category": "patchouli:mods_t3",
+  "category": "mods_t3",
   "sortnum": 1,
   "pages": [
     {

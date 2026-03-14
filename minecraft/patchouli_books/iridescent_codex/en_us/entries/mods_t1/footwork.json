@@ -1,7 +1,7 @@
 {
   "name": "Footwork",
   "icon": "footwork:combat_manual",
-  "category": "patchouli:mods_t1",
+  "category": "mods_t1",
   "sortnum": 11,
   "pages": [
     {

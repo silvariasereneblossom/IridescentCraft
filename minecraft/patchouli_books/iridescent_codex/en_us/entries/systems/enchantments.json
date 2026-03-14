@@ -1,7 +1,7 @@
 {
   "name": "Custom Enchantments",
   "icon": "minecraft:enchanted_book",
-  "category": "patchouli:systems",
+  "category": "systems",
   "sortnum": 1,
   "pages": [
     {

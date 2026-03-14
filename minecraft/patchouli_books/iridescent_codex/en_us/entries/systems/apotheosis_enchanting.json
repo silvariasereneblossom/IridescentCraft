@@ -1,7 +1,7 @@
 {
   "name": "Apotheosis Enchanting",
   "icon": "minecraft:bookshelf",
-  "category": "patchouli:systems",
+  "category": "systems",
   "sortnum": 4,
   "pages": [
     {

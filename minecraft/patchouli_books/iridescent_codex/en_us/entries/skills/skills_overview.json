@@ -1,7 +1,7 @@
 {
   "name": "Skill Trees \u2014 Overview",
   "icon": "minecraft:experience_bottle",
-  "category": "patchouli:skills",
+  "category": "skills",
   "sortnum": 0,
   "flag": "icraft:stage_tier_2",
   "pages": [

@@ -1,7 +1,7 @@
 {
   "name": "Dwarf",
   "icon": "minecraft:stone_pickaxe",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 14,
   "pages": [
     {

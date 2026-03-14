@@ -1,7 +1,7 @@
 {
   "name": "Alex's Mobs",
   "icon": "alexsmobs:animal_dictionary",
-  "category": "patchouli:mods_t1",
+  "category": "mods_t1",
   "sortnum": 10,
   "pages": [
     {

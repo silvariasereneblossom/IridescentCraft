@@ -1,7 +1,7 @@
 {
   "name": "Scaling Mobs & Champions",
   "icon": "minecraft:zombie_head",
-  "category": "patchouli:mods_t3",
+  "category": "mods_t3",
   "sortnum": 4,
   "pages": [
     {

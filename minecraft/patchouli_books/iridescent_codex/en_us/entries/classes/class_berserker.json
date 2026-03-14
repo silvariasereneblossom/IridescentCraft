@@ -1,7 +1,7 @@
 {
   "name": "Berserker",
   "icon": "minecraft:iron_axe",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 1,
   "pages": [
     {

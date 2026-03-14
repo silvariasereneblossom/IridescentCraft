@@ -1,7 +1,7 @@
 {
   "name": "Revenant",
   "icon": "minecraft:skeleton_skull",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 18,
   "pages": [
     {

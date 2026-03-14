@@ -1,7 +1,7 @@
 {
   "name": "Your First Hour",
   "icon": "minecraft:iron_sword",
-  "category": "patchouli:welcome",
+  "category": "welcome",
   "sortnum": 2,
   "pages": [
     {

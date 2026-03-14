@@ -1,7 +1,7 @@
 {
   "name": "Dimension Mechanics",
   "icon": "minecraft:ender_eye",
-  "category": "patchouli:systems",
+  "category": "systems",
   "sortnum": 3,
   "pages": [
     {

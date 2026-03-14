@@ -1,7 +1,7 @@
 {
   "name": "Elf",
   "icon": "minecraft:feather",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 13,
   "pages": [
     {

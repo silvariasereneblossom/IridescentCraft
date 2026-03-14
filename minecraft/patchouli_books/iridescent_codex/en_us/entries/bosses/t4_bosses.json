@@ -1,7 +1,7 @@
 {
   "name": "Tier 4 Bosses",
   "icon": "minecraft:dragon_egg",
-  "category": "patchouli:bosses",
+  "category": "bosses",
   "sortnum": 4,
   "pages": [
     {

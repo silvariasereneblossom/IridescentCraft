@@ -1,7 +1,7 @@
 {
   "name": "Tier Skipping",
   "icon": "minecraft:blaze_rod",
-  "category": "patchouli:progression",
+  "category": "progression",
   "sortnum": 4,
   "pages": [
     {

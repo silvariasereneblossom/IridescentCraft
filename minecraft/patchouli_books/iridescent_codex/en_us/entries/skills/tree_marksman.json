@@ -1,7 +1,7 @@
 {
   "name": "Marksman Tree",
   "icon": "minecraft:bow",
-  "category": "patchouli:skills",
+  "category": "skills",
   "sortnum": 2,
   "flag": "icraft:stage_tier_2",
   "pages": [

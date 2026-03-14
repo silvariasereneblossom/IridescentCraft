@@ -1,7 +1,7 @@
 {
   "name": "Simply Swords Unique Weapons",
   "icon": "minecraft:diamond_sword",
-  "category": "patchouli:bosses",
+  "category": "bosses",
   "sortnum": 5,
   "flag": "icraft:stage_tier_2",
   "pages": [

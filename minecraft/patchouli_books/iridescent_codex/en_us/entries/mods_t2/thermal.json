@@ -1,7 +1,7 @@
 {
   "name": "Thermal Series",
   "icon": "thermal:machine_furnace",
-  "category": "patchouli:mods_t2",
+  "category": "mods_t2",
   "sortnum": 0,
   "pages": [
     {

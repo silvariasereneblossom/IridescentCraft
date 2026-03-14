@@ -1,7 +1,7 @@
 {
   "name": "Mekanism",
   "icon": "mekanism:ingot_osmium",
-  "category": "patchouli:mods_t3",
+  "category": "mods_t3",
   "sortnum": 0,
   "pages": [
     {

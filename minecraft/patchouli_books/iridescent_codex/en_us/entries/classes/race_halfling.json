@@ -1,7 +1,7 @@
 {
   "name": "Halfling",
   "icon": "minecraft:rabbit_foot",
-  "category": "patchouli:classes",
+  "category": "classes",
   "sortnum": 16,
   "pages": [
     {

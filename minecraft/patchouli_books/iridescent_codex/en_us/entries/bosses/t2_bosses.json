@@ -1,7 +1,7 @@
 {
   "name": "Tier 2 Bosses",
   "icon": "minecraft:diamond",
-  "category": "patchouli:bosses",
+  "category": "bosses",
   "sortnum": 2,
   "pages": [
     {
