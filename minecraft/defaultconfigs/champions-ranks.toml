@@ -1,7 +1,7 @@
 # =============================================================================
 # IridescentCraft Champions Ranks Configuration
 # Place in: <world>/serverconfig/champions-ranks.toml
-# Design doc Part II: Champions System Configuration
+# Design doc: wiki/design/master.md "Scaling Configuration" (lines 350-401)
 # =============================================================================
 #
 # RANK CHANCE IS MULTIPLICATIVE:
@@ -10,27 +10,25 @@
 # If it becomes Rank 2, it then rolls chance for Rank 3. Etc.
 #
 # With these settings, effective spawn rates are:
-#   Rank 1 (1 affix):   ~8% of all hostile mobs
-#   Rank 2 (2 affixes): ~2.4% (8% × 30%)
-#   Rank 3 (3 affixes): ~0.48% (2.4% × 20%)
-#   Rank 4 (4 affixes): ~0.048% (0.48% × 10%)
-#   Total champions:    ~10.9% of all mobs
+#   Rank 1 (1 affix):   ~15% of all hostile mobs
+#   Rank 2 (2 affixes): ~4.5% (15% x 30%)
+#   Rank 3 (3 affixes): ~0.9% (4.5% x 20%)
+#   Rank 4 (4 affixes): ~0.09% (0.9% x 10%)
+#   Total champions:    ~15% of all mobs (matches Overworld target)
 #
-# DESIGN DOC TARGET RATES BY DIMENSION:
-#   Overworld:         5%  | 1 affix max
-#   Twilight/BS/Aether: 7-8% | 1-2 affixes
-#   UG/DD/Nether/Abyss: 10-12% | 2-3 affixes
-#   Deep Aether:       13% | 3-4 affixes
-#   End (all zones):   14-15% | 3-4 (4 guaranteed in Dragon's Domain)
+# DESIGN DOC TARGET RATES BY DIMENSION (quick-reference):
+#   Overworld: 15%  | Twilight: 20% | Blue Skies: 25% | Aether: 30%
+#   Undergarden: 35% | Deeper Darker: 40% | Nether: 50%
+#   Deep Aether: 50% | End: 60%
 #
 # Per-dimension spawn rate adjustment is NOT natively supported by
-# Champions. The global rate (~11%) is a balanced compromise.
-# Dimension stat scaling (1.0x-10x via ScalingMobs) provides the
-# primary difficulty curve; champions are a supplemental layer.
+# Champions. The global rate (15%) matches the Overworld baseline.
+# Higher-dimension rates should be implemented via KubeJS
+# EntityEvents.spawned handlers that manually promote mobs to
+# champion status based on dimension.
 #
-# The affix COUNT per champion naturally scales with dimension tier
-# because higher-tier mobs survive longer → more dangerous champions.
-# A 3-affix champion in the Overworld dies in 2 hits anyway.
+# Boss blacklist in champions-common.toml prevents bosses from
+# becoming champions (they have their own scaling via Progressive Bosses).
 # =============================================================================
 
 # Rank 1: Common Champion — Yellow nameplate
@@ -39,7 +37,7 @@
   tier = 1
   numAffixes = 1
   defaultColor = 16776960
-  chance = 0.08
+  chance = 0.15
   growthFactor = 2
 
 # Rank 2: Uncommon Champion — Orange nameplate
@@ -63,7 +61,6 @@
 
 # Rank 4: Legendary Champion — Purple nameplate
 # 4 affixes, massive stat boost. Extremely rare. Major threat.
-# Guaranteed enchanted book drop + large XP orb.
 # Permanent Resistance I effect makes them tankier.
 [[ranks]]
   tier = 4
