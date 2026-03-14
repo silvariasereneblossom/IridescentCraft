@@ -40,7 +40,9 @@ const PATCHOULI_BOOKS_TO_CLEAR = [
   'irons_spellbooks:irons_spellbooks',
   'thermal:guidebook',
   'botania:lexicon',
-  'create:book'
+  'create:book',
+  'footwork:combat_manual',
+  'theabyss:the_abyss'
 ]
 
 // Non-patchouli book item IDs to suppress
