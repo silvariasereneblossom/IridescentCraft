@@ -295,10 +295,40 @@ function grantTier(player, tier, triggerName) {
 // =============================================================================
 
 PlayerEvents.loggedIn(event => {
-  if (!AStages.playerHasStage('tier_1', event.player)) {
-    AStages.addStageToPlayer('tier_1', event.player)
-    console.log(`[IridescentCraft] Granted tier_1 to new player: ${event.player.username}`)
+  let player = event.player
+  if (!player.creative && !AStages.playerHasStage('tier_1', player)) {
+    AStages.addStageToPlayer('tier_1', player)
+    console.log(`[IridescentCraft] Granted tier_1 to new player: ${player.username}`)
   }
+})
+
+// =============================================================================
+// PERIODIC: Ensure tier_1 always present + creative mode bypasses tiers
+// Runs every 5 seconds
+// =============================================================================
+
+ServerEvents.tick(event => {
+  if (event.server.tickCount % 100 !== 50) return
+
+  event.server.players.forEach(player => {
+    let isCreative = player.creative
+
+    if (isCreative) {
+      // Creative/god mode: grant ALL tiers so nothing is restricted
+      const allTiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
+      allTiers.forEach(t => {
+        if (!AStages.playerHasStage(t, player)) {
+          AStages.addStageToPlayer(t, player)
+        }
+      })
+    } else {
+      // Survival: ensure tier_1 always present
+      if (!AStages.playerHasStage('tier_1', player)) {
+        AStages.addStageToPlayer('tier_1', player)
+        console.log(`[IridescentCraft] Restored tier_1 for ${player.username}`)
+      }
+    }
+  })
 })
 
 // =============================================================================
