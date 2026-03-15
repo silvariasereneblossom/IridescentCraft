@@ -301,6 +301,26 @@ PlayerEvents.loggedIn(event => {
   }
 })
 
+// =============================================================================
+// SYNC: When any stage is added (by command, script, or quest), grant matching
+// Patchouli advancements so codex categories unlock automatically.
+// =============================================================================
+
+AStageEvents.added(event => {
+  let stageName = event.getStage ? event.getStage() : (event.stage || '')
+  let player = event.getPlayer ? event.getPlayer() : event.player
+  if (!player || !stageName) return
+
+  const tierMap = { 'tier_2': 'stage_tier_2', 'tier_3': 'stage_tier_3', 'tier_4': 'stage_tier_4' }
+  let adv = tierMap[stageName]
+  if (adv) {
+    player.server.runCommandSilent(
+      `advancement grant ${player.username} only icraft:${adv}`
+    )
+    console.log(`[IridescentCraft] Synced advancement icraft:${adv} for ${player.username}`)
+  }
+})
+
 console.log('[IridescentCraft] Milestone detection loaded')
 console.log('  Tier 2: Boss kill / Thermal Frame / All T2 dims visited')
 console.log('  Tier 3: Boss kill / Mekanism Casing / All T3 dims visited')
