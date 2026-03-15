@@ -295,9 +295,80 @@ function grantTier(player, tier, triggerName) {
 // =============================================================================
 
 PlayerEvents.loggedIn(event => {
-  if (!AStages.playerHasStage('tier_1', event.player)) {
-    AStages.addStageToPlayer('tier_1', event.player)
-    console.log(`[IridescentCraft] Granted tier_1 to new player: ${event.player.username}`)
+  let player = event.player
+  if (!player.creative && !AStages.playerHasStage('tier_1', player)) {
+    AStages.addStageToPlayer('tier_1', player)
+    console.log(`[IridescentCraft] Granted tier_1 to new player: ${player.username}`)
+  }
+})
+
+// =============================================================================
+// PERIODIC: Ensure tier_1 always present + creative mode bypasses tiers
+// Runs every 5 seconds
+// =============================================================================
+
+ServerEvents.tick(event => {
+  if (event.server.tickCount % 100 !== 50) return
+
+  event.server.players.forEach(player => {
+    let isCreative = player.creative
+
+    if (isCreative) {
+      // Creative/god mode: grant ALL tiers so nothing is restricted
+      const allTiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
+      allTiers.forEach(t => {
+        if (!AStages.playerHasStage(t, player)) {
+          AStages.addStageToPlayer(t, player)
+        }
+      })
+    } else {
+      // Survival: ensure tier_1 always present
+      if (!AStages.playerHasStage('tier_1', player)) {
+        AStages.addStageToPlayer('tier_1', player)
+        console.log(`[IridescentCraft] Restored tier_1 for ${player.username}`)
+      }
+    }
+  })
+})
+
+// =============================================================================
+// SYNC: When any stage is added (by command, script, or quest), grant matching
+// Patchouli advancements so codex categories unlock automatically.
+// =============================================================================
+
+AStageEvents.added(event => {
+  let stageName = event.getStage ? event.getStage() : (event.stage || '')
+  let player = event.getPlayer ? event.getPlayer() : event.player
+  if (!player || !stageName) return
+
+  // Cascade: grant all lower tiers automatically
+  const tiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
+  let idx = tiers.indexOf(stageName)
+  if (idx > 0) {
+    for (let i = 0; i < idx; i++) {
+      if (!AStages.playerHasStage(tiers[i], player)) {
+        AStages.addStageToPlayer(tiers[i], player)
+        console.log(`[IridescentCraft] Cascade: granted ${tiers[i]} to ${player.username}`)
+      }
+    }
+  }
+
+  // Sync Patchouli advancements
+  const tierMap = { 'tier_2': 'stage_tier_2', 'tier_3': 'stage_tier_3', 'tier_4': 'stage_tier_4' }
+  let adv = tierMap[stageName]
+  if (adv) {
+    player.server.runCommandSilent(
+      `advancement grant ${player.username} only icraft:${adv}`
+    )
+    // Also grant lower tier advancements
+    const advTiers = ['tier_2', 'tier_3', 'tier_4']
+    let advIdx = advTiers.indexOf(stageName)
+    for (let i = 0; i < advIdx; i++) {
+      player.server.runCommandSilent(
+        `advancement grant ${player.username} only icraft:stage_${advTiers[i]}`
+      )
+    }
+    console.log(`[IridescentCraft] Synced advancements up to ${stageName} for ${player.username}`)
   }
 })
 
