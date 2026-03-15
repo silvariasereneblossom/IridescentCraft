@@ -1,0 +1,22 @@
+{
+  "id": "Death-13-00-53-03-15-2026_7781-3-6036",
+  "name": "Death 13:00:53 03-15-2026",
+  "icon": "journeymap:ui/img/waypoint-death-icon.png",
+  "colorizedIcon": "fake:color--11906836-waypoint-death-icon.png",
+  "x": 7781,
+  "y": -3,
+  "z": 6036,
+  "r": 74,
+  "g": 80,
+  "b": 236,
+  "enable": true,
+  "type": "Death",
+  "origin": "journeymap",
+  "dimensions": [
+    "twilightforest:twilight_forest"
+  ],
+  "persistent": true,
+  "showDeviation": false,
+  "iconColor": -1,
+  "customIconColor": false
+}
