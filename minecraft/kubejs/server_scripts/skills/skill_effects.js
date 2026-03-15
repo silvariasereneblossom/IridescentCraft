@@ -17,8 +17,9 @@ ServerEvents.loaded(event => {
     'icraft_bonemeal_eff','icraft_crafting_speed','icraft_material_save',
     'icraft_machine_speed','icraft_craft_bonus','icraft_enchant_cost_reduction',
     'icraft_rf_generation','icraft_fuel_reduction','icraft_all_resistance',
-    'icraft_hp_regen','icraft_healing_power'
+    'icraft_hp_regen','icraft_healing_power','icraft_crit_damage','icraft_lifesteal'
   ].forEach(obj => event.server.runCommandSilent(`scoreboard objectives add ${obj} dummy`))
+  console.log('[IridescentCraft] Scoreboard objectives created')
 })
 
 function getScore(server, playerName, objective) {
