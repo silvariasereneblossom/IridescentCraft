@@ -78,7 +78,7 @@ ServerEvents.recipes(event => {
   // =========================================================================
 
   // Tech path: iron + quartz + osmium nugget → 2x yield
-  event.shaped('2x refinedstorage:quartz_enriched_iron', [
+  event.shaped(Item.of('refinedstorage:quartz_enriched_iron', 2), [
     ' Q ',
     'IOI',
     ' Q '
@@ -89,7 +89,7 @@ ServerEvents.recipes(event => {
   }).id('kubejs:rs_enriched_iron_tech')
 
   // Magic path: iron + quartz + mana pearl → 2x yield
-  event.shaped('2x refinedstorage:quartz_enriched_iron', [
+  event.shaped(Item.of('refinedstorage:quartz_enriched_iron', 2), [
     ' Q ',
     'IPI',
     ' Q '
@@ -315,7 +315,7 @@ ServerEvents.recipes(event => {
   // STEP 9: CABLE (cheap, just needs enriched iron)
   // =========================================================================
 
-  event.shaped('12x refinedstorage:cable', [
+  event.shaped(Item.of('refinedstorage:cable', 12), [
     'EEE',
     'RGR',
     'EEE'

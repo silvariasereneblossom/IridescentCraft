@@ -86,9 +86,9 @@ ServerEvents.recipes(event => {
   // C.1: Mekanism enriching — prevent enriching gated ores into ingots
   // (Mek machines need osmium = T3, but if someone transmutes 1 osmium early...)
   event.remove({ type: 'mekanism:enriching', output: 'minecraft:diamond' })
-  event.remove({ type: 'mekanism:enriching', output: '2x minecraft:diamond' })
+  event.remove({ type: 'mekanism:enriching', output: 'minecraft:diamond' })
   event.remove({ type: 'mekanism:enriching', output: 'minecraft:emerald' })
-  event.remove({ type: 'mekanism:enriching', output: '2x minecraft:emerald' })
+  event.remove({ type: 'mekanism:enriching', output: 'minecraft:emerald' })
 
   // C.2: Mekanism combining — additional ore fabrication blocks
   event.remove({ type: 'mekanism:combining', output: 'minecraft:emerald_ore' })
