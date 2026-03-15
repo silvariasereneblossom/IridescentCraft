@@ -7,137 +7,137 @@
   },
   "efficient_miner_2": {
     "x": 0,
-    "y": 1,
+    "y": 56,
     "definition": "efficient_miner_2"
   },
   "sharp_axe_1": {
     "x": 0,
-    "y": 2,
+    "y": 112,
     "definition": "sharp_axe_1"
   },
   "sharp_axe_2": {
     "x": 0,
-    "y": 3,
+    "y": 168,
     "definition": "sharp_axe_2"
   },
   "green_thumb_1": {
     "x": 0,
-    "y": 4,
+    "y": 224,
     "definition": "green_thumb_1"
   },
   "green_thumb_2": {
     "x": 0,
-    "y": 5,
+    "y": 280,
     "definition": "green_thumb_2"
   },
   "lucky_strike_1": {
     "x": 0,
-    "y": 6,
+    "y": 336,
     "definition": "lucky_strike_1"
   },
   "lucky_strike_2": {
     "x": 0,
-    "y": 7,
+    "y": 392,
     "definition": "lucky_strike_2"
   },
   "deep_mining_1": {
-    "x": -2,
-    "y": 8,
+    "x": -56,
+    "y": 448,
     "definition": "deep_mining_1"
   },
   "ore_sense_1": {
-    "x": -2,
-    "y": 9,
+    "x": -56,
+    "y": 504,
     "definition": "ore_sense_1"
   },
   "deep_mining_2": {
-    "x": -2,
-    "y": 10,
+    "x": -56,
+    "y": 560,
     "definition": "deep_mining_2"
   },
   "yield_master_1": {
-    "x": -2,
-    "y": 11,
+    "x": -56,
+    "y": 616,
     "definition": "yield_master_1"
   },
   "ore_sense_2": {
-    "x": -2,
-    "y": 12,
+    "x": -56,
+    "y": 672,
     "definition": "ore_sense_2"
   },
   "deep_mining_3": {
-    "x": -2,
-    "y": 13,
+    "x": -56,
+    "y": 728,
     "definition": "deep_mining_3"
   },
   "yield_master_2": {
-    "x": -2,
-    "y": 14,
+    "x": -56,
+    "y": 784,
     "definition": "yield_master_2"
   },
   "ore_sense_3": {
-    "x": -2,
-    "y": 15,
+    "x": -56,
+    "y": 840,
     "definition": "ore_sense_3"
   },
   "deep_mining_4": {
-    "x": -2,
-    "y": 16,
+    "x": -56,
+    "y": 896,
     "definition": "deep_mining_4"
   },
   "motherlode": {
-    "x": -2,
-    "y": 17,
+    "x": -56,
+    "y": 952,
     "definition": "motherlode"
   },
   "bountiful_1": {
-    "x": 2,
-    "y": 8,
+    "x": 56,
+    "y": 448,
     "definition": "bountiful_1"
   },
   "fishers_touch_1": {
-    "x": 2,
-    "y": 9,
+    "x": 56,
+    "y": 504,
     "definition": "fishers_touch_1"
   },
   "bountiful_2": {
-    "x": 2,
-    "y": 10,
+    "x": 56,
+    "y": 560,
     "definition": "bountiful_2"
   },
   "animal_whisp_1": {
-    "x": 2,
-    "y": 11,
+    "x": 56,
+    "y": 616,
     "definition": "animal_whisp_1"
   },
   "fishers_touch_2": {
-    "x": 2,
-    "y": 12,
+    "x": 56,
+    "y": 672,
     "definition": "fishers_touch_2"
   },
   "bountiful_3": {
-    "x": 2,
-    "y": 13,
+    "x": 56,
+    "y": 728,
     "definition": "bountiful_3"
   },
   "green_magic_1": {
-    "x": 2,
-    "y": 14,
+    "x": 56,
+    "y": 784,
     "definition": "green_magic_1"
   },
   "animal_whisp_2": {
-    "x": 2,
-    "y": 15,
+    "x": 56,
+    "y": 840,
     "definition": "animal_whisp_2"
   },
   "bountiful_4": {
-    "x": 2,
-    "y": 16,
+    "x": 56,
+    "y": 896,
     "definition": "bountiful_4"
   },
   "natures_bounty": {
-    "x": 2,
-    "y": 17,
+    "x": 56,
+    "y": 952,
     "definition": "natures_bounty"
   }
 }

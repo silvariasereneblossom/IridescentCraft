@@ -7,142 +7,142 @@
   },
   "brute_force_2": {
     "x": 0,
-    "y": 1,
+    "y": 56,
     "definition": "brute_force_2"
   },
   "iron_grip_1": {
     "x": 0,
-    "y": 2,
+    "y": 112,
     "definition": "iron_grip_1"
   },
   "iron_grip_2": {
     "x": 0,
-    "y": 3,
+    "y": 168,
     "definition": "iron_grip_2"
   },
   "thick_hide_1": {
     "x": 0,
-    "y": 4,
+    "y": 224,
     "definition": "thick_hide_1"
   },
   "thick_hide_2": {
     "x": 0,
-    "y": 5,
+    "y": 280,
     "definition": "thick_hide_2"
   },
   "vigor_1": {
     "x": 0,
-    "y": 6,
+    "y": 336,
     "definition": "vigor_1"
   },
   "vigor_2": {
     "x": 0,
-    "y": 7,
+    "y": 392,
     "definition": "vigor_2"
   },
   "relentless_1": {
-    "x": -2,
-    "y": 8,
+    "x": -56,
+    "y": 448,
     "definition": "relentless_1"
   },
   "relentless_2": {
-    "x": -2,
-    "y": 9,
+    "x": -56,
+    "y": 504,
     "definition": "relentless_2"
   },
   "bloodlust_1": {
-    "x": -2,
-    "y": 10,
+    "x": -56,
+    "y": 560,
     "definition": "bloodlust_1"
   },
   "ferocity_1": {
-    "x": -2,
-    "y": 11,
+    "x": -56,
+    "y": 616,
     "definition": "ferocity_1"
   },
   "ferocity_2": {
-    "x": -2,
-    "y": 12,
+    "x": -56,
+    "y": 672,
     "definition": "ferocity_2"
   },
   "bloodlust_2": {
-    "x": -2,
-    "y": 13,
+    "x": -56,
+    "y": 728,
     "definition": "bloodlust_2"
   },
   "savage_blows_1": {
-    "x": -2,
-    "y": 14,
+    "x": -56,
+    "y": 784,
     "definition": "savage_blows_1"
   },
   "savage_blows_2": {
-    "x": -2,
-    "y": 15,
+    "x": -56,
+    "y": 840,
     "definition": "savage_blows_2"
   },
   "relentless_3": {
-    "x": -2,
-    "y": 16,
+    "x": -56,
+    "y": 896,
     "definition": "relentless_3"
   },
   "bloodlust_3": {
-    "x": -2,
-    "y": 17,
+    "x": -56,
+    "y": 952,
     "definition": "bloodlust_3"
   },
   "unending_fury": {
-    "x": -2,
-    "y": 18,
+    "x": -56,
+    "y": 1008,
     "definition": "unending_fury"
   },
   "precision_1": {
-    "x": 2,
-    "y": 8,
+    "x": 56,
+    "y": 448,
     "definition": "precision_1"
   },
   "sword_mastery_1": {
-    "x": 2,
-    "y": 9,
+    "x": 56,
+    "y": 504,
     "definition": "sword_mastery_1"
   },
   "axe_mastery_1": {
-    "x": 2,
-    "y": 10,
+    "x": 56,
+    "y": 560,
     "definition": "axe_mastery_1"
   },
   "precision_2": {
-    "x": 2,
-    "y": 11,
+    "x": 56,
+    "y": 616,
     "definition": "precision_2"
   },
   "lethal_edge_1": {
-    "x": 2,
-    "y": 12,
+    "x": 56,
+    "y": 672,
     "definition": "lethal_edge_1"
   },
   "sword_mastery_2": {
-    "x": 2,
-    "y": 13,
+    "x": 56,
+    "y": 728,
     "definition": "sword_mastery_2"
   },
   "axe_mastery_2": {
-    "x": 2,
-    "y": 14,
+    "x": 56,
+    "y": 784,
     "definition": "axe_mastery_2"
   },
   "precision_3": {
-    "x": 2,
-    "y": 15,
+    "x": 56,
+    "y": 840,
     "definition": "precision_3"
   },
   "lethal_edge_2": {
-    "x": 2,
-    "y": 16,
+    "x": 56,
+    "y": 896,
     "definition": "lethal_edge_2"
   },
   "perfect_strike": {
-    "x": 2,
-    "y": 17,
+    "x": 56,
+    "y": 952,
     "definition": "perfect_strike"
   }
 }

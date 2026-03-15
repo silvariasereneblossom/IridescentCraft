@@ -7,137 +7,137 @@
   },
   "constitution_2": {
     "x": 0,
-    "y": 1,
+    "y": 56,
     "definition": "constitution_2"
   },
   "tough_skin_1": {
     "x": 0,
-    "y": 2,
+    "y": 112,
     "definition": "tough_skin_1"
   },
   "tough_skin_2": {
     "x": 0,
-    "y": 3,
+    "y": 168,
     "definition": "tough_skin_2"
   },
   "regeneration_1": {
     "x": 0,
-    "y": 4,
+    "y": 224,
     "definition": "regeneration_1"
   },
   "regeneration_2": {
     "x": 0,
-    "y": 5,
+    "y": 280,
     "definition": "regeneration_2"
   },
   "steady_footing_1": {
     "x": 0,
-    "y": 6,
+    "y": 336,
     "definition": "steady_footing_1"
   },
   "steady_footing_2": {
     "x": 0,
-    "y": 7,
+    "y": 392,
     "definition": "steady_footing_2"
   },
   "enduring_body_1": {
-    "x": -2,
-    "y": 8,
+    "x": -56,
+    "y": 448,
     "definition": "enduring_body_1"
   },
   "armor_mastery_1": {
-    "x": -2,
-    "y": 9,
+    "x": -56,
+    "y": 504,
     "definition": "armor_mastery_1"
   },
   "enduring_body_2": {
-    "x": -2,
-    "y": 10,
+    "x": -56,
+    "y": 560,
     "definition": "enduring_body_2"
   },
   "elem_resist_1": {
-    "x": -2,
-    "y": 11,
+    "x": -56,
+    "y": 616,
     "definition": "elem_resist_1"
   },
   "armor_mastery_2": {
-    "x": -2,
-    "y": 12,
+    "x": -56,
+    "y": 672,
     "definition": "armor_mastery_2"
   },
   "enduring_body_3": {
-    "x": -2,
-    "y": 13,
+    "x": -56,
+    "y": 728,
     "definition": "enduring_body_3"
   },
   "elem_resist_2": {
-    "x": -2,
-    "y": 14,
+    "x": -56,
+    "y": 784,
     "definition": "elem_resist_2"
   },
   "armor_mastery_3": {
-    "x": -2,
-    "y": 15,
+    "x": -56,
+    "y": 840,
     "definition": "armor_mastery_3"
   },
   "enduring_body_4": {
-    "x": -2,
-    "y": 16,
+    "x": -56,
+    "y": 896,
     "definition": "enduring_body_4"
   },
   "unbreakable": {
-    "x": -2,
-    "y": 17,
+    "x": -56,
+    "y": 952,
     "definition": "unbreakable"
   },
   "recovery_1": {
-    "x": 2,
-    "y": 8,
+    "x": 56,
+    "y": 448,
     "definition": "recovery_1"
   },
   "natural_regen_1": {
-    "x": 2,
-    "y": 9,
+    "x": 56,
+    "y": 504,
     "definition": "natural_regen_1"
   },
   "recovery_2": {
-    "x": 2,
-    "y": 10,
+    "x": 56,
+    "y": 560,
     "definition": "recovery_2"
   },
   "stamina_1": {
-    "x": 2,
-    "y": 11,
+    "x": 56,
+    "y": 616,
     "definition": "stamina_1"
   },
   "natural_regen_2": {
-    "x": 2,
-    "y": 12,
+    "x": 56,
+    "y": 672,
     "definition": "natural_regen_2"
   },
   "recovery_3": {
-    "x": 2,
-    "y": 13,
+    "x": 56,
+    "y": 728,
     "definition": "recovery_3"
   },
   "stamina_2": {
-    "x": 2,
-    "y": 14,
+    "x": 56,
+    "y": 784,
     "definition": "stamina_2"
   },
   "natural_regen_3": {
-    "x": 2,
-    "y": 15,
+    "x": 56,
+    "y": 840,
     "definition": "natural_regen_3"
   },
   "recovery_4": {
-    "x": 2,
-    "y": 16,
+    "x": 56,
+    "y": 896,
     "definition": "recovery_4"
   },
   "undying": {
-    "x": 2,
-    "y": 17,
+    "x": 56,
+    "y": 952,
     "definition": "undying"
   }
 }

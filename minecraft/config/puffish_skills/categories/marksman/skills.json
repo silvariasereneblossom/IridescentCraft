@@ -7,137 +7,137 @@
   },
   "steady_aim_2": {
     "x": 0,
-    "y": 1,
+    "y": 56,
     "definition": "steady_aim_2"
   },
   "quick_hands_1": {
     "x": 0,
-    "y": 2,
+    "y": 112,
     "definition": "quick_hands_1"
   },
   "quick_hands_2": {
     "x": 0,
-    "y": 3,
+    "y": 168,
     "definition": "quick_hands_2"
   },
   "hawk_eye_1": {
     "x": 0,
-    "y": 4,
+    "y": 224,
     "definition": "hawk_eye_1"
   },
   "hawk_eye_2": {
     "x": 0,
-    "y": 5,
+    "y": 280,
     "definition": "hawk_eye_2"
   },
   "nimble_1": {
     "x": 0,
-    "y": 6,
+    "y": 336,
     "definition": "nimble_1"
   },
   "nimble_2": {
     "x": 0,
-    "y": 7,
+    "y": 392,
     "definition": "nimble_2"
   },
   "steady_shot_1": {
-    "x": -2,
-    "y": 8,
+    "x": -56,
+    "y": 448,
     "definition": "steady_shot_1"
   },
   "penetration_1": {
-    "x": -2,
-    "y": 9,
+    "x": -56,
+    "y": 504,
     "definition": "penetration_1"
   },
   "steady_shot_2": {
-    "x": -2,
-    "y": 10,
+    "x": -56,
+    "y": 560,
     "definition": "steady_shot_2"
   },
   "kill_shot_1": {
-    "x": -2,
-    "y": 11,
+    "x": -56,
+    "y": 616,
     "definition": "kill_shot_1"
   },
   "penetration_2": {
-    "x": -2,
-    "y": 12,
+    "x": -56,
+    "y": 672,
     "definition": "penetration_2"
   },
   "steady_shot_3": {
-    "x": -2,
-    "y": 13,
+    "x": -56,
+    "y": 728,
     "definition": "steady_shot_3"
   },
   "kill_shot_2": {
-    "x": -2,
-    "y": 14,
+    "x": -56,
+    "y": 784,
     "definition": "kill_shot_2"
   },
   "penetration_3": {
-    "x": -2,
-    "y": 15,
+    "x": -56,
+    "y": 840,
     "definition": "penetration_3"
   },
   "steady_shot_4": {
-    "x": -2,
-    "y": 16,
+    "x": -56,
+    "y": 896,
     "definition": "steady_shot_4"
   },
   "deadeye": {
-    "x": -2,
-    "y": 17,
+    "x": -56,
+    "y": 952,
     "definition": "deadeye"
   },
   "rapid_fire_1": {
-    "x": 2,
-    "y": 8,
+    "x": 56,
+    "y": 448,
     "definition": "rapid_fire_1"
   },
   "arrow_conserv_1": {
-    "x": 2,
-    "y": 9,
+    "x": 56,
+    "y": 504,
     "definition": "arrow_conserv_1"
   },
   "rapid_fire_2": {
-    "x": 2,
-    "y": 10,
+    "x": 56,
+    "y": 560,
     "definition": "rapid_fire_2"
   },
   "scatter_shot_1": {
-    "x": 2,
-    "y": 11,
+    "x": 56,
+    "y": 616,
     "definition": "scatter_shot_1"
   },
   "arrow_conserv_2": {
-    "x": 2,
-    "y": 12,
+    "x": 56,
+    "y": 672,
     "definition": "arrow_conserv_2"
   },
   "rapid_fire_3": {
-    "x": 2,
-    "y": 13,
+    "x": 56,
+    "y": 728,
     "definition": "rapid_fire_3"
   },
   "scatter_shot_2": {
-    "x": 2,
-    "y": 14,
+    "x": 56,
+    "y": 784,
     "definition": "scatter_shot_2"
   },
   "arrow_conserv_3": {
-    "x": 2,
-    "y": 15,
+    "x": 56,
+    "y": 840,
     "definition": "arrow_conserv_3"
   },
   "rapid_fire_4": {
-    "x": 2,
-    "y": 16,
+    "x": 56,
+    "y": 896,
     "definition": "rapid_fire_4"
   },
   "storm_of_arrows": {
-    "x": 2,
-    "y": 17,
+    "x": 56,
+    "y": 952,
     "definition": "storm_of_arrows"
   }
 }
