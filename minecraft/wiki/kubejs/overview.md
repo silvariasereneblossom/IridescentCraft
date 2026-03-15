@@ -40,11 +40,13 @@ KubeJS 2001.6.5-build.16 for Minecraft 1.20.1 Forge. Primary scripting system fo
 | `dimension_scaling.js` | — | Per-dimension mob stat multipliers |
 | `death_penalty.js` | — | Durability loss on death |
 | `loot_tables.js` | — | LootJS tier-appropriate loot |
-| `skill_effects.js` | 326 | 22 scoreboard-based skill effects |
+| `skill_effects.js` | 701 | 22 scoreboard-based skill effects (all functional) |
 | `enchant_effects.js` | 503 | 24 custom enchantment effect handlers |
-| `affix_effects.js` | 295 | Complex affix event handlers |
+| `affix_effects.js` | 997 | Complex affix event handlers (65 event-driven effects) |
+| `custom_champion_affixes.js` | 704 | 5 custom Champions affixes + per-dimension spawn scaling |
 | `class_respec.js` | 147 | Class Altar respec system |
 | `equipment_hp_halving.js` | 155 | Glass cannon HP penalty |
+| `astages_restrictions.js` | — | AStages item/dimension gating (expanded derivative gating 2026-03-15) |
 | `custom_enchantments.js` | 174 | Enchantment registration (startup) |
 
 ## Datapack Loading (Paxi)

@@ -52,7 +52,11 @@ Each dimension has unique combat mechanics beyond stat scaling:
 
 ## Champions System
 
-Elite mob spawns with combat affixes. Affix count and spawn rate scale with dimension tier.
+Elite mob spawns with combat affixes. Affix count and spawn rate scale with dimension tier. Per-dimension Champion spawn scaling now implemented.
+
+16 built-in affixes + 5 custom IridescentCraft affixes:
+
+- **Custom affixes:** Commanding (rally nearby mobs), Draining (lifesteal attacks), Hexing (debuff application), Leaping (gap-closing lunges), Summoning (spawn reinforcements)
 
 Categories: Offensive (Molten, Arctic, Venom, Wither, Desecrating, Enkindling), Defensive (Shielding, Reflecting, Regenerating, Armored, Adaptable), Mobility (Hasty, Knockback, Blink, Leaping), Utility (Commanding, Summoning, Draining, Hexing).
 
@@ -69,7 +73,7 @@ Categories: Offensive (Molten, Arctic, Venom, Wither, Desecrating, Enkindling), 
 
 ## Apotheosis Affixes
 
-~95 total designed, ~45 implemented (30 JSON datapacks + 15 event-driven).
+~95 total designed, 149 implemented (84 JSON datapacks + 65 event-driven).
 
 Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility/Utility), Shield, Dimensional, Boss-Themed, Tier-Gated.
 

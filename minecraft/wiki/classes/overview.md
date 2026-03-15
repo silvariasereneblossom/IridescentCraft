@@ -6,7 +6,7 @@ Four layered character systems define player builds, with the first three presen
 
 | System | Layer | Role | When Active |
 |--------|-------|------|-------------|
-| Origins++ | Origin | Species-level identity — unique abilities and tradeoffs (148 origins) | Character creation prompt 1 |
+| Origins (vanilla) | Origin | Flavor powers — unique abilities and tradeoffs (9 origins, no Human) | Character creation prompt 1 |
 | Origins (icraft) | Race | 7 custom races — stat modifiers and thematic flavor | Character creation prompt 2 |
 | Iridescent Classes (icraft) | Class | 10 combat roles — playstyle, HP tier, glass cannon | Character creation prompt 3 |
 | Pufferfish's Skills (+ AStages bridge) | — | Skill Points — stat investment trees | Earned through progression |
@@ -15,11 +15,11 @@ Four layered character systems define player builds, with the first three presen
 ## Three-Prompt Character Creation
 
 On first join, players choose in order:
-1. **Origin** — Broad species fantasy from Origins++ (e.g., Avian, Blazeborn, Merling)
-2. **Race** — IridescentCraft race with stat identity (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant)
-3. **Class** — Combat role (Berserker, Samurai, Battlemage, etc.)
+1. **Origin** (9 vanilla origins, no Human) — Flavor powers (e.g., Arachnid wall climbing, Blazeborn fire immunity, Merling underwater breathing)
+2. **Race** (7 custom) — IridescentCraft race with stat bonuses/penalties (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant)
+3. **Class** (10 custom) — Combat role (Berserker, Samurai, Battlemage, etc.)
 
-This creates more build diversity than a two-layer system — Origin provides the species fantasy, Race adds stat flavor, and Class defines combat role.
+Origins layer provides flavor powers, Race layer provides stat bonuses/penalties, and Class layer provides combat role. The vanilla `origins:human` has been removed to avoid overlap with the custom Human race.
 
 ## 10 Classes
 
@@ -66,10 +66,11 @@ Implemented via `class_respec.js`. Class Altar item + 3 recipe variants (one per
 
 ### Implementation Status
 
+All 22 scoreboard objectives are now functional (updated 2026-03-15):
 - 10 fully functional effects (native KubeJS event hooks)
 - 4 attribute-proxied (mapped to Iron's Spells attributes)
 - 2 approximated (closest viable mechanic)
-- 6 informational (scoreboard tracks value, needs per-mod config)
+- 6 Engineering effects — previously placeholders, now fully working
 
 ## Race System
 
@@ -77,7 +78,7 @@ Implemented via `class_respec.js`. Class Altar item + 3 recipe variants (one per
 
 ## Origin System
 
-Uses Origins++ mod defaults. Origins are ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power (e.g., Avian gets flight but takes more damage).
+Uses 9 vanilla origins (Arachnid, Avian, Blazeborn, Elytrian, Enderian, Feline, Merling, Phantom, Shulk). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power (e.g., Avian gets flight but takes more damage).
 
 ## Related Pages
 
