@@ -171,7 +171,11 @@
     "icraft:iridescent_codex": {
       "viewedEntries": [
         "icraft:loot/boss_materials",
-        "icraft:loot/rift_economy"
+        "icraft:loot/rift_economy",
+        "icraft:loot/token_system",
+        "icraft:loot/loot_boxes",
+        "icraft:loot/gems",
+        "icraft:mods_t1/runic_grimoire"
       ],
       "bookmarks": [],
       "completedManualQuests": []
