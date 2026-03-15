@@ -1,8 +1,13 @@
 {
-  "title": "Engineering",
-  "icon": {
-    "item": "create:wrench"
+  "unlocked_by_default": true,
+  "title": {
+    "text": "Engineering"
   },
-  "background": "minecraft:textures/block/copper_block.png",
-  "unlocked_by_default": true
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "create:wrench"
+    }
+  },
+  "background": "minecraft:textures/block/copper_block.png"
 }

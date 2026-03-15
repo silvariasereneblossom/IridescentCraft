@@ -1,1 +1,546 @@
-{}
+{
+  "arcane_power_1": {
+    "title": "Arcane Power I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_damage",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "arcane_power_2": {
+    "title": "Arcane Power II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_damage",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "mana_flow_1": {
+    "title": "Mana Flow I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_mana_regen 5"
+        }
+      }
+    ]
+  },
+  "mana_flow_2": {
+    "title": "Mana Flow II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_mana_regen 5"
+        }
+      }
+    ]
+  },
+  "spell_haste_1": {
+    "title": "Spell Haste I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_cast_speed 3"
+        }
+      }
+    ]
+  },
+  "spell_haste_2": {
+    "title": "Spell Haste II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_cast_speed 3"
+        }
+      }
+    ]
+  },
+  "arcane_shield_1": {
+    "title": "Arcane Shield I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "arcane_shield_2": {
+    "title": "Arcane Shield II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "overwhelming_1": {
+    "title": "Overwhelming Power I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_damage",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "arcane_pen_1": {
+    "title": "Arcane Penetration I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_resistance_shred",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "overwhelming_2": {
+    "title": "Overwhelming Power II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "mana_eff_1": {
+    "title": "Mana Efficiency I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_mana_cost_reduction 5"
+        }
+      }
+    ]
+  },
+  "arcane_pen_2": {
+    "title": "Arcane Penetration II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_resistance_shred",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "overwhelming_3": {
+    "title": "Overwhelming Power III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "mana_eff_2": {
+    "title": "Mana Efficiency II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_mana_cost_reduction 5"
+        }
+      }
+    ]
+  },
+  "arcane_pen_3": {
+    "title": "Arcane Penetration III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_resistance_shred",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "overwhelming_4": {
+    "title": "Overwhelming Power IV",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_damage",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "arcane_supremacy": {
+    "title": "Arcane Supremacy",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_damage",
+          "value": 0.15,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:magic_resistance_shred",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_mana_cost_reduction 5"
+        }
+      }
+    ]
+  },
+  "restorative_1": {
+    "title": "Restorative Touch I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "minion_master_1": {
+    "title": "Minion Mastery I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:tamed_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "restorative_2": {
+    "title": "Restorative Touch II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "ext_influence_1": {
+    "title": "Extended Influence I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_buff_duration 5"
+        }
+      }
+    ]
+  },
+  "minion_master_2": {
+    "title": "Minion Mastery II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:tamed_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "soul_bond_1": {
+    "title": "Soul Bond I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:tamed_resistance",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "restorative_3": {
+    "title": "Restorative Touch III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "minion_master_3": {
+    "title": "Minion Mastery III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:tamed_damage",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ]
+  },
+  "ext_influence_2": {
+    "title": "Extended Influence II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:enchanted_book"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_buff_duration 5"
+        }
+      }
+    ]
+  },
+  "grand_enchantment": {
+    "title": "Grand Enchantment",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.12,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:tamed_damage",
+          "value": 0.12,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_buff_duration 10"
+        }
+      }
+    ]
+  }
+}

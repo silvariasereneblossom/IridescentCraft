@@ -1,8 +1,13 @@
 {
-  "title": "Warfare",
-  "icon": {
-    "item": "minecraft:iron_sword"
+  "unlocked_by_default": true,
+  "title": {
+    "text": "Warfare"
   },
-  "background": "minecraft:textures/block/deepslate.png",
-  "unlocked_by_default": true
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "minecraft:iron_sword"
+    }
+  },
+  "background": "minecraft:textures/block/deepslate.png"
 }
