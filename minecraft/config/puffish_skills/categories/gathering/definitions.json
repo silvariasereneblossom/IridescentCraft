@@ -16,7 +16,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Mining Speed"
   },
   "efficient_miner_2": {
     "title": "Efficient Miner II",
@@ -35,7 +36,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Mining Speed"
   },
   "sharp_axe_1": {
     "title": "Sharp Axe I",
@@ -54,7 +56,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Block Breaking Speed"
   },
   "sharp_axe_2": {
     "title": "Sharp Axe II",
@@ -73,7 +76,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Block Breaking Speed"
   },
   "green_thumb_1": {
     "title": "Green Thumb I",
@@ -90,7 +94,8 @@
           "command": "scoreboard players add @s icraft_crop_yield 5"
         }
       }
-    ]
+    ],
+    "description": "Bonus crop drops"
   },
   "green_thumb_2": {
     "title": "Green Thumb II",
@@ -107,7 +112,8 @@
           "command": "scoreboard players add @s icraft_crop_yield 5"
         }
       }
-    ]
+    ],
+    "description": "Bonus crop drops"
   },
   "lucky_strike_1": {
     "title": "Lucky Strike I",
@@ -126,7 +132,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+0.3 Luck"
   },
   "lucky_strike_2": {
     "title": "Lucky Strike II",
@@ -145,7 +152,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+0.3 Luck"
   },
   "deep_mining_1": {
     "title": "Deep Mining I",
@@ -164,7 +172,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Mining Speed"
   },
   "ore_sense_1": {
     "title": "Ore Sense I",
@@ -183,7 +192,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+0.4 Luck"
   },
   "deep_mining_2": {
     "title": "Deep Mining II",
@@ -202,7 +212,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Mining Speed"
   },
   "yield_master_1": {
     "title": "Yield Mastery I",
@@ -219,7 +230,8 @@
           "command": "scoreboard players add @s icraft_ore_processing 5"
         }
       }
-    ]
+    ],
+    "description": "Bonus ore drops"
   },
   "ore_sense_2": {
     "title": "Ore Sense II",
@@ -238,7 +250,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+0.4 Luck"
   },
   "deep_mining_3": {
     "title": "Deep Mining III",
@@ -257,7 +270,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Mining Speed"
   },
   "yield_master_2": {
     "title": "Yield Mastery II",
@@ -274,7 +288,8 @@
           "command": "scoreboard players add @s icraft_ore_processing 5"
         }
       }
-    ]
+    ],
+    "description": "Bonus ore drops"
   },
   "ore_sense_3": {
     "title": "Ore Sense III",
@@ -293,7 +308,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+0.5 Luck"
   },
   "deep_mining_4": {
     "title": "Deep Mining IV",
@@ -312,7 +328,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Mining Speed"
   },
   "motherlode": {
     "title": "Motherlode",
@@ -345,7 +362,8 @@
           "command": "scoreboard players add @s icraft_ore_processing 5"
         }
       }
-    ]
+    ],
+    "description": "+15% Mining Speed, +0.5 Luck, Bonus ore drops"
   },
   "bountiful_1": {
     "title": "Bountiful Harvest I",
@@ -362,7 +380,8 @@
           "command": "scoreboard players add @s icraft_crop_yield 8"
         }
       }
-    ]
+    ],
+    "description": "Bonus crop drops"
   },
   "fishers_touch_1": {
     "title": "Fisher's Touch I",
@@ -379,7 +398,8 @@
           "command": "scoreboard players add @s icraft_fishing_speed 10"
         }
       }
-    ]
+    ],
+    "description": "Faster fishing"
   },
   "bountiful_2": {
     "title": "Bountiful Harvest II",
@@ -396,7 +416,8 @@
           "command": "scoreboard players add @s icraft_crop_yield 8"
         }
       }
-    ]
+    ],
+    "description": "Bonus crop drops"
   },
   "animal_whisp_1": {
     "title": "Animal Whisperer I",
@@ -413,7 +434,8 @@
           "command": "scoreboard players add @s icraft_breeding_speed 10"
         }
       }
-    ]
+    ],
+    "description": "Faster animal growth"
   },
   "fishers_touch_2": {
     "title": "Fisher's Touch II",
@@ -430,7 +452,8 @@
           "command": "scoreboard players add @s icraft_fishing_speed 10"
         }
       }
-    ]
+    ],
+    "description": "Faster fishing"
   },
   "bountiful_3": {
     "title": "Bountiful Harvest III",
@@ -447,7 +470,8 @@
           "command": "scoreboard players add @s icraft_crop_yield 10"
         }
       }
-    ]
+    ],
+    "description": "Bonus crop drops"
   },
   "green_magic_1": {
     "title": "Green Magic I",
@@ -464,7 +488,8 @@
           "command": "scoreboard players add @s icraft_bonemeal_eff 5"
         }
       }
-    ]
+    ],
+    "description": "More effective bonemeal"
   },
   "animal_whisp_2": {
     "title": "Animal Whisperer II",
@@ -481,7 +506,8 @@
           "command": "scoreboard players add @s icraft_breeding_speed 10"
         }
       }
-    ]
+    ],
+    "description": "Faster animal growth"
   },
   "bountiful_4": {
     "title": "Bountiful Harvest IV",
@@ -498,7 +524,8 @@
           "command": "scoreboard players add @s icraft_crop_yield 10"
         }
       }
-    ]
+    ],
+    "description": "Bonus crop drops"
   },
   "natures_bounty": {
     "title": "Nature's Bounty",
@@ -527,6 +554,7 @@
           "command": "scoreboard players add @s icraft_breeding_speed 10"
         }
       }
-    ]
+    ],
+    "description": "Bonus crop drops, Faster fishing, Faster animal growth"
   }
 }

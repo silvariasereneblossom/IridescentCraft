@@ -14,7 +14,8 @@
           "command": "scoreboard players add @s icraft_crafting_speed 5"
         }
       }
-    ]
+    ],
+    "description": "Speed boost near crafting stations"
   },
   "quick_hands_2": {
     "title": "Quick Hands II",
@@ -31,7 +32,8 @@
           "command": "scoreboard players add @s icraft_crafting_speed 5"
         }
       }
-    ]
+    ],
+    "description": "Speed boost near crafting stations"
   },
   "resource_saver_1": {
     "title": "Resource Saver I",
@@ -48,7 +50,8 @@
           "command": "scoreboard players add @s icraft_material_save 3"
         }
       }
-    ]
+    ],
+    "description": "Chance for free materials"
   },
   "resource_saver_2": {
     "title": "Resource Saver II",
@@ -65,7 +68,8 @@
           "command": "scoreboard players add @s icraft_material_save 3"
         }
       }
-    ]
+    ],
+    "description": "Chance for free materials"
   },
   "machine_eff_1": {
     "title": "Machine Efficiency I",
@@ -82,7 +86,8 @@
           "command": "scoreboard players add @s icraft_machine_speed 5"
         }
       }
-    ]
+    ],
+    "description": "Haste near machines"
   },
   "machine_eff_2": {
     "title": "Machine Efficiency II",
@@ -99,7 +104,8 @@
           "command": "scoreboard players add @s icraft_machine_speed 5"
         }
       }
-    ]
+    ],
+    "description": "Haste near machines"
   },
   "tool_care_1": {
     "title": "Tool Care I",
@@ -118,7 +124,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "-5% Repair Cost"
   },
   "tool_care_2": {
     "title": "Tool Care II",
@@ -137,7 +144,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "-5% Repair Cost"
   },
   "master_touch_1": {
     "title": "Master Touch I",
@@ -154,7 +162,8 @@
           "command": "scoreboard players add @s icraft_craft_bonus 3"
         }
       }
-    ]
+    ],
+    "description": "Chance for bonus craft output"
   },
   "ench_insight_1": {
     "title": "Enchanting Insight I",
@@ -171,7 +180,8 @@
           "command": "scoreboard players add @s icraft_enchant_cost_reduction 5"
         }
       }
-    ]
+    ],
+    "description": "XP rebate near enchanting"
   },
   "master_touch_2": {
     "title": "Master Touch II",
@@ -188,7 +198,8 @@
           "command": "scoreboard players add @s icraft_craft_bonus 3"
         }
       }
-    ]
+    ],
+    "description": "Chance for bonus craft output"
   },
   "repair_master_1": {
     "title": "Repair Mastery I",
@@ -207,7 +218,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "-8% Repair Cost"
   },
   "ench_insight_2": {
     "title": "Enchanting Insight II",
@@ -224,7 +236,8 @@
           "command": "scoreboard players add @s icraft_enchant_cost_reduction 5"
         }
       }
-    ]
+    ],
+    "description": "XP rebate near enchanting"
   },
   "master_touch_3": {
     "title": "Master Touch III",
@@ -241,7 +254,8 @@
           "command": "scoreboard players add @s icraft_craft_bonus 4"
         }
       }
-    ]
+    ],
+    "description": "Chance for bonus craft output"
   },
   "repair_master_2": {
     "title": "Repair Mastery II",
@@ -260,7 +274,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "-8% Repair Cost"
   },
   "ench_insight_3": {
     "title": "Enchanting Insight III",
@@ -277,7 +292,8 @@
           "command": "scoreboard players add @s icraft_enchant_cost_reduction 5"
         }
       }
-    ]
+    ],
+    "description": "XP rebate near enchanting"
   },
   "master_touch_4": {
     "title": "Master Touch IV",
@@ -294,7 +310,8 @@
           "command": "scoreboard players add @s icraft_craft_bonus 5"
         }
       }
-    ]
+    ],
+    "description": "Chance for bonus craft output"
   },
   "grand_artificer": {
     "title": "Grand Artificer",
@@ -325,7 +342,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "Chance for bonus craft output, XP rebate near enchanting, -10% Repair Cost"
   },
   "overclock_1": {
     "title": "Overclock I",
@@ -342,7 +360,8 @@
           "command": "scoreboard players add @s icraft_machine_speed 8"
         }
       }
-    ]
+    ],
+    "description": "Haste near machines"
   },
   "power_surge_1": {
     "title": "Power Surge I",
@@ -359,7 +378,8 @@
           "command": "scoreboard players add @s icraft_rf_generation 5"
         }
       }
-    ]
+    ],
+    "description": "XP from power generation"
   },
   "overclock_2": {
     "title": "Overclock II",
@@ -376,7 +396,8 @@
           "command": "scoreboard players add @s icraft_machine_speed 8"
         }
       }
-    ]
+    ],
+    "description": "Haste near machines"
   },
   "fuel_eff_1": {
     "title": "Fuel Efficiency I",
@@ -393,7 +414,8 @@
           "command": "scoreboard players add @s icraft_fuel_reduction 8"
         }
       }
-    ]
+    ],
+    "description": "Fuel efficiency rebate"
   },
   "power_surge_2": {
     "title": "Power Surge II",
@@ -410,7 +432,8 @@
           "command": "scoreboard players add @s icraft_rf_generation 5"
         }
       }
-    ]
+    ],
+    "description": "XP from power generation"
   },
   "overclock_3": {
     "title": "Overclock III",
@@ -427,7 +450,8 @@
           "command": "scoreboard players add @s icraft_machine_speed 10"
         }
       }
-    ]
+    ],
+    "description": "Haste near machines"
   },
   "fuel_eff_2": {
     "title": "Fuel Efficiency II",
@@ -444,7 +468,8 @@
           "command": "scoreboard players add @s icraft_fuel_reduction 8"
         }
       }
-    ]
+    ],
+    "description": "Fuel efficiency rebate"
   },
   "power_surge_3": {
     "title": "Power Surge III",
@@ -461,7 +486,8 @@
           "command": "scoreboard players add @s icraft_rf_generation 8"
         }
       }
-    ]
+    ],
+    "description": "XP from power generation"
   },
   "overclock_4": {
     "title": "Overclock IV",
@@ -478,7 +504,8 @@
           "command": "scoreboard players add @s icraft_machine_speed 10"
         }
       }
-    ]
+    ],
+    "description": "Haste near machines"
   },
   "master_engineer": {
     "title": "Master Engineer",
@@ -507,6 +534,7 @@
           "command": "scoreboard players add @s icraft_fuel_reduction 10"
         }
       }
-    ]
+    ],
+    "description": "Haste near machines, XP from power generation, Fuel efficiency rebate"
   }
 }

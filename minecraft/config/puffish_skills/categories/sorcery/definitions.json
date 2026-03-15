@@ -16,7 +16,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Magic Damage"
   },
   "arcane_power_2": {
     "title": "Arcane Power II",
@@ -35,7 +36,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Magic Damage"
   },
   "mana_flow_1": {
     "title": "Mana Flow I",
@@ -52,7 +54,8 @@
           "command": "scoreboard players add @s icraft_mana_regen 5"
         }
       }
-    ]
+    ],
+    "description": "Increased mana regeneration"
   },
   "mana_flow_2": {
     "title": "Mana Flow II",
@@ -69,7 +72,8 @@
           "command": "scoreboard players add @s icraft_mana_regen 5"
         }
       }
-    ]
+    ],
+    "description": "Increased mana regeneration"
   },
   "spell_haste_1": {
     "title": "Spell Haste I",
@@ -86,7 +90,8 @@
           "command": "scoreboard players add @s icraft_cast_speed 3"
         }
       }
-    ]
+    ],
+    "description": "Faster spell casting"
   },
   "spell_haste_2": {
     "title": "Spell Haste II",
@@ -103,7 +108,8 @@
           "command": "scoreboard players add @s icraft_cast_speed 3"
         }
       }
-    ]
+    ],
+    "description": "Faster spell casting"
   },
   "arcane_shield_1": {
     "title": "Arcane Shield I",
@@ -122,7 +128,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Magic Resistance"
   },
   "arcane_shield_2": {
     "title": "Arcane Shield II",
@@ -141,7 +148,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Magic Resistance"
   },
   "overwhelming_1": {
     "title": "Overwhelming Power I",
@@ -160,7 +168,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Magic Damage"
   },
   "arcane_pen_1": {
     "title": "Arcane Penetration I",
@@ -179,7 +188,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Magic Penetration"
   },
   "overwhelming_2": {
     "title": "Overwhelming Power II",
@@ -198,7 +208,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Magic Damage"
   },
   "mana_eff_1": {
     "title": "Mana Efficiency I",
@@ -215,7 +226,8 @@
           "command": "scoreboard players add @s icraft_mana_cost_reduction 5"
         }
       }
-    ]
+    ],
+    "description": "Reduced mana costs"
   },
   "arcane_pen_2": {
     "title": "Arcane Penetration II",
@@ -234,7 +246,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Magic Penetration"
   },
   "overwhelming_3": {
     "title": "Overwhelming Power III",
@@ -253,7 +266,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Magic Damage"
   },
   "mana_eff_2": {
     "title": "Mana Efficiency II",
@@ -270,7 +284,8 @@
           "command": "scoreboard players add @s icraft_mana_cost_reduction 5"
         }
       }
-    ]
+    ],
+    "description": "Reduced mana costs"
   },
   "arcane_pen_3": {
     "title": "Arcane Penetration III",
@@ -289,7 +304,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Magic Penetration"
   },
   "overwhelming_4": {
     "title": "Overwhelming Power IV",
@@ -308,7 +324,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Magic Damage"
   },
   "arcane_supremacy": {
     "title": "Arcane Supremacy",
@@ -341,7 +358,8 @@
           "command": "scoreboard players add @s icraft_mana_cost_reduction 5"
         }
       }
-    ]
+    ],
+    "description": "+15% Magic Damage, +8% Magic Penetration, Reduced mana costs"
   },
   "restorative_1": {
     "title": "Restorative Touch I",
@@ -360,7 +378,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Healing"
   },
   "minion_master_1": {
     "title": "Minion Mastery I",
@@ -379,7 +398,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Tamed Mob Damage"
   },
   "restorative_2": {
     "title": "Restorative Touch II",
@@ -398,7 +418,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Healing"
   },
   "ext_influence_1": {
     "title": "Extended Influence I",
@@ -415,7 +436,8 @@
           "command": "scoreboard players add @s icraft_buff_duration 5"
         }
       }
-    ]
+    ],
+    "description": "Longer buff durations"
   },
   "minion_master_2": {
     "title": "Minion Mastery II",
@@ -434,7 +456,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Tamed Mob Damage"
   },
   "soul_bond_1": {
     "title": "Soul Bond I",
@@ -453,7 +476,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Tamed Mob Resistance"
   },
   "restorative_3": {
     "title": "Restorative Touch III",
@@ -472,7 +496,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Healing"
   },
   "minion_master_3": {
     "title": "Minion Mastery III",
@@ -491,7 +516,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Tamed Mob Damage"
   },
   "ext_influence_2": {
     "title": "Extended Influence II",
@@ -508,7 +534,8 @@
           "command": "scoreboard players add @s icraft_buff_duration 5"
         }
       }
-    ]
+    ],
+    "description": "Longer buff durations"
   },
   "grand_enchantment": {
     "title": "Grand Enchantment",
@@ -541,6 +568,7 @@
           "command": "scoreboard players add @s icraft_buff_duration 10"
         }
       }
-    ]
+    ],
+    "description": "+12% Healing, +12% Tamed Mob Damage, Longer buff durations"
   }
 }

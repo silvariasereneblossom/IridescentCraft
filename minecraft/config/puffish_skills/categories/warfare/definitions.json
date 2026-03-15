@@ -16,7 +16,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Melee Damage"
   },
   "brute_force_2": {
     "title": "Brute Force II",
@@ -35,7 +36,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Melee Damage"
   },
   "iron_grip_1": {
     "title": "Iron Grip I",
@@ -54,7 +56,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Attack Speed"
   },
   "iron_grip_2": {
     "title": "Iron Grip II",
@@ -73,7 +76,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Attack Speed"
   },
   "thick_hide_1": {
     "title": "Thick Hide I",
@@ -92,7 +96,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Melee Resistance"
   },
   "thick_hide_2": {
     "title": "Thick Hide II",
@@ -111,7 +116,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Melee Resistance"
   },
   "vigor_1": {
     "title": "Vigor I",
@@ -130,7 +136,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Heart"
   },
   "vigor_2": {
     "title": "Vigor II",
@@ -149,7 +156,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Heart"
   },
   "relentless_1": {
     "title": "Relentless Strikes I",
@@ -168,7 +176,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Melee Damage"
   },
   "relentless_2": {
     "title": "Relentless Strikes II",
@@ -187,7 +196,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Melee Damage"
   },
   "bloodlust_1": {
     "title": "Bloodlust I",
@@ -204,7 +214,8 @@
           "command": "scoreboard players add @s icraft_lifesteal 1"
         }
       }
-    ]
+    ],
+    "description": "Lifesteal on hit"
   },
   "ferocity_1": {
     "title": "Ferocity I",
@@ -223,7 +234,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Attack Speed"
   },
   "ferocity_2": {
     "title": "Ferocity II",
@@ -242,7 +254,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Attack Speed"
   },
   "bloodlust_2": {
     "title": "Bloodlust II",
@@ -259,7 +272,8 @@
           "command": "scoreboard players add @s icraft_lifesteal 2"
         }
       }
-    ]
+    ],
+    "description": "Lifesteal on hit"
   },
   "savage_blows_1": {
     "title": "Savage Blows I",
@@ -278,7 +292,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Melee Damage"
   },
   "savage_blows_2": {
     "title": "Savage Blows II",
@@ -297,7 +312,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Melee Damage"
   },
   "relentless_3": {
     "title": "Relentless Strikes III",
@@ -316,7 +332,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Melee Damage"
   },
   "bloodlust_3": {
     "title": "Bloodlust III",
@@ -333,7 +350,8 @@
           "command": "scoreboard players add @s icraft_lifesteal 2"
         }
       }
-    ]
+    ],
+    "description": "Lifesteal on hit"
   },
   "unending_fury": {
     "title": "Unending Fury",
@@ -358,7 +376,8 @@
           "command": "scoreboard players add @s icraft_lifesteal 5"
         }
       }
-    ]
+    ],
+    "description": "+15% Melee Damage, Lifesteal on hit"
   },
   "precision_1": {
     "title": "Precision I",
@@ -377,7 +396,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Luck"
   },
   "sword_mastery_1": {
     "title": "Sword Mastery I",
@@ -396,7 +416,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Sword Damage"
   },
   "axe_mastery_1": {
     "title": "Axe Mastery I",
@@ -415,7 +436,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Axe Damage"
   },
   "precision_2": {
     "title": "Precision II",
@@ -434,7 +456,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Luck"
   },
   "lethal_edge_1": {
     "title": "Lethal Edge I",
@@ -451,7 +474,8 @@
           "command": "scoreboard players add @s icraft_crit_damage 8"
         }
       }
-    ]
+    ],
+    "description": "Increased critical damage"
   },
   "sword_mastery_2": {
     "title": "Sword Mastery II",
@@ -470,7 +494,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Sword Damage"
   },
   "axe_mastery_2": {
     "title": "Axe Mastery II",
@@ -489,7 +514,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Axe Damage"
   },
   "precision_3": {
     "title": "Precision III",
@@ -508,7 +534,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Luck"
   },
   "lethal_edge_2": {
     "title": "Lethal Edge II",
@@ -525,7 +552,8 @@
           "command": "scoreboard players add @s icraft_crit_damage 12"
         }
       }
-    ]
+    ],
+    "description": "Increased critical damage"
   },
   "perfect_strike": {
     "title": "Perfect Strike",
@@ -550,6 +578,7 @@
           "command": "scoreboard players add @s icraft_crit_damage 20"
         }
       }
-    ]
+    ],
+    "description": "+2 Luck, Increased critical damage"
   }
 }

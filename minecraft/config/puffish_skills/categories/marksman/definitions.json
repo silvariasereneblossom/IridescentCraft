@@ -16,7 +16,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Ranged Damage"
   },
   "steady_aim_2": {
     "title": "Steady Aim II",
@@ -35,7 +36,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Ranged Damage"
   },
   "quick_hands_1": {
     "title": "Quick Hands I",
@@ -54,7 +56,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Attack Speed"
   },
   "quick_hands_2": {
     "title": "Quick Hands II",
@@ -73,7 +76,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Attack Speed"
   },
   "hawk_eye_1": {
     "title": "Hawk Eye I",
@@ -90,7 +94,8 @@
           "command": "scoreboard players add @s icraft_accuracy 3"
         }
       }
-    ]
+    ],
+    "description": "Increased ranged damage"
   },
   "hawk_eye_2": {
     "title": "Hawk Eye II",
@@ -107,7 +112,8 @@
           "command": "scoreboard players add @s icraft_accuracy 3"
         }
       }
-    ]
+    ],
+    "description": "Increased ranged damage"
   },
   "nimble_1": {
     "title": "Nimble I",
@@ -126,7 +132,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Movement Speed"
   },
   "nimble_2": {
     "title": "Nimble II",
@@ -145,7 +152,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Movement Speed"
   },
   "steady_shot_1": {
     "title": "Steady Shot I",
@@ -164,7 +172,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Ranged Damage"
   },
   "penetration_1": {
     "title": "Penetration I",
@@ -183,7 +192,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Ranged Armor Penetration"
   },
   "steady_shot_2": {
     "title": "Steady Shot II",
@@ -202,7 +212,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Ranged Damage"
   },
   "kill_shot_1": {
     "title": "Kill Shot I",
@@ -219,7 +230,8 @@
           "command": "scoreboard players add @s icraft_execute_damage 10"
         }
       }
-    ]
+    ],
+    "description": "Bonus damage to low HP targets"
   },
   "penetration_2": {
     "title": "Penetration II",
@@ -238,7 +250,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Ranged Armor Penetration"
   },
   "steady_shot_3": {
     "title": "Steady Shot III",
@@ -257,7 +270,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Ranged Damage"
   },
   "kill_shot_2": {
     "title": "Kill Shot II",
@@ -274,7 +288,8 @@
           "command": "scoreboard players add @s icraft_execute_damage 10"
         }
       }
-    ]
+    ],
+    "description": "Bonus damage to low HP targets"
   },
   "penetration_3": {
     "title": "Penetration III",
@@ -293,7 +308,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Ranged Armor Penetration"
   },
   "steady_shot_4": {
     "title": "Steady Shot IV",
@@ -312,7 +328,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Ranged Damage"
   },
   "deadeye": {
     "title": "Deadeye",
@@ -339,7 +356,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+15% Ranged Damage, +8% Ranged Armor Penetration"
   },
   "rapid_fire_1": {
     "title": "Rapid Fire I",
@@ -358,7 +376,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Attack Speed"
   },
   "arrow_conserv_1": {
     "title": "Arrow Conservation I",
@@ -375,7 +394,8 @@
           "command": "scoreboard players add @s icraft_ammo_save 5"
         }
       }
-    ]
+    ],
+    "description": "Chance to save ammo"
   },
   "rapid_fire_2": {
     "title": "Rapid Fire II",
@@ -394,7 +414,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+6% Attack Speed"
   },
   "scatter_shot_1": {
     "title": "Scatter Shot I",
@@ -411,7 +432,8 @@
           "command": "scoreboard players add @s icraft_aoe_splash 5"
         }
       }
-    ]
+    ],
+    "description": "Projectile splash damage"
   },
   "arrow_conserv_2": {
     "title": "Arrow Conservation II",
@@ -428,7 +450,8 @@
           "command": "scoreboard players add @s icraft_ammo_save 5"
         }
       }
-    ]
+    ],
+    "description": "Chance to save ammo"
   },
   "rapid_fire_3": {
     "title": "Rapid Fire III",
@@ -447,7 +470,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Attack Speed"
   },
   "scatter_shot_2": {
     "title": "Scatter Shot II",
@@ -464,7 +488,8 @@
           "command": "scoreboard players add @s icraft_aoe_splash 5"
         }
       }
-    ]
+    ],
+    "description": "Projectile splash damage"
   },
   "arrow_conserv_3": {
     "title": "Arrow Conservation III",
@@ -481,7 +506,8 @@
           "command": "scoreboard players add @s icraft_ammo_save 5"
         }
       }
-    ]
+    ],
+    "description": "Chance to save ammo"
   },
   "rapid_fire_4": {
     "title": "Rapid Fire IV",
@@ -500,7 +526,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Attack Speed"
   },
   "storm_of_arrows": {
     "title": "Storm of Arrows",
@@ -531,6 +558,7 @@
           "command": "scoreboard players add @s icraft_aoe_splash 10"
         }
       }
-    ]
+    ],
+    "description": "+15% Attack Speed, Chance to save ammo, Projectile splash damage"
   }
 }

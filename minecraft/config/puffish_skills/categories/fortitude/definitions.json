@@ -16,7 +16,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+2 Hearts"
   },
   "constitution_2": {
     "title": "Constitution II",
@@ -35,7 +36,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+2 Hearts"
   },
   "tough_skin_1": {
     "title": "Tough Skin I",
@@ -54,7 +56,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Damage Resistance"
   },
   "tough_skin_2": {
     "title": "Tough Skin II",
@@ -73,7 +76,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Damage Resistance"
   },
   "regeneration_1": {
     "title": "Regeneration I",
@@ -92,7 +96,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Healing"
   },
   "regeneration_2": {
     "title": "Regeneration II",
@@ -111,7 +116,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Healing"
   },
   "steady_footing_1": {
     "title": "Steady Footing I",
@@ -130,7 +136,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+15% Knockback Resistance"
   },
   "steady_footing_2": {
     "title": "Steady Footing II",
@@ -149,7 +156,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+15% Knockback Resistance"
   },
   "enduring_body_1": {
     "title": "Enduring Body I",
@@ -168,7 +176,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+3 Hearts"
   },
   "armor_mastery_1": {
     "title": "Armor Mastery I",
@@ -187,7 +196,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Armor Toughness"
   },
   "enduring_body_2": {
     "title": "Enduring Body II",
@@ -206,7 +216,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+3 Hearts"
   },
   "elem_resist_1": {
     "title": "Elemental Resistance I",
@@ -225,7 +236,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Damage Resistance"
   },
   "armor_mastery_2": {
     "title": "Armor Mastery II",
@@ -244,7 +256,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Armor Toughness"
   },
   "enduring_body_3": {
     "title": "Enduring Body III",
@@ -263,7 +276,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+4 Hearts"
   },
   "elem_resist_2": {
     "title": "Elemental Resistance II",
@@ -282,7 +296,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+4% Damage Resistance"
   },
   "armor_mastery_3": {
     "title": "Armor Mastery III",
@@ -301,7 +316,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Armor Toughness"
   },
   "enduring_body_4": {
     "title": "Enduring Body IV",
@@ -320,7 +336,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+4 Hearts"
   },
   "unbreakable": {
     "title": "Unbreakable",
@@ -355,7 +372,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5 Hearts, +2 Armor Toughness, +6% Damage Resistance"
   },
   "recovery_1": {
     "title": "Recovery I",
@@ -374,7 +392,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Healing"
   },
   "natural_regen_1": {
     "title": "Natural Regen I",
@@ -393,7 +412,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Natural Regeneration"
   },
   "recovery_2": {
     "title": "Recovery II",
@@ -412,7 +432,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+8% Healing"
   },
   "stamina_1": {
     "title": "Stamina I",
@@ -431,7 +452,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Stamina"
   },
   "natural_regen_2": {
     "title": "Natural Regen II",
@@ -450,7 +472,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+5% Natural Regeneration"
   },
   "recovery_3": {
     "title": "Recovery III",
@@ -469,7 +492,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Healing"
   },
   "stamina_2": {
     "title": "Stamina II",
@@ -488,7 +512,8 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+1 Stamina"
   },
   "natural_regen_3": {
     "title": "Natural Regen III",
@@ -507,7 +532,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Natural Regeneration"
   },
   "recovery_4": {
     "title": "Recovery IV",
@@ -526,7 +552,8 @@
           "operation": "multiply_base"
         }
       }
-    ]
+    ],
+    "description": "+10% Healing"
   },
   "undying": {
     "title": "Undying",
@@ -561,6 +588,7 @@
           "operation": "addition"
         }
       }
-    ]
+    ],
+    "description": "+15% Healing, +10% Natural Regeneration, +2 Stamina"
   }
 }
