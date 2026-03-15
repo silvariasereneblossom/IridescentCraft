@@ -175,7 +175,8 @@
         "icraft:loot/token_system",
         "icraft:loot/loot_boxes",
         "icraft:loot/gems",
-        "icraft:mods_t1/runic_grimoire"
+        "icraft:mods_t1/runic_grimoire",
+        "icraft:welcome/first_hour"
       ],
       "bookmarks": [],
       "completedManualQuests": []
