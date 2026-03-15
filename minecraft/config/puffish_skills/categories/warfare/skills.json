@@ -1,0 +1,569 @@
+{
+  "brute_force_1": {
+    "title": "Brute Force I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 0
+  },
+  "brute_force_2": {
+    "title": "Brute Force II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 1
+  },
+  "iron_grip_1": {
+    "title": "Iron Grip I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 2
+  },
+  "iron_grip_2": {
+    "title": "Iron Grip II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 3
+  },
+  "thick_hide_1": {
+    "title": "Thick Hide I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 4
+  },
+  "thick_hide_2": {
+    "title": "Thick Hide II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 5
+  },
+  "vigor_1": {
+    "title": "Vigor I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 2.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 6
+  },
+  "vigor_2": {
+    "title": "Vigor II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 2.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 7
+  },
+  "relentless_1": {
+    "title": "Relentless Strikes I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 8
+  },
+  "relentless_2": {
+    "title": "Relentless Strikes II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 9
+  },
+  "bloodlust_1": {
+    "title": "Bloodlust I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "apothic_attributes:life_steal",
+          "value": 0.01,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 10
+  },
+  "ferocity_1": {
+    "title": "Ferocity I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 11
+  },
+  "ferocity_2": {
+    "title": "Ferocity II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 12
+  },
+  "bloodlust_2": {
+    "title": "Bloodlust II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "apothic_attributes:life_steal",
+          "value": 0.02,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 13
+  },
+  "savage_blows_1": {
+    "title": "Savage Blows I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 14
+  },
+  "savage_blows_2": {
+    "title": "Savage Blows II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 15
+  },
+  "relentless_3": {
+    "title": "Relentless Strikes III",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 16
+  },
+  "bloodlust_3": {
+    "title": "Bloodlust III",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "apothic_attributes:life_steal",
+          "value": 0.02,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 17
+  },
+  "unending_fury": {
+    "title": "Unending Fury",
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "cost": 2,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:melee_damage",
+          "value": 0.15,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "apothic_attributes:life_steal",
+          "value": 0.05,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 18
+  },
+  "precision_1": {
+    "title": "Precision I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 8
+  },
+  "sword_mastery_1": {
+    "title": "Sword Mastery I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:sword_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 9
+  },
+  "axe_mastery_1": {
+    "title": "Axe Mastery I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:axe_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 10
+  },
+  "precision_2": {
+    "title": "Precision II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 11
+  },
+  "lethal_edge_1": {
+    "title": "Lethal Edge I",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "apothic_attributes:crit_damage",
+          "value": 0.08,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 12
+  },
+  "sword_mastery_2": {
+    "title": "Sword Mastery II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:sword_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 13
+  },
+  "axe_mastery_2": {
+    "title": "Axe Mastery II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:axe_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 14
+  },
+  "precision_3": {
+    "title": "Precision III",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 15
+  },
+  "lethal_edge_2": {
+    "title": "Lethal Edge II",
+    "icon": {
+      "item": "minecraft:iron_sword"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "apothic_attributes:crit_damage",
+          "value": 0.12,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 16
+  },
+  "perfect_strike": {
+    "title": "Perfect Strike",
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "cost": 2,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 2.0,
+          "operation": "addition"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "apothic_attributes:crit_damage",
+          "value": 0.2,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 17
+  }
+}

@@ -1,0 +1,110 @@
+[
+  {
+    "from": "constitution_1",
+    "to": "constitution_2"
+  },
+  {
+    "from": "constitution_2",
+    "to": "tough_skin_1"
+  },
+  {
+    "from": "tough_skin_1",
+    "to": "tough_skin_2"
+  },
+  {
+    "from": "tough_skin_2",
+    "to": "regeneration_1"
+  },
+  {
+    "from": "regeneration_1",
+    "to": "regeneration_2"
+  },
+  {
+    "from": "regeneration_2",
+    "to": "steady_footing_1"
+  },
+  {
+    "from": "steady_footing_1",
+    "to": "steady_footing_2"
+  },
+  {
+    "from": "steady_footing_2",
+    "to": "enduring_body_1"
+  },
+  {
+    "from": "enduring_body_1",
+    "to": "armor_mastery_1"
+  },
+  {
+    "from": "armor_mastery_1",
+    "to": "enduring_body_2"
+  },
+  {
+    "from": "enduring_body_2",
+    "to": "elem_resist_1"
+  },
+  {
+    "from": "elem_resist_1",
+    "to": "armor_mastery_2"
+  },
+  {
+    "from": "armor_mastery_2",
+    "to": "enduring_body_3"
+  },
+  {
+    "from": "enduring_body_3",
+    "to": "elem_resist_2"
+  },
+  {
+    "from": "elem_resist_2",
+    "to": "armor_mastery_3"
+  },
+  {
+    "from": "armor_mastery_3",
+    "to": "enduring_body_4"
+  },
+  {
+    "from": "enduring_body_4",
+    "to": "unbreakable"
+  },
+  {
+    "from": "steady_footing_2",
+    "to": "recovery_1"
+  },
+  {
+    "from": "recovery_1",
+    "to": "natural_regen_1"
+  },
+  {
+    "from": "natural_regen_1",
+    "to": "recovery_2"
+  },
+  {
+    "from": "recovery_2",
+    "to": "stamina_1"
+  },
+  {
+    "from": "stamina_1",
+    "to": "natural_regen_2"
+  },
+  {
+    "from": "natural_regen_2",
+    "to": "recovery_3"
+  },
+  {
+    "from": "recovery_3",
+    "to": "stamina_2"
+  },
+  {
+    "from": "stamina_2",
+    "to": "natural_regen_3"
+  },
+  {
+    "from": "natural_regen_3",
+    "to": "recovery_4"
+  },
+  {
+    "from": "recovery_4",
+    "to": "undying"
+  }
+]

@@ -1,0 +1,532 @@
+{
+  "efficient_miner_1": {
+    "title": "Efficient Miner I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:mining_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 0
+  },
+  "efficient_miner_2": {
+    "title": "Efficient Miner II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:mining_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 1
+  },
+  "sharp_axe_1": {
+    "title": "Sharp Axe I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:breaking_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 2
+  },
+  "sharp_axe_2": {
+    "title": "Sharp Axe II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:breaking_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 3
+  },
+  "green_thumb_1": {
+    "title": "Green Thumb I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crop_yield 5"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 4
+  },
+  "green_thumb_2": {
+    "title": "Green Thumb II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crop_yield 5"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 5
+  },
+  "lucky_strike_1": {
+    "title": "Lucky Strike I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 0.3,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 6
+  },
+  "lucky_strike_2": {
+    "title": "Lucky Strike II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 0.3,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 7
+  },
+  "deep_mining_1": {
+    "title": "Deep Mining I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:mining_speed",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 8
+  },
+  "ore_sense_1": {
+    "title": "Ore Sense I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 0.4,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 9
+  },
+  "deep_mining_2": {
+    "title": "Deep Mining II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:mining_speed",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 10
+  },
+  "yield_master_1": {
+    "title": "Yield Mastery I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_ore_processing 5"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 11
+  },
+  "ore_sense_2": {
+    "title": "Ore Sense II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 0.4,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 12
+  },
+  "deep_mining_3": {
+    "title": "Deep Mining III",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:mining_speed",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 13
+  },
+  "yield_master_2": {
+    "title": "Yield Mastery II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_ore_processing 5"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 14
+  },
+  "ore_sense_3": {
+    "title": "Ore Sense III",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 0.5,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 15
+  },
+  "deep_mining_4": {
+    "title": "Deep Mining IV",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:mining_speed",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 16
+  },
+  "motherlode": {
+    "title": "Motherlode",
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "cost": 2,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:mining_speed",
+          "value": 0.15,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.luck",
+          "value": 0.5,
+          "operation": "addition"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_ore_processing 5"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 17
+  },
+  "bountiful_1": {
+    "title": "Bountiful Harvest I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crop_yield 8"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 8
+  },
+  "fishers_touch_1": {
+    "title": "Fisher's Touch I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_fishing_speed 10"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 9
+  },
+  "bountiful_2": {
+    "title": "Bountiful Harvest II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crop_yield 8"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 10
+  },
+  "animal_whisp_1": {
+    "title": "Animal Whisperer I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_breeding_speed 10"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 11
+  },
+  "fishers_touch_2": {
+    "title": "Fisher's Touch II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_fishing_speed 10"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 12
+  },
+  "bountiful_3": {
+    "title": "Bountiful Harvest III",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crop_yield 10"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 13
+  },
+  "green_magic_1": {
+    "title": "Green Magic I",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_bonemeal_eff 5"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 14
+  },
+  "animal_whisp_2": {
+    "title": "Animal Whisperer II",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_breeding_speed 10"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 15
+  },
+  "bountiful_4": {
+    "title": "Bountiful Harvest IV",
+    "icon": {
+      "item": "minecraft:iron_pickaxe"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crop_yield 10"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 16
+  },
+  "natures_bounty": {
+    "title": "Nature's Bounty",
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "cost": 2,
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crop_yield 15"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_fishing_speed 10"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_breeding_speed 10"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 17
+  }
+}

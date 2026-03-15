@@ -1,0 +1,566 @@
+{
+  "constitution_1": {
+    "title": "Constitution I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 4.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 0
+  },
+  "constitution_2": {
+    "title": "Constitution II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 4.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 1
+  },
+  "tough_skin_1": {
+    "title": "Tough Skin I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 2
+  },
+  "tough_skin_2": {
+    "title": "Tough Skin II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 3
+  },
+  "regeneration_1": {
+    "title": "Regeneration I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 4
+  },
+  "regeneration_2": {
+    "title": "Regeneration II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 5
+  },
+  "steady_footing_1": {
+    "title": "Steady Footing I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.knockback_resistance",
+          "value": 0.15,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 6
+  },
+  "steady_footing_2": {
+    "title": "Steady Footing II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.knockback_resistance",
+          "value": 0.15,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 0,
+    "y": 7
+  },
+  "enduring_body_1": {
+    "title": "Enduring Body I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 6.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 8
+  },
+  "armor_mastery_1": {
+    "title": "Armor Mastery I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.armor_toughness",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 9
+  },
+  "enduring_body_2": {
+    "title": "Enduring Body II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 6.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 10
+  },
+  "elem_resist_1": {
+    "title": "Elemental Resistance I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 11
+  },
+  "armor_mastery_2": {
+    "title": "Armor Mastery II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.armor_toughness",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 12
+  },
+  "enduring_body_3": {
+    "title": "Enduring Body III",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 8.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 13
+  },
+  "elem_resist_2": {
+    "title": "Elemental Resistance II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:resistance",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 14
+  },
+  "armor_mastery_3": {
+    "title": "Armor Mastery III",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.armor_toughness",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 15
+  },
+  "enduring_body_4": {
+    "title": "Enduring Body IV",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 8.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 16
+  },
+  "unbreakable": {
+    "title": "Unbreakable",
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "cost": 2,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.max_health",
+          "value": 10.0,
+          "operation": "addition"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.armor_toughness",
+          "value": 2.0,
+          "operation": "addition"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:resistance",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": -2,
+    "y": 17
+  },
+  "recovery_1": {
+    "title": "Recovery I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 8
+  },
+  "natural_regen_1": {
+    "title": "Natural Regen I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:natural_regeneration",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 9
+  },
+  "recovery_2": {
+    "title": "Recovery II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 10
+  },
+  "stamina_1": {
+    "title": "Stamina I",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:stamina",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 11
+  },
+  "natural_regen_2": {
+    "title": "Natural Regen II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:natural_regeneration",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 12
+  },
+  "recovery_3": {
+    "title": "Recovery III",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 13
+  },
+  "stamina_2": {
+    "title": "Stamina II",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:stamina",
+          "value": 1.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 14
+  },
+  "natural_regen_3": {
+    "title": "Natural Regen III",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:natural_regeneration",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 15
+  },
+  "recovery_4": {
+    "title": "Recovery IV",
+    "icon": {
+      "item": "minecraft:iron_chestplate"
+    },
+    "cost": 1,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 16
+  },
+  "undying": {
+    "title": "Undying",
+    "icon": {
+      "item": "minecraft:nether_star"
+    },
+    "cost": 2,
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:healing",
+          "value": 0.15,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:natural_regeneration",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:stamina",
+          "value": 2.0,
+          "operation": "addition"
+        }
+      }
+    ],
+    "x": 2,
+    "y": 17
+  }
+}

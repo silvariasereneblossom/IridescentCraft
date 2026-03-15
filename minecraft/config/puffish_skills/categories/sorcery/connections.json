@@ -1,0 +1,110 @@
+[
+  {
+    "from": "arcane_power_1",
+    "to": "arcane_power_2"
+  },
+  {
+    "from": "arcane_power_2",
+    "to": "mana_flow_1"
+  },
+  {
+    "from": "mana_flow_1",
+    "to": "mana_flow_2"
+  },
+  {
+    "from": "mana_flow_2",
+    "to": "spell_haste_1"
+  },
+  {
+    "from": "spell_haste_1",
+    "to": "spell_haste_2"
+  },
+  {
+    "from": "spell_haste_2",
+    "to": "arcane_shield_1"
+  },
+  {
+    "from": "arcane_shield_1",
+    "to": "arcane_shield_2"
+  },
+  {
+    "from": "arcane_shield_2",
+    "to": "overwhelming_1"
+  },
+  {
+    "from": "overwhelming_1",
+    "to": "arcane_pen_1"
+  },
+  {
+    "from": "arcane_pen_1",
+    "to": "overwhelming_2"
+  },
+  {
+    "from": "overwhelming_2",
+    "to": "mana_eff_1"
+  },
+  {
+    "from": "mana_eff_1",
+    "to": "arcane_pen_2"
+  },
+  {
+    "from": "arcane_pen_2",
+    "to": "overwhelming_3"
+  },
+  {
+    "from": "overwhelming_3",
+    "to": "mana_eff_2"
+  },
+  {
+    "from": "mana_eff_2",
+    "to": "arcane_pen_3"
+  },
+  {
+    "from": "arcane_pen_3",
+    "to": "overwhelming_4"
+  },
+  {
+    "from": "overwhelming_4",
+    "to": "arcane_supremacy"
+  },
+  {
+    "from": "arcane_shield_2",
+    "to": "restorative_1"
+  },
+  {
+    "from": "restorative_1",
+    "to": "minion_master_1"
+  },
+  {
+    "from": "minion_master_1",
+    "to": "restorative_2"
+  },
+  {
+    "from": "restorative_2",
+    "to": "ext_influence_1"
+  },
+  {
+    "from": "ext_influence_1",
+    "to": "minion_master_2"
+  },
+  {
+    "from": "minion_master_2",
+    "to": "soul_bond_1"
+  },
+  {
+    "from": "soul_bond_1",
+    "to": "restorative_3"
+  },
+  {
+    "from": "restorative_3",
+    "to": "minion_master_3"
+  },
+  {
+    "from": "minion_master_3",
+    "to": "ext_influence_2"
+  },
+  {
+    "from": "ext_influence_2",
+    "to": "grand_enchantment"
+  }
+]

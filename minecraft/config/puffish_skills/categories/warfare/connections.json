@@ -1,0 +1,114 @@
+[
+  {
+    "from": "brute_force_1",
+    "to": "brute_force_2"
+  },
+  {
+    "from": "brute_force_2",
+    "to": "iron_grip_1"
+  },
+  {
+    "from": "iron_grip_1",
+    "to": "iron_grip_2"
+  },
+  {
+    "from": "iron_grip_2",
+    "to": "thick_hide_1"
+  },
+  {
+    "from": "thick_hide_1",
+    "to": "thick_hide_2"
+  },
+  {
+    "from": "thick_hide_2",
+    "to": "vigor_1"
+  },
+  {
+    "from": "vigor_1",
+    "to": "vigor_2"
+  },
+  {
+    "from": "vigor_2",
+    "to": "relentless_1"
+  },
+  {
+    "from": "relentless_1",
+    "to": "relentless_2"
+  },
+  {
+    "from": "relentless_2",
+    "to": "bloodlust_1"
+  },
+  {
+    "from": "bloodlust_1",
+    "to": "ferocity_1"
+  },
+  {
+    "from": "ferocity_1",
+    "to": "ferocity_2"
+  },
+  {
+    "from": "ferocity_2",
+    "to": "bloodlust_2"
+  },
+  {
+    "from": "bloodlust_2",
+    "to": "savage_blows_1"
+  },
+  {
+    "from": "savage_blows_1",
+    "to": "savage_blows_2"
+  },
+  {
+    "from": "savage_blows_2",
+    "to": "relentless_3"
+  },
+  {
+    "from": "relentless_3",
+    "to": "bloodlust_3"
+  },
+  {
+    "from": "bloodlust_3",
+    "to": "unending_fury"
+  },
+  {
+    "from": "vigor_2",
+    "to": "precision_1"
+  },
+  {
+    "from": "precision_1",
+    "to": "sword_mastery_1"
+  },
+  {
+    "from": "sword_mastery_1",
+    "to": "axe_mastery_1"
+  },
+  {
+    "from": "axe_mastery_1",
+    "to": "precision_2"
+  },
+  {
+    "from": "precision_2",
+    "to": "lethal_edge_1"
+  },
+  {
+    "from": "lethal_edge_1",
+    "to": "sword_mastery_2"
+  },
+  {
+    "from": "sword_mastery_2",
+    "to": "axe_mastery_2"
+  },
+  {
+    "from": "axe_mastery_2",
+    "to": "precision_3"
+  },
+  {
+    "from": "precision_3",
+    "to": "lethal_edge_2"
+  },
+  {
+    "from": "lethal_edge_2",
+    "to": "perfect_strike"
+  }
+]
