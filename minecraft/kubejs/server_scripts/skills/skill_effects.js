@@ -305,6 +305,185 @@ ServerEvents.tick(event => {
       }
     })
   }
+
+  // ── Every 10 seconds: Crafting Speed (Speed/Haste near crafting stations) ──
+  if (tick % 200 === 75) {
+    event.server.players.forEach(player => {
+      if (player.spectator || player.creative) return
+      let score = getScore(event.server, player.username, 'icraft_crafting_speed')
+      if (score <= 0) return
+
+      let pos = player.blockPosition()
+      let nearStation = false
+      for (let dx = -3; dx <= 3 && !nearStation; dx++) {
+        for (let dz = -3; dz <= 3 && !nearStation; dz++) {
+          let block = player.level.getBlock(pos.x + dx, pos.y, pos.z + dz)
+          if (block && (block.id.includes('crafting_table') ||
+              block.id.includes('anvil') ||
+              block.id.includes('smithing_table'))) {
+            nearStation = true
+          }
+        }
+      }
+      if (nearStation) {
+        // Speed I for 15 seconds (300 ticks)
+        player.potionEffects.add('minecraft:speed', 300, 0, false, true)
+        // Higher skill also grants Haste I
+        if (score >= 10) {
+          player.potionEffects.add('minecraft:haste', 300, 0, false, true)
+        }
+      }
+    })
+  }
+
+  // ── Every 10 seconds: Machine Speed (Haste near mod machines) ──
+  if (tick % 200 === 125) {
+    event.server.players.forEach(player => {
+      if (player.spectator || player.creative) return
+      let score = getScore(event.server, player.username, 'icraft_machine_speed')
+      if (score <= 0) return
+
+      let pos = player.blockPosition()
+      let nearMachine = false
+      let machineKeys = ['machine','smelter','furnace','crusher','press',
+        'pulverizer','enrichment','grinder']
+      for (let dx = -3; dx <= 3 && !nearMachine; dx++) {
+        for (let dz = -3; dz <= 3 && !nearMachine; dz++) {
+          let block = player.level.getBlock(pos.x + dx, pos.y, pos.z + dz)
+          if (block && machineKeys.some(k => block.id.includes(k))) {
+            nearMachine = true
+          }
+        }
+      }
+      if (nearMachine) {
+        let amp = score >= 20 ? 1 : 0  // Haste II if score >= 20, else Haste I
+        player.potionEffects.add('minecraft:haste', 300, amp, false, true)
+      }
+    })
+  }
+
+  // ── Every 60 seconds: RF Generation (XP reward near power blocks) ──
+  if (tick % 1200 === 300) {
+    event.server.players.forEach(player => {
+      if (player.spectator || player.creative) return
+      let score = getScore(event.server, player.username, 'icraft_rf_generation')
+      if (score <= 0) return
+
+      let pos = player.blockPosition()
+      let nearGenerator = false
+      let genKeys = ['generator','dynamo','solar','turbine','reactor']
+      for (let dx = -3; dx <= 3 && !nearGenerator; dx++) {
+        for (let dz = -3; dz <= 3 && !nearGenerator; dz++) {
+          let block = player.level.getBlock(pos.x + dx, pos.y, pos.z + dz)
+          if (block && genKeys.some(k => block.id.includes(k))) {
+            nearGenerator = true
+          }
+        }
+      }
+      if (nearGenerator) {
+        let xpReward = Math.max(1, Math.floor(score / 5))
+        player.giveExperiencePoints(xpReward)
+        // Particle feedback
+        event.server.runCommandSilent(
+          `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0 8 force ${player.username}`
+        )
+      }
+    })
+  }
+
+  // ── Every 30 seconds: Fuel Reduction (coal rebate near furnaces) ──
+  if (tick % 600 === 350) {
+    event.server.players.forEach(player => {
+      if (player.spectator || player.creative) return
+      let score = getScore(event.server, player.username, 'icraft_fuel_reduction')
+      if (score <= 0) return
+
+      let pos = player.blockPosition()
+      let nearFurnace = false
+      let furnaceKeys = ['furnace','smelter','blast_furnace']
+      for (let dx = -3; dx <= 3 && !nearFurnace; dx++) {
+        for (let dz = -3; dz <= 3 && !nearFurnace; dz++) {
+          let block = player.level.getBlock(pos.x + dx, pos.y, pos.z + dz)
+          if (block && furnaceKeys.some(k => block.id.includes(k))) {
+            nearFurnace = true
+          }
+        }
+      }
+      if (nearFurnace) {
+        let coalCount = Math.min(3, Math.max(1, Math.floor(score / 10)))
+        player.give(Item.of('minecraft:coal', coalCount))
+      }
+    })
+  }
+
+  // ── Every 30 seconds: Material Save (chance for bonus material near crafting) ──
+  if (tick % 600 === 450) {
+    event.server.players.forEach(player => {
+      if (player.spectator || player.creative) return
+      let score = getScore(event.server, player.username, 'icraft_material_save')
+      if (score <= 0) return
+
+      let pos = player.blockPosition()
+      let nearCrafting = false
+      for (let dx = -3; dx <= 3 && !nearCrafting; dx++) {
+        for (let dz = -3; dz <= 3 && !nearCrafting; dz++) {
+          let block = player.level.getBlock(pos.x + dx, pos.y, pos.z + dz)
+          if (block && (block.id.includes('crafting_table') ||
+              block.id.includes('anvil') ||
+              block.id.includes('smithing_table'))) {
+            nearCrafting = true
+          }
+        }
+      }
+      if (nearCrafting && Math.random() * 100 < score) {
+        let materials = [
+          'minecraft:iron_nugget', 'minecraft:copper_ingot', 'minecraft:string',
+          'minecraft:leather', 'minecraft:flint', 'minecraft:gold_nugget',
+          'minecraft:redstone', 'minecraft:clay_ball', 'minecraft:coal',
+          'minecraft:stick'
+        ]
+        let pick = materials[Math.floor(Math.random() * materials.length)]
+        player.give(Item.of(pick))
+      }
+    })
+  }
+
+  // ── Every 60 seconds: Craft Bonus (chance for bonus component near stations) ──
+  if (tick % 1200 === 600) {
+    event.server.players.forEach(player => {
+      if (player.spectator || player.creative) return
+      let score = getScore(event.server, player.username, 'icraft_craft_bonus')
+      if (score <= 0) return
+
+      let pos = player.blockPosition()
+      let nearStation = false
+      for (let dx = -3; dx <= 3 && !nearStation; dx++) {
+        for (let dz = -3; dz <= 3 && !nearStation; dz++) {
+          let block = player.level.getBlock(pos.x + dx, pos.y, pos.z + dz)
+          if (block && (block.id.includes('crafting_table') ||
+              block.id.includes('anvil') ||
+              block.id.includes('smithing_table') ||
+              block.id.includes('stonecutter'))) {
+            nearStation = true
+          }
+        }
+      }
+      if (nearStation && Math.random() * 100 < score) {
+        let components = [
+          'minecraft:stick', 'minecraft:oak_planks', 'minecraft:iron_ingot',
+          'minecraft:copper_ingot', 'minecraft:glass', 'minecraft:paper',
+          'minecraft:slime_ball', 'minecraft:bone', 'minecraft:gunpowder',
+          'minecraft:lapis_lazuli'
+        ]
+        let pick = components[Math.floor(Math.random() * components.length)]
+        player.give(Item.of(pick))
+        // Feedback particle
+        event.server.runCommandSilent(
+          `particle minecraft:composter ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.3 0.3 0 5 force ${player.username}`
+        )
+      }
+    })
+  }
 })
 
 
@@ -316,11 +495,13 @@ ServerEvents.tick(event => {
 //    breeding_speed
 // ⚡ PROXIED (4): accuracy→ranged_damage, mana_regen→irons:mana_regen,
 //    cast_speed→irons:cooldown_reduction, mana_cost→irons:spell_power
-// 🔶 APPROXIMATED (2): fishing_speed→Lure enchant, enchant_cost→XP grant
-// 📊 INFORMATIONAL (6): crafting_speed, machine_speed, rf_generation,
-//    fuel_reduction, material_save, craft_bonus
-//    (Scoreboard values tracked; actual effect needs per-mod config or
-//     Forge events not accessible via KubeJS)
+// 🔶 APPROXIMATED (8): fishing_speed→Lure enchant, enchant_cost→XP grant,
+//    crafting_speed→Speed/Haste near stations,
+//    machine_speed→Haste near machines,
+//    rf_generation→XP near generators,
+//    fuel_reduction→coal rebate near furnaces,
+//    material_save→random material near crafting,
+//    craft_bonus→random component near stations
 // ═══════════════════════════════════════════════════════════════════════════
 
-console.log('[IridescentCraft] skill_effects.js Phase 2 loaded — 16 active effects, 6 informational')
+console.log('[IridescentCraft] skill_effects.js Phase 2 loaded — 22 active effects')
