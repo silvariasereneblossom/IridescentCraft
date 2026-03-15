@@ -21,6 +21,10 @@
 //
 // NOTE: Milestones grant TIER ACCESS ONLY. No skill points, no loot boxes.
 // Those are quest-book-exclusive rewards.
+//
+// Uses AStages API:
+//   AStages.playerHasStage('stage', player) — check stage
+//   AStages.addStageToPlayer('stage', player) — grant stage
 // =============================================================================
 
 // ---- TIER 2 BOSS KILLS ----
@@ -87,17 +91,17 @@ EntityEvents.death(event => {
   const entityId = entity.type.toString()
 
   // Check Tier 2
-  if (!player.stages.has('tier_2') && TIER_2_BOSSES.includes(entityId)) {
+  if (!AStages.playerHasStage('tier_2', player) && TIER_2_BOSSES.includes(entityId)) {
     grantTier(player, 'tier_2', entity.name.string)
   }
 
   // Check Tier 3
-  if (!player.stages.has('tier_3') && TIER_3_BOSSES.includes(entityId)) {
+  if (!AStages.playerHasStage('tier_3', player) && TIER_3_BOSSES.includes(entityId)) {
     grantTier(player, 'tier_3', entity.name.string)
   }
 
   // Check Tier 4
-  if (!player.stages.has('tier_4') && TIER_4_BOSSES.includes(entityId)) {
+  if (!AStages.playerHasStage('tier_4', player) && TIER_4_BOSSES.includes(entityId)) {
     grantTier(player, 'tier_4', entity.name.string)
   }
 })
@@ -116,7 +120,7 @@ PlayerEvents.inventoryChanged(event => {
   const itemId = event.item.id
   const requiredTier = TIER_CRAFT_TRIGGERS[itemId]
 
-  if (requiredTier && !event.player.stages.has(requiredTier)) {
+  if (requiredTier && !AStages.playerHasStage(requiredTier, event.player)) {
     grantTier(event.player, requiredTier, event.item.hoverName.string)
   }
 })
@@ -147,7 +151,7 @@ PlayerEvents.tick(event => {
   const dim = player.level.dimension.toString()
 
   // Track T2 dimension visits
-  if (!player.stages.has('tier_2')) {
+  if (!AStages.playerHasStage('tier_2', player)) {
     if (dim === 'twilightforest:twilight_forest') {
       player.server.runCommandSilent(`scoreboard players set ${player.username} icraft_visited_twilight 1`)
     }
@@ -169,7 +173,7 @@ PlayerEvents.tick(event => {
   }
 
   // Track T3 dimension visits
-  if (!player.stages.has('tier_3')) {
+  if (!AStages.playerHasStage('tier_3', player)) {
     if (dim === 'undergarden:undergarden') {
       player.server.runCommandSilent(`scoreboard players set ${player.username} icraft_visited_undergarden 1`)
     }
@@ -196,7 +200,6 @@ function checkAllDimensionsVisited(player, tier, scoreboards) {
   for (let sb of scoreboards) {
     // Set persistent data when scoreboard is set
     let dimKey = sb.replace('icraft_visited_', '')
-    let dim = player.level.dimension.toString()
 
     // Check if this specific dimension was visited
     if (!pdata.getBoolean(`icraft_dim_${dimKey}`)) {
@@ -239,17 +242,17 @@ function checkAllDimensionsVisited(player, tier, scoreboards) {
 
 function grantTier(player, tier, triggerName) {
   // Prevent double-granting
-  if (player.stages.has(tier)) return
+  if (AStages.playerHasStage(tier, player)) return
 
   // Grant via AStages
-  player.stages.add(tier)
+  AStages.addStageToPlayer(tier, player)
 
   // Also grant all lower tiers (safety net)
   const tiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
   const targetIdx = tiers.indexOf(tier)
   for (let i = 0; i <= targetIdx; i++) {
-    if (!player.stages.has(tiers[i])) {
-      player.stages.add(tiers[i])
+    if (!AStages.playerHasStage(tiers[i], player)) {
+      AStages.addStageToPlayer(tiers[i], player)
     }
   }
 
@@ -292,8 +295,8 @@ function grantTier(player, tier, triggerName) {
 // =============================================================================
 
 PlayerEvents.loggedIn(event => {
-  if (!event.player.stages.has('tier_1')) {
-    event.player.stages.add('tier_1')
+  if (!AStages.playerHasStage('tier_1', event.player)) {
+    AStages.addStageToPlayer('tier_1', event.player)
     console.log(`[IridescentCraft] Granted tier_1 to new player: ${event.player.username}`)
   }
 })

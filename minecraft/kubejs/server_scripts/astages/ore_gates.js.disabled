@@ -9,6 +9,9 @@
 //
 // AStages ore restriction replaces the block visually AND functionally
 // for players who lack the stage. The block reverts when stage is gained.
+//
+// API: AStages.addRestrictionForOre(id, stage, blockState, replacementBlockState)
+//      BlockState objects obtained via Block.getBlock(id).defaultBlockState()
 // =============================================================================
 
 // =========================================================================
@@ -27,14 +30,14 @@
 // =========================================================================
 
 // Overworld diamond ore → stone until tier_3
-AStages.addRestrictionForOre("modpack/ore_diamond", "tier_3",
-    Blocks.DIAMOND_ORE.defaultBlockState(),
-    Blocks.STONE.defaultBlockState()
+AStages.addRestrictionForOre('modpack/ore_diamond', 'tier_3',
+    Block.getBlock('minecraft:diamond_ore').defaultBlockState(),
+    Block.getBlock('minecraft:stone').defaultBlockState()
 )
 
-AStages.addRestrictionForOre("modpack/ore_diamond_deep", "tier_3",
-    Blocks.DEEPSLATE_DIAMOND_ORE.defaultBlockState(),
-    Blocks.DEEPSLATE.defaultBlockState()
+AStages.addRestrictionForOre('modpack/ore_diamond_deep', 'tier_3',
+    Block.getBlock('minecraft:deepslate_diamond_ore').defaultBlockState(),
+    Block.getBlock('minecraft:deepslate').defaultBlockState()
 )
 
 // =========================================================================
@@ -48,14 +51,14 @@ AStages.addRestrictionForOre("modpack/ore_diamond_deep", "tier_3",
 // but shouldn't be available until a certain tier, add them here. Examples:
 //
 // Osmium (Mekanism) — spawns in overworld but is a Tier 3 material
-// AStages.addRestrictionForOre("modpack/ore_osmium", "tier_3",
-//     Blocks.getBlock("mekanism:osmium_ore").defaultBlockState(),
-//     Blocks.STONE.defaultBlockState()
+// AStages.addRestrictionForOre('modpack/ore_osmium', 'tier_3',
+//     Block.getBlock('mekanism:osmium_ore').defaultBlockState(),
+//     Block.getBlock('minecraft:stone').defaultBlockState()
 // )
 //
-// AStages.addRestrictionForOre("modpack/ore_osmium_deep", "tier_3",
-//     Blocks.getBlock("mekanism:deepslate_osmium_ore").defaultBlockState(),
-//     Blocks.DEEPSLATE.defaultBlockState()
+// AStages.addRestrictionForOre('modpack/ore_osmium_deep', 'tier_3',
+//     Block.getBlock('mekanism:deepslate_osmium_ore').defaultBlockState(),
+//     Block.getBlock('minecraft:deepslate').defaultBlockState()
 // )
 //
 // IMPORTANT: Uncomment and test these — block IDs must be verified in-game
