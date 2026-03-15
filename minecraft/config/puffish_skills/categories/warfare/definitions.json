@@ -199,11 +199,9 @@
     },
     "rewards": [
       {
-        "type": "puffish_skills:attribute",
+        "type": "puffish_skills:command",
         "data": {
-          "attribute": "apothic_attributes:life_steal",
-          "value": 0.01,
-          "operation": "addition"
+          "command": "scoreboard players add @s icraft_lifesteal 1"
         }
       }
     ]
@@ -256,11 +254,9 @@
     },
     "rewards": [
       {
-        "type": "puffish_skills:attribute",
+        "type": "puffish_skills:command",
         "data": {
-          "attribute": "apothic_attributes:life_steal",
-          "value": 0.02,
-          "operation": "addition"
+          "command": "scoreboard players add @s icraft_lifesteal 2"
         }
       }
     ]
@@ -332,11 +328,9 @@
     },
     "rewards": [
       {
-        "type": "puffish_skills:attribute",
+        "type": "puffish_skills:command",
         "data": {
-          "attribute": "apothic_attributes:life_steal",
-          "value": 0.02,
-          "operation": "addition"
+          "command": "scoreboard players add @s icraft_lifesteal 2"
         }
       }
     ]
@@ -359,11 +353,9 @@
         }
       },
       {
-        "type": "puffish_skills:attribute",
+        "type": "puffish_skills:command",
         "data": {
-          "attribute": "apothic_attributes:life_steal",
-          "value": 0.05,
-          "operation": "addition"
+          "command": "scoreboard players add @s icraft_lifesteal 5"
         }
       }
     ]
@@ -454,11 +446,9 @@
     },
     "rewards": [
       {
-        "type": "puffish_skills:attribute",
+        "type": "puffish_skills:command",
         "data": {
-          "attribute": "apothic_attributes:crit_damage",
-          "value": 0.08,
-          "operation": "addition"
+          "command": "scoreboard players add @s icraft_crit_damage 8"
         }
       }
     ]
@@ -530,11 +520,9 @@
     },
     "rewards": [
       {
-        "type": "puffish_skills:attribute",
+        "type": "puffish_skills:command",
         "data": {
-          "attribute": "apothic_attributes:crit_damage",
-          "value": 0.12,
-          "operation": "addition"
+          "command": "scoreboard players add @s icraft_crit_damage 12"
         }
       }
     ]
@@ -557,11 +545,9 @@
         }
       },
       {
-        "type": "puffish_skills:attribute",
+        "type": "puffish_skills:command",
         "data": {
-          "attribute": "apothic_attributes:crit_damage",
-          "value": 0.2,
-          "operation": "addition"
+          "command": "scoreboard players add @s icraft_crit_damage 20"
         }
       }
     ]

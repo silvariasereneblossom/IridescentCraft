@@ -1,110 +1,110 @@
 [
-  {
-    "from": "quick_hands_1",
-    "to": "quick_hands_2"
-  },
-  {
-    "from": "quick_hands_2",
-    "to": "resource_saver_1"
-  },
-  {
-    "from": "resource_saver_1",
-    "to": "resource_saver_2"
-  },
-  {
-    "from": "resource_saver_2",
-    "to": "machine_eff_1"
-  },
-  {
-    "from": "machine_eff_1",
-    "to": "machine_eff_2"
-  },
-  {
-    "from": "machine_eff_2",
-    "to": "tool_care_1"
-  },
-  {
-    "from": "tool_care_1",
-    "to": "tool_care_2"
-  },
-  {
-    "from": "tool_care_2",
-    "to": "master_touch_1"
-  },
-  {
-    "from": "master_touch_1",
-    "to": "ench_insight_1"
-  },
-  {
-    "from": "ench_insight_1",
-    "to": "master_touch_2"
-  },
-  {
-    "from": "master_touch_2",
-    "to": "repair_master_1"
-  },
-  {
-    "from": "repair_master_1",
-    "to": "ench_insight_2"
-  },
-  {
-    "from": "ench_insight_2",
-    "to": "master_touch_3"
-  },
-  {
-    "from": "master_touch_3",
-    "to": "repair_master_2"
-  },
-  {
-    "from": "repair_master_2",
-    "to": "ench_insight_3"
-  },
-  {
-    "from": "ench_insight_3",
-    "to": "master_touch_4"
-  },
-  {
-    "from": "master_touch_4",
-    "to": "grand_artificer"
-  },
-  {
-    "from": "tool_care_2",
-    "to": "overclock_1"
-  },
-  {
-    "from": "overclock_1",
-    "to": "power_surge_1"
-  },
-  {
-    "from": "power_surge_1",
-    "to": "overclock_2"
-  },
-  {
-    "from": "overclock_2",
-    "to": "fuel_eff_1"
-  },
-  {
-    "from": "fuel_eff_1",
-    "to": "power_surge_2"
-  },
-  {
-    "from": "power_surge_2",
-    "to": "overclock_3"
-  },
-  {
-    "from": "overclock_3",
-    "to": "fuel_eff_2"
-  },
-  {
-    "from": "fuel_eff_2",
-    "to": "power_surge_3"
-  },
-  {
-    "from": "power_surge_3",
-    "to": "overclock_4"
-  },
-  {
-    "from": "overclock_4",
-    "to": "master_engineer"
-  }
+  [
+    "quick_hands_1",
+    "quick_hands_2"
+  ],
+  [
+    "quick_hands_2",
+    "resource_saver_1"
+  ],
+  [
+    "resource_saver_1",
+    "resource_saver_2"
+  ],
+  [
+    "resource_saver_2",
+    "machine_eff_1"
+  ],
+  [
+    "machine_eff_1",
+    "machine_eff_2"
+  ],
+  [
+    "machine_eff_2",
+    "tool_care_1"
+  ],
+  [
+    "tool_care_1",
+    "tool_care_2"
+  ],
+  [
+    "tool_care_2",
+    "master_touch_1"
+  ],
+  [
+    "master_touch_1",
+    "ench_insight_1"
+  ],
+  [
+    "ench_insight_1",
+    "master_touch_2"
+  ],
+  [
+    "master_touch_2",
+    "repair_master_1"
+  ],
+  [
+    "repair_master_1",
+    "ench_insight_2"
+  ],
+  [
+    "ench_insight_2",
+    "master_touch_3"
+  ],
+  [
+    "master_touch_3",
+    "repair_master_2"
+  ],
+  [
+    "repair_master_2",
+    "ench_insight_3"
+  ],
+  [
+    "ench_insight_3",
+    "master_touch_4"
+  ],
+  [
+    "master_touch_4",
+    "grand_artificer"
+  ],
+  [
+    "tool_care_2",
+    "overclock_1"
+  ],
+  [
+    "overclock_1",
+    "power_surge_1"
+  ],
+  [
+    "power_surge_1",
+    "overclock_2"
+  ],
+  [
+    "overclock_2",
+    "fuel_eff_1"
+  ],
+  [
+    "fuel_eff_1",
+    "power_surge_2"
+  ],
+  [
+    "power_surge_2",
+    "overclock_3"
+  ],
+  [
+    "overclock_3",
+    "fuel_eff_2"
+  ],
+  [
+    "fuel_eff_2",
+    "power_surge_3"
+  ],
+  [
+    "power_surge_3",
+    "overclock_4"
+  ],
+  [
+    "overclock_4",
+    "master_engineer"
+  ]
 ]

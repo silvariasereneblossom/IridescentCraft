@@ -1,110 +1,110 @@
 [
-  {
-    "from": "steady_aim_1",
-    "to": "steady_aim_2"
-  },
-  {
-    "from": "steady_aim_2",
-    "to": "quick_hands_1"
-  },
-  {
-    "from": "quick_hands_1",
-    "to": "quick_hands_2"
-  },
-  {
-    "from": "quick_hands_2",
-    "to": "hawk_eye_1"
-  },
-  {
-    "from": "hawk_eye_1",
-    "to": "hawk_eye_2"
-  },
-  {
-    "from": "hawk_eye_2",
-    "to": "nimble_1"
-  },
-  {
-    "from": "nimble_1",
-    "to": "nimble_2"
-  },
-  {
-    "from": "nimble_2",
-    "to": "steady_shot_1"
-  },
-  {
-    "from": "steady_shot_1",
-    "to": "penetration_1"
-  },
-  {
-    "from": "penetration_1",
-    "to": "steady_shot_2"
-  },
-  {
-    "from": "steady_shot_2",
-    "to": "kill_shot_1"
-  },
-  {
-    "from": "kill_shot_1",
-    "to": "penetration_2"
-  },
-  {
-    "from": "penetration_2",
-    "to": "steady_shot_3"
-  },
-  {
-    "from": "steady_shot_3",
-    "to": "kill_shot_2"
-  },
-  {
-    "from": "kill_shot_2",
-    "to": "penetration_3"
-  },
-  {
-    "from": "penetration_3",
-    "to": "steady_shot_4"
-  },
-  {
-    "from": "steady_shot_4",
-    "to": "deadeye"
-  },
-  {
-    "from": "nimble_2",
-    "to": "rapid_fire_1"
-  },
-  {
-    "from": "rapid_fire_1",
-    "to": "arrow_conserv_1"
-  },
-  {
-    "from": "arrow_conserv_1",
-    "to": "rapid_fire_2"
-  },
-  {
-    "from": "rapid_fire_2",
-    "to": "scatter_shot_1"
-  },
-  {
-    "from": "scatter_shot_1",
-    "to": "arrow_conserv_2"
-  },
-  {
-    "from": "arrow_conserv_2",
-    "to": "rapid_fire_3"
-  },
-  {
-    "from": "rapid_fire_3",
-    "to": "scatter_shot_2"
-  },
-  {
-    "from": "scatter_shot_2",
-    "to": "arrow_conserv_3"
-  },
-  {
-    "from": "arrow_conserv_3",
-    "to": "rapid_fire_4"
-  },
-  {
-    "from": "rapid_fire_4",
-    "to": "storm_of_arrows"
-  }
+  [
+    "steady_aim_1",
+    "steady_aim_2"
+  ],
+  [
+    "steady_aim_2",
+    "quick_hands_1"
+  ],
+  [
+    "quick_hands_1",
+    "quick_hands_2"
+  ],
+  [
+    "quick_hands_2",
+    "hawk_eye_1"
+  ],
+  [
+    "hawk_eye_1",
+    "hawk_eye_2"
+  ],
+  [
+    "hawk_eye_2",
+    "nimble_1"
+  ],
+  [
+    "nimble_1",
+    "nimble_2"
+  ],
+  [
+    "nimble_2",
+    "steady_shot_1"
+  ],
+  [
+    "steady_shot_1",
+    "penetration_1"
+  ],
+  [
+    "penetration_1",
+    "steady_shot_2"
+  ],
+  [
+    "steady_shot_2",
+    "kill_shot_1"
+  ],
+  [
+    "kill_shot_1",
+    "penetration_2"
+  ],
+  [
+    "penetration_2",
+    "steady_shot_3"
+  ],
+  [
+    "steady_shot_3",
+    "kill_shot_2"
+  ],
+  [
+    "kill_shot_2",
+    "penetration_3"
+  ],
+  [
+    "penetration_3",
+    "steady_shot_4"
+  ],
+  [
+    "steady_shot_4",
+    "deadeye"
+  ],
+  [
+    "nimble_2",
+    "rapid_fire_1"
+  ],
+  [
+    "rapid_fire_1",
+    "arrow_conserv_1"
+  ],
+  [
+    "arrow_conserv_1",
+    "rapid_fire_2"
+  ],
+  [
+    "rapid_fire_2",
+    "scatter_shot_1"
+  ],
+  [
+    "scatter_shot_1",
+    "arrow_conserv_2"
+  ],
+  [
+    "arrow_conserv_2",
+    "rapid_fire_3"
+  ],
+  [
+    "rapid_fire_3",
+    "scatter_shot_2"
+  ],
+  [
+    "scatter_shot_2",
+    "arrow_conserv_3"
+  ],
+  [
+    "arrow_conserv_3",
+    "rapid_fire_4"
+  ],
+  [
+    "rapid_fire_4",
+    "storm_of_arrows"
+  ]
 ]

@@ -1,110 +1,110 @@
 [
-  {
-    "from": "efficient_miner_1",
-    "to": "efficient_miner_2"
-  },
-  {
-    "from": "efficient_miner_2",
-    "to": "sharp_axe_1"
-  },
-  {
-    "from": "sharp_axe_1",
-    "to": "sharp_axe_2"
-  },
-  {
-    "from": "sharp_axe_2",
-    "to": "green_thumb_1"
-  },
-  {
-    "from": "green_thumb_1",
-    "to": "green_thumb_2"
-  },
-  {
-    "from": "green_thumb_2",
-    "to": "lucky_strike_1"
-  },
-  {
-    "from": "lucky_strike_1",
-    "to": "lucky_strike_2"
-  },
-  {
-    "from": "lucky_strike_2",
-    "to": "deep_mining_1"
-  },
-  {
-    "from": "deep_mining_1",
-    "to": "ore_sense_1"
-  },
-  {
-    "from": "ore_sense_1",
-    "to": "deep_mining_2"
-  },
-  {
-    "from": "deep_mining_2",
-    "to": "yield_master_1"
-  },
-  {
-    "from": "yield_master_1",
-    "to": "ore_sense_2"
-  },
-  {
-    "from": "ore_sense_2",
-    "to": "deep_mining_3"
-  },
-  {
-    "from": "deep_mining_3",
-    "to": "yield_master_2"
-  },
-  {
-    "from": "yield_master_2",
-    "to": "ore_sense_3"
-  },
-  {
-    "from": "ore_sense_3",
-    "to": "deep_mining_4"
-  },
-  {
-    "from": "deep_mining_4",
-    "to": "motherlode"
-  },
-  {
-    "from": "lucky_strike_2",
-    "to": "bountiful_1"
-  },
-  {
-    "from": "bountiful_1",
-    "to": "fishers_touch_1"
-  },
-  {
-    "from": "fishers_touch_1",
-    "to": "bountiful_2"
-  },
-  {
-    "from": "bountiful_2",
-    "to": "animal_whisp_1"
-  },
-  {
-    "from": "animal_whisp_1",
-    "to": "fishers_touch_2"
-  },
-  {
-    "from": "fishers_touch_2",
-    "to": "bountiful_3"
-  },
-  {
-    "from": "bountiful_3",
-    "to": "green_magic_1"
-  },
-  {
-    "from": "green_magic_1",
-    "to": "animal_whisp_2"
-  },
-  {
-    "from": "animal_whisp_2",
-    "to": "bountiful_4"
-  },
-  {
-    "from": "bountiful_4",
-    "to": "natures_bounty"
-  }
+  [
+    "efficient_miner_1",
+    "efficient_miner_2"
+  ],
+  [
+    "efficient_miner_2",
+    "sharp_axe_1"
+  ],
+  [
+    "sharp_axe_1",
+    "sharp_axe_2"
+  ],
+  [
+    "sharp_axe_2",
+    "green_thumb_1"
+  ],
+  [
+    "green_thumb_1",
+    "green_thumb_2"
+  ],
+  [
+    "green_thumb_2",
+    "lucky_strike_1"
+  ],
+  [
+    "lucky_strike_1",
+    "lucky_strike_2"
+  ],
+  [
+    "lucky_strike_2",
+    "deep_mining_1"
+  ],
+  [
+    "deep_mining_1",
+    "ore_sense_1"
+  ],
+  [
+    "ore_sense_1",
+    "deep_mining_2"
+  ],
+  [
+    "deep_mining_2",
+    "yield_master_1"
+  ],
+  [
+    "yield_master_1",
+    "ore_sense_2"
+  ],
+  [
+    "ore_sense_2",
+    "deep_mining_3"
+  ],
+  [
+    "deep_mining_3",
+    "yield_master_2"
+  ],
+  [
+    "yield_master_2",
+    "ore_sense_3"
+  ],
+  [
+    "ore_sense_3",
+    "deep_mining_4"
+  ],
+  [
+    "deep_mining_4",
+    "motherlode"
+  ],
+  [
+    "lucky_strike_2",
+    "bountiful_1"
+  ],
+  [
+    "bountiful_1",
+    "fishers_touch_1"
+  ],
+  [
+    "fishers_touch_1",
+    "bountiful_2"
+  ],
+  [
+    "bountiful_2",
+    "animal_whisp_1"
+  ],
+  [
+    "animal_whisp_1",
+    "fishers_touch_2"
+  ],
+  [
+    "fishers_touch_2",
+    "bountiful_3"
+  ],
+  [
+    "bountiful_3",
+    "green_magic_1"
+  ],
+  [
+    "green_magic_1",
+    "animal_whisp_2"
+  ],
+  [
+    "animal_whisp_2",
+    "bountiful_4"
+  ],
+  [
+    "bountiful_4",
+    "natures_bounty"
+  ]
 ]
