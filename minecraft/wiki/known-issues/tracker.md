@@ -9,6 +9,11 @@
 - **Origins++ overlap:** Investigated — no removals needed. Zero name collisions, separate layers.
 
 
+### Missing Icon/Texture Assets for Custom Items
+- **Status:** Known, low priority
+- **Symptom:** New boss drop items, endgame materials (Rift Shard, Rift Core, Primordial Essence, Mythic Catalysts, etc.) use default purple/black missing texture icons
+- **Fix needed:** Create item textures in `assets/kubejs/textures/item/` for all custom items registered in `custom_items.js` and `endgame_items.js`
+
 ## Needs Testing
 
 - [ ] AStages API method signatures — inferred from docs, never verified in-game

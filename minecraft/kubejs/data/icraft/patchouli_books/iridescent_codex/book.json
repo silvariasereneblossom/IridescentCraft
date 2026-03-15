@@ -1,6 +1,6 @@
 {
   "name": "The Iridescent Codex",
-  "landing_text": "A comprehensive reference for the world of IridescentCraft. Here you will find everything you need to understand the tier system, your class, the skills at your disposal, the mods that shape this world, and the bosses that stand between you and ascension.$(br2)$(italic)Chapters expand as you grow in power.$(/italic)",
+  "landing_text": "Your guide to IridescentCraft. Classes, tiers, mods, bosses \u2014 everything you need.$(br2)$(italic)Chapters expand as you grow in power.$()",
   "subtitle": "Progression \u00b7 Systems \u00b7 Lore",
   "creative_tab": "misc",
   "model": "patchouli:book_brown",
@@ -18,18 +18,18 @@
   "flip_sound": "patchouli:page_flip",
   "index_icon": "minecraft:enchanted_book",
   "pamphlet": false,
-  "show_progress": true,
+  "show_progress": false,
   "version": "3",
   "use_blocky_font": false,
   "i18n": false,
+  "use_resource_pack": true,
   "macros": {
     "$(t1)": "$(#2d8a2d)",
     "$(t2)": "$(#2d5fa3)",
     "$(t3)": "$(#7a2da3)",
     "$(t4)": "$(#c8a951)",
-    "$(end)": "$(/color)",
+    "$(end)": "$()",
     "$(warn)": "$(#c0392b)",
     "$(note)": "$(#666666)"
-  },
-  "use_resource_pack": true
+  }
 }
