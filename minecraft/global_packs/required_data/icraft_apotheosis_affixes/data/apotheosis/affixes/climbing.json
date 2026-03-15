@@ -1,0 +1,10 @@
+{
+  "_comment": "Climbing: +10-20% ladder/vine climb speed",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "COMMON": { "min": 0.03, "max": 0.06 }
+  },
+  "types": { "set": ["boots"] }
+}

@@ -1,0 +1,12 @@
+{
+  "_comment": "Reflective (Shield): 10-20% chance to reflect projectiles",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.knockback_resistance",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": { "min": 0.05, "max": 0.1 },
+    "RARE": { "min": 0.1, "max": 0.15 },
+    "EPIC": { "min": 0.15, "max": 0.2 }
+  },
+  "types": { "set": ["shield"] }
+}

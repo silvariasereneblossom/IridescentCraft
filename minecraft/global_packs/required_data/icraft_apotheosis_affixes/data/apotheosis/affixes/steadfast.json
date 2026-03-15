@@ -1,0 +1,12 @@
+{
+  "_comment": "Steadfast: -10-25% shield disable time (knockback resist on shield)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.knockback_resistance",
+  "operation": "ADDITION",
+  "values": {
+    "COMMON": { "min": 0.05, "max": 0.1 },
+    "UNCOMMON": { "min": 0.1, "max": 0.15 },
+    "RARE": { "min": 0.15, "max": 0.25 }
+  },
+  "types": { "set": ["shield"] }
+}

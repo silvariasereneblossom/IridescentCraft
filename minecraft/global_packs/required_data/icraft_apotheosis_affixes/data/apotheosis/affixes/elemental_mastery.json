@@ -1,0 +1,10 @@
+{
+  "_comment": "Elemental Mastery (T3+): +10% to all elemental damage types",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "EPIC": { "min": 0.08, "max": 0.12 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

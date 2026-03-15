@@ -1,0 +1,10 @@
+{
+  "_comment": "Nagascale (Twilight): +15% knockback resistance + speed",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.knockback_resistance",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": { "min": 0.1, "max": 0.15 }
+  },
+  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+}

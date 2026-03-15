@@ -1,0 +1,11 @@
+{
+  "_comment": "Executioner's (T3+): +20% damage to targets below 30% HP (attack damage proxy)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "RARE": { "min": 0.12, "max": 0.16 },
+    "EPIC": { "min": 0.16, "max": 0.2 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

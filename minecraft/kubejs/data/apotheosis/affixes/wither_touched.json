@@ -1,0 +1,11 @@
+{
+  "_comment": "Wither-touched (Nether): 10% chance for Wither II on hit",
+  "type": "apotheosis:mob_effect",
+  "mob_effect": "minecraft:wither",
+  "target": "user_target",
+  "amplifier": 1,
+  "values": {
+    "RARE": { "min": 0.08, "max": 0.12 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

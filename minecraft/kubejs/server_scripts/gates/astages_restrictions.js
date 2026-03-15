@@ -89,29 +89,21 @@ ServerEvents.loaded(event => {
   stageMod('tier_2', 'thermal', 'modpack/mod_thermal')
   stageMod('tier_2', 'industrialforegoing', 'modpack/mod_if')
   stageMod('tier_2', 'ars_nouveau', 'modpack/mod_ars')
+  // Gate entire dimension mods — if you can't enter the dimension, you can't get the items
+  stageMod('tier_2', 'twilightforest', 'modpack/mod_twilight')
+  stageMod('tier_2', 'blue_skies', 'modpack/mod_blueskies')
+  stageMod('tier_2', 'aether', 'modpack/mod_aether')
 
   // -- Individual item restrictions --
   stageItems('tier_2', [
-    // Twilight Forest materials
-    'twilightforest:steeleaf_ingot',
-    'twilightforest:ironwood_ingot',
-    'twilightforest:fiery_ingot',
-    'twilightforest:knightmetal_ingot',
-    'twilightforest:fiery_sword',
-    'twilightforest:fiery_pickaxe',
-    // Blue Skies materials
-    'blue_skies:pyrope_gem',
-    'blue_skies:aquite',
-    'blue_skies:charoite',
-    'blue_skies:horizonite_ingot',
-    // Aether materials
-    'aether:zanite_gemstone',
-    'aether:gravitite',
-    'aether:ambrosium_shard',
-    // Botania T2
-    'botania:manasteel_ingot',
-    'botania:mana_diamond',
-    'botania:mana_pearl',
+    // Botania T2 — raw materials + all derivatives
+    'botania:manasteel_ingot', 'botania:mana_diamond', 'botania:mana_pearl',
+    'botania:manasteel_block',
+    'botania:manasteel_helmet', 'botania:manasteel_chestplate',
+    'botania:manasteel_leggings', 'botania:manasteel_boots',
+    'botania:manasteel_sword', 'botania:manasteel_pick',
+    'botania:manasteel_axe', 'botania:manasteel_shovel',
+    'botania:mana_diamond_block',
     // Apotheosis T2 workstations
     'apotheosis:simple_reforging_table',
     'apotheosis:gem_cutting_table',
@@ -142,15 +134,35 @@ ServerEvents.loaded(event => {
 
   // -- Individual item restrictions --
   stageItems('tier_3', [
+    // Diamond raw + derivatives
     'minecraft:diamond', 'minecraft:diamond_block',
     'minecraft:diamond_sword', 'minecraft:diamond_pickaxe',
     'minecraft:diamond_axe', 'minecraft:diamond_shovel',
     'minecraft:diamond_hoe',
     'minecraft:diamond_helmet', 'minecraft:diamond_chestplate',
     'minecraft:diamond_leggings', 'minecraft:diamond_boots',
+    'minecraft:diamond_horse_armor',
+    'minecraft:diamond_ore', 'minecraft:deepslate_diamond_ore',
+    // Items crafted from diamond
+    'minecraft:enchanting_table',
+    // Nether materials (Nether is T3)
     'minecraft:ancient_debris',
-    'botania:terrasteel_ingot', 'botania:elementium_ingot',
+    'minecraft:respawn_anchor',
+    // Botania T3 — terrasteel + elementium + all derivatives
+    'botania:terrasteel_ingot', 'botania:terrasteel_block',
+    'botania:terrasteel_helmet', 'botania:terrasteel_chestplate',
+    'botania:terrasteel_leggings', 'botania:terrasteel_boots',
+    'botania:elementium_ingot', 'botania:elementium_block',
+    'botania:elementium_helmet', 'botania:elementium_chestplate',
+    'botania:elementium_leggings', 'botania:elementium_boots',
+    'botania:elementium_sword', 'botania:elementium_pickaxe',
+    'botania:elementium_axe', 'botania:elementium_shovel',
+    'botania:elementium_shears',
+    'botania:dragonstone', 'botania:dragonstone_block',
+    // Thermal T3
     'thermal:enderium_ingot',
+    // T3 vanilla derivatives
+    'minecraft:beacon',
     // Apotheosis T3 workstations
     'apotheosis:reforging_table',
     'apotheosis:sigil_of_rebirth',
@@ -198,7 +210,7 @@ ServerEvents.loaded(event => {
     'extrastorage:storagepart_256k',
     'extrastorage:storagepart_1024k',
     'extrastorage:storagepart_4096k',
-    // Netherite
+    // Netherite raw + derivatives
     'minecraft:netherite_ingot', 'minecraft:netherite_block',
     'minecraft:netherite_scrap',
     'minecraft:netherite_sword', 'minecraft:netherite_pickaxe',
@@ -206,8 +218,35 @@ ServerEvents.loaded(event => {
     'minecraft:netherite_hoe',
     'minecraft:netherite_helmet', 'minecraft:netherite_chestplate',
     'minecraft:netherite_leggings', 'minecraft:netherite_boots',
-    // Botania endgame
-    'botania:gaia_ingot',
+    'minecraft:netherite_upgrade_smithing_template',
+    // Items crafted from netherite
+    'minecraft:lodestone',
+    // End-tier items + all End derivatives
+    'minecraft:ender_eye', 'minecraft:end_crystal',
+    'minecraft:ender_chest',
+    'minecraft:end_rod',
+    'minecraft:elytra',
+    'minecraft:dragon_egg', 'minecraft:dragon_head',
+    'minecraft:end_stone', 'minecraft:end_stone_bricks',
+    'minecraft:end_stone_brick_slab', 'minecraft:end_stone_brick_stairs',
+    'minecraft:end_stone_brick_wall',
+    'minecraft:purpur_block', 'minecraft:purpur_pillar',
+    'minecraft:purpur_slab', 'minecraft:purpur_stairs',
+    'minecraft:chorus_fruit', 'minecraft:popped_chorus_fruit',
+    'minecraft:chorus_flower', 'minecraft:chorus_plant',
+    // Shulker boxes (all 17 variants)
+    'minecraft:shulker_box',
+    'minecraft:white_shulker_box', 'minecraft:orange_shulker_box',
+    'minecraft:magenta_shulker_box', 'minecraft:light_blue_shulker_box',
+    'minecraft:yellow_shulker_box', 'minecraft:lime_shulker_box',
+    'minecraft:pink_shulker_box', 'minecraft:gray_shulker_box',
+    'minecraft:light_gray_shulker_box', 'minecraft:cyan_shulker_box',
+    'minecraft:purple_shulker_box', 'minecraft:blue_shulker_box',
+    'minecraft:brown_shulker_box', 'minecraft:green_shulker_box',
+    'minecraft:red_shulker_box', 'minecraft:black_shulker_box',
+    'minecraft:shulker_shell',
+    // Botania endgame + derivatives
+    'botania:gaia_ingot', 'botania:gaia_block',
     // End portal
     'endportalrecipe:portal_catalyst',
     // Apotheosis T4 workstations
@@ -221,7 +260,7 @@ ServerEvents.loaded(event => {
   stageDimension('tier_4', 'minecraft:the_end', 'modpack/dim_end')
 
   console.log('[IridescentCraft] AStages native restrictions registered')
-  console.log('  Tier 2: 3 mods + 19 items + 4 dimensions')
-  console.log('  Tier 3: 9 mods + 18 items + 5 ores + 4 dimensions')
-  console.log('  Tier 4: 5 mods + 33 items + 2 dimensions')
+  console.log('  Tier 2: 6 mods + 16 items + 4 dimensions')
+  console.log('  Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions')
+  console.log('  Tier 4: 5 mods + 62 items + 2 dimensions')
 })

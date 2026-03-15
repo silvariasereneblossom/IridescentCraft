@@ -1,0 +1,12 @@
+{
+  "_comment": "Sweeping: +15-30% sweep damage (via attack damage bonus for swords)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "COMMON": { "min": 0.05, "max": 0.1 },
+    "UNCOMMON": { "min": 0.1, "max": 0.15 },
+    "RARE": { "min": 0.15, "max": 0.2 }
+  },
+  "types": { "set": ["sword"] }
+}

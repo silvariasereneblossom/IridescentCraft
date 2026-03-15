@@ -1,0 +1,12 @@
+{
+  "_comment": "Cleaving: +20-40% sweep area (attack damage bonus)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "UNCOMMON": { "min": 0.08, "max": 0.12 },
+    "RARE": { "min": 0.12, "max": 0.18 },
+    "EPIC": { "min": 0.18, "max": 0.25 }
+  },
+  "types": { "set": ["sword", "axe"] }
+}

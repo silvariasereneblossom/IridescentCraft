@@ -1,0 +1,12 @@
+{
+  "_comment": "Aquatic: +15-30% swim speed (movement speed bonus)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "COMMON": { "min": 0.03, "max": 0.05 },
+    "UNCOMMON": { "min": 0.05, "max": 0.08 },
+    "RARE": { "min": 0.08, "max": 0.12 }
+  },
+  "types": { "set": ["helmet", "boots"] }
+}
