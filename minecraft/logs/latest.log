@@ -36075,3 +36075,8 @@ Caused by: java.lang.NullPointerException: Trying to access unbound value: apoth
 	at net.minecraft.util.thread.BlockableEventLoop.m_18701_(BlockableEventLoop.java:139) ~[client-1.20.1-20230612.114412-srg.jar%231022!/:?]
 	at net.minecraft.client.gui.screens.worldselection.WorldOpenFlows.m_246486_(WorldOpenFlows.java:163) ~[client-1.20.1-20230612.114412-srg.jar%231022!/:?]
 	... 45 more
+[15Mar2026 20:34:43.068] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[15Mar2026 20:34:43.082] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[15Mar2026 20:34:43.099] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[15Mar2026 20:34:43.104] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[15Mar2026 20:34:43.219] [Render thread/INFO] [FTB Chunks/]: Shutting down map thread
