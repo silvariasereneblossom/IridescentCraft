@@ -6,15 +6,16 @@
 // Design doc Part I, Section 19: Loot Table Overhaul
 // "Every dungeon/structure mod's loot tables must respect the tier system."
 //
-// This script replaces the older KubeJS loot_overhaul.js with LootJS's
-// modifier API, which is cleaner and supports regex-based table matching.
+// STRUCTURE CHEST MODIFIERS ONLY. Boss entity drops are in loot_overhaul.js.
 //
 // WHAT THIS DOES:
 // 1. Removes tier-breaking items (diamonds, enchanted books, netherite)
 //    from structure chests based on tier appropriateness
 // 2. Injects tier-appropriate progression tokens into structure chests
 // 3. Removes enchanted books from ALL structure loot (Apotheosis handles enchanting)
-// 4. Adds boss-specific unique drops via entity loot modifiers
+// 4. Reduces Overworld food and removes modded food from structure chests
+// 5. Village chest loot restrictions (iron/leather only, no powerful modded items)
+// 6. Curio drops for tower structures
 //
 // STRUCTURE MOD COVERAGE (35+ mods):
 //   YUNG's Better series (Dungeons, Strongholds, Fortresses, Mineshafts,
@@ -43,11 +44,22 @@ LootJS.modifiers(event => {
   // Design doc: "REMOVE all enchanted books from structure loot.
   // Apotheosis is the enchanting system."
   //
-  // This single rule covers ALL structure chest loot tables.
+  // This single rule covers ALL structure chest loot tables EXCEPT
+  // Ad Astra planetary dimensions (which have custom planetary enchantment
+  // books added by planetary_loot.js).
   // =========================================================================
 
   event
     .addLootTypeModifier(LootType.CHEST)
+    .anyDimension(
+      'minecraft:overworld', 'minecraft:the_nether', 'minecraft:the_end',
+      'twilightforest:twilight_forest',
+      'blue_skies:everbright', 'blue_skies:everdawn',
+      'aether:the_aether', 'deep_aether:the_aether',
+      'undergarden:undergarden',
+      'deeperdarker:otherside',
+      'theabyss:the_abyss'
+    )
     .removeLoot('minecraft:enchanted_book')
 
   // =========================================================================
@@ -63,24 +75,7 @@ LootJS.modifiers(event => {
   // Overhauled Structures (chest_1/2), YUNG's series (OW structures)
   // =========================================================================
 
-  // --- Dungeon Crawl: stages 1-3 (Overworld dungeon tiers) ---
-  event
-    .addLootTableModifier(/dungeoncrawl:chests\/stage_[123]/)
-    .removeLoot('minecraft:diamond')
-    .removeLoot('minecraft:diamond_block')
-    .addWeightedLoot([
-      Item.of('kubejs:tier1_token').withChance(85),
-      Item.of('kubejs:tier2_token').withChance(15)
-    ])
-
-  // --- Dungeon Crawl: stages 4-5 (deeper = T2 loot) ---
-  event
-    .addLootTableModifier(/dungeoncrawl:chests\/stage_[45]/)
-    .removeLoot('minecraft:diamond_block')
-    .addWeightedLoot([
-      Item.of('kubejs:tier2_token').withChance(75),
-      Item.of('kubejs:tier3_token').withChance(10)
-    ])
+  // --- Dungeon Crawl: MOVED to Section 4B (more granular coverage) ---
 
   // --- Explorify (all chests — Overworld structures) ---
   event
@@ -88,22 +83,9 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond')
     .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.15)))
 
-  // --- Dungeons Plus (all chests) ---
-  event
-    .addLootTableModifier(/dungeons_plus:.*chests.*/)
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.18)))
+  // --- Dungeons Plus: MOVED to Section 4B (common/rare split) ---
 
-  // --- Structory + Structory Towers ---
-  event
-    .addLootTableModifier(/structory:.*/)
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
-
-  event
-    .addLootTableModifier(/structory_towers:.*/)
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
+  // --- Structory + Structory Towers: MOVED to Section 4B (chests-scoped) ---
 
   // --- Villages & Pillages ---
   event
@@ -179,12 +161,7 @@ LootJS.modifiers(event => {
   // These structures exist in T2 dimensions — allow diamonds but no netherite
   // =========================================================================
 
-  // --- IDAS (100+ structures, mostly dimensional) ---
-  event
-    .addLootTableModifier(/idas:.*chests.*/)
-    .removeLoot('minecraft:netherite_ingot')
-    .removeLoot('minecraft:netherite_scrap')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
+  // --- IDAS: MOVED to Section 4B (overworld/treasure split) ---
 
   // --- Keebsz Battle Towers ---
   // Loot tables confirmed: keebsz:{biome}/floor{N}and{N+1} (6 biomes × 5 tiers)
@@ -214,320 +191,12 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('kubejs:tier4_token').when(c => c.randomChance(0.12)))
 
   // =========================================================================
-  // SECTION 4: BOSS ENTITY LOOT MODIFIERS
-  // Add tier tokens, bonus XP, and unique weapon chances to boss kills
+  // SECTIONS 4–4H: BOSS ENTITY LOOT MODIFIERS
+  // REMOVED — All boss entity drops (tokens, Simply Swords uniques,
+  // mini-boss materials, next-tier peeks) are now handled exclusively
+  // by loot_overhaul.js to avoid duplicate drops.
+  // This file only handles STRUCTURE CHEST modifiers.
   // =========================================================================
-
-  // --- Meet Your Fight bosses (T2-T3) ---
-  event
-    .addEntityLootModifier('meetyourfight:swampjaw')
-    .addLoot(LootEntry.of('kubejs:tier2_token', 3))
-    .dropExperience(100)
-
-  event
-    .addEntityLootModifier('meetyourfight:bellringer')
-    .addLoot(LootEntry.of('kubejs:tier2_token', 3))
-    .dropExperience(100)
-
-  event
-    .addEntityLootModifier('meetyourfight:dame_fortuna')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 2))
-    .dropExperience(200)
-
-  event
-    .addEntityLootModifier('meetyourfight:rosalyne')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 2))
-    .dropExperience(200)
-
-  // --- Mutant Monsters (T2-T3) ---
-  const mutantBosses = [
-    'mutantmonsters:mutant_zombie',
-    'mutantmonsters:mutant_skeleton',
-    'mutantmonsters:mutant_creeper',
-    'mutantmonsters:mutant_enderman'
-  ]
-  mutantBosses.forEach(boss => {
-    event
-      .addEntityLootModifier(boss)
-      .addLoot(LootEntry.of('kubejs:tier2_token', 2))
-      .dropExperience(150)
-  })
-
-  // --- Stalwart Dungeons bosses (T2-T3) ---
-  event
-    .addEntityLootModifier('stalwart_dungeons:shelterer')
-    .addLoot(LootEntry.of('kubejs:tier2_token', 4))
-    .dropExperience(200)
-
-  event
-    .addEntityLootModifier('stalwart_dungeons:nether_keeper')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 3))
-    .dropExperience(300)
-
-  event
-    .addEntityLootModifier('stalwart_dungeons:awful_ghast')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 3))
-    .dropExperience(250)
-
-  // --- Keebsz Tower Guardian (T2) — uses loot TABLE, not entity type ---
-  event
-    .addLootTableModifier('keebsz:entities/tower_guardian')
-    .addLoot(LootEntry.of('kubejs:tier2_token', 4))
-
-  // --- Iron's Spellbooks bosses (T2-T3) ---
-  event
-    .addEntityLootModifier('irons_spellbooks:dead_king')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 3))
-    .dropExperience(400)
-
-  event
-    .addEntityLootModifier('irons_spellbooks:fire_boss')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 2))
-    .dropExperience(250)
-
-  event
-    .addEntityLootModifier('irons_spellbooks:citadel_keeper')
-    .addLoot(LootEntry.of('kubejs:tier2_token', 3))
-    .dropExperience(200)
-
-  // --- The Abyss bosses (T3) ---
-  const abyssBosses = [
-    'theabyss:soul_guard',
-    'theabyss:ice_knight',
-    'theabyss:guard'
-  ]
-  abyssBosses.forEach(boss => {
-    event
-      .addEntityLootModifier(boss)
-      .addLoot(LootEntry.of('kubejs:tier3_token', 2))
-      .dropExperience(200)
-  })
-
-  // --- Ultimate Bosses (T3) — uses loot TABLES, not entity types ---
-  event
-    .addLootTableModifier('ub:entities/sorcerer')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 3))
-
-  event
-    .addLootTableModifier('ub:entities/storm')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 3))
-
-  // --- Majestic Menaces (T3) ---
-  event
-    .addEntityLootModifier('majestic_menaces:teikoku_senshi')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 3))
-    .dropExperience(350)
-
-  // =========================================================================
-  // SECTION 4F: SIMPLY SWORDS UNIQUE WEAPON DROPS
-  // Each boss has a chance to drop a thematically matched unique weapon.
-  // 42 weapons assigned across all boss tiers.
-  // These stack with the token/XP drops defined in Section 4 above.
-  // NOTE: 6 Abyss weapon IDs (watching_warglaive, void_saber, dormant_relic,
-  //   tidebreaker, runic_edge, searing_light) need registry verification.
-  // =========================================================================
-
-  // --- Twilight Forest bosses (T2-T3) ---
-  event.addEntityLootModifier('twilightforest:naga')
-    .addLoot(LootEntry.of('simplyswords:tempest').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('twilightforest:lich')
-    .addLoot(LootEntry.of('simplyswords:soulrender').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('twilightforest:hydra')
-    .addLoot(LootEntry.of('simplyswords:emberblade').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('twilightforest:ur_ghast')
-    .addLoot(LootEntry.of('simplyswords:whisperwind').when(c => c.randomChance(0.20)))
-  event.addEntityLootModifier('twilightforest:knight_phantom')
-    .addLoot(LootEntry.of('simplyswords:enigma').when(c => c.randomChance(0.12)))
-  event.addEntityLootModifier('twilightforest:snow_queen')
-    .addLoot(LootEntry.of('simplyswords:frostfall').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('twilightforest:alpha_yeti')
-    .addLoot(LootEntry.of('simplyswords:icewhisper').when(c => c.randomChance(0.10)))
-
-  // --- Blue Skies bosses (T2-T3) ---
-  event.addEntityLootModifier('blue_skies:summoner')
-    .addLoot(LootEntry.of('simplyswords:hiveheart').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('blue_skies:alchemist')
-    .addLoot(LootEntry.of('simplyswords:toxic_longsword').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('blue_skies:starlit_crusher')
-    .addLoot(LootEntry.of('simplyswords:stars_edge').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('blue_skies:arachnarch')
-    .addLoot(LootEntry.of('simplyswords:waxweaver').when(c => c.randomChance(0.12)))
-
-  // --- Aether bosses (T2-T3) ---
-  event.addEntityLootModifier('aether:slider')
-    .addLoot(LootEntry.of('simplyswords:thunderbrand').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('aether:valkyrie_queen')
-    .addLoot(LootEntry.of('simplyswords:caelestis').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('aether:sun_spirit')
-    .addLoot(LootEntry.of('simplyswords:sunfire').when(c => c.randomChance(0.15)))
-
-  // --- Deep Aether boss (T3-T4) ---
-  event.addEntityLootModifier('deep_aether:eots_controller')
-    .addLoot(LootEntry.of('simplyswords:flamewind').when(c => c.randomChance(0.18)))
-
-  // --- Cataclysm bosses (T3-T4) ---
-  event.addEntityLootModifier('cataclysm:netherite_monstrosity')
-    .addLoot(LootEntry.of('simplyswords:brimstone_claymore').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('cataclysm:ignis')
-    .addLoot(LootEntry.of('simplyswords:molten_edge').when(c => c.randomChance(0.20)))
-  event.addEntityLootModifier('cataclysm:the_harbinger')
-    .addLoot(LootEntry.of('simplyswords:shadowsting').when(c => c.randomChance(0.18)))
-  event.addEntityLootModifier('cataclysm:the_leviathan')
-    .addLoot(LootEntry.of('simplyswords:livyatan').when(c => c.randomChance(0.18)))
-  event.addEntityLootModifier('cataclysm:maledictus')
-    .addLoot(LootEntry.of('simplyswords:twisted_blade').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('cataclysm:ignited_revenant')
-    .addLoot(LootEntry.of('simplyswords:emberlash').when(c => c.randomChance(0.08)))
-  event.addEntityLootModifier('cataclysm:ender_guardian')
-    .addLoot(LootEntry.of('simplyswords:arcanethyst').when(c => c.randomChance(0.18)))
-  event.addEntityLootModifier('cataclysm:ancient_remnant')
-    .addLoot(LootEntry.of('simplyswords:awakened_lichblade').when(c => c.randomChance(0.15)))
-
-  // --- Undergarden boss (T3) ---
-  event.addEntityLootModifier('undergarden:forgotten_guardian')
-    .addLoot(LootEntry.of('simplyswords:bramblethorn').when(c => c.randomChance(0.18)))
-
-  // --- Deeper and Darker bosses (T3) ---
-  event.addEntityLootModifier('deeperdarker:stalker')
-    .addLoot(LootEntry.of('simplyswords:soulstealer').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('deeperdarker:shattered')
-    .addLoot(LootEntry.of('simplyswords:soulpyre').when(c => c.randomChance(0.15)))
-
-  // --- Vanilla bosses (T3-T4) ---
-  event.addEntityLootModifier('minecraft:wither')
-    .addLoot(LootEntry.of('simplyswords:soulkeeper').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('minecraft:ender_dragon')
-    .addLoot(LootEntry.of('simplyswords:waking_lichblade').when(c => c.randomChance(0.25)))
-  event.addEntityLootModifier('minecraft:warden')
-    .addLoot(LootEntry.of('simplyswords:stormbringer').when(c => c.randomChance(0.20)))
-
-  // --- Botania Gaia Guardian (T4) ---
-  event.addEntityLootModifier('botania:doppleganger')
-    .addLoot(LootEntry.of('simplyswords:magiblade').when(c => c.randomChance(0.20)))
-
-  // --- Meet Your Fight (weapon drops — token/XP already in Section 4) ---
-  event.addEntityLootModifier('meetyourfight:swampjaw')
-    .addLoot(LootEntry.of('simplyswords:harbinger').when(c => c.randomChance(0.18)))
-  event.addEntityLootModifier('meetyourfight:bellringer')
-    .addLoot(LootEntry.of('simplyswords:hearthflame').when(c => c.randomChance(0.18)))
-  event.addEntityLootModifier('meetyourfight:dame_fortuna')
-    .addLoot(LootEntry.of('simplyswords:magiscythe').when(c => c.randomChance(0.18)))
-  event.addEntityLootModifier('meetyourfight:rosalyne')
-    .addLoot(LootEntry.of('simplyswords:magispear').when(c => c.randomChance(0.18)))
-
-  // --- Ultimate Bosses (loot table — weapon drops) ---
-  event.addLootTableModifier('ub:entities/sorcerer')
-    .addLoot(LootEntry.of('simplyswords:mjolnir').when(c => c.randomChance(0.20)))
-  event.addLootTableModifier('ub:entities/storm')
-    .addLoot(LootEntry.of('simplyswords:storms_edge').when(c => c.randomChance(0.20)))
-
-  // --- The Abyss bosses (T3 — weapon drops) ---
-  // NOTE: These 6 weapon IDs need in-game registry verification.
-  // Run: /kubejs hand  while holding each weapon, or check simplyswords
-  // item registry via registry_scan. If an ID is wrong, the drop simply
-  // won't fire (no crash).
-  event.addEntityLootModifier('theabyss:nightblade_boss')
-    .addLoot(LootEntry.of('simplyswords:watching_warglaive').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('theabyss:the_roka')
-    .addLoot(LootEntry.of('simplyswords:void_saber').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('theabyss:elder')
-    .addLoot(LootEntry.of('simplyswords:dormant_relic').when(c => c.randomChance(0.12)))
-  event.addEntityLootModifier('theabyss:ice_knight')
-    .addLoot(LootEntry.of('simplyswords:tidebreaker').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('theabyss:ancient_seeker')
-    .addLoot(LootEntry.of('simplyswords:runic_edge').when(c => c.randomChance(0.12)))
-  event.addEntityLootModifier('theabyss:crystal_golem')
-    .addLoot(LootEntry.of('simplyswords:searing_light').when(c => c.randomChance(0.10)))
-
-  // =========================================================================
-  // SECTION 4G: MINI-BOSS & MOB MATERIAL DROPS
-  // Smaller entities that drop tokens or crafting materials (no unique weapons)
-  // =========================================================================
-
-  // --- Vanilla mob material drops ---
-  event.addEntityLootModifier('minecraft:blaze')
-    .addLoot(LootEntry.of('kubejs:condensed_blaze_essence').when(c => c.randomChance(0.08)))
-  event.addEntityLootModifier('minecraft:elder_guardian')
-    .addLoot(LootEntry.of('kubejs:tier2_token', 1))
-  event.addEntityLootModifier('minecraft:enderman')
-    .addLoot(LootEntry.of('kubejs:void_essence').when(c => c.randomChance(0.02)))
-  event.addEntityLootModifier('minecraft:wither_skeleton')
-    .addLoot(LootEntry.of('kubejs:nether_soul_fragment').when(c => c.randomChance(0.10)))
-
-  // --- Stalwart Dungeons mini-bosses (T3) ---
-  event.addEntityLootModifier('stalwart_dungeons:incomplete_wither')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 1))
-  event.addEntityLootModifier('stalwart_dungeons:giddy_blaze')
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.20)))
-  event.addEntityLootModifier('stalwart_dungeons:reinforced_blaze')
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.20)))
-
-  // --- Iron's Spellbooks mini-bosses (T2) ---
-  const isspMobs = [
-    'irons_spellbooks:archevoker', 'irons_spellbooks:cryomancer',
-    'irons_spellbooks:necromancer', 'irons_spellbooks:pyromancer'
-  ]
-  isspMobs.forEach(mob => {
-    event.addEntityLootModifier(mob)
-      .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.25)))
-  })
-  event.addEntityLootModifier('irons_spellbooks:fire_boss')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 1))
-
-  // --- Mutant Monsters extras ---
-  event.addEntityLootModifier('mutantmonsters:mutant_snow_golem')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
-  event.addEntityLootModifier('mutantmonsters:spider_pig')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.10)))
-
-  // --- Deeper and Darker mini-bosses ---
-  event.addEntityLootModifier('deeperdarker:sculk_centipede')
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.25)))
-  event.addEntityLootModifier('deeperdarker:shriek_worm')
-    .addLoot(LootEntry.of('kubejs:tier3_token', 1))
-
-  // --- Twilight Forest: Minoshroom (T2 mini-boss) ---
-  event.addEntityLootModifier('twilightforest:minoshroom')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.35)))
-
-  // =========================================================================
-  // SECTION 4H: NEXT-TIER MATERIAL PEEK DROPS
-  // Design Doc Section 17 Method 2 + Section 26 Boss Material Drops
-  // Current-tier bosses have 5–15% chance to drop 1–3 next-tier materials.
-  // "A taste, not a full unlock"
-  // =========================================================================
-
-  // --- T2 bosses → T3 material peeks (osmium, steel) ---
-  const t2BossesForPeek = [
-    'twilightforest:naga', 'twilightforest:lich', 'twilightforest:hydra',
-    'twilightforest:ur_ghast', 'twilightforest:knight_phantom', 'twilightforest:snow_queen',
-    'blue_skies:summoner', 'blue_skies:alchemist', 'blue_skies:starlit_crusher', 'blue_skies:arachnarch',
-    'aether:slider', 'aether:valkyrie_queen', 'aether:sun_spirit'
-  ]
-  t2BossesForPeek.forEach(boss => {
-    event.addEntityLootModifier(boss)
-      .addLoot(LootEntry.of('mekanism:ingot_osmium', 1)
-        .when(c => c.randomChance(0.08)))
-      .addLoot(LootEntry.of('thermal:steel_ingot', 2)
-        .when(c => c.randomChance(0.10)))
-  })
-
-  // --- T3 bosses → T4 material peeks (ancient debris, gaia fragments) ---
-  const t3BossesForPeek = [
-    'cataclysm:netherite_monstrosity', 'cataclysm:ignis', 'cataclysm:the_harbinger',
-    'cataclysm:the_leviathan', 'cataclysm:maledictus',
-    'meetyourfight:dame_fortuna', 'meetyourfight:rosalyne',
-    'undergarden:forgotten_guardian',
-    'deeperdarker:stalker', 'deeperdarker:shattered',
-    'minecraft:wither'
-  ]
-  t3BossesForPeek.forEach(boss => {
-    event.addEntityLootModifier(boss)
-      .addLoot(LootEntry.of('minecraft:ancient_debris')
-        .when(c => c.randomChance(0.06)))
-      .addLoot(LootEntry.of('botania:life_essence', 1)
-        .when(c => c.randomChance(0.08)))
-  })
 
   // =========================================================================
   // SECTION 4B: NEWLY VERIFIED STRUCTURE MODS
@@ -559,34 +228,8 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/dungeons_arise:chests\/.*treasure/)
     .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.22)))
 
-  // --- Repurposed Structures (173 tables) ---
-  // Overworld dungeons/mineshafts (T1)
-  event
-    .addLootTableModifier(/repurposed_structures:chests\/dungeons\//)
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
-
-  event
-    .addLootTableModifier(/repurposed_structures:chests\/mineshafts\//)
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
-
-  // Overworld/Nether cities + fortresses (T2-T3)
-  event
-    .addLootTableModifier(/repurposed_structures:chests\/(cities|fortresses|pyramids|temples)\//)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
-
-  // Underground bastions (T2-T3)
-  event
-    .addLootTableModifier(/repurposed_structures:chests\/bastions\//)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
-
-  // End/Nether ancient cities (T3-T4)
-  event
-    .addLootTableModifier(
-      'repurposed_structures:chests/ancient_cities/end',
-      'repurposed_structures:chests/ancient_cities/nether')
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.15)))
+  // --- Repurposed Structures ---
+  // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
 
   // --- Valhelsia Structures (11 chest tables) ---
   // T1-T2: common structures
@@ -622,36 +265,8 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/idas:chests\/.*treasure/)
     .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
 
-  // --- Integrated Stronghold (20 tables) ---
-  // T2-T3: enhanced stronghold variant
-  event
-    .addLootTableModifier(
-      'integrated_stronghold:chests/armory',
-      'integrated_stronghold:chests/bedroom',
-      'integrated_stronghold:chests/brewing',
-      'integrated_stronghold:chests/dining_hall',
-      'integrated_stronghold:chests/farm',
-      'integrated_stronghold:chests/intersection',
-      'integrated_stronghold:chests/mine',
-      'integrated_stronghold:chests/prison',
-      'integrated_stronghold:chests/storage',
-      'integrated_stronghold:chests/stronghold')
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
-
-  // High-value stronghold rooms (T2-T3)
-  event
-    .addLootTableModifier(
-      'integrated_stronghold:chests/crypt',
-      'integrated_stronghold:chests/enchanting',
-      'integrated_stronghold:chests/grand_library',
-      'integrated_stronghold:chests/maze',
-      'integrated_stronghold:chests/nether_portal',
-      'integrated_stronghold:chests/sanctorum',
-      'integrated_stronghold:chests/secret_lab',
-      'integrated_stronghold:chests/torture_chamber',
-      'integrated_stronghold:chests/treasure')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.22)))
+  // --- Integrated Stronghold ---
+  // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
 
   // --- Dungeons Plus (31 tables) ---
   // Common chests (T1)
@@ -674,6 +289,7 @@ LootJS.modifiers(event => {
       'dungeoncrawl:chests/food',
       'dungeoncrawl:chests/supply')
     .removeLoot('minecraft:diamond')
+    .removeLoot('minecraft:diamond_block')
     .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   event
@@ -691,16 +307,17 @@ LootJS.modifiers(event => {
       'dungeoncrawl:chests/treasure')
     .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.22)))
 
-  // --- Structory + Structory Towers (39 + 49 tables) ---
+  // --- Structory (39 tables) — T1 overworld ---
   event
     .addLootTableModifier(/structory:.*chests.*/)
     .removeLoot('minecraft:diamond')
     .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
+  // --- Structory Towers (49 tables) — T1-T2 overworld ---
   event
     .addLootTableModifier(/structory_towers:.*chests.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.15)))
+    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
 
   // =========================================================================
   // SECTION 4C: YUNG'S BETTER SERIES
@@ -740,10 +357,10 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
 
   // --- YUNG's Better End Island ---
-  // T4: End content (confirmed in modlist)
-  event
-    .addLootTableModifier(/betterendisland:.*/)
-    .addLoot(LootEntry.of('kubejs:tier4_token').when(c => c.randomChance(0.15)))
+  // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
+  // Kept commented out for future reference:
+  // event.addLootTableModifier(/betterendisland:.*/)
+  //   .addLoot(LootEntry.of('kubejs:tier4_token').when(c => c.randomChance(0.15)))
 
   // Note: Better Desert Temples already covered in Section 3 above
 
@@ -823,23 +440,9 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond')
     .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
-  // --- Overhauled Structures (12 tables) ---
-  // Already has specific table coverage in Section 3 via betterdeserttemples
-  // Adding general catch-all for remaining overhauled structures
-  event
-    .addLootTableModifier(/overhauledstructures:chests\/.*_chest_[12]/)
-    .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
+  // --- Overhauled Structures: covered in Section 2 (chest_[12], chest_[3m]) ---
 
-  event
-    .addLootTableModifier(/overhauledstructures:chests\/.*_chest_[3m]/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
-
-  // --- Loot Integrations (7 tables) ---
-  // Sub-pack glue mod — adds loot to various structures
-  event
-    .addLootTableModifier(/lootintegrations:.*/)
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
+  // --- Loot Integrations: covered in Section 2 (difficulty-tier split) ---
 
   // =========================================================================
   // SECTION 5: DIAMOND/NETHERITE REMOVAL FROM VANILLA STRUCTURES
@@ -937,15 +540,158 @@ LootJS.modifiers(event => {
     .removeLoot('@nethersdelight')
 
   // =========================================================================
-  // SECTION 6: ENABLE LOGGING (remove in production)
+  // SECTION 6: VILLAGE CHEST LOOT RESTRICTIONS
+  // =========================================================================
+  // Design doc: Village loot should be T1-appropriate only.
+  // Remove powerful modded items, ensure iron/leather gear baseline.
+  // Apotheosis affixes are applied post-generation and cannot be controlled
+  // here, but we can remove obvious tier-breaking items.
+  // =========================================================================
+
+  const villageChests = [
+    'minecraft:chests/village/village_weaponsmith',
+    'minecraft:chests/village/village_toolsmith',
+    'minecraft:chests/village/village_armorer',
+    'minecraft:chests/village/village_plains_house',
+    'minecraft:chests/village/village_desert_house',
+    'minecraft:chests/village/village_savanna_house',
+    'minecraft:chests/village/village_snowy_house',
+    'minecraft:chests/village/village_taiga_house',
+    'minecraft:chests/village/village_temple',
+    'minecraft:chests/village/village_fisher',
+    'minecraft:chests/village/village_tannery',
+    'minecraft:chests/village/village_shepherd',
+    'minecraft:chests/village/village_butcher',
+    'minecraft:chests/village/village_cartographer',
+    'minecraft:chests/village/village_mason'
+  ]
+
+  // Remove all diamond+ gear and powerful modded items from village chests
+  villageChests.forEach(table => {
+    event
+      .addLootTableModifier(table)
+      .removeLoot('minecraft:diamond')
+      .removeLoot('minecraft:diamond_sword')
+      .removeLoot('minecraft:diamond_pickaxe')
+      .removeLoot('minecraft:diamond_axe')
+      .removeLoot('minecraft:diamond_shovel')
+      .removeLoot('minecraft:diamond_hoe')
+      .removeLoot('minecraft:diamond_helmet')
+      .removeLoot('minecraft:diamond_chestplate')
+      .removeLoot('minecraft:diamond_leggings')
+      .removeLoot('minecraft:diamond_boots')
+      .removeLoot('minecraft:diamond_horse_armor')
+      .removeLoot('minecraft:golden_horse_armor')
+      .removeLoot('minecraft:iron_horse_armor')
+      .removeLoot('minecraft:enchanted_golden_apple')
+  })
+
+  // Add guaranteed basic gear to smith village chests
+  event
+    .addLootTableModifier(
+      'minecraft:chests/village/village_weaponsmith',
+      'minecraft:chests/village/village_toolsmith',
+      'minecraft:chests/village/village_armorer')
+    .addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([2, 5]))
+    .addWeightedLoot([
+      Item.of('minecraft:iron_sword').withChance(20),
+      Item.of('minecraft:iron_pickaxe').withChance(20),
+      Item.of('minecraft:iron_axe').withChance(15),
+      Item.of('minecraft:leather_helmet').withChance(15),
+      Item.of('minecraft:leather_chestplate').withChance(10),
+      Item.of('minecraft:leather_leggings').withChance(10),
+      Item.of('minecraft:leather_boots').withChance(10)
+    ])
+
+  // =========================================================================
+  // SECTION 7: TOWER STRUCTURE CURIO DROPS
+  // =========================================================================
+  // Design doc Part IX: Curios drop from tier-appropriate loot tables.
+  // General utility curios (movement speed, minor buffs) appear in T1 loot.
+  // Tower structures (Structory Towers, Keebsz Battle Towers) get a 15%
+  // chance to contain a random curio item from the artifacts mod.
+  // =========================================================================
+
+  // Structory Towers — ~15% chance for a random utility curio
+  // Uses addLoot with randomChance so it's not guaranteed every chest
+  event
+    .addLootTableModifier(/structory_towers:.*chests.*/)
+    .addLoot(
+      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:snowshoes').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.01))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.008))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.01))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.008))
+    )
+
+  // Keebsz Battle Towers — upper floors (7-10) get curio chance (~15%)
+  event
+    .addLootTableModifier(/keebsz:.*\/floor[79]and[810]/)
+    .addLoot(
+      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:snowshoes').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.01))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.008))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.01))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.008))
+    )
+
+  // =========================================================================
+  // SECTION 8: ENABLE LOGGING (remove in production)
   // =========================================================================
 
   // event.enableLogging()
 
-  console.log('[IridescentCraft] LootJS loot table overhaul loaded')
+  console.log('[IridescentCraft] LootJS structure chest overhaul loaded')
   console.log('  - Global enchanted book removal: ALL chest loot')
   console.log('  - Structure token injection: 22+ mods covered')
-  console.log('  - Boss token/XP injection: 10+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
+  console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
   console.log('  - Overworld food reduction: 70% non-meat, modded foods removed')
+  console.log('  - Tower curio drops: 15% chance in tower structures')
 })
