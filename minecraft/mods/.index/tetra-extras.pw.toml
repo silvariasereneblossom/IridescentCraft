@@ -1,0 +1,16 @@
+filename = 'tetraextras-0.1.4-1.20.1.jar'
+name = 'Tetra Extras'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '8f4a112ae88a125b80b749e18e4d0ef0a9da5e5690941c767da06372ee39c30216c58c22e3b498b9536827627567efef86cdc6e1a98308196e6ebf81133d2afa'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/wDvpvvcU/versions/UV4t9tjE/tetraextras-0.1.4-1.20.1.jar'
+
+[update.modrinth]
+mod-id = 'wDvpvvcU'
+version = 'UV4t9tjE'
