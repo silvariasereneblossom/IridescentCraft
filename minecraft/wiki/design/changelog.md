@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-16 — New mod additions and Ad Astra integration
+
+### New Mods Added
+- Ad Astra added as post-T4 endgame space dimension mod. 5 planets (Moon, Mars, Mercury, Venus, Glacio) at 7x-12x difficulty. Full integration design doc exists. Requires T4 gate + recipe gating. Implementation in progress.
+- Tetra + Tetracelium added for weapon/tool overhaul. Custom material datapack (`icraft_tetra_materials`) created with 15 modded metals across all 4 tiers.
+- Soul Fire'd added for Nether soul fire mechanics. No gating needed.
+- Cobweb (Crystal Nest library) and mutil (Tetra library dependency) added as library mods.
+
+### Previously Recommended/Optional Mods Now Installed
+- ImmediatelyFast, Oculus, Equipment Compare, Jade Addons, Light Overlay (all previously recommended — now installed)
+- LazyDFU [UNOFFICIAL PORT], Alternate Current, Ksyxis, JEED, Transmog (all previously optional — now installed)
+
+### GitHub Wiki Audit Updated
+- "ADD recommended" count reduced from 5 to 0
+- All optional mods marked as resolved
+- New mods categorized in audit
+
+---
+
 ## 2026-03-16 — Config review implementation pass
 
 ### Enchanting & Repair

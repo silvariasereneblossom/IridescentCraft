@@ -29,7 +29,7 @@
 
 ## Combat & Scaling
 
-Apotheosis, ScalingMobs, Champions Unofficial, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (+Archery/Armory/Arsenal), Iron's Spells, Improved Mobs, JustLevelingFork
+Apotheosis, ScalingMobs, Champions Unofficial, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (+Archery/Armory/Arsenal), Iron's Spells, Improved Mobs, JustLevelingFork, Tetra (+Tetracelium compat, mutil library), Soul Fire'd
 
 ## Player Systems
 
@@ -37,7 +37,21 @@ Origins (+Origins++, Origins Overhaul), Gods and Heroes RPG Classes, Pufferfish'
 
 ## Dimensions
 
-Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Deep Aether
+Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Deep Aether, Ad Astra
+
+| Dimension | Tier | Notes |
+|-----------|------|-------|
+| Twilight Forest | 2 | AStages-gated |
+| Blue Skies | 2 | AStages-gated |
+| The Aether | 2 | AStages-gated |
+| Deep Aether | 2 | Aether extension |
+| The Undergarden | 3 | AStages-gated |
+| Deeper and Darker | 3 | AStages-gated |
+| Ad Astra (Moon) | Post-T4 | 7x difficulty. BEING IMPLEMENTED |
+| Ad Astra (Mars) | Post-T4 | 8x difficulty. BEING IMPLEMENTED |
+| Ad Astra (Mercury) | Post-T4 | 9x difficulty. BEING IMPLEMENTED |
+| Ad Astra (Venus) | Post-T4 | 10x difficulty. BEING IMPLEMENTED |
+| Ad Astra (Glacio) | Post-T4 | 12x difficulty. BEING IMPLEMENTED |
 
 ## Boss Mods
 
@@ -59,7 +73,9 @@ KubeJS (+addons), CraftTweaker, JeiTweaker, LootJS, AStages, FTB Quests
 
 Building: Chipped, Macaw's suite, Decorative Blocks, ConnectedTexturesMod, Rechiseled, Structurize
 
-QoL: JourneyMap, Jade, AppleSkin, Mouse Tweaks, FTB Ultimine/Chunks/Essentials, Simple Voice Chat
+QoL: JourneyMap, Jade, Jade Addons, AppleSkin, Mouse Tweaks, FTB Ultimine/Chunks/Essentials, Simple Voice Chat, Equipment Compare, Light Overlay, JEED, Transmog
+
+Performance: ImmediatelyFast, Oculus, LazyDFU [UNOFFICIAL PORT], Alternate Current, Ksyxis
 
 Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer (ungated — XP cost is gate), Flux Networks, Iron Jetpacks (tiered by materials, single dynamic item ID with NBT), Table of Experience (T2-gated recipe), DarkOrb Orb of Origin (T2-gated recipe)
 
@@ -78,6 +94,8 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | DarkOrb Orb of Origin | recipe | T2-gated (4x steel + 4x amethyst + heart of the sea) |
 | Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |
 | Terramity | recipes | 22 gun recipes removed, 64 armor pieces removed, gunsmith station removed. |
+| Tetra | datapack (`icraft_tetra_materials`) | 15 modded metal material definitions. Brass (T1), Steel/Signalum/Lumium/Manasteel/Steeleaf/Ironwood/Fiery/Knightmetal (T2), Osmium/Refined Obsidian/Terrasteel/Elementium/Enderium (T3), Aethersteel (T4). |
+| Ad Astra | recipes/config | Post-T4 space dimension. T4 gate + recipe gating. BEING IMPLEMENTED. |
 
 ## Related Pages
 
