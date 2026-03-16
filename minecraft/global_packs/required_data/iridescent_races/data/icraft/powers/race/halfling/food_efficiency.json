@@ -1,5 +1,15 @@
 {
-  "type": "origins:simple",
+  "type": "origins:modify_food",
+  "food_modifier": {
+    "name": "Halfling Food Bonus",
+    "operation": "multiply_total_multiplicative",
+    "value": 0.20
+  },
+  "saturation_modifier": {
+    "name": "Halfling Saturation Bonus",
+    "operation": "multiply_total_multiplicative",
+    "value": 0.20
+  },
   "name": "Small Appetite",
-  "description": "+20% food efficiency \u2014 food restores more hunger and saturation. Natural ability."
+  "description": "+20% food and saturation from all foods."
 }

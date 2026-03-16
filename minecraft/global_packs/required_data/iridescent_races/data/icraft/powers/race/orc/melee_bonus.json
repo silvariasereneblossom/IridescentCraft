@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Orcish Strength",
+  "description": "+10% melee weapon damage.",
+  "modifiers": [
+    {
+      "attribute": "puffish_attributes:melee_damage",
+      "operation": "multiply_base",
+      "value": 0.10
+    }
+  ]
+}

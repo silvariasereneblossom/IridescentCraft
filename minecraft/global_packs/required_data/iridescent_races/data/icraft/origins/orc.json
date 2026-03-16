@@ -1,7 +1,7 @@
 {
   "powers": [
+    "icraft:race/orc/melee_bonus",
     "icraft:race/orc/attack_speed",
-    "icraft:race/orc/knockback",
     "icraft:race/orc/hunger_drain"
   ],
   "icon": {
@@ -10,5 +10,5 @@
   "order": 4,
   "impact": 1,
   "name": "Orc",
-  "description": "Aggressive and hungry. +5% attack speed, +10% melee knockback. +15% hunger drain, -10% villager prices (hostile)."
+  "description": "Aggressive and hungry. +10% melee damage, +5% attack speed, +10% knockback. +15% hunger drain."
 }

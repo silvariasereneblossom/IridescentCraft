@@ -1,5 +1,15 @@
 {
-  "type": "origins:simple",
+  "type": "origins:modify_food",
+  "food_modifier": {
+    "name": "Cursed Flesh Food",
+    "operation": "multiply_total_multiplicative",
+    "value": -0.20
+  },
+  "saturation_modifier": {
+    "name": "Cursed Flesh Saturation",
+    "operation": "multiply_total_multiplicative",
+    "value": -0.20
+  },
   "name": "Cursed Flesh",
-  "description": "-20% healing from food and potions. Smite enchant deals +25% damage to you."
+  "description": "-20% nourishment from food. Your undead body struggles to process sustenance."
 }

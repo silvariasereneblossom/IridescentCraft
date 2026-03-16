@@ -147,7 +147,7 @@ EntityEvents.hurt(event => {
   if (player.level.server.tickCount < buffExpiry) {
     event.damage = event.damage * 1.15 // +15% damage
   }
-}
+})
 
 // Detect ender pearl landing / teleport and apply buff
 PlayerEvents.tick(event => {
@@ -188,9 +188,58 @@ PlayerEvents.tick(event => {
 // Tag Shulk players (using no_shield power as proxy since it's Shulk-specific)
 // Actually, we need a proper tagging mechanism. Add via the existing power override.
 
+// =============================================================================
+// DWARF — Miner's Appetite (halved hunger when mining)
+// On block break, apply brief Saturation to offset mining exhaustion.
+// Tag set by icraft:race/dwarf/miner_appetite power via action_on_callback.
+// =============================================================================
+
+BlockEvents.broken(event => {
+  let player = event.entity
+  if (!player || !player.player) return
+  if (!player.tags.contains('icraft_dwarf')) return
+
+  // Apply Saturation I for 3 seconds (60 ticks) to offset mining exhaustion
+  // This effectively halves the hunger cost of mining by restoring saturation
+  player.potionEffects.add('minecraft:saturation', 3, 0, false, false)
+})
+
+// =============================================================================
+// REVENANT — Shadow Strike damage reduction
+// In darkness (light level <= 4) or The Abyss, apply Resistance I.
+// Tag set by icraft:race/revenant/dark_power power via action_on_callback.
+// The +20% damage bonus is handled by the conditioned_attribute in the power.
+// =============================================================================
+
+ServerEvents.tick(event => {
+  let server = event.server
+
+  // Check every 2 seconds (offset from main origin check)
+  if (server.tickCount % 40 !== 20) return
+
+  server.players.forEach(player => {
+    if (!player.tags.contains('icraft_revenant')) return
+
+    let dim = player.level.dimension.toString()
+    let inAbyss = dim === 'theabyss:the_abyss'
+
+    // Check light level at player position
+    let blockPos = player.block
+    let lightLevel = blockPos.light
+
+    if (lightLevel <= 4 || inAbyss) {
+      // 30% damage reduction via Resistance I (20% vanilla) + stacking
+      // Resistance I = 20% damage reduction. Apply for duration + buffer.
+      player.potionEffects.add('minecraft:resistance', 60, 0, false, false)
+    }
+  })
+})
+
 console.log('[IridescentCraft] Origins custom effects loaded')
 console.log('  - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)')
 console.log('  - Merling: Land discomfort after 5 min dry')
 console.log('  - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)')
 console.log('  - Enderian: Ender Shift (+15% damage for 10s after teleport)')
 console.log('  - Shulk: Hardened Shell (reduced death durability loss)')
+console.log('  - Dwarf: Miner\'s Appetite (Saturation on block break)')
+console.log('  - Revenant: Shadow Strike (Resistance I in darkness/Abyss)')

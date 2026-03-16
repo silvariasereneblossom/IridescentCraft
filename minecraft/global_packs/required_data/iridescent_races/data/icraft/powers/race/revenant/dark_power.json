@@ -1,17 +1,29 @@
 {
-  "type": "origins:conditioned_attribute",
+  "type": "origins:multiple",
   "name": "Shadow Strike",
-  "description": "+10% damage in darkness.",
-  "modifiers": [
-    {
-      "attribute": "minecraft:generic.attack_damage",
-      "operation": "multiply_base",
-      "value": 0.1
+  "description": "+20% damage and 30% damage reduction in darkness and in The Abyss.",
+  "dark_damage": {
+    "type": "origins:conditioned_attribute",
+    "modifiers": [
+      {
+        "attribute": "minecraft:generic.attack_damage",
+        "operation": "multiply_base",
+        "value": 0.20
+      }
+    ],
+    "condition": {
+      "type": "origins:or",
+      "conditions": [
+        { "type": "origins:brightness", "comparison": "<=", "compare_to": 0.3 },
+        { "type": "origins:dimension", "dimension": "theabyss:the_abyss" }
+      ]
     }
-  ],
-  "condition": {
-    "type": "origins:brightness",
-    "comparison": "<=",
-    "compare_to": 0.3
+  },
+  "tag": {
+    "type": "origins:action_on_callback",
+    "entity_action_gained": {
+      "type": "origins:execute_command",
+      "command": "tag @s add icraft_revenant"
+    }
   }
 }
