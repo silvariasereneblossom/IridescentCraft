@@ -11,10 +11,12 @@
 	#Bio Generator Settings
 	[generators.bio_generator]
 		#Amount of energy in Joules the Bio Generator produces per tick.
-		bioGeneration = "88"
+		bioGeneration = "350"
 		#The capacity in mB of the fluid tank in the Bio Generator.
+		#IridescentCraft: Halved from 24000 to 12000 — effectively 2x biofuel consumption
+		#at the same output rate. Farming investment should be meaningful.
 		#Range: > 1
-		tankCapacity = 24000
+		tankCapacity = 12000
 
 	#Heat Generator Settings
 	[generators.heat_generator]
@@ -36,8 +38,11 @@
 		#Range: 1 ~ 9223372036854775807
 		tankCapacity = 18000
 		#The number of ticks each mB of Ethylene burns for in the Gas-Burning Generator.
+		#IridescentCraft: Reduced from 40 to 10 — ethylene burns 4x faster,
+		#requiring 4x more biofuel input to sustain. Still viable with heavy farming
+		#investment, but won't compete with fission/fusion.
 		#Range: > 1
-		ethyleneBurnTicks = 40
+		ethyleneBurnTicks = 10
 		#Multiplier for calculating the energy density of Ethylene (1 mB Hydrogen + 2 * bioGeneration * densityMultiplier).
 		ethyleneDensityMultiplier = "24"
 
