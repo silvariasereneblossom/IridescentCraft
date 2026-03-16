@@ -502,6 +502,30 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
+  // SECTION 5A2: OVERWORLD CURIO DROPS
+  // =========================================================================
+  // Since tier-gated mod items were removed from Overworld chests, add more
+  // curio/artifact drops to keep chests exciting. ~20% cumulative chance
+  // for a random curio from any non-village Overworld structure chest.
+  // =========================================================================
+
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .addLoot(LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.015)))
+    .addLoot(LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.015)))
+    .addLoot(LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:charm_of_sinking').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:digging_claws').when(c => c.randomChance(0.02)))
+    .addLoot(LootEntry.of('artifacts:antidote_vessel').when(c => c.randomChance(0.015)))
+
+  // =========================================================================
   // SECTION 5B: OVERWORLD STRUCTURE FOOD REDUCTION
   // =========================================================================
   // Reduce non-meat food in Overworld structure chests by 90%.
@@ -560,6 +584,18 @@ LootJS.modifiers(event => {
     .removeLoot('@culturaldelights')
     .removeLoot('@delightful')
     .removeLoot('@nethersdelight')
+
+  // --- Remove tier-gated mod items from Overworld chests ---
+  // These mods inject items into vanilla loot tables but are AStages-gated,
+  // causing "Unfamiliar Item" confusion for pre-tier players.
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('@aether')
+    .removeLoot('@deep_aether')
+    .removeLoot('@blue_skies')
+    .removeLoot('@twilightforest')
+    .removeLoot('@theabyss')
 
   // =========================================================================
   // SECTION 5C: OCEAN STRUCTURE LOOT
