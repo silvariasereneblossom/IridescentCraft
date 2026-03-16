@@ -1,6 +1,7 @@
 {
   "replace": true,
   "origins": [
+    "origins:human",
     "origins:arachnid",
     "origins:blazeborn",
     "origins:enderian",

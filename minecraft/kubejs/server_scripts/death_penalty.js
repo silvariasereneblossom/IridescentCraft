@@ -106,6 +106,11 @@ EntityEvents.death(event => {
     else if (soulboundLevel === 2) reduction = 0.75
     else if (soulboundLevel === 1) reduction = 0.50
 
+    // Shulk origin: Hardened Shell — 50% reduced durability loss on death
+    if (player.tags.contains('icraft_shulk')) {
+      reduction = Math.min(1.0, reduction + 0.50)
+    }
+
     let effectiveLoss = slotLossPct * (1 - reduction)
     if (effectiveLoss <= 0) return
 
