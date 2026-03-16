@@ -4,6 +4,47 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-16 — Ad Astra, Mekanism balance, food system, Tetra expansion, Farmer's Delight, bug fixes
+
+### Ad Astra Integration
+- Ad Astra added as post-T4 endgame space dimension mod. 5 planets (Moon, Mars, Mercury, Venus, Glacio) at 7x-12x difficulty.
+- MekaSuit Mk2 designed as space-tier armor upgrade requiring T4 completion + Ad Astra materials.
+- Planetary extraction system designed for unique resources per planet.
+- Space enchantments designed for vacuum/radiation/gravity protection.
+- Full integration design doc exists. Requires T4 gate + recipe gating. Implementation in progress.
+
+### Mekanism Balance Overhaul
+- Generator nerfs applied across all Mekanism generators to prevent early-game RF flooding.
+- All Mekanism machine RF costs doubled (2x) to align with progression curve.
+- Digital Miner recipe changed to require higher-tier materials (prevents T3 cheese).
+- Mekanism tool and armor recipes removed entirely (MekaTool/MekaSuit remain T4-only via existing gating).
+
+### Food System Overhaul
+- Hunger drain rate increased to 2.5x vanilla baseline.
+- Seed drops from grass reduced to 5% (from vanilla ~8%).
+- Structure food loot reduced across all loot tables.
+- Spawn protection area provides slower hunger drain for new players.
+
+### Tetra Integration Expansion
+- Tetra material count expanded from 15 to 20 modded metals.
+- New materials include Abyss metals and Forbidden & Arcanus metals.
+- Diamond hammer tier now required for high-tier material crafting.
+- Full reference page updated in wiki.
+
+### Farmer's Delight Cooking Conversion
+- 70 recipes converted to use Farmer's Delight cooking mechanics.
+- Cooking Station and Skillet now serve as primary food crafting stations.
+
+### Design Decisions (Planned)
+- Abyss ring and armor design documented for future implementation.
+
+### Bug Fixes
+- Apotheosis affix JSONs: uppercase rarity keys changed to lowercase (fixed world load crash).
+- Cherry Village: template pool feature references fixed (unregistered feature crash).
+- Zeta race condition: coremod jar added to synchronize ForgeZetaEventBus.
+
+---
+
 ## 2026-03-16 — New mod additions and Ad Astra integration
 
 ### New Mods Added

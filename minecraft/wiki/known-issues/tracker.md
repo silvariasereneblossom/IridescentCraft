@@ -14,6 +14,15 @@
 - **Design:** Aethersteel ore worldgen disabled via biome modifier override. Ore appears as holystone until T4 unlock. 17 items added to T4 AStages restrictions.
 - **Verify:** Confirm ore replacement renders correctly and T4 unlock reveals Aethersteel ore.
 
+### Ad Astra Integration
+- **Status:** In progress (2026-03-16)
+- **Design:** 5 planets (Moon, Mars, Mercury, Venus, Glacio) as post-T4 endgame. MekaSuit Mk2, planetary extraction, space enchantments.
+- **Remaining:** Recipe gating, dimension scaling, loot tables, space enchantment implementation.
+
+### Abyss Ring/Armor Design
+- **Status:** Planned (2026-03-16)
+- **Design:** Ring and armor integration for The Abyss mod documented for future implementation.
+
 ### Missing Icon/Texture Assets for Custom Items
 - **Status:** Known, low priority
 - **Symptom:** New boss drop items, endgame materials (Rift Shard, Rift Core, Primordial Essence, Mythic Catalysts, etc.) use default purple/black missing texture icons
@@ -28,8 +37,20 @@
 - [ ] Apotheosis affix JSON schema compatibility (84 JSON affixes deployed, untested)
 - [ ] Custom enchantment registration via Apotheosis
 - [ ] Mob equipment setItemSlot API — fixed, needs in-game verification
+- [ ] Mekanism balance changes — generator nerfs, 2x RF costs, Digital Miner recipe
+- [ ] Food system overhaul — hunger drain 2.5x, seed drops 5%, structure food reduction
+- [ ] Farmer's Delight cooking conversion — 70 recipes
 
 ## Resolved
+
+### Mekanism Balance Overhaul (2026-03-16)
+- **Resolved:** Generator nerfs, 2x RF costs for all machines, Digital Miner recipe changed, tool/armor recipes removed.
+
+### Food System Overhaul (2026-03-16)
+- **Resolved:** Hunger drain 2.5x, seed drops 5%, structure food reduction, spawn protection.
+
+### Farmer's Delight Cooking Conversion (2026-03-16)
+- **Resolved:** 70 recipes converted to Farmer's Delight cooking mechanics.
 
 ### Config Review Pass Complete (2026-03-16)
 - **Resolved:** Easy Anvils verified correct (repair costs meaningful). Disenchanting Table and Table of Experience T2-gated. DarkOrb Orb of Origin T2-gated. Enchantment Transfer fine (XP cost is gate). Azukaar's stat scaling zeroed. Icarus wings T3-gated (5 new recipes). Configurable Extra Mob Drops audited (empty, safe). Aethersteel moved to T4.
@@ -43,7 +64,7 @@
 - **Zeta race condition:** Coremod jar added to synchronize ForgeZetaEventBus.
 
 ### Tetra Modded Materials (2026-03-16)
-- **Resolved:** 15 modded metal material definitions created as Paxi datapack. Covers T1-T4 metals for Tetra tool crafting.
+- **Resolved:** 20 modded metal material definitions created as Paxi datapack (expanded from 15 to include Abyss + F&A metals). Covers T1-T4 metals for Tetra tool crafting. Diamond hammer tier added.
 
 ### Champions Custom Affixes Implemented (2026-03-15)
 - **Fix:** 5 custom affixes (Commanding, Draining, Hexing, Leaping, Summoning) implemented in `custom_champion_affixes.js`. Per-dimension spawn scaling added.

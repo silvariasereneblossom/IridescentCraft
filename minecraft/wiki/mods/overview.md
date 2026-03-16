@@ -11,9 +11,9 @@
 | Thermal Series | 2 | RF power, 2x ore processing, Phytogenic automation |
 | Industrial Foregoing (basic) | 2 | Basic mob interaction, simple automation |
 | Industrial Foregoing (advanced) | 3 | Laser Drill, Mob Crusher, auto-mining |
-| Mekanism (basic) | 3 | Up to 5x ore processing, basic machines |
+| Mekanism (basic) | 3 | Up to 5x ore processing, basic machines (2x RF costs, generator nerfs) |
 | Refined Storage | 3 | Digital storage (dual-path recipes: tech or magic) |
-| Mekanism (advanced) | 4 | Digital Miner, Fusion Reactor, MekaTool, Mekasuit, QIO |
+| Mekanism (advanced) | 4 | Digital Miner (recipe changed), Fusion Reactor, MekaTool, Mekasuit, QIO. Tool/armor recipes removed. |
 | RFTools Dimensions | 4 | Dimension creation |
 
 ## Core Magic (Tiered)
@@ -94,8 +94,9 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | DarkOrb Orb of Origin | recipe | T2-gated (4x steel + 4x amethyst + heart of the sea) |
 | Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |
 | Terramity | recipes | 22 gun recipes removed, 64 armor pieces removed, gunsmith station removed. |
-| Tetra | datapack (`icraft_tetra_materials`) | 15 modded metal material definitions. Brass (T1), Steel/Signalum/Lumium/Manasteel/Steeleaf/Ironwood/Fiery/Knightmetal (T2), Osmium/Refined Obsidian/Terrasteel/Elementium/Enderium (T3), Aethersteel (T4). |
+| Tetra | datapack (`icraft_tetra_materials`) | 20 modded metal material definitions including Abyss + F&A metals. Diamond hammer tier. |
 | Ad Astra | recipes/config | Post-T4 space dimension. T4 gate + recipe gating. BEING IMPLEMENTED. |
+| Mekanism | config/recipes | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal. |
 
 ## Related Pages
 

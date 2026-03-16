@@ -99,7 +99,9 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 
 ## Food & Hunger
 
-Spice of Life: Carrot Edition rewards food diversity with HP bonuses. Food is ungated from Tier 1 but best diversity requires dimensional ingredients.
+Hunger drain rate increased to 2.5x vanilla baseline. Seed drops from grass reduced to 5%. Structure food loot reduced across all loot tables. Spawn protection area provides slower hunger drain for new players.
+
+Spice of Life: Carrot Edition rewards food diversity with HP bonuses. Food is ungated from Tier 1 but best diversity requires dimensional ingredients. Farmer's Delight Cooking Station and Skillet serve as primary food crafting stations (70 recipes converted).
 
 ## XP Economy
 
@@ -116,14 +118,16 @@ XP is plentiful with many sinks: JustLevelingFork leveling, skill point investme
 
 ## Tetra Modded Materials
 
-15 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals.
+20 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals. Includes Abyss and Forbidden & Arcanus metals added 2026-03-16. Diamond hammer tier required for high-tier crafting.
 
 | Tier | Materials |
 |------|-----------|
 | T1 | Brass |
 | T2 | Steel, Signalum, Lumium, Manasteel, Steeleaf, Ironwood, Fiery, Knightmetal |
-| T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium |
+| T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium, + Abyss metals, F&A metals |
 | T4 | Aethersteel |
+
+See [Tetra Materials](tetra-materials.md) for full reference.
 
 ## Seasonal Farming (Serene Seasons)
 
@@ -132,6 +136,10 @@ Serene Seasons adds seasonal crop growth. Crops die in winter unless grown in a 
 ## Azukaar's Fair Difficulty
 
 All stat scaling (damage, luck, XP multipliers) zeroed out to avoid conflicts with ScalingMobs. Behavior features retained: hunger nerf, night purge, no-sleep enforcement, respawn distance.
+
+## Mekanism Balance
+
+Generators nerfed across the board to prevent early RF flooding. All machine RF costs doubled (2x). Digital Miner recipe requires higher-tier materials. Mekanism tool and armor recipes removed (MekaTool/MekaSuit remain T4-only via existing gating).
 
 ## Related Pages
 

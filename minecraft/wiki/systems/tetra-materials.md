@@ -8,7 +8,7 @@ Vanilla reference values (approximate, from Tetra defaults) are included for com
 
 ## Master Comparison Table
 
-All 15 custom materials sorted by tier, with vanilla benchmarks for context.
+All 20 custom materials sorted by tier, with vanilla benchmarks for context. Expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals.
 
 | Tier | Material | Source Mod | Durability | Primary Dmg | Secondary Dmg | Tertiary | Tool Efficiency | Tool Level | Magic Capacity | Tint | Repair Item |
 |------|----------|------------|------------|-------------|---------------|----------|-----------------|------------|----------------|------|-------------|
@@ -138,7 +138,7 @@ The material progression follows these principles:
 
 ## Source Coverage: Addon Mods vs IridescentCraft Datapack
 
-All 15 materials are defined by the **IridescentCraft custom datapack** (`icraft_tetra_materials`). None come from external Tetra addon mods -- they are all original definitions authored for this modpack.
+All 20 materials are defined by the **IridescentCraft custom datapack** (`icraft_tetra_materials`). None come from external Tetra addon mods -- they are all original definitions authored for this modpack. The count was expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals.
 
 The materials draw from the following source mods (the mod that provides the ingot):
 
