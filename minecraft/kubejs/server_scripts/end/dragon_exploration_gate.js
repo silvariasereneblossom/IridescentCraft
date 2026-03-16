@@ -10,8 +10,8 @@
 // Exploration Requirements (tracked in persistentData):
 //   1. Visited the outer End islands (>500 blocks from 0,0)
 //   2. Visited an End City (>1000 blocks from 0,0)
-//   3. Killed a Shulker
-//   4. Killed at least 20 Endermen in The End
+//   3. Killed 5 Shulkers
+//   4. Killed at least 50 Endermen in The End
 //   5. (Implicit) Surviving and navigating The End
 //
 // Once all 4 milestones are met, the player can craft and use a
@@ -24,7 +24,8 @@
 // ---- Constants ----
 const END_EXPLORE_OUTER = 500     // Blocks from 0,0 for "outer islands"
 const END_EXPLORE_CITY = 1000     // Blocks from 0,0 for "End City vicinity"
-const END_ENDERMAN_KILLS = 20     // Required Enderman kills in The End
+const END_ENDERMAN_KILLS = 50     // Required Enderman kills in The End
+const END_SHULKER_KILLS = 5       // Required Shulker kills in The End
 const DRAGON_SUMMON_RADIUS = 10   // Max distance from 0,0 to use crystal
 
 // =============================================================================
@@ -76,8 +77,8 @@ EntityEvents.spawned(event => {
         p.tell(Text.white('  Explore The End to unlock the Dragon fight:'))
         p.tell(Text.gray('  ○ Reach the outer End islands (500+ blocks out)'))
         p.tell(Text.gray('  ○ Find an End City (1000+ blocks out)'))
-        p.tell(Text.gray('  ○ Slay a Shulker'))
-        p.tell(Text.gray('  ○ Defeat 20 Endermen in The End'))
+        p.tell(Text.gray('  ○ Slay 5 Shulkers'))
+        p.tell(Text.gray('  ○ Defeat 50 Endermen in The End'))
         p.tell(Text.white(''))
         p.tell(Text.gray('  Then craft a §5Dragon Summoning Crystal§7 and'))
         p.tell(Text.gray('  use it at the End Portal fountain.'))
@@ -154,14 +155,21 @@ EntityEvents.death(event => {
 
   let entityId = entity.type.toString()
 
-  // Shulker kill
-  if (entityId === 'minecraft:shulker' && !pdata.getBoolean('icraft_end_shulker')) {
-    pdata.putBoolean('icraft_end_shulker', true)
-    player.tell(Text.lightPurple('  ◆ End Exploration: Shulker slain!'))
-    player.server.runCommandSilent(
-      `playsound minecraft:block.end_portal.spawn player ${player.username} ~ ~ ~ 0.5`
-    )
-    checkEndExploration(player)
+  // Shulker kills (need 5)
+  if (entityId === 'minecraft:shulker') {
+    let shulkerKills = pdata.getInt('icraft_end_shulker_kills') + 1
+    pdata.putInt('icraft_end_shulker_kills', shulkerKills)
+
+    if (shulkerKills === END_SHULKER_KILLS) {
+      pdata.putBoolean('icraft_end_shulker', true)
+      player.tell(Text.lightPurple(`  ◆ End Exploration: ${END_SHULKER_KILLS} Shulkers slain!`))
+      player.server.runCommandSilent(
+        `playsound minecraft:block.end_portal.spawn player ${player.username} ~ ~ ~ 0.5`
+      )
+      checkEndExploration(player)
+    } else if (shulkerKills < END_SHULKER_KILLS) {
+      player.tell(Text.gray(`  End Shulkers: ${shulkerKills}/${END_SHULKER_KILLS}`))
+    }
   }
 
   // Enderman kills
@@ -312,16 +320,17 @@ EntityEvents.death(event => {
 // =============================================================================
 
 ServerEvents.recipes(event => {
-  // Dragon Summoning Crystal: 4x Ender Pearl + 4x End Crystal + 1x Nether Star
+  // Dragon Summoning Crystal: 4x Ender Pearl + 2x End Crystal + 2x T4 Token + 1x Nether Star
   event.shaped('kubejs:dragon_summoning_crystal', [
     'PCP',
-    'CNC',
+    'TNT',
     'PCP'
   ], {
     P: 'minecraft:ender_pearl',
     C: 'minecraft:end_crystal',
+    T: 'kubejs:reality_progression_token_t4',
     N: 'minecraft:nether_star'
-  })
+  }).id('icraft:dragon_summoning_crystal')
 })
 
 // =============================================================================
@@ -351,11 +360,12 @@ PlayerEvents.inventoryChanged(event => {
   player.tell(Text.darkPurple('  ◆ End Exploration Progress:'))
   player.tell(Text.gray(`    ${outer ? '§a✓' : '§c○'} §7Outer Islands (500+ blocks from center)`))
   player.tell(Text.gray(`    ${city ? '§a✓' : '§c○'} §7End City Territory (1000+ blocks)`))
-  player.tell(Text.gray(`    ${shulker ? '§a✓' : '§c○'} §7Slay a Shulker`))
+  let shulkerKills = pdata.getInt('icraft_end_shulker_kills')
+  player.tell(Text.gray(`    ${shulker ? '§a✓' : '§c○'} §7Slay Shulkers (${Math.min(shulkerKills, END_SHULKER_KILLS)}/${END_SHULKER_KILLS})`))
   player.tell(Text.gray(`    ${endermen ? '§a✓' : '§c○'} §7Defeat Endermen (${Math.min(kills, END_ENDERMAN_KILLS)}/${END_ENDERMAN_KILLS})`))
 })
 
 console.log('[IridescentCraft] Dragon exploration gate loaded')
 console.log('  - Dragon blocked until End exploration complete')
-console.log('  - 4 milestones: outer islands, End City, Shulker, 20 Endermen')
+console.log('  - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen')
 console.log('  - Dragon Summoning Crystal required to start fight')
