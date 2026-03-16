@@ -561,6 +561,18 @@ LootJS.modifiers(event => {
     .removeLoot('@delightful')
     .removeLoot('@nethersdelight')
 
+  // --- Remove tier-gated mod items from Overworld chests ---
+  // These mods inject items into vanilla loot tables but are AStages-gated,
+  // causing "Unfamiliar Item" confusion for pre-tier players.
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('@aether')
+    .removeLoot('@deep_aether')
+    .removeLoot('@blue_skies')
+    .removeLoot('@twilightforest')
+    .removeLoot('@theabyss')
+
   // =========================================================================
   // SECTION 5C: OCEAN STRUCTURE LOOT
   // =========================================================================
