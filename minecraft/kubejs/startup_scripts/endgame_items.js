@@ -24,6 +24,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Ultimate Mythic crafting material')
         .maxStackSize(16)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/nether_star' })
+        .color(0, 0x9933CC)
 
     event.create('kubejs:primordial_essence')
         .displayName('Primordial Essence')
@@ -32,6 +34,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used for Mythic III+ infusion and reforging')
         .maxStackSize(64)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/blaze_powder' })
+        .color(0, 0x220033)
 
     event.create('kubejs:rift_gem')
         .displayName('Rift Gem')
@@ -40,6 +44,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Best-in-slot Apotheosis socket gem')
         .maxStackSize(16)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0xDD55FF)
 
     event.create('kubejs:rift_blueprint')
         .displayName('Rift Blueprint')
@@ -48,6 +54,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Unlocks unique Mythic crafting recipes')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/map' })
+        .color(0, 0xBB66FF)
 
     // =========================================================================
     // MYTHIC FORGE CRAFTING STATION
@@ -62,6 +70,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Crafted from Rift materials + Mekanism components')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
+        .color(0, 0x660099)
 
     // =========================================================================
     // MYTHIC INFUSION CATALYSTS
@@ -76,6 +86,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Apply to any T4 weapon or armor piece')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/diamond' })
+        .color(0, 0xCC88FF)
 
     event.create('kubejs:mythic_catalyst_2')
         .displayName('Mythic Catalyst II')
@@ -84,6 +96,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Apply to any T4 weapon or armor piece')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/diamond' })
+        .color(0, 0xBB66FF)
 
     event.create('kubejs:mythic_catalyst_3')
         .displayName('Mythic Catalyst III')
@@ -92,6 +106,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Apply to any T4 weapon or armor piece')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/diamond' })
+        .color(0, 0xAA44FF)
 
     event.create('kubejs:mythic_catalyst_4')
         .displayName('Mythic Catalyst IV')
@@ -100,6 +116,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Apply to any T4 weapon or armor piece')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/diamond' })
+        .color(0, 0x9922FF)
 
     event.create('kubejs:mythic_catalyst_5')
         .displayName('Mythic Catalyst V')
@@ -108,6 +126,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Apply to any T4 weapon or armor piece')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/diamond' })
+        .color(0, 0x8800FF)
 
     // =========================================================================
     // VOID COFFER — Rift banking item
@@ -121,6 +141,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§7Banked items survive death in the Rift')
         .maxStackSize(1)
         .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/ender_pearl' })
+        .color(0, 0x220044)
 
     // =========================================================================
     // REFORGE TOKEN — used for Mythic Reforging (affix reroll)
@@ -133,6 +155,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Cost: 3 Primordial Essences + 15 levels')
         .maxStackSize(16)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
+        .color(0, 0xDD55FF)
 
     // =========================================================================
     // MekaSuit Mk2 — Ultimate Armor Set (Ad Astra Integration)
@@ -148,6 +172,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/netherite_helmet' })
+        .color(0, 0x4488FF)
 
     event.create('kubejs:mekasuit_mk2_chestplate')
         .displayName('MekaSuit Mk2 Chestplate')
@@ -157,6 +183,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/netherite_chestplate' })
+        .color(0, 0x4488FF)
 
     event.create('kubejs:mekasuit_mk2_leggings')
         .displayName('MekaSuit Mk2 Leggings')
@@ -166,6 +194,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/netherite_leggings' })
+        .color(0, 0x4488FF)
 
     event.create('kubejs:mekasuit_mk2_boots')
         .displayName('MekaSuit Mk2 Boots')
@@ -175,6 +205,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
         .maxStackSize(1)
         .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/netherite_boots' })
+        .color(0, 0x4488FF)
 
     // =========================================================================
     // PLANETARY EXTRACTED ELEMENTS
@@ -189,6 +221,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in advanced energy systems')
         .maxStackSize(64)
         .rarity('uncommon')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0x66DDFF)
 
     event.create('kubejs:titanium_dust')
         .displayName('Titanium Dust')
@@ -197,6 +231,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in advanced alloy crafting')
         .maxStackSize(64)
         .rarity('uncommon')
+        .textureJson({ layer0: 'minecraft:item/glowstone_dust' })
+        .color(0, 0xAAAAAA)
 
     // ── Mars Extraction ──
     event.create('kubejs:ferric_oxide')
@@ -206,6 +242,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in heat-resistant materials')
         .maxStackSize(64)
         .rarity('uncommon')
+        .textureJson({ layer0: 'minecraft:item/redstone' })
+        .color(0, 0xAA3300)
 
     event.create('kubejs:cryogenic_crystal')
         .displayName('Cryogenic Crystal')
@@ -214,6 +252,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in cold-resistant technology')
         .maxStackSize(64)
         .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0x88DDFF)
 
     // ── Mercury Extraction ──
     event.create('kubejs:solar_crystal')
@@ -223,6 +263,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in stellar-grade components')
         .maxStackSize(64)
         .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0xFFDD33)
 
     event.create('kubejs:rare_earth_dust')
         .displayName('Rare Earth Dust')
@@ -231,6 +273,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in high-tech crafting')
         .maxStackSize(64)
         .rarity('uncommon')
+        .textureJson({ layer0: 'minecraft:item/glowstone_dust' })
+        .color(0, 0x999999)
 
     // ── Venus Extraction ──
     event.create('kubejs:sulfuric_compound')
@@ -240,6 +284,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in corrosion-resistant alloys')
         .maxStackSize(64)
         .rarity('uncommon')
+        .textureJson({ layer0: 'minecraft:item/glowstone_dust' })
+        .color(0, 0xAACC00)
 
     event.create('kubejs:pressure_crystal')
         .displayName('Pressure Crystal')
@@ -248,6 +294,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in pressure-resistant technology')
         .maxStackSize(64)
         .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0xCC0000)
 
     // ── Glacio Extraction ──
     event.create('kubejs:alien_isotope')
@@ -257,6 +305,8 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in alien-tech integration')
         .maxStackSize(64)
         .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0x33FF99)
 
     event.create('kubejs:cryogenic_element')
         .displayName('Cryogenic Element')
@@ -265,5 +315,7 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Used in cryo-fusion technology')
         .maxStackSize(64)
         .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0x66CCFF)
 
 })
