@@ -3,7 +3,6 @@ mods/*.jar
 !mods/iridescent_classes.jar
 !mods/iridescent_codex_data.jar
 !mods/zeta_racefix-*.jar
-!mods/miapi_busfix-*.jar
 resourcepacks/
 shaderpacks/
 saves/
