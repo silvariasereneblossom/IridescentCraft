@@ -1,0 +1,28 @@
+{
+    "key": "deorum",
+    "category": "metal",
+    "primary": 6.0,
+    "secondary": 5.5,
+    "tertiary": 3.5,
+    "durability": 700,
+    "integrityCost": 3,
+    "integrityGain": 6,
+    "magicCapacity": 110,
+    "toolLevel": "minecraft:diamond",
+    "toolEfficiency": 8,
+    "tints": {
+        "glyph": "d4a017",
+        "texture": "d4a017"
+    },
+    "textures": [
+        "shiny",
+        "metal",
+        "default"
+    ],
+    "material": {
+        "items": [ "forbidden_arcanus:deorum_ingot" ]
+    },
+    "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+    }
+}
