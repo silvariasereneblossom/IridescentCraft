@@ -133,4 +133,46 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Cost: 3 Primordial Essences + 15 levels')
         .maxStackSize(16)
         .rarity('epic')
+
+    // =========================================================================
+    // MekaSuit Mk2 — Ultimate Armor Set (Ad Astra Integration)
+    // The convergence of tech and magic — MekaSuit + Aethersteel + Glacio + Rift
+    // CAN receive Apotheosis affixes, custom enchantments, and socket gems
+    // =========================================================================
+
+    event.create('kubejs:mekasuit_mk2_helmet')
+        .displayName('MekaSuit Mk2 Helmet')
+        .tooltip('§5The ultimate protective headgear')
+        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
+        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
+        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:mekasuit_mk2_chestplate')
+        .displayName('MekaSuit Mk2 Chestplate')
+        .tooltip('§5The ultimate protective chestpiece')
+        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
+        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
+        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:mekasuit_mk2_leggings')
+        .displayName('MekaSuit Mk2 Leggings')
+        .tooltip('§5The ultimate protective leg armor')
+        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
+        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
+        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:mekasuit_mk2_boots')
+        .displayName('MekaSuit Mk2 Boots')
+        .tooltip('§5The ultimate protective footwear')
+        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
+        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
+        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
+        .maxStackSize(1)
+        .rarity('epic')
 })

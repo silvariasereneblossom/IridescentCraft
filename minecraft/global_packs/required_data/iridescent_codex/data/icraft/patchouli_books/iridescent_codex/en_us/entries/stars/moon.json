@@ -1,0 +1,21 @@
+{
+  "name": "The Moon",
+  "icon": "ad_astra:moon_stone",
+  "category": "icraft:stars",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)The Moon \u2014 Entry Point to Space$(/bold)$(br)Difficulty: $(bold)7.0x$(/bold) (comparable to End Outer Islands)$(br)Death Penalty: $(bold)22%$(/bold)$(br2)Your first extraterrestrial destination. No oxygen, low gravity, a stark landscape of Moon Stone and Moon Sand. Moderate hostile mobs patrol the surface."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Low Gravity Combat$(/bold)$(br)The Moon's reduced gravity changes combat significantly:$(br)\u2022 $(bold)Knockback is doubled$(/bold) \u2014 hits send you and mobs flying$(br)\u2022 $(bold)Fall damage is halved$(/bold) \u2014 you float down gently$(br)\u2022 Projectiles travel further$(br2)Melee builds need to close distance constantly. Ranged builds thrive here."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)What to Bring$(/bold)$(br)\u2022 Space suit with oxygen$(br)\u2022 Building materials for a temporary base$(br)\u2022 Oxygen Loader + RF power source$(br)\u2022 Mining tools for Moon Stone$(br2)$(bold)What to Mine$(/bold)$(br)Moon-specific ores and materials are required for the $(bold)Tier 2 Rocket$(/bold) to reach Mars. Explore the lunar surface structures for additional loot."
+    }
+  ],
+  "flag": "icraft:stage_tier_4"
+}

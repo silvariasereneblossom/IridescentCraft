@@ -90,6 +90,40 @@ EntityEvents.spawned(event => {
     entity.persistentData.putBoolean('icraft_ice_elemental', true)
   }
 
+  // ── Ad Astra: Moon — Low gravity combat ──
+  // Mobs get Jump Boost for low-grav feel
+  if (dim === 'ad_astra:moon') {
+    entity.potionEffects.add('minecraft:jump_boost', 999999, 1, false, false)
+  }
+
+  // ── Ad Astra: Mars — Cold-adapted mobs ──
+  // Mobs get frost resistance (speed buff to simulate cold adaptation)
+  if (dim === 'ad_astra:mars') {
+    entity.potionEffects.add('minecraft:speed', 999999, 0, false, false)
+    entity.persistentData.putBoolean('icraft_cold_adapted', true)
+  }
+
+  // ── Ad Astra: Mercury — Heat/cold dual nature ──
+  // Mobs gain fire resistance on sun side
+  if (dim === 'ad_astra:mercury') {
+    entity.potionEffects.add('minecraft:fire_resistance', 999999, 0, false, false)
+  }
+
+  // ── Ad Astra: Venus — Acid-resistant creatures ──
+  // Mobs get resistance (pressure-adapted)
+  if (dim === 'ad_astra:venus') {
+    entity.potionEffects.add('minecraft:resistance', 999999, 0, false, false)
+    entity.potionEffects.add('minecraft:strength', 999999, 0, false, false)
+  }
+
+  // ── Ad Astra: Glacio — Alien mobs, highest difficulty ──
+  // Mobs get speed + strength (alien predators)
+  if (dim === 'ad_astra:glacio') {
+    entity.potionEffects.add('minecraft:speed', 999999, 1, false, false)
+    entity.potionEffects.add('minecraft:strength', 999999, 1, false, false)
+    entity.potionEffects.add('minecraft:resistance', 999999, 0, false, false)
+  }
+
   entity.persistentData.putBoolean('icraft_dim_mech', true)
 })
 
@@ -148,6 +182,15 @@ EntityEvents.hurt(event => {
         // Deal raw damage via attack to simulate frost bypass
       }
     }
+  }
+
+  // ── Moon: Doubled Knockback (low gravity combat) ──
+  if (dim === 'ad_astra:moon') {
+    // Double the knockback by applying extra velocity
+    try {
+      let motion = target.deltaMovement
+      target.setMotion(motion.x * 2.0, motion.y * 1.5, motion.z * 2.0)
+    } catch(e) {}
   }
 
   // ── End: Ender Displacement (15% of attacks teleport player) ──
@@ -233,6 +276,52 @@ PlayerEvents.tick(event => {
   // ── Nether: Lava Affinity ──
   // Nether mobs near lava regenerate — handled via spawn regen above
   // (simplified: all Nether mobs get regen, which is close enough)
+
+  // ═══ AD ASTRA PLANET HAZARDS ═══
+
+  // ── Moon: Knockback doubled, fall damage halved ──
+  // Low gravity — handled via knockback in hurt event below
+  // Fall damage reduction handled via Slow Falling effect
+  if (dim === 'ad_astra:moon') {
+    // Slow Falling I reduces fall damage significantly (simulates low gravity)
+    player.potionEffects.add('minecraft:slow_falling', 200, 0, false, false)
+  }
+
+  // ── Mars: Cold damage ticks, faster hunger drain ──
+  if (dim === 'ad_astra:mars') {
+    // Cold damage: 1 HP every 5 seconds (reduced by Frostward enchant)
+    player.attack('freeze', 1.0)
+    // Faster hunger: apply hunger effect
+    player.potionEffects.add('minecraft:hunger', 200, 0, false, false)
+  }
+
+  // ── Mercury: Fire damage on sun side, cold on dark side ──
+  if (dim === 'ad_astra:mercury') {
+    let dayTime = player.level.dayTime % 24000
+    if (dayTime >= 0 && dayTime < 12000) {
+      // Day (sun side): fire damage
+      player.setSecondsOnFire(3)
+    } else {
+      // Night (dark side): freeze damage
+      player.attack('freeze', 1.5)
+    }
+  }
+
+  // ── Venus: Acid rain continuous damage, movement speed reduction ──
+  if (dim === 'ad_astra:venus') {
+    // Acid rain: continuous damage (1.5 HP per tick cycle)
+    player.attack('magic', 1.5)
+    // Pressure: movement speed reduction
+    player.potionEffects.add('minecraft:slowness', 200, 1, false, false)
+  }
+
+  // ── Glacio: Extreme cold, highest mob difficulty ──
+  if (dim === 'ad_astra:glacio') {
+    // Extreme cold: 2 HP per tick cycle
+    player.attack('freeze', 2.0)
+    // Mining fatigue from extreme environment
+    player.potionEffects.add('minecraft:mining_fatigue', 200, 0, false, false)
+  }
 })
 
 

@@ -1,0 +1,21 @@
+{
+  "name": "Mercury",
+  "icon": "ad_astra:mercury_stone",
+  "category": "icraft:stars",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Mercury \u2014 The Burning World$(/bold)$(br)Difficulty: $(bold)9.0x$(/bold) (comparable to Dragon's Domain)$(br)Death Penalty: $(bold)27%$(/bold)$(br2)Mercury's day/night cycle is $(italic)lethal$(/italic). The sun-facing side deals continuous fire damage. The dark side deals extreme cold damage. Survival requires constant awareness of the terminator line."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)The Terminator Line$(/bold)$(br)The boundary between Mercury's sunlit and dark sides is the only survivable zone without full environmental protection. Smart explorers follow this line as the planet rotates.$(br2)$(bold)Day Side (Sun):$(/bold) Continuous fire damage. Heatward enchantment essential.$(br)$(bold)Night Side (Dark):$(/bold) Extreme cold damage. Frostward enchantment essential.$(br2)Having $(italic)both$(/italic) enchantments is ideal."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Purpose$(/bold)$(br)Mercury contains high-value heat-resistant ores and mercury-specific metals. These materials contribute to Tier 4 Rocket construction.$(br2)$(bold)Structures$(/bold)$(br)Ancient solar collection arrays and heat-sealed structures dot the surface. They contain rare loot unique to Mercury."
+    }
+  ],
+  "flag": "icraft:stage_tier_4"
+}

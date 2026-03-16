@@ -1,0 +1,21 @@
+{
+  "name": "Mars",
+  "icon": "ad_astra:mars_stone",
+  "category": "icraft:stars",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Mars \u2014 The Red Planet$(/bold)$(br)Difficulty: $(bold)8.0x$(/bold) (comparable to End Deep / End Cities)$(br)Death Penalty: $(bold)25%$(/bold)$(br2)Cold, hostile, and unforgiving. Mars demands preparation beyond the Moon. The thin atmosphere provides no protection from the extreme cold."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Environmental Hazards$(/bold)$(br)\u2022 $(bold)Cold damage$(/bold) ticks constantly without Frostward or cold protection$(br)\u2022 $(bold)Faster hunger drain$(/bold) \u2014 bring extra food or Golden Apples$(br)\u2022 Cold-themed mobs are adapted to the environment$(br2)The Frostward enchantment is highly valuable here. Without it, you will take continuous cold damage that adds up quickly."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Purpose$(/bold)$(br)Mars contains ores and materials required for the $(bold)Tier 3 Rocket$(/bold) to reach Venus and Mercury. Explore the Martian ruins and underground facilities for rare loot.$(br2)$(bold)Recommended Gear$(/bold)$(br)\u2022 Netherite Space Suit or MekaSuit$(br)\u2022 Frostward-enchanted armor$(br)\u2022 High-saturation food supply$(br)\u2022 Established RF power for oxygen production"
+    }
+  ],
+  "flag": "icraft:stage_tier_4"
+}

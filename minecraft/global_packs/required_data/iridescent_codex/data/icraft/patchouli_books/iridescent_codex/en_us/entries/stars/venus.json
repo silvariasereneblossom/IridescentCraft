@@ -1,0 +1,21 @@
+{
+  "name": "Venus",
+  "icon": "ad_astra:venus_stone",
+  "category": "icraft:stars",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Venus \u2014 The Acid World$(/bold)$(br)Difficulty: $(bold)10.0x$(/bold) (beyond Dragon's Domain)$(br)Death Penalty: $(bold)28%$(/bold)$(br2)The most hostile inner planet. Venus's crushing pressure and acid atmosphere make every moment on the surface a fight for survival. Mobs here are pressure-adapted and acid-resistant."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Environmental Hazards$(/bold)$(br)\u2022 $(bold)Acid rain$(/bold) deals continuous damage \u2014 no escape on the surface$(br)\u2022 $(bold)Crushing pressure$(/bold) reduces movement speed significantly$(br)\u2022 Acid-resistant mobs gain Resistance and Strength$(br2)Venus is designed to be short, intense expeditions. Get in, mine what you need, get out. Extended stays will drain your resources rapidly."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Purpose$(/bold)$(br)Venus contains high-value ores required for the $(bold)Tier 4 Rocket$(/bold) to reach Glacio \u2014 the true endgame destination.$(br2)$(bold)Structures$(/bold)$(br)Floating cloud structures above the acid layer and deep surface bunkers contain unique loot. The floating structures are safer to explore but harder to reach."
+    }
+  ],
+  "flag": "icraft:stage_tier_4"
+}

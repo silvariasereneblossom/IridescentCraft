@@ -1,0 +1,21 @@
+{
+  "name": "Getting to Space",
+  "icon": "ad_astra:nasa_workbench",
+  "category": "icraft:stars",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Space exploration is the final frontier.$(/bold)$(br2)To reach space, you need three things: a $(bold)Rocket Workbench$(/bold), a $(bold)rocket$(/bold), and $(bold)fuel$(/bold). None of these are cheap \u2014 space is endgame content that requires established T4 infrastructure."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Rocket Workbench$(/bold)$(br)The gateway item. Crafted from Netherite, Mekanism Steel Casings, and a T4 progression token. Without this station, no rockets can be built.$(br2)$(bold)Fuel Refining$(/bold)$(br)Ad Astra fuel requires RF-powered refining. You will need $(italic)significant$(/italic) power infrastructure \u2014 a coal generator will not cut it. Bring your Mekanism Fusion Reactor or Thermal Dynamos."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Oxygen$(/bold)$(br)Space has no oxygen. You need an $(bold)Oxygen Loader$(/bold) to fill your space suit before launch, and oxygen tanks for extended stays. The Oxygen Loader requires continuous RF power.$(br2)$(bold)RF Requirements$(/bold)$(br)All Ad Astra machines consume significantly more RF than default. This is intentional \u2014 bringing proper power infrastructure to space is part of the challenge."
+    }
+  ],
+  "flag": "icraft:stage_tier_4"
+}

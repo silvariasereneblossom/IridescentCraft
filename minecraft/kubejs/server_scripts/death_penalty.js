@@ -33,7 +33,13 @@ const DIMENSION_DURABILITY_LOSS = {
   'theabyss:the_abyss':                 0.18,
   'minecraft:the_nether':               0.20,
   'deep_aether:the_aether':             0.22,
-  'minecraft:the_end':                  0.25
+  'minecraft:the_end':                  0.25,
+  // Ad Astra Planets (Post-T4 Endgame)
+  'ad_astra:moon':                      0.22,
+  'ad_astra:mars':                      0.25,
+  'ad_astra:mercury':                   0.27,
+  'ad_astra:venus':                     0.28,
+  'ad_astra:glacio':                    0.30
 }
 
 // Fallback for unrecognized dimensions

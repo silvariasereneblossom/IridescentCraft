@@ -275,6 +275,15 @@ ServerEvents.loaded(event => {
   stageDimension('tier_4', 'deep_aether:the_aether', 'modpack/dim_deep_aether')
   stageDimension('tier_4', 'minecraft:the_end', 'modpack/dim_end')
 
+  // -- Ad Astra Planets (Post-T4 Endgame) --
+  // All 5 planets require tier_4 stage. Belt-and-suspenders with recipe gating
+  // on the Rocket Workbench and rocket tiers themselves.
+  stageDimension('tier_4', 'ad_astra:moon',    'modpack/dim_moon')
+  stageDimension('tier_4', 'ad_astra:mars',    'modpack/dim_mars')
+  stageDimension('tier_4', 'ad_astra:mercury', 'modpack/dim_mercury')
+  stageDimension('tier_4', 'ad_astra:venus',   'modpack/dim_venus')
+  stageDimension('tier_4', 'ad_astra:glacio',  'modpack/dim_glacio')
+
   // =========================================================================
   // IRON JETPACKS — Cannot be AStages-gated (single dynamic item ID)
   // =========================================================================
@@ -291,5 +300,5 @@ ServerEvents.loaded(event => {
   console.log('[IridescentCraft] AStages native restrictions registered')
   console.log('  Tier 2: 6 mods + 16 items + 4 dimensions')
   console.log('  Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions')
-  console.log('  Tier 4: 5 mods + 79 items + 2 ores + 2 dimensions')
+  console.log('  Tier 4: 5 mods + 79 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets)')
 })

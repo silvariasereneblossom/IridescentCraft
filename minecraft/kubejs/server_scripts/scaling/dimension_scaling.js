@@ -64,6 +64,13 @@ function getDimensionScale(dim) {
     'deep_aether:the_aether':           { hp: 5.0,  dmg: 6.5,  spd: 1.15, armor: 10 },
     'minecraft:the_end':                { hp: 6.0,  dmg: 8.0,  spd: 1.15, armor: 12 },
     // End multi-zone scaling is biome-based — handled separately below
+
+    // Ad Astra Planets (Post-T4 Endgame)
+    'ad_astra:moon':                    { hp: 7.0,  dmg: 7.0,  spd: 1.10, armor: 14 },
+    'ad_astra:mars':                    { hp: 8.0,  dmg: 8.0,  spd: 1.12, armor: 16 },
+    'ad_astra:mercury':                 { hp: 9.0,  dmg: 9.0,  spd: 1.15, armor: 18 },
+    'ad_astra:venus':                   { hp: 10.0, dmg: 10.0, spd: 1.18, armor: 20 },
+    'ad_astra:glacio':                  { hp: 12.0, dmg: 12.0, spd: 1.20, armor: 24 },
   }
   return SCALES[dim] || null
 }

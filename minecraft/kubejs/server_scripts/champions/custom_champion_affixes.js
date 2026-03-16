@@ -46,6 +46,12 @@ const DIMENSION_AFFIX_WEIGHTS = {
   'theabyss:the_abyss':            { hexing: 2, draining: 2, summoning: 2, commanding: 1, leaping: 1 },
   'deep_aether:the_aether':        { commanding: 3, leaping: 2, summoning: 1, hexing: 1, draining: 1 },
   'minecraft:the_end':             { draining: 3, hexing: 2, commanding: 1, leaping: 1, summoning: 1 },
+  // Ad Astra Planets (Post-T4 Endgame)
+  'ad_astra:moon':                 { leaping: 3, commanding: 2, summoning: 1, hexing: 1, draining: 1 },
+  'ad_astra:mars':                 { hexing: 3, commanding: 2, draining: 1, leaping: 1, summoning: 1 },
+  'ad_astra:mercury':              { draining: 3, hexing: 2, leaping: 1, commanding: 1, summoning: 1 },
+  'ad_astra:venus':                { summoning: 3, hexing: 2, draining: 1, commanding: 1, leaping: 1 },
+  'ad_astra:glacio':               { commanding: 3, summoning: 3, hexing: 2, draining: 2, leaping: 2 },
 }
 
 // Per-dimension champion spawn rates (design doc values)
@@ -68,6 +74,12 @@ const DIMENSION_CHAMPION_RATES = {
   // Tier 4
   'deep_aether:the_aether':         0.13,
   'minecraft:the_end':              0.15,
+  // Ad Astra Planets (Post-T4 Endgame)
+  'ad_astra:moon':                  0.15,
+  'ad_astra:mars':                  0.18,
+  'ad_astra:mercury':               0.20,
+  'ad_astra:venus':                 0.22,
+  'ad_astra:glacio':                0.25,
 }
 
 // Chance that a champion gets a custom affix (on top of its native ones)
@@ -84,6 +96,12 @@ const CUSTOM_AFFIX_CHANCE_BY_DIM = {
   'theabyss:the_abyss':             0.40,
   'deep_aether:the_aether':         0.40,
   'minecraft:the_end':              0.45,
+  // Ad Astra Planets (Post-T4 Endgame)
+  'ad_astra:moon':                  0.40,
+  'ad_astra:mars':                  0.45,
+  'ad_astra:mercury':               0.50,
+  'ad_astra:venus':                 0.55,
+  'ad_astra:glacio':                0.60,
 }
 
 // Boss blacklist — never promote or give custom affixes to bosses
