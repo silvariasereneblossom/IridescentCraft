@@ -266,6 +266,61 @@ StartupEvents.registry('item', event => {
         .tooltip('§7Crafted from Rift Shards and Void Fragments')
         .maxStackSize(16)
         .rarity('epic')
+
+    // =========================================================================
+    // ABYSS CUSTOM RINGS (replace vanilla Abyss ring crafting)
+    // =========================================================================
+
+    event.create('kubejs:ring_of_shadows')
+        .displayName('Ring of Shadows')
+        .tooltip('§7Grants Invisibility for 5s on sneak')
+        .tooltip('§8Cooldown: 30s')
+        .maxStackSize(1)
+        .rarity('rare')
+
+    event.create('kubejs:ring_of_the_phantom')
+        .displayName('Ring of the Phantom')
+        .tooltip('§7+10% dodge chance (damage reduction)')
+        .maxStackSize(1)
+        .rarity('rare')
+
+    event.create('kubejs:ring_of_embers')
+        .displayName('Ring of Embers')
+        .tooltip('§6Fire Resistance + fire aura (1 HP/s to nearby mobs)')
+        .maxStackSize(1)
+        .rarity('rare')
+
+    event.create('kubejs:ring_of_frost')
+        .displayName('Ring of Frost')
+        .tooltip('§bSlowness aura to hostile mobs within 4 blocks')
+        .maxStackSize(1)
+        .rarity('rare')
+
+    event.create('kubejs:ring_of_the_knight')
+        .displayName('Ring of the Knight')
+        .tooltip('§e+10% melee damage, +5% knockback resistance')
+        .maxStackSize(1)
+        .rarity('rare')
+
+    event.create('kubejs:ring_of_void_sight')
+        .displayName('Ring of Void Sight')
+        .tooltip('§5Applies Glowing to mobs within 16 blocks')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:ring_of_dark_pact')
+        .displayName('Ring of Dark Pact')
+        .tooltip('§4+15% damage dealt, +10% damage taken')
+        .tooltip('§8Power demands sacrifice')
+        .maxStackSize(1)
+        .rarity('epic')
+
+    event.create('kubejs:ring_of_unorithe')
+        .displayName('Ring of Unorithe')
+        .tooltip('§d+5% all stats, 1% life steal')
+        .tooltip('§8The pinnacle of Abyss artifice')
+        .maxStackSize(1)
+        .rarity('epic')
 })
 
 

@@ -314,5 +314,55 @@ ServerEvents.recipes(event => {
   event.remove({ id: 'mekanism:refined_obsidian_boots' })
 
 
+
+  // ═══ SECTION K: THE ABYSS — RING RECIPE REMOVAL ═══
+  // Design decision: All 30 Abyss rings are removed from crafting.
+  // Custom rings replace them as boss/structure drops.
+  // Also removes the Arcane Workbench recipe (ring crafting station).
+
+  // K.1: Bulk remove all shaped ring recipes from the mod
+  event.remove({ mod: 'theabyss', type: 'minecraft:crafting_shaped', output: /theabyss:ring_/ })
+
+  // K.2: Catch any remaining ring recipes (shapeless, special, etc.)
+  event.remove({ output: /theabyss:ring_/ })
+
+  // K.3: Individual ring removal belt-and-suspenders (in case regex misses any)
+  ;[
+    'theabyss:ring_of_fire', 'theabyss:ring_of_speed', 'theabyss:ring_of_flight',
+    'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghost',
+    'theabyss:ring_of_slide', 'theabyss:ring_of_thunder', 'theabyss:ring_of_freeze',
+    'theabyss:ring_of_blackstrike', 'theabyss:ring_of_curse', 'theabyss:ring_of_eagle',
+    'theabyss:ring_of_electro', 'theabyss:ring_of_enderchest', 'theabyss:ring_of_fangs',
+    'theabyss:ring_of_firestorm', 'theabyss:ring_of_firestrike', 'theabyss:ring_of_firework',
+    'theabyss:ring_of_home', 'theabyss:ring_of_invisibility', 'theabyss:ring_of_jugger',
+    'theabyss:ring_of_nature', 'theabyss:ring_of_nightblade', 'theabyss:ring_of_ocean',
+    'theabyss:ring_of_pocket', 'theabyss:ring_of_regen', 'theabyss:ring_of_seeker',
+    'theabyss:ring_of_telekinetic', 'theabyss:ring_of_fart',
+  ].forEach(id => event.remove({ output: id }))
+
+  // K.4: Remove Arcane Workbench recipe (ring crafting station — no longer needed)
+  event.remove({ output: 'theabyss:arcane_workbench' })
+
+  // K.5: Remove crafting recipes for boss-drop-only armor sets
+  // Knight, Unorithe, Ragnarok, Dragon, Death armor — boss drops only
+  ;[
+    // Knight set
+    'theabyss:knight_helmet', 'theabyss:knight_chestplate',
+    'theabyss:knight_leggings', 'theabyss:knight_boots',
+    // Unorithe set
+    'theabyss:unorithe_helmet', 'theabyss:unorithe_chestplate',
+    'theabyss:unorithe_leggings', 'theabyss:unorithe_boots',
+    // Ragnarok set
+    'theabyss:ragnarok_helmet', 'theabyss:ragnarok_chestplate',
+    'theabyss:ragnarok_leggings', 'theabyss:ragnarok_boots',
+    // Dragon set
+    'theabyss:dragon_helmet', 'theabyss:dragon_chestplate',
+    'theabyss:dragon_leggings', 'theabyss:dragon_boots',
+    // Death set
+    'theabyss:death_helmet', 'theabyss:death_chestplate',
+    'theabyss:death_leggings', 'theabyss:death_boots',
+  ].forEach(id => event.remove({ output: id }))
+
+
   console.log('[IridescentCraft] recipe_audit.js loaded — cross-mod recipe audit active')
 })
