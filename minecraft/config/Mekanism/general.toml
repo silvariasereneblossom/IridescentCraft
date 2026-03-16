@@ -79,7 +79,7 @@
 		#Disables Flux Networks higher throughput Forge Energy (FE,RF,IF,uF,CF) power integration. Requires world restart (server-side option in SMP). Note: Disabling Forge Energy integration also disables this.
 		blacklistFluxNetworks = false
 		#How much energy is produced per mB of Hydrogen, also affects Electrolytic Separator usage, Ethylene burn rate and Gas generator energy capacity.
-		HydrogenEnergyDensity = "200"
+		HydrogenEnergyDensity = "40"
 		#Maximum Joules per mB of Steam. Also affects Thermoelectric Boiler.
 		maxEnergyPerSteam = "10"
 		#Conversion multiplier from EU to Joules (EU * euConversionRate = Joules)

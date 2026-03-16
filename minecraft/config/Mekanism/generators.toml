@@ -11,7 +11,7 @@
 	#Bio Generator Settings
 	[generators.bio_generator]
 		#Amount of energy in Joules the Bio Generator produces per tick.
-		bioGeneration = "350"
+		bioGeneration = "88"
 		#The capacity in mB of the fluid tank in the Bio Generator.
 		#Range: > 1
 		tankCapacity = 24000
@@ -39,7 +39,7 @@
 		#Range: > 1
 		ethyleneBurnTicks = 40
 		#Multiplier for calculating the energy density of Ethylene (1 mB Hydrogen + 2 * bioGeneration * densityMultiplier).
-		ethyleneDensityMultiplier = "40"
+		ethyleneDensityMultiplier = "24"
 
 	#Turbine Settings
 	[generators.turbine]
@@ -110,13 +110,13 @@
 	#Fission Reactor Settings
 	[generators.fission_reactor]
 		#Amount of energy created (in heat) from each whole mB of fission fuel.
-		energyPerFissionFuel = "1000000"
+		energyPerFissionFuel = "1200000"
 		#The heat capacity added to a Fission Reactor by a single casing block. Increase to require more energy to raise the reactor temperature.
 		#Range: 1.0 ~ 1000000.0
 		casingHeatCapacity = 1000.0
 		#The average surface area of a Fission Reactor's fuel assemblies to reach 100% boil efficiency. Higher values make it harder to cool the reactor.
 		#Range: 1.0 ~ 1.7976931348623157E308
-		surfaceAreaTarget = 4.0
+		surfaceAreaTarget = 2.8
 		#Whether catastrophic meltdowns can occur from Fission Reactors. If disabled instead of melting down the reactor will turn off and not be able to be turned back on until the damage level decreases.
 		meltdownsEnabled = true
 		#The radius of the explosion that occurs from a meltdown.

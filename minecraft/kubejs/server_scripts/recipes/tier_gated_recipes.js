@@ -91,11 +91,18 @@ ServerEvents.recipes(event => {
 
   // B.3: Mekanism T4 endgame machines (base Mek already gated by osmium = T3)
   event.remove({ id: 'mekanism:digital_miner' })
-  event.shaped('mekanism:digital_miner', ['ATA','CFC','NLN'], {
+  event.shaped('mekanism:digital_miner', ['ATA','CFC','GLG'], {
     A:'mekanism:alloy_atomic', T:'mekanism:teleportation_core',
-    C:'mekanism:basic_control_circuit', F:'mekanism:steel_casing',
-    N:'minecraft:netherite_ingot', L:'mekanism:logistical_sorter'
+    C:'mekanism:ultimate_control_circuit', F:'mekanism:steel_casing',
+    G:'minecraft:ghast_tear', L:'kubejs:reality_progression_token_t3'
   }).id('icraft:digital_miner_t4')
+
+  // B.3b: Teleportation Core — netherite block replaces lapis lazuli
+  event.remove({ id: 'mekanism:teleportation_core' })
+  event.shaped('mekanism:teleportation_core', ['NPN','PAP','NPN'], {
+    N:'minecraft:netherite_block', P:'minecraft:ender_pearl',
+    A:'mekanism:alloy_atomic'
+  }).id('icraft:teleportation_core_t4')
 
   ;['mekanism:mekasuit_helmet','mekanism:mekasuit_bodyarmor',
     'mekanism:mekasuit_pants','mekanism:mekasuit_boots'

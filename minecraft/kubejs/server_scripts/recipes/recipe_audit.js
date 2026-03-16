@@ -297,5 +297,22 @@ ServerEvents.recipes(event => {
   // "enchanter_merlin" is a boss mob entity, not an enchantment — kept.
 
 
+
+  // ═══ SECTION J: MEKANISM TOOL & ARMOR REMOVAL ═══
+  // Remove Atomic Disassembler and Meka-Tool (overpowered multi-tools).
+  // Remove Refined Obsidian armor set (trivializes progression).
+  // MekaSuit recipes are KEPT — they feed into MekaSuit Mk2 progression.
+
+  // J.1: Multi-tools
+  event.remove({ id: 'mekanism:atomic_disassembler' })
+  event.remove({ id: 'mekanism:meka_tool' })
+
+  // J.2: Refined Obsidian Armor
+  event.remove({ id: 'mekanism:refined_obsidian_helmet' })
+  event.remove({ id: 'mekanism:refined_obsidian_chestplate' })
+  event.remove({ id: 'mekanism:refined_obsidian_leggings' })
+  event.remove({ id: 'mekanism:refined_obsidian_boots' })
+
+
   console.log('[IridescentCraft] recipe_audit.js loaded — cross-mod recipe audit active')
 })

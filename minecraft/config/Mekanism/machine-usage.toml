@@ -2,74 +2,73 @@
 #Machine Energy Usage Config. This config is synced from server to client.
 [usage]
 	#Energy per operation tick (Joules).
-	enrichmentChamber = "50"
+	enrichmentChamber = "100"
 	#Energy per operation tick (Joules).
-	osmiumCompressor = "100"
+	osmiumCompressor = "200"
 	#Energy per operation tick (Joules).
-	combiner = "50"
+	combiner = "100"
 	#Energy per operation tick (Joules).
-	crusher = "50"
+	crusher = "100"
 	#Energy per operation tick (Joules).
-	metallurgicInfuser = "50"
+	metallurgicInfuser = "100"
 	#Energy per operation tick (Joules).
-	purificationChamber = "200"
+	purificationChamber = "400"
 	#Energy per operation tick (Joules).
-	energizedSmelter = "50"
+	energizedSmelter = "100"
 	#Energy per operation tick (Joules).
-	digitalMiner = "1000"
+	digitalMiner = "2000"
 	#Energy per operation tick (Joules).
-	electricPump = "100"
+	electricPump = "200"
 	#Energy that can be transferred at once per charge operation (Joules).
-	chargePad = "1024000"
+	chargePad = "2048000"
 	#Energy per operation tick (Joules).
-	rotaryCondensentrator = "50"
+	rotaryCondensentrator = "100"
 	#Energy per operation tick (Joules).
-	oxidationChamber = "200"
+	oxidationChamber = "400"
 	#Energy per operation tick (Joules).
-	chemicalInfuser = "200"
+	chemicalInfuser = "400"
 	#Energy per operation tick (Joules).
-	chemicalInjectionChamber = "400"
+	chemicalInjectionChamber = "800"
 	#Energy per operation tick (Joules).
-	precisionSawmill = "50"
+	precisionSawmill = "100"
 	#Energy per operation tick (Joules).
-	chemicalDissolutionChamber = "400"
+	chemicalDissolutionChamber = "800"
 	#Energy per operation tick (Joules).
-	chemicalWasher = "200"
+	chemicalWasher = "400"
 	#Energy per operation tick (Joules).
-	chemicalCrystallizer = "400"
+	chemicalCrystallizer = "800"
 	#Energy per operation tick (Joules).
-	seismicVibrator = "50"
+	seismicVibrator = "100"
 	#Energy per operation tick (Joules).
-	pressurizedReactionBase = "5"
+	pressurizedReactionBase = "10"
 	#Energy per operation tick (Joules).
-	fluidicPlenisher = "100"
+	fluidicPlenisher = "200"
 	#Energy per operation tick (Joules).
-	laser = "10000"
+	laser = "20000"
 	#Energy per operation tick (Joules).
-	formulaicAssemblicator = "100"
+	formulaicAssemblicator = "200"
 	#Energy per operation tick (Joules).
-	modificationStation = "100"
+	modificationStation = "200"
 	#Energy per operation tick (Joules).
-	isotopicCentrifuge = "200"
+	isotopicCentrifuge = "400"
 	#Energy per operation tick (Joules).
-	nutritionalLiquifier = "200"
+	nutritionalLiquifier = "400"
 	#Energy per operation tick (Joules).
-	antiprotonicNucleosynthesizer = "100000"
+	antiprotonicNucleosynthesizer = "200000"
 	#Energy per operation tick (Joules).
-	pigmentExtractor = "200"
+	pigmentExtractor = "400"
 	#Energy per operation tick (Joules).
-	pigmentMixer = "200"
+	pigmentMixer = "400"
 	#Energy per operation tick (Joules).
-	paintingMachine = "100"
+	paintingMachine = "200"
 	#Energy per chunk per tick (Joules).
-	dimensionalStabilizer = "5000"
+	dimensionalStabilizer = "10000"
 
 	#Teleporter
 	[usage.teleporter]
 		#Base Joules cost for a teleportation.
-		teleporterBase = "1000"
+		teleporterBase = "2000"
 		#Joules per unit of distance travelled during teleportation - sqrt(xDiff^2 + yDiff^2 + zDiff^2).
-		teleporterDistance = "10"
+		teleporterDistance = "20"
 		#Flat additional cost for interdimensional teleportation. Distance is still taken into account minimizing energy cost based on dimension scales.
-		teleporterDimensionPenalty = "10000"
-
+		teleporterDimensionPenalty = "20000"
