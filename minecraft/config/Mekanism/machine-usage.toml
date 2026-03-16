@@ -1,7 +1,5 @@
 
 #Machine Energy Usage Config. This config is synced from server to client.
-#IridescentCraft: All values at 2.5x vanilla defaults. Digital Miner at 5x.
-#Forces proper RF infrastructure investment, especially for space operations.
 [usage]
 	#Energy per operation tick (Joules).
 	enrichmentChamber = "125"
@@ -17,7 +15,7 @@
 	purificationChamber = "500"
 	#Energy per operation tick (Joules).
 	energizedSmelter = "125"
-	#Energy per operation tick (Joules). IridescentCraft: 5x default (extra 2x on top of 2.5x base)
+	#Energy per operation tick (Joules).
 	digitalMiner = "5000"
 	#Energy per operation tick (Joules).
 	electricPump = "250"
@@ -74,3 +72,4 @@
 		teleporterDistance = "25"
 		#Flat additional cost for interdimensional teleportation. Distance is still taken into account minimizing energy cost based on dimension scales.
 		teleporterDimensionPenalty = "25000"
+
