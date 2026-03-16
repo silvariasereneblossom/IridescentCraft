@@ -18,7 +18,15 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Preparation Checklist$(/bold)$(br)\u2022 MekaSuit (minimum)$(br)\u2022 Soulbound III on all gear$(br)\u2022 Frostward enchantment (maximum level)$(br)\u2022 Full Vitality enchantment$(br)\u2022 Established RF infrastructure (Flux Networks recommended)$(br)\u2022 Emergency waystone or recall method$(br)\u2022 High-tier healing items$(br2)$(italic)Do not come here unprepared. Glacio will kill you.$(/italic)"
+      "text": "$(bold)Planetary Rock Extraction$(/bold)$(br)Crush $(bold)Glacio Stone$(/bold) in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Alien Isotope$(/bold) (20%) \u2014 alien-tech integration$(br)\u2022 $(bold)Cryogenic Element$(/bold) (20%) \u2014 cryo-fusion technology$(br)\u2022 Ice Shards (30%)$(br2)$(bold)Aethersteel on Glacio$(/bold)$(br)Aethersteel Scraps drop at 5% when mining Glacio Stone and 3% from Permafrost. A secondary source alongside the Deep Aether."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Void Adaptation Enchantment$(/bold)$(br)Glacio mobs have a $(bold)12% chance$(/bold) to drop an enchanted book of $(bold)Void Adaptation$(/bold) (max level 2). This armor enchantment:$(br)\u2022 Negates mining fatigue from alien environments$(br)\u2022 Provides immunity to alien debuffs$(br)\u2022 Even level 1 removes Glacio's mining fatigue$(br2)Combined with Thermal Regulation for cold immunity, these two enchantments make Glacio survivable."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Preparation Checklist$(/bold)$(br)\u2022 MekaSuit (minimum)$(br)\u2022 Soulbound III on all gear$(br)\u2022 Thermal Regulation enchantment (level 3)$(br)\u2022 Void Adaptation enchantment$(br)\u2022 Full Vitality enchantment$(br)\u2022 Established RF infrastructure (Flux Networks recommended)$(br)\u2022 Emergency waystone or recall method$(br)\u2022 High-tier healing items$(br2)$(italic)Do not come here unprepared. Glacio will kill you.$(/italic)"
     }
   ],
   "flag": "icraft:stage_tier_4"

@@ -278,6 +278,20 @@ PlayerEvents.tick(event => {
   // (simplified: all Nether mobs get regen, which is close enough)
 
   // ═══ AD ASTRA PLANET HAZARDS ═══
+  // Planetary enchantments can negate these hazards.
+  // Helper: check total enchant level across armor (same as enchant_effects.js)
+  function getArmorEnchTotalLocal(entity, enchId) {
+    let total = 0
+    ;['head','chest','legs','feet'].forEach(slot => {
+      try {
+        let item = entity.getItemSlot(slot)
+        if (item && !item.isEmpty() && item.enchantments) {
+          total += item.enchantments.getLevel(enchId)
+        }
+      } catch(e) {}
+    })
+    return total
+  }
 
   // ── Moon: Knockback doubled, fall damage halved ──
   // Low gravity — handled via knockback in hurt event below
@@ -288,39 +302,68 @@ PlayerEvents.tick(event => {
   }
 
   // ── Mars: Cold damage ticks, faster hunger drain ──
+  // Thermal Regulation negates cold damage; each level reduces by 33%
   if (dim === 'ad_astra:mars') {
-    // Cold damage: 1 HP every 5 seconds (reduced by Frostward enchant)
-    player.attack('freeze', 1.0)
-    // Faster hunger: apply hunger effect
+    let thermalReg = getArmorEnchTotalLocal(player, 'icraft:thermal_regulation')
+    let coldReduction = Math.min(thermalReg * 0.33, 1.0)
+    if (coldReduction < 1.0) {
+      // Cold damage: 1 HP every 5 seconds, reduced by Thermal Regulation
+      player.attack('freeze', 1.0 * (1.0 - coldReduction))
+    }
+    // Faster hunger: apply hunger effect (not affected by enchant)
     player.potionEffects.add('minecraft:hunger', 200, 0, false, false)
   }
 
   // ── Mercury: Fire damage on sun side, cold on dark side ──
+  // Stellar Shield negates fire; Thermal Regulation negates cold
   if (dim === 'ad_astra:mercury') {
     let dayTime = player.level.dayTime % 24000
     if (dayTime >= 0 && dayTime < 12000) {
-      // Day (sun side): fire damage
-      player.setSecondsOnFire(3)
+      // Day (sun side): fire damage — Stellar Shield negates
+      let stellarShield = getArmorEnchTotalLocal(player, 'icraft:stellar_shield')
+      let fireReduction = Math.min(stellarShield * 0.33, 1.0)
+      if (fireReduction < 1.0) {
+        player.setSecondsOnFire(3)
+      }
     } else {
-      // Night (dark side): freeze damage
-      player.attack('freeze', 1.5)
+      // Night (dark side): freeze damage — Thermal Regulation negates
+      let thermalReg = getArmorEnchTotalLocal(player, 'icraft:thermal_regulation')
+      let coldReduction = Math.min(thermalReg * 0.33, 1.0)
+      if (coldReduction < 1.0) {
+        player.attack('freeze', 1.5 * (1.0 - coldReduction))
+      }
     }
   }
 
   // ── Venus: Acid rain continuous damage, movement speed reduction ──
+  // Pressure Shell negates acid damage and slowness
   if (dim === 'ad_astra:venus') {
-    // Acid rain: continuous damage (1.5 HP per tick cycle)
-    player.attack('magic', 1.5)
-    // Pressure: movement speed reduction
-    player.potionEffects.add('minecraft:slowness', 200, 1, false, false)
+    let pressureShell = getArmorEnchTotalLocal(player, 'icraft:pressure_shell')
+    let pressureReduction = Math.min(pressureShell * 0.50, 1.0)
+    if (pressureReduction < 1.0) {
+      // Acid rain: continuous damage (1.5 HP per tick cycle)
+      player.attack('magic', 1.5 * (1.0 - pressureReduction))
+    }
+    // Pressure: movement speed reduction — negated at level 2
+    if (pressureShell < 2) {
+      player.potionEffects.add('minecraft:slowness', 200, 1, false, false)
+    }
   }
 
   // ── Glacio: Extreme cold, highest mob difficulty ──
+  // Void Adaptation negates mining fatigue; Thermal Regulation reduces cold
   if (dim === 'ad_astra:glacio') {
-    // Extreme cold: 2 HP per tick cycle
-    player.attack('freeze', 2.0)
-    // Mining fatigue from extreme environment
-    player.potionEffects.add('minecraft:mining_fatigue', 200, 0, false, false)
+    let thermalReg = getArmorEnchTotalLocal(player, 'icraft:thermal_regulation')
+    let coldReduction = Math.min(thermalReg * 0.33, 1.0)
+    if (coldReduction < 1.0) {
+      // Extreme cold: 2 HP per tick cycle
+      player.attack('freeze', 2.0 * (1.0 - coldReduction))
+    }
+    // Mining fatigue from extreme environment — Void Adaptation negates
+    let voidAdapt = getArmorEnchTotalLocal(player, 'icraft:void_adaptation')
+    if (voidAdapt < 1) {
+      player.potionEffects.add('minecraft:mining_fatigue', 200, 0, false, false)
+    }
   }
 })
 

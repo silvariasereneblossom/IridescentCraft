@@ -15,6 +15,14 @@
     {
       "type": "patchouli:text",
       "text": "$(bold)Purpose$(/bold)$(br)Mercury contains high-value heat-resistant ores and mercury-specific metals. These materials contribute to Tier 4 Rocket construction.$(br2)$(bold)Structures$(/bold)$(br)Ancient solar collection arrays and heat-sealed structures dot the surface. They contain rare loot unique to Mercury."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Planetary Rock Extraction$(/bold)$(br)Crush $(bold)Mercury Stone$(/bold) in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Solar Crystal$(/bold) (20%) \u2014 crystallized solar energy$(br)\u2022 $(bold)Rare Earth Dust$(/bold) (20%) \u2014 high-tech crafting$(br)\u2022 Gold Nuggets (35%)$(br2)The Thermal Pulverizer gives slightly better odds."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Stellar Shield Enchantment$(/bold)$(br)Mercury mobs have a $(bold)12% chance$(/bold) to drop an enchanted book of $(bold)Stellar Shield$(/bold) (max level 3). This armor enchantment:$(br)\u2022 Grants solar radiation resistance$(br)\u2022 Reduces fire damage by 33% per level on planets$(br)\u2022 Negates Mercury day-side fire damage at level 3$(br2)Pairs well with Thermal Regulation for full Mercury survival."
     }
   ],
   "flag": "icraft:stage_tier_4"

@@ -171,4 +171,37 @@ StartupEvents.registry('enchantment', event => {
     .rarity('UNCOMMON')
     .slots(['MAINHAND'])
     .category('BOW')
+
+
+  // ═══ CATEGORY 7: Planetary Hazard Protection ═══
+
+  event.create('icraft:lunar_stride')
+    .maxLevel(3)
+    .rarity('RARE')
+    .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
+    .category('ARMOR')
+
+  event.create('icraft:thermal_regulation')
+    .maxLevel(3)
+    .rarity('RARE')
+    .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
+    .category('ARMOR')
+
+  event.create('icraft:pressure_shell')
+    .maxLevel(2)
+    .rarity('VERY_RARE')
+    .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
+    .category('ARMOR')
+
+  event.create('icraft:void_adaptation')
+    .maxLevel(2)
+    .rarity('VERY_RARE')
+    .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
+    .category('ARMOR')
+
+  event.create('icraft:stellar_shield')
+    .maxLevel(3)
+    .rarity('RARE')
+    .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
+    .category('ARMOR')
 })

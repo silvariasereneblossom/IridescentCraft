@@ -500,4 +500,72 @@ ServerEvents.tick(event => {
 })
 
 
-console.log('[IridescentCraft] enchant_effects.js loaded — 24 custom enchantment effects')
+// ==========================================================================
+// ███ PLANETARY HAZARD ENCHANTMENT EFFECTS ███
+// Lunar Stride, Thermal Regulation, Pressure Shell, Void Adaptation, Stellar Shield
+// Most hazard negation is handled in dimension_mechanics.js (checks enchant before
+// applying damage). These handlers cover supplemental effects like jump boost.
+// ==========================================================================
+
+// ── Lunar Stride: Jump Boost + fall damage reduction on Ad Astra planets ──
+ServerEvents.tick(event => {
+  if (event.server.tickCount % 40 !== 15) return
+  event.server.players.forEach(player => {
+    let lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
+    if (lunar <= 0) return
+
+    let dim = player.level.dimension
+    if (dim === 'ad_astra:moon' || dim === 'ad_astra:mars' ||
+        dim === 'ad_astra:mercury' || dim === 'ad_astra:venus' ||
+        dim === 'ad_astra:glacio') {
+      // Jump Boost scales with level (0-indexed: level-1)
+      let jumpLevel = Math.min(lunar - 1, 2)
+      player.potionEffects.add('minecraft:jump_boost', 100, jumpLevel, false, false)
+    }
+  })
+})
+
+// ── Lunar Stride: Fall damage reduction (33% per level) ──
+EntityEvents.hurt(event => {
+  if (!event.entity || !event.entity.player) return
+  let player = event.entity
+  let source = event.source
+  if (!source || source.type !== 'minecraft:fall') return
+
+  let dim = player.level.dimension
+  if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
+      dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
+      dim !== 'ad_astra:glacio') return
+
+  let lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
+  if (lunar > 0) {
+    let reduction = Math.min(lunar * 0.33, 1.0)
+    event.damage *= (1.0 - reduction)
+  }
+})
+
+// ── Stellar Shield: Fire resistance on planets ──
+EntityEvents.hurt(event => {
+  if (!event.entity || !event.entity.player) return
+  let player = event.entity
+  let source = event.source
+  if (!source) return
+
+  let dim = player.level.dimension
+  if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
+      dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
+      dim !== 'ad_astra:glacio') return
+
+  let isFireDmg = source.type.includes('fire') || source.type.includes('lava') ||
+    source.type === 'minecraft:on_fire' || source.type === 'minecraft:in_fire'
+  if (!isFireDmg) return
+
+  let stellar = getArmorEnchTotal(player, 'icraft:stellar_shield')
+  if (stellar > 0) {
+    let reduction = Math.min(stellar * 0.33, 1.0)
+    event.damage *= (1.0 - reduction)
+  }
+})
+
+
+console.log('[IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects')

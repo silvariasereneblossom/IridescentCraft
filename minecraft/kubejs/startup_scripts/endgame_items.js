@@ -175,4 +175,107 @@ StartupEvents.registry('item', event => {
         .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
         .maxStackSize(1)
         .rarity('epic')
+
+    // =========================================================================
+    // PLANETARY EXTRACTED ELEMENTS
+    // Obtained by crushing planet stones in Create Crushing Wheels or Thermal Pulverizer
+    // =========================================================================
+
+    // ── Moon Extraction ──
+    event.create('kubejs:helium_3')
+        .displayName('Helium-3 Isotope')
+        .tooltip('§bA rare fusion fuel isotope')
+        .tooltip('§7Extracted from Moon Stone via crushing')
+        .tooltip('§8Used in advanced energy systems')
+        .maxStackSize(64)
+        .rarity('uncommon')
+
+    event.create('kubejs:titanium_dust')
+        .displayName('Titanium Dust')
+        .tooltip('§bLightweight ultra-strong metal dust')
+        .tooltip('§7Extracted from Moon Stone via crushing')
+        .tooltip('§8Used in advanced alloy crafting')
+        .maxStackSize(64)
+        .rarity('uncommon')
+
+    // ── Mars Extraction ──
+    event.create('kubejs:ferric_oxide')
+        .displayName('Ferric Oxide')
+        .tooltip('§cConcentrated Martian iron compound')
+        .tooltip('§7Extracted from Mars Stone via crushing')
+        .tooltip('§8Used in heat-resistant materials')
+        .maxStackSize(64)
+        .rarity('uncommon')
+
+    event.create('kubejs:cryogenic_crystal')
+        .displayName('Cryogenic Crystal')
+        .tooltip('§bA crystal formed in extreme cold')
+        .tooltip('§7Extracted from Mars Stone via crushing')
+        .tooltip('§8Used in cold-resistant technology')
+        .maxStackSize(64)
+        .rarity('rare')
+
+    // ── Mercury Extraction ──
+    event.create('kubejs:solar_crystal')
+        .displayName('Solar Crystal')
+        .tooltip('§eCrystallized solar energy')
+        .tooltip('§7Extracted from Mercury Stone via crushing')
+        .tooltip('§8Used in stellar-grade components')
+        .maxStackSize(64)
+        .rarity('rare')
+
+    event.create('kubejs:rare_earth_dust')
+        .displayName('Rare Earth Dust')
+        .tooltip('§eFinely ground rare earth elements')
+        .tooltip('§7Extracted from Mercury Stone via crushing')
+        .tooltip('§8Used in high-tech crafting')
+        .maxStackSize(64)
+        .rarity('uncommon')
+
+    // ── Venus Extraction ──
+    event.create('kubejs:sulfuric_compound')
+        .displayName('Sulfuric Compound')
+        .tooltip('§6Concentrated sulfuric material')
+        .tooltip('§7Extracted from Venus Stone via crushing')
+        .tooltip('§8Used in corrosion-resistant alloys')
+        .maxStackSize(64)
+        .rarity('uncommon')
+
+    event.create('kubejs:pressure_crystal')
+        .displayName('Pressure Crystal')
+        .tooltip('§6A crystal formed under immense pressure')
+        .tooltip('§7Extracted from Venus Stone via crushing')
+        .tooltip('§8Used in pressure-resistant technology')
+        .maxStackSize(64)
+        .rarity('rare')
+
+    // ── Glacio Extraction ──
+    event.create('kubejs:alien_isotope')
+        .displayName('Alien Isotope')
+        .tooltip('§dAn isotope of unknown origin')
+        .tooltip('§7Extracted from Glacio Stone via crushing')
+        .tooltip('§8Used in alien-tech integration')
+        .maxStackSize(64)
+        .rarity('rare')
+
+    event.create('kubejs:cryogenic_element')
+        .displayName('Cryogenic Element')
+        .tooltip('§dAn element stable only at extreme cold')
+        .tooltip('§7Extracted from Glacio Stone via crushing')
+        .tooltip('§8Used in cryo-fusion technology')
+        .maxStackSize(64)
+        .rarity('rare')
+
+    // =========================================================================
+    // PORTABLE FUSION FUEL CONVERTER
+    // Endgame portable machine for converting water into rocket fuel
+    // =========================================================================
+
+    event.create('kubejs:fusion_fuel_converter')
+        .displayName('Portable Fusion Fuel Converter')
+        .tooltip('§5Converts water into fusion fuel')
+        .tooltip('§7Only functions in zero-gravity environments.')
+        .tooltip('§8Crafted from Netherite + Mekanism + Enderium + Aethersteel')
+        .maxStackSize(1)
+        .rarity('epic')
 })
