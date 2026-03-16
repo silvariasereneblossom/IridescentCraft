@@ -4,9 +4,9 @@
   "attribute": "puffish_attributes:critical_chance",
   "operation": "ADDITION",
   "values": {
-    "UNCOMMON": { "min": 0.1, "max": 0.12 },
-    "RARE": { "min": 0.12, "max": 0.16 },
-    "EPIC": { "min": 0.16, "max": 0.2 }
+    "uncommon": { "min": 0.1, "max": 0.12 },
+    "rare": { "min": 0.12, "max": 0.16 },
+    "epic": { "min": 0.16, "max": 0.2 }
   },
   "types": { "set": ["sword", "axe", "trident"] }
 }

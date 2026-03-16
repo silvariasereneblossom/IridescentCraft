@@ -4,7 +4,7 @@
   "attribute": "minecraft:generic.attack_damage",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "RARE": { "min": 0.15, "max": 0.25 }
+    "rare": { "min": 0.15, "max": 0.25 }
   },
   "types": { "set": ["bow", "crossbow"] }
 }

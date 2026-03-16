@@ -4,11 +4,11 @@
   "attribute": "minecraft:generic.max_health",
   "operation": "ADDITION",
   "values": {
-    "RARE": {
+    "rare": {
       "min": 5,
       "max": 7
     },
-    "EPIC": {
+    "epic": {
       "min": 7,
       "max": 10
     }

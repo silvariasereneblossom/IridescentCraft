@@ -4,9 +4,9 @@
   "attribute": "minecraft:generic.movement_speed",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "UNCOMMON": { "min": 0.03, "max": 0.05 },
-    "RARE": { "min": 0.05, "max": 0.07 },
-    "EPIC": { "min": 0.07, "max": 0.1 }
+    "uncommon": { "min": 0.03, "max": 0.05 },
+    "rare": { "min": 0.05, "max": 0.07 },
+    "epic": { "min": 0.07, "max": 0.1 }
   },
   "types": { "set": ["boots"] }
 }

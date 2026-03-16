@@ -4,9 +4,9 @@
   "attribute": "minecraft:generic.armor_toughness",
   "operation": "ADDITION",
   "values": {
-    "COMMON": { "min": 0.5, "max": 1 },
-    "UNCOMMON": { "min": 1, "max": 1.5 },
-    "RARE": { "min": 1.5, "max": 2.5 }
+    "common": { "min": 0.5, "max": 1 },
+    "uncommon": { "min": 1, "max": 1.5 },
+    "rare": { "min": 1.5, "max": 2.5 }
   },
   "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
 }

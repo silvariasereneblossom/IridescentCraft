@@ -4,8 +4,8 @@
   "attribute": "minecraft:generic.armor",
   "operation": "ADDITION",
   "values": {
-    "UNCOMMON": { "min": 1, "max": 2 },
-    "RARE": { "min": 2, "max": 3 }
+    "uncommon": { "min": 1, "max": 2 },
+    "rare": { "min": 2, "max": 3 }
   },
   "types": { "set": ["shield"] }
 }

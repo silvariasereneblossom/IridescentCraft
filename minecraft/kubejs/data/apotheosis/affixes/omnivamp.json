@@ -4,7 +4,7 @@
   "attribute": "puffish_attributes:life_steal",
   "operation": "ADDITION",
   "values": {
-    "MYTHIC": { "min": 0.02, "max": 0.04 }
+    "mythic": { "min": 0.02, "max": 0.04 }
   },
   "types": { "set": ["sword", "axe", "trident"] }
 }

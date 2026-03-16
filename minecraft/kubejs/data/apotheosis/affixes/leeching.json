@@ -4,11 +4,11 @@
   "attribute": "puffish_attributes:life_steal",
   "operation": "ADDITION",
   "values": {
-    "UNCOMMON": {
+    "uncommon": {
       "min": 0.02,
       "max": 0.03
     },
-    "RARE": {
+    "rare": {
       "min": 0.03,
       "max": 0.05
     }

@@ -4,7 +4,7 @@
   "attribute": "minecraft:generic.movement_speed",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "RARE": { "min": 0.15, "max": 0.2 }
+    "rare": { "min": 0.15, "max": 0.2 }
   },
   "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
 }

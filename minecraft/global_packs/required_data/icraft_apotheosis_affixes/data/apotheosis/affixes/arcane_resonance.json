@@ -4,11 +4,11 @@
   "attribute": "puffish_attributes:magic_damage",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "RARE": {
+    "rare": {
       "min": 0.15,
       "max": 0.2
     },
-    "EPIC": {
+    "epic": {
       "min": 0.2,
       "max": 0.25
     }

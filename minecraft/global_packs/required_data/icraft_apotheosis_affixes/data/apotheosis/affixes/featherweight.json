@@ -4,9 +4,9 @@
   "attribute": "minecraft:generic.armor",
   "operation": "ADDITION",
   "values": {
-    "COMMON": { "min": 1, "max": 2 },
-    "UNCOMMON": { "min": 2, "max": 3 },
-    "RARE": { "min": 3, "max": 4 }
+    "common": { "min": 1, "max": 2 },
+    "uncommon": { "min": 2, "max": 3 },
+    "rare": { "min": 3, "max": 4 }
   },
   "types": { "set": ["boots"] }
 }

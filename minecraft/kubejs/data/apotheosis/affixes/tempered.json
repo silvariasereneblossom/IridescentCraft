@@ -4,11 +4,11 @@
   "attribute": "minecraft:generic.armor",
   "operation": "ADDITION",
   "values": {
-    "UNCOMMON": {
+    "uncommon": {
       "min": 2,
       "max": 3
     },
-    "RARE": {
+    "rare": {
       "min": 3,
       "max": 5
     }

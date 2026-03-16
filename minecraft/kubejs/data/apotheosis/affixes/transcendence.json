@@ -4,7 +4,7 @@
   "attribute": "minecraft:generic.max_health",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "MYTHIC": {
+    "mythic": {
       "min": 0.08,
       "max": 0.12
     }

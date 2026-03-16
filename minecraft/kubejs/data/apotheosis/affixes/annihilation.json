@@ -4,11 +4,11 @@
   "attribute": "minecraft:generic.attack_damage",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "EPIC": {
+    "epic": {
       "min": 0.2,
       "max": 0.25
     },
-    "MYTHIC": {
+    "mythic": {
       "min": 0.25,
       "max": 0.3
     }

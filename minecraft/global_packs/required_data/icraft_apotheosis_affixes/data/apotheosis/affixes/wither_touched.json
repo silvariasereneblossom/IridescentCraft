@@ -5,7 +5,7 @@
   "target": "user_target",
   "amplifier": 1,
   "values": {
-    "RARE": { "min": 0.08, "max": 0.12 }
+    "rare": { "min": 0.08, "max": 0.12 }
   },
   "types": { "set": ["sword", "axe", "trident"] }
 }

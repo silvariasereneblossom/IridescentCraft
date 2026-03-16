@@ -4,11 +4,11 @@
   "attribute": "puffish_attributes:critical_damage",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "UNCOMMON": {
+    "uncommon": {
       "min": 0.1,
       "max": 0.12
     },
-    "RARE": {
+    "rare": {
       "min": 0.12,
       "max": 0.15
     }

@@ -4,15 +4,15 @@
   "attribute": "minecraft:generic.movement_speed",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "UNCOMMON": {
+    "uncommon": {
       "min": 0.05,
       "max": 0.08
     },
-    "RARE": {
+    "rare": {
       "min": 0.08,
       "max": 0.1
     },
-    "EPIC": {
+    "epic": {
       "min": 0.1,
       "max": 0.12
     }

@@ -4,7 +4,7 @@
   "attribute": "minecraft:generic.attack_knockback",
   "operation": "ADDITION",
   "values": {
-    "RARE": { "min": 1.5, "max": 2.5 }
+    "rare": { "min": 1.5, "max": 2.5 }
   },
   "types": { "set": ["sword", "axe", "trident"] }
 }

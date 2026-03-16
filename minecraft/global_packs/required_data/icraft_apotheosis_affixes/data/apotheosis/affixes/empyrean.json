@@ -4,7 +4,7 @@
   "attribute": "minecraft:generic.armor",
   "operation": "ADDITION",
   "values": {
-    "EPIC": { "min": 3, "max": 5 }
+    "epic": { "min": 3, "max": 5 }
   },
   "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
 }

@@ -4,7 +4,7 @@
   "attribute": "minecraft:generic.attack_damage",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "EPIC": { "min": 0.08, "max": 0.12 }
+    "epic": { "min": 0.08, "max": 0.12 }
   },
   "types": { "set": ["sword", "axe", "trident"] }
 }

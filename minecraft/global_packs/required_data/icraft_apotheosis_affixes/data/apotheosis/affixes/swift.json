@@ -4,15 +4,15 @@
   "attribute": "minecraft:generic.attack_speed",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "COMMON": {
+    "common": {
       "min": 0.05,
       "max": 0.08
     },
-    "UNCOMMON": {
+    "uncommon": {
       "min": 0.08,
       "max": 0.12
     },
-    "RARE": {
+    "rare": {
       "min": 0.12,
       "max": 0.15
     }

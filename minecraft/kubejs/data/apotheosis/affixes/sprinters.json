@@ -4,8 +4,8 @@
   "attribute": "minecraft:generic.movement_speed",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "UNCOMMON": { "min": 0.05, "max": 0.08 },
-    "RARE": { "min": 0.08, "max": 0.12 }
+    "uncommon": { "min": 0.05, "max": 0.08 },
+    "rare": { "min": 0.08, "max": 0.12 }
   },
   "types": { "set": ["leggings", "boots"] }
 }
