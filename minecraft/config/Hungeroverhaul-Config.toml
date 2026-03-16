@@ -1,7 +1,7 @@
 
 [General]
 	#The speed of passive hunger.
-	"Passive Hunger" = 10.0
+	"Passive Hunger" = 25.0
 	#The multiplier of the exhaustion that's added when having the hunger effect.
 	"Hunger Effect Multiplier" = 5.0
 
@@ -83,9 +83,9 @@
 
 ["Hunger Sleep"]
 	#The exhaustion points added when waking up. 4 Full points equal to 1 hunger/saturation point drained.
-	"Wake Up Exhaustion" = 24.0
+	"Wake Up Exhaustion" = 0.0
 	#The amount of hunger points decreased when waking up.
-	"Wake Up Hunger" = 6.0
+	"Wake Up Hunger" = 0.0
 
 [Toggles]
 	#Toggles the speed boost you get when sprinting while having the well-fed effect.

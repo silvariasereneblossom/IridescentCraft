@@ -877,6 +877,66 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
+  // SECTION 5B: OVERWORLD STRUCTURE FOOD REDUCTION
+  // =========================================================================
+  // Reduce non-meat food in Overworld structure chests by 60-70%.
+  // Meat (raw/cooked) is kept as-is since there's no infinite source.
+  // Modded foods (Pam's HarvestCraft, Farmer's Delight) removed entirely
+  // from structure loot — those should be player-crafted.
+  // Only applies to Overworld dimension.
+  // =========================================================================
+
+  // --- Non-meat food items to reduce by 70% (keep 30% chance) ---
+  // Uses removeLoot + addLoot with 30% random chance per food.
+  // This effectively removes ~70% of these foods from Overworld structure chests.
+  const reducedFoods = [
+    'minecraft:bread',
+    'minecraft:apple',
+    'minecraft:golden_apple',
+    'minecraft:golden_carrot',
+    'minecraft:cookie',
+    'minecraft:pumpkin_pie',
+    'minecraft:beetroot_soup',
+    'minecraft:mushroom_stew',
+    'minecraft:suspicious_stew',
+    'minecraft:baked_potato',
+    'minecraft:carrot',
+    'minecraft:potato',
+    'minecraft:beetroot',
+    'minecraft:melon_slice',
+    'minecraft:sweet_berries',
+    'minecraft:dried_kelp',
+    'minecraft:cake'
+  ]
+
+  // Apply 70% reduction to non-meat food in ALL chest loot (Overworld only).
+  // Single modifier that removes all listed foods, then re-adds each at 30% chance.
+  let foodModifier = event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+
+  reducedFoods.forEach(food => {
+    foodModifier.removeLoot(food)
+    foodModifier.addLoot(LootEntry.of(food).when(c => c.randomChance(0.30)))
+  })
+
+  // --- Remove modded foods from structure chests (Overworld only) ---
+  // Pam's HarvestCraft and Farmer's Delight foods should be player-crafted.
+  // Uses KubeJS @mod filter to match all items from these namespaces.
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('@pamhc')
+    .removeLoot('@farmersdelight')
+    .removeLoot('@farmersrespite')
+    .removeLoot('@brewinandchewin')
+    .removeLoot('@collectorsreap')
+    .removeLoot('@croptopia')
+    .removeLoot('@culturaldelights')
+    .removeLoot('@delightful')
+    .removeLoot('@nethersdelight')
+
+  // =========================================================================
   // SECTION 6: ENABLE LOGGING (remove in production)
   // =========================================================================
 
@@ -887,4 +947,5 @@ LootJS.modifiers(event => {
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Boss token/XP injection: 10+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
+  console.log('  - Overworld food reduction: 70% non-meat, modded foods removed')
 })

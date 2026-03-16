@@ -10,13 +10,13 @@
 	enableForPickaxeMineables = true
 	#Decrease saturation or food bar value by 1 after breaking X blocks tagged with mineable/shovel (like dirt, sand, ...)
 	#Range: 1 ~ 1600
-	afterBreakingShovelMineables = 80
+	afterBreakingShovelMineables = 32
 	#Decrease saturation or food bar value by 1 after breaking X blocks tagged with mineable/axe (like logs, planks, ...)
 	#Range: 1 ~ 1600
-	afterBreakingAxeMineables = 70
+	afterBreakingAxeMineables = 28
 	#Decrease saturation or food bar value by 1 after breaking X blocks tagged with mineable/pickaxe (like stone, ores, ...)
 	#Range: 1 ~ 1600
-	afterBreakingPickaxeMineables = 60
+	afterBreakingPickaxeMineables = 24
 
 ["Exhaustion for modifying blocks"]
 	#Enable exhaustion for tilling dirt blocks
@@ -27,13 +27,13 @@
 	enableForStrippingLogs = true
 	#Decrease saturation or food bar value by 1 after tilling X dirt blocks
 	#Range: > 1
-	afterTillingDirt = 100
+	afterTillingDirt = 40
 	#Decrease saturation or food bar value by 1 after pathing X dirt blocks
 	#Range: > 1
-	afterPathingDirt = 100
+	afterPathingDirt = 40
 	#Decrease saturation or food bar value by 1 after stripping X logs
 	#Range: > 1
-	afterStrippingLogs = 100
+	afterStrippingLogs = 40
 
 ["Exhaustion for Fights"]
 	#Enable exhaustion for attacking entities
@@ -46,37 +46,37 @@
 	enableForShootingArrows = true
 	#Decrease saturation or food bar value by 1 after landing X attacks on entities
 	#Range: 1 ~ 80
-	afterAttackingEntities = 75
+	afterAttackingEntities = 30
 	#Decrease saturation or food bar value by 1 after blocking X attacks with shield
 	#Range: > 1
-	afterBlockingAttacks = 75
+	afterBlockingAttacks = 30
 	#Decrease saturation or food bar value by 1 after taking damage X times
 	#Range: 1 ~ 80
-	afterTakingDamage = 75
+	afterTakingDamage = 30
 	#Decrease saturation or food bar value by 1 after shooting X arrows
 	#Range: > 1
-	afterShootingArrows = 75
+	afterShootingArrows = 30
 
 ["Exhaustion for Interaction"]
 	#Decrease saturation or food bar value by 1 after placing X blocks
 	#Range: > 1
-	afterPlacingBlocks = 100
+	afterPlacingBlocks = 40
 	#Enable exhaustion for placing blocks
 	enableForPlacingBlocks = true
 	#Enable exhaustion for fishing items
 	enableForFishing = true
 	#Decrease saturation or food bar value by 1 after fishing X items
 	#Range: > 1
-	afterFishing = 40
+	afterFishing = 16
 	#Enable exhaustion for open and closing doors/trapdoors/gates/chests (without closing chests)
 	enableForOpenAndClosing = true
 	#Decrease saturation or food bar value by 1 after open and closing X doors/trapdoors/gates/chests
 	#Range: > 1
-	afterOpenAndClosing = 90
+	afterOpenAndClosing = 36
 
 ["Exhaustion for Movement"]
 	#Enable exhaustion while resting (standing still, sitting, ...)
-	enableWhileResting = false
+	enableWhileResting = true
 	#Enable exhaustion while sneaking
 	enableWhileSneaking = true
 	#Enable exhaustion while walking
@@ -95,31 +95,31 @@
 	enableWhileWalkingUp = true
 	#Decrease saturation or food bar value by 1 after resting for X ticks
 	#Range: > 20
-	afterResting = 24000
+	afterResting = 4800
 	#Decrease saturation or food bar value by 1 after sneaking for X ticks
 	#Range: > 20
-	afterSneaking = 4800
+	afterSneaking = 1920
 	#Decrease saturation or food bar value by 1 after walking for X ticks
 	#Range: > 20
-	afterWalking = 3200
+	afterWalking = 1280
 	#Decrease saturation or food bar value by 1 after swimming for X ticks
 	#Range: > 20
-	afterSwimming = 2000
+	afterSwimming = 800
 	#Decrease saturation or food bar value by 1 after sprinting for X ticks
 	#Range: 20 ~ 280
-	afterSprinting = 240
+	afterSprinting = 96
 	#Decrease saturation or food bar value by 1 after paddling for X ticks
 	#Range: > 20
-	afterPaddling = 2400
+	afterPaddling = 960
 	#Decrease saturation or food bar value by 1 after climbing for X ticks
 	#Range: > 20
-	afterClimbing = 1600
+	afterClimbing = 640
 	#Decrease saturation or food bar value by 1 after jumping X times
 	#Range: 1 ~ 160
-	afterJumping = 80
+	afterJumping = 32
 	#Decrease saturation or food bar value by 1 after walking up (stairs & slabs) for X ticks
 	#Range: > 20
-	afterWalkingUp = 2400
+	afterWalkingUp = 960
 
 ["Exhaustion for States"]
 	#Enable exhaustion while freezing (while being inside powder snow)
@@ -133,17 +133,17 @@
 	enableWhileParagliding = true
 	#Decrease saturation or food bar value by 1 after paragliding (Paragliders Mod) for X ticks
 	#Range: > 20
-	afterParagliding = 2400
+	afterParagliding = 960
 	#Enable exhaustion while crawling (GoProne Mod)
 	enableWhileCrawling = true
 	#Decrease saturation or food bar value by 1 after crawling (GoProne Mod) for X ticks
 	#Range: > 20
-	afterCrawling = 1800
+	afterCrawling = 720
 	#Decrease saturation or food bar value by 1 after pulling yourself up (Grappling Hook Mod) for X ticks
 	enableWhilePullingUp = true
 	#Decrease saturation or food bar value by 1 after pulling yourself up (Grappling Hook Mod for X ticks
 	#Range: > 20
-	afterPullingUp = 280
+	afterPullingUp = 112
 	#Enable exhaustion for chopping trees (Falling Tree Mod, HT's TreeChop mod). For changing the exhaustion see: afterBreakingAxeMineables
 	enableForChoppingTrees = true
 	#Enable exhaustion while carrying objects (Carry on Mod
