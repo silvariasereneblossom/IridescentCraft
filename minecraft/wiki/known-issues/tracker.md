@@ -9,6 +9,11 @@
 - **Origins++ overlap:** Investigated — no removals needed. Zero name collisions, separate layers.
 
 
+### Aethersteel T4 Worldgen Replacement
+- **Status:** Implemented (2026-03-16), needs in-game verification
+- **Design:** Aethersteel ore worldgen disabled via biome modifier override. Ore appears as holystone until T4 unlock. 17 items added to T4 AStages restrictions.
+- **Verify:** Confirm ore replacement renders correctly and T4 unlock reveals Aethersteel ore.
+
 ### Missing Icon/Texture Assets for Custom Items
 - **Status:** Known, low priority
 - **Symptom:** New boss drop items, endgame materials (Rift Shard, Rift Core, Primordial Essence, Mythic Catalysts, etc.) use default purple/black missing texture icons
@@ -25,6 +30,20 @@
 - [ ] Mob equipment setItemSlot API — fixed, needs in-game verification
 
 ## Resolved
+
+### Config Review Pass Complete (2026-03-16)
+- **Resolved:** Easy Anvils verified correct (repair costs meaningful). Disenchanting Table and Table of Experience T2-gated. DarkOrb Orb of Origin T2-gated. Enchantment Transfer fine (XP cost is gate). Azukaar's stat scaling zeroed. Icarus wings T3-gated (5 new recipes). Configurable Extra Mob Drops audited (empty, safe). Aethersteel moved to T4.
+
+### Terramity Content Removal (2026-03-16)
+- **Resolved:** 22 gun recipes removed, 64 armor pieces across 16 sets removed, gunsmith station removed. Bosses, structures, mobs, accessories untouched.
+
+### Bug Fixes (2026-03-16)
+- **Apotheosis affix JSONs:** Uppercase rarity keys changed to lowercase (fixed world load crash).
+- **Cherry Village:** Template pool feature references fixed (unregistered feature crash).
+- **Zeta race condition:** Coremod jar added to synchronize ForgeZetaEventBus.
+
+### Tetra Modded Materials (2026-03-16)
+- **Resolved:** 15 modded metal material definitions created as Paxi datapack. Covers T1-T4 metals for Tetra tool crafting.
 
 ### Champions Custom Affixes Implemented (2026-03-15)
 - **Fix:** 5 custom affixes (Commanding, Draining, Hexing, Leaping, Summoning) implemented in `custom_champion_affixes.js`. Per-dimension spawn scaling added.

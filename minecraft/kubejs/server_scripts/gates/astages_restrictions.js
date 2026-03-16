@@ -253,14 +253,43 @@ ServerEvents.loaded(event => {
     'apotheosis:augmenting_table',
     'apotheosis:sigil_of_enhancement',
     'apotheosis:sigil_of_unnaming',
+    // Aethersteel — T4 endgame material (spawns in Deep Aether only)
+    'aethersteel:aethersteel_ingot', 'aethersteel:aethersteel_block',
+    'aethersteel:aethersteel_nugget', 'aethersteel:aethersteel_scrap',
+    'aethersteel:aether_debris',
+    'aethersteel:aethersteel_sword', 'aethersteel:aethersteel_pickaxe',
+    'aethersteel:aethersteel_axe', 'aethersteel:aethersteel_shovel',
+    'aethersteel:aethersteel_hoe', 'aethersteel:aethersteel_shears',
+    'aethersteel:aethersteel_knife',
+    'aethersteel:aethersteel_armor_helmet', 'aethersteel:aethersteel_armor_chestplate',
+    'aethersteel:aethersteel_armor_leggings', 'aethersteel:aethersteel_armor_boots',
+    'aethersteel:aethersteel_upgrade_smithing_template',
   ], 'modpack/item_t4')
+
+  // -- Ore replacement restrictions --
+  // Aethersteel ores appear as holystone until T4 unlocked
+  stageOre('tier_4', 'aethersteel:aether_debris', 'aether:holystone', 'modpack/ore_aether_debris')
+  stageOre('tier_4', 'aethersteel:aetherslate', 'aether:holystone', 'modpack/ore_aetherslate')
 
   // -- Dimension restrictions --
   stageDimension('tier_4', 'deep_aether:the_aether', 'modpack/dim_deep_aether')
   stageDimension('tier_4', 'minecraft:the_end', 'modpack/dim_end')
 
+  // =========================================================================
+  // IRON JETPACKS — Cannot be AStages-gated (single dynamic item ID)
+  // =========================================================================
+  // Iron Jetpacks uses a single item 'ironjetpacks:jetpack' with NBT for all
+  // variants. AStages cannot distinguish variants by item ID.
+  // Tier enforcement is via crafting material gates:
+  //   - Wood/Stone/Copper jetpacks: T1 (ungated materials)
+  //   - Iron/Bronze/Silver jetpacks: T1-T2 materials (iron, bronze, silver)
+  //   - Steel/Gold/Invar/Electrum jetpacks: T2-T3 (steel=T2, gold=T3)
+  //   - Diamond/Platinum jetpacks: T3-T4 (diamond=T3, platinum=T4)
+  //   - Emerald jetpack: T4 (emerald=T4 equivalent via rarity)
+  // No additional AStages restrictions needed — material gates handle it.
+
   console.log('[IridescentCraft] AStages native restrictions registered')
   console.log('  Tier 2: 6 mods + 16 items + 4 dimensions')
   console.log('  Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions')
-  console.log('  Tier 4: 5 mods + 62 items + 2 dimensions')
+  console.log('  Tier 4: 5 mods + 79 items + 2 ores + 2 dimensions')
 })

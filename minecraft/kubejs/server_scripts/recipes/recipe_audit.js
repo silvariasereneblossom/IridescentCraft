@@ -197,5 +197,105 @@ ServerEvents.recipes(event => {
   //    relics = true (keep, they're boss-gated naturally)
 
 
+
+  // ═══ SECTION H: DARKORB — ORB OF ORIGIN RECIPE GATE ═══
+  // DarkOrb adds a craftable recipe for origins:orb_of_origin.
+  // The Orb resets ALL Origins layers (Race, Class, Species) — cannot be
+  // configured to only reset one layer. Gate to T2+ to prevent trivial rerolls.
+  // Replace recipe to require thermal:steel_ingot (T2 material).
+  event.remove({ output: 'origins:orb_of_origin' })
+  event.shaped('origins:orb_of_origin', ['SAS','AHA','SAS'], {
+    S: 'thermal:steel_ingot',
+    A: 'minecraft:amethyst_shard',
+    H: 'minecraft:heart_of_the_sea'
+  }).id('icraft:orb_of_origin_t2')
+
+
+  // ═══ SECTION I: TERRAMITY — REMOVE GUNS, ARMOR RECIPES (KEEP BOSSES) ═══
+  // Design decision: Terramity guns and custom armor sets break the RPG
+  // progression balance. Bosses, structures, mobs, and accessories stay.
+
+  // I.1: Remove ALL gun recipes + gunsmith station + ammo crafting
+  ;[
+    'terramity:basic_pistol', 'terramity:basic_rifle',
+    'terramity:advanced_pistol', 'terramity:advanced_automatic_rifle',
+    'terramity:advanced_burst_rifle', 'terramity:suppressed_advanced_pistol',
+    'terramity:anti_material_rifle', 'terramity:antimatter_rifle',
+    'terramity:conductite_laser_rifle', 'terramity:elite_rifle',
+    'terramity:flintlock_pistol', 'terramity:plague_pistol',
+    'terramity:big_iron', 'terramity:asphodel',
+    'terramity:handcannon', 'terramity:meteor_cannon',
+    'terramity:moondrill_cannon', 'terramity:railgun',
+    'terramity:rocket_launcher', 'terramity:pump_action_shotgun',
+    'terramity:sawed_off_shotgun', 'terramity:flare_gun',
+    'terramity:gunkshot_projectile',
+    // Gunsmith station and ammo
+    'terramity:gunsmith_station',
+    'terramity:advanced_gun_parts', 'terramity:ammo_bag',
+    'terramity:ammo_box', 'terramity:bottomless_ammo_box',
+    'terramity:copper_round', 'terramity:gold_round',
+    'terramity:antimatter_round', 'terramity:dimlite_round',
+    'terramity:iridium_round', 'terramity:shadowflame_bullet',
+    'terramity:suppressed_gold_round',
+  ].forEach(id => event.remove({ output: id }))
+
+  // I.2: Remove ALL Terramity armor set recipes
+  ;[
+    // Conductite set
+    'terramity:conductite_armor_boots', 'terramity:conductite_armor_chestplate',
+    'terramity:conductite_armor_leggings', 'terramity:conductite_scouter_helmet',
+    // Conjuror set
+    'terramity:conjuror_boots', 'terramity:conjuror_chestplate',
+    'terramity:conjuror_helmet', 'terramity:conjuror_leggings',
+    // Cosmilite set
+    'terramity:cosmilite_armor_boots', 'terramity:cosmilite_armor_chestplate',
+    'terramity:cosmilite_armor_helmet', 'terramity:cosmilite_armor_leggings',
+    // Dimlite set
+    'terramity:dimlite_boots', 'terramity:dimlite_chestplate',
+    'terramity:dimlite_helmet', 'terramity:dimlite_leggings',
+    // Evil King set
+    'terramity:evil_king_armor_boots', 'terramity:evil_king_armor_chestplate',
+    'terramity:evil_king_armor_helmet', 'terramity:evil_king_armor_leggings',
+    // Exodium Warlock set
+    'terramity:exodium_warlock_boots', 'terramity:exodium_warlock_chestplate',
+    'terramity:exodium_warlock_helmet', 'terramity:exodium_warlock_leggings',
+    // Hellspec set
+    'terramity:hellspec_boots', 'terramity:hellspec_chestplate',
+    'terramity:hellspec_helmet', 'terramity:hellspec_leggings',
+    // Iridium set
+    'terramity:iridium_armor_boots', 'terramity:iridium_armor_chestplate',
+    'terramity:iridium_armor_helmet', 'terramity:iridium_armor_leggings',
+    // Nyxium Knight set
+    'terramity:nyxium_knight_boots', 'terramity:nyxium_knight_chestplate',
+    'terramity:nyxium_knight_helmet', 'terramity:nyxium_knight_leggings',
+    // Onyx set
+    'terramity:onyx_armor_boots', 'terramity:onyx_armor_chestplate',
+    'terramity:onyx_armor_helmet', 'terramity:onyx_armor_leggings',
+    // Reverium Paladin set
+    'terramity:reverium_paladin_boots', 'terramity:reverium_paladin_chestplate',
+    'terramity:reverium_paladin_helmet', 'terramity:reverium_paladin_leggings',
+    // Ruby set
+    'terramity:ruby_armor_boots', 'terramity:ruby_armor_chestplate',
+    'terramity:ruby_armor_helmet', 'terramity:ruby_armor_leggings',
+    // Sapphire set
+    'terramity:sapphire_armor_boots', 'terramity:sapphire_armor_chestplate',
+    'terramity:sapphire_armor_helmet', 'terramity:sapphire_armor_leggings',
+    // Topaz set
+    'terramity:topaz_armor_boots', 'terramity:topaz_armor_chestplate',
+    'terramity:topaz_armor_helmet', 'terramity:topaz_armor_leggings',
+    // Virentium set
+    'terramity:virentium_armor_boots', 'terramity:virentium_armor_chestplate',
+    'terramity:virentium_armor_helmet', 'terramity:virentium_armor_leggings',
+    // Void Mage set
+    'terramity:void_mage_boots', 'terramity:void_mage_chestplate',
+    'terramity:void_mage_helmet', 'terramity:void_mage_leggings',
+    // Boss hat drops (remove crafting only — still drop from bosses)
+    'terramity:gundalfs_hat_helmet',
+  ].forEach(id => event.remove({ output: id }))
+
+  // NOTE: Terramity has no custom enchantments in the enchantment registry.
+  // "enchanter_merlin" is a boss mob entity, not an enchantment — kept.
+
+
   console.log('[IridescentCraft] recipe_audit.js loaded — cross-mod recipe audit active')
 })

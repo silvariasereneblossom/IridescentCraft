@@ -246,5 +246,72 @@ ServerEvents.recipes(event => {
   event.remove({ type: 'thermal:smelter', output: 'minecraft:nether_star' })
   event.remove({ output: 'minecraft:elytra' })
 
+
+  // ═══ SECTION H: ENCHANT UTILITY WORKSTATIONS → T2 (Steel) ═══
+  // Disenchanting Table, Table of Experience → require steel ingots
+  // These mods let players freely manipulate enchantments/XP, too powerful for T1.
+
+  // H.1: Disenchanting Table → T2 (steel)
+  // Default recipe is enchanting table shape with obsidian. Replace with steel requirement.
+  event.remove({ output: 'disenchanting:disenchanting_table' })
+  event.shaped('disenchanting:disenchanting_table', ['SBS','IRI','SIS'], {
+    S:'thermal:steel_ingot', B:'minecraft:book', I:'minecraft:iron_ingot', R:'minecraft:redstone_block'
+  }).id('icraft:disenchanting_table_t2')
+
+  // H.2: Table of Experience → T2 (steel)
+  // Lets players convert items to XP and vice versa. Gate behind steel.
+  event.remove({ output: 'toe:table_of_experience' })
+  event.shaped('toe:table_of_experience', ['SBS','IEI','SIS'], {
+    S:'thermal:steel_ingot', B:'minecraft:book', I:'minecraft:iron_ingot', E:'minecraft:experience_bottle'
+  }).id('icraft:table_of_experience_t2')
+
+  // H.3: Enchantment Transfer — adds NO blocks/items (uses vanilla anvil).
+  // Gating is handled via enchantmenttransfer-common.toml config (XP cost).
+  // The enchanting table itself is already T3-gated (Section A.2), and anvils are
+  // naturally available. The XP cost serves as a soft gate.
+
+
+  // ═══ SECTION I: ICARUS WINGS → T3+ ═══
+  // All Icarus wing base recipes require an elytra (already removed in Section G).
+  // Replace with T3-gated recipes using diamonds + progression token.
+  // Only gate the base wing types; color variants are just dye+base wing (harmless).
+
+  // Remove all Icarus wing recipes
+  event.remove({ mod: 'icarus' })
+
+  // I.1: Feathered Wings → T3 (diamond + phantom membranes)
+  event.shaped('icarus:white_feathered_wings', ['HDH','FPF','F F'], {
+    H:'minecraft:honeycomb', D:'minecraft:diamond', F:'#icarus:feathers',
+    P:'minecraft:phantom_membrane'
+  }).id('icraft:feathered_wings_t3')
+
+  // I.2: Dragon Wings → T3 (diamond + dragon breath, naturally T3+ material)
+  event.shaped('icarus:black_dragon_wings', ['HDH','BPB','B B'], {
+    H:'minecraft:honeycomb', D:'minecraft:diamond', B:'minecraft:dragon_breath',
+    P:'minecraft:phantom_membrane'
+  }).id('icraft:dragon_wings_t3')
+
+  // I.3: Mechanical Feathered Wings → T3 (steel + diamond)
+  event.shaped('icarus:white_mechanical_feathered_wings', ['SDS','IPI','F F'], {
+    S:'thermal:steel_ingot', D:'minecraft:diamond', I:'minecraft:iron_ingot',
+    P:'minecraft:phantom_membrane', F:'#icarus:feathers'
+  }).id('icraft:mech_feathered_wings_t3')
+
+  // I.4: Mechanical Leather Wings → T3 (steel + diamond)
+  event.shaped('icarus:white_mechanical_leather_wings', ['SDS','IPI','L L'], {
+    S:'thermal:steel_ingot', D:'minecraft:diamond', I:'minecraft:iron_ingot',
+    P:'minecraft:phantom_membrane', L:'minecraft:leather'
+  }).id('icraft:mech_leather_wings_t3')
+
+  // I.5: Light Wings → T3 (diamond + glowstone)
+  event.shaped('icarus:yellow_light_wings', ['HDH','GPG','G G'], {
+    H:'minecraft:honeycomb', D:'minecraft:diamond', G:'minecraft:glowstone_dust',
+    P:'minecraft:phantom_membrane'
+  }).id('icraft:light_wings_t3')
+
+  // I.6: Unique wings — remove entirely (boss drop or quest reward only)
+  // flandres_wings, discords_wings, zanzas_wings already removed by mod: 'icarus' above
+
+
   console.log('[IridescentCraft] P3 tier_gated_recipes.js loaded')
 })

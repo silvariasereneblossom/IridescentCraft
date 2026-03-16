@@ -61,7 +61,7 @@ Building: Chipped, Macaw's suite, Decorative Blocks, ConnectedTexturesMod, Rechi
 
 QoL: JourneyMap, Jade, AppleSkin, Mouse Tweaks, FTB Ultimine/Chunks/Essentials, Simple Voice Chat
 
-Other: CC: Tweaked, Quark, Disenchanting, Enchantment Transfer, Flux Networks, Iron Jetpacks (tiered by materials)
+Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer (ungated — XP cost is gate), Flux Networks, Iron Jetpacks (tiered by materials, single dynamic item ID with NBT), Table of Experience (T2-gated recipe), DarkOrb Orb of Origin (T2-gated recipe)
 
 ## Config Changes Made
 
@@ -71,6 +71,13 @@ Other: CC: Tweaked, Quark, Disenchanting, Enchantment Transfer, Flux Networks, I
 | The Abyss | `theabyss.toml` | `"Spawn Book" = false` |
 | TA The Other Side | `ta_theotherside.toml` | `GuideBook = false` |
 | Celestial Artifacts | `celestial_artifacts-common.toml` | `giveItemsOnStart = false` |
+| Azukaar's Fair Difficulty | config | All stat scaling zeroed (damage, luck, XP multipliers). Behavior features kept. |
+| Icarus | recipes | All default wing recipes removed. 5 new T3 recipes (diamond + phantom membrane). |
+| Disenchanting Table | recipe | T2-gated (requires 4x `thermal:steel_ingot`) |
+| Table of Experience | recipe | T2-gated (requires 4x `thermal:steel_ingot`) |
+| DarkOrb Orb of Origin | recipe | T2-gated (4x steel + 4x amethyst + heart of the sea) |
+| Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |
+| Terramity | recipes | 22 gun recipes removed, 64 armor pieces removed, gunsmith station removed. |
 
 ## Related Pages
 
