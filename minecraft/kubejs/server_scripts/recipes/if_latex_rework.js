@@ -88,8 +88,100 @@ ServerEvents.recipes(event => {
   ).id('icraft:compact_latex_to_rubber')
 
 
-  console.log('[IridescentCraft] IF latex rework loaded')
+  // =========================================================================
+  // SECTION D: HDPE CIRCUIT BOARD — Industrial Byproduct Recycling
+  // =========================================================================
+  // HDPE Sheet + Redstone + Gold Nuggets → Plastic Circuit Board
+  // Can substitute for control circuits in select Mekanism recipes,
+  // creating a feedback loop: ethylene processing → HDPE byproduct →
+  // circuit boards → more machines → more processing capacity.
+
+  // Register the circuit board recipe
+  event.shaped('kubejs:hdpe_circuit_board', [
+    'GRG',
+    'RHR',
+    'GRG'
+  ], {
+    H: 'mekanism:hdpe_sheet',
+    R: 'minecraft:redstone',
+    G: 'minecraft:gold_nugget'
+  }).id('icraft:hdpe_circuit_board')
+
+  // =========================================================================
+  // SECTION E: HDPE CIRCUIT AS ALTERNATIVE INGREDIENT
+  // =========================================================================
+  // Add alternative recipes for key Mekanism machines using HDPE circuits
+  // instead of standard control circuits. Not replacing — adding alternatives.
+
+  // Alternative Fission Reactor Casing: HDPE circuit replaces control circuit
+  event.shaped('mekanism:fission_reactor_casing', [
+    'SCS',
+    'CLC',
+    'SCS'
+  ], {
+    S: 'mekanism:ingot_osmium',
+    C: 'kubejs:hdpe_circuit_board',
+    L: 'minecraft:lead'
+  }).id('icraft:fission_casing_hdpe')
+
+  // Alternative Fission Reactor Logic Adapter
+  event.shaped('mekanism:fission_reactor_logic_adapter', [
+    ' C ',
+    'CFC',
+    ' C '
+  ], {
+    C: 'kubejs:hdpe_circuit_board',
+    F: 'mekanism:fission_reactor_casing'
+  }).id('icraft:fission_logic_hdpe')
+
+  // Alternative Fusion Reactor Frame: HDPE circuit path
+  event.shaped('mekanism:fusion_reactor_frame', [
+    'SCS',
+    'CAC',
+    'SCS'
+  ], {
+    S: 'mekanism:alloy_ultimate',
+    C: 'kubejs:hdpe_circuit_board',
+    A: 'mekanism:alloy_atomic'
+  }).id('icraft:fusion_frame_hdpe')
+
+  // Alternative Fusion Reactor Logic Adapter
+  event.shaped('mekanism:fusion_reactor_logic_adapter', [
+    ' C ',
+    'CFC',
+    ' C '
+  ], {
+    C: 'kubejs:hdpe_circuit_board',
+    F: 'mekanism:fusion_reactor_frame'
+  }).id('icraft:fusion_logic_hdpe')
+
+  // Alternative Enrichment Chamber: HDPE circuit path (cheaper T3 entry)
+  event.shaped('mekanism:enrichment_chamber', [
+    'ACA',
+    'ISI',
+    'ACA'
+  ], {
+    A: 'mekanism:alloy_infused',
+    C: 'kubejs:hdpe_circuit_board',
+    I: 'minecraft:iron_ingot',
+    S: 'mekanism:steel_casing'
+  }).id('icraft:enrichment_chamber_hdpe')
+
+  // Alternative Crusher: HDPE circuit path
+  event.shaped('mekanism:crusher', [
+    'ACA',
+    'ISI',
+    'ACA'
+  ], {
+    A: 'mekanism:alloy_infused',
+    C: 'kubejs:hdpe_circuit_board',
+    I: 'minecraft:lava_bucket',
+    S: 'mekanism:steel_casing'
+  }).id('icraft:crusher_hdpe')
+
+  console.log('[IridescentCraft] IF latex rework + HDPE circuits loaded')
   console.log('  - Logs → latex via Create mixing/crushing + Thermal crucible')
   console.log('  - HDPE sheet/pellet/rod → dry rubber (1:9 / 1:3 / 1:6)')
   console.log('  - Latex fluid → dry rubber via smelting + Create compacting')
+  console.log('  - HDPE Circuit Board: alternative for fission/fusion/machine recipes')
 })
