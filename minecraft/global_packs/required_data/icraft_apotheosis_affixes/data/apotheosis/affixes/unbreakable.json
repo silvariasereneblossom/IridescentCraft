@@ -1,0 +1,11 @@
+{
+  "_comment": "Unbreakable (Aether Slider): +30% knockback resistance",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.knockback_resistance",
+  "operation": "ADDITION",
+  "values": {
+    "RARE": { "min": 0.2, "max": 0.3 },
+    "EPIC": { "min": 0.3, "max": 0.4 }
+  },
+  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+}

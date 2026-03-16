@@ -1,0 +1,10 @@
+{
+  "_comment": "Phantom Glow (Twilight): Struck mobs emit light/glow through walls",
+  "type": "apotheosis:mob_effect",
+  "mob_effect": "minecraft:glowing",
+  "target": "user_target",
+  "values": {
+    "UNCOMMON": { "min": 0.3, "max": 0.5 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

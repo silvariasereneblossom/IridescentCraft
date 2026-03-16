@@ -1,0 +1,10 @@
+{
+  "_comment": "Cloudwalker (Aether): Brief double-jump (speed + jump proxy)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "EPIC": { "min": 0.1, "max": 0.15 }
+  },
+  "types": { "set": ["boots"] }
+}

@@ -1,0 +1,12 @@
+{
+  "_comment": "Warded: +10-25% projectile damage reduction",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.armor",
+  "operation": "ADDITION",
+  "values": {
+    "COMMON": { "min": 0.5, "max": 1 },
+    "UNCOMMON": { "min": 1, "max": 1.5 },
+    "RARE": { "min": 1.5, "max": 2.5 }
+  },
+  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+}

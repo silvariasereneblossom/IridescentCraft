@@ -1,0 +1,10 @@
+{
+  "_comment": "Lichbane (Twilight): +20% damage to undead (attack damage proxy)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "RARE": { "min": 0.15, "max": 0.2 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

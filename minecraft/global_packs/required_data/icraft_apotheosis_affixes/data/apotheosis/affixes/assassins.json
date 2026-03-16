@@ -1,0 +1,11 @@
+{
+  "_comment": "Assassin's: +10% crit chance + 10% crit damage (crit chance portion)",
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:critical_chance",
+  "operation": "ADDITION",
+  "values": {
+    "EPIC": { "min": 0.08, "max": 0.1 },
+    "MYTHIC": { "min": 0.1, "max": 0.12 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

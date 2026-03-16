@@ -1,0 +1,11 @@
+{
+  "_comment": "Pocketed: +3-6 inventory slots (max HP proxy)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.max_health",
+  "operation": "ADDITION",
+  "values": {
+    "RARE": { "min": 1, "max": 2 },
+    "EPIC": { "min": 2, "max": 3 }
+  },
+  "types": { "set": ["chestplate", "leggings"] }
+}

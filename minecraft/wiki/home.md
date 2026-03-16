@@ -44,9 +44,12 @@ The canonical design reference for all modpack systems.
 | Dimension scaling | Implemented | `dimension_scaling.js` |
 | Death penalty | Implemented | `death_penalty.js` |
 | Loot tables (LootJS) | Implemented | `lootjs_overhaul.js` (setCount API fixed) |
-| Skill trees (Pufferfish) | Implemented | Datapack + `skill_effects.js` (34% placeholder effects) |
+| Skill trees (Pufferfish) | Implemented | Datapack + `skill_effects.js` (all effects functional) |
 | Custom enchantments | Implemented | `custom_enchantments.js` + `enchant_effects.js` (24 enchants) |
-| Apotheosis affixes | Implemented | 142 JSON + 15 event-driven affixes |
+| Apotheosis affixes | Implemented | 84 JSON + 65 event-driven affixes |
+| Champions custom affixes | Implemented | 5 custom affixes (Commanding, Draining, Hexing, Leaping, Summoning) + per-dimension spawn scaling |
+| AStages derivative gating | Implemented | Diamond/netherite/End derivatives fully gated + 6 advancement overrides |
+| Origin layer cleanup | Implemented | Vanilla origins:human removed; 3-prompt flow: Origin (9 vanilla) → Race (7 custom) → Class (10 custom) |
 | Class respec | Implemented | `class_respec.js` |
 | Equipment HP halving | Implemented | `equipment_hp_halving.js` |
 | FTB Quests | Not started | Quest book needs in-game GUI editor |

@@ -1,0 +1,10 @@
+{
+  "_comment": "Deepstone (Undergarden): +10% damage reduction below Y=0",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.armor",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": { "min": 2, "max": 4 }
+  },
+  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+}

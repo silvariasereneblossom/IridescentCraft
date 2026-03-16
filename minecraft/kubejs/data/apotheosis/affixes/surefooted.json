@@ -1,0 +1,10 @@
+{
+  "_comment": "Surefooted (T2+): Immunity to Slowness (knockback resist proxy)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.knockback_resistance",
+  "operation": "ADDITION",
+  "values": {
+    "UNCOMMON": { "min": 0.1, "max": 0.15 }
+  },
+  "types": { "set": ["boots"] }
+}

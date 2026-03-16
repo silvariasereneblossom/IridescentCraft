@@ -1,0 +1,12 @@
+{
+  "_comment": "Bounding: +5-15% jump height (movement speed proxy for boots)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "COMMON": { "min": 0.02, "max": 0.04 },
+    "UNCOMMON": { "min": 0.04, "max": 0.06 },
+    "RARE": { "min": 0.06, "max": 0.08 }
+  },
+  "types": { "set": ["boots"] }
+}

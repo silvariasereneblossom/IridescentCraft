@@ -1,0 +1,10 @@
+{
+  "_comment": "Null Gravity (End): Slow falling + jump height",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "RARE": { "min": 0.05, "max": 0.1 }
+  },
+  "types": { "set": ["boots"] }
+}

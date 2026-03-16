@@ -1,0 +1,10 @@
+{
+  "_comment": "Empyrean (Deep Aether): +5% all damage reduction",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.armor",
+  "operation": "ADDITION",
+  "values": {
+    "EPIC": { "min": 3, "max": 5 }
+  },
+  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+}

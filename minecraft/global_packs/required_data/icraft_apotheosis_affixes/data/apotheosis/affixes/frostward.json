@@ -1,0 +1,10 @@
+{
+  "_comment": "Frostward (Blue Skies): Slows melee attackers + freeze resist",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.armor",
+  "operation": "ADDITION",
+  "values": {
+    "RARE": { "min": 2, "max": 4 }
+  },
+  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+}

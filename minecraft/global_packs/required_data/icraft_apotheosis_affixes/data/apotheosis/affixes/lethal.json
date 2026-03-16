@@ -1,0 +1,12 @@
+{
+  "_comment": "Lethal: +15-25% critical hit damage multiplier",
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:critical_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "RARE": { "min": 0.15, "max": 0.18 },
+    "EPIC": { "min": 0.18, "max": 0.22 },
+    "MYTHIC": { "min": 0.22, "max": 0.25 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

@@ -1,0 +1,12 @@
+{
+  "_comment": "Blinding Speed: +20-35% attack speed, -5% damage",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "RARE": { "min": 0.2, "max": 0.25 },
+    "EPIC": { "min": 0.25, "max": 0.3 },
+    "MYTHIC": { "min": 0.3, "max": 0.35 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

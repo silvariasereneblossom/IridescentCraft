@@ -267,6 +267,19 @@ function grantTier(player, tier, triggerName) {
     )
   })
 
+  // Un-gate vanilla advancements that were blocked by impossible criteria.
+  // T3 unlocks diamond-related advancements, T4 unlocks netherite.
+  if (targetIdx >= 2) { // tier_3 or higher
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:story/mine_diamond`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:story/shiny_gear`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:story/enchant_item`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:nether/obtain_ancient_debris`)
+  }
+  if (targetIdx >= 3) { // tier_4
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:nether/netherite_armor`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:husbandry/obtain_netherite_hoe`)
+  }
+
   const tierNum = tier.replace('tier_', '')
 
   // Announce

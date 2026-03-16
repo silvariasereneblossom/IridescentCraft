@@ -16,15 +16,27 @@
 
 ## Needs Testing
 
-- [ ] AStages API method signatures — inferred from docs, never verified in-game
+- [ ] AStages API method signatures — inferred from docs, looking good per user testing
 - [ ] Simply Swords unique weapon IDs — 6 Abyss weapons unverified
 - [ ] Origins `action_on_callback` syntax for glass cannon auto-tagging
 - [ ] Iron's Spells attribute names for skill effects
-- [ ] Apotheosis affix JSON schema compatibility (142 affixes deployed, untested)
+- [ ] Apotheosis affix JSON schema compatibility (84 JSON affixes deployed, untested)
 - [ ] Custom enchantment registration via Apotheosis
 - [ ] Mob equipment setItemSlot API — fixed, needs in-game verification
 
 ## Resolved
+
+### Champions Custom Affixes Implemented (2026-03-15)
+- **Fix:** 5 custom affixes (Commanding, Draining, Hexing, Leaping, Summoning) implemented in `custom_champion_affixes.js`. Per-dimension spawn scaling added.
+
+### Skill Effects Fully Functional (2026-03-15)
+- **Fix:** All 22 scoreboard objectives now functional. 6 Engineering placeholders replaced with working implementations in `skill_effects.js`.
+
+### Vanilla Origin Layer Overlap Fixed (2026-03-15)
+- **Fix:** `origins:human` removed from vanilla Origin layer. 3-prompt flow is now Origin (9 vanilla) → Race (7 custom) → Class (10 custom). No more overlap between vanilla origins and custom races.
+
+### Diamond/Netherite Derivative Items Gated (2026-03-15)
+- **Fix:** AStages restrictions expanded to gate diamond/netherite/End derivative items. 6 advancement overrides added in `astages_restrictions.js`.
 
 ### Mob Equipment API Fixed (2026-03-14)
 - **Fix:** Replaced `setArmorSlot`/`getArmorSlot` with `setItemSlot`/`getItemBySlot` (KubeJS 6.x API). Fixes log spam.

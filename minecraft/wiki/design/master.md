@@ -7,479 +7,377 @@
 
 ---
 
-Core Philosophy
-Tier System Overview
-Material Progression Gates
-Dimensional Progression
-Tech Progression Path
-Magic Progression Path
-Weapon Progression
-Armor Progression
-Curio & Accessory System
-Combat & Difficulty Scaling
-Apotheosis Configuration
-Player Character Systems
-Food & Hunger System
-Storage & Logistics Progression
-XP Economy
-Travel & Waystones
-Tier-Skip Mechanics
-Villager Trade Rework
-Loot Table Overhaul
-Serene Seasons
-Refined Storage (Special Case)
-Building & QoL
-Misc Mod Placement
-Quest System Structure
-Custom Items & Materials
-Boss → Loot Mapping
-Death & Penalty System
-Known Exploit Vectors
-Implementation Priority
+## Table of Contents
+
+1. [Core Philosophy](#part-i-core-philosophy)
+2. [Tier System Overview](#part-ii-tier-system-overview)
+3. [Material Progression Gates](#part-iii-material-progression-gates)
+4. [Dimensional Progression](#part-iv-dimensional-progression)
+5. [Tech Progression Path](#part-v-tech-progression-path)
+6. [Magic Progression Path](#part-vi-magic-progression-path)
+7. [Weapon Progression](#part-vii-weapon-progression)
+8. [Armor Progression](#part-viii-armor-progression)
+9. [Curio & Accessory System](#part-ix-curio--accessory-system)
+10. [Combat & Difficulty Scaling](#part-x-combat--difficulty-scaling)
+11. [Apotheosis Configuration](#part-xi-apotheosis-configuration)
+12. [Player Character Systems](#part-xii-player-character-systems)
+13. [Food & Hunger System](#part-xiii-food--hunger-system)
+14. [Storage & Logistics Progression](#part-xiv-storage--logistics-progression)
+15. [XP Economy](#part-xv-xp-economy)
+16. [Travel & Waystones](#part-xvi-travel--waystones)
+17. [Tier-Skip Mechanics](#part-xvii-tier-skip-mechanics)
+18. [Villager Trade Rework](#part-xviii-villager-trade-rework)
+19. [Loot Table Overhaul](#part-xix-loot-table-overhaul)
+20. [Serene Seasons](#part-xx-serene-seasons)
+21. [Refined Storage (Special Case)](#part-xxi-refined-storage-special-case)
+22. [Building & QoL](#part-xxii-building--qol)
+23. [Misc Mod Placement](#part-xxiii-misc-mod-placement)
+24. [Quest System Structure](#part-xxiv-quest-system-structure)
+25. [Custom Items & Materials](#part-xxv-custom-items--materials)
+26. [Boss → Loot Mapping](#part-xxvi-boss--loot-mapping)
+27. [Death & Penalty System](#part-xxvii-death--penalty-system)
+28. [Known Exploit Vectors](#part-xxviii-known-exploit-vectors)
+29. [Implementation Priority](#part-xxix-implementation-priority)
+
+---
+
+## Part I: Core Philosophy
 
 Power fantasy with escalating threats. Players become absurdly powerful — but the world scales harder.
 
-Design Pillars
+### Design Pillars
 
-Open early game → Progressive gating → Earned power
-Dual-Path Progression: Every gate solvable via tech, magic, or hybrid
-Abundance of tools, not scarcity: Gates are when you unlock things, not whether
-No-drop death: Inventory kept on death; balance via expensive enchanting, XP investment
-Players NEED god-tier gear: Enemies scale harder than players to justify power creep
-Boss fights are the pinnacle: Best weapons (Simply Swords uniques) and next-tier materials come from bosses
-Play your way: Tech, magic, combat, hybrid — all equally valid paths to endgame
+- Open early game → Progressive gating → Earned power
+- Dual-Path Progression: Every gate solvable via tech, magic, or hybrid
+- Abundance of tools, not scarcity: Gates are when you unlock things, not whether
+- No-drop death: Inventory kept on death; balance via expensive enchanting, XP investment
+- Players NEED god-tier gear: Enemies scale harder than players to justify power creep
+- Boss fights are the pinnacle: Best weapons (Simply Swords uniques) and next-tier materials come from bosses
+- Play your way: Tech, magic, combat, hybrid — all equally valid paths to endgame
 
-Tier System Overview
+---
 
-Tier
-Theme
-Dimensions
-Tech Mods
-Magic Mods
-Power Level
+## Part II: Tier System Overview
 
-1
-Bronze Age Explorer
+| Tier | Theme | Dimensions | Tech Mods | Magic Mods | Power Level |
+|------|-------|-----------|-----------|------------|-------------|
+| 1 | Bronze Age Explorer | Overworld only | Create, Pretty Pipes | Botania, Iron’s Spells | Learning basics, first builds |
+| 2 | Enchanted Adventurer | Twilight Forest, Blue Skies, The Aether | Thermal, IF (basic) | Ars Nouveau | Specialization, first real power |
+| 3 | Empowered Slayer | Undergarden, Deeper Darker, Nether | IF (advanced), Mekanism (basic), RS | Occultism, Forbidden & Arcanus | Major power spike, factory building |
+| 4 | God-Killer | Deep Aether, The End | Mekanism (advanced), RFTools Dims | Mahou Tsukai | Creative-tier power, ultimate threats |
 
-Overworld only
+### Tier Unlock Paths (Branching — Complete ANY ONE)
 
-Create, Pretty Pipes
+**Tier 2 Unlock (“Ascending Power”):**
+- Option A: 1000 iron + 500 copper + Create components (grinding path)
+- Option B: Botania runes + mana diamonds (magic path)
+- Option C: Kill Twilight Lich + collect progression token (boss path)
+- Option D: Dimensional materials from multiple dimensions (exploration)
+- Option E: Prove automation with Create machines (engineering)
 
-Botania, Iron’s Spells
-Learning basics, first builds
+**Tier 3 Unlock:** Similar pattern with Tier 2 materials/bosses as requirements.
 
-2
-Enchanted Adventurer
-Twilight Forest, Blue Skies, The Aether
+**Tier 4 Unlock:** Similar pattern with Tier 3 materials/bosses as requirements.
 
-Thermal, IF (basic)
+### Staging Implementation
 
-Ars Nouveau
-Specialization, first real power
+Uses AStages (with KubeJS integration) to enforce per-player tier restrictions on:
+- Items (tier-inappropriate items can’t be used)
+- Dimensions (locked until stage unlocked)
+- Recipes (tier-gated crafting)
+- Ores (hidden/replaced until appropriate tier)
 
-3
-Empowered Slayer
-Undergarden, Deeper Darker, Nether
-IF (advanced), Mekanism (basic), RS
-Occultism, Forbidden & Arcanus
-Major power spike, factory building
+---
 
-4
+## Part III: Material Progression Gates
 
-God-Killer
+### Tier 1 — Early (Overworld Only)
 
-Deep Aether, The End
-Mekanism (advanced), RFTools Dims
+- **Available:** Iron, Copper, Brass (Create), Tin, Bronze
+- **NOT available:** Diamonds (removed from worldgen), Steel, Netherite, any modded mid-tier materials
 
-Mahou Tsukai
-Creative-tier power, ultimate threats
-Tier Unlock Paths (Branching — Complete ANY ONE)
-Tier 2 Unlock (“Ascending Power”): - Option A: 1000 iron + 500 copper + Create components (grinding path) - Option B: Botania runes + mana diamonds (magic path) - Option C: Kill Twilight Lich + collect progression token (boss path) - Option D: Dimensional materials from multiple dimensions (exploration) - Option E: Prove automation with Create machines (engineering)
-Tier 3 Unlock: Similar pattern with Tier 2 materials/bosses as requirements.
-Tier 4 Unlock: Similar pattern with Tier 3 materials/bosses as requirements.
+### Tier 2 — Mid
 
-Staging Implementation
-Uses AStages (with KubeJS integration) to enforce per-player tier restrictions on: - Items (tier-inappropriate items can’t be used)
-- Dimensions (locked until stage unlocked) - Recipes (tier-gated crafting) - Ores (hidden/replaced until appropriate tier)
+- **New materials:** Steel (Thermal), Manasteel (Botania), Signalum, Lumium, Steeleaf, Ironwood, Fiery (Twilight)
+- **Limited:** Diamonds via expensive transformation recipes only
 
-Material Progression Gates
+### Tier 3 — Late
 
-Tier 1 — Early (Overworld Only)
+- **New materials:** Full diamond access (re-enable worldgen or bulk crafting), Terrasteel, Elementium (Botania), Enderium (Thermal), Osmium, Refined Obsidian (Mekanism), Ancient Debris (Nether now accessible)
 
-Available: Iron, Copper, Brass (Create), Tin, Bronze NOT available: Diamonds (removed from worldgen), Steel, Netherite, any modded mid-tier materials
+### Tier 4 — Endgame
 
-Tier 2 — Mid
+- **New materials:** Netherite (processable now), Gaia Ingots (Botania), Dragon Scales/Hearts (custom), Antimatter, Atomic Alloy (Mekanism), creative-tier items
 
-New materials: Steel (Thermal), Manasteel (Botania), Signalum, Lumium, Steeleaf, Ironwood, Fiery (Twilight) Limited:
-Diamonds via expensive transformation recipes only
+### Cross-Tier Material Access
 
-Tier 3 — Late
+**Transmutation (Grinding Path)**
 
-New materials: Full diamond access (re-enable worldgen or bulk crafting), Terrasteel, Elementium (Botania), Enderium (Thermal), Osmium, Refined Obsidian (Mekanism), Ancient Debris (Nether now accessible)
+Expensive conversion of current-tier materials into small amounts of next-tier materials:
+- 32–64 current-tier ingots → 1 next-tier ingot
+- Implemented via KubeJS recipes (Create mixing, Thermal smeltery, or Botania Orechid variants)
+- Intentionally inefficient — provides “a taste,” not a full unlock
 
-Tier 4 — Endgame
+**Boss Drops (Combat Path)**
 
-New materials: Netherite (processable now), Gaia Ingots (Botania), Dragon Scales/Hearts (custom), Antimatter, Atomic Alloy (Mekanism), creative-tier items
+Current-tier bosses have a 5–15% chance to drop 1–3 next-tier materials:
+- Twilight bosses → occasional osmium, steel
+- Tier 3 bosses → occasional ancient debris, gaia spirit fragments
+- Gives combat-focused players a purely boss-hunting path to tier-peek
 
-Cross-Tier Material Access
+---
 
-Transmutation (Grinding Path)
-Expensive conversion of current-tier materials into small amounts of next-tier materials: - 32–64 current-tier ingots → 1 next-tier ingot - Implemented via KubeJS recipes (Create mixing, Thermal smeltery, or Botania Orechid variants) - Intentionally inefficient
-— provides “a taste,” not a full unlock
-
-Boss Drops (Combat Path)
-Current-tier bosses have a 5–15% chance to drop 1–3 next-tier materials: - Twilight bosses → occasional osmium, steel - Tier 3 bosses → occasional ancient debris, gaia spirit fragments - Gives combat-focused players a purely boss-hunting path to tier-peek
-
-Dimensional Progression
+## Part IV: Dimensional Progression
 
 Major change from vanilla: Nether is Tier 3, End is Tier 4.
 
-TierDimensionDifficulty MultiplierNotes
+| Tier | Dimension | Difficulty Multiplier | Notes |
+|------|-----------|----------------------|-------|
+| 1 | Overworld | 1.0x | Learn basics, bronze age |
+| 2 | Twilight Forest | 1.5x | First dimension, boss-heavy |
+| 2 | Blue Skies | 2.0x | Elemental themed |
+| 2 | The Aether | 2.5x | Hardest Tier 2 dimension |
+| 3 | The Undergarden | 3.0x | Hostile underground |
+| 3 | Deeper and Darker | 3.5x | Deep dark themed |
+| 3 | The Nether | 4.0x | Gated! 50% Champion spawn, Wither Skeletons are mini-bosses |
+| 4 | Deep Aether | 5.0x | Advanced Aether |
+| 4 | The End | 6.0x → 10.0x | Scaling zones, boss gauntlet |
 
-1
+### Dimensional Gating Implementation
 
-Overworld
+- AStages restricts dimension access per player
+- Portal activation requires tier-appropriate progression token OR quest completion
+- Nether portal requires Tier 3 token; End portal requires stabilized Eyes of Ender (complex recipe) OR Tier 4 token
+- End Portal Recipe mod gated to Tier 4
 
-1.0x
-Learn basics, bronze age
+---
 
-2
+## Part V: Tech Progression Path
 
-Twilight Forest
+### Tier 1: Create
 
-1.5x
-First dimension, boss-heavy
+- Kinetic automation, mechanical processing
+- Crushing wheels (~1.5x ore processing)
+- Transport via Create belts/chutes AND Pretty Pipes
+- Available immediately, gated only by basic materials
 
-2
+### Tier 2: Thermal Series + Industrial Foregoing (Basic)
 
-Blue Skies
+- RF power generation, machine processing
+- Thermal: Phytogenic automation, 2x ore processing
+- IF Basic: Basic mob interaction, simple automation machines
+- Gate: Tier 2 unlock (Twilight Lich kill OR quest completion)
 
-2.0x
-Elemental themed
+### Tier 3: Industrial Foregoing (Advanced) + Mekanism (Basic) + Refined Storage
 
-2
+- IF Advanced: Laser Drill, Mob Crusher, auto-mining
+- Mekanism Basic: Ore processing (up to 5x), energy cubes, basic machines
+- Refined Storage: Digital storage (see Section 21 for special recipe rules)
+- Gate: Tier 3 unlock + Nether materials
 
-The Aether
+### Tier 4: Mekanism (Advanced) + RFTools Dimensions
 
-2.5x
-Hardest Tier 2 dimension
+- Mekanism Advanced: Digital Miner, Fusion Reactor, MekaTool, Mekasuit, QIO
+- RFTools: Dimension creation, ultimate automation
+- Gate: Tier 4 unlock (Gaia Guardian/Ender Dragon OR quest)
 
-3
+---
 
-The Undergarden
+## Part VI: Magic Progression Path
 
-3.0x
-Hostile underground
+### Tier 1: Botania + Iron’s Spells ‘n Spellbooks
 
-3
+- Botania: Mana generation, runic crafting, Orechid, mana blaster
+- Iron’s Spells: Basic scrolls, staves, combat magic — combat magic is available from the start
+- Available immediately
 
-Deeper and Darker
+### Tier 2: Ars Nouveau
 
-3.5x
-Deep dark themed
+- Source generation, spell crafting, Imbuement Chamber
+- Gate: Tier 2 unlock
 
-3
+### Tier 3: Occultism + Forbidden & Arcanus
 
-The Nether
+- Spirit automation, ritual crafting, dark magic
+- Gate: Tier 3 unlock
 
-4.0x
-Gated! 50% Champion spawn, Wither Skeletons are mini-bosses
-4
-Deep Aether
-5.0x
-Advanced Aether
+### Tier 4: Mahou Tsukai
 
-4
+- Advanced spell effects, reality manipulation
+- This is the magic endgame — ultimate combat spells
+- Gate: Tier 4 unlock
 
-The End
+---
 
-6.0x → 10.0x
-Scaling zones, boss gauntlet
-
-Dimensional Gating Implementation
-AStages restricts dimension access per player
-Portal activation requires tier-appropriate progression token OR quest completion
-Nether portal requires Tier 3 token; End portal requires stabilized Eyes of Ender (complex recipe) OR Tier 4 token End Portal Recipe mod gated to Tier 4
-
-Tech Progression Path
-
-Tier 1: Create
-
-Kinetic automation, mechanical processing Crushing wheels (~1.5x ore processing)
-Transport via Create belts/chutes AND Pretty Pipes Available immediately, gated only by basic materials
-
-Tier 2: Thermal Series + Industrial Foregoing (Basic)
-
-RF power generation, machine processing
-Thermal: Phytogenic automation, 2x ore processing
-IF Basic: Basic mob interaction, simple automation machines Gate: Tier 2 unlock (Twilight Lich kill OR quest completion)
-
-Tier 3: Industrial Foregoing (Advanced) + Mekanism (Basic) + Refined Storage
-
-IF Advanced: Laser Drill, Mob Crusher, auto-mining
-Mekanism Basic: Ore processing (up to 5x), energy cubes, basic machines Refined Storage: Digital storage (see Section 21 for special recipe rules) Gate: Tier 3 unlock + Nether materials
-
-Tier 4: Mekanism (Advanced) + RFTools Dimensions
-
-Mekanism Advanced: Digital Miner, Fusion Reactor, MekaTool, Mekasuit, QIO RFTools: Dimension creation, ultimate automation
-Gate: Tier 4 unlock (Gaia Guardian/Ender Dragon OR quest)
-
-Magic Progression Path
-
-Tier 1: Botania + Iron’s Spells ’n Spellbooks
-
-Botania: Mana generation, runic crafting, Orechid, mana blaster
-Iron’s Spells: Basic scrolls, staves, combat magic — combat magic is available from the start
-Available immediately
-
-Tier 2: Ars Nouveau
-
-Source generation, spell crafting, Imbuement Chamber Gate: Tier 2 unlock
-
-Tier 3: Occultism + Forbidden & Arcanus
-
-Spirit automation, ritual crafting, dark magic Gate: Tier 3 unlock
-
-Tier 4: Mahou Tsukai
-
-Advanced spell effects, reality manipulation
-This is the magic endgame — ultimate combat spells Gate: Tier 4 unlock
-
-Weapon Progression
+## Part VII: Weapon Progression
 
 Clean split: Truly Modular = crafted weapons, Simply Swords = boss-drop-only trophies.
 
-System Roles
+### System Roles
 
-SystemRoleHow Acquired
-Truly Modular (+ Archery, Armory, Arsenal)
-Primary crafted weapons, customizable parts
+| System | Role | How Acquired |
+|--------|------|-------------|
+| Truly Modular (+ Archery, Armory, Arsenal) | Primary crafted weapons, customizable parts | Crafting with tier-appropriate materials |
+| Simply Swords | Unique trophy weapons with special abilities | Boss drops ONLY (via LootJS) |
+| Iron’s Spells ‘n Spellbooks | Magic combat (staves, spells, scrolls) | Crafting + loot |
+| Cataclysm | Signature boss weapons | Cataclysm boss drops |
+| Mahou Tsukai | Ultimate magic combat | Tier 4 crafting/progression |
+| Mekanism | Tech endgame weapon (MekaTool) | Tier 4 crafting |
+| Better Combat | Combat feel/animation | Passive system (always active) |
+| Too Many Bows | Ranged weapon variety | Crafting, tiered by materials |
 
-Crafting with tier-appropriate materials
+### Per-Tier Breakdown
 
-Simply Swords
-Unique trophy weapons with special abilities
+**Tier 1: Choose Your Path**
+- Melee: Vanilla iron, Truly Modular bronze/iron customs
+- Ranged: Basic bows, Too Many Bows iron tier
+- Magic: Iron’s Spells basic scrolls/staves, Botania mana blaster
+- Apotheosis: Common affixes only, 1 socket, weak gems
+- Uniques: None (bosses that drop them aren’t accessible yet)
 
-Boss drops ONLY (via LootJS)
+**Tier 2: Specialization**
+- Melee: Steel, Steeleaf, Ironwood, Fiery weapons. Truly Modular with Tier 2 materials
+- Ranged: Too Many Bows mid-tier, enchanted crossbows
+- Magic: Iron’s Spells rare scrolls, Ars Nouveau spell crafting, Botania Terra Blade
+- Boss drops: Twilight Forest bosses → Simply Swords uniques (themed per boss)
+- Apotheosis: Uncommon + Rare affixes, 2 sockets, mid gems
 
-Iron’s Spells ’n Spellbooks
-Magic combat (staves, spells, scrolls)
+**Tier 3: Power Spike**
+- Melee: Diamond, Terrasteel, Enderium, Refined Obsidian. Truly Modular peak pre-netherite
+- Ranged: Too Many Bows high-tier (explosive, homing)
+- Magic: Occultism spirit weapons, Forbidden & Arcanus dark magic, Iron’s Spells advanced
+- Boss drops: Cataclysm Harbinger/Ignis → Simply Swords uniques + signature Cataclysm weapons
+- Tech: Mekanism Atomic Disassembler
+- Apotheosis: Epic affixes, 3 sockets, rare gems
 
-Crafting + loot
-Cataclysm
-Signature boss weapons
-Cataclysm boss drops
-Mahou Tsukai
-Ultimate magic combat
-Tier 4 crafting/progression
+**Tier 4: God-Killer**
+- Melee: Netherite, Gaia Ingot weapons. Truly Modular ultimate builds
+- Magic endgame: Mahou Tsukai ultimate spells
+- Tech endgame: Mekanism MekaTool + Mekasuit
+- Combat endgame: Cataclysm Void Forge, Gauntlet of the Bulwark, Ender Guardian weapons
+- Boss drops: Dragon, Gaia Guardian II, End bosses → final Simply Swords uniques
+- Apotheosis: Mythic affixes, 4+ sockets, legendary gems
 
-Mekanism
-Tech endgame weapon (MekaTool)
+---
 
-Tier 4 crafting
-Better Combat
-Combat feel/animation
-Passive system (always active)
-Too Many Bows
-Ranged weapon variety
-Crafting, tiered by materials
-
-Per-Tier Breakdown
-
-Tier 1: Choose Your Path
-Melee: Vanilla iron, Truly Modular bronze/iron customs
-Ranged: Basic bows, Too Many Bows iron tier
-Magic: Iron’s Spells basic scrolls/staves, Botania mana blaster Apotheosis: Common affixes only, 1 socket, weak gems Uniques: None (bosses that drop them aren’t accessible yet)
-
-Tier 2: Specialization
-Melee: Steel, Steeleaf, Ironwood, Fiery weapons. Truly Modular with Tier 2 materials
-Ranged: Too Many Bows mid-tier, enchanted crossbows
-Magic: Iron’s Spells rare scrolls, Ars Nouveau spell crafting, Botania Terra Blade Boss drops: Twilight Forest bosses → Simply Swords uniques (themed per boss) Apotheosis: Uncommon + Rare affixes, 2 sockets, mid gems
-
-Tier 3: Power Spike
-Melee: Diamond, Terrasteel, Enderium, Refined Obsidian. Truly Modular peak pre-netherite
-Ranged: Too Many Bows high-tier (explosive, homing)
-Magic: Occultism spirit weapons, Forbidden & Arcanus dark magic, Iron’s Spells advanced
-Boss drops: Cataclysm Harbinger/Ignis → Simply Swords uniques + signature Cataclysm weapons
-Tech: Mekanism Atomic Disassembler
-Apotheosis: Epic affixes, 3 sockets, rare gems
-
-Tier 4: God-Killer
-Melee: Netherite, Gaia Ingot weapons. Truly Modular ultimate builds
-Magic endgame: Mahou Tsukai ultimate spells
-Tech endgame: Mekanism MekaTool + Mekasuit
-Combat endgame: Cataclysm Void Forge, Gauntlet of the Bulwark, Ender Guardian weapons Boss drops: Dragon, Gaia Guardian II, End bosses → final Simply Swords uniques Apotheosis: Mythic affixes, 4+ sockets, legendary gems
-
-Armor Progression
+## Part VIII: Armor Progression
 
 Mirrors weapon progression. Truly Modular: Armory is the crafted armor system.
 
-Tier 1
-Iron, copper, bronze. Truly Modular: Armory custom builds Origins innate defenses
-Basic Relics/Artifacts curios
-Iron Jetpacks low tier (early flight is intentional)
+**Tier 1**
+- Iron, copper, bronze. Truly Modular: Armory custom builds
+- Origins innate defenses
+- Basic Relics/Artifacts curios
+- Iron Jetpacks low tier (early flight is intentional)
 
-Tier 2
-Steel, Steeleaf, Ironwood, Fiery. Twilight armor sets Ars Nouveau enchanted robes
-Mid-tier curios Better jetpacks
+**Tier 2**
+- Steel, Steeleaf, Ironwood, Fiery. Twilight armor sets
+- Ars Nouveau enchanted robes
+- Mid-tier curios, better jetpacks
 
-Tier 3
-Diamond, Terrasteel, Refined Obsidian Occultism bound armor
-High-tier curios from Nether/Undergarden bosses
+**Tier 3**
+- Diamond, Terrasteel, Refined Obsidian
+- Occultism bound armor
+- High-tier curios from Nether/Undergarden bosses
 
-Tier 4
-Netherite, Gaia Ingot armor
-Mekanism Mekasuit (tech endgame armor) Mahou Tsukai defensive spells
-Cataclysm boss armor drops Mythic-affix gear with 4+ sockets
+**Tier 4**
+- Netherite, Gaia Ingot armor
+- Mekanism Mekasuit (tech endgame armor)
+- Mahou Tsukai defensive spells
+- Cataclysm boss armor drops
+- Mythic-affix gear with 4+ sockets
 
-Curio & Accessory System
+---
 
-Mods: Artifacts, More Artifacts, Relics, Celestial Artifacts, Elytra Slot
-Philosophy: Equipping is NEVER gated. Balance via harder encounters, not nerfing player power.
-Loot Control (Compromise): - Curios drop from tier-appropriate loot tables (controlled via LootJS) - Fight-breaking curios (fire immunity, damage immunity, flight-granting) are restricted to Tier 2+ or Tier 3+ loot tables - General utility curios (movement speed, minor buffs) can appear in Tier 1 loot - Players can always equip anything they find — no AStages restriction on curios - If a player gets a strong curio early (boss drop, trade, etc.), that’s a win, not an exploit
-Relics (leveling system): Available at all tiers. The XP investment to level Relics acts as a natural soft-gate — early players won’t have the XP to max them.
+## Part IX: Curio & Accessory System
 
-Mod Stack
+**Mods:** Artifacts, More Artifacts, Relics, Celestial Artifacts, Elytra Slot
 
-ScalingMobs: Dimension-based stat multipliers Champions Unofficial: Elite mob spawns with affixes Progressive Bosses: Bosses get stronger each kill Cataclysmic Combat: Enhanced AI
-Improved Mobs: (RECOMMENDED ADD) Behavioral AI — mobs use gear, break blocks, build bridges
-Better Combat: Combat animation/feel overhaul
-Azukaar’s Fair Difficulty Overhaul: Additional difficulty tuning
-Difficult Caves: Cave-specific difficulty
+**Philosophy:** Equipping is NEVER gated. Balance via harder encounters, not nerfing player power.
 
-Scaling Configuration
+**Loot Control (Compromise):**
+- Curios drop from tier-appropriate loot tables (controlled via LootJS)
+- Fight-breaking curios (fire immunity, damage immunity, flight-granting) are restricted to Tier 2+ or Tier 3+ loot tables
+- General utility curios (movement speed, minor buffs) can appear in Tier 1 loot
+- Players can always equip anything they find — no AStages restriction on curios
+- If a player gets a strong curio early (boss drop, trade, etc.), that’s a win, not an exploit
 
-Dimension
-Health Multi
-Damage Multi
-Champion Spawn %
-Notes
-Overworld
-1.0x
-1.0x
-15%
-Baseline
-Twilight Forest
-1.5x
-1.5x
-20%
-First challenge
-Blue Skies
-2.0x
-2.0x
-25%
-Elemental threats
-The Aether
-2.5x
-2.5x
-30%
-Hardest Tier 2
-The Undergarden
-3.0x
-3.0x
-35%
-Hostile underground
-Deeper and Darker
-3.5x
-3.5x
-40%
-Deep dark horrors
-The Nether
-4.0x
-4.0x
-50%
-Mini-boss Wither Skeletons
-Deep Aether
-5.0x
-5.0x
-50%
-Advanced Aether
-The End
-6.0x–10.0x
-6.0x–10.0x
-60%
-Multi-zone scaling
+**Relics (leveling system):** Available at all tiers. The XP investment to level Relics acts as a natural soft-gate — early players won’t have the XP to max them.
 
-Progressive Bosses
+---
 
-Each boss kill increases that boss’s stats for the next encounter Encourages varied boss hunting rather than farming one boss Ender Dragon: 1000 HP base, Enhanced AI, scales with kills
+## Part X: Combat & Difficulty Scaling
 
-Affix Rates by Tier
+### Mod Stack
 
-Tier
-Common
-Uncommon
-Rare
-Epic
-Mythic
-Max Sockets
-1
-15%
-5%
-—
-—
-—
-1
-2
-25%
-15%
-5%
-—
-—
-2
-3
-35%
-25%
-15%
-8%
-—
-3
-4
-35%
-25%
-15%
-10%
-5%
-4+
+- **ScalingMobs:** Dimension-based stat multipliers
+- **Champions Unofficial:** Elite mob spawns with affixes
+- **Progressive Bosses:** Bosses get stronger each kill
+- **Cataclysmic Combat:** Enhanced AI
+- **Improved Mobs:** (RECOMMENDED ADD) Behavioral AI — mobs use gear, break blocks, build bridges
+- **Better Combat:** Combat animation/feel overhaul
+- **Azukaar’s Fair Difficulty Overhaul:** Additional difficulty tuning
+- **Difficult Caves:** Cave-specific difficulty
 
-Reforging Gates
+### Scaling Configuration
 
-Basic reforging: Tier 2 token required
-Advanced reforging: Tier 3 token + expensive materials
-Ultimate reforging: Tier 4 token + Gaia ingots/antimatter
+| Dimension | Health Multi | Damage Multi | Champion Spawn % | Notes |
+|-----------|-------------|-------------|-----------------|-------|
+| Overworld | 1.0x | 1.0x | 15% | Baseline |
+| Twilight Forest | 1.5x | 1.5x | 20% | First challenge |
+| Blue Skies | 2.0x | 2.0x | 25% | Elemental threats |
+| The Aether | 2.5x | 2.5x | 30% | Hardest Tier 2 |
+| The Undergarden | 3.0x | 3.0x | 35% | Hostile underground |
+| Deeper and Darker | 3.5x | 3.5x | 40% | Deep dark horrors |
+| The Nether | 4.0x | 4.0x | 50% | Mini-boss Wither Skeletons |
+| Deep Aether | 5.0x | 5.0x | 50% | Advanced Aether |
+| The End | 6.0x–10.0x | 6.0x–10.0x | 60% | Multi-zone scaling |
 
-Gems
+### Progressive Bosses
 
-Require boss materials to craft
-Tiered by boss source (early bosses → weak gems, endgame bosses → legendary gems)
+- Each boss kill increases that boss’s stats for the next encounter
+- Encourages varied boss hunting rather than farming one boss
+- Ender Dragon: 1000 HP base, Enhanced AI, scales with kills
+
+---
+
+## Part XI: Apotheosis Configuration
+
+### Affix Rates by Tier
+
+| Tier | Common | Uncommon | Rare | Epic | Mythic | Max Sockets |
+|------|--------|----------|------|------|--------|-------------|
+| 1 | 15% | 5% | — | — | — | 1 |
+| 2 | 25% | 15% | 5% | — | — | 2 |
+| 3 | 35% | 25% | 15% | 8% | — | 3 |
+| 4 | 35% | 25% | 15% | 10% | 5% | 4+ |
+
+### Reforging Gates
+
+- **Basic reforging:** Tier 2 token required
+- **Advanced reforging:** Tier 3 token + expensive materials
+- **Ultimate reforging:** Tier 4 token + Gaia ingots/antimatter
+
+### Gems
+
+- Require boss materials to craft
+- Tiered by boss source (early bosses → weak gems, endgame bosses → legendary gems)
+
+---
+
+## Part XII: Player Character Systems
 
 Four layered systems, with the first three presented as sequential character creation prompts on first join:
 
-SystemRoleWhen Active
-Origins++ (Origin layer)
-Origin — species-level traits from Origins++ (148 origins with unique abilities, tradeoffs, and playstyle modifiers)
+| System | Role | When Active |
+|--------|------|-------------|
+| Origins++ (Origin layer) | Origin — species-level traits from Origins++ (148 origins with unique abilities, tradeoffs, and playstyle modifiers) | Character creation prompt 1 (Tier 1) |
+| Origins (Race layer, icraft namespace) | Race — 7 custom races (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant) with innate stat modifiers and thematic abilities | Character creation prompt 2 (Tier 1) |
+| Iridescent Classes (Class layer, icraft namespace) | Class — 10 combat roles (Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner) | Character creation prompt 3 (Tier 1) |
+| Pufferfish’s Skills (+ AStages bridge) | Skill Points — stat investment trees | Earned through progression, spent on upgrades |
+| JustLevelingFork | Provides stat scaling (HP, damage, speed) via leveling | XP curve is flattened but high — ~1000–2000 XP per level |
 
-Character creation prompt 1 (Tier 1)
-
-Origins (Race layer, icraft namespace)
-Race — 7 custom races (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant) with innate stat modifiers and thematic abilities
-
-Character creation prompt 2 (Tier 1)
-
-Iridescent Classes (Class layer, icraft namespace)
-Class — 10 combat roles (Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner)
-
-Character creation prompt 3 (Tier 1)
-
-Pufferfish’s Skills (+ AStages bridge)
-Skill Points — stat investment trees
-
-Earned through progression, spent on upgrades
-
-JustLevelingFork
-Provides stat scaling (HP, damage, speed) via leveling
-XP curve is flattened but high — ~1000–2000 XP per level
-Works alongside Pufferfish’s Skills (different systems — JLF is passive leveling, Pufferfish is active investment)
+JustLevelingFork works alongside Pufferfish’s Skills (different systems — JLF is passive leveling, Pufferfish is active investment).
 
 Three-Prompt Character Creation
 On first join, players see three sequential selection screens:
@@ -489,400 +387,401 @@ On first join, players see three sequential selection screens:
 
 This three-layer approach is intentional — Origin provides broad species fantasy, Race adds stat identity, and Class defines combat role. The separation creates more build diversity than a two-layer system.
 
-Origins
-Ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power.
+Origins are ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power.
 
-Role: Major progression system. Food diversity = HP bonuses = survival in harder dimensions.
+---
 
-Mod Stack
-Hunger Overhaul: Faster hunger drain, food less effective, slower healing
-Spice of Life: Carrot Edition: Eating diverse foods grants max HP bonuses
-Farmer’s Delight (+ Alex’s Delight, Nether’s Delight, Cultural Delights, Delightful): Complex cooking Pam’s HarvestCraft 2 (Crops, Trees, Food Core, Food Extended): Hundreds of crops/recipes Cooking for Blockheads: Kitchen multiblock
-Brewin’ and Chewin’: Brewing/fermentation
-Simple Farming: Additional crops
-Sleep Hunger: Hunger/sleep interaction
+## Part XIII: Food & Hunger System
 
-Design
-All food and farming is ungated from Tier 1 — no crop/recipe staging Players who invest in food diversity gain meaningful HP bonuses via Spice of Life
-A player eating only steak will struggle in Tier 3+ dimensions due to missing HP bonuses
-Natural soft-gate: Best food diversity requires dimensional ingredients (Nether’s Delight = Tier 3, etc.) Complex meals provide combat-relevant buffs (saturation, regeneration, resistance)
-Cooking is a parallel progression that rewards engagement without hard-blocking
+**Role:** Major progression system. Food diversity = HP bonuses = survival in harder dimensions.
 
-Storage & Logistics Progression
+### Mod Stack
 
-TierStorageTransportNotes
+- **Hunger Overhaul:** Faster hunger drain, food less effective, slower healing
+- **Spice of Life: Carrot Edition:** Eating diverse foods grants max HP bonuses
+- **Farmer’s Delight** (+ Alex’s Delight, Nether’s Delight, Cultural Delights, Delightful): Complex cooking
+- **Pam’s HarvestCraft 2** (Crops, Trees, Food Core, Food Extended): Hundreds of crops/recipes
+- **Cooking for Blockheads:** Kitchen multiblock
+- **Brewin’ and Chewin’:** Brewing/fermentation
+- **Simple Farming:** Additional crops
+- **Sleep Hunger:** Hunger/sleep interaction
 
-1
-Sophisticated Backpacks/Storage (iron tier), Storage Drawers (basic)
+### Design
 
-Pretty Pipes, Create belts/chutes
-Basic logistics available immediately
+- All food and farming is ungated from Tier 1 — no crop/recipe staging
+- Players who invest in food diversity gain meaningful HP bonuses via Spice of Life
+- A player eating only steak will struggle in Tier 3+ dimensions due to missing HP bonuses
+- Natural soft-gate: Best food diversity requires dimensional ingredients (Nether’s Delight = Tier 3, etc.)
+- Complex meals provide combat-relevant buffs (saturation, regeneration, resistance)
+- Cooking is a parallel progression that rewards engagement without hard-blocking
 
-2
-Sophisticated upgrades (steel tier), Drawers upgrades
+---
 
-Thermal Ducts, IF basic transport
+## Part XIV: Storage & Logistics Progression
 
-RF-powered logistics
+| Tier | Storage | Transport | Notes |
+|------|---------|-----------|-------|
+| 1 | Sophisticated Backpacks/Storage (iron tier), Storage Drawers (basic) | Pretty Pipes, Create belts/chutes | Basic logistics available immediately |
+| 2 | Sophisticated upgrades (steel tier), Drawers upgrades | Thermal Ducts, IF basic transport | RF-powered logistics |
+| 3 | Refined Storage (digital storage — see Section 21), Sophisticated (diamond tier) | XNet, IF advanced | Digital + advanced transport |
+| 4 | RS advanced (Infinity Booster, Extra Disks), Sophisticated (netherite tier) | Mekanism QIO, RFTools | Wireless/cross-dimensional storage |
 
-3
-Refined Storage (digital storage — see Section 21), Sophisticated (diamond tier)
+### Special Notes
 
-XNet, IF advanced
+- **EnderChests / EnderStorage:** Gated to Tier 4 (requires End materials). Cross-dimensional item transfer is endgame.
+- **Flux Networks:** Ungated. Cross-dimensional RF transfer is fine — server bootstrapping is acceptable.
+- **CC:Tweaked:** Ungated. Fun/utility mod, not a progression concern.
 
-Digital + advanced transport
+---
 
-4
-RS advanced (Infinity Booster, Extra Disks), Sophisticated (netherite tier)
+## Part XV: XP Economy
 
-Mekanism QIO, RFTools
+**Philosophy:** XP is plentiful with lots of things to spend it on and lots of ways to optimize.
 
-Wireless/cross- dimensional storage
-Special Notes
-EnderChests / EnderStorage: Gated to Tier 4 (requires End materials). Cross-dimensional item transfer is endgame.
-Flux Networks: Ungated. Cross-dimensional RF transfer is fine — server bootstrapping is acceptable.
-CC:Tweaked: Ungated. Fun/utility mod, not a progression concern.
+### XP Sources
 
-XP Economy
+- Mob kills (enhanced by dimension difficulty)
+- XP from Crops / Experienced Crops
+- Boss kills (large XP drops)
+- Quest rewards
+- Trading (villager emerald → XP conversion)
+- Cooking/crafting XP
 
-Philosophy: XP is plentiful with lots of things to spend it on and lots of ways to optimize.
+### XP Sinks
 
-XP Sources
-Mob kills (enhanced by dimension difficulty) XP from Crops / Experienced Crops
-Boss kills (large XP drops) Quest rewards
-Trading (villager emerald → XP conversion) Cooking/crafting XP
+- JustLevelingFork leveling (~1000–2000 XP per level, flat curve)
+- Pufferfish’s Skills point investment
+- Apotheosis enchanting (expensive but flat cost, not exponential)
+- Relic leveling
+- Anvil operations (Easy Anvils reduces but doesn’t eliminate cost)
+- Reforging (Apotheosis)
 
-XP Sinks
-JustLevelingFork leveling (~1000–2000 XP per level, flat curve) Pufferfish’s Skills point investment
-Apotheosis enchanting (expensive but flat cost, not exponential) Relic leveling
-Anvil operations (Easy Anvils reduces but doesn’t eliminate cost) Reforging (Apotheosis)
+### XP Mods in Pack
 
-XP Mods in Pack
-Tax Free Levels: Reduces vanilla level cost scaling
-Table of Experience: XP storage block
-Easy Anvils: Reduces anvil costs
-Easy Magic: Reduces enchanting costs
-XP from Crops / Experienced Crops: Farming XP
-Note: These mods combined make XP more accessible, which is intentional. The sinks are what matter — there should always be something valuable to spend XP on.
+- **Tax Free Levels:** Reduces vanilla level cost scaling
+- **Table of Experience:** XP storage block
+- **Easy Anvils:** Reduces anvil costs
+- **Easy Magic:** Reduces enchanting costs
+- **XP from Crops / Experienced Crops:** Farming XP
 
-Travel & Waystones
+> **Note:** These mods combined make XP more accessible, which is intentional. The sinks are what matter — there should always be something valuable to spend XP on.
 
-Philosophy: Free teleportation and travel. Exploration should feel liberating, not punishing.
+---
 
-Waystones
-Finding & activating: Free in all dimensions
-Crafting a waystone: Expensive at ALL tiers — requires rare custom boss drops Waystone Towers: Generate naturally in ALL dimensions (they’re the fast travel network) Cross-dimensional teleport: Works freely between activated waystones
+## Part XVI: Travel & Waystones
 
-Other Travel
-Iron Jetpacks: Available Tier 1 (low-tier), better versions with tier materials. Early flight is intentional.
-Icarus: Available (audit wing crafting costs for balance)
-Origins flight: Ungated, intentional
-Elytra Slot: Available when elytra is obtained (Tier 4 naturally from End)
+**Philosophy:** Free teleportation and travel. Exploration should feel liberating, not punishing.
 
-Tier-Skip Mechanics
+### Waystones
 
-Philosophy: Skilled/dedicated players can get “a taste” of the next tier — one or two specific items/machines, not a full unlock.
+- **Finding & activating:** Free in all dimensions
+- **Crafting a waystone:** Expensive at ALL tiers — requires rare custom boss drops
+- **Waystone Towers:** Generate naturally in ALL dimensions (they’re the fast travel network)
+- **Cross-dimensional teleport:** Works freely between activated waystones
 
-Method 1: Material Transmutation
-KubeJS recipes for expensive current → next tier conversion 32–64 current-tier ingots → 1 next-tier ingot
-Available through Create mixing, Thermal smelting, or Botania infusion Intentionally inefficient
+### Other Travel
 
-Method 2: Rare Boss Drops
-Current-tier bosses have 5–15% chance to drop 1–3 next-tier materials Twilight bosses → occasional osmium, steel
-Tier 3 bosses → occasional ancient debris, gaia spirit fragments Purely combat-based tier-peeking for boss hunters
+- **Iron Jetpacks:** Available Tier 1 (low-tier), better versions with tier materials. Early flight is intentional.
+- **Icarus:** Available (audit wing crafting costs for balance)
+- **Origins flight:** Ungated, intentional
+- **Elytra Slot:** Available when elytra is obtained (Tier 4 naturally from End)
 
-What This Enables
-A Tier 2 player might build ONE Mekanism machine from transmuted/dropped osmium They cannot build a full factory until properly unlocking Tier 3
-Feels rewarding without breaking gate integrity
+---
 
-Villager Trade Rework
+## Part XVII: Tier-Skip Mechanics
 
-Goal: Keep villagers relevant as an emerald economy without bypassing tier gates.
+**Philosophy:** Skilled/dedicated players can get “a taste” of the next tier — one or two specific items/machines, not a full unlock.
 
-Changes (via KubeJS)
-REMOVE: All enchanted book trades from Librarians (Apotheosis is the enchanting system) REMOVE: All diamond/netherite gear trades from Toolsmiths/Armorers/Weaponsmiths KEEP: Food, building materials, utility trades (maps, glass, dyes, etc.)
-ADD: XP bottle trades on Clerics at scaling emerald costs (emeralds → XP conversion)
-KEEP: Basic tool/armor trades using tier-appropriate materials only (iron tier)
+### Method 1: Material Transmutation
 
-Emerald Economy
-Emeralds become a “convenience currency” — food, XP, building materials, utility items NOT a progression bypass for gear or enchantments
-Farming, trading, and exploration all generate emeralds Spending emeralds on XP ties into the XP economy (Section 15)
+- KubeJS recipes for expensive current → next tier conversion
+- 32–64 current-tier ingots → 1 next-tier ingot
+- Available through Create mixing, Thermal smelting, or Botania infusion
+- Intentionally inefficient
 
-Loot Table Overhaul
+### Method 2: Rare Boss Drops
+
+- Current-tier bosses have 5–15% chance to drop 1–3 next-tier materials
+- Twilight bosses → occasional osmium, steel
+- Tier 3 bosses → occasional ancient debris, gaia spirit fragments
+- Purely combat-based tier-peeking for boss hunters
+
+### What This Enables
+
+- A Tier 2 player might build ONE Mekanism machine from transmuted/dropped osmium
+- They cannot build a full factory until properly unlocking Tier 3
+- Feels rewarding without breaking gate integrity
+
+---
+
+## Part XVIII: Villager Trade Rework
+
+**Goal:** Keep villagers relevant as an emerald economy without bypassing tier gates.
+
+### Changes (via KubeJS)
+
+- **REMOVE:** All enchanted book trades from Librarians (Apotheosis is the enchanting system)
+- **REMOVE:** All diamond/netherite gear trades from Toolsmiths/Armorers/Weaponsmiths
+- **KEEP:** Food, building materials, utility trades (maps, glass, dyes, etc.)
+- **ADD:** XP bottle trades on Clerics at scaling emerald costs (emeralds → XP conversion)
+- **KEEP:** Basic tool/armor trades using tier-appropriate materials only (iron tier)
+
+### Emerald Economy
+
+- Emeralds become a “convenience currency” — food, XP, building materials, utility items
+- NOT a progression bypass for gear or enchantments
+- Farming, trading, and exploration all generate emeralds
+- Spending emeralds on XP ties into the XP economy (Section 15)
+
+---
+
+## Part XIX: Loot Table Overhaul
 
 This is the most labor-intensive part of the pack. Every dungeon/structure mod’s loot tables must respect the tier system.
 
-Structure Mods Requiring Loot Overhaul
-Dungeon Crawl Dungeons Plus Epic Dungeons Stalwart Dungeons
-Integrated Dungeons and Structures When Dungeons Arise
-YUNG’s Better Dungeons / Desert Temples / Mineshafts / Ocean Monuments / Strongholds / Nether Fortresses Structory / Structory: Towers
-Keebsz’s Battle Towers
-Cherry Samurai Temple / Cherry Village ChoiceTheorem’s Overhauled Village Unwrecked Ships
-Valhelsia Structures Explorify
-Waystone Towers (if loot exists) Moog’s End Structures
-Villages & Pillages
+### Structure Mods Requiring Loot Overhaul
 
-Loot Tier Guidelines
-Tier 1 (Overworld structures): - Iron/copper/bronze gear - Low-tier Apotheosis affixes (Common only) - Basic gems (weak) - Food, building materials, arrows, basic potions - Weak curios (utility, movement) - NO diamonds, steel, enchanted books above level 2 - NO Simply Swords uniques (boss drops only)
-Tier 2 (Twilight / Blue Skies / Aether structures): - Steel/manasteel/steeleaf/ironwood gear - Mid-tier affixes (Uncommon + Rare) - Mid gems - Tier 2 progression token fragments (collect X → full token, alternative unlock path) - Mid-tier curios - Limited diamonds (rare)
-Tier 3 (Undergarden / Deeper Darker / Nether structures): - Diamond/terrasteel/enderium gear - High-tier affixes (Epic) - Rare gems - Tier 3 token fragments - Mekanism components - High-tier curios - Fight-breaking curios start appearing (immunities, flight)
-Tier 4 (Deep Aether / End structures): - Netherite+ gear - Mythic affixes - Legendary gems - Creative-adjacent items - Ultimate curios
+Dungeon Crawl, Dungeons Plus, Epic Dungeons, Stalwart Dungeons, Integrated Dungeons and Structures, When Dungeons Arise, YUNG’s Better Dungeons / Desert Temples / Mineshafts / Ocean Monuments / Strongholds / Nether Fortresses, Structory / Structory: Towers, Keebsz’s Battle Towers, Cherry Samurai Temple / Cherry Village, ChoiceTheorem’s Overhauled Village, Unwrecked Ships, Valhelsia Structures, Explorify, Waystone Towers (if loot exists), Moog’s End Structures, Villages & Pillages
 
-Implementation
+### Loot Tier Guidelines
+
+**Tier 1 (Overworld structures):**
+- Iron/copper/bronze gear
+- Low-tier Apotheosis affixes (Common only)
+- Basic gems (weak)
+- Food, building materials, arrows, basic potions
+- Weak curios (utility, movement)
+- NO diamonds, steel, enchanted books above level 2
+- NO Simply Swords uniques (boss drops only)
+
+**Tier 2 (Twilight / Blue Skies / Aether structures):**
+- Steel/manasteel/steeleaf/ironwood gear
+- Mid-tier affixes (Uncommon + Rare)
+- Mid gems
+- Tier 2 progression token fragments (collect X → full token, alternative unlock path)
+- Mid-tier curios
+- Limited diamonds (rare)
+
+**Tier 3 (Undergarden / Deeper Darker / Nether structures):**
+- Diamond/terrasteel/enderium gear
+- High-tier affixes (Epic)
+- Rare gems
+- Tier 3 token fragments
+- Mekanism components
+- High-tier curios
+- Fight-breaking curios start appearing (immunities, flight)
+
+**Tier 4 (Deep Aether / End structures):**
+- Netherite+ gear
+- Mythic affixes
+- Legendary gems
+- Creative-adjacent items
+- Ultimate curios
+
+### Implementation
+
 All via LootJS scripts, completely replacing default loot tables for all listed mods.
 
-Serene Seasons
+---
 
-Role: Farming only. Seasonal crops with no combat impact.
-Certain crops only grow in certain seasons
-Encourages crop diversity and planning (synergizes with Spice of Life) Greenhouses (Thermal Phytogenic Insolator, etc.) bypass seasonal restrictions No winter difficulty increase, no mob changes
-Visual/aesthetic seasonal changes active
+## Part XX: Serene Seasons
 
-Refined Storage (Special Case)
+**Role:** Farming only. Seasonal crops with no combat impact.
+
+- Certain crops only grow in certain seasons
+- Encourages crop diversity and planning (synergizes with Spice of Life)
+- Greenhouses (Thermal Phytogenic Insolator, etc.) bypass seasonal restrictions
+- No winter difficulty increase, no mob changes
+- Visual/aesthetic seasonal changes active
+
+---
+
+## Part XXI: Refined Storage (Special Case)
 
 Tier 3 base, Tier 4 advanced, with dual-path recipes.
 
-Tier 3: Basic RS
-Controller, Grid, Drives, Crafters, basic disks
-Two parallel recipe paths:
-Tech path: Uses Mekanism/Thermal materials (osmium, steel, RF components)
-Magic path: Uses Botania/Ars Nouveau materials (terrasteel, mana diamonds, source gems)
-Hybrid bonus: Using BOTH tech and magic materials yields efficiency benefits (cheaper crafting cost, double yield, or skip intermediate steps)
+### Tier 3: Basic RS
 
-Tier 4: Advanced RS
-RSInfinityBooster (infinite range)
-Extra Disks / ExtraStorage (large capacity) Requires endgame materials from both paths
+- Controller, Grid, Drives, Crafters, basic disks
+- Two parallel recipe paths:
+  - **Tech path:** Uses Mekanism/Thermal materials (osmium, steel, RF components)
+  - **Magic path:** Uses Botania/Ars Nouveau materials (terrasteel, mana diamonds, source gems)
+  - **Hybrid bonus:** Using BOTH tech and magic materials yields efficiency benefits (cheaper crafting cost, double yield, or skip intermediate steps)
 
-Building & QoL
+### Tier 4: Advanced RS
+
+- RSInfinityBooster (infinite range)
+- Extra Disks / ExtraStorage (large capacity)
+- Requires endgame materials from both paths
+
+---
+
+## Part XXII: Building & QoL
 
 Completely ungated from Tier 1. Let people build and enjoy QoL features.
 
-Building Mods (All Free)
-Chipped, Macaw’s suite (Bridges, Fences, Furniture, Roofs, Trapdoors) Decorative Blocks, Decorative LGBT Wall Flags
-Valhelsia Furniture, Domum Ornamentum ConnectedTexturesMod, Connected Glass Rechiseled, chisels-and-bits
-Structurize
+### Building Mods (All Free)
 
-QoL Mods (All Free)
-JourneyMap, Jade, AppleSkin, Mouse Tweaks Controlling, Inventory HUD+, Overflowing Bars Fast Leaf Decay, TrashSlot, Trash Cans
-FTB Ultimine, FTB Chunks, FTB Essentials No Chat Reports, Simple Voice Chat
-All performance mods (Embeddium, ModernFix, etc.)
+Chipped, Macaw’s suite (Bridges, Fences, Furniture, Roofs, Trapdoors), Decorative Blocks, Decorative LGBT Wall Flags, Valhelsia Furniture, Domum Ornamentum, ConnectedTexturesMod, Connected Glass, Rechiseled, chisels-and-bits, Structurize
 
-Misc Mod Placement
+### QoL Mods (All Free)
 
-ModTierNotes
-Pretty Pipes
-1
-Early logistics
-Iron Jetpacks
-1+
-Tiered by materials used
-Icarus
-1
-Audit wing costs
-CC: Tweaked
-Ungated
-Fun/utility
-Quark
-Ungated
-Vanilla-friendly
-Disenchanting
-Ungated
-OP tools is the goal
-Enchantment Transfer / Merge Enchantments
+JourneyMap, Jade, AppleSkin, Mouse Tweaks, Controlling, Inventory HUD+, Overflowing Bars, Fast Leaf Decay, TrashSlot, Trash Cans, FTB Ultimine, FTB Chunks, FTB Essentials, No Chat Reports, Simple Voice Chat, All performance mods (Embeddium, ModernFix, etc.)
 
-Ungated
+---
 
-Supports power fantasy
-Origins / Origins++
-Ungated
-Race selection, flight OK
-Gods and Heroes RPG Classes
-Ungated
-Class selection
-Flux Networks
-Ungated
-Server bootstrapping OK
-End Portal Recipe
-4
-Hard gated
-EnderChests / EnderStorage
-4
-Requires End materials
-XNet / XNet Gases
-3
-Advanced transport
-Industrial Foregoing (basic)
-2
-Basic machines
-Industrial Foregoing (advanced)
-3
-Laser Drill, Mob Crusher
-Mekanism (basic)
-3
-Ore processing, basic machines
-Mekanism (advanced)
-4
-Digital Miner, Fusion, Mekasuit, MekaTool, QIO
-RFTools Dimensions
-4
-Dimension creation
+## Part XXIII: Misc Mod Placement
 
-Quest System Structure
+| Mod | Tier | Notes |
+|-----|------|-------|
+| Pretty Pipes | 1 | Early logistics |
+| Iron Jetpacks | 1+ | Tiered by materials used |
+| Icarus | 1 | Audit wing costs |
+| CC: Tweaked | Ungated | Fun/utility |
+| Quark | Ungated | Vanilla-friendly |
+| Disenchanting | Ungated | OP tools is the goal |
+| Enchantment Transfer / Merge Enchantments | Ungated | Supports power fantasy |
+| Origins / Origins++ | Ungated | Race selection, flight OK |
+| Gods and Heroes RPG Classes | Ungated | Class selection |
+| Flux Networks | Ungated | Server bootstrapping OK |
+| End Portal Recipe | 4 | Hard gated |
+| EnderChests / EnderStorage | 4 | Requires End materials |
+| XNet / XNet Gases | 3 | Advanced transport |
+| Industrial Foregoing (basic) | 2 | Basic machines |
+| Industrial Foregoing (advanced) | 3 | Laser Drill, Mob Crusher |
+| Mekanism (basic) | 3 | Ore processing, basic machines |
+| Mekanism (advanced) | 4 | Digital Miner, Fusion, Mekasuit, MekaTool, QIO |
+| RFTools Dimensions | 4 | Dimension creation |
+
+---
+
+## Part XXIV: Quest System Structure
 
 FTB Quests with branching unlock paths. Each tier has multiple valid completion routes.
 
-Structure
-Main questline per tier with branching paths Optional side quests for bonus rewards Challenge quests that provide tier-skip materials
-Boss hunting quests tied to Simply Swords unique drops Food diversity tracking quests (Spice of Life integration) Automation milestone quests
-Exploration quests per dimension
+### Structure
 
-Rewards
-Progression tokens (tier unlocks) Custom materials
-XP bonuses Curios/accessories Building materials Cosmetic rewards
+- Main questline per tier with branching paths
+- Optional side quests for bonus rewards
+- Challenge quests that provide tier-skip materials
+- Boss hunting quests tied to Simply Swords unique drops
+- Food diversity tracking quests (Spice of Life integration)
+- Automation milestone quests
+- Exploration quests per dimension
 
-Custom Items & Materials
+### Rewards
 
-Progression Tokens (Consumed in Recipes)
-twilight_progression_token_t2 — from Twilight Lich dimensional_progression_token_t3 — from Harbinger/Queen reality_progression_token_t4 — from Gaia Guardian/Ender Dragon
+- Progression tokens (tier unlocks)
+- Custom materials
+- XP bonuses
+- Curios/accessories
+- Building materials
+- Cosmetic rewards
 
-Boss Materials
-dragon_scaledragon_scalelich_soul , harbinger_eye , dragon_heart , nether_soul_fragment — from Wither Skeletons condensed_blaze_essence — from Blazes
-dragon_scale
-dragon_scale
+---
 
-Intermediate Alloys
-brass_reinforced_iron_ingot — Tier 1.5 mana_infused_steel_ingot — Tier 2.5 ender_forged_diamond — Tier 3.5
+## Part XXV: Custom Items & Materials
 
-Tier-Skip Materials
-Transmutation recipes yielding small amounts of next-tier materials Boss-dropped next-tier material fragments
+### Progression Tokens (Consumed in Recipes)
 
-Boss → Loot Mapping
+- `twilight_progression_token_t2` — from Twilight Lich
+- `dimensional_progression_token_t3` — from Harbinger/Queen
+- `reality_progression_token_t4` — from Gaia Guardian/Ender Dragon
 
-Simply Swords Unique Assignment
+### Boss Materials
 
-Tier 2 Bosses
+- `lich_soul`, `harbinger_eye`, `dragon_heart`
+- `nether_soul_fragment` — from Wither Skeletons
+- `condensed_blaze_essence` — from Blazes
+- `dragon_scale`
 
-BossUnique ThemeWeapon Type
-Twilight Naga
-Agility/speed
-Rapier or Katana
-Twilight Lich
-Soul/magic
-Staff-sword or Scythe
-Twilight Hydra
-Fire/power
-Great Hammer or Claymore
-Twilight Ur-Ghast
-Void/spectral
-Spectral weapon
-Blue Skies bosses
-Elemental (per boss)
-Themed per element
-Aether bosses
-Wind/lightning
-Themed per boss
-Tier 3 Bosses
+### Intermediate Alloys
 
-BossUnique ThemeWeapon Type
-Cataclysm Harbinger
-Dark/shadow
-Shadow-themed unique
-Cataclysm Ignis
-Ultimate fire
-Fire-themed unique
-Meet Your Fight bosses
-Per-boss theme
-Varied
-Undergarden/DD bosses
-Corruption
-Corruption-themed
-Wither
-Necrotic
-Necrotic unique
-Tier 4 Bosses
+- `brass_reinforced_iron_ingot` — Tier 1.5
+- `mana_infused_steel_ingot` — Tier 2.5
+- `ender_forged_diamond` — Tier 3.5
 
-BossUnique ThemeWeapon Type
-Ender Dragon
-Draconic
-The ultimate melee weapon
-Gaia Guardian
-Nature/reality
-Reality-bending unique
-Cataclysm Ender Guardian
-Ender
-Ender-themed unique
-Ultimate/Nova Bosses
-Rarest/flashiest
-Trophy weapons
+### Tier-Skip Materials
+
+- Transmutation recipes yielding small amounts of next-tier materials
+- Boss-dropped next-tier material fragments
+
+---
+
+## Part XXVI: Boss → Loot Mapping
+
+### Simply Swords Unique Assignment
+
+#### Tier 2 Bosses
+
+| Boss | Unique Theme | Weapon Type |
+|------|-------------|-------------|
+| Twilight Naga | Agility/speed | Rapier or Katana |
+| Twilight Lich | Soul/magic | Staff-sword or Scythe |
+| Twilight Hydra | Fire/power | Great Hammer or Claymore |
+| Twilight Ur-Ghast | Void/spectral | Spectral weapon |
+| Blue Skies bosses | Elemental (per boss) | Themed per element |
+| Aether bosses | Wind/lightning | Themed per boss |
+
+#### Tier 3 Bosses
+
+| Boss | Unique Theme | Weapon Type |
+|------|-------------|-------------|
+| Cataclysm Harbinger | Dark/shadow | Shadow-themed unique |
+| Cataclysm Ignis | Ultimate fire | Fire-themed unique |
+| Meet Your Fight bosses | Per-boss theme | Varied |
+| Undergarden/DD bosses | Corruption | Corruption-themed |
+| Wither | Necrotic | Necrotic unique |
+
+#### Tier 4 Bosses
+
+| Boss | Unique Theme | Weapon Type |
+|------|-------------|-------------|
+| Ender Dragon | Draconic | The ultimate melee weapon |
+| Gaia Guardian | Nature/reality | Reality-bending unique |
+| Cataclysm Ender Guardian | Ender | Ender-themed unique |
+| Ultimate/Nova Bosses | Rarest/flashiest | Trophy weapons |
 
 Cataclysm Signature Weapons
 
 Cataclysm bosses also drop their own signature weapons (Void Forge, Gauntlet of the Bulwark, etc.) — these are SEPARATE from Simply Swords uniques. A single boss may drop both its Cataclysm signature weapon AND a Simply Swords unique.
 
-Boss Material Drops
+### Boss Material Drops
 
-Boss TierMaterials DroppedNext-Tier Peek (5–15%)
+| Boss Tier | Materials Dropped | Next-Tier Peek (5–15%) |
+|-----------|------------------|----------------------|
+| Tier 2 (Naga, Lich, etc.) | Progression tokens, common gems, tier 2 materials | Osmium, steel (small amounts) |
+| Tier 3 (Harbinger, Ignis) | T3 tokens, uncommon/rare gems, Mekanism components | Ancient debris, gaia fragments |
+| Tier 4 (Gaia, Dragon) | T4 tokens, epic/legendary gems, creative-tier mats | N/A (already endgame) |
 
-Tier 2 (Naga, Lich, etc.)
-Progression tokens, common gems, tier 2 materials
+---
 
-Osmium, steel (small amounts)
+## Part XXVII: Death & Penalty System
 
-Tier 3 (Harbinger, Ignis)
-T3 tokens, uncommon/rare gems, Mekanism components
+- Keep inventory on death (no item loss)
+- Enchanting cost: Expensive but flat (not exponential)
+- XP curve: Flattened, ~1000–2000 XP per level
 
-Ancient debris, gaia fragments
+### Durability Loss on Death (Hytale-inspired)
 
-Tier 4 (Gaia, Dragon)
-T4 tokens, epic/legendary gems, creative-tier mats
+**What’s affected:** Equipped armor + held weapon ONLY. Hotbar, inventory, and curios are unaffected.
 
-N/A (already endgame)
+**Critical rule:** Items NEVER break/destroy. At 0 durability, items become inert (cannot deal damage, provide armor, or mine) but remain in inventory. Players always keep their gear — it just stops working until repaired.
 
-Death & Penalty System
+**Scaling by dimension difficulty:**
 
-Keep inventory on death (no item loss)
-Enchanting cost: Expensive but flat (not exponential)
-XP curve: Flattened, ~1000–2000 XP per level
-
-Durability Loss on Death (Hytale-inspired)
-What’s affected: Equipped armor + held weapon ONLY. Hotbar, inventory, and curios are unaffected.
-Critical rule: Items NEVER break/destroy. At 0 durability, items become inert (cannot deal damage, provide armor, or mine) but remain in inventory. Players always keep their gear — it just stops working until repaired.
-Scaling by dimension difficulty:
-
-Dimension
-
-Difficulty
-Durability Loss
-Overworld
-1.0x
-10%
-Twilight Forest
-1.5x
-12%
-Blue Skies
-2.0x
-14%
-The Aether
-2.5x
-15%
-The Undergarden
-3.0x
-17%
-Deeper and Darker
-3.5x
-18%
-The Abyss: The Other Side
-3.5x
-18%
-The Nether
-4.0x
-20%
-Deep Aether
-5.0x
-22%
-The End
-6.0x–10.0x
-25%
+| Dimension | Difficulty | Durability Loss |
+|-----------|-----------|----------------|
+| Overworld | 1.0x | 10% |
+| Twilight Forest | 1.5x | 12% |
+| Blue Skies | 2.0x | 14% |
+| The Aether | 2.5x | 15% |
+| The Undergarden | 3.0x | 17% |
+| Deeper and Darker | 3.5x | 18% |
+| The Abyss: The Other Side | 3.5x | 18% |
+| The Nether | 4.0x | 20% |
+| Deep Aether | 5.0x | 22% |
+| The End | 6.0x–10.0x | 25% |
 
 Repair Cost Model
 Scaled by damage, but capped. More durability missing = higher repair cost, but costs never exceed a hard cap per item tier.
@@ -890,125 +789,112 @@ Repair cost = (% durability missing × base material cost), capped at a maximum
 Example: Netherite sword at 50% durability might cost 1 ingot + 5 levels. At 10% durability might cost 2 ingots + 12 levels. But never exceeds 3 ingots + 15 levels regardless of damage.
 Caps scale by material tier (iron caps low, netherite caps higher, but always reasonable) Prevents “too afraid to use my gear” syndrome while keeping repair meaningful
 
-Soulbound Enchantment (Death Protection)
+### Soulbound Enchantment (Death Protection)
+
 Repurposed from Ensorcellation. THE most valuable enchant in the pack.
-LevelEffect
-I
-50% of death durability loss prevented
-II
-75% of death durability loss prevented
-III
-100% durability loss prevented + item cannot go inert from death
+
+| Level | Effect |
+|-------|--------|
+| I | 50% of death durability loss prevented |
+| II | 75% of death durability loss prevented |
+| III | 100% durability loss prevented + item cannot go inert from death |
+
 Treasure enchant (high Arcana required). Soulbound III completely negates the death penalty for that item.
 
 Implementation Notes
 Items going inert at 0 durability is NOT vanilla behavior — requires custom KubeJS implementation On item durability reaching 0: cancel break event, set durability to 0, apply “broken” NBT tag Broken items: render with cracked/dark overlay, show “(Broken)” in tooltip, disable all functionality Repair at anvil with appropriate materials to restore
 Design implications: - Dying is a regular but not fatal cost — you lose effectiveness, not items - Dying in early dimensions is a slap on the wrist (10% on iron = cheap repair) - Dying in Tier 3+ dimensions is meaningful (20% on diamond/terrasteel = noticeable repair) - Dying in the End is serious (25% on mythic netherite = expensive but capped repair) - Makes Soulbound, Unbreaking, and Mending/Mana Temper enchantments highly valuable - Naturally teaches “prepare before entering harder dimensions” - Scales with gear quality — losing 25% on god-tier gear hurts more than on basic gear
 
-Known Exploit Vectors & Audit Policy
+---
 
-Guiding Principle: Bendable But Not Breakable
+## Part XXVIII: Known Exploit Vectors
+
+### Guiding Principle: Bendable But Not Breakable
 
 Progression should be bendable (players find creative shortcuts for small advantages) but not breakable (no shortcut skips an entire tier). Unintended recipes or interactions that provide small amounts of slightly-ahead materials are acceptable — they feel like discoveries. Interactions that bypass a full tier gate must be fixed.
-Break = skip an entire tier (e.g., Create mixing produces diamonds in Tier 1). Fix these.
-Bend = small early access (e.g., Create mixing produces steel from iron + coal at a worse ratio than Thermal). Leave these
-— they align with the tier-skip philosophy.
 
-Exploits to Audit
+- **Break** = skip an entire tier (e.g., Create mixing produces diamonds in Tier 1). Fix these.
+- **Bend** = small early access (e.g., Create mixing produces steel from iron + coal at a worse ratio than Thermal). Leave these — they align with the tier-skip philosophy.
 
-ExploitRiskSolution
+### Exploits to Audit
 
-Villager enchanted book trades
-Bypasses Apotheosis enchanting
+| Exploit | Risk | Solution |
+|---------|------|----------|
+| Villager enchanted book trades | Bypasses Apotheosis enchanting | Remove via KubeJS (Section 18) |
+| Villager diamond gear trades | Bypasses material gates | Remove via KubeJS |
+| Botania Orechid producing gated ores | Bypasses worldgen removal | Configure Orechid ore weights per tier |
+| Structure loot containing tier-inappropriate items | Floods early game with mid/late items | Full LootJS overhaul (Section 19) |
+| Mob farms producing Apotheosis affix gear | Trivializes gear progression | Consider: affixes only roll on mobs killed in native dimension, or spawner mobs don’t drop affixes |
+| Quark hidden features | Various shortcuts | Audit Quark config for progression-breaking items |
+| Cross-mod recipe leaks | Unintended material access | Thorough KubeJS recipe audit |
+| Thermal Insolator growing gated crops | Bypasses seasonal/dimensional crop gates | Configure Insolator recipes |
+| Create mixing unintended recipes | Bypasses material gates | Audit Create recipes |
 
-Remove via KubeJS (Section 18)
-Villager diamond gear trades
-Bypasses material gates
-Remove via KubeJS
-Botania Orechid producing gated ores
-Bypasses worldgen removal
-Configure Orechid ore weights per tier
-Structure loot containing tier-inappropriate items
-Floods early game with mid/late items
+---
 
-Full LootJS overhaul (Section 19)
+## Part XXIX: Implementation Priority
 
-Mob farms producing Apotheosis affix gear
+1. KubeJS custom item registration — progression tokens, boss materials, intermediate alloys
+2. AStages tier definitions + KubeJS integration — backbone of all gating
+3. Recipe modifications — material gates, tier-gated crafting, cross-mod audit
+4. LootJS loot table overhaul — all dungeon/structure mods + boss loot
+5. Simply Swords → Boss mapping (LootJS) — unique weapon assignments
+6. Mod configs — ScalingMobs, Champions, Apotheosis, Progressive Bosses, Improved Mobs
+7. Villager trade rework (KubeJS)
+8. Tier-skip recipes (KubeJS) — transmutation + boss material drops
+9. FTB Quests — branching unlock structure
+10. Pufferfish’s Skills trees — custom tech/magic/combat trees
+11. Refined Storage dual-path recipes (KubeJS)
+12. Waystone custom recipes (KubeJS)
+13. Playtesting & iteration
 
-Trivializes gear progression
-Consider: affixes only roll on mobs killed in native dimension, or spawner mobs don’t drop affixes
-Quark hidden features
-Various shortcuts
-Audit Quark config for progression-breaking items
-Cross-mod recipe leaks
-Unintended material access
-Thorough KubeJS recipe audit
+---
 
-Thermal Insolator growing gated crops
-Bypasses seasonal/dimensional crop gates
+## Mod Categories
 
-Configure Insolator recipes
-Create mixing unintended recipes
-Bypasses material gates
-Audit Create recipes
-
-Implementation Priority
-
-KubeJS custom item registration — progression tokens, boss materials, intermediate alloys
-AStages tier definitions + KubeJS integration — backbone of all gating
-Recipe modifications — material gates, tier-gated crafting, cross-mod audit
-LootJS loot table overhaul — all dungeon/structure mods + boss loot
-Simply Swords → Boss mapping (LootJS) — unique weapon assignments
-Mod configs — ScalingMobs, Champions, Apotheosis, Progressive Bosses, Improved Mobs
-Villager trade rework (KubeJS)
-Tier-skip recipes (KubeJS) — transmutation + boss material drops
-FTB Quests — branching unlock structure
-Pufferfish’s Skills trees — custom tech/magic/combat trees
-Refined Storage dual-path recipes (KubeJS)
-Waystone custom recipes (KubeJS)
-Playtesting & iteration
-
-Core Tech
+### Core Tech
 
 Create, Thermal Series (Foundation, Expansion, Dynamics, Innovation, Cultivation, Integration), Mekanism (+ Generators), RFTools (Base, Builder, Dimensions, Power, Storage), Industrial Foregoing, Flux Networks, XNet (+ Gases)
 
-Core Magic
+### Core Magic
 
 Botania, Ars Nouveau, Occultism, Forbidden & Arcanus, Mahou Tsukai (+ Combat)
 
-Combat & Scaling
+### Combat & Scaling
 
 Apotheosis, Apothic Attributes, JustLevelingFork, ScalingMobs, Champions Unofficial, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (+ Archery, Armory, Arsenal), Iron’s Spells ’n Spellbooks, Improved Mobs (RECOMMENDED ADD)
 
-Player Systems
+### Player Systems
 
 Origins (+ Origins++, Origins Overhaul), Gods and Heroes RPG Classes, Pufferfish’s Skills (+ AStages bridge), JustLevelingFork, Relics, Artifacts, More Artifacts, Celestial Artifacts
 
-Dimensions
+### Dimensions
 
 Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Deep Aether
 
-Bosses
+### Bosses
 
 Cataclysm (+ Apotheosis addon), Meet Your Fight, Mutant Monsters, Ultimate Bosses, NovaBosses, Ultris: Boss Expansion, LuMoreBossesAndMobs, brutalbosses
 
-Food & Farming
+### Food & Farming
 
 Farmer’s Delight (+ Alex’s, Nether’s, Cultural, Delightful, Brewin’ and Chewin’), Pam’s HarvestCraft 2 (Crops, Trees, Food Core, Food Extended), Cooking for Blockheads, Simple Farming, Hunger Overhaul, Spice of Life: Carrot Edition, Sleep Hunger, Serene Seasons
 
-Storage & Logistics
+### Storage & Logistics
 
 Refined Storage (+ Addons, Extra Disks, ExtraStorage, RSInfinityBooster, RSRequestify), Sophisticated Backpacks/Storage/Core, Storage Drawers, Pretty Pipes, EnderChests, EnderStorage
 
-Scripting
+### Scripting
 
 KubeJS (+ Additions, Ars Nouveau, Botania, Thermal, Delight, Offline), CraftTweaker, JeiTweaker, LootJS (via lootintegrations), AStages, FTB Quests
 
-QoL & Performance
+### QoL & Performance
 
 Embeddium (+ Extra), ModernFix, Canary, Ferrite Core, ServerCore, JourneyMap, Jade, AppleSkin, and many more (see full mod list)
 
-Full Encounter Design System
+---
+
+## Part IV-B: Full Encounter Design System
 
 Enemies are lethal but killable. Damage scales fastest, HP scales moderately. Combat in harder dimensions is DANGEROUS — players must respect enemies, not just out-stat them. A well-geared player tears through trash but respects elites and fears bosses.
 Every dimension feels mechanically unique. Not just stat inflation — each dimension has combat behaviors, environmental hazards, and enemy mechanics that demand different strategies.
@@ -1777,9 +1663,15 @@ All numbers in this document are THEORETICAL. The interaction of 7+ gear enhance
 Recommended testing approach: 1. Test with a “standard” build (Samurai, mid-tier gear, moderate enchants) as the baseline
 2. Test extremes: naked Archmage vs End mobs, full Vanguard vs Overworld mobs 3. Test multiplayer: Vanguard + Archmage duo vs designed solo difficulty 4. Adjust multipliers in 10% increments until kill speed targets are met
 
-Full Character Build System
+---
 
-Three layers, distinct purposes: - Race (Origins++/Overhaul): Innate traits. What you ARE. Permanent. Mild tradeoffs. - Class (G&H RPG Classes, heavily modified): Combat role. What you DO. Respec-able (expensive). Strong tradeoffs. - Skills (Pufferfish’s Skills): Stat investment. How you GROW. Pure bonuses, no drawbacks.
+## Part XII-B: Full Character Build System
+
+Three layers, distinct purposes:
+- **Race** (Origins++/Overhaul): Innate traits. What you ARE. Permanent. Mild tradeoffs.
+- **Class** (G&H RPG Classes, heavily modified): Combat role. What you DO. Respec-able (expensive). Strong tradeoffs.
+- **Skills** (Pufferfish’s Skills): Stat investment. How you GROW. Pure bonuses, no drawbacks.
+
 Race + Class have tradeoffs. Skills are always positive.
 
 Respec Rules
@@ -2377,30 +2269,19 @@ Anti-farming: Pufferfish’s Unofficial Additions supports anti-farming. XP from
 
 Each tree uses a branching layout. The first ~8 nodes are a shared trunk of generic stats. Then the tree splits into 2-3 specialized branches. At the bottom of each branch is a capstone — a powerful node requiring deep investment.
 Players can invest in the trunk without committing to a branch. But branches contain the best returns per point.
-[Root]/\[Stat][Stat][Branch A] [Branch B]......[Capstone] [Capstone][Root]/\[Stat][Stat][Branch A] [Branch B]......[Capstone] [Capstone]Visual Layout: Each tree is roughly:
-[Root]
-/\
-[Stat][Stat]
-[Branch A] [Branch B]
-......
-[Capstone] [Capstone]
-[Root]
-/\
-[Stat][Stat]
-[Branch A] [Branch B]
-......
-[Capstone] [Capstone]
+**Visual Layout:** Each tree is roughly:
 
-|
-|
-[Stat]
-[Stat]
-|
-|
-[SPLIT]
-[SPLIT]
-/\
-/\
+```
+        [Root]
+        /    \
+    [Stat]  [Stat]
+       |      |
+    [SPLIT] [SPLIT]
+    /    \
+[Branch A] [Branch B]
+    ...       ...
+[Capstone] [Capstone]
+```
 
 Nodes connected by lines. Each node costs 1 point. Some nodes require multiple neighbors unlocked (branching prerequisites). Capstones require ~12-15 points spent in that branch to unlock.
 
@@ -2523,59 +2404,13 @@ Lethal Edge I
 +8% crit damage (via command
 1
 
-reward)B6Sword Mastery II+8% sword damage1B7Axe Mastery II+8% axe damage1B8Precision III+4% crit chance1B9Lethal Edge II+12% crit damage1B-CAPPerfect Strike+10% crit chance, +20% crit damage2reward)B6Sword Mastery II+8% sword damage1B7Axe Mastery II+8% axe damage1B8Precision III+4% crit chance1B9Lethal Edge II+12% crit damage1B-CAPPerfect Strike+10% crit chance, +20% crit damage2Note: Sword Mastery and Axe Mastery are on separate sub-branches. Players can invest in both weapon types, but reaching the capstone fastest means focusing on one sub-path. Uses puffish_attributes:sword_damage and puffish_attributes:axe_damage.
+| B6 | Sword Mastery II | +8% sword damage | 1 |
+| B7 | Axe Mastery II | +8% axe damage | 1 |
+| B8 | Precision III | +4% crit chance | 1 |
+| B9 | Lethal Edge II | +12% crit damage | 1 |
+| **B-CAP** | **Perfect Strike** | **+10% crit chance, +20% crit damage** | **2** |
 
-reward)
-
-B6
-Sword Mastery II
-+8% sword damage
-1
-B7
-Axe Mastery II
-+8% axe damage
-1
-B8
-Precision III
-+4% crit chance
-1
-B9
-Lethal Edge II
-+12% crit damage
-1
-
-B-CAP
-
-Perfect Strike
-+10% crit chance, +20% crit damage
-
-2
-
-reward)
-
-B6
-Sword Mastery II
-+8% sword damage
-1
-B7
-Axe Mastery II
-+8% axe damage
-1
-B8
-Precision III
-+4% crit chance
-1
-B9
-Lethal Edge II
-+12% crit damage
-1
-
-B-CAP
-
-Perfect Strike
-+10% crit chance, +20% crit damage
-
-2
+> **Note:** Sword Mastery and Axe Mastery are on separate sub-branches. Players can invest in both weapon types, but reaching the capstone fastest means focusing on one sub-path. Uses `puffish_attributes:sword_damage` and `puffish_attributes:axe_damage`.
 
 XP Source: Ranged kills (bows, crossbows, thrown weapons)
 
@@ -2696,62 +2531,12 @@ Scatter Shot I
 
 1
 
-B5Arrow Conservation II+5% ammo save chance1B6Rapid Fire III+8% draw speed1B7Scatter Shot II+5% AoE splash1B8Arrow Conservation III+5% ammo save chance1B9Rapid Fire IV+8% draw speed1B-CAPStorm of Arrows+15% draw speed, +10% ammo save, 2-block AoE splash2B5Arrow Conservation II+5% ammo save chance1B6Rapid Fire III+8% draw speed1B7Scatter Shot II+5% AoE splash1B8Arrow Conservation III+5% ammo save chance1B9Rapid Fire IV+8% draw speed1B-CAPStorm of Arrows+15% draw speed, +10% ammo save, 2-block AoE splash2
-B5
-Arrow Conservation II
-+5% ammo save chance
-1
-B6
-Rapid Fire III
-+8% draw speed
-1
-B7
-Scatter Shot II
-+5% AoE splash
-1
-B8
-Arrow Conservation III
-+5% ammo save chance
-1
-B9
-Rapid Fire IV
-+8% draw speed
-1
-
-B-CAP
-
-Storm of Arrows
-+15% draw speed, +10% ammo save, 2-block AoE splash
-
-2
-
-B5
-Arrow Conservation II
-+5% ammo save chance
-1
-B6
-Rapid Fire III
-+8% draw speed
-1
-B7
-Scatter Shot II
-+5% AoE splash
-1
-B8
-Arrow Conservation III
-+5% ammo save chance
-1
-B9
-Rapid Fire IV
-+8% draw speed
-1
-
-B-CAP
-
-Storm of Arrows
-+15% draw speed, +10% ammo save, 2-block AoE splash
-
-2
+| B5 | Arrow Conservation II | +5% ammo save chance | 1 |
+| B6 | Rapid Fire III | +8% draw speed | 1 |
+| B7 | Scatter Shot II | +5% AoE splash | 1 |
+| B8 | Arrow Conservation III | +5% ammo save chance | 1 |
+| B9 | Rapid Fire IV | +8% draw speed | 1 |
+| **B-CAP** | **Storm of Arrows** | **+15% draw speed, +10% ammo save, 2-block AoE splash** | **2** |
 
 XP Source: Spell casts + magic kills (via Pufferfish’s Unofficial Additions Iron’s Spells integration)
 
@@ -3136,46 +2921,10 @@ Bountiful Harvest III
 +10% crop yield
 1
 
-B7Green Magic I+5% bonemeal efficiency (command)1B8Animal Whisperer II+10% animal breeding speed1B9Bountiful Harvest IV+10% crop yield1B-CAPNature’s Bounty+15% crop yield, +10% fishing speed, +10% breeding speed2B7Green Magic I+5% bonemeal efficiency (command)1B8Animal Whisperer II+10% animal breeding speed1B9Bountiful Harvest IV+10% crop yield1B-CAPNature’s Bounty+15% crop yield, +10% fishing speed, +10% breeding speed2
-B7
-Green Magic I
-+5% bonemeal efficiency (command)
-1
-B8
-Animal Whisperer II
-+10% animal breeding speed
-1
-B9
-Bountiful Harvest IV
-+10% crop yield
-1
-
-B-CAP
-
-Nature’s Bounty
-+15% crop yield, +10% fishing speed, +10% breeding speed
-
-2
-
-B7
-Green Magic I
-+5% bonemeal efficiency (command)
-1
-B8
-Animal Whisperer II
-+10% animal breeding speed
-1
-B9
-Bountiful Harvest IV
-+10% crop yield
-1
-
-B-CAP
-
-Nature’s Bounty
-+15% crop yield, +10% fishing speed, +10% breeding speed
-
-2
+| B7 | Green Magic I | +5% bonemeal efficiency (command) | 1 |
+| B8 | Animal Whisperer II | +10% animal breeding speed | 1 |
+| B9 | Bountiful Harvest IV | +10% crop yield | 1 |
+| **B-CAP** | **Nature’s Bounty** | **+15% crop yield, +10% fishing speed, +10% breeding speed** | **2** |
 
 XP Source: Crafting items, operating machines, smelting
 
@@ -3294,46 +3043,10 @@ Overclock III
 +10% machine speed
 1
 
-B7Fuel Efficiency II-8% fuel consumption1B8Power Surge III+8% RF generation1B9Overclock IV+10% machine speed1B-CAPMaster Engineer+15% machine speed, +10% RF gen, -10% fuel consumption2B7Fuel Efficiency II-8% fuel consumption1B8Power Surge III+8% RF generation1B9Overclock IV+10% machine speed1B-CAPMaster Engineer+15% machine speed, +10% RF gen, -10% fuel consumption2
-B7
-Fuel Efficiency II
--8% fuel consumption
-1
-B8
-Power Surge III
-+8% RF generation
-1
-B9
-Overclock IV
-+10% machine speed
-1
-
-B-CAP
-
-Master Engineer
-+15% machine speed, +10% RF gen, -10% fuel consumption
-
-2
-
-B7
-Fuel Efficiency II
--8% fuel consumption
-1
-B8
-Power Surge III
-+8% RF generation
-1
-B9
-Overclock IV
-+10% machine speed
-1
-
-B-CAP
-
-Master Engineer
-+15% machine speed, +10% RF gen, -10% fuel consumption
-
-2
+| B7 | Fuel Efficiency II | -8% fuel consumption | 1 |
+| B8 | Power Surge III | +8% RF generation | 1 |
+| B9 | Overclock IV | +10% machine speed | 1 |
+| **B-CAP** | **Master Engineer** | **+15% machine speed, +10% RF gen, -10% fuel consumption** | **2** |
 
 The skill system rewards investment that matches your class, but doesn’t punish mismatched investment.
 Class
@@ -3487,40 +3200,42 @@ Pufferfish’s Unofficial Additions — XP source integrations (spell casting vi
 Implementation as Datapack
 
 All trees are defined via JSON datapacks. Each tree is a “category” in Pufferfish’s Skills:
-data/ modpack_skills/puffish_skills/ categories/warfare/ category.json skills/brute_force_1.json ... unending_fury.json connections/marksman/ sorcery/ fortitude/ gathering/ engineering/data/ modpack_skills/puffish_skills/ categories/warfare/ category.json skills/brute_force_1.json ... unending_fury.json connections/marksman/ sorcery/ fortitude/ gathering/ engineering/
 
-data/ modpack_skills/
-puffish_skills/ categories/
-warfare/ category.json skills/
-brute_force_1.json ... unending_fury.json connections/
-marksman/ sorcery/ fortitude/ gathering/ engineering/
-
-data/ modpack_skills/
-puffish_skills/ categories/
-warfare/ category.json skills/
-brute_force_1.json ... unending_fury.json connections/
-marksman/ sorcery/ fortitude/ gathering/ engineering/
+```
+data/
+  modpack_skills/
+    puffish_skills/
+      categories/
+        warfare/
+          category.json
+          skills/
+            brute_force_1.json
+            ...
+            unending_fury.json
+          connections/
+        marksman/
+        sorcery/
+        fortitude/
+        gathering/
+        engineering/
+```
 
 Command Rewards
 
 Several effects (machine speed, mana cost reduction, buff duration, crop yield, ammo save, etc.) cannot be implemented via pure attributes. These use Pufferfish’s Skills command rewards — executing commands or applying scoreboard tags when a node is unlocked, which are read by KubeJS scripts to apply the effect.
 
-mana_cost_reductionmana_cost_reductionExample: Mana Efficiency node unlocked → sets scoreboard spell mana costs by that percentage.
-mana_cost_reduction
-mana_cost_reduction
-to 5 → KubeJS reads this value and modifies
+Example: Mana Efficiency node unlocked → sets scoreboard `mana_cost_reduction` to 5 → KubeJS reads this value and modifies spell mana costs by that percentage.
 
 This is the most implementation-heavy part of the skill system. Attribute-based nodes (damage, HP, resistance, speed) are simple JSON. Command-based nodes require KubeJS scripting for each custom effect.
 Implementation priority: Build attribute-based trees first (fully functional). Add command-based effects iteratively. Trees work without the command effects — players just get the attribute bonuses — so partial implementation is viable.
 
-/puffish_skills skills reset <player>/puffish_skills skills reset <player>Respec Details
-/puffish_skills skills reset <player>
-/puffish_skills skills reset <player>
+### Respec Details
 
-Per established rules: 5 levels per point refunded. Individual tree respec via
-<category> .<category> .
-<category> .
-<category> .
+```
+/puffish_skills skills reset <player> <category>
+```
+
+Per established rules: 5 levels per point refunded. Individual tree respec via the command above.
 At endgame with Tax Free Levels mod, 5 levels is trivial per point. Respeccing a 30-point tree costs 150 levels — meaningful but affordable. Supports horizontal build diversity from the endgame loop design.
 
 Integration with Death Penalty
@@ -4718,13 +4433,11 @@ Grounding (no knockback on enemies) vs Knockback — opposite effects
 
 Custom Affix Implementation
 
-All custom affixes implemented via Apotheosis datapack JSON files: -for affix definitions -
-data/apotheosis/affixes/data/apotheosis/affixes/data/apotheosis/loot_entries/data/apotheosis/loot_entries/for loot pool assignments - Dimensional restriction via LootJS (control which affix items can
-data/apotheosis/affixes/
-data/apotheosis/affixes/
-data/apotheosis/loot_entries/
-data/apotheosis/loot_entries/
-drop where) - Boss restriction via LootJS (inject boss-specific affix gear into boss loot tables)
+All custom affixes implemented via Apotheosis datapack JSON files:
+- `data/apotheosis/affixes/` for affix definitions
+- `data/apotheosis/loot_entries/` for loot pool assignments
+- Dimensional restriction via LootJS (control which affix items can drop where)
+- Boss restriction via LootJS (inject boss-specific affix gear into boss loot tables)
 
 Apotheosis Boss Configuration
 
@@ -4851,12 +4564,11 @@ Perfect
 Tier 4 boss drops / End loot
 Tier 4
 
-Reforging Progression
-Reforging TierRequirementWhat It DoesReforging TierRequirementWhat It Does
-Reforging TierRequirementWhat It Does
-Reforging TierRequirementWhat It Does
+### Reforging Progression
 
-Basic
+| Reforging Tier | Requirement | What It Does |
+|----------------|-------------|-------------|
+| Basic
 Tier 2 progression token
 Reroll affixes (random outcome)
 
@@ -6685,64 +6397,32 @@ Master every class (30-60 hours) — Omniclass challenge
 Build the monument (unlimited) — Creative endgame with trophy displays and exotic materials
 Progressive Boss arms race (ongoing) — Push boss difficulties higher and higher
 
-│
-│
-│
-│
-▼
-Mythic Forge ──crafts──→ Mythic Gear
-│
-│
-│
-│
-│
-▼
-│
-│
-│
-│
-│
-▼
-Stronger player ──pushes deeper──→ Oblivion's Rift (loop)
-│
-Mythic Uniques ──tracked by──→ Compendium
-│
-│
-├──floor records──→ Compendium│
-│
-│
-│
-│
-▼
-│
-│
-Completion rewards ──cosmetics──→ Creative Endgame
-│
-│
-│
-▼
-│
-Class challenges ──motivate──→ Build Diversity
-│
-│
-
-Oblivion's Rift ──drops──→ Rift Shards/Materials└──different class experiences────────────────────┘Progressive Bosses ──harder bosses──→ better drops ──→ Mythic Forge▼Gear to push the Rift deeper│┌──────────────┘Oblivion's Rift ──drops──→ Rift Shards/Materials└──different class experiences────────────────────┘Progressive Bosses ──harder bosses──→ better drops ──→ Mythic Forge▼Gear to push the Rift deeper│┌──────────────┘Every loop feeds at least two other loops. No endgame activity is a dead end.
+```
 Oblivion's Rift ──drops──→ Rift Shards/Materials
-└──different class experiences────────────────────┘
+        │                         │
+        ▼                         ▼
+  Mythic Forge ──crafts──→ Mythic Gear
+        │                         │
+        ▼                         ▼
+  Stronger player ──pushes deeper──→ Oblivion's Rift (loop)
+        │
+  Mythic Uniques ──tracked by──→ Compendium
+        │
+        ├──floor records──→ Compendium
+        │
+        ▼
+  Completion rewards ──cosmetics──→ Creative Endgame
+        │
+        ▼
+  Class challenges ──motivate──→ Build Diversity
+        └──different class experiences──┘
 
-Progressive Bosses ──harder bosses──→ better drops ──→ Mythic Forge
-▼
-Gear to push the Rift deeper
-│
-┌──────────────┘
-Oblivion's Rift ──drops──→ Rift Shards/Materials
-└──different class experiences────────────────────┘
+  Progressive Bosses ──harder bosses──→ better drops ──→ Mythic Forge
+        ▼
+  Gear to push the Rift deeper
+```
 
-Progressive Bosses ──harder bosses──→ better drops ──→ Mythic Forge
-▼
-Gear to push the Rift deeper
-│
-┌──────────────┘
+Every loop feeds at least two other loops. No endgame activity is a dead end.
 
 ActivityHours for “Completion”Notes
 First Rift clear (Floor 10)
@@ -7009,32 +6689,27 @@ Full Ascension + 100% Compendium
 350-500+
 This extends the pack’s total meaningful content from 400 hours to 600-800 hours for the most dedicated players, without forcing anyone who stops at 200-400 hours to feel like they missed the “real” game.
 
-KubeJS Requirements
+### KubeJS Requirements
 
-Ascension state: Stored as world-level GameRule or KubeJS persistent data.
-// Pseudo ServerLevel.persistentData.ascensionLevel = 0-5// Pseudo ServerLevel.persistentData.ascensionLevel = 0-5
+**Ascension state:** Stored as world-level GameRule or KubeJS persistent data.
 
-// Pseudo ServerLevel.persistentData.ascensionLevel = 0-5
+```javascript
+// Pseudo
+ServerLevel.persistentData.ascensionLevel = 0-5
+```
 
-// Pseudo ServerLevel.persistentData.ascensionLevel = 0-5
-Mob scaling: Hook into LivingSpawnEvent, check ascension level, multiply HP/damage.
-// Pseudo onEvent('entity.spawned', event => {  let ascension = getAscensionLevel(event.level)  let hpMult = [1.0, 1.25, 1.5, 1.75, 2.0, 2.5][ascension]  let dmgMult = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0][ascension]  event.entity.modifyAttribute('max_health', hpMult)  event.entity.modifyAttribute('attack_damage', dmgMult)})// Pseudo onEvent('entity.spawned', event => {  let ascension = getAscensionLevel(event.level)  let hpMult = [1.0, 1.25, 1.5, 1.75, 2.0, 2.5][ascension]  let dmgMult = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0][ascension]  event.entity.modifyAttribute('max_health', hpMult)  event.entity.modifyAttribute('attack_damage', dmgMult)})
+**Mob scaling:** Hook into LivingSpawnEvent, check ascension level, multiply HP/damage.
 
-// Pseudo onEvent('entity.spawned', event => {
+```javascript
+// Pseudo
+onEvent('entity.spawned', event => {
   let ascension = getAscensionLevel(event.level)
   let hpMult = [1.0, 1.25, 1.5, 1.75, 2.0, 2.5][ascension]
   let dmgMult = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0][ascension]
   event.entity.modifyAttribute('max_health', hpMult)
   event.entity.modifyAttribute('attack_damage', dmgMult)
 })
-
-// Pseudo onEvent('entity.spawned', event => {
-  let ascension = getAscensionLevel(event.level)
-  let hpMult = [1.0, 1.25, 1.5, 1.75, 2.0, 2.5][ascension]
-  let dmgMult = [1.0, 1.2, 1.4, 1.6, 1.8, 2.0][ascension]
-  event.entity.modifyAttribute('max_health', hpMult)
-  event.entity.modifyAttribute('attack_damage', dmgMult)
-})
+```
 Nemesis System: On PlayerDeathEvent, tag the killing entity with player UUID + “nemesis” flag + stat boosts. On entity death, check for nemesis flag and grant bonus rewards.
 Corrupted Champions: On Champion spawn event (Champions Unofficial hook), roll for Corrupted status. Add extra affix + particle effect + loot table modifier.
 Rift Echoes: On boss death event at A3+, 20% chance spawn shadow copy with reduced HP + 2 random Rift modifiers.
@@ -7173,16 +6848,15 @@ Total skill points from Welcome: 3
 
 5 quest paths, all converging on “Tier 2 Gate” quest.
 
-Path Structure
-[Path A: Grinding] ──────┐ [Path B: Magic] ──────────┤[Path C: Boss] ───────────┼──→ [TIER 2 GATE] ──→ Tier 2 unlocked [Path D: Exploration] ────┤[Path E: Engineering] ────┘[Path A: Grinding] ──────┐ [Path B: Magic] ──────────┤[Path C: Boss] ───────────┼──→ [TIER 2 GATE] ──→ Tier 2 unlocked [Path D: Exploration] ────┤[Path E: Engineering] ────┘
+### Path Structure
 
-[Path A: Grinding] ──────┐ [Path B: Magic] ──────────┤
-[Path C: Boss] ───────────┼──→ [TIER 2 GATE] ──→ Tier 2 unlocked [Path D: Exploration] ────┤
+```
+[Path A: Grinding] ──────┐
+[Path B: Magic] ──────────┤
+[Path C: Boss] ───────────┼──→ [TIER 2 GATE] ──→ Tier 2 unlocked
+[Path D: Exploration] ────┤
 [Path E: Engineering] ────┘
-
-[Path A: Grinding] ──────┐ [Path B: Magic] ──────────┤
-[Path C: Boss] ───────────┼──→ [TIER 2 GATE] ──→ Tier 2 unlocked [Path D: Exploration] ────┤
-[Path E: Engineering] ────┘
+```
 
 Each path is 5-7 quests long. Completing ANY ONE path unlocks the gate quest. Completing additional paths grants bonus rewards.
 
@@ -7435,12 +7109,11 @@ Path Complete
 All above
 Tier 2 Loot Box + 1 Skill Point
 
-Path E: Engineering
-QuestTriggerRewardQuestTriggerReward
-QuestTriggerReward
-QuestTriggerReward
+**Path E: Engineering**
 
-Thermal Foundation
+| Quest | Trigger | Reward |
+|-------|---------|--------|
+| Thermal Foundation
 Build a Thermal Dynamo + 3 Thermal machines
 Steel Loot Box
 Industrial Start
@@ -7711,16 +7384,11 @@ Multiple boss drop materials
 Prestige Token Fragment
 10%
 1 fragment (4 needed for full token)
-Mythic Loot Box (Crucible/Endgame)
-ExamplesWeightDropExamplesWeightDrop
-Examples
-Weight
-Drop
-Examples
-Weight
-Drop
+**Mythic Loot Box (Crucible/Endgame)**
 
-Mythic affix gear (guaranteed)
+| Drop | Weight | Examples |
+|------|--------|----------|
+| Mythic affix gear (guaranteed)
 30%
 Netherite with guaranteed Mythic affix
 Level 8-10 enchanted book
@@ -7741,26 +7409,25 @@ Random particle effect or title
 
 FTB Quests Technical Setup
 
-Quest Reward Commands
-Tier advancement:
-/astages add @p tier_2/astages add @p tier_2
+### Quest Reward Commands
 
+**Tier advancement:**
+```
 /astages add @p tier_2
+```
 
-/astages add @p tier_2
-Skill points:
-/puffish_skills points add @p melee 1/puffish_skills points add @p melee 1
-
+**Skill points:**
+```
 /puffish_skills points add @p melee 1
+```
 
-/puffish_skills points add @p melee 1
-Note: FTB Quests can use “choice reward” to let players pick which tree receives the point, OR auto-grant to a universal pool that players allocate themselves. Universal pool is cleaner.
-Loot boxes:
-/give @p modpack:iron_loot_box 1/give @p modpack:iron_loot_box 1
+> **Note:** FTB Quests can use “choice reward” to let players pick which tree receives the point, OR auto-grant to a universal pool that players allocate themselves. Universal pool is cleaner.
 
+**Loot boxes:**
+```
 /give @p modpack:iron_loot_box 1
+```
 
-/give @p modpack:iron_loot_box 1
 KubeJS registered item that opens a loot table on right-click.
 
 Quest Detection Types
@@ -7768,32 +7435,26 @@ Detection quests: Automatically complete when player performs action (craft item
 Submission quests: Require player to submit items to the quest book. Used for “obtain X of material” quests. Items are consumed.
 Observation quests: Track global progress (Community chapter). No player action needed.
 
-KubeJS Milestone Detection (Backup Advancement)
-// Example: Tier 2 advancement via boss kill (no quest book) ServerEvents.entityKilled(event => {if (isTier2Boss(event.entity) && !hasStage(event.player, 'tier_2')) {addStage(event.player, 'tier_2');event.player.tell('§6[Milestone] §fYou have unlocked Tier 2 through combat!');event.player.tell('§7Complete quest paths for bonus Skill Points and Loot Boxes.');}});// Example: Tier 2 advancement via boss kill (no quest book) ServerEvents.entityKilled(event => {if (isTier2Boss(event.entity) && !hasStage(event.player, 'tier_2')) {addStage(event.player, 'tier_2');event.player.tell('§6[Milestone] §fYou have unlocked Tier 2 through combat!');event.player.tell('§7Complete quest paths for bonus Skill Points and Loot Boxes.');}});
+### KubeJS Milestone Detection (Backup Advancement)
 
-// Example: Tier 2 advancement via boss kill (no quest book) ServerEvents.entityKilled(event => {
-if (isTier2Boss(event.entity) && !hasStage(event.player, 'tier_2')) {
-addStage(event.player, 'tier_2');
-event.player.tell('§6[Milestone] §fYou have unlocked Tier 2 through combat!');
-event.player.tell('§7Complete quest paths for bonus Skill Points and Loot Boxes.');
-}
+```javascript
+// Example: Tier 2 advancement via boss kill (no quest book)
+ServerEvents.entityKilled(event => {
+  if (isTier2Boss(event.entity) && !hasStage(event.player, 'tier_2')) {
+    addStage(event.player, 'tier_2');
+    event.player.tell('§6[Milestone] §fYou have unlocked Tier 2 through combat!');
+    event.player.tell('§7Complete quest paths for bonus Skill Points and Loot Boxes.');
+  }
 });
+```
 
-// Example: Tier 2 advancement via boss kill (no quest book) ServerEvents.entityKilled(event => {
-if (isTier2Boss(event.entity) && !hasStage(event.player, 'tier_2')) {
-addStage(event.player, 'tier_2');
-event.player.tell('§6[Milestone] §fYou have unlocked Tier 2 through combat!');
-event.player.tell('§7Complete quest paths for bonus Skill Points and Loot Boxes.');
-}
-});
+### Prestige Quest Reset
 
-Prestige Quest Reset
 On prestige, all FTB Quest progress resets via:
-/ftbquests change_progress @p reset/ftbquests change_progress @p reset
 
+```
 /ftbquests change_progress @p reset
-
-/ftbquests change_progress @p reset
+```
 Skill points already earned are tracked separately in Pufferfish’s Skills persistent data and are NOT affected by quest reset. The KubeJS prestige handler marks which quest-sourced skill points have been earned to prevent re-earning on subsequent prestiges.
 
 Quest Book UI Recommendations

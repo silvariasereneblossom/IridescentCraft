@@ -1,0 +1,10 @@
+{
+  "_comment": "Luminous: Struck mobs glow for 5-10 seconds",
+  "type": "apotheosis:mob_effect",
+  "mob_effect": "minecraft:glowing",
+  "target": "user_target",
+  "values": {
+    "COMMON": { "min": 0.15, "max": 0.25 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

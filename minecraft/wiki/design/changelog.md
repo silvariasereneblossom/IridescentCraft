@@ -4,6 +4,19 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-15 — Champions, affixes, skills, and gating expansion
+
+- 5 custom Champions affixes implemented: Commanding (buffs nearby mobs), Draining (leeches XP), Hexing (random debuffs), Leaping (lunges at players), Summoning (spawns reinforcements)
+- Per-dimension Champion spawn rate scaling (demotes champions in lower-tier dimensions)
+- 54 new Apotheosis JSON affixes (30→84 total), ~50 new event-driven effects (15→65) in affix_effects.js
+- All 6 Engineering skill placeholders made functional (crafting_speed, machine_speed, rf_generation, fuel_reduction, material_save, craft_bonus)
+- AStages gating expanded: mod-gated Twilight Forest/Blue Skies/Aether entirely, added all diamond/netherite/End/Botania derivatives, beacon, shulker boxes, elytra
+- 6 vanilla advancement overrides (diamond/netherite advancements hidden until appropriate tier)
+- Milestone detection auto-grants blocked advancements on tier unlock
+- Vanilla Origin layer: removed origins:human to avoid overlap with icraft:human race. Three-prompt flow is now Origin (9 vanilla) → Race (7 custom) → Class (10 custom)
+
+---
+
 ## 2026-03-14 — Final implementation push
 
 - Endgame loops: Rift Shards, Mythic Forge, 12 endgame items, boss Rift drops, Compendium tracking

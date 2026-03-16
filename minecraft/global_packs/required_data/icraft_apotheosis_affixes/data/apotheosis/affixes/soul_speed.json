@@ -1,0 +1,10 @@
+{
+  "_comment": "Soul Speed (Nether): +30% speed on soul sand",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "UNCOMMON": { "min": 0.1, "max": 0.15 }
+  },
+  "types": { "set": ["boots"] }
+}

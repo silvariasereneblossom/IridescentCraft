@@ -1,0 +1,12 @@
+{
+  "_comment": "Vorpal: +3-10% chance for 3x damage (implemented as crit damage bonus)",
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:critical_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "UNCOMMON": { "min": 0.15, "max": 0.25 },
+    "RARE": { "min": 0.25, "max": 0.4 },
+    "EPIC": { "min": 0.4, "max": 0.6 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}
