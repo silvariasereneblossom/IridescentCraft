@@ -10,6 +10,8 @@
 //   - Deeper Darker: Darkness Empowerment, Sculk Resonance
 //   - Nether: Soulfire Burns (fire bypass), Infernal Rage (extended aggro)
 //   - Deep Aether: Radiant Shield (first-hit absorb)
+//   - The Aether: Thin Air, Vertigo, Updrafts (altitude hazards)
+//   - The Abyss: Oppressive Darkness, Corruption, Fear Aura, Void Whispers
 //   - End: Void Corruption (stacking debuff)
 //
 // IMPLEMENTATION APPROACH:
@@ -30,6 +32,7 @@ EntityEvents.spawned(event => {
   if (entity.persistentData.contains('icraft_dim_mech')) return
 
   let dim = entity.level.dimension
+  let type = entity.type
 
   // ── Twilight Forest: Canopy Ambush ──
   // 15% chance to spawn invisible for 5 seconds
@@ -88,6 +91,27 @@ EntityEvents.spawned(event => {
   }
   if (dim === 'blue_skies:everbright') {
     entity.persistentData.putBoolean('icraft_ice_elemental', true)
+  }
+
+  // ── The Aether: Thin Air Adaptation ──
+  // All Aether mobs get Speed I (adapted to thin air)
+  // Flying mobs get Strength I (aerial advantage)
+  if (dim === 'aether:the_aether') {
+    entity.potionEffects.add('minecraft:speed', 999999, 0, false, false)
+    let flyingMobs = ['aether:zephyr', 'aether:valkyrie', 'aether:cockatrice']
+    if (flyingMobs.indexOf(type) !== -1) {
+      entity.potionEffects.add('minecraft:strength', 999999, 0, false, false)
+    }
+  }
+
+  // ── The Abyss: Corruption Resistance ──
+  // All Abyss mobs get Resistance I (adapted to corrupted environment)
+  // Boss entities are excluded (already handled by boss_hp.js)
+  if (dim === 'theabyss:the_abyss') {
+    let abyssBosses = ['theabyss:elder', 'theabyss:ice_knight', 'theabyss:nightblade_boss', 'theabyss:soul_guard', 'theabyss:the_roka']
+    if (abyssBosses.indexOf(type) === -1) {
+      entity.potionEffects.add('minecraft:resistance', 999999, 0, false, false)
+    }
   }
 
   // ── Ad Astra: Moon — Low gravity combat ──
@@ -276,6 +300,101 @@ PlayerEvents.tick(event => {
   // ── Nether: Lava Affinity ──
   // Nether mobs near lava regenerate — handled via spawn regen above
   // (simplified: all Nether mobs get regen, which is close enough)
+
+  // ═══ THE AETHER HAZARDS (T2) ═══
+  if (dim === 'aether:the_aether') {
+    let y = player.blockPosition().y
+
+    // ── Thin Air: Above Y=180, Weakness I (thin atmosphere) ──
+    // Aether Acclimation enchantment negates this
+    let aetherAcclimation = getArmorEnchTotalLocal(player, 'icraft:aether_acclimation')
+    if (y > 180 && aetherAcclimation <= 0) {
+      player.potionEffects.add('minecraft:weakness', 200, 0, false, true)
+    }
+
+    // ── Vertigo: Above Y=200 + sprinting, 10% chance Nausea for 3s ──
+    if (y > 200 && player.sprinting) {
+      if (Math.random() < 0.10) {
+        player.potionEffects.add('minecraft:nausea', 60, 0, false, true)
+      }
+    }
+
+    // ── Updrafts: Falling below Y=0, apply Slow Falling once per fall ──
+    if (y < 0) {
+      if (!player.persistentData.contains('icraft_aether_updraft')) {
+        player.potionEffects.add('minecraft:slow_falling', 100, 0, false, true)
+        player.persistentData.putBoolean('icraft_aether_updraft', true)
+      }
+    } else {
+      // Reset updraft tracker when back above Y=0
+      if (player.persistentData.contains('icraft_aether_updraft')) {
+        player.persistentData.remove('icraft_aether_updraft')
+      }
+    }
+  }
+
+  // ═══ THE ABYSS HAZARDS (T3) ═══
+  if (dim === 'theabyss:the_abyss') {
+    let y = player.blockPosition().y
+
+    // ── Oppressive Darkness: No light source + low light = debuffs ──
+    // Check if player is holding a light source in either hand
+    let holdingLight = false
+    try {
+      let mainHand = player.mainHandItem
+      let offHand = player.offHandItem
+      let lightSources = ['minecraft:torch', 'minecraft:soul_torch', 'minecraft:lantern',
+        'minecraft:soul_lantern', 'minecraft:glowstone', 'minecraft:shroomlight']
+      if (mainHand && !mainHand.isEmpty()) {
+        if (lightSources.indexOf(mainHand.id) !== -1) holdingLight = true
+      }
+      if (offHand && !offHand.isEmpty()) {
+        if (lightSources.indexOf(offHand.id) !== -1) holdingLight = true
+      }
+    } catch(e) {}
+
+    if (!holdingLight) {
+      try {
+        let lightLevel = player.level.getBrightness(player.blockPosition())
+        if (lightLevel < 4) {
+          player.potionEffects.add('minecraft:mining_fatigue', 200, 0, false, true)
+          player.potionEffects.add('minecraft:slowness', 200, 0, false, true)
+        }
+      } catch(e) {}
+    }
+
+    // ── Corruption Ticks: Every 200 ticks, 15% chance Hunger I for 5s ──
+    // Uses separate timing from the main 100-tick cycle
+    if (player.age % 200 < 100) {
+      // Only trigger once per 200-tick window (the main handler runs every 100 ticks)
+      if (Math.random() < 0.15) {
+        player.potionEffects.add('minecraft:hunger', 100, 0, false, true)
+      }
+    }
+
+    // ── Fear Aura: Within 16 blocks of Abyss bosses, Darkness for 3s ──
+    try {
+      let abyssBosses = ['theabyss:elder', 'theabyss:ice_knight', 'theabyss:nightblade_boss', 'theabyss:soul_guard', 'theabyss:the_roka']
+      let nearBoss = false
+      let entities = player.level.getEntitiesWithin(
+        AABB.of(player.x - 16, player.y - 16, player.z - 16, player.x + 16, player.y + 16, player.z + 16)
+      )
+      for (let e of entities) {
+        if (abyssBosses.indexOf(e.type) !== -1) {
+          nearBoss = true
+          break
+        }
+      }
+      if (nearBoss) {
+        player.potionEffects.add('minecraft:darkness', 60, 0, false, true)
+      }
+    } catch(e) {}
+
+    // ── Void Whispers: Below Y=20, Weakness I ──
+    if (y < 20) {
+      player.potionEffects.add('minecraft:weakness', 200, 0, false, true)
+    }
+  }
 
   // ═══ AD ASTRA PLANET HAZARDS ═══
   // Planetary enchantments can negate these hazards.
