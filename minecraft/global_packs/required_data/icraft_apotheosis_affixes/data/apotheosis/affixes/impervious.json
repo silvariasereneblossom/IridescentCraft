@@ -1,12 +1,43 @@
 {
-  "_comment": "Impervious: +10-20% damage reduction via armor",
   "type": "apotheosis:attribute",
   "attribute": "minecraft:generic.armor",
   "operation": "ADDITION",
   "values": {
-    "rare": { "min": 3, "max": 5 },
-    "epic": { "min": 5, "max": 7 },
-    "mythic": { "min": 7, "max": 10 }
+    "common": {
+      "min": 0.5,
+      "steps": 2,
+      "step": 0.5
+    },
+    "uncommon": {
+      "min": 1.0,
+      "steps": 2,
+      "step": 0.5
+    },
+    "rare": {
+      "min": 3,
+      "steps": 4,
+      "step": 0.5
+    },
+    "epic": {
+      "min": 5,
+      "steps": 4,
+      "step": 0.5
+    },
+    "mythic": {
+      "min": 7,
+      "steps": 6,
+      "step": 0.5
+    },
+    "ancient": {
+      "min": 9.0,
+      "steps": 4,
+      "step": 0.5
+    }
   },
-  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+  "types": [
+    "helmet",
+    "chestplate",
+    "leggings",
+    "boots"
+  ]
 }

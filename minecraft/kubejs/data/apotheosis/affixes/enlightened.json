@@ -1,28 +1,43 @@
 {
-  "_comment": "+5-15% XP",
   "type": "apotheosis:attribute",
   "attribute": "puffish_attributes:experience",
   "operation": "MULTIPLY_BASE",
   "values": {
     "common": {
       "min": 0.05,
-      "max": 0.08
+      "steps": 3,
+      "step": 0.01
     },
     "uncommon": {
       "min": 0.08,
-      "max": 0.12
+      "steps": 4,
+      "step": 0.01
     },
     "rare": {
       "min": 0.12,
-      "max": 0.15
+      "steps": 3,
+      "step": 0.01
+    },
+    "epic": {
+      "min": 0.15,
+      "steps": 3,
+      "step": 0.01
+    },
+    "mythic": {
+      "min": 0.18,
+      "steps": 3,
+      "step": 0.01
+    },
+    "ancient": {
+      "min": 0.21,
+      "steps": 4,
+      "step": 0.01
     }
   },
-  "types": {
-    "set": [
-      "helmet",
-      "chestplate",
-      "leggings",
-      "boots"
-    ]
-  }
+  "types": [
+    "helmet",
+    "chestplate",
+    "leggings",
+    "boots"
+  ]
 }

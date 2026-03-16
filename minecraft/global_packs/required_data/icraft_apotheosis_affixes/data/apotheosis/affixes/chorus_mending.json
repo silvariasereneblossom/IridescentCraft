@@ -1,13 +1,43 @@
 {
-  "_comment": "Chorus Mending: +2-6% max HP for passive survivability (End armor affix)",
   "type": "apotheosis:attribute",
   "attribute": "minecraft:generic.max_health",
   "operation": "MULTIPLY_BASE",
   "values": {
-    "uncommon": { "min": 0.02, "max": 0.03 },
-    "rare": { "min": 0.03, "max": 0.04 },
-    "epic": { "min": 0.04, "max": 0.05 },
-    "mythic": { "min": 0.05, "max": 0.06 }
+    "common": {
+      "min": 0.01,
+      "steps": 2,
+      "step": 0.01
+    },
+    "uncommon": {
+      "min": 0.02,
+      "steps": 1,
+      "step": 0.01
+    },
+    "rare": {
+      "min": 0.03,
+      "steps": 1,
+      "step": 0.01
+    },
+    "epic": {
+      "min": 0.04,
+      "steps": 1,
+      "step": 0.01
+    },
+    "mythic": {
+      "min": 0.05,
+      "steps": 1,
+      "step": 0.01
+    },
+    "ancient": {
+      "min": 0.06,
+      "steps": 4,
+      "step": 0.01
+    }
   },
-  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+  "types": [
+    "helmet",
+    "chestplate",
+    "leggings",
+    "boots"
+  ]
 }

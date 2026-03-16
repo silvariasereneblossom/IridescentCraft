@@ -1,13 +1,43 @@
 {
-  "_comment": "Stunning: 3-8% chance for Slowness III + Weakness on hit",
   "type": "apotheosis:mob_effect",
   "mob_effect": "minecraft:slowness",
   "target": "user_target",
   "amplifier": 2,
   "values": {
-    "rare": { "min": 0.03, "max": 0.05 },
-    "epic": { "min": 0.05, "max": 0.07 },
-    "mythic": { "min": 0.07, "max": 0.08 }
+    "common": {
+      "min": 0.01,
+      "steps": 2,
+      "step": 0.01
+    },
+    "uncommon": {
+      "min": 0.01,
+      "steps": 2,
+      "step": 0.01
+    },
+    "rare": {
+      "min": 0.03,
+      "steps": 2,
+      "step": 0.01
+    },
+    "epic": {
+      "min": 0.05,
+      "steps": 2,
+      "step": 0.01
+    },
+    "mythic": {
+      "min": 0.07,
+      "steps": 1,
+      "step": 0.01
+    },
+    "ancient": {
+      "min": 0.09,
+      "steps": 4,
+      "step": 0.01
+    }
   },
-  "types": { "set": ["sword", "axe", "trident"] }
+  "types": [
+    "sword",
+    "axe",
+    "trident"
+  ]
 }

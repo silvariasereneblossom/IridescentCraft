@@ -1,10 +1,42 @@
 {
-  "_comment": "Omnivamp (T4+): 3% of all damage returned as HP",
   "type": "apotheosis:attribute",
   "attribute": "puffish_attributes:life_steal",
   "operation": "ADDITION",
   "values": {
-    "mythic": { "min": 0.02, "max": 0.04 }
+    "common": {
+      "min": 0.25,
+      "steps": 2,
+      "step": 0.25
+    },
+    "uncommon": {
+      "min": 0.25,
+      "steps": 2,
+      "step": 0.25
+    },
+    "rare": {
+      "min": 0.25,
+      "steps": 2,
+      "step": 0.25
+    },
+    "epic": {
+      "min": 0.25,
+      "steps": 3,
+      "step": 0.25
+    },
+    "mythic": {
+      "min": 0.02,
+      "steps": 1,
+      "step": 0.25
+    },
+    "ancient": {
+      "min": 0.52,
+      "steps": 4,
+      "step": 0.25
+    }
   },
-  "types": { "set": ["sword", "axe", "trident"] }
+  "types": [
+    "sword",
+    "axe",
+    "trident"
+  ]
 }
