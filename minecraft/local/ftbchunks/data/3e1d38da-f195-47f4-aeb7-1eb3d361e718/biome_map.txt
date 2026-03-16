@@ -1,0 +1,13 @@
+#010 minecraft:forest
+#4B0 minecraft:jungle
+#47F biomesoplenty:mediterranean_forest
+#552 biomesoplenty:old_growth_woodland
+#3DC minecraft:plains
+#68B biomesoplenty:rainforest
+#5FF minecraft:river
+#5F6 biomesoplenty:rocky_rainforest
+#67B minecraft:savanna
+#3AF minecraft:sparse_jungle
+#14C biomesoplenty:spider_nest
+#30B biomesoplenty:volcanic_plains
+#7F2 biomesoplenty:woodland
