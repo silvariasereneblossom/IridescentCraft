@@ -6,7 +6,6 @@
   "origin.origins.merling.description": "Natural inhabitants of the ocean who thrive underwater. They can survive on land but grow sluggish if they stay dry too long.",
   "origin.origins.phantom.description": "Half-human, half-phantom beings who can phase through blocks. Sunlight weakens them and their spectral nature burns energy faster.",
   "origin.origins.shulk.description": "Related to Shulkers, their shell-like skin provides natural armor. Their armored bodies require more sustenance than most.",
-
   "power.origins.carnivore.name": "Meat Preference",
   "power.origins.carnivore.description": "Non-meat foods provide 50% less nourishment. Your spider metabolism prefers protein.",
   "power.origins.vegetarian.name": "Plant Preference",
@@ -26,5 +25,7 @@
   "power.origins.damage_from_snowballs.name": "Cold Sensitive",
   "power.origins.damage_from_snowballs.description": "Your fiery nature makes cold uncomfortable, but it won't harm you.",
   "power.origins.damage_from_potions.name": "Potion Resistant",
-  "power.origins.damage_from_potions.description": "Your unusual physiology resists some potion effects."
+  "power.origins.damage_from_potions.description": "Your unusual physiology resists some potion effects.",
+  "power.origins.nether_spawn.name": "Nether Affinity",
+  "power.origins.nether_spawn.description": "You deal 10% more damage and take 10% less damage in the Nether. After your first Nether visit, this doubles and applies everywhere."
 }

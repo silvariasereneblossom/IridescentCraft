@@ -69,6 +69,66 @@ ServerEvents.tick(event => {
   })
 })
 
+// =============================================================================
+// BLAZEBORN — Nether Affinity
+// 10% damage boost + 10% damage reduction in the Nether.
+// After first Nether visit, doubles to 20% and applies in ALL dimensions.
+// =============================================================================
+
+// Track first Nether visit
+PlayerEvents.tick(event => {
+  if (event.player.age % 200 !== 50) return // Every 10s, offset
+  let player = event.player
+  if (!player.tags.contains('icraft_blazeborn')) return
+
+  let dim = player.level.dimension.toString()
+  let data = player.persistentData
+
+  // Detect first Nether visit
+  if (dim === 'minecraft:the_nether' && !data.getBoolean('icraft_nether_visited')) {
+    data.putBoolean('icraft_nether_visited', true)
+    player.tell(Text.gold('═══════════════════════════════════════'))
+    player.tell(Text.gold('  ★ NETHER AFFINITY AWAKENED ★'))
+    player.tell(Text.white('  The Nether recognizes its child.'))
+    player.tell(Text.gray('  Your damage bonus and resistance now'))
+    player.tell(Text.gray('  double and apply in ALL dimensions.'))
+    player.tell(Text.gold('═══════════════════════════════════════'))
+  }
+})
+
+// Apply damage bonus via EntityEvents.hurt (dealing damage)
+EntityEvents.hurt(event => {
+  let source = event.source
+  if (!source || !source.player) return
+  let player = source.player
+  if (!player.tags.contains('icraft_blazeborn')) return
+
+  let inNether = player.level.dimension.toString() === 'minecraft:the_nether'
+  let awakened = player.persistentData.getBoolean('icraft_nether_visited')
+
+  if (inNether || awakened) {
+    let bonus = awakened ? 0.20 : 0.10 // 20% if awakened, 10% if just in Nether
+    event.damage = event.damage * (1 + bonus)
+  }
+})
+
+// Apply damage reduction via EntityEvents.hurt (taking damage)
+EntityEvents.hurt(event => {
+  let entity = event.entity
+  if (!entity.player) return
+  let player = entity
+  if (!player.tags.contains('icraft_blazeborn')) return
+
+  let inNether = player.level.dimension.toString() === 'minecraft:the_nether'
+  let awakened = player.persistentData.getBoolean('icraft_nether_visited')
+
+  if (inNether || awakened) {
+    let reduction = awakened ? 0.20 : 0.10 // 20% if awakened, 10% if just in Nether
+    event.damage = event.damage * (1 - reduction)
+  }
+})
+
 console.log('[IridescentCraft] Origins custom effects loaded')
 console.log('  - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)')
 console.log('  - Merling: Land discomfort after 5 min dry')
+console.log('  - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)')
