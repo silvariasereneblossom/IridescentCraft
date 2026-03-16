@@ -364,5 +364,74 @@ ServerEvents.recipes(event => {
   ].forEach(id => event.remove({ output: id }))
 
 
+
+
+  // ═══ SECTION L: BLUE SKIES — DUSK ARC, SHADOW ARMOR, RUNIC ARC REMOVAL ═══
+  // Design decision: Dusk Arc removed entirely (too strong for T2).
+  // Shadow Armor removed (outclasses progression-appropriate gear).
+  // Runic Arc crafting removed — now only obtainable as a rare boss drop
+  // or very rare Blue Skies structure chest loot (see loot_overhaul.js).
+
+  // L.1: Remove Dusk Arc recipe (all variants)
+  event.remove({ output: /blue_skies:dusk_arc/ })
+
+  // L.2: Remove Shadow Armor recipes (all 4 pieces)
+  ;[
+    'blue_skies:shadow_helmet', 'blue_skies:shadow_chestplate',
+    'blue_skies:shadow_leggings', 'blue_skies:shadow_boots',
+  ].forEach(id => event.remove({ output: id }))
+
+  // L.3: Remove Runic Arc crafting recipe (gated to boss drops + rare loot)
+  event.remove({ output: 'blue_skies:runic_arc' })
+
+
+  // ═══ SECTION M: BLUE SKIES — MATERIAL STAT NERFS (HARDCODED LIMITATION) ═══
+  // Diopside, Charoite, and Horizonite tools/armor are hardcoded in the
+  // Blue Skies mod JAR. There is no config or datapack to change their
+  // attack damage, durability, or armor values.
+  //
+  // Target stats (T2 level, NOT diamond):
+  //   Diopside:   durability ~350, damage ~6,   armor ~iron+1 (precision gem)
+  //   Charoite:   durability ~400, damage ~6.5, armor ~iron+1 (balanced + magic)
+  //   Horizonite: durability ~450, damage ~7,   armor ~iron+2 (high durability)
+  //
+  // WORKAROUND: Remove all vanilla Blue Skies tool/armor crafting recipes
+  // for these materials. Players use Tetra integration instead (see
+  // icraft_tetra_materials datapack for balanced T2 Tetra definitions).
+  // The raw materials (diopside gem, charoite gem, horizonite ingot) remain
+  // obtainable and usable as Tetra components at proper T2 stats.
+  //
+  // NOTE FOR PLAYTESTING: If players still obtain the vanilla Blue Skies
+  // tools/armor via other means (loot tables, mob drops), additional
+  // loot table removals may be needed. The Tetra materials ARE balanced.
+
+  // M.1: Remove Diopside tool + armor recipes
+  ;[
+    'blue_skies:diopside_sword', 'blue_skies:diopside_pickaxe',
+    'blue_skies:diopside_axe', 'blue_skies:diopside_shovel',
+    'blue_skies:diopside_hoe',
+    'blue_skies:diopside_helmet', 'blue_skies:diopside_chestplate',
+    'blue_skies:diopside_leggings', 'blue_skies:diopside_boots',
+  ].forEach(id => event.remove({ output: id }))
+
+  // M.2: Remove Charoite tool + armor recipes
+  ;[
+    'blue_skies:charoite_sword', 'blue_skies:charoite_pickaxe',
+    'blue_skies:charoite_axe', 'blue_skies:charoite_shovel',
+    'blue_skies:charoite_hoe',
+    'blue_skies:charoite_helmet', 'blue_skies:charoite_chestplate',
+    'blue_skies:charoite_leggings', 'blue_skies:charoite_boots',
+  ].forEach(id => event.remove({ output: id }))
+
+  // M.3: Remove Horizonite tool + armor recipes
+  ;[
+    'blue_skies:horizonite_sword', 'blue_skies:horizonite_pickaxe',
+    'blue_skies:horizonite_axe', 'blue_skies:horizonite_shovel',
+    'blue_skies:horizonite_hoe',
+    'blue_skies:horizonite_helmet', 'blue_skies:horizonite_chestplate',
+    'blue_skies:horizonite_leggings', 'blue_skies:horizonite_boots',
+  ].forEach(id => event.remove({ output: id }))
+
+
   console.log('[IridescentCraft] recipe_audit.js loaded — cross-mod recipe audit active')
 })

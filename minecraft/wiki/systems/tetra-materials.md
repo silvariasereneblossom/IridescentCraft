@@ -8,7 +8,7 @@ Vanilla reference values (approximate, from Tetra defaults) are included for com
 
 ## Master Comparison Table
 
-All 20 custom materials sorted by tier, with vanilla benchmarks for context. Expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals.
+All 23 custom materials sorted by tier, with vanilla benchmarks for context. Expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals. Expanded to 23 on 2026-03-16 with the addition of Blue Skies materials (Diopside, Charoite, Horizonite).
 
 | Tier | Material | Source Mod | Durability | Primary Dmg | Secondary Dmg | Tertiary | Tool Efficiency | Tool Level | Magic Capacity | Tint | Repair Item |
 |------|----------|------------|------------|-------------|---------------|----------|-----------------|------------|----------------|------|-------------|
@@ -23,6 +23,9 @@ All 20 custom materials sorted by tier, with vanilla benchmarks for context. Exp
 | T2 | Knightmetal | Twilight Forest | 500 | 5.6 | 3.2 | 3.5 | 7.5 | diamond | 78 | #c4b57a | `twilightforest:knightmetal_ingot` |
 | T2 | Fiery | Twilight Forest | 460 | 5.8 | 3.4 | 3.2 | 7.5 | diamond | 86 | #d45a10 | `twilightforest:fiery_ingot` |
 | T2 | Lumium | Thermal | 320 | 4.8 | 4.4 | 2.3 | 7.5 | diamond | 100 | #f5e16f | `thermal:lumium_ingot` |
+| T2 | Diopside | Blue Skies | 350 | 5.0 | 4.5 | 3.0 | 8.0 | iron | 60 | #2d8f4e | `blue_skies:diopside` |
+| T2 | Charoite | Blue Skies | 400 | 5.2 | 4.8 | 3.0 | 7.0 | iron | 100 | #7b2d8f | `blue_skies:charoite` |
+| T2 | Horizonite | Blue Skies | 450 | 5.5 | 5.0 | 3.5 | 7.5 | diamond | 70 | #c4761a | `blue_skies:horizonite_ingot` |
 | T3 | Osmium | Mekanism | 650 | 6.0 | 3.2 | 3.2 | 8 | diamond | 88 | #8eadb5 | `mekanism:ingot_osmium` |
 | T3 | Elementium | Botania | 720 | 6.2 | 3.4 | 2.5 | 8.5 | diamond | 150 | #e565c9 | `botania:elementium_ingot` |
 | T3 | Terrasteel | Botania | 800 | 6.5 | 3.0 | 3.0 | 9 | diamond | 140 | #3dba4e | `botania:terrasteel_ingot` |
@@ -54,7 +57,7 @@ Entry-level modded metal available during the Overworld exploration phase. Sits 
 
 ### Tier 2 -- Mid Game
 
-The largest tier with 8 materials spanning Twilight Forest, Thermal, and Botania metals. These bridge the gap between iron and diamond, with diamond-level mining capability.
+The largest tier with 11 materials spanning Twilight Forest, Thermal, Botania, and Blue Skies metals. These bridge the gap between iron and diamond, with diamond-level mining capability.
 
 | Material | Source Mod | Durability | Primary | Secondary | Tertiary | Efficiency | Tool Level | Magic Cap | Tint | Repair Item |
 |----------|------------|------------|---------|-----------|----------|------------|------------|-----------|------|-------------|
@@ -66,6 +69,9 @@ The largest tier with 8 materials spanning Twilight Forest, Thermal, and Botania
 | Knightmetal | Twilight Forest | 500 | 5.6 | 3.2 | 3.5 | 7.5 | diamond | 78 | #c4b57a | `twilightforest:knightmetal_ingot` |
 | Fiery | Twilight Forest | 460 | 5.8 | 3.4 | 3.2 | 7.5 | diamond | 86 | #d45a10 | `twilightforest:fiery_ingot` |
 | Lumium | Thermal | 320 | 4.8 | 4.4 | 2.3 | 7.5 | diamond | 100 | #f5e16f | `thermal:lumium_ingot` |
+| Diopside | Blue Skies | 350 | 5.0 | 4.5 | 3.0 | 8.0 | iron | 60 | #2d8f4e | `blue_skies:diopside` |
+| Charoite | Blue Skies | 400 | 5.2 | 4.8 | 3.0 | 7.0 | iron | 100 | #7b2d8f | `blue_skies:charoite` |
+| Horizonite | Blue Skies | 450 | 5.5 | 5.0 | 3.5 | 7.5 | diamond | 70 | #c4761a | `blue_skies:horizonite_ingot` |
 
 **Notes:**
 - **Ironwood** has iron tool level (not diamond) but better stats than iron -- it is the Twilight Forest entry point.
@@ -74,7 +80,11 @@ The largest tier with 8 materials spanning Twilight Forest, Thermal, and Botania
 - **Signalum** mirrors Lumium's support role with high secondary (4.2) but slightly more balanced stats.
 - **Steel** and **Knightmetal** are the durability picks (400 and 500), favoring sustained use over burst damage.
 - **Fiery** has the highest primary damage in T2 (5.8) with solid durability (460) -- the straightforward DPS choice.
-- All T2 materials require an iron-level hammer to craft in Tetra.
+- **Diopside** is a Blue Skies gem with the highest tool efficiency in T2 (8.0) but iron tool level and the lowest magic capacity (60) -- a precision mining gem.
+- **Charoite** is a balanced Blue Skies metal with high secondary damage (4.8) and high magic capacity (100) -- the dimensional magic-affinity pick.
+- **Horizonite** is the strongest Blue Skies metal with the highest durability in T2 (450), highest primary damage tied with Steel (5.5), and diamond tool level -- the T2 endgame workhorse.
+- Blue Skies materials (Diopside, Charoite) require a gold-level hammer; Horizonite requires iron.
+- All other T2 materials require an iron-level hammer to craft in Tetra.
 
 ---
 
@@ -138,7 +148,7 @@ The material progression follows these principles:
 
 ## Source Coverage: Addon Mods vs IridescentCraft Datapack
 
-All 20 materials are defined by the **IridescentCraft custom datapack** (`icraft_tetra_materials`). None come from external Tetra addon mods -- they are all original definitions authored for this modpack. The count was expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals.
+All 23 materials are defined by the **IridescentCraft custom datapack** (`icraft_tetra_materials`). None come from external Tetra addon mods -- they are all original definitions authored for this modpack. The count was expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals, then to 23 with the addition of Blue Skies materials.
 
 The materials draw from the following source mods (the mod that provides the ingot):
 
@@ -146,6 +156,7 @@ The materials draw from the following source mods (the mod that provides the ing
 |------------|-----------|-------|
 | Twilight Forest | Ironwood, Steeleaf, Knightmetal, Fiery | 4 |
 | Thermal Series | Steel, Signalum, Lumium, Enderium | 4 |
+| Blue Skies | Diopside, Charoite, Horizonite | 3 |
 | Botania | Manasteel, Elementium, Terrasteel | 3 |
 | Mekanism | Osmium, Refined Obsidian | 2 |
 | Create | Brass | 1 |
@@ -173,4 +184,7 @@ For completeness, here are the parameters not shown in the main tables:
 | Terrasteel | 3 | 7 | shiny, metal | iron |
 | Enderium | 3 | 7 | heavy, metal | iron |
 | Refined Obsidian | 3 | 8 | heavy, metal | iron |
+| Diopside | 2 | 5 | shiny, metal, default | gold |
+| Charoite | 2 | 5 | shiny, metal | gold |
+| Horizonite | 2 | 6 | heavy, metal | iron |
 | Aethersteel | 4 | 10 | shiny, heavy, metal | diamond |

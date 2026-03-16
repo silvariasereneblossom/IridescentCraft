@@ -376,6 +376,13 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.05)))
 
+  // --- Blue Skies: Runic Arc as very rare structure chest loot (0.5%) ---
+  // Supplements the 5% boss drop rate (see loot_overhaul.js).
+  // Only in Blue Skies dimensions to maintain dimensional gating.
+  event
+    .addLootTableModifier(/blue_skies:chests\/.*/)
+    .addLoot(LootEntry.of('blue_skies:runic_arc').when(c => c.randomChance(0.005)))
+
   // --- Aether (191 tables, targeting chests only) ---
   // T2-T3: Aether dimension dungeons (bronze/silver/gold)
   event

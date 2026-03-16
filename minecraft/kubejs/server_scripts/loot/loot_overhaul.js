@@ -172,6 +172,19 @@ LootJS.modifiers(event => {
             LootEntry.of("simplyswords:waxweaver").when(c => c.randomChance(0.12))
         )
 
+    // Blue Skies bosses — Runic Arc rare drop (5% from each boss)
+    // Runic Arc crafting recipe removed in recipe_audit.js Section L.
+    // This makes it a boss-gated progression item.
+    ;["blue_skies:summoner", "blue_skies:alchemist",
+      "blue_skies:starlit_crusher", "blue_skies:arachnarch"
+    ].forEach(boss => {
+        event.addEntityLootModifier(boss)
+            .addLoot(
+                LootEntry.of("blue_skies:runic_arc")
+                    .when(c => c.randomChance(0.05))
+            )
+    })
+
     // -----------------------------------------------------------------
     // TIER 2 BOSSES — Aether
     // Verified: slider, valkyrie_queen, sun_spirit
