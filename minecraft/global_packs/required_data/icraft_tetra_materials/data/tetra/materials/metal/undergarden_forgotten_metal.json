@@ -1,0 +1,27 @@
+{
+    "key": "undergarden_forgotten_metal",
+    "category": "metal",
+    "primary": 6.8,
+    "secondary": 4.2,
+    "tertiary": 3.5,
+    "durability": 800,
+    "integrityCost": 3,
+    "integrityGain": 6,
+    "magicCapacity": 60,
+    "toolLevel": "minecraft:diamond",
+    "toolEfficiency": 8.0,
+    "tints": {
+        "glyph": "2a4a3a",
+        "texture": "2a4a3a"
+    },
+    "textures": [
+        "heavy",
+        "metal"
+    ],
+    "material": {
+        "items": [ "undergarden:forgotten_ingot" ]
+    },
+    "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+    }
+}
