@@ -88,10 +88,10 @@ LootJS.modifiers(event => {
   // --- Structory + Structory Towers: MOVED to Section 4B (chests-scoped) ---
 
   // --- Villages & Pillages ---
+  // No T1 tokens — villages are starting areas, not progression structures
   event
     .addLootTableModifier(/villagesandpillages:.*chests.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
   // --- Unwrecked Ships ---
   event
@@ -437,11 +437,10 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // --- ChoiceTheorem's Overhauled Village (12 tables) ---
-  // T1: village variants
+  // No T1 tokens — villages are starting areas, not progression structures
   event
     .addLootTableModifier(/ctov:.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
   // --- Explorations+ (16 tables) ---
   // T1: overworld exploration structures
@@ -462,6 +461,7 @@ LootJS.modifiers(event => {
   // Tier 2 progression.
   // =========================================================================
 
+  // Non-village vanilla overworld chests: remove diamonds + add T1 token chance
   const vanillaOverworldChests = [
     'minecraft:chests/simple_dungeon',
     'minecraft:chests/abandoned_mineshaft',
@@ -475,9 +475,6 @@ LootJS.modifiers(event => {
     'minecraft:chests/stronghold_library',
     'minecraft:chests/underwater_ruin_big',
     'minecraft:chests/underwater_ruin_small',
-    'minecraft:chests/village/village_toolsmith',
-    'minecraft:chests/village/village_weaponsmith',
-    'minecraft:chests/village/village_armorer',
     'minecraft:chests/woodland_mansion'
   ]
 
@@ -489,19 +486,34 @@ LootJS.modifiers(event => {
       .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
   })
 
+  // Village smith chests: remove diamonds but NO T1 tokens
+  // Villages are starting areas, not progression structures
+  const vanillaVillageSmithChests = [
+    'minecraft:chests/village/village_toolsmith',
+    'minecraft:chests/village/village_weaponsmith',
+    'minecraft:chests/village/village_armorer'
+  ]
+
+  vanillaVillageSmithChests.forEach(table => {
+    event
+      .addLootTableModifier(table)
+      .removeLoot('minecraft:diamond')
+      .removeLoot('minecraft:diamond_horse_armor')
+  })
+
   // =========================================================================
   // SECTION 5B: OVERWORLD STRUCTURE FOOD REDUCTION
   // =========================================================================
-  // Reduce non-meat food in Overworld structure chests by 60-70%.
+  // Reduce non-meat food in Overworld structure chests by 90%.
   // Meat (raw/cooked) is kept as-is since there's no infinite source.
   // Modded foods (Pam's HarvestCraft, Farmer's Delight) removed entirely
   // from structure loot — those should be player-crafted.
   // Only applies to Overworld dimension.
   // =========================================================================
 
-  // --- Non-meat food items to reduce by 70% (keep 30% chance) ---
-  // Uses removeLoot + addLoot with 30% random chance per food.
-  // This effectively removes ~70% of these foods from Overworld structure chests.
+  // --- Non-meat food items to reduce by 90% (keep 10% chance) ---
+  // Uses removeLoot + addLoot with 10% random chance per food.
+  // This effectively removes ~90% of these foods from Overworld structure chests.
   const reducedFoods = [
     'minecraft:bread',
     'minecraft:apple',
@@ -522,15 +534,15 @@ LootJS.modifiers(event => {
     'minecraft:cake'
   ]
 
-  // Apply 70% reduction to non-meat food in ALL chest loot (Overworld only).
-  // Single modifier that removes all listed foods, then re-adds each at 30% chance.
+  // Apply 90% reduction to non-meat food in ALL chest loot (Overworld only).
+  // Single modifier that removes all listed foods, then re-adds each at 10% chance.
   let foodModifier = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
 
   reducedFoods.forEach(food => {
     foodModifier.removeLoot(food)
-    foodModifier.addLoot(LootEntry.of(food).when(c => c.randomChance(0.30)))
+    foodModifier.addLoot(LootEntry.of(food).when(c => c.randomChance(0.10)))
   })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
@@ -548,6 +560,87 @@ LootJS.modifiers(event => {
     .removeLoot('@culturaldelights')
     .removeLoot('@delightful')
     .removeLoot('@nethersdelight')
+
+  // =========================================================================
+  // SECTION 5C: OCEAN STRUCTURE LOOT
+  // =========================================================================
+  // Ocean structures (Monuments, Ruins, Shipwrecks, Buried Treasure) get
+  // T1-appropriate loot with token fragments (15-20% chance).
+  // Ocean Monuments get slightly better loot since they require underwater
+  // combat (Elder Guardians). Water-themed curio drops at ~10% chance.
+  // YUNG's Better Ocean Monuments handled in Section 4C above (T2 tokens).
+  // =========================================================================
+
+  // --- Vanilla Ocean Structures: Shipwrecks, Ocean Ruins, Buried Treasure ---
+  // T1 ocean loot: nautical supplies + token fragments (15% chance)
+  event
+    .addLootTableModifier(
+      'minecraft:chests/shipwreck_treasure',
+      'minecraft:chests/shipwreck_map',
+      'minecraft:chests/shipwreck_supply',
+      'minecraft:chests/underwater_ruin_big',
+      'minecraft:chests/underwater_ruin_small',
+      'minecraft:chests/buried_treasure')
+    .addLoot(LootEntry.of('minecraft:prismarine_shard').limitCount([1, 3]).when(c => c.randomChance(0.20)))
+    .addLoot(LootEntry.of('minecraft:prismarine_crystals').limitCount([1, 2]).when(c => c.randomChance(0.15)))
+    .addLoot(LootEntry.of('minecraft:nautilus_shell').when(c => c.randomChance(0.08)))
+    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.15)))
+
+  // --- Vanilla Ocean Monument ---
+  // T1-T2 ocean loot: slightly better rewards for underwater combat challenge
+  // Note: diamonds already removed by Section 5 vanillaOverworldChests
+  // Note: YUNG's Better Ocean Monuments already handled in Section 4C (T2 tokens)
+  event
+    .addLootTableModifier('minecraft:chests/ocean_monument')
+    .removeLoot('minecraft:diamond')
+    .addLoot(LootEntry.of('minecraft:prismarine_shard').limitCount([2, 5]).when(c => c.randomChance(0.25)))
+    .addLoot(LootEntry.of('minecraft:prismarine_crystals').limitCount([2, 4]).when(c => c.randomChance(0.20)))
+    .addLoot(LootEntry.of('minecraft:sponge').when(c => c.randomChance(0.10)))
+    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.20)))
+
+  // --- Ocean structure curio drops: water-themed artifacts (~10% total) ---
+  // Spread across multiple items at low individual chance to total ~10%
+  event
+    .addLootTableModifier(
+      'minecraft:chests/shipwreck_treasure',
+      'minecraft:chests/shipwreck_map',
+      'minecraft:chests/shipwreck_supply',
+      'minecraft:chests/underwater_ruin_big',
+      'minecraft:chests/underwater_ruin_small',
+      'minecraft:chests/buried_treasure',
+      'minecraft:chests/ocean_monument')
+    .addLoot(
+      LootEntry.of('artifacts:snorkel').when(c => c.randomChance(0.025))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:flippers').when(c => c.randomChance(0.025))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.02))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.015))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.01))
+    )
+
+  // --- YUNG's Better Ocean Monuments: curio drops ---
+  // Already has T2 tokens from Section 4C; add water-themed curios here
+  event
+    .addLootTableModifier(/betteroceanmonuments:.*/)
+    .addLoot(
+      LootEntry.of('artifacts:snorkel').when(c => c.randomChance(0.03))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:flippers').when(c => c.randomChance(0.03))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.02))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.012))
+    )
 
   // =========================================================================
   // SECTION 6: VILLAGE CHEST LOOT RESTRICTIONS
@@ -702,6 +795,7 @@ LootJS.modifiers(event => {
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
   console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
-  console.log('  - Overworld food reduction: 70% non-meat, modded foods removed')
+  console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
+  console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
   console.log('  - Tower curio drops: 15% chance in tower structures')
 })
