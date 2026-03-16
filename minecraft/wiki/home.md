@@ -62,6 +62,9 @@ The canonical design reference for all modpack systems.
 | Waystone recipes | Implemented | Boss-drop gated crafting, all variants |
 | Cross-mod recipe audit | Implemented | 30+ tier-breaking recipes blocked across 8 mods |
 | Mod config audit | Implemented | ScalingMobs, Champions, Apotheosis configs aligned to design |
+| Config review pass | Implemented | Easy Anvils verified, Disenchanting/Table of XP/DarkOrb T2-gated, Azukaar's stat scaling zeroed, Icarus T3-gated, Aethersteel T4, Terramity guns/armor removed |
+| Tetra integration | Implemented | 15 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4 |
+| Serene Seasons documentation | Implemented | 4-page Patchouli Codex entry for seasonal farming |
 
 ---
 

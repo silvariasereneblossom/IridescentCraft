@@ -114,6 +114,25 @@ XP is plentiful with many sinks: JustLevelingFork leveling, skill point investme
 | 3 | Refined Storage, Sophisticated (diamond) | XNet, IF advanced |
 | 4 | RS advanced, Sophisticated (netherite) | Mekanism QIO, RFTools |
 
+## Tetra Modded Materials
+
+15 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals.
+
+| Tier | Materials |
+|------|-----------|
+| T1 | Brass |
+| T2 | Steel, Signalum, Lumium, Manasteel, Steeleaf, Ironwood, Fiery, Knightmetal |
+| T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium |
+| T4 | Aethersteel |
+
+## Seasonal Farming (Serene Seasons)
+
+Serene Seasons adds seasonal crop growth. Crops die in winter unless grown in a greenhouse (glass-enclosed, torch-lit). Documented in a 4-page Patchouli Codex entry.
+
+## Azukaar's Fair Difficulty
+
+All stat scaling (damage, luck, XP multipliers) zeroed out to avoid conflicts with ScalingMobs. Behavior features retained: hunger nerf, night purge, no-sleep enforcement, respawn distance.
+
 ## Related Pages
 
 - [Master Design Document](../design/master.md) — Parts I, II, V, VI, VII

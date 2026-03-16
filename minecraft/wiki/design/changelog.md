@@ -4,6 +4,43 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-16 — Config review implementation pass
+
+### Enchanting & Repair
+- Easy Anvils verified correct — "too expensive" removed, repair costs at 1.0+, no changes needed
+- Disenchanting Table recipe gated to T2 (requires 4x `thermal:steel_ingot`)
+- Table of Experience recipe gated to T2 (requires 4x `thermal:steel_ingot`)
+- Enchantment Transfer: no gating needed — works through vanilla anvil, XP cost is the gate
+- DarkOrb Orb of Origin recipe gated to T2 (4x steel + 4x amethyst + heart of the sea). Resets ALL Origins layers (can't be configured per-layer).
+
+### Combat & Difficulty
+- Azukaar's Fair Difficulty: all stat scaling zeroed out (damage, luck, XP multipliers). Behavior features kept (hunger nerf, night purge, no-sleep enforcement, respawn distance).
+- Icarus wings: all default recipes removed. 5 new T3 recipes added requiring diamond + phantom membrane.
+- Configurable Extra Mob Drops: audited — all entries empty, no tier-breaking drops.
+
+### Dimensions
+- Aethersteel moved to T4 endgame. Worldgen disabled via biome modifier override datapack. 17 items added to T4 AStages restrictions. Ore replacement added (appears as holystone until T4).
+
+### Content Removal
+- Terramity: 22 gun recipes removed, 64 armor pieces across 16 sets removed, gunsmith station removed. Bosses, structures, mobs, accessories untouched. No custom enchantments found.
+
+### Documentation
+- Serene Seasons: 4-page Patchouli Codex entry added explaining seasonal farming, winter crop death, greenhouse bypass
+- Iron Jetpacks: verified — uses single dynamic item ID with NBT, material gating already enforces tier progression. Documented in code.
+
+### Tetra Integration
+- 15 modded metal material definitions created as Paxi datapack (`icraft_tetra_materials`)
+- Covers: Brass (T1), Steel/Signalum/Lumium/Manasteel/Steeleaf/Ironwood/Fiery/Knightmetal (T2), Osmium/Refined Obsidian/Terrasteel/Elementium/Enderium (T3), Aethersteel (T4)
+- Full reference page added to wiki
+
+### Bug Fixes
+- Apotheosis affix JSONs: uppercase rarity keys → lowercase (fixed world load crash)
+- Cherry Village: template pool feature references fixed (unregistered feature crash)
+- Zeta race condition: coremod jar added to synchronize ForgeZetaEventBus
+- Vanilla Origin layer: origins:human removed to prevent overlap with icraft:human race
+
+---
+
 ## 2026-03-15 — Champions, affixes, skills, and gating expansion
 
 - 5 custom Champions affixes implemented: Commanding (buffs nearby mobs), Draining (leeches XP), Hexing (random debuffs), Leaping (lunges at players), Summoning (spawns reinforcements)
