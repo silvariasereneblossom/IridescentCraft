@@ -51,7 +51,8 @@
 #World generation
 [world]
 	#Should this mod add some of its items (ropes, seeds, knives, meals etc.) as extra chest loot across Minecraft?
-	generateFDChestLoot = true
+	#IridescentCraft: Disabled — modded food removed from structure loot by design
+	generateFDChestLoot = false
 	#Should FD generate Compost Heaps across all village biomes?
 	genVillageCompostHeaps = true
 	#Should FD crops show up planted randomly in various village farms?
