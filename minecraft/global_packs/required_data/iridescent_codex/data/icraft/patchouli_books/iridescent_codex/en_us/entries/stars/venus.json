@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Planetary Rock Extraction$(/bold)$(br)Crush $(bold)Venus Stone$(/bold) in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Sulfuric Compound$(/bold) (25%) \u2014 corrosion-resistant alloys$(br)\u2022 $(bold)Pressure Crystal$(/bold) (15%) \u2014 pressure-resistant tech$(br)\u2022 Quartz (40%)$(br2)$(bold)Aethersteel on Venus$(/bold)$(br)Aethersteel Scraps can be found as rare drops (5%) when mining Venus Stone. A valuable secondary source of this endgame material."
+      "text": "$(bold)Planetary Rock Extraction$(/bold)$(br)Crush $(bold)Venus Stone$(/bold) in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Sulfuric Compound$(/bold) (25%) \u2014 corrosion-resistant alloys$(br)\u2022 $(bold)Pressure Crystal$(/bold) (15%) \u2014 pressure-resistant tech$(br)\u2022 Quartz (40%)"
     },
     {
       "type": "patchouli:text",

@@ -68,49 +68,5 @@ LootJS.modifiers(event => {
     )
 
 
-  // =========================================================================
-  // AETHERSTEEL ON VENUS & GLACIO
-  // Since Forge biome modifiers cannot filter by dimension, we add Aethersteel
-  // scraps as bonus drops when mining planet stone on Venus and Glacio.
-  // This simulates finding Aethersteel ore veins in these dimensions.
-  // =========================================================================
-
-  // ── Venus: Mining Venus Stone has 5% chance to drop Aethersteel Scrap ──
-  event
-    .addBlockLootModifier('ad_astra:venus_stone')
-    .anyDimension('ad_astra:venus')
-    .addLoot(
-      LootEntry.of('aethersteel:aethersteel_scrap')
-        .when(c => c.randomChance(0.05))
-    )
-
-  // ── Glacio: Mining Glacio Stone has 5% chance to drop Aethersteel Scrap ──
-  event
-    .addBlockLootModifier('ad_astra:glacio_stone')
-    .anyDimension('ad_astra:glacio')
-    .addLoot(
-      LootEntry.of('aethersteel:aethersteel_scrap')
-        .when(c => c.randomChance(0.05))
-    )
-
-  // ── Venus: Deepslate equivalent has higher chance ──
-  event
-    .addBlockLootModifier('ad_astra:venus_sandstone')
-    .anyDimension('ad_astra:venus')
-    .addLoot(
-      LootEntry.of('aethersteel:aethersteel_scrap')
-        .when(c => c.randomChance(0.03))
-    )
-
-  // ── Glacio: Deepslate equivalent has higher chance ──
-  event
-    .addBlockLootModifier('ad_astra:permafrost')
-    .anyDimension('ad_astra:glacio')
-    .addLoot(
-      LootEntry.of('aethersteel:aethersteel_scrap')
-        .when(c => c.randomChance(0.03))
-    )
-
-
-  console.log('[IridescentCraft] planetary_loot.js loaded — planetary enchant books + Aethersteel drops')
+  console.log('[IridescentCraft] planetary_loot.js loaded — planetary enchant book drops')
 })

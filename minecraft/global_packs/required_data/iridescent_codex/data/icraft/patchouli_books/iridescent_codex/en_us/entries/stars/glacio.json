@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Planetary Rock Extraction$(/bold)$(br)Crush $(bold)Glacio Stone$(/bold) in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Alien Isotope$(/bold) (20%) \u2014 alien-tech integration$(br)\u2022 $(bold)Cryogenic Element$(/bold) (20%) \u2014 cryo-fusion technology$(br)\u2022 Ice Shards (30%)$(br2)$(bold)Aethersteel on Glacio$(/bold)$(br)Aethersteel Scraps drop at 5% when mining Glacio Stone and 3% from Permafrost. A secondary source alongside the Deep Aether."
+      "text": "$(bold)Planetary Rock Extraction$(/bold)$(br)Crush $(bold)Glacio Stone$(/bold) in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Alien Isotope$(/bold) (20%) \u2014 alien-tech integration$(br)\u2022 $(bold)Cryogenic Element$(/bold) (20%) \u2014 cryo-fusion technology$(br)\u2022 Ice Shards (30%)"
     },
     {
       "type": "patchouli:text",

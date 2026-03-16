@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Portable Fusion Fuel Converter$(/bold)$(br)An endgame portable device that converts a Water Bucket into Ad Astra Fuel. Crafted from Netherite, Enderium, an Electrolytic Separator, and Aethersteel.$(br2)Designed for sustained planetary operations where returning for fuel is impractical. The converter is not consumed during use \u2014 craft it once, use it forever."
+      "text": "$(bold)Water-to-Fuel Processing$(/bold)$(br)Transport water to your planetary base via $(bold)Dynamic Tank$(/bold) on your rocket. Then process it through Mekanism machines:$(br2)1. $(bold)Electrolytic Separator$(/bold): Water \u2192 Hydrogen + Oxygen$(br)2. $(bold)Rotary Condensentrator$(/bold): Hydrogen \u2192 Rocket Fuel$(br2)This two-step chain means real Mekanism infrastructure investment pays off in space. The oxygen byproduct also feeds your base's life support."
     },
     {
       "type": "patchouli:text",

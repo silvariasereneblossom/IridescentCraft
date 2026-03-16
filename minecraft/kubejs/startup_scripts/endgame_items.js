@@ -266,16 +266,4 @@ StartupEvents.registry('item', event => {
         .maxStackSize(64)
         .rarity('rare')
 
-    // =========================================================================
-    // PORTABLE FUSION FUEL CONVERTER
-    // Endgame portable machine for converting water into rocket fuel
-    // =========================================================================
-
-    event.create('kubejs:fusion_fuel_converter')
-        .displayName('Portable Fusion Fuel Converter')
-        .tooltip('§5Converts water into fusion fuel')
-        .tooltip('§7Only functions in zero-gravity environments.')
-        .tooltip('§8Crafted from Netherite + Mekanism + Enderium + Aethersteel')
-        .maxStackSize(1)
-        .rarity('epic')
 })

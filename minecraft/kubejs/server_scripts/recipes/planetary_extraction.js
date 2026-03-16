@@ -107,34 +107,33 @@ ServerEvents.recipes(event => {
 
 
   // =========================================================================
-  // SECTION C: FUSION FUEL CONVERTER CRAFTING RECIPE
-  // Very expensive endgame shaped recipe
+  // SECTION C: WATER → FUSION FUEL (Mekanism Machine Chain)
+  //
+  // Design: Players transport water to their Moon/planet base via Dynamic Tank,
+  // then process it through existing Mekanism machines:
+  //
+  // Step 1: Electrolytic Separator — Water → Hydrogen + Oxygen (already vanilla Mek)
+  // Step 2: Rotary Condensentrator — Hydrogen gas → Ad Astra Fuel (new recipe)
+  //
+  // This rewards Mekanism infrastructure investment and feels authentic.
+  // No custom converter item needed — uses real Mekanism machines.
   // =========================================================================
 
-  event.shaped('kubejs:fusion_fuel_converter', [
-    'ENE',
-    'CAK',
-    'ENE'
-  ], {
-    N: 'minecraft:netherite_ingot',
-    E: 'thermal:enderium_ingot',
-    C: 'ad_astra:steel_plate',       // Ad Astra compressor component
-    A: 'kubejs:aethersteel_ingot',
-    K: 'mekanism:electrolytic_separator'
-  }).id('icraft:fusion_fuel_converter')
+  // Rotary Condensentrator: Condense Hydrogen gas into Ad Astra rocket fuel
+  // The Electrolytic Separator already splits water → hydrogen + oxygen (vanilla Mek)
+  // This adds the second step: hydrogen → fuel
+  event.custom({
+    type: 'mekanism:condensentrating',
+    input: {
+      amount: 500,
+      gas: 'mekanism:hydrogen'
+    },
+    output: {
+      amount: 250,
+      id: 'ad_astra:fuel'
+    }
+  }).id('icraft:hydrogen_to_rocket_fuel')
 
 
-  // =========================================================================
-  // SECTION D: FUSION FUEL CONVERSION RECIPE
-  // Fusion Fuel Converter + Water Bucket → Ad Astra Fuel Bucket
-  // Shapeless recipe — the converter is not consumed
-  // =========================================================================
-
-  event.shapeless('ad_astra:fuel_bucket', [
-    'kubejs:fusion_fuel_converter',
-    'minecraft:water_bucket'
-  ]).id('icraft:fusion_fuel_conversion')
-
-
-  console.log('[IridescentCraft] planetary_extraction.js loaded — planet crushing + fuel converter')
+  console.log('[IridescentCraft] planetary_extraction.js loaded — planet crushing + hydrogen-to-fuel chain')
 })
