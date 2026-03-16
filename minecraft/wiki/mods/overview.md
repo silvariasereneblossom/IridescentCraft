@@ -37,16 +37,17 @@ Origins (+Origins++, Origins Overhaul), Gods and Heroes RPG Classes, Pufferfish'
 
 ## Dimensions
 
-Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Deep Aether, Ad Astra
+Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Deep Aether, The Abyss, Ad Astra
 
 | Dimension | Tier | Notes |
 |-----------|------|-------|
-| Twilight Forest | 2 | AStages-gated |
-| Blue Skies | 2 | AStages-gated |
-| The Aether | 2 | AStages-gated |
+| Twilight Forest | 2 | AStages-gated. Portal activator changed to T1 boss token (was diamond). |
+| Blue Skies | 2 | AStages-gated. Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. |
+| The Aether | 2 | AStages-gated. Dimension mechanics: thin air, vertigo, updrafts. |
 | Deep Aether | 2 | Aether extension |
-| The Undergarden | 3 | AStages-gated |
+| The Undergarden | 3 | AStages-gated. 4 metals integrated into Tetra. |
 | Deeper and Darker | 3 | AStages-gated |
+| The Abyss | 3 | Dimension mechanics: oppressive darkness, corruption, fear aura. 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating. |
 | Ad Astra (Moon) | Post-T4 | 7x difficulty. BEING IMPLEMENTED |
 | Ad Astra (Mars) | Post-T4 | 8x difficulty. BEING IMPLEMENTED |
 | Ad Astra (Mercury) | Post-T4 | 9x difficulty. BEING IMPLEMENTED |
@@ -94,9 +95,13 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | DarkOrb Orb of Origin | recipe | T2-gated (4x steel + 4x amethyst + heart of the sea) |
 | Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |
 | Terramity | recipes | 22 gun recipes removed, 64 armor pieces removed, gunsmith station removed. |
-| Tetra | datapack (`icraft_tetra_materials`) | 20 modded metal material definitions including Abyss + F&A metals. Diamond hammer tier. |
+| Tetra | datapack (`icraft_tetra_materials`) | 27 modded metal material definitions including Blue Skies, Undergarden, Abyss + F&A metals. Diamond hammer tier. |
 | Ad Astra | recipes/config | Post-T4 space dimension. T4 gate + recipe gating. BEING IMPLEMENTED. |
 | Mekanism | config/recipes | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal. |
+| Blue Skies | recipes/loot | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2. |
+| The Abyss | recipes/config | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating. Dimension mechanics (darkness, corruption, fear). |
+| Twilight Forest | recipes | Portal activator changed from diamond to T1 boss token. |
+| End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, 9 advancement overrides, 5 End Apotheosis affixes, Void Blossom loot fix, entity ID fixes, Moog's End Structure loot. |
 
 ## Related Pages
 

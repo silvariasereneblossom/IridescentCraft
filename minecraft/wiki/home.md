@@ -63,12 +63,20 @@ The canonical design reference for all modpack systems.
 | Cross-mod recipe audit | Implemented | 30+ tier-breaking recipes blocked across 8 mods |
 | Mod config audit | Implemented | ScalingMobs, Champions, Apotheosis configs aligned to design |
 | Config review pass | Implemented | Easy Anvils verified, Disenchanting/Table of XP/DarkOrb T2-gated, Azukaar's stat scaling zeroed, Icarus T3-gated, Aethersteel T4, Terramity guns/armor removed |
-| Tetra integration | Implemented | 20 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4, including Abyss + F&A metals |
+| Tetra integration | Implemented | 27 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4, including Blue Skies + Undergarden + Abyss + F&A metals |
 | Serene Seasons documentation | Implemented | 4-page Patchouli Codex entry for seasonal farming |
 | Mekanism balance overhaul | Implemented | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal |
 | Food system overhaul | Implemented | Hunger drain 2.5x, seed drops 5%, structure food reduction, spawn protection |
 | Farmer's Delight cooking conversion | Implemented | 70 recipes converted to Farmer's Delight cooking |
 | Ad Astra integration | In progress | 5 planets, post-T4 endgame, MekaSuit Mk2, planetary extraction, space enchantments |
+| Blue Skies balance pass | Implemented | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only, 3 materials nerfed to T2 + Tetra integration |
+| Undergarden balance pass | Implemented | Tetra stat overrides for 4 metals (27 materials total) |
+| Aether dimension mechanics | Implemented | Thin air, vertigo, updrafts |
+| Abyss dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura |
+| End overhaul | Implemented | Dragon Exploration Gate, 9 advancement overrides, 5 End Apotheosis affixes, Void Blossom loot fix, entity ID fixes, Moog's End Structure loot |
+| TF portal activator | Implemented | Changed from diamond to T1 boss token |
+| Abyss overhaul | Implemented | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating |
+| Server distribution | Implemented | Server distribution folder created |
 
 ---
 

@@ -8,7 +8,7 @@ Vanilla reference values (approximate, from Tetra defaults) are included for com
 
 ## Master Comparison Table
 
-All 23 custom materials sorted by tier, with vanilla benchmarks for context. Expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals. Expanded to 23 on 2026-03-16 with the addition of Blue Skies materials (Diopside, Charoite, Horizonite).
+All 27 custom materials sorted by tier, with vanilla benchmarks for context. Expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals. Expanded to 23 with Blue Skies materials (Diopside, Charoite, Horizonite). Expanded to 27 with Undergarden metals (4 metals with Tetra stat overrides).
 
 | Tier | Material | Source Mod | Durability | Primary Dmg | Secondary Dmg | Tertiary | Tool Efficiency | Tool Level | Magic Capacity | Tint | Repair Item |
 |------|----------|------------|------------|-------------|---------------|----------|-----------------|------------|----------------|------|-------------|
@@ -148,7 +148,7 @@ The material progression follows these principles:
 
 ## Source Coverage: Addon Mods vs IridescentCraft Datapack
 
-All 23 materials are defined by the **IridescentCraft custom datapack** (`icraft_tetra_materials`). None come from external Tetra addon mods -- they are all original definitions authored for this modpack. The count was expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals, then to 23 with the addition of Blue Skies materials.
+All 27 materials are defined by the **IridescentCraft custom datapack** (`icraft_tetra_materials`). None come from external Tetra addon mods -- they are all original definitions authored for this modpack. The count was expanded from 15 to 20 on 2026-03-16 with the addition of Abyss and Forbidden & Arcanus metals, then to 23 with Blue Skies materials, then to 27 with Undergarden metals.
 
 The materials draw from the following source mods (the mod that provides the ingot):
 
@@ -156,6 +156,7 @@ The materials draw from the following source mods (the mod that provides the ing
 |------------|-----------|-------|
 | Twilight Forest | Ironwood, Steeleaf, Knightmetal, Fiery | 4 |
 | Thermal Series | Steel, Signalum, Lumium, Enderium | 4 |
+| Undergarden | *(4 metals with Tetra stat overrides)* | 4 |
 | Blue Skies | Diopside, Charoite, Horizonite | 3 |
 | Botania | Manasteel, Elementium, Terrasteel | 3 |
 | Mekanism | Osmium, Refined Obsidian | 2 |
