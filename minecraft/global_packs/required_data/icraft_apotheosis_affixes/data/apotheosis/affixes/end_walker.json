@@ -1,0 +1,12 @@
+{
+  "_comment": "End Walker: +10-25% movement speed (End boots affix)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.movement_speed",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "rare": { "min": 0.08, "max": 0.12 },
+    "epic": { "min": 0.12, "max": 0.18 },
+    "mythic": { "min": 0.18, "max": 0.25 }
+  },
+  "types": { "set": ["boots"] }
+}

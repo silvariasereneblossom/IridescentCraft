@@ -243,6 +243,19 @@ StartupEvents.registry('item', event => {
         .rarity('rare')
 
     // =========================================================================
+    // DRAGON SUMMONING CRYSTAL (End exploration gate item)
+    // =========================================================================
+
+    event.create('kubejs:dragon_summoning_crystal')
+        .displayName('Dragon Summoning Crystal')
+        .tooltip('§5A crystallized beacon of draconic energy')
+        .tooltip('§7Use at the End Portal fountain (0,0) to summon the Ender Dragon')
+        .tooltip('§8Requires End exploration before the Dragon can be challenged')
+        .maxStackSize(1)
+        .rarity('epic')
+        .glow(true)
+
+    // =========================================================================
     // ENDGAME MATERIALS (T4 boss drops for Crucible/Prestige)
     // =========================================================================
 

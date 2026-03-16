@@ -57,7 +57,6 @@ const TIER_3_BOSSES = [
   'cataclysm:the_leviathan',
   'cataclysm:maledictus',
   'cataclysm:ancient_remnant',
-  'cataclysm:the_ender_guardian',
   'cataclysm:the_baby_leviathan',
   // Meet Your Fight
   'meetyourfight:dame_fortuna',
@@ -75,6 +74,8 @@ const TIER_3_BOSSES = [
 const TIER_4_BOSSES = [
   'minecraft:ender_dragon',
   'botania:doppleganger',  // Gaia Guardian
+  'cataclysm:ender_guardian',  // Ender Guardian (End boss, T4)
+  'cataclysm:ignited_revenant',  // Ignited Revenant (1000 HP, T4)
 ]
 
 // =============================================================================
@@ -103,6 +104,14 @@ EntityEvents.death(event => {
   // Check Tier 4
   if (!AStages.playerHasStage('tier_4', player) && TIER_4_BOSSES.includes(entityId)) {
     grantTier(player, 'tier_4', entity.name.string)
+  }
+
+  // Dragon-specific End advancements (granted even if player already has T4)
+  if (entityId === 'minecraft:ender_dragon') {
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/kill_dragon`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/dragon_egg`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/respawn_dragon`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/dragon_breath`)
   }
 })
 
@@ -278,6 +287,12 @@ function grantTier(player, tier, triggerName) {
   if (targetIdx >= 3) { // tier_4
     player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:nether/netherite_armor`)
     player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:husbandry/obtain_netherite_hoe`)
+    // End advancements — grant root + exploration advancements on T4 unlock
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/root`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/enter_end_gateway`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/find_end_city`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/elytra`)
+    player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/levitate`)
   }
 
   const tierNum = tier.replace('tier_', '')

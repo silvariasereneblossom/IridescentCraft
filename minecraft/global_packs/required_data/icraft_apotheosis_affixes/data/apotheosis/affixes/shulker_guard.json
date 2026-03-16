@@ -1,0 +1,13 @@
+{
+  "_comment": "Shulker Guard: +1-4 armor (projectile defense proxy, End armor affix)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.armor",
+  "operation": "ADDITION",
+  "values": {
+    "uncommon": { "min": 0.5, "max": 1.0 },
+    "rare": { "min": 1.0, "max": 2.0 },
+    "epic": { "min": 2.0, "max": 3.0 },
+    "mythic": { "min": 3.0, "max": 4.0 }
+  },
+  "types": { "set": ["helmet", "chestplate", "leggings", "boots"] }
+}

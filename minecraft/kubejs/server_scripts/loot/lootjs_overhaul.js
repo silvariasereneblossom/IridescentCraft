@@ -185,10 +185,13 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/irons_spellbooks:.*chests.*/)
     .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
 
-  // --- Moog's End Structures (T4 content — allow everything, add T4 tokens) ---
+  // --- Moog's End Structures (T4 content — allow everything, add T4 tokens + thematic loot) ---
   event
     .addLootTableModifier(/mes:.*chests.*/)
     .addLoot(LootEntry.of('kubejs:tier4_token').when(c => c.randomChance(0.12)))
+    .addLoot(LootEntry.of('minecraft:chorus_fruit').limitCount([4, 8]).when(c => c.randomChance(0.08)))
+    .addLoot(LootEntry.of('minecraft:ender_pearl').limitCount([2, 4]).when(c => c.randomChance(0.05)))
+    .addLoot(LootEntry.of('minecraft:shulker_shell').when(c => c.randomChance(0.03)))
 
   // =========================================================================
   // SECTIONS 4–4H: BOSS ENTITY LOOT MODIFIERS

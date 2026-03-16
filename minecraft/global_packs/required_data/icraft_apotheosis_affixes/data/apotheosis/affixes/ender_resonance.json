@@ -1,0 +1,13 @@
+{
+  "_comment": "Ender Resonance: +10-20% bonus damage (End-themed weapon affix)",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "uncommon": { "min": 0.08, "max": 0.10 },
+    "rare": { "min": 0.10, "max": 0.14 },
+    "epic": { "min": 0.14, "max": 0.18 },
+    "mythic": { "min": 0.18, "max": 0.20 }
+  },
+  "types": { "set": ["sword", "axe", "trident"] }
+}

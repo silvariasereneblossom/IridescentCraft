@@ -303,14 +303,17 @@ LootJS.modifiers(event => {
             LootEntry.of("simplyswords:twisted_blade").when(c => c.randomChance(0.15))
         )
 
-    // Cataclysm: Ignited Revenant — Fire/undead theme (mini-boss tier)
+    // Cataclysm: Ignited Revenant — Fire/undead theme (1000 HP = T4 tier)
     event.addEntityLootModifier("cataclysm:ignited_revenant")
         .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.30))
+            LootEntry.of("kubejs:t4_token_fragment").limitCount([2, 4])
         )
+        .addWeightedLoot([
+            Item.of("kubejs:ultimate_reforging_token").withChance(15),
+            Item.of("kubejs:waystone_core").withChance(10)
+        ])
         .addLoot(
-            LootEntry.of("simplyswords:emberlash").when(c => c.randomChance(0.08))
+            LootEntry.of("simplyswords:emberlash").when(c => c.randomChance(0.15))
         )
 
     // Cataclysm: Ender Golem — Ender/construct theme (mini-boss tier)
@@ -460,6 +463,19 @@ LootJS.modifiers(event => {
         ])
         .addLoot(
             LootEntry.of("simplyswords:arcanethyst").when(c => c.randomChance(0.18))
+        )
+
+    // Cataclysm: Void Blossom — Void/nature theme (T4 boss)
+    event.addEntityLootModifier("cataclysm:void_blossom")
+        .addLoot(
+            LootEntry.of("kubejs:t4_token_fragment").limitCount([2, 4])
+        )
+        .addWeightedLoot([
+            Item.of("kubejs:ultimate_reforging_token").withChance(15),
+            Item.of("kubejs:waystone_core").withChance(15)
+        ])
+        .addLoot(
+            LootEntry.of("simplyswords:watching_warglaive").when(c => c.randomChance(0.18))
         )
 
     // Cataclysm: Ancient Remnant — Ultimate Cataclysm boss
@@ -920,12 +936,13 @@ LootJS.modifiers(event => {
     //       soulkeeper(Wither)
     //   T4: waking_lichblade(EnderDragon), magiblade(GaiaGuardian),
     //       arcanethyst(EnderGuardian), awakened_lichblade(AncientRemnant),
-    //       stormbringer(Warden)
+    //       stormbringer(Warden), watching_warglaive(VoidBlossom),
+    //       emberlash(IgnitedRevenant — promoted to T4)
     //
-    // UNASSIGNED (12/42) — reserved for future bosses:
+    // UNASSIGNED (11/42) — reserved for future bosses:
     //   harbinger, hearthflame, magiscythe, magispear, mjolnir,
     //   ribboncleaver, slumbering_lichblade, sword_on_a_stick,
-    //   storms_edge, watcher_claymore, watching_warglaive, wickpiercer
+    //   storms_edge, watcher_claymore, wickpiercer
     // =====================================================================
 
 })

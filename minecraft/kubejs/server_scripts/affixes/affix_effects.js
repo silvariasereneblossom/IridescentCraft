@@ -285,6 +285,23 @@ EntityEvents.hurt(event => {
     event.damage *= 1.25
   }
 
+  // ── Void-Touched: Attacks briefly levitate target (anti-melee, End-themed) ──
+  if (hasAffix(weapon, "Void-Touched") || hasAffix(weapon, "Void Touched")) {
+    if (Math.random() < 0.15) { // 15% chance per hit
+      target.potionEffects.add('minecraft:levitation', 20, 0, false, false) // 1s levitate
+    }
+  }
+
+  // ── Ender Resonance: +15% damage to End mobs (Endermen, Shulkers, etc.) ──
+  if (hasAffix(weapon, "Ender Resonance") || hasAffix(weapon, "Resonance")) {
+    let targetType = target.type.toString()
+    if (targetType.includes('enderman') || targetType.includes('shulker') ||
+        targetType.includes('ender_dragon') || targetType.includes('endermite') ||
+        targetType.includes('ender_guardian') || targetType.includes('ender_golem')) {
+      event.damage *= 1.15
+    }
+  }
+
   // ── Deepwound: Reduce target healing by applying Instant Damage trace ──
   if (hasAffix(weapon, "Deepwound")) {
     target.persistentData.putLong('icraft_deepwound', target.level.gameTime)
@@ -878,6 +895,21 @@ ServerEvents.tick(event => {
     if ((dim === 'aether:the_aether' || dim === 'deep_aether:the_aether') &&
         hasAnyAffix(player, "Aether-touched") || hasAnyAffix(player, "Aether")) {
       player.potionEffects.add('minecraft:speed', 120, 0, false, false)
+    }
+
+    // ── End Walker: Speed boost in The End ──
+    if (dim === 'minecraft:the_end' && hasAnyAffix(player, "End Walker")) {
+      player.potionEffects.add('minecraft:speed', 120, 1, false, false)
+    }
+
+    // ── Chorus Mending: Passive regen in The End ──
+    if (dim === 'minecraft:the_end' && hasAnyAffix(player, "Chorus")) {
+      if (player.health < player.maxHealth) player.heal(0.5)
+    }
+
+    // ── Shulker's Guard: Projectile resistance proxy in The End ──
+    if (dim === 'minecraft:the_end' && hasAnyAffix(player, "Shulker Guard")) {
+      player.potionEffects.add('minecraft:resistance', 120, 0, false, false)
     }
 
     // ── Magma Walker: Fire immunity tick on magma/lava ──
