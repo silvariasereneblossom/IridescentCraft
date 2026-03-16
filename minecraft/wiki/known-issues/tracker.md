@@ -24,10 +24,12 @@
 - **Design:** 4 Undergarden metals added to Tetra with stat overrides. Total material count now 27.
 - **Verify:** Confirm Undergarden materials appear correctly in Tetra crafting UI.
 
-### Missing Icon/Texture Assets for Custom Items
-- **Status:** Known, low priority
-- **Symptom:** New boss drop items, endgame materials (Rift Shard, Rift Core, Primordial Essence, Mythic Catalysts, etc.) use default purple/black missing texture icons
-- **Fix needed:** Create item textures in `assets/kubejs/textures/item/` for all custom items registered in `custom_items.js` and `endgame_items.js`
+### Custom Item Artwork Needed (72 items)
+- **Status:** TODO — tinted placeholder textures in place, need proper pixel art
+- **Current state:** All 72 custom items use tinted vanilla base textures (e.g. tinted ender pearl for tokens, tinted amethyst shard for crystals). Functional and color-coded but not unique artwork.
+- **Items needing art:** Progression tokens (T1-T4 + fragments), boss materials (12+), intermediate alloys, 8 Abyss rings, endgame items (Rift Core, Primordial Essence, Mythic Catalysts I-V, Rift Gem, Rift Blueprint, Void Coffer), MekaSuit Mk2 (4 pieces), Dragon Summoning Crystal, Dragon Heart, Dragon Scale, planetary extracted elements (10), Class Altar, Waystone Core, reforging tokens
+- **Location:** Textures go in `assets/kubejs/textures/item/` as 16x16 PNGs matching the item registry names
+- **Priority:** Medium — placeholders work but proper art would significantly improve visual polish
 
 ## Needs Testing
 
