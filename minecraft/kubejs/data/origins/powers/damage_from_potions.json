@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Potion Sensitivity",
+  "description": "Potions feel unpleasant but no longer cause damage."
+}
