@@ -438,4 +438,19 @@ StartupEvents.registry('item', event => {
     .rarity('EPIC')
     .textureJson({ layer0: 'minecraft:item/nether_star' })
     .color(0, 0xFFAA00)
+
+  // =========================================================================
+  // HDPE CIRCUIT BOARD — Industrial Byproduct → Circuit Substitute
+  // =========================================================================
+
+  event.create('kubejs:hdpe_circuit_board')
+    .displayName('HDPE Circuit Board')
+    .tooltip('§aA lightweight plastic circuit board')
+    .tooltip('§7Crafted from HDPE Sheet + Redstone + Gold')
+    .tooltip('§7Substitutes for control circuits in select recipes')
+    .tooltip('§8Feeds ethylene byproducts back into your factory')
+    .maxStackSize(64)
+    .rarity('uncommon')
+    .textureJson({ layer0: 'minecraft:item/iron_ingot' })
+    .color(0, 0x33AA33)
 })
