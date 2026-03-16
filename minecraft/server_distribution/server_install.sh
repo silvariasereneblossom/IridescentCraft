@@ -104,18 +104,35 @@ else
     PACK_DIR="$(dirname "$MODS_SOURCE")"
 fi
 
-# Read the client-only exclusion list
-CLIENT_ONLY_FILE="$SCRIPT_DIR/client_only_mods.txt"
+# Build client-only exclusion list dynamically from .index metadata
+# This survives mod updates since it reads the actual metadata, not hardcoded filenames
 declare -A EXCLUDE_MODS
-if [ -f "$CLIENT_ONLY_FILE" ]; then
-    while IFS= read -r line; do
-        # Skip comments and empty lines
-        [[ "$line" =~ ^#.*$ || -z "$line" ]] && continue
-        EXCLUDE_MODS["$line"]=1
-    done < "$CLIENT_ONLY_FILE"
-    echo "  Loaded ${#EXCLUDE_MODS[@]} client-only mods to exclude."
+INDEX_DIR="$MODS_SOURCE/.index"
+if [ -d "$INDEX_DIR" ]; then
+    while IFS= read -r toml_file; do
+        if grep -q "side = 'client'" "$toml_file" 2>/dev/null; then
+            fname=$(grep "^filename" "$toml_file" | cut -d"'" -f2)
+            [ -n "$fname" ] && EXCLUDE_MODS["$fname"]=1
+        fi
+    done < <(find "$INDEX_DIR" -name "*.pw.toml" 2>/dev/null)
+    # Always exclude rendering mods that are marked 'both' but crash/waste resources on servers
+    EXCLUDE_MODS["embeddium-0.3.31+mc1.20.1.jar"]=1
+    for emb in "$MODS_SOURCE"/embeddium-*.jar; do
+        [ -f "$emb" ] && EXCLUDE_MODS["$(basename "$emb")"]=1
+    done
+    echo "  Auto-detected ${#EXCLUDE_MODS[@]} client-only mods to exclude."
 else
-    echo "  WARNING: client_only_mods.txt not found. All mods will be copied."
+    # Fallback to static list if no .index directory
+    CLIENT_ONLY_FILE="$SCRIPT_DIR/client_only_mods.txt"
+    if [ -f "$CLIENT_ONLY_FILE" ]; then
+        while IFS= read -r line; do
+            [[ "$line" =~ ^#.*$ || -z "$line" ]] && continue
+            EXCLUDE_MODS["$line"]=1
+        done < "$CLIENT_ONLY_FILE"
+        echo "  Loaded ${#EXCLUDE_MODS[@]} client-only mods from static list (no .index found)."
+    else
+        echo "  WARNING: No .index/ metadata and no client_only_mods.txt. All mods will be copied."
+    fi
 fi
 
 mkdir -p mods
