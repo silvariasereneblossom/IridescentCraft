@@ -35,6 +35,7 @@ Major change from vanilla: Nether is Tier 3, End is Tier 4.
 | 3 | Deeper and Darker | 3.5x | 3.5x | 4.0x | 10% |
 | 3 | The Nether | 4.0x | 4.0x | 5.0x | 12% |
 | 4 | Deep Aether | 5.0x | 5.0x | 6.5x | 13% |
+| 3 | The Abyss | 3.5x | 3.5x | 4.0x | 10% |
 | 4 | The End | 6.0x-10.0x | 6.0x-10.0x | 8.0x-12.0x | 14-15% |
 
 ## Staging Implementation

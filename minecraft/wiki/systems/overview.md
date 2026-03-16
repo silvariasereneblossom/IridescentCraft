@@ -43,12 +43,13 @@ Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
 Each dimension has unique combat mechanics beyond stat scaling:
 - **Twilight Forest:** Canopy Ambush (invisibility), Pack Tactics, Twilight Corruption
 - **Blue Skies:** Elemental damage (30% bypasses armor), Elemental Storms
-- **The Aether:** Updraft Zones, Cloud Cover, Gravity Wells
+- **The Aether:** Thin Air (slow regen above cloud level), Vertigo (screen effects near edges), Updrafts (launch zones near cliffs)
 - **Undergarden:** Virulent Spores (poison), Fungal Armor (regen), Decay Aura
 - **Deeper and Darker:** Acoustic Aggro, Sculk Resonance, Darkness Empowerment
 - **The Nether:** Infernal Rage, Soulfire Burns (30% bypasses armor), Blaze Swarm
 - **Deep Aether:** Celestial Empowerment, Wind Shear, Radiant Shield
-- **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture
+- **The Abyss:** Oppressive Darkness (reduced visibility + slowness without light source), Corruption (gradual wither in corrupt biomes), Fear Aura (boss proximity debuffs)
+- **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. 9 advancement overrides, 5 End Apotheosis affixes.
 
 ## Champions System
 
@@ -118,13 +119,13 @@ XP is plentiful with many sinks: JustLevelingFork leveling, skill point investme
 
 ## Tetra Modded Materials
 
-20 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals. Includes Abyss and Forbidden & Arcanus metals added 2026-03-16. Diamond hammer tier required for high-tier crafting.
+27 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals. Includes Blue Skies, Undergarden, Abyss, and Forbidden & Arcanus metals. Diamond hammer tier required for high-tier crafting.
 
 | Tier | Materials |
 |------|-----------|
 | T1 | Brass |
-| T2 | Steel, Signalum, Lumium, Manasteel, Steeleaf, Ironwood, Fiery, Knightmetal |
-| T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium, + Abyss metals, F&A metals |
+| T2 | Steel, Signalum, Lumium, Manasteel, Steeleaf, Ironwood, Fiery, Knightmetal, Diopside, Charoite, Horizonite |
+| T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium, + Undergarden metals, Abyss metals, F&A metals |
 | T4 | Aethersteel |
 
 See [Tetra Materials](tetra-materials.md) for full reference.
@@ -140,6 +141,18 @@ All stat scaling (damage, luck, XP multipliers) zeroed out to avoid conflicts wi
 ## Mekanism Balance
 
 Generators nerfed across the board to prevent early RF flooding. All machine RF costs doubled (2x). Digital Miner recipe requires higher-tier materials. Mekanism tool and armor recipes removed (MekaTool/MekaSuit remain T4-only via existing gating).
+
+## Abyss Ring & Armor System
+
+The Abyss mod received a full overhaul. 30 original ring recipes removed (too accessible for their power level). 8 custom rings created with progression-appropriate recipes gated behind boss drops. 7 armor set bonuses implemented for Abyss armor sets. Key equipment requires Abyss boss drops to craft.
+
+## Blue Skies Balance
+
+Dusk Arc weapon and Shadow Armor set removed (overpowered for T2). Runic Arc changed to boss-drop only. Diopside, Charoite, and Horizonite nerfed to T2-appropriate stats and integrated into Tetra.
+
+## End Overhaul
+
+Dragon Exploration Gate: players must explore End islands and complete objectives before the dragon fight becomes available. 9 advancement overrides replace the vanilla End advancement chain. 5 End-specific Apotheosis affixes. Void Blossom loot table fixed. Entity ID corrections for End mobs. Moog's End Structure loot tables populated.
 
 ## Related Pages
 

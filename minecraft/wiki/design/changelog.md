@@ -4,6 +4,43 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-16 — Blue Skies, Undergarden, Aether/Abyss mechanics, End overhaul, Abyss overhaul, server distribution
+
+### Blue Skies Balance Pass
+- Dusk Arc weapon removed (overpowered for T2).
+- Shadow Armor set removed (bypassed tier progression).
+- Runic Arc changed to boss-drop only (was craftable).
+- Diopside, Charoite, Horizonite nerfed to T2-appropriate stats and integrated into Tetra (23 materials total).
+
+### Undergarden Balance Pass
+- Tetra stat overrides added for 4 Undergarden metals, bringing total Tetra material count to 27.
+
+### Aether + Abyss Dimension Mechanics
+- Aether mechanics implemented: thin air (slow regen above cloud level), vertigo (screen effects near edges), updrafts (launch zones near cliffs).
+- Abyss mechanics implemented: oppressive darkness (reduced visibility + slowness without light source), corruption (gradual wither in corrupt biomes), fear aura (boss proximity debuffs).
+
+### Comprehensive End Overhaul
+- Dragon Exploration Gate: players must explore End islands and complete objectives before the dragon fight becomes available (explore first, fight dragon last).
+- 9 advancement overrides for End progression (replaces vanilla End advancement chain).
+- 5 End-specific Apotheosis affixes added (End Apotheosis affixes).
+- Void Blossom loot table fix (was dropping nothing).
+- Entity ID fixes for End mobs (corrected registry names).
+- Moog's End Structure loot tables populated with tier-appropriate rewards.
+
+### Twilight Forest Portal Change
+- TF portal activator changed from diamond to T1 boss token (makes TF accessible after first boss kill rather than requiring diamonds).
+
+### Abyss Overhaul
+- 30 original ring recipes removed (were too accessible).
+- 8 custom rings created with progression-appropriate recipes.
+- 7 armor set bonuses implemented for Abyss armor sets.
+- Boss drop gating: key Abyss equipment now requires boss drops to craft.
+
+### Server Distribution
+- Server distribution folder created for packaged server deployment.
+
+---
+
 ## 2026-03-16 — Ad Astra, Mekanism balance, food system, Tetra expansion, Farmer's Delight, bug fixes
 
 ### Ad Astra Integration

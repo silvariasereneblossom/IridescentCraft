@@ -19,9 +19,10 @@
 - **Design:** 5 planets (Moon, Mars, Mercury, Venus, Glacio) as post-T4 endgame. MekaSuit Mk2, planetary extraction, space enchantments.
 - **Remaining:** Recipe gating, dimension scaling, loot tables, space enchantment implementation.
 
-### Abyss Ring/Armor Design
-- **Status:** Planned (2026-03-16)
-- **Design:** Ring and armor integration for The Abyss mod documented for future implementation.
+### Undergarden Tetra Stat Overrides
+- **Status:** Implemented (2026-03-16), needs in-game verification
+- **Design:** 4 Undergarden metals added to Tetra with stat overrides. Total material count now 27.
+- **Verify:** Confirm Undergarden materials appear correctly in Tetra crafting UI.
 
 ### Missing Icon/Texture Assets for Custom Items
 - **Status:** Known, low priority
@@ -42,6 +43,27 @@
 - [ ] Farmer's Delight cooking conversion — 70 recipes
 
 ## Resolved
+
+### Blue Skies Balance Pass (2026-03-16)
+- **Resolved:** Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2 + Tetra integration (23 materials).
+
+### Abyss Overhaul (2026-03-16)
+- **Resolved:** 30 ring recipes removed, 8 custom rings created, 7 armor set bonuses implemented, boss drop gating added. Replaces earlier "Planned" status.
+
+### End Overhaul (2026-03-16)
+- **Resolved:** Dragon Exploration Gate implemented (explore first, fight dragon last). 9 advancement overrides, 5 End Apotheosis affixes, Void Blossom loot fix, entity ID fixes, Moog's End Structure loot populated.
+
+### Aether + Abyss Dimension Mechanics (2026-03-16)
+- **Resolved:** Aether mechanics (thin air, vertigo, updrafts) and Abyss mechanics (oppressive darkness, corruption, fear aura) implemented.
+
+### TF Portal Activator Change (2026-03-16)
+- **Resolved:** Twilight Forest portal activator changed from diamond to T1 boss token.
+
+### Undergarden Tetra Integration (2026-03-16)
+- **Resolved:** 4 Undergarden metals added to Tetra (27 materials total).
+
+### Server Distribution (2026-03-16)
+- **Resolved:** Server distribution folder created for packaged deployment.
 
 ### Mekanism Balance Overhaul (2026-03-16)
 - **Resolved:** Generator nerfs, 2x RF costs for all machines, Digital Miner recipe changed, tool/armor recipes removed.
