@@ -5247,3 +5247,8 @@ Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING
 [17Mar2026 11:24:28.887] [Render thread/WARN] [ModernFix/]: Game took 78.388 seconds to start
 [17Mar2026 11:24:28.889] [Render thread/INFO] [auudio/AudioHandler/]: Reloading sounds!
 [17Mar2026 11:24:28.889] [Render thread/INFO] [auudio/AudioHandler/]: Running post-reload tasks..
+[17Mar2026 15:19:41.342] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[17Mar2026 15:19:41.349] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[17Mar2026 15:19:41.451] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[17Mar2026 15:19:41.486] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[17Mar2026 15:19:41.609] [Render thread/INFO] [FTB Chunks/]: Shutting down map thread
