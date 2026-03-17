@@ -138,38 +138,24 @@ foreach ($toml in $tomlFiles) {
         continue
     }
 
-    # Download
+    # Download — use Invoke-WebRequest which follows all redirects (307→302→200)
+    # This is critical for CurseForge which does multiple redirects
     $pct = [math]::Round(($total / $totalFiles) * 100)
     Write-Host "  [$pct%] Downloading: $filename" -NoNewline
 
     try {
-        $wc = New-Object System.Net.WebClient
-        $wc.DownloadFile($downloadUrl, "mods\$filename")
+        Invoke-WebRequest -Uri $downloadUrl -OutFile "mods\$filename" -MaximumRedirection 10 -UseBasicParsing
 
-        if (Test-Path "mods\$filename") {
-            $fileSize = (Get-Item "mods\$filename").Length
-            if ($fileSize -gt 1000) {
-                Write-Host " OK" -ForegroundColor Green
-                $downloaded++
-            } else {
-                # Tiny file = probably a redirect/error page, not a real jar
-                # Try following redirects with Invoke-WebRequest
-                Remove-Item "mods\$filename" -Force
-                try {
-                    Invoke-WebRequest -Uri $downloadUrl -OutFile "mods\$filename" -MaximumRedirection 5
-                    Write-Host " OK (redirect)" -ForegroundColor Green
-                    $downloaded++
-                } catch {
-                    Write-Host " FAILED" -ForegroundColor Red
-                    $failed++
-                }
-            }
+        if ((Test-Path "mods\$filename") -and (Get-Item "mods\$filename").Length -gt 1000) {
+            Write-Host " OK" -ForegroundColor Green
+            $downloaded++
         } else {
-            Write-Host " FAILED" -ForegroundColor Red
+            if (Test-Path "mods\$filename") { Remove-Item "mods\$filename" -Force }
+            Write-Host " FAILED (bad response)" -ForegroundColor Red
             $failed++
         }
     } catch {
-        Write-Host " FAILED" -ForegroundColor Red
+        Write-Host " FAILED ($($_.Exception.Message))" -ForegroundColor Red
         $failed++
     }
 }
