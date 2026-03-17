@@ -13,12 +13,19 @@ $ErrorActionPreference = "Continue"
 $ForgeVersion = "1.20.1-47.4.6"
 $ForgeInstaller = "forge-$ForgeVersion-installer.jar"
 
+# Trans flag colors via ANSI escape sequences
+$esc = [char]27
+$tfBlue = "${esc}[38;2;91;206;250m"
+$tfPink = "${esc}[38;2;245;169;184m"
+$tfWhite = "${esc}[38;2;255;255;255m"
+$tfReset = "${esc}[0m"
+
 Write-Host ""
-Write-Host "==========================================" -ForegroundColor Blue
-Write-Host "  IridescentCraft Server Installer" -ForegroundColor Magenta
-Write-Host "  Forge $ForgeVersion" -ForegroundColor White
-Write-Host "  Standalone Edition" -ForegroundColor Magenta
-Write-Host "==========================================" -ForegroundColor Blue
+Write-Host "${tfBlue}==========================================${tfReset}"
+Write-Host "${tfPink}  IridescentCraft Server Installer${tfReset}"
+Write-Host "${tfWhite}  Forge $ForgeVersion${tfReset}"
+Write-Host "${tfPink}  Standalone Edition${tfReset}"
+Write-Host "${tfBlue}==========================================${tfReset}"
 Write-Host ""
 
 # -------------------------------------------------------------------
