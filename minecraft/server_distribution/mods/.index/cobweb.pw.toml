@@ -1,0 +1,16 @@
+filename = 'cobweb-forge-1.20.1-1.0.1.jar'
+name = 'Cobweb'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'fc152db7f2f0a2676ab570033945c03b5547bee667788305899371b7d421e9103ebeda5e839a644d36e6ed9b6d7c1a2b4c0db7ceae1888559d7e34f35ee6bfdb'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/dQcfqGbl/versions/6tcgyNkq/cobweb-forge-1.20.1-1.0.1.jar'
+
+[update.modrinth]
+mod-id = 'dQcfqGbl'
+version = '6tcgyNkq'

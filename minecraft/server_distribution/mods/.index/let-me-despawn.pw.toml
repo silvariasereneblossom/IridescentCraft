@@ -1,0 +1,16 @@
+filename = 'letmedespawn-1.20.x-forge-1.5.0.jar'
+name = 'Let Me Despawn'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.2', '1.20.2-Snapshot', '1.20.3', '1.20.3-Snapshot', '1.20.4' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '878dd35df02e1e17b7eb16113147f964eda8847f'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6311230
+project-id = 663477

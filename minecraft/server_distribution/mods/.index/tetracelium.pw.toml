@@ -1,0 +1,16 @@
+filename = 'tetracelium-1.20.1-1.3.1.jar'
+name = 'tetracelium'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '164db8702cab72b9642986db7779f48c1a610224b4dc93be7a4a0d6ddba3354511f99612e6e305a54b3ab09a78066f874bcad6e30f9d3e2e7b843264e40c643c'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/rTvWs5Jz/versions/ylknRMaS/tetracelium-1.20.1-1.3.1.jar'
+
+[update.modrinth]
+mod-id = 'rTvWs5Jz'
+version = 'ylknRMaS'

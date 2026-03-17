@@ -1,0 +1,16 @@
+filename = 'Cucumber-1.20.1-7.0.16.jar'
+name = 'Cucumber Library'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '88a9ec30e4acb5c80a3ae060ad70b79e945293c6'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7180783
+project-id = 272335

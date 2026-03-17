@@ -1,0 +1,16 @@
+filename = 'AkashicTome-1.7-27.jar'
+name = 'Akashic Tome'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '06c00f0fd09dda54ef47f51b66093447929c936a'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5605501
+project-id = 250577

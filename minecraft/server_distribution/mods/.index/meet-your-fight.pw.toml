@@ -1,0 +1,16 @@
+filename = 'meetyourfight-1.20.1-1.6.0.jar'
+name = 'Meet Your Fight'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '0c2abcb9a756803b924f8be21b64222fa5cdf1f54a6827a3fd122acc5ed505d8428b7fd3e153c18a2526b252c14ad1cf759685d30bd6ecb1c89a5ec05074becf'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/D9r5EYDa/versions/t2HPINVy/meetyourfight-1.20.1-1.6.0.jar'
+
+[update.modrinth]
+mod-id = 'D9r5EYDa'
+version = 't2HPINVy'

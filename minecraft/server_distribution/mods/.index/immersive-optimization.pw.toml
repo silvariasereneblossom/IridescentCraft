@@ -1,0 +1,16 @@
+filename = 'immersive_optimization-forge-1.20.1-0.1.0.jar'
+name = 'Immersive Optimization'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '38f833638b29c098005e18068fb5f3957462dea496176d446b400c37bf4fb19343dd250993cd458465bfe29c0b1f27afbb5bc3a7245b972fed82ea8e70a0c8c8'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/vNZgQmjg/versions/IbAHAwYb/immersive_optimization-forge-1.20.1-0.1.0.jar'
+
+[update.modrinth]
+mod-id = 'vNZgQmjg'
+version = 'IbAHAwYb'

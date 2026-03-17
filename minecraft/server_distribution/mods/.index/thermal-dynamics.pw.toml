@@ -1,0 +1,16 @@
+filename = 'thermal_dynamics-1.20.1-11.0.1.23.jar'
+name = 'Thermal Dynamics'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '7a9b3691dfca81e52d3e34738c6bc0a98b58bf93'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5372747
+project-id = 227443

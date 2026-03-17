@@ -1,0 +1,30 @@
+filename = 'merenc-forge-1.20.[0-4]-v4.2.jar'
+name = 'Merge Enchantments'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [
+    '1.18',
+    '1.18.1',
+    '1.18.2',
+    '1.19',
+    '1.19.1',
+    '1.19.2',
+    '1.19.3',
+    '1.19.4',
+    '1.20',
+    '1.20.1',
+    '1.20.2',
+    '1.20.3',
+    '1.20.4'
+]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '9175f4e8ab6ee1674560b841b5bac90d1d6aa7b0c53499c9f41d257fd9f4e96972553ac3f750da57b7f540b3b052b135231ad2b29b16402ddc7d61d469aab981'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/xZUFmYJ5/versions/s6aBiK6u/merenc-forge-1.20.%5B0-4%5D-v4.2.jar'
+
+[update.modrinth]
+mod-id = 'xZUFmYJ5'
+version = 's6aBiK6u'

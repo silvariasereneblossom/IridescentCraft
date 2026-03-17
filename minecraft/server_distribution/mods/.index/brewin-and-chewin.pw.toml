@@ -1,0 +1,16 @@
+filename = 'BrewinAndChewin-1.20.1-3.2.1.jar'
+name = "Brewin' And Chewin'"
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'b11a91386ef9da2569b69fd4c229b1c31dcc2eb9'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6237884
+project-id = 637808

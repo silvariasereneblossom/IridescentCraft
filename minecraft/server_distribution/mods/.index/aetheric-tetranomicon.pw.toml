@@ -1,0 +1,16 @@
+filename = 'aetheric_tetranomicon-1.2.0-1.20.1.jar'
+name = 'Aetheric Tetranomicon'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '41ef3209e4cf273fea231a39a97e58628c26603a'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6124951
+project-id = 966902

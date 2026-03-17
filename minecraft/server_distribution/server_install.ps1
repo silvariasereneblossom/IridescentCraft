@@ -195,29 +195,15 @@ if ($failed -gt 0) {
     Write-Host "  Failed: $failed mods" -ForegroundColor Red
 }
 
-# -------------------------------------------------------------------
-# Step 4: Final
-# -------------------------------------------------------------------
 Write-Host ""
-Write-Host "[4/4] Final setup..." -ForegroundColor Yellow
-Write-Host ""
-Write-Host "==========================================" -ForegroundColor Green
-Write-Host "  Installation complete!" -ForegroundColor Green
-Write-Host "==========================================" -ForegroundColor Green
-Write-Host ""
-Write-Host "To start the server: double-click start.bat"
-Write-Host ""
-Write-Host "The server will listen on port 25565 by default."
-Write-Host "Edit server.properties to change settings."
-Write-Host ""
-Write-Host "IMPORTANT: First startup will take 5-15 minutes with 420+ mods." -ForegroundColor Yellow
-Write-Host "Wait until you see 'Done' in the console before connecting."
+Write-Host "  Mod download complete." -ForegroundColor Green
 Write-Host ""
 
 if ($failed -gt 0) {
     Write-Host "WARNING: $failed mod(s) failed to download." -ForegroundColor Red
     Write-Host "You may need to download them manually." -ForegroundColor Red
     Write-Host ""
+    exit 1
 }
 
-Read-Host "Press Enter to close"
+exit 0

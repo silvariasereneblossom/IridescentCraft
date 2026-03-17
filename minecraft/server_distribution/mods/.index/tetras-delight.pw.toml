@@ -1,0 +1,16 @@
+filename = 'tetrasdelight-1.20.1-1.jar'
+name = "Tetra's Delight"
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'eb6a89f9671a3cb84984f172ebc39fabc4b97ced03d631254c464dcf51eb844716c1ded78af45acffd4aa53ed686e0dde4dd7c77b3f1c1d6d016fe4870bdaf60'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/TVhC6ZPD/versions/RMrGkuN3/tetrasdelight-1.20.1-1.jar'
+
+[update.modrinth]
+mod-id = 'TVhC6ZPD'
+version = 'RMrGkuN3'

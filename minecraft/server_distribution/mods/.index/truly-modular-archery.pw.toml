@@ -1,0 +1,16 @@
+filename = 'Truly-Modular-archery-archery-forge-1.6-1.20.1.jar'
+name = 'Truly Modular: Archery'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '40f2e63fae5e74e2f9a9700d0a1718fe7ffa96d9bd200c15caf5a73d541c4803be73ccd19c1905c6fd8f31a951bab891d3c3c1e4f0cf0d47fa153969bb3ba5bd'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/RXklwn50/versions/2dd7iKfx/Truly-Modular-archery-archery-forge-1.6-1.20.1.jar'
+
+[update.modrinth]
+mod-id = 'RXklwn50'
+version = '2dd7iKfx'

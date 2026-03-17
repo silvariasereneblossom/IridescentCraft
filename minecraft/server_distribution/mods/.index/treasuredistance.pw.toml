@@ -1,0 +1,16 @@
+filename = 'treasuredistance-1.20-1.2.jar'
+name = 'Better Treasure Map'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.2', '1.20.3', '1.20.4' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '736d49f14ee48422f6209807c5285e787355d785'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 4801197
+project-id = 873563

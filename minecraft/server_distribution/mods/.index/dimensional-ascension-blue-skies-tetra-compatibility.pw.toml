@@ -1,0 +1,16 @@
+filename = 'dimasctetracompat-1.20.1-1.5.0.0.jar'
+name = 'Dimensional Ascension - Blue Skies Tetra Compatibility'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '2fd01c6413fd05218e9af9c2e11dabc8744b4358d502a67693ab782cf5f791ceef2ecfa33411590c11f3b257bf49e3dc3281537cd3ef20cc79f8442ad397a604'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/7aRNsEHq/versions/l5OMl0m3/dimasctetracompat-1.20.1-1.5.0.0.jar'
+
+[update.modrinth]
+mod-id = '7aRNsEHq'
+version = 'l5OMl0m3'

@@ -1,0 +1,16 @@
+filename = 'idas_forge-1.12.1+1.20.1.jar'
+name = 'Integrated Dungeons and Structures'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '7faf6db8ee20db124a4aeb13d96c89f38007161a'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7046799
+project-id = 605375

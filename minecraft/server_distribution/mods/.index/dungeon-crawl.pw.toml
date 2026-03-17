@@ -1,0 +1,16 @@
+filename = 'Dungeon Crawl-1.20.1-2.3.15.jar'
+name = 'Dungeon Crawl'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'e17ebc9be0b3f0646f2de10563b72827442cc866'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6047153
+project-id = 324973

@@ -1,23 +1,26 @@
 @echo off
-REM IridescentCraft Server Start Script (Windows)
+REM IridescentCraft Server — Unified Installer + Launcher (Windows)
 REM Forge 1.20.1-47.4.6 with 420+ mods
+REM
+REM First run:  Installs Forge, downloads mods, then starts the server
+REM Later runs: Skips install (mods already present), starts the server
 REM
 REM Requirements:
 REM   - Java 17 (e.g., Adoptium/Temurin JDK 17)
 REM   - 8-12 GB RAM available for the server
-REM
-REM Usage: Double-click start.bat or run from command prompt
 
 title IridescentCraft Server
 
+echo.
 echo ==========================================
 echo   IridescentCraft Server
 echo   Forge 1.20.1-47.4.6
-echo   RAM: 8-10 GB allocated
 echo ==========================================
 echo.
 
-REM Check Java
+REM -------------------------------------------------------------------
+REM Phase 1: Check Java
+REM -------------------------------------------------------------------
 java -version >nul 2>&1
 if %errorlevel% neq 0 (
     echo ERROR: Java not found. Please install Java 17.
@@ -26,8 +29,72 @@ if %errorlevel% neq 0 (
     exit /b 1
 )
 
-REM JVM Arguments optimized for 420+ mod modpack
-REM G1GC tuned with Aikar's flags for large modded servers
+REM -------------------------------------------------------------------
+REM Phase 2: Install if needed (Forge + mods)
+REM -------------------------------------------------------------------
+if not exist "libraries\net\minecraftforge\forge\1.20.1-47.4.6" (
+    echo [INSTALL] Forge not found — running first-time setup...
+    echo.
+    if not exist "forge-1.20.1-47.4.6-installer.jar" (
+        echo ERROR: forge-1.20.1-47.4.6-installer.jar not found.
+        pause
+        exit /b 1
+    )
+    java -jar forge-1.20.1-47.4.6-installer.jar --installServer
+    echo.
+)
+
+REM Download mods if .index exists and mods folder is mostly empty
+set NEED_MODS=0
+if not exist "mods" set NEED_MODS=1
+if exist "mods\.index" (
+    REM Count jar files — if fewer than 50, probably needs download
+    set JAR_COUNT=0
+    for %%F in (mods\*.jar) do set /a JAR_COUNT+=1
+    if !JAR_COUNT! LSS 50 set NEED_MODS=1
+)
+
+if exist "mods\.index" (
+    echo [INSTALL] Downloading mods via PowerShell...
+    echo.
+    powershell -ExecutionPolicy Bypass -File "%~dp0server_install.ps1"
+    if %errorlevel% neq 0 (
+        echo.
+        echo ERROR: Mod installation failed.
+        pause
+        exit /b 1
+    )
+    echo.
+)
+
+REM Strip any client-only / crash-causing mods
+if exist "mods" (
+    call "%~dp0strip_client_mods.bat" >nul 2>&1
+)
+
+REM -------------------------------------------------------------------
+REM Phase 3: Accept EULA
+REM -------------------------------------------------------------------
+if not exist "eula.txt" (
+    echo eula=true> eula.txt
+    echo [SETUP] EULA accepted.
+)
+findstr /C:"eula=true" eula.txt >nul 2>&1
+if %errorlevel% neq 0 (
+    echo [SETUP] Accepting EULA...
+    echo eula=true> eula.txt
+)
+
+REM -------------------------------------------------------------------
+REM Phase 4: Launch server
+REM -------------------------------------------------------------------
+echo.
+echo ==========================================
+echo   Starting server (8-10 GB RAM)
+echo   First startup may take 5-15 minutes
+echo ==========================================
+echo.
+
 java ^
     -Xmx10G ^
     -Xms8G ^
@@ -53,9 +120,11 @@ java ^
     -Daikars.new.flags=true ^
     -XX:+HeapDumpOnOutOfMemoryError ^
     -XX:HeapDumpPath=crash-heapdump.hprof ^
-    @libraries/net/minecraftforge/forge/1.20.1-47.4.6/win_args.txt nogui %* 2>&1 | more +0 > server_output.log
+    @libraries/net/minecraftforge/forge/1.20.1-47.4.6/win_args.txt nogui %*
 
-REM Capture exit code
+REM -------------------------------------------------------------------
+REM Phase 5: Post-exit crash log
+REM -------------------------------------------------------------------
 set EXIT_CODE=%errorlevel%
 
 if %EXIT_CODE% neq 0 (
@@ -65,7 +134,6 @@ if %EXIT_CODE% neq 0 (
     echo ==========================================
     echo.
 
-    REM Build crash log with timestamp
     for /f "tokens=1-3 delims=/ " %%a in ('date /t') do set DATESTAMP=%%c-%%a-%%b
     for /f "tokens=1-2 delims=: " %%a in ('time /t') do set TIMESTAMP=%%a-%%b
     set CRASHLOG=crash-%DATESTAMP%_%TIMESTAMP%.log
@@ -76,7 +144,6 @@ if %EXIT_CODE% neq 0 (
     echo Exit Code: %EXIT_CODE% >> "%CRASHLOG%"
     echo. >> "%CRASHLOG%"
 
-    REM Append latest Forge crash report if one exists
     if exist "crash-reports" (
         for /f "delims=" %%F in ('dir /b /o-d "crash-reports\crash-*.txt" 2^>nul') do (
             echo --- Forge Crash Report: %%F --- >> "%CRASHLOG%"
@@ -86,11 +153,10 @@ if %EXIT_CODE% neq 0 (
     )
     :got_crash
 
-    REM Append last 200 lines of server output
     echo. >> "%CRASHLOG%"
-    echo --- Last 200 lines of server output --- >> "%CRASHLOG%"
-    if exist "server_output.log" (
-        powershell -Command "Get-Content server_output.log -Tail 200" >> "%CRASHLOG%"
+    echo --- Last 200 lines of server log --- >> "%CRASHLOG%"
+    if exist "logs\latest.log" (
+        powershell -Command "Get-Content 'logs\latest.log' -Tail 200" >> "%CRASHLOG%"
     )
 
     echo Crash log saved: %CRASHLOG%
