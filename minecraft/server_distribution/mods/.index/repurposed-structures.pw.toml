@@ -1,0 +1,16 @@
+filename = 'repurposed_structures-7.1.21+1.20.1-forge.jar'
+name = 'Repurposed Structures'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '2ac348cb2717b8ac01cff7bb253c73e5a932ad97'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7672010
+project-id = 368293

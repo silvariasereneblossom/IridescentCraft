@@ -1,0 +1,150 @@
+# =============================================================================
+# IridescentCraft Champions Affixes Configuration
+# Place in: <world>/serverconfig/champions-affixes.toml
+# Design doc Part II: Champion Affix Pool
+# =============================================================================
+#
+# BUILT-IN AFFIXES mapped to design doc affixes:
+#   Design Doc Name → Champions Built-in
+#   ─────────────────────────────────────
+#   Molten         → molten (fire resistance, fiery attacks, armor pen)
+#   Arctic         → arctic (homing frost projectiles, slow)
+#   Venom          → plagued (poison aura)
+#   Desecrating    → desecrating (harming cloud at target)
+#   Enkindling     → enkindling (fire projectiles, fire spread)
+#   Shielding      → shielding (periodic damage shield)
+#   Reflecting     → reflective (reflects damage)
+#   Regenerating   → lively (HP regen)
+#   Adaptable      → adaptable (damage type resistance)
+#   Hasty          → hasty (speed boost)
+#   Knockback      → knocking (extreme knockback + slow)
+#   Commanding     → infested (spawns minions — closest equivalent)
+#   Draining       → dampening (reduces indirect damage — closest equiv)
+#   Hexing         → paralyzing (CC effect — closest equivalent)
+#   Wither         → wounding (wound effect, reduced healing)
+#   Blink          → magnetic (pulls targets — anti-kite)
+#
+# DIMENSION-WEIGHTED AFFIXES (from design doc):
+#   Twilight Forest:  infested (pack hunters), plagued (poison)
+#   Blue Skies:       arctic, molten (elemental)
+#   Aether:           hasty, knocking (aerial combat)
+#   Undergarden:      plagued, lively, adaptable (attrition)
+#   Deeper & Darker:  magnetic, shielding, paralyzing (horror/stealth)
+#   Nether:           molten, enkindling, desecrating (fire)
+#   Deep Aether:      shielding, knocking, infested (celestial warriors)
+#   The End:          magnetic, dampening, wounding, adaptable (void)
+#
+# NOTE: Champions doesn't support per-dimension affix weighting natively.
+# All affixes are globally available. The design doc's dimension weighting
+# serves as GUIDANCE for future custom affix implementation via KubeJS.
+# =============================================================================
+
+# ─── OFFENSIVE AFFIXES ───
+
+# Molten: Fire resistance, fiery attacks, armor penetration
+# Design: Weighted in Nether, Blue Skies
+[[affixes]]
+  identifier = "molten"
+  enabled = true
+
+# Arctic: Homing frost projectiles that slow targets
+# Design: Weighted in Blue Skies
+[[affixes]]
+  identifier = "arctic"
+  enabled = true
+
+# Enkindling: Fire projectiles, increases fire spread
+# Design: Weighted in Nether
+[[affixes]]
+  identifier = "enkindling"
+  enabled = true
+
+# Desecrating: Spawns harming cloud at target location
+# Design: Weighted in Nether
+[[affixes]]
+  identifier = "desecrating"
+  enabled = true
+
+# Wounding: Attacks inflict Wound (reduced healing, increased damage taken)
+# Design: Maps to "Wither" affix — weighted in The End
+[[affixes]]
+  identifier = "wounding"
+  enabled = true
+
+# ─── DEFENSIVE AFFIXES ───
+
+# Shielding: Periodically shields from all damage
+# Design: Weighted in Deeper & Darker, Deep Aether, The End
+[[affixes]]
+  identifier = "shielding"
+  enabled = true
+
+# Reflective: Portion of damage reflected to attacker
+# Design: Available globally
+[[affixes]]
+  identifier = "reflective"
+  enabled = true
+
+# Lively: Regenerates HP (1/s in combat, 5/s out of combat)
+# Design: Maps to "Regenerating" — weighted in Undergarden
+[[affixes]]
+  identifier = "lively"
+  enabled = true
+
+# Adaptable: Gains resistance to repeated damage types
+# Design: Weighted in Undergarden, The End
+[[affixes]]
+  identifier = "adaptable"
+  enabled = true
+  # Rank 2+ only — too punishing for Overworld mobs
+  minTier = 2
+
+# ─── MOBILITY AFFIXES ───
+
+# Hasty: +30% movement speed
+# Design: Weighted in Aether
+[[affixes]]
+  identifier = "hasty"
+  enabled = true
+
+# Knocking: Extreme knockback + brief slow
+# Design: Maps to "Knockback" — weighted in Aether, Deep Aether
+[[affixes]]
+  identifier = "knocking"
+  enabled = true
+
+# Magnetic: Pulls targets toward champion (anti-kiting)
+# Design: Maps to "Blink" — weighted in Deeper & Darker, The End
+[[affixes]]
+  identifier = "magnetic"
+  enabled = true
+  # Rank 2+ only — too frustrating on Rank 1 Overworld mobs
+  minTier = 2
+
+# ─── UTILITY/CC AFFIXES ───
+
+# Infested: Spawns silverfish when attacking/attacked
+# Design: Maps to "Commanding/Summoning" — weighted in Twilight Forest
+[[affixes]]
+  identifier = "infested"
+  enabled = true
+
+# Plagued: Poison aura to nearby creatures
+# Design: Maps to "Venom" — weighted in Twilight Forest, Undergarden
+[[affixes]]
+  identifier = "plagued"
+  enabled = true
+
+# Paralyzing: Chance to jail targets (unable to move)
+# Design: Maps to "Hexing" — weighted in Deeper & Darker
+[[affixes]]
+  identifier = "paralyzing"
+  enabled = true
+  # Rank 2+ only — extremely frustrating on basic mobs
+  minTier = 2
+
+# Dampening: Reduces indirect damage (arrow resistance)
+# Design: Maps to "Draining" — weighted in The End
+[[affixes]]
+  identifier = "dampening"
+  enabled = true

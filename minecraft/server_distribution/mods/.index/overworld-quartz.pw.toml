@@ -1,0 +1,16 @@
+filename = 'overworld_quartz-1.20.1-1.1.2.jar'
+name = 'Overworld Quartz'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '5f8b71378a4218c66ee012c0d5b3d183dd813b45372b24bdace43e46a498d46570235b808579bffb8fb51762a3eec7f877eb16f3442d59c95f50afb0008e38af'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/CKI6qOiK/versions/RgWGr0vG/overworld_quartz-1.20.1-1.1.2.jar'
+
+[update.modrinth]
+mod-id = 'CKI6qOiK'
+version = 'RgWGr0vG'

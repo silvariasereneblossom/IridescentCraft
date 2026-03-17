@@ -1,0 +1,16 @@
+filename = 'Enhanced-Celestials-forge-1.20.1-5.0.3.1.jar'
+name = 'Enhanced Celestials'
+side = 'server'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '287315f7214d37b2b4a999c44f0a3867c6356578'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6318263
+project-id = 438447

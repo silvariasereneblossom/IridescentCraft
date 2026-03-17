@@ -1,0 +1,9 @@
+{
+  "criteria": {
+    "trigger": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "rewards": {},
+  "parent": "icraft:stage_tier_2"
+}

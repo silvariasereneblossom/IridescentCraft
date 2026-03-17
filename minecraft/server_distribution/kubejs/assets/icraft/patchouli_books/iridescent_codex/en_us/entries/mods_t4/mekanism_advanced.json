@@ -1,0 +1,25 @@
+{
+  "name": "Mekanism Advanced (T4)",
+  "icon": "mekanism:mekasuit_bodyarmor",
+  "category": "icraft:mods_t4",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(t4)Tier 4$() Mekanism unlocks the apex tech content: $(item)MekaSuit$(), $(item)MekaTool$(), QIO Network, Fusion Reactor, and Antimatter production."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)MekaSuit:$() The best armor in the pack for tech-path players. Modular, upgradeable, and powerful. Requires extensive Mekanism infrastructure to produce.$(br2)$(bold)MekaTool:$() All-in-one tool replacing pick, axe, shovel, hoe, and sword. Configurable modes. Endgame default tool."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Fusion Reactor:$() Produces enormous amounts of RF. Building one is a $(t4)T4$() capstone project. Powers the late-game Mekanism factory comfortably.$(br2)$(bold)Antimatter:$() Produced via Particle Accelerator. Required for several Mythic infusion recipes and the $(thing)Oblivion's Rift$() portal components."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)No book needed.$() Mekanism Generators and Tools are documented alongside the core mod at $(bold)mekanismmod.com$(). Focus on the Fission Reactor and Fusion Reactor at $(t4)T4$() — both require significant infrastructure."
+    }
+  ],
+  "advancement": "icraft:stage_tier_4"
+}

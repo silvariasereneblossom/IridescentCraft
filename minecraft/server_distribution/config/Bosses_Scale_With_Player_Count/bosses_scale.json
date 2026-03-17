@@ -1,0 +1,13 @@
+{
+  "_comment": "IridescentCraft — Bosses Scale With Player Count",
+  "_comment2": "Multiplier per additional player in range. 2.0 = boss gets 2x HP with 2 players, 3x with 3, etc.",
+  "_comment3": "This is critical for multiplayer balance — boss HP targets assume solo play.",
+  "multiplier": 1.5,
+  "change_name_of_scaled_mobs": false,
+  "drops_scale_with_player_count": true,
+  "custom_boss_1": "",
+  "custom_boss_2": "",
+  "custom_boss_3": "",
+  "custom_boss_4": "",
+  "custom_boss_5": ""
+}

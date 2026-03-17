@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Nature's Blessing",
+  "description": "+15% magic damage (nature attunement).",
+  "modifiers": [
+    {
+      "attribute": "puffish_attributes:magic_damage",
+      "operation": "multiply_base",
+      "value": 0.15
+    }
+  ]
+}

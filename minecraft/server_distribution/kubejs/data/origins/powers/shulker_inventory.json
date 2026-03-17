@@ -1,0 +1,13 @@
+{
+  "type": "origins:action_on_callback",
+  "entity_action_gained": {
+    "type": "origins:execute_command",
+    "command": "tag @s add icraft_shulk"
+  },
+  "entity_action_lost": {
+    "type": "origins:execute_command",
+    "command": "tag @s remove icraft_shulk"
+  },
+  "name": "Hardened Shell",
+  "description": "Your shell-like skin protects your equipment. Durability loss on death is reduced by 50%."
+}

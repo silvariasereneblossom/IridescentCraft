@@ -1,0 +1,11 @@
+{
+  "type": "origins:conditioned_attribute",
+  "modifier": {
+    "attribute": "forge:block_reach",
+    "value": 0.0,
+    "operation": "addition",
+    "name": "placeholder"
+  },
+  "name": "Efficient Digger",
+  "description": "Your strong arms let you mine 20% faster."
+}

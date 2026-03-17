@@ -1,0 +1,21 @@
+{
+  "type": "origins:modify_food",
+  "name": "Plant Preference",
+  "description": "Meat provides 50% less nourishment. Your avian metabolism thrives on plants and grains.",
+  "item_condition": {
+    "type": "origins:ingredient",
+    "ingredient": {
+      "tag": "origins:meat"
+    }
+  },
+  "food_modifier": {
+    "name": "Plant Preference Food",
+    "operation": "multiply_total_multiplicative",
+    "value": -0.5
+  },
+  "saturation_modifier": {
+    "name": "Plant Preference Saturation",
+    "operation": "multiply_total_multiplicative",
+    "value": -0.5
+  }
+}

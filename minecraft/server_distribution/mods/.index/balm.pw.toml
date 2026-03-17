@@ -1,0 +1,16 @@
+filename = 'balm-forge-1.20.1-7.3.38-all.jar'
+name = 'Balm'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '515905f87268f1eb5af2a9878a84914517efe552'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7420617
+project-id = 531761

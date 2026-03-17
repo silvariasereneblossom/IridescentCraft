@@ -1,0 +1,30 @@
+filename = 'Unwrecked Ships Plus 2.0.5.jar'
+name = 'Unwrecked Ships - Plus'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge', 'quilt', 'fabric' ]
+x-prismlauncher-mc-versions = [
+    '1.20',
+    '1.20.1',
+    '1.20.2',
+    '1.20.3',
+    '1.20.4',
+    '1.20.5',
+    '1.20.6',
+    '1.21',
+    '1.21.1',
+    '1.21.2',
+    '1.21.3',
+    '1.21.4',
+    '1.21.5'
+]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '2b1210604f0426048ee7668189a84fa310e0ed4daffa5ac7de4c6315096b96054e10e6ed351fc038ed3fe29cebe4c6f74db5ed6954e907f6731197de4f4a00a3'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/ae8EZLiC/versions/FrJNgD2B/Unwrecked Ships Plus 2.0.5.jar'
+
+[update.modrinth]
+mod-id = 'ae8EZLiC'
+version = 'FrJNgD2B'

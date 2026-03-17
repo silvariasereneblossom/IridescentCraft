@@ -1,0 +1,15 @@
+#enable chainmail block sound
+vanilla_mobs_animations = true
+#enable chainmail block sound
+savager_and_ravage_animations = true
+#enable chainmail block sound
+bygone_nether_animations = true
+#enable chainmail block sound
+dungeons_mobs_animations = true
+#enable chainmail block sound
+quark_animations = true
+#enable chainmail block sound
+guard_villagers_animations = true
+#enable chainmail block sound
+meet_your_fight_animations = true
+

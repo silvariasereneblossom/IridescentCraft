@@ -1,0 +1,12 @@
+{
+  "type": "champions:magnetic",
+  "category": "offence",
+  "enable": true,
+  "hasSub": false,
+  "mobList": [],
+  "mobPermission": "blacklist",
+  "tier": {
+    "min": 2,
+    "max": 100
+  }
+}

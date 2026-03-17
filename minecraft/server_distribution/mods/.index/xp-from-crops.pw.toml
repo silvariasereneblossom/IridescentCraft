@@ -1,0 +1,16 @@
+filename = 'xp_from_crops-1.0.0-forge-1.20.1.jar'
+name = 'Xp from Crops'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'ab90f1b2fce1d700e385195e03a8b09b8c5cf54bf753883b704225d6f927e85443829358bddcfbb3853df9398d42c75cf53de8a61eb836c4e342d9b60350ccf0'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/RvkVY4dn/versions/p5ZkvSWD/xp_from_crops-1.0.0-forge-1.20.1.jar'
+
+[update.modrinth]
+mod-id = 'RvkVY4dn'
+version = 'p5ZkvSWD'

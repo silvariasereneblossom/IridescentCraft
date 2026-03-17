@@ -1,0 +1,6 @@
+
+["linear Xp per Level"]
+	#linear Xp per Level, default is 50, min is 1
+	#Range: > 1
+	XpPerLevel = 150
+

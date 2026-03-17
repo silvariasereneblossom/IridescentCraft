@@ -1,0 +1,16 @@
+filename = 'almanac-1.20.x-forge-1.0.2.jar'
+name = 'Almanac'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.2', '1.20.3', '1.20.4' ]
+x-prismlauncher-release-type = 'beta'
+
+[download]
+hash = '58c4dea50fcb17593e2c97a23ce101c62b5b32e2fd71d4bbf323f2778d4474c991caba7234ecf4d06f1e246ccb9ad7f67f2fa73f023cd80ef55333e2ed952f43'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Gi02250Z/versions/DnzrwvfD/almanac-1.20.x-forge-1.0.2.jar'
+
+[update.modrinth]
+mod-id = 'Gi02250Z'
+version = 'DnzrwvfD'

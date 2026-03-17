@@ -1,0 +1,10 @@
+
+#General settings
+[general]
+	#Is the max potential for damage reduction fully unlocked
+	#In Vanilla it is 80%
+	#If fullUnlocked = false it is 90%
+	#If fullUnlocked = true it is fully uncapped
+	#It also applies to mobs wearing armor
+	fullUnlocked = false
+

@@ -1,10 +1,10 @@
 # IridescentCraft Server Setup Guide
 
-Dedicated server setup for the IridescentCraft Progression RPG Modpack.
+Standalone dedicated server distribution for the IridescentCraft Progression RPG Modpack.
 
 Forge 1.20.1-47.4.0 | 420+ mods
 
-**Forge installer is included** — no separate download needed.
+**This folder is fully self-contained.** Copy it to any machine, run the installer, and go.
 
 ---
 
@@ -17,80 +17,31 @@ Forge 1.20.1-47.4.0 | 420+ mods
 | CPU | 4 cores | 6+ cores |
 | Disk | 10 GB free | 20 GB free (for world growth) |
 | OS | Linux or Windows | Linux (better performance) |
+| Network | Internet (for initial mod downloads) | |
 
 **Download Java 17:** https://adoptium.net/
 
 ---
 
-## Quick Start (Automated)
+## Quick Start
 
-If you have the full IridescentCraft repository checked out:
+### Windows
+1. Double-click `server_install.bat`
+2. Wait for Forge install and mod downloads
+3. Double-click `start.bat`
 
 ### Linux
 ```bash
-cd server_distribution/
 chmod +x server_install.sh start.sh
 ./server_install.sh
 ./start.sh
 ```
 
-### Windows
-1. Run `server_install.sh` using Git Bash or WSL
-2. Double-click `start.bat`
-
 The install script will:
-- Download and install Forge 1.20.1-47.4.0
-- Copy all server-compatible mods (excluding client-only mods)
-- Copy config/, kubejs/, defaultconfigs/, and global_packs/
-- Set up eula.txt and server.properties
-
----
-
-## Manual Setup
-
-If you prefer to set things up manually or are deploying on a remote machine:
-
-### 1. Install Forge
-
-Download the Forge 1.20.1-47.4.0 installer:
-```
-https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.0/forge-1.20.1-47.4.0-installer.jar
-```
-
-Run the installer in server mode:
-```bash
-java -jar forge-1.20.1-47.4.0-installer.jar --installServer
-```
-
-This creates the `libraries/` folder and Forge args files.
-
-### 2. Copy Mod Files
-
-From the modpack's `minecraft/` directory, copy these folders into your server directory:
-
-- **mods/** - All mod jar files. **Exclude the client-only mods** listed in `client_only_mods.txt`
-- **config/** - All mod configurations
-- **kubejs/** - KubeJS scripts (recipes, events, etc.)
-- **defaultconfigs/** - Default config files applied to new worlds
-- **global_packs/** - Paxi datapacks (required for progression)
-
-### 3. Copy Server Files
-
-From this `server_distribution/` folder, copy to your server directory:
-- `start.sh` and/or `start.bat`
-- `eula.txt`
-- `server.properties`
-
-### 4. Start the Server
-
-```bash
-# Linux
-chmod +x start.sh
-./start.sh
-
-# Windows
-start.bat
-```
+- Install Forge 1.20.1-47.4.0 (installer is included)
+- Download all server-side mods automatically from .pw.toml metadata
+- Skip client-only mods (rendering, UI, etc.)
+- Config, KubeJS, defaultconfigs, and global_packs are already included
 
 **First startup takes 5-15 minutes** with 420+ mods. Wait until you see:
 ```
@@ -99,19 +50,20 @@ start.bat
 
 ---
 
-## Client-Only Mods (Do NOT Include on Server)
+## What's Included
 
-The file `client_only_mods.txt` lists all mods that should be excluded from the server.
-These are rendering, UI, and sound mods that either crash on a headless server or serve
-no purpose. Key exclusions include:
-
-- Oculus (shaders)
-- Embeddium (rendering)
-- ImmediatelyFast (rendering)
-- Falling Leaves (particles)
-- Mouse Tweaks (UI)
-- JourneyMap Integration (map UI)
-- Better Advancements (UI)
+| Folder/File | Purpose |
+|-------------|---------|
+| `mods/.index/` | PrismLauncher metadata (download URLs for all mods) |
+| `mods/*.jar` | Custom IridescentCraft mods (bundled directly) |
+| `config/` | All mod configurations |
+| `kubejs/` | KubeJS scripts (recipes, events, etc.) |
+| `defaultconfigs/` | Default config files for new worlds |
+| `global_packs/` | Paxi datapacks (required for progression) |
+| `forge-*-installer.jar` | Forge server installer |
+| `eula.txt` | Minecraft EULA (pre-accepted) |
+| `server.properties` | Pre-configured server settings |
+| `start.bat` / `start.sh` | Server launch scripts |
 
 ---
 
@@ -172,7 +124,11 @@ In the Minecraft client (with IridescentCraft modpack installed):
 - Check `logs/latest.log` and `crash-reports/` for details
 - Ensure you have Java 17 (not 8, not 21)
 - Ensure you have enough RAM allocated (minimum 8 GB)
-- Make sure client-only mods are not in the server's mods/ folder
+
+### Mods failed to download during install
+- Re-run `server_install.bat` / `server_install.sh` — it skips already-downloaded mods
+- CurseForge downloads may fail if their API is temporarily down; try again later
+- For persistent failures, manually download the mod from CurseForge/Modrinth
 
 ### TPS drops / lag
 - Reduce `view-distance` to 6 in server.properties

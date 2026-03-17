@@ -1,0 +1,31 @@
+
+# Settings for the dash effect
+
+[Dash]
+# Enable dash from the Effect of Estrogen
+# Default: true
+enabled = true
+# The multiplier for the dash delta movement
+# Range: 0.0 ~ 100.0
+# Default: 2.0
+deltaModifier = 2.0
+
+# Recipe* Configuration
+
+[Recipes]
+# Enable Cauldron Interactions
+# Default: true
+cauldronInteractions = true
+
+# Settings for the durations of effects
+
+[Durations]
+# How long does Girl Power from the Estrogen Pill last in ticks
+# Default: 6000
+estrogenPillDuration = 6000
+# How long does Girl Power from the Crystal Estrogen Pill last in ticks
+# Default: 6000
+crystalEstrogenPillDuration = 6000
+# How long does Girl Power from the Estrogen Chip Cookie last in ticks
+# Default: 6000
+estrogenChipCookieDuration = 6000
