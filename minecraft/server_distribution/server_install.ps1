@@ -88,7 +88,8 @@ $forceSkip = @(
     "equipment-compare",   # Client tooltip mod
     "chat_heads",          # Client chat rendering
     "BetterAnimations",    # Client animation (NOT player-animation — that's a dependency)
-    "transmog"             # Client cosmetic
+    "transmog",            # Client cosmetic
+    "probejs"              # Dev tool, crashes on dedicated server
 )
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
