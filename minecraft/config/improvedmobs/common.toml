@@ -4,8 +4,9 @@
 	#Disable/Enables the whole difficulty scaling of this mod. Requires a mc restart
 	"Enable difficulty scaling" = true
 	#Time in ticks for which the difficulty shouldnt increase at the beginning. One full minecraft day is 24000 ticks
+	# Delay 3 in-game days (72000 ticks) so early game feels vanilla
 	#Range: > 0
-	"Difficulty Delay" = 0
+	"Difficulty Delay" = 72000
 	#If true ignores mobs from spawners
 	"Ignore Spawner" = false
 	#Handles increase in difficulty regarding current difficulty.
@@ -14,7 +15,9 @@
 	#So the difficulty increases by 0.01 every 2400 ticks (->0.1 per mc day since a mc day has 24000 ticks) till it reaches a difficulty of 10.
 	#Then it increases by 1 per mc day till it reaches 30 and then stops.
 	#If you want to use negative values use | instead of - as the delimiter.
-	"Difficulty Increase" = ["0.0-0.1", "250.0-0.0"]
+	# Slower ramp: 0.05/day for first 50 difficulty, then 0.08/day to 150, then stops
+	# Old: 0.1/day straight to 250 — too aggressive for early game
+	"Difficulty Increase" = ["0.0-0.05", "50.0-0.08", "150.0-0.0"]
 	#Wether difficulty should only increase with at least one online players or not
 	"Ignore Players" = false
 	#If true will increase difficulty by the amount of time skipped. Else will only increase difficulty once.
@@ -168,7 +171,8 @@
 	"Steal Block Blacklist" = []
 	#Items which will be given to mobs who can break blocks. Empty list = no items. Syntax: id;weight
 	#Note: Mobs can only break blocks if the tool they are holding can break the blocks
-	"Breaking items" = ["minecraft:diamond_pickaxe;1", "minecraft:iron_axe;2"]
+	# Changed diamond pickaxe to iron — diamond tools on Overworld mobs is tier-breaking
+	"Breaking items" = ["minecraft:iron_pickaxe;2", "minecraft:iron_axe;2"]
 	#Should mobs be able to break block entities? Evaluated before the break list
 	"Break BlockEntities" = true
 	#Chance for neutral mobs to be aggressive
@@ -213,29 +217,36 @@
 	#Some special names are BOW, TRIDEN, CROSSBOW refering to every bow/trident/crossbow item (So you dont need to type e.g. every bow item)
 	"Entity Item Use Blacklist" = ["minecraft:drowned;TRIDENT", "minecraft:illusioner;BOW", "minecraft:piglin;CROSSBOW", "minecraft:pillager;CROSSBOW", "minecraft:skeleton;BOW", "minecraft:snow_golem;minecraft:snowball", "minecraft:stray;BOW", "minecraft:wither_skeleton;BOW"]
 	#Base chance that a mob can have one piece of armor
+	# Reduced from 0.10 to 0.05 — less gear on early mobs
 	#Range: 0.0 ~ 1.0
-	"Equipment Chance" = 0.10000000149011612
+	"Equipment Chance" = 0.05000000074505806
 	#Base chance for each additional armor pieces
+	# Reduced from 0.30 to 0.15
 	#Range: 0.0 ~ 1.0
-	"Additional Equipment Chance" = 0.30000001192092896
+	"Additional Equipment Chance" = 0.15000000596046448
 	#Adds additional x*difficulty% to base equip chance
+	# Reduced from 0.30 to 0.15 — slower gear scaling
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Equipment Addition" = 0.30000001192092896
+	"Equipment Addition" = 0.15000000596046448
 	#Chance for an equipment to have a random armor trim
 	#Range: 0.0 ~ 1.0
 	"Armor Trim Chance" = 0.05000000074505806
 	#Chance for mobs to have a weapon
+	# Reduced from 0.5 to 0.3
 	#Range: 0.0 ~ 1.0
-	"Weapon Chance" = 0.5
+	"Weapon Chance" = 0.30000001192092896
 	#Adds additional x*difficulty% to base weapon chance
+	# Reduced from 0.30 to 0.15
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Weapon Chance Add" = 0.30000001192092896
+	"Weapon Chance Add" = 0.15000000596046448
 	#Base chance for each armor pieces to get enchanted
+	# Reduced from 0.20 to 0.10
 	#Range: 0.0 ~ 1.0
-	"Enchanting Chance" = 0.20000000298023224
+	"Enchanting Chance" = 0.10000000149011612
 	#Adds additional x*difficulty% to base enchanting chance
+	# Reduced from 0.20 to 0.10
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Enchanting Addition" = 0.20000000298023224
+	"Enchanting Addition" = 0.10000000149011612
 	#Specify min and max enchanting levels according to difficulty. difficulty-minLevel-maxLevel
 	"Enchanting Calc" = ["0.0-5-10", "25.0-5-15", "50.0-10-17", "100.0-15-25", "200.0-20-30", "250.0-30-35"]
 	#Blacklist enchantments from being applied to equipments
@@ -254,32 +265,40 @@
 #Settings for attribute modifiers
 [attributes]
 	#Health will be multiplied by 1 + difficulty*0.016*x. Set to 0 to disable
+	# Reduced from 1.0 to 0.5 — gentler HP scaling, dimension_scaling.js handles the big jumps
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Health Increase Multiplier" = 1.0
+	"Health Increase Multiplier" = 0.5
 	#Health will be multiplied by at maximum this. Set to 0 means no limit
+	# Reduced from 5.0 to 2.5 — don't let Improved Mobs stack too much with dimension scaling
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Max Health Increase" = 5.0
+	"Max Health Increase" = 2.5
 	#Round health to the nearest x. Set to 0 to disable
 	#Range: 0.0 ~ 1.7976931348623157E308
 	"Round HP" = 0.5
 	#Damage will be multiplied by 1 + difficulty*0.008*x. Set to 0 to disable
+	# Reduced from 1.0 to 0.4 — mobs were hitting too hard in early Overworld
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Damage Increase Multiplier" = 1.0
+	"Damage Increase Multiplier" = 0.4
 	#Damage will be multiplied by at maximum this. Set to 0 means no limit
+	# Reduced from 3.0 to 1.5 — combined with dimension_scaling.js this is plenty
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Max Damage Increase" = 3.0
+	"Max Damage Increase" = 1.5
 	#Speed will be increased by difficulty*0.0008*x. Set to 0 to disable
+	# Reduced from 1.0 to 0.5
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Speed Increase" = 1.0
+	"Speed Increase" = 0.5
 	#Maximum increase in speed
+	# Reduced from 0.1 to 0.05
 	#Range: 0.0 ~ 1.0
-	"Max Speed" = 0.1
+	"Max Speed" = 0.05
 	#Knockback will be increased by difficulty*0.002*x. Set to 0 to disable
+	# Reduced from 1.0 to 0.5
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Knockback Increase" = 1.0
+	"Knockback Increase" = 0.5
 	#Maximum increase in knockback
+	# Reduced from 0.5 to 0.25
 	#Range: 0.0 ~ 1.0
-	"Max Knockback" = 0.5
+	"Max Knockback" = 0.25
 	#Magic resistance will be increased by difficulty*0.0016*x. Set to 0 to disable
 	#Range: 0.0 ~ 1.7976931348623157E308
 	"Magic Resistance Increase" = 1.0
@@ -287,15 +306,19 @@
 	#Range: 0.0 ~ 1.0
 	"Max Magic Resistance" = 0.4000000059604645
 	#Projectile Damage will be multiplied by 1 + difficulty*0.008*x. Set to 0 to disable
+	# Reduced from 1.0 to 0.4
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Projectile Damage Increase" = 1.0
+	"Projectile Damage Increase" = 0.4
 	#Projectile damage will be multiplied by maximum of this
+	# Reduced from 2.0 to 1.5
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Max Projectile Damage" = 2.0
+	"Max Projectile Damage" = 1.5
 	#Explosion Damage will be multiplied by 1 + difficulty*0.003*x. Set to 0 to disable
+	# Reduced from 1.0 to 0.4
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Explosion Damage Increase" = 1.0
+	"Explosion Damage Increase" = 0.4
 	#Explosion damage will be multiplied by maximum of this
+	# Reduced from 1.75 to 1.3
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Max Explosion Damage" = 1.75
+	"Max Explosion Damage" = 1.3
 

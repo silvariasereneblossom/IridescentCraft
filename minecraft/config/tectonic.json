@@ -23,7 +23,7 @@
     "flat_terrain_skew": 0.1,
     "jungle_pillars": true,
     "ocean_offset": -0.8,
-    "ridge_scale": 0.25,
+    "ridge_scale": 0.18,
     "river_lanterns": true,
     "rolling_hills": true,
     "underground_rivers": true
@@ -38,7 +38,7 @@
     "max_y": 320,
     "min_y": -64,
     "ultrasmooth": false,
-    "vertical_scale": 1.155
+    "vertical_scale": 0.8
   },
   "islands": {
     "enabled": true,

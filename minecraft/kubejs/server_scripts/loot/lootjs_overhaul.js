@@ -502,6 +502,62 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
+  // SECTION 5A: OVERWORLD CHEST CLUTTER CLEANUP
+  // =========================================================================
+  // Remove low-value filler items from ALL Overworld structure chests.
+  // Full removals for horse armor, spider eyes, poisonous potatoes.
+  // Partial reductions for rotten flesh (80%), gunpowder (50%),
+  // string (50%), bones (50%), name tags (60%).
+  // =========================================================================
+
+  // --- Full removals: horse armor, spider eyes, poisonous potatoes ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('minecraft:iron_horse_armor')
+    .removeLoot('minecraft:golden_horse_armor')
+    .removeLoot('minecraft:diamond_horse_armor')
+    .removeLoot('minecraft:leather_horse_armor')
+    .removeLoot('minecraft:spider_eye')
+    .removeLoot('minecraft:fermented_spider_eye')
+    .removeLoot('minecraft:poisonous_potato')
+
+  // --- Rotten flesh: 80% reduction (remove then re-add at 20% chance) ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('minecraft:rotten_flesh')
+    .addLoot(LootEntry.of('minecraft:rotten_flesh').when(c => c.randomChance(0.20)))
+
+  // --- Gunpowder: 50% reduction ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('minecraft:gunpowder')
+    .addLoot(LootEntry.of('minecraft:gunpowder').when(c => c.randomChance(0.50)))
+
+  // --- String: 50% reduction ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('minecraft:string')
+    .addLoot(LootEntry.of('minecraft:string').when(c => c.randomChance(0.50)))
+
+  // --- Bones: 50% reduction ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('minecraft:bone')
+    .addLoot(LootEntry.of('minecraft:bone').when(c => c.randomChance(0.50)))
+
+  // --- Name tags: 60% reduction (keep 40%) ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .removeLoot('minecraft:name_tag')
+    .addLoot(LootEntry.of('minecraft:name_tag').when(c => c.randomChance(0.40)))
+
+  // =========================================================================
   // SECTION 5A2: OVERWORLD CURIO DROPS
   // =========================================================================
   // Since tier-gated mod items were removed from Overworld chests, add more
@@ -524,6 +580,22 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('artifacts:charm_of_sinking').when(c => c.randomChance(0.02)))
     .addLoot(LootEntry.of('artifacts:digging_claws').when(c => c.randomChance(0.02)))
     .addLoot(LootEntry.of('artifacts:antidote_vessel').when(c => c.randomChance(0.015)))
+
+  // =========================================================================
+  // SECTION 5A3: EARLY MAGIC ACCESS — IRON'S SPELLS IN OVERWORLD CHESTS
+  // =========================================================================
+  // Fae/Archmage players need early access to spellcasting items.
+  // Iron's Spells and Botania are T1 (ungated), but spell books/scrolls
+  // rarely appear in Overworld loot naturally.
+  // Add scrolls (8% chance) and copper spell book (3% chance) to
+  // all Overworld structure chests to support magic-class early game.
+  // =========================================================================
+
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.08)))
+    .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.03)))
 
   // =========================================================================
   // SECTION 5B: OVERWORLD STRUCTURE FOOD REDUCTION
@@ -830,6 +902,8 @@ LootJS.modifiers(event => {
   console.log('  - Global enchanted book removal: ALL chest loot')
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
+  console.log('  - Overworld clutter cleanup: horse armor, spider eyes, etc removed/reduced')
+  console.log('  - Early magic access: scrolls (8%) + copper spell book (3%) in OW chests')
   console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
   console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
   console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
