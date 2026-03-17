@@ -1,7 +1,7 @@
 {
   "powers": [
-    "icraft:race/orc/melee_bonus",
     "icraft:race/orc/attack_speed",
+    "icraft:race/orc/melee_bonus",
     "icraft:race/orc/hunger_drain"
   ],
   "icon": {
