@@ -1,0 +1,9 @@
+#3FF ars_nouveau:archwood_forest
+#508 minecraft:frozen_peaks
+#286 minecraft:grove
+#294 biomesoplenty:jade_cliffs
+#51E minecraft:jagged_peaks
+#68B biomesoplenty:rainforest
+#421 minecraft:stony_peaks
+#7CC biomesoplenty:volcano
+#7F2 biomesoplenty:woodland
