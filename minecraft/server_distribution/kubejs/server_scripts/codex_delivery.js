@@ -39,7 +39,6 @@ const PATCHOULI_BOOKS_TO_CLEAR = [
   'ars_nouveau:worn_notebook',
   'irons_spellbooks:irons_spellbooks',
   'thermal:guidebook',
-  'botania:lexicon',
   'create:book',
   'footwork:combat_manual',
   'theabyss:the_abyss'
@@ -58,7 +57,8 @@ const OTHER_BOOKS_TO_CLEAR = [
   'primalmagick:grimoire',
   'primalmagick:grimoire_creative',
   'ars_nouveau:worn_notebook',
-  'theabyss:the_abyss_guidebook'
+  'theabyss:the_abyss_guidebook',
+  'botania:lexicon'
 ]
 
 // Run all clear commands for a player
