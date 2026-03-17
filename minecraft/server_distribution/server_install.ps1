@@ -87,8 +87,7 @@ $forceSkip = @(
     "light-overlay",       # F7 light level display
     "equipment-compare",   # Client tooltip mod
     "chat_heads",          # Client chat rendering
-    "BetterAnimations",    # Client animation
-    "player-animation",    # Client animation lib
+    "BetterAnimations",    # Client animation (NOT player-animation — that's a dependency)
     "transmog"             # Client cosmetic
 )
 
