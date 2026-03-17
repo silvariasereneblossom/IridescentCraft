@@ -77,7 +77,20 @@ $failed = 0
 $total = 0
 
 # Client-only and server-incompatible mods to skip
-$forceSkip = @("embeddium", "oculus", "immediatelyfast", "rubidium-extra")
+# Mods marked 'both' but crash or are useless on dedicated servers
+$forceSkip = @(
+    "embeddium",           # Rendering engine
+    "oculus",              # Shader support
+    "immediatelyfast",     # Client rendering optimization
+    "rubidium-extra",      # Embeddium addon
+    "kubejsoffline",       # Client GUI mod, crashes on server
+    "light-overlay",       # F7 light level display
+    "equipment-compare",   # Client tooltip mod
+    "chat_heads",          # Client chat rendering
+    "BetterAnimations",    # Client animation
+    "player-animation",    # Client animation lib
+    "transmog"             # Client cosmetic
+)
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
 $totalFiles = $tomlFiles.Count
