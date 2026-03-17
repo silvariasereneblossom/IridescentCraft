@@ -1,0 +1,16 @@
+{
+    // Default required player permission level to edit server configs from client.
+    // Default: -1
+    requiredPermissionLevel: -1,
+    // Players allowed to edit the config from their client regardless of permission level
+    // Can contain UUIDs and names
+    // Default: []
+    allowedPlayers: [],
+    // Players denied from editing server configs regardless of permission level
+    // Can contain UUIDs and names
+    // Default: []
+    deniedPlayers: [],
+    // Server config permissions overrides. Not yet implemented
+    // Default: []
+    overrides: []
+}

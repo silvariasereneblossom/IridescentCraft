@@ -1,0 +1,12 @@
+{
+	"version": 3,
+	"show_warnings": true,
+	"categories": [
+		"warfare",
+		"marksman",
+		"sorcery",
+		"fortitude",
+		"gathering",
+		"engineering"
+	]
+}

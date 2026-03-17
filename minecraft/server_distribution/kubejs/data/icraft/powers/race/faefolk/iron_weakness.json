@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Iron Allergy",
+  "description": "Iron weapons and tools deal +10% damage to you. Holding iron items causes minor discomfort (0.5 exhaustion/30s)."
+}

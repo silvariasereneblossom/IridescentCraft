@@ -1,0 +1,16 @@
+filename = 'domum_ornamentum-1.20.1-1.0.296-universal.jar'
+name = 'Domum Ornamentum'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'f0052adb170e5f73f0f5b625c411bc5b99183c00'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7585567
+project-id = 527361

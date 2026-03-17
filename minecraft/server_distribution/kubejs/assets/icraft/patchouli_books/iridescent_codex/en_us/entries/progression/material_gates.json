@@ -1,0 +1,24 @@
+{
+  "name": "Material Progression",
+  "icon": "minecraft:iron_ingot",
+  "category": "icraft:progression",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier 1 Materials$()$(br2)Iron · Copper · Brass (Create) · Tin · Bronze$(br2)$(bold)What's absent:$() Diamonds have been removed from Overworld worldgen and all Overworld structure chests. Steel requires Thermal Series (Tier 2). Netherite requires the Nether (Tier 3).$(br2)Your $(t1)Tier 1$() ceiling is a finely crafted bronze or brass weapon/armor set with Common $(thing)Apotheosis$() affixes."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Cross-Tier Material Peek$()$(br2)You can get $(italic)a taste$() of next-tier materials before unlocking the tier — never enough to build a factory, always enough to feel the reward.$(br2)$(bold)Transmutation:$() KubeJS recipes let you convert 32–64 current-tier ingots into 1 next-tier ingot. Inefficient by design.$(br2)$(bold)Boss drops:$() Current-tier bosses have a 5–15% chance to drop 1–3 next-tier materials."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier 2 Materials$()$(br2)Steel (Thermal) · Manasteel (Botania) · Signalum · Lumium · Steeleaf · Ironwood · Fiery (Twilight Forest)$(br2)$(bold)Diamond access:$() Limited diamond access via expensive transformation recipes only. Twilight Forest bosses occasionally drop small amounts.$(br2)$(bold)Apotheosis:$() Uncommon + Rare affixes, 2 sockets, Chipped/Normal gems."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier 3 Materials$()$(br2)Diamond (full access) · Terrasteel · Elementium · Enderium · Osmium · Refined Obsidian$(br2)$(bold)Tier 4 Materials$()$(br2)Netherite · Gaia Ingots · Dragon Scales/Hearts · Antimatter · Atomic Alloy$(br2)$(bold)Boss materials$() are a separate category — unique crafting components dropped only by specific bosses, used in high-end recipes and waystone construction."
+    }
+  ]
+}

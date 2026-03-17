@@ -1,0 +1,16 @@
+filename = 'ad_astra-forge-1.20.1-1.15.20.jar'
+name = 'Ad Astra'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '537ac3e358a97efd7b03648a9bfd7b11f1ae7ff7'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6262032
+project-id = 635042

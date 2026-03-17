@@ -1,0 +1,20 @@
+{
+  "name": "Apotheosis Enchanting",
+  "icon": "minecraft:bookshelf",
+  "category": "icraft:systems",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Apotheosis$() completely replaces vanilla enchanting. The enchanting table still exists but its behavior is determined by the bookshelves surrounding it.$(br2)$(bold)Key difference:$() All enchanted books have been removed from structure loot. Apotheosis is the enchanting system. You will not find powerful enchants in chests — you will earn them."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Bookshelf Tiers$()$(br2)Different bookshelf types unlock different enchantment pools:$(br2)$(li)Vanilla bookshelves: Basic enchants, lower max level$(li)$(thing)Apotheosis$() shelves: Higher max level, wider pool$(li)Dimensional shelves (crafted from dimensional materials): Rare enchants, max-level options$(br2)Building a high-tier enchanting setup is a meaningful investment and a key $(t2)Tier 2$()–$(t3)3$() project."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Gem Sockets & Enchanting$()$(br2)$(thing)Apotheosis$() affixes add gem sockets to items. Gems and enchants are completely separate systems — they both apply simultaneously. A Legendary sword can have both maximum enchants and 4 perfect gems.$(br2)$(bold)Anvil cap removed:$() Apotheosis removes the vanilla 'Too Expensive' cap. You can combine and repair items as many times as needed. XP costs increase but never become impossible."
+    }
+  ]
+}

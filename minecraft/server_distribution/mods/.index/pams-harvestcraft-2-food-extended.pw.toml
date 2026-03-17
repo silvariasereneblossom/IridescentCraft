@@ -1,0 +1,16 @@
+filename = 'pamhc2foodextended-1.20.4-1.0.1.jar'
+name = "Pam's HarvestCraft 2 - Food Extended"
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20.1', '1.20.2', '1.20.3', '1.20.4' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '5939df90ec025f90e502d6e735081103860bbd0f'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5147171
+project-id = 402231

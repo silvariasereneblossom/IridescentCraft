@@ -1,0 +1,22 @@
+{
+  "name": "Void Summoner",
+  "icon": "minecraft:wither_skeleton_skull",
+  "category": "icraft:classes",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)The puppet master. Commands minions and thrives in darkness. Vulnerable alone, devastating with an army.$()$(br2)HP Modifier: -10%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Weapon Affinities:$() Minion damage is the primary output"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Soul Tether$() — Minions deal +15% damage. All summoned entities are empowered.$(br2)$(bold)Dark Pact$() — Minion damage heals you for 5% of damage dealt. Your summons keep you alive.$(br2)$(bold)Shadow Cloak$() — Stronger in darkness, weaker in light. Night time and underground areas empower the $(thing)Void Summoner$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Summoner Playstyle",
+      "text": "The $(thing)Void Summoner$() pairs best with Occultism's summoning system (T3) and Iron's Spells summon spells. Your personal combat ability is low — your minions are your weapon.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Revenant$() — Night power + Shadow Cloak for maximum darkness synergy. Thematic perfection.$(br)$(thing)Faefolk$() — Nature magic bonuses apply to nature-themed summons.$(br)$(thing)Halfling$() — Small hitbox + food efficiency helps survive while minions fight."
+    }
+  ]
+}

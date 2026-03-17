@@ -1,0 +1,143 @@
+{
+  "arcane_power_1": {
+    "x": 0,
+    "y": 0,
+    "definition": "arcane_power_1",
+    "root": true
+  },
+  "arcane_power_2": {
+    "x": 0,
+    "y": 56,
+    "definition": "arcane_power_2"
+  },
+  "mana_flow_1": {
+    "x": 0,
+    "y": 112,
+    "definition": "mana_flow_1"
+  },
+  "mana_flow_2": {
+    "x": 0,
+    "y": 168,
+    "definition": "mana_flow_2"
+  },
+  "spell_haste_1": {
+    "x": 0,
+    "y": 224,
+    "definition": "spell_haste_1"
+  },
+  "spell_haste_2": {
+    "x": 0,
+    "y": 280,
+    "definition": "spell_haste_2"
+  },
+  "arcane_shield_1": {
+    "x": 0,
+    "y": 336,
+    "definition": "arcane_shield_1"
+  },
+  "arcane_shield_2": {
+    "x": 0,
+    "y": 392,
+    "definition": "arcane_shield_2"
+  },
+  "overwhelming_1": {
+    "x": -56,
+    "y": 448,
+    "definition": "overwhelming_1"
+  },
+  "arcane_pen_1": {
+    "x": -56,
+    "y": 504,
+    "definition": "arcane_pen_1"
+  },
+  "overwhelming_2": {
+    "x": -56,
+    "y": 560,
+    "definition": "overwhelming_2"
+  },
+  "mana_eff_1": {
+    "x": -56,
+    "y": 616,
+    "definition": "mana_eff_1"
+  },
+  "arcane_pen_2": {
+    "x": -56,
+    "y": 672,
+    "definition": "arcane_pen_2"
+  },
+  "overwhelming_3": {
+    "x": -56,
+    "y": 728,
+    "definition": "overwhelming_3"
+  },
+  "mana_eff_2": {
+    "x": -56,
+    "y": 784,
+    "definition": "mana_eff_2"
+  },
+  "arcane_pen_3": {
+    "x": -56,
+    "y": 840,
+    "definition": "arcane_pen_3"
+  },
+  "overwhelming_4": {
+    "x": -56,
+    "y": 896,
+    "definition": "overwhelming_4"
+  },
+  "arcane_supremacy": {
+    "x": -56,
+    "y": 952,
+    "definition": "arcane_supremacy"
+  },
+  "restorative_1": {
+    "x": 56,
+    "y": 448,
+    "definition": "restorative_1"
+  },
+  "minion_master_1": {
+    "x": 56,
+    "y": 504,
+    "definition": "minion_master_1"
+  },
+  "restorative_2": {
+    "x": 56,
+    "y": 560,
+    "definition": "restorative_2"
+  },
+  "ext_influence_1": {
+    "x": 56,
+    "y": 616,
+    "definition": "ext_influence_1"
+  },
+  "minion_master_2": {
+    "x": 56,
+    "y": 672,
+    "definition": "minion_master_2"
+  },
+  "soul_bond_1": {
+    "x": 56,
+    "y": 728,
+    "definition": "soul_bond_1"
+  },
+  "restorative_3": {
+    "x": 56,
+    "y": 784,
+    "definition": "restorative_3"
+  },
+  "minion_master_3": {
+    "x": 56,
+    "y": 840,
+    "definition": "minion_master_3"
+  },
+  "ext_influence_2": {
+    "x": 56,
+    "y": 896,
+    "definition": "ext_influence_2"
+  },
+  "grand_enchantment": {
+    "x": 56,
+    "y": 952,
+    "definition": "grand_enchantment"
+  }
+}

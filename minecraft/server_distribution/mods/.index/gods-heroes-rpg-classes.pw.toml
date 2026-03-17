@@ -1,0 +1,16 @@
+filename = 'gh_classesv1.2.jar'
+name = 'Gods and Heroes RPG Classes'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge', 'fabric' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '5d640cd6aa0ede91d89bd12c79cd6652c352eac8e1d3e40d0d0a39682ee135e0c0d17b88da5af1bd155434dda59e848fe2d14d764506df567d2404d56b6333a7'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/knJ32CXT/versions/bQ3oJY32/gh_classesv1.2.jar'
+
+[update.modrinth]
+mod-id = 'knJ32CXT'
+version = 'bQ3oJY32'

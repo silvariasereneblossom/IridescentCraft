@@ -1,0 +1,7 @@
+{
+  "type": "origins:exhaust",
+  "name": "Restless Hunger",
+  "description": "Your spectral nature burns energy 25% faster than normal.",
+  "interval": 80,
+  "exhaustion": 0.1
+}

@@ -1,0 +1,16 @@
+filename = 'truly_modular_create_compat-forge-1.20.1-1.0.0.jar'
+name = 'Create: Truly Modular'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'd6d973b814855ab58bc199f0243421817e9965f199c1b0510c3e07e3bb850f9a0d3a38e5fc97475fce662f210e140b8e845a736369d85089412014451d5b8ac5'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/yi2BJuVN/versions/QvFyx1kF/truly_modular_create_compat-forge-1.20.1-1.0.0.jar'
+
+[update.modrinth]
+mod-id = 'yi2BJuVN'
+version = 'QvFyx1kF'

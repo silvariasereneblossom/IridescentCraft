@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:class/samurai/hp_modifier",
+    "icraft:class/samurai/evasive_stance",
+    "icraft:class/samurai/bushido",
+    "icraft:class/samurai/focus"
+  ],
+  "icon": {
+    "item": "simplyswords:iron_katana"
+  },
+  "order": 2,
+  "impact": 2,
+  "name": "Samurai",
+  "description": "Versatile melee/ranged hybrid. +5% HP, +8% speed. +15% damage against full-HP enemies. 'Focus' rewards patience with +30% damage after 3 seconds without attacking."
+}

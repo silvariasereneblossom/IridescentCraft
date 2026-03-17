@@ -1,0 +1,12 @@
+{
+  "name": "Elf",
+  "icon": "minecraft:feather",
+  "category": "icraft:classes",
+  "sortnum": 13,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Swift, graceful, and hungry. Elves are the best mobile fighters but require more food management.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Night Vision$() — Permanent night vision in dim environments. No UI effect — seamlessly dark to light.$(br2)$(bold)Swift$() — +10% movement speed permanently. Combines very well with $(thing)Ranger$(), $(thing)Samurai$(), $(thing)Archmage$().$(br2)$(bold)Fragile$() — -8% armor effectiveness from all worn armor. The tradeoff for speed.$(br2)$(bold)Hunger Penalty$() — +20% food drain rate. Fast metabolism is the cost of being an $(thing)Elf$()."
+    }
+  ]
+}

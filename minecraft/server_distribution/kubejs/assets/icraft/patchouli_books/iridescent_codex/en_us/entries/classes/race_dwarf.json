@@ -1,0 +1,12 @@
+{
+  "name": "Dwarf",
+  "icon": "minecraft:stone_pickaxe",
+  "category": "icraft:classes",
+  "sortnum": 14,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Sturdy, slow, and made for underground work. Dwarves excel at $(t1)Tier 1$()–$(t2)2$() play when mining and forging dominate.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Mining Speed$() — +25% mining speed on stone and ore. Reduces to +15% in non-overworld dimensions.$(br2)$(bold)Fire Resistance$() — Permanent fire resistance IV. Lava does not burn you. Blazes deal 40% less damage.$(br2)$(bold)Sturdy$() — +8% armor effectiveness from heavy armor (iron, steel, diamond, netherite only).$(br2)$(bold)Slow$() — -10% movement speed permanently. The cost of being built like a boulder."
+    }
+  ]
+}

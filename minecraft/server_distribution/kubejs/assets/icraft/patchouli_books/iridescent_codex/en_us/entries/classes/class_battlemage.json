@@ -1,0 +1,22 @@
+{
+  "name": "Battlemage",
+  "icon": "minecraft:blaze_rod",
+  "category": "icraft:classes",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Melee/magic hybrid. Combines physical toughness with magical utility. Neither pure caster nor pure fighter.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords (bonus), no ranged penalty"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Arcane Strikes$() — +10% attack damage baseline. Melee hits are magically enhanced.$(br2)$(bold)Spell Armor$() — +2 bonus armor from arcane wards. Stacks with worn armor for surprisingly high defense for a hybrid class.$(br2)$(bold)Mana Shield$() — Chance to negate incoming hits by consuming mana. Melee kills restore mana. Creates a fight-to-fuel-defense loop."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Hybrid Playstyle",
+      "text": "The $(thing)Battlemage$() is the most durable caster class. Unlike the $(thing)Archmage$() who sacrifices everything for spell damage, the $(thing)Battlemage$() can stand in melee and survive.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() — Nature magic bonuses synergize with Botania and Ars Nouveau.$(br)$(thing)Orc$() — Attack speed + arcane strikes = fast magic-infused melee.$(br)$(thing)Dwarf$() — Extra armor effectiveness stacks with Spell Armor for extreme toughness."
+    }
+  ]
+}

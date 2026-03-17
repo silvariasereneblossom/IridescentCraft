@@ -1,0 +1,540 @@
+{
+  "quick_hands_1": {
+    "title": "Quick Hands I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crafting_speed 5"
+        }
+      }
+    ],
+    "description": "Speed boost near crafting stations"
+  },
+  "quick_hands_2": {
+    "title": "Quick Hands II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_crafting_speed 5"
+        }
+      }
+    ],
+    "description": "Speed boost near crafting stations"
+  },
+  "resource_saver_1": {
+    "title": "Resource Saver I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_material_save 3"
+        }
+      }
+    ],
+    "description": "Chance for free materials"
+  },
+  "resource_saver_2": {
+    "title": "Resource Saver II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_material_save 3"
+        }
+      }
+    ],
+    "description": "Chance for free materials"
+  },
+  "machine_eff_1": {
+    "title": "Machine Efficiency I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_machine_speed 5"
+        }
+      }
+    ],
+    "description": "Haste near machines"
+  },
+  "machine_eff_2": {
+    "title": "Machine Efficiency II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_machine_speed 5"
+        }
+      }
+    ],
+    "description": "Haste near machines"
+  },
+  "tool_care_1": {
+    "title": "Tool Care I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:repair_cost",
+          "value": -0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "-5% Repair Cost"
+  },
+  "tool_care_2": {
+    "title": "Tool Care II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:repair_cost",
+          "value": -0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "-5% Repair Cost"
+  },
+  "master_touch_1": {
+    "title": "Master Touch I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_craft_bonus 3"
+        }
+      }
+    ],
+    "description": "Chance for bonus craft output"
+  },
+  "ench_insight_1": {
+    "title": "Enchanting Insight I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_enchant_cost_reduction 5"
+        }
+      }
+    ],
+    "description": "XP rebate near enchanting"
+  },
+  "master_touch_2": {
+    "title": "Master Touch II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_craft_bonus 3"
+        }
+      }
+    ],
+    "description": "Chance for bonus craft output"
+  },
+  "repair_master_1": {
+    "title": "Repair Mastery I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:repair_cost",
+          "value": -0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "-8% Repair Cost"
+  },
+  "ench_insight_2": {
+    "title": "Enchanting Insight II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_enchant_cost_reduction 5"
+        }
+      }
+    ],
+    "description": "XP rebate near enchanting"
+  },
+  "master_touch_3": {
+    "title": "Master Touch III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_craft_bonus 4"
+        }
+      }
+    ],
+    "description": "Chance for bonus craft output"
+  },
+  "repair_master_2": {
+    "title": "Repair Mastery II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:repair_cost",
+          "value": -0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "-8% Repair Cost"
+  },
+  "ench_insight_3": {
+    "title": "Enchanting Insight III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_enchant_cost_reduction 5"
+        }
+      }
+    ],
+    "description": "XP rebate near enchanting"
+  },
+  "master_touch_4": {
+    "title": "Master Touch IV",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_craft_bonus 5"
+        }
+      }
+    ],
+    "description": "Chance for bonus craft output"
+  },
+  "grand_artificer": {
+    "title": "Grand Artificer",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_craft_bonus 5"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_enchant_cost_reduction 10"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:repair_cost",
+          "value": -0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "Chance for bonus craft output, XP rebate near enchanting, -10% Repair Cost"
+  },
+  "overclock_1": {
+    "title": "Overclock I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_machine_speed 8"
+        }
+      }
+    ],
+    "description": "Haste near machines"
+  },
+  "power_surge_1": {
+    "title": "Power Surge I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_rf_generation 5"
+        }
+      }
+    ],
+    "description": "XP from power generation"
+  },
+  "overclock_2": {
+    "title": "Overclock II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_machine_speed 8"
+        }
+      }
+    ],
+    "description": "Haste near machines"
+  },
+  "fuel_eff_1": {
+    "title": "Fuel Efficiency I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_fuel_reduction 8"
+        }
+      }
+    ],
+    "description": "Fuel efficiency rebate"
+  },
+  "power_surge_2": {
+    "title": "Power Surge II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_rf_generation 5"
+        }
+      }
+    ],
+    "description": "XP from power generation"
+  },
+  "overclock_3": {
+    "title": "Overclock III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_machine_speed 10"
+        }
+      }
+    ],
+    "description": "Haste near machines"
+  },
+  "fuel_eff_2": {
+    "title": "Fuel Efficiency II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_fuel_reduction 8"
+        }
+      }
+    ],
+    "description": "Fuel efficiency rebate"
+  },
+  "power_surge_3": {
+    "title": "Power Surge III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_rf_generation 8"
+        }
+      }
+    ],
+    "description": "XP from power generation"
+  },
+  "overclock_4": {
+    "title": "Overclock IV",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "create:wrench"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_machine_speed 10"
+        }
+      }
+    ],
+    "description": "Haste near machines"
+  },
+  "master_engineer": {
+    "title": "Master Engineer",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_machine_speed 15"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_rf_generation 10"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_fuel_reduction 10"
+        }
+      }
+    ],
+    "description": "Haste near machines, XP from power generation, Fuel efficiency rebate"
+  }
+}

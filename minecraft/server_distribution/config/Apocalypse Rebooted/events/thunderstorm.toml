@@ -1,0 +1,14 @@
+# apocalypse:events/thunderstorm.toml
+# This config contains settings related to Apocalypse's thunderstorm event.
+
+
+# Category: general
+# General event settings
+
+  # If true, this event is enabled and will trigger if it starts thundering in the world.
+  # <Boolean> Valid Values: { true, false }, Default: true
+  general.enabled = true
+  # If true, natural mob spawns will ignore light level and be able to spawn in both dark and bright areas.
+  # <Boolean> Valid Values: { true, false }, Default: false
+  general.spawns_ignore_light = false
+

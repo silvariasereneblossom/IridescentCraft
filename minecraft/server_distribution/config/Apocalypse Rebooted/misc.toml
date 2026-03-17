@@ -1,0 +1,108 @@
+# apocalypse:misc.toml
+# This config contains misc settings; a bit of this and a bit of that.
+
+  # Block List fields: General format = [ "namespace:block_name[property1=value1,...]", ... ]
+  #   Block lists are arrays of blocks and partial block states.
+  #   Blocks are defined by their key in the block registry, usually following the pattern 'namespace:block_name'.
+  #   An asterisk '*' can be used to match all blocks belonging to X namespace. For example, 'minecraft:*' will match
+  #     all vanilla blocks.
+  #   Block tags can also be used here. To declare a tag, start with a '#' followed by the rest of the tag path.
+  #   Tag example: '#minecraft:beehive_inhabitors'
+  #   List entries by default match any block state. The block states to match can be narrowed down by specifying
+  #     properties. The syntax for block state properties is the same as for commands. Any properties not specified will
+  #     match any value. For example, 'minecraft:beehive[honey_level=5]' will match any full beehives, regardless of the
+  #     direction they face.
+  #   Note that tags and namespace entries are not block state sensitive; they only care about the base block
+  #       Priority order: specific entries > tag entries > namespace entries
+
+
+
+# Category: version_check
+# Contains settings related to version checking (when Forge looks for updates of Apocalypse).
+
+  # If enabled, the player will receive an in-game message when a new mod update is released.
+  # <Boolean> Valid Values: { true, false }, Default: true
+  version_check.send_update_message = true
+
+
+
+# Category: trap_properties
+# Contains settings related to trap types used in the Dynamic Trap.
+# NOTE: AoE for traps depends on the facing of the Dynamic Trap! The bounding box is not centered on the Dynamic Trap
+#   block.
+
+  # The range for the Dynamic Trap's AoE in which the Ghost Freeze trap will affect ghosts.
+  # <Integer> Range: 1 ~ 60, Default: 20
+  trap_properties.ghost_freeze_range = 20
+  # The range for the Dynamic Trap's AoE in which the Armor Shatter trap will affect mobs.
+  # <Integer> Range: 1 ~ 60, Default: 20
+  trap_properties.armor_shatter_range = 20
+
+
+
+# Category: events
+# Contains settings shared by all events from Apocalypse.
+
+  # If enabled, Apocalypse events will display a short message to the player when they start up.
+  # <Boolean> Valid Values: { true, false }, Default: true
+  events.display_start_message = true
+
+
+
+# Category: other
+# Some uncategorized settings. Very cool!
+
+  # The chance for grumps to spawn with a bucket helmet equipped.
+  # Grumps with bucket helmets take greatly reduced damage from arrows.
+  # <Number> Range: 0.0 ~ 1.0, Default: 0.05
+  other.grump_bucket_helmet_chance = 0.05
+
+  # A list of blocks that the Breecher will target and try to explode if it can't currently reach its target player.
+  # <Block List> Format: [ "namespace:block_name[properties]", ... ], Default: [ "apocalypse:dynamic_trap",
+  #   "#minecraft:beds", "#minecraft:doors", "#minecraft:trapdoors", "#forge:chests", "#forge:barrels",
+  #   "#forge:fence_gates" ]
+  other.breecher_explosion_targets = [
+    "apocalypse:dynamic_trap",
+    "#minecraft:beds",
+    "#minecraft:doors",
+    "#minecraft:trapdoors",
+    "#forge:chests",
+    "#forge:barrels",
+    "#forge:fence_gates"
+  ]
+
+  # The explosion power of Seeker fireballs.
+  # <Integer> Range: 1 ~ 10, Default: 4
+  other.seeker_explosion_power = 4
+
+  # A list of blocks that the Destroyer cannot explode.
+  # Generally speaking destroyers are supposed to be able to blow up anything, but some exceptions may be desired
+  #   (bedrock and whatnot).
+  # <Block List> Format: [ "namespace:block_name[properties]", ... ], Default: [ "minecraft:bedrock" ]
+  other.destroyer_proof_blocks = [
+    "minecraft:bedrock"
+  ]
+  # The explosion power of Destroyer fireballs.
+  # <Integer> Range: 1 ~ 10, Default: 2
+  other.destroyer_explosion_power = 2
+  # Additional damage destroyer fireballs deals to its target's equipment (armor, shield etc.). Set this to 0 to deal
+  #   no extra damage.
+  # <Integer> Range: ≥ 0, Default: 0
+  other.destroyer_equipment_damage = 0
+  # If enabled, Destroyers will attempt to blow up their target player's respawn point (bed, respawn anchor etc.).
+  # This does not apply to the global respawn point (where players respawn if they have no bed etc.)
+  # <Boolean> Valid Values: { true, false }, Default: false
+  other.destroyer_target_respawn_pos = false
+
+  # (Only relevant for multiplayer) If enabled, the day-night cycle will pause if no players are online.
+  # Useful if you want your players to be unable to just skip through full moons by disconnecting.
+  # <Boolean> Valid Values: { true, false }, Default: true
+  other.pause_daylight_cycle = true
+
+  # Some equipment added by Apocalypse (Midnight Steel armor) has abilities or attribute modifiers that halve on new
+  #   moons or change over time when it is a full moon night.
+  # This field's value is the amount of seconds that must pass before the equipment's stats change again during full
+  #   moon nights.
+  # <Integer> Range: 5 ~ 3600, Default: 60
+  other.lunar_equipment_update_time = 60
+

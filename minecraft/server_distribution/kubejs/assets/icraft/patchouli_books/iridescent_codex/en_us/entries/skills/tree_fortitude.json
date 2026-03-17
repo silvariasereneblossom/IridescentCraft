@@ -1,0 +1,23 @@
+{
+  "name": "Fortitude Tree",
+  "icon": "minecraft:shield",
+  "category": "icraft:skills",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Survival investment. Benefits every class but is essential for Vanguard and Paladin.$()$(br2)HP, armor toughness, knockback resistance, and healing received are attribute-based and apply immediately. All-resistance (flat % DR) and HP regen require KubeJS bridge script (implemented in Phase 1)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Nodes",
+      "text": "$(bold)Max HP$() — Increases base max HP. Does NOT interact with the half-equipment-HP rule for glass cannon classes.$(br2)$(bold)Armor Toughness$() — Standard armor toughness attribute. Especially valuable vs high-damage single hits.$(br2)$(bold)Healing Received$() — apothic_attributes:healing_received — percentage bonus to all incoming heals."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Nodes (cont.)",
+      "text": "$(bold)Resilience Branch$() — All-resistance (flat DR %). KubeJS-implemented. Stacks diminishingly with armor.$(br2)$(bold)Regeneration Branch$() — Passive HP regen via tick-based KubeJS healing. Applies every 5 seconds.$(br2)$(bold)Fortitude Capstone$() — $(bold)Unbreakable Spirit$() — Once per combat encounter: survive a killing blow at 1 HP. 10 min cooldown."
+    }
+  ],
+  "advancement": "icraft:stage_tier_2"
+}

@@ -1,0 +1,16 @@
+filename = 'Tetra Attribute Rebalancing-6.9.0-1.0.0-PrecisionFix.jar'
+name = 'Tetra Attribute Rebalancing'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '5aed02584d694ecf60a33828b48d00d74083cd6d'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7099059
+project-id = 1363849

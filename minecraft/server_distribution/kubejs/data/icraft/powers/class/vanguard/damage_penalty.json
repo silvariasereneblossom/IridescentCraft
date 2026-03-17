@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Pacifist's Burden",
+  "description": "-15% all damage dealt.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": -0.15
+    }
+  ]
+}

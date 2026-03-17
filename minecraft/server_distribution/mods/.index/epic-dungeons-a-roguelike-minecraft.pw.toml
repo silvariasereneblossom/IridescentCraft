@@ -1,0 +1,16 @@
+filename = 'Epic Dungeons-0.1.04-Forge-1.19-1.20.1.jar'
+name = 'Epic Dungeons: A Roguelike Minecraft'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.19', '1.19.1', '1.19.2', '1.19.3', '1.19.4', '1.20', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '437c96191ded4c7389be5861af034ffc7ed60cdfabd567b4ca1cf56ab2ded4854dbd7d33bf44137d72db1e927c373d03162ac7e612127b8f7e4d6a79446eb379'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/iAwGa4r9/versions/5S6XCkrM/Epic Dungeons-0.1.04-Forge-1.19-1.20.1.jar'
+
+[update.modrinth]
+mod-id = 'iAwGa4r9'
+version = '5S6XCkrM'

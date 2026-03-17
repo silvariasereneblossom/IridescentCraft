@@ -1,0 +1,22 @@
+{
+  "name": "Samurai",
+  "icon": "simplyswords:iron_katana",
+  "category": "icraft:classes",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Versatile melee/ranged hybrid. Rewards patience and opening strikes. Neither the best at melee nor ranged, but excels at switching between them.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords and bows (both bonus, no penalty)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Bushido$() — +15% damage against enemies at full health. Rewards aggressive openers and precise first strikes.$(br2)$(bold)Evasive Stance$() — +8% dodge chance (incoming attacks deal 0 damage). Increases to 12% while moving. Rewards active repositioning.$(br2)$(bold)Focus$() — Not attacking for 3 seconds grants Focused: next attack +30% damage. 10 second cooldown after consuming. Patience is power."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Speed & Playstyle",
+      "text": "+8% movement speed makes the $(thing)Samurai$() one of the faster classes. Combined with Evasive Stance, this class rewards a hit-and-move playstyle.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$() — +10% speed stacks for exceptional mobility. Night vision helps in dark dungeons.$(br)$(thing)Orc$() — +12% attack speed compensates for Focus's wait time.$(br)$(thing)Human$() — Versatile bonus and +15% XP gain for faster progression."
+    }
+  ]
+}

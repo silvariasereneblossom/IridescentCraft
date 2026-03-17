@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:race/faefolk/slow_fall",
+    "icraft:race/faefolk/nature_magic",
+    "icraft:race/faefolk/armor_weakness",
+    "icraft:race/faefolk/fragile"
+  ],
+  "icon": {
+    "item": "minecraft:lily_of_the_valley"
+  },
+  "order": 7,
+  "impact": 2,
+  "name": "Faefolk",
+  "description": "Magical and nature-attuned. Slow fall, +30% magic damage. -50% armor toughness, -10% max HP."
+}

@@ -1,0 +1,16 @@
+filename = 'alexsdelight-1.5.jar'
+name = "Alex's Delight"
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'ef7049ba6f16df22c8d98dd4dad2d9dc2aa6b6ba'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5028450
+project-id = 556448

@@ -1,0 +1,16 @@
+filename = 'lootintegrations_ctov-1.4.jar'
+name = "Loot Integrations: ChoiceTheorem's Overhauled Village & Immersive Structures"
+side = 'server'
+x-prismlauncher-loaders = [ 'neoforge', 'forge', 'fabric' ]
+x-prismlauncher-mc-versions = [ '1.18.2', '1.19.2', '1.20.1', '1.21', '1.21.1', '1.21.4', '1.21.5' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '4d24044f3757946ded3cf507e2fc5733635c5dba'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6510009
+project-id = 1135500

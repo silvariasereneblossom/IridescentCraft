@@ -1,0 +1,16 @@
+filename = 'aether_treasure_reforging-1.20.1-1.0.1-neoforge.jar'
+name = 'Treasure Reforging'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '57b52e5effcf57cd9a12931435ddb986f5b9d3b5'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5759738
+project-id = 1016302
