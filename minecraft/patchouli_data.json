@@ -179,7 +179,8 @@
         "icraft:welcome/first_hour",
         "icraft:welcome/philosophy",
         "icraft:welcome/intro",
-        "icraft:progression/tier_overview"
+        "icraft:progression/tier_overview",
+        "icraft:welcome/class_guide"
       ],
       "bookmarks": [],
       "completedManualQuests": []
