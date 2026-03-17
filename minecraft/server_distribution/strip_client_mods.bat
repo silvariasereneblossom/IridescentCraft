@@ -39,9 +39,11 @@ call :delete "*ProbeJS*"
 REM --- References client classes ---
 call :delete "*irons_spells_js*"
 
-REM --- Disabled/removed mods (safety net in case jars linger) ---
+REM --- Removed mods (SuperMartijn642 lib incompatibility) ---
 call :delete "*rechiseled*"
 call :delete "*supermartijn642*"
+call :delete "*connectedglass*"
+call :delete "*trashcans*"
 
 REM --- Client-side-only mods (side='client' in metadata) ---
 call :delete "*auudio*"

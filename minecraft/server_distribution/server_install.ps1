@@ -91,8 +91,10 @@ $forceSkip = @(
     "transmog",            # Client cosmetic
     "probejs",             # Dev tool, crashes on dedicated server
     "irons_spells_js",     # KubeJS Iron's Spells addon, references client classes
-    "rechiseled",          # Removed from pack (SuperMartijn642 Core Lib crash)
-    "supermartijn642"      # Dependencies of Rechiseled, also removed
+    "rechiseled",          # Removed — SuperMartijn642 Core Lib incompatibility
+    "supermartijn642",     # Lib dependency, removed
+    "connectedglass",     # Depends on SuperMartijn642, removed
+    "trashcans"           # Depends on SuperMartijn642, removed
 )
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
