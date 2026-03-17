@@ -12,10 +12,17 @@ REM   - 8-12 GB RAM available for the server
 title IridescentCraft Server
 
 echo.
-echo ==========================================
-echo   IridescentCraft Server
-echo   Forge 1.20.1-47.4.6
-echo ==========================================
+powershell -Command ^
+  "$r='Red';$o='DarkYellow';$y='Yellow';$g='Green';$c='Cyan';$b='Blue';$m='Magenta';" ^
+  "$colors=@($r,$o,$y,$g,$c,$b,$m);" ^
+  "Write-Host '  ==========================================' -ForegroundColor Cyan;" ^
+  "$text='  IridescentCraft Server';" ^
+  "for($i=0;$i -lt $text.Length;$i++){Write-Host $text[$i] -NoNewline -ForegroundColor $colors[$i %% $colors.Length]};" ^
+  "Write-Host '';" ^
+  "$text='  Forge 1.20.1-47.4.6';" ^
+  "for($i=0;$i -lt $text.Length;$i++){Write-Host $text[$i] -NoNewline -ForegroundColor $colors[$i %% $colors.Length]};" ^
+  "Write-Host '';" ^
+  "Write-Host '  ==========================================' -ForegroundColor Cyan"
 echo.
 
 REM -------------------------------------------------------------------
@@ -36,9 +43,14 @@ if not exist "libraries\net\minecraftforge\forge\1.20.1-47.4.6" (
     echo [INSTALL] Forge not found — running first-time setup...
     echo.
     if not exist "forge-1.20.1-47.4.6-installer.jar" (
-        echo ERROR: forge-1.20.1-47.4.6-installer.jar not found.
-        pause
-        exit /b 1
+        echo [INSTALL] Downloading Forge installer...
+        powershell -Command "Invoke-WebRequest -Uri 'https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.6/forge-1.20.1-47.4.6-installer.jar' -OutFile 'forge-1.20.1-47.4.6-installer.jar' -UseBasicParsing"
+        if not exist "forge-1.20.1-47.4.6-installer.jar" (
+            echo ERROR: Failed to download Forge installer.
+            pause
+            exit /b 1
+        )
+        echo [INSTALL] Forge installer downloaded.
     )
     java -jar forge-1.20.1-47.4.6-installer.jar --installServer
     echo.

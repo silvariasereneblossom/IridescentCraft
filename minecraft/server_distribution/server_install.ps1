@@ -14,11 +14,11 @@ $ForgeVersion = "1.20.1-47.4.6"
 $ForgeInstaller = "forge-$ForgeVersion-installer.jar"
 
 Write-Host ""
-Write-Host "==========================================" -ForegroundColor Cyan
-Write-Host "  IridescentCraft Server Installer" -ForegroundColor Cyan
-Write-Host "  Forge $ForgeVersion" -ForegroundColor Cyan
-Write-Host "  Standalone Edition" -ForegroundColor Cyan
-Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host "==========================================" -ForegroundColor Blue
+Write-Host "  IridescentCraft Server Installer" -ForegroundColor Magenta
+Write-Host "  Forge $ForgeVersion" -ForegroundColor White
+Write-Host "  Standalone Edition" -ForegroundColor Magenta
+Write-Host "==========================================" -ForegroundColor Blue
 Write-Host ""
 
 # -------------------------------------------------------------------
