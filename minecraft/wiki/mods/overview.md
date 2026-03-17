@@ -117,6 +117,10 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Mod | Reason | Date |
 |-----|--------|------|
 | Rechiseled | SuperMartijn642 Core Lib load order incompatibility | 2026-03-17 |
+| SuperMartijn642's Core Lib | Load order incompatibility (dependency of Rechiseled, Connected Glass, Trash Cans) | 2026-03-17 |
+| SuperMartijn642's Config Lib | Dependency of above | 2026-03-17 |
+| Connected Glass | Depends on SuperMartijn642 libs (removed) | 2026-03-17 |
+| Trash Cans | Depends on SuperMartijn642 libs (removed) | 2026-03-17 |
 | Pretty Rain | Cloth Config incompatibility | 2026-03-17 |
 
 ## Related Pages

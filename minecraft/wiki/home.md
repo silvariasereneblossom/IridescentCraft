@@ -76,7 +76,7 @@ The canonical design reference for all modpack systems.
 | End overhaul | Implemented | Dragon Exploration Gate, 9 advancement overrides, 5 End Apotheosis affixes, Void Blossom loot fix, entity ID fixes, Moog's End Structure loot |
 | TF portal activator | Implemented | Changed from diamond to T1 boss token |
 | Abyss overhaul | Implemented | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating |
-| Server distribution | Implemented | Server distribution folder created |
+| Server distribution | Implemented | Unified `iridescentserver.bat` (auto-install + launch + crash logging). Strip script, force-skip list, mod channel mismatch tracker (5 mods resolved). |
 | Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. Mundane origin re-added. |
 | Race layer rebalance | Implemented | Elf/Dwarf/Orc/Halfling/Faefolk/Revenant stat adjustments, bug fixes, functional effects |
 | Class descriptions update | Implemented | All 10 class descriptions updated to match actual power implementations |
@@ -89,7 +89,11 @@ The canonical design reference for all modpack systems.
 | LootJS clutter/food tuning | Implemented | Horse armor/spider eyes removed, food reduction 70%→90% |
 | Apotheosis affix tuning | Implemented | Dimension key prefixes fixed, Overworld generation 50%→25% |
 | Rechiseled removed | Implemented | SuperMartijn642 Core Lib load order incompatibility |
+| Connected Glass removed | Implemented | Depends on SuperMartijn642 libs |
+| Trash Cans removed | Implemented | Depends on SuperMartijn642 libs |
 | Pretty Rain removed | Implemented | Cloth Config incompatibility |
+| Duplicate origin definitions fixed | Implemented | KubeJS/data had duplicate origin JSONs causing malformed class prompt on server |
+| Codex book suppression fix | Implemented | botania:lexicon misclassified as Patchouli book, caused login timeout on server |
 
 ---
 

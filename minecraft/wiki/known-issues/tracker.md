@@ -169,8 +169,17 @@ Forge requires network channel lists to match between client and server. Mods th
 ### Race Layer Rebalance (2026-03-17)
 - **Resolved:** Elf (+15% ranged, +5% magic), Dwarf (halved mining hunger), Orc (+10% melee, knockback fix), Halfling (+20% food efficiency functional), Faefolk (magic 15%→30%, -50% armor toughness, -10% HP), Revenant (sunlight→weakness+slow, night vision, darkness bonuses, -20% healing functional).
 
-### Rechiseled Removed (2026-03-17)
-- **Resolved:** Removed due to SuperMartijn642 Core Lib load order incompatibility.
+### SuperMartijn642 Mod Family Removed (2026-03-17)
+- **Resolved:** Rechiseled, Connected Glass, Trash Cans all removed — depend on SuperMartijn642's Core Lib which has a load order incompatibility. All `.pw.toml` metadata deleted, added to server force-skip + strip lists.
+
+### Duplicate Origin Definitions Fixed (2026-03-17)
+- **Resolved:** All 17 origin JSONs (7 races + 10 classes) + origin layer definition were duplicated in `kubejs/data/` alongside the Paxi datapacks. Caused malformed second class prompt on dedicated server. Removed KubeJS copies.
+
+### Codex Book Suppression Login Timeout Fixed (2026-03-17)
+- **Resolved:** `botania:lexicon` was in `PATCHOULI_BOOKS_TO_CLEAR` but is its own item, not a Patchouli guide book. Generated malformed `/clear` command every second on login, causing connection timeout on dedicated server. Moved to `OTHER_BOOKS_TO_CLEAR`.
+
+### Server Distribution Overhaul (2026-03-17)
+- **Resolved:** Unified `iridescentserver.bat` (auto-install Forge + download mods + strip client mods + launch + crash logging). Added `mods/.index/` with 452 `.pw.toml` files. `strip_client_mods.bat` verified — no false positives.
 
 ### Pretty Rain Removed (2026-03-17)
 - **Resolved:** Removed due to Cloth Config incompatibility.
