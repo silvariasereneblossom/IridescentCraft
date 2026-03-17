@@ -118,8 +118,11 @@ foreach ($toml in $tomlFiles) {
     }
     if ($skip) { $skippedClient++; continue }
 
+    # Use -LiteralPath for filenames with special chars like [0-4]
+    $modPath = "mods\$filename"
+
     # Skip if already downloaded
-    if (Test-Path "mods\$filename") {
+    if (Test-Path -LiteralPath $modPath) {
         $skippedExists++
         continue
     }
@@ -144,13 +147,13 @@ foreach ($toml in $tomlFiles) {
     Write-Host "  [$pct%] Downloading: $filename" -NoNewline
 
     try {
-        Invoke-WebRequest -Uri $downloadUrl -OutFile "mods\$filename" -MaximumRedirection 10 -UseBasicParsing
+        Invoke-WebRequest -Uri $downloadUrl -OutFile $modPath -MaximumRedirection 10 -UseBasicParsing
 
-        if ((Test-Path "mods\$filename") -and (Get-Item "mods\$filename").Length -gt 1000) {
+        if ((Test-Path -LiteralPath $modPath) -and (Get-Item -LiteralPath $modPath).Length -gt 1000) {
             Write-Host " OK" -ForegroundColor Green
             $downloaded++
         } else {
-            if (Test-Path "mods\$filename") { Remove-Item "mods\$filename" -Force }
+            if (Test-Path -LiteralPath $modPath) { Remove-Item -LiteralPath $modPath -Force }
             Write-Host " FAILED (bad response)" -ForegroundColor Red
             $failed++
         }
