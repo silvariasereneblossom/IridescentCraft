@@ -24,6 +24,10 @@
 - **Design:** 4 Undergarden metals added to Tetra with stat overrides. Total material count now 27.
 - **Verify:** Confirm Undergarden materials appear correctly in Tetra crafting UI.
 
+### Fast Leaf Decay ConcurrentModificationException
+- **Status:** Known issue (2026-03-17), intermittent
+- **Description:** Fast Leaf Decay occasionally throws ConcurrentModificationException. Non-fatal, does not crash the game. Monitoring.
+
 ### Custom Item Artwork Needed (72 items)
 - **Status:** TODO — tinted placeholder textures in place, need proper pixel art
 - **Current state:** All 72 custom items use tinted vanilla base textures (e.g. tinted ender pearl for tokens, tinted amethyst shard for crystals). Functional and color-coded but not unique artwork.
@@ -146,3 +150,36 @@
 
 ### pack_format Wrong (2026-03-12)
 - **Fix:** Changed codex `pack.mcmeta` from format 15 to 12 (correct for 1.20.1)
+
+### Vanilla Origins Overhaul (2026-03-17)
+- **Resolved:** All 9 vanilla origins rebalanced. No lethal environmental effects, food preferences not restrictions. Mundane origin re-added. All power descriptions updated.
+
+### Race Layer Rebalance (2026-03-17)
+- **Resolved:** Elf (+15% ranged, +5% magic), Dwarf (halved mining hunger), Orc (+10% melee, knockback fix), Halfling (+20% food efficiency functional), Faefolk (magic 15%→30%, -50% armor toughness, -10% HP), Revenant (sunlight→weakness+slow, night vision, darkness bonuses, -20% healing functional).
+
+### Rechiseled Removed (2026-03-17)
+- **Resolved:** Removed due to SuperMartijn642 Core Lib load order incompatibility.
+
+### Pretty Rain Removed (2026-03-17)
+- **Resolved:** Removed due to Cloth Config incompatibility.
+
+### Walkable Mekanism Cables Coremod (2026-03-17)
+- **Resolved:** v1.0.1 deployed with LocalVariableTable fix.
+
+### Apotheosis Affix Tuning (2026-03-17)
+- **Resolved:** Dimension key prefixes fixed, Overworld Affix Item generation reduced from 50% to 25%.
+
+### Tectonic Terrain Tuning (2026-03-17)
+- **Resolved:** vertical_scale 1.155→0.8 (-31%), ridge_scale reduced.
+
+### Improved Mobs Rebalance (2026-03-17)
+- **Resolved:** 3 in-game day grace period, equipment/damage caps halved, diamond→iron for mob breaking tools.
+
+### LootJS Clutter and Food Tuning (2026-03-17)
+- **Resolved:** Horse armor, spider eyes, etc. removed from loot tables. Structure food reduction increased from 70% to 90%.
+
+### Early Magic Access (2026-03-17)
+- **Resolved:** Iron's Spells scrolls and copper spell book added to Overworld chest loot.
+
+### HDPE/Rubber Pipeline (2026-03-17)
+- **Resolved:** HDPE Circuit Board recipe added. Alternative Mekanism machine recipes. IF latex/rubber rework (logs→latex via Create/Thermal, HDPE→dry rubber).

@@ -154,6 +154,22 @@ Dusk Arc weapon and Shadow Armor set removed (overpowered for T2). Runic Arc cha
 
 Dragon Exploration Gate: players must explore End islands and complete objectives before the dragon fight becomes available. 9 advancement overrides replace the vanilla End advancement chain. 5 End-specific Apotheosis affixes. Void Blossom loot table fixed. Entity ID corrections for End mobs. Moog's End Structure loot tables populated.
 
+## Improved Mobs
+
+Rebalanced for fairer early game. 3 in-game day grace period before mobs gain equipment/abilities. Equipment and damage caps halved from defaults. Mob breaking tools downgraded from diamond to iron tier.
+
+## Tectonic Terrain
+
+Tectonic worldgen tuned for flatter terrain: vertical_scale reduced from 1.155 to 0.8 (-31% height reduction), ridge_scale reduced. Mountains are still present but less extreme.
+
+## Walkable Mekanism Cables
+
+Coremod (v1.0.1) that makes Mekanism cables/pipes walkable instead of having tiny hitboxes. Includes LocalVariableTable fix.
+
+## HDPE & Rubber Pipeline
+
+HDPE Circuit Board added as a craftable component for alternative Mekanism machine recipes. IF latex/rubber pipeline reworked: logs produce latex via Create/Thermal processing routes, HDPE converts to dry rubber for recipe chains.
+
 ## Related Pages
 
 - [Master Design Document](../design/master.md) — Parts I, II, V, VI, VII

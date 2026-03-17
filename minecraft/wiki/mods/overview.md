@@ -72,7 +72,7 @@ KubeJS (+addons), CraftTweaker, JeiTweaker, LootJS, AStages, FTB Quests
 
 ## Ungated Mods
 
-Building: Chipped, Macaw's suite, Decorative Blocks, ConnectedTexturesMod, Rechiseled, Structurize
+Building: Chipped, Macaw's suite, Decorative Blocks, ConnectedTexturesMod, Structurize
 
 QoL: JourneyMap, Jade, Jade Addons, AppleSkin, Mouse Tweaks, FTB Ultimine/Chunks/Essentials, Simple Voice Chat, Equipment Compare, Light Overlay, JEED, Transmog
 
@@ -102,6 +102,22 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | The Abyss | recipes/config | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating. Dimension mechanics (darkness, corruption, fear). |
 | Twilight Forest | recipes | Portal activator changed from diamond to T1 boss token. |
 | End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, 9 advancement overrides, 5 End Apotheosis affixes, Void Blossom loot fix, entity ID fixes, Moog's End Structure loot. |
+| Improved Mobs | config | 3 in-game day grace period, equipment/damage caps halved, diamond→iron for mob breaking tools. |
+| Tectonic | config | vertical_scale 1.155→0.8 (-31%), ridge_scale reduced. |
+| LootJS | scripts | Clutter removal (horse armor, spider eyes), food reduction 70%→90%. |
+| Apotheosis | config | Dimension key prefixes fixed, Overworld Affix Item generation 50%→25%. |
+| Iron's Spells | loot tables | Scrolls + copper spell book added to Overworld chest loot for early magic access. |
+| Walkable Cables | coremod | v1.0.1 — makes Mekanism cables walkable, LocalVariableTable fix. |
+| Mekanism (HDPE) | recipes | HDPE Circuit Board recipe, alternative machine recipes using HDPE components. |
+| Industrial Foregoing | recipes | Latex/rubber pipeline rework: logs→latex via Create/Thermal, HDPE→dry rubber. |
+| Origins | power JSONs | All 9 vanilla origins rebalanced (no lethal effects, food prefs not restrictions). Mundane origin re-added. |
+
+## Removed Mods
+
+| Mod | Reason | Date |
+|-----|--------|------|
+| Rechiseled | SuperMartijn642 Core Lib load order incompatibility | 2026-03-17 |
+| Pretty Rain | Cloth Config incompatibility | 2026-03-17 |
 
 ## Related Pages
 

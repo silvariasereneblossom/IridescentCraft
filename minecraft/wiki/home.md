@@ -77,6 +77,19 @@ The canonical design reference for all modpack systems.
 | TF portal activator | Implemented | Changed from diamond to T1 boss token |
 | Abyss overhaul | Implemented | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating |
 | Server distribution | Implemented | Server distribution folder created |
+| Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. Mundane origin re-added. |
+| Race layer rebalance | Implemented | Elf/Dwarf/Orc/Halfling/Faefolk/Revenant stat adjustments, bug fixes, functional effects |
+| Class descriptions update | Implemented | All 10 class descriptions updated to match actual power implementations |
+| Codex expansion | Implemented | "Choosing Your Build" guide, "Origins Guide", updated Champions/Enchantments/Affixes/class entries |
+| Tectonic terrain tuning | Implemented | vertical_scale 1.155→0.8 (-31%), ridge_scale reduced |
+| Improved Mobs rebalance | Implemented | 3-day grace period, caps halved, diamond→iron for mob tools |
+| Early magic access | Implemented | Iron's Spells scrolls + copper spell book in Overworld chests |
+| Walkable Mekanism cables | Implemented | Coremod v1.0.1, LocalVariableTable fix |
+| HDPE/rubber pipeline | Implemented | HDPE Circuit Board, alternative Mekanism recipes, IF latex/rubber rework |
+| LootJS clutter/food tuning | Implemented | Horse armor/spider eyes removed, food reduction 70%→90% |
+| Apotheosis affix tuning | Implemented | Dimension key prefixes fixed, Overworld generation 50%→25% |
+| Rechiseled removed | Implemented | SuperMartijn642 Core Lib load order incompatibility |
+| Pretty Rain removed | Implemented | Cloth Config incompatibility |
 
 ---
 

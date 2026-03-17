@@ -76,9 +76,42 @@ All 22 scoreboard objectives are now functional (updated 2026-03-15):
 
 7 custom races implemented as an Origins layer in the `icraft` namespace. Races provide stat modifiers and thematic identity, separate from the Origins++ origin selection.
 
-## Origin System
+### Race Details (updated 2026-03-17)
 
-Uses 9 vanilla origins (Arachnid, Avian, Blazeborn, Elytrian, Enderian, Feline, Merling, Phantom, Shulk). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional. Tradeoffs built into each Origin balance innate power (e.g., Avian gets flight but takes more damage).
+| Race | Bonuses | Penalties |
+|------|---------|-----------|
+| Human | None | None (baseline) |
+| Elf | +15% ranged damage, +5% magic damage | — |
+| Dwarf | Mining hunger halved | — |
+| Orc | +10% melee damage | — |
+| Halfling | +20% food efficiency | — |
+| Faefolk | +30% magic damage | -50% armor toughness, -10% HP |
+| Revenant | +20% damage + Resistance I in darkness/Abyss, Night Vision 1.1 | Weakness+slowness in sunlight, -20% healing |
+
+Notable fixes: Orc knockback double-apply bug fixed. Halfling food efficiency now functional. Revenant healing penalty now functional.
+
+## Origin System (Overhauled 2026-03-17)
+
+Uses 9 vanilla origins + Mundane (10 total). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional.
+
+**Design philosophy:** No lethal environmental effects. Food preferences, not restrictions. Tradeoffs should be interesting, not punishing.
+
+### Origin Details
+
+| Origin | Key Powers | Changes from Vanilla |
+|--------|-----------|---------------------|
+| Arachnid | Wall climbing, cobweb immunity | Unchanged |
+| Avian | Sky Affinity: altitude buffs at Y=80 and Y=150 | "Fresh air" replaced with Sky Affinity |
+| Blazeborn | Fire immunity, Nether Affinity (+10/20% damage in Nether) | Water damage→discomfort, Nether Spawn→Nether Affinity |
+| Elytrian | Elytra flight, launch ability | Unchanged |
+| Enderian | Teleport, Ender Shift (+15% damage after teleport) | New Ender Shift power added |
+| Feline | Cat-like abilities, night vision | -20% HP added as tradeoff |
+| Merling | Underwater breathing, aqua affinity | Suffocation→land discomfort after 5 min dry |
+| Phantom | Phasing, invisibility, half health | Sunlight burn→weakness+slowness |
+| Shulk | Hardened Shell (50% death durability reduction), +20% mining speed | Extra inventory→Hardened Shell |
+| Mundane | No powers | Re-added as blank slate option |
+
+All power descriptions updated to match new implementations.
 
 ## Related Pages
 

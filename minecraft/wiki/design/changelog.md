@@ -4,6 +4,56 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-17 — Origins overhaul, race rebalance, class descriptions, Codex updates, terrain/balance tuning
+
+### Gameplay & Balance Tuning
+- Playtest feedback: LootJS clutter removal (horse armor, spider eyes, etc.), structure food reduction increased from 70% to 90%.
+- Apotheosis affix rarity: fixed dimension key prefixes, reduced Overworld Affix Item generation from 50% to 25%.
+- Tectonic terrain: vertical_scale reduced from 1.155 to 0.8 (-31% height), ridge_scale reduced for flatter terrain.
+- Improved Mobs rebalance: 3 in-game day grace period added, equipment/damage caps halved, diamond downgraded to iron for mob breaking tools.
+- Early magic access: Iron's Spells scrolls and copper spell book added to Overworld chest loot tables.
+- Walkable Mekanism cables coremod added (v1.0.1), with LocalVariableTable fix.
+- HDPE Circuit Board recipe added, plus alternative Mekanism machine recipes using HDPE components.
+- IF latex/rubber pipeline rework: logs produce latex via Create/Thermal processing, HDPE converts to dry rubber.
+
+### Vanilla Origins Overhaul
+- Design philosophy: no lethal environmental effects, food preferences not restrictions.
+- Avian: "fresh air" replaced with Sky Affinity altitude buffs (+buffs at Y=80 and Y=150).
+- Blazeborn: water damage replaced with discomfort, Nether Spawn replaced with Nether Affinity (+10/20% damage in Nether).
+- Phantom: sunlight burn replaced with weakness+slowness, half health retained.
+- Shulk: extra inventory replaced with Hardened Shell (50% death durability reduction), +20% mining speed.
+- Feline: -20% HP added as tradeoff.
+- Enderian: new Ender Shift power (+15% damage for short time after teleport).
+- Merling: suffocation replaced with land discomfort after 5 minutes dry.
+- Mundane origin re-added (no buffs or nerfs, blank slate).
+- All power descriptions updated to match new implementations.
+
+### Race Layer Rebalance
+- Elf: +15% ranged damage, +5% magic damage added.
+- Dwarf: mining hunger penalty halved.
+- Orc: +10% melee damage, fixed knockback double-apply bug.
+- Halfling: food efficiency now functional (+20%).
+- Faefolk: magic damage bonus increased from 15% to 30%, -50% armor toughness added, -10% HP added.
+- Revenant: sunlight effect changed to weakness+slowness, night vision level 1.1, +20% damage + Resistance I in darkness/Abyss, healing penalty now functional (-20%).
+
+### Class Descriptions
+- All 10 class descriptions updated to match actual power implementations.
+
+### Codex Updates
+- New "Choosing Your Build" early game guide entry added.
+- New "Origins Guide" entry added.
+- Updated entries: Champions, Enchantments (29 total documented), Affixes (88 total documented), all 10 class entries.
+
+### Removed Mods
+- Rechiseled removed (SuperMartijn642 Core Lib load order incompatibility).
+- Pretty Rain removed (Cloth Config incompatibility).
+
+### Bug Fixes
+- Fast Leaf Decay ConcurrentModificationException noted (intermittent, non-fatal).
+- Walkable Mekanism cables coremod LocalVariableTable fix (v1.0.1).
+
+---
+
 ## 2026-03-16 — Blue Skies, Undergarden, Aether/Abyss mechanics, End overhaul, Abyss overhaul, server distribution
 
 ### Blue Skies Balance Pass
