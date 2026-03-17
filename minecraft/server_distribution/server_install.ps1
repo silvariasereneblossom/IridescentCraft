@@ -147,17 +147,23 @@ foreach ($toml in $tomlFiles) {
     Write-Host "  [$pct%] Downloading: $filename" -NoNewline
 
     try {
-        Invoke-WebRequest -Uri $downloadUrl -OutFile $modPath -MaximumRedirection 10 -UseBasicParsing
+        # Download to temp file first, then rename — avoids PowerShell
+        # bracket wildcard issues with filenames like [Forge1.20.1]TetraClip.jar
+        $tempFile = "mods\_download_temp_$total.jar"
+        Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing
 
-        if ((Test-Path -LiteralPath $modPath) -and (Get-Item -LiteralPath $modPath).Length -gt 1000) {
+        if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {
+            # Rename temp to actual filename using .NET (bypasses PS wildcards)
+            [System.IO.File]::Move((Resolve-Path $tempFile).Path, (Join-Path (Get-Location) $modPath))
             Write-Host " OK" -ForegroundColor Green
             $downloaded++
         } else {
-            if (Test-Path -LiteralPath $modPath) { Remove-Item -LiteralPath $modPath -Force }
+            if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
             Write-Host " FAILED (bad response)" -ForegroundColor Red
             $failed++
         }
     } catch {
+        if (Test-Path "mods\_download_temp_$total.jar") { Remove-Item "mods\_download_temp_$total.jar" -Force }
         Write-Host " FAILED ($($_.Exception.Message))" -ForegroundColor Red
         $failed++
     }
