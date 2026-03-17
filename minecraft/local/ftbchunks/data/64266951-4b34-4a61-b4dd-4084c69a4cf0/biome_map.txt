@@ -1,11 +1,17 @@
 #3FF ars_nouveau:archwood_forest
 #4DF biomesoplenty:aspen_glade
+#3D6 minecraft:cold_ocean
 #6AF biomesoplenty:crag
+#109 minecraft:deep_cold_ocean
 #010 minecraft:forest
 #508 minecraft:frozen_peaks
 #286 minecraft:grove
+#467 biomesoplenty:highland
 #51E minecraft:jagged_peaks
+#056 biomesoplenty:maple_woods
+#2D6 minecraft:meadow
 #3DC minecraft:plains
+#28B biomesoplenty:pumpkin_patch
 #108 biomesoplenty:seasonal_forest
 #524 minecraft:snowy_slopes
 #51A minecraft:stony_shore

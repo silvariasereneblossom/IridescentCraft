@@ -2,19 +2,6 @@
   "backups": [
     {
       "worldName": "New World",
-      "createTime": 1773603000823,
-      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\IridescentCraft\\minecraft\\backups\\2026-3-15_15-30-0.zip",
-      "size": 25369472,
-      "ratio": 0.86283875,
-      "sha1": "3bec86e012b6412c8fbeb6f978e2b9e296ea0d5c",
-      "preview": "",
-      "snapshot": false,
-      "backupName": "automated",
-      "backupFormat": "ZIP",
-      "complete": true
-    },
-    {
-      "worldName": "New World",
       "createTime": 1773676801141,
       "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\IridescentCraft\\minecraft\\backups\\2026-3-16_12-0-0.zip",
       "size": 7125846,
@@ -59,6 +46,19 @@
       "size": 3195524,
       "ratio": 0.8787098,
       "sha1": "960751bf675232dc3fe5dd518d859b635c3ec2c1",
+      "preview": "",
+      "snapshot": false,
+      "backupName": "automated",
+      "backupFormat": "ZIP",
+      "complete": true
+    },
+    {
+      "worldName": "New World (1)",
+      "createTime": 1773718201186,
+      "backupLocation": "C:\\Users\\Silvaria Zemaitis\\AppData\\Roaming\\PrismLauncher\\instances\\IridescentCraft\\minecraft\\backups\\2026-3-16_23-30-0.zip",
+      "size": 29482379,
+      "ratio": 0.85533816,
+      "sha1": "2f3219fb88cf51e5e89fbd2a160076d391e46dc9",
       "preview": "",
       "snapshot": false,
       "backupName": "automated",

@@ -176,7 +176,10 @@
         "icraft:loot/loot_boxes",
         "icraft:loot/gems",
         "icraft:mods_t1/runic_grimoire",
-        "icraft:welcome/first_hour"
+        "icraft:welcome/first_hour",
+        "icraft:welcome/philosophy",
+        "icraft:welcome/intro",
+        "icraft:progression/tier_overview"
       ],
       "bookmarks": [],
       "completedManualQuests": []
