@@ -1,0 +1,210 @@
+# IridescentCraft Server Installation Script (PowerShell)
+# Standalone — works without the rest of the modpack repo.
+#
+# This script:
+#   1. Checks for Java 17
+#   2. Runs the included Forge installer
+#   3. Downloads all server-side mods from .pw.toml metadata
+#   4. Everything else (config, kubejs, etc.) is already included
+
+$ErrorActionPreference = "Continue"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+$ForgeVersion = "1.20.1-47.4.0"
+$ForgeInstaller = "forge-$ForgeVersion-installer.jar"
+
+Write-Host ""
+Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host "  IridescentCraft Server Installer" -ForegroundColor Cyan
+Write-Host "  Forge $ForgeVersion" -ForegroundColor Cyan
+Write-Host "  Standalone Edition" -ForegroundColor Cyan
+Write-Host "==========================================" -ForegroundColor Cyan
+Write-Host ""
+
+# -------------------------------------------------------------------
+# Step 1: Check Java
+# -------------------------------------------------------------------
+Write-Host "[1/4] Checking Java installation..." -ForegroundColor Yellow
+
+try {
+    $javaOut = & java -version 2>&1 | Select-Object -First 1
+    Write-Host "  $javaOut" -ForegroundColor Green
+} catch {
+    Write-Host "  ERROR: Java not found. Please install Java 17." -ForegroundColor Red
+    Write-Host "  Download: https://adoptium.net/" -ForegroundColor Red
+    Read-Host "Press Enter to exit"
+    exit 1
+}
+
+# -------------------------------------------------------------------
+# Step 2: Install Forge
+# -------------------------------------------------------------------
+Write-Host ""
+Write-Host "[2/4] Setting up Forge server..." -ForegroundColor Yellow
+
+if (Test-Path "libraries\net\minecraftforge\forge\$ForgeVersion") {
+    Write-Host "  Forge libraries already present, skipping." -ForegroundColor Green
+} else {
+    if (-not (Test-Path $ForgeInstaller)) {
+        Write-Host "  ERROR: $ForgeInstaller not found in this directory." -ForegroundColor Red
+        Read-Host "Press Enter to exit"
+        exit 1
+    }
+    Write-Host "  Running Forge installer (--installServer)..."
+    & java -jar $ForgeInstaller --installServer
+    Write-Host "  Forge installed." -ForegroundColor Green
+}
+
+# -------------------------------------------------------------------
+# Step 3: Download mods from .pw.toml metadata
+# -------------------------------------------------------------------
+Write-Host ""
+Write-Host "[3/4] Downloading mods..." -ForegroundColor Yellow
+
+$indexDir = "mods\.index"
+if (-not (Test-Path $indexDir)) {
+    Write-Host "  ERROR: mods\.index\ not found." -ForegroundColor Red
+    Read-Host "Press Enter to exit"
+    exit 1
+}
+
+if (-not (Test-Path "mods")) { New-Item -ItemType Directory -Path "mods" | Out-Null }
+
+$downloaded = 0
+$skippedClient = 0
+$skippedExists = 0
+$failed = 0
+$total = 0
+
+# Client-only and server-incompatible mods to skip
+$forceSkip = @("embeddium", "oculus", "immediatelyfast", "rubidium-extra")
+
+$tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
+$totalFiles = $tomlFiles.Count
+Write-Host "  Found $totalFiles mod metadata files."
+
+foreach ($toml in $tomlFiles) {
+    $total++
+    $filename = ""
+    $side = "both"
+    $mode = ""
+    $url = ""
+    $projectId = ""
+    $fileId = ""
+
+    # Parse TOML file
+    foreach ($line in Get-Content $toml.FullName) {
+        $line = $line.Trim()
+        if ($line -match "^filename\s*=\s*'(.+)'") { $filename = $matches[1] }
+        if ($line -match "^side\s*=\s*'(.+)'") { $side = $matches[1] }
+        if ($line -match "^mode\s*=\s*'(.+)'") { $mode = $matches[1] }
+        if ($line -match "^url\s*=\s*'(.+)'") { $url = $matches[1] }
+        if ($line -match "^project-id\s*=\s*(\d+)") { $projectId = $matches[1] }
+        if ($line -match "^file-id\s*=\s*(\d+)") { $fileId = $matches[1] }
+    }
+
+    if ([string]::IsNullOrEmpty($filename)) { continue }
+
+    # Skip client-only mods
+    if ($side -eq "client") {
+        $skippedClient++
+        continue
+    }
+
+    # Skip force-excluded mods
+    $skip = $false
+    foreach ($pattern in $forceSkip) {
+        if ($filename -like "*$pattern*") { $skip = $true; break }
+    }
+    if ($skip) { $skippedClient++; continue }
+
+    # Skip if already downloaded
+    if (Test-Path "mods\$filename") {
+        $skippedExists++
+        continue
+    }
+
+    # Determine download URL
+    $downloadUrl = ""
+    if ($mode -eq "url" -and -not [string]::IsNullOrEmpty($url)) {
+        $downloadUrl = $url
+    } elseif ($mode -eq "metadata:curseforge" -and $projectId -and $fileId) {
+        $downloadUrl = "https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download"
+    }
+
+    if ([string]::IsNullOrEmpty($downloadUrl)) {
+        Write-Host "  WARNING: No URL for $filename" -ForegroundColor DarkYellow
+        $failed++
+        continue
+    }
+
+    # Download
+    $pct = [math]::Round(($total / $totalFiles) * 100)
+    Write-Host "  [$pct%] Downloading: $filename" -NoNewline
+
+    try {
+        $wc = New-Object System.Net.WebClient
+        $wc.DownloadFile($downloadUrl, "mods\$filename")
+
+        if (Test-Path "mods\$filename") {
+            $fileSize = (Get-Item "mods\$filename").Length
+            if ($fileSize -gt 1000) {
+                Write-Host " OK" -ForegroundColor Green
+                $downloaded++
+            } else {
+                # Tiny file = probably a redirect/error page, not a real jar
+                # Try following redirects with Invoke-WebRequest
+                Remove-Item "mods\$filename" -Force
+                try {
+                    Invoke-WebRequest -Uri $downloadUrl -OutFile "mods\$filename" -MaximumRedirection 5
+                    Write-Host " OK (redirect)" -ForegroundColor Green
+                    $downloaded++
+                } catch {
+                    Write-Host " FAILED" -ForegroundColor Red
+                    $failed++
+                }
+            }
+        } else {
+            Write-Host " FAILED" -ForegroundColor Red
+            $failed++
+        }
+    } catch {
+        Write-Host " FAILED" -ForegroundColor Red
+        $failed++
+    }
+}
+
+Write-Host ""
+Write-Host "  Downloaded: $downloaded mods" -ForegroundColor Green
+Write-Host "  Skipped (client-only): $skippedClient" -ForegroundColor Cyan
+Write-Host "  Skipped (already present): $skippedExists" -ForegroundColor Cyan
+if ($failed -gt 0) {
+    Write-Host "  Failed: $failed mods" -ForegroundColor Red
+}
+
+# -------------------------------------------------------------------
+# Step 4: Final
+# -------------------------------------------------------------------
+Write-Host ""
+Write-Host "[4/4] Final setup..." -ForegroundColor Yellow
+Write-Host ""
+Write-Host "==========================================" -ForegroundColor Green
+Write-Host "  Installation complete!" -ForegroundColor Green
+Write-Host "==========================================" -ForegroundColor Green
+Write-Host ""
+Write-Host "To start the server: double-click start.bat"
+Write-Host ""
+Write-Host "The server will listen on port 25565 by default."
+Write-Host "Edit server.properties to change settings."
+Write-Host ""
+Write-Host "IMPORTANT: First startup will take 5-15 minutes with 420+ mods." -ForegroundColor Yellow
+Write-Host "Wait until you see 'Done' in the console before connecting."
+Write-Host ""
+
+if ($failed -gt 0) {
+    Write-Host "WARNING: $failed mod(s) failed to download." -ForegroundColor Red
+    Write-Host "You may need to download them manually." -ForegroundColor Red
+    Write-Host ""
+}
+
+Read-Host "Press Enter to close"
