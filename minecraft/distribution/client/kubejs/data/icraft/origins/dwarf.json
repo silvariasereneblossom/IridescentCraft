@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:race/dwarf/mining_speed",
+    "icraft:race/dwarf/sturdy",
+    "icraft:race/dwarf/fire_resist",
+    "icraft:race/dwarf/slow"
+  ],
+  "icon": {
+    "item": "minecraft:iron_pickaxe"
+  },
+  "order": 3,
+  "impact": 1,
+  "name": "Dwarf",
+  "description": "Sturdy underground specialist. +15% mining speed, +10% armor toughness, 50% fire resistance. -5% speed, -8% jump height."
+}

@@ -1,0 +1,33 @@
+{
+  "name": "Origins Guide",
+  "icon": "minecraft:egg",
+  "category": "icraft:welcome",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Vanilla Origins",
+      "text": "$(thing)IridescentCraft$() uses Origins++ which provides 148 origin options. The vanilla-derived origins have been rebalanced for the modpack. Key principle: $(bold)no origin prevents eating any food type$() — dietary traits are preferences, not restrictions. Environmental effects cause discomfort, not death.$(br2)Here are the 10 core origins and their key powers."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Origins (Part 1)",
+      "text": "$(bold)Arachnid$() — Wall climbing, cobweb immunity, carnivore preference.$(br2)$(bold)Avian$() — Slow falling, increased speed, lightweight (more knockback).$(br2)$(bold)Blazeborn$() — Fire immunity, Nether-adapted. Water causes discomfort (not lethal).$(br2)$(bold)Elytrian$() — Elytra-like flight from start. Cannot wear chestplate while flying. Claustrophobia in small spaces.$(br2)$(bold)Enderian$() — Teleportation ability. Water causes discomfort. Pearl-throw teleport at will."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Origins (Part 2)",
+      "text": "$(bold)Feline$() — Night vision, reduced fall damage, sprinting speed boost. Scared by creepers (brief slowness).$(br2)$(bold)Merling$() — Underwater breathing, swim speed, aquatic affinity. Dries out on land slowly (discomfort, not lethal).$(br2)$(bold)Phantom$() — Invisibility when not wearing armor. Phasing through blocks briefly. Hunger cost for phasing.$(br2)$(bold)Shulk$() — Natural armor. Inventory-based power (stronger with full inventory). Slower movement.$(br2)$(bold)Mundane$() — No powers, no weaknesses. Pure baseline human. For players who want Race and Class to be the only modifiers."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Important Notes",
+      "text": "$(bold)Food is never restricted.$() Some origins have food preferences that give small bonuses or penalties, but no origin is locked out of any food type. Everyone can eat everything.$(br2)$(bold)Environmental effects are discomfort.$() Blazeborn in water, Merling on land — these cause mild effects like slowness or minor damage, not instant death. You can still function.$(br2)$(bold)Origins are separate from Race and Class.$() Your origin provides flavor powers. Your race provides stats. Your class provides combat role. All three stack."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Best Combos",
+      "text": "$(bold)Blazeborn + Dwarf + Berserker$()$(br)Triple fire synergy. Nether becomes trivial.$(br2)$(bold)Elytrian + Elf + Ranger$()$(br)Maximum mobility. Fly, kite, never get hit.$(br2)$(bold)Enderian + Faefolk + Archmage$()$(br)Teleport for safety, spell from range, Slow Fall backup.$(br2)$(bold)Shulk + Dwarf + Vanguard$()$(br)Maximum armor stacking. Nearly unkillable.$(br2)$(bold)Mundane + Human + Wanderer$()$(br)The blank slate. No bonuses, no penalties, maximum flexibility."
+    }
+  ]
+}

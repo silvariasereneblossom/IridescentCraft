@@ -1,0 +1,16 @@
+filename = 'ArmorUnlocked-1.20-1.0.2.jar'
+name = 'Armor Unlocked'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '310b24043ad56a1bc1f68a720663352e099ed658603478e0da790adebe6d8995644c63e9133c15692f9102c3135babb8b834ba0e3759dde8443d7cb25e2aa480'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/fqddFpyu/versions/LETpPN3Q/ArmorUnlocked-1.20-1.0.2.jar'
+
+[update.modrinth]
+mod-id = 'fqddFpyu'
+version = 'LETpPN3Q'

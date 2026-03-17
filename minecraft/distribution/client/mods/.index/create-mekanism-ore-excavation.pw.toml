@@ -1,0 +1,17 @@
+filename = 'Create Mekanism Ore Excavation 1.20.1 B.1.0.jar'
+name = 'Create Mekanism Ore Excavation'
+side = 'server'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'beta'
+x-prismlauncher-version-number = 'CMOE 1.20.1 B.1.0.jar'
+
+[download]
+hash = '04098832edbc1a5d47a21ad7179f6fec9585d6e3'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5687547
+project-id = 1095874

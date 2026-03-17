@@ -1,0 +1,16 @@
+filename = 'keepdurable1.20.1.jar'
+name = 'KeepDurable1.20.1'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'ea6d973a3596561d373cd6dcb093df7d07880dd0'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5585613
+project-id = 1035972

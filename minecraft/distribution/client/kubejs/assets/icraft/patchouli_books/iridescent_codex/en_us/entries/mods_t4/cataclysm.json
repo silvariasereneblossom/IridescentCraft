@@ -1,0 +1,25 @@
+{
+  "name": "L_Ender's Cataclysm",
+  "icon": "cataclysm:netherite_monstrosity_spawn_egg",
+  "category": "icraft:mods_t4",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Cataclysm adds massive T3–$(t4)T4$() dungeon structures with ultra-boss encounters and unique materials."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Role in the pack:$() Cataclysm is the hardest $(t3)T3$() content. Five ultra-bosses (Netherite Monstrosity, Ignis, The $(item)Harbinger$(), The Leviathan, Maledictus) each in enormous purpose-built structures.$(br2)$(bold)Loot:$() Cataclysm structures have some of the highest token drop rates in T3. Boss materials from Cataclysm bosses are among the best $(t3)T3$() crafting components."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Prep requirement:$() Full terrasteel or enderium gear is the minimum recommended for Cataclysm boss attempts. Maledictus and The $(item)Harbinger$() in particular are calibrated for well-geared $(t3)T3$() players.$(br2)$(bold)Unique weapons:$() 8 $(thing)Simply Swords$() uniques drop from Cataclysm bosses — the most of any single mod."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)No guide book.$() Cataclysm is boss-focused — documentation comes from fighting. Each boss drops a $(bold)Trophy$() that can be placed for display. JEI covers all weapon and armor recipes unlocked by boss materials."
+    }
+  ],
+  "advancement": "icraft:stage_tier_4"
+}

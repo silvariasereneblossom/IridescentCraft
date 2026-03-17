@@ -1,0 +1,16 @@
+filename = 'Truly-Modular-armory-armory-forge-1.13-1.20.1.jar'
+name = 'Truly Modular: Armory'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '6fec4322100561e289a5d35bbdfb049b9b04e33895c88fbcca82c23b384a80088e4a8071062620f3e59e096954495471ba120d11f5f117bfb52f56893394e6d5'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/6mUV27DN/versions/9RRFLJ2U/Truly-Modular-armory-armory-forge-1.13-1.20.1.jar'
+
+[update.modrinth]
+mod-id = '6mUV27DN'
+version = '9RRFLJ2U'

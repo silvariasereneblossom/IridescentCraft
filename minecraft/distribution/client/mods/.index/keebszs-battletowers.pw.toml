@@ -1,0 +1,16 @@
+filename = 'keebszs_battletowers_0.6.0-1.20.1BETA.jar'
+name = "Keebsz's Battle Towers"
+side = 'both'
+x-prismlauncher-loaders = [ 'forge', 'fabric' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'beta'
+
+[download]
+hash = '6ce8610429b107cbfc0d2e048a93507c7e8b8d62'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 4784932
+project-id = 655693

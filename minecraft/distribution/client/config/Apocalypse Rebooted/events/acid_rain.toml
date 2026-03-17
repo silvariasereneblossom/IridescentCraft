@@ -1,0 +1,40 @@
+# apocalypse:events/acid_rain.toml
+# This config contains settings related to Apocalypse's acid rain event.
+
+
+# Category: general
+# General event settings
+
+  # The chance of triggering an Acid Rain event when it starts raining. 1.0 = 100% chance, 0.5 = 50% etc.
+  # Setting this to 0.0 effectively disables acid rain.
+  # <Number> Range: 0.0 ~ 1.0, Default: 0.5
+  general.acid_rain_chance = 0.0
+
+  # Determines the interval in which acid rain damage should be dealt in seconds.
+  # A value of 2 will inflict acid rain damage on players every 2 seconds.
+  # <Integer> Range: 1 ~ 1000, Default: 3
+  general.damage_rate = 1
+  # The amount of damage that should be dealt to players on acid rain tick.
+  # Setting this to 0 disables acid rain damage.
+  # <Integer> Range: ≥ 0, Default: 1
+  general.rain_damage = 0
+
+  # If true, acid rain will damage all living things and not just players.
+  # <Boolean> Valid Values: { true, false }, Default: false
+  general.damage_mobs = false
+  # If 'damage_mobs' is true, this field acts as a blacklist for mobs that should be an exception and NOT take damage
+  #   from acid rain.
+  # <Entity List> Format: [ "namespace:entity_type", ... ], Default: [ "minecraft:vex", "minecraft:slime",
+  #   "minecraft:warden", "apocalypse:ghost" ]
+  general.mob_blacklist = [
+    "minecraft:vex",
+    "minecraft:slime",
+    "minecraft:warden",
+    "apocalypse:ghost"
+  ]
+
+  # If true, colder biomes/areas where it snows will have acid snow when the acid rain event triggers.
+  #  * Requires a WORLD restart to take effect *
+  # <Boolean> Valid Values: { true, false }, Default: false
+  general.acid_snow = false
+

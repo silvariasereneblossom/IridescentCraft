@@ -1,0 +1,16 @@
+filename = 'mobtimizations-forge-1.20.1-1.0.1.jar'
+name = 'Mobtimizations'
+side = 'server'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '7a1f74a0cc178013808b09f409341d7277ebb72a'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7594372
+project-id = 974401

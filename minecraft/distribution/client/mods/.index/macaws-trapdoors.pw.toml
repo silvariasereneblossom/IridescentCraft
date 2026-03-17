@@ -1,0 +1,16 @@
+filename = 'mcw-trapdoors-1.1.5-mc1.20.1forge.jar'
+name = "Macaw's Trapdoors"
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '1b3b4b40041346b19bc9ab280b288a9f6b77b513'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7256186
+project-id = 400933

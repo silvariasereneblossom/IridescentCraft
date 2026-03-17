@@ -1,0 +1,195 @@
+
+#When setting the values, keep in mind that 20 ticks last one second (in the best case).
+#So if you want to drop the hunger bar by 1 after 10 seconds of walking, you have to specify 200 (10 seconds * 20 ticks/second = 200 ticks)
+["Exhaustion for breaking blocks"]
+	#Enable exhaustion for breaking blocks tagged with mineable/shovel (like dirt, sand, ...)
+	enableForShovelMineables = true
+	#Enable exhaustion for breaking blocks tagged with mineable/axe (like logs, planks, ...)
+	enableForAxeMineables = true
+	#Enable exhaustion for breaking blocks tagged with mineable/pickaxe (like stone, ores, ...)
+	enableForPickaxeMineables = true
+	#Decrease saturation or food bar value by 1 after breaking X blocks tagged with mineable/shovel (like dirt, sand, ...)
+	#Range: 1 ~ 1600
+	afterBreakingShovelMineables = 120
+	#Decrease saturation or food bar value by 1 after breaking X blocks tagged with mineable/axe (like logs, planks, ...)
+	#Range: 1 ~ 1600
+	afterBreakingAxeMineables = 100
+	#Decrease saturation or food bar value by 1 after breaking X blocks tagged with mineable/pickaxe (like stone, ores, ...)
+	#Range: 1 ~ 1600
+	afterBreakingPickaxeMineables = 80
+
+["Exhaustion for modifying blocks"]
+	#Enable exhaustion for tilling dirt blocks
+	enableForTillingDirt = true
+	#Enable exhaustion for pathing dirt blocks
+	enableForPathingDirt = true
+	#Enable exhaustion for stripping logs
+	enableForStrippingLogs = true
+	#Decrease saturation or food bar value by 1 after tilling X dirt blocks
+	#Range: > 1
+	afterTillingDirt = 120
+	#Decrease saturation or food bar value by 1 after pathing X dirt blocks
+	#Range: > 1
+	afterPathingDirt = 120
+	#Decrease saturation or food bar value by 1 after stripping X logs
+	#Range: > 1
+	afterStrippingLogs = 120
+
+["Exhaustion for Fights"]
+	#Enable exhaustion for attacking entities
+	enableForAttackingEntities = false
+	#Enable exhaustion for blocking an attack with a shield
+	enableForBlockingAttacks = false
+	#Enable exhaustion for taking damage
+	enableForTakingDamage = false
+	#Enable exhaustion for shooting arrows
+	enableForShootingArrows = true
+	#Decrease saturation or food bar value by 1 after landing X attacks on entities
+	#Range: 1 ~ 80
+	afterAttackingEntities = 80
+	#Decrease saturation or food bar value by 1 after blocking X attacks with shield
+	#Range: > 1
+	afterBlockingAttacks = 100
+	#Decrease saturation or food bar value by 1 after taking damage X times
+	#Range: 1 ~ 80
+	afterTakingDamage = 80
+	#Decrease saturation or food bar value by 1 after shooting X arrows
+	#Range: > 1
+	afterShootingArrows = 120
+
+["Exhaustion for Interaction"]
+	#Decrease saturation or food bar value by 1 after placing X blocks
+	#Range: > 1
+	afterPlacingBlocks = 200
+	#Enable exhaustion for placing blocks
+	enableForPlacingBlocks = false
+	#Enable exhaustion for fishing items
+	enableForFishing = true
+	#Decrease saturation or food bar value by 1 after fishing X items
+	#Range: > 1
+	afterFishing = 60
+	#Enable exhaustion for open and closing doors/trapdoors/gates/chests (without closing chests)
+	enableForOpenAndClosing = false
+	#Decrease saturation or food bar value by 1 after open and closing X doors/trapdoors/gates/chests
+	#Range: > 1
+	afterOpenAndClosing = 180
+
+["Exhaustion for Movement"]
+	#Enable exhaustion while resting (standing still, sitting, ...)
+	enableWhileResting = false
+	#Enable exhaustion while sneaking
+	enableWhileSneaking = true
+	#Enable exhaustion while walking
+	enableWhileWalking = false
+	#Enable exhaustion while swimming
+	enableWhileSwimming = true
+	#Enable exhaustion while sprinting
+	enableWhileSprinting = true
+	#Enable exhaustion while paddling
+	enableWhilePaddling = false
+	#Enable exhaustion while climbing
+	enableWhileClimbing = true
+	#Enable exhaustion while jumping
+	enableForJumping = true
+	#Enable exhaustion while walking up (stairs & slabs)
+	enableWhileWalkingUp = true
+	#Decrease saturation or food bar value by 1 after resting for X ticks
+	#Range: > 20
+	afterResting = 48000
+	#Decrease saturation or food bar value by 1 after sneaking for X ticks
+	#Range: > 20
+	afterSneaking = 9600
+	#Decrease saturation or food bar value by 1 after walking for X ticks
+	#Range: > 20
+	afterWalking = 7200
+	#Decrease saturation or food bar value by 1 after swimming for X ticks
+	#Range: > 20
+	afterSwimming = 4800
+	#Decrease saturation or food bar value by 1 after sprinting for X ticks
+	#Range: 20 ~ 280
+	afterSprinting = 280
+	#Decrease saturation or food bar value by 1 after paddling for X ticks
+	#Range: > 20
+	afterPaddling = 3600
+	#Decrease saturation or food bar value by 1 after climbing for X ticks
+	#Range: > 20
+	afterClimbing = 2400
+	#Decrease saturation or food bar value by 1 after jumping X times
+	#Range: 1 ~ 160
+	afterJumping = 160
+	#Decrease saturation or food bar value by 1 after walking up (stairs & slabs) for X ticks
+	#Range: > 20
+	afterWalkingUp = 4800
+
+["Exhaustion for States"]
+	#Enable exhaustion while freezing (while being inside powder snow)
+	enableWhileFreezing = false
+	#Decrease saturation or food bar value by 1 after freezing (while being inside powder snow) for X ticks
+	#Range: > 20
+	afterFreezing = 1200
+
+["Exhaustion for other mods"]
+	#Enable exhaustion while paragliding (Paragliders Mod)
+	enableWhileParagliding = true
+	#Decrease saturation or food bar value by 1 after paragliding (Paragliders Mod) for X ticks
+	#Range: > 20
+	afterParagliding = 3600
+	#Enable exhaustion while crawling (GoProne Mod)
+	enableWhileCrawling = true
+	#Decrease saturation or food bar value by 1 after crawling (GoProne Mod) for X ticks
+	#Range: > 20
+	afterCrawling = 3000
+	#Decrease saturation or food bar value by 1 after pulling yourself up (Grappling Hook Mod) for X ticks
+	enableWhilePullingUp = true
+	#Decrease saturation or food bar value by 1 after pulling yourself up (Grappling Hook Mod for X ticks
+	#Range: > 20
+	afterPullingUp = 560
+	#Enable exhaustion for chopping trees (Falling Tree Mod, HT's TreeChop mod). For changing the exhaustion see: afterBreakingAxeMineables
+	enableForChoppingTrees = true
+	#Enable exhaustion while carrying objects (Carry on Mod
+	enableForCarryingObjects = true
+	#Sets the multiplier for exhaustion when carrying objects (Carry On Mod)
+	#Range: 1.0 ~ 10.0
+	carryMultiplier = 1.5
+
+["Hunger leveling"]
+	#Provides the option to lower the initial maximum of the player's hunger bar. The defined maximum can be increased by leveling up (by gaining experience).
+	enableHungerLeveling = false
+	#Determines the hunger indicator (drumstick amount) each player starts with when joining a world for the first time (vanilla's default is 10).
+	#Range: 1 ~ 10
+	initialHungerbarMaximum = 10
+	#Determines what level delta is needed to increase the initialHungerbarMaximum by one drumstick.
+	#Range: 1 ~ 20
+	raisingHungerbarAfter = 3
+	#Determines whether a level decrease down to the latest level, that caused a hunger bar increase, should lead to a hunger bar decrease.
+	hunger2LevelRelation = false
+
+["Exhaustion by time of day"]
+	#Determines whether players should receive exhaustion at a certain time of day
+	enableExhaustionAtTimeOfDay = false
+	#Defines the points in time (in ticks) at which players should get a constant exhaustion (hunger points). If you want to force players to have a breakfast, you can add the following entry: 1000:6 -> This will drop the hunger bar by 3 drumsticks (6 hunger points) each day at 07:00 am (at 1000 ticks).
+	exhaustionAtTimes = []
+
+["Advanced Settings"]
+	#Defines whether food stats (exhaustion, saturation, food level, ...) should be restored after death.
+	enableFoodRestore = false
+	#Defines the minimum food level that players get after their death. Only takes place if enableFoodRestore is enabled.
+	#Range: 1 ~ 20
+	minFoodLevelAfterRestore = 18
+	#Defines the food level that players get after their death. When set, minFoodLevelAfterRestore will be ignored. Setting this option to -1 disables it.
+	#Range: -1 ~ 20
+	foodLevelAfterDeath = -1
+	#Sets the multiplier for exhaustion caused by the rules of Appetite when the player is in a cold biome
+	#Range: 1.0 ~ 10.0
+	coldBiomeMultiplier = 1.0
+	#Sets the multiplier for exhaustion caused by the rules of Appetite when the player is in a hot biome
+	#Range: 1.0 ~ 10.0
+	hotBiomeMultiplier = 1.0
+	#Determines that each armor wil have an individual impact on the added exhaustion. Lighter armor will have an lower impact and heavier armor an higher impact. When enabling this option keep in mind that each exhaustion rule will consider the logarithmic multiplier and therefore will slightly differ from the specified value.
+	ArmorImpactOnExhaustion = false
+	#Appetite is using the logarithm as a multiplier to modify the exhaustion defined by the rules, depending on the armor defense points. This value defines the logarithmic base whereas the defense points will be used as the numerus. The higher the value the higher the reward (lower exhaustion) for wearing lighter armor but the lower the additional exhaustion for heavier armor. The lower the value the higher the exhaustion for wearing heavy armor but the lower the reward for wearing lighter armor.
+	#Example for rewarding the player (default mode): Wearing leather armor (numerus = 7) for the defined impact of 12 (base) leads to an multiplier of 0.78 (22% fewer exhaustion). Wearing diamond armor (numerus = 20) for the same impact leads to a multiplier of 1.2 (20% higher exhaustion). A calculated multiplier for leather armor lower than 1 is also used when the player is wearing no armor.
+	#Example for higher difficulty: Wearing leather armor for the defined impact of 6 leads to an multiplier of 1.09 (9% more exhaustion). Wearing diamond armor for the same impact leads to a multiplier of 1.67 (67% higher exhaustion).
+	#Range: 6.0 ~ 20.0
+	armorLogarithmicImpact = 15.0
+

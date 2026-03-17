@@ -1,0 +1,16 @@
+filename = 'chisels-and-bits-forge-20.1.20.jar'
+name = 'chisels-and-bits'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'aa88d268371df1d65abcf355ad2d69fa0ce7c603'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7620767
+project-id = 231095

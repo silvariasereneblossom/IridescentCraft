@@ -1,0 +1,408 @@
+
+[General]
+	#Global max damage reduction from artifacts in percentage
+	#Range: 0.01 ~ 1.0
+	Max_Damage_Reduction = 1.0
+	#Global max fire damage reduction from artifacts in percentage
+	#Range: 0.01 ~ 1.0
+	Max_Fire_Damage_Reduction = 1.0
+	#Global max damage increase from artifacts in percentage
+	#Range: 0.01 ~ 2.0
+	Max_Damage_Increase = 2.0
+	#Enable debugging
+	Debug = false
+	#Stop the endermen from being able to target or be hurt by the ender dragon/dragon breath
+	Ender_Tweaks = true
+
+[Artifacts]
+
+	[Artifacts.Hero_Shield]
+		#Amount of hits taken until damage is ignored
+		Hits = 5
+		#Explosion damage reduction in percentage
+		Explosion_Damage_Reduction = 0.75
+		#Level of resistance hero shield provides
+		Level = 1
+		#Enable compat to disable explosion overlay from enhanced visuals
+		EnhancedVisuals_Compat = true
+
+	[Artifacts.Obsidian_Skull]
+		#Fire damage reduction in percentage
+		Fire_Damage_Reduction = 0.5
+
+	[Artifacts.Obsidian_Shield]
+		#Fire damage reduction in percentage
+		Fire_Damage_Reduction = 0.5
+
+	[Artifacts.Ankh_Charm]
+		#List of additional effects the ankh charm grants immunity to (e.g., minecraft:glowing, minecraft:slow_falling etc)
+		Additional_Effects = ["moreartifacts:virulent"]
+
+	[Artifacts.Ankh_Shield]
+		#Fire damage reduction in percentage
+		Fire_Damage_Reduction = 0.5
+		#List of additional effects the ankh shield grants immunity to (e.g., minecraft:glowing, minecraft:slow_falling etc)
+		Additional_Effects = ["moreartifacts:virulent"]
+
+	[Artifacts.Venom_Amulet]
+		#Chance to apply poison
+		Poison_Chance = 0.4
+		#Level of poison inflicted
+		#Range: 1 ~ 5
+		Poison_Level = 1
+		#Duration of the poison effect in seconds
+		Duration = 5
+
+	[Artifacts.Decay_Amulet]
+		#Chance to apply wither
+		Wither_Chance = 0.4
+		#Level of wither inflicted
+		#Range: 1 ~ 5
+		Wither_Level = 1
+		#Duration of the wither effect in seconds
+		Duration = 5
+
+	[Artifacts.Spectre_Amulet]
+		#Chance to heal
+		Heal_Chance = 0.4
+		#Amount of health gained from attacking
+		Heal_Amount = 2.0
+
+	[Artifacts.Necroplasm_Amulet]
+		#Chance to heal
+		Heal_Chance = 0.5
+		#Amount of health gained from attacking
+		Heal_Amount = 2.0
+		#Chance to apply poison
+		Poison_Chance = 0.6
+		#Level of poison inflicted
+		#Range: 1 ~ 5
+		Poison_Level = 1
+		#Duration of the poison effect in seconds
+		Poison_Duration = 5
+		#Chance to apply wither
+		Wither_Chance = 0.6
+		#Level of wither inflicted
+		#Range: 1 ~ 5
+		Wither_Level = 1
+		#Duration of the wither effect in seconds
+		Wither_Duration = 5
+
+	[Artifacts.Mechanical_Glove]
+		#Attack Damage increase
+		Attack_Damage = 2
+
+	[Artifacts.Mechanical_Claw]
+		#Damage increased in percentage
+		Damage_Increase = 0.15
+		#Chance to inflict bleed onto hit enemies
+		Bleed_Chance = 0.25
+		#Damage that bleed deals per second
+		Bleed_Damage = 1
+		#Duration of bleed in seconds
+		Bleed_Duration = 8
+		#Blacklist for entities that cannot be affected by bleed
+		Blacklisted_Entities = []
+
+	[Artifacts.Echo_Glove]
+		#Damage increased in percentage
+		Damage_Increase = 0.05
+		#Attack speed increased in percentage
+		Attack_Speed_Increase = 0.15
+		#Chance to ignore invulnerability frames on hit
+		Ignore_Chance = 0.1
+
+	[Artifacts.Shackle]
+		#Armor increase
+		Armor = 1
+
+	[Artifacts.Melody_Plushie]
+		#Max Health Increase percentage
+		Max_Health = 0.2
+		#Level of health boost from waking up
+		Health_Boost_Level = 2
+		#Duration of health boost in seconds
+		Duration = 240
+		#Level regeneration melody plushie provides
+		Regen_Level = 1
+
+	[Artifacts.Enderian_Scarf]
+		#Damage reduction in percentage
+		Damage_Reduction = 0.08
+
+	[Artifacts.True_Enderian_Scarf]
+		#Damage reduction in percentage
+		Damage_Reduction = 0.1
+		#Chance to evade an attack
+		Evade_Chance = 0.1
+		#Amount of reach gain
+		Reach_Gain = 1.0
+		#Enable compat to disable endermen static from enhanced visuals
+		EnhancedVisuals_Compat = true
+
+	[Artifacts.Gilded_Scarf]
+		#Damage reduction in percentage
+		Damage_Reduction = 0.12
+		#Increased damage dealt in percentage
+		Damage_Dealt = 1.1
+
+	[Artifacts.Lucky_Emerald_Ring]
+		#Increased damage dealt against illagers in percentage
+		Damage_Dealt = 1.25
+		#Chance for on hit to drop an emerald
+		Emerald_Chance = 0.05
+		#Amount of increased luck
+		Luck_Increase = 1
+
+	[Artifacts.Magic_Quiver]
+		#Increased arrow damage dealt in percentage
+		Arrow_Damage = 1.1
+		#Chance to not consume arrows in percentage
+		Save_Arrow_Chance = 0.2
+
+	[Artifacts.Envenomed_Quiver]
+		#Increased arrow damage dealt in percentage
+		Arrow_Damage = 1.15
+		#Level of poison inflicted
+		#Range: 1 ~ 5
+		Poison_Level = 1
+		#Duration of the poison effect in seconds
+		Poison_Duration = 5
+		#Level of poison inflicted
+		#Range: 1 ~ 5
+		Wither_Level = 1
+		#Duration of the wither effect in seconds
+		Wither_Duration = 5
+		#Chance to not consume arrows in percentage
+		Save_Arrow_Chance = 0.2
+
+	[Artifacts.Molten_Quiver]
+		#Increased arrow damage dealt in percentage
+		Arrow_Damage = 1.15
+		#Increased on fire bonus arrow damage in percentage
+		On_Fire_Bonus = 1.05
+		#Duration of enemies on fire in seconds
+		Fire_Duration = 5
+		#Chance to not consume arrows in percentage
+		Save_Arrow_Chance = 0.2
+
+	[Artifacts.Wooden_Headgear]
+		#Armor increase
+		Armor = 1.0
+		#Damage taken in percentage
+		Damage_Taken = 0.95
+
+	[Artifacts.Golden_Headgear]
+		#Armor increase
+		Armor = 2.0
+		#Damage taken in percentage
+		Damage_Taken = 0.9
+
+	[Artifacts.Netherite_Headgear]
+		#Armor increase
+		Armor = 3.0
+		#Damage taken in percentage
+		Damage_Taken = 0.85
+
+	[Artifacts.Ender_Dragon_Claw]
+		#Increased damage dealt in percentage
+		Damage_Dealt = 1.5
+		#Chance to increase damage dealt
+		Chance = 0.05
+
+	[Artifacts.Enderian_Eye]
+		#Max teleportation radius
+		Radius = 25
+		#Cooldown for teleporting
+		Cooldown = 5.0
+
+	[Artifacts.Venom_Stone]
+		#Increased damage dealt in percentage
+		Damage_Dealt = 1.2
+		#Chance to inflict poison
+		Chance = 0.25
+		#Level of the poison effect
+		#Range: 1 ~ 5
+		Poison_Level = 2
+		#Duration of the poison effect in seconds
+		Duration = 5
+		#Chance to convert poison into a more deadly poison
+		Deadly_Chance = 0.15
+
+	[Artifacts.Decay_Stone]
+		#Increased damage dealt in percentage
+		Damage_Dealt = 1.2
+		#Chance to inflict wither
+		Chance = 0.25
+		#Level of the wither effect
+		#Range: 1 ~ 5
+		Wither_Level = 3
+		#Duration of the wither effect in seconds
+		Duration = 3
+		#Amount of hearts healed by the decay stone
+		Hearts = 1
+
+	[Artifacts.Fire_Stone]
+		#Increased damage dealt in percentage
+		Damage_Dealt = 1.3
+		#Chance to set enemies ablaze
+		Chance = 0.25
+		#Duration of enemies on fire in seconds
+		Duration = 3
+
+	[Artifacts.Ice_Stone]
+		#Increased damage dealt in percentage
+		Damage_Dealt = 1.1
+		#Chance to freeze enemies
+		Chance = 0.25
+		#Duration of enemies frozen in seconds
+		Duration = 8
+		#Enable compat to use ice and fire's freezing mechanic
+		IceandFire_Compat = true
+		#Chance to encase enemies in ice (iceandfire)
+		Encase_Chance = 0.1
+		#Duration of how long enemies stay encased in ice for (iceandfire)
+		Encased_Duration = 5
+
+	[Artifacts.Recall_Potion]
+		#Recall potion use time in ticks
+		Use_Time = 32
+		#Recall potion cooldown in seconds
+		Cooldown = 0
+		#Can recall potion work from other dimensions
+		Interdimensional = false
+		#Does recall potion have enchantment glow
+		Glow = false
+		#Main ingredient used to brew recall potions
+		Ingredient = "minecraft:ender_pearl"
+
+	[Artifacts.Vanir_Mask]
+		#Increased damage dealt to hit enemies
+		Damage_Increase = 2.0
+		#Increased max health gained in percentage
+		Health_Increase = 0.1
+		#Increased speed gained in percentage
+		Speed_Increase = 0.25
+		#Increased armor gained in percentage
+		Armor_Increase = 0.25
+		#Increased armor toughness gained in percentage
+		Armor_Toughness_Increase = 0.25
+
+	[Artifacts.Ruby_Ring]
+		#Damage increased for every health threshold in percentage
+		Damage_Increase = 0.05
+		#Health threshold for each damage increase
+		Health_Threshold = 20.0
+		#Max health cap for the damage increase
+		Health_Cap = 60.0
+
+	[Artifacts.Tainted_Mirror]
+		#Makes players take only half of the damage they deal by the mirror instead of full damage
+		Reduced_Player_Damage = true
+
+	[Artifacts.Natures_Mantle]
+		#Increased speed gained in percentage
+		Speed_Increase = 0.1
+
+	[Artifacts.Ender_Dragon_Eye]
+		#Chance to summon endermen to fight for you when hit in percentage
+		Summon_Chance = 0.01
+		#Distance at which endermen can follow you from in blocks
+		Follow_Distance = 20.0
+		#Enable compat to disable endermen static from enhanced visuals
+		EnhancedVisuals_Compat = true
+
+	[Artifacts.Leather_Treads]
+		#Speed increase gained in percentage
+		Speed_Increase = 0.05
+
+	[Artifacts.Dune_Treads]
+		#Speed increase gained in percentage
+		Speed_Increase = 0.05
+		#Speed increase when on sand gained in percentage
+		Sand_Speed_Increase = 0.1
+
+	[Artifacts.High_Jumpers]
+		#Speed increase gained in percentage
+		Speed_Increase = 0.1
+
+	[Artifacts.Mechanical_Gears]
+		#Speed increase gained in percentage
+		Speed_Increase = 0.02
+		#Chance to dodge attacks in percentage
+		Dodge_Chance = 0.05
+
+	[Artifacts.Blazing_Treads]
+		#Speed increase gained in percentage
+		Speed_Increase = 0.1
+
+	[Artifacts.Enderian_Treads]
+		#Speed increase gained in percentage
+		Speed_Increase = 0.2
+		#Cooldown for evading attacks in seconds
+		Cooldown = 60.0
+
+	[Artifacts.Sculk_Treads]
+		#Speed increase gained in percentage
+		Speed_Increase = 0.25
+
+[Loot]
+
+	[Loot.Bezoar]
+		#Bezoar drop chance from cave spiders in percentage
+		Drop_Chance = 0.05
+
+	[Loot.Vitamins]
+		#Vitamins drop chance from elder guardians in percentage
+		Drop_Chance = 0.4
+
+	[Loot.Fast_Clock]
+		#Fast Clock drop chance from strays in percentage
+		Drop_Chance = 0.02
+
+	[Loot.Desert_Charm]
+		#Desert Charm drop chance from husks in percentage
+		Drop_Chance = 0.02
+
+	[Loot.Wither_Shard]
+		#Wither Shard drop chance from the wither in percentage
+		Drop_Chance = 0.25
+
+	[Loot.Shulker_Heart]
+		#Shulker Heart drop chance from shulkers in percentage
+		Drop_Chance = 0.15
+
+	[Loot.Enderian_Scarf]
+		#Enderian Scarf drop chance from endermen in percentage
+		Drop_Chance = 0.01
+
+	[Loot.Shackle]
+		#Shackle drop chance from zombies in percentage
+		Drop_Chance = 0.01
+
+	[Loot.Magic_Quiver]
+		#Magic Quiver drop chance from skeletons in percentage
+		Skeleton_Drop_Chance = 0.01
+		#Magic Quiver drop chance from pillagers in percentage
+		Pillager_Drop_Chance = 0.04
+
+	[Loot.Ender_Dragon_Claw]
+		#Ender Dragon Claw drop chance from the ender dragon in percentage
+		Drop_Chance = 0.25
+
+	[Loot.Melody_Plushie]
+		#Melody Plushie drop chance from cat morning gifts in percentage
+		Drop_Chance = 0.01
+
+	[Loot.Sculk_Lens]
+		#Sculk Lens loot chance from ancient cities in percentage
+		Loot_Chance = 0.05
+
+	[Loot.Recall_Potion]
+		#Recall Potion loot chance from simple dungeons in percentage
+		Loot_Chance = 0.25
+
+	[Loot.Cobalt_Shield]
+		#Cobalt Shield loot chance from simple dungeon in percentage
+		Loot_Chance = 0.1
+

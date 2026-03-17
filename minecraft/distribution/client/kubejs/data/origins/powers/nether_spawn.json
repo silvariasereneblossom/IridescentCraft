@@ -1,0 +1,13 @@
+{
+  "type": "origins:multiple",
+  "name": "Nether Affinity",
+  "description": "You deal 10% more damage and take 10% less damage in the Nether. After your first Nether visit, this doubles and applies everywhere.",
+
+  "nether_tag": {
+    "type": "origins:action_on_callback",
+    "entity_action_gained": {
+      "type": "origins:execute_command",
+      "command": "tag @s add icraft_blazeborn"
+    }
+  }
+}

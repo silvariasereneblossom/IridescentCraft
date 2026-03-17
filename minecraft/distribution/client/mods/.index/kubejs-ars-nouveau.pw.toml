@@ -1,0 +1,16 @@
+filename = 'kubejsarsnouveau-1.2.2.jar'
+name = 'KubeJS Ars Nouveau'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '4f9ea0636f208d3f7ab5b8fe609a943889d32d75'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 4862554
+project-id = 833926

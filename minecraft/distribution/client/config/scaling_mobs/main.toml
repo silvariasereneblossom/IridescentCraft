@@ -1,0 +1,86 @@
+
+[Misc]
+	#The amount by which mobs scale, per Minecraft day
+	#Range: 0.0 ~ Infinity
+	"Scaling Speed" = 1.0
+	#Players with lower scale will receive a higher boost to their stats
+	#Setting this to 0 disables the feature
+	#Range: 0.0 ~ Infinity
+	"Player Scale Favor" = 10.0
+	#If true, mob stats will increase exponentially
+	"Use Exponential Scaling" = false
+	#If true, mob scaling speed will increase with more players in the world, up to 2x with 5 players
+	#Scaling will also cease if no players are on the server
+	"Scale with Player Count" = true
+	#After this day in the Minecraft world, all hostile mobs will be immune to burning in daylight
+	#Range: > 0
+	"Mobs Stop Burning on Day" = 7
+	#A list of mobs that will scale, even if they're not monsters
+	"Mob Whitelist" = []
+	#A list of mobs that will not scale, even if they're monsters
+	"Mob Blacklist" = []
+
+[Health]
+	#The decimal amount that hostile mobs' health increase per day
+	#Range: 0.0 ~ Infinity
+	"Health Scale Rate" = 0.03
+	#The decimal amount of the mobs' base health in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Health Base" = 0.0
+	#The maximum amount that hostile mobs' damage can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Health" = +inf
+
+[Damage]
+	#The decimal amount that hostile mobs' damage increase per day
+	#Range: 0.0 ~ Infinity
+	"Damage Scale Rate" = 0.03
+	#The decimal amount of the mobs' base damage in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Damage Base" = 0.0
+	#The maximum amount that hostile mobs' damage can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Damage" = +inf
+
+[Speed]
+	#The decimal amount that hostile mobs' speed increase per day
+	#Range: 0.0 ~ Infinity
+	"Speed Scale Rate" = 0.005
+	#The decimal amount of the mobs' base speed in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Speed Base" = 0.0
+	#The maximum amount that hostile mobs' speed can scale to
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Speed" = 1.0
+
+["Armor Piercing"]
+	#The decimal amount of increase to mobs' damage that ignores armor per day
+	#Range: 0.0 ~ Infinity
+	"Armor Piercing Scale Rate" = 0.01
+	#The decimal amount of mobs' damage that ignores armor in the beginning
+	#Range: 0.0 ~ Infinity
+	"Armor Piercing Base" = 0.0
+	#The maximum amount of increase to mobs' damage that ignores armor
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Armor Piercing" = 1.0
+
+[Drops]
+	#The decimal amount of increase to mobs' drops per day
+	#Range: 0.0 ~ Infinity
+	"Mob Drops Scaling Rate" = 0.05
+	#The decimal amount of mobs' drops in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob Drops Base" = 0.0
+	#The maximum amount of increase to mobs' drops
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Mob Drops" = 400.0
+	#The decimal amount of increase to mobs' XP drops per day
+	#Range: 0.0 ~ Infinity
+	"Mob XP Scaling Rate" = 0.05
+	#The decimal amount of mobs' XP drops in the beginning
+	#Range: 0.0 ~ Infinity
+	"Mob XP Base" = 0.0
+	#The maximum amount of increase to mobs' XP drops
+	#Range: 0.0 ~ Infinity
+	"Max Scaled Mob XP" = 400.0
+

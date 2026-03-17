@@ -1,0 +1,13 @@
+{
+  "unlocked_by_default": true,
+  "title": {
+    "text": "Gathering"
+  },
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "minecraft:iron_pickaxe"
+    }
+  },
+  "background": "minecraft:textures/block/stone.png"
+}

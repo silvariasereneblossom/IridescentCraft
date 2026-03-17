@@ -1,0 +1,16 @@
+filename = 'mcw-roofs-2.3.2-mc1.20.1forge.jar'
+name = "Macaw's Roofs"
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '2b02beb2bd177aa695dc6fc030fc3bb230ca96b1'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6494466
+project-id = 352039

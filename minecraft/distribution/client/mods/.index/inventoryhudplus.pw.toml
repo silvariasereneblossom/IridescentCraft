@@ -1,0 +1,16 @@
+filename = 'inventoryhud.forge.1.20.1-3.4.26.jar'
+name = 'InventoryHUD+'
+side = 'client'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '69698f4b505d070b097fab6b7bde508f8de138137f5825ed6601601a02b3a8876a4ad2f93f25667a6579367dd20dc3a5ae0465a4957bd5740a12668d6b3ad725'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Kp2uclYl/versions/xnDlNpNS/inventoryhud.forge.1.20.1-3.4.26.jar'
+
+[update.modrinth]
+mod-id = 'Kp2uclYl'
+version = 'xnDlNpNS'

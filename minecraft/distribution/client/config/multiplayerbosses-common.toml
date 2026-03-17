@@ -1,0 +1,27 @@
+#If boss health should be scaled
+"Should Scale Boss Health" = true
+#If boss drops should be rolled an additional time per player
+"Should Scale Boss Drops" = true
+#The amount to scale boss health per player after the first
+#Range: 0.0 ~ 1.7976931348623157E308
+"Health Multiplier Per Player" = 1.0
+#A flat value to increase boss health. Will override "Health Multiplier Per Player" if it is not 0
+#Range: 0.0 ~ 1.7976931348623157E308
+"Flat Health Multiplier" = 0.0
+#A flat value to increase boss. If this value is not 0 player count will be ignored
+#Range: > 0
+"Flat Drop Multiplier" = 0
+#Whether to use the forge tag "forge:bosses" to detect bosses
+"Should Use Forge Tags" = true
+#Whether to drop loot bags filled with boss items or just drop the plain items
+"Should Drop Loot Bags" = true
+#Whether to scale health and loot off of the number of players in the configured range or use the global player count
+"Use Proximity Scaling" = true
+#How far from a boss spawn position to detect players
+#Range: > 0
+"Proximity Scaling Range" = 100
+#All bosses that should be affected by this mod. Most are usually in the "forge:bosses" tag
+"Boss Entities" = ["minecraft:wither", "minecraft:ender_dragon", "cataclysm:ancient_remnant", "cataclysm:ignis", "cataclysm:maledictus", "cataclysm:ender_golem", "cataclysm:ender_guardian", "cataclysm:the_leviathan", "cataclysm:the_harbinger", "cataclysm:netherite_monstrosity", "bosses_of_mass_destruction:void_blossom", "bosses_of_mass_destruction:gauntlet", "bosses_of_mass_destruction:lich", "bosses_of_mass_destruction:obsidilith"]
+#Tint colors used for loot bags dropped from bosses. Uses minecrafts integer encoded rgb format. Use -1 for no tint
+"Loot Bag Tints" = [["minecraft:wither", "7561558", "13882367"], ["minecraft:ender_dragon", "2171169", "9830655"], ["cataclysm:ancient_remnant", "15789718", "16760084"], ["cataclysm:ignis", "5384240", "4766957"], ["cataclysm:maledictus", "10387251", "2220943"], ["cataclysm:ender_golem", "2363210", "7217407"], ["cataclysm:ender_guardian", "12905869", "1049638"], ["cataclysm:the_leviathan", "1050911", "6690047"], ["cataclysm:the_harbinger", "13617352", "12523030"], ["cataclysm:netherite_monstrosity", "3092275", "7995392"], ["bosses_of_mass_destruction:void_blossom", "2511372", "4653074"], ["bosses_of_mass_destruction:lich", "2700357", "6984916"], ["bosses_of_mass_destruction:obsidilith", "328201", "3089731"]]
+

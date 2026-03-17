@@ -1,0 +1,16 @@
+filename = 'enchantmentlevelcapindicator-1.20.1-1.1.jar'
+name = 'Enchantment Level Cap Indicator'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge', 'quilt', 'fabric' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '7b72b5902fb57d3a01daa450e1eef9476b5cefc2'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6250440
+project-id = 1204463

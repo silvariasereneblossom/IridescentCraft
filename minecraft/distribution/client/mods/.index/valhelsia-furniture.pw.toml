@@ -1,0 +1,16 @@
+filename = 'valhelsia_furniture-forge-1.20.1-1.1.3.jar'
+name = 'Valhelsia Furniture'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '3369038794434045849f46c280c390467c8672f2'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5189602
+project-id = 694349

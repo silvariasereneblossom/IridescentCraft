@@ -1,0 +1,16 @@
+filename = 'supplementaries-1.20-3.1.42-forge.jar'
+name = 'Supplementaries'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'c9e2f6c813eef73843d869ff5611f155af7467fb'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7431873
+project-id = 412082
