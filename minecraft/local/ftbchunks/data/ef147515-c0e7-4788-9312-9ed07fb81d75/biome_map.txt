@@ -1,0 +1,5 @@
+#460 minecraft:cherry_grove
+#294 biomesoplenty:jade_cliffs
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#524 minecraft:snowy_slopes
