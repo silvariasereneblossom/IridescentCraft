@@ -17,7 +17,7 @@
 
 set -e
 
-FORGE_VERSION="1.20.1-47.4.0"
+FORGE_VERSION="1.20.1-47.4.6"
 FORGE_INSTALLER="forge-${FORGE_VERSION}-installer.jar"
 FORGE_INSTALLER_URL="https://maven.minecraftforge.net/net/minecraftforge/forge/${FORGE_VERSION}/forge-${FORGE_VERSION}-installer.jar"
 

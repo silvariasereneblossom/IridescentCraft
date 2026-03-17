@@ -10,7 +10,7 @@
 $ErrorActionPreference = "Continue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-$ForgeVersion = "1.20.1-47.4.0"
+$ForgeVersion = "1.20.1-47.4.6"
 $ForgeInstaller = "forge-$ForgeVersion-installer.jar"
 
 Write-Host ""

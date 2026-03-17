@@ -1,6 +1,6 @@
 @echo off
 REM IridescentCraft Server Start Script (Windows)
-REM Forge 1.20.1-47.4.0 with 420+ mods
+REM Forge 1.20.1-47.4.6 with 420+ mods
 REM
 REM Requirements:
 REM   - Java 17 (e.g., Adoptium/Temurin JDK 17)
@@ -12,7 +12,7 @@ title IridescentCraft Server
 
 echo ==========================================
 echo   IridescentCraft Server
-echo   Forge 1.20.1-47.4.0
+echo   Forge 1.20.1-47.4.6
 echo   RAM: 8-10 GB allocated
 echo ==========================================
 echo.
@@ -51,7 +51,7 @@ java ^
     -XX:MaxTenuringThreshold=1 ^
     -Dusing.aikars.flags=https://mcflags.emc.gs ^
     -Daikars.new.flags=true ^
-    @libraries/net/minecraftforge/forge/1.20.1-47.4.0/win_args.txt nogui %*
+    @libraries/net/minecraftforge/forge/1.20.1-47.4.6/win_args.txt nogui %*
 
 echo.
 echo Server stopped.

@@ -2,7 +2,7 @@
 
 Standalone dedicated server distribution for the IridescentCraft Progression RPG Modpack.
 
-Forge 1.20.1-47.4.0 | 420+ mods
+Forge 1.20.1-47.4.6 | 420+ mods
 
 **This folder is fully self-contained.** Copy it to any machine, run the installer, and go.
 
@@ -38,7 +38,7 @@ chmod +x server_install.sh start.sh
 ```
 
 The install script will:
-- Install Forge 1.20.1-47.4.0 (installer is included)
+- Install Forge 1.20.1-47.4.6 (installer is included)
 - Download all server-side mods automatically from .pw.toml metadata
 - Skip client-only mods (rendering, UI, etc.)
 - Config, KubeJS, defaultconfigs, and global_packs are already included

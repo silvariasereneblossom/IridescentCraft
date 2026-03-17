@@ -7,7 +7,7 @@ REM Usage: Double-click server_install.bat
 title IridescentCraft Server Installer
 echo ==========================================
 echo   IridescentCraft Server Installer
-echo   Forge 1.20.1-47.4.0
+echo   Forge 1.20.1-47.4.6
 echo ==========================================
 echo.
 echo Launching PowerShell installer...

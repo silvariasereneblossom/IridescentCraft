@@ -1,6 +1,6 @@
 #!/usr/bin/env bash
 # IridescentCraft Server Start Script (Linux)
-# Forge 1.20.1-47.4.0 with 420+ mods
+# Forge 1.20.1-47.4.6 with 420+ mods
 #
 # Requirements:
 #   - Java 17 (e.g., Adoptium/Temurin JDK 17)
@@ -53,10 +53,10 @@ JVM_ARGS=(
 
 echo "=========================================="
 echo "  IridescentCraft Server"
-echo "  Forge 1.20.1-47.4.0"
+echo "  Forge 1.20.1-47.4.6"
 echo "  RAM: 8-10 GB allocated"
 echo "=========================================="
 echo ""
 
 # Run the Forge server
-java "${JVM_ARGS[@]}" @libraries/net/minecraftforge/forge/1.20.1-47.4.0/unix_args.txt nogui "$@"
+java "${JVM_ARGS[@]}" @libraries/net/minecraftforge/forge/1.20.1-47.4.6/unix_args.txt nogui "$@"

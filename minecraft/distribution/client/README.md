@@ -8,14 +8,14 @@
 5. Launch and play!
 
 ## Installation (Manual)
-1. Install Forge 1.20.1-47.4.0
+1. Install Forge 1.20.1-47.4.6
 2. Copy the `mods/` folder contents to your instance mods/
 3. Copy `config/`, `defaultconfigs/`, `kubejs/`, `global_packs/` to your instance
 4. Launch
 
 ## Requirements
 - Minecraft 1.20.1
-- Forge 47.4.0+
+- Forge 47.4.6+
 - Java 17
 - 8-12GB RAM recommended (JVM args: -Xms4G -Xmx10G)
 
