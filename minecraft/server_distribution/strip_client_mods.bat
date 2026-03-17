@@ -39,6 +39,9 @@ call :delete "*ProbeJS*"
 REM --- References client classes ---
 call :delete "*irons_spells_js*"
 
+REM --- Disabled/removed mods still downloaded by installer (.pw.toml present) ---
+call :delete "*rechiseled*"
+
 REM --- Client-side-only mods (side='client' in metadata) ---
 call :delete "*auudio*"
 call :delete "*BetterAdvancements*"

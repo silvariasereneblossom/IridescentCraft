@@ -1,5 +1,15 @@
 # Known Issues Tracker
 
+## Server Mod Channel Mismatches (Running Count)
+
+Forge requires network channel lists to match between client and server. Mods that register channels must be present on both sides, even if they're "client-only". This tracks mods that caused `mismatched mod channel list` on connect.
+
+| # | Mod | Problem | Fix |
+|---|-----|---------|-----|
+| 1 | Decorative LGBT Wall Flags | `side='client'` but registers channel | Changed to `side='both'` |
+| 2 | Alex's Mobs EXTRA Music | Was already `side='server'`, needed re-download | Re-run installer |
+| 3 | Rechiseled | Removed from pack (`.disabled`) but `.pw.toml` still present, installer downloads it | Added to force-skip + strip list |
+
 ## Active Issues
 
 ### Three-Prompt Character Creation

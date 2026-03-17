@@ -90,7 +90,8 @@ $forceSkip = @(
     "BetterAnimations",    # Client animation (NOT player-animation — that's a dependency)
     "transmog",            # Client cosmetic
     "probejs",             # Dev tool, crashes on dedicated server
-    "irons_spells_js"      # KubeJS Iron's Spells addon, references client classes
+    "irons_spells_js",     # KubeJS Iron's Spells addon, references client classes
+    "rechiseled"           # Removed from pack (SuperMartijn642 Core Lib crash), .pw.toml still present
 )
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
