@@ -5263,3 +5263,48 @@ Caused by: java.lang.IllegalStateException: Expected BEGIN_OBJECT but was STRING
 [17Mar2026 16:26:31.107] [Render thread/ERROR] [com.mojang.blaze3d.platform.Window/]: ########## GL ERROR ##########
 [17Mar2026 16:26:31.107] [Render thread/ERROR] [com.mojang.blaze3d.platform.Window/]: @ Render
 [17Mar2026 16:26:31.107] [Render thread/ERROR] [com.mojang.blaze3d.platform.Window/]: 65539: Invalid mouse button 99
+[17Mar2026 16:37:29.698] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[17Mar2026 16:37:29.699] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[17Mar2026 16:37:29.703] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to 10.0.0.10, 25565
+[17Mar2026 16:37:42.121] [Netty Client IO #1/ERROR] [net.minecraftforge.network.NetworkRegistry/NETREGISTRY]: Channels [alexs_mobs_extra_music:alexs_mobs_extra_music] rejected their server side version number
+[17Mar2026 16:37:42.121] [Netty Client IO #1/ERROR] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Terminating connection with server, mismatched mod list
+[17Mar2026 16:41:49.215] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[17Mar2026 16:41:49.216] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[17Mar2026 16:41:49.221] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to 10.0.0.10, 25565
+[17Mar2026 16:41:50.383] [Netty Client IO #2/ERROR] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Channels [rechiseled:main] rejected their client side version number
+[17Mar2026 16:41:50.383] [Netty Client IO #2/ERROR] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Terminating connection with server, mismatched mod list
+[17Mar2026 16:58:04.665] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[17Mar2026 16:58:04.666] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[17Mar2026 16:58:04.679] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to 10.0.0.10, 25565
+[17Mar2026 16:58:05.890] [Netty Client IO #3/ERROR] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Channels [rechiseled:main] rejected their client side version number
+[17Mar2026 16:58:05.890] [Netty Client IO #3/ERROR] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Terminating connection with server, mismatched mod list
+[17Mar2026 17:00:55.226] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[17Mar2026 17:00:55.227] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[17Mar2026 17:00:55.240] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to 10.0.0.10, 25565
+[17Mar2026 17:00:56.633] [Netty Client IO #4/ERROR] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Channels [rechiseled:main] rejected their client side version number
+[17Mar2026 17:00:56.633] [Netty Client IO #4/ERROR] [net.minecraftforge.network.HandshakeHandler/FMLHANDSHAKE]: Terminating connection with server, mismatched mod list
+[17Mar2026 17:01:42.435] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[17Mar2026 17:01:42.436] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[17Mar2026 17:01:42.439] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to 10.0.0.10, 25565
+[17Mar2026 17:02:03.522] [Server Connector #6/ERROR] [net.minecraft.client.gui.screens.ConnectScreen/]: Couldn't connect to server
+io.netty.channel.AbstractChannel$AnnotatedConnectException: Connection timed out: no further information: sereneblossom.gay/10.0.0.10:25565
+Caused by: java.net.ConnectException: Connection timed out: no further information
+	at sun.nio.ch.Net.pollConnect(Native Method) ~[?:?]
+	at sun.nio.ch.Net.pollConnectNow(Net.java:672) ~[?:?]
+	at sun.nio.ch.SocketChannelImpl.finishConnect(SocketChannelImpl.java:946) ~[?:?]
+	at io.netty.channel.socket.nio.NioSocketChannel.doFinishConnect(NioSocketChannel.java:337) ~[netty-transport-4.1.82.Final.jar%23121!/:4.1.82.Final]
+	at io.netty.channel.nio.AbstractNioChannel$AbstractNioUnsafe.finishConnect(AbstractNioChannel.java:334) ~[netty-transport-4.1.82.Final.jar%23121!/:4.1.82.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKey(NioEventLoop.java:776) ~[netty-transport-4.1.82.Final.jar%23121!/:4.1.82.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeysOptimized(NioEventLoop.java:724) ~[netty-transport-4.1.82.Final.jar%23121!/:4.1.82.Final]
+	at io.netty.channel.nio.NioEventLoop.processSelectedKeys(NioEventLoop.java:650) ~[netty-transport-4.1.82.Final.jar%23121!/:4.1.82.Final]
+	at io.netty.channel.nio.NioEventLoop.run(NioEventLoop.java:562) ~[netty-transport-4.1.82.Final.jar%23121!/:4.1.82.Final]
+	at io.netty.util.concurrent.SingleThreadEventExecutor$4.run(SingleThreadEventExecutor.java:997) ~[netty-common-4.1.82.Final.jar%23116!/:4.1.82.Final]
+	at io.netty.util.internal.ThreadExecutorMap$2.run(ThreadExecutorMap.java:74) ~[netty-common-4.1.82.Final.jar%23116!/:4.1.82.Final]
+	at java.lang.Thread.run(Thread.java:833) ~[?:?]
+[17Mar2026 17:02:03.544] [Render thread/INFO] [mixin/]: Mixing client.MixinChatOptionsScreen from mixins/common/nochatreports.mixins.json into net.minecraft.client.gui.screens.ChatOptionsScreen
+[17Mar2026 17:02:03.544] [Render thread/INFO] [mixin/]: Renaming synthetic method lambda$init$0(Lnet/minecraft/client/gui/components/AbstractWidget;)V to md1c33c0$nochatreports$lambda$init$0$0 in mixins/common/nochatreports.mixins.json:client.MixinChatOptionsScreen from mod nochatreports
+[17Mar2026 17:10:19.150] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[17Mar2026 17:10:19.152] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[17Mar2026 17:10:19.152] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[17Mar2026 17:10:19.156] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[17Mar2026 17:10:19.242] [Render thread/INFO] [FTB Chunks/]: Shutting down map thread
