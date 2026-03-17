@@ -4,6 +4,8 @@ Dedicated server setup for the IridescentCraft Progression RPG Modpack.
 
 Forge 1.20.1-47.4.0 | 420+ mods
 
+**Forge installer is included** — no separate download needed.
+
 ---
 
 ## System Requirements
