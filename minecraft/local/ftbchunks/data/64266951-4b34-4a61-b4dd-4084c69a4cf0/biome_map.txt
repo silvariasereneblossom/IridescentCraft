@@ -1,0 +1,11 @@
+#3FF ars_nouveau:archwood_forest
+#4DF biomesoplenty:aspen_glade
+#6AF biomesoplenty:crag
+#010 minecraft:forest
+#508 minecraft:frozen_peaks
+#286 minecraft:grove
+#51E minecraft:jagged_peaks
+#3DC minecraft:plains
+#108 biomesoplenty:seasonal_forest
+#524 minecraft:snowy_slopes
+#51A minecraft:stony_shore

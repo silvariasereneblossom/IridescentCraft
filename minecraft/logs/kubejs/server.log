@@ -1,104 +1,109 @@
-[19:09:52] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[19:09:52] [INIT] Loaded plugins:
-[19:09:52] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[19:09:52] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[19:09:52] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[19:09:52] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[19:09:52] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[19:09:52] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
-[19:09:52] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[19:09:52] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[19:09:52] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[19:09:52] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[19:09:52] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[19:09:52] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[19:09:52] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[19:09:52] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[19:09:52] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[19:09:52] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[19:09:52] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[19:09:52] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[19:09:52] [INFO] abyss/abyss_armor_effects.js#231: [IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active
-[19:09:52] [INFO] Loaded script server_scripts:abyss/abyss_armor_effects.js in 0.002 s
-[19:09:52] [INFO] abyss/abyss_ring_effects.js#187: [IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active
-[19:09:52] [INFO] Loaded script server_scripts:abyss/abyss_ring_effects.js in 0.001 s
-[19:09:52] [INFO] affixes/affix_effects.js#1029: [IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects
-[19:09:52] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.004 s
-[19:09:52] [INFO] Loaded script server_scripts:champions/custom_champion_affixes.js in 0.004 s
-[19:09:52] [INFO] class/equipment_hp_halving.js#155: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
-[19:09:52] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:codex_delivery.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:death_penalty.js in 0.001 s
-[19:09:52] [INFO] enchantments/enchant_effects.js#571: [IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects
-[19:09:52] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.002 s
-[19:09:52] [INFO] end/dragon_exploration_gate.js#368: [IridescentCraft] Dragon exploration gate loaded
-[19:09:52] [INFO] end/dragon_exploration_gate.js#369:   - Dragon blocked until End exploration complete
-[19:09:52] [INFO] end/dragon_exploration_gate.js#370:   - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen
-[19:09:52] [INFO] end/dragon_exploration_gate.js#371:   - Dragon Summoning Crystal required to start fight
-[19:09:52] [INFO] Loaded script server_scripts:end/dragon_exploration_gate.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:endgame/ascension.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:endgame/mythic_forge.js in 0.001 s
-[19:09:52] [INFO] endgame/rift_mechanics.js#283: [IridescentCraft] Rift mechanics loaded
-[19:09:52] [INFO] endgame/rift_mechanics.js#284:   - Rift tracking data initialization
-[19:09:52] [INFO] endgame/rift_mechanics.js#285:   - Rift Shard/Catalyst Compendium milestones
-[19:09:52] [INFO] endgame/rift_mechanics.js#286:   - Mythic unique item server announcements
-[19:09:52] [INFO] Loaded script server_scripts:endgame/rift_mechanics.js in 0.0 s
-[19:09:52] [INFO] example.js#5: Hello, World! (Loaded server scripts)
-[19:09:52] [INFO] Loaded script server_scripts:example.js in 0.001 s
-[19:09:52] [INFO] food/hunger_management.js#97: [IridescentCraft] AFK hunger management loaded
-[19:09:52] [INFO] food/hunger_management.js#98:   - AFK threshold: 20 minutes (24000 ticks)
-[19:09:52] [INFO] food/hunger_management.js#99:   - Sleep protection: Saturation I while sleeping
-[19:09:52] [INFO] Loaded script server_scripts:food/hunger_management.js in 0.0 s
-[19:09:52] [INFO] gates/astages_restrictions.js#30: Loaded Java class 'net.minecraft.resources.ResourceLocation'
-[19:09:52] [INFO] Loaded script server_scripts:gates/astages_restrictions.js in 0.001 s
-[19:09:52] [INFO] gates/milestone_detection.js#403: [IridescentCraft] Milestone detection loaded
-[19:09:52] [INFO] gates/milestone_detection.js#404:   Tier 2: Boss kill / Thermal Frame / All T2 dims visited
-[19:09:52] [INFO] gates/milestone_detection.js#405:   Tier 3: Boss kill / Mekanism Casing / All T3 dims visited
-[19:09:52] [INFO] gates/milestone_detection.js#406:   Tier 4: Dragon/Gaia kill / Ultimate Circuit
-[19:09:52] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:loot/abyss_boss_loot.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:loot/crop_seed_reduction.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.002 s
-[19:09:52] [INFO] Loaded script server_scripts:loot/planetary_loot.js in 0.0 s
-[19:09:52] [INFO] origins/origin_effects.js#72: [IridescentCraft] Origins custom effects loaded
-[19:09:52] [INFO] origins/origin_effects.js#73:   - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)
-[19:09:52] [INFO] origins/origin_effects.js#74:   - Merling: Land discomfort after 5 min dry
-[19:09:52] [INFO] Loaded script server_scripts:origins/origin_effects.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/ad_astra_gating.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/cooking_conversion.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/if_latex_rework.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/planetary_extraction.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/recipe_audit.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/tier_skip.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:recipes/waystone_recipes.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.001 s
-[19:09:52] [INFO] Loaded script server_scripts:scaling/dimension_scaling.js in 0.0 s
-[19:09:52] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.001 s
-[19:09:52] [INFO] skills/skill_effects.js#701: [IridescentCraft] skill_effects.js Phase 3 loaded — 22 active effects (0 placeholders)
-[19:09:52] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.001 s
-[19:09:52] [INFO] spawn_protection.js#66: [IridescentCraft] Spawn village protection loaded
-[19:09:52] [INFO] spawn_protection.js#67:   - Protection radius: 64 blocks from world spawn
-[19:09:52] [INFO] spawn_protection.js#68:   - Block breaking: CANCELLED in zone (survival only)
-[19:09:52] [INFO] spawn_protection.js#69:   - Block placing: CANCELLED in zone (survival only)
-[19:09:52] [INFO] spawn_protection.js#70:   - Block interaction: ALLOWED (chests, crafting tables, etc.)
-[19:09:52] [INFO] Loaded script server_scripts:spawn_protection.js in 0.001 s
-[19:09:52] [INFO] Loaded 39/39 KubeJS server scripts in 0.036 s with 0 errors and 0 warnings
-[19:09:52] [INFO] Scripts loaded
-[19:09:52] [INFO] Initializing recipe event...
-[19:09:52] [WARN] Due to the way Minecraft resource loading works, KubeJS' server.log may not contain everything that happened in your server scripts on initial world creation.
-[19:09:52] [WARN] You can still see the full log (including past reloads) in your latest.log file.
-[19:10:48] [INFO] Server resource reload complete!
-[19:10:48] [INFO] death_penalty.js#273: [IridescentCraft] keepInventory enabled — death penalty handles consequences
-[19:10:48] [INFO] gates/astages_restrictions.js#300: [IridescentCraft] AStages native restrictions registered
-[19:10:48] [INFO] gates/astages_restrictions.js#301:   Tier 2: 6 mods + 16 items + 4 dimensions
-[19:10:48] [INFO] gates/astages_restrictions.js#302:   Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions
-[19:10:48] [INFO] gates/astages_restrictions.js#303:   Tier 4: 5 mods + 79 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets)
-[19:10:48] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
-[19:10:58] [INFO] codex_delivery.js#18: [IridescentCraft] loggedIn fired for silvieserene, sweep armed
-[19:10:58] [INFO] gates/milestone_detection.js#329: [IridescentCraft] Granted tier_1 to new player: silvieserene
+[22:13:59] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[22:13:59] [INIT] Loaded plugins:
+[22:13:59] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[22:13:59] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[22:13:59] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[22:13:59] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[22:13:59] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[22:13:59] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
+[22:13:59] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[22:13:59] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[22:13:59] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[22:13:59] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[22:13:59] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[22:13:59] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[22:13:59] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[22:13:59] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[22:13:59] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[22:13:59] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[22:13:59] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[22:13:59] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[22:14:00] [INFO] abyss/abyss_armor_effects.js#231: [IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active
+[22:14:00] [INFO] Loaded script server_scripts:abyss/abyss_armor_effects.js in 0.001 s
+[22:14:00] [INFO] abyss/abyss_ring_effects.js#187: [IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active
+[22:14:00] [INFO] Loaded script server_scripts:abyss/abyss_ring_effects.js in 0.001 s
+[22:14:00] [INFO] affixes/affix_effects.js#1029: [IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects
+[22:14:00] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.001 s
+[22:14:00] [INFO] Loaded script server_scripts:champions/custom_champion_affixes.js in 0.001 s
+[22:14:00] [INFO] class/equipment_hp_halving.js#155: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
+[22:14:00] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:codex_delivery.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:death_penalty.js in 0.0 s
+[22:14:00] [INFO] enchantments/enchant_effects.js#571: [IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects
+[22:14:00] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.001 s
+[22:14:00] [INFO] end/dragon_exploration_gate.js#368: [IridescentCraft] Dragon exploration gate loaded
+[22:14:00] [INFO] end/dragon_exploration_gate.js#369:   - Dragon blocked until End exploration complete
+[22:14:00] [INFO] end/dragon_exploration_gate.js#370:   - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen
+[22:14:00] [INFO] end/dragon_exploration_gate.js#371:   - Dragon Summoning Crystal required to start fight
+[22:14:00] [INFO] Loaded script server_scripts:end/dragon_exploration_gate.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:endgame/ascension.js in 0.001 s
+[22:14:00] [INFO] Loaded script server_scripts:endgame/mythic_forge.js in 0.0 s
+[22:14:00] [INFO] endgame/rift_mechanics.js#283: [IridescentCraft] Rift mechanics loaded
+[22:14:00] [INFO] endgame/rift_mechanics.js#284:   - Rift tracking data initialization
+[22:14:00] [INFO] endgame/rift_mechanics.js#285:   - Rift Shard/Catalyst Compendium milestones
+[22:14:00] [INFO] endgame/rift_mechanics.js#286:   - Mythic unique item server announcements
+[22:14:00] [INFO] Loaded script server_scripts:endgame/rift_mechanics.js in 0.0 s
+[22:14:00] [INFO] example.js#5: Hello, World! (Loaded server scripts)
+[22:14:00] [INFO] Loaded script server_scripts:example.js in 0.0 s
+[22:14:00] [INFO] food/hunger_management.js#97: [IridescentCraft] AFK hunger management loaded
+[22:14:00] [INFO] food/hunger_management.js#98:   - AFK threshold: 20 minutes (24000 ticks)
+[22:14:00] [INFO] food/hunger_management.js#99:   - Sleep protection: Saturation I while sleeping
+[22:14:00] [INFO] Loaded script server_scripts:food/hunger_management.js in 0.001 s
+[22:14:00] [INFO] gates/astages_restrictions.js#30: Loaded Java class 'net.minecraft.resources.ResourceLocation'
+[22:14:00] [INFO] Loaded script server_scripts:gates/astages_restrictions.js in 0.0 s
+[22:14:00] [INFO] gates/milestone_detection.js#403: [IridescentCraft] Milestone detection loaded
+[22:14:00] [INFO] gates/milestone_detection.js#404:   Tier 2: Boss kill / Thermal Frame / All T2 dims visited
+[22:14:00] [INFO] gates/milestone_detection.js#405:   Tier 3: Boss kill / Mekanism Casing / All T3 dims visited
+[22:14:00] [INFO] gates/milestone_detection.js#406:   Tier 4: Dragon/Gaia kill / Ultimate Circuit
+[22:14:00] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:loot/abyss_boss_loot.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:loot/crop_seed_reduction.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.001 s
+[22:14:00] [INFO] Loaded script server_scripts:loot/planetary_loot.js in 0.0 s
+[22:14:00] [INFO] origins/origin_effects.js#238: [IridescentCraft] Origins custom effects loaded
+[22:14:00] [INFO] origins/origin_effects.js#239:   - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)
+[22:14:00] [INFO] origins/origin_effects.js#240:   - Merling: Land discomfort after 5 min dry
+[22:14:00] [INFO] origins/origin_effects.js#241:   - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)
+[22:14:00] [INFO] origins/origin_effects.js#242:   - Enderian: Ender Shift (+15% damage for 10s after teleport)
+[22:14:00] [INFO] origins/origin_effects.js#243:   - Shulk: Hardened Shell (reduced death durability loss)
+[22:14:00] [INFO] origins/origin_effects.js#244:   - Dwarf: Miner's Appetite (Saturation on block break)
+[22:14:00] [INFO] origins/origin_effects.js#245:   - Revenant: Shadow Strike (Resistance I in darkness/Abyss)
+[22:14:00] [INFO] Loaded script server_scripts:origins/origin_effects.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/ad_astra_gating.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/cooking_conversion.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/if_latex_rework.js in 0.001 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/planetary_extraction.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/recipe_audit.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.001 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/tier_skip.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:recipes/waystone_recipes.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.0 s
+[22:14:00] [INFO] Loaded script server_scripts:scaling/dimension_scaling.js in 0.001 s
+[22:14:00] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.0 s
+[22:14:00] [INFO] skills/skill_effects.js#701: [IridescentCraft] skill_effects.js Phase 3 loaded — 22 active effects (0 placeholders)
+[22:14:00] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.001 s
+[22:14:00] [INFO] spawn_protection.js#66: [IridescentCraft] Spawn village protection loaded
+[22:14:00] [INFO] spawn_protection.js#67:   - Protection radius: 64 blocks from world spawn
+[22:14:00] [INFO] spawn_protection.js#68:   - Block breaking: CANCELLED in zone (survival only)
+[22:14:00] [INFO] spawn_protection.js#69:   - Block placing: CANCELLED in zone (survival only)
+[22:14:00] [INFO] spawn_protection.js#70:   - Block interaction: ALLOWED (chests, crafting tables, etc.)
+[22:14:00] [INFO] Loaded script server_scripts:spawn_protection.js in 0.0 s
+[22:14:00] [INFO] Loaded 39/39 KubeJS server scripts in 0.017 s with 0 errors and 0 warnings
+[22:14:00] [INFO] Scripts loaded
+[22:14:00] [INFO] Initializing recipe event...
+[22:14:00] [WARN] Due to the way Minecraft resource loading works, KubeJS' server.log may not contain everything that happened in your server scripts on initial world creation.
+[22:14:00] [WARN] You can still see the full log (including past reloads) in your latest.log file.
+[22:15:05] [INFO] Server resource reload complete!
+[22:15:05] [INFO] death_penalty.js#278: [IridescentCraft] keepInventory enabled — death penalty handles consequences
+[22:15:05] [INFO] gates/astages_restrictions.js#300: [IridescentCraft] AStages native restrictions registered
+[22:15:05] [INFO] gates/astages_restrictions.js#301:   Tier 2: 6 mods + 16 items + 4 dimensions
+[22:15:05] [INFO] gates/astages_restrictions.js#302:   Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions
+[22:15:05] [INFO] gates/astages_restrictions.js#303:   Tier 4: 5 mods + 79 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets)
+[22:15:05] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
+[22:15:19] [INFO] codex_delivery.js#18: [IridescentCraft] loggedIn fired for silvieserene, sweep armed
+[22:15:19] [INFO] gates/milestone_detection.js#329: [IridescentCraft] Granted tier_1 to new player: silvieserene
