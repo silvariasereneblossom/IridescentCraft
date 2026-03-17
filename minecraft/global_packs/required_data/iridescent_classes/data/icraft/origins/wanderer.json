@@ -11,5 +11,5 @@
   "order": 4,
   "impact": 1,
   "name": "Wanderer",
-  "description": "Jack of all trades. No penalties, small bonuses to everything. Benefits from using many different systems and playstyles."
+  "description": "Jack of all trades. +5% HP, +5% to damage/speed/attack speed. +10% XP gain. Using 3+ weapon types in 60 seconds grants +10% damage. No penalties."
 }

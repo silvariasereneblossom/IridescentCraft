@@ -10,5 +10,5 @@
   "order": 9,
   "impact": 1,
   "name": "Artificer",
-  "description": "The builder and engineer. No combat tradeoffs \u2014 average in all fights. Power comes from crafting speed, machine efficiency, and resource bonuses."
+  "description": "The builder and engineer. No HP penalty. +15% mining speed, +10% attack speed. +10% bonus ore drops. Nearby crafting tables grant Speed I. Power comes from infrastructure."
 }

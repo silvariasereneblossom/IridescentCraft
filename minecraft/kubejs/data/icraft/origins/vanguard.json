@@ -12,5 +12,5 @@
   "order": 6,
   "impact": 3,
   "name": "Vanguard",
-  "description": "The immovable object. +20% HP, -15% all damage dealt. Maximum survivability, minimal offense. In multiplayer, the dedicated tank."
+  "description": "The immovable object. +20% HP, +6 armor, +3 toughness, +40% knockback resistance. -15% all damage dealt. Nearby enemies deal less damage to allies."
 }

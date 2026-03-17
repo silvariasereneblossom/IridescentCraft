@@ -12,5 +12,5 @@
   "order": 10,
   "impact": 3,
   "name": "Void Summoner",
-  "description": "The puppet master. -10% HP, half equipment HP. Commands minions, drains life through them. Vulnerable alone, devastating with an army."
+  "description": "The puppet master. -10% HP, equipment HP halved. Minions deal +15% damage. Minion damage heals you (5%). Stronger in darkness, weaker in light."
 }

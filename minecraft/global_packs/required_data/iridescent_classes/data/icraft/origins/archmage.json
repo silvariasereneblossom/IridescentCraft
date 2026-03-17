@@ -12,5 +12,5 @@
   "order": 8,
   "impact": 3,
   "name": "Archmage",
-  "description": "Ultimate glass cannon spellcaster. -20% HP, half equipment HP. Maximum spell damage, absolute minimum survivability."
+  "description": "Ultimate glass cannon spellcaster. -20% HP, equipment HP halved, -4 armor, -2 toughness. +25% magic damage. Spell kills restore mana. Standing still boosts spell damage."
 }

@@ -11,5 +11,5 @@
   "order": 5,
   "impact": 2,
   "name": "Paladin",
-  "description": "Holy warrior and support. +10% HP, strong armor bonuses. Self-sustaining tank with group utility and healing."
+  "description": "Tank and support. +10% HP, +3 armor, +1 toughness, +10% knockback resistance. Nearby allies regenerate HP. Shield blocking reduces incoming damage further."
 }

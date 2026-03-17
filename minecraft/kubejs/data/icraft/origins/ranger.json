@@ -12,5 +12,5 @@
   "order": 7,
   "impact": 3,
   "name": "Ranger",
-  "description": "Mobile glass cannon. -20% HP, half equipment HP effectiveness. Maximum ranged damage, extreme mobility, paper-thin defenses."
+  "description": "Mobile glass cannon. -20% HP, equipment HP halved, -3 armor. +15% speed, +10% attack speed, +20% projectile damage. High risk, high ranged reward."
 }

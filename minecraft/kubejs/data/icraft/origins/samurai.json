@@ -11,5 +11,5 @@
   "order": 2,
   "impact": 2,
   "name": "Samurai",
-  "description": "Versatile melee/ranged hybrid. Katanas +12%, bows +10%. Rewards switching between melee and ranged constantly."
+  "description": "Versatile melee/ranged hybrid. +5% HP, +8% speed. +15% damage against full-HP enemies. 'Focus' rewards patience with +30% damage after 3 seconds without attacking."
 }

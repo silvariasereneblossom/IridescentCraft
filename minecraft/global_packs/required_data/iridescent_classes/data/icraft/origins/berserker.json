@@ -12,5 +12,5 @@
   "order": 1,
   "impact": 2,
   "name": "Berserker",
-  "description": "Sustained melee damage dealer. Gets stronger as HP drops. Axes deal +15% damage, bows/magic deal less. The \"I don't need to dodge, I need to hit harder\" class."
+  "description": "Sustained melee damage dealer. -5% HP, +10% armor effectiveness. Axes deal +15% damage (bows/magic deal less). Below 40% HP: +20% melee damage. Sustained combat grants +5% damage dealt and -5% taken."
 }
