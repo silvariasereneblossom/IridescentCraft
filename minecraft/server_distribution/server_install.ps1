@@ -89,7 +89,8 @@ $forceSkip = @(
     "chat_heads",          # Client chat rendering
     "BetterAnimations",    # Client animation (NOT player-animation — that's a dependency)
     "transmog",            # Client cosmetic
-    "probejs"              # Dev tool, crashes on dedicated server
+    "probejs",             # Dev tool, crashes on dedicated server
+    "irons_spells_js"      # KubeJS Iron's Spells addon, references client classes
 )
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
