@@ -1,27 +1,22 @@
 {
   "name": "Void Summoner",
-  "icon": "minecraft:skeleton_skull",
+  "icon": "minecraft:wither_skeleton_skull",
   "category": "icraft:classes",
   "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Summoner/Necromancer. Commands minions. Vulnerable alone. Your army fights for you.$()$(br2)HP Modifier: -10%  |  Equipment HP: Half effectiveness$(br)$(bold)Weapon Affinities:$() No melee/ranged bonus \u2014 personal damage is low by design"
+      "text": "$(italic)The puppet master. Commands minions and thrives in darkness. Vulnerable alone, devastating with an army.$()$(br2)HP Modifier: -10%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Weapon Affinities:$() Minion damage is the primary output"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Soul Tether$() \u2014 All summons: +20% damage, +30% max HP, persist 25% longer. Max active summons scales with mana pool.$(br2)$(bold)Life Siphon$() \u2014 Summon deals damage: heals you 5% of damage dealt. Summon kills enemy: heal 8% of your max HP.$(br2)$(bold)Void Bond$() \u2014 20% of damage you take is redirected to nearest summon instead."
+      "text": "$(bold)Soul Tether$() — Minions deal +15% damage. All summoned entities are empowered.$(br2)$(bold)Dark Pact$() — Minion damage heals you for 5% of damage dealt. Your summons keep you alive.$(br2)$(bold)Shadow Cloak$() — Stronger in darkness, weaker in light. Night time and underground areas empower the $(thing)Void Summoner$()."
     },
     {
       "type": "patchouli:text",
-      "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Death Harvest$() \u2014 Enemies killed by summons: +50% XP, 10% chance to drop a Soul Fragment (summoning cost material).$(br2)$(bold)Necrotic Presence$() \u2014 Enemies within 6 blocks: -10% damage, -10% speed aura."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Active Ability",
-      "text": "Active: $(bold)Mass Reanimate$()$(br)Summon Void Specters for 20 seconds. Count scales with mana pool (min 3, up to 8\u201312 endgame). Each Specter explodes on death for 4-block AoE. 60s cooldown."
+      "title": "Summoner Playstyle",
+      "text": "The $(thing)Void Summoner$() pairs best with Occultism's summoning system (T3) and Iron's Spells summon spells. Your personal combat ability is low — your minions are your weapon.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Revenant$() — Night power + Shadow Cloak for maximum darkness synergy. Thematic perfection.$(br)$(thing)Faefolk$() — Nature magic bonuses apply to nature-themed summons.$(br)$(thing)Halfling$() — Small hitbox + food efficiency helps survive while minions fight."
     }
   ]
 }

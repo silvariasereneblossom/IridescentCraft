@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Apotheosis$() affixes are random modifiers that appear on weapons and armor dropped by mobs and bosses. $(thing)IridescentCraft$() adds $(bold)30 custom affix entries$() on top of Apotheosis's built-in pool.$(br2)Affixes also provide $(bold)gem sockets$(). Higher-rarity affixed items have more sockets. $(l:icraft:loot/gems)See the Gems entry$(/l) for socket details."
+      "text": "$(thing)Apotheosis$() affixes are random modifiers that appear on weapons and armor dropped by mobs and bosses. $(thing)IridescentCraft$() adds $(bold)88 custom affix entries$() on top of Apotheosis's built-in pool, including 5 End-themed affixes exclusive to End dimension loot.$(br2)Affixes also provide $(bold)gem sockets$(). Higher-rarity affixed items have more sockets. $(l:icraft:loot/gems)See the Gems entry$(/l) for socket details."
     },
     {
       "type": "patchouli:text",
       "title": "Affix Tiers",
-      "text": "$(bold)Common$() — Available $(t1)Tier 1$()+. Mild bonuses. 0–1 sockets.$(br)$(bold)Uncommon$() — Available $(t2)Tier 2$()+. Moderate bonuses. 1–2 sockets.$(br)$(bold)Rare$() — Available $(t2)Tier 2$()+. Strong bonuses. 2 sockets.$(br)$(bold)Epic$() — Available $(t3)Tier 3$()+. Very strong bonuses. 2–3 sockets.$(br)$(bold)Legendary$() — Available $(t4)Tier 4$(). Exceptional bonuses. 3–4 sockets.$(br)$(bold)Mythic$() — Post-endgame Rift infusion only. Maximum bonuses. 4 sockets."
+      "text": "$(bold)Common$() — Available $(t1)Tier 1$()+. Mild bonuses. 0-1 sockets.$(br)$(bold)Uncommon$() — Available $(t2)Tier 2$()+. Moderate bonuses. 1-2 sockets.$(br)$(bold)Rare$() — Available $(t2)Tier 2$()+. Strong bonuses. 2 sockets.$(br)$(bold)Epic$() — Available $(t3)Tier 3$()+. Very strong bonuses. 2-3 sockets.$(br)$(bold)Legendary$() — Available $(t4)Tier 4$(). Exceptional bonuses. 3-4 sockets.$(br)$(bold)Mythic$() — Post-endgame Rift infusion only. Maximum bonuses. 4 sockets."
     },
     {
       "type": "patchouli:text",
@@ -20,8 +20,8 @@
     },
     {
       "type": "patchouli:text",
-      "title": "Champion Affixes",
-      "text": "$(thing)Champions$() are elite mob variants (glowing) with special abilities. $(thing)IridescentCraft$() adds 5 custom Champion affixes beyond the built-in 16:$(br2)$(bold)Commanding$() — buffs nearby mobs$(br)$(bold)Draining$() — leeches your mana/XP on hit$(br)$(bold)Hexing$() — applies random debuffs$(br)$(bold)Leaping$() — closes distance instantly$(br)$(bold)Summoning$() — spawns reinforcements$(br2)Champions spawn at ~8% base rate and scale to higher rates in harder dimensions."
+      "title": "End-Themed Affixes",
+      "text": "The End dimension features $(bold)5 exclusive affixes$() that only appear on End loot drops:$(br2)These affixes interact with the End's unique mechanics — Void Proximity damage scaling, Ender Displacement teleportation, and Void Corruption. End-themed affixes are among the most powerful in the game, rewarding players who tackle the hardest content.$(br2)End affix gear pairs well with the $(bold)Voidward$() and $(bold)Warp Shield$() enchantments for maximum End survivability."
     }
   ]
 }

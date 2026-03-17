@@ -1,27 +1,22 @@
 {
   "name": "Berserker",
-  "icon": "minecraft:iron_axe",
+  "icon": "minecraft:netherite_axe",
   "category": "icraft:classes",
   "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Melee DPS. Gets stronger as HP drops. The 'I don't need to dodge, I need to hit harder' class.$()$(br2)HP Modifier: -5%  |  Equipment HP: Normal$(br)$(bold)Weapon Affinities:$() Swords and axes (bonus), bows/crossbows (penalty)"
+      "text": "$(italic)Sustained melee damage dealer. Gets stronger as HP drops. The 'I don't need to dodge, I need to hit harder' class.$()$(br2)HP Modifier: -5%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Axes deal +15% damage. Bows and magic deal less."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Blood Fury$() \u2014 Below 40% HP: +20% melee damage, +10% attack speed. Below 20% HP: doubles to +40%/+20%. The core identity passive.$(br2)$(bold)Relentless$() \u2014 Each consecutive hit without taking damage: +3% damage, stacks to 10x (+30%). Taking damage removes 3 stacks.$(br2)$(bold)Bloodletting$() \u2014 Melee kills restore 2% max HP. Overkill damage increases this to 4%. Anti-synergy with Blood Fury \u2014 staying low vs healing up."
+      "text": "$(bold)Blood Fury$() — Below 40% HP: +20% melee damage. The core identity passive. Gets stronger the closer to death you are.$(br2)$(bold)Thick Skinned$() — +10% armor effectiveness from worn armor pieces. Compensates for the -5% HP penalty and rewards investing in heavy armor.$(br2)$(bold)Battle Trance$() — After sustained combat (10+ seconds): +5% all damage dealt, -5% all damage taken. Rewards staying in fights rather than kiting."
     },
     {
       "type": "patchouli:text",
-      "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Thick Skinned$() \u2014 +10% armor effectiveness from worn armor pieces only. Compensates for -5% HP penalty.$(br2)$(bold)Battle Trance$() \u2014 After 10 seconds in combat: +5% all damage, -5% all damage taken. Rewards staying in fights."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Active Ability",
-      "text": "Active: $(bold)Reckless Charge$()$(br)Dash 8 blocks, deal 150% weapon damage to first enemy hit, gain +25% attack speed for 4 seconds. During dash: +30% damage taken. 30s cooldown."
+      "title": "Weapon Affinity",
+      "text": "Axes are the Berserker's primary weapon. The +15% axe damage bonus means axes outperform swords significantly for this class. Bows and magic are penalized — the $(thing)Berserker$() is meant to be in melee range.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$() — +12% attack speed stacks with Blood Fury for devastating sustained DPS.$(br)$(thing)Human$() — Versatile bonus keeps up with any content.$(br)$(thing)Dwarf$() — Fire resistance lets you fight in lava zones without retreating."
     }
   ]
 }

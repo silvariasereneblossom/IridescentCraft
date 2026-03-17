@@ -6,15 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Champions (via Champions Unofficial) are elite mob variants that spawn at approximately $(bold)8% base rate$(/bold) across all dimensions. They glow, have custom affixes, and are significantly more dangerous than standard mobs.$(br2)Champions are the primary source of good early affix items. Killing one is always worth the effort."
+      "text": "$(thing)Champions$() (via Champions Unofficial) are elite mob variants that spawn with custom affixes. They glow, are significantly more dangerous than standard mobs, and drop better loot.$(br2)Champions are the primary source of good early affix items. Killing one is always worth the effort."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Champion Ranks$(/bold)$(br2)$(bold)Rank 1 (Common)$(/bold) \u2014 1 affix. Slightly buffed stats.$(br)$(bold)Rank 2 (Elite)$(/bold) \u2014 2 affixes. Noticeably stronger.$(br)$(bold)Rank 3 (Champion)$(/bold) \u2014 3 affixes. Serious threat. Good loot.$(br)$(bold)Rank 4 (Legendary)$(/bold) \u2014 4 affixes. Boss-level threat. Excellent loot.$(br2)Higher ranks are rarer. Rank 4 Champions are uncommon enough to be memorable encounters."
+      "title": "Spawn Scaling",
+      "text": "Champion spawn rates scale per dimension:$(br2)$(bold)Overworld$() — ~8% base rate$(br)$(bold)Twilight/Aether$() — ~12%$(br)$(bold)Nether/Undergarden$() — ~16%$(br)$(bold)End/Deep Aether$() — ~20%$(br2)Higher-tier dimensions spawn more Champions and at higher ranks. A Rank 4 Champion in the End is a genuine boss-level encounter."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Affix Pool$(/bold)$(br2)Champions draw from 16 built-in affixes plus 5 custom IridescentCraft affixes. Some affix combinations are extremely dangerous \u2014 for example, Commanding (buffs nearby mobs) combined with Summoning (spawns reinforcements) in a cave.$(br2)$(bold)Anti-cheese note:$(/bold) Champions are designed to not be kitable with basic ranged attacks. Magnetic and Leaping affixes exist specifically to punish pure-range cheese strategies."
+      "title": "Champion Ranks",
+      "text": "$(bold)Rank 1 (Common)$() — 1 affix. Slightly buffed stats.$(br)$(bold)Rank 2 (Elite)$() — 2 affixes. Noticeably stronger.$(br)$(bold)Rank 3 (Champion)$() — 3 affixes. Serious threat. Good loot.$(br)$(bold)Rank 4 (Legendary)$() — 4 affixes. Boss-level threat. Excellent loot.$(br2)Higher ranks are rarer. Rank 4 $(thing)Champions$() are uncommon enough to be memorable encounters."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Custom IridescentCraft Affixes",
+      "text": "Champions draw from 16 built-in affixes plus $(bold)5 custom IridescentCraft affixes$():$(br2)$(bold)Commanding$() — Buffs nearby mobs with damage and speed$(br)$(bold)Draining$() — Leeches your mana and XP on hit$(br)$(bold)Hexing$() — Applies random debuffs on attack$(br)$(bold)Leaping$() — Closes distance instantly, punishes ranged kiting$(br)$(bold)Summoning$() — Spawns reinforcement mobs$(br2)$(italic)Commanding + Summoning in a cave is a death sentence.$() Play carefully around multi-affix Champions."
     }
   ]
 }

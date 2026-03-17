@@ -6,22 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Pure tank. Maximum survivability, minimum offense. The immovable object.$()$(br2)HP Modifier: +20%  |  Equipment HP: Normal  |  Damage Modifier: -15% all damage"
+      "text": "$(italic)The immovable object. Maximum survivability, reduced offense. Pure tank.$()$(br2)HP Modifier: +20%  |  Equipment HP: Full$(br)$(bold)Damage Modifier:$() -15% all damage dealt"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Fortification$() — +20% armor effectiveness, +15% shield block angle, +40% knockback resistance.$(br2)$(bold)Aggro Pulse$() — Every 10s in combat: nearby mobs (12 blocks) prioritize targeting the $(thing)Vanguard$().$(br2)$(bold)Retribution$() — When hit: reflect 10% damage as magic. When blocking: reflect 20% instead. Vanguard's main damage source."
+      "text": "$(bold)Fortress$() — +6 armor, +3 toughness. The highest base defensive stats of any class. Stacks with worn armor for extreme damage reduction.$(br2)$(bold)Immovable$() — +40% knockback resistance. Nearly impossible to push around. Critical for holding position in chaotic fights.$(br2)$(bold)Guardian$() — Nearby enemies deal less damage to allies. The $(thing)Vanguard$() protects by proximity."
     },
     {
       "type": "patchouli:text",
-      "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Endurance$() — Damage taken reduced by 1% for every 5% max HP missing (max -20% at 0 HP). Gets tankier as HP drops.$(br2)$(bold)Ironclad$() — Immune to armor-piercing up to 50%. Equipment durability loss from combat -25%."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Active Ability",
-      "text": "Active: $(bold)Unbreakable$()$(br)+50% DR, immune to knockback and all CC for 8 seconds. Aggro Pulse triggers every 2s instead of every 10s. 120s cooldown."
+      "title": "The Tank Tradeoff",
+      "text": "The -15% damage penalty is real. The $(thing)Vanguard$() kills things slowly. But the $(thing)Vanguard$() does not die. With +20% HP, +6 armor, +3 toughness, and Guardian aura, this class can stand in fights that would kill any other class.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — +8% armor effectiveness on top of Fortress = the tankiest possible build.$(br)$(thing)Orc$() — Attack speed partially compensates for the damage penalty.$(br)$(thing)Revenant$() — Night power bonus helps offset the -15% damage penalty."
     }
   ]
 }

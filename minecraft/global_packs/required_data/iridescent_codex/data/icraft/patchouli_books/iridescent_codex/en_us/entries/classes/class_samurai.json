@@ -1,27 +1,22 @@
 {
   "name": "Samurai",
-  "icon": "minecraft:golden_sword",
+  "icon": "simplyswords:iron_katana",
   "category": "icraft:classes",
   "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Melee/Ranged hybrid. Versatile \u2014 not the best at either, but rewards switching between them.$(/italic)$(br2)HP Modifier: +5%  |  Equipment HP: Normal$(br)$(bold)Weapon Affinities:$(/bold) Swords and bows (both bonus, no penalty)"
+      "text": "$(italic)Versatile melee/ranged hybrid. Rewards patience and opening strikes. Neither the best at melee nor ranged, but excels at switching between them.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords and bows (both bonus, no penalty)"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Way of the Blade$(/bold) \u2014 After 3 melee hits: next ranged attack +25% damage. After 2 ranged hits: next melee attack +20% damage. Core loop.$(br2)$(bold)Bushido$(/bold) \u2014 +15% damage against enemies at full health. Kills within 3s of first hit grant a 2s speed boost.$(br2)$(bold)Evasive Stance$(/bold) \u2014 +8% dodge chance (incoming attacks deal 0 damage). Increases to 12% while moving."
+      "text": "$(bold)Bushido$() — +15% damage against enemies at full health. Rewards aggressive openers and precise first strikes.$(br2)$(bold)Evasive Stance$() — +8% dodge chance (incoming attacks deal 0 damage). Increases to 12% while moving. Rewards active repositioning.$(br2)$(bold)Focus$() — Not attacking for 3 seconds grants Focused: next attack +30% damage. 10 second cooldown after consuming. Patience is power."
     },
     {
       "type": "patchouli:text",
-      "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Focus$(/bold) \u2014 Not attacking for 3s grants Focused: next attack +30% damage, +20% crit chance. 10s cooldown after consuming."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Active Ability",
-      "text": "Active: $(bold)Blade Dance$(/bold)$(br)+30% attack speed, +15% movement speed for 5 seconds. Every hit during Blade Dance reduces its cooldown by 0.5s. 45s cooldown."
+      "title": "Speed & Playstyle",
+      "text": "+8% movement speed makes the $(thing)Samurai$() one of the faster classes. Combined with Evasive Stance, this class rewards a hit-and-move playstyle.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$() — +10% speed stacks for exceptional mobility. Night vision helps in dark dungeons.$(br)$(thing)Orc$() — +12% attack speed compensates for Focus's wait time.$(br)$(thing)Human$() — Versatile bonus and +15% XP gain for faster progression."
     }
   ]
 }

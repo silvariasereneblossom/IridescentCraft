@@ -6,22 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Melee/Magic hybrid. Melee charges spells. Spells empower melee. Neither is passive.$(/italic)$(br2)HP Modifier: +5%  |  Equipment HP: Normal$(br)$(bold)Weapon Affinities:$(/bold) Swords (bonus), no ranged penalty"
+      "text": "$(italic)Melee/magic hybrid. Combines physical toughness with magical utility. Neither pure caster nor pure fighter.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords (bonus), no ranged penalty"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Infusion$(/bold) \u2014 Melee hits generate Arcane Charges (max 5). Each charge: +6% spell damage (max +30%). Casting consumes all charges.$(br2)$(bold)Spell Strike$(/bold) \u2014 After casting a spell: next melee hit within 4s deals +20% damage with the spell's element.$(br2)$(bold)Mana Barrier$(/bold) \u2014 When hit: 15% of damage is absorbed by mana (if using Iron's Spells or Ars Nouveau)."
+      "text": "$(bold)Arcane Strikes$() — +10% attack damage baseline. Melee hits are magically enhanced.$(br2)$(bold)Spell Armor$() — +2 bonus armor from arcane wards. Stacks with worn armor for surprisingly high defense for a hybrid class.$(br2)$(bold)Mana Shield$() — Chance to negate incoming hits by consuming mana. Melee kills restore mana. Creates a fight-to-fuel-defense loop."
     },
     {
       "type": "patchouli:text",
-      "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Elemental Attunement$(/bold) \u2014 3 same-element spells in a row: Attuned (+15% damage, +10% resistance to that element) for 30s.$(br2)$(bold)Arcane Recovery$(/bold) \u2014 Kills restore 3% mana. Passive mana regen +15% in combat."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Active Ability",
-      "text": "Active: $(bold)Arcane Surge$(/bold)$(br)Instantly gain 5 Arcane Charges. For 6 seconds, melee hits don't consume charges on spell cast. 60s cooldown."
+      "title": "Hybrid Playstyle",
+      "text": "The $(thing)Battlemage$() is the most durable caster class. Unlike the $(thing)Archmage$() who sacrifices everything for spell damage, the $(thing)Battlemage$() can stand in melee and survive.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() — Nature magic bonuses synergize with Botania and Ars Nouveau.$(br)$(thing)Orc$() — Attack speed + arcane strikes = fast magic-infused melee.$(br)$(thing)Dwarf$() — Extra armor effectiveness stacks with Spell Armor for extreme toughness."
     }
   ]
 }

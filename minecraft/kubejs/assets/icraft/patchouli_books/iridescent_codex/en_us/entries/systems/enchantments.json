@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)IridescentCraft$() adds $(bold)24 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools. These are registered as real enchantments and work with all Apotheosis systems (affix reforging, gem sockets, etc.).$(br2)The enchantments are organized into five thematic groups."
+      "text": "$(thing)IridescentCraft$() adds $(bold)29 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools. These include 24 general-purpose enchantments available through enchanting and loot, plus 5 planetary enchantments exclusive to Ad Astra planet mob drops.$(br2)All custom enchantments are registered as real enchantments and work with all Apotheosis systems."
     },
     {
       "type": "patchouli:text",
@@ -22,6 +22,11 @@
       "type": "patchouli:text",
       "title": "Anti-Boss, Path Synergy & Utility",
       "text": "$(bold)Boss Ward$() — Damage reduction from boss entities$(br)$(bold)Steadfast$() — Knockback immunity$(br)$(bold)Nemesis$() — Tracks kills, damage bonus vs previously-fought bosses$(br2)$(bold)Mana Temper$() — Spells power up weapon$(br)$(bold)RF Capacitance$() — Stored RF boosts damage$(br)$(bold)Convergence$() — Bonus when tech+magic gear worn together$(br2)$(bold)Magnetism$() — Item pickup radius$(br)$(bold)Last Stand$() — On near-death: burst damage$(br)$(bold)Vitality$() — Max HP boost$(br)$(bold)Phalanx$() — Group defense aura$(br)$(bold)Quick Draw$() — Offhand swap speed"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Planetary Enchantments (Ad Astra)",
+      "text": "Five enchantments exclusive to Ad Astra planets. Each planet's mobs have a 12% chance to drop their enchanted book:$(br2)$(bold)Lunar Stride$() — Moon. Reduces low-gravity movement penalties.$(br)$(bold)Thermal Regulation$() — Mars. Negates cold and heat environmental damage.$(br)$(bold)Pressure Shell$() — Venus. Reduces acid damage and pressure slowdown.$(br)$(bold)Void Adaptation$() — Glacio. Negates alien debuffs and mining fatigue.$(br)$(bold)Stellar Shield$() — Mercury. Solar radiation and fire resistance on planets.$(br2)$(italic)Collect these on early planets to survive later ones.$()"
     }
   ]
 }

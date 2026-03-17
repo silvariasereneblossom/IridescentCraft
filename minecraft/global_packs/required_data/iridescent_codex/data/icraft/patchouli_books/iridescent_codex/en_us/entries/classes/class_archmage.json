@@ -1,27 +1,22 @@
 {
   "name": "Archmage",
-  "icon": "minecraft:blaze_rod",
+  "icon": "minecraft:enchanted_book",
   "category": "icraft:classes",
   "sortnum": 8,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Ultimate glass cannon spellcaster. Maximum spell damage. The squishiest class in the game.$(/italic)$(br2)HP Modifier: -20%  |  Equipment HP: Half effectiveness$(br)$(bold)Weapon Affinities:$(/bold) Spells (large bonus), all weapon types (significant penalty)"
+      "text": "$(italic)Ultimate glass cannon spellcaster. Maximum spell damage. The squishiest class in the game.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Armor Penalty:$() -4 armor, -2 toughness"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Mastery$(/bold) \u2014 +25% spell damage, +15% cast speed, -10% mana cost.$(br2)$(bold)Spell Penetration$(/bold) \u2014 Spells ignore 20% magic resistance. Against magic shields: +30% damage.$(br2)$(bold)Glass Cannon$(/bold) \u2014 For every 10% max HP missing: +3% spell damage (max +30% at 0 HP). No defensive benefit \u2014 pure offense."
+      "text": "$(bold)Arcane Power$() — +25% magic damage. The highest spell damage bonus of any class. All Iron's Spells and Ars Nouveau spells benefit.$(br2)$(bold)Mana Attunement$() — Spell kills restore mana. Standing still boosts spell damage further. Rewards a stationary casting playstyle.$(br2)$(bold)Glass Frame$() — -4 armor, -2 toughness, equipment HP halved. The $(thing)Archmage$() sacrifices all defense for offense."
     },
     {
       "type": "patchouli:text",
-      "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Mana Well$(/bold) \u2014 +30% max mana, +20% mana regen. Above 80% mana: +5% spell damage.$(br2)$(bold)Chain Reaction$(/bold) \u2014 Spell kill: 25% chance to fire a free 50% damage copy at a nearby enemy. Cannot chain off itself."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Active Ability",
-      "text": "Active: $(bold)Arcane Annihilation$(/bold)$(br)For 8s: spells deal +50% damage, cost 0 mana, have no cooldown. After: lose 25% current mana, no mana regen for 5s. 120s cooldown."
+      "title": "The Glass Cannon",
+      "text": "The $(thing)Archmage$() deals the most magic damage in the game but has the lowest survivability. One mistake in melee range is usually fatal.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() — +15% Botania and +10% Ars Nouveau synergy. Slow Fall provides emergency safety.$(br)$(thing)Elf$() — Speed for repositioning. Night vision for safe dungeon casting.$(br)$(thing)Halfling$() — Smaller hitbox + food efficiency. Halfling Luck can save you from lethal hits."
     }
   ]
 }

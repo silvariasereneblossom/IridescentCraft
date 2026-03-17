@@ -6,22 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Crafter/Engineer. No combat tradeoffs \u2014 average fighter. Power comes from crafting and machine bonuses.$(/italic)$(br2)HP Modifier: 0%  |  Equipment HP: Normal$(br)$(bold)Weapon Affinities:$(/bold) No penalties; crafted weapons get special bonuses"
+      "text": "$(italic)The builder and engineer. No combat tradeoffs - average fighter. Power comes from crafting and infrastructure.$()$(br2)HP Modifier: 0% (no penalty)  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() No penalties; crafted items benefit from bonuses"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Master Craftsman$(/bold) \u2014 15% chance on craft: +1 to a random existing enchant level. Tools get +10% durability.$(br2)$(bold)Efficient Engineering$(/bold) \u2014 Machines within 8 blocks: +15% speed. RF generators: +10% output. Furnaces: +25% speed.$(br2)$(bold)Material Expertise$(/bold) \u2014 +20% yield when processing ores. +10% chance for bonus byproducts."
+      "text": "$(bold)Crafting Mastery$() — +15% mining speed. +10% attack speed baseline. Nearby crafting tables grant Speed I.$(br2)$(bold)Engineer Speed$() — +10% bonus ore drops from mining. Infrastructure-focused power that compounds over time.$(br2)$(bold)Resourceful$() — Power comes from building, not fighting. The $(thing)Artificer$() rewards time spent on infrastructure."
     },
     {
       "type": "patchouli:text",
-      "title": "Passive Abilities (cont.)",
-      "text": "$(bold)Blueprint Memory$(/bold) \u2014 -25% XP cost for anvil ops. -20% material repair cost. -15% enchanting levels required.$(br2)$(bold)Innovation$(/bold) \u2014 Every 50 unique items crafted: +1% to all crafting bonuses (max +10% at 500 crafts)."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Active Ability",
-      "text": "Active: $(bold)Overcharge$(/bold)$(br)Instantly repair all equipped items by 20% durability. For 30s: tools +25% efficiency, +15% attack damage. 300s cooldown."
+      "title": "The Builder's Path",
+      "text": "The $(thing)Artificer$() is the only class with no combat tradeoffs. Average at fighting but excels at everything else. If you want to focus on building, crafting, and automation rather than combat, this is your class.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — +25% mining speed stacks with Crafting Mastery. Fire resistance for Nether resource runs.$(br)$(thing)Halfling$() — Food efficiency + ore bonus = maximum resource gathering.$(br)$(thing)Human$() — +15% XP and Versatile bonus for jack-of-all-trades building."
     }
   ]
 }
