@@ -11,6 +11,9 @@ REM   - 8-12 GB RAM available for the server
 
 title IridescentCraft Server
 
+REM Ensure working directory is where the bat lives
+cd /d "%~dp0"
+
 echo.
 powershell -Command ^
   "$r='Red';$o='DarkYellow';$y='Yellow';$g='Green';$c='Cyan';$b='Blue';$m='Magenta';" ^
