@@ -13,36 +13,14 @@ $ErrorActionPreference = "Continue"
 $ForgeVersion = "1.20.1-47.4.6"
 $ForgeInstaller = "forge-$ForgeVersion-installer.jar"
 
-# Enable ANSI/VT escape codes in Windows console
-# This is needed when launched from cmd.exe which doesn't enable VT by default
-$null = Add-Type -MemberDefinition @'
-[DllImport("kernel32.dll", SetLastError = true)]
-public static extern IntPtr GetStdHandle(int nStdHandle);
-[DllImport("kernel32.dll", SetLastError = true)]
-public static extern bool GetConsoleMode(IntPtr hConsoleHandle, out uint lpMode);
-[DllImport("kernel32.dll", SetLastError = true)]
-public static extern bool SetConsoleMode(IntPtr hConsoleHandle, uint dwMode);
-'@ -Name 'Console' -Namespace 'Win32' -PassThru -ErrorAction SilentlyContinue
-
-try {
-    $h = [Win32.Console]::GetStdHandle(-11)  # STD_OUTPUT_HANDLE
-    $mode = 0
-    [Win32.Console]::GetConsoleMode($h, [ref]$mode) | Out-Null
-    [Win32.Console]::SetConsoleMode($h, $mode -bor 0x0004) | Out-Null  # ENABLE_VIRTUAL_TERMINAL_PROCESSING
-} catch {}
-
-$e = "$([char]27)"
-$tfBlue  = "${e}[38;2;91;206;250m"
-$tfPink  = "${e}[38;2;245;169;184m"
-$tfWhite = "${e}[38;2;255;255;255m"
-$tfReset = "${e}[0m"
-
+# Trans flag banner — blue / pink / white / pink / blue
+# Uses Write-Host -ForegroundColor (PS 5.x compatible)
 Write-Host ""
-[Console]::WriteLine("${tfBlue}==========================================${tfReset}")
-[Console]::WriteLine("${tfPink}  IridescentCraft Server Installer${tfReset}")
-[Console]::WriteLine("${tfWhite}  Forge ${ForgeVersion}${tfReset}")
-[Console]::WriteLine("${tfPink}  Standalone Edition${tfReset}")
-[Console]::WriteLine("${tfBlue}==========================================${tfReset}")
+Write-Host "==========================================" -ForegroundColor DarkCyan
+Write-Host "  IridescentCraft Server Installer" -ForegroundColor Magenta
+Write-Host "  Forge $ForgeVersion" -ForegroundColor White
+Write-Host "  Standalone Edition" -ForegroundColor Magenta
+Write-Host "==========================================" -ForegroundColor DarkCyan
 Write-Host ""
 
 # -------------------------------------------------------------------
