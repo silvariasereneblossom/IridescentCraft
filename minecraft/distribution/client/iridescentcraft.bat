@@ -127,17 +127,43 @@ echo [SETUP] Preparing IridescentCraft instance...
 echo.
 
 REM Determine PrismLauncher data directory
-set "PRISM_DATA=%AppData%\PrismLauncher"
+REM Priority: portable.txt next to exe > portable.txt in parent > %AppData%
+set "PRISM_DATA="
+
+REM Check portable mode — portable.txt next to prismlauncher.exe
 if exist "%PRISM_DIR%portable.txt" (
-    REM Portable mode — data is next to the exe
     set "PRISM_DATA=%PRISM_DIR%"
 )
-REM Also check parent dir for portable.txt (some ZIP structures)
-for %%D in ("%PRISM_DIR%..") do (
-    if exist "%%~fD\portable.txt" set "PRISM_DATA=%%~fD\"
+REM Check parent dir for portable.txt (ZIP subfolder structures)
+if not defined PRISM_DATA (
+    for %%D in ("%PRISM_DIR%..") do (
+        if exist "%%~fD\portable.txt" set "PRISM_DATA=%%~fD\"
+    )
+)
+REM Fall back to %AppData%\PrismLauncher
+if not defined PRISM_DATA (
+    set "PRISM_DATA=%AppData%\PrismLauncher"
 )
 
-set INSTANCE_DIR=%PRISM_DATA%\instances\IridescentCraft
+REM Find the actual instances directory
+set "INSTANCES_DIR=%PRISM_DATA%\instances"
+
+REM Check if PrismLauncher has a custom InstanceDir configured
+if exist "%PRISM_DATA%\prismlauncher.cfg" (
+    for /f "usebackq tokens=1,* delims==" %%A in ("%PRISM_DATA%\prismlauncher.cfg") do (
+        if "%%A"=="InstanceDir" (
+            if not "%%B"=="" set "INSTANCES_DIR=%%B"
+        )
+    )
+)
+
+echo   PrismLauncher data: %PRISM_DATA%
+echo   Instances folder: %INSTANCES_DIR%
+
+REM Ensure instances folder exists
+mkdir "%INSTANCES_DIR%" 2>nul
+
+set "INSTANCE_DIR=%INSTANCES_DIR%\IridescentCraft"
 
 REM Check if instance already exists
 if exist "%INSTANCE_DIR%\instance.cfg" (
@@ -150,14 +176,13 @@ if exist "%INSTANCE_DIR%\instance.cfg" (
 REM Create instance directory structure
 echo   Creating instance at: %INSTANCE_DIR%
 mkdir "%INSTANCE_DIR%" 2>nul
-mkdir "%INSTANCE_DIR%\minecraft" 2>nul
 mkdir "%INSTANCE_DIR%\.minecraft" 2>nul
 
 REM Copy instance metadata
 copy /y "%~dp0instance.cfg" "%INSTANCE_DIR%\instance.cfg" >nul
 copy /y "%~dp0mmc-pack.json" "%INSTANCE_DIR%\mmc-pack.json" >nul
 
-REM Copy game files into the instance's minecraft folder
+REM Copy game files into the instance's .minecraft folder
 echo   Copying configs...
 xcopy /s /e /y /q "%~dp0config" "%INSTANCE_DIR%\.minecraft\config\" >nul 2>&1
 echo   Copying default configs...
