@@ -1,6 +1,7 @@
 {
   "order": 1,
   "replace": true,
+  "enabled": true,
   "origins": [
     "icraft:human",
     "icraft:elf",

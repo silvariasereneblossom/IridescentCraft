@@ -1,6 +1,7 @@
 {
   "order": 2,
   "replace": true,
+  "enabled": true,
   "origins": [
     "icraft:berserker",
     "icraft:samurai",

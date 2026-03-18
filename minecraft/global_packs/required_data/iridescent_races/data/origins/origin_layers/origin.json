@@ -1,6 +1,7 @@
 {
   "order": 0,
   "replace": true,
+  "enabled": true,
   "origins": [
     "origins:arachnid",
     "origins:blazeborn",
@@ -12,6 +13,11 @@
     "origins:feline",
     "origins:avian"
   ],
+  "name": "Origin",
+  "gui_title": {
+    "choose_origin": "Choose Your Origin",
+    "view_origin": "Your Origin"
+  },
   "allow_random": true,
   "allow_random_unchoosable": false
 }
