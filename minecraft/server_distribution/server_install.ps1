@@ -86,6 +86,7 @@ $forceSkip = @(
     "probejs",             # Dev tool, crashes on dedicated server
     "irons_spells_js",     # KubeJS Iron's Spells addon, references client classes
     "gh_classes",          # Disabled — conflicts with icraft class layer
+    "cherryvillage",       # Removed — unregistered worldgen feature crash
     "rechiseled",          # Removed — SuperMartijn642 Core Lib incompatibility
     "supermartijn642",     # Lib dependency, removed
     "connectedglass",     # Depends on SuperMartijn642, removed

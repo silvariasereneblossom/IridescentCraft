@@ -42,6 +42,10 @@ call :delete "*irons_spells_js*"
 REM --- Disabled mods that may linger from manual copies ---
 call :delete "*gh_classes*"
 
+REM --- Removed mods (worldgen crash) ---
+call :delete "*cherryvillage*"
+call :delete "*CherryVillage*"
+
 REM --- Removed mods (SuperMartijn642 lib incompatibility) ---
 call :delete "*rechiseled*"
 call :delete "*supermartijn642*"
