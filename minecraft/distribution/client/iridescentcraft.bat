@@ -158,9 +158,20 @@ echo   Creating instance...
 mkdir "%INSTANCE_DIR%" 2>nul
 mkdir "%INSTANCE_DIR%\.minecraft" 2>nul
 
+REM Verify source files exist
+echo   Source: %~dp0
+if not exist "%~dp0instance.cfg" (
+    echo   ERROR: instance.cfg not found in %~dp0
+    echo   Make sure you run this bat from the client distribution folder.
+    pause
+    exit /b 1
+)
+
 REM Copy instance metadata
-copy /y "%~dp0instance.cfg" "%INSTANCE_DIR%\instance.cfg" >nul
-copy /y "%~dp0mmc-pack.json" "%INSTANCE_DIR%\mmc-pack.json" >nul
+echo   Copying instance.cfg...
+copy /y "%~dp0instance.cfg" "%INSTANCE_DIR%\instance.cfg"
+echo   Copying mmc-pack.json...
+copy /y "%~dp0mmc-pack.json" "%INSTANCE_DIR%\mmc-pack.json"
 
 REM Copy game files
 echo   Copying configs...
@@ -173,6 +184,15 @@ echo   Copying datapacks...
 xcopy /s /e /y /q "%~dp0global_packs" "%INSTANCE_DIR%\.minecraft\global_packs\" >nul 2>&1
 echo   Copying mod metadata...
 xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\.minecraft\mods\" >nul 2>&1
+
+REM Verify critical files were copied
+if not exist "%INSTANCE_DIR%\instance.cfg" (
+    echo.
+    echo   ERROR: Failed to copy instance.cfg to %INSTANCE_DIR%
+    echo   Try running this bat as Administrator.
+    pause
+    exit /b 1
+)
 
 REM Ensure instgroups.json exists
 if not exist "%INSTANCES_DIR%\instgroups.json" (
