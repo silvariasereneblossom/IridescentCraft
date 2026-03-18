@@ -42,5 +42,7 @@
   "power.origins.fragile.name": "Spectral Form",
   "power.origins.fragile.description": "Your half-phantom nature leaves you with only half the health of a normal being.",
   "origin.origins.human.name": "Mundane",
-  "origin.origins.human.description": "An ordinary being with no special powers or weaknesses. The balanced choice for those who prefer to let their Race and Class define them."
+  "origin.origins.human.description": "An ordinary being with no special powers or weaknesses. The balanced choice for those who prefer to let their Race and Class define them.",
+  "power.origins.hotblooded.name": "Hotblooded",
+  "power.origins.hotblooded.description": "Your hot body burns up venoms, making you immune to poison. Your metabolism is otherwise normal."
 }
