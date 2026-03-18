@@ -146,22 +146,39 @@ if not defined PRISM_DATA (
 )
 
 REM Find the actual instances directory
-set "INSTANCES_DIR=%PRISM_DATA%\instances"
+REM Try multiple known locations until we find one that exists
+set "INSTANCES_DIR="
 
-REM Check if PrismLauncher has a custom InstanceDir configured
-if exist "%PRISM_DATA%\prismlauncher.cfg" (
-    for /f "usebackq tokens=1,* delims==" %%A in ("%PRISM_DATA%\prismlauncher.cfg") do (
-        if "%%A"=="InstanceDir" (
-            if not "%%B"=="" set "INSTANCES_DIR=%%B"
+REM 1. Check prismlauncher.cfg for custom InstanceDir
+for %%C in ("%PRISM_DATA%\prismlauncher.cfg" "%PRISM_DIR%prismlauncher.cfg") do (
+    if exist "%%~C" (
+        for /f "usebackq tokens=1,* delims==" %%A in ("%%~C") do (
+            if "%%A"=="InstanceDir" (
+                if not "%%B"=="" (
+                    if exist "%%B" set "INSTANCES_DIR=%%B"
+                )
+            )
         )
+    )
+)
+
+REM 2. Check standard locations
+if not defined INSTANCES_DIR (
+    if exist "%PRISM_DATA%\instances" (
+        set "INSTANCES_DIR=%PRISM_DATA%\instances"
+    ) else if exist "%AppData%\PrismLauncher\instances" (
+        set "INSTANCES_DIR=%AppData%\PrismLauncher\instances"
+    ) else if exist "%LocalAppData%\PrismLauncher\instances" (
+        set "INSTANCES_DIR=%LocalAppData%\PrismLauncher\instances"
+    ) else (
+        REM Create default location
+        set "INSTANCES_DIR=%PRISM_DATA%\instances"
+        mkdir "%PRISM_DATA%\instances" 2>nul
     )
 )
 
 echo   PrismLauncher data: %PRISM_DATA%
 echo   Instances folder: %INSTANCES_DIR%
-
-REM Ensure instances folder exists
-mkdir "%INSTANCES_DIR%" 2>nul
 
 set "INSTANCE_DIR=%INSTANCES_DIR%\IridescentCraft"
 
@@ -194,8 +211,16 @@ xcopy /s /e /y /q "%~dp0global_packs" "%INSTANCE_DIR%\.minecraft\global_packs\" 
 echo   Copying mod metadata...
 xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\.minecraft\mods\" >nul 2>&1
 
+REM Register instance in instgroups.json if it doesn't exist
+if not exist "%INSTANCES_DIR%\instgroups.json" (
+    echo {"formatVersion":1,"groups":{}} > "%INSTANCES_DIR%\instgroups.json"
+)
+
 echo.
-echo   [OK] Instance created. PrismLauncher will download mods on first launch.
+echo   [OK] Instance created at: %INSTANCE_DIR%
+echo   PrismLauncher will download mods on first launch.
+echo.
+echo   If the instance doesn't appear, try closing and reopening PrismLauncher.
 echo.
 
 :launch
