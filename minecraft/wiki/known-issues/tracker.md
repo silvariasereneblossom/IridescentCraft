@@ -7,7 +7,7 @@ Forge requires network channel lists to match between client and server. Mods th
 | # | Mod | Problem | Fix |
 |---|-----|---------|-----|
 | 1 | Decorative LGBT Wall Flags | `side='client'` but registers channel | Changed to `side='both'` |
-| 2 | Alex's Mobs EXTRA Music | Was already `side='server'`, needed re-download | Re-run installer |
+| 2 | Alex's Mobs EXTRA Music | Filename uses double quotes in `.pw.toml` (apostrophe in `Alex's`), installer regex only matched single quotes | Fixed TOML parser to accept both quote types |
 | 3 | Rechiseled + SuperMartijn642 libs | Removed from pack but `.pw.toml` still present — both sides re-download, causing channel mismatch | Deleted `.pw.toml` files + `.disabled` jar. Also in server force-skip + strip list as safety net |
 | 4 | Connected Glass | Depends on SuperMartijn642 libs (removed) | Deleted `.pw.toml`, added to force-skip + strip list |
 | 5 | Trash Cans | Depends on SuperMartijn642 libs (removed) | Deleted `.pw.toml`, added to force-skip + strip list |

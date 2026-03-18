@@ -107,10 +107,10 @@ foreach ($toml in $tomlFiles) {
     # Parse TOML file
     foreach ($line in Get-Content $toml.FullName) {
         $line = $line.Trim()
-        if ($line -match "^filename\s*=\s*'(.+)'") { $filename = $matches[1] }
-        if ($line -match "^side\s*=\s*'(.+)'") { $side = $matches[1] }
-        if ($line -match "^mode\s*=\s*'(.+)'") { $mode = $matches[1] }
-        if ($line -match "^url\s*=\s*'(.+)'") { $url = $matches[1] }
+        if ($line -match "^filename\s*=\s*['""](.+)['""]") { $filename = $matches[1] }
+        if ($line -match "^side\s*=\s*['""](.+)['""]") { $side = $matches[1] }
+        if ($line -match "^mode\s*=\s*['""](.+)['""]") { $mode = $matches[1] }
+        if ($line -match "^url\s*=\s*['""](.+)['""]") { $url = $matches[1] }
         if ($line -match "^project-id\s*=\s*(\d+)") { $projectId = $matches[1] }
         if ($line -match "^file-id\s*=\s*(\d+)") { $fileId = $matches[1] }
     }
