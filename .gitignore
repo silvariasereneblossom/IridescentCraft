@@ -9,5 +9,7 @@ shaderpacks/
 saves/
 *.zip
 !global_packs/required_data/*.zip
+!server_distribution/global_packs/required_data/*.zip
+!distribution/client/global_packs/required_data/*.zip
 *.rar
 
