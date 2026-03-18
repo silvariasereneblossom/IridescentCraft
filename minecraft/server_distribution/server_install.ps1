@@ -13,14 +13,6 @@ $ErrorActionPreference = "Continue"
 $ForgeVersion = "1.20.1-47.4.6"
 $ForgeInstaller = "forge-$ForgeVersion-installer.jar"
 
-# Trans flag banner — blue / pink / white / pink / blue
-# Uses Write-Host -ForegroundColor (PS 5.x compatible)
-Write-Host ""
-Write-Host "==========================================" -ForegroundColor DarkCyan
-Write-Host "  IridescentCraft Server Installer" -ForegroundColor Magenta
-Write-Host "  Forge $ForgeVersion" -ForegroundColor White
-Write-Host "  Standalone Edition" -ForegroundColor Magenta
-Write-Host "==========================================" -ForegroundColor DarkCyan
 Write-Host ""
 
 # -------------------------------------------------------------------
