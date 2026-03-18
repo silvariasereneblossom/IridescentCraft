@@ -158,40 +158,58 @@ echo   Creating instance...
 mkdir "%INSTANCE_DIR%" 2>nul
 mkdir "%INSTANCE_DIR%\.minecraft" 2>nul
 
-REM Verify source files exist
-echo   Source: %~dp0
-if not exist "%~dp0instance.cfg" (
-    echo   ERROR: instance.cfg not found in %~dp0
-    echo   Make sure you run this bat from the client distribution folder.
+REM Download instance metadata from GitHub
+set "REPO_RAW=https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/distribution/client"
+
+echo   Downloading instance.cfg...
+powershell -Command "Invoke-WebRequest -Uri '%REPO_RAW%/instance.cfg' -OutFile '%INSTANCE_DIR%\instance.cfg' -UseBasicParsing"
+echo   Downloading mmc-pack.json...
+powershell -Command "Invoke-WebRequest -Uri '%REPO_RAW%/mmc-pack.json' -OutFile '%INSTANCE_DIR%\mmc-pack.json' -UseBasicParsing"
+
+if not exist "%INSTANCE_DIR%\instance.cfg" (
+    echo   ERROR: Failed to download instance.cfg
     pause
     exit /b 1
 )
 
-REM Copy instance metadata
-echo   Copying instance.cfg...
-copy /y "%~dp0instance.cfg" "%INSTANCE_DIR%\instance.cfg"
-echo   Copying mmc-pack.json...
-copy /y "%~dp0mmc-pack.json" "%INSTANCE_DIR%\mmc-pack.json"
-
-REM Copy game files
-echo   Copying configs...
-xcopy /s /e /y /q "%~dp0config" "%INSTANCE_DIR%\.minecraft\config\" >nul 2>&1
-echo   Copying default configs...
-xcopy /s /e /y /q "%~dp0defaultconfigs" "%INSTANCE_DIR%\.minecraft\defaultconfigs\" >nul 2>&1
-echo   Copying KubeJS scripts...
-xcopy /s /e /y /q "%~dp0kubejs" "%INSTANCE_DIR%\.minecraft\kubejs\" >nul 2>&1
-echo   Copying datapacks...
-xcopy /s /e /y /q "%~dp0global_packs" "%INSTANCE_DIR%\.minecraft\global_packs\" >nul 2>&1
-echo   Copying mod metadata...
-xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\.minecraft\mods\" >nul 2>&1
-
-REM Verify critical files were copied
-if not exist "%INSTANCE_DIR%\instance.cfg" (
-    echo.
-    echo   ERROR: Failed to copy instance.cfg to %INSTANCE_DIR%
-    echo   Try running this bat as Administrator.
-    pause
-    exit /b 1
+REM Copy game files from local distribution if available, otherwise download
+if exist "%~dp0config" (
+    echo   Copying configs...
+    xcopy /s /e /y /q "%~dp0config" "%INSTANCE_DIR%\.minecraft\config\" >nul 2>&1
+    echo   Copying default configs...
+    xcopy /s /e /y /q "%~dp0defaultconfigs" "%INSTANCE_DIR%\.minecraft\defaultconfigs\" >nul 2>&1
+    echo   Copying KubeJS scripts...
+    xcopy /s /e /y /q "%~dp0kubejs" "%INSTANCE_DIR%\.minecraft\kubejs\" >nul 2>&1
+    echo   Copying datapacks...
+    xcopy /s /e /y /q "%~dp0global_packs" "%INSTANCE_DIR%\.minecraft\global_packs\" >nul 2>&1
+    echo   Copying mod metadata...
+    xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\.minecraft\mods\" >nul 2>&1
+) else (
+    echo   No local distribution folder found — downloading from GitHub...
+    echo   Cloning mod index and configs...
+    powershell -Command ^
+      "try {" ^
+      "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+      "  $zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
+      "  $zipFile = $env:TEMP + '\IridescentCraft-main.zip';" ^
+      "  $extractDir = $env:TEMP + '\IridescentCraft-extract';" ^
+      "  Write-Host '  Downloading repository...';" ^
+      "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing;" ^
+      "  Write-Host '  Extracting...';" ^
+      "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
+      "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
+      "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\distribution\client';" ^
+      "  $dest = '%INSTANCE_DIR%\.minecraft';" ^
+      "  Write-Host '  Copying game files...';" ^
+      "  if (Test-Path \"$src\config\") { Copy-Item \"$src\config\" \"$dest\config\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\defaultconfigs\") { Copy-Item \"$src\defaultconfigs\" \"$dest\defaultconfigs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\kubejs\") { Copy-Item \"$src\kubejs\" \"$dest\kubejs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\global_packs\") { Copy-Item \"$src\global_packs\" \"$dest\global_packs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\mods\") { Copy-Item \"$src\mods\" \"$dest\mods\" -Recurse -Force };" ^
+      "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
+      "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
+      "  Write-Host '  Done.';" ^
+      "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
 )
 
 REM Ensure instgroups.json exists
