@@ -1,0 +1,5 @@
+#010 minecraft:forest
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#698 biomesoplenty:redwood_forest
+#5FF minecraft:river

@@ -1,12 +1,12 @@
-[23:18:02] [Render thread/INFO] [JMLogger] JourneyMap log initialized.
-[23:18:02] [Render thread/INFO] [JourneymapClient] initialize ENTER
-[23:18:02] [Render thread/INFO] [ClientAPI] [ClientAPI] built with JourneyMap API 1.9-SNAPSHOT
-[23:18:02] [Render thread/INFO] [PluginHelper] Initializing plugins with Client API: journeymap.client.api.impl.ClientAPI
-[23:18:02] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: com.tom.createores.jm.JMPlugin
-[23:18:02] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: net.blay09.mods.waystones.compat.JourneyMapIntegration
-[23:18:02] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: me.frankv.jmi.JMIJourneyMapPlugin
-[23:18:02] [Render thread/DEBUG] [JourneymapClient] Loading and Generating Journeymap configs
-[23:18:02] [Render thread/INFO] [?] Version: JourneyMap 1.20.1-5.10.3, built with forge 1.20.1-47.2.30
+[03:45:22] [Render thread/INFO] [JMLogger] JourneyMap log initialized.
+[03:45:22] [Render thread/INFO] [JourneymapClient] initialize ENTER
+[03:45:22] [Render thread/INFO] [ClientAPI] [ClientAPI] built with JourneyMap API 1.9-SNAPSHOT
+[03:45:22] [Render thread/INFO] [PluginHelper] Initializing plugins with Client API: journeymap.client.api.impl.ClientAPI
+[03:45:22] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: com.tom.createores.jm.JMPlugin
+[03:45:22] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: net.blay09.mods.waystones.compat.JourneyMapIntegration
+[03:45:22] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: me.frankv.jmi.JMIJourneyMapPlugin
+[03:45:22] [Render thread/DEBUG] [JourneymapClient] Loading and Generating Journeymap configs
+[03:45:22] [Render thread/INFO] [?] Version: JourneyMap 1.20.1-5.10.3, built with forge 1.20.1-47.2.30
 forge: 47.4.6
 Environment: os.name, os.arch, java.version, user.country, user.language=null, game language=en_us, locale=en_us
 Features: 
@@ -24,48 +24,50 @@ FullMapProperties{state=Valid, file=journeymap.fullmap.config, configVersion=5.1
 WaypointProperties{state=Valid, file=journeymap.waypoint.config, configVersion=5.10.3, autoRemoveDeathpointDistance=2, dateFormat=MM-dd-yyyy, autoRemoveDeathpoints=false, fullscreenDoubleClickToCreate=true, managerDimensionFocus=false, minDistance=4, boldLabel=false, textureSmall=true, showDeathpointlabel=true, beaconEnabled=true, createDeathpoints=true, showName=true, disableStrikeThrough=false, maxDistance=0, autoHideLabel=true, autoRemoveTempWaypoints=2, teleportCommand=/tp {name} {x} {y} {z}, showStaticBeam=true, shaderBeacon=false, timeFormat=HH:mm:ss, showDeviationLabel=false, showDistance=true, showRotatingBeam=true, fontScale=2.0, showTexture=true, managerEnabled=true}
 WebMapProperties{state=Valid, file=journeymap.webmap.config, configVersion=5.10.3, port=8080, enabled=false}
 CoreProperties{state=Valid, file=journeymap.core.config, configVersion=5.10.3, verboseColorPalette=false, maxPlayersData=32, mapSurfaceAboveCaves=true, dataCachingEnabled=true, optionsManagerViewed=5.10.3, announceMod=true, colorPassive=#bbbbbb, mapBlendWater=false, renderDistanceSurfaceMax=0, seedId=false, radarVerticalDistance=16, mapBlendGrass=true, recordCacheStats=false, hideSneakingEntities=true, revealShape=jm.minimap.shape_circle, mapBiome=true, alwaysMapSurface=false, colorVillager=#88e188, mapPlants=false, colorPet=#0077ff, radarLateralDistance=64, mapBathymetry=false, mapCrops=true, maxMobsData=32, mapPlantShadows=false, alwaysMapCaves=false, checkUpdates=true, mapBlendFoliage=true, hideSpectators=false, mappingEnabled=true, colorPlayer=#ffffff, tileHighDisplayQuality=true, cacheVillagersData=2200, logLevel=INFO, maxVillagersData=32, mapWaterBiomeColors=false, maxAnimalsData=32, mapTransparency=true, caveBlackAsClear=false, tileRenderType=1, caveIgnoreGlass=true, mapTopography=true, renderDistanceCaveMax=0, mapAntialiasing=true, colorSelf=#0000ff, cachePlayersData=2000, cacheMobsData=3000, cachePlayerData=1000, splashViewed=5.10.3, colorHostile=#ff0000, cacheAnimalsData=3100, themeName=OceanMonument, mapCaveLighting=true, renderDelay=2, glErrorChecking=false, autoMapPoll=2000}
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeKeyEvents
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChatEvents
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeHudOverlayEvents
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeWorldEvent
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChunkEvents
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeClientTickEvent
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeRenderLevelLastEvent
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeLoggedInEvent
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeTextureStitchedEvent
-[23:18:02] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgePopupCustomEvents
-[23:18:02] [Render thread/INFO] [JourneymapClient] initialize EXIT, elapsed count 1 avg 115.6ms
-[23:18:16] [Render thread/INFO] [JourneymapClient] Journeymap PostInit
-[23:18:16] [Render thread/DEBUG] [JourneymapClient] postInitialize ENTER
-[23:18:16] [Render thread/TRACE] [ThemeLoader] Initializing themes ...
-[23:18:17] [Render thread/INFO] [ThemeLoader] Preloaded theme textures: 73
-[23:18:17] [Render thread/INFO] [JourneymapClient] postInitialize EXIT, elapsed count 1 avg 163.47ms
-[23:22:37] [Netty Client IO #0/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
-[23:22:49] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\waypoints
-[23:22:49] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\overworld. Memory: 3752MB total, 247MB free 
-[23:22:54] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\minecraft:overworld
-[23:22:54] [Render thread/INFO] [JourneymapClient] World UID is set to: 29afb748-3f21-4d12-83c7-e38a7e8b4935
-[23:23:14] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for create
-[23:23:14] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for biomesoplenty
-[23:23:14] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_29afb748~3f21~4d12~83c7~e38a7e8b4935\waypoints
-[23:23:14] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_29afb748~3f21~4d12~83c7~e38a7e8b4935\overworld. Memory: 6392MB total, 866MB free 
-[23:35:09] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_29afb748~3f21~4d12~83c7~e38a7e8b4935\minecraft:overworld
-[00:05:03] [Render thread/INFO] [MappingMonitorTask] World ID has been reset.
-[00:05:03] [Render thread/INFO] [JourneymapClient] World UID is set to: null
-[00:35:41] [Netty Client IO #2/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
-[00:35:49] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\waypoints
-[00:35:49] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\overworld. Memory: 6392MB total, 394MB free 
-[00:36:07] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\minecraft:overworld
-[00:36:07] [Render thread/INFO] [JourneymapClient] World UID is set to: 29afb748-3f21-4d12-83c7-e38a7e8b4935
-[00:36:08] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_29afb748~3f21~4d12~83c7~e38a7e8b4935\waypoints
-[00:36:08] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_29afb748~3f21~4d12~83c7~e38a7e8b4935\overworld. Memory: 8192MB total, 2002MB free 
-[00:36:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for estrogen:textures/entity_icon/moth/normal.png
-[00:36:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/bluejay.png
-[00:36:10] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
-[00:36:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for estrogen:textures/entity_icon/moth/fuzzy.png
-[00:36:10] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
-[00:36:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for creategenderless:textures/entity_icon/lumarfly_low_res.png
-[00:36:10] [Render thread/INFO] [ChatLog] JourneyMap: Press [J]
-[00:36:13] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_29afb748~3f21~4d12~83c7~e38a7e8b4935\minecraft:overworld
-[00:36:13] [Render thread/INFO] [MappingMonitorTask] World ID has been reset.
-[00:36:13] [Render thread/INFO] [JourneymapClient] World UID is set to: null
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeKeyEvents
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChatEvents
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeHudOverlayEvents
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeWorldEvent
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChunkEvents
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeClientTickEvent
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeRenderLevelLastEvent
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeLoggedInEvent
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeTextureStitchedEvent
+[03:45:22] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgePopupCustomEvents
+[03:45:22] [Render thread/INFO] [JourneymapClient] initialize EXIT, elapsed count 1 avg 112.06ms
+[03:45:44] [Render thread/INFO] [JourneymapClient] Journeymap PostInit
+[03:45:44] [Render thread/DEBUG] [JourneymapClient] postInitialize ENTER
+[03:45:44] [Render thread/TRACE] [ThemeLoader] Initializing themes ...
+[03:45:44] [Render thread/INFO] [ThemeLoader] Preloaded theme textures: 73
+[03:45:44] [Render thread/INFO] [JourneymapClient] postInitialize EXIT, elapsed count 1 avg 161.65ms
+[03:49:27] [Netty Client IO #1/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[03:49:36] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\waypoints
+[03:49:36] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\overworld. Memory: 3860MB total, 431MB free 
+[03:49:41] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\minecraft:overworld
+[03:49:41] [Render thread/INFO] [JourneymapClient] World UID is set to: 0f1ebf57-b0af-4773-8032-230fd47bf301
+[03:50:01] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for create
+[03:50:01] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for biomesoplenty
+[03:50:02] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_0f1ebf57~b0af~4773~8032~230fd47bf301\waypoints
+[03:50:02] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_0f1ebf57~b0af~4773~8032~230fd47bf301\overworld. Memory: 7616MB total, 2979MB free 
+[03:50:03] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/bluejay.png
+[03:50:03] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairypink.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[03:50:03] [Render thread/INFO] [ChatLog] JourneyMap: Press [J]
+[03:50:05] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_0f1ebf57~b0af~4773~8032~230fd47bf301\minecraft:overworld
+[03:50:05] [Render thread/INFO] [MappingMonitorTask] World ID has been reset.
+[03:50:05] [Render thread/INFO] [JourneymapClient] World UID is set to: null
+[03:55:37] [Netty Client IO #2/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[03:55:49] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\waypoints
+[03:55:49] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\overworld. Memory: 7616MB total, 3016MB free 
+[03:56:08] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\minecraft:overworld
+[03:56:08] [Render thread/INFO] [JourneymapClient] World UID is set to: 22411e82-6edf-4b7e-bf1c-d8a11825bc06
+[03:56:10] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_22411e82~6edf~4b7e~bf1c~d8a11825bc06\waypoints
+[03:56:10] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_22411e82~6edf~4b7e~bf1c~d8a11825bc06\overworld. Memory: 8192MB total, 3100MB free 
+[03:56:17] [Render thread/WARN] [JMLogger] Can't get entityTexture for pridemoths:textures/entity_icon/moth.png
+[03:56:17] [Render thread/WARN] [JMLogger] Can't get entityTexture for pridemoths:textures/entity_icon/baby/moth.png
+[03:56:17] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[03:56:17] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/lizard/brown.png
+[03:56:17] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/bluegill.png
+[03:56:17] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/emptytexture.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[03:56:24] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_22411e82~6edf~4b7e~bf1c~d8a11825bc06\minecraft:overworld
+[03:56:24] [Render thread/INFO] [MappingMonitorTask] World ID has been reset.
+[03:56:24] [Render thread/INFO] [JourneymapClient] World UID is set to: null

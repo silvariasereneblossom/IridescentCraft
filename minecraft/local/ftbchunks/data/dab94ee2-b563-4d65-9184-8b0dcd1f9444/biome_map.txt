@@ -1,0 +1,4 @@
+#460 minecraft:cherry_grove
+#286 minecraft:grove
+#2D6 minecraft:meadow
+#524 minecraft:snowy_slopes
