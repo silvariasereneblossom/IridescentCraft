@@ -11,5 +11,8 @@ saves/
 !global_packs/required_data/*.zip
 !server_distribution/global_packs/required_data/*.zip
 !distribution/client/global_packs/required_data/*.zip
+!config/paxi/datapacks/*.zip
+!server_distribution/config/paxi/datapacks/*.zip
+!distribution/client/config/paxi/datapacks/*.zip
 *.rar
 
