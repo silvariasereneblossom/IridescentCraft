@@ -1,0 +1,7 @@
+#47F minecraft:birch_forest
+#4F9 minecraft:dark_forest
+#286 minecraft:grove
+#73A minecraft:old_growth_pine_taiga
+#60C minecraft:old_growth_spruce_taiga
+#5FF minecraft:river
+#169 minecraft:taiga

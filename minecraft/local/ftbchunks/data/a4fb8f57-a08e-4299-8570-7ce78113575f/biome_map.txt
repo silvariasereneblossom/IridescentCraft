@@ -1,0 +1,4 @@
+#3FF ars_nouveau:archwood_forest
+#556 minecraft:beach
+#460 minecraft:cherry_grove
+#3DC minecraft:plains

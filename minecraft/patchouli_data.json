@@ -180,7 +180,8 @@
         "icraft:welcome/philosophy",
         "icraft:welcome/intro",
         "icraft:progression/tier_overview",
-        "icraft:welcome/class_guide"
+        "icraft:welcome/class_guide",
+        "icraft:systems/enchantments"
       ],
       "bookmarks": [],
       "completedManualQuests": []
