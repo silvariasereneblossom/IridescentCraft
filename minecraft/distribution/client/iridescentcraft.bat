@@ -97,16 +97,23 @@ echo   Extracting PrismLauncher...
 powershell -Command "Expand-Archive -Path '%PRISM_ZIP%' -DestinationPath '%PRISM_DIR%' -Force"
 del "%PRISM_ZIP%" 2>nul
 
-REM Find the exe (might be in a subfolder)
-for /r "%PRISM_DIR%" %%F in (prismlauncher.exe) do (
+REM Find the exe — ZIP may extract into a subfolder
+REM Use PowerShell for reliable recursive search with spaces in paths
+for /f "delims=" %%F in ('powershell -Command "Get-ChildItem -Path '%PRISM_DIR%' -Filter 'prismlauncher.exe' -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName"') do (
     set "PRISM_EXE=%%F"
-    set "PRISM_DIR=%%~dpF"
+    for %%D in ("%%~dpF.") do set "PRISM_DIR=%%~fD\"
 )
 
 if not defined PRISM_EXE (
     echo ERROR: PrismLauncher extraction failed.
+    echo Check: %~dp0PrismLauncher\
     pause
     exit /b 1
+)
+
+REM Create portable.txt so PrismLauncher stores data next to itself
+if not exist "%PRISM_DIR%portable.txt" (
+    echo. > "%PRISM_DIR%portable.txt"
 )
 
 echo   [OK] PrismLauncher installed to: %PRISM_DIR%
@@ -120,10 +127,14 @@ echo [SETUP] Preparing IridescentCraft instance...
 echo.
 
 REM Determine PrismLauncher data directory
-set PRISM_DATA=%AppData%\PrismLauncher
+set "PRISM_DATA=%AppData%\PrismLauncher"
 if exist "%PRISM_DIR%portable.txt" (
     REM Portable mode — data is next to the exe
-    set PRISM_DATA=%PRISM_DIR%
+    set "PRISM_DATA=%PRISM_DIR%"
+)
+REM Also check parent dir for portable.txt (some ZIP structures)
+for %%D in ("%PRISM_DIR%..") do (
+    if exist "%%~fD\portable.txt" set "PRISM_DATA=%%~fD\"
 )
 
 set INSTANCE_DIR=%PRISM_DATA%\instances\IridescentCraft
@@ -175,7 +186,7 @@ echo     3. Click "Launch" — mods will download automatically
 echo     4. First launch takes 5-15 minutes with 420+ mods
 echo.
 
-start "" "%PRISM_EXE%"
+start "PrismLauncher" "%PRISM_EXE%"
 
 echo PrismLauncher launched. You can close this window.
 echo.
