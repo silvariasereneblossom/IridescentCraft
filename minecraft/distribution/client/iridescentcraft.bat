@@ -5,7 +5,7 @@ REM
 REM Requirements:
 REM   - Windows 10/11 (64-bit)
 REM   - Java 17 (PrismLauncher will prompt if missing)
-REM   - Microsoft account for Minecraft login
+REM   - Minecraft account (Microsoft, Ely.by, or offline)
 
 title IridescentCraft Client Installer
 setlocal enabledelayedexpansion
@@ -180,7 +180,8 @@ REM -------------------------------------------------------------------
 echo [LAUNCH] Starting PrismLauncher...
 echo.
 echo   NOTE: If this is your first time:
-echo     1. Log in with your Microsoft account
+echo     1. Add your account (Accounts section in Settings)
+echo        - Microsoft, Ely.by, or offline accounts supported
 echo     2. Select "IridescentCraft" from the instance list
 echo     3. Click "Launch" — mods will download automatically
 echo     4. First launch takes 5-15 minutes with 420+ mods
