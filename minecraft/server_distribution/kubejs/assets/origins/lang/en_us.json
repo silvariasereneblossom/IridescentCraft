@@ -44,5 +44,9 @@
   "origin.origins.human.name": "Mundane",
   "origin.origins.human.description": "An ordinary being with no special powers or weaknesses. The balanced choice for those who prefer to let their Race and Class define them.",
   "power.origins.hotblooded.name": "Hotblooded",
-  "power.origins.hotblooded.description": "Your hot body burns up venoms, making you immune to poison. Your metabolism is otherwise normal."
+  "power.origins.hotblooded.description": "Your hot body burns up venoms, making you immune to poison. Your metabolism is otherwise normal.",
+
+  "layer.origins.gender.name": "Gender",
+  "layer.origins.gender.gui_title.choose_origin": "Choose Your Gender",
+  "layer.origins.gender.gui_title.view_origin": "Your Gender"
 }
