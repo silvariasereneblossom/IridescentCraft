@@ -28,9 +28,12 @@ echo.
 REM -------------------------------------------------------------------
 REM Phase 0: Download server files from GitHub if not present
 REM -------------------------------------------------------------------
-REM If this bat is run standalone (no config/ folder nearby), download
-REM the full server distribution from the GitHub repo.
-if not exist "%~dp0config" (
+REM If config/ or global_packs/ is missing, download the full server
+REM distribution from the GitHub repo.
+set "NEED_DOWNLOAD=0"
+if not exist "%~dp0config" set "NEED_DOWNLOAD=1"
+if not exist "%~dp0global_packs" set "NEED_DOWNLOAD=1"
+if "%NEED_DOWNLOAD%"=="1" (
     echo [SETUP] Server files not found — downloading from GitHub...
     echo.
     powershell -ExecutionPolicy Bypass -Command ^
@@ -58,7 +61,7 @@ if not exist "%~dp0config" (
       "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
       "  Write-Host '  Done.' -ForegroundColor Green;" ^
       "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
-    if not exist "%~dp0config" (
+    if not exist "%~dp0global_packs" (
         echo ERROR: Failed to download server files.
         pause
         exit /b 1

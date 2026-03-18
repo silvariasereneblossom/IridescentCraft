@@ -64,7 +64,7 @@ echo ""
 # -------------------------------------------------------------------
 # Phase 0: Download server files from GitHub if not present
 # -------------------------------------------------------------------
-if [ ! -d "$SCRIPT_DIR/config" ]; then
+if [ ! -d "$SCRIPT_DIR/config" ] || [ ! -d "$SCRIPT_DIR/global_packs" ]; then
     echo "[SETUP] Server files not found — downloading from GitHub..."
     echo ""
 
@@ -99,7 +99,7 @@ if [ ! -d "$SCRIPT_DIR/config" ]; then
     rm -f "$ZIP_FILE"
     rm -rf "$EXTRACT_DIR"
 
-    if [ ! -d "$SCRIPT_DIR/config" ]; then
+    if [ ! -d "$SCRIPT_DIR/global_packs" ]; then
         echo "ERROR: Failed to download server files."
         exit 1
     fi
