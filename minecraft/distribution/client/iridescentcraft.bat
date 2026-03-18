@@ -173,6 +173,8 @@ if not exist "%INSTANCE_DIR%\instance.cfg" (
 )
 
 REM Copy game files from local distribution if available, otherwise download
+REM NOTE: mods/ goes at instance root (PrismLauncher manages .index there)
+REM       configs/kubejs/global_packs go inside .minecraft
 if exist "%~dp0config" (
     echo   Copying configs...
     xcopy /s /e /y /q "%~dp0config" "%INSTANCE_DIR%\.minecraft\config\" >nul 2>&1
@@ -182,11 +184,10 @@ if exist "%~dp0config" (
     xcopy /s /e /y /q "%~dp0kubejs" "%INSTANCE_DIR%\.minecraft\kubejs\" >nul 2>&1
     echo   Copying datapacks...
     xcopy /s /e /y /q "%~dp0global_packs" "%INSTANCE_DIR%\.minecraft\global_packs\" >nul 2>&1
-    echo   Copying mod metadata...
-    xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\.minecraft\mods\" >nul 2>&1
+    echo   Copying mod metadata and custom jars...
+    xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\mods\" >nul 2>&1
 ) else (
     echo   No local distribution folder found — downloading from GitHub...
-    echo   Cloning mod index and configs...
     powershell -Command ^
       "try {" ^
       "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
@@ -199,13 +200,14 @@ if exist "%~dp0config" (
       "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
       "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
       "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\distribution\client';" ^
-      "  $dest = '%INSTANCE_DIR%\.minecraft';" ^
+      "  $mcDest = '%INSTANCE_DIR%\.minecraft';" ^
+      "  $instDest = '%INSTANCE_DIR%';" ^
       "  Write-Host '  Copying game files...';" ^
-      "  if (Test-Path \"$src\config\") { Copy-Item \"$src\config\" \"$dest\config\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\defaultconfigs\") { Copy-Item \"$src\defaultconfigs\" \"$dest\defaultconfigs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\kubejs\") { Copy-Item \"$src\kubejs\" \"$dest\kubejs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\global_packs\") { Copy-Item \"$src\global_packs\" \"$dest\global_packs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\mods\") { Copy-Item \"$src\mods\" \"$dest\mods\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\config\") { Copy-Item \"$src\config\" \"$mcDest\config\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\defaultconfigs\") { Copy-Item \"$src\defaultconfigs\" \"$mcDest\defaultconfigs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\kubejs\") { Copy-Item \"$src\kubejs\" \"$mcDest\kubejs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\global_packs\") { Copy-Item \"$src\global_packs\" \"$mcDest\global_packs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\mods\") { Copy-Item \"$src\mods\" \"$instDest\mods\" -Recurse -Force };" ^
       "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
       "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
       "  Write-Host '  Done.';" ^
