@@ -70,12 +70,13 @@ if exist "mods\.index" (
     echo [INSTALL] Downloading mods via PowerShell...
     echo.
     powershell -Command ^
-      "$blue='Cyan';$pink='Magenta';$white='White';" ^
-      "foreach($c in '  =========================================='.ToCharArray()){Write-Host $c -NoNewline -ForegroundColor $blue};Write-Host '';" ^
-      "foreach($c in '  IridescentCraft Server Installer'.ToCharArray()){Write-Host $c -NoNewline -ForegroundColor $pink};Write-Host '';" ^
-      "foreach($c in '  Forge 1.20.1-47.4.6'.ToCharArray()){Write-Host $c -NoNewline -ForegroundColor $white};Write-Host '';" ^
-      "foreach($c in '  Standalone Edition'.ToCharArray()){Write-Host $c -NoNewline -ForegroundColor $pink};Write-Host '';" ^
-      "foreach($c in '  =========================================='.ToCharArray()){Write-Host $c -NoNewline -ForegroundColor $blue};Write-Host ''"
+      "$e=[char]27;" ^
+      "$blue=\"${e}[38;2;91;206;250m\";$pink=\"${e}[38;2;245;169;184m\";$white=\"${e}[38;2;255;255;255m\";$rs=\"${e}[0m\";" ^
+      "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine();" ^
+      "[Console]::Write(\"${pink}  IridescentCraft Server Installer${rs}\");[Console]::WriteLine();" ^
+      "[Console]::Write(\"${white}  Forge 1.20.1-47.4.6${rs}\");[Console]::WriteLine();" ^
+      "[Console]::Write(\"${pink}  Standalone Edition${rs}\");[Console]::WriteLine();" ^
+      "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine()"
     echo.
     powershell -ExecutionPolicy Bypass -File "%~dp0server_install.ps1"
     if %errorlevel% neq 0 (
