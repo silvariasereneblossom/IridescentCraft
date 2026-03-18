@@ -20,7 +20,13 @@ FORGE_INSTALLER_URL="https://maven.minecraftforge.net/net/minecraftforge/forge/$
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-# ANSI color codes
+# ANSI 24-bit RGB color codes
+# Trans flag: #5BCEFA (blue), #F5A9B8 (pink), #FFFFFF (white)
+TF_BLUE='\033[38;2;91;206;250m'
+TF_PINK='\033[38;2;245;169;184m'
+TF_WHITE='\033[38;2;255;255;255m'
+
+# Rainbow colors
 RED='\033[0;31m'
 ORANGE='\033[0;33m'
 YELLOW='\033[1;33m'
@@ -29,10 +35,9 @@ CYAN='\033[0;36m'
 BLUE='\033[0;34m'
 MAGENTA='\033[0;35m'
 WHITE='\033[1;37m'
-PINK='\033[1;35m'
 NC='\033[0m'
 
-# Rainbow print function
+# Rainbow print function — cycles colors per non-space character
 rainbow_print() {
     local text="$1"
     local colors=("$RED" "$ORANGE" "$YELLOW" "$GREEN" "$CYAN" "$BLUE" "$MAGENTA")
@@ -130,6 +135,7 @@ if [ -d "$INDEX_DIR" ]; then
         "probejs"
         "ProbeJS"
         "irons_spells_js"
+        "gh_classes"
         "rechiseled"
         "supermartijn642"
         "connectedglass"
@@ -142,21 +148,24 @@ if [ -d "$INDEX_DIR" ]; then
     FAILED=0
     TOTAL_FILES=$(ls -1 "$INDEX_DIR"/*.pw.toml 2>/dev/null | wc -l)
 
-    echo -e "${BLUE}==========================================${NC}"
-    echo -e "${PINK}  IridescentCraft Server Installer${NC}"
-    echo -e "${WHITE}  Forge ${FORGE_VERSION}${NC}"
-    echo -e "${PINK}  Downloading mods...${NC}"
-    echo -e "${BLUE}==========================================${NC}"
+    # Trans flag installer banner
+    echo ""
+    echo -e "${TF_BLUE}  ==========================================${NC}"
+    echo -e "${TF_PINK}  IridescentCraft Server Installer${NC}"
+    echo -e "${TF_WHITE}  Forge ${FORGE_VERSION}${NC}"
+    echo -e "${TF_PINK}  Standalone Edition${NC}"
+    echo -e "${TF_BLUE}  ==========================================${NC}"
     echo ""
     echo "  Found $TOTAL_FILES mod metadata files."
 
     for toml_file in "$INDEX_DIR"/*.pw.toml; do
         [ -f "$toml_file" ] || continue
 
-        filename=$(grep '^filename' "$toml_file" | head -1 | sed "s/^filename = '//;s/'$//")
-        side=$(grep '^side' "$toml_file" | head -1 | sed "s/^side = '//;s/'$//")
-        mode=$(grep '^mode' "$toml_file" | head -1 | sed "s/^mode = '//;s/'$//")
-        url=$(grep '^url' "$toml_file" | head -1 | sed "s/^url = '//;s/'$//")
+        # Parse TOML — handle both single and double quoted values
+        filename=$(grep '^filename' "$toml_file" | head -1 | sed "s/^filename = ['\"]//;s/['\"]$//")
+        side=$(grep '^side' "$toml_file" | head -1 | sed "s/^side = ['\"]//;s/['\"]$//")
+        mode=$(grep '^mode' "$toml_file" | head -1 | sed "s/^mode = ['\"]//;s/['\"]$//")
+        url=$(grep '^url' "$toml_file" | head -1 | sed "s/^url = ['\"]//;s/['\"]$//")
 
         [ -z "$filename" ] && continue
 
@@ -234,12 +243,18 @@ if [ -d "$INDEX_DIR" ]; then
     echo -e "  ${CYAN}Skipped (already present): $SKIPPED_EXISTS${NC}"
     [ "$FAILED" -gt 0 ] && echo -e "  ${RED}Failed: $FAILED mods${NC}"
     echo ""
+
+    echo "Mod download complete. Press Enter to continue to server launch..."
+    read -r
+    echo ""
 fi
 
 # Strip client-only / crash-causing mods
 strip_mod() {
-    for f in mods/$1; do
-        [ -f "$f" ] && echo "  Stripping: $(basename "$f")" && rm -f "$f"
+    for pattern in "$@"; do
+        for f in mods/$pattern; do
+            [ -f "$f" ] && echo "  Stripping: $(basename "$f")" && rm -f "$f"
+        done
     done
 }
 
@@ -256,6 +271,7 @@ if [ -d "mods" ]; then
     strip_mod "*transmog*"
     strip_mod "*probejs*" "*ProbeJS*"
     strip_mod "*irons_spells_js*"
+    strip_mod "*gh_classes*"
     strip_mod "*rechiseled*"
     strip_mod "*supermartijn642*"
     strip_mod "*connectedglass*"
