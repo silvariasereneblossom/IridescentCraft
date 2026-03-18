@@ -86,6 +86,9 @@ if exist "mods\.index" (
         exit /b 1
     )
     echo.
+    echo Mod download complete. Press Enter to continue to server launch...
+    pause >nul
+    echo.
 )
 
 REM Strip any client-only / crash-causing mods
