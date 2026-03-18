@@ -26,6 +26,47 @@ powershell -Command ^
 echo.
 
 REM -------------------------------------------------------------------
+REM Phase 0: Download server files from GitHub if not present
+REM -------------------------------------------------------------------
+REM If this bat is run standalone (no config/ folder nearby), download
+REM the full server distribution from the GitHub repo.
+if not exist "%~dp0config" (
+    echo [SETUP] Server files not found — downloading from GitHub...
+    echo.
+    powershell -ExecutionPolicy Bypass -Command ^
+      "try {" ^
+      "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+      "  $zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
+      "  $zipFile = $env:TEMP + '\IridescentCraft-server.zip';" ^
+      "  $extractDir = $env:TEMP + '\IridescentCraft-server-extract';" ^
+      "  Write-Host '  Downloading repository...';" ^
+      "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing;" ^
+      "  Write-Host '  Extracting server distribution...';" ^
+      "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
+      "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
+      "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\server_distribution';" ^
+      "  $dest = '%~dp0';" ^
+      "  Write-Host '  Copying server files...';" ^
+      "  Get-ChildItem $src -Exclude 'iridescentserver.bat','iridescentserver.sh' | ForEach-Object {" ^
+      "    if ($_.PSIsContainer) {" ^
+      "      Copy-Item $_.FullName $dest -Recurse -Force;" ^
+      "    } else {" ^
+      "      Copy-Item $_.FullName $dest -Force;" ^
+      "    }" ^
+      "  };" ^
+      "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
+      "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
+      "  Write-Host '  Done.' -ForegroundColor Green;" ^
+      "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
+    if not exist "%~dp0config" (
+        echo ERROR: Failed to download server files.
+        pause
+        exit /b 1
+    )
+    echo.
+)
+
+REM -------------------------------------------------------------------
 REM Phase 1: Check Java
 REM -------------------------------------------------------------------
 java -version >nul 2>&1

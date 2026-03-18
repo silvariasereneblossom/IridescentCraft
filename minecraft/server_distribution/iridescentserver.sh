@@ -62,6 +62,52 @@ echo -e "${CYAN}==========================================${NC}"
 echo ""
 
 # -------------------------------------------------------------------
+# Phase 0: Download server files from GitHub if not present
+# -------------------------------------------------------------------
+if [ ! -d "$SCRIPT_DIR/config" ]; then
+    echo "[SETUP] Server files not found — downloading from GitHub..."
+    echo ""
+
+    DOWNLOADER=""
+    if command -v curl &> /dev/null; then DOWNLOADER="curl"
+    elif command -v wget &> /dev/null; then DOWNLOADER="wget"
+    else echo "ERROR: Neither curl nor wget found."; exit 1; fi
+
+    ZIP_FILE="/tmp/IridescentCraft-server.zip"
+    EXTRACT_DIR="/tmp/IridescentCraft-server-extract"
+
+    echo "  Downloading repository..."
+    if [ "$DOWNLOADER" = "curl" ]; then
+        curl -L -s -o "$ZIP_FILE" "https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip"
+    else
+        wget -q -O "$ZIP_FILE" "https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip"
+    fi
+
+    echo "  Extracting server distribution..."
+    rm -rf "$EXTRACT_DIR"
+    unzip -q "$ZIP_FILE" -d "$EXTRACT_DIR"
+    SRC=$(find "$EXTRACT_DIR" -maxdepth 1 -type d | tail -1)/minecraft/server_distribution
+
+    echo "  Copying server files..."
+    for item in "$SRC"/*; do
+        base=$(basename "$item")
+        [ "$base" = "iridescentserver.bat" ] && continue
+        [ "$base" = "iridescentserver.sh" ] && continue
+        cp -r "$item" "$SCRIPT_DIR/"
+    done
+
+    rm -f "$ZIP_FILE"
+    rm -rf "$EXTRACT_DIR"
+
+    if [ ! -d "$SCRIPT_DIR/config" ]; then
+        echo "ERROR: Failed to download server files."
+        exit 1
+    fi
+    echo -e "  ${GREEN}Done.${NC}"
+    echo ""
+fi
+
+# -------------------------------------------------------------------
 # Phase 1: Check Java
 # -------------------------------------------------------------------
 if ! command -v java &> /dev/null; then
