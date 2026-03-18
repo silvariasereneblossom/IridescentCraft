@@ -186,6 +186,9 @@ if exist "%~dp0config" (
     xcopy /s /e /y /q "%~dp0global_packs" "%INSTANCE_DIR%\.minecraft\global_packs\" >nul 2>&1
     echo   Copying mod metadata and custom jars...
     xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\mods\" >nul 2>&1
+    REM Also copy custom JARs into .minecraft/mods so Forge loads them
+    echo   Copying custom mod JARs to game folder...
+    copy /y "%~dp0mods\*.jar" "%INSTANCE_DIR%\.minecraft\mods\" >nul 2>&1
 ) else (
     echo   No local distribution folder found — downloading from GitHub...
     powershell -Command ^
@@ -220,12 +223,83 @@ if not exist "%INSTANCES_DIR%\instgroups.json" (
 )
 
 echo.
-echo   [OK] Instance created. PrismLauncher will download mods on first launch.
+echo   [OK] Instance created.
 echo.
+
+REM -------------------------------------------------------------------
+REM Phase 3: Download mods from .pw.toml metadata
+REM -------------------------------------------------------------------
+set "INDEX_DIR=%INSTANCE_DIR%\mods\.index"
+set "MODS_DIR=%INSTANCE_DIR%\.minecraft\mods"
+mkdir "%MODS_DIR%" 2>nul
+
+if exist "%INDEX_DIR%" (
+    echo [MODS] Downloading mods from metadata...
+    echo.
+    powershell -ExecutionPolicy Bypass -Command ^
+      "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+      "$indexDir = '%INDEX_DIR%';" ^
+      "$modsDir = '%MODS_DIR%';" ^
+      "$tomlFiles = Get-ChildItem \"$indexDir\*.pw.toml\";" ^
+      "$total = $tomlFiles.Count;" ^
+      "Write-Host \"  Found $total mod metadata files.\";" ^
+      "$downloaded = 0; $skipped = 0; $failed = 0; $count = 0;" ^
+      "foreach ($toml in $tomlFiles) {" ^
+      "  $count++;" ^
+      "  $content = Get-Content $toml.FullName;" ^
+      "  $filename = ''; $side = 'both'; $mode = ''; $url = ''; $projectId = ''; $fileId = '';" ^
+      "  foreach ($line in $content) {" ^
+      "    $line = $line.Trim();" ^
+      "    if ($line -match \"^filename\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $filename = $matches[1] }" ^
+      "    if ($line -match \"^side\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $side = $matches[1] }" ^
+      "    if ($line -match \"^mode\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $mode = $matches[1] }" ^
+      "    if ($line -match \"^url\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $url = $matches[1] }" ^
+      "    if ($line -match '^project-id\s*=\s*(\d+)') { $projectId = $matches[1] }" ^
+      "    if ($line -match '^file-id\s*=\s*(\d+)') { $fileId = $matches[1] }" ^
+      "  };" ^
+      "  if (-not $filename) { continue };" ^
+      "  if ($side -eq 'server') { $skipped++; continue };" ^
+      "  $modPath = Join-Path $modsDir $filename;" ^
+      "  if (Test-Path -LiteralPath $modPath) { $skipped++; continue };" ^
+      "  $dlUrl = '';" ^
+      "  if ($mode -eq 'url' -and $url) { $dlUrl = $url }" ^
+      "  elseif ($mode -eq 'metadata:curseforge' -and $projectId -and $fileId) {" ^
+      "    $dlUrl = \"https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download\"" ^
+      "  };" ^
+      "  if (-not $dlUrl) { $failed++; continue };" ^
+      "  $pct = [math]::Round(($count / $total) * 100);" ^
+      "  Write-Host \"  [$pct%%] $filename\" -NoNewline;" ^
+      "  try {" ^
+      "    $tempFile = Join-Path $modsDir \"_temp_$count.jar\";" ^
+      "    Invoke-WebRequest -Uri $dlUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing;" ^
+      "    if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {" ^
+      "      [System.IO.File]::Move((Resolve-Path $tempFile).Path, $modPath);" ^
+      "      Write-Host ' OK' -ForegroundColor Green;" ^
+      "      $downloaded++;" ^
+      "    } else {" ^
+      "      if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
+      "      Write-Host ' FAILED' -ForegroundColor Red;" ^
+      "      $failed++;" ^
+      "    }" ^
+      "  } catch {" ^
+      "    if (Test-Path (Join-Path $modsDir \"_temp_$count.jar\")) { Remove-Item (Join-Path $modsDir \"_temp_$count.jar\") -Force };" ^
+      "    Write-Host ' FAILED' -ForegroundColor Red;" ^
+      "    $failed++;" ^
+      "  }" ^
+      "};" ^
+      "Write-Host '';" ^
+      "Write-Host \"  Downloaded: $downloaded\" -ForegroundColor Green;" ^
+      "Write-Host \"  Skipped: $skipped\" -ForegroundColor Cyan;" ^
+      "if ($failed -gt 0) { Write-Host \"  Failed: $failed\" -ForegroundColor Red }"
+    echo.
+    echo   Mod download complete. Press Enter to continue...
+    pause >nul
+    echo.
+)
 
 :launch
 REM -------------------------------------------------------------------
-REM Phase 3: Launch PrismLauncher
+REM Phase 4: Launch PrismLauncher
 REM -------------------------------------------------------------------
 echo [LAUNCH] Starting PrismLauncher...
 echo.
@@ -233,7 +307,7 @@ echo   NOTE: If this is your first time:
 echo     1. Add your account (Accounts section in Settings)
 echo        - Microsoft, Ely.by, or offline accounts supported
 echo     2. Select "IridescentCraft" from the instance list
-echo     3. Click "Launch" — mods will download automatically
+echo     3. Click "Launch"
 echo     4. First launch takes 5-15 minutes with 420+ mods
 echo.
 
