@@ -36,6 +36,7 @@ for %%P in (
     "%ProgramFiles%\PrismLauncher\prismlauncher.exe"
     "%ProgramFiles(x86)%\PrismLauncher\prismlauncher.exe"
     "%~dp0PrismLauncher\prismlauncher.exe"
+    "%LocalAppData%\PrismLauncher\prismlauncher.exe"
 ) do (
     if exist "%%~P" (
         set "PRISM_EXE=%%~P"
@@ -54,10 +55,38 @@ if not defined PRISM_EXE (
     )
 )
 
+REM Search common user folders as last resort
+if not defined PRISM_EXE (
+    for /f "delims=" %%F in ('powershell -Command "Get-ChildItem -Path $env:LOCALAPPDATA,$env:APPDATA,$env:USERPROFILE -Filter 'prismlauncher.exe' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName" 2^>nul') do (
+        set "PRISM_EXE=%%F"
+        for %%D in ("%%~dpF.") do set "PRISM_DIR=%%~fD\"
+    )
+)
+
 if defined PRISM_EXE (
     echo [OK] PrismLauncher found: %PRISM_EXE%
     echo.
     goto :setup_instance
+)
+
+REM Ask user to locate it manually
+echo   PrismLauncher not found in standard locations.
+echo   If you already have it installed, enter the path to prismlauncher.exe
+echo   or press Enter to download a fresh portable copy.
+echo.
+set /p "USER_PRISM=  Path (or Enter to download): "
+if defined USER_PRISM (
+    if exist "!USER_PRISM!" (
+        set "PRISM_EXE=!USER_PRISM!"
+        for %%D in ("!USER_PRISM!") do set "PRISM_DIR=%%~dpD"
+        echo [OK] Using: !PRISM_EXE!
+        echo.
+        goto :setup_instance
+    ) else (
+        echo   File not found: !USER_PRISM!
+        echo   Downloading fresh copy instead...
+        echo.
+    )
 )
 
 echo [INSTALL] PrismLauncher not found. Downloading portable version...
