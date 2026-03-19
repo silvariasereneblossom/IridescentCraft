@@ -351,10 +351,11 @@ fi
 # Phase 4: Launch server
 # -------------------------------------------------------------------
 echo ""
-echo -e "${CYAN}==========================================${NC}"
-echo "  Starting server (8-10 GB RAM)"
-echo "  First startup may take 5-15 minutes"
-echo -e "${CYAN}==========================================${NC}"
+echo -e "${TF_BLUE}  ==========================================${NC}"
+echo -e "${TF_PINK}  Welcome to IridescentCraft!${NC}"
+echo -e "${TF_WHITE}  Starting server (8-10 GB RAM)${NC}"
+echo -e "${TF_PINK}  First startup may take 5-15 minutes${NC}"
+echo -e "${TF_BLUE}  ==========================================${NC}"
 echo ""
 
 java \

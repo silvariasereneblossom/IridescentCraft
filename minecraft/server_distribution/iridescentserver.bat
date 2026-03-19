@@ -163,10 +163,16 @@ REM -------------------------------------------------------------------
 REM Phase 4: Launch server
 REM -------------------------------------------------------------------
 echo.
-echo ==========================================
-echo   Starting server (8-10 GB RAM)
-echo   First startup may take 5-15 minutes
-echo ==========================================
+powershell -Command ^
+  "$null = Add-Type -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern IntPtr GetStdHandle(int n);[DllImport(\"kernel32.dll\")]public static extern bool GetConsoleMode(IntPtr h,out uint m);[DllImport(\"kernel32.dll\")]public static extern bool SetConsoleMode(IntPtr h,uint m);' -Name C -Namespace W -PassThru -EA SilentlyContinue;" ^
+  "try{$h=[W.C]::GetStdHandle(-11);$m=0;[W.C]::GetConsoleMode($h,[ref]$m)|Out-Null;[W.C]::SetConsoleMode($h,$m -bor 4)|Out-Null}catch{};" ^
+  "$e=[char]27;" ^
+  "$blue=\"${e}[38;2;91;206;250m\";$pink=\"${e}[38;2;245;169;184m\";$white=\"${e}[38;2;255;255;255m\";$rs=\"${e}[0m\";" ^
+  "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine();" ^
+  "[Console]::Write(\"${pink}  Welcome to IridescentCraft!${rs}\");[Console]::WriteLine();" ^
+  "[Console]::Write(\"${white}  Starting server (8-10 GB RAM)${rs}\");[Console]::WriteLine();" ^
+  "[Console]::Write(\"${pink}  First startup may take 5-15 minutes${rs}\");[Console]::WriteLine();" ^
+  "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine()"
 echo.
 
 java ^
