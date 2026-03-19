@@ -718,20 +718,50 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('artifacts:antidote_vessel').when(c => c.randomChance(0.015)))
 
   // =========================================================================
-  // SECTION 5A3: EARLY MAGIC ACCESS — IRON'S SPELLS IN OVERWORLD CHESTS
+  // SECTION 5A3: IRON'S SPELLS TIERED LOOT
   // =========================================================================
-  // Fae/Archmage players need early access to spellcasting items.
-  // Iron's Spells and Botania are T1 (ungated), but spell books/scrolls
-  // rarely appear in Overworld loot naturally.
-  // Add scrolls (8% chance) and copper spell book (3% chance) to
-  // all Overworld structure chests to support magic-class early game.
+  // Spell books, scrolls, and inks scale by tier to support magic builds
+  // throughout progression. Copper/iron books early, gold/diamond later.
+  // Scrolls in all tiers (random spell appropriate to dimension).
   // =========================================================================
 
+  // T1 (Overworld): Scrolls, copper/iron spell books, common ink
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
     .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.01)))
+    .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.05)))
+
+  // T2 (TF, Aether, Blue Skies): Scrolls, iron/gold spell books, uncommon ink
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('twilightforest:twilight_forest',
+      'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.10)))
+    .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.01)))
+    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.05)))
+
+  // T3 (Nether, Undergarden): Scrolls, gold/diamond spell books, rare ink
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.12)))
+    .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.01)))
+    .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.04)))
+
+  // T4 (End, Deeper Darker, Abyss): Scrolls, diamond/netherite spell books, epic ink
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.15)))
+    .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('irons_spellbooks:netherite_spell_book').when(c => c.randomChance(0.01)))
+    .addLoot(LootEntry.of('irons_spellbooks:epic_ink').when(c => c.randomChance(0.03)))
 
   // =========================================================================
   // SECTION 5B: OVERWORLD STRUCTURE FOOD REDUCTION
@@ -1122,15 +1152,7 @@ LootJS.modifiers(event => {
   // structure chests (not just overworld chests).
   // =========================================================================
 
-  // Boost Iron's Spells materials in ALL structure chests (not just OW)
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .addLoot(
-      LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.06))
-    )
-    .addLoot(
-      LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.03))
-    )
+  // Iron's Spells inks are now tiered in Section 5A3 — no global injection needed
 
   // Ars Nouveau source gems in structure chests
   event
