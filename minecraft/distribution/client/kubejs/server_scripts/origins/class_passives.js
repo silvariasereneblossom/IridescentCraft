@@ -201,6 +201,37 @@ ServerEvents.tick(event => {
     })
   }
 
+  // ── ARCHMAGE — Mana Attunement: tier-scaling magic bonus, every 10 seconds ──
+  // Amplifies magic equipment: T1 +0%, T2 +5%, T3 +10%, T4 +15%
+  // Weak early (glass cannon with no payoff), devastating late (glass nuke)
+  if (tick % 200 === 25) {
+    event.server.players.forEach(player => {
+      if (getClass(player) !== 'archmage') return
+
+      let name = player.username
+      let tier = getPlayerTier(player)
+
+      // T1=0%, T2=5%, T3=10%, T4=15%
+      let magicBonus = Math.max(0, (tier - 1) * 0.05)
+
+      player.server.runCommandSilent(
+        `attribute ${name} minecraft:generic.attack_damage modifier remove icraft:archmage_attunement`
+      )
+
+      if (magicBonus > 0) {
+        // Apply to all magic damage channels
+        try {
+          player.modifyAttribute('puffish_attributes:magic_damage',
+            'icraft_archmage_attunement', magicBonus, 'multiply_base')
+          player.modifyAttribute('irons_spellbooks:spell_power',
+            'icraft_archmage_attunement', magicBonus, 'multiply_base')
+          player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+            'icraft_archmage_attunement', magicBonus, 'multiply_base')
+        } catch (e) {}
+      }
+    })
+  }
+
   // ── VANGUARD — Guardian's Presence: every 3 seconds ──
   // Weakness only affects melee attack damage, so applying it to passive
   // mobs (cows, pigs, etc.) has zero effect. Safe to target all non-player
