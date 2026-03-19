@@ -1,9 +1,6 @@
 // =============================================================================
 // CLASS PASSIVES — KubeJS implementations for origin-described mechanics
 // =============================================================================
-// Each class has passive abilities described in their Origins power JSONs.
-// This script implements the ones that need tick-based logic.
-// =============================================================================
 
 // ── Helper: check class origin ──
 function hasClass(player, className) {
@@ -19,14 +16,12 @@ function hasClass(player, className) {
 
 // Cache class lookups per player (refreshed every 30s)
 let classCache = {}
-let classCacheTick = 0
 
 function getClass(player) {
   return classCache[player.username] || null
 }
 
 function refreshClassCache(server) {
-  classCacheTick = server.tickCount
   let classes = ['berserker', 'samurai', 'battlemage', 'wanderer', 'paladin',
     'vanguard', 'ranger', 'archmage', 'artificer', 'void_summoner']
   server.players.forEach(p => {
@@ -40,17 +35,35 @@ function refreshClassCache(server) {
   })
 }
 
+// ── Helper: detect progression tier from visited dimensions ──
+function getPlayerTier(player) {
+  let data = player.persistentData
+  let tier = data.getInt('icraft_detected_tier') || 1
+  let dim = player.level.dimension.toString()
+
+  // Update tier based on current dimension (only goes up)
+  if (dim.includes('the_end') || dim.includes('otherside') || dim.includes('the_abyss')) {
+    tier = Math.max(tier, 4)
+  } else if (dim.includes('the_nether') || dim.includes('undergarden')) {
+    tier = Math.max(tier, 3)
+  } else if (dim.includes('twilight') || dim.includes('aether') || dim.includes('blue_skies') ||
+             dim.includes('everbright') || dim.includes('everdawn')) {
+    tier = Math.max(tier, 2)
+  }
+
+  data.putInt('icraft_detected_tier', tier)
+  return tier
+}
+
+
 // =============================================================================
 // SAMURAI — Focus (Movement Shield + Vorpal Scaling)
 // =============================================================================
-// Movement builds absorption up to 10% max HP.
-// When shield breaks (absorption hits 0), 10s cooldown before regen.
-// Vorpal I-V based on total attack damage:
-//   10-20 = I, 21-40 = II, 41-60 = III, 61-80 = IV, 81+ = V
+// Movement builds a shield tracked in persistentData (NOT absorption).
+// Shield displayed as absorption but managed carefully to avoid conflicts.
+// If shield HP depletes, 10s cooldown before it can rebuild.
+// Vorpal I-V via Strength effect, scaling with progression tier.
 // =============================================================================
-
-let samuraiLastPos = {}
-let samuraiShieldCD = {}  // tick when cooldown expires
 
 ServerEvents.tick(event => {
   let tick = event.server.tickCount
@@ -66,6 +79,14 @@ ServerEvents.tick(event => {
       let name = player.username
       let data = player.persistentData
 
+      // -- Vorpal: Strength based on progression tier --
+      let tier = getPlayerTier(player)
+      // T1 = Strength I (amp 0), T2 = II, T3 = III, T4 = IV, beyond = V
+      let vorpalAmp = Math.min(tier - 1, 4)
+      player.server.runCommandSilent(
+        `effect give ${name} minecraft:strength 3 ${vorpalAmp} true`
+      )
+
       // -- Movement Shield --
       let lastX = data.getDouble('icraft_focus_x') || player.x
       let lastZ = data.getDouble('icraft_focus_z') || player.z
@@ -78,77 +99,39 @@ ServerEvents.tick(event => {
 
       // Check cooldown
       let cdExpires = data.getLong('icraft_focus_cd') || 0
-      if (tick < cdExpires) return  // Shield on cooldown
+      if (tick < cdExpires) return  // Shield on cooldown, don't touch anything
 
-      // Check if shield just broke (absorption was > 0 last tick, now 0)
-      let hadShield = data.getBoolean('icraft_focus_active')
+      let shieldHP = data.getDouble('icraft_focus_shield') || 0
+      let maxShield = player.maxHealth * 0.10
+
+      // Detect shield damage: if current absorption < our shield, damage was taken
       let currentAbsorption = player.absorptionAmount || 0
+      if (shieldHP > 0 && currentAbsorption < shieldHP) {
+        // Shield took damage (or golden apple wore off — but if our shield was
+        // lower than a golden apple's absorption, this won't trigger)
+        shieldHP = Math.max(0, currentAbsorption)
+        data.putDouble('icraft_focus_shield', shieldHP)
 
-      if (hadShield && currentAbsorption <= 0.1) {
-        // Shield broke — start 10s cooldown
-        data.putLong('icraft_focus_cd', tick + 200)
-        data.putBoolean('icraft_focus_active', false)
-        player.tell('\u00a7e[Focus]\u00a77 Shield shattered. Recharging...')
-        return
-      }
-
-      // Build shield from movement (1 block moved = 0.5 absorption, capped at 10% max HP)
-      if (dist > 0.1) {
-        let maxShield = player.maxHealth * 0.10
-        let shieldGain = Math.min(dist * 0.5, maxShield - currentAbsorption)
-        if (shieldGain > 0) {
-          let newAbsorption = Math.min(currentAbsorption + shieldGain, maxShield)
-          player.absorptionAmount = newAbsorption
-          data.putBoolean('icraft_focus_active', true)
+        if (shieldHP <= 0) {
+          // Shield broke — start 10s cooldown
+          data.putLong('icraft_focus_cd', tick + 200)
+          data.putDouble('icraft_focus_shield', 0)
+          player.tell('\u00a7e[Focus]\u00a77 Shield shattered. Recharging...')
+          return
         }
       }
 
-      // -- Vorpal Scaling --
-      // Apply Strength effect based on attack damage tier
-      // We read attack damage via attribute command workaround
-      // Since we can't read attributes directly, use known base + modifiers
-      // Base player ATK: 1.0 + weapon damage
-      // Approximate from held item
-      let atkDmg = data.getDouble('icraft_focus_atk') || 0
+      // Build shield from movement
+      if (dist > 0.1 && shieldHP < maxShield) {
+        let gain = Math.min(dist * 0.5, maxShield - shieldHP)
+        shieldHP = Math.min(shieldHP + gain, maxShield)
+        data.putDouble('icraft_focus_shield', shieldHP)
 
-      // Update ATK estimate every 5 seconds
-      if (tick % 100 === 0) {
-        // Use Strength levels as Vorpal proxy
-        // Check player's approximate total damage via health/armor heuristic
-        // Simpler: just scale with max health as a progression proxy
-        // Actually simplest: use the scoreboard if available, or weapon tier
-        let held = player.mainHandItem
-        let weaponDmg = 1  // fist
-        if (held && held.id !== 'minecraft:air') {
-          // Rough weapon damage tiers
-          let id = held.id
-          if (id.includes('netherite')) weaponDmg = 10
-          else if (id.includes('diamond')) weaponDmg = 8
-          else if (id.includes('iron') || id.includes('gold')) weaponDmg = 6
-          else if (id.includes('stone')) weaponDmg = 5
-          else if (id.includes('wood')) weaponDmg = 4
-          else weaponDmg = 7  // modded weapons default
+        // Only set absorption if our shield > current absorption
+        // This prevents overwriting golden apple / totem absorption
+        if (shieldHP > currentAbsorption) {
+          player.absorptionAmount = shieldHP
         }
-        // Add class bonus (15% from Brutal Strikes equivalent)
-        // Add race bonuses etc — just estimate total
-        let totalEstimate = weaponDmg * 1.2  // rough with bonuses
-        data.putDouble('icraft_focus_atk', totalEstimate)
-        atkDmg = totalEstimate
-      }
-
-      // Vorpal tiers: Strength effect as proxy
-      // 10-20 total ATK = Strength I, 21-40 = II, etc.
-      let vorpalLevel = 0
-      if (atkDmg >= 81) vorpalLevel = 4      // Vorpal V (Strength V)
-      else if (atkDmg >= 61) vorpalLevel = 3  // Vorpal IV
-      else if (atkDmg >= 41) vorpalLevel = 2  // Vorpal III
-      else if (atkDmg >= 21) vorpalLevel = 1  // Vorpal II
-      else if (atkDmg >= 10) vorpalLevel = 0  // Vorpal I
-
-      if (atkDmg >= 10) {
-        player.server.runCommandSilent(
-          `effect give ${name} minecraft:strength 3 ${vorpalLevel} true`
-        )
       }
     })
   }
@@ -162,7 +145,7 @@ ServerEvents.tick(event => {
       let data = player.persistentData
       let currentDim = player.level.dimension.toString()
 
-      // Track visited dimensions as a comma-separated string
+      // Track visited dimensions
       let visited = data.getString('icraft_wanderer_dims') || ''
       let dimList = visited ? visited.split(',') : []
 
@@ -177,8 +160,8 @@ ServerEvents.tick(event => {
       // Apply bonuses based on dimension count
       let count = dimList.length
       if (count > 0) {
-        let speedBonus = count * 0.025  // 2.5% per dimension
-        let xpBonus = count * 0.05      // 5% per dimension
+        let speedBonus = count * 0.025
+        let xpBonus = count * 0.05
 
         player.server.runCommandSilent(
           `attribute ${name} minecraft:generic.movement_speed modifier remove icraft:wanderer_travel_speed`
@@ -187,7 +170,6 @@ ServerEvents.tick(event => {
           `attribute ${name} minecraft:generic.movement_speed modifier add icraft:wanderer_travel_speed ${speedBonus} multiply_base`
         )
 
-        // XP bonus via puffish if available
         try {
           player.modifyAttribute('puffish_attributes:experience',
             'icraft_wanderer_travel_xp', xpBonus, 'multiply_base')
@@ -212,7 +194,7 @@ ServerEvents.tick(event => {
         if (ally.username === player.username) return
         let dx = ally.x - px, dy = ally.y - py, dz = ally.z - pz
         let distSq = dx * dx + dy * dy + dz * dz
-        if (distSq <= 64 && ally.health < ally.maxHealth) {  // 8 blocks = 64 sq
+        if (distSq <= 64 && ally.health < ally.maxHealth) {
           ally.heal(0.5)
         }
       })
@@ -220,94 +202,28 @@ ServerEvents.tick(event => {
   }
 
   // ── VANGUARD — Guardian's Presence: every 3 seconds ──
+  // Weakness only affects melee attack damage, so applying it to passive
+  // mobs (cows, pigs, etc.) has zero effect. Safe to target all non-player
+  // living entities within range.
   if (tick % 60 === 15) {
     event.server.players.forEach(player => {
       if (getClass(player) !== 'vanguard') return
 
-      // Apply Weakness I to hostile mobs within 5 blocks
       player.server.runCommandSilent(
-        `execute at ${player.username} run effect give @e[distance=..5,type=!player,nbt={Health:1.0f}] minecraft:weakness 5 0 true`
+        `execute at ${player.username} run effect give @e[distance=..5,type=!player,type=!item,type=!experience_orb,type=!arrow,type=!area_effect_cloud] minecraft:weakness 5 0 true`
       )
-      // More reliable: target all living entities that aren't players
-      player.server.runCommandSilent(
-        `execute at ${player.username} run effect give @e[distance=..5,type=#minecraft:raiders] minecraft:weakness 5 0 true`
-      )
-      player.server.runCommandSilent(
-        `execute at ${player.username} run effect give @e[distance=..5,predicate=icraft:is_hostile] minecraft:weakness 5 0 true`
-      )
-      // Fallback: just target common hostile mobs
-      let hostiles = ['zombie', 'skeleton', 'spider', 'creeper', 'enderman',
-        'witch', 'pillager', 'vindicator', 'ravager', 'blaze', 'wither_skeleton',
-        'piglin_brute', 'hoglin', 'zoglin', 'phantom', 'drowned', 'husk', 'stray']
-      hostiles.forEach(mob => {
-        player.server.runCommandSilent(
-          `execute at ${player.username} run effect give @e[distance=..5,type=minecraft:${mob}] minecraft:weakness 5 0 true`
-        )
-      })
     })
   }
-
-  // ── ARCHMAGE — Mana Attunement: every 5 seconds ──
-  if (tick % 100 === 20) {
-    event.server.players.forEach(player => {
-      if (getClass(player) !== 'archmage') return
-
-      let name = player.username
-
-      // Melee penalty: -25% melee damage (always on)
-      player.server.runCommandSilent(
-        `attribute ${name} minecraft:generic.attack_damage modifier remove icraft:archmage_melee_penalty`
-      )
-      player.server.runCommandSilent(
-        `attribute ${name} minecraft:generic.attack_damage modifier add icraft:archmage_melee_penalty -0.25 multiply_base`
-      )
-
-      // Low-mana damage bonus: up to +15% when mana is low
-      // We can't read Iron's Spells mana directly from KubeJS.
-      // Proxy: check if player has been casting recently (no Mana Regen effect
-      // means mana is probably low). Alternative: use food level as a
-      // rough proxy — low food = been active = probably low mana.
-      // Simplest approach: scale with missing health (low HP = desperate = bonus)
-      // Actually, use absorption as inverse proxy — less absorption = more casting
-      // Best approach: just apply a flat +8% magic bonus here (half the max)
-      // and let the combat flow handle the rest. The description says "up to 15%"
-      // so we can implement it as a health-scaling bonus.
-      let healthPct = player.health / player.maxHealth
-      let manaBonus = 0
-      if (healthPct < 0.8) {
-        // Scale from 0% at 80% HP to 15% at 20% HP
-        manaBonus = Math.min(0.15, (0.8 - healthPct) * 0.25)
-      }
-
-      player.server.runCommandSilent(
-        `attribute ${name} minecraft:generic.attack_damage modifier remove icraft:archmage_desperation`
-      )
-      if (manaBonus > 0) {
-        // Apply to both melee and magic (spell_power)
-        player.server.runCommandSilent(
-          `attribute ${name} minecraft:generic.attack_damage modifier add icraft:archmage_desperation ${manaBonus} multiply_base`
-        )
-        try {
-          player.modifyAttribute('irons_spellbooks:spell_power',
-            'icraft_archmage_desperation', manaBonus, 'multiply_base')
-          player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
-            'icraft_archmage_desperation', manaBonus, 'multiply_base')
-        } catch (e) {}
-      }
-    })
-  }
-
-  // ── VOID SUMMONER — Soul Tether: XP boost on nearby mob deaths ──
-  // Handled via EntityEvents.death below
 })
 
-// Void Summoner: bonus XP from nearby mob deaths
+// =============================================================================
+// VOID SUMMONER — Soul Tether (lifesteal + bonus XP from nearby deaths)
+// =============================================================================
+
 EntityEvents.death(event => {
   let entity = event.entity
-  if (entity.player) return  // Not player deaths
+  if (entity.player) return
 
-  let source = event.source
-  // Check if any Void Summoner is within 16 blocks
   let server = entity.server
   if (!server) return
 
@@ -320,33 +236,30 @@ EntityEvents.death(event => {
     let distSq = dx * dx + dy * dy + dz * dz
 
     if (distSq <= 256) {  // 16 blocks
-      // 10% bonus XP: give 1-3 XP orbs
-      let baseXP = 3  // rough average mob XP
-      let bonus = Math.max(1, Math.floor(baseXP * 0.10))
+      // 10% bonus XP
+      let bonus = Math.max(1, Math.floor(3 * 0.10))
       player.giveExperiencePoints(bonus)
 
-      // Soul Tether lifesteal: heal 5% of mob's max HP
+      // 5% lifesteal from mob max HP, capped at 2 HP
       try {
         let mobMaxHP = entity.maxHealth || 20
-        let healAmount = mobMaxHP * 0.05
-        if (healAmount > 0 && player.health < player.maxHealth) {
-          player.heal(Math.min(healAmount, 2))  // Cap at 2 HP per proc
+        let heal = Math.min(mobMaxHP * 0.05, 2)
+        if (heal > 0 && player.health < player.maxHealth) {
+          player.heal(heal)
         }
       } catch (e) {}
     }
   })
 })
 
-// Refresh bonuses on login
+// Refresh cache on login
 PlayerEvents.loggedIn(event => {
-  // Clear class cache so it refreshes
   delete classCache[event.player.username]
 })
 
 console.log('[IridescentCraft] Class passives loaded')
-console.log('  - Samurai: Focus (movement shield + Vorpal scaling)')
+console.log('  - Samurai: Focus (movement shield + Vorpal by tier)')
 console.log('  - Wanderer: Seasoned Traveler (dimension stacking)')
 console.log('  - Paladin: Healing Aura (AoE regen)')
-console.log('  - Vanguard: Guardian\'s Presence (Weakness to nearby mobs)')
-console.log('  - Archmage: Mana Attunement (-25% melee, +15% desperation bonus)')
+console.log('  - Vanguard: Guardian\'s Presence (Weakness to nearby entities)')
 console.log('  - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)')

@@ -1,5 +1,17 @@
 {
-  "type": "origins:simple",
+  "type": "origins:attribute",
   "name": "Mana Attunement",
-  "description": "Spell kills restore mana. As your mana drains, desperation fuels your power \u2014 up to +15% bonus damage when mana is low. Melee damage reduced by 25%."
+  "description": "Your attunement amplifies all magic by 15% and restores mana on spell kills. Melee damage is reduced by 25%.",
+  "modifiers": [
+    {
+      "attribute": "puffish_attributes:magic_damage",
+      "operation": "multiply_base",
+      "value": 0.15
+    },
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": -0.25
+    }
+  ]
 }
