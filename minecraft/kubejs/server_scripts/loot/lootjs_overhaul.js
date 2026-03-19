@@ -67,28 +67,39 @@ LootJS.modifiers(event => {
     )
     .removeLoot('minecraft:enchanted_book')
 
-  // Re-add enchanted books at 7.5% — T1/T2 dimensions (Overworld, Aether, Blue Skies)
+  // Re-add enchanted books at 7.5% — T1 (Overworld)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld', 'aether:the_aether', 'deep_aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
+    .anyDimension('minecraft:overworld')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
         .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 10, max: 25 }, treasure: true })
         .when(c => c.randomChance(0.075))
     )
 
-  // Re-add enchanted books at 10% — T2/T3 dimensions (Nether, TF, Undergarden)
+  // Re-add enchanted books at 10% — T2 (TF, Aether, Blue Skies)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'twilightforest:twilight_forest', 'undergarden:undergarden')
+    .anyDimension('twilightforest:twilight_forest',
+      'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 20, max: 30 }, treasure: true })
+        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 15, max: 30 }, treasure: true })
         .when(c => c.randomChance(0.10))
     )
 
-  // Re-add enchanted books at 15% — T3/T4 dimensions (End, Deeper Darker, Abyss)
+  // Re-add enchanted books at 12.5% — T3 (Nether, Undergarden)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    .addLoot(
+      LootEntry.of('minecraft:enchanted_book')
+        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 20, max: 30 }, treasure: true })
+        .when(c => c.randomChance(0.125))
+    )
+
+  // Re-add enchanted books at 15% — T4 (End, Deeper Darker, Abyss)
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
@@ -107,28 +118,28 @@ LootJS.modifiers(event => {
       LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.05))
     )
 
-  // T2 (Nether, TF, Blue Skies, Aether): Apprentice spell book (5%)
+  // T2 (TF, Aether, Blue Skies): Apprentice spell book (5%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'twilightforest:twilight_forest',
-      'blue_skies:everbright', 'blue_skies:everdawn',
-      'aether:the_aether', 'deep_aether:the_aether')
+    .anyDimension('twilightforest:twilight_forest',
+      'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.05))
     )
 
-  // T3 (Undergarden, Deeper Darker, Abyss): Archmage spell book (3%)
+  // T3 (Nether, Undergarden): Archmage spell book (3%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
     .addLoot(
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.03))
     )
 
-  // T4 (End): Archmage spell book (5%) — rewarding endgame exploration
+  // T4 (End, Deeper Darker, Abyss): Archmage spell book (5%)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end')
+    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
     )
