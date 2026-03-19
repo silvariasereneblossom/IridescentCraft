@@ -1,27 +1,27 @@
 @echo off
 REM IridescentCraft Client Installer (Windows)
-REM One-click: downloads PrismLauncher if needed, sets up instance, launches
+REM One-click: finds/downloads PrismLauncher, sets up instance, downloads mods
 REM
 REM Requirements:
 REM   - Windows 10/11 (64-bit)
-REM   - Java 17 (PrismLauncher will prompt if missing)
+REM   - Java 17+ (PrismLauncher will prompt if missing)
 REM   - Minecraft account (Microsoft, Ely.by, or offline)
 
 title IridescentCraft Client Installer
 setlocal enabledelayedexpansion
+cd /d "%~dp0"
 
 echo.
 powershell -Command ^
-  "$r='Red';$o='DarkYellow';$y='Yellow';$g='Green';$c='Cyan';$b='Blue';$m='Magenta';" ^
-  "$colors=@($r,$o,$y,$g,$c,$b,$m);" ^
-  "Write-Host '  ==========================================' -ForegroundColor Cyan;" ^
-  "$text='  IridescentCraft Client Installer';" ^
-  "for($i=0;$i -lt $text.Length;$i++){Write-Host $text[$i] -NoNewline -ForegroundColor $colors[$i %% $colors.Length]};" ^
-  "Write-Host '';" ^
-  "$text='  Forge 1.20.1-47.4.6  ~420 mods';" ^
-  "for($i=0;$i -lt $text.Length;$i++){Write-Host $text[$i] -NoNewline -ForegroundColor $colors[$i %% $colors.Length]};" ^
-  "Write-Host '';" ^
-  "Write-Host '  ==========================================' -ForegroundColor Cyan"
+  "Add-Type -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern bool SetConsoleMode(IntPtr h,int m);[DllImport(\"kernel32.dll\")]public static extern IntPtr GetStdHandle(int h);' -Name W -Namespace C;" ^
+  "$h=[C.W]::GetStdHandle(-11);[C.W]::SetConsoleMode($h,7)|Out-Null;" ^
+  "$B=\"`e[38;2;91;206;250m\";$P=\"`e[38;2;245;169;184m\";$W=\"`e[38;2;255;255;255m\";$R=\"`e[0m\";" ^
+  "[Console]::Write(\"${B}  ==========================================`n\");" ^
+  "[Console]::Write(\"${P}  IridescentCraft Client Installer`n\");" ^
+  "[Console]::Write(\"${W}  Forge 1.20.1-47.4.6  ~420 mods`n\");" ^
+  "[Console]::Write(\"${P}  Iridescent Edition`n\");" ^
+  "[Console]::Write(\"${B}  ==========================================`n\");" ^
+  "[Console]::Write(\"${R}\")"
 echo.
 
 REM -------------------------------------------------------------------
@@ -85,7 +85,6 @@ if defined USER_PRISM (
 echo [INSTALL] Downloading PrismLauncher...
 echo.
 
-REM Download and extract to %AppData%\PrismLauncher (standard location)
 set "PRISM_INSTALL=%AppData%\PrismLauncher"
 set "PRISM_ZIP=%TEMP%\PrismLauncher-Portable.zip"
 
@@ -115,7 +114,6 @@ echo   Extracting to %PRISM_INSTALL%...
 powershell -Command "Expand-Archive -Path '%PRISM_ZIP%' -DestinationPath '%PRISM_INSTALL%' -Force"
 del "%PRISM_ZIP%" 2>nul
 
-REM Find prismlauncher.exe (ZIP may have a subfolder)
 for /f "delims=" %%F in ('powershell -Command "Get-ChildItem -Path '%PRISM_INSTALL%' -Filter 'prismlauncher.exe' -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName"') do (
     set "PRISM_EXE=%%F"
 )
@@ -131,66 +129,61 @@ echo.
 
 :setup_instance
 REM -------------------------------------------------------------------
-REM Phase 2: Set up instance in %AppData%\PrismLauncher\instances
+REM Phase 2: Set up instance
 REM -------------------------------------------------------------------
-REM PrismLauncher defaults to %AppData%\PrismLauncher for data.
-REM Always create the instance there — works for installed and portable.
+REM PrismLauncher OneSix layout:
+REM   instances/IridescentCraft/
+REM     instance.cfg          <- PrismLauncher metadata
+REM     mmc-pack.json         <- component list (MC + Forge versions)
+REM     .minecraft/           <- actual game directory
+REM       mods/               <- Forge loads mods from here
+REM       config/
+REM       kubejs/
+REM       global_packs/
 REM -------------------------------------------------------------------
+
 echo [SETUP] Preparing IridescentCraft instance...
 echo.
 
 set "INSTANCES_DIR=%AppData%\PrismLauncher\instances"
-mkdir "%INSTANCES_DIR%" 2>nul
-
 set "INSTANCE_DIR=%INSTANCES_DIR%\IridescentCraft"
+set "MC_DIR=%INSTANCE_DIR%\.minecraft"
 
-echo   Instances folder: %INSTANCES_DIR%
-
-REM Check if instance already exists
-if exist "%INSTANCE_DIR%\instance.cfg" (
-    echo   Instance already exists. Skipping setup.
-    echo.
-    goto :launch
-)
-
-REM Create instance
-echo   Creating instance...
+mkdir "%INSTANCES_DIR%" 2>nul
 mkdir "%INSTANCE_DIR%" 2>nul
-mkdir "%INSTANCE_DIR%\.minecraft" 2>nul
+mkdir "%MC_DIR%" 2>nul
+mkdir "%MC_DIR%\mods" 2>nul
 
-REM Download instance metadata from GitHub
-set "REPO_RAW=https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/distribution/client"
+REM Always sync configs/scripts/datapacks (supports updates on re-run)
+echo   Syncing game files...
 
-echo   Downloading instance.cfg...
-powershell -Command "Invoke-WebRequest -Uri '%REPO_RAW%/instance.cfg' -OutFile '%INSTANCE_DIR%\instance.cfg' -UseBasicParsing"
-echo   Downloading mmc-pack.json...
-powershell -Command "Invoke-WebRequest -Uri '%REPO_RAW%/mmc-pack.json' -OutFile '%INSTANCE_DIR%\mmc-pack.json' -UseBasicParsing"
-
-if not exist "%INSTANCE_DIR%\instance.cfg" (
-    echo   ERROR: Failed to download instance.cfg
-    pause
-    exit /b 1
-)
-
-REM Copy game files from local distribution if available, otherwise download
-REM NOTE: mods/ goes at instance root (PrismLauncher manages .index there)
-REM       configs/kubejs/global_packs go inside .minecraft
 if exist "%~dp0config" (
-    echo   Copying configs...
-    xcopy /s /e /y /q "%~dp0config" "%INSTANCE_DIR%\.minecraft\config\" >nul 2>&1
-    echo   Copying default configs...
-    xcopy /s /e /y /q "%~dp0defaultconfigs" "%INSTANCE_DIR%\.minecraft\defaultconfigs\" >nul 2>&1
-    echo   Copying KubeJS scripts...
-    xcopy /s /e /y /q "%~dp0kubejs" "%INSTANCE_DIR%\.minecraft\kubejs\" >nul 2>&1
-    echo   Copying datapacks...
-    xcopy /s /e /y /q "%~dp0global_packs" "%INSTANCE_DIR%\.minecraft\global_packs\" >nul 2>&1
-    echo   Copying mod metadata and custom jars...
-    xcopy /s /e /y /q "%~dp0mods" "%INSTANCE_DIR%\mods\" >nul 2>&1
-    REM Also copy custom JARs into .minecraft/mods so Forge loads them
-    echo   Copying custom mod JARs to game folder...
-    copy /y "%~dp0mods\*.jar" "%INSTANCE_DIR%\.minecraft\mods\" >nul 2>&1
+    REM Local distribution available — copy from here
+    xcopy /s /e /y /q "%~dp0config" "%MC_DIR%\config\" >nul 2>&1
+    echo     config... OK
+    if exist "%~dp0defaultconfigs" (
+        xcopy /s /e /y /q "%~dp0defaultconfigs" "%MC_DIR%\defaultconfigs\" >nul 2>&1
+        echo     defaultconfigs... OK
+    )
+    xcopy /s /e /y /q "%~dp0kubejs" "%MC_DIR%\kubejs\" >nul 2>&1
+    echo     kubejs... OK
+    xcopy /s /e /y /q "%~dp0global_packs" "%MC_DIR%\global_packs\" >nul 2>&1
+    echo     global_packs... OK
+
+    REM Copy custom mod JARs (coremods, compat patches — NOT downloaded mods)
+    if exist "%~dp0mods\*.jar" (
+        copy /y "%~dp0mods\*.jar" "%MC_DIR%\mods\" >nul 2>&1
+        echo     custom JARs... OK
+    )
+
+    REM Copy mod index for download phase
+    if exist "%~dp0mods\.index" (
+        mkdir "%MC_DIR%\mods\.index" 2>nul
+        xcopy /s /e /y /q "%~dp0mods\.index" "%MC_DIR%\mods\.index\" >nul 2>&1
+        echo     mod index... OK
+    )
 ) else (
-    echo   No local distribution folder found — downloading from GitHub...
+    echo   No local distribution — downloading from GitHub...
     powershell -Command ^
       "try {" ^
       "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
@@ -203,99 +196,144 @@ if exist "%~dp0config" (
       "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
       "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
       "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\distribution\client';" ^
-      "  $mcDest = '%INSTANCE_DIR%\.minecraft';" ^
-      "  $instDest = '%INSTANCE_DIR%';" ^
+      "  $mc = '%MC_DIR%';" ^
       "  Write-Host '  Copying game files...';" ^
-      "  if (Test-Path \"$src\config\") { Copy-Item \"$src\config\" \"$mcDest\config\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\defaultconfigs\") { Copy-Item \"$src\defaultconfigs\" \"$mcDest\defaultconfigs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\kubejs\") { Copy-Item \"$src\kubejs\" \"$mcDest\kubejs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\global_packs\") { Copy-Item \"$src\global_packs\" \"$mcDest\global_packs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\mods\") { Copy-Item \"$src\mods\" \"$instDest\mods\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\config\") { Copy-Item \"$src\config\" \"$mc\config\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\defaultconfigs\") { Copy-Item \"$src\defaultconfigs\" \"$mc\defaultconfigs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\kubejs\") { Copy-Item \"$src\kubejs\" \"$mc\kubejs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\global_packs\") { Copy-Item \"$src\global_packs\" \"$mc\global_packs\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\mods\.index\") { New-Item -ItemType Directory -Path \"$mc\mods\.index\" -Force | Out-Null; Copy-Item \"$src\mods\.index\*\" \"$mc\mods\.index\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\mods\*.jar\") { Copy-Item \"$src\mods\*.jar\" \"$mc\mods\" -Force };" ^
       "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
       "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
       "  Write-Host '  Done.';" ^
       "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
 )
 
-REM Ensure instgroups.json exists
+REM Write instance.cfg and mmc-pack.json (always overwrite for updates)
+echo   Writing instance metadata...
+(
+echo [General]
+echo ConfigVersion=1.3
+echo InstanceType=OneSix
+echo MCLaunchMethod=LauncherPart
+echo OverrideMemory=true
+echo MaxMemAlloc=10240
+echo MinMemAlloc=4096
+echo iconKey=default
+echo name=IridescentCraft
+) > "%INSTANCE_DIR%\instance.cfg"
+
+(
+echo {
+echo     "components": [
+echo         {
+echo             "cachedName": "Minecraft",
+echo             "cachedVersion": "1.20.1",
+echo             "important": true,
+echo             "uid": "net.minecraft",
+echo             "version": "1.20.1"
+echo         },
+echo         {
+echo             "cachedName": "Forge",
+echo             "cachedVersion": "47.4.6",
+echo             "uid": "net.minecraftforge",
+echo             "version": "47.4.6"
+echo         }
+echo     ],
+echo     "formatVersion": 1
+echo }
+) > "%INSTANCE_DIR%\mmc-pack.json"
+
+REM Ensure instgroups.json exists (PrismLauncher needs this)
 if not exist "%INSTANCES_DIR%\instgroups.json" (
-    echo {"formatVersion":1,"groups":{}} > "%INSTANCES_DIR%\instgroups.json"
+    powershell -Command "'{\"formatVersion\":1,\"groups\":{}}' | Set-Content -Path '%INSTANCES_DIR%\instgroups.json' -Encoding UTF8"
 )
 
 echo.
-echo   [OK] Instance created.
+echo   [OK] Instance ready.
 echo.
 
 REM -------------------------------------------------------------------
 REM Phase 3: Download mods from .pw.toml metadata
 REM -------------------------------------------------------------------
-set "INDEX_DIR=%INSTANCE_DIR%\mods\.index"
-set "MODS_DIR=%INSTANCE_DIR%\.minecraft\mods"
-mkdir "%MODS_DIR%" 2>nul
+set "INDEX_DIR=%MC_DIR%\mods\.index"
+set "MODS_DIR=%MC_DIR%\mods"
 
-if exist "%INDEX_DIR%" (
-    echo [MODS] Downloading mods from metadata...
+if not exist "%INDEX_DIR%" (
+    echo [WARN] No mod index found. Mods must be downloaded manually.
     echo.
-    powershell -ExecutionPolicy Bypass -Command ^
-      "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-      "$indexDir = '%INDEX_DIR%';" ^
-      "$modsDir = '%MODS_DIR%';" ^
-      "$tomlFiles = Get-ChildItem \"$indexDir\*.pw.toml\";" ^
-      "$total = $tomlFiles.Count;" ^
-      "Write-Host \"  Found $total mod metadata files.\";" ^
-      "$downloaded = 0; $skipped = 0; $failed = 0; $count = 0;" ^
-      "foreach ($toml in $tomlFiles) {" ^
-      "  $count++;" ^
-      "  $content = Get-Content $toml.FullName;" ^
-      "  $filename = ''; $side = 'both'; $mode = ''; $url = ''; $projectId = ''; $fileId = '';" ^
-      "  foreach ($line in $content) {" ^
-      "    $line = $line.Trim();" ^
-      "    if ($line -match \"^filename\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $filename = $matches[1] }" ^
-      "    if ($line -match \"^side\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $side = $matches[1] }" ^
-      "    if ($line -match \"^mode\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $mode = $matches[1] }" ^
-      "    if ($line -match \"^url\s*=\s*['\"]\"\"(.+)['\"]\"\"\" ) { $url = $matches[1] }" ^
-      "    if ($line -match '^project-id\s*=\s*(\d+)') { $projectId = $matches[1] }" ^
-      "    if ($line -match '^file-id\s*=\s*(\d+)') { $fileId = $matches[1] }" ^
-      "  };" ^
-      "  if (-not $filename) { continue };" ^
-      "  if ($side -eq 'server') { $skipped++; continue };" ^
-      "  $modPath = Join-Path $modsDir $filename;" ^
-      "  if (Test-Path -LiteralPath $modPath) { $skipped++; continue };" ^
-      "  $dlUrl = '';" ^
-      "  if ($mode -eq 'url' -and $url) { $dlUrl = $url }" ^
-      "  elseif ($mode -eq 'metadata:curseforge' -and $projectId -and $fileId) {" ^
-      "    $dlUrl = \"https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download\"" ^
-      "  };" ^
-      "  if (-not $dlUrl) { $failed++; continue };" ^
-      "  $pct = [math]::Round(($count / $total) * 100);" ^
-      "  Write-Host \"  [$pct%%] $filename\" -NoNewline;" ^
-      "  try {" ^
-      "    $tempFile = Join-Path $modsDir \"_temp_$count.jar\";" ^
-      "    Invoke-WebRequest -Uri $dlUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing;" ^
-      "    if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {" ^
-      "      [System.IO.File]::Move((Resolve-Path $tempFile).Path, $modPath);" ^
-      "      Write-Host ' OK' -ForegroundColor Green;" ^
-      "      $downloaded++;" ^
-      "    } else {" ^
-      "      if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
-      "      Write-Host ' FAILED' -ForegroundColor Red;" ^
-      "      $failed++;" ^
-      "    }" ^
-      "  } catch {" ^
-      "    if (Test-Path (Join-Path $modsDir \"_temp_$count.jar\")) { Remove-Item (Join-Path $modsDir \"_temp_$count.jar\") -Force };" ^
-      "    Write-Host ' FAILED' -ForegroundColor Red;" ^
-      "    $failed++;" ^
-      "  }" ^
-      "};" ^
-      "Write-Host '';" ^
-      "Write-Host \"  Downloaded: $downloaded\" -ForegroundColor Green;" ^
-      "Write-Host \"  Skipped: $skipped\" -ForegroundColor Cyan;" ^
-      "if ($failed -gt 0) { Write-Host \"  Failed: $failed\" -ForegroundColor Red }"
-    echo.
-    echo   Mod download complete. Press Enter to continue...
-    pause >nul
-    echo.
+    goto :launch
 )
+
+echo [MODS] Checking mods...
+echo.
+
+powershell -ExecutionPolicy Bypass -Command ^
+  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+  "$indexDir = '%INDEX_DIR%';" ^
+  "$modsDir = '%MODS_DIR%';" ^
+  "$tomlFiles = Get-ChildItem \"$indexDir\*.pw.toml\";" ^
+  "$total = $tomlFiles.Count;" ^
+  "Write-Host \"  Found $total mod metadata files.\";" ^
+  "Write-Host '';" ^
+  "$downloaded = 0; $skipped = 0; $failed = 0; $count = 0;" ^
+  "foreach ($toml in $tomlFiles) {" ^
+  "  $count++;" ^
+  "  $content = Get-Content $toml.FullName;" ^
+  "  $filename = ''; $side = 'both'; $mode = ''; $url = ''; $projectId = ''; $fileId = '';" ^
+  "  foreach ($line in $content) {" ^
+  "    $line = $line.Trim();" ^
+  "    if ($line -match '^filename\s*=\s*[''\""](.+)[''\""]') { $filename = $matches[1] }" ^
+  "    if ($line -match '^side\s*=\s*[''\""](.+)[''\""]') { $side = $matches[1] }" ^
+  "    if ($line -match '^mode\s*=\s*[''\""](.+)[''\""]') { $mode = $matches[1] }" ^
+  "    if ($line -match '^url\s*=\s*[''\""](.+)[''\""]') { $url = $matches[1] }" ^
+  "    if ($line -match '^project-id\s*=\s*(\d+)') { $projectId = $matches[1] }" ^
+  "    if ($line -match '^file-id\s*=\s*(\d+)') { $fileId = $matches[1] }" ^
+  "  };" ^
+  "  if (-not $filename) { continue };" ^
+  "  if ($side -eq 'server') { $skipped++; continue };" ^
+  "  $modPath = Join-Path $modsDir $filename;" ^
+  "  if (Test-Path -LiteralPath $modPath) { $skipped++; continue };" ^
+  "  $dlUrl = '';" ^
+  "  if ($mode -eq 'url' -and $url) {" ^
+  "    $dlUrl = $url" ^
+  "  } elseif ($mode -eq 'metadata:curseforge' -and $fileId) {" ^
+  "    $idStr = $fileId.ToString();" ^
+  "    $part1 = $idStr.Substring(0, 4);" ^
+  "    $part2 = $idStr.Substring(4).TrimStart('0');" ^
+  "    if (-not $part2) { $part2 = '0' };" ^
+  "    $dlUrl = \"https://edge.forgecdn.net/files/$part1/$part2/$filename\"" ^
+  "  };" ^
+  "  if (-not $dlUrl) { $failed++; continue };" ^
+  "  $pct = [math]::Round(($count / $total) * 100);" ^
+  "  Write-Host \"  [$pct%%] $filename\" -NoNewline;" ^
+  "  try {" ^
+  "    $tempFile = Join-Path $modsDir \"_dl_$count.tmp\";" ^
+  "    Invoke-WebRequest -Uri $dlUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing;" ^
+  "    if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {" ^
+  "      Move-Item -LiteralPath $tempFile -Destination $modPath -Force;" ^
+  "      Write-Host ' OK' -ForegroundColor Green;" ^
+  "      $downloaded++;" ^
+  "    } else {" ^
+  "      if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
+  "      Write-Host ' SMALL/EMPTY' -ForegroundColor Red;" ^
+  "      $failed++;" ^
+  "    }" ^
+  "  } catch {" ^
+  "    if (Test-Path (Join-Path $modsDir \"_dl_$count.tmp\")) { Remove-Item (Join-Path $modsDir \"_dl_$count.tmp\") -Force };" ^
+  "    Write-Host ' FAILED' -ForegroundColor Red;" ^
+  "    $failed++;" ^
+  "  }" ^
+  "};" ^
+  "Write-Host '';" ^
+  "Write-Host \"  Downloaded: $downloaded\" -ForegroundColor Green;" ^
+  "Write-Host \"  Already present: $skipped\" -ForegroundColor Cyan;" ^
+  "if ($failed -gt 0) { Write-Host \"  Failed: $failed (re-run to retry)\" -ForegroundColor Red }"
+
+echo.
+echo   Mod sync complete.
+echo.
 
 :launch
 REM -------------------------------------------------------------------
@@ -308,10 +346,10 @@ echo     1. Add your account (Accounts section in Settings)
 echo        - Microsoft, Ely.by, or offline accounts supported
 echo     2. Select "IridescentCraft" from the instance list
 echo     3. Click "Launch"
-echo     4. First launch takes 5-15 minutes with 420+ mods
+echo     4. First launch takes 5-15 minutes (Forge downloads + 420 mods load)
 echo.
 
-start "PrismLauncher" "%PRISM_EXE%"
+start "" "%PRISM_EXE%"
 
 echo PrismLauncher launched. You can close this window.
 echo.
