@@ -133,13 +133,39 @@ LootJS.modifiers(event => {
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
     )
 
-  // --- Compass of Return — 5% in surface dimension chests (T1 rare find) ---
+  // --- Compass of Return — 2.5% in cave/structure chests only (T1 rare find) ---
+  // Overworld: only dungeons, mineshafts, temples, buried treasure, mod structures
+  // Excludes villages and other surface/settlement chests
+  event
+    .addLootTableModifier(
+      'minecraft:chests/simple_dungeon',
+      'minecraft:chests/abandoned_mineshaft',
+      'minecraft:chests/desert_pyramid',
+      'minecraft:chests/jungle_temple',
+      'minecraft:chests/stronghold_corridor',
+      'minecraft:chests/stronghold_crossing',
+      'minecraft:chests/stronghold_library',
+      'minecraft:chests/buried_treasure',
+      'minecraft:chests/underwater_ruin_big',
+      'minecraft:chests/underwater_ruin_small',
+      /dungeoncrawl:.*chests.*/,
+      /explorify:.*chests.*/,
+      /structory:.*chests.*/,
+      /dungeons_plus:.*/,
+      /whendungeonsarise:.*/,
+      /valhelsia_structures:.*chests.*/,
+      /repurposed_structures:.*chests.*/
+    )
+    .addLoot(
+      LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.025))
+    )
+  // Aether + Blue Skies: all chests are structures, so dimension filter is fine
   event
     .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld', 'aether:the_aether', 'deep_aether:the_aether',
+    .anyDimension('aether:the_aether', 'deep_aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
-      LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.05))
+      LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.025))
     )
 
   // =========================================================================
