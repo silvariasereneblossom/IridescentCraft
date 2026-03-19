@@ -266,7 +266,17 @@ if not exist "%INDEX_DIR%" (
     goto :launch
 )
 
-echo [MODS] Checking mods...
+REM Quick check: if 400+ jars already present, skip download phase
+set "JAR_COUNT=0"
+for /f %%A in ('powershell -Command "(Get-ChildItem '%MODS_DIR%\*.jar' -ErrorAction SilentlyContinue).Count"') do set "JAR_COUNT=%%A"
+if %JAR_COUNT% GEQ 400 (
+    echo [MODS] %JAR_COUNT% mods already present. Skipping download.
+    echo   To force re-download, delete mods folder and re-run.
+    echo.
+    goto :launch
+)
+
+echo [MODS] Found %JAR_COUNT% mods, checking for missing...
 echo.
 
 powershell -ExecutionPolicy Bypass -Command ^

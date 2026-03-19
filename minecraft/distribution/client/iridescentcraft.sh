@@ -248,7 +248,15 @@ if [ ! -d "$INDEX_DIR" ]; then
     echo -e "  ${YELLOW}[WARN]${RESET} No mod index found. Mods must be downloaded manually."
     echo ""
 else
-    echo "  [MODS] Checking mods..."
+    # Quick check: if 400+ jars already present, skip download
+    JAR_COUNT=$(ls "$MODS_DIR"/*.jar 2>/dev/null | wc -l)
+    if [ "$JAR_COUNT" -ge 400 ]; then
+        echo -e "  [MODS] ${GREEN}$JAR_COUNT mods already present. Skipping download.${RESET}"
+        echo "  To force re-download, delete mods folder and re-run."
+        echo ""
+    else
+
+    echo "  [MODS] Found $JAR_COUNT mods, checking for missing..."
     echo ""
 
     TOTAL=$(ls "$INDEX_DIR"/*.pw.toml 2>/dev/null | wc -l)
@@ -337,6 +345,8 @@ else
     echo -e "  ${GREEN}Downloaded: $DOWNLOADED${RESET}"
     echo -e "  ${CYAN}Already present: $SKIPPED${RESET}"
     [ "$FAILED" -gt 0 ] && echo -e "  ${RED}Failed: $FAILED (re-run to retry)${RESET}"
+
+    fi  # end of JAR_COUNT < 400 check
 fi
 
 echo ""
