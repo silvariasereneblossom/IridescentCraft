@@ -204,3 +204,24 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ### HDPE/Rubber Pipeline (2026-03-17)
 - **Resolved:** HDPE Circuit Board recipe added. Alternative Mekanism machine recipes. IF latex/rubber rework (logs→latex via Create/Thermal, HDPE→dry rubber).
+
+### Paxi Datapacks Not Loading on Dedicated Server (2026-03-19)
+- **Resolved:** Paxi Forge 4.0 loads from `config/paxi/datapacks/`, not `global_packs/required_data/` on dedicated servers. All 17 datapacks moved. Added `cd /d %~dp0` to bat for correct working directory.
+
+### Cherry Village Removed (2026-03-19)
+- **Resolved:** Removed due to unregistered worldgen feature crash. Added to force-skip + strip lists.
+
+### Gods & Heroes RPG Classes Removed (2026-03-19)
+- **Resolved:** `.pw.toml` still present, installer re-downloaded the mod every run. Injected broken class origins (hunter, warrior) into Origins class layer. Deleted metadata, added to force-skip + strip lists.
+
+### Origin Layer Order Missing (2026-03-19)
+- **Resolved:** Added `order` (0, 1, 2), `enabled: true`, `name`, and `gui_title` to all three origin layer JSONs. All three prompts confirmed working on dedicated server.
+
+### Custom Content Missing Translations (2026-03-19)
+- **Resolved:** Added 185+ translation entries: 72 KubeJS items, 29 enchantments, 440 Apotheosis affix key variations, Gender layer. All synced to server and client distributions.
+
+### Enchanted Book Loot Rebalance (2026-03-19)
+- **Resolved:** Enchanted books no longer globally removed. Scaled by dimension difficulty (7.5% OW → 15% End). Ars Nouveau spell books added by tier.
+
+### Loot Table Overhaul (2026-03-19)
+- **Resolved:** Village smith chests get 20% artifact chance. Ocean structures heavily oceanic-themed. Towers of the Wild get artifact drops. Village affix gear limited to white/green. Magic materials boosted in structure chests.

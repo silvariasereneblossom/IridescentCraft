@@ -4,6 +4,58 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-19 — Alpha distribution, dedicated server fixes, loot rebalance
+
+### Server Distribution
+- `iridescentserver.bat`: Added `cd /d %~dp0` to fix working directory issues
+- Paxi Forge 4.0 loads datapacks from `config/paxi/datapacks/`, NOT `global_packs/required_data/` on dedicated servers. All 17 datapacks synced there.
+- Phase 0 standalone download checks both `config/` and `global_packs/`
+- Mod download only runs on first install (fewer than 50 JARs)
+- `.gitignore` exceptions added for `config/paxi/datapacks/*.zip`
+- `max-tick-time=-1` for modded server stability
+- `online-mode=false` for alpha testing (production copy preserved)
+
+### Client Distribution
+- `iridescentcraft.bat`: downloads PrismLauncher, creates instance, downloads mods
+- Instance uses `%AppData%\PrismLauncher` (no portable mode)
+- `instance.cfg` has `ManagedPack=true` with `[General]` header
+- Mods go at instance root `mods/`, configs in `.minecraft/`
+
+### Mod Removals
+- Cherry Village removed (unregistered worldgen feature crash). Added to strip/skip lists.
+- Gods & Heroes RPG Classes `.pw.toml` removed (was being re-downloaded, injecting broken class origins)
+
+### Origin Layers Fix
+- Added `order` field (0, 1, 2) and `enabled: true` to all three layer JSONs
+- Added `name` and `gui_title` to Origin layer override
+- All three prompts (Origin → Race → Class) confirmed working on dedicated server
+
+### Translations (185+ entries)
+- 72 custom KubeJS item translations (tokens, boss materials, alloys, rings, endgame, MekaSuit Mk2, planetary elements)
+- 29 custom enchantment translations (icraft namespace)
+- 440 Apotheosis affix translations covering all key formats (.suf/.suffix/.pre/.prefix/bare)
+- Gender layer translation (server-only mod needs client lang)
+
+### Loot Rebalance
+- Enchanted books: no longer globally removed. Scaled by dimension (7.5% OW → 15% End) with tier-appropriate enchant levels.
+- Ars Nouveau spell books: Novice (OW 5%), Apprentice (T2 5%), Archmage (T3 3%, End 5%)
+- Village smith chests: 20% artifact chance (8 starter artifacts at 2.5% each)
+- Ocean structures: heavily oceanic-themed (snorkel/flippers 15%, fishing rods, heart of the sea)
+- Towers of the Wild: ~12% per artifact type
+- Village affix gear: epic+ rarity stripped, white/green only
+- Magic materials: Iron's Spells inks and Ars source gems boosted in structure chests
+
+### Datapacks
+- 17 datapacks synced to `config/paxi/datapacks/` across all distributions
+- Added: Towers of the Wild, ScalingHealth NoCrystalDrops, Infinity Ham Blocker, fix_stone_tags, keepinventory, BOP biome weights (cherry blossom 8x boost)
+
+### KubeJS Optimization Audit
+- 17 tick-based scripts audited — all properly gated with interval checks
+- `codex_delivery.js` and `skill_effects.js` identified as most active but efficiently structured
+- `AStageEvents.added` in milestone_detection.js flagged as potential issue (listed as unavailable in wiki)
+
+---
+
 ## 2026-03-17 (session 2) — Server distribution testing, mod removals, bug fixes
 
 ### Mod Removals

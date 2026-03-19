@@ -122,6 +122,8 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Connected Glass | Depends on SuperMartijn642 libs (removed) | 2026-03-17 |
 | Trash Cans | Depends on SuperMartijn642 libs (removed) | 2026-03-17 |
 | Pretty Rain | Cloth Config incompatibility | 2026-03-17 |
+| Cherry Village | Unregistered worldgen feature crash | 2026-03-19 |
+| Gods & Heroes RPG Classes | Conflicts with icraft class layer, broken origin translations | 2026-03-19 |
 
 ## Related Pages
 
