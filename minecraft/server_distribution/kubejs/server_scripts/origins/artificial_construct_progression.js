@@ -54,9 +54,9 @@ ItemEvents.rightClicked(event => {
         `playsound minecraft:entity.iron_golem.repair player ${player.username} ~ ~ ~ 0.5 1.2`
       )
 
-      // Iron accelerates natural healing by 400% (Regeneration II for 10s)
+      // Iron accelerates natural healing by 400% (Regeneration III for 10s)
       player.server.runCommandSilent(
-        `effect give ${player.username} minecraft:regeneration 10 1 true`
+        `effect give ${player.username} minecraft:regeneration 10 2 true`
       )
 
       // Track iron consumed
@@ -80,9 +80,9 @@ ItemEvents.rightClicked(event => {
         `playsound minecraft:entity.iron_golem.repair player ${player.username} ~ ~ ~ 0.8 0.8`
       )
 
-      // Iron accelerates natural healing by 400% (Regeneration II for 10s)
+      // Iron accelerates natural healing by 400% (Regeneration III for 10s)
       player.server.runCommandSilent(
-        `effect give ${player.username} minecraft:regeneration 10 1 true`
+        `effect give ${player.username} minecraft:regeneration 10 2 true`
       )
 
       let data = player.persistentData
@@ -164,6 +164,6 @@ PlayerEvents.loggedIn(event => {
 console.log('[IridescentCraft] Artificial Construct progression loaded')
 console.log('  - 25% food efficiency from normal food')
 console.log('  - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)')
-console.log('  - Iron eating grants Regen II for 10s (400% healing acceleration)')
+console.log('  - Iron eating grants Regen III for 10s (400% healing acceleration)')
 console.log('  - Iron upgrade ladder: 1000/2000/4000/8000/16000')
 console.log('  - +5% HP/melee/reduction/toughness per level (max +25%)')
