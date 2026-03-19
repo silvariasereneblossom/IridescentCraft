@@ -12,5 +12,5 @@
   "order": 1,
   "impact": 2,
   "name": "Berserker",
-  "description": "Sustained melee damage dealer. -5% HP, +10% armor effectiveness. Axes deal +15% damage (bows/magic deal less). Below 40% HP: +20% melee damage. Sustained combat grants +5% damage dealt and -5% taken."
+  "description": "A whirlwind of steel and fury. Berserkers wield axes with devastating force, dealing 15% bonus damage at the cost of ranged and magical finesse. The closer they are to death, the harder they hit \u2014 and sustained combat only sharpens their edge."
 }

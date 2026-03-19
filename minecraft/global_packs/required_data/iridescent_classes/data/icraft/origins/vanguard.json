@@ -12,5 +12,5 @@
   "order": 6,
   "impact": 3,
   "name": "Vanguard",
-  "description": "The immovable object. +20% HP, +6 armor, +3 toughness, +40% knockback resistance. -15% all damage dealt. Nearby enemies deal less damage to allies."
+  "description": "The immovable object. Vanguards absorb punishment that would fell any other class, with massive health, armor, and knockback resistance. Their presence alone weakens nearby enemies. The trade-off: they deal 15% less damage, letting their allies handle the killing."
 }

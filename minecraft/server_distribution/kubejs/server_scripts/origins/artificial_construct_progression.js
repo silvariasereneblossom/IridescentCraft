@@ -3,6 +3,7 @@
 // =============================================================================
 // Food: Can eat normally but at 25% efficiency (biofuel conversion)
 // Iron eating: Iron Ingots (0.5 food), Iron Blocks (4.5 food / 9 ingots)
+// Iron healing: Eating iron grants Regeneration II for 10s (400% healing acceleration)
 // Iron upgrades: every threshold grants +5% HP, melee, reduction, toughness
 //   Thresholds: 1000 → 2000 → 4000 → 8000 → 16000 (5 levels, max +25% each)
 //   Iron Blocks count as 9 ingots
@@ -53,6 +54,11 @@ ItemEvents.rightClicked(event => {
         `playsound minecraft:entity.iron_golem.repair player ${player.username} ~ ~ ~ 0.5 1.2`
       )
 
+      // Iron accelerates natural healing by 400% (Regeneration II for 10s)
+      player.server.runCommandSilent(
+        `effect give ${player.username} minecraft:regeneration 10 1 true`
+      )
+
       // Track iron consumed
       let data = player.persistentData
       let totalIron = data.getInt('icraft_construct_iron') || 0
@@ -72,6 +78,11 @@ ItemEvents.rightClicked(event => {
       player.saturation = Math.min(20, player.saturation + 4.5)
       player.server.runCommandSilent(
         `playsound minecraft:entity.iron_golem.repair player ${player.username} ~ ~ ~ 0.8 0.8`
+      )
+
+      // Iron accelerates natural healing by 400% (Regeneration II for 10s)
+      player.server.runCommandSilent(
+        `effect give ${player.username} minecraft:regeneration 10 1 true`
       )
 
       let data = player.persistentData
@@ -153,5 +164,6 @@ PlayerEvents.loggedIn(event => {
 console.log('[IridescentCraft] Artificial Construct progression loaded')
 console.log('  - 25% food efficiency from normal food')
 console.log('  - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)')
+console.log('  - Iron eating grants Regen II for 10s (400% healing acceleration)')
 console.log('  - Iron upgrade ladder: 1000/2000/4000/8000/16000')
 console.log('  - +5% HP/melee/reduction/toughness per level (max +25%)')
