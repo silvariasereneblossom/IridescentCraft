@@ -49,6 +49,8 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Needs Testing
 
+- [ ] Witch of Ink progression system — origin detection via NBT, boss counter scaling (damage/reduction/toughness), Blessing of Penthesilea capstone trigger
+- [ ] Artificial Construct iron eating — ItemEvents.rightClicked for iron ingot/block consumption, iron upgrade ladder tracking (1000→16000 thresholds, +5% per level)
 - [ ] AStages API method signatures — inferred from docs, looking good per user testing
 - [ ] Simply Swords unique weapon IDs — 6 Abyss weapons unverified
 - [ ] Origins `action_on_callback` syntax for glass cannon auto-tagging

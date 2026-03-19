@@ -6,8 +6,8 @@ Four layered character systems define player builds, with the first three presen
 
 | System | Layer | Role | When Active |
 |--------|-------|------|-------------|
-| Origins (vanilla) | Origin | Flavor powers — unique abilities and tradeoffs (9 origins, no Human) | Character creation prompt 1 |
-| Origins (icraft) | Race | 7 custom races — stat modifiers and thematic flavor | Character creation prompt 2 |
+| Origins (vanilla + icraft) | Origin | Flavor powers — unique abilities and tradeoffs (11 origins, no Human) | Character creation prompt 1 |
+| Origins (icraft) | Race | 11 custom races — stat modifiers and thematic flavor | Character creation prompt 2 |
 | Iridescent Classes (icraft) | Class | 10 combat roles — playstyle, HP tier, glass cannon | Character creation prompt 3 |
 | Pufferfish's Skills (+ AStages bridge) | — | Skill Points — stat investment trees | Earned through progression |
 | JustLevelingFork | — | Passive stat scaling via XP leveling | Always active |
@@ -15,8 +15,8 @@ Four layered character systems define player builds, with the first three presen
 ## Three-Prompt Character Creation
 
 On first join, players choose in order:
-1. **Origin** (9 vanilla origins, no Human) — Flavor powers (e.g., Arachnid wall climbing, Blazeborn fire immunity, Merling underwater breathing)
-2. **Race** (7 custom) — IridescentCraft race with stat bonuses/penalties (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant)
+1. **Origin** (11 origins, no Human) — Flavor powers (e.g., Arachnid wall climbing, Blazeborn fire immunity, Merling underwater breathing, Witch of Ink paint magic, Artificial Construct iron eating)
+2. **Race** (11 custom) — IridescentCraft race with stat bonuses/penalties (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin)
 3. **Class** (10 custom) — Combat role (Berserker, Samurai, Battlemage, etc.)
 
 Origins layer provides flavor powers, Race layer provides stat bonuses/penalties, and Class layer provides combat role. The vanilla `origins:human` has been removed to avoid overlap with the custom Human race.
@@ -74,9 +74,9 @@ All 22 scoreboard objectives are now functional (updated 2026-03-15):
 
 ## Race System
 
-7 custom races implemented as an Origins layer in the `icraft` namespace. Races provide stat modifiers and thematic identity, separate from the Origins++ origin selection.
+11 custom races implemented as an Origins layer in the `icraft` namespace. Races provide stat modifiers and thematic identity, separate from the origin selection.
 
-### Race Details (updated 2026-03-17)
+### Race Details (updated 2026-03-19)
 
 | Race | Bonuses | Penalties |
 |------|---------|-----------|
@@ -87,16 +87,20 @@ All 22 scoreboard objectives are now functional (updated 2026-03-15):
 | Halfling | +20% food efficiency | — |
 | Faefolk | +30% magic damage | -50% armor toughness, -10% HP |
 | Revenant | +20% damage + Resistance I in darkness/Abyss, Night Vision 1.1 | Weakness+slowness in sunlight, -20% healing |
+| Demi-God | +40% HP (8 hearts), 2x raw meat healing, strength ability, phase ability, fire damage 1.5x | Mild Nether weakness |
+| Ryu | 25% damage reduction, slow fall, draconic food healing, sparkles, clears debuffs | Meat preference |
+| Fallen Angel | +15% all damage, slow fall, velocity dash, translucent | -20% HP (4 hearts), meat preference |
+| Kirin | +0.1 movement speed, wall climbing, sprint jump, cat vision, speed boost | -20% HP (4 hearts) |
 
 Notable fixes: Orc knockback double-apply bug fixed. Halfling food efficiency now functional. Revenant healing penalty now functional.
 
 ## Origin System (Overhauled 2026-03-17)
 
-Uses 9 vanilla origins + Mundane (10 total). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional.
+Uses 9 vanilla origins + 2 custom origins + Mundane (11 total, no Human). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional.
 
-**Design philosophy:** No lethal environmental effects. Food preferences, not restrictions. Tradeoffs should be interesting, not punishing.
+**Design philosophy:** No lethal environmental effects. Food preferences, not restrictions. Tradeoffs should be interesting, not punishing. Elytra flight reserved for Elytrian. Each heart = 5% HP.
 
-### Origin Details
+### Origin Details (updated 2026-03-19)
 
 | Origin | Key Powers | Changes from Vanilla |
 |--------|-----------|---------------------|
@@ -110,6 +114,8 @@ Uses 9 vanilla origins + Mundane (10 total). The vanilla `origins:human` has bee
 | Phantom | Phasing, invisibility, half health | Sunlight burn→weakness+slowness |
 | Shulk | Hardened Shell (50% death durability reduction), +20% mining speed | Extra inventory→Hardened Shell |
 | Mundane | No powers | Re-added as blank slate option |
+| Witch of Ink | Paint magic, 50% food reduction, feeds from paintings. Boss counter (200 max) scales damage/reduction/toughness. Blessing of Penthesilea capstone. | New custom origin |
+| Artificial Construct | 25% food efficiency, iron eating (ingots + blocks), iron upgrade ladder (1000→16000 iron, +5% per level, max +25%) | New custom origin |
 
 All power descriptions updated to match new implementations.
 

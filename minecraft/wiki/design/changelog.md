@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-19 — Origins expansion: 4 new races, 2 new origins
+
+### Race Layer Expansion (7 → 11 races)
+- 4 new races added to the icraft Race layer:
+  - **Demi-God:** +40% HP (8 hearts), 2x raw meat healing, strength ability, phase ability, fire damage 1.5x, mild Nether weakness.
+  - **Ryu:** 25% damage reduction, slow fall, draconic food healing, meat preference, sparkles, clears debuffs.
+  - **Fallen Angel:** +15% all damage, -20% HP (4 hearts), slow fall, velocity dash, meat preference, translucent.
+  - **Kirin:** +0.1 movement speed, wall climbing, sprint jump, cat vision, -20% HP (4 hearts), speed boost.
+- Design rules maintained: no lethal effects, food preferences not restrictions, each heart = 5% HP.
+
+### Origin Layer Expansion (9+Mundane → 11 total)
+- 2 new custom origins added:
+  - **Witch of Ink:** Paint magic, 50% food reduction, feeds from paintings. Boss counter (200 max) scales damage/reduction/toughness progressively. Blessing of Penthesilea capstone ability.
+  - **Artificial Construct:** 25% food efficiency, iron eating (ingots + blocks). Iron upgrade ladder progression: 1000→16000 iron consumed, +5% per level, max +25% bonus.
+- Elytra flight remains reserved for Elytrian origin only.
+
+---
+
 ## 2026-03-19 — Alpha distribution, dedicated server fixes, loot rebalance
 
 ### Server Distribution

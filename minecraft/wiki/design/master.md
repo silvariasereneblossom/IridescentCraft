@@ -371,8 +371,8 @@ Four layered systems, with the first three presented as sequential character cre
 
 | System | Role | When Active |
 |--------|------|-------------|
-| Origins++ (Origin layer) | Origin — species-level traits from Origins++ (148 origins with unique abilities, tradeoffs, and playstyle modifiers) | Character creation prompt 1 (Tier 1) |
-| Origins (Race layer, icraft namespace) | Race — 7 custom races (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant) with innate stat modifiers and thematic abilities | Character creation prompt 2 (Tier 1) |
+| Origins++ (Origin layer) | Origin — 11 origins with unique abilities, tradeoffs, and playstyle modifiers (9 vanilla rebalanced + 2 custom + Mundane, no Human) | Character creation prompt 1 (Tier 1) |
+| Origins (Race layer, icraft namespace) | Race — 11 custom races (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin) with innate stat modifiers and thematic abilities | Character creation prompt 2 (Tier 1) |
 | Iridescent Classes (Class layer, icraft namespace) | Class — 10 combat roles (Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner) | Character creation prompt 3 (Tier 1) |
 | Pufferfish’s Skills (+ AStages bridge) | Skill Points — stat investment trees | Earned through progression, spent on upgrades |
 | JustLevelingFork | Provides stat scaling (HP, damage, speed) via leveling | XP curve is flattened but high — ~1000–2000 XP per level |
@@ -382,7 +382,7 @@ JustLevelingFork works alongside Pufferfish’s Skills (different systems — JL
 Three-Prompt Character Creation
 On first join, players see three sequential selection screens:
 1. **Origin** (Origins++ defaults) — Species-level identity with unique abilities and tradeoffs (e.g., Avian gets flight but takes more damage; Blazeborn has fire immunity but water hurts)
-2. **Race** (IridescentCraft custom) — One of 7 races providing stat modifiers and thematic flavor
+2. **Race** (IridescentCraft custom) — One of 11 races providing stat modifiers and thematic flavor
 3. **Class** (IridescentCraft custom) — One of 10 combat roles defining playstyle, HP tier, and glass cannon status
 
 This three-layer approach is intentional — Origin provides broad species fantasy, Race adds stat identity, and Class defines combat role. The separation creates more build diversity than a two-layer system.
@@ -2188,6 +2188,40 @@ Benefits: Slow fall (passive), +15% nature magic effectiveness, flowers/crops gr
 Drawbacks: Iron items deal +10% damage to you, -5% HP (flat, small)
 
 Identity: Magical, nature-attuned, iron-vulnerable. Natural Battlemage/Archmage pairing.
+
+Demi-God
+Benefits: +40% HP (8 hearts), 2x raw meat healing, strength ability, phase ability, fire damage 1.5x
+Drawbacks: Mild Nether weakness
+Identity: Divine-blooded powerhouse. High durability with strong offensive tools. Natural Berserker/Vanguard/Paladin pairing.
+
+Ryu
+Benefits: 25% damage reduction, slow fall, draconic food healing, sparkles, clears debuffs
+Drawbacks: Meat preference
+Identity: Draconic, resilient, debuff-proof. Natural Paladin/Vanguard/Wanderer pairing. Built for sustained survival.
+
+Fallen Angel
+Benefits: +15% all damage, slow fall, velocity dash, translucent
+Drawbacks: -20% HP (4 hearts), meat preference
+Identity: Glass cannon with mobility. High damage output offset by reduced survivability. Natural Ranger/Archmage/Samurai pairing.
+
+Kirin
+Benefits: +0.1 movement speed, wall climbing, sprint jump, cat vision, speed boost
+Drawbacks: -20% HP (4 hearts)
+Identity: Speed and mobility specialist. Highly mobile with vertical traversal. Natural Ranger/Wanderer/Samurai pairing.
+
+Origins — Custom Additions (2 new origins, 11 total)
+
+Design rules: No lethal effects, food preferences not restrictions, elytra flight reserved for Elytrian, each heart = 5% HP.
+
+Witch of Ink
+Powers: Paint magic (unique ability set), 50% food reduction, feeds from paintings.
+Progression: Boss counter tracks kills up to 200 max. Scaling rewards: increased damage, damage reduction, and armor toughness as counter rises. Blessing of Penthesilea capstone ability unlocked at high boss count.
+Identity: Artistic caster with deep progression loop. Gets stronger the more bosses defeated.
+
+Artificial Construct
+Powers: 25% food efficiency, iron eating (consumes iron ingots and iron blocks for sustenance).
+Progression: Iron upgrade ladder — consume iron to progress through levels. Thresholds: 1000→16000 iron consumed. Each level grants +5% bonus, max +25% at final level.
+Identity: Mechanical being that literally eats metal. Rewards dedication to resource gathering with permanent stat bonuses.
 
 Technical Requirements
 
