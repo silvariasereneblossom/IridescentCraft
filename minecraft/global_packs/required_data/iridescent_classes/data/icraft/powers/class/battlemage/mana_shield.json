@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
   "name": "Mana Shield",
-  "description": "When hit while holding a magic item: 15% chance to negate damage. Melee kills restore small amount of mana."
+  "description": "15% base chance to negate incoming damage, scaling with your magic damage bonuses. The more arcane power you wield, the stronger your shield becomes."
 }
