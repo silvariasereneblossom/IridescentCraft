@@ -1,0 +1,11 @@
+#3D6 minecraft:cold_ocean
+#735 biomesoplenty:coniferous_forest
+#6AF biomesoplenty:crag
+#67F biomesoplenty:fir_clearing
+#286 minecraft:grove
+#294 biomesoplenty:jade_cliffs
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#524 minecraft:snowy_slopes
+#51A minecraft:stony_shore
