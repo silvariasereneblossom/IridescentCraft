@@ -309,6 +309,21 @@ StartupEvents.registry('item', event => {
         .color(0, 0x4AEDD9)
 
     // =========================================================================
+    // COMPASS OF RETURN (Magic Mirror — teleport to bed on 10 min CD)
+    // =========================================================================
+
+    event.create('kubejs:compass_of_return')
+        .displayName('Compass of Return')
+        .tooltip('§9Right-click to return to your last bed')
+        .tooltip('§7Cooldown: 10 minutes')
+        .tooltip('§8"The needle always points home."')
+        .maxStackSize(1)
+        .rarity('rare')
+        .glow(true)
+        .textureJson({ layer0: 'minecraft:item/compass' })
+        .color(0, 0x5599FF)
+
+    // =========================================================================
     // DRAGON SUMMONING CRYSTAL (End exploration gate item)
     // =========================================================================
 
