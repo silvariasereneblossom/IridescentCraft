@@ -1,5 +1,12 @@
 {
-  "type": "origins:simple",
+  "type": "origins:attribute",
   "name": "Bushido",
-  "description": "+15% damage against full-HP enemies. Kills within 3 seconds of first strike grant a speed boost."
+  "description": "The way of the blade. +10% attack speed from disciplined swordsmanship.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_speed",
+      "operation": "multiply_base",
+      "value": 0.10
+    }
+  ]
 }

@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
   "name": "Healing Aura",
-  "description": "Nearby allies within 8 blocks slowly regenerate HP (0.5 HP/5s). Paladin regenerates 1 HP/5s when above 50% HP."
+  "description": "Allies within 8 blocks slowly regenerate HP. You regenerate faster when above half health. Your presence is a balm to the wounded."
 }
