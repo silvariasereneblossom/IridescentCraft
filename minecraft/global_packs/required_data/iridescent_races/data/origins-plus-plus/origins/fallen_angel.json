@@ -1,0 +1,26 @@
+{
+  "powers": [
+    "origins:fall_immunity",
+    "origins-plus-plus:fallen-angel/arms",
+    "origins-plus-plus:fallen-angel/bloodthirsty",
+    "origins-plus-plus:fallen-angel/deadshot",
+    "origins-plus-plus:fallen-angel/fire",
+    "origins-plus-plus:fallen-angel/fragile",
+    "origins-plus-plus:fallen-angel/glowing",
+    "origins-plus-plus:fallen-angel/haste",
+    "origins-plus-plus:fallen-angel/immunity",
+    "origins-plus-plus:fallen-angel/roof",
+    "origins-plus-plus:fallen-angel/translucent",
+    "origins-plus-plus:fallen-angel/velocity",
+    "icraft:race/fallen_angel/slow_fall",
+    "icraft:race/fallen_angel/damage_bonus",
+    "icraft:race/fallen_angel/meat_preference"
+  ],
+  "icon": {
+    "item": "minecraft:feather"
+  },
+  "order": 11,
+  "impact": 3,
+  "name": "Fallen Angel",
+  "description": "A celestial being cast from grace. Frail but deadly, dealing 15% bonus damage from all sources. Slow fall replaces true flight, and meat is preferred sustenance. Fire burns deeper."
+}

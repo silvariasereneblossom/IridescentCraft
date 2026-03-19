@@ -1,0 +1,18 @@
+{
+  "type": "origins:modify_food",
+  "item_condition": {
+    "type": "origins:ingredient",
+    "ingredient": { "tag": "origins-plus-plus:raw_meat" },
+    "inverted": true
+  },
+  "food_modifier": {
+    "value": -0.5,
+    "operation": "multiply_total"
+  },
+  "saturation_modifier": {
+    "value": -0.5,
+    "operation": "multiply_total"
+  },
+  "name": "Meat Preference",
+  "description": "Non-meat foods provide 50% less nourishment."
+}

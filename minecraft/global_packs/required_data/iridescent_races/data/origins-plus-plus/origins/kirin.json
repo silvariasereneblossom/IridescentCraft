@@ -1,0 +1,20 @@
+{
+  "powers": [
+    "origins:cat_vision",
+    "origins:fall_immunity",
+    "origins:nine_lives",
+    "origins:sprint_jump",
+    "origins-plus-plus:kirin/climb",
+    "origins-plus-plus:kirin/exhaustion",
+    "origins-plus-plus:kirin/jump_boost",
+    "origins-plus-plus:kirin/modify_player_speed",
+    "origins-plus-plus:kirin/unrivaled_speed"
+  ],
+  "icon": {
+    "item": "minecraft:golden_horse_armor"
+  },
+  "order": 12,
+  "impact": 3,
+  "name": "Kirin",
+  "description": "A mythical beast of lightning speed. Kirin are agile climbers with cat-like vision, but their small frames give them 20% less health. They sprint and leap with unmatched speed."
+}

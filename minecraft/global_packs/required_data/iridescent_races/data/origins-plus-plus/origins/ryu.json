@@ -1,0 +1,25 @@
+{
+  "powers": [
+    "origins:more_exhaustion",
+    "origins-plus-plus:ryu/all_knowing",
+    "origins-plus-plus:ryu/better_odds",
+    "origins-plus-plus:ryu/big_body",
+    "origins-plus-plus:ryu/dark_color",
+    "origins-plus-plus:ryu/friendly_eyes",
+    "origins-plus-plus:ryu/healing_potions",
+    "origins-plus-plus:ryu/natural_protection",
+    "origins-plus-plus:ryu/so_much_weight",
+    "origins-plus-plus:ryu/sparkly",
+    "origins-plus-plus:ryu/winged",
+    "icraft:race/ryu/slow_fall",
+    "icraft:race/ryu/meat_preference",
+    "icraft:race/ryu/food_healing"
+  ],
+  "icon": {
+    "item": "minecraft:dragon_egg"
+  },
+  "order": 10,
+  "impact": 3,
+  "name": "Ryu",
+  "description": "A dragon-blooded being of immense power. Resilient and imposing, Ryu take 25% less damage and heal quickly from food. Non-meat foods provide less nourishment. Healing potions are half as effective."
+}

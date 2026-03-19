@@ -11,7 +11,9 @@
     "origins:shulk",
     "origins:elytrian",
     "origins:feline",
-    "origins:avian"
+    "origins:avian",
+    "origins-plus-plus:witch_of_ink",
+    "origins-plus-plus:artificial_construct"
   ],
   "name": "Origin",
   "gui_title": {

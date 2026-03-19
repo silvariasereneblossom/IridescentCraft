@@ -9,7 +9,11 @@
     "icraft:orc",
     "icraft:halfling",
     "icraft:revenant",
-    "icraft:faefolk"
+    "icraft:faefolk",
+    "origins-plus-plus:demi_god",
+    "origins-plus-plus:ryu",
+    "origins-plus-plus:fallen_angel",
+    "origins-plus-plus:kirin"
   ],
   "name": "Race",
   "gui_title": {

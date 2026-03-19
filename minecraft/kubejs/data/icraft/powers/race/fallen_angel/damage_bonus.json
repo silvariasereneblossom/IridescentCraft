@@ -1,0 +1,9 @@
+{
+  "type": "origins:modify_damage_dealt",
+  "modifier": {
+    "value": 0.15,
+    "operation": "multiply_total"
+  },
+  "name": "Wrath of the Fallen",
+  "description": "Your angelic fury adds 15% damage to all attacks."
+}

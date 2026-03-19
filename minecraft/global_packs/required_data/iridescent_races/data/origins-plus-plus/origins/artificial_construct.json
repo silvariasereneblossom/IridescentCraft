@@ -1,0 +1,17 @@
+{
+  "powers": [
+    "origins-plus-plus:artificial-construct/heal",
+    "origins-plus-plus:artificial-construct/less_fall_damage",
+    "origins-plus-plus:artificial-construct/metal_shell",
+    "origins-plus-plus:artificial-construct/no_food",
+    "origins-plus-plus:artificial-construct/no_hunger",
+    "origins-plus-plus:artificial-construct/reach"
+  ],
+  "icon": {
+    "item": "minecraft:iron_block"
+  },
+  "order": 11,
+  "impact": 3,
+  "name": "Artificial Construct",
+  "description": "A golem-like being of iron and magic. Normal food provides only 25% nourishment, but you can eat iron ingots and blocks directly. Consuming iron strengthens your frame permanently. Extended reach, metal shell armor, and reduced fall damage."
+}
