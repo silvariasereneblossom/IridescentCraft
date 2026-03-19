@@ -66,6 +66,24 @@ The master design document lives at `wiki/design/master.md`. When any design cha
 2. Add an entry to `wiki/design/changelog.md` with date, what changed, and why
 3. Commit the wiki changes along with the implementation
 
+## Development Rules
+
+### Shell Script Testing
+When modifying any `.sh` script, always run `bash -n <script>` on the Linux host to syntax-check before committing. The user does not have a Linux terminal — Claude's host is the only place to validate.
+
+### Trans Flag Color Scheme
+Any 5-line title banner (`===`, title, version, edition, `===`) in scripts MUST use trans flag colors:
+- Line 1 & 5 (`===`): Blue `#5BCEFA` / ANSI `38;2;91;206;250`
+- Line 2 & 4 (title/edition): Pink `#F5A9B8` / ANSI `38;2;245;169;184`
+- Line 3 (version): White `#FFFFFF` / ANSI `38;2;255;255;255`
+
+Windows: `[Console]::Write()` with VT processing enabled via P/Invoke.
+Linux: Standard `\033[38;2;R;G;Bm` ANSI codes.
+PS1 files: No banners — the bat handles display.
+
+### Distribution Sync
+All changes to kubejs, configs, datapacks, or lang files must be synced to all three distributions: main instance, server_distribution, distribution/client.
+
 ## Protocols
 
 | Protocol | Description | File |
