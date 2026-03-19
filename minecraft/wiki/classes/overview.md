@@ -25,16 +25,31 @@ Origins layer provides flavor powers, Race layer provides stat bonuses/penalties
 
 | Class | Role | HP Tier | Equipment HP |
 |-------|------|---------|-------------|
-| Berserker | Melee DPS | Standard | Full |
-| Samurai | Melee/Ranged Hybrid | Standard | Full |
-| Battlemage | Melee/Magic Hybrid | Standard | Full |
-| Wanderer | Hybrid Multiclass | Standard | Full |
-| Paladin | Tank/Support/Healer | High | Full |
-| Vanguard | Pure Tank | Highest | Full |
-| Ranger | Ranged DPS | Low | **Halved** (glass cannon) |
-| Archmage | Offensive Caster | Low | **Halved** (glass cannon) |
+| Berserker | Melee DPS | Standard (-5%) | Full |
+| Samurai | Melee/Ranged Hybrid | Standard (+5%) | Full |
+| Battlemage | Melee/Magic Hybrid | Standard (+5%) | Full |
+| Wanderer | Hybrid Multiclass | Standard (+5%) | Full |
+| Paladin | Tank/Support/Healer | High (+10%) | Full |
+| Vanguard | Pure Tank | Highest (+20%) | Full |
+| Ranger | Ranged DPS | Low (-20%) | **Halved** (glass cannon) |
+| Archmage | Offensive Caster | Low (-20%) | **Halved** (glass cannon) |
 | Artificer | Crafter/Non-Combat | Standard | Full |
-| Void Summoner | Summoner/Necromancer | Low | **Halved** (glass cannon) |
+| Void Summoner | Summoner/Necromancer | Low (-10%) | **Halved** (glass cannon) |
+
+### Class Details (updated 2026-03-19)
+
+| Class | Key Passives | KubeJS Mechanic |
+|-------|-------------|-----------------|
+| Berserker | +15% base melee (Brutal Strikes), +5% ATK/+1 armor (Battle Trance), +10% armor (Thick Skinned), +20% melee below 40% HP (Blood Fury) | — |
+| Samurai | +8% speed, +10% attack speed (Bushido), Focus (movement shield up to 10% HP, Vorpal I-V by tier) | `class_passives.js` |
+| Battlemage | +15% melee/+15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I-III scaling with magic bonuses) | `battlemage_mana_shield.js` |
+| Wanderer | +5% ATK/speed/atkspd (Jack of All Trades), +10% XP (Wanderlust), Seasoned Traveler (+5% XP/+2.5% speed per dimension visited) | `class_passives.js` |
+| Paladin | +3 armor/+1 toughness (Holy Armor), +10% KB resist, Healing Aura (0.5 HP/5s to allies in 8 blocks, 1 HP/5s self above 50%) | `class_passives.js` |
+| Vanguard | +6 armor/+3 toughness (Fortress), +40% KB resist (Immovable), -15% damage (Damage Penalty), Guardian's Presence (Weakness I to mobs in 5 blocks) | `class_passives.js` |
+| Ranger | +15% speed, +10% atkspd, +20% projectile damage, -3 armor | — |
+| Archmage | +50% magic (Arcane Supremacy), -25% melee + tier-scaling magic amp T1:0%→T4:+15% (Mana Attunement), -4 armor/-2 toughness | `class_passives.js` |
+| Artificer | +15% mining, +10% atkspd, +10% ore drops, Speed I near crafting tables | — |
+| Void Summoner | +15% tamed damage (Dark Pact), +10% ATK in dark (Shadow Cloak), Soul Tether (5% lifesteal/10% XP from nearby mob deaths) | `class_passives.js` |
 
 ### Glass Cannon Mechanic
 
@@ -111,11 +126,21 @@ Uses 9 vanilla origins + 2 custom origins + Mundane (11 total, no Human). The va
 | Enderian | Teleport, Ender Shift (+15% damage after teleport) | New Ender Shift power added |
 | Feline | Cat-like abilities, night vision | -20% HP added as tradeoff |
 | Merling | Underwater breathing, aqua affinity | Suffocation→land discomfort after 5 min dry |
-| Phantom | Phasing, invisibility, half health | Sunlight burn→weakness+slowness |
+| Phantom | Phasing, invisibility, half health, **Spectral Undeath** | Sunlight burn→weakness+slowness. Never dies — locks to 0.5 hearts + 5min debuffs instead (`phantom_undeath.js`) |
 | Shulk | Hardened Shell (50% death durability reduction), +20% mining speed | Extra inventory→Hardened Shell |
 | Mundane | No powers | Re-added as blank slate option |
-| Witch of Ink | Paint magic, 50% food reduction, feeds from paintings. Boss counter (200 max) scales damage/reduction/toughness. Blessing of Penthesilea capstone. | New custom origin |
-| Artificial Construct | 25% food efficiency, iron eating (ingots + blocks), iron upgrade ladder (1000→16000 iron, +5% per level, max +25%) | New custom origin |
+| Witch of Ink | Paint magic, 50% food reduction, feeds from paintings. Boss counter (200 max) scales damage/reduction/toughness. Blessing of Penthesilea capstone. | New custom origin. Hyperscaling fantasy — weak early, monster late (`witch_of_ink_progression.js`) |
+| Artificial Construct | 25% food efficiency, iron eating (ingots + blocks + Regen III), iron upgrade ladder (1000→16000 iron, 5/5/5/10/10% per level, max +35%) | New custom origin. Hyperscaling fantasy — back-loaded power curve (`artificial_construct_progression.js`) |
+
+### Custom Items
+
+| Item | Source | Mechanic |
+|------|--------|----------|
+| Compass of Return | 2.5% in cave/structure chests (T1), craftable T2 | Right-click teleports to last bed, 10min CD (`compass_of_return.js`) |
+
+### Magic Damage Sync
+
+`puffish_attributes:magic_damage` is set by Origins powers but not read by magic mods. The magic damage sync in `skill_effects.js` detects Archmage/Battlemage/Faefolk/Elf origins and pushes bonuses to both `ars_nouveau:spell_damage` and `irons_spellbooks:spell_power`.
 
 All power descriptions updated to match new implementations.
 

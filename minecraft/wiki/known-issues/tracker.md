@@ -49,15 +49,23 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Needs Testing
 
-- [ ] Witch of Ink progression system — origin detection via NBT, boss counter scaling (damage/reduction/toughness), Blessing of Penthesilea capstone trigger
-- [ ] Artificial Construct iron eating — ItemEvents.rightClicked for iron ingot/block consumption, iron upgrade ladder tracking (1000→16000 thresholds, +5% per level)
+- [ ] Witch of Ink progression system — origin detection via NBT, boss counter scaling, Blessing of Penthesilea capstone
+- [ ] Artificial Construct iron eating — iron ingot/block consumption, Regen III on eat, 5/5/5/10/10% upgrade ladder
+- [ ] Phantom Undeath — EntityEvents.death cancel on players, Spectral Collapse debuffs
+- [ ] Samurai Focus — movement shield via absorption, Vorpal (Strength) by progression tier
+- [ ] Wanderer Seasoned Traveler — dimension tracking and stacking speed/XP bonuses
+- [ ] Paladin Healing Aura — AoE regen to nearby players
+- [ ] Vanguard Guardian's Presence — Weakness I to nearby mobs via @e selector
+- [ ] Archmage Mana Attunement — tier-scaling magic amplifier (T1:0%→T4:15%)
+- [ ] Void Summoner Soul Tether — lifesteal and XP from nearby mob deaths
+- [ ] Battlemage Mana Shield — Resistance scaling with magic damage bonuses
+- [ ] Magic damage sync — puffish_attributes → ars_nouveau + irons_spellbooks
+- [ ] Compass of Return — bed tracking via BlockEvents.rightClicked, cross-dimension teleport
+- [ ] Client installer — CurseForge CDN downloads, PrismLauncher instance creation
+- [ ] Iron's Spells loot tiering — spell books and inks by dimension tier
 - [ ] AStages API method signatures — inferred from docs, looking good per user testing
 - [ ] Simply Swords unique weapon IDs — 6 Abyss weapons unverified
-- [ ] Origins `action_on_callback` syntax for glass cannon auto-tagging
-- [ ] Iron's Spells attribute names for skill effects
 - [ ] Apotheosis affix JSON schema compatibility (84 JSON affixes deployed, untested)
-- [ ] Custom enchantment registration via Apotheosis
-- [ ] Mob equipment setItemSlot API — fixed, needs in-game verification
 - [ ] Mekanism balance changes — generator nerfs, 2x RF costs, Digital Miner recipe
 - [ ] Food system overhaul — hunger drain 2.5x, seed drops 5%, structure food reduction
 - [ ] Farmer's Delight cooking conversion — 70 recipes

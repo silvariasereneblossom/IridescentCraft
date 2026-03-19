@@ -87,6 +87,15 @@ All changes to kubejs, configs, datapacks, or lang files must be synced to all t
 ### Script Parity (.bat ↔ .sh)
 Every `.bat` script in server_distribution/ and distribution/client/ must have a matching `.sh` with identical logic. When modifying a `.bat`, always update the `.sh` counterpart (and vice versa). Run `bash -n` on the `.sh` to syntax-check.
 
+### Wiki Updates
+After all major changes (new features, balance changes, new items/origins/classes, system reworks), update both:
+1. **Internal wiki** (`wiki/` directory) — relevant overview pages, known-issues tracker, changelog
+2. **Design doc** (`wiki/design/master.md`) — update affected sections when initial design is modified
+3. **Changelog** (`wiki/design/changelog.md`) — dated entry with what changed and why
+
+### Memory Updates
+After significant design changes, update relevant memory files in `/root/.claude/projects/-root/memory/` so future sessions have accurate context.
+
 ## Protocols
 
 | Protocol | Description | File |

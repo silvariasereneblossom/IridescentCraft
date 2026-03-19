@@ -4,6 +4,50 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-19 — Class passives, magic system, balance pass, client installer
+
+### Class Passive Implementations
+All 10 classes now have fully functional passives (previously 6 were description-only):
+- **Berserker:** Battle Trance converted to real +5% ATK/+1 armor attribute. Brutal Strikes changed from axe-conditional to +15% base melee.
+- **Samurai:** Bushido converted to +10% attack speed. Focus reworked: movement builds absorption shield (10% max HP cap), 10s CD on break. Vorpal I-V via Strength scaling with progression tier.
+- **Battlemage:** Reworked to +15% melee/+15% magic. Mana Shield replaced with scaling Resistance (I at base, II with Faefolk, III with Faefolk+affixes).
+- **Wanderer:** Adaptable replaced with Seasoned Traveler (+5% XP/+2.5% speed per new dimension visited, permanent stacking).
+- **Paladin:** Healing Aura implemented (0.5 HP/5s AoE, 1 HP/5s self above 50% HP).
+- **Vanguard:** Guardian's Presence implemented (Weakness I to all mobs within 5 blocks).
+- **Archmage:** +50% magic (up from 25%). Mana Attunement: -25% melee penalty + tier-scaling magic amplifier (T1:+0%, T2:+5%, T3:+10%, T4:+15%). Weak early, devastating late.
+- **Void Summoner:** Soul Tether implemented (5% lifesteal from nearby mob deaths, 10% bonus XP within 16 blocks).
+
+### Magic Damage System Fix
+- `puffish_attributes:magic_damage` was registered but never read by magic mods. Added sync in `skill_effects.js` pushing bonuses to both `ars_nouveau:spell_damage` and `irons_spellbooks:spell_power`.
+- Iron's Spells re-enabled (was disabled — only the KubeJS addon was broken, base mod always worked).
+- Iron's Spells loot tiered: T1 copper/iron books, T2 iron/gold, T3 gold/diamond, T4 diamond/netherite. Inks scale similarly.
+
+### Construct & Balance Changes
+- Artificial Construct: iron upgrade scaling changed from flat +5% to 5/5/5/10/10% (max +35%, back-loaded). Iron eating now grants Regen III (400% healing). Offhand healing removed.
+- Faefolk: iron_weakness.json removed (was orphaned, never in power list).
+
+### Phantom Undeath
+- Phantoms never truly die. At 0 HP, death cancelled, health locks to 0.5 hearts. Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 minutes. Resistance II during collapse for survival.
+
+### Loot Tier Fix
+- Nether correctly placed at T3 (was grouped with T2). Enchanted books and spell books re-tiered: T1 OW, T2 TF/Aether/Blue Skies, T3 Nether/Undergarden, T4 End/Abyss.
+
+### Compass of Return
+- New item: right-click teleports to last bed, 10 minute cooldown. 2.5% drop in cave/structure chests (T1). Craftable at T2 (compass + ender pearls + gold).
+
+### Stylistic Description Pass
+- All 28 descriptions (11 origins, 11 races, 10 classes) rewritten in consistent evocative tone. Demi-God's god_punch renamed to Divine Fury.
+
+### Client Installer Rewrite
+- CurseForge mods (319/450) now use edge.forgecdn.net CDN (old API endpoint returned 403).
+- All mods download to `.minecraft/mods/` (fixed path confusion). Re-run syncs configs without re-downloading mods.
+- Linux `.sh` version added with full parity. Script parity rule added to CLAUDE.md.
+
+### OfflineSkins
+- Added OfflineSkins mod (client-only) for skin display on offline-mode servers.
+
+---
+
 ## 2026-03-19 — Origins expansion: 4 new races, 2 new origins
 
 ### Race Layer Expansion (7 → 11 races)
