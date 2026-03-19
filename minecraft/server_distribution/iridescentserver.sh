@@ -318,6 +318,7 @@ if [ -d "mods" ]; then
     strip_mod "*probejs*" "*ProbeJS*"
     strip_mod "*irons_spells_js*"
     strip_mod "*gh_classes*"
+    strip_mod "*cherryvillage*" "*CherryVillage*"
     strip_mod "*rechiseled*"
     strip_mod "*supermartijn642*"
     strip_mod "*connectedglass*"
