@@ -13,5 +13,5 @@
   "order": 11,
   "impact": 3,
   "name": "Artificial Construct",
-  "description": "A golem forged from iron and bound by magic. Normal food provides only 25% nourishment \u2014 iron ingots and blocks are their true sustenance. Eating iron also accelerates natural healing by 400%. Consume enough iron to permanently upgrade their frame, gaining +5% stats per level across five tiers. Extended reach, natural armor, and reduced fall damage."
+  "description": "A golem forged from iron and bound by magic. Normal food provides only 25% nourishment \u2014 iron ingots and blocks are their true sustenance. Eating iron also accelerates natural healing by 400%. Consume enough iron to permanently upgrade their frame across five tiers, with the final two granting massive power spikes. Extended reach, natural armor, and reduced fall damage."
 }

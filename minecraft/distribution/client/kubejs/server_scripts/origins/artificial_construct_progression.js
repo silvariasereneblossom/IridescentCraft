@@ -4,8 +4,9 @@
 // Food: Can eat normally but at 25% efficiency (biofuel conversion)
 // Iron eating: Iron Ingots (0.5 food), Iron Blocks (4.5 food / 9 ingots)
 // Iron healing: Eating iron grants Regeneration II for 10s (400% healing acceleration)
-// Iron upgrades: every threshold grants +5% HP, melee, reduction, toughness
-//   Thresholds: 1000 → 2000 → 4000 → 8000 → 16000 (5 levels, max +25% each)
+// Iron upgrades: each threshold grants HP, melee, reduction, toughness
+//   Thresholds: 1000 → 2000 → 4000 → 8000 → 16000 (5 levels)
+//   Bonuses per level: +5%, +5%, +5%, +10%, +10% (max +35% each)
 //   Iron Blocks count as 9 ingots
 // =============================================================================
 
@@ -22,7 +23,7 @@ function isArtificialConstruct(player) {
 }
 
 const IRON_THRESHOLDS = [1000, 2000, 4000, 8000, 16000]
-const BONUS_PER_LEVEL = 0.05  // 5% per level
+const BONUS_PER_LEVEL = [0.05, 0.05, 0.05, 0.10, 0.10]  // 5/5/5/10/10%
 
 // Track iron ingot consumption
 PlayerEvents.inventoryChanged(event => {
@@ -107,9 +108,11 @@ function checkIronUpgrade(player, totalIron) {
     let newLevel = currentLevel + 1
     data.putInt('icraft_construct_level', newLevel)
 
-    let bonusPct = newLevel * 5
-    player.tell('\u00a76[Iron Forge Upgrade]\u00a7r Level ' + newLevel + '/5')
-    player.tell('\u00a77  +' + bonusPct + '% HP, Melee, Damage Reduction, Armor Toughness')
+    let totalPct = 0
+    for (let i = 0; i < newLevel; i++) totalPct += BONUS_PER_LEVEL[i] * 100
+    let levelPct = BONUS_PER_LEVEL[newLevel - 1] * 100
+    player.tell('\u00a76[Iron Forge Upgrade]\u00a7r Level ' + newLevel + '/5 (+' + levelPct + '%)')
+    player.tell('\u00a77  Total: +' + totalPct + '% HP, Melee, Damage Reduction, Armor Toughness')
 
     if (newLevel < 5) {
       let nextReq = IRON_THRESHOLDS[newLevel]
@@ -128,7 +131,8 @@ function checkIronUpgrade(player, totalIron) {
 function applyConstructBonuses(player) {
   let data = player.persistentData
   let level = data.getInt('icraft_construct_level') || 0
-  let bonus = level * BONUS_PER_LEVEL  // 0.05 per level
+  let bonus = 0
+  for (let i = 0; i < level; i++) bonus += BONUS_PER_LEVEL[i]
 
   let name = player.username
 
@@ -166,4 +170,4 @@ console.log('  - 25% food efficiency from normal food')
 console.log('  - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)')
 console.log('  - Iron eating grants Regen III for 10s (400% healing acceleration)')
 console.log('  - Iron upgrade ladder: 1000/2000/4000/8000/16000')
-console.log('  - +5% HP/melee/reduction/toughness per level (max +25%)')
+console.log('  - +5/5/5/10/10% HP/melee/reduction/toughness per level (max +35%)')
