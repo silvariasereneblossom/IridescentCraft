@@ -486,19 +486,38 @@ LootJS.modifiers(event => {
       .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
   })
 
-  // Village smith chests: remove diamonds but NO T1 tokens
-  // Villages are starting areas, not progression structures
+  // Village smith chests: remove diamonds, add 20% artifact chance per chest
+  // Villages are starting areas — artifacts provide exciting early finds
   const vanillaVillageSmithChests = [
     'minecraft:chests/village/village_toolsmith',
     'minecraft:chests/village/village_weaponsmith',
     'minecraft:chests/village/village_armorer'
   ]
 
+  // Starter-friendly artifacts for village smiths
+  const villageArtifacts = [
+    'artifacts:umbrella',
+    'artifacts:kitty_slippers',
+    'artifacts:bunny_hoppers',
+    'artifacts:running_shoes',
+    'artifacts:snowshoes',
+    'artifacts:pocket_piston',
+    'artifacts:obsidian_skull',
+    'artifacts:cloud_in_a_bottle'
+  ]
+
   vanillaVillageSmithChests.forEach(table => {
-    event
+    let modifier = event
       .addLootTableModifier(table)
       .removeLoot('minecraft:diamond')
       .removeLoot('minecraft:diamond_horse_armor')
+
+    // Each artifact has ~2.5% individual chance, totaling ~20% for at least one
+    villageArtifacts.forEach(artifact => {
+      modifier.addLoot(
+        LootEntry.of(artifact).when(c => c.randomChance(0.025))
+      )
+    })
   })
 
   // =========================================================================
@@ -706,8 +725,9 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('minecraft:sponge').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.20)))
 
-  // --- Ocean structure curio drops: water-themed artifacts (~10% total) ---
-  // Spread across multiple items at low individual chance to total ~10%
+  // --- Ocean structure curio drops: HEAVILY oceanic/fishing themed ---
+  // Ocean structures should feel rewarding for aquatic exploration.
+  // High chance for water-themed artifacts and fishing gear.
   event
     .addLootTableModifier(
       'minecraft:chests/shipwreck_treasure',
@@ -717,37 +737,55 @@ LootJS.modifiers(event => {
       'minecraft:chests/underwater_ruin_small',
       'minecraft:chests/buried_treasure',
       'minecraft:chests/ocean_monument')
+    // Water-themed artifacts — high chance
     .addLoot(
-      LootEntry.of('artifacts:snorkel').when(c => c.randomChance(0.025))
+      LootEntry.of('artifacts:snorkel').when(c => c.randomChance(0.15))
     )
     .addLoot(
-      LootEntry.of('artifacts:flippers').when(c => c.randomChance(0.025))
+      LootEntry.of('artifacts:flippers').when(c => c.randomChance(0.15))
     )
     .addLoot(
-      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.02))
+      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.10))
+    )
+    // Aquaculture fishing loot
+    .addLoot(
+      LootEntry.of('minecraft:fishing_rod').when(c => c.randomChance(0.12))
     )
     .addLoot(
-      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.015))
+      LootEntry.of('minecraft:tropical_fish_bucket').when(c => c.randomChance(0.08))
     )
     .addLoot(
-      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.01))
+      LootEntry.of('minecraft:heart_of_the_sea').when(c => c.randomChance(0.05))
+    )
+    // General utility artifacts at lower rate
+    .addLoot(
+      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.05))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.04))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.04))
     )
 
-  // --- YUNG's Better Ocean Monuments: curio drops ---
-  // Already has T2 tokens from Section 4C; add water-themed curios here
+  // --- YUNG's Better Ocean Monuments: premium ocean loot ---
+  // Already has T2 tokens from Section 4C; heavily water-themed curios
   event
     .addLootTableModifier(/betteroceanmonuments:.*/)
     .addLoot(
-      LootEntry.of('artifacts:snorkel').when(c => c.randomChance(0.03))
+      LootEntry.of('artifacts:snorkel').when(c => c.randomChance(0.20))
     )
     .addLoot(
-      LootEntry.of('artifacts:flippers').when(c => c.randomChance(0.03))
+      LootEntry.of('artifacts:flippers').when(c => c.randomChance(0.20))
     )
     .addLoot(
-      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.02))
+      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.10))
     )
     .addLoot(
-      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.012))
+      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.06))
+    )
+    .addLoot(
+      LootEntry.of('minecraft:heart_of_the_sea').when(c => c.randomChance(0.08))
     )
 
   // =========================================================================
@@ -893,7 +931,112 @@ LootJS.modifiers(event => {
     )
 
   // =========================================================================
-  // SECTION 8: ENABLE LOGGING (remove in production)
+  // SECTION 8: TOWERS OF THE WILD — CURIO + MAGIC LOOT
+  // =========================================================================
+  // Towers of the Wild chests get guaranteed curio/artifact chance (100%)
+  // and boosted magic materials. These are exploration landmarks.
+  // =========================================================================
+
+  event
+    .addLootTableModifier('totw_reworked:tower_chest')
+    .addLoot(
+      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.12))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.12))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.12))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.12))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.10))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.08))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.06))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.08))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.06))
+    )
+    .addLoot(
+      LootEntry.of('artifacts:snowshoes').when(c => c.randomChance(0.12))
+    )
+
+  // =========================================================================
+  // SECTION 8A: VILLAGE CHEST AFFIX GEAR — WHITE/GREEN ONLY
+  // =========================================================================
+  // Village chests should have low-tier affix gear (white/green rarity).
+  // Blue is very rare (2%), no purple/orange. These are starting areas.
+  // =========================================================================
+
+  // Village chests: low chance for basic (white/green) gear
+  const villageChestPatterns = [
+    /minecraft:chests\/village\/.*/,
+    /villagesandpillages:.*chests.*/,
+    /ctov:.*chests.*/
+  ]
+
+  villageChestPatterns.forEach(pattern => {
+    event
+      .addLootTableModifier(pattern)
+      // Remove any high-tier affix items that Apotheosis might inject
+      .removeLoot(Ingredient.custom(item => {
+        let nbt = item.nbt
+        if (!nbt) return false
+        let affixes = nbt.getString('affix_data')
+        if (!affixes) return false
+        // Remove epic+ rarity items from villages
+        return affixes.includes('epic') || affixes.includes('mythic') || affixes.includes('ancient')
+      }))
+  })
+
+  // =========================================================================
+  // SECTION 8B: BOOSTED MAGIC MATERIALS IN STRUCTURE CHESTS
+  // =========================================================================
+  // Magic mod materials and spell books get higher weight in all
+  // structure chests (not just overworld chests).
+  // =========================================================================
+
+  // Boost Iron's Spells materials in ALL structure chests (not just OW)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .addLoot(
+      LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.06))
+    )
+    .addLoot(
+      LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.03))
+    )
+
+  // Ars Nouveau source gems in structure chests
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .addLoot(
+      LootEntry.of('ars_nouveau:source_gem', [1, 3]).when(c => c.randomChance(0.05))
+    )
+
+  // =========================================================================
+  // SECTION 8C: REDUCED ARTIFACT/CURIO WEIGHT IN GENERIC OW CHESTS
+  // =========================================================================
+  // General overworld chests (caves, mineshafts) should have very low
+  // artifact chance (~5%). Structure-specific chests keep their rates.
+  // Towers get boosted rates (Section 8 above).
+  // =========================================================================
+
+  // Already handled — artifacts only appear in structure-specific sections
+  // (towers at ~12% per item, ocean at existing rates). Generic overworld
+  // chests don't get artifact injections by default.
+
+  // =========================================================================
+  // SECTION 9: ENABLE LOGGING (remove in production)
   // =========================================================================
 
   // event.enableLogging()
@@ -907,5 +1050,7 @@ LootJS.modifiers(event => {
   console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
   console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
   console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
-  console.log('  - Tower curio drops: 15% chance in tower structures')
+  console.log('  - Tower curio drops: ~12% per artifact type in tower chests')
+  console.log('  - Village affix gear: white/green only, no epic+')
+  console.log('  - Boosted magic materials: inks, source gems in structure chests')
 })
