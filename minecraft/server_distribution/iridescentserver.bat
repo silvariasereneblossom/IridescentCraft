@@ -103,17 +103,17 @@ if not exist "libraries\net\minecraftforge\forge\1.20.1-47.4.6" (
     echo.
 )
 
-REM Download mods if .index exists and mods folder is mostly empty
+REM Download mods if .index exists and mods folder has fewer than 50 jars
+setlocal enabledelayedexpansion
 set NEED_MODS=0
 if not exist "mods" set NEED_MODS=1
 if exist "mods\.index" (
-    REM Count jar files — if fewer than 50, probably needs download
     set JAR_COUNT=0
     for %%F in (mods\*.jar) do set /a JAR_COUNT+=1
     if !JAR_COUNT! LSS 50 set NEED_MODS=1
 )
 
-if exist "mods\.index" (
+if "!NEED_MODS!"=="1" if exist "mods\.index" (
     echo [INSTALL] Downloading mods via PowerShell...
     echo.
     powershell -Command ^
@@ -137,6 +137,7 @@ if exist "mods\.index" (
     pause >nul
     echo.
 )
+endlocal
 
 REM Strip any client-only / crash-causing mods
 if exist "mods" (
