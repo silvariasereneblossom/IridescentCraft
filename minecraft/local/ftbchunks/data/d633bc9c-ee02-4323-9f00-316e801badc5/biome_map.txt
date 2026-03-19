@@ -1,0 +1,4 @@
+#735 biomesoplenty:coniferous_forest
+#67F biomesoplenty:fir_clearing
+#467 biomesoplenty:highland
+#5FF minecraft:river
