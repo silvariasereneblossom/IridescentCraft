@@ -84,6 +84,9 @@ PS1 files: No banners — the bat handles display.
 ### Distribution Sync
 All changes to kubejs, configs, datapacks, or lang files must be synced to all three distributions: main instance, server_distribution, distribution/client.
 
+### Script Parity (.bat ↔ .sh)
+Every `.bat` script in server_distribution/ and distribution/client/ must have a matching `.sh` with identical logic. When modifying a `.bat`, always update the `.sh` counterpart (and vice versa). Run `bash -n` on the `.sh` to syntax-check.
+
 ## Protocols
 
 | Protocol | Description | File |
