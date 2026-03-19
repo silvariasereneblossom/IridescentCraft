@@ -82,5 +82,11 @@
 
   "item.kubejs.dragon_summoning_crystal": "Dragon Summoning Crystal",
 
-  "item.kubejs.compass_of_return": "Compass of Return"
+  "item.kubejs.compass_of_return": "Compass of Return",
+
+  "item.kubejs.transmuted_steel": "Transmuted Steel Ingot",
+  "item.kubejs.transmuted_manasteel": "Transmuted Manasteel Ingot",
+  "item.kubejs.transmuted_osmium": "Transmuted Osmium Ingot",
+  "item.kubejs.transmuted_diamond": "Transmuted Diamond",
+  "item.kubejs.transmuted_ancient_debris": "Transmuted Ancient Debris"
 }

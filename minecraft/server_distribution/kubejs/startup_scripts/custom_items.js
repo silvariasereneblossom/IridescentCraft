@@ -442,6 +442,57 @@ StartupEvents.registry('item', event => {
 })
 
 
+// ═══ TRANSMUTED MATERIALS (Tier-Skip Outputs) ═══
+// These bypass AStages item gates. Tagged identically to their real
+// counterparts so they work in all tag-based recipes.
+// Hidden from JEI — discovered via transmutation recipes or Codex.
+StartupEvents.registry('item', event => {
+    event.create('kubejs:transmuted_steel')
+        .displayName('Transmuted Steel Ingot')
+        .tooltip('§7An impure steel ingot, forged from raw iron through sheer determination')
+        .tooltip('§8Functions identically to steel in all recipes')
+        .maxStackSize(64)
+        .rarity('uncommon')
+        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
+        .color(0, 0x888888)
+
+    event.create('kubejs:transmuted_manasteel')
+        .displayName('Transmuted Manasteel Ingot')
+        .tooltip('§7Iron infused with raw mana through brute-force alchemy')
+        .tooltip('§8Functions identically to manasteel in all recipes')
+        .maxStackSize(64)
+        .rarity('uncommon')
+        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
+        .color(0, 0x4488CC)
+
+    event.create('kubejs:transmuted_osmium')
+        .displayName('Transmuted Osmium Ingot')
+        .tooltip('§7Steel transmuted into osmium through dimensional resonance')
+        .tooltip('§8Functions identically to osmium in all recipes')
+        .maxStackSize(64)
+        .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
+        .color(0, 0xAABBDD)
+
+    event.create('kubejs:transmuted_diamond')
+        .displayName('Transmuted Diamond')
+        .tooltip('§7A diamond crystallized from concentrated magical pressure')
+        .tooltip('§8Functions identically to diamond in all recipes')
+        .maxStackSize(64)
+        .rarity('rare')
+        .textureJson({ layer0: 'minecraft:item/diamond' })
+        .color(0, 0x88DDFF)
+
+    event.create('kubejs:transmuted_ancient_debris')
+        .displayName('Transmuted Ancient Debris')
+        .tooltip('§7Dimensional flux compressed into proto-netherite')
+        .tooltip('§8Functions identically to ancient debris in all recipes')
+        .maxStackSize(64)
+        .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/iron_ingot' })
+        .color(0, 0x654321)
+})
+
 // ═══ CLASS RESPEC STATION ═══
 // Design Doc Part III: "Class Altar" — tier-appropriate boss material + 30 levels
 StartupEvents.registry('item', event => {

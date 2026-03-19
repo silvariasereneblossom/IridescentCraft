@@ -64,62 +64,58 @@ ServerEvents.recipes(event => {
     // All are intentionally inefficient (32–64:1 ratio).
     // =====================================================================
 
-    // --- T1 → T2 Peek: Iron/Copper → Steel (tech path) ---
-    // 32 iron + 8 coal + 8 copper → 1 steel (shaped 3x3)
-    event.shaped('thermal:steel_ingot', [
+    // --- T1 → T2 Peek: Iron/Copper → Transmuted Steel (tech path) ---
+    // Outputs transmuted version that bypasses AStages tier_2 gate
+    event.shaped('kubejs:transmuted_steel', [
         'ICI',
         'CKC',
         'ICI'
     ], {
-        I: '4x minecraft:iron_ingot',     // 16 iron
-        C: '2x minecraft:copper_ingot',   // 8 copper
-        K: '8x minecraft:coal'            // 8 coal
+        I: '4x minecraft:iron_ingot',
+        C: '2x minecraft:copper_ingot',
+        K: '8x minecraft:coal'
     }).id('kubejs:transmute_iron_to_steel')
 
-    // T1 → T2 Peek: Iron → Manasteel (magic path)
-    // 32 iron + mana diamond → 1 manasteel
-    event.shaped('botania:manasteel_ingot', [
+    // T1 → T2 Peek: Iron → Transmuted Manasteel (magic path)
+    event.shaped('kubejs:transmuted_manasteel', [
         'III',
         'IMI',
         'III'
     ], {
-        I: '4x minecraft:iron_ingot',     // 32 iron
+        I: '4x minecraft:iron_ingot',
         M: 'botania:mana_diamond'
     }).id('kubejs:transmute_iron_to_manasteel')
 
-    // --- T2 → T3 Peek: Steel → Osmium (tech path) ---
-    // 32 steel + 4 mana diamonds → 1 osmium
-    event.shaped('mekanism:ingot_osmium', [
+    // --- T2 → T3 Peek: Steel → Transmuted Osmium (tech path) ---
+    event.shaped('kubejs:transmuted_osmium', [
         'SSS',
         'SMS',
         'SSS'
     ], {
-        S: '4x #forge:ingots/steel',      // 32 steel
+        S: '4x #forge:ingots/steel',
         M: 'botania:mana_diamond'
     }).id('kubejs:transmute_steel_to_osmium')
 
-    // T2 → T3 Peek: Manasteel → Diamond (magic path)
-    // 16 manasteel + 4 terrasteel → 1 diamond
-    event.shaped('minecraft:diamond', [
+    // T2 → T3 Peek: Manasteel → Transmuted Diamond (magic path)
+    event.shaped('kubejs:transmuted_diamond', [
         'MTM',
         'T T',
         'MTM'
     ], {
-        M: '2x botania:manasteel_ingot',  // 8 manasteel
-        T: 'botania:terrasteel_ingot'     // 4 terrasteel
+        M: '2x botania:manasteel_ingot',
+        T: 'botania:terrasteel_ingot'
     }).id('kubejs:transmute_manasteel_to_diamond')
 
-    // --- T3 → T4 Peek: Diamond → Ancient Debris ---
-    // 16 diamonds + 8 terrasteel + enderium → 1 ancient debris
+    // --- T3 → T4 Peek: Diamond → Transmuted Ancient Debris ---
     // EXTREMELY expensive — by design
-    event.shaped('minecraft:ancient_debris', [
+    event.shaped('kubejs:transmuted_ancient_debris', [
         'DTD',
         'TET',
         'DTD'
     ], {
-        D: '2x minecraft:diamond',         // 8 diamonds
-        T: '2x botania:terrasteel_ingot',  // 8 terrasteel
-        E: '#forge:ingots/enderium'        // 1 enderium
+        D: '2x minecraft:diamond',
+        T: '2x botania:terrasteel_ingot',
+        E: '#forge:ingots/enderium'
     }).id('kubejs:transmute_diamond_to_debris')
 
     // =====================================================================
