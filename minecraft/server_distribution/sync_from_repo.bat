@@ -58,6 +58,11 @@ robocopy "%REPO%" "%LOCAL%" /MIR /MT:4 /NJH /NJS /NDL /NP ^
 
 set ROBOCOPY_EXIT=%errorlevel%
 
+REM Sync mods/.index and custom JARs separately (don't delete downloaded mods)
+echo [SYNC] Syncing mod metadata and custom JARs...
+robocopy "%REPO%\mods\.index" "%LOCAL%\mods\.index" /MIR /NJH /NJS /NDL /NP >nul
+robocopy "%REPO%\mods" "%LOCAL%\mods" *.jar /NJH /NJS /NDL /NP >nul
+
 echo.
 
 REM Robocopy exit codes: 0=no changes, 1=files copied, 2=extra files deleted
