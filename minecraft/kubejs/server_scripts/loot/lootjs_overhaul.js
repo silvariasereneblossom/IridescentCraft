@@ -39,16 +39,21 @@
 LootJS.modifiers(event => {
 
   // =========================================================================
-  // SECTION 1: GLOBAL ENCHANTED BOOK REMOVAL
+  // SECTION 1: ENCHANTED BOOK REBALANCE
   // =========================================================================
-  // Design doc: "REMOVE all enchanted books from structure loot.
-  // Apotheosis is the enchanting system."
+  // Remove vanilla enchanted book generation, then re-add at tier-appropriate
+  // rates. Apotheosis enhances the enchanting table but books should still
+  // appear in loot as exciting finds — just not everywhere.
   //
-  // This single rule covers ALL structure chest loot tables EXCEPT
-  // Ad Astra planetary dimensions (which have custom planetary enchantment
-  // books added by planetary_loot.js).
+  // Rates scale by dimension difficulty:
+  //   Overworld/Aether/Blue Skies: 7.5%
+  //   Nether/Twilight Forest/Undergarden: 10%
+  //   End/Deeper and Darker/The Abyss: 15%
+  //
+  // Also adds Ars Nouveau spell books at tier-appropriate rates.
   // =========================================================================
 
+  // First remove all vanilla enchanted books globally
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension(
@@ -61,6 +66,72 @@ LootJS.modifiers(event => {
       'theabyss:the_abyss'
     )
     .removeLoot('minecraft:enchanted_book')
+
+  // Re-add enchanted books at 7.5% — T1/T2 dimensions (Overworld, Aether, Blue Skies)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld', 'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .addLoot(
+      LootEntry.of('minecraft:enchanted_book')
+        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 10, max: 25 }, treasure: true })
+        .when(c => c.randomChance(0.075))
+    )
+
+  // Re-add enchanted books at 10% — T2/T3 dimensions (Nether, TF, Undergarden)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_nether', 'twilightforest:twilight_forest', 'undergarden:undergarden')
+    .addLoot(
+      LootEntry.of('minecraft:enchanted_book')
+        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 20, max: 30 }, treasure: true })
+        .when(c => c.randomChance(0.10))
+    )
+
+  // Re-add enchanted books at 15% — T3/T4 dimensions (End, Deeper Darker, Abyss)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .addLoot(
+      LootEntry.of('minecraft:enchanted_book')
+        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: 30, treasure: true })
+        .when(c => c.randomChance(0.15))
+    )
+
+  // --- Ars Nouveau spell books — tier appropriate ---
+  // T1 (Overworld): Novice spell book (5%)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .addLoot(
+      LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.05))
+    )
+
+  // T2 (Nether, TF, Blue Skies, Aether): Apprentice spell book (5%)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_nether', 'twilightforest:twilight_forest',
+      'blue_skies:everbright', 'blue_skies:everdawn',
+      'aether:the_aether', 'deep_aether:the_aether')
+    .addLoot(
+      LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.05))
+    )
+
+  // T3 (Undergarden, Deeper Darker, Abyss): Archmage spell book (3%)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('undergarden:undergarden', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .addLoot(
+      LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.03))
+    )
+
+  // T4 (End): Archmage spell book (5%) — rewarding endgame exploration
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_end')
+    .addLoot(
+      LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
+    )
 
   // =========================================================================
   // SECTION 2: TIER 1 STRUCTURE LOOT (Overworld)
