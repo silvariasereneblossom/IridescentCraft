@@ -460,6 +460,51 @@ ServerEvents.tick(event => {
           player.modifyAttribute('irons_spellbooks:spell_power',
             'icraft_mana_eff_sync', mc / 200, 'multiply_base')
         }
+
+        // ── Magic Damage Sync ──
+        // puffish_attributes:magic_damage is set by Origins powers (Archmage,
+        // Battlemage, Faefolk, Elf) and Sorcery skill tree, but magic mods
+        // don't read it. Sync the total bonus to Ars Nouveau's spell_damage.
+        // We read the player's magic_damage attribute total via command and
+        // apply the bonus portion to ars_nouveau spell damage.
+        //
+        // Known sources (multiply_base, additive):
+        //   Archmage: +0.50, Battlemage: +0.15, Faefolk: +0.30, Elf: +0.05
+        //   Sorcery skill tree: variable
+        // We sum from known origins + skill score rather than reading the
+        // attribute directly (KubeJS can't easily read attribute totals).
+        let magicBonus = 0
+        let magicScore = getScore(event.server, name, 'icraft_magic_damage')
+        if (magicScore > 0) magicBonus += magicScore / 100
+
+        // Detect origin/race magic bonuses
+        try {
+          // Archmage class: +50%
+          let r1 = player.server.runCommandSilent(
+            `execute if entity ${name}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:archmage"}]}}}]`
+          )
+          if (r1 > 0) magicBonus += 0.50
+          // Battlemage class: +15%
+          let r2 = player.server.runCommandSilent(
+            `execute if entity ${name}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:battlemage"}]}}}]`
+          )
+          if (r2 > 0) magicBonus += 0.15
+          // Faefolk race: +30%
+          let r3 = player.server.runCommandSilent(
+            `execute if entity ${name}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:faefolk"}]}}}]`
+          )
+          if (r3 > 0) magicBonus += 0.30
+          // Elf race: +5%
+          let r4 = player.server.runCommandSilent(
+            `execute if entity ${name}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:elf"}]}}}]`
+          )
+          if (r4 > 0) magicBonus += 0.05
+        } catch(e) {}
+
+        if (magicBonus > 0) {
+          player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+            'icraft_magic_damage_sync', magicBonus, 'multiply_base')
+        }
       } catch(e) {} // Silent fail if mod attributes don't exist
     })
   }
