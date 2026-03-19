@@ -320,5 +320,13 @@ ServerEvents.recipes(event => {
   // flandres_wings, discords_wings, zanzas_wings already removed by mod: 'icarus' above
 
 
+  // ═══ SECTION J: COMPASS OF RETURN (T2 craftable) ═══
+  // Found as 5% loot in surface dimension chests (T1 rare find).
+  // Craftable at T2: compass + ender pearls + gold (spatial magic theme).
+  event.shaped('kubejs:compass_of_return', [' G ','ECE',' G '], {
+    G:'minecraft:gold_ingot', E:'minecraft:ender_pearl', C:'minecraft:compass'
+  }).id('icraft:compass_of_return_t2')
+
+
   console.log('[IridescentCraft] P3 tier_gated_recipes.js loaded')
 })

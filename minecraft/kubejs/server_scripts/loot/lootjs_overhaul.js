@@ -133,6 +133,15 @@ LootJS.modifiers(event => {
       LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
     )
 
+  // --- Compass of Return — 5% in surface dimension chests (T1 rare find) ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld', 'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .addLoot(
+      LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.05))
+    )
+
   // =========================================================================
   // SECTION 2: TIER 1 STRUCTURE LOOT (Overworld)
   // Remove diamonds, add T1 token chance
