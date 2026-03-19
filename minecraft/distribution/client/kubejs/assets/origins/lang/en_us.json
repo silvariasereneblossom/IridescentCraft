@@ -45,21 +45,19 @@
   "origin.origins.human.description": "An ordinary being with no special powers or weaknesses. The balanced choice for those who prefer to let their Race and Class define them.",
   "power.origins.hotblooded.name": "Hotblooded",
   "power.origins.hotblooded.description": "Your hot body burns up venoms, making you immune to poison. Your metabolism is otherwise normal.",
-
   "layer.origins.gender.name": "Gender",
   "layer.origins.gender.gui_title.choose_origin": "Choose Your Gender",
   "layer.origins.gender.gui_title.view_origin": "Your Gender",
-
   "origin.origins-plus-plus.demi_god.name": "Demi-God",
-  "origin.origins-plus-plus.demi_god.description": "Divine heritage grants +40% health, raw meat feasting, and a powerful phase ability. Fire burns hotter, and the Nether weakens you — but you can fight through it.",
+  "origin.origins-plus-plus.demi_god.description": "Divine heritage grants +40% health, a powerful phase ability, and strength on command. Raw meat provides double nourishment, cooked meat 50% more. Fire burns 50% hotter, and the Nether weakens you \u2014 but you can fight through it.",
   "origin.origins-plus-plus.ryu.name": "Ryu",
-  "origin.origins-plus-plus.ryu.description": "A dragon-blooded being of immense power. 25% damage reduction, draconic regeneration from food, and slow falling wings. Non-meat food is less effective, and healing potions are halved.",
+  "origin.origins-plus-plus.ryu.description": "A dragon-blooded being of immense power. 25% damage reduction, slow falling wings, and draconic regeneration from food. Non-meat food provides half nourishment. Healing potions are 50% effective.",
   "origin.origins-plus-plus.fallen_angel.name": "Fallen Angel",
-  "origin.origins-plus-plus.fallen_angel.description": "Cast from grace, Fallen Angels deal 15% bonus damage from all sources but have 20% less health. Broken wings grant slow fall, and meat is preferred sustenance.",
+  "origin.origins-plus-plus.fallen_angel.description": "A celestial being cast from grace. Frail but deadly, dealing 15% bonus damage from all sources. -20% health. Broken wings grant slow fall, and meat is preferred sustenance. Fire burns deeper.",
   "origin.origins-plus-plus.kirin.name": "Kirin",
-  "origin.origins-plus-plus.kirin.description": "A mythical beast of lightning speed. Agile climbers with cat-like vision, but 20% less health. Sprint and leap with unmatched speed.",
+  "origin.origins-plus-plus.kirin.description": "A mythical beast of lightning speed. Agile climbers with cat-like vision, wall climbing, and unmatched sprint speed. -20% health. Extra exhaustion from constant movement.",
   "origin.origins-plus-plus.witch_of_ink.name": "Witch of Ink",
-  "origin.origins-plus-plus.witch_of_ink.description": "An artist who paints reality. Food provides half nourishment but paintings sustain you. Defeat bosses to grow stronger — 200 boss kills unlock the Blessing of Penthesilea.",
+  "origin.origins-plus-plus.witch_of_ink.description": "An artist who paints reality into being. Food provides half nourishment, but paintings sustain you. Paint with dyes, erase mistakes, reanimate art. -20% health, fire burns deeper. Defeat bosses to grow stronger \u2014 200 boss kills unlock the Blessing of Penthesilea.",
   "origin.origins-plus-plus.artificial_construct.name": "Artificial Construct",
-  "origin.origins-plus-plus.artificial_construct.description": "A golem of iron and magic. Normal food is 25% effective, but you can eat iron directly. Consuming enough iron permanently strengthens your frame. Extended reach and metal shell armor."
+  "origin.origins-plus-plus.artificial_construct.description": "A golem of iron and magic. Normal food provides only 25% nourishment. Right-click iron ingots or blocks to eat them. Hold iron in your offhand to passively heal. Consuming enough iron permanently upgrades your frame. Extended reach, metal shell armor, reduced fall damage."
 }

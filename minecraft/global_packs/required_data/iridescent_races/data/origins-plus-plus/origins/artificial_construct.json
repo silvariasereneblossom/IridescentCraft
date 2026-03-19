@@ -13,5 +13,5 @@
   "order": 11,
   "impact": 3,
   "name": "Artificial Construct",
-  "description": "A golem-like being of iron and magic. Normal food provides only 25% nourishment, but you can eat iron ingots and blocks directly. Consuming iron strengthens your frame permanently. Extended reach, metal shell armor, and reduced fall damage."
+  "description": "A golem of iron and magic. Normal food provides only 25% nourishment. Right-click iron ingots or blocks to eat them directly. Hold iron in your offhand to passively heal. Consuming enough iron permanently upgrades your frame (+5% stats per level, 5 levels). Extended reach, metal shell armor, reduced fall damage."
 }
