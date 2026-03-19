@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Attuned to nature magic and wind. Faefolk are ideal for Botania and Ars Nouveau paths but are weakened by iron.$(/italic)$(br2)$(bold)Racial Traits:$(/bold)$(br2)$(bold)Nature Magic$(/bold) \u2014 +15% effectiveness with Botania mana tools. +10% Ars Nouveau spell power.$(br2)$(bold)Slow Fall$(/bold) \u2014 Permanent Slow Falling. Fall damage reduced by 60%. Feather Fall still stacks.$(br2)$(bold)Iron Weakness$(/bold) \u2014 Iron armor and iron tools deal/protect 15% less effectively when worn/held by Faefolk.$(br2)$(bold)Fragile$(/bold) \u2014 -10% armor effectiveness from all armor. Even more fragile than Elves."
+      "text": "$(italic)Creatures of ancient magic and wild nature. Faefolk channel devastating arcane power at the cost of physical resilience.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Nature Magic$() — $(item)+30% magic damage$(). The highest racial magic bonus. Synergizes with Battlemage and Archmage classes.$(br2)$(bold)Slow Fall$() — Gentle drift on the wind. Reduced fall speed and damage.$(br2)$(bold)Fragile$() — $(warn)-50% armor toughness, -10% max HP$(). Raw magical force compensates."
     }
   ]
 }

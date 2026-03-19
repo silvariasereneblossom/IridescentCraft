@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Jack of all trades. No penalties, mild bonuses to everything. Rewarded for variety and exploration.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() No penalties on anything. +5% to damage, speed, and attack speed."
+      "text": "$(italic)A jack of all trades. The more you explore, the stronger you become.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Core Identity:$() Generalist with exploration scaling."
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Jack of All Trades$() — Using 3+ different weapon types within 60 seconds grants +10% damage bonus. Rewards weapon-switching combat.$(br2)$(bold)Wanderlust$() — +10% XP gain from all sources. Compounds significantly over long play sessions.$(br2)$(bold)Adaptable$() — Baseline +5% to damage, speed, and attack speed. No specialization, but no weakness either."
+      "text": "$(bold)Jack of All Trades$() — +5% attack damage, +5% speed, +5% attack speed. Modest bonuses to everything.$(br2)$(bold)Wanderlust$() — +10% XP gain from all sources.$(br2)$(bold)Seasoned Traveler$() — Each new dimension permanently grants $(item)+5% XP$() and $(item)+2.5% speed$(). Stacks with every dimension discovered."
     },
     {
       "type": "patchouli:text",
-      "title": "The Generalist",
-      "text": "The $(thing)Wanderer$() is the recommended class for players who want to experience everything without committing to a role. No playstyle is penalized, and the XP bonus helps with faster progression.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Human$() — Double XP bonus (+15% race + 10% class). Maximum progression speed.$(br)$(thing)Halfling$() — Luck + Wanderer's all-around stats = excellent explorer.$(br)$(thing)Elf$() — Speed stacking for fast overworld traversal."
+      "title": "Exploration Scaling",
+      "text": "With 10+ dimensions, a fully-explored Wanderer gains up to $(item)+55% XP$() and $(item)+27.5% speed$() permanently. $(note)Hyperscaling$() — weak early, dominant late.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Human$() — +10% XP stacks. Fastest leveling.$(br)$(thing)Halfling$() — Luck + food efficiency + exploration.$(br)$(thing)Kirin$() — Speed stacking reaches absurd levels."
     }
   ]
 }

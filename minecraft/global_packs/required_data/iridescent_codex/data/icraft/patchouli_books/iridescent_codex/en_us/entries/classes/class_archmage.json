@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Ultimate glass cannon spellcaster. Maximum spell damage. The squishiest class in the game.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Armor Penalty:$() -4 armor, -2 toughness"
+      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp. Weak early, devastating late.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Armor Penalty:$() -4 armor, -2 toughness"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Power$() — +25% magic damage. The highest spell damage bonus of any class. All Iron's Spells and Ars Nouveau spells benefit.$(br2)$(bold)Mana Attunement$() — Spell kills restore mana. Standing still boosts spell damage further. Rewards a stationary casting playstyle.$(br2)$(bold)Glass Frame$() — -4 armor, -2 toughness, equipment HP halved. The $(thing)Archmage$() sacrifices all defense for offense."
+      "text": "$(bold)Arcane Supremacy$() — $(item)+50% magic damage$(). Highest in the game. Applies to Iron's Spells and Ars Nouveau.$(br2)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling magic amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()$(br2)$(bold)Glass Frame$() — -4 armor, -2 toughness, halved equipment HP."
     },
     {
       "type": "patchouli:text",
-      "title": "The Glass Cannon",
-      "text": "The $(thing)Archmage$() deals the most magic damage in the game but has the lowest survivability. One mistake in melee range is usually fatal.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() — +15% Botania and +10% Ars Nouveau synergy. Slow Fall provides emergency safety.$(br)$(thing)Elf$() — Speed for repositioning. Night vision for safe dungeon casting.$(br)$(thing)Halfling$() — Smaller hitbox + food efficiency. Halfling Luck can save you from lethal hits."
+      "title": "Glass Nuke",
+      "text": "$(thing)Faefolk Archmage$() at T4:$(br)  +50% + 30% + 15% = $(item)+95% magic$()$(br)  But: -30% HP, -50% toughness, halved gear.$(br2)One hit kills you. One spell kills everything else.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() — Glass nuke. +95% magic at T4.$(br)$(thing)Elf$() — +5% magic + speed. Safer.$(br)$(thing)Demi-God$() — +40% HP offsets fragility."
     }
   ]
 }

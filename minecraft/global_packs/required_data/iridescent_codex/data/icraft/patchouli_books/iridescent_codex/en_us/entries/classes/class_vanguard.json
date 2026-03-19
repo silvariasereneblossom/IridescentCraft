@@ -6,17 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The immovable object. Maximum survivability, reduced offense. Pure tank.$()$(br2)HP Modifier: +20%  |  Equipment HP: Full$(br)$(bold)Damage Modifier:$() -15% all damage dealt"
+      "text": "$(italic)The immovable object. Maximum survivability, reduced offense. Your presence alone weakens enemies.$()$(br2)HP Modifier: +20%  |  Equipment HP: Full$(br)$(bold)Damage Modifier:$() $(warn)-15% all damage dealt$()"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Fortress$() — +6 armor, +3 toughness. The highest base defensive stats of any class. Stacks with worn armor for extreme damage reduction.$(br2)$(bold)Immovable$() — +40% knockback resistance. Nearly impossible to push around. Critical for holding position in chaotic fights.$(br2)$(bold)Guardian$() — Nearby enemies deal less damage to allies. The $(thing)Vanguard$() protects by proximity."
+      "text": "$(bold)Fortress$() — +6 armor, +3 toughness. Highest defensive stats of any class.$(br2)$(bold)Immovable$() — +40% knockback resistance.$(br2)$(bold)Guardian's Presence$() — Hostile mobs within 5 blocks receive $(item)Weakness I$(). Your enemies deal less damage just by standing near you."
     },
     {
       "type": "patchouli:text",
-      "title": "The Tank Tradeoff",
-      "text": "The -15% damage penalty is real. The $(thing)Vanguard$() kills things slowly. But the $(thing)Vanguard$() does not die. With +20% HP, +6 armor, +3 toughness, and Guardian aura, this class can stand in fights that would kill any other class.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — +8% armor effectiveness on top of Fortress = the tankiest possible build.$(br)$(thing)Orc$() — Attack speed partially compensates for the damage penalty.$(br)$(thing)Revenant$() — Night power bonus helps offset the -15% damage penalty."
+      "title": "The Wall",
+      "text": "The -15% damage penalty is real. You kill slowly. But you $(bold)do not die$(). +20% HP, +6 armor, +3 toughness, Guardian's aura — built for group play.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$() — +60% total HP. Unkillable.$(br)$(thing)Dwarf$() — Armor stacking + fire resistance.$(br)$(thing)Orc$() — Attack speed offsets -15% damage."
     }
   ]
 }
