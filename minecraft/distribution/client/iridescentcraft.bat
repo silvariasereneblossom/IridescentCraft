@@ -232,6 +232,57 @@ if not defined PRISM_EXE (
     )
 )
 
+REM Search user profile as last resort
+if not defined PRISM_EXE (
+    for /f "delims=" %%F in ('powershell -Command "Get-ChildItem -Path $env:LOCALAPPDATA,$env:APPDATA,$env:USERPROFILE -Filter 'prismlauncher.exe' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName" 2^>nul') do (
+        set "PRISM_EXE=%%F"
+    )
+)
+
+REM Download PrismLauncher if not found
+if not defined PRISM_EXE (
+    echo [INSTALL] PrismLauncher not found. Downloading...
+    echo.
+
+    set "PRISM_INSTALL=%LocalAppData%\PrismLauncher"
+    set "PRISM_ZIP=%TEMP%\PrismLauncher-Portable.zip"
+
+    mkdir "!PRISM_INSTALL!" 2>nul
+
+    powershell -Command ^
+      "try {" ^
+      "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+      "  $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/PrismLauncher/PrismLauncher/releases/latest' -UseBasicParsing;" ^
+      "  $asset = $release.assets | Where-Object { $_.name -match 'Windows-MSVC-Portable.*\.zip$' -and $_.name -notmatch 'arm' } | Select-Object -First 1;" ^
+      "  if ($asset) {" ^
+      "    Write-Host ('  Downloading: ' + $asset.name);" ^
+      "    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile '!PRISM_ZIP!' -UseBasicParsing;" ^
+      "  } else {" ^
+      "    Write-Host 'ERROR: Could not find download' -ForegroundColor Red; exit 1;" ^
+      "  }" ^
+      "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
+
+    if exist "!PRISM_ZIP!" (
+        echo   Extracting...
+        powershell -Command "Expand-Archive -Path '!PRISM_ZIP!' -DestinationPath '!PRISM_INSTALL!' -Force"
+        del "!PRISM_ZIP!" 2>nul
+
+        for /f "delims=" %%F in ('powershell -Command "Get-ChildItem -Path '!PRISM_INSTALL!' -Filter 'prismlauncher.exe' -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName"') do (
+            set "PRISM_EXE=%%F"
+        )
+    )
+
+    if defined PRISM_EXE (
+        echo   [OK] PrismLauncher installed to !PRISM_INSTALL!
+        echo.
+    ) else (
+        echo   WARNING: PrismLauncher download failed.
+        echo   Please install manually from https://prismlauncher.org/download/
+        echo.
+        goto :import_instructions
+    )
+)
+
 if defined PRISM_EXE (
     echo [IMPORT] Launching PrismLauncher with instance import...
     echo.

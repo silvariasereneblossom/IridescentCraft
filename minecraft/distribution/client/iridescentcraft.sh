@@ -198,6 +198,41 @@ if command -v prismlauncher &>/dev/null; then
     PRISM_EXE="prismlauncher"
 elif flatpak list 2>/dev/null | grep -qi prismlauncher; then
     PRISM_EXE="flatpak run org.prismlauncher.PrismLauncher"
+else
+    # Check AppImage in common locations
+    for f in "$HOME"/Downloads/PrismLauncher*.AppImage "$HOME"/Applications/PrismLauncher*.AppImage "$HOME"/.local/share/PrismLauncher/PrismLauncher*.AppImage; do
+        if [ -x "$f" ] 2>/dev/null; then
+            PRISM_EXE="$f"
+            break
+        fi
+    done
+fi
+
+# Download if not found
+if [ -z "$PRISM_EXE" ]; then
+    echo "  [INSTALL] PrismLauncher not found. Downloading AppImage..."
+    echo ""
+
+    PRISM_DIR="$HOME/.local/share/PrismLauncher"
+    mkdir -p "$PRISM_DIR"
+
+    DL_URL=$(curl -sL "https://api.github.com/repos/PrismLauncher/PrismLauncher/releases/latest" \
+        | grep -oP '"browser_download_url":\s*"\K[^"]*Linux-x86_64\.AppImage(?=")' \
+        | head -1)
+
+    if [ -n "$DL_URL" ]; then
+        APPIMAGE_PATH="$PRISM_DIR/PrismLauncher.AppImage"
+        echo "    Downloading: $(basename "$DL_URL")"
+        curl -L "$DL_URL" -o "$APPIMAGE_PATH"
+        chmod +x "$APPIMAGE_PATH"
+        PRISM_EXE="$APPIMAGE_PATH"
+        echo -e "  ${GREEN}[OK]${RESET} PrismLauncher installed."
+        echo ""
+    else
+        echo -e "  ${YELLOW}WARNING: Could not download PrismLauncher.${RESET}"
+        echo "    Install manually from https://prismlauncher.org/download/"
+        echo ""
+    fi
 fi
 
 if [ -n "$PRISM_EXE" ]; then
