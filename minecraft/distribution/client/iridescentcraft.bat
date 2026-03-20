@@ -13,6 +13,21 @@ title IridescentCraft Client Installer
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
+REM Verify we're in the distribution folder
+if not exist "%~dp0mods\.index" (
+    echo ERROR: This script must be run from the client distribution folder.
+    echo Expected: distribution\client\iridescentcraft.bat
+    echo.
+    echo The folder should contain: config\, kubejs\, mods\.index\, etc.
+    echo.
+    echo If you only have this .bat file, download the full distribution:
+    echo   https://github.com/silvariasereneblossom/IridescentCraft
+    echo   ^(minecraft\distribution\client\ folder^)
+    echo.
+    pause
+    exit /b 1
+)
+
 echo.
 powershell -Command ^
   "Add-Type -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern bool SetConsoleMode(IntPtr h,int m);[DllImport(\"kernel32.dll\")]public static extern IntPtr GetStdHandle(int h);' -Name W -Namespace C;" ^
@@ -139,34 +154,28 @@ REM -------------------------------------------------------------------
 echo [SAVE] Choose where to save the instance zip...
 echo.
 
+REM Default to Desktop, offer save dialog
+set "DEFAULT_SAVE=%USERPROFILE%\Desktop\IridescentCraft-instance.zip"
 set "SAVE_PATH="
-for /f "delims=" %%F in ('powershell -Command ^
-  "Add-Type -AssemblyName System.Windows.Forms;" ^
-  "$d = New-Object System.Windows.Forms.SaveFileDialog;" ^
-  "$d.Title = 'Save IridescentCraft Instance';" ^
-  "$d.FileName = 'IridescentCraft-instance.zip';" ^
-  "$d.Filter = 'ZIP Archive (*.zip)|*.zip';" ^
-  "$d.InitialDirectory = [Environment]::GetFolderPath('Desktop');" ^
-  "if ($d.ShowDialog() -eq 'OK') { $d.FileName } else { 'CANCELLED' }"') do (
-    set "SAVE_PATH=%%F"
-)
 
-if "%SAVE_PATH%"=="CANCELLED" (
-    echo   Save cancelled. The zip is still at:
-    echo   %OUTPUT_ZIP%
-    echo   You can import it manually in PrismLauncher.
-    echo.
-    goto :import_instructions
-)
+echo   Default save location: %DEFAULT_SAVE%
+echo   Press Enter to save there, or type a custom path:
+echo.
+set /p "CUSTOM_PATH=  Path (or Enter for Desktop): "
 
-if not defined SAVE_PATH (
-    echo   No path selected. The zip is still at:
-    echo   %OUTPUT_ZIP%
-    echo.
-    goto :import_instructions
+if defined CUSTOM_PATH (
+    set "SAVE_PATH=!CUSTOM_PATH!"
+) else (
+    set "SAVE_PATH=%DEFAULT_SAVE%"
 )
 
 copy /y "%OUTPUT_ZIP%" "%SAVE_PATH%" >nul 2>&1
+if not exist "%SAVE_PATH%" (
+    echo   ERROR: Failed to save to %SAVE_PATH%
+    echo   The zip is still at: %OUTPUT_ZIP%
+    echo.
+    goto :import_instructions
+)
 echo   Saved to: %SAVE_PATH%
 echo.
 
