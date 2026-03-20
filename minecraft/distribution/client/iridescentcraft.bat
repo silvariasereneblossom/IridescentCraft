@@ -281,7 +281,7 @@ powershell -ExecutionPolicy Bypass -Command ^
   "$total = $tomlFiles.Count;" ^
   "Write-Host \"  Found $total mod metadata files.\";" ^
   "Write-Host '';" ^
-  "$downloaded = 0; $skipped = 0; $failed = 0; $count = 0;" ^
+  "$downloaded = 0; $skipped = 0; $failed = 0; $count = 0; $failedNames = @();" ^
   "foreach ($toml in $tomlFiles) {" ^
   "  $count++;" ^
   "  $content = Get-Content $toml.FullName;" ^
@@ -316,7 +316,9 @@ powershell -ExecutionPolicy Bypass -Command ^
   "  $success = $false;" ^
   "  for ($retry = 0; $retry -lt 3; $retry++) {" ^
   "    try {" ^
-  "      Invoke-WebRequest -Uri $dlUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing -TimeoutSec 120;" ^
+  "      $wc = New-Object System.Net.WebClient;" ^
+  "      $wc.DownloadFile($dlUrl, $tempFile);" ^
+  "      $wc.Dispose();" ^
   "      if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {" ^
   "        Move-Item -LiteralPath $tempFile -Destination $modPath -Force;" ^
   "        $success = $true; break;" ^
@@ -325,6 +327,7 @@ powershell -ExecutionPolicy Bypass -Command ^
   "      }" ^
   "    } catch {" ^
   "      if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
+  "      if ($retry -eq 2) { Write-Host \" [$($_.Exception.Message)]\" -NoNewline -ForegroundColor DarkGray }" ^
   "      if ($retry -lt 2) { Start-Sleep -Seconds 2 }" ^
   "    }" ^
   "  };" ^
@@ -333,13 +336,17 @@ powershell -ExecutionPolicy Bypass -Command ^
   "    $downloaded++;" ^
   "  } else {" ^
   "    Write-Host ' FAILED' -ForegroundColor Red;" ^
-  "    $failed++;" ^
+  "    $failed++; $failedNames += $filename;" ^
   "  }" ^
   "};" ^
   "Write-Host '';" ^
   "Write-Host \"  Downloaded: $downloaded\" -ForegroundColor Green;" ^
   "Write-Host \"  Already present: $skipped\" -ForegroundColor Cyan;" ^
-  "if ($failed -gt 0) { Write-Host \"  Failed: $failed (re-run to retry)\" -ForegroundColor Red }"
+  "if ($failed -gt 0) {" ^
+  "  Write-Host \"  Failed: $failed\" -ForegroundColor Red;" ^
+  "  foreach ($fn in $failedNames) { Write-Host \"    - $fn\" -ForegroundColor DarkRed };" ^
+  "  Write-Host '  Re-run to retry failed downloads.' -ForegroundColor Yellow;" ^
+  "}"
 
 echo.
 echo   Mod sync complete.
