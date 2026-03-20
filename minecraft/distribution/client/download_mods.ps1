@@ -17,6 +17,13 @@ $existingJars = (Get-ChildItem "$ModsDir\*.jar" -ErrorAction SilentlyContinue).C
 Write-Host "  Existing JARs in mods dir: $existingJars" -ForegroundColor DarkGray
 Write-Host ''
 
+"Index: $IndexDir" | Out-File $logFile -Append
+"Mods:  $ModsDir" | Out-File $logFile -Append
+"Existing JARs: $existingJars" | Out-File $logFile -Append
+# List first 5 existing jars for verification
+Get-ChildItem "$ModsDir\*.jar" -ErrorAction SilentlyContinue | Select-Object -First 5 -ExpandProperty Name | ForEach-Object { "  existing: $_" } | Out-File $logFile -Append
+"" | Out-File $logFile -Append
+
 $tomlFiles = Get-ChildItem "$IndexDir\*.pw.toml"
 $total = $tomlFiles.Count
 Write-Host "  Found $total mod metadata files."
