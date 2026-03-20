@@ -38,23 +38,38 @@ if (-not (Test-Path "$distDir\mods\.index")) {
 
     try {
         Write-Host "    Downloading repository..."
-        Invoke-WebRequest -Uri 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip' -OutFile $repoZip -UseBasicParsing
+        $wc = New-Object System.Net.WebClient
+        $wc.DownloadFile('https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip', $repoZip)
+        $wc.Dispose()
+
+        if (-not (Test-Path $repoZip) -or (Get-Item $repoZip).Length -lt 10000) {
+            throw "Download produced empty or missing file"
+        }
+
         Write-Host "    Extracting..."
         if (Test-Path $repoExtract) { Remove-Item $repoExtract -Recurse -Force }
-        Expand-Archive -Path $repoZip -DestinationPath $repoExtract -Force
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($repoZip, $repoExtract)
 
         $subDir = (Get-ChildItem $repoExtract -Directory | Select-Object -First 1).FullName
         $distDir = "$subDir\minecraft\distribution\client"
 
         if (-not (Test-Path "$distDir\mods\.index")) {
             Write-Host "  ERROR: Could not find client distribution in downloaded repo." -ForegroundColor Red
+            Write-Host "  Contents of extract dir:" -ForegroundColor DarkGray
+            Get-ChildItem $repoExtract -Recurse -Depth 2 | Select-Object -First 20 | ForEach-Object { Write-Host "    $($_.FullName)" -ForegroundColor DarkGray }
             Read-Host "  Press Enter to exit"
             exit 1
         }
         Write-Host "    [OK] Distribution files ready."
         Write-Host ""
     } catch {
-        Write-Host "  ERROR: Download failed: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host "  ERROR: Download failed." -ForegroundColor Red
+        Write-Host "  Detail: $($_.Exception.Message)" -ForegroundColor DarkGray
+        Write-Host ""
+        Write-Host "  Check your internet connection, or download manually:" -ForegroundColor Yellow
+        Write-Host "  https://github.com/silvariasereneblossom/IridescentCraft" -ForegroundColor Yellow
+        Write-Host ""
         Read-Host "  Press Enter to exit"
         exit 1
     }
@@ -140,7 +155,8 @@ Write-Host ""
 # ── Phase 2: Zip ──
 Write-Host "  [ZIP] Creating importable archive..."
 if (Test-Path $outputZip) { Remove-Item $outputZip -Force }
-Compress-Archive -Path "$staging\*" -DestinationPath $outputZip -Force
+Add-Type -AssemblyName System.IO.Compression.FileSystem
+[System.IO.Compression.ZipFile]::CreateFromDirectory($staging, $outputZip)
 $zipSize = [math]::Round((Get-Item $outputZip).Length / 1MB, 1)
 Write-Host "    Created: $outputZip ($zipSize MB)"
 Write-Host ""
