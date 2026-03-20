@@ -1,17 +1,17 @@
 @echo off
 REM IridescentCraft Client Installer (Windows)
 REM Builds a PrismLauncher-importable instance zip, then imports it.
-REM PrismLauncher handles Forge download + mod downloads from .index metadata.
-REM
-REM Requirements:
-REM   - Windows 10/11 (64-bit)
-REM   - PrismLauncher installed (will help find/download if missing)
-REM   - Java 17+ (PrismLauncher will prompt if missing)
-REM   - Minecraft account (Microsoft, Ely.by, or offline)
 
 title IridescentCraft Client Installer
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
+
+REM Catch any fatal errors — keep window open
+if "%~1"=="--run" goto :main
+cmd /k "%~f0" --run
+exit /b
+
+:main
 
 echo.
 powershell -Command ^
