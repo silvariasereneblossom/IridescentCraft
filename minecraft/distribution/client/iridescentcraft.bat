@@ -148,8 +148,7 @@ echo.
 set "INSTANCES_DIR=%AppData%\PrismLauncher\instances"
 set "INSTANCE_DIR=%INSTANCES_DIR%\IridescentCraft"
 set "MC_DIR=%INSTANCE_DIR%\.minecraft"
-REM PrismLauncher manages mods at instance root, maps into .minecraft at launch
-set "MODS_ROOT=%INSTANCE_DIR%\mods"
+set "MODS_ROOT=%MC_DIR%\mods"
 
 mkdir "%INSTANCES_DIR%" 2>nul
 mkdir "%INSTANCE_DIR%" 2>nul

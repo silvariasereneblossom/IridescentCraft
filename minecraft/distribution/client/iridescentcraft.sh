@@ -138,8 +138,7 @@ fi
 INSTANCES_DIR="$DATA_DIR/instances"
 INSTANCE_DIR="$INSTANCES_DIR/IridescentCraft"
 MC_DIR="$INSTANCE_DIR/.minecraft"
-# PrismLauncher manages mods at instance root, maps into .minecraft at launch
-MODS_ROOT="$INSTANCE_DIR/mods"
+MODS_ROOT="$MC_DIR/mods"
 
 mkdir -p "$INSTANCES_DIR" "$INSTANCE_DIR" "$MC_DIR" "$MODS_ROOT"
 
