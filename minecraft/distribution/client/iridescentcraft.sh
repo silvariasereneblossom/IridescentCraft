@@ -35,6 +35,33 @@ echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo ""
 
 # -------------------------------------------------------------------
+# Phase 0: Ensure distribution files are available
+# -------------------------------------------------------------------
+DIST_DIR="$SCRIPT_DIR"
+
+if [ ! -d "$DIST_DIR/mods/.index" ]; then
+    echo "  [DOWNLOAD] Distribution files not found locally. Downloading from GitHub..."
+    echo ""
+
+    REPO_ZIP="/tmp/IridescentCraft-repo.zip"
+    REPO_EXTRACT="/tmp/IridescentCraft-repo-extract"
+
+    curl -sL "https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip" -o "$REPO_ZIP"
+    rm -rf "$REPO_EXTRACT"
+    unzip -qo "$REPO_ZIP" -d "$REPO_EXTRACT"
+
+    DIST_DIR="$(find "$REPO_EXTRACT" -maxdepth 1 -type d | tail -1)/minecraft/distribution/client"
+
+    if [ ! -d "$DIST_DIR/mods/.index" ]; then
+        echo -e "  ${RED}ERROR: Could not find client distribution in downloaded repo.${RESET}"
+        exit 1
+    fi
+
+    echo -e "  ${GREEN}[OK]${RESET} Distribution files ready."
+    echo ""
+fi
+
+# -------------------------------------------------------------------
 # Phase 1: Build instance staging directory
 # -------------------------------------------------------------------
 echo "  [BUILD] Assembling IridescentCraft instance package..."
@@ -86,33 +113,33 @@ MMCPACK
 echo "    mmc-pack.json... OK"
 
 # Copy game files
-if [ -d "$SCRIPT_DIR/config" ]; then
-    cp -r "$SCRIPT_DIR/config" "$STAGE_MC/"
+if [ -d "$DIST_DIR/config" ]; then
+    cp -r "$DIST_DIR/config" "$STAGE_MC/"
     echo "    config... OK"
 fi
-if [ -d "$SCRIPT_DIR/defaultconfigs" ]; then
-    cp -r "$SCRIPT_DIR/defaultconfigs" "$STAGE_MC/"
+if [ -d "$DIST_DIR/defaultconfigs" ]; then
+    cp -r "$DIST_DIR/defaultconfigs" "$STAGE_MC/"
     echo "    defaultconfigs... OK"
 fi
-if [ -d "$SCRIPT_DIR/kubejs" ]; then
-    cp -r "$SCRIPT_DIR/kubejs" "$STAGE_MC/"
+if [ -d "$DIST_DIR/kubejs" ]; then
+    cp -r "$DIST_DIR/kubejs" "$STAGE_MC/"
     echo "    kubejs... OK"
 fi
-if [ -d "$SCRIPT_DIR/global_packs" ]; then
-    cp -r "$SCRIPT_DIR/global_packs" "$STAGE_MC/"
+if [ -d "$DIST_DIR/global_packs" ]; then
+    cp -r "$DIST_DIR/global_packs" "$STAGE_MC/"
     echo "    global_packs... OK"
 fi
 
 # Copy mod index
-if [ -d "$SCRIPT_DIR/mods/.index" ]; then
+if [ -d "$DIST_DIR/mods/.index" ]; then
     mkdir -p "$STAGE_MODS/.index"
-    cp -r "$SCRIPT_DIR/mods/.index/"* "$STAGE_MODS/.index/"
+    cp -r "$DIST_DIR/mods/.index/"* "$STAGE_MODS/.index/"
     echo "    mod index (.pw.toml)... OK"
 fi
 
 # Copy custom JARs
-if ls "$SCRIPT_DIR"/mods/*.jar &>/dev/null; then
-    cp "$SCRIPT_DIR"/mods/*.jar "$STAGE_MODS/"
+if ls "$DIST_DIR"/mods/*.jar &>/dev/null; then
+    cp "$DIST_DIR"/mods/*.jar "$STAGE_MODS/"
     echo "    custom JARs... OK"
 fi
 
@@ -203,6 +230,8 @@ fi
 
 # Cleanup
 rm -rf "$STAGING"
+[ -n "${REPO_EXTRACT:-}" ] && rm -rf "$REPO_EXTRACT"
+[ -n "${REPO_ZIP:-}" ] && rm -f "$REPO_ZIP"
 
 echo "  Done!"
 echo ""

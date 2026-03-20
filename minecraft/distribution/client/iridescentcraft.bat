@@ -13,21 +13,6 @@ title IridescentCraft Client Installer
 setlocal enabledelayedexpansion
 cd /d "%~dp0"
 
-REM Verify we're in the distribution folder
-if not exist "%~dp0mods\.index" (
-    echo ERROR: This script must be run from the client distribution folder.
-    echo Expected: distribution\client\iridescentcraft.bat
-    echo.
-    echo The folder should contain: config\, kubejs\, mods\.index\, etc.
-    echo.
-    echo If you only have this .bat file, download the full distribution:
-    echo   https://github.com/silvariasereneblossom/IridescentCraft
-    echo   ^(minecraft\distribution\client\ folder^)
-    echo.
-    pause
-    exit /b 1
-)
-
 echo.
 powershell -Command ^
   "Add-Type -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern bool SetConsoleMode(IntPtr h,int m);[DllImport(\"kernel32.dll\")]public static extern IntPtr GetStdHandle(int h);' -Name W -Namespace C;" ^
@@ -40,6 +25,51 @@ powershell -Command ^
   "[Console]::Write(\"${B}  ==========================================`n\");" ^
   "[Console]::Write(\"${R}\")"
 echo.
+
+REM -------------------------------------------------------------------
+REM Phase 0: Ensure distribution files are available
+REM -------------------------------------------------------------------
+REM If run standalone (no config/ folder nearby), download from GitHub
+set "DIST_DIR=%~dp0"
+
+if not exist "%DIST_DIR%mods\.index" (
+    echo [DOWNLOAD] Distribution files not found locally. Downloading from GitHub...
+    echo.
+
+    set "REPO_ZIP=%TEMP%\IridescentCraft-repo.zip"
+    set "REPO_EXTRACT=%TEMP%\IridescentCraft-repo-extract"
+
+    powershell -Command ^
+      "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+      "Write-Host '  Downloading repository...';" ^
+      "Invoke-WebRequest -Uri 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip' -OutFile '%REPO_ZIP%' -UseBasicParsing;" ^
+      "Write-Host '  Extracting...';" ^
+      "if (Test-Path '%REPO_EXTRACT%') { Remove-Item '%REPO_EXTRACT%' -Recurse -Force };" ^
+      "Expand-Archive -Path '%REPO_ZIP%' -DestinationPath '%REPO_EXTRACT%' -Force;" ^
+      "Write-Host '  Done.'"
+
+    if not exist "!REPO_EXTRACT!" (
+        echo   ERROR: Download failed. Check your internet connection.
+        echo.
+        pause
+        exit /b 1
+    )
+
+    REM Find the extracted client distribution folder
+    for /f "delims=" %%D in ('dir /b /ad "!REPO_EXTRACT!"') do (
+        set "DIST_DIR=!REPO_EXTRACT!\%%D\minecraft\distribution\client\"
+    )
+
+    if not exist "!DIST_DIR!mods\.index" (
+        echo   ERROR: Could not find client distribution in downloaded repo.
+        echo.
+        pause
+        exit /b 1
+    )
+
+    echo   [OK] Distribution files ready.
+    echo.
+)
 
 REM -------------------------------------------------------------------
 REM Phase 1: Build instance zip
@@ -96,33 +126,33 @@ echo }
 echo   mmc-pack.json... OK
 
 REM Copy game files from local distribution
-if exist "%~dp0config" (
-    xcopy /s /e /y /q "%~dp0config" "%STAGE_MC%\config\" >nul 2>&1
+if exist "%DIST_DIR%config" (
+    xcopy /s /e /y /q "%DIST_DIR%config" "%STAGE_MC%\config\" >nul 2>&1
     echo   config... OK
 )
-if exist "%~dp0defaultconfigs" (
-    xcopy /s /e /y /q "%~dp0defaultconfigs" "%STAGE_MC%\defaultconfigs\" >nul 2>&1
+if exist "%DIST_DIR%defaultconfigs" (
+    xcopy /s /e /y /q "%DIST_DIR%defaultconfigs" "%STAGE_MC%\defaultconfigs\" >nul 2>&1
     echo   defaultconfigs... OK
 )
-if exist "%~dp0kubejs" (
-    xcopy /s /e /y /q "%~dp0kubejs" "%STAGE_MC%\kubejs\" >nul 2>&1
+if exist "%DIST_DIR%kubejs" (
+    xcopy /s /e /y /q "%DIST_DIR%kubejs" "%STAGE_MC%\kubejs\" >nul 2>&1
     echo   kubejs... OK
 )
-if exist "%~dp0global_packs" (
-    xcopy /s /e /y /q "%~dp0global_packs" "%STAGE_MC%\global_packs\" >nul 2>&1
+if exist "%DIST_DIR%global_packs" (
+    xcopy /s /e /y /q "%DIST_DIR%global_packs" "%STAGE_MC%\global_packs\" >nul 2>&1
     echo   global_packs... OK
 )
 
 REM Copy mod index (.pw.toml files — PrismLauncher downloads mods from these)
-if exist "%~dp0mods\.index" (
+if exist "%DIST_DIR%mods\.index" (
     mkdir "%STAGE_MODS%\.index" 2>nul
-    xcopy /s /e /y /q "%~dp0mods\.index" "%STAGE_MODS%\.index\" >nul 2>&1
+    xcopy /s /e /y /q "%DIST_DIR%mods\.index" "%STAGE_MODS%\.index\" >nul 2>&1
     echo   mod index (.pw.toml)... OK
 )
 
 REM Copy custom JARs (coremods, patches — not in .index)
-if exist "%~dp0mods\*.jar" (
-    copy /y "%~dp0mods\*.jar" "%STAGE_MODS%\" >nul 2>&1
+if exist "%DIST_DIR%mods\*.jar" (
+    copy /y "%DIST_DIR%mods\*.jar" "%STAGE_MODS%\" >nul 2>&1
     echo   custom JARs... OK
 )
 
@@ -242,8 +272,10 @@ echo   First launch takes 5-15 minutes (Forge + 420 mods).
 echo.
 
 :done
-REM Cleanup staging
+REM Cleanup staging and downloaded repo
 rmdir /s /q "%STAGING%" 2>nul
+if defined REPO_EXTRACT rmdir /s /q "%REPO_EXTRACT%" 2>nul
+if defined REPO_ZIP del "%REPO_ZIP%" 2>nul
 
 echo Done! You can close this window.
 echo.
