@@ -30,6 +30,9 @@ The canonical design reference for all modpack systems.
 ### Known Issues
 - [Issue Tracker](known-issues/tracker.md) — Active bugs, testing needed, resolved
 
+### Roadmap
+- [Planned Changes](roadmap/planned.md) — Future features, improvements, and technical debt
+
 ### Meta
 - [Style Guide](meta/style-guide.md) — Writing conventions for wiki pages
 - [License](LICENSE.md) — Standard's Petty Software License v2.0

@@ -17,6 +17,7 @@ IridescentCraft is a 420-mod Minecraft 1.20.1 Forge modpack with RPG progression
 - `wiki/kubejs/overview.md` — Script reference, event compatibility, datapack loading
 - `wiki/mods/overview.md` — Key mods by tier, config changes
 - `wiki/known-issues/tracker.md` — Active bugs, verification needed, resolved issues
+- `wiki/roadmap/planned.md` — Planned future changes, improvements, technical debt
 - `wiki/meta/style-guide.md` — Writing conventions
 - `wiki/protocols/` — Maintenance workflows
 
