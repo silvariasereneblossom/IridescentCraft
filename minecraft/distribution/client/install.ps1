@@ -33,41 +33,70 @@ if (-not (Test-Path "$distDir\mods\.index")) {
     Write-Host "  [DOWNLOAD] Distribution files not found. Downloading from GitHub..."
     Write-Host ""
 
-    $repoZip = "$env:TEMP\IridescentCraft-repo.zip"
-    $repoExtract = "$env:TEMP\IridescentCraft-repo-extract"
+    # Use GitHub API to download just the client distribution (~16 MB)
+    # via git sparse checkout simulation — download tree listing then fetch files
+    $distDir = "$env:TEMP\IridescentCraft-dist"
+    $baseUrl = "https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/distribution/client"
+    $apiUrl = "https://api.github.com/repos/silvariasereneblossom/IridescentCraft/git/trees/main?recursive=1"
 
     try {
-        Write-Host "    Downloading repository..."
+        Write-Host "    Fetching file listing..."
         $wc = New-Object System.Net.WebClient
-        $wc.DownloadFile('https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip', $repoZip)
+        $wc.Headers.Add("User-Agent", "IridescentCraft-Installer")
+        $treeJson = $wc.DownloadString($apiUrl)
+
+        # Parse file paths under distribution/client/
+        $prefix = "minecraft/distribution/client/"
+        $files = @()
+        # Simple JSON parsing — extract paths
+        foreach ($match in [regex]::Matches($treeJson, '"path"\s*:\s*"([^"]+)"')) {
+            $path = $match.Groups[1].Value
+            if ($path.StartsWith($prefix) -and -not $path.EndsWith('/')) {
+                $files += $path.Substring($prefix.Length)
+            }
+        }
+
+        # Filter to only tree entries that are blobs (files)
+        # Also filter by the type field that comes before each path
+        Write-Host "    Found $($files.Count) files to download."
+
+        if ($files.Count -lt 10) {
+            throw "Too few files found — API may have changed or repo is empty"
+        }
+
+        $dlCount = 0
+        $total = $files.Count
+        foreach ($file in $files) {
+            $dlCount++
+            $localPath = Join-Path $distDir $file
+            $localDir = Split-Path $localPath -Parent
+            if (-not (Test-Path $localDir)) { New-Item -ItemType Directory -Path $localDir -Force | Out-Null }
+
+            $fileUrl = "$baseUrl/$($file -replace '\\','/')"
+            try {
+                $wc.DownloadFile($fileUrl, $localPath)
+            } catch {
+                # Skip failures silently — some paths from tree may be dirs
+            }
+
+            if ($dlCount % 50 -eq 0) {
+                $pct = [math]::Round(($dlCount / $total) * 100)
+                Write-Host "    [$pct%] Downloaded $dlCount / $total files..." -ForegroundColor DarkGray
+            }
+        }
         $wc.Dispose()
 
-        if (-not (Test-Path $repoZip) -or (Get-Item $repoZip).Length -lt 10000) {
-            throw "Download produced empty or missing file"
-        }
-
-        Write-Host "    Extracting..."
-        if (Test-Path $repoExtract) { Remove-Item $repoExtract -Recurse -Force }
-        Add-Type -AssemblyName System.IO.Compression.FileSystem
-        [System.IO.Compression.ZipFile]::ExtractToDirectory($repoZip, $repoExtract)
-
-        $subDir = (Get-ChildItem $repoExtract -Directory | Select-Object -First 1).FullName
-        $distDir = "$subDir\minecraft\distribution\client"
-
         if (-not (Test-Path "$distDir\mods\.index")) {
-            Write-Host "  ERROR: Could not find client distribution in downloaded repo." -ForegroundColor Red
-            Write-Host "  Contents of extract dir:" -ForegroundColor DarkGray
-            Get-ChildItem $repoExtract -Recurse -Depth 2 | Select-Object -First 20 | ForEach-Object { Write-Host "    $($_.FullName)" -ForegroundColor DarkGray }
-            Read-Host "  Press Enter to exit"
-            exit 1
+            throw "Distribution files incomplete after download"
         }
-        Write-Host "    [OK] Distribution files ready."
+
+        Write-Host "    [OK] Distribution files ready ($dlCount files)."
         Write-Host ""
     } catch {
         Write-Host "  ERROR: Download failed." -ForegroundColor Red
         Write-Host "  Detail: $($_.Exception.Message)" -ForegroundColor DarkGray
         Write-Host ""
-        Write-Host "  Check your internet connection, or download manually:" -ForegroundColor Yellow
+        Write-Host "  Alternative: clone the repo and run from distribution\client\ folder:" -ForegroundColor Yellow
         Write-Host "  https://github.com/silvariasereneblossom/IridescentCraft" -ForegroundColor Yellow
         Write-Host ""
         Read-Host "  Press Enter to exit"
@@ -267,8 +296,7 @@ if ($prismExe) {
 
 # Cleanup
 Remove-Item $staging -Recurse -Force -ErrorAction SilentlyContinue
-if (Test-Path variable:repoExtract) { Remove-Item $repoExtract -Recurse -Force -ErrorAction SilentlyContinue }
-if (Test-Path variable:repoZip) { Remove-Item $repoZip -Force -ErrorAction SilentlyContinue }
+if ($distDir -like "*TEMP*") { Remove-Item $distDir -Recurse -Force -ErrorAction SilentlyContinue }
 
 Write-Host ""
 Write-Host "  Done!" -ForegroundColor Green
