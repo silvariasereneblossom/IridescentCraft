@@ -11,6 +11,12 @@ param(
 $logFile = Join-Path (Split-Path $IndexDir -Parent) "download_log.txt"
 "Download started: $(Get-Date)" | Out-File $logFile
 
+Write-Host "  Index: $IndexDir" -ForegroundColor DarkGray
+Write-Host "  Mods:  $ModsDir" -ForegroundColor DarkGray
+$existingJars = (Get-ChildItem "$ModsDir\*.jar" -ErrorAction SilentlyContinue).Count
+Write-Host "  Existing JARs in mods dir: $existingJars" -ForegroundColor DarkGray
+Write-Host ''
+
 $tomlFiles = Get-ChildItem "$IndexDir\*.pw.toml"
 $total = $tomlFiles.Count
 Write-Host "  Found $total mod metadata files."
