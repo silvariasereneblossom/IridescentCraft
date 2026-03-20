@@ -273,80 +273,8 @@ for /f %%A in ('powershell -Command "(Get-ChildItem '%MODS_DIR%\*.jar' -ErrorAct
 echo [MODS] Found %JAR_COUNT% mods installed, checking for missing...
 echo.
 
-powershell -ExecutionPolicy Bypass -Command ^
-  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-  "$indexDir = '%INDEX_DIR%';" ^
-  "$modsDir = '%MODS_DIR%';" ^
-  "$tomlFiles = Get-ChildItem \"$indexDir\*.pw.toml\";" ^
-  "$total = $tomlFiles.Count;" ^
-  "Write-Host \"  Found $total mod metadata files.\";" ^
-  "Write-Host '';" ^
-  "$downloaded = 0; $skipped = 0; $failed = 0; $count = 0; $failedNames = @();" ^
-  "foreach ($toml in $tomlFiles) {" ^
-  "  $count++;" ^
-  "  $content = Get-Content $toml.FullName;" ^
-  "  $filename = ''; $side = 'both'; $mode = ''; $url = ''; $projectId = ''; $fileId = '';" ^
-  "  foreach ($line in $content) {" ^
-  "    $line = $line.Trim();" ^
-  "    if ($line -match '^filename\s*=\s*[''\""](.+)[''\""]') { $filename = $matches[1] }" ^
-  "    if ($line -match '^side\s*=\s*[''\""](.+)[''\""]') { $side = $matches[1] }" ^
-  "    if ($line -match '^mode\s*=\s*[''\""](.+)[''\""]') { $mode = $matches[1] }" ^
-  "    if ($line -match '^url\s*=\s*[''\""](.+)[''\""]') { $url = $matches[1] }" ^
-  "    if ($line -match '^project-id\s*=\s*(\d+)') { $projectId = $matches[1] }" ^
-  "    if ($line -match '^file-id\s*=\s*(\d+)') { $fileId = $matches[1] }" ^
-  "  };" ^
-  "  if (-not $filename) { continue };" ^
-  "  if ($side -eq 'server') { $skipped++; continue };" ^
-  "  $modPath = Join-Path $modsDir $filename;" ^
-  "  if (Test-Path -LiteralPath $modPath) { $skipped++; continue };" ^
-  "  $dlUrl = '';" ^
-  "  if ($mode -eq 'url' -and $url) {" ^
-  "    $dlUrl = $url" ^
-  "  } elseif ($mode -eq 'metadata:curseforge' -and $fileId) {" ^
-  "    $idStr = $fileId.ToString();" ^
-  "    $part1 = $idStr.Substring(0, 4);" ^
-  "    $part2 = $idStr.Substring(4).TrimStart('0');" ^
-  "    if (-not $part2) { $part2 = '0' };" ^
-  "    $dlUrl = \"https://edge.forgecdn.net/files/$part1/$part2/$filename\"" ^
-  "  };" ^
-  "  if (-not $dlUrl) { $failed++; continue };" ^
-  "  $pct = [math]::Round(($count / $total) * 100);" ^
-  "  Write-Host \"  [$pct%%] $filename\" -NoNewline;" ^
-  "  $tempFile = Join-Path $modsDir \"_dl_$count.tmp\";" ^
-  "  $success = $false;" ^
-  "  for ($retry = 0; $retry -lt 3; $retry++) {" ^
-  "    try {" ^
-  "      $wc = New-Object System.Net.WebClient;" ^
-  "      $wc.DownloadFile($dlUrl, $tempFile);" ^
-  "      $wc.Dispose();" ^
-  "      if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {" ^
-  "        Move-Item -LiteralPath $tempFile -Destination $modPath -Force;" ^
-  "        $success = $true; break;" ^
-  "      } else {" ^
-  "        if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
-  "      }" ^
-  "    } catch {" ^
-  "      if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
-  "      if ($retry -eq 2) { Write-Host \" [$($_.Exception.Message)]\" -NoNewline -ForegroundColor DarkGray }" ^
-  "      if ($retry -lt 2) { Start-Sleep -Seconds 2 }" ^
-  "    }" ^
-  "  };" ^
-  "  if ($success) {" ^
-  "    Write-Host ' OK' -ForegroundColor Green;" ^
-  "    $downloaded++;" ^
-  "  } else {" ^
-  "    Write-Host ' FAILED' -ForegroundColor Red;" ^
-  "    $failed++; $failedNames += $filename;" ^
-  "  }" ^
-  "};" ^
-  "Write-Host '';" ^
-  "Write-Host \"  Downloaded: $downloaded\" -ForegroundColor Green;" ^
-  "Write-Host \"  Already present: $skipped\" -ForegroundColor Cyan;" ^
-  "if ($failed -gt 0) {" ^
-  "  Write-Host \"  Failed: $failed\" -ForegroundColor Red;" ^
-  "  foreach ($fn in $failedNames) { Write-Host \"    - $fn\" -ForegroundColor DarkRed };" ^
-  "  Write-Host '  Re-run to retry failed downloads.' -ForegroundColor Yellow;" ^
-  "}"
+REM Use external PS1 script to avoid bat escaping issues with regex
+powershell -ExecutionPolicy Bypass -File "%~dp0download_mods.ps1" -IndexDir "%INDEX_DIR%" -ModsDir "%MODS_DIR%"
 
 echo.
 echo   Mod sync complete.
