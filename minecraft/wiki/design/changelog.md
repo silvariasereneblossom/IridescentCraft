@@ -4,6 +4,39 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-20 — Client installer fixes, transmuted materials, Codex update
+
+### Client Installer Fixes
+- CurseForge CDN download (319/450 mods) confirmed working via `edge.forgecdn.net`
+- Identified and fixed bat→PowerShell regex escaping bug: inline `[''\""]` character class was corrupted by CMD's quote parser, causing some TOML URL extractions to silently fail (including Iron's Spells base mod)
+- Moved mod download logic to external `download_mods.ps1` — clean PowerShell syntax, no escaping layers
+- Added 3x retry with 2s delay, `WebClient.DownloadFile` (streams to disk), error reporting with failed mod names
+- Removed `irons_spells_js` KubeJS addon (crashed when base mod failed to download, addon unused)
+- Re-run behavior: always checks for missing mods, skips existing ones instantly
+- Linux `.sh` verified working locally — both Modrinth and CurseForge CDN paths parse and download correctly
+
+### Transmuted Materials (Tier-Skip Fix)
+- AStages gates entire mods (e.g., `thermal`=tier_2), which blocked tier-skip recipe outputs
+- Created 5 ungated transmuted items: `kubejs:transmuted_steel`, `transmuted_manasteel`, `transmuted_osmium`, `transmuted_diamond`, `transmuted_ancient_debris`
+- Added to same forge tags as originals — work in ALL tag-based recipes automatically
+- Hidden from JEI via `jei_hiding.js` — discoverable through Codex or experimentation
+- `tier_skip.js` updated to output transmuted versions
+
+### Codex Update
+- Origins Guide: 6 pages (fixed missing texture from odd page count), updated with Phantom undeath, Witch of Ink, Artificial Construct
+- 7 class entries rewritten to match current implementations (Berserker, Samurai, Battlemage, Wanderer, Archmage, Vanguard, Void Summoner)
+- Faefolk race entry: removed Iron Weakness reference
+- 4 new race entries added: Demi-God, Ryu, Fallen Angel, Kirin
+
+### OfflineSkins
+- Added client-only OfflineSkins mod for skin display on offline-mode servers
+
+### Wiki & Memory
+- Added wiki update rule and memory update rule to CLAUDE.md
+- Script parity rule (.bat ↔ .sh) added to CLAUDE.md
+
+---
+
 ## 2026-03-19 — Class passives, magic system, balance pass, client installer
 
 ### Class Passive Implementations

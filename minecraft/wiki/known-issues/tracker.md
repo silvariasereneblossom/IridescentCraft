@@ -61,7 +61,8 @@ Forge requires network channel lists to match between client and server. Mods th
 - [ ] Battlemage Mana Shield — Resistance scaling with magic damage bonuses
 - [ ] Magic damage sync — puffish_attributes → ars_nouveau + irons_spellbooks
 - [ ] Compass of Return — bed tracking via BlockEvents.rightClicked, cross-dimension teleport
-- [ ] Client installer — CurseForge CDN downloads, PrismLauncher instance creation
+- [ ] Client installer — instance creation works, mod download mostly works, verifying final fix for regex escaping bug
+- [ ] Transmuted materials — verify forge tags work in recipes, JEI hiding functional
 - [ ] Iron's Spells loot tiering — spell books and inks by dimension tier
 - [ ] AStages API method signatures — inferred from docs, looking good per user testing
 - [ ] Simply Swords unique weapon IDs — 6 Abyss weapons unverified
