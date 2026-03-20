@@ -138,8 +138,10 @@ fi
 INSTANCES_DIR="$DATA_DIR/instances"
 INSTANCE_DIR="$INSTANCES_DIR/IridescentCraft"
 MC_DIR="$INSTANCE_DIR/.minecraft"
+# PrismLauncher manages mods at instance root, maps into .minecraft at launch
+MODS_ROOT="$INSTANCE_DIR/mods"
 
-mkdir -p "$INSTANCES_DIR" "$INSTANCE_DIR" "$MC_DIR/mods"
+mkdir -p "$INSTANCES_DIR" "$INSTANCE_DIR" "$MC_DIR" "$MODS_ROOT"
 
 # Always sync configs/scripts/datapacks (supports updates on re-run)
 echo "  Syncing game files..."
@@ -155,16 +157,16 @@ if [ -d "$SCRIPT_DIR/config" ]; then
     cp -r "$SCRIPT_DIR/global_packs" "$MC_DIR/"
     echo "    global_packs... OK"
 
-    # Copy custom mod JARs
+    # Copy custom mod JARs to instance root mods/ (PrismLauncher managed)
     if ls "$SCRIPT_DIR"/mods/*.jar &>/dev/null; then
-        cp "$SCRIPT_DIR"/mods/*.jar "$MC_DIR/mods/"
+        cp "$SCRIPT_DIR"/mods/*.jar "$MODS_ROOT/"
         echo "    custom JARs... OK"
     fi
 
     # Copy mod index
     if [ -d "$SCRIPT_DIR/mods/.index" ]; then
-        mkdir -p "$MC_DIR/mods/.index"
-        cp -r "$SCRIPT_DIR/mods/.index/"* "$MC_DIR/mods/.index/"
+        mkdir -p "$MODS_ROOT/.index"
+        cp -r "$SCRIPT_DIR/mods/.index/"* "$MODS_ROOT/.index/"
         echo "    mod index... OK"
     fi
 else
@@ -183,10 +185,10 @@ else
     [ -d "$SRC/kubejs" ] && cp -r "$SRC/kubejs" "$MC_DIR/"
     [ -d "$SRC/global_packs" ] && cp -r "$SRC/global_packs" "$MC_DIR/"
     if [ -d "$SRC/mods/.index" ]; then
-        mkdir -p "$MC_DIR/mods/.index"
-        cp -r "$SRC/mods/.index/"* "$MC_DIR/mods/.index/"
+        mkdir -p "$MODS_ROOT/.index"
+        cp -r "$SRC/mods/.index/"* "$MODS_ROOT/.index/"
     fi
-    ls "$SRC"/mods/*.jar &>/dev/null && cp "$SRC"/mods/*.jar "$MC_DIR/mods/"
+    ls "$SRC"/mods/*.jar &>/dev/null && cp "$SRC"/mods/*.jar "$MODS_ROOT/"
 
     rm -f "$ZIPFILE"
     rm -rf "$EXTRACTDIR"
@@ -241,8 +243,8 @@ echo ""
 # -------------------------------------------------------------------
 # Phase 3: Download mods from .pw.toml metadata
 # -------------------------------------------------------------------
-INDEX_DIR="$MC_DIR/mods/.index"
-MODS_DIR="$MC_DIR/mods"
+INDEX_DIR="$MODS_ROOT/.index"
+MODS_DIR="$MODS_ROOT"
 
 if [ ! -d "$INDEX_DIR" ]; then
     echo -e "  ${YELLOW}[WARN]${RESET} No mod index found. Mods must be downloaded manually."

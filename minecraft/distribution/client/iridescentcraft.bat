@@ -148,11 +148,13 @@ echo.
 set "INSTANCES_DIR=%AppData%\PrismLauncher\instances"
 set "INSTANCE_DIR=%INSTANCES_DIR%\IridescentCraft"
 set "MC_DIR=%INSTANCE_DIR%\.minecraft"
+REM PrismLauncher manages mods at instance root, maps into .minecraft at launch
+set "MODS_ROOT=%INSTANCE_DIR%\mods"
 
 mkdir "%INSTANCES_DIR%" 2>nul
 mkdir "%INSTANCE_DIR%" 2>nul
 mkdir "%MC_DIR%" 2>nul
-mkdir "%MC_DIR%\mods" 2>nul
+mkdir "%MODS_ROOT%" 2>nul
 
 REM Always sync configs/scripts/datapacks (supports updates on re-run)
 echo   Syncing game files...
@@ -170,16 +172,16 @@ if exist "%~dp0config" (
     xcopy /s /e /y /q "%~dp0global_packs" "%MC_DIR%\global_packs\" >nul 2>&1
     echo     global_packs... OK
 
-    REM Copy custom mod JARs (coremods, compat patches — NOT downloaded mods)
+    REM Copy custom mod JARs to instance root mods/ (PrismLauncher managed)
     if exist "%~dp0mods\*.jar" (
-        copy /y "%~dp0mods\*.jar" "%MC_DIR%\mods\" >nul 2>&1
+        copy /y "%~dp0mods\*.jar" "%MODS_ROOT%\" >nul 2>&1
         echo     custom JARs... OK
     )
 
     REM Copy mod index for download phase
     if exist "%~dp0mods\.index" (
-        mkdir "%MC_DIR%\mods\.index" 2>nul
-        xcopy /s /e /y /q "%~dp0mods\.index" "%MC_DIR%\mods\.index\" >nul 2>&1
+        mkdir "%MODS_ROOT%\.index" 2>nul
+        xcopy /s /e /y /q "%~dp0mods\.index" "%MODS_ROOT%\.index\" >nul 2>&1
         echo     mod index... OK
     )
 ) else (
@@ -202,8 +204,9 @@ if exist "%~dp0config" (
       "  if (Test-Path \"$src\defaultconfigs\") { Copy-Item \"$src\defaultconfigs\" \"$mc\defaultconfigs\" -Recurse -Force };" ^
       "  if (Test-Path \"$src\kubejs\") { Copy-Item \"$src\kubejs\" \"$mc\kubejs\" -Recurse -Force };" ^
       "  if (Test-Path \"$src\global_packs\") { Copy-Item \"$src\global_packs\" \"$mc\global_packs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\mods\.index\") { New-Item -ItemType Directory -Path \"$mc\mods\.index\" -Force | Out-Null; Copy-Item \"$src\mods\.index\*\" \"$mc\mods\.index\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\mods\*.jar\") { Copy-Item \"$src\mods\*.jar\" \"$mc\mods\" -Force };" ^
+      "  $modsRoot = '%MODS_ROOT%';" ^
+      "  if (Test-Path \"$src\mods\.index\") { New-Item -ItemType Directory -Path \"$modsRoot\.index\" -Force | Out-Null; Copy-Item \"$src\mods\.index\*\" \"$modsRoot\.index\" -Recurse -Force };" ^
+      "  if (Test-Path \"$src\mods\*.jar\") { Copy-Item \"$src\mods\*.jar\" \"$modsRoot\" -Force };" ^
       "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
       "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
       "  Write-Host '  Done.';" ^
@@ -257,8 +260,8 @@ echo.
 REM -------------------------------------------------------------------
 REM Phase 3: Download mods from .pw.toml metadata
 REM -------------------------------------------------------------------
-set "INDEX_DIR=%MC_DIR%\mods\.index"
-set "MODS_DIR=%MC_DIR%\mods"
+set "INDEX_DIR=%MODS_ROOT%\.index"
+set "MODS_DIR=%MODS_ROOT%"
 
 if not exist "%INDEX_DIR%" (
     echo [WARN] No mod index found. Mods must be downloaded manually.
