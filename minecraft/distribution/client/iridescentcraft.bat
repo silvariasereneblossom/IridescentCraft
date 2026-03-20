@@ -1,9 +1,11 @@
 @echo off
 REM IridescentCraft Client Installer (Windows)
-REM One-click: finds/downloads PrismLauncher, sets up instance, downloads mods
+REM Builds a PrismLauncher-importable instance zip, then imports it.
+REM PrismLauncher handles Forge download + mod downloads from .index metadata.
 REM
 REM Requirements:
 REM   - Windows 10/11 (64-bit)
+REM   - PrismLauncher installed (will help find/download if missing)
 REM   - Java 17+ (PrismLauncher will prompt if missing)
 REM   - Minecraft account (Microsoft, Ely.by, or offline)
 
@@ -25,195 +27,23 @@ powershell -Command ^
 echo.
 
 REM -------------------------------------------------------------------
-REM Phase 1: Find or download PrismLauncher
+REM Phase 1: Build instance zip
 REM -------------------------------------------------------------------
-set PRISM_EXE=
-
-REM Check common install locations
-for %%P in (
-    "%LocalAppData%\Programs\PrismLauncher\prismlauncher.exe"
-    "%ProgramFiles%\PrismLauncher\prismlauncher.exe"
-    "%ProgramFiles(x86)%\PrismLauncher\prismlauncher.exe"
-    "%LocalAppData%\PrismLauncher\prismlauncher.exe"
-    "%AppData%\PrismLauncher\prismlauncher.exe"
-    "%~dp0PrismLauncher\prismlauncher.exe"
-) do (
-    if exist "%%~P" (
-        set "PRISM_EXE=%%~P"
-    )
-)
-
-REM Check PATH
-if not defined PRISM_EXE (
-    where prismlauncher.exe >nul 2>&1
-    if !errorlevel! equ 0 (
-        for /f "delims=" %%P in ('where prismlauncher.exe') do set "PRISM_EXE=%%P"
-    )
-)
-
-REM Search user profile as last resort
-if not defined PRISM_EXE (
-    for /f "delims=" %%F in ('powershell -Command "Get-ChildItem -Path $env:LOCALAPPDATA,$env:APPDATA,$env:USERPROFILE -Filter 'prismlauncher.exe' -Recurse -Depth 4 -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName" 2^>nul') do (
-        set "PRISM_EXE=%%F"
-    )
-)
-
-if defined PRISM_EXE (
-    echo [OK] PrismLauncher found: %PRISM_EXE%
-    echo.
-    goto :setup_instance
-)
-
-REM Ask user to locate it manually before downloading
-echo   PrismLauncher not found in standard locations.
-echo   If you already have it installed, enter the path to prismlauncher.exe
-echo   or press Enter to download a fresh copy.
-echo.
-set /p "USER_PRISM=  Path (or Enter to download): "
-if defined USER_PRISM (
-    if exist "!USER_PRISM!" (
-        set "PRISM_EXE=!USER_PRISM!"
-        echo [OK] Using: !PRISM_EXE!
-        echo.
-        goto :setup_instance
-    ) else (
-        echo   File not found. Downloading fresh copy...
-        echo.
-    )
-)
-
-echo [INSTALL] Downloading PrismLauncher...
+echo [BUILD] Assembling IridescentCraft instance package...
 echo.
 
-set "PRISM_INSTALL=%AppData%\PrismLauncher"
-set "PRISM_ZIP=%TEMP%\PrismLauncher-Portable.zip"
+set "STAGING=%TEMP%\IridescentCraft-staging"
+set "STAGE_MC=%STAGING%\.minecraft"
+set "STAGE_MODS=%STAGING%\.minecraft\mods"
+set "OUTPUT_ZIP=%TEMP%\IridescentCraft-instance.zip"
 
-mkdir "%PRISM_INSTALL%" 2>nul
+REM Clean previous staging
+if exist "%STAGING%" rmdir /s /q "%STAGING%"
+mkdir "%STAGING%"
+mkdir "%STAGE_MC%"
+mkdir "%STAGE_MODS%"
 
-powershell -Command ^
-  "try {" ^
-  "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-  "  $release = Invoke-RestMethod -Uri 'https://api.github.com/repos/PrismLauncher/PrismLauncher/releases/latest' -UseBasicParsing;" ^
-  "  $asset = $release.assets | Where-Object { $_.name -match 'Windows-MSVC-Portable.*\.zip$' -and $_.name -notmatch 'arm' } | Select-Object -First 1;" ^
-  "  if ($asset) {" ^
-  "    Write-Host ('  Downloading: ' + $asset.name);" ^
-  "    Invoke-WebRequest -Uri $asset.browser_download_url -OutFile '%PRISM_ZIP%' -UseBasicParsing;" ^
-  "  } else {" ^
-  "    Write-Host 'ERROR: Could not find download' -ForegroundColor Red; exit 1;" ^
-  "  }" ^
-  "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
-
-if not exist "%PRISM_ZIP%" (
-    echo ERROR: Failed to download PrismLauncher.
-    echo Please download manually from https://prismlauncher.org/download/
-    pause
-    exit /b 1
-)
-
-echo   Extracting to %PRISM_INSTALL%...
-powershell -Command "Expand-Archive -Path '%PRISM_ZIP%' -DestinationPath '%PRISM_INSTALL%' -Force"
-del "%PRISM_ZIP%" 2>nul
-
-for /f "delims=" %%F in ('powershell -Command "Get-ChildItem -Path '%PRISM_INSTALL%' -Filter 'prismlauncher.exe' -Recurse -ErrorAction SilentlyContinue | Select-Object -First 1 -ExpandProperty FullName"') do (
-    set "PRISM_EXE=%%F"
-)
-
-if not defined PRISM_EXE (
-    echo ERROR: Extraction failed. Check %PRISM_INSTALL%
-    pause
-    exit /b 1
-)
-
-echo   [OK] PrismLauncher installed.
-echo.
-
-:setup_instance
-REM -------------------------------------------------------------------
-REM Phase 2: Set up instance
-REM -------------------------------------------------------------------
-REM PrismLauncher OneSix layout:
-REM   instances/IridescentCraft/
-REM     instance.cfg          <- PrismLauncher metadata
-REM     mmc-pack.json         <- component list (MC + Forge versions)
-REM     .minecraft/           <- actual game directory
-REM       mods/               <- Forge loads mods from here
-REM       config/
-REM       kubejs/
-REM       global_packs/
-REM -------------------------------------------------------------------
-
-echo [SETUP] Preparing IridescentCraft instance...
-echo.
-
-set "INSTANCES_DIR=%AppData%\PrismLauncher\instances"
-set "INSTANCE_DIR=%INSTANCES_DIR%\IridescentCraft"
-set "MC_DIR=%INSTANCE_DIR%\.minecraft"
-set "MODS_ROOT=%MC_DIR%\mods"
-
-mkdir "%INSTANCES_DIR%" 2>nul
-mkdir "%INSTANCE_DIR%" 2>nul
-mkdir "%MC_DIR%" 2>nul
-mkdir "%MODS_ROOT%" 2>nul
-
-REM Always sync configs/scripts/datapacks (supports updates on re-run)
-echo   Syncing game files...
-
-if exist "%~dp0config" (
-    REM Local distribution available — copy from here
-    xcopy /s /e /y /q "%~dp0config" "%MC_DIR%\config\" >nul 2>&1
-    echo     config... OK
-    if exist "%~dp0defaultconfigs" (
-        xcopy /s /e /y /q "%~dp0defaultconfigs" "%MC_DIR%\defaultconfigs\" >nul 2>&1
-        echo     defaultconfigs... OK
-    )
-    xcopy /s /e /y /q "%~dp0kubejs" "%MC_DIR%\kubejs\" >nul 2>&1
-    echo     kubejs... OK
-    xcopy /s /e /y /q "%~dp0global_packs" "%MC_DIR%\global_packs\" >nul 2>&1
-    echo     global_packs... OK
-
-    REM Copy custom mod JARs to instance root mods/ (PrismLauncher managed)
-    if exist "%~dp0mods\*.jar" (
-        copy /y "%~dp0mods\*.jar" "%MODS_ROOT%\" >nul 2>&1
-        echo     custom JARs... OK
-    )
-
-    REM Copy mod index for download phase
-    if exist "%~dp0mods\.index" (
-        mkdir "%MODS_ROOT%\.index" 2>nul
-        xcopy /s /e /y /q "%~dp0mods\.index" "%MODS_ROOT%\.index\" >nul 2>&1
-        echo     mod index... OK
-    )
-) else (
-    echo   No local distribution — downloading from GitHub...
-    powershell -Command ^
-      "try {" ^
-      "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-      "  $zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
-      "  $zipFile = $env:TEMP + '\IridescentCraft-main.zip';" ^
-      "  $extractDir = $env:TEMP + '\IridescentCraft-extract';" ^
-      "  Write-Host '  Downloading repository...';" ^
-      "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing;" ^
-      "  Write-Host '  Extracting...';" ^
-      "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
-      "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
-      "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\distribution\client';" ^
-      "  $mc = '%MC_DIR%';" ^
-      "  Write-Host '  Copying game files...';" ^
-      "  if (Test-Path \"$src\config\") { Copy-Item \"$src\config\" \"$mc\config\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\defaultconfigs\") { Copy-Item \"$src\defaultconfigs\" \"$mc\defaultconfigs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\kubejs\") { Copy-Item \"$src\kubejs\" \"$mc\kubejs\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\global_packs\") { Copy-Item \"$src\global_packs\" \"$mc\global_packs\" -Recurse -Force };" ^
-      "  $modsRoot = '%MODS_ROOT%';" ^
-      "  if (Test-Path \"$src\mods\.index\") { New-Item -ItemType Directory -Path \"$modsRoot\.index\" -Force | Out-Null; Copy-Item \"$src\mods\.index\*\" \"$modsRoot\.index\" -Recurse -Force };" ^
-      "  if (Test-Path \"$src\mods\*.jar\") { Copy-Item \"$src\mods\*.jar\" \"$modsRoot\" -Force };" ^
-      "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
-      "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
-      "  Write-Host '  Done.';" ^
-      "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
-)
-
-REM Write instance.cfg and mmc-pack.json (always overwrite for updates)
-echo   Writing instance metadata...
+REM Write instance.cfg
 (
 echo [General]
 echo ConfigVersion=1.3
@@ -224,8 +54,10 @@ echo MaxMemAlloc=10240
 echo MinMemAlloc=4096
 echo iconKey=default
 echo name=IridescentCraft
-) > "%INSTANCE_DIR%\instance.cfg"
+) > "%STAGING%\instance.cfg"
+echo   instance.cfg... OK
 
+REM Write mmc-pack.json (tells PrismLauncher which MC + Forge to use)
 (
 echo {
 echo     "components": [
@@ -245,59 +77,165 @@ echo         }
 echo     ],
 echo     "formatVersion": 1
 echo }
-) > "%INSTANCE_DIR%\mmc-pack.json"
+) > "%STAGING%\mmc-pack.json"
+echo   mmc-pack.json... OK
 
-REM Ensure instgroups.json exists (PrismLauncher needs this)
-if not exist "%INSTANCES_DIR%\instgroups.json" (
-    powershell -Command "'{\"formatVersion\":1,\"groups\":{}}' | Set-Content -Path '%INSTANCES_DIR%\instgroups.json' -Encoding UTF8"
+REM Copy game files from local distribution
+if exist "%~dp0config" (
+    xcopy /s /e /y /q "%~dp0config" "%STAGE_MC%\config\" >nul 2>&1
+    echo   config... OK
+)
+if exist "%~dp0defaultconfigs" (
+    xcopy /s /e /y /q "%~dp0defaultconfigs" "%STAGE_MC%\defaultconfigs\" >nul 2>&1
+    echo   defaultconfigs... OK
+)
+if exist "%~dp0kubejs" (
+    xcopy /s /e /y /q "%~dp0kubejs" "%STAGE_MC%\kubejs\" >nul 2>&1
+    echo   kubejs... OK
+)
+if exist "%~dp0global_packs" (
+    xcopy /s /e /y /q "%~dp0global_packs" "%STAGE_MC%\global_packs\" >nul 2>&1
+    echo   global_packs... OK
+)
+
+REM Copy mod index (.pw.toml files — PrismLauncher downloads mods from these)
+if exist "%~dp0mods\.index" (
+    mkdir "%STAGE_MODS%\.index" 2>nul
+    xcopy /s /e /y /q "%~dp0mods\.index" "%STAGE_MODS%\.index\" >nul 2>&1
+    echo   mod index (.pw.toml)... OK
+)
+
+REM Copy custom JARs (coremods, patches — not in .index)
+if exist "%~dp0mods\*.jar" (
+    copy /y "%~dp0mods\*.jar" "%STAGE_MODS%\" >nul 2>&1
+    echo   custom JARs... OK
 )
 
 echo.
-echo   [OK] Instance ready.
+echo   [OK] Instance package assembled.
 echo.
 
 REM -------------------------------------------------------------------
-REM Phase 3: Download mods from .pw.toml metadata
+REM Phase 2: Zip it
 REM -------------------------------------------------------------------
-set "INDEX_DIR=%MODS_ROOT%\.index"
-set "MODS_DIR=%MODS_ROOT%"
+echo [ZIP] Creating importable archive...
 
-if not exist "%INDEX_DIR%" (
-    echo [WARN] No mod index found. Mods must be downloaded manually.
+if exist "%OUTPUT_ZIP%" del "%OUTPUT_ZIP%"
+powershell -Command "Compress-Archive -Path '%STAGING%\*' -DestinationPath '%OUTPUT_ZIP%' -Force"
+
+if not exist "%OUTPUT_ZIP%" (
+    echo   ERROR: Failed to create zip.
+    pause
+    exit /b 1
+)
+
+for /f %%S in ('powershell -Command "(Get-Item '%OUTPUT_ZIP%').Length / 1MB" ') do set "ZIP_SIZE=%%S"
+echo   Created: %OUTPUT_ZIP% (%ZIP_SIZE% MB)
+echo.
+
+REM -------------------------------------------------------------------
+REM Phase 3: Save dialog — let user choose where to save
+REM -------------------------------------------------------------------
+echo [SAVE] Choose where to save the instance zip...
+echo.
+
+set "SAVE_PATH="
+for /f "delims=" %%F in ('powershell -Command ^
+  "Add-Type -AssemblyName System.Windows.Forms;" ^
+  "$d = New-Object System.Windows.Forms.SaveFileDialog;" ^
+  "$d.Title = 'Save IridescentCraft Instance';" ^
+  "$d.FileName = 'IridescentCraft-instance.zip';" ^
+  "$d.Filter = 'ZIP Archive (*.zip)|*.zip';" ^
+  "$d.InitialDirectory = [Environment]::GetFolderPath('Desktop');" ^
+  "if ($d.ShowDialog() -eq 'OK') { $d.FileName } else { 'CANCELLED' }"') do (
+    set "SAVE_PATH=%%F"
+)
+
+if "%SAVE_PATH%"=="CANCELLED" (
+    echo   Save cancelled. The zip is still at:
+    echo   %OUTPUT_ZIP%
+    echo   You can import it manually in PrismLauncher.
     echo.
-    goto :launch
+    goto :import_instructions
 )
 
-REM Count existing mods
-set "JAR_COUNT=0"
-for /f %%A in ('powershell -Command "(Get-ChildItem '%MODS_DIR%\*.jar' -ErrorAction SilentlyContinue).Count"') do set "JAR_COUNT=%%A"
+if not defined SAVE_PATH (
+    echo   No path selected. The zip is still at:
+    echo   %OUTPUT_ZIP%
+    echo.
+    goto :import_instructions
+)
 
-echo [MODS] Found %JAR_COUNT% mods installed, checking for missing...
+copy /y "%OUTPUT_ZIP%" "%SAVE_PATH%" >nul 2>&1
+echo   Saved to: %SAVE_PATH%
 echo.
 
-REM Use external PS1 script to avoid bat escaping issues with regex
-powershell -ExecutionPolicy Bypass -File "%~dp0download_mods.ps1" -IndexDir "%INDEX_DIR%" -ModsDir "%MODS_DIR%"
-
-echo.
-echo   Mod sync complete.
-echo.
-
-:launch
 REM -------------------------------------------------------------------
-REM Phase 4: Launch PrismLauncher
+REM Phase 4: Try to auto-import via PrismLauncher CLI
 REM -------------------------------------------------------------------
-echo [LAUNCH] Starting PrismLauncher...
+set PRISM_EXE=
+
+REM Check common install locations
+for %%P in (
+    "%LocalAppData%\Programs\PrismLauncher\prismlauncher.exe"
+    "%ProgramFiles%\PrismLauncher\prismlauncher.exe"
+    "%ProgramFiles(x86)%\PrismLauncher\prismlauncher.exe"
+    "%LocalAppData%\PrismLauncher\prismlauncher.exe"
+    "%AppData%\PrismLauncher\prismlauncher.exe"
+) do (
+    if exist "%%~P" set "PRISM_EXE=%%~P"
+)
+
+if not defined PRISM_EXE (
+    where prismlauncher.exe >nul 2>&1
+    if !errorlevel! equ 0 (
+        for /f "delims=" %%P in ('where prismlauncher.exe') do set "PRISM_EXE=%%P"
+    )
+)
+
+if defined PRISM_EXE (
+    echo [IMPORT] Launching PrismLauncher with instance import...
+    echo.
+    if defined SAVE_PATH (
+        start "" "%PRISM_EXE%" --import "%SAVE_PATH%"
+    ) else (
+        start "" "%PRISM_EXE%" --import "%OUTPUT_ZIP%"
+    )
+    echo   PrismLauncher should open with the import dialog.
+    echo   Click OK to import, then launch the instance.
+    echo.
+    echo   First launch will download Forge + ~420 mods.
+    echo   This takes 5-15 minutes depending on your internet.
+    echo.
+    goto :done
+)
+
+:import_instructions
+echo ===================================================================
+echo   HOW TO IMPORT:
+echo ===================================================================
 echo.
-echo   NOTE: If this is your first time:
-echo     1. Add your account (Accounts section in Settings)
-echo        - Microsoft, Ely.by, or offline accounts supported
-echo     2. Select "IridescentCraft" from the instance list
-echo     3. Click "Launch"
-echo     4. First launch takes 5-15 minutes (Forge downloads + 420 mods load)
+echo   1. Open PrismLauncher
+echo   2. Click "Add Instance" (top left)
+echo   3. Select "Import" tab
+echo   4. Browse to the zip file:
+if defined SAVE_PATH (
+    echo      %SAVE_PATH%
+) else (
+    echo      %OUTPUT_ZIP%
+)
+echo   5. Click OK
+echo   6. PrismLauncher will download Forge + all mods automatically
+echo   7. Add your Minecraft account in Settings if needed
+echo   8. Launch!
+echo.
+echo   First launch takes 5-15 minutes (Forge + 420 mods).
 echo.
 
-start "" "%PRISM_EXE%"
+:done
+REM Cleanup staging
+rmdir /s /q "%STAGING%" 2>nul
 
-echo PrismLauncher launched. You can close this window.
+echo Done! You can close this window.
 echo.
 pause
