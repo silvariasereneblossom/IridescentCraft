@@ -312,20 +312,26 @@ powershell -ExecutionPolicy Bypass -Command ^
   "  if (-not $dlUrl) { $failed++; continue };" ^
   "  $pct = [math]::Round(($count / $total) * 100);" ^
   "  Write-Host \"  [$pct%%] $filename\" -NoNewline;" ^
-  "  try {" ^
-  "    $tempFile = Join-Path $modsDir \"_dl_$count.tmp\";" ^
-  "    Invoke-WebRequest -Uri $dlUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing;" ^
-  "    if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {" ^
-  "      Move-Item -LiteralPath $tempFile -Destination $modPath -Force;" ^
-  "      Write-Host ' OK' -ForegroundColor Green;" ^
-  "      $downloaded++;" ^
-  "    } else {" ^
+  "  $tempFile = Join-Path $modsDir \"_dl_$count.tmp\";" ^
+  "  $success = $false;" ^
+  "  for ($retry = 0; $retry -lt 3; $retry++) {" ^
+  "    try {" ^
+  "      Invoke-WebRequest -Uri $dlUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing -TimeoutSec 120;" ^
+  "      if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {" ^
+  "        Move-Item -LiteralPath $tempFile -Destination $modPath -Force;" ^
+  "        $success = $true; break;" ^
+  "      } else {" ^
+  "        if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
+  "      }" ^
+  "    } catch {" ^
   "      if (Test-Path $tempFile) { Remove-Item $tempFile -Force };" ^
-  "      Write-Host ' SMALL/EMPTY' -ForegroundColor Red;" ^
-  "      $failed++;" ^
+  "      if ($retry -lt 2) { Start-Sleep -Seconds 2 }" ^
   "    }" ^
-  "  } catch {" ^
-  "    if (Test-Path (Join-Path $modsDir \"_dl_$count.tmp\")) { Remove-Item (Join-Path $modsDir \"_dl_$count.tmp\") -Force };" ^
+  "  };" ^
+  "  if ($success) {" ^
+  "    Write-Host ' OK' -ForegroundColor Green;" ^
+  "    $downloaded++;" ^
+  "  } else {" ^
   "    Write-Host ' FAILED' -ForegroundColor Red;" ^
   "    $failed++;" ^
   "  }" ^

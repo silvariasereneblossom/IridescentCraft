@@ -323,13 +323,22 @@ else
         printf "  [%3d%%] %s" "$PCT" "$FILENAME"
 
         TMPFILE="$MODS_DIR/_dl_$COUNT.tmp"
-        if curl -sL "$DL_URL" -o "$TMPFILE" --max-redirs 10 && \
-           [ -f "$TMPFILE" ] && [ "$(stat -c%s "$TMPFILE" 2>/dev/null || stat -f%z "$TMPFILE" 2>/dev/null)" -gt 1000 ]; then
-            mv "$TMPFILE" "$MOD_PATH"
+        DL_OK=0
+        for RETRY in 1 2 3; do
+            if curl -sL "$DL_URL" -o "$TMPFILE" --max-redirs 10 --connect-timeout 30 --max-time 120 && \
+               [ -f "$TMPFILE" ] && [ "$(stat -c%s "$TMPFILE" 2>/dev/null || stat -f%z "$TMPFILE" 2>/dev/null)" -gt 1000 ]; then
+                mv "$TMPFILE" "$MOD_PATH"
+                DL_OK=1
+                break
+            else
+                rm -f "$TMPFILE"
+                [ "$RETRY" -lt 3 ] && sleep 2
+            fi
+        done
+        if [ "$DL_OK" -eq 1 ]; then
             echo -e " ${GREEN}OK${RESET}"
             DOWNLOADED=$((DOWNLOADED + 1))
         else
-            rm -f "$TMPFILE"
             echo -e " ${RED}FAILED${RESET}"
             FAILED=$((FAILED + 1))
         fi
