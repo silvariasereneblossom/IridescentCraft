@@ -7,6 +7,10 @@ param(
 
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
+# Log file for debugging
+$logFile = Join-Path (Split-Path $IndexDir -Parent) "download_log.txt"
+"Download started: $(Get-Date)" | Out-File $logFile
+
 $tomlFiles = Get-ChildItem "$IndexDir\*.pw.toml"
 $total = $tomlFiles.Count
 Write-Host "  Found $total mod metadata files."
@@ -87,6 +91,7 @@ foreach ($toml in $tomlFiles) {
         Write-Host ' FAILED' -ForegroundColor Red
         $failed++
         $failedNames += $filename
+        "FAILED: $filename | URL: $dlUrl" | Out-File $logFile -Append
     }
 }
 
@@ -97,4 +102,6 @@ if ($failed -gt 0) {
     Write-Host "  Failed: $failed" -ForegroundColor Red
     foreach ($fn in $failedNames) { Write-Host "    - $fn" -ForegroundColor DarkRed }
     Write-Host '  Re-run to retry failed downloads.' -ForegroundColor Yellow
+    Write-Host "  Log saved to: $logFile" -ForegroundColor DarkGray
 }
+"Summary: downloaded=$downloaded skipped=$skipped failed=$failed" | Out-File $logFile -Append
