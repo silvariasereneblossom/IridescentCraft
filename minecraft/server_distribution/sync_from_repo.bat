@@ -80,6 +80,13 @@ if %ROBOCOPY_EXIT% LEQ 3 (
 
 echo.
 
+REM Check for mod updates (new .pw.toml versions → download new JARs, remove old)
+echo.
+echo [UPDATE] Checking for mod version changes...
+pushd "%LOCAL%"
+powershell -ExecutionPolicy Bypass -File "%LOCAL%\update_mods.ps1" -ModsDir "mods"
+popd
+
 REM Check if server is running — warn if so
 tasklist /FI "IMAGENAME eq java.exe" 2>nul | find /I "java.exe" >nul
 if %errorlevel% equ 0 (

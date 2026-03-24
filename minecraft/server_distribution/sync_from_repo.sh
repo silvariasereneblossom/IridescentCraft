@@ -77,6 +77,13 @@ rsync -av --include='*.jar' --exclude='*' "$REPO/mods/" "$LOCAL/mods/"
 echo ""
 echo "[OK] Sync complete."
 
+# Check for mod updates
+echo ""
+echo "[UPDATE] Checking for mod version changes..."
+pushd "$LOCAL" > /dev/null
+bash "$LOCAL/update_mods.sh" "mods"
+popd > /dev/null
+
 # Check if server is running
 if pgrep -f "forge.*nogui" > /dev/null 2>&1 || pgrep -f "minecraft_server" > /dev/null 2>&1; then
     echo "[NOTE] Minecraft server appears to be running. Restart to pick up changes."
