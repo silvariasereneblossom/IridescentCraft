@@ -319,25 +319,49 @@ if ($prismExe) {
         Write-Host "    then press Enter here to download CurseForge mods." -ForegroundColor Yellow
         Read-Host "    Press Enter when PrismLauncher import is done"
 
-        # Find the instance mods folder
-        $instancesDir = "$env:APPDATA\PrismLauncher\instances"
+        # Find the instance mods folder — check multiple possible data directories
         $instanceMods = ""
-        # Try common instance locations
-        foreach ($candidate in @(
-            "$instancesDir\IridescentCraft\.minecraft\mods",
-            "$instancesDir\IridescentCraft\mods",
-            "$instancesDir\IridescentCraft (1)\.minecraft\mods",
-            "$instancesDir\IridescentCraft (1)\mods"
-        )) {
-            if (Test-Path $candidate) { $instanceMods = $candidate; break }
+        $dataDirs = @(
+            "$env:APPDATA\PrismLauncher",
+            "$env:LOCALAPPDATA\PrismLauncher",
+            "$env:APPDATA\PrismLauncher\instances",
+            "$env:LOCALAPPDATA\Programs\PrismLauncher"
+        )
+        # Also check portable installs next to prismlauncher.exe
+        if ($prismExe) {
+            $prismParent = Split-Path $prismExe -Parent
+            $dataDirs += $prismParent
+            $dataDirs += "$prismParent\instances"
         }
 
+        foreach ($dataDir in $dataDirs) {
+            if (-not (Test-Path $dataDir)) { continue }
+            # Search for IridescentCraft instance in this data dir
+            $searchPaths = @($dataDir)
+            if (Test-Path "$dataDir\instances") { $searchPaths += "$dataDir\instances" }
+            foreach ($searchDir in $searchPaths) {
+                $instances = Get-ChildItem $searchDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "IridescentCraft*" }
+                foreach ($inst in $instances) {
+                    if (Test-Path "$($inst.FullName)\.minecraft\mods") { $instanceMods = "$($inst.FullName)\.minecraft\mods"; break }
+                    elseif (Test-Path "$($inst.FullName)\minecraft\mods") { $instanceMods = "$($inst.FullName)\minecraft\mods"; break }
+                    elseif (Test-Path "$($inst.FullName)\mods") { $instanceMods = "$($inst.FullName)\mods"; break }
+                }
+                if ($instanceMods) { break }
+            }
+            if ($instanceMods) { break }
+        }
+
+        # Ask user if we can't find it
         if (-not $instanceMods) {
-            # Search for the instance
-            $found = Get-ChildItem $instancesDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "IridescentCraft*" } | Select-Object -First 1
-            if ($found) {
-                if (Test-Path "$($found.FullName)\.minecraft\mods") { $instanceMods = "$($found.FullName)\.minecraft\mods" }
-                elseif (Test-Path "$($found.FullName)\mods") { $instanceMods = "$($found.FullName)\mods" }
+            Write-Host "  Could not find IridescentCraft instance mods folder automatically." -ForegroundColor Yellow
+            Write-Host "  In PrismLauncher, right-click the instance -> Folder -> .minecraft" -ForegroundColor Yellow
+            Write-Host ""
+            $manualPath = Read-Host "  Paste the .minecraft path here (or Enter to skip)"
+            if ($manualPath -and (Test-Path "$manualPath\mods")) {
+                $instanceMods = "$manualPath\mods"
+            } elseif ($manualPath -and (Test-Path $manualPath)) {
+                New-Item -ItemType Directory -Path "$manualPath\mods" -Force | Out-Null
+                $instanceMods = "$manualPath\mods"
             }
         }
 
