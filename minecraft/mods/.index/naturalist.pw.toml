@@ -1,4 +1,4 @@
-filename = 'naturalist-5.0pre3+forge-1.20.1.jar'
+filename = 'naturalist-5.0pre5+forge-1.20.1.jar'
 name = 'Naturalist'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '6a03e808a1cf88ef4208af58e39858ae501b0746b99c9d39273c414f9fe7db6751444c32b749beedc184deff4bfae10ed23e6143b83b03113c56320844a577db'
-hash-format = 'sha512'
-mode = 'url'
-url = 'https://cdn.modrinth.com/data/F8BQNPWX/versions/Cx95h37p/naturalist-5.0pre3%2Bforge-1.20.1.jar'
+hash = 'bc2c527dd52a1e6a92a3e34db1a88742e8e7d596'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
 
-[update.modrinth]
-mod-id = 'F8BQNPWX'
-version = 'Cx95h37p'
+[update.curseforge]
+file-id = 6863943
+project-id = 627986
