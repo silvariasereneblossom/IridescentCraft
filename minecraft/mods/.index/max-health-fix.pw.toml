@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'ac0da227ebc7606affb7017ecd31cd351c9113da'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '66a03115042eaa2367ebb36123950b861cf60a0a5b039d2989ff46994c2b9528a3c1608dc6959af6af9d1582a41e904dc330812114223c3a6953339d47f6286e'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/mH8wdmqr/versions/9zIRBxJ9/MaxHealthFix-Forge-1.20.1-12.0.4.jar'
 
-[update.curseforge]
-file-id = 7612769
-project-id = 492246
+[update.modrinth]
+mod-id = 'mH8wdmqr'
+version = '9zIRBxJ9'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1', '1.20.2', '1.20.3', '1.20.4', '1.20.5'
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '7ceb1df8113e4e87ac74c61a4f2cdd2f6d6ceca4'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'ea8a8149e9f6a6b1895d7ebd02e284ba230afc433d2c07b860d277f9e6e6e2f1926312d40adabbe44257b06c306de03ceee9accba955e47fa7c64e259ca560b1'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/1Z4JHpyZ/versions/qZGw4bNN/ad_astra_more_structures-1.0.0.jar'
 
-[update.curseforge]
-file-id = 6802331
-project-id = 1311898
+[update.modrinth]
+mod-id = '1Z4JHpyZ'
+version = 'qZGw4bNN'

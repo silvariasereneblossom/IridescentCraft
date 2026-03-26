@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'f80991a44ece347f0be2724c63159b6e46ae8393'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'd2aa572dde135610c9d1288f9e76604a447a935a2c2b88ea67585dd2922fe9d8401c6812f33b45107debe46c026ffd8acb866eaadab8ceddecf37e3cf4651a20'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/klXONLDA/versions/6vHMXtim/villagesandpillages-forge-mc1.20.1-1.0.2.jar'
 
-[update.curseforge]
-file-id = 5933305
-project-id = 915531
+[update.modrinth]
+mod-id = 'klXONLDA'
+version = '6vHMXtim'

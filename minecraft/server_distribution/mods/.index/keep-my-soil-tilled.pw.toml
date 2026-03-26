@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'c7a8c0dfb5f75170ee816b740ce60302d726d3ab'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '2c2daacd0c8ed3cd089c3f7810f762a4064a74eb7a353194bf826508c812c5d152326856f798f2d5c136bfc81f2c388c566f3a4ac69cb0099058d25ab0357f0a'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/OC5Zubbe/versions/WLWL44CC/keepmysoiltilled-1.20.1-2.5.jar'
 
-[update.curseforge]
-file-id = 6185615
-project-id = 547961
+[update.modrinth]
+mod-id = 'OC5Zubbe'
+version = 'WLWL44CC'

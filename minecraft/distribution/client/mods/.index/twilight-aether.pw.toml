@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'a2a90dff72a901bb6a67a3fb11c7643aabbd9902'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'dfb5c7352760630d7b20a011e24436a9dd2d81071e86ba999f3c308855ddcd1854e7dc631dcdc05b136c0b3e6f522ec46167f4090adcdc6ae208e5bc3363b690'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/bTR6zxRo/versions/vdkt4pak/twilightaether-1.20.1-1.0.0.jar'
 
-[update.curseforge]
-file-id = 5635493
-project-id = 1084673
+[update.modrinth]
+mod-id = 'bTR6zxRo'
+version = 'vdkt4pak'

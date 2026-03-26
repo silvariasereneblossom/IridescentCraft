@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '15e4a9d8472e56fc29c52590f1d27d313408263a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1e869a57c545035676ba54fa00434c0d7e01b1fc17704c1daada7e1fd4bc73697afdccecbf6b56f5d89b7632dfd2c404cdd879feb4a97b3490e8a9914b7303e8'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/HyKmtI3L/versions/CNPnqwEt/furnacerecycle-1.20.1-2.5.jar'
 
-[update.curseforge]
-file-id = 5572522
-project-id = 551140
+[update.modrinth]
+mod-id = 'HyKmtI3L'
+version = 'CNPnqwEt'

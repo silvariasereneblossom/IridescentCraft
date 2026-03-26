@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '74b917dd99cd97b2f0480628a1b56958f5e0f5ad'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'bc6136fbec7447ef3d7ecd150dc3f531f7980e8dea95c638cbb06ddef1f28aeadd72a214baff0232fd2fd28f931061b7571f4f1fb7acf6fc1c08965ea481cfda'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/e0M1UDsY/versions/9fUQXa48/collective-1.20.1-8.13.jar'
 
-[update.curseforge]
-file-id = 7148968
-project-id = 342584
+[update.modrinth]
+mod-id = 'e0M1UDsY'
+version = '9fUQXa48'

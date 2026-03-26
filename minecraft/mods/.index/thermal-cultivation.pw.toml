@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '1973b5142aedca44aefa66d2406643e7d00205c7'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'da46fffa1b76ba0c3eb6e8ec527fa8c48123970d648033f59dbfa004823cff53181d1dd57f2227e3dac2f02afbba2e1286211ff0e5110a19a83a085fbe61a346'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/5beJoehw/versions/A2jLUXFB/thermal_cultivation-1.20.1-11.0.1.24.jar'
 
-[update.curseforge]
-file-id = 5372746
-project-id = 271835
+[update.modrinth]
+mod-id = '5beJoehw'
+version = 'A2jLUXFB'

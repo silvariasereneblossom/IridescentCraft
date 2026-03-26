@@ -1,4 +1,4 @@
-filename = 'hunger_overhaul-1.4.7-forge-1.20.1.jar'
+filename = 'hunger-overhaul-reborn-forge-0.1.0-alpha.jar'
 name = 'Hunger Overhaul'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '575a1ecc89211c47e0f6d62f331114db94590b7f'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '90de2a236628dff1dec1a10127afd9d1764422c2c3a49b3c75b98d7ae92dcc1ea9685d79501fe1e022466feb20a84a6f79a9faad303675c3b220824b07b8b9d8'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/ZFjvY7Et/versions/CdFrTAAy/hunger-overhaul-reborn-forge-0.1.0-alpha.jar'
 
-[update.curseforge]
-file-id = 7316869
-project-id = 1124230
+[update.modrinth]
+mod-id = 'ZFjvY7Et'
+version = 'CdFrTAAy'

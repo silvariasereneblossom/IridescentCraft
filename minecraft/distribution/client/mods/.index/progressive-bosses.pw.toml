@@ -1,4 +1,4 @@
-filename = 'progressivebosses-4.3.11.jar'
+filename = 'progressivebosses-4.3.12.jar'
 name = 'Progressive Bosses'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '0336c398e90ee14556df3649818c85a5b003783e'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'd3d2c411775488226668f369667e600adc877ab35ab862fa9209a7c460428fadadd9459eed69e3ba0ab33735a7f6123dba016bc8e9b7fcd807848fdea7ccad28'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Zxspe0HA/versions/swYJ1CxT/progressivebosses-4.3.12.jar'
 
-[update.curseforge]
-file-id = 7223908
-project-id = 289466
+[update.modrinth]
+mod-id = 'Zxspe0HA'
+version = 'swYJ1CxT'

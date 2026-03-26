@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '5e88feef805d15ffbe3c0918f53d6ed213a7dc6a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'cf8ab2951432209e83be5ddfd9eddc8c31d9e01b64d66194bb2c9dac0894309075839a7d1f9a9356f8a6f1ca76f4d8d6b3736123767a920f403173c1b7060bbf'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/HsdNFinx/versions/eP3L8E7C/valhelsia_core-forge-1.20.1-1.1.2.jar'
 
-[update.curseforge]
-file-id = 5189548
-project-id = 416935
+[update.modrinth]
+mod-id = 'HsdNFinx'
+version = 'eP3L8E7C'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '41b0751ec3f1410f1bee668f4e68e4c5c43f8fac'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '17890934dd62a8a3434208b534c6eca10df62d65a8f6c47a51eff9c7b821ebdd4d7b8519235072a357bbbedf78725d9ab438e6a388e29c899b1b8584cf6149ec'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/P0Mu4wcQ/versions/NEtfVCxm/artifacts-forge-9.5.16.jar'
 
-[update.curseforge]
-file-id = 6399828
-project-id = 312353
+[update.modrinth]
+mod-id = 'P0Mu4wcQ'
+version = 'NEtfVCxm'

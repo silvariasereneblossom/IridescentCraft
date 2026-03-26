@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '58bb3c0bc97e65fda5560b78c40dc4db4cb6c6c0'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '7f43de7290e37ebdf861153d4ffd207c5ccc872e67ba87a87f164e03fbad0ba0e37f86f1fe947060d0fe1560fa5889c5b3da769f07209363ffe9481fe628f623'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/USZyvOJq/versions/wokUaljB/insanelib-1.23.4.3.jar'
 
-[update.curseforge]
-file-id = 7635498
-project-id = 465109
+[update.modrinth]
+mod-id = 'USZyvOJq'
+version = 'wokUaljB'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '72e11fde34d9e6a14275f396627b934c34e706c3'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'f3209377ba357ba539a9c95b83a63d902b477005b9d0a792d478a15760d99d9647600aff4ae17f9c1dc3187b4e6e52773cccdc52ceee91fa9205bdd6cba124ed'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/YecCeirP/versions/l6TLDnhF/adtetra-2.1.0.jar'
 
-[update.curseforge]
-file-id = 5927590
-project-id = 827040
+[update.modrinth]
+mod-id = 'YecCeirP'
+version = 'l6TLDnhF'

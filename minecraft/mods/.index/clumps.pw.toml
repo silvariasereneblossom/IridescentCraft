@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '97cc669f68dbe812cb77cc3631339334fc28b877'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'ffd8ff2438e9f9d260d3926ccdd0cccc4772c6f99f29715690aed4f6e97a76035f3aeaa78168e2a458bc4cccf521e97ebdb6e0b61c819facb04af9ebb3638383'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Wnxd13zP/versions/nAHGB5ls/Clumps-forge-1.20.1-12.0.0.4.jar'
 
-[update.curseforge]
-file-id = 5278538
-project-id = 256717
+[update.modrinth]
+mod-id = 'Wnxd13zP'
+version = 'nAHGB5ls'

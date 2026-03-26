@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'cadf134d25f2e05c8d05961a5cbbce2c003de9cd'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '19247f06df7b6958c01f208f398d7f4783ca6727af43951430265f057401e0efedd859c5a987efdf6c4f5456fe0634849c46d4415fa4cbdca1cfac97fb119ede'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/e0IclJLr/versions/J3hhQ60U/rftoolsbuilder-1.20-6.0.8.jar'
 
-[update.curseforge]
-file-id = 5707448
-project-id = 347706
+[update.modrinth]
+mod-id = 'e0IclJLr'
+version = 'J3hhQ60U'

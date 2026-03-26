@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '7b46df9e34d81bb678e9547a662cca15a04855e5'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '99ec2055022dc58ed17547ca6ffea0694cfa9692f5703d3113f3821892c130661dfa6466e6a6f69e5f9bf22aa6b8165a0e87bdbfdf11635a960af6815c5cf201'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/rEuzehyH/versions/kmUvAUwY/findme-3.2.3-forge.jar'
 
-[update.curseforge]
-file-id = 7069249
-project-id = 291936
+[update.modrinth]
+mod-id = 'rEuzehyH'
+version = 'kmUvAUwY'

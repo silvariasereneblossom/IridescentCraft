@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'e0a018f61c2302c377b26ef3f7c5bd6e8a7303b8'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '83548db81b6099fa0ebe51bea556ed04d0a7c72f320360703235206fffb0c2616ee182146bd12ec63229e40007a35dc4b910ddf714d9461858a8811843ca8fb6'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/ImlP9deQ/versions/VY1IIRi6/ensorcellation-1.20.1-5.0.2.24.jar'
 
-[update.curseforge]
-file-id = 5430042
-project-id = 349447
+[update.modrinth]
+mod-id = 'ImlP9deQ'
+version = 'VY1IIRi6'

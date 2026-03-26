@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'c6a843aea394297dad9130f1545c4f137a0b40d4'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '92a2ad07b6973cd122a088e30ac90eb2e74eaf32b3d3748613d8f9a40ef668ef00c816a02cd3b2427648149ad51147cc8cbbef72ce89ba5b7773e70f40b334b6'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/7I1fu1km/versions/edTYH2p8/kubejsoffline-5.2.0.27.jar'
 
-[update.curseforge]
-file-id = 7430748
-project-id = 641627
+[update.modrinth]
+mod-id = '7I1fu1km'
+version = 'edTYH2p8'

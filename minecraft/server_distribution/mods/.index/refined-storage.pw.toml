@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'ff9e83c81344d0bfe9e0bb53c6df00c7e0a39cf5'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '82b0f695cd360c46645e1587d254066ef1d3d0b6e5be31259604ed618f4ce6d686c579453c7b4fc7ea08d8d206b382b86280a3f49b5516a1094b314a08dbef0d'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/KDvYkUg3/versions/ZITLFjjf/refinedstorage-1.12.4.jar'
 
-[update.curseforge]
-file-id = 4844585
-project-id = 243076
+[update.modrinth]
+mod-id = 'KDvYkUg3'
+version = 'ZITLFjjf'

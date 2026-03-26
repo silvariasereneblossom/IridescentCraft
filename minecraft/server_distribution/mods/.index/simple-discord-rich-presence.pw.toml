@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'f56b1d7e02c25e2e0c91ef9b51ed10ceb492a0d4'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '669ae32b3cca8478fcee68fcb13aeb71af4eeb464ba62e78ccae01921eb624580f6b3ba61ed16595acc9fbceb562ba85541f3c58a66580765bd0615d610f15e5'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/SCAopByd/versions/jnmqJmSh/SimpleDiscordRichPresence-forge-4.0.3-build.40%2Bmc1.20.1.jar'
 
-[update.curseforge]
-file-id = 4964550
-project-id = 334853
+[update.modrinth]
+mod-id = 'SCAopByd'
+version = 'jnmqJmSh'

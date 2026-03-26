@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '01e3275d3eb586c953ac786b1afee6e473eef947'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'ce8b526b0d673566ee1aecfe14521818b183d73dafde838b7b4a9376e629cb2bf3d36219c8a03e974c8d93550d387a3ea1e33b9ca64c26cd934ded937d065d94'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/MI1LWe93/versions/Ap1DSAzz/creeperoverhaul-3.0.2-forge.jar'
 
-[update.curseforge]
-file-id = 5125710
-project-id = 561625
+[update.modrinth]
+mod-id = 'MI1LWe93'
+version = 'Ap1DSAzz'

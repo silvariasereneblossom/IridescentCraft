@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'b13d912b9247a38d66d11598c121442585a1c1e9'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '5b51f5d31437d9bfbf221b67459abd87260d284874e1e23b7ed1d522b23a48059a3b1d2c1c541428da35dc6be15561b4f3c7f36aac6df3a0e8db6a278f6b0316'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/LNytGWDc/versions/8amzvn9x/create-1.20.1-6.0.8.jar'
 
-[update.curseforge]
-file-id = 7178761
-project-id = 328085
+[update.modrinth]
+mod-id = 'LNytGWDc'
+version = '8amzvn9x'

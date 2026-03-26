@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '19b07a69a8a429c74e0ddae074ec6636aca88ed7'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '3b06669b722ed68c5aecdaa88068ee60794b8f46e9f90487a73d4bb9abfadcd9f1f43394149e0ebe17220b13934593abf88670297d09a5b4ec7bdb8d1f2dd726'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/dx2OtNnP/versions/b2CrceAn/decorative_lgbt_wall_flags_150.jar'
 
-[update.curseforge]
-file-id = 7151325
-project-id = 851597
+[update.modrinth]
+mod-id = 'dx2OtNnP'
+version = 'b2CrceAn'

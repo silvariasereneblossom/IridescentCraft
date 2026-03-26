@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'c2720e589a292d5d168ef71a57f5dc3436db96b1'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '08f6426ab4466573ac7c4407d78df113c6ed88643cfd71c078382f2677c68db8b59c57aeee6c792cef0fefa16f7f7cba7912f73610de417d2fbed908201784cf'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/BZemjxZb/versions/6D8WV9Cf/kubejsadditions-forge-4.3.4.jar'
 
-[update.curseforge]
-file-id = 6302185
-project-id = 594387
+[update.modrinth]
+mod-id = 'BZemjxZb'
+version = '6D8WV9Cf'

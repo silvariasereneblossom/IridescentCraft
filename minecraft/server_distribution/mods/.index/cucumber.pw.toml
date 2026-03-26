@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '88a9ec30e4acb5c80a3ae060ad70b79e945293c6'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '4b68f300df40e2243a76b80c6a8dff2ed6af01a33e058f1f0e79690ffebea35b020d323fe478c4e41516330c7650cb9b1b713d132ed0de63f96e4787da43a7f5'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Rw1NrDzF/versions/xnLznSfT/Cucumber-1.20.1-7.0.16.jar'
 
-[update.curseforge]
-file-id = 7180783
-project-id = 272335
+[update.modrinth]
+mod-id = 'Rw1NrDzF'
+version = 'xnLznSfT'

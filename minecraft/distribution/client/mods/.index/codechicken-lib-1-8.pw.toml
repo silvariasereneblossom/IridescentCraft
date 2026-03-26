@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'f9b90ff58442b5967366fd90d24980a34540518d'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'c3854f8c4ef06073f22990fc804597d257f9c2a355d95deda9caa6d56e864fac4302798662909a229aaa63d82fcca219d42e0ee13584e613678f5e52ef99b21c'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/2gq0ALnz/versions/pxajg7Ob/CodeChickenLib-1.20.1-4.4.0.516-universal.jar'
 
-[update.curseforge]
-file-id = 5753868
-project-id = 242818
+[update.modrinth]
+mod-id = '2gq0ALnz'
+version = 'pxajg7Ob'

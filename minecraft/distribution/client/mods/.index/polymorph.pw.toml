@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = 'e4afd6f512cc06311320357ed974cee586e031c3'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'c36b4c3b893fa01619cf03750878913f37b59854282cd25ff61a8a81da59f0d8f0cb42da8da1e2ab20d0d86f8e0ad6e9bdf69925d1336a03fd23dbf9b232fe87'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/tagwiZkJ/versions/UZBKtFyR/polymorph-forge-0.49.10%2B1.20.1.jar'
 
-[update.curseforge]
-file-id = 6450982
-project-id = 388800
+[update.modrinth]
+mod-id = 'tagwiZkJ'
+version = 'UZBKtFyR'

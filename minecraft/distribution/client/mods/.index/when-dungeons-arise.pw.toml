@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1', '1.20.2', '1.20.3', '1.20.4' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '30b4520e4fab40a6bb6153a2c72e34bcb721f0a5'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '021bc9558af43492c45c05874fa9f2e87f1e90298b70681f8d3b845716d29b4a5eae57d06c3c4308fd7d7cd45194dea513e78c891d1f546a8f5474acc204153d'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/8DfbfASn/versions/6hQpx5Tc/DungeonsArise-1.20.x-2.1.58-release.jar'
 
-[update.curseforge]
-file-id = 4983862
-project-id = 442508
+[update.modrinth]
+mod-id = '8DfbfASn'
+version = '6hQpx5Tc'

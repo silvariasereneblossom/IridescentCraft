@@ -1,16 +1,16 @@
 filename = 'ramcompat-1.20.1-0.1.4.jar'
-name = "Relics: Alex's Mobs Compat"
+name = 'Relics: Alex's Mobs Compat'
 side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '6475d3d9eed8ede0a2e9356aacc6a81bf713de2a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '524bacc325aa9280ce47213982df7a3c6c375f6c1de01b99f2d20427bcb6f3fdb7058e634b4ba79a1a58cebe3f93b5cb2f47648898f7b55725ea6bee9650480a'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/uS725fXT/versions/g64HNKRQ/ramcompat-1.20.1-0.1.4.jar'
 
-[update.curseforge]
-file-id = 5586345
-project-id = 944203
+[update.modrinth]
+mod-id = 'uS725fXT'
+version = 'g64HNKRQ'

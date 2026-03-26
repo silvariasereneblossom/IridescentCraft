@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'alpha'
 
 [download]
-hash = 'aef2c02392624f0a12475ada809366b12ac9ec52'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '5509a7b51ec1d57aae2af0a0200bda474539fcfe28303f3ff0158ba95b8e7a88ae023d8a9bd97d4626a6a8ce809506e19cdcb05b76e8be5bf8a0450c5d6a46b1'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/qyVF9oeo/versions/x0sJ9PeR/sound-physics-remastered-forge-1.20.1-1.5.1.jar'
 
-[update.curseforge]
-file-id = 7032235
-project-id = 535489
+[update.modrinth]
+mod-id = 'qyVF9oeo'
+version = 'x0sJ9PeR'

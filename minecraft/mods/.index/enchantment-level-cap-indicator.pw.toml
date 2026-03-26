@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '7b72b5902fb57d3a01daa450e1eef9476b5cefc2'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '033e87d1a5a41326467a560a81f15247d58085a0413989ab2399f9c6d9c7d0870e396f37d6cd581073410009b736bb42f4c54176a00c8d76b6e9d21d281cda41'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/82BWabBj/versions/C7G8DghX/enchantmentlevelcapindicator-1.20.1-1.1.jar'
 
-[update.curseforge]
-file-id = 6250440
-project-id = 1204463
+[update.modrinth]
+mod-id = '82BWabBj'
+version = 'C7G8DghX'

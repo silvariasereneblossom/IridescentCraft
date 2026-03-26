@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '14057b5970e04af3dfa07690b3fc85b628f2184d'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '6ac36f471bf2d39581a5a0ac104ab748f74dec3e8a90aa63e04d7355819bce28f830723098f1678cd5be02d338851e742403ecd6b61b75d7281e2eddeb5f92d7'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/oX7uP2kS/versions/fNkc0v2k/shetiphiancore-forge-1.20.1-1.5.jar'
 
-[update.curseforge]
-file-id = 6909982
-project-id = 71738
+[update.modrinth]
+mod-id = 'oX7uP2kS'
+version = 'fNkc0v2k'

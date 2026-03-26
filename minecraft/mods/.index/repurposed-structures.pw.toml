@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '2ac348cb2717b8ac01cff7bb253c73e5a932ad97'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'd4178b98c293c4c101c78a8a3fe2dc56cbbb2a0ede1605f9a0344220f3eaa25a369af54233d8126c17a13764cb440dd03f2ee81ca159c4ee49fb960887bec31a'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/QDNS5oAT/versions/IITp3pFu/repurposed_structures-7.1.21%2B1.20.1-forge.jar'
 
-[update.curseforge]
-file-id = 7672010
-project-id = 368293
+[update.modrinth]
+mod-id = 'QDNS5oAT'
+version = 'IITp3pFu'

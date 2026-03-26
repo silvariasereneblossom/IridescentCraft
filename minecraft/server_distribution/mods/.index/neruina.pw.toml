@@ -1,4 +1,4 @@
-filename = 'neruina-3.2.1+1.20.1-forge.jar'
+filename = 'neruina-3.2.2+1.20.1-forge.jar'
 name = 'Neruina'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '055220a1c4f284ea7db83a38a959f700c6557153'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'cd83cae7974cc6ccd78ef5b36fbc1d32ed35ba5cceca383a9cca8fc286aebfc68347c74ff315ca3464f6d57751603c369d2c70ce665191718c966cf5c06edbc8'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/1s5x833P/versions/Ysts364x/neruina-3.2.2%2B1.20.1-forge.jar'
 
-[update.curseforge]
-file-id = 7597005
-project-id = 851046
+[update.modrinth]
+mod-id = '1s5x833P'
+version = 'Ysts364x'

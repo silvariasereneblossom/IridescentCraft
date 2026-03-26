@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '9e0f612a08e1211010cbef71b95846989042fe2c'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '9627d3199e7d26f7ad6d4f3559aba2404b7befa8b51e85b313b8b6a8291deec63b37dd00a6adf54f00cc8b801a35f69ad84a9dbf5c1cca4c1ee113770ba4dc79'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/iu1jkWqa/versions/sZvo35G8/xnet-1.20-6.1.6.jar'
 
-[update.curseforge]
-file-id = 5712546
-project-id = 260912
+[update.modrinth]
+mod-id = 'iu1jkWqa'
+version = 'sZvo35G8'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '6edbc705ccb1ca075c8155f99144646a8168e8ee'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '4b65e16386200e833bffc6c92f1b01d6c8e271937a59ae0841e12702609c4af817c5f610c0796be854c5139cd031dcdff2fd0618aac4b4c8d5657c6edcf14f62'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/pfjLUfGv/versions/BID0lWKw/Botania-1.20.1-451-FORGE.jar'
 
-[update.curseforge]
-file-id = 7649894
-project-id = 225643
+[update.modrinth]
+mod-id = 'pfjLUfGv'
+version = 'BID0lWKw'

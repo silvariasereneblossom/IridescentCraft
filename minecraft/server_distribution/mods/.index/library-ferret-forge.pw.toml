@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '29f240c16ff1a1bc574d69162d379cc1c881e1ab'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1495316d492186487fca2dfb6043c74f86ff424fd761bc9a3f4d97d62dbd533940fd2e7070453cf423e86a7ba98d188f0c354b34f1b67760b622ea12a8a154ef'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/DOB2l4oJ/versions/wl68oCTb/libraryferret-forge-1.20.1-4.0.0.jar'
 
-[update.curseforge]
-file-id = 4601234
-project-id = 532727
+[update.modrinth]
+mod-id = 'DOB2l4oJ'
+version = 'wl68oCTb'

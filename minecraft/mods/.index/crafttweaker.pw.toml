@@ -1,4 +1,4 @@
-filename = 'CraftTweaker-forge-1.20.1-14.0.59.jar'
+filename = 'CraftTweaker-forge-1.20.1-14.0.60.jar'
 name = 'CraftTweaker'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '1883e15dca2f3d2d36ab452f489b9c3534383684'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '7352168dffbdc23b472f767940c9c139b321d940b496bf8505c502c35aed33f686d35b2b3b67acbf5a4efb82ad90907412df67a85f6464ea685445d9655e9679'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Xg35A4rS/versions/8GR4gItx/CraftTweaker-forge-1.20.1-14.0.60.jar'
 
-[update.curseforge]
-file-id = 6914010
-project-id = 239197
+[update.modrinth]
+mod-id = 'Xg35A4rS'
+version = '8GR4gItx'

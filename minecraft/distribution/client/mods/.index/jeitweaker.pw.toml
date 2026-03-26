@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '4650a39c9167caa31596cab15df40d890530f60d'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '955e8b8a30bffc25dd78537e6330010fffc43815614caa5f8d33d5dd8a61343be9aaab5b364cc1ff28dd6015ebe79150e630e8db24a52b2f308b4c9d540283be'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/EiEOyeoL/versions/BTMxPqmn/JeiTweaker-forge-1.20.1-8.0.6.jar'
 
-[update.curseforge]
-file-id = 4781713
-project-id = 368718
+[update.modrinth]
+mod-id = 'EiEOyeoL'
+version = 'BTMxPqmn'

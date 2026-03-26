@@ -1,16 +1,16 @@
 filename = 'NaturesCompass-1.20.1-1.11.2-forge.jar'
-name = "Nature's Compass"
+name = 'Nature's Compass'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '31ae930cdbb34e8e05e1954cfb2fee3a3813e850'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '7a2a9e9e91f9d2093d94c42ed056bca4048f39ba45b233415b6d1874986b5848a82826873ccc2b38abccbdf5652f2e217482354c66434ed1b93df8971cb0bea3'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/fPetb5Kh/versions/Og40jCNX/NaturesCompass-1.20.1-1.11.2-forge.jar'
 
-[update.curseforge]
-file-id = 4712189
-project-id = 252848
+[update.modrinth]
+mod-id = 'fPetb5Kh'
+version = 'Og40jCNX'

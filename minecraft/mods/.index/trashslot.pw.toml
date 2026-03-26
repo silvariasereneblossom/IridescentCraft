@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '16fa6a3e069a1ca53752b55d79bef87b463f2e60'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '232ef7a382639f7fba46729b04a1a46f6a64020430f541a86ba8a1fc1bd89016252036faa2dfb5c55076ce39211ef13f6bcafc2e752e097a81de43d7d854fb9a'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/vRYk0bv7/versions/rFFVyXKs/trashslot-forge-1.20.1-15.1.3.jar'
 
-[update.curseforge]
-file-id = 7364652
-project-id = 235577
+[update.modrinth]
+mod-id = 'vRYk0bv7'
+version = 'rFFVyXKs'

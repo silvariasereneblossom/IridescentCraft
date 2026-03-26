@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '30903d8b3341608e237bda61d668252b6fa6bce4'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'a4ef63142f852e6b6d20f8de9d7318ce983c32e52faba37ce27935b02189db5c57385618821222d7cc7a34c826d0fed60ce42c30655ea1a28466832d6ab88042'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/IAJe5m4X/versions/BYB6xiNY/prettybeaches-forge-1.20-11.0.1.jar'
 
-[update.curseforge]
-file-id = 4596463
-project-id = 290659
+[update.modrinth]
+mod-id = 'IAJe5m4X'
+version = 'BYB6xiNY'

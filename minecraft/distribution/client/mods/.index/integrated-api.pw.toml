@@ -1,4 +1,4 @@
-filename = 'integrated_api-1.5.3+1.20.1-forge.jar'
+filename = 'integrated_api-1.5.1+1.20.1-forge.jar'
 name = 'Integrated API'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '833ce48294c14129ef233b2a4ad86d8d622d0854'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'b811008cb4fefaa01b973a7e902a0ce3234856b9512013938634e131e03b187ac55bc4890ec465eca05a81c93aa0532bff25d86b00de0c874ca243b0385f449b'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/V6fKbpBN/versions/56sc1bo2/integrated_api-1.5.1%2B1.20.1-forge.jar'
 
-[update.curseforge]
-file-id = 6369317
-project-id = 817709
+[update.modrinth]
+mod-id = 'V6fKbpBN'
+version = '56sc1bo2'

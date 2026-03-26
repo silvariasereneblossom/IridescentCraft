@@ -1,16 +1,16 @@
 filename = '[forge]ctov-3.4.14.jar'
-name = "ChoiceTheorem's Overhauled Village"
+name = 'ChoiceTheorem's Overhauled Village'
 side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '8fa73fd4c5ae58636e159e54321651adf555ac44'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '66c5846c0065afb1bad3001bccaa32f58cb8e608c3914d6611a20e30fd145dd0487a6255ee410b72cfee6f28f06c19dda4216459b230ded693c2772b2576b28e'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/fgmhI8kH/versions/o7mg6MeV/%5Bforge%5Dctov-3.4.14.jar'
 
-[update.curseforge]
-file-id = 6459777
-project-id = 623908
+[update.modrinth]
+mod-id = 'fgmhI8kH'
+version = 'o7mg6MeV'

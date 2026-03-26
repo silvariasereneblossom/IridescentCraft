@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '285c22b2567b9fdf98ef9808eceb5557de9611d3'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '3b84ea415d9255861bcbf78cfda3987b78aa452361bf44ba6a0223501a25ab5c5c55cb0eac6f460c88b8cec958f2b59211e488277c26e3432a08196f62049e7c'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Aqlf1Shp/versions/XweDEycJ/fabric-api-0.92.6%2B1.11.14%2B1.20.1.jar'
 
-[update.curseforge]
-file-id = 6885853
-project-id = 889079
+[update.modrinth]
+mod-id = 'Aqlf1Shp'
+version = 'XweDEycJ'

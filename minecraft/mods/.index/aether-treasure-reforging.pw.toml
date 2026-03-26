@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '57b52e5effcf57cd9a12931435ddb986f5b9d3b5'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '84bf57183766c18c321fc0ed156226eeab92cfe3de12127e679c4b5b3f93a6415d490928375ba77f75f38e8944093bd172489c4a4ef79c271bde0867b42985f2'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/4qIW8vBb/versions/k4ZjqTVu/aether_treasure_reforging-1.20.1-1.0.1-neoforge.jar'
 
-[update.curseforge]
-file-id = 5759738
-project-id = 1016302
+[update.modrinth]
+mod-id = '4qIW8vBb'
+version = 'k4ZjqTVu'

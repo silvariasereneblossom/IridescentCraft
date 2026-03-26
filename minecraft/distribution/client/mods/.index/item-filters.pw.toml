@@ -1,4 +1,4 @@
-filename = 'item-filters-forge-2001.1.0-build.59.jar'
+filename = 'item-filters-forge-2001.1.0-build.53.jar'
 name = 'Item Filters'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '55a7f032c59489eca96069a7841601de2ff97590'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '4bed10d923a6b6b03614a019a50a5676f4dc89213b6143a77f5af4c759fa7f9940e45a81192e07717efbb3c917324b2e33343c1db3a6ed61171ccebb4b09832f'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/1KLyhGRz/versions/FMUX4THT/item-filters-forge-2001.1.0-build.53.jar'
 
-[update.curseforge]
-file-id = 4838266
-project-id = 309674
+[update.modrinth]
+mod-id = '1KLyhGRz'
+version = 'FMUX4THT'

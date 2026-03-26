@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'ba1f5826f8f5d0772c9adf46fbe93befcdd5796a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '45345015591fcb371e030bcdf8e61d118987e401803ab83173eca975aa3b7b224c00f44daed5174e9e85af4f45e9d9e4f9e29e596dc2213cb3a57a9b421176d5'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/T34cBZKl/versions/LSn2z31g/ExtraStorage-1.20.1-4.0.7.jar'
 
-[update.curseforge]
-file-id = 5168999
-project-id = 410168
+[update.modrinth]
+mod-id = 'T34cBZKl'
+version = 'LSn2z31g'

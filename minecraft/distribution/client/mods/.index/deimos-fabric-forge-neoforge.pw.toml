@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'be13dc4183b961303bdab93f306e8da636836a8e'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '99c7b8445c2fa406c2bbb826d02c5a51199f27d12367fa06bb567101415b864de49ff6e9caf2475e99b816110873f58a020cfddf250110d4d216085ef450bbbe'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/WQaxNzFg/versions/OBaYPNQL/deimos-1.20.1-forge-2.5.jar'
 
-[update.curseforge]
-file-id = 7226087
-project-id = 1158094
+[update.modrinth]
+mod-id = 'WQaxNzFg'
+version = 'OBaYPNQL'

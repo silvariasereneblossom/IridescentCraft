@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20-Snapshot', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '39be3bb98c52c54b85de4f8a8ca74b6ad4486071'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '7f4beea75daeea36d39c86f6f3907327a661bb9ee144e9143a8bcdab7d190920714ac76519e9531418267c936533a32b71116d7e1b972c4808495a47f4917f0f'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/G3Ib70DM/versions/yjD66l2n/NoSeeNoTick-2.0.0-1.20.1.jar'
 
-[update.curseforge]
-file-id = 4596138
-project-id = 833405
+[update.modrinth]
+mod-id = 'G3Ib70DM'
+version = 'yjD66l2n'

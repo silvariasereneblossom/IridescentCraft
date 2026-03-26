@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'c6a43bb40d8359bff53d6e643564bf25b71522c3'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'ba8f8c1677e447a15960c8752e36e204e5abeb48d7bf275d59bb4479d31475406e277a5c09ae27135854b9290d5bdf6b5f73c0f03815fd8ab198cd6f77375a17'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/yVoBEgR0/versions/6lSrQF7r/attributizer-3.1.jar'
 
-[update.curseforge]
-file-id = 7004542
-project-id = 838573
+[update.modrinth]
+mod-id = 'yVoBEgR0'
+version = '6lSrQF7r'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'bd0a5ed5c89b1ef4f6218a9e3cd328ec7fe473cd'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'd2babe9a6ca6492a17a50eaedb26a26a3312d2dfb33fa5e067d645a6bec4cdd1ff300f5049b73ae65b1a4baa28aa32c1a580fc1d0aafe023db3e3dd9dea560b8'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/5JY3QNIB/versions/uJz3Sdhn/JustEnoughAdvancements-1.20.1-5.0.1.jar'
 
-[update.curseforge]
-file-id = 4631663
-project-id = 444941
+[update.modrinth]
+mod-id = '5JY3QNIB'
+version = 'uJz3Sdhn'

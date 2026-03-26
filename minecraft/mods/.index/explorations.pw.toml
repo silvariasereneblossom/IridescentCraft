@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '044872033237c62ff720b939ff610ba4817e182e'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'a86f6b96330499d21e30210f3552a330f1223651dfb4545900fa5fb8650919e4fc03b58abf2d462a7bd62b195143db265948985ac0e13bbb245673a315329a74'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/pcGnjJ39/versions/DrsYEYkr/explorations-forge-1.20.1-1.6.1.jar'
 
-[update.curseforge]
-file-id = 5786325
-project-id = 550247
+[update.modrinth]
+mod-id = 'pcGnjJ39'
+version = 'DrsYEYkr'

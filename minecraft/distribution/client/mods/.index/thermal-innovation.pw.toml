@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '5c6881416ff4fb116d05f4a48acf12b30f10af82'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'e1a02ec48678b4a6fc23621e6e379d6451312214eee3655efd5d3eec9c8cb7a95023e156c7d66042da26178de644df724a0b41839739abf1ecebc01285658501'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/MNgLmnvM/versions/pzbezfsE/thermal_innovation-1.20.1-11.0.1.23.jar'
 
-[update.curseforge]
-file-id = 5372751
-project-id = 291737
+[update.modrinth]
+mod-id = 'MNgLmnvM'
+version = 'pzbezfsE'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'afca74c6e18883632e74e15a549004bfca245a90'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '074c9da64873ffaffc80f0abfbbc6decbed4cb5615a94b226344719728432312e7268ed8f088371466d7594813541fbb2a46dc7d08c9d1f3c1416f89dac2bdaf'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/guitPqEi/versions/8raubcF4/StorageDrawers-forge-1.20.1-12.14.3.jar'
 
-[update.curseforge]
-file-id = 6994481
-project-id = 223852
+[update.modrinth]
+mod-id = 'guitPqEi'
+version = '8raubcF4'

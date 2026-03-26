@@ -1,16 +1,16 @@
 filename = 'YungsBetterMineshafts-1.20-Forge-4.0.4.jar'
-name = "YUNG's Better Mineshafts"
+name = 'YUNG's Better Mineshafts'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'e2cbc574807a994bb9610184eb4bbfe29a6c0774'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1e8237e0fc4dd7e00a3ad30c5c02a82eeed63aed4544310cfdee863ac95b626874773f599779b985e6e460869804c036e1336c2720fbb34a3b09445434c063c8'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/HjmxVlSr/versions/kVO57zxB/YungsBetterMineshafts-1.20-Forge-4.0.4.jar'
 
-[update.curseforge]
-file-id = 4769063
-project-id = 389665
+[update.modrinth]
+mod-id = 'HjmxVlSr'
+version = 'kVO57zxB'

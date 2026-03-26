@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'c83c9b719a6bab33fbd2b3f2f680eb3adbfc1aa1'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '4eb6a635f3eff3baa158539bd55344421cf69b15e28f7da8bf55f370a11c071f3525063a6f81b67fbfca550ad8aaab7e6208df87f65ca6ed2851edd46f032b58'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/sk9knFPE/versions/uNALdylI/rhino-forge-2001.2.3-build.10.jar'
 
-[update.curseforge]
-file-id = 6186971
-project-id = 416294
+[update.modrinth]
+mod-id = 'sk9knFPE'
+version = 'uNALdylI'

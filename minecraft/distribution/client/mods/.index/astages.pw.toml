@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'alpha'
 
 [download]
-hash = 'c0a5ad0afd2de04702efbac65424c933ffb44008'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '587f071012a1ea0cc878c2856fd595cac455445a34ea15a76898782f5f802a6370b242c2f56fb337f46689ded28d9b823e23d2a1c19357671e84cb57be7d1c16'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/6wy8fmIk/versions/iryOzoch/astages-2.0.0-alpha.6-1.20.1-all.jar'
 
-[update.curseforge]
-file-id = 7633904
-project-id = 1120180
+[update.modrinth]
+mod-id = '6wy8fmIk'
+version = 'iryOzoch'

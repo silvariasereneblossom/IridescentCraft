@@ -1,4 +1,4 @@
-filename = 'mobtimizations-forge-1.20.1-1.0.1.jar'
+filename = 'mobtimizations-forge-1.20.1-1.0.0.jar'
 name = 'Mobtimizations'
 side = 'server'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '7a1f74a0cc178013808b09f409341d7277ebb72a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '6b4687616bbeb1afe6dc13fd291373ee4af2bdc26a5a3367ec20500f9afac4706a3b26a65e52bded5d8cb4a7d8782c0e742002bf7ca2d66b54f5ea35879f413a'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Kbz7UydC/versions/mEhoYk0d/mobtimizations-forge-1.20.1-1.0.0.jar'
 
-[update.curseforge]
-file-id = 7594372
-project-id = 974401
+[update.modrinth]
+mod-id = 'Kbz7UydC'
+version = 'mEhoYk0d'

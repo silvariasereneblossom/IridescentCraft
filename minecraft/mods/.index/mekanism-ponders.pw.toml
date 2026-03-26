@@ -7,11 +7,11 @@ x-prismlauncher-release-type = 'release'
 x-prismlauncher-version-number = 'mekanism_ponders-1.0.2-1.20.1.jar'
 
 [download]
-hash = '383847f8f1b14af5dba3a309077b5caf5e40fc4a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '64674630f41204585f84b1d86704c942077c04d04c5788f3e787261b17d2bf51dece636f53ac69d7520b5f113de9e5a12b1c03d5a8f30a87d2d507241d26ddfe'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/yriKr10n/versions/X36gBKXc/mekanism_ponders-1.0.2-1.20.1.jar'
 
-[update.curseforge]
-file-id = 7667366
-project-id = 1448575
+[update.modrinth]
+mod-id = 'yriKr10n'
+version = 'X36gBKXc'

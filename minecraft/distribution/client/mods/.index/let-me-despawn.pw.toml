@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1', '1.20.2', '1.20.2-Snapshot', '1.20.3',
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '878dd35df02e1e17b7eb16113147f964eda8847f'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '22e5e7a3e4eb1e238ff420108f6fb138e2fc47335a8fbe4cef093cef32d7aaf710de00ba0450bfee570aa2857989b0e9d7abb8600720386e185ffac5670505c1'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/vE2FN5qn/versions/1VmupN41/letmedespawn-1.20.x-forge-1.5.0.jar'
 
-[update.curseforge]
-file-id = 6311230
-project-id = 663477
+[update.modrinth]
+mod-id = 'vE2FN5qn'
+version = '1VmupN41'

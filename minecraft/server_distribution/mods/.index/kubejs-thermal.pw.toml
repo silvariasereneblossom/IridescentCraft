@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'bace9e49302c3ef2a23b4522ea37b9c78ccf8770'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '3a880704bfbdc3991d013615404738dd6ddfc89b91ccbf90a5ee6f340e26ea45c3e699d8c9836edd318145c8f0740fce63a9b5fe5165f2e58bcf113d9136d4e2'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/taN3HInZ/versions/9VgQJ20P/kubejs-thermal-2001.1.10-build.2.jar'
 
-[update.curseforge]
-file-id = 5002992
-project-id = 421694
+[update.modrinth]
+mod-id = 'taN3HInZ'
+version = '9VgQJ20P'

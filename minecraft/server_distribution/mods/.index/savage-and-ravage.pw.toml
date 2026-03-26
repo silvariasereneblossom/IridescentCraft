@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'e58730ba8e1858dfd8db5853e05c16d7803514cf'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '0d72543e4efd8777277a7ce6ab955bde24bc1eeea703f34499b10a2a886c81434e3da9c2179437ea025f934281a7301fea65291cdaf5a5ab047f66daeafb70dd'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/KxOh9voD/versions/NsU4X2ew/savage_and_ravage-1.20.1-6.0.1.jar'
 
-[update.curseforge]
-file-id = 7115735
-project-id = 381736
+[update.modrinth]
+mod-id = 'KxOh9voD'
+version = 'NsU4X2ew'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'alpha'
 
 [download]
-hash = 'd75610b0c34626cea8b1155a47d28333cc1f58a2'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'af096d18c3bb1ee5e0fc765ccbe5e63882865f16884e005f23a537f14009edf0f8dcd82254fcbc76081757430abc3a825001f89e120a7415aa1dbe2772f7a922'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/qEH6GYul/versions/YHTMDq85/LibX-1.20.1-5.0.14.jar'
 
-[update.curseforge]
-file-id = 5207625
-project-id = 412525
+[update.modrinth]
+mod-id = 'qEH6GYul'
+version = 'YHTMDq85'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'eefcb28a80c6a8e42d452b2caf232a49a40f7b3c'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '7cb486768fac70011c02f3fb2136ae4dd331253edbc70f1240417b22f6daa43e07dd9748b9a92ebe5153cb0d4f397b764e820f8366a6d0f39b9f08e0fbea6388'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/MdlnLS7Q/versions/1GswR5qC/forbidden_arcanus-1.20.1-2.2.6.jar'
 
-[update.curseforge]
-file-id = 5198323
-project-id = 309858
+[update.modrinth]
+mod-id = 'MdlnLS7Q'
+version = '1GswR5qC'

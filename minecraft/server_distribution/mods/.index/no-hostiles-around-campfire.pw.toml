@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '3bc11ac1a98c776948dfa291ed2ecf579063604f'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1eae3222ec664b0d86567bff76e84736564bd294ceb444cf7e8027a13a7f2136d81704c3c1876b3e321daff82d978bfa75ac04066925e0a21db9d9d4ae9b41f7'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/EJqeyaVz/versions/iNnx7a2g/nohostilesaroundcampfire-1.20.1-7.2.jar'
 
-[update.curseforge]
-file-id = 6185486
-project-id = 347394
+[update.modrinth]
+mod-id = 'EJqeyaVz'
+version = 'iNnx7a2g'

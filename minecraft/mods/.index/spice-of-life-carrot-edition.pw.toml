@@ -1,4 +1,4 @@
-filename = 'solcarrot-1.20.1-1.15.1.jar'
+filename = 'spice_of_life-1.0.0-forge-1.20.1.jar'
 name = 'Spice of Life: Carrot Edition'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1', '1.20.2' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'f7fa1fd0c633b10f98d7f0f97766b95aac1a2dc0'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '31ee1556a5693e559bb60c8e1768f91c4195a7a65181594f25071507ec28101b59c8691bf592f0b7052a4516cbe05f349b96576d6ba66ef4fbb82c7ee4d4fa07'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/qFtXIV3B/versions/LMcY1DLm/spice_of_life-1.0.0-forge-1.20.1.jar'
 
-[update.curseforge]
-file-id = 4888575
-project-id = 277616
+[update.modrinth]
+mod-id = 'qFtXIV3B'
+version = 'LMcY1DLm'

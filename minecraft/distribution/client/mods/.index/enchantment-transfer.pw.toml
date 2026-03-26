@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '1ba75545be01cb92bc6cee543f24dedb3d581d4d'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'd8a867f517d2c61f1aecf448a3b235031e28c0b59eb9b420ace79bb44c58c07eccdfa6423ccb46b7ec2bf951dab008b74fba20831304a226602620ad39ce28d9'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/VLBJHtK0/versions/KpK6A6nq/enchantmenttransfer-0.0.6-1.20.1.jar'
 
-[update.curseforge]
-file-id = 4646163
-project-id = 567984
+[update.modrinth]
+mod-id = 'VLBJHtK0'
+version = 'KpK6A6nq'

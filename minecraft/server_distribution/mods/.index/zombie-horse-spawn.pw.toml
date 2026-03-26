@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'fefc3dc5501be8d2439f0da37788b7b5a74d3344'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '78f5c59715f91819719de35720151d5c8e9523c891b35f8665a027c925a2be088b84104652d9f49e92fe1c6906107ee51002fba23677497da3d415183854c56f'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/owDBGfRd/versions/dKV5HYJi/zombiehorsespawn-1.20.1-5.2.jar'
 
-[update.curseforge]
-file-id = 6184693
-project-id = 345692
+[update.modrinth]
+mod-id = 'owDBGfRd'
+version = 'dKV5HYJi'

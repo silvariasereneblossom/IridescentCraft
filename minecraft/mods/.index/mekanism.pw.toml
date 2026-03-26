@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'b7f12ae710888b01746507a0aa8cb375f5897158'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'a838bb3fa5550ba3589a81005fde2ca04b5d33417ae65a8060bbc46ba948dec2d16ab0871a55e73e0ca39651b33814eb508b5b85d337e6ed8874b79383f3e6f0'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Ce6I4WUE/versions/uxe1WQp4/Mekanism-1.20.1-10.4.16.80.jar'
 
-[update.curseforge]
-file-id = 6552911
-project-id = 268560
+[update.modrinth]
+mod-id = 'Ce6I4WUE'
+version = 'uxe1WQp4'

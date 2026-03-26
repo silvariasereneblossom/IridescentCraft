@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'cde06d0f1e9042fb2e0b536a4d2c5443d129dd51'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'ea9970aeec627f37806eb316dfdc5aa2c38a6cd30479997c451d7642407d1bd308f6e9b02d1cc82c777a89531aada805bfb54f4a8889f77c5eb00ed972f92c0c'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/LOpKHB2A/versions/sKoHLGbK/waystones-forge-1.20.1-14.1.20.jar'
 
-[update.curseforge]
-file-id = 7682270
-project-id = 245755
+[update.modrinth]
+mod-id = 'LOpKHB2A'
+version = 'sKoHLGbK'

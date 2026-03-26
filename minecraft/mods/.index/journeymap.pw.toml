@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'd0bbe7c23049892b154b6417904dd027fb53a37a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '9d9892ab5775755fb09cc1fb31d77c712abe781c735bb67642257b4f7aa4607e269a157090d70f8a651d9f5b58ad78afa3b3c9cf30b3745d43f4c0bc7759b990'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/lfHFW1mp/versions/r7FWVNCs/journeymap-1.20.1-5.10.3-forge.jar'
 
-[update.curseforge]
-file-id = 5789363
-project-id = 32274
+[update.modrinth]
+mod-id = 'lfHFW1mp'
+version = 'r7FWVNCs'

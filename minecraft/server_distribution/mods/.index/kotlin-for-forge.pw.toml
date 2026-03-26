@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.19.3', '1.19.4', '1.20', '1.20.1', '1.20.2', 
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '962fdb760409d6d71cbf079235f1ca94e3863a22'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '767f40030ed4b370a3838fa65ae1b79974f31979342fff7cc834a0d5f39eb28612642519352ff2a1dd5226ce1f745f8b3156ee3625ffde01219137d064c1ee40'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/ordsPcFz/versions/Zsh14XeQ/kotlinforforge-4.12.0-all.jar'
 
-[update.curseforge]
-file-id = 7291067
-project-id = 351264
+[update.modrinth]
+mod-id = 'ordsPcFz'
+version = 'Zsh14XeQ'

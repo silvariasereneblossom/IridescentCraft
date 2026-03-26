@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '67245aea8c4c598c0f6edd1f39864b2cf9426d90'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'ad4764537a4bfaf61eeb6b2ad8d11f3cb1d9ab04e67e21d64a35e0f7f627b6788a36ba1089dd8a4318b5ee19999ddbcb203a06c7d16a81448ad9ced1f8481eff'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/sbJh4AZw/versions/jzJh1NvL/occultism-1.20.1-1.157.0.jar'
 
-[update.curseforge]
-file-id = 7429593
-project-id = 361026
+[update.modrinth]
+mod-id = 'sbJh4AZw'
+version = 'jzJh1NvL'

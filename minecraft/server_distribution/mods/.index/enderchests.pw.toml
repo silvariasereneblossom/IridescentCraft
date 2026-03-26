@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'bf9dc6fc028bfbfd0658659591329073f157aac6'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1bdd8f0e1cb77e0b5b1d02bd9d4d7c4aa42399f51231a0c314f0d3656f5598dd42a9025873240f2fe0fc5091a04b779074fb0698b9fb0c64242d4b72befacc60'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/gxSiDoVF/versions/qN5rqO9J/enderchests-forge-1.20.1-1.4.jar'
 
-[update.curseforge]
-file-id = 6910034
-project-id = 363535
+[update.modrinth]
+mod-id = 'gxSiDoVF'
+version = 'qN5rqO9J'

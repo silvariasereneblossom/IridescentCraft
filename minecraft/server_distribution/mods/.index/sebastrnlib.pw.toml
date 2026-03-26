@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '9cfed6776ff5ccda300dd0cee610dddb68c5fa15'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '2f76d1cf6bcdf23fc64f423e42706a1d41fe82960d5ef92c2ba3eb21f90134b5295ff4ea949ed6607b0bc002697c7723c0fbd090d4236a3874f6f235ccd03950'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/a9K5upFZ/versions/HTnN2Qop/sebastrnlib-4.0.0.jar'
 
-[update.curseforge]
-file-id = 4706669
-project-id = 709936
+[update.modrinth]
+mod-id = 'a9K5upFZ'
+version = 'HTnN2Qop'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'b1fdcfdd48ac4519ea95cb3b8dbaacc5cf819b20'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '62b527f52f86245643597454f1090ce4861ab62bbf30f3dda34485bcd700b862d6469ff825e1524ac808b58f29cdd49d55c641a9adabd3973445605de0bd08a8'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/DWIEOniQ/versions/lrauJ1WR/IronJetpacks-1.20.1-7.0.9.jar'
 
-[update.curseforge]
-file-id = 6880323
-project-id = 284497
+[update.modrinth]
+mod-id = 'DWIEOniQ'
+version = 'lrauJ1WR'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '8d6ecb5e6c8b7dc0a95eeaba012c6bcd1b75e77d'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '955d6820b0e73f860e6aab805c2e169e3a17c3b5939d48b656740a62758418340d08d34e815de5f3d4d6f9bfa49b4047b8abdd3b3f153adeb5e9037ea32164f0'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Ro7yiyD4/versions/hFWGuy24/thermal_integration-1.20.1-11.0.1.27.jar'
 
-[update.curseforge]
-file-id = 5374210
-project-id = 626708
+[update.modrinth]
+mod-id = 'Ro7yiyD4'
+version = 'hFWGuy24'

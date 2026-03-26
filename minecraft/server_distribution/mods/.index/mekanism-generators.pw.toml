@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '53fa707fd204ca1dd099a08995c2197145ff9a36'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'f377ddd719cc5df6b09c81b16467da5ca6645237270c6f81556304585ebaee79030613783418a7b100ed6695857d17ce2d83ecfd123abf309e78ea3c0c2d1d12'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/OFVYKsAk/versions/Th4Czz4N/MekanismGenerators-1.20.1-10.4.16.80.jar'
 
-[update.curseforge]
-file-id = 6552914
-project-id = 268566
+[update.modrinth]
+mod-id = 'OFVYKsAk'
+version = 'Th4Czz4N'

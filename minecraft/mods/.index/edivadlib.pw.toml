@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '7c4d3b7f341554e5a09c4fa289519a5d9b090b62'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1cfd9460c73fd7633bac7df8820f6a8c787a6cb7f28b4a847a4e80d078c87eed30bc54d1ebb68f0a2052a4d2deed97d610ee8d8ccc909b7dd7e87415e09bf104'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/a8Jk9kpK/versions/vN5I1S1f/EdivadLib-1.20.1-2.0.1.jar'
 
-[update.curseforge]
-file-id = 4717006
-project-id = 638508
+[update.modrinth]
+mod-id = 'a8Jk9kpK'
+version = 'vN5I1S1f'

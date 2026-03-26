@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '56156e143c6ce69dd3fff9bed34b2b75a0cebbc5'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '12770bab1b84e7496dce99e456a2163a3711e84de690d474c43415dd2de5883faf69a823f3295f223b606b80fd4923075c9ac70f77f8e4c0a550fad508486d5e'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/4JVfdODB/versions/1vIFc2dJ/cynosure-0.1.15-forge.jar'
 
-[update.curseforge]
-file-id = 7465654
-project-id = 1259952
+[update.modrinth]
+mod-id = '4JVfdODB'
+version = '1vIFc2dJ'

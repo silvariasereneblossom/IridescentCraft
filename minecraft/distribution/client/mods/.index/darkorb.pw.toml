@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '71b96f5d2ac5cd4d6f26946d99179e127cee802b'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1163195a5e92f94779ed2ccdf45ca2961697f53d666a08a132055ec8e5912a11af85cd6b25d5690cffe8539da24efdd5fd2cb507c82bc1855f319db0dde166c1'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/UuKdr8dM/versions/PcZgr6Ic/darkorb-forge-1.20.1-1.0.3.jar'
 
-[update.curseforge]
-file-id = 5115808
-project-id = 893320
+[update.modrinth]
+mod-id = 'UuKdr8dM'
+version = 'PcZgr6Ic'

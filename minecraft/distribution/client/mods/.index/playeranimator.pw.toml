@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '16808f94a41d45d8e986b4e4ea6b02ba57fa058a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'cb9f6a3aaa943823a85fdd716ddb3c7623af2b3520926c3a98d170c52d31908894808fb61c52bea39bae622dbab59d50b4bad56f7ca0533a9c3350d412c33729'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/gedNE4y2/versions/xe2EVE6q/player-animation-lib-forge-1.0.2-rc1%2B1.20.jar'
 
-[update.curseforge]
-file-id = 4587214
-project-id = 658587
+[update.modrinth]
+mod-id = 'gedNE4y2'
+version = 'xe2EVE6q'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'f6d3cdd3ec68c5590cf5b2e89c38dbf031824bfd'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '3945bf3f6d843957f13584dfc70bede253d1e48f0dcb96f647fbcc6fcd3d1748a0dd9c6ca5c882e07a41f98eb84057934f51e43ab6023ed0a19695de2e6fe9f5'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/xv94TkTM/versions/LH6Bi6Am/Controlling-forge-1.20.1-12.0.2.jar'
 
-[update.curseforge]
-file-id = 4646682
-project-id = 250398
+[update.modrinth]
+mod-id = 'xv94TkTM'
+version = 'LH6Bi6Am'

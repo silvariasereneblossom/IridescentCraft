@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '9a7f4ffdfe0dfe0a8071ac6501e52b1b4e208758'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '9d813c615bd084d7115d542aab5394911e0c403c6ef0a986aa7cbe25a887d59c5f0145c91997b4a1c025c2c790889e0a1b19f9814fc3e7c4312c5433a7976e0f'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Tl8ESrhX/versions/OTbqpyC8/torchmaster-20.1.9.jar'
 
-[update.curseforge]
-file-id = 5849456
-project-id = 254268
+[update.modrinth]
+mod-id = 'Tl8ESrhX'
+version = 'OTbqpyC8'

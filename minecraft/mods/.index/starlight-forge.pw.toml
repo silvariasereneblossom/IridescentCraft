@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'a915880c7834a0b0f9f300f0e3053deaa9a3205a'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'cc89c6b2dd0db709586028c7732a57a3e6184f19cc2b98b25964c720c3ab434031e62de23e0dab022575d637b5e4a34b5813164d32ec356d56588da400e7d026'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/iRfIGC1s/versions/cNa0vkNj/starlight-1.1.2%2Bforge.1cda73c.jar'
 
-[update.curseforge]
-file-id = 4631193
-project-id = 526854
+[update.modrinth]
+mod-id = 'iRfIGC1s'
+version = 'cNa0vkNj'

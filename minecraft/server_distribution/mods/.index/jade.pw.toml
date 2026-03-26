@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '1997e5fe2db3a0575ca79bfe4720019f01fd2b8c'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '612c7535d28ae0cb336f31b790770b3dcb5173d496fb74eabcb28d06e3b88e72733128060cefc4ae4147cce528a8e8c09688a36d8f9e11dbf77e93d89b743560'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/nvQzSEkH/versions/LecuGude/Jade-1.20.1-Forge-11.13.2.jar'
 
-[update.curseforge]
-file-id = 6855440
-project-id = 324717
+[update.modrinth]
+mod-id = 'nvQzSEkH'
+version = 'LecuGude'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '537d75314530737508eb39a12e26e61079c5d52d'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'e0ee5de490a9e7b241da43ee843081a443b54f8ae8e359d10bd6949b7c28946f8c9c326f507f9343ea344d99070e95e0b454e350ab0c6fc3aaecefa4cb6e67b3'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/VbCjkvcq/versions/laOcMdQ2/endportalrecipe-1.20.1-5.7.jar'
 
-[update.curseforge]
-file-id = 6186091
-project-id = 346030
+[update.modrinth]
+mod-id = 'VbCjkvcq'
+version = 'laOcMdQ2'

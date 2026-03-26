@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'da49b50013deee55861e81664096818357d563ac'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '56bfe2c0cdc35dedf6aa1be9c0a4aa3c99708b8ec18f6dc66b81d6bf5c9b3beac5f5673ecbbb76f2ac1c97578d8e8cae360336a2af0b11c8f665affdcd94232c'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/BCLngNKp/versions/vgD645b7/stalwart-dungeons-1.20.1-1.2.8.jar'
 
-[update.curseforge]
-file-id = 4703671
-project-id = 474817
+[update.modrinth]
+mod-id = 'BCLngNKp'
+version = 'vgD645b7'

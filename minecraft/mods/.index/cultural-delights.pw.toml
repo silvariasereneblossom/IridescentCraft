@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'beta'
 
 [download]
-hash = '39350afa0143814e53b9b049fe7b0af26f15ca98'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '524ac2dba18f94bb04de797f8192fcf4018be37ee290c001a3141d7bf171724f3502e3a0fa095b1c1b4b2fd8ab5825a951b484f1f87bdfa8a0d6501aa2dc4ddd'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/YttyNOFA/versions/1IoPruxL/culturaldelights-0.16.5.jar'
 
-[update.curseforge]
-file-id = 6660005
-project-id = 574622
+[update.modrinth]
+mod-id = 'YttyNOFA'
+version = '1IoPruxL'

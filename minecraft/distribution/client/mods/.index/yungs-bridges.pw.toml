@@ -1,16 +1,16 @@
 filename = 'YungsBridges-1.20-Forge-4.0.3.jar'
-name = "YUNG's Bridges"
+name = 'YUNG's Bridges'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '88467fe87b95e6cf7a432822033cf74dd8586254'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '2705fbaeb62115c5604719d68756f723a974ea9a62a4194771ebbea877ee715de72cefe3b01ec0d318d4d6fe2e9de87e6a7122ef21ee54d48153e84cb7bae0c6'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/Ht4BfYp6/versions/KgO1gfM2/YungsBridges-1.20-Forge-4.0.3.jar'
 
-[update.curseforge]
-file-id = 4769518
-project-id = 536660
+[update.modrinth]
+mod-id = 'Ht4BfYp6'
+version = 'KgO1gfM2'

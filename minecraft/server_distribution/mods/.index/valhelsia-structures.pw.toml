@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '60e859d58b6ee8db01ea7a08e0dd6cbad761befb'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '1744800037937ba66bd18dae178cfd1a0780938412442a0e6e5fe98a8052c5e70409a8e88afe99869c80f446e24e29ac374011d26618fea77703cf09bca3b2ef'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/T21szC0a/versions/9bGpLPl7/valhelsia_structures-forge-1.20.1-1.1.2.jar'
 
-[update.curseforge]
-file-id = 5195707
-project-id = 347488
+[update.modrinth]
+mod-id = 'T21szC0a'
+version = '9bGpLPl7'

@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'ed5a23ec30c90fd06b3f1d8140614028e1fafaee'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '185617d6d446f3d4ef6c7d5c6ee4e2fb731a89f7495157313b21292ec6b8e3dbcc10c0379ab49ecb2d0c64d0a78df74750d7f7336d5e6c43516a7c92f278c0a2'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/fuuu3xnx/versions/PM9yAW1G/Searchables-forge-1.20.1-1.0.3.jar'
 
-[update.curseforge]
-file-id = 5284015
-project-id = 858542
+[update.modrinth]
+mod-id = 'fuuu3xnx'
+version = 'PM9yAW1G'

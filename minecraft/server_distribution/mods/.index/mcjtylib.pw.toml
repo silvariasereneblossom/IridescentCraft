@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '3e50e0dafdbb0b1197dc7a958b86ca033abaca7d'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '9f0ff2aa297b2cbd454ec4e1cf326a6c644d8e74471efb2df5e69305cf3fc865de20d5200550e88e6f2e1e54e90bfc48412c5974b107e75f28685bc98a8a7892'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/1Zu0uTEE/versions/pt0NR4gg/mcjtylib-1.20-8.0.7.jar'
 
-[update.curseforge]
-file-id = 6586028
-project-id = 233105
+[update.modrinth]
+mod-id = '1Zu0uTEE'
+version = 'pt0NR4gg'

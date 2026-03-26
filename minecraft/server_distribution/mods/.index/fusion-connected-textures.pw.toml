@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'ec5c8a552493297842543140fed1b0a327c217f4'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '90122c1dbfefb807f2a5beea56fc9d9beed2dec36abe04b28d91a7bcd9cab66e26acbe7281c31f418c56033fd88091f968bad6ae3ab0f582af04d29679555343'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/p19vrgc2/versions/EJMDd0qw/fusion-1.2.12-forge-mc1.20.1.jar'
 
-[update.curseforge]
-file-id = 7471518
-project-id = 854949
+[update.modrinth]
+mod-id = 'p19vrgc2'
+version = 'EJMDd0qw'

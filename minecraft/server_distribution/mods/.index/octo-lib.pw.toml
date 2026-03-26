@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '9eab28baff36942e1c924489e34753df10f40208'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'e0bbe3a999f3a8c32b7dc0fd5bae61f62915dc5be40ac97a777f0784cdfaaed74b74f48cd407b9a8abb081ff331fbd272c9d4e08125f48f091435c926468d5c6'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/RH2KUdKJ/versions/HZ7KmyXp/OctoLib-FORGE-0.5.0.1%2B1.20.1.jar'
 
-[update.curseforge]
-file-id = 6274623
-project-id = 916747
+[update.modrinth]
+mod-id = 'RH2KUdKJ'
+version = 'HZ7KmyXp'

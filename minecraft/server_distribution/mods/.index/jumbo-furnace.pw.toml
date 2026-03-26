@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'ed3311015a934a30405e6f22cf70968d710d8897'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '6ef02fbf9aabf371f736d44f649c51708053679966b3f19730dae2b6251c70f2bac1ee2399511def916b71e933394adb10565174c2aa26e84df2c79aa51bbe7b'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/KXQSDZIy/versions/Dg4hXqSE/jumbofurnace-1.20.1-4.0.0.5.jar'
 
-[update.curseforge]
-file-id = 4685578
-project-id = 390880
+[update.modrinth]
+mod-id = 'KXQSDZIy'
+version = 'Dg4hXqSE'

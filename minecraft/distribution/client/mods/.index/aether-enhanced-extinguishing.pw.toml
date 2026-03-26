@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'b66f1f7eba4be5c83511894afead73f1933cc3af'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'adae2b4fe214a6a8fbff6eed7f3ad699baacac1751138c75fc82b9c5b09a2976ce655c516cac93ade229416d875ac0f517c8c43df86765150114cacddddf7ddd'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/FDrEl7QY/versions/fhAMvUrG/aether_enhanced_extinguishing-1.20.1-1.0.0-neoforge.jar'
 
-[update.curseforge]
-file-id = 4755648
-project-id = 884860
+[update.modrinth]
+mod-id = 'FDrEl7QY'
+version = 'fhAMvUrG'

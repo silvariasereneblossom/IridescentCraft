@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '4b8425c03778054801f0268f34b4a7a9b6d57392'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'b037c027322aa96194cfc07d34ca3961d8f2601590cece2a32395ce3e031c97be6f1bdf21230322cacacc8ade75baae6b84f99f0d3a3dbe901e99b9e5361fca5'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/N4D9AicU/versions/SxzunA0z/rftoolsdim-1.20-11.0.10.jar'
 
-[update.curseforge]
-file-id = 5884304
-project-id = 240950
+[update.modrinth]
+mod-id = 'N4D9AicU'
+version = 'SxzunA0z'

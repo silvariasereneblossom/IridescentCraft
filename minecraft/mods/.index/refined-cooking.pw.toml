@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = 'a67202a1ea133c8a8f154a4498ff7a6bc7629f8e'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '80ee76232716c1c2900ac42f77a97e4e958b3f31bbc045c2b5963a30f39a39af15ce0c4ebb2109c0647b4de5c9683fd071d84eaee2a11f6b03e0249487cd3638'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/AOuwe9He/versions/7M3am6zk/refinedcooking-4.0.0.jar'
 
-[update.curseforge]
-file-id = 4706949
-project-id = 543972
+[update.modrinth]
+mod-id = 'AOuwe9He'
+version = '7M3am6zk'

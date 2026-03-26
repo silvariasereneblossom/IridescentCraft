@@ -6,11 +6,11 @@ x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
 
 [download]
-hash = '843b16ca88bc5c390bb22a2a84437e6bffdd43dd'
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = 'c9ddf7d243aac2cbf88fc2fd7e71ce4470354765d602dadf0fa68105a0561cb14b482c60d9e04084845bcf2237442d913888dcfb45b392bc700b0f3470517c96'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/WrpuIfhw/versions/7fc0hJN6/corpse-forge-1.20.1-1.0.23.jar'
 
-[update.curseforge]
-file-id = 7018272
-project-id = 316582
+[update.modrinth]
+mod-id = 'WrpuIfhw'
+version = '7fc0hJN6'
