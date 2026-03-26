@@ -123,6 +123,7 @@ if (Test-Path $buildScript) {
     $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
     $quotePattern = "['" + '"]'
     $mrFiles = @()
+    $cfMods = @()
 
     foreach ($toml in $tomlFiles) {
         $filename = ''; $side = 'both'; $mode = ''; $url = ''; $hash = ''; $hashFormat = ''
@@ -156,17 +157,27 @@ if (Test-Path $buildScript) {
         if ($side -eq 'client') { $envServer = "unsupported" }
         if ($side -eq 'server') { $envClient = "unsupported" }
 
-        $entry = @{ path = "mods/$filename"; downloads = @($dlUrl); fileSize = 0; env = @{ client = $envClient; server = $envServer } }
-        if ($hash -and $hashFormat) {
-            $hashes = @{}
-            if ($hashFormat -eq 'sha512') { $hashes['sha512'] = $hash }
-            elseif ($hashFormat -eq 'sha1') { $hashes['sha1'] = $hash }
-            if ($hashes.Count -gt 0) { $entry['hashes'] = $hashes }
+        # PrismLauncher requires sha512 in hashes for every file entry.
+        # Only Modrinth mods have sha512 — skip CurseForge mods from index
+        # (they'll need to be downloaded separately or added as overrides)
+        if (-not ($hash -and $hashFormat -eq 'sha512')) {
+            # CurseForge mod — add to separate download list
+            $cfMods += [ordered]@{ filename = $filename; url = $dlUrl }
+            continue
+        }
+
+        $entry = [ordered]@{
+            path = "mods/$filename"
+            hashes = [ordered]@{ sha512 = $hash }
+            env = [ordered]@{ client = $envClient; server = $envServer }
+            downloads = @($dlUrl)
+            fileSize = 0
         }
         $mrFiles += $entry
     }
 
-    Write-Host "    $($mrFiles.Count) mods indexed."
+    Write-Host "    $($mrFiles.Count) Modrinth mods (auto-download via PrismLauncher)"
+    Write-Host "    $($cfMods.Count) CurseForge mods (will download after import)"
 
     $staging = "$env:TEMP\IridescentCraft-mrpack"
     if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
@@ -182,6 +193,12 @@ if (Test-Path $buildScript) {
     }
     $mrIndex | ConvertTo-Json -Depth 10 | Set-Content "$staging\modrinth.index.json" -Encoding UTF8
     Write-Host "    modrinth.index.json... OK"
+
+    # Save CurseForge mod list for post-import download
+    if ($cfMods.Count -gt 0) {
+        $cfMods | ConvertTo-Json -Depth 5 | Set-Content "$staging\overrides\curseforge_mods.json" -Encoding UTF8
+        Write-Host "    curseforge_mods.json ($($cfMods.Count) mods)... OK"
+    }
 
     # Overrides
     foreach ($dir in @('config', 'defaultconfigs', 'kubejs', 'global_packs')) {
@@ -291,8 +308,80 @@ if ($prismExe) {
     Write-Host "    PrismLauncher should open with the import dialog."
     Write-Host "    Click OK to import, then launch the instance."
     Write-Host ""
-    Write-Host "    First launch will download Forge + ~420 mods."
-    Write-Host "    This takes 5-15 minutes depending on your internet."
+    Write-Host "    PrismLauncher will download Forge + Modrinth mods automatically."
+    Write-Host ""
+
+    if ($cfMods.Count -gt 0) {
+        Write-Host "    After import completes, this script will download" -ForegroundColor Yellow
+        Write-Host "    $($cfMods.Count) CurseForge mods that PrismLauncher can't fetch." -ForegroundColor Yellow
+        Write-Host ""
+        Write-Host "    Please wait for PrismLauncher to finish importing," -ForegroundColor Yellow
+        Write-Host "    then press Enter here to download CurseForge mods." -ForegroundColor Yellow
+        Read-Host "    Press Enter when PrismLauncher import is done"
+
+        # Find the instance mods folder
+        $instancesDir = "$env:APPDATA\PrismLauncher\instances"
+        $instanceMods = ""
+        # Try common instance locations
+        foreach ($candidate in @(
+            "$instancesDir\IridescentCraft\.minecraft\mods",
+            "$instancesDir\IridescentCraft\mods",
+            "$instancesDir\IridescentCraft (1)\.minecraft\mods",
+            "$instancesDir\IridescentCraft (1)\mods"
+        )) {
+            if (Test-Path $candidate) { $instanceMods = $candidate; break }
+        }
+
+        if (-not $instanceMods) {
+            # Search for the instance
+            $found = Get-ChildItem $instancesDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "IridescentCraft*" } | Select-Object -First 1
+            if ($found) {
+                if (Test-Path "$($found.FullName)\.minecraft\mods") { $instanceMods = "$($found.FullName)\.minecraft\mods" }
+                elseif (Test-Path "$($found.FullName)\mods") { $instanceMods = "$($found.FullName)\mods" }
+            }
+        }
+
+        if ($instanceMods) {
+            Write-Host ""
+            Write-Host "  [CURSEFORGE] Downloading $($cfMods.Count) CurseForge mods..." -ForegroundColor Cyan
+            Write-Host "    Target: $instanceMods"
+            Write-Host ""
+
+            $dlOK = 0; $dlFail = 0
+            foreach ($mod in $cfMods) {
+                $modPath = Join-Path $instanceMods $mod.filename
+                if (Test-Path -LiteralPath $modPath) { $dlOK++; continue }
+
+                Write-Host "    $($mod.filename)" -NoNewline
+                try {
+                    $tmp = Join-Path $instanceMods "_cf_dl.tmp"
+                    $wc = New-Object System.Net.WebClient
+                    $wc.DownloadFile($mod.url, $tmp)
+                    $wc.Dispose()
+                    if ((Test-Path $tmp) -and (Get-Item $tmp).Length -gt 1000) {
+                        Move-Item -LiteralPath $tmp -Destination $modPath -Force
+                        Write-Host " OK" -ForegroundColor Green
+                        $dlOK++
+                    } else {
+                        if (Test-Path $tmp) { Remove-Item $tmp -Force }
+                        Write-Host " FAILED" -ForegroundColor Red
+                        $dlFail++
+                    }
+                } catch {
+                    if (Test-Path (Join-Path $instanceMods "_cf_dl.tmp")) { Remove-Item (Join-Path $instanceMods "_cf_dl.tmp") -Force }
+                    Write-Host " FAILED" -ForegroundColor Red
+                    $dlFail++
+                }
+            }
+            Write-Host ""
+            Write-Host "    CurseForge: $dlOK OK" -ForegroundColor Green
+            if ($dlFail -gt 0) { Write-Host "    Failed: $dlFail (re-run to retry)" -ForegroundColor Red }
+        } else {
+            Write-Host "  Could not find instance mods folder." -ForegroundColor Yellow
+            Write-Host "  CurseForge mods must be downloaded manually." -ForegroundColor Yellow
+            Write-Host "  The curseforge_mods.json in the instance has the URLs." -ForegroundColor Yellow
+        }
+    }
 } else {
     Write-Host "  ==================================================================="
     Write-Host "    HOW TO IMPORT:"
@@ -304,11 +393,10 @@ if ($prismExe) {
     Write-Host "    4. Select 'Import' tab"
     Write-Host "    5. Browse to: $savePath"
     Write-Host "    6. Click OK"
-    Write-Host "    7. PrismLauncher will download Forge + all mods automatically"
+    Write-Host "    7. PrismLauncher will download Forge + Modrinth mods"
     Write-Host "    8. Add your Minecraft account in Settings if needed"
     Write-Host "    9. Launch!"
     Write-Host ""
-    Write-Host "    First launch takes 5-15 minutes (Forge + 420 mods)."
 }
 
 # Cleanup

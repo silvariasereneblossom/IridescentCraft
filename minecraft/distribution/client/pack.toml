@@ -1,0 +1,13 @@
+name = "IridescentCraft"
+author = "Silvaria"
+version = "1.0.0-alpha"
+pack-format = "packwiz:1.1.0"
+
+[index]
+file = "index.toml"
+hash-format = "sha256"
+hash = ""
+
+[versions]
+minecraft = "1.20.1"
+forge = "47.4.6"
