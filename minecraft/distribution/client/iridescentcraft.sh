@@ -62,112 +62,134 @@ if [ ! -d "$DIST_DIR/mods/.index" ]; then
 fi
 
 # -------------------------------------------------------------------
-# Phase 1: Build instance staging directory
+# Phase 1: Build .mrpack (Modrinth pack format)
 # -------------------------------------------------------------------
-echo "  [BUILD] Assembling IridescentCraft instance package..."
+# PrismLauncher natively imports .mrpack and downloads all mods.
+echo "  [BUILD] Building Modrinth pack (.mrpack)..."
 echo ""
 
-STAGING="/tmp/IridescentCraft-staging"
-STAGE_MC="$STAGING/.minecraft"
-STAGE_MODS="$STAGING/.minecraft/mods"
-OUTPUT_ZIP="/tmp/IridescentCraft-instance.zip"
+STAGING="/tmp/IridescentCraft-mrpack"
+OUTPUT_MRPACK="/tmp/IridescentCraft.mrpack"
 
 rm -rf "$STAGING"
-mkdir -p "$STAGING" "$STAGE_MC" "$STAGE_MODS"
+mkdir -p "$STAGING/overrides/mods"
 
-# Write instance.cfg
-cat > "$STAGING/instance.cfg" << 'INSTCFG'
-[General]
-ConfigVersion=1.3
-InstanceType=OneSix
-MCLaunchMethod=LauncherPart
-OverrideMemory=true
-MaxMemAlloc=10240
-MinMemAlloc=4096
-iconKey=default
-name=IridescentCraft
-INSTCFG
-echo "    instance.cfg... OK"
+# Parse .pw.toml files and build modrinth.index.json
+INDEX_DIR="$DIST_DIR/mods/.index"
+TOML_COUNT=$(ls "$INDEX_DIR"/*.pw.toml 2>/dev/null | wc -l)
+echo "    Parsing $TOML_COUNT .pw.toml files..."
 
-# Write mmc-pack.json
-cat > "$STAGING/mmc-pack.json" << 'MMCPACK'
+# Build JSON files array
+FILES_JSON="["
+FIRST=true
+MOD_COUNT=0
+
+for toml in "$INDEX_DIR"/*.pw.toml; do
+    [ -f "$toml" ] || continue
+
+    FILENAME="" SIDE="both" MODE="" URL="" HASH="" HASH_FMT="" FILE_ID=""
+
+    while IFS= read -r line; do
+        line="$(echo "$line" | sed 's/^[[:space:]]*//')"
+        case "$line" in
+            filename\ =\ *) FILENAME="$(echo "$line" | sed "s/^filename[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
+            side\ =\ *)     SIDE="$(echo "$line" | sed "s/^side[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
+            mode\ =\ *)     MODE="$(echo "$line" | sed "s/^mode[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
+            url\ =\ *)      URL="$(echo "$line" | sed "s/^url[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
+            hash\ =\ *)     HASH="$(echo "$line" | sed "s/^hash[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
+            hash-format\ =\ *) HASH_FMT="$(echo "$line" | sed "s/^hash-format[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
+            file-id\ =\ *)  FILE_ID="$(echo "$line" | sed 's/^file-id[[:space:]]*=[[:space:]]*//')" ;;
+        esac
+    done < "$toml"
+
+    [ -z "$FILENAME" ] && continue
+
+    # Build download URL
+    DL_URL=""
+    if [ "$MODE" = "url" ] && [ -n "$URL" ]; then
+        DL_URL="$URL"
+    elif [ "$MODE" = "metadata:curseforge" ] && [ -n "$FILE_ID" ]; then
+        PART1="${FILE_ID:0:4}"
+        PART2="${FILE_ID:4}"
+        PART2="$(echo "$PART2" | sed 's/^0*//')"
+        [ -z "$PART2" ] && PART2="0"
+        DL_URL="https://edge.forgecdn.net/files/$PART1/$PART2/$FILENAME"
+    fi
+    [ -z "$DL_URL" ] && continue
+
+    # Env mapping
+    ENV_CLIENT="required"; ENV_SERVER="required"
+    [ "$SIDE" = "client" ] && ENV_SERVER="unsupported"
+    [ "$SIDE" = "server" ] && ENV_CLIENT="unsupported"
+
+    # Build hashes object
+    HASHES_JSON="{}"
+    if [ -n "$HASH" ] && [ -n "$HASH_FMT" ]; then
+        HASHES_JSON="{\"$HASH_FMT\":\"$HASH\"}"
+    fi
+
+    # Append to files array
+    if [ "$FIRST" = true ]; then FIRST=false; else FILES_JSON="$FILES_JSON,"; fi
+    FILES_JSON="$FILES_JSON
+    {\"path\":\"mods/$FILENAME\",\"downloads\":[\"$DL_URL\"],\"fileSize\":0,\"hashes\":$HASHES_JSON,\"env\":{\"client\":\"$ENV_CLIENT\",\"server\":\"$ENV_SERVER\"}}"
+    MOD_COUNT=$((MOD_COUNT + 1))
+done
+
+FILES_JSON="$FILES_JSON
+  ]"
+
+echo "    $MOD_COUNT mods indexed."
+
+# Write modrinth.index.json
+cat > "$STAGING/modrinth.index.json" << MRINDEX
 {
-    "components": [
-        {
-            "cachedName": "Minecraft",
-            "cachedVersion": "1.20.1",
-            "important": true,
-            "uid": "net.minecraft",
-            "version": "1.20.1"
-        },
-        {
-            "cachedName": "Forge",
-            "cachedVersion": "47.4.6",
-            "uid": "net.minecraftforge",
-            "version": "47.4.6"
-        }
-    ],
-    "formatVersion": 1
+  "formatVersion": 1,
+  "game": "minecraft",
+  "versionId": "1.0.0-alpha",
+  "name": "IridescentCraft",
+  "summary": "Progression-focused RPG modpack with 420+ mods.",
+  "files": $FILES_JSON,
+  "dependencies": {
+    "minecraft": "1.20.1",
+    "forge": "47.4.6"
+  }
 }
-MMCPACK
-echo "    mmc-pack.json... OK"
+MRINDEX
+echo "    modrinth.index.json... OK"
 
-# Copy game files
-if [ -d "$DIST_DIR/config" ]; then
-    cp -r "$DIST_DIR/config" "$STAGE_MC/"
-    echo "    config... OK"
-fi
-if [ -d "$DIST_DIR/defaultconfigs" ]; then
-    cp -r "$DIST_DIR/defaultconfigs" "$STAGE_MC/"
-    echo "    defaultconfigs... OK"
-fi
-if [ -d "$DIST_DIR/kubejs" ]; then
-    cp -r "$DIST_DIR/kubejs" "$STAGE_MC/"
-    echo "    kubejs... OK"
-fi
-if [ -d "$DIST_DIR/global_packs" ]; then
-    cp -r "$DIST_DIR/global_packs" "$STAGE_MC/"
-    echo "    global_packs... OK"
-fi
+# Copy overrides
+for dir in config defaultconfigs kubejs global_packs; do
+    if [ -d "$DIST_DIR/$dir" ]; then
+        cp -r "$DIST_DIR/$dir" "$STAGING/overrides/"
+        echo "    overrides/$dir... OK"
+    fi
+done
 
-# Copy mod index
-if [ -d "$DIST_DIR/mods/.index" ]; then
-    mkdir -p "$STAGE_MODS/.index"
-    cp -r "$DIST_DIR/mods/.index/"* "$STAGE_MODS/.index/"
-    echo "    mod index (.pw.toml)... OK"
-fi
-
-# Copy custom JARs
+# Custom JARs
 if ls "$DIST_DIR"/mods/*.jar &>/dev/null; then
-    cp "$DIST_DIR"/mods/*.jar "$STAGE_MODS/"
-    echo "    custom JARs... OK"
+    cp "$DIST_DIR"/mods/*.jar "$STAGING/overrides/mods/"
+    CUSTOM_COUNT=$(ls "$DIST_DIR"/mods/*.jar | wc -l)
+    echo "    overrides/mods/ ($CUSTOM_COUNT custom JARs)... OK"
 fi
 
-echo ""
-echo -e "  ${GREEN}[OK]${RESET} Instance package assembled."
-echo ""
+# Create .mrpack
+rm -f "$OUTPUT_MRPACK"
+(cd "$STAGING" && zip -r "$OUTPUT_MRPACK" . -x "*.DS_Store" > /dev/null 2>&1)
 
-# -------------------------------------------------------------------
-# Phase 2: Zip it
-# -------------------------------------------------------------------
-echo "  [ZIP] Creating importable archive..."
-
-rm -f "$OUTPUT_ZIP"
-(cd "$STAGING" && zip -r "$OUTPUT_ZIP" . -x "*.DS_Store" > /dev/null 2>&1)
-
-if [ ! -f "$OUTPUT_ZIP" ]; then
-    echo -e "  ${RED}ERROR: Failed to create zip.${RESET}"
+if [ ! -f "$OUTPUT_MRPACK" ]; then
+    echo -e "  ${RED}ERROR: Failed to create .mrpack.${RESET}"
     exit 1
 fi
 
-ZIP_SIZE=$(du -h "$OUTPUT_ZIP" | cut -f1)
-echo "    Created: $OUTPUT_ZIP ($ZIP_SIZE)"
+MRPACK_SIZE=$(du -h "$OUTPUT_MRPACK" | cut -f1)
+echo ""
+echo -e "  ${GREEN}[OK]${RESET} .mrpack created ($MRPACK_SIZE)"
 echo ""
 
 # -------------------------------------------------------------------
-# Phase 3: Choose save location
+# Phase 2: Choose save location
 # -------------------------------------------------------------------
-DEFAULT_SAVE="$HOME/Desktop/IridescentCraft-instance.zip"
+DEFAULT_SAVE="$HOME/Desktop/IridescentCraft.mrpack"
 
 # Try GUI file picker if available
 SAVE_PATH=""
@@ -175,9 +197,9 @@ if command -v zenity &>/dev/null; then
     SAVE_PATH=$(zenity --file-selection --save --confirm-overwrite \
         --title="Save IridescentCraft Instance" \
         --filename="$DEFAULT_SAVE" \
-        --file-filter="ZIP Archive|*.zip" 2>/dev/null) || true
+        --file-filter="Modrinth Pack|*.mrpack" 2>/dev/null) || true
 elif command -v kdialog &>/dev/null; then
-    SAVE_PATH=$(kdialog --getsavefilename "$DEFAULT_SAVE" "*.zip" 2>/dev/null) || true
+    SAVE_PATH=$(kdialog --getsavefilename "$DEFAULT_SAVE" "*.mrpack" 2>/dev/null) || true
 fi
 
 if [ -z "$SAVE_PATH" ]; then
@@ -186,7 +208,7 @@ if [ -z "$SAVE_PATH" ]; then
     echo "  Saving to default location: $SAVE_PATH"
 fi
 
-cp "$OUTPUT_ZIP" "$SAVE_PATH"
+cp "$OUTPUT_MRPACK" "$SAVE_PATH"
 echo -e "  ${GREEN}Saved to: $SAVE_PATH${RESET}"
 echo ""
 
