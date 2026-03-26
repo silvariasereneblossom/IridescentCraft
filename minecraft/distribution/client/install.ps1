@@ -104,94 +104,111 @@ if (-not (Test-Path "$distDir\mods\.index")) {
     }
 }
 
-# ── Phase 1: Build instance zip ──
-Write-Host "  [BUILD] Assembling IridescentCraft instance package..."
-Write-Host ""
+# ── Phase 1: Build .mrpack (Modrinth pack format) ──
+# PrismLauncher natively imports .mrpack files and downloads all mods
+# from the modrinth.index.json automatically.
 
-$staging = "$env:TEMP\IridescentCraft-staging"
-$stageMC = "$staging\.minecraft"
-$stageMods = "$staging\.minecraft\mods"
-$outputZip = "$env:TEMP\IridescentCraft-instance.zip"
+$outputZip = "$env:TEMP\IridescentCraft.mrpack"
 
-if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
-New-Item -ItemType Directory -Path $stageMods -Force | Out-Null
+# Use build_mrpack.ps1 if available alongside this script, otherwise inline
+$buildScript = Join-Path $scriptDir "build_mrpack.ps1"
+if (Test-Path $buildScript) {
+    & $buildScript -DistDir $distDir -OutputFile $outputZip
+} else {
+    # Inline mrpack builder (same logic as build_mrpack.ps1)
+    Write-Host "  [BUILD] Building Modrinth pack (.mrpack)..."
+    Write-Host ""
 
-# instance.cfg
-@"
-[General]
-ConfigVersion=1.3
-InstanceType=OneSix
-MCLaunchMethod=LauncherPart
-OverrideMemory=true
-MaxMemAlloc=10240
-MinMemAlloc=4096
-iconKey=default
-name=IridescentCraft
-"@ | Set-Content "$staging\instance.cfg" -Encoding UTF8
-Write-Host "    instance.cfg... OK"
+    $indexDir = "$distDir\mods\.index"
+    $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
+    $quotePattern = "['" + '"]'
+    $mrFiles = @()
 
-# mmc-pack.json
-@"
-{
-    "components": [
-        {
-            "cachedName": "Minecraft",
-            "cachedVersion": "1.20.1",
-            "important": true,
-            "uid": "net.minecraft",
-            "version": "1.20.1"
-        },
-        {
-            "cachedName": "Forge",
-            "cachedVersion": "47.4.6",
-            "uid": "net.minecraftforge",
-            "version": "47.4.6"
+    foreach ($toml in $tomlFiles) {
+        $filename = ''; $side = 'both'; $mode = ''; $url = ''; $hash = ''; $hashFormat = ''
+        $fileId = ''
+
+        foreach ($line in Get-Content $toml.FullName) {
+            $line = $line.Trim()
+            if ($line -match "^filename\s*=\s*$quotePattern(.+)$quotePattern") { $filename = $matches[1] }
+            if ($line -match "^side\s*=\s*$quotePattern(.+)$quotePattern") { $side = $matches[1] }
+            if ($line -match "^mode\s*=\s*$quotePattern(.+)$quotePattern") { $mode = $matches[1] }
+            if ($line -match "^url\s*=\s*$quotePattern(.+)$quotePattern") { $url = $matches[1] }
+            if ($line -match "^hash\s*=\s*$quotePattern(.+)$quotePattern") { $hash = $matches[1] }
+            if ($line -match "^hash-format\s*=\s*$quotePattern(.+)$quotePattern") { $hashFormat = $matches[1] }
+            if ($line -match '^file-id\s*=\s*(\d+)') { $fileId = $matches[1] }
         }
-    ],
-    "formatVersion": 1
-}
-"@ | Set-Content "$staging\mmc-pack.json" -Encoding UTF8
-Write-Host "    mmc-pack.json... OK"
 
-# Copy game files
-$dirs = @('config', 'defaultconfigs', 'kubejs', 'global_packs')
-foreach ($dir in $dirs) {
-    if (Test-Path "$distDir\$dir") {
-        Copy-Item "$distDir\$dir" "$stageMC\$dir" -Recurse -Force
-        Write-Host "    $dir... OK"
+        if ([string]::IsNullOrEmpty($filename)) { continue }
+
+        $dlUrl = ''
+        if ($mode -eq 'url' -and $url) { $dlUrl = $url }
+        elseif ($mode -eq 'metadata:curseforge' -and $fileId) {
+            $idStr = $fileId.ToString()
+            $part1 = $idStr.Substring(0, 4)
+            $part2 = $idStr.Substring(4).TrimStart('0')
+            if (-not $part2) { $part2 = '0' }
+            $dlUrl = "https://edge.forgecdn.net/files/$part1/$part2/$filename"
+        }
+        if ([string]::IsNullOrEmpty($dlUrl)) { continue }
+
+        $envClient = "required"; $envServer = "required"
+        if ($side -eq 'client') { $envServer = "unsupported" }
+        if ($side -eq 'server') { $envClient = "unsupported" }
+
+        $entry = @{ path = "mods/$filename"; downloads = @($dlUrl); fileSize = 0; env = @{ client = $envClient; server = $envServer } }
+        if ($hash -and $hashFormat) {
+            $hashes = @{}
+            if ($hashFormat -eq 'sha512') { $hashes['sha512'] = $hash }
+            elseif ($hashFormat -eq 'sha1') { $hashes['sha1'] = $hash }
+            if ($hashes.Count -gt 0) { $entry['hashes'] = $hashes }
+        }
+        $mrFiles += $entry
     }
+
+    Write-Host "    $($mrFiles.Count) mods indexed."
+
+    $staging = "$env:TEMP\IridescentCraft-mrpack"
+    if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
+    New-Item -ItemType Directory -Path "$staging\overrides\mods" -Force | Out-Null
+
+    # modrinth.index.json
+    $mrIndex = @{
+        formatVersion = 1; game = "minecraft"; versionId = "1.0.0-alpha"
+        name = "IridescentCraft"
+        summary = "Progression-focused RPG modpack with 420+ mods."
+        files = $mrFiles
+        dependencies = @{ minecraft = "1.20.1"; forge = "47.4.6" }
+    }
+    $mrIndex | ConvertTo-Json -Depth 10 | Set-Content "$staging\modrinth.index.json" -Encoding UTF8
+    Write-Host "    modrinth.index.json... OK"
+
+    # Overrides
+    foreach ($dir in @('config', 'defaultconfigs', 'kubejs', 'global_packs')) {
+        if (Test-Path "$distDir\$dir") {
+            Copy-Item "$distDir\$dir" "$staging\overrides\$dir" -Recurse -Force
+            Write-Host "    overrides/$dir... OK"
+        }
+    }
+    $customJars = Get-ChildItem "$distDir\mods\*.jar" -ErrorAction SilentlyContinue
+    if ($customJars) {
+        foreach ($jar in $customJars) { Copy-Item $jar.FullName "$staging\overrides\mods\" -Force }
+        Write-Host "    overrides/mods/ ($($customJars.Count) custom JARs)... OK"
+    }
+
+    if (Test-Path $outputZip) { Remove-Item $outputZip -Force }
+    Add-Type -AssemblyName System.IO.Compression.FileSystem
+    [System.IO.Compression.ZipFile]::CreateFromDirectory($staging, $outputZip)
+    Remove-Item $staging -Recurse -Force -ErrorAction SilentlyContinue
 }
 
-# Copy mod index
-if (Test-Path "$distDir\mods\.index") {
-    New-Item -ItemType Directory -Path "$stageMods\.index" -Force | Out-Null
-    Copy-Item "$distDir\mods\.index\*" "$stageMods\.index\" -Recurse -Force
-    $tomlCount = (Get-ChildItem "$stageMods\.index\*.pw.toml").Count
-    Write-Host "    mod index ($tomlCount .pw.toml files)... OK"
-}
-
-# Copy custom JARs
-$customJars = Get-ChildItem "$distDir\mods\*.jar" -ErrorAction SilentlyContinue
-if ($customJars) {
-    Copy-Item "$distDir\mods\*.jar" "$stageMods\" -Force
-    Write-Host "    custom JARs ($($customJars.Count))... OK"
-}
-
-Write-Host ""
-Write-Host "  [OK] Instance package assembled." -ForegroundColor Green
-Write-Host ""
-
-# ── Phase 2: Zip ──
-Write-Host "  [ZIP] Creating importable archive..."
-if (Test-Path $outputZip) { Remove-Item $outputZip -Force }
-Add-Type -AssemblyName System.IO.Compression.FileSystem
-[System.IO.Compression.ZipFile]::CreateFromDirectory($staging, $outputZip)
 $zipSize = [math]::Round((Get-Item $outputZip).Length / 1MB, 1)
-Write-Host "    Created: $outputZip ($zipSize MB)"
+Write-Host ""
+Write-Host "  [OK] .mrpack created ($zipSize MB)" -ForegroundColor Green
 Write-Host ""
 
-# ── Phase 3: Save location ──
-$defaultSave = [IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'IridescentCraft-instance.zip')
+# ── Phase 2: Save location ──
+$defaultSave = [IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'IridescentCraft.mrpack')
 Write-Host "  Default save: $defaultSave"
 $customPath = Read-Host "  Press Enter to save to Desktop, or type a custom path"
 
@@ -295,7 +312,6 @@ if ($prismExe) {
 }
 
 # Cleanup
-Remove-Item $staging -Recurse -Force -ErrorAction SilentlyContinue
 if ($distDir -like "*TEMP*") { Remove-Item $distDir -Recurse -Force -ErrorAction SilentlyContinue }
 
 Write-Host ""
