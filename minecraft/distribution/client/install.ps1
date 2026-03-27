@@ -347,7 +347,10 @@ if ($prismExe) {
     Write-Host "  =                                                          =" -ForegroundColor Yellow
     Write-Host "  ============================================================" -ForegroundColor Yellow
     Write-Host ""
-    [Console]::Beep(800, 300); [Console]::Beep(1000, 300)
+    # Alert sound — use Windows default notification sound
+    try { [Console]::Beep(800, 300); [Console]::Beep(1000, 300) } catch {}
+    try { (New-Object Media.SoundPlayer "C:\Windows\Media\notify.wav").PlaySync() } catch {}
+    try { [System.Media.SystemSounds]::Exclamation.Play() } catch {}
     $host.UI.RawUI.WindowTitle = "*** IridescentCraft - PRESS ENTER WHEN READY ***"
     Read-Host "    >>> Press Enter AFTER PrismLauncher import is fully complete <<<"
     $host.UI.RawUI.WindowTitle = "IridescentCraft Client Installer"
