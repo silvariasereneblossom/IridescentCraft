@@ -120,7 +120,7 @@
     ],
     "aquaculture:neptunium_fillet_knife": [
       56178,
-      8.999999E-4
+      0.0008999999
     ],
     "aquaculture:neptunium_sword": [
       53030,
@@ -545,10 +545,6 @@
     "meetyourfight:twilights_thorn": [
       49414,
       13.332878
-    ],
-    "mekanism:electric_bow": [
-      54387,
-      2.1195521
     ],
     "miapi:modular_axe": [
       55337,
@@ -2078,22 +2074,6 @@
       34646,
       2.3055708
     ],
-    "mekanism:free_runners": [
-      35957,
-      0.59678036
-    ],
-    "mekanism:free_runners_armored": [
-      35921,
-      0.64716274
-    ],
-    "mekanism:hazmat_boots": [
-      35957,
-      0.59678036
-    ],
-    "mekanism:mekasuit_boots": [
-      34402,
-      3.5910394
-    ],
     "miapi:modular_boots": [
       36497,
       0.009
@@ -2519,14 +2499,6 @@
     "irons_spellbooks:wizard_leggings": [
       34646,
       2.3055708
-    ],
-    "mekanism:hazmat_pants": [
-      35957,
-      0.59678036
-    ],
-    "mekanism:mekasuit_pants": [
-      34402,
-      3.5910394
     ],
     "miapi:modular_leggings": [
       36499,
@@ -2997,26 +2969,6 @@
     "irons_spellbooks:wizard_chestplate": [
       34645,
       2.3055708
-    ],
-    "mekanism:hazmat_gown": [
-      35956,
-      0.59678036
-    ],
-    "mekanism:jetpack": [
-      35956,
-      0.59678036
-    ],
-    "mekanism:jetpack_armored": [
-      35722,
-      0.9074007
-    ],
-    "mekanism:mekasuit_bodyarmor": [
-      34401,
-      3.5910394
-    ],
-    "mekanism:scuba_tank": [
-      35956,
-      0.59678036
     ],
     "miapi:modular_chestplate": [
       36500,
@@ -3543,18 +3495,6 @@
     "irons_spellbooks:wizard_helmet": [
       34644,
       2.3055708
-    ],
-    "mekanism:hazmat_mask": [
-      35955,
-      0.59678036
-    ],
-    "mekanism:mekasuit_helmet": [
-      34400,
-      3.5910394
-    ],
-    "mekanism:scuba_mask": [
-      35955,
-      0.59678036
     ],
     "miapi:modular_helmet": [
       36490,
