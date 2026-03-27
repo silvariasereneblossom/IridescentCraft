@@ -103,19 +103,20 @@ LootJS.modifiers(event => {
     // Since we can't detect "Rift mobs" without RFTools, End mobs serve as proxy
     // =========================================================================
 
-    // --- Endermen (End dimension only would need dimension check) ---
-    // Base 2% void_essence already in lootjs_overhaul.js
-    // Add small Rift Shard chance for endgame enderman farming
+    // --- Endermen (End dimension ONLY — not overworld endermen) ---
     event.addEntityLootModifier('minecraft:enderman')
+        .anyDimension('minecraft:the_end')
         .addLoot(LootEntry.of('kubejs:rift_shard').when(c => c.randomChance(0.01)))
 
     // --- Shulkers: End-exclusive mob, higher Void Fragment rate ---
     event.addEntityLootModifier('minecraft:shulker')
+        .anyDimension('minecraft:the_end')
         .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.08)))
         .addLoot(LootEntry.of('kubejs:rift_shard').when(c => c.randomChance(0.03)))
 
-    // --- Phantom: rare Rift material source ---
+    // --- Phantom: End dimension only (not overworld night phantoms) ---
     event.addEntityLootModifier('minecraft:phantom')
+        .anyDimension('minecraft:the_end')
         .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.05)))
 
     console.log('[IridescentCraft] Rift loot mechanics loaded (LootJS)')
