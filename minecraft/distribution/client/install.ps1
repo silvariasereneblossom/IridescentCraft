@@ -347,6 +347,7 @@ if ($prismExe) {
     Write-Host ""
     Read-Host "    Press Enter AFTER PrismLauncher import is fully complete"
 
+  try {
     Write-Host ""
     Write-Host "  [VERIFY] Searching for instance mods folder..." -ForegroundColor Cyan
 
@@ -490,6 +491,12 @@ if ($prismExe) {
         Write-Host ""
         Write-Host "  Total mods installed: $finalCount" -ForegroundColor Cyan
     }
+  } catch {
+    Write-Host ""
+    Write-Host "  ERROR during verification: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "  Line: $($_.InvocationInfo.ScriptLineNumber)" -ForegroundColor DarkGray
+    Write-Host ""
+  }
 } else {
     Write-Host "  ==================================================================="
     Write-Host "    HOW TO IMPORT:"
