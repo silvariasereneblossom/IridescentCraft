@@ -333,19 +333,24 @@ if ($prismExe) {
     Write-Host "    PrismLauncher will download Forge + Modrinth mods automatically."
     Write-Host ""
 
+    # Wait for PrismLauncher to finish, then prompt with beep
     Write-Host ""
     Write-Host "  ============================================================" -ForegroundColor Yellow
-    Write-Host "    IMPORTANT: Wait for PrismLauncher to FULLY finish" -ForegroundColor Yellow
-    Write-Host "    downloading all mods before pressing Enter below." -ForegroundColor Yellow
-    Write-Host "" -ForegroundColor Yellow
-    Write-Host "    Look for PrismLauncher's progress bar to complete" -ForegroundColor Yellow
-    Write-Host "    and the instance to appear in the list." -ForegroundColor Yellow
-    Write-Host "" -ForegroundColor Yellow
-    Write-Host "    Then press Enter here to download ~95 remaining mods" -ForegroundColor Yellow
-    Write-Host "    that PrismLauncher can't fetch (CurseForge-only mods)." -ForegroundColor Yellow
+    Write-Host "  =                                                          =" -ForegroundColor Yellow
+    Write-Host "  =   WAITING: PrismLauncher is downloading mods.            =" -ForegroundColor Yellow
+    Write-Host "  =                                                          =" -ForegroundColor Yellow
+    Write-Host "  =   1. Click OK in PrismLauncher's import dialog           =" -ForegroundColor Yellow
+    Write-Host "  =   2. Wait for ALL mods to finish downloading             =" -ForegroundColor Yellow
+    Write-Host "  =   3. Come back to THIS window and press Enter            =" -ForegroundColor Yellow
+    Write-Host "  =                                                          =" -ForegroundColor Yellow
+    Write-Host "  =   This will download ~95 remaining CurseForge mods.      =" -ForegroundColor Yellow
+    Write-Host "  =                                                          =" -ForegroundColor Yellow
     Write-Host "  ============================================================" -ForegroundColor Yellow
     Write-Host ""
-    Read-Host "    Press Enter AFTER PrismLauncher import is fully complete"
+    [Console]::Beep(800, 300); [Console]::Beep(1000, 300)
+    $host.UI.RawUI.WindowTitle = "*** IridescentCraft - PRESS ENTER WHEN READY ***"
+    Read-Host "    >>> Press Enter AFTER PrismLauncher import is fully complete <<<"
+    $host.UI.RawUI.WindowTitle = "IridescentCraft Client Installer"
 
   try {
     Write-Host ""
