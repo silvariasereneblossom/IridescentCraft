@@ -333,9 +333,22 @@ if ($prismExe) {
     Write-Host "    PrismLauncher will download Forge + Modrinth mods automatically."
     Write-Host ""
 
-    Write-Host "    Please wait for PrismLauncher to finish importing," -ForegroundColor Yellow
-    Write-Host "    then press Enter to verify and download remaining mods." -ForegroundColor Yellow
-    Read-Host "    Press Enter when PrismLauncher import is done"
+    Write-Host ""
+    Write-Host "  ============================================================" -ForegroundColor Yellow
+    Write-Host "    IMPORTANT: Wait for PrismLauncher to FULLY finish" -ForegroundColor Yellow
+    Write-Host "    downloading all mods before pressing Enter below." -ForegroundColor Yellow
+    Write-Host "" -ForegroundColor Yellow
+    Write-Host "    Look for PrismLauncher's progress bar to complete" -ForegroundColor Yellow
+    Write-Host "    and the instance to appear in the list." -ForegroundColor Yellow
+    Write-Host "" -ForegroundColor Yellow
+    Write-Host "    Then press Enter here to download ~95 remaining mods" -ForegroundColor Yellow
+    Write-Host "    that PrismLauncher can't fetch (CurseForge-only mods)." -ForegroundColor Yellow
+    Write-Host "  ============================================================" -ForegroundColor Yellow
+    Write-Host ""
+    Read-Host "    Press Enter AFTER PrismLauncher import is fully complete"
+
+    Write-Host ""
+    Write-Host "  [VERIFY] Searching for instance mods folder..." -ForegroundColor Cyan
 
     # ── Find instance mods folder ──
     $instanceMods = ""
@@ -365,8 +378,12 @@ if ($prismExe) {
         if ($instanceMods) { break }
     }
 
-    if (-not $instanceMods) {
-        Write-Host "  Could not find IridescentCraft instance automatically." -ForegroundColor Yellow
+    if ($instanceMods) {
+        Write-Host "    Found: $instanceMods" -ForegroundColor Green
+    } else {
+        Write-Host "    Not found automatically. Searched:" -ForegroundColor Yellow
+        foreach ($d in $dataDirs) { Write-Host "      $d" -ForegroundColor DarkGray }
+        Write-Host ""
         Write-Host "  In PrismLauncher: right-click instance -> Folder -> .minecraft" -ForegroundColor Yellow
         Write-Host ""
         $manualPath = Read-Host "  Paste the .minecraft\mods path here (or Enter to skip)"
