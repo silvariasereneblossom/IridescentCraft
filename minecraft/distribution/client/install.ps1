@@ -211,7 +211,10 @@ $($filesJson -join ",`n")
 }
 "@
     $indexContent | Set-Content "$staging\modrinth.index.json" -Encoding UTF8
+    # Save a debug copy on Desktop for inspection
+    $indexContent | Set-Content ([IO.Path]::Combine([Environment]::GetFolderPath('Desktop'), 'debug_modrinth_index.json')) -Encoding UTF8
     Write-Host "    modrinth.index.json... OK"
+    Write-Host "    (debug copy saved to Desktop\debug_modrinth_index.json)" -ForegroundColor DarkGray
 
     # Save CurseForge mod list for post-import download
     if ($cfMods.Count -gt 0) {
