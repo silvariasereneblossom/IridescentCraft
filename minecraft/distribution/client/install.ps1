@@ -183,15 +183,34 @@ if (Test-Path $buildScript) {
     if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
     New-Item -ItemType Directory -Path "$staging\overrides\mods" -Force | Out-Null
 
-    # modrinth.index.json
-    $mrIndex = @{
-        formatVersion = 1; game = "minecraft"; versionId = "1.0.0-alpha"
-        name = "IridescentCraft"
-        summary = "Progression-focused RPG modpack with 420+ mods."
-        files = $mrFiles
-        dependencies = @{ minecraft = "1.20.1"; forge = "47.4.6" }
+    # modrinth.index.json — build manually to avoid PowerShell's
+    # ConvertTo-Json collapsing single-element arrays to bare values
+    $filesJson = @()
+    foreach ($f in $mrFiles) {
+        $escapedPath = $f.path -replace '\\', '/' -replace '"', '\"'
+        $escapedUrl = $f.downloads[0] -replace '"', '\"'
+        $escapedHash = $f.hashes.sha512 -replace '"', '\"'
+        $envC = $f.env.client
+        $envS = $f.env.server
+        $filesJson += "    {`n      `"path`": `"$escapedPath`",`n      `"hashes`": {`"sha512`": `"$escapedHash`"},`n      `"env`": {`"client`": `"$envC`", `"server`": `"$envS`"},`n      `"downloads`": [`"$escapedUrl`"],`n      `"fileSize`": 0`n    }"
     }
-    $mrIndex | ConvertTo-Json -Depth 10 | Set-Content "$staging\modrinth.index.json" -Encoding UTF8
+    $indexContent = @"
+{
+  "formatVersion": 1,
+  "game": "minecraft",
+  "versionId": "1.0.0-alpha",
+  "name": "IridescentCraft",
+  "summary": "Progression-focused RPG modpack with 420+ mods.",
+  "files": [
+$($filesJson -join ",`n")
+  ],
+  "dependencies": {
+    "minecraft": "1.20.1",
+    "forge": "47.4.6"
+  }
+}
+"@
+    $indexContent | Set-Content "$staging\modrinth.index.json" -Encoding UTF8
     Write-Host "    modrinth.index.json... OK"
 
     # Save CurseForge mod list for post-import download
