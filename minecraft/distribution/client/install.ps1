@@ -311,100 +311,145 @@ if ($prismExe) {
     Write-Host "    PrismLauncher will download Forge + Modrinth mods automatically."
     Write-Host ""
 
-    if ($cfMods.Count -gt 0) {
-        Write-Host "    After import completes, this script will download" -ForegroundColor Yellow
-        Write-Host "    $($cfMods.Count) CurseForge mods that PrismLauncher can't fetch." -ForegroundColor Yellow
-        Write-Host ""
-        Write-Host "    Please wait for PrismLauncher to finish importing," -ForegroundColor Yellow
-        Write-Host "    then press Enter here to download CurseForge mods." -ForegroundColor Yellow
-        Read-Host "    Press Enter when PrismLauncher import is done"
+    Write-Host "    Please wait for PrismLauncher to finish importing," -ForegroundColor Yellow
+    Write-Host "    then press Enter to verify and download remaining mods." -ForegroundColor Yellow
+    Read-Host "    Press Enter when PrismLauncher import is done"
 
-        # Find the instance mods folder — check multiple possible data directories
-        $instanceMods = ""
-        $dataDirs = @(
-            "$env:APPDATA\PrismLauncher",
-            "$env:LOCALAPPDATA\PrismLauncher",
-            "$env:APPDATA\PrismLauncher\instances",
-            "$env:LOCALAPPDATA\Programs\PrismLauncher"
-        )
-        # Also check portable installs next to prismlauncher.exe
-        if ($prismExe) {
-            $prismParent = Split-Path $prismExe -Parent
-            $dataDirs += $prismParent
-            $dataDirs += "$prismParent\instances"
-        }
+    # ── Find instance mods folder ──
+    $instanceMods = ""
+    $dataDirs = @(
+        "$env:APPDATA\PrismLauncher",
+        "$env:LOCALAPPDATA\PrismLauncher",
+        "$env:LOCALAPPDATA\Programs\PrismLauncher"
+    )
+    if ($prismExe) {
+        $prismParent = Split-Path $prismExe -Parent
+        $dataDirs += $prismParent
+    }
 
-        foreach ($dataDir in $dataDirs) {
-            if (-not (Test-Path $dataDir)) { continue }
-            # Search for IridescentCraft instance in this data dir
-            $searchPaths = @($dataDir)
-            if (Test-Path "$dataDir\instances") { $searchPaths += "$dataDir\instances" }
-            foreach ($searchDir in $searchPaths) {
-                $instances = Get-ChildItem $searchDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "IridescentCraft*" }
-                foreach ($inst in $instances) {
-                    if (Test-Path "$($inst.FullName)\.minecraft\mods") { $instanceMods = "$($inst.FullName)\.minecraft\mods"; break }
-                    elseif (Test-Path "$($inst.FullName)\minecraft\mods") { $instanceMods = "$($inst.FullName)\minecraft\mods"; break }
-                    elseif (Test-Path "$($inst.FullName)\mods") { $instanceMods = "$($inst.FullName)\mods"; break }
-                }
-                if ($instanceMods) { break }
+    foreach ($dataDir in $dataDirs) {
+        if (-not (Test-Path $dataDir)) { continue }
+        $searchPaths = @($dataDir)
+        if (Test-Path "$dataDir\instances") { $searchPaths += "$dataDir\instances" }
+        foreach ($searchDir in $searchPaths) {
+            $instances = Get-ChildItem $searchDir -Directory -ErrorAction SilentlyContinue | Where-Object { $_.Name -like "IridescentCraft*" }
+            foreach ($inst in $instances) {
+                if (Test-Path "$($inst.FullName)\.minecraft\mods") { $instanceMods = "$($inst.FullName)\.minecraft\mods"; break }
+                elseif (Test-Path "$($inst.FullName)\minecraft\mods") { $instanceMods = "$($inst.FullName)\minecraft\mods"; break }
+                elseif (Test-Path "$($inst.FullName)\mods") { $instanceMods = "$($inst.FullName)\mods"; break }
             }
             if ($instanceMods) { break }
         }
+        if ($instanceMods) { break }
+    }
 
-        # Ask user if we can't find it
-        if (-not $instanceMods) {
-            Write-Host "  Could not find IridescentCraft instance mods folder automatically." -ForegroundColor Yellow
-            Write-Host "  In PrismLauncher, right-click the instance -> Folder -> .minecraft" -ForegroundColor Yellow
-            Write-Host ""
-            $manualPath = Read-Host "  Paste the .minecraft path here (or Enter to skip)"
-            if ($manualPath -and (Test-Path "$manualPath\mods")) {
-                $instanceMods = "$manualPath\mods"
-            } elseif ($manualPath -and (Test-Path $manualPath)) {
-                New-Item -ItemType Directory -Path "$manualPath\mods" -Force | Out-Null
-                $instanceMods = "$manualPath\mods"
+    if (-not $instanceMods) {
+        Write-Host "  Could not find IridescentCraft instance automatically." -ForegroundColor Yellow
+        Write-Host "  In PrismLauncher: right-click instance -> Folder -> .minecraft" -ForegroundColor Yellow
+        Write-Host ""
+        $manualPath = Read-Host "  Paste the .minecraft\mods path here (or Enter to skip)"
+        if ($manualPath -and (Test-Path $manualPath)) {
+            $instanceMods = $manualPath
+        } elseif ($manualPath -and (Test-Path (Split-Path $manualPath))) {
+            New-Item -ItemType Directory -Path $manualPath -Force | Out-Null
+            $instanceMods = $manualPath
+        }
+    }
+
+    if (-not $instanceMods) {
+        Write-Host "  Skipping mod verification — could not find mods folder." -ForegroundColor Red
+    } else {
+        Write-Host ""
+        Write-Host "  Instance mods: $instanceMods" -ForegroundColor DarkGray
+        $existingCount = (Get-ChildItem "$instanceMods\*.jar" -ErrorAction SilentlyContinue).Count
+        Write-Host "  JARs found: $existingCount" -ForegroundColor DarkGray
+        Write-Host ""
+
+        # ── Build complete expected mod list (Modrinth + CurseForge) ──
+        $allExpected = @()
+
+        # Add all Modrinth mods from mrFiles
+        foreach ($mr in $mrFiles) {
+            $fn = $mr.path -replace '^mods/', ''
+            $allExpected += [ordered]@{ filename = $fn; url = $mr.downloads[0] }
+        }
+
+        # Add CurseForge mods
+        foreach ($cf in $cfMods) {
+            $allExpected += $cf
+        }
+
+        Write-Host "  [VERIFY] Checking $($allExpected.Count) expected mods..." -ForegroundColor Cyan
+        Write-Host ""
+
+        $present = 0; $missing = @(); $dlOK = 0; $dlFail = 0
+
+        foreach ($mod in $allExpected) {
+            $modPath = Join-Path $instanceMods $mod.filename
+            if (Test-Path -LiteralPath $modPath) {
+                $present++
+            } else {
+                $missing += $mod
             }
         }
 
-        if ($instanceMods) {
-            Write-Host ""
-            Write-Host "  [CURSEFORGE] Downloading $($cfMods.Count) CurseForge mods..." -ForegroundColor Cyan
-            Write-Host "    Target: $instanceMods"
+        Write-Host "    Present: $present / $($allExpected.Count)"
+        if ($missing.Count -eq 0) {
+            Write-Host "    All mods verified!" -ForegroundColor Green
+        } else {
+            Write-Host "    Missing: $($missing.Count) — downloading now..." -ForegroundColor Yellow
             Write-Host ""
 
-            $dlOK = 0; $dlFail = 0
-            foreach ($mod in $cfMods) {
-                $modPath = Join-Path $instanceMods $mod.filename
-                if (Test-Path -LiteralPath $modPath) { $dlOK++; continue }
+            foreach ($mod in $missing) {
+                if ([string]::IsNullOrEmpty($mod.url)) {
+                    Write-Host "    $($mod.filename) — no URL" -ForegroundColor DarkYellow
+                    $dlFail++
+                    continue
+                }
 
                 Write-Host "    $($mod.filename)" -NoNewline
-                try {
-                    $tmp = Join-Path $instanceMods "_cf_dl.tmp"
-                    $wc = New-Object System.Net.WebClient
-                    $wc.DownloadFile($mod.url, $tmp)
-                    $wc.Dispose()
-                    if ((Test-Path $tmp) -and (Get-Item $tmp).Length -gt 1000) {
-                        Move-Item -LiteralPath $tmp -Destination $modPath -Force
-                        Write-Host " OK" -ForegroundColor Green
-                        $dlOK++
-                    } else {
+
+                $tmp = Join-Path $instanceMods "_verify_dl.tmp"
+                $modPath = Join-Path $instanceMods $mod.filename
+                $success = $false
+
+                for ($retry = 0; $retry -lt 3; $retry++) {
+                    try {
+                        $wc = New-Object System.Net.WebClient
+                        $wc.DownloadFile($mod.url, $tmp)
+                        $wc.Dispose()
+                        if ((Test-Path $tmp) -and (Get-Item $tmp).Length -gt 1000) {
+                            Move-Item -LiteralPath $tmp -Destination $modPath -Force
+                            $success = $true; break
+                        } else {
+                            if (Test-Path $tmp) { Remove-Item $tmp -Force }
+                        }
+                    } catch {
                         if (Test-Path $tmp) { Remove-Item $tmp -Force }
-                        Write-Host " FAILED" -ForegroundColor Red
-                        $dlFail++
+                        if ($retry -lt 2) { Start-Sleep -Seconds 2 }
                     }
-                } catch {
-                    if (Test-Path (Join-Path $instanceMods "_cf_dl.tmp")) { Remove-Item (Join-Path $instanceMods "_cf_dl.tmp") -Force }
+                }
+
+                if ($success) {
+                    Write-Host " OK" -ForegroundColor Green
+                    $dlOK++
+                } else {
                     Write-Host " FAILED" -ForegroundColor Red
                     $dlFail++
                 }
             }
+
             Write-Host ""
-            Write-Host "    CurseForge: $dlOK OK" -ForegroundColor Green
-            if ($dlFail -gt 0) { Write-Host "    Failed: $dlFail (re-run to retry)" -ForegroundColor Red }
-        } else {
-            Write-Host "  Could not find instance mods folder." -ForegroundColor Yellow
-            Write-Host "  CurseForge mods must be downloaded manually." -ForegroundColor Yellow
-            Write-Host "  The curseforge_mods.json in the instance has the URLs." -ForegroundColor Yellow
+            Write-Host "    Downloaded: $dlOK" -ForegroundColor Green
+            if ($dlFail -gt 0) {
+                Write-Host "    Still missing: $dlFail (re-run installer to retry)" -ForegroundColor Red
+            }
         }
+
+        # Final count
+        $finalCount = (Get-ChildItem "$instanceMods\*.jar" -ErrorAction SilentlyContinue).Count
+        Write-Host ""
+        Write-Host "  Total mods installed: $finalCount" -ForegroundColor Cyan
     }
 } else {
     Write-Host "  ==================================================================="
