@@ -188,7 +188,7 @@ if (-not (Test-Path "$instancesDir\instgroups.json")) {
 }
 
 # Copy configs, kubejs, datapacks
-foreach ($dir in @('config', 'defaultconfigs', 'kubejs', 'global_packs')) {
+foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
     if (Test-Path "$distDir\$dir") {
         Copy-Item "$distDir\$dir" "$mcDir\$dir" -Recurse -Force
         Write-Host "    $dir... OK"

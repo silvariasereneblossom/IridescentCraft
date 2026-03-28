@@ -72,8 +72,9 @@ if (-not (Test-Path "$distDir\config")) {
         $treeJson = $wc.DownloadString($apiUrl)
 
         $prefix = "minecraft/distribution/client/"
-        # Only download config, kubejs, global_packs, defaultconfigs (not mods)
-        $configDirs = @('config/', 'kubejs/', 'global_packs/', 'defaultconfigs/')
+        # Only download config, kubejs, defaultconfigs (not mods)
+        # Datapacks are inside config/paxi/datapacks/ — no separate global_packs needed
+        $configDirs = @('config/', 'kubejs/', 'defaultconfigs/')
         $files = @()
 
         foreach ($match in [regex]::Matches($treeJson, '"path"\s*:\s*"([^"]+)"')) {
@@ -118,7 +119,7 @@ Write-Host ""
 Write-Host "  [3/3] Updating instance configs..." -ForegroundColor Cyan
 
 $updated = 0
-foreach ($dir in @('config', 'defaultconfigs', 'kubejs', 'global_packs')) {
+foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
     if (Test-Path "$distDir\$dir") {
         Copy-Item "$distDir\$dir" "$instanceMC\$dir" -Recurse -Force
         $count = (Get-ChildItem "$distDir\$dir" -Recurse -File).Count
