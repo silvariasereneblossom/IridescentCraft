@@ -86,17 +86,40 @@ ServerEvents.loaded(event => {
   // =========================================================================
 
   // -- Mod restrictions --
-  stageMod('tier_2', 'thermal', 'modpack/mod_thermal')
+  // NOTE: No mod-wide gates. Mod-wide gates block food, seeds, decorative
+  // blocks, and other non-progression items. Use individual item gates only.
+  // Dimension gates already prevent entering gated dimensions.
   stageMod('tier_2', 'industrialforegoing', 'modpack/mod_if')
-  stageMod('tier_2', 'ars_nouveau', 'modpack/mod_ars')
-  // Gate entire dimension mods — if you can't enter the dimension, you can't get the items
-  stageMod('tier_2', 'twilightforest', 'modpack/mod_twilight')
-  stageMod('tier_2', 'blue_skies', 'modpack/mod_blueskies')
-  stageMod('tier_2', 'aether', 'modpack/mod_aether')
+  // IF is safe to mod-gate: all items are machines/components, no food/crops
 
   // -- Individual item restrictions --
   stageItems('tier_2', [
-    // Botania T2 — raw materials + all derivatives
+    // Thermal T2 — machines and ingots only (NOT food/crops/seeds/decorative)
+    'thermal:machine_frame',
+    'thermal:steel_ingot', 'thermal:steel_block',
+    'thermal:invar_ingot', 'thermal:invar_block',
+    'thermal:electrum_ingot', 'thermal:electrum_block',
+    'thermal:signalum_ingot', 'thermal:signalum_block',
+    'thermal:lumium_ingot', 'thermal:lumium_block',
+    'thermal:redstone_servo', 'thermal:rf_coil',
+    // Thermal machines
+    'thermal:machine_furnace', 'thermal:machine_sawmill',
+    'thermal:machine_pulverizer', 'thermal:machine_smelter',
+    'thermal:machine_insolator', 'thermal:machine_centrifuge',
+    'thermal:machine_press', 'thermal:machine_crucible',
+    'thermal:machine_chiller', 'thermal:machine_refinery',
+    'thermal:machine_bottler', 'thermal:machine_brewer',
+    'thermal:machine_crafter',
+    'thermal:dynamo_stirling', 'thermal:dynamo_compression',
+    'thermal:dynamo_magmatic', 'thermal:dynamo_numismatic',
+    'thermal:dynamo_lapidary', 'thermal:dynamo_disenchantment',
+    'thermal:dynamo_gourmand',
+    // Ars Nouveau T2 — spell books and advanced items (NOT source gems)
+    'ars_nouveau:novice_spell_book', 'ars_nouveau:apprentice_spell_book',
+    'ars_nouveau:archmage_spell_book',
+    'ars_nouveau:enchanting_apparatus', 'ars_nouveau:arcane_core',
+    'ars_nouveau:imbuement_chamber', 'ars_nouveau:scribes_table',
+    // Botania T2 — advanced materials + gear
     'botania:manasteel_ingot', 'botania:mana_diamond', 'botania:mana_pearl',
     'botania:manasteel_block',
     'botania:manasteel_helmet', 'botania:manasteel_chestplate',
@@ -121,16 +144,16 @@ ServerEvents.loaded(event => {
   // TIER 3 — Mekanism, RS, Occultism, F&A, diamonds, Nether access
   // =========================================================================
 
-  // -- Mod restrictions --
+  // -- Mod restrictions (only pure tech/machine mods safe to blanket-gate) --
   stageMod('tier_3', 'mekanism', 'modpack/mod_mekanism')
   stageMod('tier_3', 'mekanismgenerators', 'modpack/mod_mekgen')
   stageMod('tier_3', 'refinedstorage', 'modpack/mod_rs')
   stageMod('tier_3', 'extrastorage', 'modpack/mod_extrastorage')
   stageMod('tier_3', 'extradisks', 'modpack/mod_extradisks')
   stageMod('tier_3', 'rsrequestify', 'modpack/mod_rsrequestify')
-  stageMod('tier_3', 'occultism', 'modpack/mod_occultism')
-  stageMod('tier_3', 'forbidden_arcanus', 'modpack/mod_forbidden')
   stageMod('tier_3', 'xnet', 'modpack/mod_xnet')
+  // NOTE: occultism and forbidden_arcanus NOT mod-gated (have passive/food items)
+  // Gate their key progression items individually instead
 
   // -- Individual item restrictions --
   stageItems('tier_3', [
