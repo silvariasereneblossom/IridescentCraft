@@ -121,6 +121,11 @@ Write-Host "  [3/3] Updating instance configs..." -ForegroundColor Cyan
 $updated = 0
 foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
     if (Test-Path "$distDir\$dir") {
+        # Delete the target directory first, then copy fresh
+        # This ensures removed files don't persist
+        if (Test-Path "$instanceMC\$dir") {
+            Remove-Item "$instanceMC\$dir" -Recurse -Force
+        }
         Copy-Item "$distDir\$dir" "$instanceMC\$dir" -Recurse -Force
         $count = (Get-ChildItem "$distDir\$dir" -Recurse -File).Count
         Write-Host "    $dir ($count files)... OK"
