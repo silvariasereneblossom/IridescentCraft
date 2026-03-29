@@ -1,7 +1,0 @@
-{
-  "type": "origins:exhaust",
-  "name": "Refined Palate",
-  "description": "-10% hunger efficiency (eat more often).",
-  "interval": 200,
-  "exhaustion": 0.2
-}

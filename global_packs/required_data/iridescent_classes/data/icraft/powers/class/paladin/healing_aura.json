@@ -1,5 +1,0 @@
-{
-  "type": "origins:simple",
-  "name": "Healing Aura",
-  "description": "Allies within 8 blocks slowly regenerate HP. You regenerate faster when above half health. Your presence is a balm to the wounded."
-}

@@ -15070,3 +15070,817 @@ A recipe category must be registered in order to use this recipe type.
 [28Mar2026 20:07:00.685] [Server thread/WARN] [net.minecraft.world.level.chunk.LevelChunk/]: Tried to load a block entity for block Block{minecraft:water}[level=0] but failed at location BlockPos{x=1780, y=-19, z=-450}
 [28Mar2026 20:07:01.750] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
 [28Mar2026 20:07:01.754] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:49.354] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:49.496] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[28Mar2026 20:09:49.715] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:50.004] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:50.006] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:50.518] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[28Mar2026 20:09:50.586] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:50.894] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:51.672] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[28Mar2026 20:09:51.701] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:568)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[28Mar2026 20:09:51.702] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:833)
+[28Mar2026 20:09:51.889] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:52.062] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:568)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[28Mar2026 20:09:52.256] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:833)
+[28Mar2026 20:09:52.258] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:52.736] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[28Mar2026 20:09:53.128] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:53.345] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 19.775243759155273) to MEDIUM (avg. 46.40946960449219)
+[28Mar2026 20:09:53.677] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[28Mar2026 20:09:53.704] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:53.755] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:53.843] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:54.255] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:54.655] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from VERY_LOW (avg. 12.989346) to LOW (avg. 25.619968)
+[28Mar2026 20:09:54.745] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[28Mar2026 20:09:54.763] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:54.767] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:54.769] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:55.398] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:55.443] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:55.639] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[28Mar2026 20:09:55.899] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:55.905] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:55.907] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:55.909] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:56.737] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:56.739] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:56.906] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:57.632] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:58.099] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:568)
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[28Mar2026 20:09:59.675] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[28Mar2026 20:09:59.676] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:833)
+[28Mar2026 20:10:00.004] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from MEDIUM (avg. 46.40946960449219) to LOW (avg. 31.06475067138672)
+[28Mar2026 20:10:00.775] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:00.777] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:04.270] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:04.272] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:05.171] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:05.521] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:05.523] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:06.341] [Worker-Main-15/WARN] [net.minecraft.world.entity.EntityType/]: Skipping Entity with id 
+[28Mar2026 20:10:09.274] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:10.424] [Worker-Main-14/WARN] [net.minecraft.world.level.levelgen.heightproviders.UniformHeight/]: Empty height range: [0 absolute--16 absolute]
+[28Mar2026 20:10:16.326] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:16.575] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:16.723] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:17.272] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:17.370] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:17.372] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:17.422] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:17.871] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:18.077] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:18.673] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:18.675] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:18.676] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:19.602] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:19.604] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:19.605] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:19.605] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:19.606] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:19.606] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:21.030] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:21.132] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:21.136] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:21.140] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:21.141] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:22.724] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:23.378] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:23.602] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:24.723] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.035] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.036] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.421] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.422] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.423] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.427] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.720] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.722] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.871] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:26.873] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:27.671] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:27.673] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:31.769] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:32.869] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:34.620] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:34.622] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:37.020] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:37.077] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:37.079] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:37.080] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:37.081] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:10:45.186] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement ['X' Marks the Spot]
+[28Mar2026 20:10:45.191] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement ['X' Marks the Spot]
+[28Mar2026 20:10:45.229] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 277 advancements
+[28Mar2026 20:10:56.935] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Amateur Archaeologist]
+[28Mar2026 20:10:56.950] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Amateur Archaeologist]
+[28Mar2026 20:10:56.984] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 280 advancements
+[28Mar2026 20:11:01.970] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:11:01.971] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:11:03.971] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:11:05.471] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:11:13.573] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:11:13.575] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:11:16.111] [Render thread/INFO] [STDOUT/]: [mcjty.rftoolsdim.modules.knowledge.data.RandomPatternCreator:getPatterns:269]: Generated patterns: 746
+[28Mar2026 20:11:36.752] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2496ms or 49 ticks behind
+[28Mar2026 20:11:52.848] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Simple Farming]
+[28Mar2026 20:11:52.863] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Simple Farming]
+[28Mar2026 20:11:52.880] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 289 advancements
+[28Mar2026 20:11:55.834] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Apothic Affixes]
+[28Mar2026 20:11:55.834] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [I Found It Underground]
+[28Mar2026 20:11:55.849] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Apothic Affixes]
+[28Mar2026 20:11:55.849] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [I Found It Underground]
+[28Mar2026 20:11:55.883] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 294 advancements
+[28Mar2026 20:12:04.386] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:04.387] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:568)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[28Mar2026 20:12:04.529] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[28Mar2026 20:12:04.530] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:833)
+[28Mar2026 20:12:08.625] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:08.630] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:17.725] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:17.727] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:27.074] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:33.970] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:37.100] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:37.472] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:12:39.009] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:00.573] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:00.575] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:18.974] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:22.721] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:26.423] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:29.474] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:35.222] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:44.526] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:44.625] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:49.375] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:54.076] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:13:54.078] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:14:00.075] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:14:02.230] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:14:34.174] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:14:34.175] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:14:34.176] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:14:47.973] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:14:47.976] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:10.574] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:10.576] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:10.579] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:17.460] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 22.34758949279785) to VERY_LOW (avg. 19.780780792236328)
+[28Mar2026 20:15:24.960] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 19.780780792236328) to LOW (avg. 24.327239990234375)
+[28Mar2026 20:15:24.978] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:25.284] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:25.626] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:27.380] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:27.481] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:27.482] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:27.483] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:32.285] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:35.173] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:35.422] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:568)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[28Mar2026 20:15:35.423] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:833)
+[28Mar2026 20:15:36.624] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:36.627] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:37.875] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:38.078] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:38.080] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:38.876] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:39.578] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:40.080] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:40.082] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:40.329] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:40.926] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:41.528] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:41.875] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:42.426] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:42.778] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:42.790] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:42.888] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 296 advancements
+[28Mar2026 20:15:43.409] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.410] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.410] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.411] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.411] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.411] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.451] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.453] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:43.591] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:45.541] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:48.236] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Barrel Booty]
+[28Mar2026 20:15:48.243] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Barrel Booty]
+[28Mar2026 20:15:48.292] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 296 advancements
+[28Mar2026 20:15:54.962] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 27.475208282470703) to VERY_LOW (avg. 19.761558532714844)
+[28Mar2026 20:15:55.973] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:56.133] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:15:58.326] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:08.287] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:09.626] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:09.961] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_LOW (avg. 19.761558532714844) to LOW (avg. 20.017019271850586)
+[28Mar2026 20:16:10.727] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:568)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[28Mar2026 20:16:10.728] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:833)
+[28Mar2026 20:16:10.788] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:10.862] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:10.907] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:11.179] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:11.286] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:17.924] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:17.925] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:19.726] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:19.727] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:21.579] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:21.580] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:21.582] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:23.838] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 325 advancements
+[28Mar2026 20:16:28.527] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:28.529] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:30.228] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:30.231] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:30.287] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:30.289] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:568)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[28Mar2026 20:16:33.427] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:833)
+[28Mar2026 20:16:33.874] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:35.529] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:35.758] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:35.758] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:35.759] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:35.759] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:35.760] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:35.760] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:39.033] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:39.083] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:39.384] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:39.388] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:39.389] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:16:40.412] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[28Mar2026 20:16:40.466] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[28Mar2026 20:16:40.484] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:moon
+[28Mar2026 20:16:40.488] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/twilightforest:twilight_forest
+[28Mar2026 20:16:40.489] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everdawn
+[28Mar2026 20:16:40.490] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/aether:the_aether
+[28Mar2026 20:16:40.492] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:glacio
+[28Mar2026 20:16:40.493] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[28Mar2026 20:16:40.495] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:moon_orbit
+[28Mar2026 20:16:40.496] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:the_abyss
+[28Mar2026 20:16:40.497] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everbright
+[28Mar2026 20:16:40.498] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mars_orbit
+[28Mar2026 20:16:40.499] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:pocket_dimension
+[28Mar2026 20:16:40.500] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:venus_orbit
+[28Mar2026 20:16:40.501] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:spectral_world
+[28Mar2026 20:16:40.504] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mars
+[28Mar2026 20:16:40.505] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/deeperdarker:otherside
+[28Mar2026 20:16:40.506] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:glacio_orbit
+[28Mar2026 20:16:40.507] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/irons_spellbooks:pocket_dimension
+[28Mar2026 20:16:40.508] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/mahoutsukai:reality_marble
+[28Mar2026 20:16:40.510] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/undergarden:undergarden
+[28Mar2026 20:16:40.513] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mercury_orbit
+[28Mar2026 20:16:40.514] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[28Mar2026 20:16:40.515] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:frost_world
+[28Mar2026 20:16:40.516] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:venus
+[28Mar2026 20:16:40.517] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:earth_orbit
+[28Mar2026 20:16:40.518] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mercury
+[28Mar2026 20:20:34.033] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:34.216] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Level load for minecraft:overworld changed from LOW (avg. 25.619968) to VERY_LOW (avg. 8.65602101)
+[28Mar2026 20:20:34.235] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:34.236] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:34.236] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:36.930] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:36.931] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:36.933] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:39.633] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:39.636] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:39.982] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:41.090] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:41.238] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:41.297] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:41.705] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:41.741] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:42.040] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:42.042] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:42.043] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:43.799] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:43.800] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:43.800] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:43.801] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:43.801] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:46.346] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Sky of Beginning]
+[28Mar2026 20:20:46.358] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Sky of Beginning]
+[28Mar2026 20:20:46.390] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 357 advancements
+[28Mar2026 20:20:49.634] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:49.934] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:50.981] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:50.983] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:50.984] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:52.836] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:52.837] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:20:52.837] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:04.581] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:05.180] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:14.086] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:14.087] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:14.088] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:15.392] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:16.384] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:18.638] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:18.639] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:18.639] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:23.632] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:26.939] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:27.303] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:27.307] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:27.538] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:27.540] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:27.543] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:27.544] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:28.481] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:29.831] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:30.431] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:30.583] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:30.732] [Server thread/ERROR] [top.theillusivec4.champions.Champions/]: No rank configuration found! Please check the 'champions-ranks.toml' file in the 'serverconfigs'.
+[28Mar2026 20:21:32.017] [Server thread/INFO] [net.minecraft.client.server.IntegratedServer/]: Saving and pausing game...
+[28Mar2026 20:21:32.068] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[28Mar2026 20:21:32.084] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:moon
+[28Mar2026 20:21:32.085] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/twilightforest:twilight_forest
+[28Mar2026 20:21:32.085] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everdawn
+[28Mar2026 20:21:32.086] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/aether:the_aether
+[28Mar2026 20:21:32.087] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:glacio
+[28Mar2026 20:21:32.088] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[28Mar2026 20:21:32.089] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:moon_orbit
+[28Mar2026 20:21:32.091] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:the_abyss
+[28Mar2026 20:21:32.092] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everbright
+[28Mar2026 20:21:32.093] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mars_orbit
+[28Mar2026 20:21:32.095] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:pocket_dimension
+[28Mar2026 20:21:32.097] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:venus_orbit
+[28Mar2026 20:21:32.098] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:spectral_world
+[28Mar2026 20:21:32.099] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mars
+[28Mar2026 20:21:32.101] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/deeperdarker:otherside
+[28Mar2026 20:21:32.102] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:glacio_orbit
+[28Mar2026 20:21:32.103] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/irons_spellbooks:pocket_dimension
+[28Mar2026 20:21:32.104] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/mahoutsukai:reality_marble
+[28Mar2026 20:21:32.105] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/undergarden:undergarden
+[28Mar2026 20:21:32.105] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mercury_orbit
+[28Mar2026 20:21:32.107] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[28Mar2026 20:21:32.107] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:frost_world
+[28Mar2026 20:21:32.108] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:venus
+[28Mar2026 20:21:32.109] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:earth_orbit
+[28Mar2026 20:21:32.112] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mercury
+[28Mar2026 20:21:32.716] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[28Mar2026 20:21:32.717] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received class net.minecraftforge.client.event.ClientPlayerNetworkEvent$LoggingOut
+[28Mar2026 20:21:32.717] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from JEI_STARTED to DISABLED
+[28Mar2026 20:21:32.717] [Render thread/INFO] [mezz.jei.library.startup.JeiStarter/]: Stopping JEI
+[28Mar2026 20:21:32.717] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable...
+[28Mar2026 20:21:32.717] [Render thread/INFO] [mezz.jei.forge.plugins.forge.ForgeGuiPlugin/]: Stopping JEI GUI
+[28Mar2026 20:21:32.719] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable took 2.129 ms
+[28Mar2026 20:21:32.719] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[28Mar2026 20:21:32.729] [Render thread/INFO] [voicechat/]: [voicechat] Clearing audio channels
+[28Mar2026 20:21:32.733] [Render thread/INFO] [voicechat/]: [voicechat] Stopping microphone thread
+[28Mar2026 20:21:32.735] [Render thread/INFO] [voicechat/]: [voicechat] Disconnecting voicechat
+[28Mar2026 20:21:32.797] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: silvieserene lost connection: Disconnected
+[28Mar2026 20:21:32.797] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene left the game
+[28Mar2026 20:21:32.801] [Server thread/INFO] [voicechat/]: [voicechat] Disconnecting client silvieserene
+[28Mar2026 20:21:32.855] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: Stopping singleplayer server as player logged out
+[28Mar2026 20:21:32.866] [Server thread/INFO] [net.creeperhost.ftbbackups.FTBBackups/]: Shutdown Complete
+[28Mar2026 20:21:32.867] [Config file watcher thread/INFO] [portb.configlib.ConfigLib/]: Watcher has shut down
+[28Mar2026 20:21:32.879] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Stopping server
+[28Mar2026 20:21:32.879] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving players
+[28Mar2026 20:21:32.879] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving worlds
+[28Mar2026 20:21:32.950] [Immersive Optimization Worker/INFO] [Immersive Optimization/]: Shutting down Immersive Optimization worker
+[28Mar2026 20:21:33.188] [Worker-Main-10/INFO] [com.alessandro.astages.AStages/]: Encountered null player, skipped adding it to holder!
+[28Mar2026 20:21:33.915] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:overworld
+[28Mar2026 20:21:34.651] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:moon
+[28Mar2026 20:21:34.652] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/twilightforest:twilight_forest
+[28Mar2026 20:21:34.653] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everdawn
+[28Mar2026 20:21:34.653] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/aether:the_aether
+[28Mar2026 20:21:34.654] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:glacio
+[28Mar2026 20:21:34.655] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_end
+[28Mar2026 20:21:34.657] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:moon_orbit
+[28Mar2026 20:21:34.658] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:the_abyss
+[28Mar2026 20:21:34.659] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/blue_skies:everbright
+[28Mar2026 20:21:34.659] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mars_orbit
+[28Mar2026 20:21:34.660] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:pocket_dimension
+[28Mar2026 20:21:34.661] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:venus_orbit
+[28Mar2026 20:21:34.662] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:spectral_world
+[28Mar2026 20:21:34.665] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mars
+[28Mar2026 20:21:34.666] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/deeperdarker:otherside
+[28Mar2026 20:21:34.667] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:glacio_orbit
+[28Mar2026 20:21:34.668] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/irons_spellbooks:pocket_dimension
+[28Mar2026 20:21:34.669] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/mahoutsukai:reality_marble
+[28Mar2026 20:21:34.670] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/undergarden:undergarden
+[28Mar2026 20:21:34.671] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mercury_orbit
+[28Mar2026 20:21:34.672] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/minecraft:the_nether
+[28Mar2026 20:21:34.673] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/theabyss:frost_world
+[28Mar2026 20:21:34.674] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:venus
+[28Mar2026 20:21:34.675] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:earth_orbit
+[28Mar2026 20:21:34.675] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: Saving chunks for level 'ServerLevel[New World]'/ad_astra:mercury
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (New World): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (twilight_forest): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everdawn): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_aether): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM1): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (moon_orbit): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (the_abyss): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (everbright): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars_orbit): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus_orbit): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (spectral_world): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mars): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (otherside): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (glacio_orbit): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (pocket_dimension): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (reality_marble): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (undergarden): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury_orbit): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (DIM-1): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (frost_world): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (venus): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (earth_orbit): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage (mercury): All chunks are saved
+[28Mar2026 20:21:34.894] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: ThreadedAnvilChunkStorage: All dimensions are saved
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:adaptable]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:arctic]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:dampening]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:desecrating]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:enkindling]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:hasty]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:infested]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:knocking]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:lively]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:magnetic]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:molten]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:paralyzing]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:plagued]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:reflective]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:shielding]
+[28Mar2026 20:21:35.100] [Server thread/INFO] [top.theillusivec4.champions.Champions/]: Affix added to registry: ResourceKey[champions:affix / champions:wounding]
+[28Mar2026 20:21:35.226] [Server thread/INFO] [Calio/]: Removing Dynamic Registries for: net.minecraft.client.server.IntegratedServer@14ff4365
+[28Mar2026 20:21:35.230] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Unloading EnderChest Data
+[28Mar2026 20:21:35.232] [Server thread/INFO] [shetiphian.enderchests.EnderChests/]: Finished Unloading EnderChest Data
+[28Mar2026 20:21:35.236] [Server thread/INFO] [quickstack/]: [quickstack]: Configuration changed.
+[28Mar2026 20:21:35.237] [Server thread/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
+[28Mar2026 20:21:35.264] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[28Mar2026 20:21:35.269] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
+[28Mar2026 20:21:35.280] [Render thread/WARN] [structurize/]: Client logged off. Resetting Pack Meta and Reloading State
+[28Mar2026 20:21:35.282] [Structurize IO Worker #1/INFO] [structurize/]: Registered structure pack: silvieserene
+[28Mar2026 20:21:35.282] [Structurize IO Worker #1/WARN] [structurize/]: Finished discovering Client Structure packs
+[28Mar2026 20:27:36.855] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[28Mar2026 20:27:36.865] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[28Mar2026 20:27:36.867] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[28Mar2026 20:27:36.867] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[28Mar2026 20:27:36.883] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
+[28Mar2026 20:27:36.972] [Render thread/INFO] [FTB Chunks/]: Shutting down map thread

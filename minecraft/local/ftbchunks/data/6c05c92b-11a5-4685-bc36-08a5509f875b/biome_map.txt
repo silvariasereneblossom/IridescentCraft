@@ -2,9 +2,13 @@
 #460 minecraft:cherry_grove
 #735 biomesoplenty:coniferous_forest
 #6AF biomesoplenty:crag
+#67F biomesoplenty:fir_clearing
 #010 minecraft:forest
+#35F biomesoplenty:jacaranda_glade
 #2D6 minecraft:meadow
 #5A5 biomesoplenty:orchard
 #3DC minecraft:plains
 #28B biomesoplenty:pumpkin_patch
+#108 biomesoplenty:seasonal_forest
 #524 minecraft:snowy_slopes
+#14C biomesoplenty:spider_nest

@@ -181,7 +181,8 @@
         "icraft:welcome/intro",
         "icraft:progression/tier_overview",
         "icraft:welcome/class_guide",
-        "icraft:systems/enchantments"
+        "icraft:systems/enchantments",
+        "icraft:mods_t1/botania"
       ],
       "bookmarks": [],
       "completedManualQuests": []

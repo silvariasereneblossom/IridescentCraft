@@ -49,3 +49,39 @@ CoreProperties{state=Valid, file=journeymap.core.config, configVersion=5.10.3, v
 [20:06:29] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/lost_soul.png
 [20:06:29] [Render thread/WARN] [JMLogger] Can't get entityTexture for pridemoths:textures/entity_icon/moth.png
 [20:06:29] [Render thread/INFO] [ChatLog] JourneyMap: Press [J]
+[20:10:06] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/canary.png
+[20:10:06] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/necromancer.png
+[20:10:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for ars_nouveau:textures/entity_icon/whirlisprig_summer.png
+[20:10:19] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/themoonflower.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:15:31] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:15:37] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairyblue.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:15:41] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:15:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/raccoon.png
+[20:16:16] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/crow.png
+[20:16:36] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/emptytexture.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:16:39] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/blue_jay.png
+[20:20:39] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/lizard/brown.png
+[20:20:42] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/sparrow.png
+[20:21:25] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thehunter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:21:25] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/theroyal.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:21:25] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:21:32] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\offline\minecraft:overworld
+[20:21:34] [Server thread/ERROR] [PluginWrapper] Plugin JMPlugin{modId=createoreexcavation} errored during event: MAPPING_STOPPED
+java.lang.NullPointerException: Cannot invoke "java.io.File.mkdirs()" because "modFolder" is null
+	at com.tom.createores.jm.OreVeinsOverlay.onMappingStopped(OreVeinsOverlay.java:115) ~[createoreexcavation-1.20-1.6.5.jar%23728!/:1.6.5]
+	at com.tom.createores.jm.JMPlugin.onEvent(JMPlugin.java:36) ~[createoreexcavation-1.20-1.6.5.jar%23728!/:1.6.5]
+	at journeymap.client.api.impl.PluginWrapper.notify(PluginWrapper.java:377) ~[journeymap-1.20.1-5.10.3-forge.jar%23833!/:1.20.1-5.10.3]
+	at journeymap.client.api.impl.ClientEventManager.fireMappingEvent(ClientEventManager.java:81) ~[journeymap-1.20.1-5.10.3-forge.jar%23833!/:1.20.1-5.10.3]
+	at journeymap.client.JourneymapClient.stopMapping(JourneymapClient.java:608) ~[journeymap-1.20.1-5.10.3-forge.jar%23833!/:1.20.1-5.10.3]
+	at journeymap.client.event.handlers.WorldEventHandler.onUnload(WorldEventHandler.java:32) ~[journeymap-1.20.1-5.10.3-forge.jar%23833!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.ForgeWorldEvent.onUnload(ForgeWorldEvent.java:19) ~[journeymap-1.20.1-5.10.3-forge.jar%23833!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.__ForgeWorldEvent_onUnload_Unload.invoke(.dynamic) ~[journeymap-1.20.1-5.10.3-forge.jar%23833!/:1.20.1-5.10.3]
+	at net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.server.MinecraftServer.m_7041_(MinecraftServer.java:589) ~[client-1.20.1-20230612.114412-srg.jar%231070!/:?]
+	at net.minecraft.client.server.IntegratedServer.m_7041_(IntegratedServer.java:187) ~[client-1.20.1-20230612.114412-srg.jar%231070!/:?]
+	at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:689) ~[client-1.20.1-20230612.114412-srg.jar%231070!/:?]
+	at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251) ~[client-1.20.1-20230612.114412-srg.jar%231070!/:?]
+	at java.lang.Thread.run(Thread.java:833) ~[?:?]
+[20:21:35] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
