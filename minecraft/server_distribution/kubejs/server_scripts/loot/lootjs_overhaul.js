@@ -53,6 +53,20 @@ LootJS.modifiers(event => {
   // Also adds Ars Nouveau spell books at tier-appropriate rates.
   // =========================================================================
 
+  // Remove ALL endgame KubeJS items from passive mob loot (safety net)
+  event
+    .addEntityLootModifier('minecraft:pig')
+    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+  event
+    .addEntityLootModifier('minecraft:cow')
+    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+  event
+    .addEntityLootModifier('minecraft:sheep')
+    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+  event
+    .addEntityLootModifier('minecraft:chicken')
+    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+
   // Remove T4-gated mod items from ALL chest loot (shouldn't appear before T4)
   event
     .addLootTypeModifier(LootType.CHEST)
