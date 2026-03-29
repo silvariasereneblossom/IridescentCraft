@@ -1,0 +1,4 @@
+#67B minecraft:savanna
+#5AD terramity:scorched_caves
+#274 biomesoplenty:scrubland
+#7F2 biomesoplenty:woodland

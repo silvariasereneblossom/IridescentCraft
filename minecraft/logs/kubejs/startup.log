@@ -1,30 +1,30 @@
-[02:33:37] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[02:33:37] [INIT] Loaded plugins:
-[02:33:37] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[02:33:37] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[02:33:37] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[02:33:37] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[02:33:37] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[02:33:37] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
-[02:33:37] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[02:33:37] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[02:33:37] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[02:33:37] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[02:33:37] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[02:33:37] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[02:33:37] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[02:33:37] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[02:33:37] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[02:33:37] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[02:33:37] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[02:33:37] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[02:33:38] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.076 s
-[02:33:38] [INFO] Loaded script startup_scripts:custom_items.js in 0.009 s
-[02:33:38] [INFO] Loaded script startup_scripts:endgame_items.js in 0.003 s
-[02:33:38] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
-[02:33:38] [INFO] Loaded script startup_scripts:example.js in 0.002 s
-[02:33:38] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
-[02:33:38] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
-[02:33:38] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
-[02:33:38] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.001 s
-[02:33:38] [INFO] Loaded 5/5 KubeJS startup scripts in 0.628 s with 0 errors and 0 warnings
+[03:40:09] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[03:40:09] [INIT] Loaded plugins:
+[03:40:09] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[03:40:09] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[03:40:09] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[03:40:09] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[03:40:09] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[03:40:09] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
+[03:40:09] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[03:40:09] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[03:40:09] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[03:40:09] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[03:40:09] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[03:40:09] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[03:40:09] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[03:40:09] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[03:40:09] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[03:40:09] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[03:40:09] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[03:40:09] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[03:40:12] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.363 s
+[03:40:12] [INFO] Loaded script startup_scripts:custom_items.js in 0.03 s
+[03:40:12] [INFO] Loaded script startup_scripts:endgame_items.js in 0.036 s
+[03:40:12] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
+[03:40:12] [INFO] Loaded script startup_scripts:example.js in 0.005 s
+[03:40:12] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
+[03:40:12] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
+[03:40:12] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
+[03:40:12] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.0 s
+[03:40:12] [INFO] Loaded 5/5 KubeJS startup scripts in 2.567 s with 0 errors and 0 warnings

@@ -1,0 +1,9 @@
+#556 minecraft:beach
+#010 minecraft:forest
+#4B0 minecraft:jungle
+#79A minecraft:lukewarm_ocean
+#3B0 biomesoplenty:lush_desert
+#68B biomesoplenty:rainforest
+#274 biomesoplenty:scrubland
+#2B7 minecraft:warm_ocean
+#7F2 biomesoplenty:woodland
