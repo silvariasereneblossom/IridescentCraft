@@ -36,65 +36,62 @@ LootJS.modifiers(event => {
         .addLoot(LootEntry.of('kubejs:rift_shard', 3))
         .addLoot(LootEntry.of('kubejs:void_fragment', 1))
 
-    // --- Botania Gaia Guardian: 3-5 Rift Shards + 2-3 Void Fragments ---
-    event.addEntityLootModifier('botania:doppleganger')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 4))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 2))
-        .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.15)))
-
-    // --- Cataclysm: Ancient Remnant (hardest T4 boss) ---
-    // Higher drop rates — this is the "Rift key" gatekeeper boss
-    event.addEntityLootModifier('cataclysm:ancient_remnant')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 5))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 4))
-        .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.20)))
-        .addLoot(LootEntry.of('kubejs:rift_core').when(c => c.randomChance(0.05)))
-
-    // --- Cataclysm: Ender Guardian (End-dimension T4 boss) ---
-    event.addEntityLootModifier('cataclysm:ender_guardian')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 4))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 3))
-        .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.15)))
-
-    // --- Cataclysm: Ignis (T3-T4 fire boss) ---
-    event.addEntityLootModifier('cataclysm:ignis')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 2))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 1))
-
-    // --- Cataclysm: The Harbinger (T3-T4 deep sea boss) ---
-    event.addEntityLootModifier('cataclysm:the_harbinger')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 2))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 1))
-
-    // --- Cataclysm: The Leviathan (T3-T4 ocean boss) ---
-    event.addEntityLootModifier('cataclysm:the_leviathan')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 2))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 1))
-
-    // --- Cataclysm: Maledictus (T3-T4 nether boss) ---
-    event.addEntityLootModifier('cataclysm:maledictus')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 2))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 1))
-
-    // --- Cataclysm: Netherite Monstrosity (T3 nether boss) ---
-    event.addEntityLootModifier('cataclysm:netherite_monstrosity')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 1))
-        .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.50)))
-
-    // --- Cataclysm: Ignited Revenant (T3-T4 mini-boss) ---
-    event.addEntityLootModifier('cataclysm:ignited_revenant')
-        .addLoot(LootEntry.of('kubejs:rift_shard').when(c => c.randomChance(0.30)))
-        .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.20)))
-
-    // --- Deep Aether: EOTS Controller (T3-T4 boss) ---
-    event.addEntityLootModifier('deep_aether:eots_controller')
-        .addLoot(LootEntry.of('kubejs:rift_shard', 2))
-        .addLoot(LootEntry.of('kubejs:void_fragment', 1))
-
     // --- Warden: rare Rift material drop (T3-T4 miniboss) ---
     event.addEntityLootModifier('minecraft:warden')
         .addLoot(LootEntry.of('kubejs:rift_shard', 2))
         .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.40)))
+
+    // --- Modded boss drops: only register if the mod is loaded ---
+    // LootJS may apply modifiers to wrong entities if the entity type doesn't exist
+    if (Platform.isLoaded('botania')) {
+        event.addEntityLootModifier('botania:doppleganger')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 4))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 2))
+            .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.15)))
+    }
+
+    if (Platform.isLoaded('cataclysm')) {
+        event.addEntityLootModifier('cataclysm:ancient_remnant')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 5))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 4))
+            .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.20)))
+            .addLoot(LootEntry.of('kubejs:rift_core').when(c => c.randomChance(0.05)))
+
+        event.addEntityLootModifier('cataclysm:ender_guardian')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 4))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 3))
+            .addLoot(LootEntry.of('kubejs:primordial_essence').when(c => c.randomChance(0.15)))
+
+        event.addEntityLootModifier('cataclysm:ignis')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 2))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 1))
+
+        event.addEntityLootModifier('cataclysm:the_harbinger')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 2))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 1))
+
+        event.addEntityLootModifier('cataclysm:the_leviathan')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 2))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 1))
+
+        event.addEntityLootModifier('cataclysm:maledictus')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 2))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 1))
+
+        event.addEntityLootModifier('cataclysm:netherite_monstrosity')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 1))
+            .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.50)))
+
+        event.addEntityLootModifier('cataclysm:ignited_revenant')
+            .addLoot(LootEntry.of('kubejs:rift_shard').when(c => c.randomChance(0.30)))
+            .addLoot(LootEntry.of('kubejs:void_fragment').when(c => c.randomChance(0.20)))
+    }
+
+    if (Platform.isLoaded('deep_aether')) {
+        event.addEntityLootModifier('deep_aether:eots_controller')
+            .addLoot(LootEntry.of('kubejs:rift_shard', 2))
+            .addLoot(LootEntry.of('kubejs:void_fragment', 1))
+    }
 
     // =========================================================================
     // SECTION 2: END DIMENSION MOB DROPS
