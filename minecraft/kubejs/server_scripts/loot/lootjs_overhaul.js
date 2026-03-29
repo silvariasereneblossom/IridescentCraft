@@ -53,6 +53,14 @@ LootJS.modifiers(event => {
   // Also adds Ars Nouveau spell books at tier-appropriate rates.
   // =========================================================================
 
+  // Remove T4-gated mod items from ALL chest loot (shouldn't appear before T4)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .removeLoot(Ingredient.custom(item => {
+      let id = item.id
+      return id.startsWith('rftoolsdim:') || id.startsWith('mahoutsukai:')
+    }))
+
   // First remove all vanilla enchanted books globally
   event
     .addLootTypeModifier(LootType.CHEST)
@@ -804,7 +812,7 @@ LootJS.modifiers(event => {
 
   reducedFoods.forEach(food => {
     foodModifier.removeLoot(food)
-    foodModifier.addLoot(LootEntry.of(food).when(c => c.randomChance(0.10)))
+    foodModifier.addLoot(LootEntry.of(food).when(c => c.randomChance(0.07)))
   })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
