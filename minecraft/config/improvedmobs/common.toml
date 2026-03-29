@@ -199,7 +199,7 @@
 #Configs regarding mobs spawning with equipment
 [equipment]
 	#Blacklist items from whole mods. Add modid to prevent items from that mod being equipped. (For individual items use the equipment.json)
-	"Item Blacklist" = []
+	"Item Blacklist" = ["mekanism", "mekanismgenerators", "thermal", "refinedstorage", "industrialforegoing", "ars_nouveau", "irons_spellbooks", "botania", "occultism", "forbidden_arcanus", "cataclysm", "mahoutsukai", "simplyswords", "twilightforest", "blue_skies", "aether", "deep_aether", "deeperdarker", "undergarden", "theabyss", "ironjetpacks", "create"]
 	#Use blacklist as whitelist
 	"Item Whitelist" = false
 	#Blacklist for items mobs should never be able to use.
