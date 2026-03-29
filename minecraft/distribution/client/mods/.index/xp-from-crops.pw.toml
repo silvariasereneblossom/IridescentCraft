@@ -1,6 +1,6 @@
 filename = 'xp_from_crops-1.0.0-forge-1.20.1.jar'
 name = 'Xp from Crops'
-side = 'server'
+side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'

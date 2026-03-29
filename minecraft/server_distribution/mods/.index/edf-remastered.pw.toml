@@ -1,6 +1,6 @@
 filename = 'edf-remastered-4.3.jar'
 name = 'Ender Dragon Fight Remastered'
-side = 'server'
+side = 'both'
 x-prismlauncher-loaders = [ 'forge', 'quilt', 'fabric' ]
 x-prismlauncher-mc-versions = [ '1.19', '1.19.1', '1.19.2', '1.19.3', '1.19.4', '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'

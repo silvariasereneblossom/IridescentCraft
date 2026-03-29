@@ -1,6 +1,6 @@
 filename = 'Ksyxis-1.3.4.jar'
 name = 'Ksyxis'
-side = 'server'
+side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge', 'quilt', 'fabric' ]
 x-prismlauncher-mc-versions = [
     '1.10',

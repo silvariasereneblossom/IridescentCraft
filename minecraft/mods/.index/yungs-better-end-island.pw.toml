@@ -1,6 +1,6 @@
 filename = 'YungsBetterEndIsland-1.20-Forge-2.0.6.jar'
 name = "YUNG's Better End Island"
-side = 'server'
+side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
