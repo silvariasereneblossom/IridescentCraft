@@ -2,9 +2,12 @@
 title IridescentCraft Config Updater
 cd /d "%~dp0"
 
-REM v2 — Downloads latest update_configs.ps1 from GitHub (cache-busted) and runs it.
+REM v3 — Clean download every time, no caching possible
 
-set "PS1=%TEMP%\icraft_update_%RANDOM%.ps1"
+REM Delete ALL old cached ps1 files
+del "%TEMP%\icraft_update_*.ps1" 2>nul
+
+set "PS1=%TEMP%\icraft_update_%TIME:~6,2%%RANDOM%.ps1"
 
 echo Downloading latest updater...
 powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/distribution/client/update_configs.ps1?v=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds(), '%PS1%')"

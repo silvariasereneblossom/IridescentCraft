@@ -2,8 +2,7 @@
 title IridescentCraft Client Installer
 cd /d "%~dp0"
 
-REM v5 — Downloads install.ps1 then runs it as -File (not inside -Command)
-REM This ensures proper error handling and Read-Host works correctly.
+REM v6 — Clean download every time, no caching possible
 
 if exist "%~dp0install.ps1" (
     echo Using local install.ps1...
@@ -18,9 +17,12 @@ echo   Downloading installer script...
 echo ==========================================
 echo.
 
-set "PS1=%TEMP%\icraft_install.ps1"
+REM Delete ALL old cached ps1 files
+del "%TEMP%\icraft_install_*.ps1" 2>nul
 
-powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/distribution/client/install.ps1?nocache=' + [guid]::NewGuid(), '%PS1%')"
+set "PS1=%TEMP%\icraft_install_%TIME:~6,2%%RANDOM%.ps1"
+
+powershell -ExecutionPolicy Bypass -Command "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12; (New-Object System.Net.WebClient).DownloadFile('https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/distribution/client/install.ps1?v=' + [DateTimeOffset]::UtcNow.ToUnixTimeSeconds(), '%PS1%')"
 
 if not exist "%PS1%" (
     echo ERROR: Failed to download installer script.
