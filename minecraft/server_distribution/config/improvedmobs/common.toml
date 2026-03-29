@@ -214,7 +214,7 @@
 	"Entity Item Use Blacklist" = ["minecraft:drowned;TRIDENT", "minecraft:illusioner;BOW", "minecraft:piglin;CROSSBOW", "minecraft:pillager;CROSSBOW", "minecraft:skeleton;BOW", "minecraft:snow_golem;minecraft:snowball", "minecraft:stray;BOW", "minecraft:wither_skeleton;BOW"]
 	#Base chance that a mob can have one piece of armor
 	#Range: 0.0 ~ 1.0
-	"Equipment Chance" = 0.05000000074505806
+	"Equipment Chance" = 0.0
 	#Base chance for each additional armor pieces
 	#Range: 0.0 ~ 1.0
 	"Additional Equipment Chance" = 0.15000000596046448
