@@ -1,0 +1,8 @@
+#4DF biomesoplenty:aspen_glade
+#460 minecraft:cherry_grove
+#35F biomesoplenty:jacaranda_glade
+#65C biomesoplenty:lavender_field
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#5FF minecraft:river
+#108 biomesoplenty:seasonal_forest
