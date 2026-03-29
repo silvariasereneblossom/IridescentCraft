@@ -510,8 +510,9 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
         )
 
-    // Enderman — rare void essence accumulation
+    // Enderman — rare void essence accumulation (END DIMENSION ONLY)
     event.addEntityLootModifier("minecraft:enderman")
+        .anyDimension('minecraft:the_end')
         .addLoot(
             LootEntry.of("kubejs:void_essence")
                 .when(c => c.randomChance(0.02))
