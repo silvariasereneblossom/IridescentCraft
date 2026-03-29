@@ -85,6 +85,13 @@ PS1 files: No banners — the bat handles display.
 ### Distribution Sync
 All changes to kubejs, configs, datapacks, or lang files must be synced to all three distributions: main instance, server_distribution, distribution/client.
 
+### Mod Index Side Labels
+The `side` field in `.pw.toml` files has DIFFERENT meanings per distribution:
+- **Server distribution** (`server_distribution/mods/.index/`): `side = 'client'` mods are SKIPPED (rendering, UI mods not needed on dedicated server)
+- **Client distribution** (`distribution/client/mods/.index/`): `side = 'server'` mods are SKIPPED (the installer doesn't download them)
+- Almost ALL mods should be `side = 'both'` in the client distribution. Only true server-admin tools should be `side = 'server'`.
+- When copying `.index/` between distributions, verify `side` labels are correct for each context.
+
 ### Script Parity (.bat ↔ .sh)
 Every `.bat` script in server_distribution/ and distribution/client/ must have a matching `.sh` with identical logic. When modifying a `.bat`, always update the `.sh` counterpart (and vice versa). Run `bash -n` on the `.sh` to syntax-check.
 
