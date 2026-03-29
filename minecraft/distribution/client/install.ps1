@@ -291,6 +291,36 @@ if ($failed -gt 0) {
     foreach ($fn in $failedNames) { Write-Host "      - $fn" -ForegroundColor DarkRed }
 }
 
+# ── Cleanup: remove JARs that no longer have a matching TOML ──
+# Build list of expected filenames from TOMLs
+$expectedFiles = @{}
+foreach ($toml in $tomlFiles) {
+    $fn = ''
+    foreach ($line in Get-Content $toml.FullName) {
+        if ($line.Trim() -match "^filename\s*=\s*$quotePattern(.+)$quotePattern") { $fn = $matches[1]; break }
+    }
+    if ($fn) { $expectedFiles[$fn] = $true }
+}
+# Add custom JARs (not in TOMLs)
+$customJarFiles = Get-ChildItem "$distDir\mods\*.jar" -ErrorAction SilentlyContinue
+foreach ($cj in $customJarFiles) { $expectedFiles[$cj.Name] = $true }
+
+$orphaned = @()
+$existingJars = Get-ChildItem "$modsDir\*.jar" -ErrorAction SilentlyContinue
+foreach ($jar in $existingJars) {
+    if (-not $expectedFiles.ContainsKey($jar.Name)) {
+        $orphaned += $jar
+    }
+}
+if ($orphaned.Count -gt 0) {
+    Write-Host ""
+    Write-Host "    Removing $($orphaned.Count) orphaned mods (no longer in pack):" -ForegroundColor Yellow
+    foreach ($o in $orphaned) {
+        Remove-Item $o.FullName -Force
+        Write-Host "      - $($o.Name)" -ForegroundColor DarkYellow
+    }
+}
+
 $totalJars = (Get-ChildItem "$modsDir\*.jar" -ErrorAction SilentlyContinue).Count
 Write-Host ""
 Write-Host "    Total mods installed: $totalJars" -ForegroundColor Cyan
