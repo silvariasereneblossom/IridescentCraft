@@ -1,0 +1,9 @@
+{
+  "type": "origins:modify_damage_taken",
+  "modifier": {
+    "value": -0.25,
+    "operation": "multiply_total"
+  },
+  "name": "Dragon Scales",
+  "description": "Your draconic heritage grants 25% damage reduction from all sources."
+}

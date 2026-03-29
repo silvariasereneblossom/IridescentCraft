@@ -1,0 +1,16 @@
+{
+  "powers": [
+    "icraft:race/elf/night_vision",
+    "icraft:race/elf/swift",
+    "icraft:race/elf/ranged_bonus",
+    "icraft:race/elf/hunger_penalty",
+    "icraft:race/elf/fragile"
+  ],
+  "icon": {
+    "item": "minecraft:oak_leaves"
+  },
+  "order": 2,
+  "impact": 1,
+  "name": "Elf",
+  "description": "Graceful and keen-eyed, Elves see perfectly in darkness and move with preternatural speed. Their arrows strike 15% harder, and their attunement to magic amplifies spells. Slender frames make them fragile, and their high metabolism demands constant feeding."
+}

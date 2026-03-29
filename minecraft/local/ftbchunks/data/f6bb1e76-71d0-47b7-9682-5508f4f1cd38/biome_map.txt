@@ -1,0 +1,12 @@
+#460 minecraft:cherry_grove
+#010 minecraft:forest
+#552 biomesoplenty:old_growth_woodland
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#68B biomesoplenty:rainforest
+#698 biomesoplenty:redwood_forest
+#67B minecraft:savanna
+#706 minecraft:savanna_plateau
+#274 biomesoplenty:scrubland
+#3AF minecraft:sparse_jungle
+#7F2 biomesoplenty:woodland

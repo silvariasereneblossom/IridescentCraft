@@ -1,0 +1,12 @@
+{
+  "type": "champions:adaptable",
+  "category": "defence",
+  "enable": true,
+  "hasSub": false,
+  "mobList": [],
+  "mobPermission": "blacklist",
+  "tier": {
+    "min": 2,
+    "max": 100
+  }
+}

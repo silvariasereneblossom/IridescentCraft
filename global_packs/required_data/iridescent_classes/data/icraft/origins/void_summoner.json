@@ -1,0 +1,16 @@
+{
+  "powers": [
+    "icraft:class/void_summoner/hp_modifier",
+    "icraft:class/void_summoner/dark_pact",
+    "icraft:class/void_summoner/soul_tether",
+    "icraft:class/void_summoner/shadow_cloak",
+    "icraft:class/void_summoner/glass_cannon_tag"
+  ],
+  "icon": {
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "order": 10,
+  "impact": 3,
+  "name": "Void Summoner",
+  "description": "A puppet master who commands from the shadows. Void Summoners empower their minions to deal devastating damage, and every blow their servants land feeds life back to their master. They flourish in darkness and wither in the light \u2014 a price paid gladly for dominion over lesser souls."
+}

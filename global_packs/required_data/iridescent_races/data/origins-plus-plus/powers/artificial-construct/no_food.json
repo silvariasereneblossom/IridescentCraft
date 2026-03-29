@@ -1,0 +1,13 @@
+{
+  "type": "origins:modify_food",
+  "food_modifier": {
+    "operation": "multiply_total",
+    "value": -0.75
+  },
+  "saturation_modifier": {
+    "operation": "multiply_total",
+    "value": -0.75
+  },
+  "name": "Biofuel Conversion",
+  "description": "Normal food provides only 25% nourishment. Your construct body processes it inefficiently. Iron ingots and blocks are your true fuel."
+}

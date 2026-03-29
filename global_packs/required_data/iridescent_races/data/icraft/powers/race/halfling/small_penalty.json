@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Small Frame",
+  "description": "-5% attack damage (before class modifiers).",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": -0.05
+    }
+  ]
+}

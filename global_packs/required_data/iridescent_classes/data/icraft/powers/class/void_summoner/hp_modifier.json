@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Void Vitality",
+  "description": "Reduced max HP (-10%). Equipment HP halved.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "operation": "multiply_base",
+      "value": -0.1
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Crafting Mastery",
+  "description": "+15% mining speed for all tools.",
+  "modifiers": [
+    {
+      "attribute": "puffish_attributes:mining_speed",
+      "operation": "multiply_base",
+      "value": 0.15
+    }
+  ]
+}

@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Focus",
+  "description": "Movement builds a protective shield (up to 10% max HP). If the shield breaks, it goes on cooldown for 10 seconds. Your blade grows sharper with power \u2014 gain Vorpal I-V based on your total attack damage."
+}

@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Bushido",
+  "description": "The way of the blade. +10% attack speed from disciplined swordsmanship.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_speed",
+      "operation": "multiply_base",
+      "value": 0.10
+    }
+  ]
+}

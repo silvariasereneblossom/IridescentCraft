@@ -1,0 +1,17 @@
+{
+  "type": "origins:attribute",
+  "name": "Battle Fury",
+  "description": "+5% attack speed, +10% knockback.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_speed",
+      "operation": "multiply_base",
+      "value": 0.05
+    },
+    {
+      "attribute": "minecraft:generic.attack_knockback",
+      "operation": "multiply_base",
+      "value": 0.1
+    }
+  ]
+}

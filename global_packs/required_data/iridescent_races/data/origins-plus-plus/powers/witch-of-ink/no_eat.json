@@ -1,0 +1,13 @@
+{
+  "type": "origins:modify_food",
+  "food_modifier": {
+    "operation": "multiply_total",
+    "value": -0.5
+  },
+  "saturation_modifier": {
+    "operation": "multiply_total",
+    "value": -0.5
+  },
+  "name": "Ink-Stained Appetite",
+  "description": "Food provides 50% less nourishment. Your body of ink prefers to feed on art."
+}

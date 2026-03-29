@@ -1,0 +1,17 @@
+{
+  "type": "origins:attribute",
+  "name": "Arcane Strikes",
+  "description": "+15% melee damage and +15% magic damage. Your blade and your spells strike as one.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": 0.15
+    },
+    {
+      "attribute": "puffish_attributes:magic_damage",
+      "operation": "multiply_base",
+      "value": 0.15
+    }
+  ]
+}

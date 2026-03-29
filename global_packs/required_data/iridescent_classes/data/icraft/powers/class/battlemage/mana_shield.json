@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Mana Shield",
+  "description": "15% base chance to negate incoming damage, scaling with your magic damage bonuses. The more arcane power you wield, the stronger your shield becomes."
+}

@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Fae Fragility",
+  "description": "-10% max HP.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "operation": "multiply_base",
+      "value": -0.10
+    }
+  ]
+}

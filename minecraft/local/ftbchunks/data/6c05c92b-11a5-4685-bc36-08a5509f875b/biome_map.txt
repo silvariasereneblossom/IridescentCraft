@@ -1,0 +1,10 @@
+#4DF biomesoplenty:aspen_glade
+#460 minecraft:cherry_grove
+#735 biomesoplenty:coniferous_forest
+#6AF biomesoplenty:crag
+#010 minecraft:forest
+#2D6 minecraft:meadow
+#5A5 biomesoplenty:orchard
+#3DC minecraft:plains
+#28B biomesoplenty:pumpkin_patch
+#524 minecraft:snowy_slopes

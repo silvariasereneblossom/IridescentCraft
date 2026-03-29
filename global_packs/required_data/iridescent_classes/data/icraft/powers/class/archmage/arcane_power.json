@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Arcane Supremacy",
+  "description": "+50% magic damage. Your mastery of the arcane is unrivaled.",
+  "modifiers": [
+    {
+      "attribute": "puffish_attributes:magic_damage",
+      "operation": "multiply_base",
+      "value": 0.50
+    }
+  ]
+}

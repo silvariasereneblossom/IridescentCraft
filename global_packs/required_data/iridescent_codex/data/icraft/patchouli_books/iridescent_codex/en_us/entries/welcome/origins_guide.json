@@ -1,0 +1,38 @@
+{
+  "name": "Origins Guide",
+  "icon": "minecraft:nether_star",
+  "category": "icraft:welcome",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Your Origin",
+      "text": "$(thing)IridescentCraft$() features 11 unique origins, each with distinct powers and tradeoffs. Key principles:$(br2)$(item)No origin blocks any food type$() — dietary traits are preferences, not restrictions.$(br2)$(item)Environmental effects cause discomfort$(), not death.$(br2)$(item)Phantoms never truly die$() — they enter Spectral Collapse instead."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Origins (1/3)",
+      "text": "$(bold)Arachnid$() — Scale walls, spin webs. Meat preference.$(br2)$(bold)Avian$() — Sky Affinity grants speed and agility at high altitudes. Plant preference.$(br2)$(bold)Blazeborn$() — Fire/lava immune. Nether Affinity boosts damage. Water slows you.$(br2)$(bold)Enderian$() — Teleport on cooldown. Ender Shift: +15% damage for 10s after teleporting. Water drains strength."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Origins (2/3)",
+      "text": "$(bold)Feline$() — Silent, always land on feet. Night vision. -20% HP.$(br2)$(bold)Merling$() — Breathe underwater. Sluggish after 5 min on dry land.$(br2)$(bold)Phantom$() — Phase through blocks. Half health. $(warn)Never truly dies$() — Spectral Collapse instead (5 min debuff).$(br2)$(bold)Shulk$() — Natural armor, equipment death protection, +20% mining speed. Heavy metabolism."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Origins (3/3)",
+      "text": "$(bold)Mundane$() — No powers or weaknesses. Let Race and Class define you.$(br2)$(bold)Witch of Ink$() — Paint reality with dyes. -20% HP, half food. $(note)Hyperscaler:$() Kill bosses to grow stronger (200 kills for Blessing of Penthesilea).$(br2)$(bold)Artificial Construct$() — Iron golem. Eat iron for food + Regen III. $(note)Hyperscaler:$() Consume iron to permanently upgrade (+35% stats at max)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Best Combos",
+      "text": "$(bold)Blazeborn + Dwarf + Berserker$()$(br)Fire synergy. Nether becomes trivial.$(br2)$(bold)Elytrian + Elf + Ranger$()$(br)Maximum mobility. Fly, kite, never get hit.$(br2)$(bold)Enderian + Faefolk + Archmage$()$(br)Teleport, spell from range, glass nuke.$(br2)$(bold)Phantom + Any + Any$()$(br)Never die. Ever. 5 min penalty instead.$(br2)$(bold)Witch of Ink + Orc + Berserker$()$(br)Weak early, monster late. Hyperscaling melee."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Design Notes",
+      "text": "$(bold)Origins are flavor.$() Your origin gives unique abilities. Your $(thing)Race$() gives stat modifiers. Your $(thing)Class$() gives combat role. All three stack.$(br2)$(bold)No combination is unplayable.$() Some are stronger than others, but the tradeoffs keep everything viable.$(br2)$(bold)Hyperscaling origins$() (Witch of Ink, Artificial Construct) are intentionally weak early. They reward 50-100+ hours of investment."
+    }
+  ]
+}

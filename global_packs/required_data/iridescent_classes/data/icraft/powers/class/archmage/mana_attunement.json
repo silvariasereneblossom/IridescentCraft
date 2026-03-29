@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Mana Attunement",
+  "description": "Your arcane mastery amplifies magic equipment \u2014 the stronger your gear, the harder your spells hit. Weak early, devastating late. Melee damage is permanently reduced by 25%.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": -0.25
+    }
+  ]
+}

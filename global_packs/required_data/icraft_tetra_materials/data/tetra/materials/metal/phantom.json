@@ -1,0 +1,28 @@
+{
+    "key": "phantom",
+    "category": "metal",
+    "primary": 6.0,
+    "secondary": 5.5,
+    "tertiary": 3.5,
+    "durability": 600,
+    "integrityCost": 3,
+    "integrityGain": 6,
+    "magicCapacity": 95,
+    "toolLevel": "minecraft:diamond",
+    "toolEfficiency": 8,
+    "tints": {
+        "glyph": "6a2d8e",
+        "texture": "6a2d8e"
+    },
+    "textures": [
+        "shiny",
+        "metal",
+        "default"
+    ],
+    "material": {
+        "items": [ "theabyss:phantom_ingot" ]
+    },
+    "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+    }
+}

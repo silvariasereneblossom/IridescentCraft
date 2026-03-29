@@ -1,0 +1,22 @@
+{
+  "type": "origins:attribute",
+  "name": "Jack of All Trades",
+  "description": "+5% attack damage, +5% movement speed, +5% attack speed.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": 0.05
+    },
+    {
+      "attribute": "minecraft:generic.movement_speed",
+      "operation": "multiply_base",
+      "value": 0.05
+    },
+    {
+      "attribute": "minecraft:generic.attack_speed",
+      "operation": "multiply_base",
+      "value": 0.05
+    }
+  ]
+}

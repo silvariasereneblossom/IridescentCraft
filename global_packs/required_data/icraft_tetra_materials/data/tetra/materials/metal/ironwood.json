@@ -1,0 +1,27 @@
+{
+    "key": "ironwood",
+    "category": "metal",
+    "primary": 5.0,
+    "secondary": 3.6,
+    "tertiary": 3.0,
+    "durability": 340,
+    "integrityCost": 2,
+    "integrityGain": 5,
+    "magicCapacity": 96,
+    "toolLevel": "minecraft:iron",
+    "toolEfficiency": 6.5,
+    "tints": {
+        "glyph": "6b4e35",
+        "texture": "6b4e35"
+    },
+    "textures": [
+        "metal",
+        "default"
+    ],
+    "material": {
+        "items": [ "twilightforest:ironwood_ingot" ]
+    },
+    "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+    }
+}
