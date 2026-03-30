@@ -16,7 +16,7 @@
 function isWitchOfInk(player) {
   try {
     let result = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"origins-plus-plus:witch_of_ink"}]}}}]`
+      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:witch_of_ink"}]}}}]`
     )
     return result > 0
   } catch (e) {

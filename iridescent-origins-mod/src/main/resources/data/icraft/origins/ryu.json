@@ -1,0 +1,25 @@
+{
+  "powers": [
+    "origins:more_exhaustion",
+    "icraft:origin/ryu/all_knowing",
+    "icraft:origin/ryu/better_odds",
+    "icraft:origin/ryu/big_body",
+    "icraft:origin/ryu/dark_color",
+    "icraft:origin/ryu/friendly_eyes",
+    "icraft:origin/ryu/healing_potions",
+    "icraft:origin/ryu/natural_protection",
+    "icraft:origin/ryu/so_much_weight",
+    "icraft:origin/ryu/sparkly",
+    "icraft:origin/ryu/winged",
+    "icraft:race/ryu/slow_fall",
+    "icraft:race/ryu/meat_preference",
+    "icraft:race/ryu/food_healing"
+  ],
+  "icon": {
+    "item": "minecraft:dragon_egg"
+  },
+  "order": 10,
+  "impact": 2,
+  "name": "Ryu",
+  "description": "Dragon-blooded and ancient, the Ryu shrugs off 25% of all damage and heals rapidly from hearty meals. Broken wings grant slow fall rather than true flight. Their draconic stomach rejects anything that isn't meat, and healing potions are only half as potent on their scaled hide."
+}

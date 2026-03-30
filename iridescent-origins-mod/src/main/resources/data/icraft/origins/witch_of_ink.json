@@ -1,0 +1,23 @@
+{
+  "powers": [
+    "icraft:origin/witch-of-ink/art_affinity",
+    "icraft:origin/witch-of-ink/artistry",
+    "icraft:origin/witch-of-ink/aura",
+    "icraft:origin/witch-of-ink/eraser",
+    "icraft:origin/witch-of-ink/fired",
+    "icraft:origin/witch-of-ink/frail",
+    "icraft:origin/witch-of-ink/magic_brush",
+    "icraft:origin/witch-of-ink/no_eat",
+    "icraft:origin/witch-of-ink/no_invisibility",
+    "icraft:origin/witch-of-ink/painted_armor",
+    "icraft:origin/witch-of-ink/reanimate",
+    "icraft:origin/witch-of-ink/witchy"
+  ],
+  "icon": {
+    "item": "minecraft:ink_sac"
+  },
+  "order": 10,
+  "impact": 3,
+  "name": "Witch of Ink",
+  "description": "A living canvas of ink and will. Half food, -20% HP, fire weakness. Boss kills scale damage, reduction, and toughness (max 200). At 200: Blessing of Penthesilea doubles defenses and grants Haste."
+}

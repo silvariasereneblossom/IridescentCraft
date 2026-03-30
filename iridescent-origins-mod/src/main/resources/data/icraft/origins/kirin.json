@@ -1,0 +1,20 @@
+{
+  "powers": [
+    "origins:cat_vision",
+    "origins:fall_immunity",
+    "origins:nine_lives",
+    "origins:sprint_jump",
+    "icraft:origin/kirin/climb",
+    "icraft:origin/kirin/exhaustion",
+    "icraft:origin/kirin/jump_boost",
+    "icraft:origin/kirin/modify_player_speed",
+    "icraft:origin/kirin/unrivaled_speed"
+  ],
+  "icon": {
+    "item": "minecraft:golden_horse_armor"
+  },
+  "order": 12,
+  "impact": 2,
+  "name": "Kirin",
+  "description": "A mythical beast of impossible speed. Kirin scale walls like spiders, see in the dark, and sprint faster than any other race. Their lithe frames hold 20% less health, and the relentless pace of their movement burns through food quickly."
+}
