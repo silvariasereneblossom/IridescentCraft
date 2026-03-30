@@ -826,7 +826,7 @@ LootJS.modifiers(event => {
 
   reducedFoods.forEach(food => {
     foodModifier.removeLoot(food)
-    foodModifier.addLoot(LootEntry.of(food).limitCount([1, 3]).when(c => c.randomChance(0.05)))
+    foodModifier.addLoot(LootEntry.of(food).limitCount([1, 1]).when(c => c.randomChance(0.05)))
   })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
