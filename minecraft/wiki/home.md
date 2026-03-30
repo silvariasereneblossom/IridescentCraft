@@ -16,7 +16,7 @@ The canonical design reference for all modpack systems.
 - [Progression Overview](progression/overview.md) — Tier system, dimension gates, unlock paths
 
 ### Classes & Races
-- [Classes & Races Overview](classes/overview.md) — 10 classes, 11 races, 11 origins, glass cannon mechanics
+- [Classes & Races Overview](classes/overview.md) — 10 classes, 11 races, 13 origins, glass cannon mechanics
 
 ### Systems
 - [Systems Overview](systems/overview.md) — Death penalty, scaling, enchantments, affixes, skills, loot, food
@@ -52,7 +52,7 @@ The canonical design reference for all modpack systems.
 | Apotheosis affixes | Implemented | 84 JSON + 65 event-driven affixes |
 | Champions custom affixes | Implemented | 5 custom affixes (Commanding, Draining, Hexing, Leaping, Summoning) + per-dimension spawn scaling |
 | AStages derivative gating | Implemented | Diamond/netherite/End derivatives fully gated + 6 advancement overrides |
-| Origin layer cleanup | Implemented | Vanilla origins:human removed; 3-prompt flow: Origin (11 total) → Race (11 custom) → Class (10 custom) |
+| Origin layer cleanup | Implemented | Vanilla origins:human removed; 3-prompt flow: Origin (13 total) → Race (11 custom) → Class (10 custom) |
 | Class respec | Implemented | `class_respec.js` |
 | Equipment HP halving | Implemented | `equipment_hp_halving.js` |
 | FTB Quests | Not started | Quest book needs in-game GUI editor |
@@ -82,7 +82,7 @@ The canonical design reference for all modpack systems.
 | Server distribution | Implemented | Unified `iridescentserver.bat` (auto-install + launch + crash logging). Strip script, force-skip list, mod channel mismatch tracker (5 mods resolved). |
 | Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. Mundane origin re-added. |
 | Race layer rebalance | Implemented | Elf/Dwarf/Orc/Halfling/Faefolk/Revenant stat adjustments, bug fixes, functional effects |
-| Origins expansion | Implemented | 4 new races (Demi-God, Ryu, Fallen Angel, Kirin) — 11 races total. 2 new origins (Witch of Ink, Artificial Construct) — 11 origins total. |
+| Origins expansion | Implemented | 4 new races (Demi-God, Ryu, Fallen Angel, Kirin) — 11 races total. 4 custom origins (Witch of Ink, Artificial Construct, Witherborn, Slimebodied) — 13 origins total. |
 | Class descriptions update | Implemented | All 10 class descriptions updated to match actual power implementations |
 | Codex expansion | Implemented | "Choosing Your Build" guide, "Origins Guide", updated Champions/Enchantments/Affixes/class entries |
 | Tectonic terrain tuning | Implemented | vertical_scale 1.155→0.8 (-31%), ridge_scale reduced |
@@ -98,6 +98,14 @@ The canonical design reference for all modpack systems.
 | Pretty Rain removed | Implemented | Cloth Config incompatibility |
 | Duplicate origin definitions fixed | Implemented | KubeJS/data had duplicate origin JSONs causing malformed class prompt on server |
 | Codex book suppression fix | Implemented | botania:lexicon misclassified as Patchouli book, caused login timeout on server |
+| Relics curation | Implemented | 15 Relics removed, 3 special drops (Ender's Hand, Space Dissector, Shadow Glaive) |
+| Village loot overhaul | Implemented | Gear removed, T1 materials added, food capped at 1 |
+| Mod side labels fixed | Implemented | 30 mods corrected from `side='server'` to `side='both'` (pig rift shard root cause) |
+| Improved Mobs equipment disabled | Implemented | Equipment Chance = 0 |
+| Loot Integrations removed | Implemented | Redundant mod caused item leakage |
+| Client installer rework | Implemented | Switched to repo zip download for reliable binary handling |
+| Resource pack distribution | Implemented | Resource packs now distributed via Paxi |
+| Datapack source reorganization | Implemented | `global_packs/required_data` moved to `datapack_sources` to prevent double-loading |
 
 ---
 

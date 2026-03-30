@@ -4,6 +4,43 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-03-30 — New origins, Orc rework, loot curation, mod fixes, distribution overhaul
+
+### New Origins (11 → 13)
+- **Witherborn:** DOT melee origin. Wither on hit, hunger-based damage penalty.
+- **Slimebodied:** Food management tank. 5% food efficiency, satiety damage reduction.
+
+### Race & Origin Reworks
+- **Orc rework:** +10% attack speed, +20% HP, +10% melee, +50% hunger drain, Bloodlust (+20% damage scaling with hunger).
+- **Witch of Ink:** Paint actives stripped, now pure passive hyperscaler.
+- **Construct:** Description updated to reflect 5/5/5/10/10% scaling, Regen III, +35% max.
+
+### Relics Curation
+- 15 Relics removed from loot tables.
+- 3 special drops added: Ender's Hand (dragon-only), Space Dissector (T4 1%), Shadow Glaive (T2/T3 1%).
+
+### Loot Overhaul
+- Village loot: gear removed, T1 materials added, food capped at 1.
+- Curio drop rates halved (~10% cumulative).
+- Infinity Ham removed from all loot tables.
+- RFTools/Mahou items removed from chest loot.
+
+### Mod & Config Fixes
+- 30 mods fixed from `side='server'` to `side='both'` (root cause of pig rift shard bug and other missing client content).
+- `Platform.isLoaded` guards added on modded entity loot modifiers.
+- Improved Mobs equipment disabled (Equipment Chance = 0).
+- Loot Integrations mod removed (redundant, caused item leakage).
+- APTweaks passive mob caps tripled.
+- AStages mod-wide gates removed for mods with food/crops (Thermal, Ars, etc.).
+
+### Distribution & Packaging
+- Client installer switched to repo zip download (reliable binary file handling).
+- Resource packs now distributed via Paxi.
+- `iridescent_classes.jar` rebuilt without baked-in origin layers.
+- `global_packs/required_data` moved to `datapack_sources` (prevents double-loading).
+
+---
+
 ## 2026-03-20 — Client installer fixes, transmuted materials, Codex update
 
 ### Client Installer Fixes

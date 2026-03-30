@@ -6,7 +6,7 @@ Four layered character systems define player builds, with the first three presen
 
 | System | Layer | Role | When Active |
 |--------|-------|------|-------------|
-| Origins (vanilla + icraft) | Origin | Flavor powers — unique abilities and tradeoffs (11 origins, no Human) | Character creation prompt 1 |
+| Origins (vanilla + icraft) | Origin | Flavor powers — unique abilities and tradeoffs (13 origins, no Human) | Character creation prompt 1 |
 | Origins (icraft) | Race | 11 custom races — stat modifiers and thematic flavor | Character creation prompt 2 |
 | Iridescent Classes (icraft) | Class | 10 combat roles — playstyle, HP tier, glass cannon | Character creation prompt 3 |
 | Pufferfish's Skills (+ AStages bridge) | — | Skill Points — stat investment trees | Earned through progression |
@@ -15,7 +15,7 @@ Four layered character systems define player builds, with the first three presen
 ## Three-Prompt Character Creation
 
 On first join, players choose in order:
-1. **Origin** (11 origins, no Human) — Flavor powers (e.g., Arachnid wall climbing, Blazeborn fire immunity, Merling underwater breathing, Witch of Ink paint magic, Artificial Construct iron eating)
+1. **Origin** (13 origins, no Human) — Flavor powers (e.g., Arachnid wall climbing, Blazeborn fire immunity, Merling underwater breathing, Witch of Ink passive hyperscaling, Artificial Construct iron eating, Witherborn DOT melee, Slimebodied food tank)
 2. **Race** (11 custom) — IridescentCraft race with stat bonuses/penalties (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin)
 3. **Class** (10 custom) — Combat role (Berserker, Samurai, Battlemage, etc.)
 
@@ -98,7 +98,7 @@ All 22 scoreboard objectives are now functional (updated 2026-03-15):
 | Human | None | None (baseline) |
 | Elf | +15% ranged damage, +5% magic damage | — |
 | Dwarf | Mining hunger halved | — |
-| Orc | +10% melee damage | — |
+| Orc | +10% attack speed, +20% HP, +10% melee damage, Bloodlust (+20% damage scaling with hunger) | +50% hunger drain |
 | Halfling | +20% food efficiency | — |
 | Faefolk | +30% magic damage | -50% armor toughness, -10% HP |
 | Revenant | +20% damage + Resistance I in darkness/Abyss, Night Vision 1.1 | Weakness+slowness in sunlight, -20% healing |
@@ -109,13 +109,13 @@ All 22 scoreboard objectives are now functional (updated 2026-03-15):
 
 Notable fixes: Orc knockback double-apply bug fixed. Halfling food efficiency now functional. Revenant healing penalty now functional.
 
-## Origin System (Overhauled 2026-03-17)
+## Origin System (Overhauled 2026-03-17, expanded 2026-03-30)
 
-Uses 9 vanilla origins + 2 custom origins + Mundane (11 total, no Human). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional.
+Uses 9 vanilla origins + 4 custom origins + Mundane (13 total, no Human). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional.
 
 **Design philosophy:** No lethal environmental effects. Food preferences, not restrictions. Tradeoffs should be interesting, not punishing. Elytra flight reserved for Elytrian. Each heart = 5% HP.
 
-### Origin Details (updated 2026-03-19)
+### Origin Details (updated 2026-03-30)
 
 | Origin | Key Powers | Changes from Vanilla |
 |--------|-----------|---------------------|
@@ -129,8 +129,10 @@ Uses 9 vanilla origins + 2 custom origins + Mundane (11 total, no Human). The va
 | Phantom | Phasing, invisibility, half health, **Spectral Undeath** | Sunlight burn→weakness+slowness. Never dies — locks to 0.5 hearts + 5min debuffs instead (`phantom_undeath.js`) |
 | Shulk | Hardened Shell (50% death durability reduction), +20% mining speed | Extra inventory→Hardened Shell |
 | Mundane | No powers | Re-added as blank slate option |
-| Witch of Ink | Paint magic, 50% food reduction, feeds from paintings. Boss counter (200 max) scales damage/reduction/toughness. Blessing of Penthesilea capstone. | New custom origin. Hyperscaling fantasy — weak early, monster late (`witch_of_ink_progression.js`) |
-| Artificial Construct | 25% food efficiency, iron eating (ingots + blocks + Regen III), iron upgrade ladder (1000→16000 iron, 5/5/5/10/10% per level, max +35%) | New custom origin. Hyperscaling fantasy — back-loaded power curve (`artificial_construct_progression.js`) |
+| Witch of Ink | Pure passive hyperscaler. 50% food reduction, feeds from paintings. Boss counter (200 max) scales damage/reduction/toughness. Blessing of Penthesilea capstone. Paint actives stripped. | Custom origin. Hyperscaling fantasy — weak early, monster late (`witch_of_ink_progression.js`) |
+| Artificial Construct | 25% food efficiency, iron eating (ingots + blocks + Regen III), iron upgrade ladder (1000→16000 iron, 5/5/5/10/10% per level, max +35%) | Custom origin. Hyperscaling fantasy — back-loaded power curve (`artificial_construct_progression.js`) |
+| Witherborn | DOT melee fighter. Wither on hit, hunger-based damage penalty. | Custom origin. Decay-themed attacker with sustain tradeoff |
+| Slimebodied | Food management tank. 5% food efficiency, satiety damage reduction. | Custom origin. Tanky through food sustain mechanics |
 
 ### Custom Items
 

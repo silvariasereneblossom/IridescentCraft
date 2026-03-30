@@ -49,6 +49,9 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Needs Testing
 
+- [ ] Witherborn wither on hit — confirm wither effect applies on melee, hunger damage penalty functions
+- [ ] Slimebodied food cooldown/DR — confirm 5% food efficiency, satiety-based damage reduction
+- [ ] Orc Bloodlust — confirm +20% damage scaling with hunger level, +20% HP, +10% attack speed
 - [ ] Witch of Ink progression system — origin detection via NBT, boss counter scaling, Blessing of Penthesilea capstone
 - [ ] Artificial Construct iron eating — iron ingot/block consumption, Regen III on eat, 5/5/5/10/10% upgrade ladder
 - [ ] Phantom Undeath — EntityEvents.death cancel on players, Spectral Collapse debuffs
@@ -236,3 +239,12 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ### Loot Table Overhaul (2026-03-19)
 - **Resolved:** Village smith chests get 20% artifact chance. Ocean structures heavily oceanic-themed. Towers of the Wild get artifact drops. Village affix gear limited to white/green. Magic materials boosted in structure chests.
+
+### Pig Rift Shard Bug (2026-03-30)
+- **Resolved:** Root cause was 30 mods with `side='server'` instead of `side='both'` in client `.pw.toml` index. Client never downloaded those mods, causing missing entity registrations and loot modifier failures. All 30 mods corrected.
+
+### Class Layer Duplication (2026-03-30)
+- **Resolved:** `iridescent_classes.jar` had baked-in origin layers that duplicated the datapack layers. Rebuilt jar without baked-in layers. `global_packs/required_data` moved to `datapack_sources` to prevent double-loading.
+
+### AStages Food Blocking (2026-03-30)
+- **Resolved:** AStages mod-wide gates for Thermal, Ars Nouveau, and other mods with food/crop items blocked players from eating/harvesting those items at any tier. Removed mod-wide gates for affected mods.
