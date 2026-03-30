@@ -67,13 +67,44 @@ LootJS.modifiers(event => {
     .addEntityLootModifier('minecraft:chicken')
     .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
 
-  // Remove Infinity Ham from ALL loot tables (broken/OP item from Relics mod)
+  // ── RELICS CURATION ──
+  // Remove relics that are too active/environmental/OP for gear-driven design
+  let removedRelics = [
+    'relics:infinity_ham',
+    'relics:magic_mirror',
+    'relics:aqua_walker',
+    'relics:amphibian_boot',
+    'relics:magma_walker',
+    'relics:ice_skates',
+    'relics:roller_skates',
+    'relics:horse_flute',
+    'relics:chorus_inhibitor',
+    'relics:elytra_booster',
+    'relics:spatial_sign',
+    'relics:midnight_robe',
+    'relics:ice_breaker',
+    'relics:enders_hand',
+    'relics:space_dissector'
+  ]
+  let relicRemover = event.addLootTypeModifier(LootType.CHEST)
+  removedRelics.forEach(r => relicRemover.removeLoot(r))
+
+  // Ender's Hand — exclusive Dragon drop (free ender pearl teleport)
+  event.addEntityLootModifier('minecraft:ender_dragon')
+    .addLoot(LootEntry.of('relics:enders_hand'))
+
+  // Space Dissector — rare T4 dimension drop
   event
     .addLootTypeModifier(LootType.CHEST)
-    .removeLoot('relics:infinity_ham')
+    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .addLoot(LootEntry.of('relics:space_dissector').when(c => c.randomChance(0.01)))
+
+  // Shadow Glaive — rare T2/T3 drop
   event
-    .addEntityLootModifier('minecraft:pig')
-    .removeLoot('relics:infinity_ham')
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn', 'minecraft:the_nether', 'undergarden:undergarden')
+    .addLoot(LootEntry.of('relics:shadow_glaive').when(c => c.randomChance(0.01)))
 
   // Remove T4-gated mod items from ALL chest loot (shouldn't appear before T4)
   event
