@@ -5,6 +5,7 @@ mods/*.jar
 !mods/zeta_racefix-*.jar
 !mods/mek_walkable_cables-*.jar
 resourcepacks/
+!config/paxi/resourcepacks/
 shaderpacks/
 saves/
 *.zip
@@ -14,5 +15,10 @@ saves/
 !config/paxi/datapacks/*.zip
 !server_distribution/config/paxi/datapacks/*.zip
 !distribution/client/config/paxi/datapacks/*.zip
+!config/paxi/resourcepacks/
+!config/paxi/resourcepacks/*.zip
+!config/paxi/resourcepacks/*.txt
+!server_distribution/config/paxi/resourcepacks/*.zip
+!distribution/client/config/paxi/resourcepacks/*.zip
 *.rar
 
