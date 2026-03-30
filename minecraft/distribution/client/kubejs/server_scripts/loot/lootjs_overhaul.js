@@ -666,11 +666,11 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:iron_leggings')
       .removeLoot('minecraft:iron_boots')
 
-    // T1 materials — iron, gold, copper (low quantities)
-    modifier.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.20)))
-    modifier.addLoot(LootEntry.of('minecraft:gold_ingot').limitCount([1, 2]).when(c => c.randomChance(0.10)))
-    modifier.addLoot(LootEntry.of('minecraft:copper_ingot').limitCount([1, 4]).when(c => c.randomChance(0.15)))
-    modifier.addLoot(LootEntry.of('create:brass_ingot').limitCount([1, 2]).when(c => c.randomChance(0.08)))
+    // T1 materials — iron, gold, copper (scarce)
+    modifier.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 2]).when(c => c.randomChance(0.10)))
+    modifier.addLoot(LootEntry.of('minecraft:gold_ingot').limitCount([1, 1]).when(c => c.randomChance(0.05)))
+    modifier.addLoot(LootEntry.of('minecraft:copper_ingot').limitCount([1, 3]).when(c => c.randomChance(0.08)))
+    modifier.addLoot(LootEntry.of('create:brass_ingot').limitCount([1, 1]).when(c => c.randomChance(0.04)))
 
     // Seeds — relatively rare
     modifier.addLoot(LootEntry.of('minecraft:wheat_seeds').limitCount([1, 2]).when(c => c.randomChance(0.05)))
