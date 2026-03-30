@@ -17,7 +17,7 @@
     "item": "minecraft:ink_sac"
   },
   "order": 10,
-  "impact": 2,
+  "impact": 3,
   "name": "Witch of Ink",
   "description": "A living canvas of ink and willpower. Food provides half nourishment. Frail and flammable, with 20% less health. But every boss slain fuels their power \u2014 scaling damage, reduction, and toughness up to 200 kills. At 200: the Blessing of Penthesilea doubles their defensive bonuses and grants permanent Haste."
 }
