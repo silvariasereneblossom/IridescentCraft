@@ -67,6 +67,14 @@ LootJS.modifiers(event => {
     .addEntityLootModifier('minecraft:chicken')
     .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
 
+  // Remove Infinity Ham from ALL loot tables (broken/OP item from Relics mod)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .removeLoot('relics:infinity_ham')
+  event
+    .addEntityLootModifier('minecraft:pig')
+    .removeLoot('relics:infinity_ham')
+
   // Remove T4-gated mod items from ALL chest loot (shouldn't appear before T4)
   event
     .addLootTypeModifier(LootType.CHEST)
@@ -650,11 +658,34 @@ LootJS.modifiers(event => {
       .addLootTableModifier(table)
       .removeLoot('minecraft:diamond')
       .removeLoot('minecraft:diamond_horse_armor')
+      // Remove most gear — villages shouldn't be armouries
+      .removeLoot('minecraft:iron_sword')
+      .removeLoot('minecraft:iron_pickaxe')
+      .removeLoot('minecraft:iron_helmet')
+      .removeLoot('minecraft:iron_chestplate')
+      .removeLoot('minecraft:iron_leggings')
+      .removeLoot('minecraft:iron_boots')
 
-    // Each artifact has ~1% individual chance, totaling ~8% for at least one
+    // T1 materials — iron, gold, copper (low quantities)
+    modifier.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.20)))
+    modifier.addLoot(LootEntry.of('minecraft:gold_ingot').limitCount([1, 2]).when(c => c.randomChance(0.10)))
+    modifier.addLoot(LootEntry.of('minecraft:copper_ingot').limitCount([1, 4]).when(c => c.randomChance(0.15)))
+    modifier.addLoot(LootEntry.of('create:brass_ingot').limitCount([1, 2]).when(c => c.randomChance(0.08)))
+
+    // Seeds — relatively rare
+    modifier.addLoot(LootEntry.of('minecraft:wheat_seeds').limitCount([1, 2]).when(c => c.randomChance(0.05)))
+    modifier.addLoot(LootEntry.of('minecraft:beetroot_seeds').limitCount([1, 1]).when(c => c.randomChance(0.03)))
+    modifier.addLoot(LootEntry.of('minecraft:pumpkin_seeds').limitCount([1, 1]).when(c => c.randomChance(0.03)))
+    modifier.addLoot(LootEntry.of('minecraft:melon_seeds').limitCount([1, 1]).when(c => c.randomChance(0.02)))
+
+    // Gear — very rare (0.5%)
+    modifier.addLoot(LootEntry.of('minecraft:iron_sword').when(c => c.randomChance(0.005)))
+    modifier.addLoot(LootEntry.of('minecraft:iron_pickaxe').when(c => c.randomChance(0.005)))
+
+    // Artifacts — very rare (0.5% each, ~4% total)
     villageArtifacts.forEach(artifact => {
       modifier.addLoot(
-        LootEntry.of(artifact).when(c => c.randomChance(0.01))
+        LootEntry.of(artifact).when(c => c.randomChance(0.005))
       )
     })
   })
@@ -723,21 +754,22 @@ LootJS.modifiers(event => {
   // for a random curio from any non-village Overworld structure chest.
   // =========================================================================
 
+  // ~10% cumulative chance for a curio from non-village overworld chests
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-    .addLoot(LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.03)))
-    .addLoot(LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.015)))
-    .addLoot(LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.015)))
-    .addLoot(LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:charm_of_sinking').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:digging_claws').when(c => c.randomChance(0.02)))
-    .addLoot(LootEntry.of('artifacts:antidote_vessel').when(c => c.randomChance(0.015)))
+    .addLoot(LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.01)))
+    .addLoot(LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.005)))
+    .addLoot(LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.005)))
+    .addLoot(LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:charm_of_sinking').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:digging_claws').when(c => c.randomChance(0.008)))
+    .addLoot(LootEntry.of('artifacts:antidote_vessel').when(c => c.randomChance(0.005)))
 
   // =========================================================================
   // SECTION 5A3: IRON'S SPELLS TIERED LOOT
