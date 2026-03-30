@@ -651,10 +651,10 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:diamond')
       .removeLoot('minecraft:diamond_horse_armor')
 
-    // Each artifact has ~2.5% individual chance, totaling ~20% for at least one
+    // Each artifact has ~1% individual chance, totaling ~8% for at least one
     villageArtifacts.forEach(artifact => {
       modifier.addLoot(
-        LootEntry.of(artifact).when(c => c.randomChance(0.025))
+        LootEntry.of(artifact).when(c => c.randomChance(0.01))
       )
     })
   })
@@ -826,7 +826,7 @@ LootJS.modifiers(event => {
 
   reducedFoods.forEach(food => {
     foodModifier.removeLoot(food)
-    foodModifier.addLoot(LootEntry.of(food).when(c => c.randomChance(0.07)))
+    foodModifier.addLoot(LootEntry.of(food).limitCount([1, 3]).when(c => c.randomChance(0.05)))
   })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
