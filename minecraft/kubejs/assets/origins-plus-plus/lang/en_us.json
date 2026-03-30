@@ -15,6 +15,7 @@
   "power.origins-plus-plus.witch-of-ink/aura.description": "",
   "power.origins-plus-plus.witch-of-ink/no_invisibility.name": "",
   "power.origins-plus-plus.witch-of-ink/no_invisibility.description": "",
+
   "power.origins-plus-plus.artificial-construct/battery.name": "",
   "power.origins-plus-plus.artificial-construct/battery.description": "",
   "power.origins-plus-plus.artificial-construct/battery_resource.name": "",
@@ -28,5 +29,41 @@
   "power.origins-plus-plus.artificial-construct/no_hunger.name": "",
   "power.origins-plus-plus.artificial-construct/no_hunger.description": "",
   "power.origins-plus-plus.artificial-construct/water_breathing.name": "",
-  "power.origins-plus-plus.artificial-construct/water_breathing.description": ""
+  "power.origins-plus-plus.artificial-construct/water_breathing.description": "",
+
+  "power.origins-plus-plus.ryu/lift_off.name": "",
+  "power.origins-plus-plus.ryu/lift_off.description": "",
+  "power.origins-plus-plus.ryu/winged.name": "",
+  "power.origins-plus-plus.ryu/winged.description": "",
+  "power.origins-plus-plus.ryu/healing_potions.name": "Potion Resistance",
+  "power.origins-plus-plus.ryu/healing_potions.description": "Healing potions are only 50% effective on your scaled hide.",
+  "power.origins-plus-plus.ryu/so_much_weight.name": "",
+  "power.origins-plus-plus.ryu/so_much_weight.description": "",
+  "power.origins-plus-plus.ryu/raw_diet.name": "",
+  "power.origins-plus-plus.ryu/raw_diet.description": "",
+
+  "power.origins-plus-plus.demi-god/raw_diet.name": "",
+  "power.origins-plus-plus.demi-god/raw_diet.description": "",
+  "power.origins-plus-plus.demi-god/god_punch.name": "Divine Fury",
+  "power.origins-plus-plus.demi-god/god_punch.description": "Activate Strength on command. 50s cooldown.",
+  "power.origins-plus-plus.demi-god/cursed.name": "Nether Sickness",
+  "power.origins-plus-plus.demi-god/cursed.description": "The Nether weakens your divine blood, but you can fight through it.",
+  "power.origins-plus-plus.demi-god/fire.name": "Fire Vulnerability",
+  "power.origins-plus-plus.demi-god/fire.description": "Fire burns 50% hotter against your divine form.",
+  "power.origins-plus-plus.demi-god/raw_meat_buff.name": "Divine Diet",
+  "power.origins-plus-plus.demi-god/raw_meat_buff.description": "Raw meat gives 2x nourishment. Cooked meat gives 1.5x.",
+
+  "power.origins-plus-plus.fallen-angel/elytra.name": "",
+  "power.origins-plus-plus.fallen-angel/elytra.description": "",
+  "power.origins-plus-plus.fallen-angel/deadshot.name": "Wither Shot",
+  "power.origins-plus-plus.fallen-angel/deadshot.description": "Fire a wither skull projectile.",
+  "power.origins-plus-plus.fallen-angel/velocity.name": "Dark Expulsion",
+  "power.origins-plus-plus.fallen-angel/velocity.description": "Launch yourself forward, leaving a withering cloud.",
+  "power.origins-plus-plus.fallen-angel/roof.name": "Claustrophobia",
+  "power.origins-plus-plus.fallen-angel/roof.description": "Slower under roofs. The memory of confinement haunts you.",
+
+  "power.origins-plus-plus.kirin/cat_size.name": "",
+  "power.origins-plus-plus.kirin/cat_size.description": "",
+  "power.origins-plus-plus.kirin/dislike_of_water.name": "",
+  "power.origins-plus-plus.kirin/dislike_of_water.description": ""
 }
