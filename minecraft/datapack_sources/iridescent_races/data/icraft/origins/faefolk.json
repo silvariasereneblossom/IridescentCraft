@@ -3,7 +3,8 @@
     "icraft:race/faefolk/slow_fall",
     "icraft:race/faefolk/nature_magic",
     "icraft:race/faefolk/armor_weakness",
-    "icraft:race/faefolk/fragile"
+    "icraft:race/faefolk/fragile",
+    "icraft:race/faefolk/swift"
   ],
   "icon": {
     "item": "minecraft:lily_of_the_valley"
@@ -11,5 +12,5 @@
   "order": 7,
   "impact": 2,
   "name": "Faefolk",
-  "description": "Creatures of ancient magic and wild nature, Faefolk drift gently on the wind and channel 30% more power through their spells. Their ethereal bodies resist armor poorly and hold less vitality, but raw magical force more than compensates."
+  "description": "Swift and magical, Faefolk drift on the wind and channel 30% more power through their spells. +10% speed, but -15% HP and -50% armor toughness. Raw arcane force is their armor."
 }

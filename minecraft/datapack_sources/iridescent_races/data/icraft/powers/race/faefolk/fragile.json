@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
   "name": "Fae Fragility",
-  "description": "-10% max HP.",
+  "description": "-15% max HP. Your ethereal form is delicate.",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",
       "operation": "multiply_base",
-      "value": -0.10
+      "value": -0.15
     }
   ]
 }
