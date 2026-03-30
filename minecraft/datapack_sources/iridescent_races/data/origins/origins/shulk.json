@@ -11,5 +11,6 @@
     "item": "minecraft:shulker_shell"
   },
   "order": 4,
-  "impact": 0
+  "impact": 0,
+  "replace": true
 }

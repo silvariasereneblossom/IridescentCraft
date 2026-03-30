@@ -13,5 +13,6 @@
     "item": "minecraft:cod"
   },
   "order": 0,
-  "impact": 2
+  "impact": 2,
+  "replace": true
 }

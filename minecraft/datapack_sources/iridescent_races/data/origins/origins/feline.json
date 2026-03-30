@@ -12,5 +12,6 @@
     "item": "minecraft:orange_wool"
   },
   "order": 0,
-  "impact": 1
+  "impact": 1,
+  "replace": true
 }
