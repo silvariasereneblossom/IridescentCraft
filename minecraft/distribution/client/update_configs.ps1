@@ -121,34 +121,32 @@ Write-Host "  [3/3] Updating instance configs..." -ForegroundColor Cyan
 $updated = 0
 foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
     if (Test-Path "$distDir\$dir") {
-        # Delete the target directory first, then copy fresh
-        # This ensures removed files don't persist
-        if (Test-Path "$instanceMC\$dir") {
-            Write-Host "    Deleting old $dir..." -NoNewline
-            try {
-                Remove-Item "$instanceMC\$dir" -Recurse -Force -ErrorAction Stop
-                Write-Host " OK" -ForegroundColor Green
-            } catch {
-                Write-Host " FAILED: $($_.Exception.Message)" -ForegroundColor Red
-                Write-Host "    Retrying with robocopy /MIR empty dir..." -ForegroundColor Yellow
-                # Fallback: use robocopy to mirror an empty dir (handles locked files better)
-                $emptyDir = "$env:TEMP\icraft_empty_$dir"
-                New-Item -ItemType Directory -Path $emptyDir -Force | Out-Null
-                $null = robocopy $emptyDir "$instanceMC\$dir" /MIR /NFL /NDL /NJH /NJS /NP 2>&1
-                Remove-Item $emptyDir -Force -ErrorAction SilentlyContinue
-                # Final attempt to remove the now-empty directory
-                Remove-Item "$instanceMC\$dir" -Recurse -Force -ErrorAction SilentlyContinue
-                if (Test-Path "$instanceMC\$dir") {
-                    Write-Host "    WARNING: Could not fully delete $dir. Close Minecraft first!" -ForegroundColor Red
-                } else {
-                    Write-Host "    Retry succeeded." -ForegroundColor Green
+        # Overlay copy — overwrite existing files, add new ones
+        if (-not (Test-Path "$instanceMC\$dir")) {
+            New-Item -ItemType Directory -Path "$instanceMC\$dir" -Force | Out-Null
+        }
+        Copy-Item "$distDir\$dir\*" "$instanceMC\$dir" -Recurse -Force -ErrorAction SilentlyContinue
+        $count = (Get-ChildItem "$distDir\$dir" -Recurse -File -ErrorAction SilentlyContinue).Count
+        Write-Host "    $dir ($count files)... OK"
+        $updated += $count
+
+        # Verify critical subdirectories
+        if ($dir -eq 'config') {
+            $paxiDP = Join-Path $instanceMC 'config\paxi\datapacks'
+            $dpCount = (Get-ChildItem "$paxiDP\*.zip" -ErrorAction SilentlyContinue).Count
+            if ($dpCount -gt 0) {
+                Write-Host "      paxi datapacks: $dpCount zips" -ForegroundColor DarkGray
+            } else {
+                Write-Host "      WARNING: No Paxi datapacks found!" -ForegroundColor Red
+                # Try copying specifically
+                if (Test-Path "$distDir\config\paxi\datapacks") {
+                    New-Item -ItemType Directory -Path $paxiDP -Force | Out-Null
+                    Copy-Item "$distDir\config\paxi\datapacks\*" "$paxiDP\" -Force -ErrorAction SilentlyContinue
+                    $dpCount = (Get-ChildItem "$paxiDP\*.zip" -ErrorAction SilentlyContinue).Count
+                    Write-Host "      Retry: $dpCount zips copied" -ForegroundColor Yellow
                 }
             }
         }
-        Copy-Item "$distDir\$dir" "$instanceMC\$dir" -Recurse -Force
-        $count = (Get-ChildItem "$distDir\$dir" -Recurse -File).Count
-        Write-Host "    $dir ($count files)... OK"
-        $updated += $count
     }
 }
 
