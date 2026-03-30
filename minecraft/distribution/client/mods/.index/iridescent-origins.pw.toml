@@ -1,0 +1,9 @@
+filename = 'iridescent_origins-1.0.0.jar'
+name = 'IridescentCraft Origins'
+side = 'both'
+
+[download]
+hash = ''
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
