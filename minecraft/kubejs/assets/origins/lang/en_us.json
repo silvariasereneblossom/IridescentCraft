@@ -60,9 +60,9 @@
   "origin.origins-plus-plus.kirin.name": "Kirin",
   "origin.origins-plus-plus.kirin.description": "A mythical beast of impossible speed. Kirin scale walls like spiders, see in the dark, and sprint faster than any other race. Their lithe frames hold 20% less health, and the relentless pace of their movement burns through food quickly.",
   "origin.origins-plus-plus.witch_of_ink.name": "Witch of Ink",
-  "origin.origins-plus-plus.witch_of_ink.description": "A living canvas of ink and willpower. Food provides half nourishment. Frail and flammable, with 20% less health. But every boss slain fuels their power \u2014 scaling damage, reduction, and toughness up to 200 kills. At 200: the Blessing of Penthesilea doubles their defensive bonuses and grants permanent Haste.",
+  "origin.origins-plus-plus.witch_of_ink.description": "A living canvas of ink and will. Half food, -20% HP, fire weakness. Boss kills scale damage, reduction, and toughness (max 200). At 200: Blessing of Penthesilea doubles defenses and grants Haste.",
   "origin.origins-plus-plus.artificial_construct.name": "Artificial Construct",
-  "origin.origins-plus-plus.artificial_construct.description": "A golem forged from iron and arcane will. Normal food provides only 25% nourishment \u2014 iron ingots and blocks are their true fuel, granting Regeneration III when consumed. Devour enough iron to permanently upgrade across five tiers (5/5/5/10/10%), reaching +35% to HP, melee, reduction, and toughness. Extended reach, natural armor, and reduced fall damage.",
+  "origin.origins-plus-plus.artificial_construct.description": "An iron golem given life. Food gives 25% nourishment \u2014 eat iron for Regen III instead. Five upgrade tiers from iron consumption (5/5/5/10/10%, max +35%). Extended reach, natural armor, reduced fall damage.",
 
   "origin.icraft.witherborn.name": "Witherborn",
   "origin.icraft.witherborn.description": "Born of decay, the Witherborn wields the Wither itself as a weapon. Melee attacks inflict Wither on targets \u2014 even bosses normally immune. But hunger saps their strength: up to -50% damage when starving. Food provides only 25% nourishment and drains 50% faster. Keep eating or wither away.",

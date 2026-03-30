@@ -13,5 +13,5 @@
   "order": 11,
   "impact": 3,
   "name": "Artificial Construct",
-  "description": "A golem forged from iron and arcane will. Normal food provides only 25% nourishment \u2014 iron ingots and blocks are their true fuel, granting Regeneration III when consumed. Devour enough iron to permanently upgrade across five tiers (5/5/5/10/10%), reaching +35% to HP, melee, reduction, and toughness. Extended reach, natural armor, and reduced fall damage."
+  "description": "An iron golem given life. Food gives 25% nourishment \u2014 eat iron for Regen III instead. Five upgrade tiers from iron consumption (5/5/5/10/10%, max +35%). Extended reach, natural armor, reduced fall damage."
 }
