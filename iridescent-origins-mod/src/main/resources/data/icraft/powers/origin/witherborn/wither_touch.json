@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Touch of Decay",
+  "description": "Melee attacks apply Wither to targets. Bosses normally immune to Wither receive True Wither instead."
+}

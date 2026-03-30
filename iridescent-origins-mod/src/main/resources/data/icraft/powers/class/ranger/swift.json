@@ -1,0 +1,17 @@
+{
+  "type": "origins:attribute",
+  "name": "Swift",
+  "description": "+15% movement speed, +10% attack speed.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.movement_speed",
+      "operation": "multiply_base",
+      "value": 0.15
+    },
+    {
+      "attribute": "minecraft:generic.attack_speed",
+      "operation": "multiply_base",
+      "value": 0.1
+    }
+  ]
+}

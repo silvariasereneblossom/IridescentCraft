@@ -1,0 +1,37 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+
+[[mods]]
+modId="iridescent_origins"
+version="${file.jarVersion}"
+displayName="Iridescent Origins"
+description='''Custom origins, races, and classes for IridescentCraft.'''
+
+[[dependencies.iridescent_origins]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.iridescent_origins]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.iridescent_origins]]
+    modId="origins"
+    mandatory=true
+    versionRange="[1.10.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.iridescent_origins]]
+    modId="origins_plus_plus"
+    mandatory=false
+    versionRange="[2.0,)"
+    ordering="AFTER"
+    side="BOTH"

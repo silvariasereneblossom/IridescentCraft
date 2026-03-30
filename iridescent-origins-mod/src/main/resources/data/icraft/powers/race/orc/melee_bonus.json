@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Orcish Strength",
+  "description": "+10% melee damage. Raw brute force.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": 0.10
+    }
+  ]
+}

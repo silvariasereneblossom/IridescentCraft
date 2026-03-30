@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Digest Slowly",
+  "description": "10-second cooldown between eating. Your body needs time to absorb each meal."
+}

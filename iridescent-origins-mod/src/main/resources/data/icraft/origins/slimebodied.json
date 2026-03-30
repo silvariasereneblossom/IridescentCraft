@@ -1,0 +1,18 @@
+{
+  "powers": [
+    "icraft:origin/slimebodied/food_efficiency",
+    "icraft:origin/slimebodied/reduced_health",
+    "icraft:origin/slimebodied/reduced_toughness",
+    "icraft:origin/slimebodied/satiety_defense",
+    "icraft:origin/slimebodied/slow_metabolism",
+    "icraft:origin/slimebodied/food_cooldown",
+    "icraft:origin/slimebodied/satiety_floor"
+  ],
+  "icon": {
+    "item": "minecraft:slime_ball"
+  },
+  "order": 13,
+  "impact": 3,
+  "name": "Slimebodied",
+  "description": "An amorphous being of living gel. Food provides only 5% nourishment, but hunger drains at 25% normal rate and never while idle. Well-fed slimes gain up to 25% damage reduction. 10-second cooldown between meals. 75% base health, -50% armor toughness. Satiety never drops below 25%. Invest in high-quality food."
+}

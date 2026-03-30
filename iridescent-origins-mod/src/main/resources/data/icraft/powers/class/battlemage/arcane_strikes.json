@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Arcane Strikes",
+  "description": "+10% attack damage (melee-magic hybrid bonus).",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": 0.1
+    }
+  ]
+}

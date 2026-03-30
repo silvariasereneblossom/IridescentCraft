@@ -1,0 +1,7 @@
+{
+  "type": "origins:exhaust",
+  "name": "Ravenous",
+  "description": "+50% hunger drain. The fury burns through food.",
+  "interval": 80,
+  "exhaustion": 0.5
+}

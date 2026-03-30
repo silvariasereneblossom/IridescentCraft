@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Spell Armor",
+  "description": "Innate +2 armor from arcane wards.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 2.0
+    }
+  ]
+}

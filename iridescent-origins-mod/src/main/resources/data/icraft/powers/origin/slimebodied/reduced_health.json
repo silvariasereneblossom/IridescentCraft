@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "Amorphous Form",
+  "description": "75% base health. Your gelatinous body has less structural integrity.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "operation": "multiply_base",
+      "value": -0.25
+    }
+  ]
+}
