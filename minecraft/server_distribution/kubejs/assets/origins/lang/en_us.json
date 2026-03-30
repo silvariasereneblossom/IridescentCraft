@@ -62,5 +62,11 @@
   "origin.origins-plus-plus.witch_of_ink.name": "Witch of Ink",
   "origin.origins-plus-plus.witch_of_ink.description": "A living canvas of ink and willpower. Food provides half nourishment. Frail and flammable, with 20% less health. But every boss slain fuels their power \u2014 scaling damage, reduction, and toughness up to 200 kills. At 200: the Blessing of Penthesilea doubles their defensive bonuses and grants permanent Haste.",
   "origin.origins-plus-plus.artificial_construct.name": "Artificial Construct",
-  "origin.origins-plus-plus.artificial_construct.description": "A golem forged from iron and arcane will. Normal food provides only 25% nourishment \u2014 iron ingots and blocks are their true fuel, granting Regeneration III when consumed. Devour enough iron to permanently upgrade across five tiers (5/5/5/10/10%), reaching +35% to HP, melee, reduction, and toughness. Extended reach, natural armor, and reduced fall damage."
+  "origin.origins-plus-plus.artificial_construct.description": "A golem forged from iron and arcane will. Normal food provides only 25% nourishment \u2014 iron ingots and blocks are their true fuel, granting Regeneration III when consumed. Devour enough iron to permanently upgrade across five tiers (5/5/5/10/10%), reaching +35% to HP, melee, reduction, and toughness. Extended reach, natural armor, and reduced fall damage.",
+
+  "origin.icraft.witherborn.name": "Witherborn",
+  "origin.icraft.witherborn.description": "Born of decay, the Witherborn wields the Wither itself as a weapon. Melee attacks inflict Wither on targets \u2014 even bosses normally immune. But hunger saps their strength: up to -50% damage when starving. Food provides only 25% nourishment and drains 50% faster. Keep eating or wither away.",
+
+  "origin.icraft.slimebodied.name": "Slimebodied",
+  "origin.icraft.slimebodied.description": "An amorphous being of living gel. Food provides only 5% nourishment, but hunger drains at 25% normal rate and never while idle. Well-fed slimes gain up to 25% damage reduction. 10-second cooldown between meals. 75% base health, -50% armor toughness. Satiety never drops below 25%. Invest in high-quality food."
 }

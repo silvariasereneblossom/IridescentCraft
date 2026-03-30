@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Core Reserves",
+  "description": "Satiety cannot drop below 25%. Your core always retains some sustenance."
+}

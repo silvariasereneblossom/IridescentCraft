@@ -1,0 +1,17 @@
+{
+  "powers": [
+    "icraft:origin/witherborn/food_efficiency",
+    "icraft:origin/witherborn/wither_immunity",
+    "icraft:origin/witherborn/attack_speed",
+    "icraft:origin/witherborn/hunger_drain",
+    "icraft:origin/witherborn/hunger_weakness",
+    "icraft:origin/witherborn/wither_touch"
+  ],
+  "icon": {
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "order": 12,
+  "impact": 2,
+  "name": "Witherborn",
+  "description": "Born of decay, the Witherborn wields the Wither itself as a weapon. Melee attacks inflict Wither on targets \u2014 even bosses normally immune. But hunger saps their strength: up to -50% damage when starving. Food provides only 25% nourishment and drains 50% faster. Keep eating or wither away."
+}

@@ -1,0 +1,6 @@
+{
+  "type": "origins:effect_immunity",
+  "name": "Wither Blood",
+  "description": "Immune to the Wither effect. The decay flows through you, not against you.",
+  "effects": ["minecraft:wither"]
+}

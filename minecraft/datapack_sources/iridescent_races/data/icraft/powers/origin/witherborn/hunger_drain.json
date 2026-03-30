@@ -1,0 +1,7 @@
+{
+  "type": "origins:exhaust",
+  "name": "Wasting Away",
+  "description": "Hunger drains 50% faster. Your body consumes itself.",
+  "interval": 80,
+  "exhaustion": 0.5
+}
