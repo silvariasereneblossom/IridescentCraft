@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Creatures of ancient magic and wild nature. Faefolk channel devastating arcane power at the cost of physical resilience.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Nature Magic$() — $(item)+30% magic damage$(). The highest racial magic bonus. Synergizes with Battlemage and Archmage classes.$(br2)$(bold)Slow Fall$() — Gentle drift on the wind. Reduced fall speed and damage.$(br2)$(bold)Fragile$() — $(warn)-50% armor toughness, -10% max HP$(). Raw magical force compensates."
+      "text": "$(italic)Swift and magical, Faefolk drift on the wind and channel devastating arcane power.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Nature Magic$() — $(item)+30% magic damage$(). The highest racial magic bonus. Synergizes with Battlemage and Archmage.$(br2)$(bold)Fae Swiftness$() — $(item)+10% movement speed$(). Light on your feet.$(br2)$(bold)Slow Fall$() — Gentle drift on the wind.$(br2)$(bold)Fragile$() — $(warn)-15% max HP, -50% armor toughness$(). Raw magical force is your armor."
     }
   ]
 }
