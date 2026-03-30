@@ -1,17 +1,12 @@
 {
   "type": "origins:attribute",
   "name": "Battle Fury",
-  "description": "+5% attack speed, +10% knockback.",
+  "description": "+10% attack speed. Orcs swing fast and hard.",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_speed",
       "operation": "multiply_base",
-      "value": 0.05
-    },
-    {
-      "attribute": "minecraft:generic.attack_knockback",
-      "operation": "multiply_base",
-      "value": 0.1
+      "value": 0.10
     }
   ]
 }

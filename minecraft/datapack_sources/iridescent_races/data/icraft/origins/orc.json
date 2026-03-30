@@ -2,7 +2,9 @@
   "powers": [
     "icraft:race/orc/attack_speed",
     "icraft:race/orc/melee_bonus",
-    "icraft:race/orc/hunger_drain"
+    "icraft:race/orc/health_bonus",
+    "icraft:race/orc/hunger_drain",
+    "icraft:race/orc/hunger_fury"
   ],
   "icon": {
     "item": "minecraft:iron_axe"
@@ -10,5 +12,5 @@
   "order": 4,
   "impact": 1,
   "name": "Orc",
-  "description": "Brutal and relentless, Orcs hit harder, swing faster, and send foes flying with every blow. Their savage fury comes at a cost \u2014 the rage that fuels them burns through food 15% faster than other races."
+  "description": "Brutal and relentless. Orcs hit harder, swing faster, and take more punishment \u2014 but burn through food at an alarming rate. The hungrier they get, the more dangerous they become."
 }

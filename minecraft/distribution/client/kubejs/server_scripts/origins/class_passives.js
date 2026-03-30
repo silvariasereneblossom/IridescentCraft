@@ -232,6 +232,34 @@ ServerEvents.tick(event => {
     })
   }
 
+  // ── ORC — Bloodlust: hunger-scaling damage bonus, every 5 seconds ──
+  // Up to +20% bonus damage as food level drops (20 = full, 0 = starving)
+  // Linear scale: 0% at full, +20% at 0 food
+  if (tick % 100 === 30) {
+    event.server.players.forEach(player => {
+      try {
+        let isOrc = player.server.runCommandSilent(
+          `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:orc"}]}}}]`
+        )
+        if (isOrc <= 0) return
+
+        let name = player.username
+        let foodLevel = player.foodLevel  // 0-20
+        // Scale: 0% at food 20, +20% at food 0
+        let hungerBonus = Math.max(0, (20 - foodLevel) / 20) * 0.20
+
+        player.server.runCommandSilent(
+          `attribute ${name} minecraft:generic.attack_damage modifier remove icraft:orc_bloodlust`
+        )
+        if (hungerBonus > 0.01) {
+          player.server.runCommandSilent(
+            `attribute ${name} minecraft:generic.attack_damage modifier add icraft:orc_bloodlust ${hungerBonus} multiply_base`
+          )
+        }
+      } catch (e) {}
+    })
+  }
+
   // ── VANGUARD — Guardian's Presence: every 3 seconds ──
   // Weakness only affects melee attack damage, so applying it to passive
   // mobs (cows, pigs, etc.) has zero effect. Safe to target all non-player
