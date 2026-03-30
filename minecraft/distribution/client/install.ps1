@@ -35,43 +35,53 @@ if (-not (Test-Path "$distDir\mods\.index")) {
     Write-Host ""
 
     $distDir = "$env:TEMP\IridescentCraft-dist"
-    $apiUrl = "https://api.github.com/repos/silvariasereneblossom/IridescentCraft/git/trees/main?recursive=1"
+    $repoZip = "$env:TEMP\IridescentCraft-repo.zip"
+    $repoExtract = "$env:TEMP\IridescentCraft-repo-extract"
 
     try {
         $wc = New-Object System.Net.WebClient
-        $wc.Headers.Add("User-Agent", "IridescentCraft-Installer")
-        Write-Host "    Fetching file listing..."
-        $treeJson = $wc.DownloadString($apiUrl)
-
-        $prefix = "minecraft/distribution/client/"
-        $files = @()
-        foreach ($match in [regex]::Matches($treeJson, '"path"\s*:\s*"([^"]+)"')) {
-            $path = $match.Groups[1].Value
-            if ($path.StartsWith($prefix) -and -not $path.EndsWith('/')) {
-                $files += $path.Substring($prefix.Length)
-            }
-        }
-
-        Write-Host "    Found $($files.Count) files to download."
-        if ($files.Count -lt 10) { throw "Too few files found" }
-
-        $dlCount = 0
-        foreach ($file in $files) {
-            $dlCount++
-            $localPath = Join-Path $distDir $file
-            $localDir = Split-Path $localPath -Parent
-            if (-not (Test-Path $localDir)) { New-Item -ItemType Directory -Path $localDir -Force | Out-Null }
-            $fileUrl = "https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/$prefix$($file -replace '\\','/')"
-            try { $wc.DownloadFile($fileUrl, $localPath) } catch {}
-            if ($dlCount % 50 -eq 0) {
-                $pct = [math]::Round(($dlCount / $files.Count) * 100)
-                Write-Host "    [$pct%] $dlCount / $($files.Count)..." -ForegroundColor DarkGray
-            }
-        }
+        Write-Host "    Downloading repository (~1.3 GB, please wait)..."
+        Write-Host "    This is a one-time download. Future updates are much smaller." -ForegroundColor DarkGray
+        $wc.DownloadFile('https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip', $repoZip)
         $wc.Dispose()
-        Write-Host "    [OK] Distribution ready." -ForegroundColor Green
+
+        if (-not (Test-Path $repoZip) -or (Get-Item $repoZip).Length -lt 1000000) {
+            throw "Download failed or file too small"
+        }
+
+        $zipSize = [math]::Round((Get-Item $repoZip).Length / 1MB, 0)
+        Write-Host "    Downloaded: $zipSize MB"
+        Write-Host "    Extracting client distribution..."
+
+        if (Test-Path $repoExtract) { Remove-Item $repoExtract -Recurse -Force }
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($repoZip, $repoExtract)
+
+        $subDir = (Get-ChildItem $repoExtract -Directory | Select-Object -First 1).FullName
+        $srcDir = "$subDir\minecraft\distribution\client"
+
+        if (-not (Test-Path "$srcDir\mods\.index")) {
+            throw "Could not find client distribution in downloaded repo"
+        }
+
+        # Copy client distribution to temp location
+        if (Test-Path $distDir) { Remove-Item $distDir -Recurse -Force }
+        Copy-Item $srcDir $distDir -Recurse -Force
+
+        # Cleanup repo download
+        Remove-Item $repoZip -Force -ErrorAction SilentlyContinue
+        Remove-Item $repoExtract -Recurse -Force -ErrorAction SilentlyContinue
+
+        $fileCount = (Get-ChildItem $distDir -Recurse -File).Count
+        Write-Host "    [OK] Distribution ready ($fileCount files)." -ForegroundColor Green
     } catch {
         Write-Host "  ERROR: $($_.Exception.Message)" -ForegroundColor Red
+        Write-Host ""
+        Write-Host "  If download fails, try cloning the repo manually:" -ForegroundColor Yellow
+        Write-Host "  https://github.com/silvariasereneblossom/IridescentCraft" -ForegroundColor Yellow
+        # Cleanup partial downloads
+        Remove-Item $repoZip -Force -ErrorAction SilentlyContinue
+        Remove-Item $repoExtract -Recurse -Force -ErrorAction SilentlyContinue
         Read-Host "  Press Enter to exit"
         exit 1
     }

@@ -64,50 +64,44 @@ $distDir = $scriptDir
 # Check if we have local distribution files
 if (-not (Test-Path "$distDir\config")) {
     $distDir = "$env:TEMP\IridescentCraft-update"
-    $apiUrl = "https://api.github.com/repos/silvariasereneblossom/IridescentCraft/git/trees/main?recursive=1"
+    $repoZip = "$env:TEMP\IridescentCraft-update-repo.zip"
+    $repoExtract = "$env:TEMP\IridescentCraft-update-extract"
 
     try {
         $wc = New-Object System.Net.WebClient
-        $wc.Headers.Add("User-Agent", "IridescentCraft-Updater")
-        $treeJson = $wc.DownloadString($apiUrl)
-
-        $prefix = "minecraft/distribution/client/"
-        # Only download config, kubejs, defaultconfigs (not mods)
-        # Datapacks are inside config/paxi/datapacks/ — no separate global_packs needed
-        $configDirs = @('config/', 'kubejs/', 'defaultconfigs/')
-        $files = @()
-
-        foreach ($match in [regex]::Matches($treeJson, '"path"\s*:\s*"([^"]+)"')) {
-            $path = $match.Groups[1].Value
-            if ($path.StartsWith($prefix)) {
-                $relPath = $path.Substring($prefix.Length)
-                foreach ($dir in $configDirs) {
-                    if ($relPath.StartsWith($dir)) {
-                        $files += $relPath
-                        break
-                    }
-                }
-            }
-        }
-
-        Write-Host "    Found $($files.Count) config files to download."
-
-        $dlCount = 0
-        foreach ($file in $files) {
-            $dlCount++
-            $localPath = Join-Path $distDir $file
-            $localDir = Split-Path $localPath -Parent
-            if (-not (Test-Path $localDir)) { New-Item -ItemType Directory -Path $localDir -Force | Out-Null }
-            $fileUrl = "https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/$prefix$($file -replace '\\','/')"
-            try { $wc.DownloadFile($fileUrl, $localPath) } catch {}
-            if ($dlCount % 50 -eq 0) {
-                Write-Host "    Downloaded $dlCount / $($files.Count)..." -ForegroundColor DarkGray
-            }
-        }
+        Write-Host "    Downloading repository..."
+        $wc.DownloadFile('https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip', $repoZip)
         $wc.Dispose()
-        Write-Host "    [OK] Config files downloaded." -ForegroundColor Green
+
+        if (-not (Test-Path $repoZip) -or (Get-Item $repoZip).Length -lt 1000000) {
+            throw "Download failed"
+        }
+
+        Write-Host "    Extracting configs..."
+        if (Test-Path $repoExtract) { Remove-Item $repoExtract -Recurse -Force }
+        Add-Type -AssemblyName System.IO.Compression.FileSystem
+        [System.IO.Compression.ZipFile]::ExtractToDirectory($repoZip, $repoExtract)
+
+        $subDir = (Get-ChildItem $repoExtract -Directory | Select-Object -First 1).FullName
+        $srcDir = "$subDir\minecraft\distribution\client"
+
+        if (Test-Path $distDir) { Remove-Item $distDir -Recurse -Force }
+        New-Item -ItemType Directory -Path $distDir -Force | Out-Null
+
+        # Copy only config dirs (not mods)
+        foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
+            if (Test-Path "$srcDir\$dir") {
+                Copy-Item "$srcDir\$dir" "$distDir\$dir" -Recurse -Force
+            }
+        }
+
+        Remove-Item $repoZip -Force -ErrorAction SilentlyContinue
+        Remove-Item $repoExtract -Recurse -Force -ErrorAction SilentlyContinue
+        Write-Host "    [OK] Config files ready." -ForegroundColor Green
     } catch {
         Write-Host "    ERROR: $($_.Exception.Message)" -ForegroundColor Red
+        Remove-Item $repoZip -Force -ErrorAction SilentlyContinue
+        Remove-Item $repoExtract -Recurse -Force -ErrorAction SilentlyContinue
         Read-Host "  Press Enter to exit"
         exit 1
     }
