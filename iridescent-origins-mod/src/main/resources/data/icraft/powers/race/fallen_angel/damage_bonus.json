@@ -1,0 +1,9 @@
+{
+  "type": "origins:modify_damage_dealt",
+  "modifier": {
+    "operation": "multiply_base",
+    "value": 0.15
+  },
+  "name": "Lethal Grace",
+  "description": "All attacks deal 15% bonus damage."
+}

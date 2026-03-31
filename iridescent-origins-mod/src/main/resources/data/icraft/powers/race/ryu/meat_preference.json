@@ -1,0 +1,17 @@
+{
+  "type": "origins:modify_food",
+  "item_condition": {
+    "type": "origins:meat",
+    "inverted": true
+  },
+  "food_modifier": {
+    "operation": "multiply_total",
+    "value": -0.5
+  },
+  "saturation_modifier": {
+    "operation": "multiply_total",
+    "value": -0.5
+  },
+  "name": "Draconic Diet",
+  "description": "Non-meat foods provide 50% less nourishment."
+}
