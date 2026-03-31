@@ -1,0 +1,9 @@
+{
+  "useMojang": true,
+  "useCrafatar": true,
+  "useCustomServer": false,
+  "hostCustomServer": "http://example.com",
+  "useCustomServer2": false,
+  "hostCustomServer2Skin": "http://example.com/skins/%auto%",
+  "hostCustomServer2Cape": "http://example.com/capes/%auto%"
+}

@@ -1,0 +1,11 @@
+#556 minecraft:beach
+#460 minecraft:cherry_grove
+#646 biomesoplenty:dune_beach
+#010 minecraft:forest
+#4F1 minecraft:ocean
+#482 biomesoplenty:overgrown_greens
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#698 biomesoplenty:redwood_forest
+#5FF minecraft:river
+#51A minecraft:stony_shore
