@@ -882,32 +882,23 @@ LootJS.modifiers(event => {
   ]
 
   // Apply food reduction in Overworld chest loot.
-  // Each food type is limited to at most 1 instance per chest (first one kept,
-  // rest removed). Then that single instance has a 50% chance of being removed too.
-  const reducedFoodSet = new Set(reducedFoods)
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
-    .group(loot => {
-      let seenFoods = new Set()
-      loot.forEach(itemStack => {
-        let id = itemStack.getId()
-        if (reducedFoodSet.has(id)) {
-          if (seenFoods.has(id)) {
-            // Already saw this food — remove duplicate
-            itemStack.setCount(0)
-          } else {
-            seenFoods.add(id)
-            // First instance: 50% chance to keep, cap to 1
-            if (Math.random() < 0.5) {
-              itemStack.setCount(0)
-            } else {
-              itemStack.setCount(1)
-            }
-          }
+  // Uses modifyLoot per food type — this intercepts items AFTER the base
+  // loot table generates them. Each food item has a 75% chance of being
+  // removed entirely, and surviving items are capped to stack size 1.
+  // With 17 food types, a chest with 5 food slots averages ~1-2 food items.
+  reducedFoods.forEach(food => {
+    event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:overworld')
+      .modifyLoot(Ingredient.of(food), itemStack => {
+        if (Math.random() < 0.75) {
+          itemStack.setCount(0)
+          return itemStack
         }
+        itemStack.setCount(1)
+        return itemStack
       })
-    })
+  })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
   // Pam's HarvestCraft and Farmer's Delight foods should be player-crafted.
