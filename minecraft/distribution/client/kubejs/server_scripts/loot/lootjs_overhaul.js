@@ -881,15 +881,21 @@ LootJS.modifiers(event => {
     'minecraft:cake'
   ]
 
-  // Apply 90% reduction to non-meat food in ALL chest loot (Overworld only).
-  // Single modifier that removes all listed foods, then re-adds each at 10% chance.
-  let foodModifier = event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
-
+  // Apply 95% removal to non-meat food in ALL chest loot (Overworld only).
+  // Uses modifyLoot to intercept items after generation and either remove them
+  // (95% chance) or cap their stack to 1 (5% chance).
   reducedFoods.forEach(food => {
-    foodModifier.removeLoot(food)
-    foodModifier.addLoot(LootEntry.of(food).limitCount([1, 1]).when(c => c.randomChance(0.05)))
+    event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:overworld')
+      .modifyLoot(food, itemStack => {
+        if (Math.random() < 0.95) {
+          itemStack.setCount(0)
+        } else {
+          itemStack.setCount(1)
+        }
+        return itemStack
+      })
   })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
