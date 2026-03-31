@@ -1,0 +1,14 @@
+#460 minecraft:cherry_grove
+#4CA minecraft:dripstone_caves
+#010 minecraft:forest
+#286 minecraft:grove
+#65C biomesoplenty:lavender_field
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#5FF minecraft:river
+#67B minecraft:savanna
+#706 minecraft:savanna_plateau
+#274 biomesoplenty:scrubland
+#14C biomesoplenty:spider_nest
+#7CC biomesoplenty:volcano
+#7F2 biomesoplenty:woodland

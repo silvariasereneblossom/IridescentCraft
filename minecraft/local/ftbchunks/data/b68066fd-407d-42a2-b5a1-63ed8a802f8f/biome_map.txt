@@ -1,0 +1,5 @@
+#646 biomesoplenty:dune_beach
+#4F1 minecraft:ocean
+#5F0 biomesoplenty:pasture
+#4FE biomesoplenty:prairie
+#51A minecraft:stony_shore

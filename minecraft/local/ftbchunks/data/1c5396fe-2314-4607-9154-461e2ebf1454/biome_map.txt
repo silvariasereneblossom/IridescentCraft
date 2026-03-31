@@ -1,0 +1,7 @@
+#47F minecraft:birch_forest
+#4F9 minecraft:dark_forest
+#010 minecraft:forest
+#467 biomesoplenty:highland
+#2D6 minecraft:meadow
+#482 biomesoplenty:overgrown_greens
+#698 biomesoplenty:redwood_forest

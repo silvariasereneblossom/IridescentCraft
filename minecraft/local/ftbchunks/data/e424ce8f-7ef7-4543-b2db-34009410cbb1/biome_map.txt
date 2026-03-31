@@ -1,0 +1,4 @@
+#4DF biomesoplenty:aspen_glade
+#65C biomesoplenty:lavender_field
+#5A5 biomesoplenty:orchard
+#108 biomesoplenty:seasonal_forest

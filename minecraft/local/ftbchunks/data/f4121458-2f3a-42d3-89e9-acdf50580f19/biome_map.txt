@@ -1,0 +1,4 @@
+#47F minecraft:birch_forest
+#286 minecraft:grove
+#056 biomesoplenty:maple_woods
+#169 minecraft:taiga

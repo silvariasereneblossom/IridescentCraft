@@ -1,293 +1,152 @@
-[03:43:55] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[03:43:55] [INIT] Loaded plugins:
-[03:43:55] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[03:43:55] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[03:43:55] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[03:43:55] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[03:43:55] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[03:43:55] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
-[03:43:55] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[03:43:55] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[03:43:55] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[03:43:55] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[03:43:55] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[03:43:55] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[03:43:55] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[03:43:55] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[03:43:55] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[03:43:55] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[03:43:55] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[03:43:55] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[03:43:56] [INFO] abyss/abyss_armor_effects.js#231: [IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active
-[03:43:56] [INFO] Loaded script server_scripts:abyss/abyss_armor_effects.js in 0.002 s
-[03:43:56] [INFO] abyss/abyss_ring_effects.js#187: [IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active
-[03:43:56] [INFO] Loaded script server_scripts:abyss/abyss_ring_effects.js in 0.001 s
-[03:43:56] [INFO] affixes/affix_effects.js#1029: [IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects
-[03:43:56] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.003 s
-[03:43:56] [INFO] Loaded script server_scripts:champions/custom_champion_affixes.js in 0.002 s
-[03:43:56] [INFO] class/equipment_hp_halving.js#155: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
-[03:43:56] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:codex_delivery.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:death_penalty.js in 0.0 s
-[03:43:56] [INFO] enchantments/enchant_effects.js#571: [IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects
-[03:43:56] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.001 s
-[03:43:56] [INFO] end/dragon_exploration_gate.js#368: [IridescentCraft] Dragon exploration gate loaded
-[03:43:56] [INFO] end/dragon_exploration_gate.js#369:   - Dragon blocked until End exploration complete
-[03:43:56] [INFO] end/dragon_exploration_gate.js#370:   - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen
-[03:43:56] [INFO] end/dragon_exploration_gate.js#371:   - Dragon Summoning Crystal required to start fight
-[03:43:56] [INFO] Loaded script server_scripts:end/dragon_exploration_gate.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:endgame/ascension.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:endgame/mythic_forge.js in 0.0 s
-[03:43:56] [INFO] endgame/rift_mechanics.js#284: [IridescentCraft] Rift mechanics loaded
-[03:43:56] [INFO] endgame/rift_mechanics.js#285:   - Rift tracking data initialization
-[03:43:56] [INFO] endgame/rift_mechanics.js#286:   - Rift Shard/Catalyst Compendium milestones
-[03:43:56] [INFO] endgame/rift_mechanics.js#287:   - Mythic unique item server announcements
-[03:43:56] [INFO] Loaded script server_scripts:endgame/rift_mechanics.js in 0.001 s
-[03:43:56] [INFO] example.js#5: Hello, World! (Loaded server scripts)
-[03:43:56] [INFO] Loaded script server_scripts:example.js in 0.0 s
-[03:43:56] [INFO] food/hunger_management.js#97: [IridescentCraft] AFK hunger management loaded
-[03:43:56] [INFO] food/hunger_management.js#98:   - AFK threshold: 20 minutes (24000 ticks)
-[03:43:56] [INFO] food/hunger_management.js#99:   - Sleep protection: Saturation I while sleeping
-[03:43:56] [INFO] Loaded script server_scripts:food/hunger_management.js in 0.0 s
-[03:43:56] [INFO] gates/astages_restrictions.js#30: Loaded Java class 'net.minecraft.resources.ResourceLocation'
-[03:43:56] [INFO] Loaded script server_scripts:gates/astages_restrictions.js in 0.001 s
-[03:43:56] [INFO] gates/milestone_detection.js#403: [IridescentCraft] Milestone detection loaded
-[03:43:56] [INFO] gates/milestone_detection.js#404:   Tier 2: Boss kill / Thermal Frame / All T2 dims visited
-[03:43:56] [INFO] gates/milestone_detection.js#405:   Tier 3: Boss kill / Mekanism Casing / All T3 dims visited
-[03:43:56] [INFO] gates/milestone_detection.js#406:   Tier 4: Dragon/Gaia kill / Ultimate Circuit
-[03:43:56] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.0 s
-[03:43:56] [INFO] items/compass_of_return.js#107: [IridescentCraft] Compass of Return loaded
-[03:43:56] [INFO] items/compass_of_return.js#108:   - Right-click to teleport to last bed
-[03:43:56] [INFO] items/compass_of_return.js#109:   - 10 minute cooldown
-[03:43:56] [INFO] items/compass_of_return.js#110:   - Bed position tracked on right-click interaction
-[03:43:56] [INFO] Loaded script server_scripts:items/compass_of_return.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:loot/abyss_boss_loot.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:loot/crop_seed_reduction.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.002 s
-[03:43:56] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:loot/planetary_loot.js in 0.0 s
-[03:43:56] [INFO] origins/artificial_construct_progression.js#168: [IridescentCraft] Artificial Construct progression loaded
-[03:43:56] [INFO] origins/artificial_construct_progression.js#169:   - 25% food efficiency from normal food
-[03:43:56] [INFO] origins/artificial_construct_progression.js#170:   - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)
-[03:43:56] [INFO] origins/artificial_construct_progression.js#171:   - Iron eating grants Regen III for 10s (400% healing acceleration)
-[03:43:56] [INFO] origins/artificial_construct_progression.js#172:   - Iron upgrade ladder: 1000/2000/4000/8000/16000
-[03:43:56] [INFO] origins/artificial_construct_progression.js#173:   - +5/5/5/10/10% HP/melee/reduction/toughness per level (max +35%)
-[03:43:56] [INFO] Loaded script server_scripts:origins/artificial_construct_progression.js in 0.001 s
-[03:43:56] [INFO] origins/battlemage_mana_shield.js#73: [IridescentCraft] Battlemage Mana Shield loaded
-[03:43:56] [INFO] origins/battlemage_mana_shield.js#74:   - Resistance I base (20% damage reduction)
-[03:43:56] [INFO] origins/battlemage_mana_shield.js#75:   - Resistance II with high magic bonus (36% reduction)
-[03:43:56] [INFO] origins/battlemage_mana_shield.js#76:   - Resistance III cap with very high magic bonus (48% reduction)
-[03:43:56] [INFO] Loaded script server_scripts:origins/battlemage_mana_shield.js in 0.0 s
-[03:43:56] [INFO] origins/class_passives.js#291: [IridescentCraft] Class passives loaded
-[03:43:56] [INFO] origins/class_passives.js#292:   - Samurai: Focus (movement shield + Vorpal by tier)
-[03:43:56] [INFO] origins/class_passives.js#293:   - Wanderer: Seasoned Traveler (dimension stacking)
-[03:43:56] [INFO] origins/class_passives.js#294:   - Paladin: Healing Aura (AoE regen)
-[03:43:56] [INFO] origins/class_passives.js#295:   - Vanguard: Guardian's Presence (Weakness to nearby entities)
-[03:43:56] [INFO] origins/class_passives.js#296:   - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)
-[03:43:56] [INFO] Loaded script server_scripts:origins/class_passives.js in 0.0 s
-[03:43:56] [INFO] origins/origin_effects.js#238: [IridescentCraft] Origins custom effects loaded
-[03:43:56] [INFO] origins/origin_effects.js#239:   - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)
-[03:43:56] [INFO] origins/origin_effects.js#240:   - Merling: Land discomfort after 5 min dry
-[03:43:56] [INFO] origins/origin_effects.js#241:   - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)
-[03:43:56] [INFO] origins/origin_effects.js#242:   - Enderian: Ender Shift (+15% damage for 10s after teleport)
-[03:43:56] [INFO] origins/origin_effects.js#243:   - Shulk: Hardened Shell (reduced death durability loss)
-[03:43:56] [INFO] origins/origin_effects.js#244:   - Dwarf: Miner's Appetite (Saturation on block break)
-[03:43:56] [INFO] origins/origin_effects.js#245:   - Revenant: Shadow Strike (Resistance I in darkness/Abyss)
-[03:43:56] [INFO] Loaded script server_scripts:origins/origin_effects.js in 0.001 s
-[03:43:56] [INFO] origins/phantom_undeath.js#98: [IridescentCraft] Phantom Undeath loaded
-[03:43:56] [INFO] origins/phantom_undeath.js#99:   - Phantoms cannot die — health locks to 0.5 hearts
-[03:43:56] [INFO] origins/phantom_undeath.js#100:   - Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 min
-[03:43:56] [INFO] origins/phantom_undeath.js#101:   - Resistance II during collapse to prevent instant re-collapse
-[03:43:56] [INFO] Loaded script server_scripts:origins/phantom_undeath.js in 0.0 s
-[03:43:56] [INFO] origins/witch_of_ink_progression.js#184: [IridescentCraft] Witch of Ink progression loaded
-[03:43:56] [INFO] origins/witch_of_ink_progression.js#185:   - Boss kill counter (Apotheosis +1, dimensional +10)
-[03:43:56] [INFO] origins/witch_of_ink_progression.js#186:   - Scaling boons: damage, reduction, toughness (max 20% each)
-[03:43:56] [INFO] origins/witch_of_ink_progression.js#187:   - Blessing of Penthesilea at 200 counters
-[03:43:56] [INFO] Loaded script server_scripts:origins/witch_of_ink_progression.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/ad_astra_gating.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/cooking_conversion.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/if_latex_rework.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/planetary_extraction.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/recipe_audit.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/tier_skip.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:recipes/waystone_recipes.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.001 s
-[03:43:56] [INFO] Loaded script server_scripts:scaling/dimension_scaling.js in 0.0 s
-[03:43:56] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.0 s
-[03:43:56] [INFO] skills/skill_effects.js#748: [IridescentCraft] skill_effects.js Phase 3 loaded — 22 active effects (0 placeholders)
-[03:43:56] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.001 s
-[03:43:56] [INFO] spawn_protection.js#66: [IridescentCraft] Spawn village protection loaded
-[03:43:56] [INFO] spawn_protection.js#67:   - Protection radius: 64 blocks from world spawn
-[03:43:56] [INFO] spawn_protection.js#68:   - Block breaking: CANCELLED in zone (survival only)
-[03:43:56] [INFO] spawn_protection.js#69:   - Block placing: CANCELLED in zone (survival only)
-[03:43:56] [INFO] spawn_protection.js#70:   - Block interaction: ALLOWED (chests, crafting tables, etc.)
-[03:43:56] [INFO] Loaded script server_scripts:spawn_protection.js in 0.001 s
-[03:43:56] [INFO] tags/transmuted_tags.js#35: [IridescentCraft] Transmuted material tags registered
-[03:43:56] [INFO] Loaded script server_scripts:tags/transmuted_tags.js in 0.0 s
-[03:43:56] [INFO] Loaded 46/46 KubeJS server scripts in 0.034 s with 0 errors and 0 warnings
-[03:43:56] [INFO] Scripts loaded
-[03:43:56] [INFO] Initializing recipe event...
-[03:43:56] [WARN] Due to the way Minecraft resource loading works, KubeJS' server.log may not contain everything that happened in your server scripts on initial world creation.
-[03:43:56] [WARN] You can still see the full log (including past reloads) in your latest.log file.
-[03:45:20] [INFO] Server resource reload complete!
-[03:45:20] [INFO] death_penalty.js#278: [IridescentCraft] keepInventory enabled — death penalty handles consequences
-[03:45:20] [INFO] gates/astages_restrictions.js#323: [IridescentCraft] AStages native restrictions registered
-[03:45:20] [INFO] gates/astages_restrictions.js#324:   Tier 2: 6 mods + 16 items + 4 dimensions
-[03:45:20] [INFO] gates/astages_restrictions.js#325:   Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions
-[03:45:20] [INFO] gates/astages_restrictions.js#326:   Tier 4: 5 mods + 79 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets)
-[03:45:20] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
-[03:45:32] [INFO] codex_delivery.js#18: [IridescentCraft] loggedIn fired for silvieserene, sweep armed
-[03:45:32] [INFO] gates/milestone_detection.js#329: [IridescentCraft] Granted tier_1 to new player: silvieserene
-[03:47:51] [INFO] codex_delivery.js#74: [IridescentCraft] Cleared patchouli book: terramity:terramity_guidebook (1 items)
-[03:47:51] [INFO] codex_delivery.js#74: [IridescentCraft] Cleared patchouli book: simplyswords:runic_grimoire (1 items)
-[03:47:51] [INFO] codex_delivery.js#74: [IridescentCraft] Cleared patchouli book: footwork:combat_manual (1 items)
-[03:47:55] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:47:57] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:47:58] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:47:59] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:48:00] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:48:01] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:48:02] [ERROR] ! Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
-[03:48:02] [ERROR] ! java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
-[03:48:02] [ERROR] !   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
-[03:48:02] [ERROR] !   at java.lang.reflect.Method.invoke(Method.java:568)
-[03:48:02] [ERROR] !   at …rhino.MemberBox.invoke(MemberBox.java:160)
-[03:48:02] [ERROR] !   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
-[03:48:02] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
-[03:48:02] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
-[03:48:02] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
-[03:48:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[03:48:02] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
-[03:48:02] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
-[03:48:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[03:48:02] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
-[03:48:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[03:48:02] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
-[03:48:02] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
-[03:48:02] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
-[03:48:02] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
-[03:48:02] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
-[03:48:02] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
-[03:48:02] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
-[03:48:02] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
-[03:48:02] [ERROR] !   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
-[03:48:02] [ERROR] !   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
-[03:48:02] [ERROR] !   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
-[03:48:02] [ERROR] !   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
-[03:48:02] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
-[03:48:02] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
-[03:48:02] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
-[03:48:02] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
-[03:48:02] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
-[03:48:02] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
-[03:48:02] [ERROR] !   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
-[03:48:02] [ERROR] !   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
-[03:48:02] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
-[03:48:02] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
-[03:48:02] [ERROR] !   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
-[03:48:02] [ERROR] !   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
-[03:48:02] [ERROR] !   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
-[03:48:02] [ERROR] !   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
-[03:48:02] [ERROR] !   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
-[03:48:02] [ERROR] !   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
-[03:48:02] [ERROR] !   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
-[03:48:02] [ERROR] !   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
-[03:48:02] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
-[03:48:02] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
-[03:48:02] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
-[03:48:02] [ERROR] !   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
-[03:48:02] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
-[03:48:02] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
-[03:48:02] [ERROR] !   at java.lang.Thread.run(Thread.java:833)
-[03:48:03] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:48:04] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:48:04] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
-[03:49:47] [ERROR] ! affixes/affix_effects.js#579: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:39] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:40] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:41] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:42] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:42] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:43] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:43] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:44] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:45] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:50:45] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:08] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:16] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:26] [ERROR] ! Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
-[03:51:26] [ERROR] ! java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
-[03:51:26] [ERROR] !   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
-[03:51:26] [ERROR] !   at java.lang.reflect.Method.invoke(Method.java:568)
-[03:51:26] [ERROR] !   at …rhino.MemberBox.invoke(MemberBox.java:160)
-[03:51:26] [ERROR] !   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
-[03:51:26] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
-[03:51:26] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
-[03:51:26] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
-[03:51:26] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[03:51:26] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
-[03:51:26] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
-[03:51:26] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[03:51:26] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
-[03:51:26] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[03:51:26] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
-[03:51:26] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
-[03:51:26] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy201.onEvent(Unknown Source)
-[03:51:26] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
-[03:51:26] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
-[03:51:26] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
-[03:51:26] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
-[03:51:26] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
-[03:51:26] [ERROR] !   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
-[03:51:26] [ERROR] !   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
-[03:51:26] [ERROR] !   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
-[03:51:26] [ERROR] !   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
-[03:51:26] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy301.add(Unknown Source)
-[03:51:26] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
-[03:51:26] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
-[03:51:26] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
-[03:51:26] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
-[03:51:26] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
-[03:51:26] [ERROR] !   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
-[03:51:26] [ERROR] !   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
-[03:51:26] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
-[03:51:26] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
-[03:51:26] [ERROR] !   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
-[03:51:26] [ERROR] !   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
-[03:51:26] [ERROR] !   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
-[03:51:26] [ERROR] !   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
-[03:51:26] [ERROR] !   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
-[03:51:26] [ERROR] !   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
-[03:51:26] [ERROR] !   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
-[03:51:26] [ERROR] !   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
-[03:51:26] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
-[03:51:26] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
-[03:51:26] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
-[03:51:26] [ERROR] !   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
-[03:51:26] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
-[03:51:26] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
-[03:51:26] [ERROR] !   at java.lang.Thread.run(Thread.java:833)
-[03:51:32] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:34] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:36] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:44] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:46] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:47] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:48] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:50] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:51] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:53] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:54] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:55] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:57] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:51:58] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:52:00] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:52:04] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:52:05] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:52:08] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
-[03:52:21] [ERROR] ! skills/skill_effects.js#121: Error in 'EntityEvents.hurt': TypeError: Cannot find function includes in object Function.
+[21:57:55] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[21:57:55] [INIT] Loaded plugins:
+[21:57:55] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[21:57:55] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[21:57:55] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[21:57:55] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[21:57:55] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[21:57:55] [INIT] - top.theillusivec4.champions.common.integration.kubejs.ChampionsKubeJSPlugin
+[21:57:55] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[21:57:55] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[21:57:55] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[21:57:55] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[21:57:55] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[21:57:55] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[21:57:55] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[21:57:55] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[21:57:55] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[21:57:55] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[21:57:55] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[21:57:55] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[21:57:56] [INFO] abyss/abyss_armor_effects.js#231: [IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active
+[21:57:56] [INFO] Loaded script server_scripts:abyss/abyss_armor_effects.js in 0.002 s
+[21:57:56] [INFO] abyss/abyss_ring_effects.js#187: [IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active
+[21:57:56] [INFO] Loaded script server_scripts:abyss/abyss_ring_effects.js in 0.0 s
+[21:57:56] [INFO] affixes/affix_effects.js#1029: [IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects
+[21:57:56] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.002 s
+[21:57:56] [INFO] Loaded script server_scripts:champions/custom_champion_affixes.js in 0.001 s
+[21:57:56] [INFO] class/equipment_hp_halving.js#155: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
+[21:57:56] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:codex_delivery.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:death_penalty.js in 0.0 s
+[21:57:56] [INFO] enchantments/enchant_effects.js#571: [IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects
+[21:57:56] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.002 s
+[21:57:56] [INFO] end/dragon_exploration_gate.js#368: [IridescentCraft] Dragon exploration gate loaded
+[21:57:56] [INFO] end/dragon_exploration_gate.js#369:   - Dragon blocked until End exploration complete
+[21:57:56] [INFO] end/dragon_exploration_gate.js#370:   - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen
+[21:57:56] [INFO] end/dragon_exploration_gate.js#371:   - Dragon Summoning Crystal required to start fight
+[21:57:56] [INFO] Loaded script server_scripts:end/dragon_exploration_gate.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:endgame/ascension.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:endgame/mythic_forge.js in 0.0 s
+[21:57:56] [INFO] endgame/rift_mechanics.js#281: [IridescentCraft] Rift mechanics loaded
+[21:57:56] [INFO] endgame/rift_mechanics.js#282:   - Rift tracking data initialization
+[21:57:56] [INFO] endgame/rift_mechanics.js#283:   - Rift Shard/Catalyst Compendium milestones
+[21:57:56] [INFO] endgame/rift_mechanics.js#284:   - Mythic unique item server announcements
+[21:57:56] [INFO] Loaded script server_scripts:endgame/rift_mechanics.js in 0.001 s
+[21:57:56] [INFO] example.js#5: Hello, World! (Loaded server scripts)
+[21:57:56] [INFO] Loaded script server_scripts:example.js in 0.0 s
+[21:57:56] [INFO] food/hunger_management.js#97: [IridescentCraft] AFK hunger management loaded
+[21:57:56] [INFO] food/hunger_management.js#98:   - AFK threshold: 20 minutes (24000 ticks)
+[21:57:56] [INFO] food/hunger_management.js#99:   - Sleep protection: Saturation I while sleeping
+[21:57:56] [INFO] Loaded script server_scripts:food/hunger_management.js in 0.0 s
+[21:57:56] [INFO] gates/astages_restrictions.js#30: Loaded Java class 'net.minecraft.resources.ResourceLocation'
+[21:57:56] [INFO] Loaded script server_scripts:gates/astages_restrictions.js in 0.001 s
+[21:57:56] [INFO] gates/milestone_detection.js#403: [IridescentCraft] Milestone detection loaded
+[21:57:56] [INFO] gates/milestone_detection.js#404:   Tier 2: Boss kill / Thermal Frame / All T2 dims visited
+[21:57:56] [INFO] gates/milestone_detection.js#405:   Tier 3: Boss kill / Mekanism Casing / All T3 dims visited
+[21:57:56] [INFO] gates/milestone_detection.js#406:   Tier 4: Dragon/Gaia kill / Ultimate Circuit
+[21:57:56] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.001 s
+[21:57:56] [INFO] items/compass_of_return.js#107: [IridescentCraft] Compass of Return loaded
+[21:57:56] [INFO] items/compass_of_return.js#108:   - Right-click to teleport to last bed
+[21:57:56] [INFO] items/compass_of_return.js#109:   - 10 minute cooldown
+[21:57:56] [INFO] items/compass_of_return.js#110:   - Bed position tracked on right-click interaction
+[21:57:56] [INFO] Loaded script server_scripts:items/compass_of_return.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:loot/abyss_boss_loot.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:loot/crop_seed_reduction.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:loot/planetary_loot.js in 0.0 s
+[21:57:56] [INFO] origins/artificial_construct_progression.js#168: [IridescentCraft] Artificial Construct progression loaded
+[21:57:56] [INFO] origins/artificial_construct_progression.js#169:   - 25% food efficiency from normal food
+[21:57:56] [INFO] origins/artificial_construct_progression.js#170:   - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)
+[21:57:56] [INFO] origins/artificial_construct_progression.js#171:   - Iron eating grants Regen III for 10s (400% healing acceleration)
+[21:57:56] [INFO] origins/artificial_construct_progression.js#172:   - Iron upgrade ladder: 1000/2000/4000/8000/16000
+[21:57:56] [INFO] origins/artificial_construct_progression.js#173:   - +5/5/5/10/10% HP/melee/reduction/toughness per level (max +35%)
+[21:57:56] [INFO] Loaded script server_scripts:origins/artificial_construct_progression.js in 0.0 s
+[21:57:56] [INFO] origins/battlemage_mana_shield.js#73: [IridescentCraft] Battlemage Mana Shield loaded
+[21:57:56] [INFO] origins/battlemage_mana_shield.js#74:   - Resistance I base (20% damage reduction)
+[21:57:56] [INFO] origins/battlemage_mana_shield.js#75:   - Resistance II with high magic bonus (36% reduction)
+[21:57:56] [INFO] origins/battlemage_mana_shield.js#76:   - Resistance III cap with very high magic bonus (48% reduction)
+[21:57:56] [INFO] Loaded script server_scripts:origins/battlemage_mana_shield.js in 0.0 s
+[21:57:56] [INFO] origins/class_passives.js#319: [IridescentCraft] Class passives loaded
+[21:57:56] [INFO] origins/class_passives.js#320:   - Samurai: Focus (movement shield + Vorpal by tier)
+[21:57:56] [INFO] origins/class_passives.js#321:   - Wanderer: Seasoned Traveler (dimension stacking)
+[21:57:56] [INFO] origins/class_passives.js#322:   - Paladin: Healing Aura (AoE regen)
+[21:57:56] [INFO] origins/class_passives.js#323:   - Vanguard: Guardian's Presence (Weakness to nearby entities)
+[21:57:56] [INFO] origins/class_passives.js#324:   - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)
+[21:57:56] [INFO] Loaded script server_scripts:origins/class_passives.js in 0.001 s
+[21:57:56] [INFO] origins/origin_effects.js#238: [IridescentCraft] Origins custom effects loaded
+[21:57:56] [INFO] origins/origin_effects.js#239:   - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)
+[21:57:56] [INFO] origins/origin_effects.js#240:   - Merling: Land discomfort after 5 min dry
+[21:57:56] [INFO] origins/origin_effects.js#241:   - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)
+[21:57:56] [INFO] origins/origin_effects.js#242:   - Enderian: Ender Shift (+15% damage for 10s after teleport)
+[21:57:56] [INFO] origins/origin_effects.js#243:   - Shulk: Hardened Shell (reduced death durability loss)
+[21:57:56] [INFO] origins/origin_effects.js#244:   - Dwarf: Miner's Appetite (Saturation on block break)
+[21:57:56] [INFO] origins/origin_effects.js#245:   - Revenant: Shadow Strike (Resistance I in darkness/Abyss)
+[21:57:56] [INFO] Loaded script server_scripts:origins/origin_effects.js in 0.0 s
+[21:57:56] [INFO] origins/phantom_undeath.js#98: [IridescentCraft] Phantom Undeath loaded
+[21:57:56] [INFO] origins/phantom_undeath.js#99:   - Phantoms cannot die — health locks to 0.5 hearts
+[21:57:56] [INFO] origins/phantom_undeath.js#100:   - Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 min
+[21:57:56] [INFO] origins/phantom_undeath.js#101:   - Resistance II during collapse to prevent instant re-collapse
+[21:57:56] [INFO] Loaded script server_scripts:origins/phantom_undeath.js in 0.001 s
+[21:57:56] [INFO] origins/witch_of_ink_progression.js#184: [IridescentCraft] Witch of Ink progression loaded
+[21:57:56] [INFO] origins/witch_of_ink_progression.js#185:   - Boss kill counter (Apotheosis +1, dimensional +10)
+[21:57:56] [INFO] origins/witch_of_ink_progression.js#186:   - Scaling boons: damage, reduction, toughness (max 20% each)
+[21:57:56] [INFO] origins/witch_of_ink_progression.js#187:   - Blessing of Penthesilea at 200 counters
+[21:57:56] [INFO] Loaded script server_scripts:origins/witch_of_ink_progression.js in 0.0 s
+[21:57:56] [INFO] origins/witherborn_slimebodied.js#157: [IridescentCraft] Witherborn & Slimebodied origins loaded
+[21:57:56] [INFO] origins/witherborn_slimebodied.js#158:   Witherborn: Wither on hit, hunger damage penalty
+[21:57:56] [INFO] origins/witherborn_slimebodied.js#159:   Slimebodied: satiety DR, food cooldown, satiety floor
+[21:57:56] [INFO] Loaded script server_scripts:origins/witherborn_slimebodied.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/ad_astra_gating.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/cooking_conversion.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/if_latex_rework.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/planetary_extraction.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/recipe_audit.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/tier_skip.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:recipes/waystone_recipes.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.001 s
+[21:57:56] [INFO] Loaded script server_scripts:scaling/dimension_scaling.js in 0.0 s
+[21:57:56] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.0 s
+[21:57:56] [INFO] skills/skill_effects.js#748: [IridescentCraft] skill_effects.js Phase 3 loaded — 22 active effects (0 placeholders)
+[21:57:56] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.001 s
+[21:57:56] [INFO] spawn_protection.js#66: [IridescentCraft] Spawn village protection loaded
+[21:57:56] [INFO] spawn_protection.js#67:   - Protection radius: 64 blocks from world spawn
+[21:57:56] [INFO] spawn_protection.js#68:   - Block breaking: CANCELLED in zone (survival only)
+[21:57:56] [INFO] spawn_protection.js#69:   - Block placing: CANCELLED in zone (survival only)
+[21:57:56] [INFO] spawn_protection.js#70:   - Block interaction: ALLOWED (chests, crafting tables, etc.)
+[21:57:56] [INFO] Loaded script server_scripts:spawn_protection.js in 0.0 s
+[21:57:56] [INFO] tags/transmuted_tags.js#35: [IridescentCraft] Transmuted material tags registered
+[21:57:56] [INFO] Loaded script server_scripts:tags/transmuted_tags.js in 0.0 s
+[21:57:56] [INFO] Loaded 47/47 KubeJS server scripts in 0.032 s with 0 errors and 0 warnings
+[21:57:56] [INFO] Scripts loaded
+[21:57:56] [INFO] Initializing recipe event...
+[21:57:56] [WARN] Due to the way Minecraft resource loading works, KubeJS' server.log may not contain everything that happened in your server scripts on initial world creation.
+[21:57:56] [WARN] You can still see the full log (including past reloads) in your latest.log file.
+[21:59:16] [INFO] Server resource reload complete!
+[21:59:16] [INFO] death_penalty.js#278: [IridescentCraft] keepInventory enabled — death penalty handles consequences
+[21:59:16] [INFO] gates/astages_restrictions.js#323: [IridescentCraft] AStages native restrictions registered
+[21:59:16] [INFO] gates/astages_restrictions.js#324:   Tier 2: 6 mods + 16 items + 4 dimensions
+[21:59:16] [INFO] gates/astages_restrictions.js#325:   Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions
+[21:59:16] [INFO] gates/astages_restrictions.js#326:   Tier 4: 5 mods + 79 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets)
+[21:59:16] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
+[21:59:29] [INFO] codex_delivery.js#18: [IridescentCraft] loggedIn fired for silvieserene, sweep armed
+[21:59:29] [INFO] gates/milestone_detection.js#329: [IridescentCraft] Granted tier_1 to new player: silvieserene
+[22:00:08] [INFO] codex_delivery.js#74: [IridescentCraft] Cleared patchouli book: terramity:terramity_guidebook (1 items)
+[22:00:08] [INFO] codex_delivery.js#74: [IridescentCraft] Cleared patchouli book: simplyswords:runic_grimoire (1 items)
+[22:00:08] [INFO] codex_delivery.js#74: [IridescentCraft] Cleared patchouli book: footwork:combat_manual (1 items)
