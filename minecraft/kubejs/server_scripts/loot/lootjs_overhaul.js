@@ -881,22 +881,33 @@ LootJS.modifiers(event => {
     'minecraft:cake'
   ]
 
-  // Apply 95% removal to non-meat food in ALL chest loot (Overworld only).
-  // Uses modifyLoot to intercept items after generation and either remove them
-  // (95% chance) or cap their stack to 1 (5% chance).
-  reducedFoods.forEach(food => {
-    event
-      .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:overworld')
-      .modifyLoot(food, itemStack => {
-        if (Math.random() < 0.95) {
-          itemStack.setCount(0)
-        } else {
-          itemStack.setCount(1)
+  // Apply food reduction in Overworld chest loot.
+  // Each food type is limited to at most 1 instance per chest (first one kept,
+  // rest removed). Then that single instance has a 50% chance of being removed too.
+  const reducedFoodSet = new Set(reducedFoods)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .group(loot => {
+      let seenFoods = new Set()
+      loot.forEach(itemStack => {
+        let id = itemStack.getId()
+        if (reducedFoodSet.has(id)) {
+          if (seenFoods.has(id)) {
+            // Already saw this food — remove duplicate
+            itemStack.setCount(0)
+          } else {
+            seenFoods.add(id)
+            // First instance: 50% chance to keep, cap to 1
+            if (Math.random() < 0.5) {
+              itemStack.setCount(0)
+            } else {
+              itemStack.setCount(1)
+            }
+          }
         }
-        return itemStack
       })
-  })
+    })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
   // Pam's HarvestCraft and Farmer's Delight foods should be player-crafted.
