@@ -182,7 +182,15 @@
         "icraft:progression/tier_overview",
         "icraft:welcome/class_guide",
         "icraft:systems/enchantments",
-        "icraft:mods_t1/botania"
+        "icraft:mods_t1/botania",
+        "icraft:classes/class_archmage",
+        "icraft:classes/race_overview",
+        "icraft:classes/race_faefolk",
+        "icraft:classes/race_ryu",
+        "icraft:classes/race_fallen_angel",
+        "icraft:classes/race_kirin",
+        "icraft:systems/champions",
+        "icraft:welcome/origins_guide"
       ],
       "bookmarks": [],
       "completedManualQuests": []

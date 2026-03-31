@@ -1,0 +1,7 @@
+#735 biomesoplenty:coniferous_forest
+#6D4 biomesoplenty:field
+#467 biomesoplenty:highland
+#482 biomesoplenty:overgrown_greens
+#698 biomesoplenty:redwood_forest
+#5FF minecraft:river
+#2CF biomesoplenty:shrubland

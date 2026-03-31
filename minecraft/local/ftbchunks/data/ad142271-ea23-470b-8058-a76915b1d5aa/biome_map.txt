@@ -1,0 +1,6 @@
+#3FF ars_nouveau:archwood_forest
+#460 minecraft:cherry_grove
+#35F biomesoplenty:jacaranda_glade
+#5A5 biomesoplenty:orchard
+#3DC minecraft:plains
+#706 minecraft:savanna_plateau

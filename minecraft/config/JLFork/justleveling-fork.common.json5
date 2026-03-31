@@ -204,102 +204,108 @@
 		29,
 		32
 	],
-	// =================================================================
-	// SKILL PARAMETERS
-	// =================================================================
-	// Many skills are replaced by KubeJS implementations (mastery_tax.js
-	// and justleveling_skills.js). Disabled skills have requiredLevel: 999.
-	// See wiki for the full IridescentCraft skill design.
-	// =================================================================
-
-	// --- STR: One Handed (KEEP) — +50% one-handed damage ---
+	// One Handed skill damage amplifier increase
 	oneHandedAmplifier: 0.5,
-	// --- STR: Fighting Spirit → Hemorrhage (DISABLED, KubeJS reimpl) ---
+	// Fighting Spirit skill strength potion effect boost
 	fightingSpiritBoost: 0,
+	// Fighting Spirit skill strength potion effect duration
 	fightingSpiritDuration: 0,
-	// --- STR: Berserker → True Strength (DISABLED, KubeJS reimpl) ---
+	// Berserker skill health percent
 	berserkerPercent: 0,
-
-	// --- CON: Athletics → Hearty Meals (DISABLED, KubeJS reimpl) ---
-	athleticsModifier: 0,
-	// --- DEF: Lion Heart (DISABLED, KubeJS reimpl — DR scales w/ missing HP) ---
+	// Athletics skill air modifier multiply
+	athleticsModifier: 0.0,
+	// Lion Heart skill negative potion effect percent
 	lionHeartPercent: 0,
-
-	// --- DEX: Quick Reposition → Fleet of Foot (DISABLED, KubeJS reimpl) ---
+	// Quick Reposition skill speed potion effect boost
 	quickRepositionBoost: 0,
+	// Quick Reposition skill speed potion effect duration
 	quickRepositionDuration: 0,
-	// --- DEX: Stealth Mastery → Rapid Fire (DISABLED, KubeJS reimpl) ---
+	// Stealth Mastery skill enemy vision percent
 	stealthMasteryUnSneakPercent: 0,
+	// Stealth Mastery skill enemy vision percent when player is sneaking
 	stealthMasterySneakPercent: 0,
-	stealthMasteryModifier: 0,
-
-	// --- DEF: Counter Attack → Turtle Shield (DISABLED, KubeJS reimpl) ---
+	// Stealth Mastery skill arrow damage modifier multiply
+	stealthMasteryModifier: 0.0,
+	// Counter Attack skill duration to return the attack
 	counterAttackDuration: 0,
+	// Counter Attack skill damage returned percent
 	counterAttackPercent: 0,
-	// --- DEF: Diamond Skin → Lion Heart (DISABLED, KubeJS reimpl) ---
+	// Diamond Skin defence potion effect boost
 	diamondSkinBoost: 0,
-	diamondSkinSneakAmplifier: 0,
-
-	// --- INT: Haggler (KEEP) — 20% cheaper villager trades ---
+	// Diamond skill defense amplifier increase when player is sneaking
+	diamondSkinSneakAmplifier: 0.0,
+	// Haggler skill villager trades cost percent reduced
 	hagglerPercent: 20,
-	// --- INT: Alchemy Manipulation → Potion Manipulation (KEEP) — +1 amplifier ---
+	// Expert Alchemist skill potion amplifier increase
 	alchemyManipulationAmplifier: 1.0,
-
-	// --- BLD: Obsidian Smasher (KEEP) — 10x obsidian break speed ---
+	// Obsidian Smasher skill obsidian breaking speed modifier multiply
 	obsidianSmasherModifier: 10.0,
-	// --- BLD: Treasure Hunter → Resourceful (DISABLED, KubeJS reimpl — 8% craft refund) ---
+	// Treasure Hunter skill probability chance to get a treasure in dirt
 	treasureHunterProbability: 0,
+	// Treasure Hunter skill treasures item list
 	treasureHunterItemList: [],
-	// --- BLD: Convergence → Master Craftsman (DISABLED, KubeJS reimpl — +12% craft refund) ---
+	// Convergence skill probability chance to obtain part of the spent material
 	convergenceProbability: 0,
-
-	// --- MAG: Safe Port → Arcane Efficiency (DISABLED, KubeJS reimpl) ---
-	// --- MAG: Life Eater → Spell Attunement (DISABLED, KubeJS reimpl) ---
-	lifeEaterModifier: 0,
-
-	// --- LCK: Critical Roll → Lucky Strike (KEEP, tuned) — 20% chance for 120% damage ---
-	criticalRoll6Modifier: 1.20,
+	// Life Eater skill life steal amplifier increase
+	lifeEaterModifier: 0.0,
+	// Critical Roll skill critic modifier multiply when you roll a 6
+	criticalRoll6Modifier: 1.2,
+	// Critical Roll skill critic probability reduce when you roll a 1
 	criticalRoll1Probability: 0,
-	// --- LCK: Lucky Drop → Fortune's Favor (KEEP) — passive Luck + Fortune I ---
+	// Lucky Drop skill mob drops modifier multiply
 	luckyDropModifier: 2.0,
+	// Lucky Drop skill mobs drops probability
 	luckyDropProbability: 10,
-	// --- LCK: Limit Breaker → Motherlode (DISABLED, KubeJS reimpl — 0.01% 5x mining) ---
-	limitBreakerAmplifier: 0,
+	// Limit Breaker skill deal damage amplifier
+	limitBreakerAmplifier: 0.0,
+	// Limit Breaker skill deal damage probability
 	limitBreakerProbability: 0,
-
-	// =================================================================
-	// REQUIRED LEVELS — Standardized to 10/20/30 per aptitude
-	// =================================================================
-	// STR
+	// Required level to unlock skill
 	oneHandedRequiredLevel: 10,
+	// Required level to unlock skill
 	fightingSpiritRequiredLevel: 20,
+	// Required level to unlock skill
 	berserkerRequiredLevel: 30,
-	// CON (uses Athletics/TurtleShield/LionHeart slots)
+	// Required level to unlock skill
 	athleticsRequiredLevel: 10,
+	// Required level to unlock skill
 	turtleShieldRequiredLevel: 20,
+	// Required level to unlock skill
 	lionHeartRequiredLevel: 30,
-	// DEX (uses QuickReposition/StealthMastery/CatEyes slots)
+	// Required level to unlock skill
 	quickRepositionRequiredLevel: 10,
+	// Required level to unlock skill
 	stealthMasteryRequiredLevel: 20,
+	// Required level to unlock skill
 	catEyesRequiredLevel: 30,
-	// DEF (uses SnowWalker/CounterAttack/DiamondSkin slots)
+	// Required level to unlock skill
 	snowWalkerRequiredLevel: 10,
+	// Required level to unlock skill
 	counterattackRequiredLevel: 20,
+	// Required level to unlock skill
 	diamondSkinRequiredLevel: 30,
-	// INT
+	// Required level to unlock skill
 	scholarRequiredLevel: 999,
+	// Required level to unlock skill
 	hagglerRequiredLevel: 10,
+	// Required level to unlock skill
 	alchemyManipulationRequiredLevel: 20,
-	// BLD
+	// Required level to unlock skill
 	obsidianSmasherRequiredLevel: 10,
+	// Required level to unlock skill
 	treasureHunterRequiredLevel: 20,
+	// Required level to unlock skill
 	convergenceRequiredLevel: 30,
-	// MAG
+	// Required level to unlock skill
 	safePortRequiredLevel: 10,
+	// Required level to unlock skill
 	lifeEaterRequiredLevel: 20,
+	// Required level to unlock skill
 	wornholeStorageRequiredLevel: 30,
-	// LCK
+	// Required level to unlock skill
 	criticalRollRequiredLevel: 10,
+	// Required level to unlock skill
 	luckyDropRequiredLevel: 20,
+	// Required level to unlock skill
 	limitBreakerRequiredLevel: 30
 }
