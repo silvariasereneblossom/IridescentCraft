@@ -1,6 +1,16 @@
 {
-  "type": "origins:modify_falling",
+  "type": "origins:stacking_status_effect",
+  "min_stacks": 0,
+  "max_stacks": 1,
+  "duration_per_stack": 20,
+  "effect": {
+    "effect": "minecraft:slow_falling",
+    "show_particles": false,
+    "show_icon": false
+  },
+  "condition": {
+    "type": "origins:falling"
+  },
   "name": "Fae Wings",
-  "description": "Passive slow fall \u2014 reduced fall speed and damage.",
-  "velocity": -0.01
+  "description": "Drift gently on the wind. No fall damage."
 }
