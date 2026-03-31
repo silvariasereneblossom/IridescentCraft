@@ -6,12 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)An amorphous being of living gel. A unique food economy unlike any other origin.$()$(br2)$(bold)Origin Traits:$()$(br2)$(bold)Gelatinous Digestion$() — $(warn)Food provides only 5% nourishment$(). Eat high-quality meals.$(br2)$(bold)Slow Metabolism$() — $(item)Hunger drains at 25% normal rate$() and never while idle. Your body conserves energy.$(br2)$(bold)Core Reserves$() — $(item)Satiety never drops below 25%$(). Your core retains sustenance.$(br2)$(bold)Digest Slowly$() — 10-second cooldown between eating."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Gel Defenses",
-      "text": "$(bold)Gelatinous Resilience$() — $(item)Up to 25% damage reduction based on satiation$(). A well-fed slime is a tough slime.$(br2)$(bold)Amorphous Form$() — $(warn)-25% base health$(). Your gelatinous body has less structural integrity.$(br2)$(bold)Soft Body$() — $(warn)-50% armor toughness$(). Armor sits loosely on your shifting form.$(br2)$(italic)Invest in high-quality food. Each meal barely fills you, but your slow metabolism means every bite counts for longer.$()"
+      "text": "$(italic)An amorphous being of living gel. A unique food economy.$()$(br2)$(bold)Gelatinous Digestion$() — $(warn)Food gives only 5% nourishment$().$(br)$(bold)Slow Metabolism$() — $(item)Hunger drains at 25% rate$(), never while idle.$(br)$(bold)Core Reserves$() — $(item)Satiety never drops below 25%$().$(br)$(bold)Digest Slowly$() — 10s cooldown between eating.$(br2)$(bold)Gel Defenses$()$(br)$(bold)Gelatinous Resilience$() — $(item)Up to 25% DR based on satiation$().$(br)$(bold)Amorphous Form$() — $(warn)-25% base HP$().$(br)$(bold)Soft Body$() — $(warn)-50% armor toughness$().$(br2)$(italic)Invest in high-quality food. Each meal barely fills you, but slow metabolism makes every bite count.$()"
     }
   ]
 }

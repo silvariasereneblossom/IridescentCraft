@@ -6,12 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Scion of a forgotten god. Towers over mortal limits with massive health and divine abilities.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Divine Constitution$() — $(item)+40% max HP (8 extra hearts)$(). The tankiest race in the game.$(br2)$(bold)Divine Fury$() — $(item)Activate Strength on command$(). 50-second cooldown.$(br2)$(bold)Phase$() — $(item)Phase through blocks$(). Toggle ability with a resource bar that depletes while active.$(br2)$(bold)Divine Appetite$() — $(item)Raw meat gives 2x nourishment$(). Cooked meat 1.5x."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Divine Weaknesses",
-      "text": "$(bold)Fire Sensitivity$() — $(warn)+50% fire damage taken$(). Your divine flesh burns more easily.$(br2)$(bold)Nether Unease$() — $(warn)Weakness in the Nether$(). The Nether's corruption weakens you.$(br2)$(bold)Divine Swiftness$() — $(item)Speed II outside the Nether$(). Fast everywhere except the one place that hurts you."
+      "text": "$(italic)Scion of a forgotten god. Massive health and divine abilities.$()$(br2)$(bold)Divine Constitution$() — $(item)+40% max HP (8 extra hearts)$().$(br)$(bold)Divine Fury$() — $(item)Activate Strength on command$(). 50s cooldown.$(br)$(bold)Phase$() — $(item)Phase through blocks$(). Toggle with resource bar.$(br)$(bold)Divine Appetite$() — $(item)Raw meat 2x, cooked 1.5x nourishment$().$(br)$(bold)Divine Swiftness$() — $(item)Speed II outside the Nether$().$(br2)$(bold)Weaknesses:$() $(warn)+50% fire damage$(). $(warn)Weakness in the Nether$()."
     }
   ]
 }

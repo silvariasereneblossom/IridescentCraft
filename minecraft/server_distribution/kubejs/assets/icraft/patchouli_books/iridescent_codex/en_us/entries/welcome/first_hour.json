@@ -6,19 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)What To Do First$()$(br2)$(li)$(bold)Select your Race and Class.$() These are the most impactful decisions you'll make early. See the Classes & Races chapter.$(li)$(bold)Open FTB Quests.$() The Welcome chapter gives you 3 skill points for free — just for going through it.$(li)$(bold)Find food.$() Hunger Overhaul makes food drain faster. Diverse food gives you max HP bonuses via Spice of Life."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(li)$(bold)Avoid enchanting table anxiety.$() $(thing)Apotheosis$() completely reworks enchanting. Your bookshelf setup determines what enchants are available — more and better bookshelves unlock better enchants. No $(t1)Tier 1$() rush needed.$(li)$(bold)Don't expect diamonds in chests.$() They've been removed from all Overworld structure loot. Diamonds are a $(t2)Tier 2$() material — you'll earn them, not find them.$(li)$(bold)Explore structures.$() $(t1)Tier 1$() token fragments drop from Overworld dungeon chests. Collect 5 for a full token."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)What To Ignore For Now$()$(br2)$(li)The Nether — it's $(t3)Tier 3$(). The portal won't activate until you're ready.$(li)The End — it's $(t4)Tier 4$().$(li)Twilight Forest — it's $(t2)Tier 2$() content. You can enter, but mobs will hurt.$(li)Refined Storage — it's $(t3)Tier 3$().$(li)Mekanism — it's $(t3)Tier 3$()–$(t4)4$().$(br2)This doesn't mean you can't look. It means the pack is balanced around those tiers."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Waystones$()$(br2)Waystones generate naturally in all dimensions. They're your free fast-travel network. Activating a waystone registers it permanently — teleporting between them costs nothing.$(br2)$(bold)Crafting a waystone$() is intentionally expensive at all tiers, requiring rare boss drop materials. Natural generation handles your travel needs. Crafting is for establishing outposts far from natural spawns."
+      "text": "$(bold)What To Do First$()$(br)$(li)$(bold)Select Race and Class.$() See Classes & Races chapter.$(li)$(bold)Open FTB Quests.$() Welcome chapter gives 3 free skill points.$(li)$(bold)Find food.$() Diverse food gives max HP bonuses via Spice of Life.$(li)$(bold)Explore structures.$() T1 token fragments drop from Overworld dungeon chests. Collect 5 for a full token.$(br2)$(bold)What To Ignore For Now$()$(br)$(li)Nether — $(t3)Tier 3$()$(li)The End — $(t4)Tier 4$()$(li)Twilight Forest — $(t2)Tier 2$()$(li)Refined Storage — $(t3)Tier 3$()$(li)Mekanism — $(t3)Tier 3$()-$(t4)4$()$(br2)$(bold)Waystones$() generate naturally — free fast-travel. Activate to register permanently."
     }
   ]
 }

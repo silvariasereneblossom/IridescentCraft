@@ -6,11 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your class defines your combat role. It modifies your HP, your weapon effectiveness, and grants you passive abilities.$(br2)$(bold)There are 10 classes.$() All are viable. There is no 'best' class — only classes that match different playstyles.$(br2)$(bold)Respeccing:$() Classes can be changed at a $(bold)Class Altar$() — a craftable station requiring a tier-appropriate boss drop + 30 XP levels. Skill points are not lost."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)The Ten Classes$()$(br2)$(li)$(bold)Berserker$() — Axe melee, low-HP rage$(li)$(bold)Samurai$() — Katana precision, movement shield$(li)$(bold)Battlemage$() — Melee/magic hybrid$(li)$(bold)Wanderer$() — Jack of all trades, explorer$(li)$(bold)Paladin$() — Tank/support, healing aura$(li)$(bold)Vanguard$() — Pure tank, -15% damage$(li)$(bold)Ranger$() — Ranged glass cannon$(li)$(bold)Archmage$() — Magic glass cannon$(li)$(bold)Artificer$() — Builder, no combat penalty$(li)$(bold)Void Summoner$() — Minion master, darkness"
+      "text": "Your class defines your combat role — HP, weapons, and passive abilities.$(br2)$(bold)10 classes, all viable.$() No 'best' class. Respec at a $(bold)Class Altar$() (boss drop + 30 XP levels). Skill points kept.$(br2)$(bold)The Ten Classes:$()$(br)$(li)$(bold)Berserker$() — Axe melee, low-HP rage$(li)$(bold)Samurai$() — Katana precision, movement shield$(li)$(bold)Battlemage$() — Melee/magic hybrid$(li)$(bold)Wanderer$() — Explorer, jack of all trades$(li)$(bold)Paladin$() — Tank/support, healing aura$(li)$(bold)Vanguard$() — Pure tank, -15% damage$(li)$(bold)Ranger$() — Ranged glass cannon$(li)$(bold)Archmage$() — Magic glass cannon$(li)$(bold)Artificer$() — Builder, no combat penalty$(li)$(bold)Void Summoner$() — Minion master"
     }
   ]
 }

@@ -6,17 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The builder and engineer. No combat tradeoffs - average fighter. Power comes from crafting and infrastructure.$()$(br2)HP Modifier: 0% (no penalty)  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() No penalties; crafted items benefit from bonuses"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Passive Abilities",
-      "text": "$(bold)Crafting Mastery$() — +15% mining speed. +10% attack speed baseline. Nearby crafting tables grant Speed I.$(br2)$(bold)Engineer Speed$() — +10% bonus ore drops from mining. Infrastructure-focused power that compounds over time.$(br2)$(bold)Resourceful$() — Power comes from building, not fighting. The $(thing)Artificer$() rewards time spent on infrastructure."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "The Builder's Path",
-      "text": "The $(thing)Artificer$() is the only class with no combat tradeoffs. Average at fighting but excels at everything else. If you want to focus on building, crafting, and automation rather than combat, this is your class.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — +25% mining speed stacks with Crafting Mastery. Fire resistance for Nether resource runs.$(br)$(thing)Halfling$() — Food efficiency + ore bonus = maximum resource gathering.$(br)$(thing)Human$() — +15% XP and Versatile bonus for jack-of-all-trades building."
+      "text": "$(italic)The builder and engineer. No combat tradeoffs — power comes from crafting.$()$(br2)HP: 0% | Equip HP: Full$(br2)$(bold)Crafting Mastery$() — +15% mining speed, +10% attack speed. Nearby crafting tables grant Speed I.$(br)$(bold)Engineer Speed$() — +10% bonus ore drops from mining.$(br)$(bold)Resourceful$() — Power from building, not fighting.$(br2)$(bold)Best races:$() $(thing)Dwarf$() (+25% mining), $(thing)Halfling$() (food + ore), $(thing)Human$() (+15% XP)"
     }
   ]
 }

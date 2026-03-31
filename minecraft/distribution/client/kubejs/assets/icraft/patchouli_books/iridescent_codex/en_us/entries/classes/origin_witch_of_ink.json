@@ -6,12 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A living canvas of ink and will. Weak early, devastating late. The ultimate hyperscaler.$()$(br2)$(bold)Origin Traits:$()$(br2)$(bold)Paper-Thin$() — $(warn)-20% max HP$(). Your body is made of ink and parchment.$(br2)$(bold)Ink-Stained Appetite$() — $(warn)Food provides 50% less nourishment.$(br2)$(bold)Flammable Canvas$() — $(warn)Fire burns hotter against your ink-stained body.$()"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Hyperscaling",
-      "text": "$(bold)Boss Kill Scaling$() — Each boss kill grants stacking bonuses to damage, damage reduction, and armor toughness (max 200 stacks).$(br2)$(bold)Blessing of Penthesilea$() — $(item)At 200 boss kills: defenses double and Haste is granted permanently.$(br2)$(italic)The Witch of Ink is intentionally punishing for the first 50+ hours. The payoff is becoming one of the strongest origins in the game.$()"
+      "text": "$(italic)A living canvas of ink and will. Weak early, devastating late. The ultimate hyperscaler.$()$(br2)$(bold)Paper-Thin$() — $(warn)-20% max HP$().$(br)$(bold)Ink-Stained Appetite$() — $(warn)Food gives 50% less nourishment.$(br)$(bold)Flammable Canvas$() — $(warn)Fire burns hotter.$(br2)$(bold)Hyperscaling$()$(br)$(bold)Boss Kill Scaling$() — Each boss kill grants stacking damage, DR, and toughness (max 200 stacks).$(br)$(bold)Blessing of Penthesilea$() — $(item)At 200 kills: defenses double, permanent Haste.$(br2)$(italic)Punishing for 50+ hours. The payoff is becoming one of the strongest origins.$()"
     }
   ]
 }
