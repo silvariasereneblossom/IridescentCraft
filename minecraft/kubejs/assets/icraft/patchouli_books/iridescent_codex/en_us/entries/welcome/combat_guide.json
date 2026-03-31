@@ -1,0 +1,13 @@
+{
+  "name": "Combat Guide",
+  "icon": "minecraft:iron_sword",
+  "category": "icraft:welcome",
+  "sortnum": 10,
+  "advancement": "icraft:quest/first_blood",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Congratulations!$() You've slain your first monster and proven yourself ready for combat.$(br2)This page unlocked because you completed the $(italic)First Blood$() quest. As you complete more quests, new Codex entries will appear.$(br2)$(bold)Combat Tips:$()$(br)$(li)Melee weapons have different speeds and reach$(br)$(li)Armor toughness reduces damage from heavy hits$(br)$(li)Shields block frontal damage — hold right-click$(br)$(li)Dodge by sprinting sideways — don't face-tank"
+    }
+  ]
+}

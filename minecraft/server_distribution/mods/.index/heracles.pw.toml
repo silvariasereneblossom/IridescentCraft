@@ -1,0 +1,16 @@
+filename = 'Heracles-forge-1.20.1-1.1.13.jar'
+name = 'Heracles (Odyssey Quests)'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = 'e3baefb03efa84e3e5cc8f329d81bd9b2f27a878875acf8ad9977e6a89ee173733060f40980a130970383d6f15c268f63242789d57052fe545a7ba05d5a24949'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/lo90fZoB/versions/9ZUSHiZa/Heracles-forge-1.20.1-1.1.13.jar'
+
+[update.modrinth]
+mod-id = 'lo90fZoB'
+version = '9ZUSHiZa'
