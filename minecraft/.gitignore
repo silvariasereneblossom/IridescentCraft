@@ -1,6 +1,7 @@
 mods/*.jar
 !mods/iridescent_codex_data.jar
 !mods/iridescent_classes.jar
+!mods/iridescent_origins-*.jar
 resourcepacks/
 shaderpacks/
 saves/
