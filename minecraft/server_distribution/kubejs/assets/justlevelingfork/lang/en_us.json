@@ -20,8 +20,8 @@
   "skill.justlevelingfork.quick_reposition": "Fleet of Foot",
   "skill.justlevelingfork.quick_reposition.description": "Permanent 15%% movement speed increase.",
 
-  "skill.justlevelingfork.stealth_mastery": "Rapid Fire",
-  "skill.justlevelingfork.stealth_mastery.description": "Bow draw speed increased by 15%%.",
+  "skill.justlevelingfork.stealth_mastery": "Rapid Fire [WIP]",
+  "skill.justlevelingfork.stealth_mastery.description": "Bow draw speed increased by 15%%. (Work in progress — not yet functional)",
 
   "skill.justlevelingfork.cat_eyes": "Excitement",
   "skill.justlevelingfork.cat_eyes.description": "Killing an enemy temporarily increases draw speed and movement speed by 30%%.",
@@ -47,14 +47,14 @@
   "skill.justlevelingfork.obsidian_smasher": "Obsidian Smasher",
   "skill.justlevelingfork.obsidian_smasher.description": "Mine obsidian %s times faster.",
 
-  "skill.justlevelingfork.convergence": "Master Craftsman",
-  "skill.justlevelingfork.convergence.description": "Additional 12%% chance to refund crafting materials (stacks with Resourceful for 20%% total).",
+  "skill.justlevelingfork.convergence": "Master Craftsman [WIP]",
+  "skill.justlevelingfork.convergence.description": "Additional 12%% chance to refund crafting materials (stacks with Resourceful for 20%% total). (Work in progress — not yet functional)",
 
-  "skill.justlevelingfork.treasure_hunter": "Resourceful",
-  "skill.justlevelingfork.treasure_hunter.description": "8%% chance to refund crafting materials, including modded recipes.",
+  "skill.justlevelingfork.treasure_hunter": "Resourceful [WIP]",
+  "skill.justlevelingfork.treasure_hunter.description": "8%% chance to refund crafting materials, including modded recipes. (Work in progress — not yet functional)",
 
-  "skill.justlevelingfork.safe_port": "Arcane Efficiency",
-  "skill.justlevelingfork.safe_port.description": "Enchanting costs 25%% less XP by any means.",
+  "skill.justlevelingfork.safe_port": "Arcane Efficiency [WIP]",
+  "skill.justlevelingfork.safe_port.description": "Enchanting costs 25%% less XP by any means. (Work in progress — not yet functional)",
 
   "skill.justlevelingfork.life_eater": "Spell Attunement",
   "skill.justlevelingfork.life_eater.description": "Flat +25%% magic damage modifier, additive with class bonuses.",
@@ -71,8 +71,8 @@
   "skill.justlevelingfork.lucky_drop.description": "Passive Luck attribute and Fortune I on all mining.",
   "overlay.skill.justlevelingfork.lucky_drop": "§a[Fortune's Favor] §rBonus drop x%s",
 
-  "skill.justlevelingfork.limit_breaker": "Motherlode",
-  "skill.justlevelingfork.limit_breaker.description": "0.01%% chance to multiply mining output by 5x.",
+  "skill.justlevelingfork.limit_breaker": "Motherlode [WIP]",
+  "skill.justlevelingfork.limit_breaker.description": "0.01%% chance to multiply mining output by 5x. (Work in progress — not yet functional)",
 
   "tooltip.skill.scholar.lock_item": ""
 }
