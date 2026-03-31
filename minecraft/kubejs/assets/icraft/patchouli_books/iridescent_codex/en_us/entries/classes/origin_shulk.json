@@ -1,0 +1,12 @@
+{
+  "name": "Shulk",
+  "icon": "minecraft:shulker_shell",
+  "category": "icraft:classes",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Kin to the Shulker, their hardened shell provides natural armor and cushions their equipment.$()$(br2)$(bold)Origin Traits:$()$(br2)$(bold)Hardened Shell$() — $(item)Reduced durability loss on death$(). Your shell-like skin cushions your equipment.$(br2)$(bold)Strong Arms$() — $(item)+20% mining speed$(). Your powerful arms break blocks faster.$(br2)$(bold)Heavy Metabolism$() — $(warn)+25% hunger drain$(). Your armored body requires more fuel than others."
+    }
+  ]
+}

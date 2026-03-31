@@ -1,0 +1,17 @@
+{
+  "name": "Witherborn",
+  "icon": "minecraft:wither_skeleton_skull",
+  "category": "icraft:classes",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Born of decay, the Witherborn wields the Wither itself as a weapon.$()$(br2)$(bold)Origin Traits:$()$(br2)$(bold)Touch of Decay$() — $(item)Melee attacks apply Wither to targets$(). Bosses normally immune to Wither receive True Wither instead.$(br2)$(bold)Wither Blood$() — $(item)Immune to the Wither effect$(). The decay flows through you, not against you.$(br2)$(bold)Relentless Strikes$() — $(item)+15% attack speed$(). Frantic, decaying energy fuels rapid attacks."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Cost of Decay",
+      "text": "$(bold)Fading Strength$() — $(warn)Lose up to 50% damage as hunger decreases$(). The emptier your stomach, the weaker your strikes.$(br2)$(bold)Withered Appetite$() — $(warn)Food provides only 25% nourishment$(). Your decaying body barely processes sustenance.$(br2)$(bold)Wasting Away$() — $(warn)+50% hunger drain$(). Your body consumes itself.$(br2)$(italic)Keep eating or wither away. The Witherborn is a feast-or-famine origin — devastating when well-fed, helpless when starving.$()"
+    }
+  ]
+}

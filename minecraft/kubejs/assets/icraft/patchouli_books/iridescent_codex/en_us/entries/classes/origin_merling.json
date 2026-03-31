@@ -1,0 +1,12 @@
+{
+  "name": "Merling",
+  "icon": "minecraft:heart_of_the_sea",
+  "category": "icraft:classes",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Natural inhabitants of the deep, Merlings breathe and thrive beneath the waves.$()$(br2)$(bold)Origin Traits:$()$(br2)$(bold)Amphibious$() — $(item)Breathe underwater naturally$(). Swim faster and see clearly beneath the waves.$(br2)$(bold)Aqua Affinity$() — Boosted movement and mining speed underwater.$(br2)$(bold)Land Weakness$() — $(warn)Staying dry for more than 5 minutes leaves you sluggish and gasping.$() Stay near water."
+    }
+  ]
+}

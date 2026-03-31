@@ -1220,6 +1220,32 @@ LootJS.modifiers(event => {
     )
 
   // =========================================================================
+  // SECTION 8.1: TOWERS OF THE WILD — LOOT CLEANUP + MAGIC SCROLLS
+  // =========================================================================
+  // Remove tier-breaking items (diamonds, manasteel, excess arrows).
+  // Add guaranteed magic scroll + chance of second for mage exploration.
+  // Towers are T1 exploration landmarks — magic-themed, not resource farms.
+  // =========================================================================
+  event
+    .addLootTableModifier('totw_reworked:tower_chest')
+    .addLootTableModifier('totw_reworked:ocean_tower_chest')
+    // Remove items that shouldn't be in T1 tower loot
+    .removeLoot('minecraft:diamond')
+    .removeLoot('botania:manasteel_ingot')
+    .removeLoot('botania:mana_pearl')
+    .removeLoot('botania:mana_diamond')
+    .removeLoot('minecraft:arrow')
+    .removeLoot('minecraft:spectral_arrow')
+    // Guaranteed magic scroll (mage exploration incentive)
+    .addLoot(LootEntry.of('irons_spellbooks:scroll'))
+    // 40% chance of a second scroll
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.40)))
+    // 15% chance of common ink
+    .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
+    // 8% chance of copper spell book (T1 magic gear)
+    .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
+
+  // =========================================================================
   // SECTION 8A: VILLAGE CHEST AFFIX GEAR — WHITE/GREEN ONLY
   // =========================================================================
   // Village chests should have low-tier affix gear (white/green rarity).
