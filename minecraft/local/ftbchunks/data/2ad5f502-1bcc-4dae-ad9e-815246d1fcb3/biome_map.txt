@@ -1,0 +1,15 @@
+#47F minecraft:birch_forest
+#735 biomesoplenty:coniferous_forest
+#6AF biomesoplenty:crag
+#6D4 biomesoplenty:field
+#010 minecraft:forest
+#286 minecraft:grove
+#294 biomesoplenty:jade_cliffs
+#056 biomesoplenty:maple_woods
+#2D6 minecraft:meadow
+#5A5 biomesoplenty:orchard
+#204 biomesoplenty:rocky_shrubland
+#108 biomesoplenty:seasonal_forest
+#2CF biomesoplenty:shrubland
+#51A minecraft:stony_shore
+#169 minecraft:taiga
