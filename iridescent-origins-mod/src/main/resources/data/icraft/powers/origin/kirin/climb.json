@@ -1,4 +1,6 @@
 {
+	"name":"Wall Climber",
+	"description":"Scale walls like a spider. Toggle with save toolbar key.",
 	"type":"origins:multiple",
 	"toggle":{
 		"type":"origins:toggle",

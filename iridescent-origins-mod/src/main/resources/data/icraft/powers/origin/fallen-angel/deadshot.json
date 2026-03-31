@@ -1,4 +1,6 @@
 {
+	"name":"Wither Shot",
+	"description":"Fire a wither skull projectile.",
 	"type":"origins:fire_projectile",
 	"entity_type":"minecraft:wither_skull",
 	"cooldown":60,

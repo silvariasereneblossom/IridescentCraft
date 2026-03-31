@@ -1,4 +1,6 @@
 {
+	"name":"Claustrophobia",
+	"description":"Slower under roofs. The memory of confinement haunts you.",
 	"condition":{
 		"type":"origins:block_collision",
 		"offset_x":0,

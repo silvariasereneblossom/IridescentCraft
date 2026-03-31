@@ -1,4 +1,5 @@
 {
+	"hidden":true,
 	"type":"origins:multiple",
 	"color":{
 		"type":"origins:model_color",

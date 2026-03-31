@@ -7,5 +7,7 @@
 	"modifier":{
 		"operation":"addition",
 		"value":3
-	}
+	},
+	"name":"Flammable Canvas",
+	"description":"Fire burns hotter against your ink-stained body."
 }

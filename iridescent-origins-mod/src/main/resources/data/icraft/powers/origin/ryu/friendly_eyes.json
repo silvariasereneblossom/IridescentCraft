@@ -1,4 +1,5 @@
 {
+	"hidden":true,
 	"type":"origins:multiple",
 	"add_mobs":{
 		"type":"origins:action_over_time",

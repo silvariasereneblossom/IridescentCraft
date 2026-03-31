@@ -1,4 +1,6 @@
 {
+	"name":"Dark Resilience",
+	"description":"Immune to Wither, Poison, Instant Damage, and Nausea.",
 	"type":"origins:effect_immunity",
 	"effects":[
 		"minecraft:wither",

@@ -1,4 +1,6 @@
 {
+	"name":"Divine Constitution",
+	"description":"+40% max HP. Your divine blood grants extraordinary vitality.",
 	"type":"origins:attribute",
 	"modifier":{
 		"attribute":"minecraft:generic.max_health",

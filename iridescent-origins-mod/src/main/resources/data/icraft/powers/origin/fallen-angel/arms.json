@@ -1,4 +1,5 @@
 {
+	"hidden":true,
 	"type":"origins:modify_harvest",
 	"block_condition":{
 		"type":"origins:in_tag",

@@ -1,4 +1,6 @@
 {
+	"name":"Iron Plating",
+	"description":"Natural armor and a metallic sheen.",
 	"type":"origins:multiple",
 	"gray":{
 		"type":"origins:model_color",

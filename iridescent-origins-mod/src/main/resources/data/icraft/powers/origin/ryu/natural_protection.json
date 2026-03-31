@@ -1,4 +1,6 @@
 {
+	"name":"Draconic Scales",
+	"description":"+4 max HP from thick dragon scales.",
 	"type":"origins:attribute",
 	"modifier":{
 		"operation":"addition",

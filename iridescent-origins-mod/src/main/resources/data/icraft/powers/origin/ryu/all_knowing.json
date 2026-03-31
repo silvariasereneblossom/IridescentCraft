@@ -1,4 +1,6 @@
 {
+	"name":"Dragon's Sight",
+	"description":"Reveal all nearby entities with Glowing. 15s cooldown.",
 	"type":"origins:active_self",
 	"key":"key.origins.secondary_active",
 	"cooldown":300,

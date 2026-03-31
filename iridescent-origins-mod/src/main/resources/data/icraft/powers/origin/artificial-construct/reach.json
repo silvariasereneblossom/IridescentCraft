@@ -1,4 +1,6 @@
 {
+	"name":"Extended Arms",
+	"description":"Longer reach than normal beings.",
 	"type":"origins:multiple",
 	"scale":{
 		"type":"origins:action_over_time",

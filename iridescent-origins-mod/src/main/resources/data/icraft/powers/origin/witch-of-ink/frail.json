@@ -5,5 +5,7 @@
 		"value":-4,
 		"operation":"addition"
 	},
-	"update_health":true
+	"update_health":true,
+	"name":"Paper-Thin",
+	"description":"Your body is made of ink and parchment. -20% max HP."
 }

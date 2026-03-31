@@ -1,4 +1,6 @@
 {
+	"name":"Divine Fury",
+	"description":"Activate Strength on command. 50s cooldown.",
 	"type":"origins:active_self",
 	"entity_action":{
 		"type":"origins:apply_effect",

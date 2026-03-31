@@ -1,4 +1,6 @@
 {
+	"name":"Unrivaled Speed",
+	"description":"Burst of Speed II for 12 seconds. 60s cooldown.",
 	"type":"origins:active_self",
 	"entity_action":{
 		"type":"origins:and",

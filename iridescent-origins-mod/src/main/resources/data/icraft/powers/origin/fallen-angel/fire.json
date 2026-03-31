@@ -1,4 +1,6 @@
 {
+	"name":"Fire Vulnerability",
+	"description":"Fire burns deeper against your fallen form.",
 	"type":"origins:modify_damage_taken",
 	"damage_condition":{
 		"type":"origins:or",

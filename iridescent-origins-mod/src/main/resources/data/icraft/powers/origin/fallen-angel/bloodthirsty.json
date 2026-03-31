@@ -1,4 +1,6 @@
 {
+	"name":"Bloodthirst",
+	"description":"Permanent Strength I. Your fallen nature demands violence.",
 	"type":"origins:stacking_status_effect",
 	"min_stacks":0,
 	"max_stacks":1,

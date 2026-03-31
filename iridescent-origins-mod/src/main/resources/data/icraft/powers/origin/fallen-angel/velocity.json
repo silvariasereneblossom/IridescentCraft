@@ -1,4 +1,6 @@
 {
+	"name":"Dark Expulsion",
+	"description":"Launch yourself forward, leaving a withering cloud.",
 	"type":"origins:active_self",
 	"key":"key.origins.primary_active",
 	"entity_action":{

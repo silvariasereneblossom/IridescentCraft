@@ -1,4 +1,6 @@
 {
+	"name":"Divine Swiftness",
+	"description":"Speed II outside the Nether.",
 	"type":"origins:stacking_status_effect",
 	"min_stacks":0,
 	"max_stacks":1,

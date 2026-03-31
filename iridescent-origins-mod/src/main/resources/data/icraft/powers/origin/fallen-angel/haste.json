@@ -1,4 +1,5 @@
 {
+	"hidden":true,
 	"type":"origins:stacking_status_effect",
 	"min_stacks":0,
 	"max_stacks":1,

@@ -1,4 +1,6 @@
 {
+	"name":"Broken Body",
+	"description":"-20% max HP. Your mortal frame is frail.",
 	"type":"origins:attribute",
 	"modifier":{
 		"attribute":"minecraft:generic.max_health",

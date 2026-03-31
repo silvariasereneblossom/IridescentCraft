@@ -1,4 +1,6 @@
 {
+	"name":"Pounce",
+	"description":"Launch forward with a burst of speed. 25s cooldown.",
 	"type":"origins:active_self",
 	"entity_action":{
 		"type":"origins:and",
