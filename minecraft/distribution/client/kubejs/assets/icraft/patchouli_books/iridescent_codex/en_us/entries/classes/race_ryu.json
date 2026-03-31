@@ -2,11 +2,16 @@
   "name": "Ryu",
   "icon": "minecraft:dragon_egg",
   "category": "icraft:classes",
-  "sortnum": 19,
+  "sortnum": 23,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Dragon-blooded and ancient. Resilient and imposing, the Ryu shrugs off damage and heals from food.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Natural Protection$() — $(item)25% damage reduction$(). Extremely durable.$(br2)$(bold)Slow Fall$() — Broken wings grant slow fall, not true flight.$(br2)$(bold)Food Healing$() — Eating food triggers accelerated healing.$(br2)$(bold)Meat Preference$() — $(warn)Non-meat food provides less nourishment.$(br2)$(bold)Healing Potions$() — $(warn)Only 50% effective.$() Your scaled hide resists potions."
+      "text": "$(italic)Dragon-blooded and ancient. Resilient and imposing, the Ryu shrugs off damage and heals from food.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Dragon Scales$() — $(item)25% damage reduction from all sources$(). Extremely durable.$(br2)$(bold)Draconic Scales$() — $(item)+4 max HP$(). Thick dragon scales add vitality.$(br2)$(bold)Draconic Vitality$() — $(item)Rapid healing when well-fed$(). At 18+ food, heal 0.5 hearts every 2 seconds.$(br2)$(bold)Broken Wings$() — $(item)Slow fall$(). Not true flight, but a gentle descent.$(br2)$(bold)Dragon's Sight$() — $(item)Reveal all nearby entities with Glowing$(). 15-second cooldown."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Draconic Drawbacks",
+      "text": "$(bold)Draconic Diet$() — $(warn)Non-meat food provides 50% less nourishment$(). Your dragon stomach rejects anything that isn't meat.$(br2)$(bold)Potion Resistance$() — $(warn)Healing potions are 50% as effective$(). Your dragon blood resists magical healing.$(br2)$(bold)Heavy Metabolism$() — $(warn)+25% hunger drain$(). Your massive body burns energy quickly."
     }
   ]
 }

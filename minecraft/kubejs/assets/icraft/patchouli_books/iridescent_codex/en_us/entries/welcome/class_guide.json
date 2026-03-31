@@ -7,17 +7,17 @@
     {
       "type": "patchouli:text",
       "title": "The 3-Layer System",
-      "text": "Your character has three layers of identity, chosen in order:$(br2)$(bold)1. Origin$() — What species you are. Flavor powers like flight, wall-climbing, or fire immunity. Chosen from Origins++ (148 options).$(br2)$(bold)2. Race$() — What people you belong to. Stat modifiers and thematic traits. 7 options: Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant. $(bold)Permanent.$()$(br2)$(bold)3. Class$() — What you do in combat. 10 options. Respec-able via Class Altar."
+      "text": "Your character has three layers of identity, chosen in order:$(br2)$(bold)1. Origin$() — What species you are. 13 options with unique flavor powers (flight, phasing, wall-climbing). $(bold)Permanent.$()$(br2)$(bold)2. Race$() — What people you belong to. 11 options with stat modifiers and thematic traits. $(bold)Permanent.$()$(br2)$(bold)3. Class$() — What you do in combat. 10 options. Respec-able via Class Altar."
     },
     {
       "type": "patchouli:text",
       "title": "What to Pick If...",
-      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas + bows), $(thing)Orc$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (pure magic, glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank, -15% damage), $(thing)Paladin$() (tank+support+heals), $(thing)Dwarf$() race$(br2)$(bold)Want to explore:$()$(br)$(thing)Wanderer$() (jack of all trades), $(thing)Ranger$() (fast, mobile), $(thing)Elf$() race"
+      "text": "$(bold)Want to hit things:$()$(br)$(thing)Berserker$() (axes, low-HP rage), $(thing)Samurai$() (katanas, precision), $(thing)Orc$() or $(thing)Fallen Angel$() race$(br2)$(bold)Want to cast spells:$()$(br)$(thing)Archmage$() (pure magic, glass cannon), $(thing)Battlemage$() (melee+magic), $(thing)Faefolk$() race$(br2)$(bold)Want to tank:$()$(br)$(thing)Vanguard$() (pure tank), $(thing)Paladin$() (tank+heals), $(thing)Demi-God$() or $(thing)Dwarf$() race$(br2)$(bold)Want to explore:$()$(br)$(thing)Wanderer$() (jack of all trades), $(thing)Ranger$() (fast), $(thing)Kirin$() or $(thing)Elf$() race"
     },
     {
       "type": "patchouli:text",
       "title": "More Builds",
-      "text": "$(bold)Want to build/craft:$()$(br)$(thing)Artificer$() class, $(thing)Dwarf$() or $(thing)Halfling$() race$(br2)$(bold)Want to summon:$()$(br)$(thing)Void Summoner$() class, $(thing)Revenant$() race$(br2)$(bold)Don't know what you want:$()$(br)$(thing)Wanderer$() class + $(thing)Human$() race. No penalties, bonus XP, try everything. Respec your class later at a Class Altar when you know your playstyle.$(br2)$(italic)Remember: Race is permanent. Class can be changed. When in doubt, pick Human race and Wanderer class.$()"
+      "text": "$(bold)Want to build/craft:$()$(br)$(thing)Artificer$() class, $(thing)Dwarf$() or $(thing)Halfling$() race$(br2)$(bold)Want to summon:$()$(br)$(thing)Void Summoner$() class, $(thing)Revenant$() race$(br2)$(bold)Want to hyperscale:$()$(br)$(thing)Witch of Ink$() or $(thing)Artificial Construct$() origin$(br2)$(bold)Don't know what you want:$()$(br)$(thing)Mundane$() origin + $(thing)Human$() race + $(thing)Wanderer$() class. No penalties, bonus XP, try everything. Respec your class later.$(br2)$(italic)Remember: Origin and Race are permanent. Class can be changed. When in doubt, pick safe defaults.$()"
     },
     {
       "type": "patchouli:text",

@@ -1,24 +1,20 @@
 {
-  "name": "The Class System",
+  "name": "The 3-Layer System",
   "icon": "minecraft:diamond_sword",
   "category": "icraft:classes",
   "sortnum": 0,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your class defines your combat role. It modifies your HP, your weapon effectiveness, and grants you passive abilities and one active skill. Classes are implemented via the $(bold)Origins$() system as a separate layer from your Race.$(br2)There are $(bold)10 classes$(). All are viable. The pack does not have a 'best' class — it has classes that match different playstyles."
+      "text": "Your character has three layers of identity:$(br2)$(bold)Layer 1 — Origin$() (what species you are)$(br)13 unique species with flavor powers like flight, phasing, or wall-climbing. Permanent.$(br2)$(bold)Layer 2 — Race$() (what people you belong to)$(br)11 races with stat modifiers and thematic traits. Permanent.$(br2)$(bold)Layer 3 — Class$() (what you do in combat)$(br)10 combat roles with HP modifiers, weapon affinities, and active abilities. Respec-able via Class Altar."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Respeccing Your Class$()$(br2)Classes can be changed at a $(bold)Class Altar$() — a craftable station requiring a tier-appropriate boss drop + 30 XP levels. You do not lose skill points when you respec your class. The altar can be shared between players on a server.$(br2)$(bold)Races are permanent.$() Your race is chosen at character creation and cannot be changed."
+      "text": "$(bold)How They Stack$()$(br2)All three layers stack additively. A $(thing)Blazeborn$() / $(thing)Orc$() / $(thing)Berserker$() is a fire-immune melee monster. A $(thing)Phantom$() / $(thing)Faefolk$() / $(thing)Archmage$() is an unkillable glass cannon.$(br2)$(bold)Origins$() provide unique abilities (flavor layer).$(br)$(bold)Races$() provide stat modifiers (identity layer).$(br)$(bold)Classes$() provide combat roles (gameplay layer)."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Three Layers of Identity$()$(br2)$(bold)Race$() — What you ARE. Innate traits, mild tradeoffs. Permanent.$(br)$(bold)Class$() — What you DO. Combat role, HP modifier, weapon affinities, active ability. Respec-able.$(br)$(bold)Skills$() — How you INVEST. Cumulative bonuses across six trees. Respec costs 5 levels per point.$(br2)These three layers stack additively. A $(thing)Berserker$()/$(thing)Orc$() with Warfare tree investment is a very different character from a Berserker/$(thing)Elf$()."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)The 'Half Equipment HP' Rule$()$(br2)$(thing)Ranger$(), $(thing)Archmage$(), and $(thing)Void Summoner$() receive only 50% effectiveness from all equipment-sourced max HP bonuses. This includes Vitality enchant, HP affixes, and armor attribute modifiers.$(br2)$(italic)Does not affect$() base HP, Spice of Life food HP, or JustLevelingFork level-up HP. Glass cannon classes have a lower HP ceiling — but they're still rewarded for investing in food diversity and leveling."
+      "text": "$(bold)Respeccing$()$(br2)$(bold)Origins and Races are permanent.$() Choose carefully at character creation.$(br2)$(bold)Classes can be changed$() at a $(bold)Class Altar$() — a craftable station requiring a tier-appropriate boss drop + 30 XP levels. Skill points are not lost when respeccing.$(br2)$(bold)The 'Half Equipment HP' Rule$()$(br2)$(thing)Ranger$(), $(thing)Archmage$(), and $(thing)Void Summoner$() receive only 50% effectiveness from equipment-sourced max HP bonuses (Vitality enchant, HP affixes, armor attributes). Base HP, food HP, and level-up HP are unaffected."
     }
   ]
 }

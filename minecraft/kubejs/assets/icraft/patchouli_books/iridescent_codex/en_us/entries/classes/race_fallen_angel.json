@@ -2,11 +2,16 @@
   "name": "Fallen Angel",
   "icon": "minecraft:feather",
   "category": "icraft:classes",
-  "sortnum": 20,
+  "sortnum": 24,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Wrath$() — $(item)+15% damage from all sources$(). The highest racial damage bonus.$(br2)$(bold)Tattered Wings$() — Slow fall. Not true flight.$(br2)$(bold)Fragile$() — $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Meat Preference$() — Craves meat to fuel their war.$(br2)$(bold)Fire Vulnerability$() — $(warn)Fire sears deeper than most.$()"
+      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Lethal Grace$() — $(item)+15% damage from all sources$(). The highest racial damage bonus.$(br2)$(bold)Bloodthirst$() — $(item)Permanent Strength I$(). Your fallen nature demands violence.$(br2)$(bold)Dark Expulsion$() — $(item)Launch yourself forward$(), leaving a withering cloud. 25-second cooldown.$(br2)$(bold)Wither Shot$() — $(item)Fire a wither skull projectile$(). 3-second cooldown.$(br2)$(bold)Tattered Wings$() — $(item)Slow fall$(). Not true flight."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Fallen Weaknesses",
+      "text": "$(bold)Broken Body$() — $(warn)-20% max HP (4 fewer hearts)$(). Your mortal frame is frail.$(br2)$(bold)Carnivorous Hunger$() — $(warn)Non-meat foods provide 50% less nourishment.$(br2)$(bold)Fire Vulnerability$() — $(warn)Fire burns deeper against your fallen form.$(br2)$(bold)Dark Resilience$() — $(item)Immune to Wither, Poison, Instant Damage, and Nausea.$(br2)$(bold)Claustrophobia$() — $(warn)Slower under roofs$(). The memory of confinement haunts you."
     }
   ]
 }

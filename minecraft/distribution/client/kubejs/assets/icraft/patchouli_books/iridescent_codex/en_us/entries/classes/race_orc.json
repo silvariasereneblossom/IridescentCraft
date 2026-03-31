@@ -2,11 +2,11 @@
   "name": "Orc",
   "icon": "minecraft:iron_axe",
   "category": "icraft:classes",
-  "sortnum": 15,
+  "sortnum": 18,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Aggressive, hungry, and hits like a falling anvil. Orcs excel in sustained melee at the cost of resource drain.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Ferocity$() — +12% attack speed. Pairs extremely well with $(thing)Berserker$()'s Blood Fury.$(br2)$(bold)Knockback Mastery$() — +30% knockback dealt. Enemies you hit stagger further. Useful for crowd control.$(br2)$(bold)Hunger Drain$() — +35% food drain rate. The highest penalty in the pack. Always eat before fights.$(br2)$(bold)Brutish$() — Immunity to Weakness potion effect. Resistance to Slowness is halved in duration."
+      "text": "$(italic)Brutal and relentless. Orcs hit harder, swing faster, and take more punishment — but burn through food at an alarming rate.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Orcish Strength$() — $(item)+10% melee damage$(). Raw brute force.$(br2)$(bold)Battle Fury$() — $(item)+10% attack speed$(). Orcs swing fast and hard.$(br2)$(bold)Orcish Endurance$() — $(item)+20% max health$(). Built tough.$(br2)$(bold)Bloodlust$() — $(item)Up to +20% bonus damage as hunger increases$(). The hungrier you are, the harder you hit.$(br2)$(bold)Ravenous$() — $(warn)+50% hunger drain$(). The fury burns through food."
     }
   ]
 }

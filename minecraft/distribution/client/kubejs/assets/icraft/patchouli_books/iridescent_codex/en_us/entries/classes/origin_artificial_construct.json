@@ -1,0 +1,17 @@
+{
+  "name": "Artificial Construct",
+  "icon": "minecraft:iron_block",
+  "category": "icraft:classes",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)An iron golem given life. Eat iron to grow stronger. The builder's hyperscaler.$()$(br2)$(bold)Origin Traits:$()$(br2)$(bold)Biofuel Conversion$() — $(warn)Food provides only 25% nourishment$(). Eat iron ingots and blocks instead for $(item)Regen III$().$(br2)$(bold)Iron Plating$() — $(item)+4 natural armor$(). Your metallic body is naturally tough.$(br2)$(bold)Extended Arms$() — $(item)Longer reach$() than normal beings.$(br2)$(bold)Fall Resistance$() — $(item)Reduced fall damage$() from your heavy frame."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Upgrade Tiers",
+      "text": "$(bold)Iron Consumption Upgrades$() — Consume iron to permanently upgrade your stats across five tiers:$(br2)$(bold)Tier 1-3:$() +5% each$(br)$(bold)Tier 4-5:$() +10% each$(br)$(bold)Maximum:$() $(item)+35% total stat bonus$()$(br2)$(italic)Like the Witch of Ink, the Artificial Construct rewards long-term investment. Early game is rough with 25% food efficiency, but iron consumption provides both sustenance and permanent growth.$()"
+    }
+  ]
+}

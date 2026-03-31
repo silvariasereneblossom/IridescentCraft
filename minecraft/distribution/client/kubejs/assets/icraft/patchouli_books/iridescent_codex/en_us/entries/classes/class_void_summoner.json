@@ -2,7 +2,7 @@
   "name": "Void Summoner",
   "icon": "minecraft:wither_skeleton_skull",
   "category": "icraft:classes",
-  "sortnum": 10,
+  "sortnum": 36,
   "pages": [
     {
       "type": "patchouli:text",

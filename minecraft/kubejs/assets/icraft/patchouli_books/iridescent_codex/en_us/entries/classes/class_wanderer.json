@@ -2,7 +2,7 @@
   "name": "Wanderer",
   "icon": "minecraft:compass",
   "category": "icraft:classes",
-  "sortnum": 4,
+  "sortnum": 30,
   "pages": [
     {
       "type": "patchouli:text",

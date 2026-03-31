@@ -2,7 +2,7 @@
   "name": "Paladin",
   "icon": "minecraft:golden_sword",
   "category": "icraft:classes",
-  "sortnum": 5,
+  "sortnum": 31,
   "pages": [
     {
       "type": "patchouli:text",

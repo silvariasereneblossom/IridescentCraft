@@ -2,7 +2,7 @@
   "name": "Archmage",
   "icon": "minecraft:enchanted_book",
   "category": "icraft:classes",
-  "sortnum": 8,
+  "sortnum": 34,
   "pages": [
     {
       "type": "patchouli:text",

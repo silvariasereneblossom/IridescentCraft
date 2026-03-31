@@ -2,7 +2,7 @@
   "name": "Ranger",
   "icon": "minecraft:bow",
   "category": "icraft:classes",
-  "sortnum": 7,
+  "sortnum": 33,
   "pages": [
     {
       "type": "patchouli:text",

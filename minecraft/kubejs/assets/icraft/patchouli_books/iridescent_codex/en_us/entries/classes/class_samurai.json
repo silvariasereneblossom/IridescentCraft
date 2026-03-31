@@ -2,7 +2,7 @@
   "name": "Samurai",
   "icon": "simplyswords:iron_katana",
   "category": "icraft:classes",
-  "sortnum": 2,
+  "sortnum": 28,
   "pages": [
     {
       "type": "patchouli:text",

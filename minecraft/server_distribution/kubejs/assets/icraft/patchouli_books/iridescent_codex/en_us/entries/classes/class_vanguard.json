@@ -2,7 +2,7 @@
   "name": "Vanguard",
   "icon": "minecraft:shield",
   "category": "icraft:classes",
-  "sortnum": 6,
+  "sortnum": 32,
   "pages": [
     {
       "type": "patchouli:text",

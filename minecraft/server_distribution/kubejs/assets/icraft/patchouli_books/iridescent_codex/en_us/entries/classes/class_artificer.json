@@ -2,7 +2,7 @@
   "name": "Artificer",
   "icon": "minecraft:crafting_table",
   "category": "icraft:classes",
-  "sortnum": 9,
+  "sortnum": 35,
   "pages": [
     {
       "type": "patchouli:text",

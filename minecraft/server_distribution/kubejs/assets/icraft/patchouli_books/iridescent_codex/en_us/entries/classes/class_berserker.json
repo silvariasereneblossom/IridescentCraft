@@ -2,7 +2,7 @@
   "name": "Berserker",
   "icon": "minecraft:netherite_axe",
   "category": "icraft:classes",
-  "sortnum": 1,
+  "sortnum": 27,
   "pages": [
     {
       "type": "patchouli:text",

@@ -2,11 +2,16 @@
   "name": "Demi-God",
   "icon": "minecraft:nether_star",
   "category": "icraft:classes",
-  "sortnum": 18,
+  "sortnum": 22,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Scion of a forgotten god. Towers over mortal limits with massive health and divine abilities.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Divine Body$() — $(item)+40% max HP$() (8 extra hearts). The tankiest race.$(br2)$(bold)Divine Fury$() — Activate Strength on command. 50s cooldown.$(br2)$(bold)Phase$() — Phase through blocks briefly.$(br2)$(bold)Raw Diet$() — Raw meat gives 2x nourishment. Cooked meat 1.5x.$(br2)$(bold)Cursed$() — $(warn)Fire burns 50% hotter. Nether sickens you.$() But you endure."
+      "text": "$(italic)Scion of a forgotten god. Towers over mortal limits with massive health and divine abilities.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Divine Constitution$() — $(item)+40% max HP (8 extra hearts)$(). The tankiest race in the game.$(br2)$(bold)Divine Fury$() — $(item)Activate Strength on command$(). 50-second cooldown.$(br2)$(bold)Phase$() — $(item)Phase through blocks$(). Toggle ability with a resource bar that depletes while active.$(br2)$(bold)Divine Appetite$() — $(item)Raw meat gives 2x nourishment$(). Cooked meat 1.5x."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Divine Weaknesses",
+      "text": "$(bold)Fire Sensitivity$() — $(warn)+50% fire damage taken$(). Your divine flesh burns more easily.$(br2)$(bold)Nether Unease$() — $(warn)Weakness in the Nether$(). The Nether's corruption weakens you.$(br2)$(bold)Divine Swiftness$() — $(item)Speed II outside the Nether$(). Fast everywhere except the one place that hurts you."
     }
   ]
 }
