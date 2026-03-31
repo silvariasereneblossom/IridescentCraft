@@ -6,19 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The skill system ($(bold)Pufferfish's Skills$()) provides six skill trees with deep investment paths. Skill points are earned through $(thing)FTB Quests$() — completing quest paths rewards points, not combat.$(br2)$(bold)Opening the skill menu:$() Default key $(bold)K$().$(br2)$(bold)Respeccing:$() 5 XP levels per point refunded. Full respec is possible but expensive."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)The Six Trees$()$(br2)$(li)$(bold)Warfare$() — Melee damage, weapon mastery, combat stats$(li)$(bold)Marksman$() — Ranged damage, arrow handling, precision$(li)$(bold)Sorcery$() — Spell power, mana, cast efficiency$(li)$(bold)Fortitude$() — HP, defense, regen, resistance$(li)$(bold)Gathering$() — Mining, farming, fishing, luck$(li)$(bold)Engineering$() — Crafting, machine bonuses, automation speed"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Point Budget$()$(br2)A fully completionist player who finishes every quest in every tier earns approximately $(bold)75 skill points$() total. Each tree has 40 levels of investment.$(br2)$(bold)240 total points$() would be required to max all six trees — this is intentionally unreachable. Build choices matter. You will specialize.$(br2)Anti-farming: Pufferfish Unofficial Additions prevents grinding specific XP sources for points."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Tree Structure$()$(br2)Each tree has:$(br2)$(li)$(bold)8-node trunk$() — always available, foundational bonuses$(li)$(bold)2 branches$() — unlock after trunk nodes, specialize into substyles$(li)$(bold)1 capstone$() — requires near-full tree investment, powerful late bonus$(br2)Branching at each fork is exclusive — you choose one branch or the other. Not both."
+      "text": "Six skill trees (Pufferfish's Skills), ~75 earnable points from FTB Quests. Open with $(bold)K$(). Respec: 5 XP levels per point.$(br2)$(bold)Trees:$() Warfare (melee), Marksman (ranged), Sorcery (spells), Fortitude (defense), Gathering (resources), Engineering (automation).$(br2)$(bold)Budget:$() 240 total points to max all trees but only ~75 earnable. You will specialize. Each tree has 8-node trunk, 2 exclusive branches, and 1 capstone."
     }
   ],
   "advancement": "icraft:stage_tier_2"

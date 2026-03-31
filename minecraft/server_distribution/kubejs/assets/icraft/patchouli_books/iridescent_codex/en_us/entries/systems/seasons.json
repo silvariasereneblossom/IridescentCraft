@@ -6,19 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Serene Seasons$() adds a full seasonal cycle to the Overworld. Each season lasts several in-game days and affects weather, temperature, and most importantly $(bold)crop growth$().$(br2)The four seasons cycle automatically:$(br)$(li)$(#0a0)Spring$() — crops grow normally$(li)$(#ff0)Summer$() — crops grow at peak rate$(li)$(#f80)Autumn$() — crops grow slowly$(li)$(#88f)Winter$() — outdoor crops $(bold)die$()"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Winter Crop Death$()$(br2)During winter, most crops planted outdoors will $(bold)fail to grow and eventually break$(). Snow and ice generate naturally across the landscape.$(br2)Some crops are winter-hardy and survive all seasons. Check the $(l:https://sereneseasons.fandom.com)Serene Seasons guide$(/l) or experiment to discover which.$(br2)$(italic)Plan your harvests before autumn ends!$()"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Bypassing Seasons$()$(br2)Two methods let you farm year-round:$(br2)$(li)$(bold)Thermal Phytogenic Insolator$() — this T2 machine grows crops indoors using RF power, completely ignoring seasonal effects. The ultimate farming solution.$(br2)$(li)$(bold)Underground farms$() — crops grown deep underground or in enclosed spaces may be partially protected, though results vary by crop type."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Seasonal Strategy$()$(br2)$(li)In $(#0a0)Spring$() and $(#ff0)Summer$(), plant extensively and stockpile food$(li)In $(#f80)Autumn$(), harvest everything before the frost$(li)In $(#88f)Winter$(), rely on stored food, animal farms, or machine-grown crops$(br2)$(bold)Tip:$() The $(item)Season Calendar$() item shows the current season and sub-season. Craft one early to track the cycle."
+      "text": "Serene Seasons adds a seasonal cycle to the Overworld affecting crop growth.$(br2)$(bold)Seasons:$() $(#0a0)Spring$() (normal growth), $(#ff0)Summer$() (peak growth), $(#f80)Autumn$() (slow growth), $(#88f)Winter$() (outdoor crops die).$(br2)$(bold)Winter:$() Most outdoor crops fail and break. Some crops are winter-hardy. Plan harvests before autumn ends.$(br2)$(bold)Year-Round Farming:$() Thermal Phytogenic Insolator (T2 machine, uses RF, ignores seasons) or underground farms (partial protection).$(br2)$(bold)Tip:$() Craft a Season Calendar to track the cycle. Stockpile food in Spring/Summer."
     }
   ]
 }

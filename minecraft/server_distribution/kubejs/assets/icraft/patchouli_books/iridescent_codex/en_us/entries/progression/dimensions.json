@@ -6,19 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)A critical difference from vanilla:$()$(br2)The $(bold)Nether is Tier 3$() content. The $(bold)End is Tier 4$() content.$(br2)Nether portals require a $(t3)Tier 3$() progression token to activate. End portals require a stabilized Eye of Ender recipe gated to $(t4)Tier 4$(). This is intentional — both dimensions are significantly more dangerous than their vanilla equivalents in this pack."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Tier 2 Dimensions$()$(br2)$(bold)Twilight Forest$() — Dense, dark, ambush-heavy. Bosses guard progression. Home of the first $(thing)Simply Swords$() uniques.$(br2)$(bold)Blue Skies$() (Everbright + Everdawn) — Elemental combat. Mobs deal elemental damage that bypasses standard armor.$(br2)$(bold)The Aether$() — Aerial warfare. Vertical combat, thin platforms, falling is lethal. Ranged builds shine here."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Tier 3 Dimensions$()$(br2)$(bold)The Undergarden$() — Toxic attrition. Constant poison pressure, environmental hazards. Survival builds matter.$(br2)$(bold)Deeper and Darker$() — Horror survival. Noise attracts mobs. Sculk mechanics. Stealth has value here.$(br2)$(bold)The Nether$() — Relentless aggression. Everything is permanently aggro. Piglins hunt in packs.$(br2)$(bold)The Abyss: The Other Side$() — Optional $(t3)Tier 3$() dimension."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Tier 4 Dimensions$()$(br2)$(bold)Deep Aether$() — Ascension trial. Combines aerial combat with elite mob AI. Celestial Events every 20 minutes empower all mobs.$(br2)$(bold)The End$() — Three escalating zones: Outer Islands → Deep End / End Cities → Dragon's Domain. Difficulty increases sharply between zones. $(warn)The End is designed to kill you.$() $(italic)Prepare accordingly.$()"
+      "text": "$(bold)Key difference:$() Nether is $(t3)T3$() content. End is $(t4)T4$() content. Both are far more dangerous than vanilla.$(br2)$(bold)T2:$() Twilight Forest (boss-guarded progression, first uniques), Blue Skies (elemental combat bypasses armor), The Aether (aerial combat, doubled fall damage).$(br2)$(bold)T3:$() Undergarden (toxic attrition), Deeper and Darker (horror/stealth), The Nether (permanent aggro), The Abyss (optional).$(br2)$(bold)T4:$() Deep Aether (celestial events buff mobs), The End (3 escalating zones - the endgame)."
     }
   ]
 }

@@ -6,27 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)IridescentCraft$() is structured around four tiers of progression. Each tier unlocks new dimensions, materials, crafting systems, and magic. Tiers are $(bold)per-player$() — each person on a server advances independently.$(br2)Tiers are tracked by the $(bold)AStages$() mod. Your current tier is visible in the $(thing)FTB Quests$() screen. Advancement is triggered by completing the gate quest in each tier's FTB chapter."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 1 — Foundations",
-      "text": "$(bold)Material tier:$() Iron, Copper, Brass, Tin, Bronze$(br)$(bold)Dimensions:$() Overworld only$(br)$(bold)Tech:$() Create$(br)$(bold)Magic:$() Botania, Iron's Spells$(br)$(bold)Notable:$() Diamonds are not available in Overworld chests or worldgen. This is intentional. $(thing)Apotheosis$() affixes are Common-tier only."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 2 — Expansion",
-      "text": "$(bold)Material tier:$() Steel, Manasteel, Steeleaf, Ironwood, Fiery$(br)$(bold)Dimensions:$() Twilight Forest, Blue Skies, The Aether$(br)$(bold)Tech:$() Thermal Series, Industrial Foregoing (basic)$(br)$(bold)Magic:$() Ars Nouveau$(br)$(bold)Notable:$() Limited diamond access via transformation recipes. First $(thing)Simply Swords$() uniques available from Twilight bosses."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 3 — Dominion",
-      "text": "$(bold)Material tier:$() Diamond (full), Terrasteel, Enderium, Osmium$(br)$(bold)Dimensions:$() Undergarden, Deeper & Darker, The Nether, The Abyss$(br)$(bold)Tech:$() Mekanism (basic), Refined Storage, IF (advanced)$(br)$(bold)Magic:$() Occultism, Forbidden & Arcanus$(br)$(bold)Notable:$() Ancient Debris accessible. Nether unlocked here, not at game start."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 4 — Ascension",
-      "text": "$(bold)Material tier:$() Netherite, Gaia Ingots, Antimatter, Atomic Alloy$(br)$(bold)Dimensions:$() Deep Aether, The End (multi-zone)$(br)$(bold)Tech:$() Mekanism (advanced), RFTools Dimensions$(br)$(bold)Magic:$() Mahou Tsukai$(br)$(bold)Notable:$() $(item)MekaTool$(), Mekasuit, QIO network, Fusion Reactor. The path to Ascension and $(thing)Oblivion's Rift$() begins here."
+      "text": "The pack has four progression tiers, tracked by AStages (per-player). Advance by completing gate quests in FTB Quests.$(br2)$(bold)T1 - Foundations:$() Iron/Copper/Brass. Overworld only. Create + Botania + Iron's Spells. Common affixes only.$(br2)$(bold)T2 - Expansion:$() Steel/Manasteel. Twilight Forest, Blue Skies, Aether. Thermal + Ars Nouveau. First Simply Swords uniques.$(br2)$(bold)T3 - Dominion:$() Diamond/Terrasteel/Enderium/Osmium. Undergarden, Deeper & Darker, Nether, Abyss. Mekanism + Refined Storage + Occultism.$(br2)$(bold)T4 - Ascension:$() Netherite/Antimatter. Deep Aether, The End. MekaSuit, Mahou Tsukai, Oblivion's Rift."
     }
   ]
 }

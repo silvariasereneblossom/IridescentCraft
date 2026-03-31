@@ -6,15 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(t4)Tier 4$() bosses are the hardest content in the pack. Full $(t4)Tier 4$() gear is strongly recommended. Deep Aether, End, and Ultimate Bosses all require preparation."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Ender Dragon$() — Drops: $(l:icraft:bosses/unique_weapons)Waking Lichblade$(/l) (25% — highest in the pack), Dragon Heart, Dragon Scale. Scales progressively.$(br2)$(bold)Ultimate Bosses: Sorcerer$() — Drops: $(l:icraft:bosses/unique_weapons)Mjolnir$(/l) (20%), tokens.$(br2)$(bold)Ultimate Bosses: Storm$() — Drops: $(l:icraft:bosses/unique_weapons)Storm's Edge$(/l) (20%), tokens."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Deep Aether Boss$() — EOTS Controller. Drops: $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%), $(t4)T4$() boss materials.$(br2)$(bold)The Abyss Bosses$() — 6 bosses across the Abyss: The Other Side dimension. $(warn)Note: 6 Abyss weapon IDs are pending in-game registry verification. Drop chances are live but weapon IDs may need correction.$()$(br2)$(bold)Stalwart Dungeons T3+$() — Shelterer, Nether Keeper, Awful Ghast."
+      "text": "$(t4)Tier 4$() bosses are the hardest content in the pack. Full $(t4)Tier 4$() gear is strongly recommended. Deep Aether, End, and Ultimate Bosses all require preparation.$(br2)$(bold)Ender Dragon$() - Drops: $(l:icraft:bosses/unique_weapons)Waking Lichblade$(/l) (25% - highest in the pack), Dragon Heart, Dragon Scale. Scales progressively.$(br2)$(bold)Ultimate Bosses: Sorcerer$() - Drops: $(l:icraft:bosses/unique_weapons)Mjolnir$(/l) (20%), tokens.$(br2)$(bold)Ultimate Bosses: Storm$() - Drops: $(l:icraft:bosses/unique_weapons)Storm's Edge$(/l) (20%), tokens.$(br2)$(bold)Deep Aether Boss$() - EOTS Controller. Drops: $(l:icraft:bosses/unique_weapons)Flamewind$(/l) (18%), $(t4)T4$() boss materials.$(br2)$(bold)The Abyss Bosses$() - 6 bosses across the Abyss: The Other Side dimension. $(warn)Note: 6 Abyss weapon IDs are pending in-game registry verification. Drop chances are live but weapon IDs may need correction.$()$(br2)$(bold)Stalwart Dungeons T3+$() - Shelterer, Nether Keeper, Awful Ghast."
     }
   ],
   "advancement": "icraft:stage_tier_4"

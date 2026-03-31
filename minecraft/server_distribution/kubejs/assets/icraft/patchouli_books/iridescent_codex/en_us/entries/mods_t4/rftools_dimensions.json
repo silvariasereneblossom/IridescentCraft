@@ -6,19 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "RFTools Dimensions enables custom dimension creation — the backbone for $(thing)Oblivion's Rift$()."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() $(thing)Oblivion's Rift$() (the primary endgame loop) uses RFTools Dimensions to generate procedural dungeon dimensions. Each Rift run is a unique dimension.$(br2)$(bold)Rift Keystone:$() Required to open a Rift portal. Crafted from $(thing)Rift Shards$() (endgame currency) + boss materials."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Dimension safety:$() Rift dimensions are single-use and collapse after the run timer expires. You will be ejected if you don't exit in time. Bring a warp scroll."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(). The Dimension Builder and Dimlet system are the core loop — craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder."
+      "text": "RFTools Dimensions enables custom dimension creation - the backbone for $(thing)Oblivion's Rift$().$(br2)$(bold)Role in the pack:$() $(thing)Oblivion's Rift$() (the primary endgame loop) uses RFTools Dimensions to generate procedural dungeon dimensions. Each Rift run is a unique dimension.$(br2)$(bold)Rift Keystone:$() Required to open a Rift portal. Crafted from $(thing)Rift Shards$() (endgame currency) + boss materials.$(br2)$(bold)Dimension safety:$() Rift dimensions are single-use and collapse after the run timer expires. You will be ejected if you don't exit in time. Bring a warp scroll.$(br2)$(bold)No book needed.$() RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(). The Dimension Builder and Dimlet system are the core loop - craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder."
     }
   ],
   "advancement": "icraft:stage_tier_4"

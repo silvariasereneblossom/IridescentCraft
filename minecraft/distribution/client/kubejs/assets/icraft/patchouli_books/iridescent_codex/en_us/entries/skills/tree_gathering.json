@@ -6,17 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Resource investment. Best for Artificer, Halfling builds, or any player focused on automation setup.$()$(br2)Mining speed and luck are attribute-based and apply immediately. Crop yield bonus and fishing luck require KubeJS event hooks (implemented in Phase 1)."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Nodes",
-      "text": "$(bold)Mining Speed$() — apothic_attributes:mining_speed — percentage bonus to all block-breaking speed.$(br2)$(bold)Fortune Enhancement$() — Increases effective Fortune level for loot table rolls. Does not add enchant levels — it adds luck to the roll.$(br2)$(bold)Crop Yield$() — KubeJS harvest event: chance for bonus crop drops. Scales linearly to +50% at max investment."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Nodes (cont.)",
-      "text": "$(bold)Prospector Branch$() — Vein mining-style bonuses: detecting ore proximity, bonus drops from ore processing.$(br2)$(bold)Naturalist Branch$() — Fishing speed, bait efficiency, mob loot quantity bonuses.$(br2)$(bold)Gathering Capstone$() — $(bold)Master Gatherer$() — All resource gathering has 10% chance to trigger double yield. Stacks with Fortune."
+      "text": "Resource investment. Best for Artificer, Halfling builds, or any player focused on automation setup.$()$(br2)Mining speed and luck are attribute-based and apply immediately. Crop yield bonus and fishing luck require KubeJS event hooks (implemented in Phase 1).$(br2)$(bold)Nodes$()$(br)$(bold)Mining Speed$() - apothic_attributes:mining_speed - percentage bonus to all block-breaking speed.$(br2)$(bold)Fortune Enhancement$() - Increases effective Fortune level for loot table rolls. Does not add enchant levels - it adds luck to the roll.$(br2)$(bold)Crop Yield$() - KubeJS harvest event: chance for bonus crop drops. Scales linearly to +50% at max investment.$(br2)$(bold)Nodes (cont.)$()$(br)$(bold)Prospector Branch$() - Vein mining-style bonuses: detecting ore proximity, bonus drops from ore processing.$(br2)$(bold)Naturalist Branch$() - Fishing speed, bait efficiency, mob loot quantity bonuses.$(br2)$(bold)Gathering Capstone$() - $(bold)Master Gatherer$() - All resource gathering has 10% chance to trigger double yield. Stacks with Fortune."
     }
   ],
   "advancement": "icraft:stage_tier_2"

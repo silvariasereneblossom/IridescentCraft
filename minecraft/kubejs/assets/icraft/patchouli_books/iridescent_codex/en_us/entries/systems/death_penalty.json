@@ -6,19 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Keep inventory is on.$() You will never lose items on death.$(br2)However, death costs you $(bold)equipment durability$(). How much depends on where you die:$(br2)$(li)Overworld: ~10% durability loss$(li)$(t2)Tier 2$() dimensions: ~15% loss$(li)$(t3)Tier 3$() (Nether, Abyss, Undergarden): ~20% loss$(li)$(t4)Tier 4$() (End, Deep Aether): ~25% loss"
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Item Inertness$()$(br2)When an item reaches 0 durability it becomes $(bold)inert$(): it stays in your inventory, displays at 0 durability, but provides no stats or function. It cannot break further.$(br2)To restore an inert item: repair it at an anvil (costs materials + XP), or use a Mending enchant in future combat. Inert items are $(italic)not$() destroyed. No item is ever permanently lost to durability."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Soulbound Enchantment$()$(br2)$(thing)Soulbound$() (repurposed from Ensorcellation) is the ultimate insurance: items with Soulbound III are completely immune to the death durability penalty.$(br2)Soulbound is a $(bold)treasure enchantment$() — it cannot be obtained through an enchanting table. It drops only from high-tier structures and boss kills. It is rare by design.$(br2)$(bold)Soulbound I–II$() reduce durability loss (50% and 75% reduction respectively)."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Wanderer Race Bonus$()$(br2)The Wanderer class has a $(bold)Survivor$() passive that reduces all death durability loss by 25%. Combined with $(thing)Soulbound$() II, a Wanderer can lose very little durability on death even in the End.$(br2)$(bold)Artificer Ironclad$() also reduces combat-based durability loss by 25%, which applies to attrition during fights but not to the death penalty specifically."
+      "text": "$(bold)Keep inventory is on.$() Death costs equipment durability based on dimension: Overworld ~10%, T2 ~15%, T3 ~20%, T4 ~25%.$(br2)$(bold)Inert Items:$() At 0 durability, items become inert (no stats/function) but stay in inventory. Repair at anvil or via Mending. Nothing is ever permanently lost.$(br2)$(bold)Soulbound:$() Treasure enchant (structure/boss drops only). Soulbound III = immune to death penalty. I-II reduce loss by 50%/75%.$(br2)$(bold)Wanderer Bonus:$() Survivor passive reduces death durability loss by 25%."
     }
   ]
 }

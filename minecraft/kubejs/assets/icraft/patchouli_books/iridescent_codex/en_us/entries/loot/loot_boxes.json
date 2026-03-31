@@ -6,22 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Loot boxes are right-click-to-open containers that drop a curated set of items from a specific loot table. They are earned through $(thing)FTB Quests$() — completing additional quest paths beyond your required one always rewards a loot box.$(br2)$(bold)Six loot box tiers:$() Iron · Steel · $(t3)Tier 3$() · $(t4)Tier 4$() · Crucible · Mythic"
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Iron Loot Box (T1)",
-      "text": "$(bold)Contents:$()$(br)2–4 $(t1)Tier 1$() tokens, 1–2 uncommon $(thing)Apotheosis$() gems (flawed/chipped), 3–5 boss materials (Overworld-tier), 1 Common Apotheosis affix reforge token, 1–2 Iron's Spells scrolls (Tier 1)$(br2)$(bold)Earned by:$() Completing a non-required $(t1)T1$() quest path."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Steel Loot Box (T2)",
-      "text": "$(bold)Contents:$()$(br)2–4 $(t2)Tier 2$() tokens, 1–2 normal/flawless gems, 3–5 Twilight/Aether boss materials, 1 Uncommon/Rare affix token, 1 Ars Nouveau spell recipe, 1 random $(thing)Simply Swords$() unique (5% — low but possible)$(br2)$(bold)Earned by:$() Completing a non-required $(t2)T2$() quest path."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 3, 4, Crucible & Mythic",
-      "text": "$(bold)Tier 3 Box:$() $(t3)T3$() tokens, flawless/perfect gems, Cataclysm boss materials, Epic affix token, Refined Storage pattern$(br2)$(bold)Tier 4 Box:$() $(t4)T4$() tokens, perfect gems, end-tier boss materials, Legendary affix token$(br2)$(bold)Crucible Box:$() Mixed high-tier materials + guaranteed unique weapon(rift-sourced)$(br2)$(bold)Mythic Box:$() $(thing)Rift Shards$(), endgame materials, chance at Mythic I–II infusion component"
+      "text": "Loot boxes are right-click containers earned through FTB Quests. Completing extra quest paths rewards a box.$(br2)$(bold)Iron (T1):$() 2-4 T1 tokens, flawed/chipped gems, Overworld boss materials, Common reforge token.$(br)$(bold)Steel (T2):$() 2-4 T2 tokens, normal/flawless gems, TF/Aether materials, Rare reforge token, 5% unique weapon.$(br)$(bold)T3:$() T3 tokens, flawless/perfect gems, Cataclysm materials, Epic reforge token.$(br)$(bold)T4:$() T4 tokens, perfect gems, Legendary reforge token.$(br)$(bold)Crucible:$() Mixed high-tier + guaranteed unique.$(br)$(bold)Mythic:$() Rift Shards, endgame materials."
     }
   ]
 }

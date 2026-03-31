@@ -6,11 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Rift Shards$() are the endgame currency, earned from $(thing)Oblivion's Rift$() runs and $(t4)Tier 4$() boss kills. They are used for the $(bold)Mythic Gear Chase$() — the post-$(t4)Tier 4$() character improvement loop.$(br2)$(bold)Rift Keystone$(): 5 Rift Shards + boss material. Required to open an Oblivion's Rift portal."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Mythic Infusion$()$(br2)Mythic infusion elevates a Legendary item to Mythic tier (Mythic I–V). Each Mythic level:$(br2)$(li)Increases all existing affix values by ~15%$(li)Adds one additional socket$(li)Unlocks a visual effect on the item$(br2)Mythic V is the ceiling. Getting there requires deep Rift farming and is intentionally designed as the long-term endgame loop."
+      "text": "$(thing)Rift Shards$() are the endgame currency, earned from $(thing)Oblivion's Rift$() runs and $(t4)Tier 4$() boss kills. They are used for the $(bold)Mythic Gear Chase$() — the post-$(t4)Tier 4$() character improvement loop.$(br2)$(bold)Rift Keystone$(): 5 Rift Shards + boss material. Required to open an Oblivion's Rift portal.$(br2)$(bold)Mythic Infusion$()$(br2)Mythic infusion elevates a Legendary item to Mythic tier (Mythic I–V). Each Mythic level:$(br2)$(li)Increases all existing affix values by ~15%$(li)Adds one additional socket$(li)Unlocks a visual effect on the item$(br2)Mythic V is the ceiling. Getting there requires deep Rift farming and is intentionally designed as the long-term endgame loop."
     }
   ]
 }

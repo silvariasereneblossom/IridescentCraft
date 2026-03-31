@@ -6,19 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Create is the primary $(t1)Tier 1$() tech mod. Mechanical power, automated crafting, and item transport."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Your first automation engine. Brass production is the $(t1)T1$() ceiling material. Mixing recipes allow transmutation of $(t1)T1$() materials into small quantities of $(t2)T2$() materials at an intentionally poor ratio.$(br2)$(bold)Key IridescentCraft interactions:$() Brass is a required material throughout T1. Mechanical Crafters automate token fragment collection. The Deployer can automate enchanting table interactions."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)What's gated:$() Nothing in Create is tier-gated. The entire mod is available from $(t1)Tier 1$().$(br2)$(bold)What's recommended:$() Build a brass auto-crafter early. Brass costs are higher than vanilla Minecraft expects them to be — plan for it.$(br2)$(bold)Artificer synergy:$() Artificer's Efficient Engineering passive boosts machine speed. A $(t1)T1$() Artificer player can set up extremely efficient Create lines."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)No book needed.$() Create uses an in-world $(bold)Ponder$() system — hold $(bold)W$() while hovering any Create block in JEI to open an animated tutorial. It's one of the best in-game documentation systems in any mod."
+      "text": "Create is the primary $(t1)T1$() tech mod - mechanical power, automated crafting, and item transport.$(br2)$(bold)Role:$() First automation engine. Brass is the T1 ceiling material. Mixing recipes transmute T1 materials into small T2 amounts at poor ratios. Nothing is tier-gated - the full mod is available from T1.$(br2)$(bold)Tips:$() Build a brass auto-crafter early. Artificer's Efficient Engineering boosts machine speed. Create uses an in-world Ponder system - hold W on any Create block in JEI for animated tutorials."
     }
   ]
 }

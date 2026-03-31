@@ -6,15 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(t2)Tier 2$() bosses live in the Twilight Forest, Blue Skies, and The Aether. This is where $(thing)Simply Swords$() uniques begin. Prepare in full steel or manasteel before attempting Twilight Forest."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Naga$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Tempest$(/l), Naga Scale.$(br2)$(bold)Lich$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Soulrender$(/l), Lich Soul.$(br2)$(bold)Hydra$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Emberblade$(/l), Hydra Fang.$(br2)$(bold)Ur-Ghast$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Whisperwind$(/l) (20% — highest $(t2)T2$() rate), Ur-Ghast Tear."
-    },
-    {
-      "type": "patchouli:text",
-      "text": "$(bold)Knight Phantom$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Enigma$(/l), tokens.$(br2)$(bold)Snow Queen$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Frostfall$(/l), tokens.$(br2)$(bold)Alpha Yeti$() (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Icewhisper$(/l), tokens.$(br2)$(bold)Blue Skies Bosses$() — Summoner, Alchemist, Starlit Crusher, Arachnarch. Each drops a unique.$(br2)$(bold)Aether Bosses$() — Slider, Valkyrie Queen, Sun Spirit. Each drops a unique."
+      "text": "$(t2)Tier 2$() bosses live in Twilight Forest, Blue Skies, and The Aether. First Simply Swords uniques drop here. Prepare full steel or manasteel.$(br2)$(bold)Twilight Forest:$() Naga (Tempest), Lich (Soulrender), Hydra (Emberblade), Ur-Ghast (Whisperwind 20%), Knight Phantom (Enigma), Snow Queen (Frostfall), Alpha Yeti (Icewhisper).$(br2)$(bold)Blue Skies:$() Summoner, Alchemist, Starlit Crusher, Arachnarch - each drops a unique.$(br2)$(bold)Aether:$() Slider, Valkyrie Queen, Sun Spirit - each drops a unique."
     }
   ],
   "advancement": "icraft:stage_tier_2"

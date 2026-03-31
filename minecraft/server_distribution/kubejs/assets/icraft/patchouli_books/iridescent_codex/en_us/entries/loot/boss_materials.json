@@ -6,22 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Boss materials are unique crafting components dropped only by specific bosses. They are used in:$(br2)$(li)Waystone construction (expensive by design)$(li)$(thing)Class Altar$() construction$(li)$(t4)Tier 4$() advanced recipes$(li)Mythic infusion (endgame)$(br2)Unlike tokens, boss materials are $(italic)not$() interchangeable between bosses. Each boss's material has specific uses."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "T2 Boss Materials",
-      "text": "$(bold)Naga Scale$() — Twilight Forest Naga. Used in $(t2)Tier 2$() armor crafting recipes.$(br2)$(bold)Lich Soul$() — Lich. Used in necromantic recipes, Occultism preparations.$(br2)$(bold)Hydra Fang$() — Hydra. Used in melee weapon enhancement recipes.$(br2)$(bold)Ur-Ghast Tear$() — Ur-Ghast. Used in aerial mobility items."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "T3 Boss Materials",
-      "text": "$(bold)Harbinger Eye$() — Cataclysm: The Harbinger. High-value $(t3)T3$() crafting material.$(br2)$(bold)Ignis Core$() — Cataclysm: Ignis. Used in fire-themed T3+ recipes.$(br2)$(bold)Nether Soul Fragment$() — Wither Skeletons (rare). Used in Stalwart Dungeons preps.$(br2)$(bold)Gaia Spirit Fragment$() — Botania Gaia Guardian. Required for Mahou Tsukai initiation."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "T4 Boss Materials",
-      "text": "$(bold)Dragon Heart$() — Ender Dragon. Used in ultimate crafting recipes, Mythic infusion base.$(br2)$(bold)Dragon Scale$() — Ender Dragon. Used in $(t4)Tier 4$() armor crafting.$(br2)$(bold)Void Essence$() — Rare Enderman drop. Used in $(thing)Void Summoner$() builds.$(br2)$(bold)Wither Bone$() — Wither. Used in Stalwart Dungeons and necromantic recipes."
+      "text": "Boss materials are unique drops used in waystone construction, Class Altar crafting, $(t4)T4$() recipes, and mythic infusion. Each boss's material has specific uses.$(br2)$(bold)T2:$() Naga Scale (armor), Lich Soul (necromantic), Hydra Fang (melee enhancement), Ur-Ghast Tear (aerial items).$(br2)$(bold)T3:$() Harbinger Eye, Ignis Core, Nether Soul Fragment, Gaia Spirit Fragment (Mahou Tsukai initiation).$(br2)$(bold)T4:$() Dragon Heart (mythic infusion base), Dragon Scale (armor), Void Essence (Void Summoner builds), Wither Bone."
     }
   ]
 }
