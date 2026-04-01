@@ -4,6 +4,67 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-01 — Origins++ port, JustLeveling redesign, Heracles POC, loot/artifact overhaul
+
+### Origins++ → icraft Namespace Port
+- All 6 Origins++ origins/races fully ported to `icraft` namespace (80 powers, 15 mcfunctions, 3 tags)
+- Origins++ mod removed as dependency — all data self-contained in Iridescent Origins mod
+- Iridescent Origins now builds as a proper Forge mod via Gradle (compiled @Mod class)
+- Origin layers must live under `data/origins/origin_layers/` (Origins Forge only scans that namespace)
+- Missing race powers created: Ryu (slow_fall, meat_preference, food_healing), Fallen Angel (slow_fall, damage_bonus, meat_preference)
+- All 37 ported powers given names/descriptions or set to hidden
+- `origins:falling` condition doesn't exist in Origins Forge — removed from slow fall powers (always-on Slow Falling effect)
+
+### JustLeveling Fork Overhaul
+- Lock items list cleared entirely — AStages handles all item/tier gating
+- 24 skills redesigned across 8 aptitudes (10/20/30 unlock levels):
+  - STR: One Handed / Hemorrhage / True Strength
+  - CON: Hearty Meals / Overflow / Iron Stomach
+  - DEX: Fleet of Foot / Rapid Fire [WIP] / Excitement
+  - DEF: Second Wind / Turtle Shield / Lion Heart
+  - INT: Haggler / Potion Manipulation / Enlightenment
+  - BLD: Obsidian Smasher / Resourceful [WIP] / Master Craftsman [WIP]
+  - MAG: Arcane Efficiency [WIP] / Spell Attunement / Mystic Ward
+  - LCK: Lucky Strike / Fortune's Favor / Motherlode [WIP]
+- 13 skills implemented via KubeJS (justleveling_skills.js)
+- Mastery tax system: quadratic XP drain for aptitude breadth beyond 32 total levels
+- Lang overrides rename all skills in the UI
+- Scholar skill disabled (enchanting no longer level-gated)
+
+### Heracles Quest Mod (Proof of Concept)
+- Heracles (Odyssey Quests) 1.1.13 added to modpack
+- Proof-of-concept integration chain: Quest → command reward → advancement grant → Codex entry unlocks
+- "First Blood" quest: kill 1 zombie → unlocks Combat Guide in Codex
+- Advancements use `trigger: minecraft:impossible` (only grantable via command)
+
+### Loot & Artifact Overhaul
+- Village loot tables overridden via Paxi datapack (kubejs/data doesn't override loot tables on Forge)
+- Village food reduced to weight 1 / count 1, seeds/plants reduced, T1 materials added (iron nuggets, raw copper, string, leather, torches)
+- 2.5% spell scroll chance in village chests
+- Artifact injection rates tiered via loot table overrides: ~1% village, ~5% overworld structures, ~10% endgame
+- Artifacts mod `artifact_rarity` config is overwritten on startup — bypassed via datapack loot table overrides
+- `Ingredient.custom()` silently fails in LootJS — all instances replaced with `@mod` syntax
+- Tower loot: diamonds/manasteel removed, guaranteed magic scroll + 40% second scroll
+- RFTools/Mahou items removed from chest loot via `@mod` syntax
+
+### Codex Overhaul
+- Complete rebuild for 3-layer system: 37 entries (3 overviews + 13 origins + 11 races + 10 classes)
+- All multi-page entries condensed to single pages (85 entries total — second pages rendered as broken textures)
+- Race/origin stats verified against actual power JSON values
+- Welcome guides updated for 13 origins / 11 races / 10 classes
+
+### Combat & Spawn
+- Spawn protection zone (64 blocks): hostile mob spawns cancelled, existing hostiles killed every 5s
+- Cute Villagers UV fix: non-integer UVs (89.1/93.1) rounded to integers for EMF compatibility
+
+### Technical Discoveries
+- Forge 1.20.1 ignores pure datapack JARs in mods/ — needs compiled @Mod class
+- `kubejs/data/` does NOT override loot tables on Forge — use Paxi datapacks instead
+- LootJS `group()` and `modifyLoot(Ingredient.of())` silently fail — datapack overrides are reliable
+- Artifacts mod config is overwritten on startup — use Forge `global_loot_modifiers.json` overrides
+
+---
+
 ## 2026-03-30 — New origins, Orc rework, loot curation, mod fixes, distribution overhaul
 
 ### New Origins (11 → 13)
