@@ -16,9 +16,8 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ### Three-Prompt Character Creation
 - **Status:** Working as intended (confirmed 2026-03-14)
-- **Design:** Three sequential prompts on first join: Origin (Origins++) → Race (7 icraft) → Class (10 icraft)
-- **Implementation:** Layer ordering via `order` field (0, 1, 2). Default Origins layer re-enabled.
-- **Origins++ overlap:** Investigated — no removals needed. Zero name collisions, separate layers.
+- **Design:** Three sequential prompts on first join: Origin (13 origins, 9 vanilla + 4 custom) → Race (11 icraft) → Class (10 icraft)
+- **Implementation:** Layer ordering via `order` field (0, 1, 2). Default Origins layer re-enabled. All custom content in Iridescent Origins mod.
 
 
 ### Aethersteel T4 Worldgen Replacement

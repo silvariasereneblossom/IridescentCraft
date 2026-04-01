@@ -27,13 +27,20 @@
 | Forbidden & Arcanus | 3 | Dark magic |
 | Mahou Tsukai | 4 | Ultimate magic combat |
 
+## Core Player Systems (Tiered)
+
+| Mod | Tier | Notes |
+|-----|------|-------|
+| Heracles | 1 | Quest system |
+| JustLevelingFork | All | Stat/skill progression via XP leveling |
+
 ## Combat & Scaling
 
 Apotheosis, ScalingMobs, Champions Unofficial, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (+Archery/Armory/Arsenal), Iron's Spells, Improved Mobs, JustLevelingFork, Tetra (+Tetracelium compat, mutil library), Soul Fire'd
 
 ## Player Systems
 
-Origins (+Origins++, Origins Overhaul), Gods and Heroes RPG Classes, Pufferfish's Skills (+AStages), JustLevelingFork, Relics, Artifacts, More Artifacts, Celestial Artifacts
+Origins (Forge), Iridescent Origins, Pufferfish's Skills (+AStages), JustLevelingFork, Heracles (quest system), Relics, Artifacts, More Artifacts, Celestial Artifacts
 
 ## Dimensions
 
@@ -44,7 +51,7 @@ Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Dee
 | Twilight Forest | 2 | AStages-gated. Portal activator changed to T1 boss token (was diamond). |
 | Blue Skies | 2 | AStages-gated. Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. |
 | The Aether | 2 | AStages-gated. Dimension mechanics: thin air, vertigo, updrafts. |
-| Deep Aether | 2 | Aether extension |
+| Deep Aether | 4 | AStages-gated. Advanced Aether endgame dimension. |
 | The Undergarden | 3 | AStages-gated. 4 metals integrated into Tetra. |
 | Deeper and Darker | 3 | AStages-gated |
 | The Abyss | 3 | Dimension mechanics: oppressive darkness, corruption, fear aura. 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating. |
@@ -110,7 +117,7 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Walkable Cables | coremod | v1.0.1 — makes Mekanism cables walkable, LocalVariableTable fix. |
 | Mekanism (HDPE) | recipes | HDPE Circuit Board recipe, alternative machine recipes using HDPE components. |
 | Industrial Foregoing | recipes | Latex/rubber pipeline rework: logs→latex via Create/Thermal, HDPE→dry rubber. |
-| Origins | power JSONs | All 9 vanilla origins rebalanced (no lethal effects, food prefs not restrictions). Mundane origin re-added. |
+| Origins | power JSONs | All 9 vanilla origins rebalanced (no lethal effects, food prefs not restrictions). 4 custom origins added (Witch of Ink, Artificial Construct, Witherborn, Slimebodied). No Mundane, no Human. |
 
 ## Removed Mods
 

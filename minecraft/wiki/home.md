@@ -55,7 +55,7 @@ The canonical design reference for all modpack systems.
 | Origin layer cleanup | Implemented | Vanilla origins:human removed; 3-prompt flow: Origin (13 total) → Race (11 custom) → Class (10 custom) |
 | Class respec | Implemented | `class_respec.js` |
 | Equipment HP halving | Implemented | `equipment_hp_halving.js` |
-| FTB Quests | Not started | Quest book needs in-game GUI editor |
+| Heracles quest system | In progress | Proof of concept added, replacing FTB Quests |
 | Patchouli Codex | Working | 11 categories, 80 entries. Formatted, advancement-gated |
 | Book suppression | Working | `/clear` with NBT matching, 9 mod books suppressed |
 | Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
@@ -80,7 +80,7 @@ The canonical design reference for all modpack systems.
 | TF portal activator | Implemented | Changed from diamond to T1 boss token |
 | Abyss overhaul | Implemented | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating |
 | Server distribution | Implemented | Unified `iridescentserver.bat` (auto-install + launch + crash logging). Strip script, force-skip list, mod channel mismatch tracker (5 mods resolved). |
-| Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. Mundane origin re-added. |
+| Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. No Mundane, no Human. |
 | Race layer rebalance | Implemented | Elf/Dwarf/Orc/Halfling/Faefolk/Revenant stat adjustments, bug fixes, functional effects |
 | Origins expansion | Implemented | 4 new races (Demi-God, Ryu, Fallen Angel, Kirin) — 11 races total. 4 custom origins (Witch of Ink, Artificial Construct, Witherborn, Slimebodied) — 13 origins total. |
 | Class descriptions update | Implemented | All 10 class descriptions updated to match actual power implementations |

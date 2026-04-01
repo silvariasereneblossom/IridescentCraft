@@ -111,7 +111,7 @@ Notable fixes: Orc knockback double-apply bug fixed. Halfling food efficiency no
 
 ## Origin System (Overhauled 2026-03-17, expanded 2026-03-30)
 
-Uses 9 vanilla origins + 4 custom origins + Mundane (13 total, no Human). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional.
+Uses 9 vanilla origins + 4 custom origins = 13 total (no Mundane, no Human). The vanilla `origins:human` has been removed to avoid overlap with the custom Human race. Origins are ungated — early flight from Origins is intentional.
 
 **Design philosophy:** No lethal environmental effects. Food preferences, not restrictions. Tradeoffs should be interesting, not punishing. Elytra flight reserved for Elytrian. Each heart = 5% HP.
 
@@ -128,7 +128,6 @@ Uses 9 vanilla origins + 4 custom origins + Mundane (13 total, no Human). The va
 | Merling | Underwater breathing, aqua affinity | Suffocation→land discomfort after 5 min dry |
 | Phantom | Phasing, invisibility, half health, **Spectral Undeath** | Sunlight burn→weakness+slowness. Never dies — locks to 0.5 hearts + 5min debuffs instead (`phantom_undeath.js`) |
 | Shulk | Hardened Shell (50% death durability reduction), +20% mining speed | Extra inventory→Hardened Shell |
-| Mundane | No powers | Re-added as blank slate option |
 | Witch of Ink | Pure passive hyperscaler. 50% food reduction, feeds from paintings. Boss counter (200 max) scales damage/reduction/toughness. Blessing of Penthesilea capstone. Paint actives stripped. | Custom origin. Hyperscaling fantasy — weak early, monster late (`witch_of_ink_progression.js`) |
 | Artificial Construct | 25% food efficiency, iron eating (ingots + blocks + Regen III), iron upgrade ladder (1000→16000 iron, 5/5/5/10/10% per level, max +35%) | Custom origin. Hyperscaling fantasy — back-loaded power curve (`artificial_construct_progression.js`) |
 | Witherborn | DOT melee fighter. Wither on hit, hunger-based damage penalty. | Custom origin. Decay-themed attacker with sustain tradeoff |

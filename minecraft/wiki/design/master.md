@@ -371,7 +371,7 @@ Four layered systems, with the first three presented as sequential character cre
 
 | System | Role | When Active |
 |--------|------|-------------|
-| Origins++ (Origin layer) | Origin — 11 origins with unique abilities, tradeoffs, and playstyle modifiers (9 vanilla rebalanced + 2 custom + Mundane, no Human) | Character creation prompt 1 (Tier 1) |
+| Origins (Forge) + Iridescent Origins (Origin layer) | Origin — 13 origins with unique abilities (9 vanilla rebalanced + 4 custom, no Human) | Character creation prompt 1 (Tier 1) |
 | Origins (Race layer, icraft namespace) | Race — 11 custom races (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin) with innate stat modifiers and thematic abilities | Character creation prompt 2 (Tier 1) |
 | Iridescent Classes (Class layer, icraft namespace) | Class — 10 combat roles (Berserker, Samurai, Battlemage, Wanderer, Paladin, Vanguard, Ranger, Archmage, Artificer, Void Summoner) | Character creation prompt 3 (Tier 1) |
 | Pufferfish’s Skills (+ AStages bridge) | Skill Points — stat investment trees | Earned through progression, spent on upgrades |
@@ -381,7 +381,7 @@ JustLevelingFork works alongside Pufferfish’s Skills (different systems — JL
 
 Three-Prompt Character Creation
 On first join, players see three sequential selection screens:
-1. **Origin** (Origins++ defaults) — Species-level identity with unique abilities and tradeoffs (e.g., Avian gets flight but takes more damage; Blazeborn has fire immunity but water hurts)
+1. **Origin** (Origins (Forge) + Iridescent Origins) — Species-level identity with unique abilities and tradeoffs (e.g., Avian gets flight but takes more damage; Blazeborn has fire immunity but water hurts)
 2. **Race** (IridescentCraft custom) — One of 11 races providing stat modifiers and thematic flavor
 3. **Class** (IridescentCraft custom) — One of 10 combat roles defining playstyle, HP tier, and glass cannon status
 
@@ -641,8 +641,7 @@ JourneyMap, Jade, AppleSkin, Mouse Tweaks, Controlling, Inventory HUD+, Overflow
 | Quark | Ungated | Vanilla-friendly |
 | Disenchanting | Ungated | OP tools is the goal |
 | Enchantment Transfer / Merge Enchantments | Ungated | Supports power fantasy |
-| Origins / Origins++ | Ungated | Race selection, flight OK |
-| Gods and Heroes RPG Classes | Ungated | Class selection |
+| Origins (Forge) / Iridescent Origins | Ungated | Race selection, flight OK |
 | Flux Networks | Ungated | Server bootstrapping OK |
 | End Portal Recipe | 4 | Hard gated |
 | EnderChests / EnderStorage | 4 | Requires End materials |
@@ -866,7 +865,7 @@ Apotheosis, Apothic Attributes, JustLevelingFork, ScalingMobs, Champions Unoffic
 
 ### Player Systems
 
-Origins (+ Origins++, Origins Overhaul), Gods and Heroes RPG Classes, Pufferfish’s Skills (+ AStages bridge), JustLevelingFork, Relics, Artifacts, More Artifacts, Celestial Artifacts
+Origins (Forge), Iridescent Origins, Pufferfish’s Skills (+ AStages bridge), JustLevelingFork, Heracles (quest system), Relics, Artifacts, More Artifacts, Celestial Artifacts
 
 ### Dimensions
 
@@ -1668,8 +1667,8 @@ Recommended testing approach: 1. Test with a “standard” build (Samurai, mid-
 ## Part XII-B: Full Character Build System
 
 Three layers, distinct purposes:
-- **Race** (Origins++/Overhaul): Innate traits. What you ARE. Permanent. Mild tradeoffs.
-- **Class** (G&H RPG Classes, heavily modified): Combat role. What you DO. Respec-able (expensive). Strong tradeoffs.
+- **Race** (Iridescent Origins): Innate traits. What you ARE. Permanent. Mild tradeoffs.
+- **Class** (Iridescent Origins): Combat role. What you DO. Respec-able (expensive). Strong tradeoffs.
 - **Skills** (Pufferfish’s Skills): Stat investment. How you GROW. Pure bonuses, no drawbacks.
 
 Race + Class have tradeoffs. Skills are always positive.
@@ -2150,9 +2149,9 @@ Races modify secondary stats and provide unique utility. They do NOT modify HP% 
 What races CAN modify: - Movement speed (small, ±5-8%) - Hunger/saturation rates - Vision (night vision, underwater vision) - Environmental resistances (fire, cold, fall damage) - Size (via Pehkui if available) - Resource interaction (mining speed, farming yield) - Social (villager prices, mob aggro)
 What races should NOT modify: - Max HP % (class layer) - Damage % (class layer) - Equipment effectiveness (class layer) - Weapon affinities (class layer)
 
-Example Races (to be finalized based on Origins++/Overhaul available options)
+Example Races (11 implemented via Iridescent Origins)
 
-These are design targets — actual implementation depends on what Origins++/Origins Overhaul provides as a base to modify.
+These races are fully implemented in the `icraft` namespace as Origins power JSONs.
 
 Human
 Benefits: +10% XP gain, neutral villager prices, no environmental weaknesses
@@ -2227,12 +2226,12 @@ Technical Requirements
 
 Class System (G&H RPG Classes modification)
 All class definitions are Origins datapacks — fully customizable
-Attribute modifiers via Apothic Attributes (G&H dependency)
+Attribute modifiers via Apothic Attributes
 Active abilities via Origins power system (cooldown-based keybind)
 Weapon affinities: Use item-conditional attribute modifiers (Origins supports “when holding item with tag X”)
 “Half equipment HP” mechanic: Override max_health attribute contributions from equipment slots with a 0.5 multiplier for affected classes
 
-Race System (Origins++/Overhaul modification)
+Race System (Iridescent Origins)
 Race layer separate from class layer (Origins supports multiple layers)
 Environmental effects via Origins conditions
 Size modification via Pehkui integration (if available)
@@ -6190,7 +6189,7 @@ This means a fully Mythic’d player is roughly 1.3-1.4x as strong as a fresh Ti
 
 Concept
 
-The pack supports 10 classes, 7 races, and dozens of gear combinations. Endgame encourages players to experience multiple builds rather than perfecting a single one.
+The pack supports 10 classes, 11 races, and dozens of gear combinations. Endgame encourages players to experience multiple builds rather than perfecting a single one.
 
 Respec Incentives
 
@@ -8322,7 +8321,7 @@ fusion-1.2.7b-forge-mc1.19.2.jar.duplicate
 Wrong MC version (1.19.2). Remove.
 
 Origins appears twice
-Check if this is Origins + Origins Overhaul or an actual duplicate jar.
+Resolved — Origins (Forge) base mod + Iridescent Origins (custom content mod). Not a duplicate.
 
 These are in your list, weren’t part of design discussions, and don’t conflict with anything. They’re neutral additions.
 Ambiance/Aesthetic: AmbientSounds, Fallingleaves, Pretty Beaches, Pretty Rain, Sound Physics Remastered, Traveler’s Titles, Chat Heads, biomemusic mod, Beautiful Enchanted Books, Better Animations Collection, Prism, Highlighter
@@ -8353,5 +8352,5 @@ ADD (recommended)
 Fine as-is
 ~380
 
-Total systems designed: Tier progression, 9 dimensions, 10 classes, 7 races, 110 skill nodes, ~95 custom affixes, 25 custom enchantments, ~40 unique boss weapons, 5 endgame loops, 5 Ascension levels, full quest structure, 406 mods audited.
+Total systems designed: Tier progression, 9 dimensions, 10 classes, 11 races, 13 origins, 110 skill nodes, ~95 custom affixes, 25 custom enchantments, ~40 unique boss weapons, 5 endgame loops, 5 Ascension levels, full quest structure, 420+ mods audited.
 Estimated content: 150-200 hours to soft endpoint, 400-600 hours for completionist, 600-800+ hours with full Ascension.
