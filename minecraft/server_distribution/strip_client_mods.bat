@@ -55,6 +55,8 @@ call :delete "*CherryVillage*"
 REM --- Removed mods (SuperMartijn642 lib incompatibility) ---
 call :delete "*rechiseled*"
 call :delete "*supermartijn642*"
+call :delete "*connectedglass*"
+call :delete "*trashcans*"
 
 REM --- Client-side-only mods (side='client' in metadata) ---
 call :delete "*auudio*"
