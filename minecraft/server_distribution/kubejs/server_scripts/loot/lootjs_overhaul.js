@@ -56,16 +56,16 @@ LootJS.modifiers(event => {
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
   event
     .addEntityLootModifier('minecraft:pig')
-    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+    .removeLoot('@kubejs')
   event
     .addEntityLootModifier('minecraft:cow')
-    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+    .removeLoot('@kubejs')
   event
     .addEntityLootModifier('minecraft:sheep')
-    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+    .removeLoot('@kubejs')
   event
     .addEntityLootModifier('minecraft:chicken')
-    .removeLoot(Ingredient.custom(item => item.id.startsWith('kubejs:')))
+    .removeLoot('@kubejs')
 
   // ── RELICS CURATION ──
   // Remove relics that are too active/environmental/OP for gear-driven design
@@ -1250,15 +1250,9 @@ LootJS.modifiers(event => {
   villageChestPatterns.forEach(pattern => {
     event
       .addLootTableModifier(pattern)
-      // Remove any high-tier affix items that Apotheosis might inject
-      .removeLoot(Ingredient.custom(item => {
-        let nbt = item.nbt
-        if (!nbt) return false
-        let affixes = nbt.getString('affix_data')
-        if (!affixes) return false
-        // Remove epic+ rarity items from villages
-        return affixes.includes('epic') || affixes.includes('mythic') || affixes.includes('ancient')
-      }))
+      // Note: Apotheosis affix filtering requires NBT inspection which
+      // Ingredient.custom() can't do reliably in LootJS. Removed for now.
+      // High-tier affixes in villages are rare enough to not be game-breaking.
   })
 
   // =========================================================================
