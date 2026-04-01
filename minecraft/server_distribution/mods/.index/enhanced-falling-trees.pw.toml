@@ -1,0 +1,17 @@
+filename = 'efallingtrees-0.6.0-1.20+forge.jar'
+name = 'Enhanced Falling Trees'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20', '1.20.1', '1.20.1', '1.20.2', '1.20.2', '1.20.3', '1.20.3', '1.20.4', '1.20.4' ]
+x-prismlauncher-release-type = 'beta'
+x-prismlauncher-version-number = '0.6.0-1.20+forge'
+
+[download]
+hash = '5e0ea69ab57f90f13add3b940859f88c9cf516b52322cf34bd5d6b9dd5ebff6b5cfdaa24a92c990d157a70b8d4e72ec86b2503a69499888d3ae42c58ab224315'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/UJMd74i4/versions/rgO0bdwf/efallingtrees-0.6.0-1.20%2Bforge.jar'
+
+[update.modrinth]
+mod-id = 'UJMd74i4'
+version = 'rgO0bdwf'

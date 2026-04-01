@@ -24,10 +24,16 @@ CYAN='\033[36m'
 GRAY='\033[90m'
 RESET='\033[0m'
 
+TF_BLUE='\033[38;2;91;206;250m'
+TF_PINK='\033[38;2;245;169;184m'
+TF_WHITE='\033[38;2;255;255;255m'
+
 echo ""
-echo -e "${CYAN}  ==========================================${RESET}"
-echo -e "${CYAN}  IridescentCraft Mod Updater${RESET}"
-echo -e "${CYAN}  ==========================================${RESET}"
+echo -e "${TF_BLUE}  ==========================================${RESET}"
+echo -e "${TF_PINK}  IridescentCraft Mod Updater${RESET}"
+echo -e "${TF_WHITE}  Server Utility${RESET}"
+echo -e "${TF_PINK}  Iridescent Edition${RESET}"
+echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo ""
 
 if [ ! -d "$INDEX_DIR" ]; then
@@ -36,7 +42,7 @@ if [ ! -d "$INDEX_DIR" ]; then
 fi
 
 # Force-skip list
-FORCE_SKIP="embeddium|oculus|immediatelyfast|rubidium-extra|kubejsoffline|light-overlay|equipment-compare|chat_heads|BetterAnimations|transmog|probejs|irons_spells_js|gh_classes|cherryvillage|rechiseled|supermartijn642|connectedglass|trashcans"
+FORCE_SKIP="embeddium|oculus|immediatelyfast|rubidium-extra|kubejsoffline|light-overlay|equipment-compare|chat_heads|BetterAnimations|transmog|probejs|irons_spells_js|gh_classes|cherryvillage|rechiseled|supermartijn642"
 
 # Custom JARs that aren't in TOMLs
 CUSTOM_JARS="iridescent_classes.jar|iridescent_codex_data.jar|mek_walkable_cables-1.0.1.jar|offlineskins-1.20.1-v1.jar"

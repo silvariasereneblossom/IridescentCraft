@@ -4,13 +4,14 @@ side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = 'relics-1.20.1-0.8.0.13.jar'
 
 [download]
-hash = 'b3fae37b4677c9b3488b9c3059abe428c0e0b066e395120ed7936dc70fe7dd5a828c0c663d17c3a8c59fb5d5316b07427a6afe2fac39de98a12430101d25a37a'
-hash-format = 'sha512'
-mode = 'url'
-url = 'https://cdn.modrinth.com/data/OCJRPujW/versions/C7tM1LJR/relics-1.20.1-0.8.0.13.jar'
+hash = '940358d190780a9a59a69dd7e75a5e7cf07e4209'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
 
-[update.modrinth]
-mod-id = 'OCJRPujW'
-version = 'C7tM1LJR'
+[update.curseforge]
+file-id = 7708970
+project-id = 445274

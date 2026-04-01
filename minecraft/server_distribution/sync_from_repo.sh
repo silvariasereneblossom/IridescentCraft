@@ -25,10 +25,17 @@ if [ "$(realpath "$REPO")" = "$(realpath "$LOCAL")" ]; then
     exit 0
 fi
 
+TF_BLUE='\033[38;2;91;206;250m'
+TF_PINK='\033[38;2;245;169;184m'
+TF_WHITE='\033[38;2;255;255;255m'
+RESET='\033[0m'
+
 echo ""
-echo "=========================================="
-echo "  IridescentCraft Server Sync"
-echo "=========================================="
+echo -e "${TF_BLUE}  ==========================================${RESET}"
+echo -e "${TF_PINK}  IridescentCraft Server Sync${RESET}"
+echo -e "${TF_WHITE}  Repo to Local Server${RESET}"
+echo -e "${TF_PINK}  Iridescent Edition${RESET}"
+echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo ""
 echo "  Source: $REPO"
 echo "  Dest:   $LOCAL"

@@ -2,8 +2,9 @@ filename = 'progressivebosses-4.3.12.jar'
 name = 'Progressive Bosses'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '4.3.12'
 
 [download]
 hash = 'd3d2c411775488226668f369667e600adc877ab35ab862fa9209a7c460428fadadd9459eed69e3ba0ab33735a7f6123dba016bc8e9b7fcd807848fdea7ccad28'
