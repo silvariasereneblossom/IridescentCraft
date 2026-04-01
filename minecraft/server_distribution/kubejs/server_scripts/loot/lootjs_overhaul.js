@@ -882,23 +882,21 @@ LootJS.modifiers(event => {
   ]
 
   // Apply food reduction in Overworld chest loot.
-  // Uses modifyLoot with ItemFilter.custom to match each food item AFTER
-  // the base loot table generates them. 75% chance to remove, survivors
-  // capped to stack size 1.
+  // Uses a single modifier that removes all listed foods, then adds back
+  // each at 25% chance capped to 1. removeLoot with string item ID is
+  // the most basic LootJS API and should work reliably.
+  let foodMod = event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+
   reducedFoods.forEach(food => {
-    event
-      .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:overworld')
-      .modifyLoot(ItemFilter.custom(itemStack => {
-        return itemStack.id == food
-      }), itemStack => {
-        if (Math.random() < 0.75) {
-          itemStack.setCount(0)
-          return itemStack
-        }
-        itemStack.setCount(1)
-        return itemStack
-      })
+    foodMod.removeLoot(food)
+  })
+
+  reducedFoods.forEach(food => {
+    foodMod.addLoot(
+      LootEntry.of(food).limitCount([1, 1]).when(c => c.randomChance(0.20))
+    )
   })
 
   // --- Remove modded foods from structure chests (Overworld only) ---
