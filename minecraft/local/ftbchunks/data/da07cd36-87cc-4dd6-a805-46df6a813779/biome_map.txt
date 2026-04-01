@@ -1,0 +1,4 @@
+#556 minecraft:beach
+#47F biomesoplenty:mediterranean_forest
+#5FF minecraft:river
+#67B minecraft:savanna
