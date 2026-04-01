@@ -109,10 +109,8 @@ LootJS.modifiers(event => {
   // Remove T4-gated mod items from ALL chest loot (shouldn't appear before T4)
   event
     .addLootTypeModifier(LootType.CHEST)
-    .removeLoot(Ingredient.custom(item => {
-      let id = item.id
-      return id.startsWith('rftoolsdim:') || id.startsWith('mahoutsukai:')
-    }))
+    .removeLoot('@rftoolsdim')
+    .removeLoot('@mahoutsukai')
 
   // First remove all vanilla enchanted books globally
   event
