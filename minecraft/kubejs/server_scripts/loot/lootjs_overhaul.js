@@ -783,22 +783,10 @@ LootJS.modifiers(event => {
   // for a random curio from any non-village Overworld structure chest.
   // =========================================================================
 
-  // ~10% cumulative chance for a curio from non-village overworld chests
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
-    .addLoot(LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.01)))
-    .addLoot(LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.005)))
-    .addLoot(LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.005)))
-    .addLoot(LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:charm_of_sinking').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:digging_claws').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:antidote_vessel').when(c => c.randomChance(0.005)))
+  // Artifact drops removed from generic Overworld chests — the Artifacts mod
+  // already injects its own drops natively. Adding more on top made them
+  // appear in every other chest. Towers of the Wild have their own boosted
+  // rates (Section 8). Village smiths have a small chance (Section above).
 
   // =========================================================================
   // SECTION 5A3: IRON'S SPELLS TIERED LOOT
