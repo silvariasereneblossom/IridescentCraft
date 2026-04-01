@@ -24,11 +24,17 @@ FORGE_INSTALLER_URL="https://maven.minecraftforge.net/net/minecraftforge/forge/$
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
-echo "=========================================="
-echo "  IridescentCraft Server Installer"
-echo "  Forge ${FORGE_VERSION}"
-echo "  Standalone Edition"
-echo "=========================================="
+TF_BLUE='\033[38;2;91;206;250m'
+TF_PINK='\033[38;2;245;169;184m'
+TF_WHITE='\033[38;2;255;255;255m'
+RESET='\033[0m'
+
+echo ""
+echo -e "${TF_BLUE}  ==========================================${RESET}"
+echo -e "${TF_PINK}  IridescentCraft Server Installer${RESET}"
+echo -e "${TF_WHITE}  Forge ${FORGE_VERSION}  ~450 mods${RESET}"
+echo -e "${TF_PINK}  Iridescent Edition${RESET}"
+echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo ""
 
 # -------------------------------------------------------------------

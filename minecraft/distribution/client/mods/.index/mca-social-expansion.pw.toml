@@ -1,17 +1,17 @@
-filename = 'offlineskins-1.20.1-v1.jar'
-name = 'OfflineSkins'
+filename = 'mca-social-expansion-0.2.jar'
+name = 'MCA Social Expansion'
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
-x-prismlauncher-version-number = 'offlineskins-1.20.1-v1.jar'
+x-prismlauncher-version-number = 'mca-social-expansion-0.2.jar'
 
 [download]
-hash = 'ee0166b3ec3878963dec8d840dc86e3faf53f11a'
+hash = 'e8052c698d71472495212ead9f448005ebe45737'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
 url = ''
 
 [update.curseforge]
-file-id = 4592954
-project-id = 241420
+file-id = 7699286
+project-id = 1471285

@@ -11,10 +11,15 @@ if exist "%~dp0install.ps1" (
     exit /b
 )
 
-echo ==========================================
-echo   IridescentCraft Client Installer
-echo   Downloading installer script...
-echo ==========================================
+powershell -Command ^
+  "Add-Type -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern bool SetConsoleMode(IntPtr h,int m);[DllImport(\"kernel32.dll\")]public static extern IntPtr GetStdHandle(int h);' -Name W -Namespace C;" ^
+  "$h=[C.W]::GetStdHandle(-11);[C.W]::SetConsoleMode($h,7)|Out-Null;" ^
+  "$B=\"`e[38;2;91;206;250m\";$P=\"`e[38;2;245;169;184m\";$W=\"`e[38;2;255;255;255m\";$R=\"`e[0m\";" ^
+  "[Console]::Write(\"${B}  ==========================================${R}`n\");" ^
+  "[Console]::Write(\"${P}  IridescentCraft Client Installer${R}`n\");" ^
+  "[Console]::Write(\"${W}  Forge 1.20.1-47.4.6  ~450 mods${R}`n\");" ^
+  "[Console]::Write(\"${P}  Iridescent Edition${R}`n\");" ^
+  "[Console]::Write(\"${B}  ==========================================${R}`n\")"
 echo.
 
 REM Delete ALL old cached ps1 files

@@ -88,9 +88,7 @@ $forceSkip = @(
     "gh_classes",          # Disabled — conflicts with icraft class layer
     "cherryvillage",       # Removed — unregistered worldgen feature crash
     "rechiseled",          # Removed — SuperMartijn642 Core Lib incompatibility
-    "supermartijn642",     # Lib dependency, removed
-    "connectedglass",     # Depends on SuperMartijn642, removed
-    "trashcans"           # Depends on SuperMartijn642, removed
+    "supermartijn642"      # Lib dependency, removed
 )
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"

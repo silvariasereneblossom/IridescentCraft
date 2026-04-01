@@ -26,39 +26,19 @@ TF_BLUE='\033[38;2;91;206;250m'
 TF_PINK='\033[38;2;245;169;184m'
 TF_WHITE='\033[38;2;255;255;255m'
 
-# Rainbow colors
-RED='\033[0;31m'
-ORANGE='\033[0;33m'
-YELLOW='\033[1;33m'
+RESET='\033[0m'
 GREEN='\033[0;32m'
 CYAN='\033[0;36m'
-BLUE='\033[0;34m'
-MAGENTA='\033[0;35m'
-WHITE='\033[1;37m'
+RED='\033[0;31m'
+YELLOW='\033[1;33m'
 NC='\033[0m'
 
-# Rainbow print function — cycles colors per non-space character
-rainbow_print() {
-    local text="$1"
-    local colors=("$RED" "$ORANGE" "$YELLOW" "$GREEN" "$CYAN" "$BLUE" "$MAGENTA")
-    local i=0
-    for (( j=0; j<${#text}; j++ )); do
-        local char="${text:$j:1}"
-        if [ "$char" = " " ]; then
-            printf " "
-        else
-            printf "${colors[$((i % ${#colors[@]}))]}%s" "$char"
-            i=$((i + 1))
-        fi
-    done
-    printf "${NC}\n"
-}
-
 echo ""
-echo -e "${CYAN}==========================================${NC}"
-rainbow_print "  IridescentCraft Server"
-rainbow_print "  Forge ${FORGE_VERSION}"
-echo -e "${CYAN}==========================================${NC}"
+echo -e "${TF_BLUE}  ==========================================${RESET}"
+echo -e "${TF_PINK}  IridescentCraft Server${RESET}"
+echo -e "${TF_WHITE}  Forge ${FORGE_VERSION}  ~450 mods${RESET}"
+echo -e "${TF_PINK}  Iridescent Edition${RESET}"
+echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo ""
 
 # -------------------------------------------------------------------
