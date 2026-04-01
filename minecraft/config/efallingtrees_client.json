@@ -1,0 +1,30 @@
+{
+  "invertCrouchMining": false,
+  "soundSettings": {
+    "enabled": true,
+    "startVolume": 0.7,
+    "endVolume": 0.7
+  },
+  "animation": {
+    "treeProperties": {
+      "fallAnimLength": 2.5,
+      "bounceAngleHeight": 10.0,
+      "bounceAnimLength": 1.0
+    },
+    "bambooProperties": {
+      "fallAnimLength": 1.0,
+      "bounceAngleHeight": 4.0,
+      "bounceAnimLength": 0.3
+    },
+    "cactusProperties": {
+      "fallAnimLength": 1.5,
+      "bounceAngleHeight": 8.0,
+      "bounceAnimLength": 0.5
+    },
+    "chorusProperties": {
+      "fallAnimLength": 2.0,
+      "bounceAngleHeight": 10.0,
+      "bounceAnimLength": 1.0
+    }
+  }
+}

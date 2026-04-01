@@ -1,0 +1,65 @@
+{
+  "isCrouchMiningAllowed": true,
+  "multiplyToolDamage": true,
+  "multiplyFoodExhaustion": true,
+  "leafParticleLifeTimeLength": 1.0,
+  "leafParticleCount": 5,
+  "treeLifetimeLength": 4.0,
+  "cactusLifetimeLength": 2.5,
+  "bambooLifetimeLength": 2.0,
+  "chorusLifetimeLength": 4.0,
+  "filter": {
+    "log": {
+      "whitelistedBlockTags": [
+        "minecraft:logs"
+      ],
+      "whitelistedBlocks": [],
+      "blacklistedBlocks": []
+    },
+    "leaves": {
+      "whitelistedBlockTags": [
+        "minecraft:leaves"
+      ],
+      "whitelistedBlocks": [],
+      "blacklistedBlocks": []
+    }
+  },
+  "limitations": {
+    "maxLeavesDistance": 7,
+    "maxTreeDistance": 7,
+    "treeFallRequirements": {
+      "maxAmountType": "BASE_BLOCK_AMOUNT",
+      "maxAmount": 200,
+      "minTreeHeight": 2,
+      "onlyRequiredTool": false
+    },
+    "bambooFallRequirements": {
+      "maxAmountType": "BASE_BLOCK_AMOUNT",
+      "maxAmount": 200,
+      "minTreeHeight": 2,
+      "onlyRequiredTool": false
+    },
+    "chorusFallRequirements": {
+      "maxAmountType": "BASE_BLOCK_AMOUNT",
+      "maxAmount": 200,
+      "minTreeHeight": 2,
+      "onlyRequiredTool": false
+    },
+    "cactusFallRequirements": {
+      "maxAmountType": "BASE_BLOCK_AMOUNT",
+      "maxAmount": 200,
+      "minTreeHeight": 2,
+      "onlyRequiredTool": false
+    }
+  },
+  "features": {
+    "disableCactusTrees": false,
+    "disableBambooTrees": false,
+    "disableChorusTrees": true
+  },
+  "treeBreaking": {
+    "enableBreakingSpeedModification": true,
+    "axeSpeedMultiplier": 80,
+    "noAxeSpeedMultiplier": 30
+  }
+}
