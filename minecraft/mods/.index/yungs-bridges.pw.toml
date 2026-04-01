@@ -1,9 +1,10 @@
 filename = 'YungsBridges-1.20-Forge-4.0.3.jar'
-name = 'YUNG's Bridges'
-side = 'both'
+name = "YUNG's Bridges"
+side = ''
 x-prismlauncher-loaders = [ 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20', '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '1.20-Forge-4.0.3'
 
 [download]
 hash = '2705fbaeb62115c5604719d68756f723a974ea9a62a4194771ebbea877ee715de72cefe3b01ec0d318d4d6fe2e9de87e6a7122ef21ee54d48153e84cb7bae0c6'

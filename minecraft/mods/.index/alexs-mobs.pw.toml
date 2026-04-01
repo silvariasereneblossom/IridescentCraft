@@ -1,9 +1,10 @@
 filename = 'alexsmobs-1.22.9.jar'
-name = 'Alex's Mobs'
-side = 'both'
+name = "Alex's Mobs"
+side = ''
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '1.22.9'
 
 [download]
 hash = 'b50280057926d750f9ffbf6a8df36deb37529356895f6bf59f25d272ecf69afccec65ec1a5c3a8bfad24f9475c15b93c5ec4666447b1fce26a90c41445bbfb04'

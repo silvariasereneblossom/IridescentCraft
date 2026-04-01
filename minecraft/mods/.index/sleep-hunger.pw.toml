@@ -1,0 +1,17 @@
+filename = 'sleep_hunger-1.0.4-neoforge-1.21.1.jar'
+name = 'Sleep Hunger'
+side = 'server'
+x-prismlauncher-loaders = [ 'neoforge' ]
+x-prismlauncher-mc-versions = [ '1.21.1' ]
+x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = 'sleep_hunger-1.0.4-neoforge-1.21.1.jar'
+
+[download]
+hash = '70e2144162de2cac07fcd8146b5b8c590858ef3a'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7232901
+project-id = 1246337

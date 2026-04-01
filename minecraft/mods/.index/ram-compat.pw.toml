@@ -1,9 +1,10 @@
 filename = 'ramcompat-1.20.1-0.1.4.jar'
-name = 'Relics: Alex's Mobs Compat'
-side = 'both'
+name = "Relics: Alex's Mobs Compat"
+side = ''
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '0.1.4'
 
 [download]
 hash = '524bacc325aa9280ce47213982df7a3c6c375f6c1de01b99f2d20427bcb6f3fdb7058e634b4ba79a1a58cebe3f93b5cb2f47648898f7b55725ea6bee9650480a'

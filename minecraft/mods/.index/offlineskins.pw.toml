@@ -1,0 +1,17 @@
+filename = 'offlineskins-1.20.1-v1.jar'
+name = 'OfflineSkins'
+side = ''
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = 'offlineskins-1.20.1-v1.jar'
+
+[download]
+hash = 'ee0166b3ec3878963dec8d840dc86e3faf53f11a'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 4592954
+project-id = 241420
