@@ -1,0 +1,9 @@
+
+[mood_audio]
+	#Mute villager mood vocalizations tied to laughter/celebration and crying.
+	muteMoodVocalizations = true
+
+[catalog]
+	#Use the Townstead extended catalog with kitchen building tiers. Disable to use MCA's original catalog.
+	useTownsteadCatalog = true
+
