@@ -882,15 +882,16 @@ LootJS.modifiers(event => {
   ]
 
   // Apply food reduction in Overworld chest loot.
-  // Uses modifyLoot per food type — this intercepts items AFTER the base
-  // loot table generates them. Each food item has a 75% chance of being
-  // removed entirely, and surviving items are capped to stack size 1.
-  // With 17 food types, a chest with 5 food slots averages ~1-2 food items.
+  // Uses modifyLoot with ItemFilter.custom to match each food item AFTER
+  // the base loot table generates them. 75% chance to remove, survivors
+  // capped to stack size 1.
   reducedFoods.forEach(food => {
     event
       .addLootTypeModifier(LootType.CHEST)
       .anyDimension('minecraft:overworld')
-      .modifyLoot(Ingredient.of(food), itemStack => {
+      .modifyLoot(ItemFilter.custom(itemStack => {
+        return itemStack.id == food
+      }), itemStack => {
         if (Math.random() < 0.75) {
           itemStack.setCount(0)
           return itemStack
