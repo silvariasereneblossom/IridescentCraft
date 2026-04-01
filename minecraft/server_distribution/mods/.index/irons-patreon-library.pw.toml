@@ -1,0 +1,12 @@
+filename = 'irons_patreon_lib-1.20.1-1.0.1.jar'
+name = "Iron's Patreon Library"
+side = 'both'
+
+[download]
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7830104
+project-id = 1492763
