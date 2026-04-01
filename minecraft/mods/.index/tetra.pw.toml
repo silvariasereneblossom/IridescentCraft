@@ -1,13 +1,17 @@
-filename = 'tetra-1.20.1-6.12.0.jar'
+filename = 'tetra-1.20.1-6.13.0.jar'
 name = 'tetra'
 side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '6.13.0'
 
 [download]
-hash = 'c2fecd9f8b0e87a3439354f4faea2e1caa1b92d3a55a7a62a7bfede0b0a122e4dc15b7abb16a5c5f33da2c8bba2b49b22e1ce5f1f6dced6ac6fb9e4e48f60f1f'
+hash = 'b78a7637f12d68289bdab9286f37ad1ebbf1394c762ddc83b48cd4e51d8380dfaaf594ee029ca5c782a1217b5a4b6b634215d436f15427dfb5edcdea49715469'
 hash-format = 'sha512'
 mode = 'url'
-url = 'https://cdn.modrinth.com/data/YP9DjOvN/versions/XYHIbaNN/tetra-1.20.1-6.12.0.jar'
+url = 'https://cdn.modrinth.com/data/YP9DjOvN/versions/kgQ4CZ6x/tetra-1.20.1-6.13.0.jar'
 
 [update.modrinth]
 mod-id = 'YP9DjOvN'
-version = 'XYHIbaNN'
+version = 'kgQ4CZ6x'
