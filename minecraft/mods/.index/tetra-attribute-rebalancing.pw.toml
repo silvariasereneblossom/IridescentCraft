@@ -1,0 +1,12 @@
+filename = 'Tetra Attribute Rebalancing-6.9.0-1.0.0-PrecisionFix.jar'
+name = 'Tetra Attribute Rebalancing'
+side = 'both'
+
+[download]
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5453476
+project-id = 1035890
