@@ -1,0 +1,82 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 4.0,
+        "max": 6.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "create:red_seat",
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:pink_stool",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:light_gray_stool",
+          "weight": 8
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:gray_stool",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:green_stool",
+          "weight": 6
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:yellow_stool",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:red_stool",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:item_frame",
+          "weight": 5,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:painting",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "weight": 3,
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{title:\"Showroom Notes\",author:\"Pella Reed\",pages:['{\"text\":\"A chair is bought with the eye before it is trusted by the back.\"}','{\"text\":\"Stools sell fastest to workshops and kitchens. Seats sell to folk who want a room to feel finished.\"}','{\"text\":\"Never stack the polished pieces near the entry. Dust travels faster than customers.\"}']}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,148 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 5.0,
+        "max": 8.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "quark:red_corundum",
+          "weight": 9,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:red_corundum_cluster",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:orange_corundum",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:orange_corundum_cluster",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:yellow_corundum",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:yellow_corundum_cluster",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:green_corundum",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:green_corundum_cluster",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:blue_corundum",
+          "weight": 8,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:blue_corundum_cluster",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:indigo_corundum",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:indigo_corundum_cluster",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:violet_corundum",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "quark:violet_corundum_cluster",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:amethyst_shard",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{title:\"On Crystals\",author:\"Sel the Polisher\",pages:['{\"text\":\"Common folk buy color before quality. Red sells first, blue sells steady, and violet sits until someone falls in love with it.\"}','{\"text\":\"Clusters fetch more attention than loose pieces. Leave some stone on them and call it natural beauty.\"}','{\"text\":\"Do not display everything in direct sun. Some stones lose wonder when seen too plainly.\"}']}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

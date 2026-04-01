@@ -1,0 +1,19 @@
+{
+    "pools": [
+        {
+            "rolls": 1,
+            "entries": [
+                {
+                    "type": "minecraft:item",
+                    "name": "minecraft:potion",
+                    "functions": [
+                        {
+                            "function": "minecraft:set_nbt",
+                            "tag": "{Potion:\"minecraft:water\",CustomPotionColor:424462,CustomPotionEffects:[{Id:31,Duration:1200}],custom_potion_effects:[{id:\"minecraft:bad_omen\",duration:1200}],display:{Name:'[{\"text\":\"Potion of Bad Omen\",\"italic\":false}]'}}"
+                        }
+                    ]
+                }
+            ]
+        }
+    ]
+}

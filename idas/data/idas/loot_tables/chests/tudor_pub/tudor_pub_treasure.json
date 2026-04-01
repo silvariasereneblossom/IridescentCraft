@@ -1,0 +1,73 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_nugget",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 15.0,
+                "max": 20.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald",
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "type": "minecraft:uniform",
+                "min": 2.0,
+                "max": 6.0
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 4.0,
+        "max": 7.0
+      },
+      "entries": [
+        { "type": "minecraft:item", "name": "create:zinc_ingot", "weight": 10 },
+        { "type": "minecraft:item", "name": "minecraft:copper_ingot", "weight": 12 },
+        { "type": "minecraft:item", "name": "minecraft:iron_ingot", "weight": 8 },
+        { "type": "minecraft:item", "name": "create:andesite_alloy", "weight": 6 },
+        { "type": "minecraft:item", "name": "create:cardboard", "weight": 8 },
+        { "type": "minecraft:item", "name": "create:clipboard", "weight": 5 },
+        { "type": "minecraft:item", "name": "create:experience_nugget", "weight": 5 },
+        { "type": "minecraft:item", "name": "supplementaries:goblet", "weight": 5 },
+        { "type": "minecraft:item", "name": "supplementaries:sconce", "weight": 3 },
+
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{title:\"Ledger of Tabs\",author:\"Edwin Pike\",pages:['{\"text\":\"Tabs owed:\\\\nHarlan - 4 mugs\\\\nMira - paid\\\\nOld Fen - 2 ciders\\\\nMason twins - never again.\"}','{\"text\":\"Business steady. Repaired copper kettle again.\"}','{\"text\":\"Money comes and goes faster than ale.\"}']}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

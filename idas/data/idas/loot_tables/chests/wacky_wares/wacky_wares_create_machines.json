@@ -1,0 +1,110 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "type": "minecraft:uniform",
+        "min": 5.0,
+        "max": 7.0
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "create:andesite_alloy",
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 4.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:shaft",
+          "weight": 12,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 5.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:cogwheel",
+          "weight": 10,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:large_cogwheel",
+          "weight": 7,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 2.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:andesite_casing",
+          "weight": 9,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": { "type": "minecraft:uniform", "min": 1.0, "max": 3.0 }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:whisk",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:mechanical_saw",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:millstone",
+          "weight": 2
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:hand_crank",
+          "weight": 3
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:wrench",
+          "weight": 4
+        },
+        {
+          "type": "minecraft:item",
+          "name": "create:clipboard",
+          "weight": 5
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:written_book",
+          "weight": 4,
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{title:\"Kinetic Basics\",author:\"Orin Vale\",pages:['{\"text\":\"Start simple: shafts, cogwheels, casing, and a hand crank if all else fails.\"}','{\"text\":\"Do not chase fancy metal before learning the humble machine. A millstone used well earns more than a complicated contraption built poorly.\"}','{\"text\":\"If it spins and screams, slow it down. If it spins and works, pretend you meant it that way.\"}']}"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}
