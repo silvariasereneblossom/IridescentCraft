@@ -783,22 +783,10 @@ LootJS.modifiers(event => {
   // for a random curio from any non-village Overworld structure chest.
   // =========================================================================
 
-  // ~10% cumulative chance for a curio from non-village overworld chests
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
-    .addLoot(LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.01)))
-    .addLoot(LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.005)))
-    .addLoot(LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.005)))
-    .addLoot(LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:charm_of_sinking').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:digging_claws').when(c => c.randomChance(0.008)))
-    .addLoot(LootEntry.of('artifacts:antidote_vessel').when(c => c.randomChance(0.005)))
+  // Artifact drops removed from generic Overworld chests — the Artifacts mod
+  // already injects its own drops natively. Adding more on top made them
+  // appear in every other chest. Towers of the Wild have their own boosted
+  // rates (Section 8). Village smiths have a small chance (Section above).
 
   // =========================================================================
   // SECTION 5A3: IRON'S SPELLS TIERED LOOT
@@ -812,7 +800,7 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.08)))
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').customFunction({function: 'irons_spellbooks:randomize_spell', quality: {min: 0.0, max: 0.3}}).when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.05)))
@@ -823,7 +811,7 @@ LootJS.modifiers(event => {
     .anyDimension('twilightforest:twilight_forest',
       'aether:the_aether', 'deep_aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
-    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.10)))
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').customFunction({function: 'irons_spellbooks:randomize_spell', quality: {min: 0.2, max: 0.5}}).when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.05)))
@@ -832,7 +820,7 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
-    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.12)))
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').customFunction({function: 'irons_spellbooks:randomize_spell', quality: {min: 0.3, max: 0.7}}).when(c => c.randomChance(0.12)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.04)))
@@ -841,7 +829,7 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
-    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.15)))
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').customFunction({function: 'irons_spellbooks:randomize_spell', quality: {min: 0.5, max: 1.0}}).when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:netherite_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:epic_ink').when(c => c.randomChance(0.03)))
@@ -1225,9 +1213,9 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:arrow')
     .removeLoot('minecraft:spectral_arrow')
     // Guaranteed magic scroll (mage exploration incentive)
-    .addLoot(LootEntry.of('irons_spellbooks:scroll'))
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').customFunction({function: 'irons_spellbooks:randomize_spell', quality: {min: 0.0, max: 0.4}}))
     // 40% chance of a second scroll
-    .addLoot(LootEntry.of('irons_spellbooks:scroll').when(c => c.randomChance(0.40)))
+    .addLoot(LootEntry.of('irons_spellbooks:scroll').customFunction({function: 'irons_spellbooks:randomize_spell', quality: {min: 0.0, max: 0.4}}).when(c => c.randomChance(0.40)))
     // 15% chance of common ink
     .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
     // 8% chance of copper spell book (T1 magic gear)
