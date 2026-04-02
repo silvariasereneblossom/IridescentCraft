@@ -1,0 +1,16 @@
+#05B minecraft:bamboo_jungle
+#556 minecraft:beach
+#008 minecraft:desert
+#266 biomesoplenty:floodplain
+#4B0 minecraft:jungle
+#79A minecraft:lukewarm_ocean
+#498 minecraft:lush_caves
+#3B0 biomesoplenty:lush_desert
+#6C1 biomesoplenty:lush_savanna
+#4F1 minecraft:ocean
+#68B biomesoplenty:rainforest
+#5FF minecraft:river
+#5F6 biomesoplenty:rocky_rainforest
+#3AF minecraft:sparse_jungle
+#30B biomesoplenty:volcanic_plains
+#5DF biomesoplenty:wasteland

@@ -1,5 +1,5 @@
 {
-  "SaveBossKiller": true,
-  "isEnabledStatistics": true,
+  "saveBossKillerName": true,
+  "statisticsEnabled": true,
   "asyncLogic": true
 }

@@ -1,0 +1,4 @@
+#010 minecraft:forest
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie

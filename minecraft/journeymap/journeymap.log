@@ -1,12 +1,12 @@
-[19:29:52] [Render thread/INFO] [JMLogger] JourneyMap log initialized.
-[19:29:52] [Render thread/INFO] [JourneymapClient] initialize ENTER
-[19:29:52] [Render thread/INFO] [ClientAPI] [ClientAPI] built with JourneyMap API 1.9-SNAPSHOT
-[19:29:52] [Render thread/INFO] [PluginHelper] Initializing plugins with Client API: journeymap.client.api.impl.ClientAPI
-[19:29:52] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: com.tom.createores.jm.JMPlugin
-[19:29:52] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: net.blay09.mods.waystones.compat.JourneyMapIntegration
-[19:29:52] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: me.frankv.jmi.JMIJourneyMapPlugin
-[19:29:52] [Render thread/DEBUG] [JourneymapClient] Loading and Generating Journeymap configs
-[19:29:52] [Render thread/INFO] [?] Version: JourneyMap 1.20.1-5.10.3, built with forge 1.20.1-47.2.30
+[19:39:27] [Render thread/INFO] [JMLogger] JourneyMap log initialized.
+[19:39:27] [Render thread/INFO] [JourneymapClient] initialize ENTER
+[19:39:27] [Render thread/INFO] [ClientAPI] [ClientAPI] built with JourneyMap API 1.9-SNAPSHOT
+[19:39:27] [Render thread/INFO] [PluginHelper] Initializing plugins with Client API: journeymap.client.api.impl.ClientAPI
+[19:39:27] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: com.tom.createores.jm.JMPlugin
+[19:39:27] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: net.blay09.mods.waystones.compat.JourneyMapIntegration
+[19:39:27] [Render thread/INFO] [PluginHelper] Initialized IClientPlugin: me.frankv.jmi.JMIJourneyMapPlugin
+[19:39:27] [Render thread/DEBUG] [JourneymapClient] Loading and Generating Journeymap configs
+[19:39:28] [Render thread/INFO] [?] Version: JourneyMap 1.20.1-5.10.3, built with forge 1.20.1-47.2.30
 forge: 47.4.6
 Environment: os.name, os.arch, java.version, user.country, user.language=null, game language=en_us, locale=en_us
 Features: 
@@ -24,19 +24,266 @@ FullMapProperties{state=Valid, file=journeymap.fullmap.config, configVersion=5.1
 WaypointProperties{state=Valid, file=journeymap.waypoint.config, configVersion=5.10.3, autoRemoveDeathpointDistance=2, dateFormat=MM-dd-yyyy, autoRemoveDeathpoints=false, fullscreenDoubleClickToCreate=true, managerDimensionFocus=false, minDistance=4, boldLabel=false, textureSmall=true, showDeathpointlabel=true, beaconEnabled=true, createDeathpoints=true, showName=true, disableStrikeThrough=false, maxDistance=0, autoHideLabel=true, autoRemoveTempWaypoints=2, teleportCommand=/tp {name} {x} {y} {z}, showStaticBeam=true, shaderBeacon=false, timeFormat=HH:mm:ss, showDeviationLabel=false, showDistance=true, showRotatingBeam=true, fontScale=2.0, showTexture=true, managerEnabled=true}
 WebMapProperties{state=Valid, file=journeymap.webmap.config, configVersion=5.10.3, port=8080, enabled=false}
 CoreProperties{state=Valid, file=journeymap.core.config, configVersion=5.10.3, verboseColorPalette=false, maxPlayersData=32, mapSurfaceAboveCaves=true, dataCachingEnabled=true, optionsManagerViewed=5.10.3, announceMod=true, colorPassive=#bbbbbb, mapBlendWater=false, renderDistanceSurfaceMax=0, seedId=false, radarVerticalDistance=16, mapBlendGrass=true, recordCacheStats=false, hideSneakingEntities=true, revealShape=jm.minimap.shape_circle, mapBiome=true, alwaysMapSurface=false, colorVillager=#88e188, mapPlants=false, colorPet=#0077ff, radarLateralDistance=64, mapBathymetry=false, mapCrops=true, maxMobsData=32, mapPlantShadows=false, alwaysMapCaves=false, checkUpdates=true, mapBlendFoliage=true, hideSpectators=false, mappingEnabled=true, colorPlayer=#ffffff, tileHighDisplayQuality=true, cacheVillagersData=2200, logLevel=INFO, maxVillagersData=32, mapWaterBiomeColors=false, maxAnimalsData=32, mapTransparency=true, caveBlackAsClear=false, tileRenderType=1, caveIgnoreGlass=true, mapTopography=true, renderDistanceCaveMax=0, mapAntialiasing=true, colorSelf=#0000ff, cachePlayersData=2000, cacheMobsData=3000, cachePlayerData=1000, splashViewed=5.10.3, colorHostile=#ff0000, cacheAnimalsData=3100, themeName=OceanMonument, mapCaveLighting=true, renderDelay=2, glErrorChecking=false, autoMapPoll=2000}
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeKeyEvents
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChatEvents
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeHudOverlayEvents
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeWorldEvent
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChunkEvents
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeClientTickEvent
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeRenderLevelLastEvent
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeLoggedInEvent
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeTextureStitchedEvent
-[19:29:52] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgePopupCustomEvents
-[19:29:52] [Render thread/INFO] [JourneymapClient] initialize EXIT, elapsed count 1 avg 138.18ms
-[19:30:09] [Render thread/INFO] [JourneymapClient] Journeymap PostInit
-[19:30:09] [Render thread/DEBUG] [JourneymapClient] postInitialize ENTER
-[19:30:09] [Render thread/TRACE] [ThemeLoader] Initializing themes ...
-[19:30:10] [Render thread/INFO] [ThemeLoader] Preloaded theme textures: 73
-[19:30:10] [Render thread/INFO] [JourneymapClient] postInitialize EXIT, elapsed count 1 avg 160.19ms
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeKeyEvents
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChatEvents
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeHudOverlayEvents
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeWorldEvent
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeChunkEvents
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeClientTickEvent
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeRenderLevelLastEvent
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeLoggedInEvent
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgeTextureStitchedEvent
+[19:39:28] [Render thread/DEBUG] [ForgeEventHandlerManager] Handler registered: journeymap.client.event.forge.ForgePopupCustomEvents
+[19:39:28] [Render thread/INFO] [JourneymapClient] initialize EXIT, elapsed count 1 avg 117.82ms
+[19:39:41] [Render thread/INFO] [JourneymapClient] Journeymap PostInit
+[19:39:41] [Render thread/DEBUG] [JourneymapClient] postInitialize ENTER
+[19:39:41] [Render thread/TRACE] [ThemeLoader] Initializing themes ...
+[19:39:41] [Render thread/INFO] [ThemeLoader] Preloaded theme textures: 73
+[19:39:41] [Render thread/INFO] [JourneymapClient] postInitialize EXIT, elapsed count 1 avg 158.74ms
+[19:40:42] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[19:42:32] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for create
+[19:42:32] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for biomesoplenty
+[19:42:32] [Render thread/INFO] [WaypointStore] Loaded 20 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World\waypoints
+[19:42:32] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World\overworld. Memory: 8344MB total, 1468MB free 
+[19:45:06] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[19:45:07] [Render thread/INFO] [ChatLog] JourneyMap: Press [J]
+[19:45:10] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:45:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/piranha.png
+[19:45:14] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tambaqui.png
+[19:45:20] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/lost_soul.png
+[19:45:20] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snake/coral_snake.png
+[19:46:20] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:46:33] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/ladybug.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:48:22] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/piranha.png
+[19:48:22] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:48:25] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[19:48:25] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/lost_soul.png
+[19:48:25] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snake/coral_snake.png
+[19:48:25] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tambaqui.png
+[19:49:00] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/arapaima.png
+[19:49:00] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bass.png
+[19:49:37] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/catfish.png
+[19:49:50] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/lizard/green.png
+[19:49:50] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairyblue.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:49:50] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/catfish_small.png
+[19:49:53] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/bamboo/bamboo_creeper.png
+[19:50:06] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/catfish_medium.png
+[19:50:12] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/elephant/elephant.png
+[19:50:12] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/leafcutter_ant.png
+[19:50:21] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_3.png
+[19:50:21] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_1.png
+[19:50:21] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_0.png
+[19:50:37] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/ladybug.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:50:37] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/crawler.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:50:37] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/faller.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:50:40] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/bidy.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:50:50] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/plains/plains_creeper_aprilfools.png
+[19:50:50] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/intruder.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:51:40] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/piranha.png
+[19:51:40] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/crawler.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:51:40] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/bamboo/bamboo_creeper.png
+[19:51:40] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/ladybug.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:51:43] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_3.png
+[19:51:43] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_1.png
+[19:51:43] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_0.png
+[19:51:43] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/elephant/elephant.png
+[19:51:43] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:51:43] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/catfish_medium.png
+[19:51:43] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/catfish.png
+[19:51:43] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/leafcutter_ant.png
+[19:52:05] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/lizard/green.png
+[19:52:18] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/hummingbird_0.png
+[19:52:18] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bass.png
+[19:52:18] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tambaqui.png
+[19:52:29] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/arapaima.png
+[19:52:40] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/emptytexture.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:52:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/catfish_large.png
+[19:52:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/bluegill.png
+[19:52:50] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/gorilla_silverback.png
+[19:52:50] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/turtle/arrau_turtle.png
+[19:53:24] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/gorilla.png
+[19:55:23] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_2.png
+[19:57:21] [Render thread/INFO] [DeathPointHandler] silvieserene died at BlockPos{x=880, y=66, z=-792}. Deathpoints enabled: true. Deathpoint created: true
+[19:57:36] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[19:58:50] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:58:53] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/piranha.png
+[19:58:53] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tambaqui.png
+[19:58:56] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[19:58:56] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snake/coral_snake.png
+[19:58:56] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairyblue.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:58:56] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:58:56] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/necromancer.png
+[19:58:59] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:58:59] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[19:58:59] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/cave/cave_creeper.png
+[19:59:02] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/bamboo/bamboo_creeper.png
+[19:59:06] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/seagull.png
+[19:59:06] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thehorror.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:00:30] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/beach/beach_creeper.png
+[20:00:34] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/huntsman.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:00:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/atlantic_herring.png
+[20:00:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/red_grouper.png
+[20:00:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/jellyfish.png
+[20:00:53] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/meature.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:00:59] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:01:02] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter_staggered.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:01:05] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/ocean/teal_1.png
+[20:01:15] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tuna.png
+[20:01:18] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/corrupt_lost_soul.png
+[20:01:52] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/jungle/jungle_creeper.png
+[20:02:05] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thewheezer.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:02:05] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thebomber.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:02:08] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/corrupt_lost_soul.png
+[20:02:08] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/beach/beach_creeper.png
+[20:02:08] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter_staggered.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:02:08] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/ocean/teal_1.png
+[20:02:08] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thewheezer.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:02:08] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/necromancer.png
+[20:02:08] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thebomber.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:02:11] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snake/coral_snake.png
+[20:02:11] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/atlantic_herring.png
+[20:02:11] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/red_grouper.png
+[20:02:11] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/jellyfish.png
+[20:02:11] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tuna.png
+[20:02:49] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/bamboo/bamboo_creeper.png
+[20:03:08] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:03:08] [Render thread/WARN] [JMLogger] Can't get entityTexture for mutantmonsters:textures/entity_icon/mutant_skeleton.png
+[20:03:12] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/themoonflower.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:03:17] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/huntsman.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:03:28] [Render thread/INFO] [DeathPointHandler] silvieserene died at BlockPos{x=1221, y=64, z=-532}. Deathpoints enabled: true. Deathpoint created: true
+[20:03:29] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[20:03:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tambaqui.png
+[20:03:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/piranha.png
+[20:03:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/catfish.png
+[20:03:40] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:03:40] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/jungle/jungle_creeper.png
+[20:03:44] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:03:49] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairyblue.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:03:49] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/equestrian.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:03:49] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:08:18] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thepregnant.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:08:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/seagull.png
+[20:12:51] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/piranha.png
+[20:12:54] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:12:54] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[20:12:54] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairyblue.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:12:54] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snake/coral_snake.png
+[20:12:54] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tambaqui.png
+[20:13:00] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/jungle/jungle_creeper.png
+[20:13:03] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:03] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/bamboo/bamboo_creeper.png
+[20:13:03] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thepregnant.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:14] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:14] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:19] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/equestrian.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:19] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/huntsman.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:32] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thehorror.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:32] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter_staggered.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/cave/cave_creeper.png
+[20:13:32] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/emptytexture.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:35] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thebomber.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[20:13:40] [Render thread/INFO] [DeathPointHandler] silvieserene died at BlockPos{x=1225, y=64, z=-595}. Deathpoints enabled: true. Deathpoint created: true
+[20:13:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bass.png
+[20:13:46] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/catfish.png
+[20:14:15] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\offline\minecraft:overworld
+[20:14:16] [Server thread/ERROR] [PluginWrapper] Plugin JMPlugin{modId=createoreexcavation} errored during event: MAPPING_STOPPED
+java.lang.NullPointerException: Cannot invoke "java.io.File.mkdirs()" because "modFolder" is null
+	at com.tom.createores.jm.OreVeinsOverlay.onMappingStopped(OreVeinsOverlay.java:115) ~[createoreexcavation-1.20-1.6.5.jar%23731!/:1.6.5]
+	at com.tom.createores.jm.JMPlugin.onEvent(JMPlugin.java:36) ~[createoreexcavation-1.20-1.6.5.jar%23731!/:1.6.5]
+	at journeymap.client.api.impl.PluginWrapper.notify(PluginWrapper.java:377) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.api.impl.ClientEventManager.fireMappingEvent(ClientEventManager.java:81) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.JourneymapClient.stopMapping(JourneymapClient.java:608) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.handlers.WorldEventHandler.onUnload(WorldEventHandler.java:32) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.ForgeWorldEvent.onUnload(ForgeWorldEvent.java:19) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.__ForgeWorldEvent_onUnload_Unload.invoke(.dynamic) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.server.MinecraftServer.m_7041_(MinecraftServer.java:589) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.client.server.IntegratedServer.m_7041_(IntegratedServer.java:187) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:689) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at java.lang.Thread.run(Thread.java:833) ~[?:?]
+[20:14:16] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[21:49:50] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[21:50:22] [Render thread/INFO] [WaypointStore] Loaded 23 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World\waypoints
+[21:50:22] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World\overworld. Memory: 12288MB total, 2265MB free 
+[21:50:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/arapaima.png
+[21:54:04] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/ladybug.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:54:14] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/capuchin_monkey_2.png
+[21:54:17] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/fly.png
+[21:54:39] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/capuchin_monkey_2.png
+[21:54:39] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snake/coral_snake.png
+[21:54:39] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairyblue.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:54:39] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:54:39] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/fly.png
+[21:54:39] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/emptytexture.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:54:39] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/bamboo/bamboo_creeper.png
+[21:54:39] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:54:39] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/ladybug.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:56:13] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/leafcutter_ant.png
+[21:56:13] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/leafcutter_ant_queen.png
+[21:56:19] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_2.png
+[21:56:19] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_0.png
+[21:56:19] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/tambaqui.png
+[21:56:19] [Render thread/WARN] [JMLogger] Can't get entityTexture for aquaculture:textures/entity_icon/fish/piranha.png
+[21:56:23] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/toucan/toucan_1.png
+[21:56:54] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:57:04] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\offline\minecraft:overworld
+[21:57:06] [Server thread/ERROR] [PluginWrapper] Plugin JMPlugin{modId=createoreexcavation} errored during event: MAPPING_STOPPED
+java.lang.NullPointerException: Cannot invoke "java.io.File.mkdirs()" because "modFolder" is null
+	at com.tom.createores.jm.OreVeinsOverlay.onMappingStopped(OreVeinsOverlay.java:115) ~[createoreexcavation-1.20-1.6.5.jar%23731!/:1.6.5]
+	at com.tom.createores.jm.JMPlugin.onEvent(JMPlugin.java:36) ~[createoreexcavation-1.20-1.6.5.jar%23731!/:1.6.5]
+	at journeymap.client.api.impl.PluginWrapper.notify(PluginWrapper.java:377) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.api.impl.ClientEventManager.fireMappingEvent(ClientEventManager.java:81) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.JourneymapClient.stopMapping(JourneymapClient.java:608) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.handlers.WorldEventHandler.onUnload(WorldEventHandler.java:32) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.ForgeWorldEvent.onUnload(ForgeWorldEvent.java:19) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.__ForgeWorldEvent_onUnload_Unload.invoke(.dynamic) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.server.MinecraftServer.m_7041_(MinecraftServer.java:589) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.client.server.IntegratedServer.m_7041_(IntegratedServer.java:187) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:689) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at java.lang.Thread.run(Thread.java:833) ~[?:?]
+[21:57:06] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[23:02:17] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[23:03:39] [Render thread/INFO] [WaypointStore] Loaded 23 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World\waypoints
+[23:03:39] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\sp\New World\overworld. Memory: 12288MB total, 5990MB free 
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/lost_soul.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/hummingbird_1.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/hummingbird_0.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/hummingbird_2.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for pridemoths:textures/entity_icon/moth.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/cabbage_white.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/blue_morpho.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/swallowtail.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/monarch.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for ars_nouveau:textures/entity_icon/starbuncle_white.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for pridemoths:textures/entity_icon/baby/moth.png
+[23:04:48] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/sparrow.png
+[23:04:58] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/robin.png
+[23:05:11] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\offline\minecraft:overworld
+[23:05:11] [JM-task-6/WARN] [TaskBatch] TaskBatch thread interrupted: journeymap.client.task.multi.MapPlayerTask$MapPlayerTaskBatch@279d90ef
+[23:05:17] [Server thread/ERROR] [PluginWrapper] Plugin JMPlugin{modId=createoreexcavation} errored during event: MAPPING_STOPPED
+java.lang.NullPointerException: Cannot invoke "java.io.File.mkdirs()" because "modFolder" is null
+	at com.tom.createores.jm.OreVeinsOverlay.onMappingStopped(OreVeinsOverlay.java:115) ~[createoreexcavation-1.20-1.6.5.jar%23731!/:1.6.5]
+	at com.tom.createores.jm.JMPlugin.onEvent(JMPlugin.java:36) ~[createoreexcavation-1.20-1.6.5.jar%23731!/:1.6.5]
+	at journeymap.client.api.impl.PluginWrapper.notify(PluginWrapper.java:377) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.api.impl.ClientEventManager.fireMappingEvent(ClientEventManager.java:81) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.JourneymapClient.stopMapping(JourneymapClient.java:608) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.handlers.WorldEventHandler.onUnload(WorldEventHandler.java:32) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.ForgeWorldEvent.onUnload(ForgeWorldEvent.java:19) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at journeymap.client.event.forge.__ForgeWorldEvent_onUnload_Unload.invoke(.dynamic) ~[journeymap-1.20.1-5.10.3-forge.jar%23838!/:1.20.1-5.10.3]
+	at net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.server.MinecraftServer.m_7041_(MinecraftServer.java:589) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.client.server.IntegratedServer.m_7041_(IntegratedServer.java:187) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:689) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251) ~[client-1.20.1-20230612.114412-srg.jar%231076!/:?]
+	at java.lang.Thread.run(Thread.java:833) ~[?:?]
+[23:05:18] [Server thread/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
