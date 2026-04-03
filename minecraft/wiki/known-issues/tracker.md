@@ -245,5 +245,17 @@ Forge requires network channel lists to match between client and server. Mods th
 ### Class Layer Duplication (2026-03-30)
 - **Resolved:** `iridescent_classes.jar` had baked-in origin layers that duplicated the datapack layers. Rebuilt jar without baked-in layers. `global_packs/required_data` moved to `datapack_sources` to prevent double-loading.
 
+### Tetra 6.13.0 Incompatibility (2026-04-03)
+- **Resolved:** Rolled back Tetra to 6.12.0. Tetra 6.13.0 broke: TSB (ModuleModel removed), Tetra Attribute Rebalancing (mixin fail), module model deserialization. Art of Forging downgraded 1.8.5→1.8.4. Upgrade blocked until TSB + addons update.
+
+### "None" Spell Scrolls (2026-04-03)
+- **Resolved:** Iron's Spellbooks scrolls in LootJS loot tables were bare items without `randomize_spell` function. Added `irons_spellbooks:randomize_spell` custom function with tier-scaled quality ranges.
+
+### Create + Starlight Contraption Crash (2026-04-03)
+- **Active:** Tester crash: `IllegalStateException` in `BlockStarLightEngine.initNibble` when Create contraption renders. Known Create + Starlight incompatibility. Sporadic — occurs when contraption assembles in chunk with incomplete light data. Low priority.
+
+### Heracles Quest Not Triggering (2026-04-03)
+- **Resolved:** First Blood quest was only in `defaultconfigs/` (new worlds only). Copied to `config/heracles/quests/main/` for existing worlds.
+
 ### AStages Food Blocking (2026-03-30)
 - **Resolved:** AStages mod-wide gates for Thermal, Ars Nouveau, and other mods with food/crop items blocked players from eating/harvesting those items at any tier. Removed mod-wide gates for affected mods.

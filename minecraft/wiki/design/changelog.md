@@ -4,6 +4,50 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-03 — New mods review, Tetra 6.13.0 rollback, mob HP tiers, spell scroll fix, tower loot
+
+### New Mods Reviewed + Duplicate Cleanup
+- Removed 3 duplicate mod index entries: Origins (Fabric dupe), CTOV dupe, Pufferfish Skills dupe
+- Fixed Sleep Hunger: wrong version (NeoForge 1.21.1 → Forge 1.20.1)
+- Added Iron's Patreon Library (new required dep for Iron's Spellbooks 3.15.5.1)
+- Re-removed Connected Glass + Trash Cans (still depend on SuperMartijn642 libs)
+- Synced 20 new mod .pw.toml files to server + client distributions
+
+### Tetra 6.13.0 → 6.12.0 Rollback
+- Tetra 6.13.0 broke TSB (ModuleModel class removed), Tetra Attribute Rebalancing (mixin injection fail), and module model deserialization ("no deserializer for type: static")
+- Attempted binary bytecode patch for TSB — failed due to Forge module classloading restrictions
+- Art of Forging downgraded 1.8.5 → 1.8.4 (1.8.5 caused MaterialData NPE on 6.12.0)
+- All Tetra addons confirmed working on 6.12.0
+
+### Mob Tier HP Scaling (NEW SYSTEM)
+- Basic mobs (zombie, skeleton, spider, creeper, etc.): 3x HP — zombie now 60 HP
+- Mid-tier mobs (blaze, wither skeleton, TF/Aether/Blue Skies mobs, dungeon mobs): 1.5x HP
+- Champions: 1.25x HP (stacks on top of Champion affixes)
+- Bosses: 1x (unchanged, custom HP via boss_hp.js)
+- Catch-all: any unlisted hostile mob defaults to 3x
+- Stacks multiplicatively with dimension_scaling.js and ascension.js
+
+### Spell Scroll Fix
+- Bare `irons_spellbooks:scroll` items dropped with no spell ("None" scrolls)
+- Added `irons_spellbooks:randomize_spell` custom function to all scroll loot entries
+- Quality ranges: T1 0.0-0.3, T2 0.2-0.5, T3 0.3-0.7, T4 0.5-1.0
+
+### Waystone Tower Loot + ToTW Worldgen
+- Waystone Towers now share ToTW loot (curios, artifacts, scrolls, ink, spell books)
+- Waystone Towers use minecraft:chests/stronghold_corridor — added to ToTW LootJS sections
+- ToTW spawn frequency increased: regular spacing 62→45, derelict 55→42
+
+### Heracles Quest Fix
+- First Blood quest copied to config/heracles/quests/main/ (global path, works for existing worlds)
+- defaultconfigs/ only applies on new world creation
+
+### Distribution + Script Updates
+- Trans flag banners added to all .bat and .sh scripts (ANSI RGB via Console.Write/echo -e)
+- Missing .sh counterparts created: strip_client_mods.sh, update_configs.sh
+- Public GitHub wiki Home page links fixed (file paths → [[Page Name]] wiki syntax)
+
+---
+
 ## 2026-04-01 — Origins++ port, JustLeveling redesign, Heracles POC, loot/artifact overhaul
 
 ### Origins++ → icraft Namespace Port

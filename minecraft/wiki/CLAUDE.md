@@ -95,12 +95,15 @@ The `side` field in `.pw.toml` files has DIFFERENT meanings per distribution:
 ### Script Parity (.bat ↔ .sh)
 Every `.bat` script in server_distribution/ and distribution/client/ must have a matching `.sh` with identical logic. When modifying a `.bat`, always update the `.sh` counterpart (and vice versa). Run `bash -n` on the `.sh` to syntax-check.
 
-### Wiki Updates
-After all major changes (new features, balance changes, new items/origins/classes, system reworks), update all three:
-1. **Internal wiki** (`wiki/` directory) — relevant overview pages, known-issues tracker, changelog
-2. **Design doc** (`wiki/design/master.md`) — update affected sections when initial design is modified
-3. **Changelog** (`wiki/design/changelog.md`) — dated entry with what changed and why
-4. **Public GitHub wiki** — clone `https://github.com/silvariasereneblossom/IridescentCraft.wiki.git` to `/tmp/icraft-wiki`, update matching pages, commit and push. Uses `[[Page Name]]` link syntax (not file paths). Sidebar is `_Sidebar.md`.
+### Wiki Updates (MANDATORY after every major change)
+After every major change (new features, balance changes, new items/origins/classes, system reworks, mod additions/removals, config changes, bug fixes), update ALL of the following before the session ends:
+1. **Changelog** (`wiki/design/changelog.md`) — dated entry with what changed and why. DO NOT defer this.
+2. **Known issues** (`wiki/known-issues/tracker.md`) — add new issues, mark resolved ones
+3. **Internal wiki** (`wiki/` directory) — relevant overview pages (mods, systems, classes, etc.)
+4. **Design doc** (`wiki/design/master.md`) — update affected sections when initial design is modified
+5. **Public GitHub wiki** — clone `https://github.com/silvariasereneblossom/IridescentCraft.wiki.git` to `/tmp/icraft-wiki`, update matching pages, commit and push. Uses `[[Page Name]]` link syntax (not file paths). Sidebar is `_Sidebar.md`.
+
+This is a blocking requirement — changelogs must be updated in the same session as the changes, not deferred to later.
 
 ### Memory Updates
 After significant design changes, update relevant memory files in `/root/.claude/projects/-root/memory/` so future sessions have accurate context.
