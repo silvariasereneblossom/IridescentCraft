@@ -1162,8 +1162,11 @@ LootJS.modifiers(event => {
   // and boosted magic materials. These are exploration landmarks.
   // =========================================================================
 
+  // Waystone Towers use minecraft:chests/stronghold_corridor — include them here
+  // (Stronghold corridors also benefit from this loot at T3)
   event
     .addLootTableModifier('totw_reworked:tower_chest')
+    .addLootTableModifier('minecraft:chests/stronghold_corridor')
     .addLoot(
       LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.12))
     )
@@ -1205,6 +1208,7 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier('totw_reworked:tower_chest')
     .addLootTableModifier('totw_reworked:ocean_tower_chest')
+    .addLootTableModifier('minecraft:chests/stronghold_corridor')
     // Remove items that shouldn't be in T1 tower loot
     .removeLoot('minecraft:diamond')
     .removeLoot('botania:manasteel_ingot')
