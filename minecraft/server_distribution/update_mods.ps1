@@ -1,5 +1,5 @@
 # =============================================================================
-# IridescentCraft Server — Mod Update Script
+# IridescentCraft Server -- Mod Update Script
 # =============================================================================
 # Run AFTER sync_from_repo to update mod JARs when .pw.toml files change.
 #
@@ -11,7 +11,7 @@
 #   5. Reports what changed
 #
 # This handles the case where you update a mod in the repo (new .pw.toml
-# with different filename/version) — the old JAR gets cleaned up and the
+# with different filename/version) -- the old JAR gets cleaned up and the
 # new one gets downloaded automatically.
 # =============================================================================
 
@@ -44,15 +44,15 @@ $forceSkip = @(
     "connectedglass", "trashcans"
 )
 
-# ── Phase 1: Build expected mod map from TOMLs ──
+# -- Phase 1: Build expected mod map from TOMLs --
 Write-Host "  [1/3] Reading mod index..."
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
 Write-Host "    Found $($tomlFiles.Count) .pw.toml files."
 
-# Map: expected filename → TOML data
+# Map: expected filename -> TOML data
 $expectedMods = @{}
-# Map: mod-id → expected filename (for old version detection)
+# Map: mod-id -> expected filename (for old version detection)
 $modIdToFilename = @{}
 $quotePattern = "['" + '"]'
 
@@ -100,7 +100,7 @@ foreach ($toml in $tomlFiles) {
         TomlName = $toml.Name
     }
 
-    # Track mod-id → filename for old version detection
+    # Track mod-id -> filename for old version detection
     $modKey = ''
     if ($modrinthId) { $modKey = "mr:$modrinthId" }
     elseif ($projectId) { $modKey = "cf:$projectId" }
@@ -112,7 +112,7 @@ foreach ($toml in $tomlFiles) {
 Write-Host "    $($expectedMods.Count) server-side mods expected."
 Write-Host ""
 
-# ── Phase 2: Compare with existing JARs ──
+# -- Phase 2: Compare with existing JARs --
 Write-Host "  [2/3] Checking installed mods..."
 
 $existingJars = Get-ChildItem "$ModsDir\*.jar" -ErrorAction SilentlyContinue
@@ -143,7 +143,7 @@ foreach ($expected in $expectedMods.Keys) {
     }
 }
 
-# Also find orphaned JARs — in mods/ but NOT in any .pw.toml and not a custom JAR
+# Also find orphaned JARs -- in mods/ but NOT in any .pw.toml and not a custom JAR
 $customJars = @('iridescent_classes.jar', 'iridescent_codex_data.jar', 'mek_walkable_cables-1.0.1.jar', 'offlineskins-1.20.1-v1.jar')
 $orphaned = @()
 foreach ($jar in $existingJars) {
@@ -169,7 +169,7 @@ if ($toDownload.Count -eq 0 -and $toRemove.Count -eq 0) {
     exit 0
 }
 
-# ── Phase 3: Apply changes ──
+# -- Phase 3: Apply changes --
 Write-Host "  [3/3] Applying updates..."
 Write-Host ""
 
@@ -233,7 +233,7 @@ foreach ($mod in $toDownload) {
 # Report orphans
 if ($orphaned.Count -gt 0) {
     Write-Host ""
-    Write-Host "  Orphaned JARs (no matching TOML — may be outdated):" -ForegroundColor DarkYellow
+    Write-Host "  Orphaned JARs (no matching TOML -- may be outdated):" -ForegroundColor DarkYellow
     foreach ($o in $orphaned | Select-Object -First 20) {
         Write-Host "    ? $o" -ForegroundColor DarkGray
     }

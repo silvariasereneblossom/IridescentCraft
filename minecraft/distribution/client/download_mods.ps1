@@ -1,5 +1,5 @@
 # IridescentCraft Mod Downloader
-# Called by iridescentcraft.bat — do not run directly
+# Called by iridescentcraft.bat -- do not run directly
 param(
     [string]$IndexDir,
     [string]$ModsDir

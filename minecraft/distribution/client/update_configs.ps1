@@ -1,7 +1,7 @@
 # =============================================================================
 # IridescentCraft Config Updater
 # Downloads latest configs/kubejs/datapacks and updates existing instance.
-# Does NOT touch mods — only game configuration files.
+# Does NOT touch mods -- only game configuration files.
 # =============================================================================
 
 $ErrorActionPreference = "Continue"
@@ -24,7 +24,7 @@ try {
 }
 Write-Host ""
 
-# ── Step 1: Find the instance ──
+# -- Step 1: Find the instance --
 Write-Host "  [1/3] Finding IridescentCraft instance..." -ForegroundColor Cyan
 
 $instanceMods = ""
@@ -65,7 +65,7 @@ if (-not $instanceMC) {
 Write-Host "    Found: $instanceMC" -ForegroundColor Green
 Write-Host ""
 
-# ── Step 2: Download latest configs from GitHub ──
+# -- Step 2: Download latest configs from GitHub --
 Write-Host "  [2/3] Downloading latest configs from GitHub..." -ForegroundColor Cyan
 Write-Host ""
 
@@ -120,13 +120,13 @@ if (-not (Test-Path "$distDir\config")) {
 
 Write-Host ""
 
-# ── Step 3: Copy configs to instance ──
+# -- Step 3: Copy configs to instance --
 Write-Host "  [3/3] Updating instance configs..." -ForegroundColor Cyan
 
 $updated = 0
 foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
     if (Test-Path "$distDir\$dir") {
-        # Overlay copy — overwrite existing files, add new ones
+        # Overlay copy -- overwrite existing files, add new ones
         if (-not (Test-Path "$instanceMC\$dir")) {
             New-Item -ItemType Directory -Path "$instanceMC\$dir" -Force | Out-Null
         }

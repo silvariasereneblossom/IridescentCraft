@@ -1,14 +1,14 @@
 # =============================================================================
 # IridescentCraft Client Installer v6
 # =============================================================================
-# Fully self-contained — downloads all mods directly, no mrpack import.
+# Fully self-contained -- downloads all mods directly, no mrpack import.
 # Creates the PrismLauncher instance with everything ready to launch.
 # =============================================================================
 
 $ErrorActionPreference = "Continue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
 
-# ── Banner ──
+# -- Banner --
 try {
     Add-Type -MemberDefinition '[DllImport("kernel32.dll")]public static extern bool SetConsoleMode(IntPtr h,int m);[DllImport("kernel32.dll")]public static extern IntPtr GetStdHandle(int h);' -Name W -Namespace C
     $h = [C.W]::GetStdHandle(-11); [C.W]::SetConsoleMode($h, 7) | Out-Null
@@ -26,7 +26,7 @@ try {
 }
 Write-Host ""
 
-# ── Phase 1: Get distribution files ──
+# -- Phase 1: Get distribution files --
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $distDir = $scriptDir
 
@@ -90,7 +90,7 @@ if (-not (Test-Path "$distDir\mods\.index")) {
 }
 Write-Host ""
 
-# ── Phase 2: Find or create PrismLauncher data directory ──
+# -- Phase 2: Find or create PrismLauncher data directory --
 Write-Host "  [2/5] Locating PrismLauncher..." -ForegroundColor Cyan
 
 # Find PrismLauncher and its data directory
@@ -159,7 +159,7 @@ Write-Host "    PrismLauncher data: $prismDataDir" -ForegroundColor DarkGray
 Write-Host "    Instances: $instancesDir" -ForegroundColor DarkGray
 Write-Host ""
 
-# ── Phase 3: Create instance ──
+# -- Phase 3: Create instance --
 Write-Host "  [3/5] Creating IridescentCraft instance..." -ForegroundColor Cyan
 
 $instanceDir = "$instancesDir\IridescentCraft"
@@ -214,7 +214,7 @@ if ($customJars) {
 
 Write-Host ""
 
-# ── Phase 4: Download ALL mods ──
+# -- Phase 4: Download ALL mods --
 Write-Host "  [4/5] Downloading mods..." -ForegroundColor Cyan
 Write-Host ""
 
@@ -301,7 +301,7 @@ if ($failed -gt 0) {
     foreach ($fn in $failedNames) { Write-Host "      - $fn" -ForegroundColor DarkRed }
 }
 
-# ── Cleanup: remove JARs that no longer have a matching TOML ──
+# -- Cleanup: remove JARs that no longer have a matching TOML --
 # Build list of expected filenames from TOMLs
 $expectedFiles = @{}
 foreach ($toml in $tomlFiles) {
@@ -336,7 +336,7 @@ Write-Host ""
 Write-Host "    Total mods installed: $totalJars" -ForegroundColor Cyan
 Write-Host ""
 
-# ── Phase 5: Launch ──
+# -- Phase 5: Launch --
 Write-Host "  [5/5] Ready!" -ForegroundColor Green
 Write-Host ""
 
@@ -345,10 +345,10 @@ if ($prismExe) {
     Start-Process $prismExe
     Write-Host ""
     Write-Host "  Select 'IridescentCraft' from the instance list and click Launch."
-    Write-Host "  First launch downloads Forge — takes a few minutes."
+    Write-Host "  First launch downloads Forge -- takes a few minutes."
 } else {
     Write-Host "  Install PrismLauncher from https://prismlauncher.org/download/"
-    Write-Host "  Then open it — IridescentCraft will appear in the instance list."
+    Write-Host "  Then open it -- IridescentCraft will appear in the instance list."
 }
 
 if ($failed -gt 0) {

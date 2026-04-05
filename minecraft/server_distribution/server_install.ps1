@@ -1,5 +1,5 @@
 # IridescentCraft Server Installation Script (PowerShell)
-# Standalone — works without the rest of the modpack repo.
+# Standalone -- works without the rest of the modpack repo.
 #
 # This script:
 #   1. Checks for Java 17
@@ -81,13 +81,13 @@ $forceSkip = @(
     "light-overlay",       # F7 light level display
     "equipment-compare",   # Client tooltip mod
     "chat_heads",          # Client chat rendering
-    "BetterAnimations",    # Client animation (NOT player-animation — that's a dependency)
+    "BetterAnimations",    # Client animation (NOT player-animation -- that's a dependency)
     "transmog",            # Client cosmetic
     "probejs",             # Dev tool, crashes on dedicated server
     "irons_spells_js",     # KubeJS Iron's Spells addon, references client classes
-    "gh_classes",          # Disabled — conflicts with icraft class layer
-    "cherryvillage",       # Removed — unregistered worldgen feature crash
-    "rechiseled",          # Removed — SuperMartijn642 Core Lib incompatibility
+    "gh_classes",          # Disabled -- conflicts with icraft class layer
+    "cherryvillage",       # Removed -- unregistered worldgen feature crash
+    "rechiseled",          # Removed -- SuperMartijn642 Core Lib incompatibility
     "supermartijn642",     # Lib dependency, removed
     "connectedglass",     # Depends on SuperMartijn642, removed
     "trashcans"           # Depends on SuperMartijn642, removed
@@ -155,13 +155,13 @@ foreach ($toml in $tomlFiles) {
         continue
     }
 
-    # Download — use Invoke-WebRequest which follows all redirects (307→302→200)
+    # Download -- use Invoke-WebRequest which follows all redirects (307->302->200)
     # This is critical for CurseForge which does multiple redirects
     $pct = [math]::Round(($total / $totalFiles) * 100)
     Write-Host "  [$pct%] Downloading: $filename" -NoNewline
 
     try {
-        # Download to temp file first, then rename — avoids PowerShell
+        # Download to temp file first, then rename -- avoids PowerShell
         # bracket wildcard issues with filenames like [Forge1.20.1]TetraClip.jar
         $tempFile = "mods\_download_temp_$total.jar"
         Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing

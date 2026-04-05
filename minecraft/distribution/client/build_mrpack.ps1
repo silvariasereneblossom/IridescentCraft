@@ -22,7 +22,7 @@ if (-not (Test-Path $indexDir)) {
 Write-Host "  Building Modrinth pack (.mrpack)..."
 Write-Host ""
 
-# ── Parse all .pw.toml files into modrinth index format ──
+# -- Parse all .pw.toml files into modrinth index format --
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"
 $quotePattern = "['" + '"]'
 $files = @()
@@ -92,7 +92,7 @@ foreach ($toml in $tomlFiles) {
 
 Write-Host "    $($files.Count) mods indexed."
 
-# ── Build modrinth.index.json ──
+# -- Build modrinth.index.json --
 $index = @{
     formatVersion = 1
     game = "minecraft"
@@ -106,7 +106,7 @@ $index = @{
     }
 }
 
-# ── Build .mrpack (zip) ──
+# -- Build .mrpack (zip) --
 $staging = "$env:TEMP\IridescentCraft-mrpack-staging"
 if (Test-Path $staging) { Remove-Item $staging -Recurse -Force }
 New-Item -ItemType Directory -Path $staging -Force | Out-Null
