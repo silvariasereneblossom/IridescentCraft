@@ -8,5 +8,5 @@
 # Uncomment the next line to set it.
 # -Xmx4G
 
-# Disable Forge mod version checker (freezes server startup on slow connections)
--Dfml.queryResult=confirm
+# Disable Forge mod version checker (deadlocks server startup when no internet/slow DNS)
+-Dfml.versionCheck=false
