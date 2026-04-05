@@ -4,8 +4,8 @@ side = 'both'
 
 [download]
 hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+mode = 'url'
+url = 'https://edge.forgecdn.net/files/5453/476/Tetra%20Attribute%20Rebalancing-6.9.0-1.0.0-PrecisionFix.jar'
 
 [update.curseforge]
 file-id = 5453476
