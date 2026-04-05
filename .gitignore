@@ -19,3 +19,18 @@ saves/
 !distribution/client/config/paxi/datapacks/*.zip
 *.rar
 
+
+# Loot audit working artifacts (extracted mod JARs)
+dungeons_plus/
+explorify/
+idas/
+moogs_end/
+repurposed/
+stalwart/
+structory/
+structory_towers/
+valhelsia/
+when_dungeons/
+yungs_*/
+*.jar
+!minecraft/**/*.jar
