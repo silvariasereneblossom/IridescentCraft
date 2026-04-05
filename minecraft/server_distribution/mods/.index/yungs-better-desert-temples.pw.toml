@@ -1,9 +1,10 @@
 filename = 'YungsBetterDesertTemples-1.20-Forge-3.0.3.jar'
-name = 'YUNG's Better Desert Temples'
-side = 'both'
+name = "YUNG's Better Desert Temples"
+side = ''
 x-prismlauncher-loaders = [ 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20', '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '1.20-Forge-3.0.3'
 
 [download]
 hash = '30ce20533c9a2cc11608120dd7d5fb0f9b48e11873eb1a653d2d88022d351f2c25b316b63df0dbc693de598e0f1c768a36865e0759dbab23e2f2e36a3918470a'

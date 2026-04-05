@@ -1,9 +1,10 @@
 filename = 'ExplorersCompass-1.20.1-1.3.3-forge.jar'
-name = 'Explorer's Compass'
+name = "Explorer's Compass"
 side = 'both'
 x-prismlauncher-loaders = [ 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '1.20.1-1.3.3-forge'
 
 [download]
 hash = 'a36e1de88eded95222ed6c0d938d52218f3177d9893cbf5fc8059f3ee9b2880700dab96727c26a9bd954341e7541a6a9292a3febf2867fbdce005b44a059c6c6'

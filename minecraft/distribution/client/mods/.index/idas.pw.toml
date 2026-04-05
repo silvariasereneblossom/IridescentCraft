@@ -4,13 +4,14 @@ side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = 'idas_forge-1.13.0+1.20.1.jar'
 
 [download]
-hash = '4f287d627adc6b8818b249f6b4ea252d0baf55b012c626e5a453380ccd8e53cd55a5eb22303b21ff9d50cbfb67cd9b8a96eeb24d494adc35174a0a7403569366'
-hash-format = 'sha512'
-mode = 'url'
-url = 'https://cdn.modrinth.com/data/Z8OZShAU/versions/mgwwWo3b/idas_forge-1.13.0%2B1.20.1.jar'
+hash = '84386b55c1729e8fb62f91211d046fb6d7ef23d2'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
 
-[update.modrinth]
-mod-id = 'Z8OZShAU'
-version = 'mgwwWo3b'
+[update.curseforge]
+file-id = 7787515
+project-id = 605375

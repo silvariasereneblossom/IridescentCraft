@@ -1,9 +1,10 @@
 filename = 'YungsBetterNetherFortresses-1.20-Forge-2.0.6.jar'
-name = 'YUNG's Better Nether Fortresses'
-side = 'both'
+name = "YUNG's Better Nether Fortresses"
+side = ''
 x-prismlauncher-loaders = [ 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20', '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20', '1.20', '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '1.20-Forge-2.0.6'
 
 [download]
 hash = 'bceefeaf84dffd7386a61118d6b1c6c2107e17e7a8f4340eff2c1f0234dba0e6d8f43903521d5a70334362ab6e4069788e5b29cf42d8ee9cd4f2a98feb64112b'

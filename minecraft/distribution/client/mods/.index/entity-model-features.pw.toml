@@ -1,17 +1,17 @@
-filename = 'entity_model_features_1.20.1-forge-3.0.15.jar'
-name = '[EMF] Entity Model Features'
-side = 'client'
+filename = 'entity_model_features_1.20.1-forge-3.0.17.jar'
+name = 'Entity Model Features'
+side = 'both'
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
 x-prismlauncher-mc-versions = [ '1.20', '1.20', '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
-x-prismlauncher-version-number = '3.0.15-forge-1.20.1'
+x-prismlauncher-version-number = '3.0.17-forge-1.20.1'
 
 [download]
-hash = '3ccf36dcf2c1a9c32fd015699cf80ed67f11a539f7521881fd835fff9abf2f87f89770e6e2739decd002ac95e963f89de62225371e8c552b054fb26078d88e2c'
+hash = '31ef2b446b059bceb663989910928f34bda2513b753583f1306ce79bf62979eec38b9bf2dee96f72e088fee29a709dd64e217a02598e612810aee067c05413b8'
 hash-format = 'sha512'
 mode = 'url'
-url = 'https://cdn.modrinth.com/data/4I1XuqiY/versions/IkCzFQPH/entity_model_features_1.20.1-forge-3.0.15.jar'
+url = 'https://cdn.modrinth.com/data/4I1XuqiY/versions/nRb48t2X/entity_model_features_1.20.1-forge-3.0.17.jar'
 
 [update.modrinth]
 mod-id = '4I1XuqiY'
-version = 'IkCzFQPH'
+version = 'nRb48t2X'

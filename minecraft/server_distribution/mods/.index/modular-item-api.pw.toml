@@ -1,16 +1,17 @@
-filename = 'Truly-Modular-miapi-forge-1.1.48-1.20.1.jar'
+filename = 'Truly-Modular-miapi-forge-1.1.49-1.20.1.jar'
 name = 'Truly Modular'
-side = 'both'
+side = ''
 x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
-x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
 x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '1.1.49-1.20.1-neoforge'
 
 [download]
-hash = '3c008c7f9519a49860f14967be6bb35e86f50eae65096b1078f6f6e026358c29d2fd044dd8df9ea2ff1a87dfb452692460547caa98977fb879fc4188f7b876d2'
+hash = '8a9c3fd184895148f7e9b2645cdcf832acb5088f866fff4543bd9aaf8fe0771598d9ee3902cf51b12faf27b49ded553a573bd904df3d5726eee87f7248f16f7b'
 hash-format = 'sha512'
 mode = 'url'
-url = 'https://cdn.modrinth.com/data/c4Uf1TKc/versions/YjwY5qAR/Truly-Modular-miapi-forge-1.1.48-1.20.1.jar'
+url = 'https://cdn.modrinth.com/data/c4Uf1TKc/versions/W9uZWbXR/Truly-Modular-miapi-forge-1.1.49-1.20.1.jar'
 
 [update.modrinth]
 mod-id = 'c4Uf1TKc'
-version = 'YjwY5qAR'
+version = 'W9uZWbXR'
