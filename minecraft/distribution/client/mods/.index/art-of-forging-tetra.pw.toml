@@ -1,11 +1,11 @@
-filename = 'art-of-forging-a-tetra-addon-1.8.4-1.20.1.jar'
+filename = 'art_of_forging-1.8.4-1.20.1.jar'
 name = 'Art of Forging: A Tetra Addon'
 side = 'both'
 
 [download]
 hash-format = 'sha512'
 mode = 'url'
-url = 'https://cdn.modrinth.com/data/Y9qsR64e/versions/8jdlCmZ8/art-of-forging-a-tetra-addon-1.8.4-1.20.1.jar'
+url = 'https://cdn.modrinth.com/data/Y9qsR64e/versions/8jdlCmZ8/art_of_forging-1.8.4-1.20.1.jar'
 
 [update.modrinth]
 mod-id = 'Y9qsR64e'
