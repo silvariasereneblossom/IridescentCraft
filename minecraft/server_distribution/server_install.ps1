@@ -90,7 +90,8 @@ $forceSkip = @(
     "rechiseled",          # Removed -- SuperMartijn642 Core Lib incompatibility
     "supermartijn642",     # Lib dependency, removed
     "connectedglass",     # Depends on SuperMartijn642, removed
-    "trashcans"           # Depends on SuperMartijn642, removed
+    "trashcans",
+    "mca-social"           # Depends on SuperMartijn642, removed
 )
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"

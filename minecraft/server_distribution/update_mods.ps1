@@ -41,7 +41,8 @@ $forceSkip = @(
     "kubejsoffline", "light-overlay", "equipment-compare", "chat_heads",
     "BetterAnimations", "transmog", "probejs", "irons_spells_js",
     "gh_classes", "cherryvillage", "rechiseled", "supermartijn642",
-    "connectedglass", "trashcans"
+    "connectedglass", "trashcans",
+    "mca-social"
 )
 
 # -- Phase 1: Build expected mod map from TOMLs --

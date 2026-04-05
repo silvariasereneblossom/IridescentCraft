@@ -42,7 +42,7 @@ if [ ! -d "$INDEX_DIR" ]; then
 fi
 
 # Force-skip list
-FORCE_SKIP="embeddium|oculus|immediatelyfast|rubidium-extra|kubejsoffline|light-overlay|equipment-compare|chat_heads|BetterAnimations|transmog|probejs|irons_spells_js|gh_classes|cherryvillage|rechiseled|supermartijn642|connectedglass|trashcans"
+FORCE_SKIP="embeddium|oculus|immediatelyfast|rubidium-extra|kubejsoffline|light-overlay|equipment-compare|chat_heads|BetterAnimations|transmog|probejs|irons_spells_js|gh_classes|cherryvillage|rechiseled|supermartijn642|connectedglass|trashcans|mca-social"
 
 # Custom JARs that aren't in TOMLs
 CUSTOM_JARS="iridescent_classes.jar|iridescent_codex_data.jar|mek_walkable_cables-1.0.1.jar|offlineskins-1.20.1-v1.jar"
