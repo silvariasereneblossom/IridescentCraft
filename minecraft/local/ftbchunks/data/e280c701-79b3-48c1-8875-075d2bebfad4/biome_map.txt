@@ -1,0 +1,7 @@
+#35F biomesoplenty:jacaranda_glade
+#2D6 minecraft:meadow
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#5FF minecraft:river
+#524 minecraft:snowy_slopes
+#14C biomesoplenty:spider_nest

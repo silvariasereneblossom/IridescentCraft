@@ -40,3 +40,105 @@ CoreProperties{state=Valid, file=journeymap.core.config, configVersion=5.10.3, v
 [03:48:44] [Render thread/TRACE] [ThemeLoader] Initializing themes ...
 [03:48:44] [Render thread/INFO] [ThemeLoader] Preloaded theme textures: 73
 [03:48:44] [Render thread/INFO] [JourneymapClient] postInitialize EXIT, elapsed count 1 avg 174.35ms
+[20:38:22] [Netty Client IO #2/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[20:39:57] [Netty Client IO #3/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[20:40:06] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\waypoints
+[20:40:06] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\overworld. Memory: 5736MB total, 2088MB free 
+[20:40:10] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\minecraft:overworld
+[20:40:10] [Render thread/INFO] [JourneymapClient] World UID is set to: fe9a5043-f69c-43ac-b550-6b1c48c4c304
+[20:40:32] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_fe9a5043~f69c~43ac~b550~6b1c48c4c304\waypoints
+[20:40:32] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_fe9a5043~f69c~43ac~b550~6b1c48c4c304\overworld. Memory: 7624MB total, 1711MB free 
+[20:41:09] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for create
+[20:41:09] [Render thread/INFO] [ModBlockDelegate] Custom modded block handling enabled for biomesoplenty
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/priest/priest_armored.png
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/hummingbird_0.png
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/hummingbird_1.png
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/hummingbird_2.png
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/swallowtail.png
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/monarch.png
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/blue_morpho.png
+[20:42:33] [Render thread/WARN] [JMLogger] Can't get entityTexture for blue_skies:textures/entity_icon/gatekeeper/gatekeeper.png
+[20:42:33] [Render thread/INFO] [ChatLog] JourneyMap: Press [J]
+[20:45:26] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_fe9a5043~f69c~43ac~b550~6b1c48c4c304\minecraft:overworld
+[20:59:07] [Render thread/INFO] [MappingMonitorTask] World ID has been reset.
+[20:59:07] [Render thread/INFO] [JourneymapClient] World UID is set to: null
+[20:59:15] [Netty Client IO #4/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[20:59:22] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\waypoints
+[20:59:22] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\overworld. Memory: 7624MB total, 1470MB free 
+[20:59:42] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server\minecraft:overworld
+[20:59:42] [Render thread/INFO] [JourneymapClient] World UID is set to: fe9a5043-f69c-43ac-b550-6b1c48c4c304
+[20:59:42] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_fe9a5043~f69c~43ac~b550~6b1c48c4c304\waypoints
+[20:59:42] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_fe9a5043~f69c~43ac~b550~6b1c48c4c304\overworld. Memory: 9400MB total, 1037MB free 
+[21:04:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/butterfly/cabbage_white.png
+[21:04:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/lost_soul.png
+[21:04:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snake/snake.png
+[21:04:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/robin.png
+[21:04:32] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/snail/brown.png
+[21:04:34] [Render thread/INFO] [DeathPointHandler] silvieserene died at BlockPos{x=2174, y=88, z=-3664}. Deathpoints enabled: true. Deathpoint created: true
+[21:04:40] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/enchanted_lost_soul.png
+[21:05:19] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/slugger.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:05:42] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/bison.png
+[21:05:50] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thewheezer.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:05:54] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thesucker.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:05:54] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:05:54] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/swarmer.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:05:58] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/plains/plains_creeper.png
+[21:08:23] [Render thread/WARN] [JMLogger] terramity:textures/entities/uvogre.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:08:40] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/equestrian.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[21:08:46] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Minecraft~Server_fe9a5043~f69c~43ac~b550~6b1c48c4c304\minecraft:overworld
+[21:08:47] [Render thread/INFO] [MappingMonitorTask] World ID has been reset.
+[21:08:47] [Render thread/INFO] [JourneymapClient] World UID is set to: null
+[02:11:48] [Netty Client IO #13/INFO] [ForgeConfig] Loading JourneyMap Forge Configs
+[02:11:56] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Iridescentcraft\waypoints
+[02:11:56] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Iridescentcraft\overworld. Memory: 9400MB total, 931MB free 
+[02:12:17] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Iridescentcraft\minecraft:overworld
+[02:12:17] [Render thread/INFO] [JourneymapClient] World UID is set to: 68dc00c0-da5f-40a8-94e3-89bf827026f9
+[02:12:19] [Render thread/INFO] [WaypointStore] Loaded 0 waypoints from C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Iridescentcraft_68dc00c0~da5f~40a8~94e3~89bf827026f9\waypoints
+[02:12:19] [Render thread/INFO] [JourneymapClient] Mapping started in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Iridescentcraft_68dc00c0~da5f~40a8~94e3~89bf827026f9\overworld. Memory: 12184MB total, 4951MB free 
+[02:13:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for ars_nouveau:textures/entity_icon/drygmy_brown.png
+[02:13:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for naturalist:textures/entity_icon/bird/sparrow.png
+[02:13:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for ars_nouveau:textures/entity_icon/starbuncle_magenta.png
+[02:13:10] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:13:10] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:13:10] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairyblue.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:13:10] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/fly.png
+[02:13:15] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/raccoon.png
+[02:14:26] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:14:26] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:14:56] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:01] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/lost_soul.png
+[02:15:01] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:09] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/equestrian.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:09] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/plains/plains_creeper.png
+[02:15:19] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thebomber.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:22] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/themoonflower.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:22] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/spitterblack.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:22] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/slugger.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:26] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thesucker.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:26] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/tars.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:30] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/necromancer.png
+[02:15:30] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/huntsman.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:34] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/levelthreethehunter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:34] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thehunter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:15:47] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/seagull.png
+[02:15:51] [Render thread/WARN] [JMLogger] Can't get entityTexture for blue_skies:textures/entity_icon/gatekeeper/gatekeeper.png
+[02:16:01] [Render thread/INFO] [DeathPointHandler] silvieserene died at BlockPos{x=-1822, y=100, z=-3102}. Deathpoints enabled: true. Deathpoint created: true
+[02:16:45] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/slugger.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/themoonflower.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/plains/plains_creeper.png
+[02:16:45] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/levelthreethehunter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/huntsman.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thesucker.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thebomber.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/equestrian.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/sprinter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] enemyexpansion:textures/entities/direwolf.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:45] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/spitterblack.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:47] [Render thread/WARN] [JMLogger] terramity:textures/entities/fairygreen.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:47] [Render thread/WARN] [JMLogger] terramity:textures/entities/gnome.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:47] [Render thread/WARN] [JMLogger] Can't get entityTexture for forbidden_arcanus:textures/entity_icon/lost_soul/lost_soul.png
+[02:16:49] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/tars.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:16:49] [Render thread/WARN] [JMLogger] Can't get entityTexture for irons_spellbooks:textures/entity_icon/necromancer.png
+[02:16:49] [Render thread/WARN] [JMLogger] undead_revamp2:textures/entities/thehunter.png doesn't have /entity/ in path, so can't look for /entity_icon/
+[02:17:17] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/crow.png
+[02:17:26] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Iridescentcraft_68dc00c0~da5f~40a8~94e3~89bf827026f9\minecraft:overworld

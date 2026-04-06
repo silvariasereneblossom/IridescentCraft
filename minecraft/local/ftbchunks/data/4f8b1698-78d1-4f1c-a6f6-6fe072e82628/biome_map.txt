@@ -1,0 +1,10 @@
+#4F9 minecraft:dark_forest
+#508 minecraft:frozen_peaks
+#294 biomesoplenty:jade_cliffs
+#65C biomesoplenty:lavender_field
+#4F1 minecraft:ocean
+#5F0 biomesoplenty:pasture
+#2CF biomesoplenty:shrubland
+#524 minecraft:snowy_slopes
+#51A minecraft:stony_shore
+#774 minecraft:sunflower_plains
