@@ -5,5 +5,6 @@
 # To set the minimum to 2.5GB: -Xms2500M
 
 # A good default for a modded server is 4GB.
-# Uncomment the next line to set it.
-# -Xmx4G
+# IridescentCraft with 450+ mods needs more.
+-Xmx8G
+-Xms4G
