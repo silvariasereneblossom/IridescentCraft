@@ -108,7 +108,7 @@ if not exist "mods" set NEED_MODS=1
 if exist "mods\.index" (
     set JAR_COUNT=0
     for %%F in (mods\*.jar) do set /a JAR_COUNT+=1
-    if !JAR_COUNT! LSS 50 set NEED_MODS=1
+    if !JAR_COUNT! LSS 10 set NEED_MODS=1
 )
 
 if "!NEED_MODS!"=="1" if exist "mods\.index" (
