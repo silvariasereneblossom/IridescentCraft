@@ -86,12 +86,16 @@ foreach ($toml in $tomlFiles) {
     $dlUrl = ''
     if ($mode -eq 'url' -and $url) {
         $dlUrl = $url
+    } elseif ($mode -eq 'metadata:curseforge' -and $fileId -and $projectId) {
+        # Use CurseForge API endpoint (CDN returns 403 for many files)
+        $dlUrl = "https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download"
     } elseif ($mode -eq 'metadata:curseforge' -and $fileId) {
+        # Fallback: construct CDN URL if no project ID
         $idStr = $fileId.ToString()
         $part1 = $idStr.Substring(0, 4)
         $part2 = $idStr.Substring(4).TrimStart('0')
         if (-not $part2) { $part2 = '0' }
-        $dlUrl = "https://edge.forgecdn.net/files/$part1/$part2/$filename"
+        $dlUrl = "https://edge.forgecdn.net/files/$part1/$part2/$([uri]::EscapeDataString($filename))"
     }
 
     $expectedMods[$filename] = @{

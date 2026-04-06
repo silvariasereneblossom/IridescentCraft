@@ -63,7 +63,7 @@ UP_TO_DATE=0
 for toml in "$INDEX_DIR"/*.pw.toml; do
     [ -f "$toml" ] || continue
 
-    FILENAME="" SIDE="both" MODE="" URL="" FILE_ID=""
+    FILENAME="" SIDE="both" MODE="" URL="" FILE_ID="" PROJECT_ID=""
 
     while IFS= read -r line; do
         line="$(echo "$line" | sed 's/^[[:space:]]*//')"
@@ -73,6 +73,7 @@ for toml in "$INDEX_DIR"/*.pw.toml; do
             mode\ =\ *)     MODE="$(echo "$line" | sed "s/^mode[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
             url\ =\ *)      URL="$(echo "$line" | sed "s/^url[[:space:]]*=[[:space:]]*['\"]//;s/['\"]$//")" ;;
             file-id\ =\ *)  FILE_ID="$(echo "$line" | sed 's/^file-id[[:space:]]*=[[:space:]]*//')" ;;
+            project-id\ =\ *) PROJECT_ID="$(echo "$line" | sed 's/^project-id[[:space:]]*=[[:space:]]*//')" ;;
         esac
     done < "$toml"
 
@@ -84,12 +85,16 @@ for toml in "$INDEX_DIR"/*.pw.toml; do
     DL_URL=""
     if [ "$MODE" = "url" ] && [ -n "$URL" ]; then
         DL_URL="$URL"
+    elif [ "$MODE" = "metadata:curseforge" ] && [ -n "$FILE_ID" ] && [ -n "$PROJECT_ID" ]; then
+        # Use CurseForge API endpoint (CDN returns 403 for many files)
+        DL_URL="https://www.curseforge.com/api/v1/mods/$PROJECT_ID/files/$FILE_ID/download"
     elif [ "$MODE" = "metadata:curseforge" ] && [ -n "$FILE_ID" ]; then
+        # Fallback CDN URL if no project ID
         PART1="${FILE_ID:0:4}"
         PART2="${FILE_ID:4}"
         PART2="$(echo "$PART2" | sed 's/^0*//')"
         [ -z "$PART2" ] && PART2="0"
-        DL_URL="https://edge.forgecdn.net/files/$PART1/$PART2/$FILENAME"
+        DL_URL="https://edge.forgecdn.net/files/$PART1/$PART2/$(python3 -c "import urllib.parse; print(urllib.parse.quote('$FILENAME'))" 2>/dev/null || echo "$FILENAME")"
     fi
 
     EXPECTED_MODS["$FILENAME"]="$DL_URL"
