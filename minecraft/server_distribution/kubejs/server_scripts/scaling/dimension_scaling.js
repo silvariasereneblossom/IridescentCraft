@@ -15,6 +15,7 @@
 // =============================================================================
 
 EntityEvents.spawned(event => {
+  try {
   let entity = event.entity
   if (!entity || !entity.living) return
   if (entity.player) return
@@ -38,6 +39,9 @@ EntityEvents.spawned(event => {
 
   // Mark as scaled
   entity.persistentData.putBoolean('icraft_scaled', true)
+  } catch (e) {
+    // Some modded entities have abstract methods that crash when accessed
+  }
 })
 
 // ─── Dimension Scale Tables ───

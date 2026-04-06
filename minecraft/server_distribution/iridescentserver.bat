@@ -144,6 +144,27 @@ if exist "mods" (
     call "%~dp0strip_client_mods.bat" >nul 2>&1
 )
 
+REM Copy defaultconfigs to world serverconfigs if missing (Champions etc.)
+if exist "world" (
+    if not exist "world\serverconfigs" mkdir "world\serverconfigs"
+    if not exist "world\serverconfigs\champions-ranks.toml" (
+        if exist "defaultconfigs\champions-ranks.toml" (
+            copy /y "defaultconfigs\champions-ranks.toml" "world\serverconfigs\" >nul
+            echo [SETUP] Copied champions-ranks.toml to world serverconfigs
+        )
+    )
+    if not exist "world\serverconfigs\champions-entities.toml" (
+        if exist "defaultconfigs\champions-entities.toml" (
+            copy /y "defaultconfigs\champions-entities.toml" "world\serverconfigs\" >nul
+        )
+    )
+    if not exist "world\serverconfigs\champions-affixes.toml" (
+        if exist "defaultconfigs\champions-affixes.toml" (
+            copy /y "defaultconfigs\champions-affixes.toml" "world\serverconfigs\" >nul
+        )
+    )
+)
+
 REM -------------------------------------------------------------------
 REM Phase 3: Accept EULA
 REM -------------------------------------------------------------------

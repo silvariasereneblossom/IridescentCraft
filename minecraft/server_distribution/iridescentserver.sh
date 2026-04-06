@@ -404,3 +404,14 @@ else
     echo ""
     echo "Server stopped normally."
 fi
+
+# Copy defaultconfigs to world serverconfigs if missing (Champions etc.)
+if [ -d "world" ]; then
+    mkdir -p "world/serverconfigs"
+    for cfg in champions-ranks.toml champions-entities.toml champions-affixes.toml; do
+        if [ ! -f "world/serverconfigs/$cfg" ] && [ -f "defaultconfigs/$cfg" ]; then
+            cp "defaultconfigs/$cfg" "world/serverconfigs/"
+            echo "[SETUP] Copied $cfg to world serverconfigs"
+        fi
+    done
+fi

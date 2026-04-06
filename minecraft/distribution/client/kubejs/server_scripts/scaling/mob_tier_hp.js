@@ -18,6 +18,7 @@
 // =============================================================================
 
 EntityEvents.spawned(event => {
+  try {
   let entity = event.entity
   if (!entity || !entity.living) return
   if (entity.player) return
@@ -48,6 +49,10 @@ EntityEvents.spawned(event => {
 
   // Mark as processed
   entity.persistentData.putBoolean('icraft_mob_tier', true)
+  } catch (e) {
+    // Some modded entities (e.g. Iron's Spellbooks NecromancerEntity) have abstract methods
+    // that crash when accessed. Silently skip these.
+  }
 })
 
 // ─── Tier Classification ───
