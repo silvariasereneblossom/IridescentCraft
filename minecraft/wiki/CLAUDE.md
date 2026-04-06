@@ -92,6 +92,19 @@ The `side` field in `.pw.toml` files has DIFFERENT meanings per distribution:
 - Almost ALL mods should be `side = 'both'` in the client distribution. Only true server-admin tools should be `side = 'server'`.
 - When copying `.index/` between distributions, verify `side` labels are correct for each context.
 
+### Server Mod Compatibility Audit
+When adding new mods or after batch updates, audit mods for dedicated server compatibility. Mods that reference client-only classes (`Screen`, `MouseHandler`, `Minecraft`, rendering classes) will crash the dedicated server. For each new mod:
+1. Check if the mod explicitly supports dedicated servers (CurseForge/Modrinth page)
+2. If uncertain, check the mod's mixins/code for client class references
+3. Client-only mods must be: marked `side = 'client'` in server `.pw.toml`, added to `strip_client_mods.bat/.sh`, and added to force-skip lists in `server_install.ps1`, `update_mods.ps1`, `update_mods.sh`
+
+Known server-incompatible mods (crash on dedicated server):
+- MCA Social Expansion (references `Screen` in network registration)
+- Embeddium, Oculus, ImmediatelyFast (rendering engines)
+- KubeJS Offline, Light Overlay, Equipment Compare, Chat Heads (client GUI)
+- ProbeJS (dev tool), Iron's Spells JS addon (client class refs)
+- Better Animations, Transmog (client cosmetic)
+
 ### Script Parity (.bat ↔ .sh)
 Every `.bat` script in server_distribution/ and distribution/client/ must have a matching `.sh` with identical logic. When modifying a `.bat`, always update the `.sh` counterpart (and vice versa). Run `bash -n` on the `.sh` to syntax-check.
 
