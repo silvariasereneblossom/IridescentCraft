@@ -48,6 +48,7 @@ call :delete "*irons_spells_js*"
 REM --- Disabled mods that may linger from manual copies ---
 call :delete "*gh_classes*"
 call :delete "*mca-social*"
+call :delete "*mcasocial*"
 
 REM --- Removed mods (worldgen crash) ---
 call :delete "*cherryvillage*"
