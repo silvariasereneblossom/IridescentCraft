@@ -144,26 +144,20 @@ if exist "mods" (
     call "%~dp0strip_client_mods.bat" >nul 2>&1
 )
 
-REM Copy defaultconfigs to world serverconfigs if missing (Champions etc.)
-if exist "world" (
-    if not exist "world\serverconfigs" mkdir "world\serverconfigs"
-    if not exist "world\serverconfigs\champions-ranks.toml" (
-        if exist "defaultconfigs\champions-ranks.toml" (
-            copy /y "defaultconfigs\champions-ranks.toml" "world\serverconfigs\" >nul
-            echo [SETUP] Copied champions-ranks.toml to world serverconfigs
-        )
-    )
-    if not exist "world\serverconfigs\champions-entities.toml" (
-        if exist "defaultconfigs\champions-entities.toml" (
-            copy /y "defaultconfigs\champions-entities.toml" "world\serverconfigs\" >nul
-        )
-    )
-    if not exist "world\serverconfigs\champions-affixes.toml" (
-        if exist "defaultconfigs\champions-affixes.toml" (
-            copy /y "defaultconfigs\champions-affixes.toml" "world\serverconfigs\" >nul
-        )
-    )
+REM Ensure world/serverconfigs has Champions configs
+REM On fresh worlds, world/ is created by Forge on first boot.
+REM We create it early so configs are in place before the server reads them.
+if not exist "world\serverconfigs" mkdir "world\serverconfigs"
+if exist "defaultconfigs\champions-ranks.toml" (
+    copy /y "defaultconfigs\champions-ranks.toml" "world\serverconfigs\" >nul
 )
+if exist "defaultconfigs\champions-entities.toml" (
+    copy /y "defaultconfigs\champions-entities.toml" "world\serverconfigs\" >nul
+)
+if exist "defaultconfigs\champions-affixes.toml" (
+    copy /y "defaultconfigs\champions-affixes.toml" "world\serverconfigs\" >nul
+)
+echo [SETUP] Champions serverconfigs synced.
 
 REM -------------------------------------------------------------------
 REM Phase 3: Accept EULA
