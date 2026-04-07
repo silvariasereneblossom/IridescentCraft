@@ -720,6 +720,49 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
+  // SECTION 4D: VILLAGE HOUSE CHESTS — TOOLS, MAGIC, AFFIXES
+  // =========================================================================
+  // All village house chests get basic tools for early game, boosted magic
+  // weapon chances, and a very low chance of an affixed weapon.
+  // Villages are T1 starting areas — tools help new players, magic provides
+  // early caster gear, affixes are exciting rare finds.
+  // =========================================================================
+  const villageHouseChests = [
+    'minecraft:chests/village/village_plains_house',
+    'minecraft:chests/village/village_desert_house',
+    'minecraft:chests/village/village_savanna_house',
+    'minecraft:chests/village/village_snowy_house',
+    'minecraft:chests/village/village_taiga_house'
+  ]
+
+  villageHouseChests.forEach(table => {
+    let mod = event.addLootTableModifier(table)
+
+    // Wood tools — common starter gear (~15% each)
+    mod.addLoot(LootEntry.of('minecraft:wooden_sword').when(c => c.randomChance(0.15)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_pickaxe').when(c => c.randomChance(0.15)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_axe').when(c => c.randomChance(0.12)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_shovel').when(c => c.randomChance(0.10)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_hoe').when(c => c.randomChance(0.08)))
+
+    // Stone tools — less common (~8% each)
+    mod.addLoot(LootEntry.of('minecraft:stone_sword').when(c => c.randomChance(0.08)))
+    mod.addLoot(LootEntry.of('minecraft:stone_pickaxe').when(c => c.randomChance(0.08)))
+    mod.addLoot(LootEntry.of('minecraft:stone_axe').when(c => c.randomChance(0.06)))
+    mod.addLoot(LootEntry.of('minecraft:stone_shovel').when(c => c.randomChance(0.05)))
+
+    // Magic weapons — boosted chance (~8% scroll, ~5% wand/book)
+    mod.addLoot(LootEntry.lootTable('icraft:magic/scroll_t1').when(c => c.randomChance(0.08)))
+    mod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.05)))
+    mod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.06)))
+
+    // Enchanted iron weapons — very rare, exciting early finds
+    // Apotheosis will naturally apply affixes to enchanted gear via its system
+    mod.addLoot(LootEntry.of('minecraft:iron_sword').enchantRandomly().when(c => c.randomChance(0.03)))
+    mod.addLoot(LootEntry.of('minecraft:iron_axe').enchantRandomly().when(c => c.randomChance(0.02)))
+  })
+
+  // =========================================================================
   // SECTION 5A: OVERWORLD CHEST CLUTTER CLEANUP
   // =========================================================================
   // Remove low-value filler items from ALL Overworld structure chests.
