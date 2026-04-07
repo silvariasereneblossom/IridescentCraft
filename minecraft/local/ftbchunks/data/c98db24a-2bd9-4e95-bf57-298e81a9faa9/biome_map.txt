@@ -1,0 +1,10 @@
+#3FF ars_nouveau:archwood_forest
+#460 minecraft:cherry_grove
+#6D4 biomesoplenty:field
+#467 biomesoplenty:highland
+#056 biomesoplenty:maple_woods
+#2D6 minecraft:meadow
+#73A minecraft:old_growth_pine_taiga
+#3DC minecraft:plains
+#28B biomesoplenty:pumpkin_patch
+#169 minecraft:taiga
