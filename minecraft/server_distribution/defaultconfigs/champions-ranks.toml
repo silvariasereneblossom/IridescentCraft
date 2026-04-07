@@ -1,71 +1,30 @@
-# =============================================================================
-# IridescentCraft Champions Ranks Configuration
-# Place in: <world>/serverconfig/champions-ranks.toml
-# Design doc: wiki/design/master.md "Scaling Configuration" (lines 350-401)
-# =============================================================================
-#
-# RANK CHANCE IS MULTIPLICATIVE:
-# When a hostile mob spawns, it rolls chance for Rank 1.
-# If it becomes Rank 1, it then rolls chance for Rank 2.
-# If it becomes Rank 2, it then rolls chance for Rank 3. Etc.
-#
-# With these settings, effective spawn rates are:
-#   Rank 1 (1 affix):   ~15% of all hostile mobs
-#   Rank 2 (2 affixes): ~4.5% (15% x 30%)
-#   Rank 3 (3 affixes): ~0.9% (4.5% x 20%)
-#   Rank 4 (4 affixes): ~0.09% (0.9% x 10%)
-#   Total champions:    ~15% of all mobs (matches Overworld target)
-#
-# DESIGN DOC TARGET RATES BY DIMENSION (quick-reference):
-#   Overworld: 15%  | Twilight: 20% | Blue Skies: 25% | Aether: 30%
-#   Undergarden: 35% | Deeper Darker: 40% | Nether: 50%
-#   Deep Aether: 50% | End: 60%
-#
-# Per-dimension spawn rate adjustment is NOT natively supported by
-# Champions. The global rate (15%) matches the Overworld baseline.
-# Higher-dimension rates should be implemented via KubeJS
-# EntityEvents.spawned handlers that manually promote mobs to
-# champion status based on dimension.
-#
-# Boss blacklist in champions-common.toml prevents bosses from
-# becoming champions (they have their own scaling via Progressive Bosses).
-# =============================================================================
+#List of ranks
 
-# Rank 1: Common Champion — Yellow nameplate
-# 1 affix, mild stat boost. Common enough to be a regular occurrence.
 [[ranks]]
-  tier = 1
-  numAffixes = 1
-  defaultColor = 16776960
-  chance = 0.15
-  growthFactor = 2
+	tier = 1
+	numAffixes = 1
+	defaultColor = 16776960
+	chance = 0.15
+	growthFactor = 2
 
-# Rank 2: Uncommon Champion — Orange nameplate
-# 2 affixes, moderate stat boost. Noticeable threat, worth engaging carefully.
 [[ranks]]
-  tier = 2
-  numAffixes = 2
-  defaultColor = 16744448
-  chance = 0.30
-  growthFactor = 4
+	tier = 2
+	numAffixes = 2
+	defaultColor = 16744448
+	chance = 0.30
+	growthFactor = 4
 
-# Rank 3: Rare Champion — Red nameplate
-# 3 affixes, significant stat boost. Mini-boss tier. Death message on kill.
-# Players should consider whether to fight or flee.
 [[ranks]]
-  tier = 3
-  numAffixes = 3
-  defaultColor = 16711680
-  chance = 0.20
-  growthFactor = 8
+	tier = 3
+	numAffixes = 3
+	defaultColor = 16711680
+	chance = 0.20
+	growthFactor = 8
 
-# Rank 4: Legendary Champion — Purple nameplate
-# 4 affixes, massive stat boost. Extremely rare. Major threat.
-# Permanent Resistance I effect makes them tankier.
 [[ranks]]
-  tier = 4
-  numAffixes = 4
-  defaultColor = 11141375
-  chance = 0.10
-  growthFactor = 14
-  effects = ["minecraft:resistance;0"]
+	tier = 4
+	numAffixes = 4
+	defaultColor = 11141375
+	chance = 0.10
+	growthFactor = 14
+	effects = ["minecraft:resistance;0"]
