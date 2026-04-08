@@ -707,14 +707,14 @@ LootJS.modifiers(event => {
     modifier.addLoot(LootEntry.of('minecraft:pumpkin_seeds').limitCount([1, 1]).when(c => c.randomChance(0.03)))
     modifier.addLoot(LootEntry.of('minecraft:melon_seeds').limitCount([1, 1]).when(c => c.randomChance(0.02)))
 
-    // Gear — very rare (0.5%)
-    modifier.addLoot(LootEntry.of('minecraft:iron_sword').when(c => c.randomChance(0.005)))
-    modifier.addLoot(LootEntry.of('minecraft:iron_pickaxe').when(c => c.randomChance(0.005)))
+    // Gear — uncommon (5%)
+    modifier.addLoot(LootEntry.of('minecraft:iron_sword').when(c => c.randomChance(0.05)))
+    modifier.addLoot(LootEntry.of('minecraft:iron_pickaxe').when(c => c.randomChance(0.05)))
 
-    // Artifacts — very rare (0.5% each, ~4% total)
+    // Artifacts — rare (5% each, ~33% chance of at least one per chest)
     villageArtifacts.forEach(artifact => {
       modifier.addLoot(
-        LootEntry.of(artifact).when(c => c.randomChance(0.005))
+        LootEntry.of(artifact).when(c => c.randomChance(0.05))
       )
     })
   })
@@ -760,6 +760,16 @@ LootJS.modifiers(event => {
     // Apotheosis will naturally apply affixes to enchanted gear via its system
     mod.addLoot(LootEntry.of('minecraft:iron_sword').enchantRandomly().when(c => c.randomChance(0.03)))
     mod.addLoot(LootEntry.of('minecraft:iron_axe').enchantRandomly().when(c => c.randomChance(0.02)))
+
+    // Artifacts — small chance in house chests too (3% each, ~21% chance of any)
+    const houseArtifacts = [
+      'artifacts:umbrella', 'artifacts:kitty_slippers', 'artifacts:bunny_hoppers',
+      'artifacts:running_shoes', 'artifacts:snowshoes', 'artifacts:pocket_piston',
+      'artifacts:obsidian_skull', 'artifacts:cloud_in_a_bottle'
+    ]
+    houseArtifacts.forEach(artifact => {
+      mod.addLoot(LootEntry.of(artifact).when(c => c.randomChance(0.03)))
+    })
   })
 
   // =========================================================================
