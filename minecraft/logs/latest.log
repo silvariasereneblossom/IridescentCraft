@@ -6828,3 +6828,19 @@ java.util.NoSuchElementException: No value present
 [08Apr2026 16:53:44.743] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Hashim'/2035, l='ClientLevel', x=101.30, y=116.21, z=47.10] died, message: 'Hashim died because of Sprinter'
 [08Apr2026 16:59:01.440] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] ? Death penalty: 10% durability loss (overworld)
 [08Apr2026 16:59:01.491] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene was slain by The Moonflower
+[08Apr2026 17:18:55.353] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[08Apr2026 17:18:55.367] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[08Apr2026 17:18:55.379] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[08Apr2026 17:18:55.381] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received class net.minecraftforge.client.event.ClientPlayerNetworkEvent$LoggingOut
+[08Apr2026 17:18:55.381] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from JEI_STARTED to DISABLED
+[08Apr2026 17:18:55.381] [Render thread/INFO] [mezz.jei.library.startup.JeiStarter/]: Stopping JEI
+[08Apr2026 17:18:55.381] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable...
+[08Apr2026 17:18:55.382] [Render thread/INFO] [mezz.jei.forge.plugins.forge.ForgeGuiPlugin/]: Stopping JEI GUI
+[08Apr2026 17:18:55.399] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime Unavailable: jei:forge_gui took 17.08 milliseconds
+[08Apr2026 17:18:55.400] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable took 18.67 ms
+[08Apr2026 17:18:55.402] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[08Apr2026 17:18:55.431] [Render thread/INFO] [voicechat/]: [voicechat] Clearing audio channels
+[08Apr2026 17:18:55.443] [Render thread/INFO] [voicechat/]: [voicechat] Disconnecting voicechat
+[08Apr2026 17:18:55.910] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[08Apr2026 17:18:55.928] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
+[08Apr2026 17:18:56.008] [Render thread/INFO] [FTB Chunks/]: Shutting down map thread

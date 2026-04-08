@@ -67,3 +67,4 @@ CoreProperties{state=Valid, file=journeymap.core.config, configVersion=5.10.3, v
 [16:43:22] [Render thread/WARN] [JMLogger] Can't get entityTexture for alexsmobs:textures/entity_icon/gelada_monkey_leader.png
 [16:50:26] [Render thread/WARN] [JMLogger] Can't get entityTexture for creeperoverhaul:textures/entity_icon/plains/plains_creeper.png
 [16:59:01] [Render thread/INFO] [DeathPointHandler] silvieserene died at BlockPos{x=107, y=100, z=-15}. Deathpoints enabled: true. Deathpoint created: true
+[17:18:55] [Render thread/INFO] [JourneymapClient] Mapping halted in C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\journeymap\data\mp\Iridescentcraft_865438f9~1d39~4473~b77c~ec5097fc5974\minecraft:overworld
