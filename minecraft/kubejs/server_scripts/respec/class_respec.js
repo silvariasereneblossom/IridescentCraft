@@ -121,7 +121,7 @@ ServerEvents.loaded(event => {
 })
 
 ServerEvents.tick(event => {
-  if (event.server.tickCount % 20 !== 0) return // Check every second
+  if (event.server.tickCount % 40 !== 0) return // Check every 2 seconds
   event.server.players.forEach(player => {
     try {
       let obj = event.server.scoreboard.getObjective('icraft_respec_skill')

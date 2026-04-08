@@ -93,6 +93,7 @@ function clearModBooks(player, doLog) {
 // Sweep: aggressive for first 10s after login (every 1s), then every 10s for 2 min
 ServerEvents.tick(event => {
   let tick = event.server.tickCount
+  if (tick % 20 !== 0) return // Throttle: check once per second max
 
   event.server.players.forEach(player => {
     let sweepTicks = player.persistentData.getInt('icraft_book_sweep_ticks')

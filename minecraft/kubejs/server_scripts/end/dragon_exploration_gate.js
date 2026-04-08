@@ -233,7 +233,7 @@ function checkEndExploration(player) {
 // Alternative: use ServerEvents.tick to check held item near position.
 
 ServerEvents.tick(event => {
-  if (event.server.tickCount % 20 !== 10) return // Every 1 second
+  if (event.server.tickCount % 40 !== 10) return // Every 2 seconds
 
   event.server.players.forEach(player => {
     if (player.level.dimension.toString() !== 'minecraft:the_end') return

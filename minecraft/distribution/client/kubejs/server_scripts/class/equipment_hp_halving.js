@@ -115,7 +115,7 @@ ServerEvents.loaded(event => {
 })
 
 ServerEvents.tick(event => {
-  if (event.server.tickCount % 20 !== 0) return
+  if (event.server.tickCount % 100 !== 0) return
   event.server.players.forEach(player => {
     try {
       let obj = event.server.scoreboard.getObjective('icraft_glass_cannon')
