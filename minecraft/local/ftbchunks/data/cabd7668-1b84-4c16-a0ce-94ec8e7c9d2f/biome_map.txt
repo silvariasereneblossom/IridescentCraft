@@ -1,0 +1,12 @@
+#556 minecraft:beach
+#3D6 minecraft:cold_ocean
+#735 biomesoplenty:coniferous_forest
+#6AF biomesoplenty:crag
+#6D4 biomesoplenty:field
+#010 minecraft:forest
+#508 minecraft:frozen_peaks
+#2D6 minecraft:meadow
+#1AB biomesoplenty:ominous_woods
+#3DC minecraft:plains
+#524 minecraft:snowy_slopes
+#51A minecraft:stony_shore

@@ -1,0 +1,8 @@
+#47F biomesoplenty:mediterranean_forest
+#552 biomesoplenty:old_growth_woodland
+#5A5 biomesoplenty:orchard
+#68B biomesoplenty:rainforest
+#5FF minecraft:river
+#2CF biomesoplenty:shrubland
+#30B biomesoplenty:volcanic_plains
+#7F2 biomesoplenty:woodland

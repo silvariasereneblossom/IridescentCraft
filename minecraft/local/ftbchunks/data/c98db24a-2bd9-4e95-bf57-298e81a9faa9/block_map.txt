@@ -49,6 +49,7 @@
 #CC07F6 minecraft:cornflower
 #306005 minecraft:cracked_stone_bricks
 #1A90CD quark:crate
+#7B251B mca:cross_headstone
 #7278C1 valhelsia_structures:cut_oak_post
 #9B524D create:cut_tuff_brick_stairs
 #3C7D4F create:cut_tuff_stairs

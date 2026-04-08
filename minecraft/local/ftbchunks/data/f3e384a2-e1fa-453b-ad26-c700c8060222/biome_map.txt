@@ -1,0 +1,9 @@
+#460 minecraft:cherry_grove
+#010 minecraft:forest
+#51E minecraft:jagged_peaks
+#2D6 minecraft:meadow
+#5A5 biomesoplenty:orchard
+#3DC minecraft:plains
+#4FE biomesoplenty:prairie
+#5FF minecraft:river
+#524 minecraft:snowy_slopes

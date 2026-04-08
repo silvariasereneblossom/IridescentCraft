@@ -1,0 +1,9 @@
+#4DF biomesoplenty:aspen_glade
+#7AA biomesoplenty:cold_desert
+#735 biomesoplenty:coniferous_forest
+#67F biomesoplenty:fir_clearing
+#005 biomesoplenty:gravel_beach
+#28B biomesoplenty:pumpkin_patch
+#4C8 biomesoplenty:snowy_fir_clearing
+#4E5 minecraft:snowy_plains
+#240 biomesoplenty:tundra
