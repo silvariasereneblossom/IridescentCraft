@@ -42,6 +42,8 @@ $forceSkip = @(
     "BetterAnimations", "transmog", "probejs", "irons_spells_js",
     "gh_classes", "cherryvillage", "rechiseled", "supermartijn642",
     "connectedglass", "trashcans",
+    "ftbbackups", "ftbchunks", "ftbessentials", "ftblibrary",
+    "ftbquests", "ftbranks", "ftbteams", "ftbultimine",
     "mca-social"
 )
 

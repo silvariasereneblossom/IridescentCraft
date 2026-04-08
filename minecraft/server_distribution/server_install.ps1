@@ -91,6 +91,8 @@ $forceSkip = @(
     "supermartijn642",     # Lib dependency, removed
     "connectedglass",     # Depends on SuperMartijn642, removed
     "trashcans",
+    "ftbbackups", "ftbchunks", "ftbessentials", "ftblibrary",
+    "ftbquests", "ftbranks", "ftbteams", "ftbultimine",
     "mca-social"           # Depends on SuperMartijn642, removed
 )
 

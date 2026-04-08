@@ -48,6 +48,15 @@ call :delete "*irons_spells_js*"
 REM --- Disabled mods that may linger from manual copies ---
 call :delete "*gh_classes*"
 call :delete "*champions*"
+REM --- Removed FTB mods ---
+call :delete "*ftbbackups*"
+call :delete "*ftbchunks*"
+call :delete "*ftbessentials*"
+call :delete "*ftblibrary*"
+call :delete "*ftbquests*"
+call :delete "*ftbranks*"
+call :delete "*ftbteams*"
+call :delete "*ftbultimine*"
 call :delete "*mca-social*"
 call :delete "*mcasocial*"
 
