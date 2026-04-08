@@ -93,6 +93,39 @@ pushd "%LOCAL%"
 powershell -ExecutionPolicy Bypass -File "%LOCAL%\update_mods.ps1" -ModsDir "mods"
 popd
 
+REM Clean stale mod JARs not referenced by any .pw.toml
+echo.
+echo [CLEANUP] Removing stale mod JARs...
+powershell -ExecutionPolicy Bypass -Command ^
+  "$indexDir = '%LOCAL%\mods\.index';" ^
+  "$modsDir = '%LOCAL%\mods';" ^
+  "if (-not (Test-Path $indexDir)) { exit };" ^
+  "$expected = @{};" ^
+  "Get-ChildItem $indexDir\*.pw.toml | ForEach-Object {" ^
+  "  foreach ($line in Get-Content $_.FullName) {" ^
+  "    if ($line -match '^\s*filename\s*=\s*[''\""](.+)[''\""]') { $expected[$matches[1]] = $true }" ^
+  "  }" ^
+  "};" ^
+  "$removed = 0;" ^
+  "Get-ChildItem $modsDir\*.jar -ErrorAction SilentlyContinue | ForEach-Object {" ^
+  "  if (-not $expected.ContainsKey($_.Name)) {" ^
+  "    Write-Host ('  Removing stale: ' + $_.Name) -ForegroundColor DarkYellow;" ^
+  "    Remove-Item $_.FullName -Force;" ^
+  "    $removed++;" ^
+  "  }" ^
+  "};" ^
+  "if ($removed -gt 0) { Write-Host ('  Removed ' + $removed + ' stale JAR(s)') -ForegroundColor Yellow }" ^
+  "else { Write-Host '  No stale JARs found.' -ForegroundColor Green }"
+
+REM Run strip_client_mods to clean any remaining client-only mods
+if exist "%LOCAL%\strip_client_mods.bat" (
+    echo.
+    echo [CLEANUP] Stripping client-only mods...
+    pushd "%LOCAL%"
+    call strip_client_mods.bat >nul 2>&1
+    popd
+)
+
 REM Check if server is running — warn if so
 tasklist /FI "IMAGENAME eq java.exe" 2>nul | find /I "java.exe" >nul
 if %errorlevel% equ 0 (

@@ -91,6 +91,36 @@ pushd "$LOCAL" > /dev/null
 bash "$LOCAL/update_mods.sh" "mods"
 popd > /dev/null
 
+# Clean stale mod JARs not referenced by any .pw.toml
+echo ""
+echo "[CLEANUP] Removing stale mod JARs..."
+STALE_COUNT=0
+if [ -d "$LOCAL/mods/.index" ]; then
+    # Build list of expected filenames
+    EXPECTED=$(grep -h "^filename" "$LOCAL/mods/.index/"*.pw.toml 2>/dev/null | sed "s/.*= *['\"]//;s/['\"]$//" | sort)
+    for jar in "$LOCAL/mods/"*.jar; do
+        [ -f "$jar" ] || continue
+        JAR_NAME=$(basename "$jar")
+        if ! echo "$EXPECTED" | grep -qxF "$JAR_NAME"; then
+            echo "  Removing stale: $JAR_NAME"
+            rm -f "$jar"
+            STALE_COUNT=$((STALE_COUNT + 1))
+        fi
+    done
+fi
+if [ "$STALE_COUNT" -gt 0 ]; then
+    echo "  Removed $STALE_COUNT stale JAR(s)"
+else
+    echo "  No stale JARs found."
+fi
+
+# Run strip_client_mods to clean any remaining client-only mods
+if [ -f "$LOCAL/strip_client_mods.sh" ]; then
+    echo ""
+    echo "[CLEANUP] Stripping client-only mods..."
+    bash "$LOCAL/strip_client_mods.sh" > /dev/null 2>&1
+fi
+
 # Check if server is running
 if pgrep -f "forge.*nogui" > /dev/null 2>&1 || pgrep -f "minecraft_server" > /dev/null 2>&1; then
     echo "[NOTE] Minecraft server appears to be running. Restart to pick up changes."
