@@ -47,6 +47,7 @@ call :delete "*irons_spells_js*"
 
 REM --- Disabled mods that may linger from manual copies ---
 call :delete "*gh_classes*"
+call :delete "*champions*"
 call :delete "*mca-social*"
 call :delete "*mcasocial*"
 
