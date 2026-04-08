@@ -144,20 +144,20 @@ if exist "mods" (
     call "%~dp0strip_client_mods.bat" >nul 2>&1
 )
 
-REM Ensure world/serverconfigs has Champions configs
+REM Ensure world/serverconfig has Champions configs
 REM On fresh worlds, world/ is created by Forge on first boot.
 REM We create it early so configs are in place before the server reads them.
-if not exist "world\serverconfigs" mkdir "world\serverconfigs"
+if not exist "world\serverconfig" mkdir "world\serverconfig"
 if exist "defaultconfigs\champions-ranks.toml" (
-    copy /y "defaultconfigs\champions-ranks.toml" "world\serverconfigs\" >nul
+    copy /y "defaultconfigs\champions-ranks.toml" "world\serverconfig\" >nul
 )
 if exist "defaultconfigs\champions-entities.toml" (
-    copy /y "defaultconfigs\champions-entities.toml" "world\serverconfigs\" >nul
+    copy /y "defaultconfigs\champions-entities.toml" "world\serverconfig\" >nul
 )
 if exist "defaultconfigs\champions-affixes.toml" (
-    copy /y "defaultconfigs\champions-affixes.toml" "world\serverconfigs\" >nul
+    copy /y "defaultconfigs\champions-affixes.toml" "world\serverconfig\" >nul
 )
-echo [SETUP] Champions serverconfigs synced.
+echo [SETUP] Champions serverconfig synced.
 
 REM -------------------------------------------------------------------
 REM Phase 3: Accept EULA
