@@ -576,8 +576,8 @@ EntityEvents.hurt(event => {
   }
 
   // ── Ignis Core: Fire damage heals instead ──
-  if (event.source && event.source.type &&
-      (event.source.type.includes('fire') || event.source.type.includes('lava'))) {
+  let srcType = event.source && event.source.type ? String(event.source.type) : ''
+  if (srcType && (srcType.includes('fire') || srcType.includes('lava'))) {
     if (hasAnyAffix(player, "Ignis Core") || hasAnyAffix(player, "Ignis")) {
       let healAmount = event.damage * 0.5
       event.damage = 0
