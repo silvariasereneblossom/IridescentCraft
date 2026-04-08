@@ -18,6 +18,9 @@ EntityEvents.spawned(event => {
 
     let type = entity.type
 
+    // Skip entities with broken abstract methods that crash on property access
+    if (BROKEN_ENTITIES.has(type)) return
+
     // Skip already-processed mobs (single flag for both systems)
     if (entity.persistentData.contains('icraft_scaled')) return
 
@@ -143,6 +146,11 @@ function isHostileMod(type) {
 }
 
 // ── Boss Blacklist ──
+// Entities with abstract methods that crash KubeJS on any property access
+const BROKEN_ENTITIES = new Set([
+  'irons_spellbooks:necromancer',
+])
+
 const BOSSES = new Set([
   'minecraft:ender_dragon', 'minecraft:wither', 'minecraft:warden',
   'minecraft:elder_guardian',

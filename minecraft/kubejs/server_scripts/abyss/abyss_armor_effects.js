@@ -60,9 +60,7 @@ function isInAbyss(player) {
 // ==========================================================================
 // ███ TICK-BASED ARMOR SET EFFECTS (every 40 ticks = 2 seconds) ███
 // ==========================================================================
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 40 !== 0) return
-
+global.tick_abyssArmorEffects = (event) => {
   event.server.players.forEach(player => {
     if (!player || !player.living) return
 
@@ -138,7 +136,8 @@ ServerEvents.tick(event => {
       }
     }
   })
-})
+}
+global.registerServerTick('tick_abyssArmorEffects', 40, 0)
 
 
 // ==========================================================================

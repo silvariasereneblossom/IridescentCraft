@@ -120,18 +120,15 @@ ServerEvents.loaded(event => {
   event.server.runCommandSilent('scoreboard objectives add icraft_respec_skill trigger')
 })
 
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 40 !== 0) return // Check every 2 seconds
+global.tick_skillRespec = (event) => {
   event.server.players.forEach(player => {
     try {
       let obj = event.server.scoreboard.getObjective('icraft_respec_skill')
       if (!obj) return
       let score = event.server.scoreboard.getOrCreatePlayerScore(player.username, obj)
       if (score.score > 0) {
-        // Player triggered respec
         if (player.experienceLevel >= 5) {
           player.giveExperienceLevels(-5)
-          // Grant 1 skill point via Pufferfish command
           player.server.runCommandSilent(
             `puffish_skills points add ${player.username} 1`
           )
@@ -139,9 +136,9 @@ ServerEvents.tick(event => {
         } else {
           player.tell('§c§lNot enough XP! §r§7Need 5 levels to refund 1 skill point.')
         }
-        // Reset trigger
         score.score = 0
       }
     } catch(e) {}
   })
-})
+}
+global.registerServerTick('tick_skillRespec', 40, 0)

@@ -13,10 +13,8 @@ const ORIGIN_CHECK_INTERVAL = 40
 // Merling: ticks dry before debuffs apply (5 minutes = 6000 ticks)
 const MERLING_DRY_THRESHOLD = 6000
 
-ServerEvents.tick(event => {
+global.tick_originEffectsAvianMerling = (event) => {
   let server = event.server
-
-  if (server.tickCount % ORIGIN_CHECK_INTERVAL !== 0) return
 
   server.players.forEach(player => {
     // =========================================================================
@@ -67,7 +65,8 @@ ServerEvents.tick(event => {
       }
     }
   })
-})
+}
+global.registerServerTick('tick_originEffectsAvianMerling', 40, 0)
 
 // =============================================================================
 // BLAZEBORN — Nether Affinity
@@ -76,15 +75,13 @@ ServerEvents.tick(event => {
 // =============================================================================
 
 // Track first Nether visit
-PlayerEvents.tick(event => {
-  if (event.player.age % 200 !== 50) return // Every 10s, offset
+global.tick_blazebornNetherAffinity = (event) => {
   let player = event.player
   if (!player.tags.contains('icraft_blazeborn')) return
 
   let dim = player.level.dimension.toString()
   let data = player.persistentData
 
-  // Detect first Nether visit
   if (dim === 'minecraft:the_nether' && !data.getBoolean('icraft_nether_visited')) {
     data.putBoolean('icraft_nether_visited', true)
     player.tell(Text.gold('═══════════════════════════════════════'))
@@ -94,7 +91,8 @@ PlayerEvents.tick(event => {
     player.tell(Text.gray('  double and apply in ALL dimensions.'))
     player.tell(Text.gold('═══════════════════════════════════════'))
   }
-})
+}
+global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
 
 // Apply damage bonus via EntityEvents.hurt (dealing damage)
 EntityEvents.hurt(event => {
@@ -150,12 +148,10 @@ EntityEvents.hurt(event => {
 })
 
 // Detect ender pearl landing / teleport and apply buff
-PlayerEvents.tick(event => {
-  if (event.player.age % 20 !== 7) return
+global.tick_enderianShift = (event) => {
   let player = event.player
   if (!player.tags.contains('icraft_enderian')) return
 
-  // Check if player just teleported (position changed significantly)
   let data = player.persistentData
   let lastX = data.getDouble('icraft_ender_lastx')
   let lastZ = data.getDouble('icraft_ender_lastz')
@@ -163,13 +159,11 @@ PlayerEvents.tick(event => {
   let dz = player.z - lastZ
   let distSq = dx * dx + dz * dz
 
-  // If moved more than 8 blocks in 1 second, likely teleported
   if (distSq > 64 && lastX !== 0) {
     let tick = player.level.server.tickCount
     let lastBuff = data.getLong('icraft_ender_shift_expires')
-    // Don't re-trigger if buff already active
     if (tick > lastBuff) {
-      data.putLong('icraft_ender_shift_expires', tick + 200) // 10 seconds
+      data.putLong('icraft_ender_shift_expires', tick + 200)
       player.potionEffects.add('minecraft:strength', 200, 0, false, true)
       player.tell(Text.darkPurple('  ◆ Ender Shift: +15% damage for 10 seconds'))
     }
@@ -177,7 +171,8 @@ PlayerEvents.tick(event => {
 
   data.putDouble('icraft_ender_lastx', player.x)
   data.putDouble('icraft_ender_lastz', player.z)
-})
+}
+global.registerPlayerTick('tick_enderianShift', 20, 7)
 
 // =============================================================================
 // SHULK — Hardened Shell (reduced durability loss on death)
@@ -211,11 +206,8 @@ BlockEvents.broken(event => {
 // The +20% damage bonus is handled by the conditioned_attribute in the power.
 // =============================================================================
 
-ServerEvents.tick(event => {
+global.tick_revenantShadowStrike = (event) => {
   let server = event.server
-
-  // Check every 2 seconds (offset from main origin check)
-  if (server.tickCount % 40 !== 20) return
 
   server.players.forEach(player => {
     if (!player.tags.contains('icraft_revenant')) return
@@ -223,17 +215,15 @@ ServerEvents.tick(event => {
     let dim = player.level.dimension.toString()
     let inAbyss = dim === 'theabyss:the_abyss'
 
-    // Check light level at player position
     let blockPos = player.block
     let lightLevel = blockPos.light
 
     if (lightLevel <= 4 || inAbyss) {
-      // 30% damage reduction via Resistance I (20% vanilla) + stacking
-      // Resistance I = 20% damage reduction. Apply for duration + buffer.
       player.potionEffects.add('minecraft:resistance', 60, 0, false, false)
     }
   })
-})
+}
+global.registerServerTick('tick_revenantShadowStrike', 40, 20)
 
 console.log('[IridescentCraft] Origins custom effects loaded')
 console.log('  - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)')

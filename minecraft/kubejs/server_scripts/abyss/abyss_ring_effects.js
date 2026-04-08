@@ -65,9 +65,7 @@ function getNearbyLivingEntities(player, radius) {
 // ==========================================================================
 // ███ TICK-BASED RING EFFECTS (every 20 ticks = 1 second) ███
 // ==========================================================================
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 20 !== 0) return
-
+global.tick_abyssRingEffects = (event) => {
   event.server.players.forEach(player => {
     if (!player || !player.living) return
 
@@ -129,7 +127,8 @@ ServerEvents.tick(event => {
       player.potionEffects.add('minecraft:health_boost', 40, 0, false, false)
     }
   })
-})
+}
+global.registerServerTick('tick_abyssRingEffects', 20, 0)
 
 
 // ==========================================================================

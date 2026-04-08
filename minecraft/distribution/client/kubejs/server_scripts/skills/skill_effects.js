@@ -390,7 +390,7 @@ PlayerEvents.inventoryChanged(event => {
 // ═══════════════════════════════════════════════════════════════════════════
 // PERIODIC TICK: Attribute Sync + Passive Effects
 // ═══════════════════════════════════════════════════════════════════════════
-ServerEvents.tick(event => {
+global.tick_skillEffects = (event) => {
   let tick = event.server.tickCount
 
   // ── Every 5 seconds: HP Regen ──
@@ -676,7 +676,8 @@ ServerEvents.tick(event => {
       )
     })
   }
-})
+}
+global.registerServerTick('tick_skillEffects', 25, 0)
 
 
 // ═══════════════════════════════════════════════════════════════════════════

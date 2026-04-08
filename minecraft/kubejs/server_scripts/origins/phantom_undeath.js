@@ -76,24 +76,21 @@ EntityEvents.death(event => {
 })
 
 // Clear the collapse flag when debuffs expire (check every 10 seconds)
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 200 !== 0) return
-
+global.tick_phantomUndeath = (event) => {
   event.server.players.forEach(player => {
     if (!isPhantom(player)) return
 
     let data = player.persistentData
     if (!data.getBoolean('icraft_phantom_collapsed')) return
 
-    // Check if weakness effect has expired (it's the 5-minute timer)
-    // If player no longer has weakness, collapse is over
     let hasWeakness = player.potionEffects.isActive('minecraft:weakness')
     if (!hasWeakness) {
       data.putBoolean('icraft_phantom_collapsed', false)
       player.tell('\u00a77Your spectral form stabilizes. You feel whole again.')
     }
   })
-})
+}
+global.registerServerTick('tick_phantomUndeath', 200, 0)
 
 console.log('[IridescentCraft] Phantom Undeath loaded')
 console.log('  - Phantoms cannot die — health locks to 0.5 hearts')
