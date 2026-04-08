@@ -34,3 +34,4 @@ when_dungeons/
 yungs_*/
 *.jar
 !minecraft/**/*.jar
+.claude/worktrees/
