@@ -47,28 +47,25 @@ function getMagicBonus(player) {
 }
 
 // Apply Mana Shield as Resistance effect every 5 seconds
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 100 !== 0) return
-
+global.tick_battlemageManaShield = (event) => {
   event.server.players.forEach(player => {
     if (!isBattlemage(player)) return
 
     let magicBonus = getMagicBonus(player)
 
-    // Scale: 0.15 magic → Resistance I, 0.35+ → Resistance II, 0.55+ → Resistance III
-    let resistLevel = 0  // Resistance I (amplifier 0)
+    let resistLevel = 0
     if (magicBonus >= 0.55) {
-      resistLevel = 2  // Resistance III
+      resistLevel = 2
     } else if (magicBonus >= 0.35) {
-      resistLevel = 1  // Resistance II
+      resistLevel = 1
     }
 
-    // Apply for 7 seconds (140 ticks) — overlaps the 5s refresh with buffer
     player.server.runCommandSilent(
       `effect give ${player.username} minecraft:resistance 7 ${resistLevel} true`
     )
   })
-})
+}
+global.registerServerTick('tick_battlemageManaShield', 100, 0)
 
 console.log('[IridescentCraft] Battlemage Mana Shield loaded')
 console.log('  - Resistance I base (20% damage reduction)')

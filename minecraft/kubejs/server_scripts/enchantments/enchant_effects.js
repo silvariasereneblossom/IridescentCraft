@@ -328,7 +328,7 @@ BlockEvents.broken(event => {
 // ==========================================================================
 // ███ PERIODIC TICK EFFECTS ███
 // ==========================================================================
-ServerEvents.tick(event => {
+global.tick_enchantPeriodicEffects = (event) => {
   let tick = event.server.tickCount
 
   // ── Every 2 seconds: Vitality HP bonus ──
@@ -466,15 +466,15 @@ ServerEvents.tick(event => {
       } catch(e) {}
     })
   }
-})
+}
+global.registerServerTick('tick_enchantPeriodicEffects', 5, 0)
 
 
 // ==========================================================================
 // ███ CONVERGENCE: Spell power scales with weapon tier ███
 // Applied via attribute sync — checks mainhand weapon material tier
 // ==========================================================================
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 200 !== 75) return
+global.tick_enchantConvergence = (event) => {
   event.server.players.forEach(player => {
     let conv = getWeaponEnchLevel(player, 'icraft:convergence')
     if (conv <= 0) return
@@ -482,7 +482,6 @@ ServerEvents.tick(event => {
     let weapon = player.mainHandItem
     if (!weapon || weapon.isEmpty()) return
 
-    // Determine weapon material tier
     let id = weapon.id
     let tierBonus = 0
     if (id.includes('netherite')) tierBonus = 0.20
@@ -497,7 +496,8 @@ ServerEvents.tick(event => {
       } catch(e) {}
     }
   })
-})
+}
+global.registerServerTick('tick_enchantConvergence', 200, 75)
 
 
 // ==========================================================================
@@ -508,8 +508,7 @@ ServerEvents.tick(event => {
 // ==========================================================================
 
 // ── Lunar Stride: Jump Boost + fall damage reduction on Ad Astra planets ──
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 40 !== 15) return
+global.tick_enchantLunarStride = (event) => {
   event.server.players.forEach(player => {
     let lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
     if (lunar <= 0) return
@@ -518,12 +517,12 @@ ServerEvents.tick(event => {
     if (dim === 'ad_astra:moon' || dim === 'ad_astra:mars' ||
         dim === 'ad_astra:mercury' || dim === 'ad_astra:venus' ||
         dim === 'ad_astra:glacio') {
-      // Jump Boost scales with level (0-indexed: level-1)
       let jumpLevel = Math.min(lunar - 1, 2)
       player.potionEffects.add('minecraft:jump_boost', 100, jumpLevel, false, false)
     }
   })
-})
+}
+global.registerServerTick('tick_enchantLunarStride', 40, 15)
 
 // ── Lunar Stride: Fall damage reduction (33% per level) ──
 EntityEvents.hurt(event => {

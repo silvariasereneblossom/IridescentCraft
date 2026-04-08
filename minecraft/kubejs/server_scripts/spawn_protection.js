@@ -61,12 +61,12 @@ EntityEvents.spawned(event => {
 })
 
 // --- Cleanup: single command every 10 seconds for any stragglers ---
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 200 !== 100) return
+global.tick_spawnProtectionCleanup = (event) => {
   let spawn = event.server.overworld().getSharedSpawnPos()
   event.server.runCommandSilent(
     `execute positioned ${spawn.x} 0 ${spawn.z} run kill @e[type=#minecraft:hostile,distance=..${SPAWN_PROTECTION_RADIUS}]`
   )
-})
+}
+global.registerServerTick('tick_spawnProtectionCleanup', 200, 100)
 
 console.log('[IridescentCraft] Spawn protection loaded (radius: ' + SPAWN_PROTECTION_RADIUS + ')')

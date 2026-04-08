@@ -13,11 +13,8 @@ const AFK_THRESHOLD = 24000
 // Check interval — every 100 ticks (5 seconds) to reduce overhead
 const CHECK_INTERVAL = 100
 
-ServerEvents.tick(event => {
+global.tick_hungerManagement = (event) => {
   let server = event.server
-
-  // Only check every CHECK_INTERVAL ticks
-  if (server.tickCount % CHECK_INTERVAL !== 0) return
 
   server.players.forEach(player => {
     let data = player.persistentData
@@ -92,7 +89,8 @@ ServerEvents.tick(event => {
     data.putInt('ic_lastZ', currentZ)
     data.putInt('ic_lastHealth', currentHealth)
   })
-})
+}
+global.registerServerTick('tick_hungerManagement', 100, 0)
 
 console.log('[IridescentCraft] AFK hunger management loaded')
 console.log('  - AFK threshold: 20 minutes (24000 ticks)')

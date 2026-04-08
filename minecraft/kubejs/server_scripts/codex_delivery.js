@@ -91,7 +91,7 @@ function clearModBooks(player, doLog) {
 }
 
 // Sweep: aggressive for first 10s after login (every 1s), then every 10s for 2 min
-ServerEvents.tick(event => {
+global.tick_codexBookSweep = (event) => {
   let tick = event.server.tickCount
 
   event.server.players.forEach(player => {
@@ -108,4 +108,5 @@ ServerEvents.tick(event => {
     player.persistentData.putInt('icraft_book_sweep_ticks', sweepTicks - interval)
     clearModBooks(player, aggressive)
   })
-})
+}
+global.registerServerTick('tick_codexBookSweep', 20, 0)

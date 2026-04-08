@@ -154,16 +154,12 @@ PlayerEvents.loggedIn(event => {
 })
 
 // Periodic refresh every 5 minutes
-let ascensionTickCounter = 0
-ServerEvents.tick(event => {
-  ascensionTickCounter++
-  if (ascensionTickCounter < 6000) return  // 6000 ticks = 5 minutes
-  ascensionTickCounter = 0
-
+global.tick_ascensionRefresh = (event) => {
   event.server.players.forEach(player => {
     applyAscensionPlayerBonuses(player)
   })
-})
+}
+global.registerServerTick('tick_ascensionRefresh', 6000, 0)
 
 function applyAscensionPlayerBonuses(player) {
   let ascension = getAscensionLevel(player.level)

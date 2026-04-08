@@ -65,7 +65,7 @@ function getPlayerTier(player) {
 // Vorpal I-V via Strength effect, scaling with progression tier.
 // =============================================================================
 
-ServerEvents.tick(event => {
+global.tick_classPassives = (event) => {
   let tick = event.server.tickCount
 
   // Refresh class cache every 30 seconds
@@ -273,7 +273,8 @@ ServerEvents.tick(event => {
       )
     })
   }
-})
+}
+global.registerServerTick('tick_classPassives', 5, 0)
 
 // =============================================================================
 // VOID SUMMONER — Soul Tether (lifesteal + bonus XP from nearby deaths)

@@ -246,12 +246,9 @@ EntityEvents.hurt(event => {
 
 
 // ─── Player Tick: Environmental Hazards ───
-PlayerEvents.tick(event => {
+global.tick_dimEnvironmentalHazards = (event) => {
   let player = event.player
   if (!player || player.spectator || player.creative) return
-
-  // Only check every 100 ticks (5 seconds) for performance
-  if (player.age % 100 !== 0) return
 
   let dim = player.level.dimension
 
@@ -484,23 +481,23 @@ PlayerEvents.tick(event => {
       player.potionEffects.add('minecraft:mining_fatigue', 200, 0, false, false)
     }
   }
-})
+}
+global.registerPlayerTick('tick_dimEnvironmentalHazards', 100, 0)
 
 
 // ─── Overworld: Full Moon Detection ───
 // Notifies players of full moon danger
-PlayerEvents.tick(event => {
+global.tick_fullMoonDetection = (event) => {
   let player = event.player
   if (!player || player.level.dimension !== 'minecraft:overworld') return
-  if (player.age % 24000 !== 13000) return  // Check once at nightfall
 
   let dayTime = player.level.dayTime
   let lunarPhase = Math.floor((dayTime / 24000) % 8)
   if (lunarPhase === 0) {
-    // Full moon — notify player
     player.tell('§c§lFull Moon Rising! §r§7Hostile mobs are more numerous and aggressive tonight.')
   }
-})
+}
+global.registerPlayerTick('tick_fullMoonDetection', 24000, 13000)
 
 
 // ─── Nether: Blaze Swarm (on kill) ───
@@ -533,15 +530,10 @@ EntityEvents.death(event => {
 
 
 // ─── End: Dragon's Influence ───
-// Design doc: While Ender Dragon is alive, all End mobs gain +15% all stats
-// Check every 200 ticks (10 seconds) per player for performance
-PlayerEvents.tick(event => {
+global.tick_dragonsInfluence = (event) => {
   let player = event.player
   if (!player || player.level.dimension !== 'minecraft:the_end') return
-  if (player.age % 200 !== 0) return
 
-  // Check if dragon is alive by looking at the dragon fight data
-  // Simplified: check if any ender_dragon entity exists within render distance
   let dragonAlive = false
   let entities = player.level.getEntitiesWithin(
     AABB.of(player.x - 200, 0, player.z - 200, player.x + 200, 256, player.z + 200)
@@ -553,7 +545,6 @@ PlayerEvents.tick(event => {
     }
   }
 
-  // Store state for this player
   if (dragonAlive) {
     if (!player.persistentData.contains('icraft_dragon_warned')) {
       player.tell('§5§lThe Dragon\'s presence empowers nearby enemies... §r§7(+15% mob stats)')
@@ -564,20 +555,15 @@ PlayerEvents.tick(event => {
       player.persistentData.remove('icraft_dragon_warned')
     }
   }
-})
+}
+global.registerPlayerTick('tick_dragonsInfluence', 200, 0)
 
 
 // ─── End: Enhanced Void Corruption (time-based) ───
-// Design doc: Every 60 seconds in Deep End, gain 1 stack (max 10)
-// Each stack: -2% max HP, +3% damage dealt
-// Leaving End or resting at waystone clears stacks
-PlayerEvents.tick(event => {
+global.tick_enhancedVoidCorruption = (event) => {
   let player = event.player
   if (!player || player.spectator || player.creative) return
   if (player.level.dimension !== 'minecraft:the_end') return
-
-  // Only tick every 60 seconds (1200 ticks)
-  if (player.age % 1200 !== 0) return
 
   // Only apply in Deep End (>800 blocks from origin)
   let distSq = player.x * player.x + player.z * player.z
@@ -591,7 +577,6 @@ PlayerEvents.tick(event => {
     stacks++
     player.persistentData.putInt('icraft_void_corruption', stacks)
 
-    // Visual feedback at key thresholds
     if (stacks === 1) {
       player.tell('§5The Void seeps into your being... §7(Void Corruption: 1)')
     } else if (stacks === 5) {
@@ -601,18 +586,12 @@ PlayerEvents.tick(event => {
     }
   }
 
-  // Apply effects via potion effects (simulating HP loss + damage gain)
-  // Weakness proportional to stack count (represents HP fragility)
-  // Strength proportional to stack count (represents damage boost)
   if (stacks > 0) {
-    // Strength: +3% per stack → Strength I at 3 stacks, II at 7, III at 10
     let strLevel = Math.floor(stacks / 3.5)
     if (strLevel > 0) {
       player.potionEffects.add('minecraft:strength', 1400, strLevel - 1, false, true)
     }
 
-    // Apply max_health reduction via attribute (temporary)
-    // -2% per stack
     player.modifyAttribute(
       'minecraft:generic.max_health',
       'icraft_void_corruption_hp',
@@ -620,12 +599,11 @@ PlayerEvents.tick(event => {
       'multiply_base'
     )
   }
-})
+}
+global.registerPlayerTick('tick_enhancedVoidCorruption', 1200, 0)
 
 // Clear Void Corruption when leaving the End
-// Uses tick-based dimension tracking since PlayerEvents.changeDimension doesn't exist in KubeJS 6.x
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 20 !== 0) return // Check once per second
+global.tick_voidCorruptionCleanse = (event) => {
   event.server.players.forEach(player => {
     let currentDim = player.level.dimension
     let lastDim = player.persistentData.getString('icraft_last_dimension')
@@ -640,4 +618,5 @@ ServerEvents.tick(event => {
     }
     player.persistentData.putString('icraft_last_dimension', currentDim)
   })
-})
+}
+global.registerServerTick('tick_voidCorruptionCleanse', 20, 0)

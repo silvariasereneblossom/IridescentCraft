@@ -170,8 +170,7 @@ PlayerEvents.loggedIn(event => {
 })
 
 // Refresh Penthesilea Haste every 2 minutes (keeps it permanent)
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 2400 !== 100) return
+global.tick_witchOfInkHaste = (event) => {
   event.server.players.forEach(player => {
     if (!isWitchOfInk(player)) return
     let data = player.persistentData
@@ -179,7 +178,8 @@ ServerEvents.tick(event => {
       player.potionEffects.add('minecraft:haste', 2400, 0, false, false)
     }
   })
-})
+}
+global.registerServerTick('tick_witchOfInkHaste', 2400, 100)
 
 console.log('[IridescentCraft] Witch of Ink progression loaded')
 console.log('  - Boss kill counter (Apotheosis +1, dimensional +10)')

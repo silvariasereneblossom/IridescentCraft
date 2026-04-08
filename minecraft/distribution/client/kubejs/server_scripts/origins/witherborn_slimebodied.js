@@ -38,12 +38,7 @@ EntityEvents.hurt(event => {
 // TICK-BASED MECHANICS
 // =============================================================================
 
-ServerEvents.tick(event => {
-  let tick = event.server.tickCount
-
-  // Every 5 seconds
-  if (tick % 100 !== 35) return
-
+global.tick_witherbornSlimebodied = (event) => {
   event.server.players.forEach(player => {
 
     // ── WITHERBORN: hunger-scaling damage PENALTY (opposite of Orc) ──
@@ -107,7 +102,8 @@ ServerEvents.tick(event => {
       }
     }
   })
-})
+}
+global.registerServerTick('tick_witherbornSlimebodied', 100, 35)
 
 // ── SLIMEBODIED: Food cooldown (10 seconds) ──
 let slimeFoodCooldown = {}

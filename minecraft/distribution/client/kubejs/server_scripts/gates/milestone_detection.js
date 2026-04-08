@@ -153,9 +153,7 @@ ServerEvents.loaded(event => {
 })
 
 // Check dimension on tick (infrequent — every 10 seconds)
-PlayerEvents.tick(event => {
-  if (event.player.age % 200 !== 0) return
-
+global.tick_milestoneDimVisit = (event) => {
   const player = event.player
   const dim = player.level.dimension.toString()
 
@@ -199,7 +197,8 @@ PlayerEvents.tick(event => {
       'icraft_visited_nether'
     ])
   }
-})
+}
+global.registerPlayerTick('tick_milestoneDimVisit', 200, 0)
 
 function checkAllDimensionsVisited(player, tier, scoreboards) {
   // Use persistent player data for reliability
@@ -335,14 +334,11 @@ PlayerEvents.loggedIn(event => {
 // Runs every 5 seconds
 // =============================================================================
 
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 100 !== 50) return
-
+global.tick_milestoneTierEnsure = (event) => {
   event.server.players.forEach(player => {
     let isCreative = player.creative
 
     if (isCreative) {
-      // Creative/god mode: grant ALL tiers so nothing is restricted
       const allTiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
       allTiers.forEach(t => {
         if (!AStages.playerHasStage(t, player)) {
@@ -350,14 +346,14 @@ ServerEvents.tick(event => {
         }
       })
     } else {
-      // Survival: ensure tier_1 always present
       if (!AStages.playerHasStage('tier_1', player)) {
         AStages.addStageToPlayer('tier_1', player)
         console.log(`[IridescentCraft] Restored tier_1 for ${player.username}`)
       }
     }
   })
-})
+}
+global.registerServerTick('tick_milestoneTierEnsure', 100, 50)
 
 // =============================================================================
 // SYNC: When any stage is added (by command, script, or quest), grant matching

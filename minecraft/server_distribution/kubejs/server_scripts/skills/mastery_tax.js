@@ -45,10 +45,8 @@ function getMasteryTax(investedLevels) {
 // Track previous total per player to detect level-ups
 let playerPrevTotals = {}
 
-ServerEvents.tick(event => {
+global.tick_masteryTax = (event) => {
   let server = event.server
-  // Check every 40 ticks (2 seconds)
-  if (server.tickCount % 40 !== 0) return
 
   server.players.forEach(player => {
     let uuid = player.uuid.toString()
@@ -101,7 +99,8 @@ ServerEvents.tick(event => {
 
     playerPrevTotals[uuid] = total
   })
-})
+}
+global.registerServerTick('tick_masteryTax', 40, 0)
 
 // Reset tracking on player login
 PlayerEvents.loggedIn(event => {

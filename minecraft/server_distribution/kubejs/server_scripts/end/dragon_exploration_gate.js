@@ -94,9 +94,7 @@ EntityEvents.spawned(event => {
 // Runs every 10 seconds for players in The End
 // =============================================================================
 
-PlayerEvents.tick(event => {
-  if (event.player.age % 200 !== 100) return // Every 10s, offset from other ticks
-
+global.tick_endExplorationTracking = (event) => {
   let player = event.player
   let dim = player.level.dimension.toString()
   if (dim !== 'minecraft:the_end') return
@@ -136,7 +134,8 @@ PlayerEvents.tick(event => {
     )
     checkEndExploration(player)
   }
-})
+}
+global.registerPlayerTick('tick_endExplorationTracking', 200, 100)
 
 // =============================================================================
 // KILL TRACKING IN THE END
@@ -232,9 +231,7 @@ function checkEndExploration(player) {
 // is near the fountain, consume it and start the dragon fight.
 // Alternative: use ServerEvents.tick to check held item near position.
 
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 20 !== 10) return // Every 1 second
-
+global.tick_dragonSummonCrystal = (event) => {
   event.server.players.forEach(player => {
     if (player.level.dimension.toString() !== 'minecraft:the_end') return
 
@@ -243,18 +240,14 @@ ServerEvents.tick(event => {
 
     let pdata = player.persistentData
     if (!pdata.getBoolean('icraft_end_explored')) {
-      // Don't consume — player hasn't explored enough
       return
     }
 
-    // Check if player is near 0,0 (the fountain)
     let distSq = player.x * player.x + player.z * player.z
     if (distSq > DRAGON_SUMMON_RADIUS * DRAGON_SUMMON_RADIUS) return
 
-    // Check if player is sneaking (deliberate activation)
     if (!player.crouching) return
 
-    // Consume the crystal and summon the dragon
     held.shrink(1)
     pdata.putBoolean('icraft_dragon_summoned', true)
 
@@ -264,13 +257,10 @@ ServerEvents.tick(event => {
     player.tell(Text.gray('  Prepare yourself for the ultimate battle!'))
     player.tell(Text.gold('═══════════════════════════════════════'))
 
-    // Announce server-wide
     player.server.tell(
       Text.yellow(`★ ${player.username} has summoned the Ender Dragon!`)
     )
 
-    // Place 4 End Crystals on the obsidian pillars to trigger respawn
-    // This uses the vanilla dragon respawn mechanic
     player.server.runCommandSilent(
       `summon minecraft:end_crystal 0 64 -3 {ShowBottom:1b}`
     )
@@ -284,7 +274,6 @@ ServerEvents.tick(event => {
       `summon minecraft:end_crystal -3 64 0 {ShowBottom:1b}`
     )
 
-    // Sound effects
     player.server.runCommandSilent(
       `playsound minecraft:entity.ender_dragon.growl player ${player.username} 0 64 0 2 0.5`
     )
@@ -294,7 +283,8 @@ ServerEvents.tick(event => {
 
     console.log(`[IridescentCraft] ${player.username} summoned the Ender Dragon!`)
   })
-})
+}
+global.registerServerTick('tick_dragonSummonCrystal', 40, 10)
 
 // =============================================================================
 // POST-DRAGON: Mark dragon as killed for future spawns

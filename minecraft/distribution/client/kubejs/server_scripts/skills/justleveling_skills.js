@@ -103,10 +103,9 @@ PlayerEvents.loggedIn(event => {
 // TICK-BASED PASSIVES — check every 100 ticks (5 seconds)
 // Offset by 37 ticks to avoid stacking with other tick scripts
 // ═══════════════════════════════════════════════════════════════════════════════
-ServerEvents.tick(event => {
+global.tick_justlevelingSkills = (event) => {
   let server = event.server
   let tick = server.tickCount
-  if (tick % 100 !== 37) return
 
   server.players.forEach(player => {
     if (player.spectator || player.creative) return
@@ -212,7 +211,8 @@ ServerEvents.tick(event => {
     // Handled in EntityEvents.hurt below. No tick action needed here.
     // The hurt event reads aptitude cache directly.
   })
-})
+}
+global.registerServerTick('tick_justlevelingSkills', 100, 37)
 
 
 // ═══════════════════════════════════════════════════════════════════════════════

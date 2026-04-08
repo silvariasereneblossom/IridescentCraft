@@ -167,10 +167,7 @@ ItemEvents.canPickUp(event => {
 
 // Prevent items from breaking during normal use too
 // When durability hits 0 during combat/mining, mark as broken instead of destroying
-PlayerEvents.tick(event => {
-  // Performance: only check every 20 ticks (1 second)
-  if (event.player.age % 20 !== 0) return
-
+global.tick_deathPenaltyBrokenCheck = (event) => {
   const player = event.player
 
   // Check all equipment for 0-durability items that need the broken tag
@@ -198,7 +195,8 @@ PlayerEvents.tick(event => {
 
   let oh = player.offHandItem
   if (checkAndMarkBroken(oh)) player.setItemSlot('offhand', oh)
-})
+}
+global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 20, 0)
 
 
 // =============================================================================

@@ -811,9 +811,7 @@ EntityEvents.hurt(event => {
 // ==========================================================================
 // ███ DIMENSIONAL & PASSIVE AFFIX EFFECTS (tick-based) ███
 // ==========================================================================
-ServerEvents.tick(event => {
-  if (event.server.tickCount % 100 !== 80) return // Every 5s
-
+global.tick_affixEffects = (event) => {
   event.server.players.forEach(player => {
     let dim = player.level.dimension
 
@@ -1023,7 +1021,8 @@ ServerEvents.tick(event => {
       }
     }
   })
-})
+}
+global.registerServerTick('tick_affixEffects', 100, 80)
 
 
 console.log('[IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects')
