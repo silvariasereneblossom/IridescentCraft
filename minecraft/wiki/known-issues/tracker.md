@@ -14,6 +14,18 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Apotheosis Tower Loot
+- **Status:** Active
+- **Description:** Some Apotheosis tower chests show gold only. Paxi override may have load order issue causing incomplete loot table replacement.
+
+### Lootr Chest Conversion
+- **Status:** Active
+- **Description:** Some chests near spawn generate as vanilla (not Lootr per-player chests). Possibly timing-related during initial worldgen chunk generation.
+
+### Create + Starlight Crash
+- **Status:** Active (first reported 2026-04-03)
+- **Description:** Sporadic `IllegalStateException` in `BlockStarLightEngine.initNibble` when Create contraption renders in chunk with incomplete light data. Known Create + Starlight incompatibility. Low priority.
+
 ### Three-Prompt Character Creation
 - **Status:** Working as intended (confirmed 2026-03-14)
 - **Design:** Three sequential prompts on first join: Origin (13 origins, 9 vanilla + 4 custom) → Race (11 icraft) → Class (10 icraft)
@@ -74,6 +86,21 @@ Forge requires network channel lists to match between client and server. Mods th
 - [ ] Farmer's Delight cooking conversion — 70 recipes
 
 ## Resolved
+
+### KubeJS TypeError Spam (2026-04-08)
+- **Resolved:** Fixed `source.type.includes` called on non-string values, `getItemSlot` not available in KubeJS 6 API. Ignis Core TypeError also resolved. All three errors eliminated from server logs.
+
+### FTB Mods Removed (2026-04-08)
+- **Resolved:** All 8 FTB mods removed (Backups, Chunks, Essentials, Library, Quests, Ranks, Teams, Ultimine). Replaced with FastBack (git-based backups), LiteMiner + Amber (veinmining), Open Parties and Claims (chunk claiming).
+
+### Champions Removed (2026-04-07)
+- **Resolved:** Champions Unofficial removed entirely. Broken rank config system that could not be fixed, unmaintained with no upstream activity, error spam on every mob spawn event causing server lag.
+
+### NecromancerEntity Crash (2026-04-06)
+- **Resolved:** Added `BROKEN_ENTITIES` early-exit list in `mob_scaling_unified.js`. NecromancerEntity and other broken entities are skipped before any scaling logic runs, preventing server crashes.
+
+### Tetra Attribute Rebalancing Removed (2026-04-05)
+- **Resolved:** Mod delisted from CurseForge, no longer available for download. Was already broken by Tetra 6.13.0 mixin changes. Removed from all distributions.
 
 ### Blue Skies Balance Pass (2026-03-16)
 - **Resolved:** Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2 + Tetra integration (23 materials).
@@ -250,9 +277,6 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ### "None" Spell Scrolls (2026-04-03)
 - **Resolved:** Iron's Spellbooks scrolls in LootJS loot tables were bare items without `randomize_spell` function. Added `irons_spellbooks:randomize_spell` custom function with tier-scaled quality ranges.
-
-### Create + Starlight Contraption Crash (2026-04-03)
-- **Active:** Tester crash: `IllegalStateException` in `BlockStarLightEngine.initNibble` when Create contraption renders. Known Create + Starlight incompatibility. Sporadic — occurs when contraption assembles in chunk with incomplete light data. Low priority.
 
 ### Heracles Quest Not Triggering (2026-04-03)
 - **Resolved:** First Blood quest was only in `defaultconfigs/` (new worlds only). Copied to `config/heracles/quests/main/` for existing worlds.
