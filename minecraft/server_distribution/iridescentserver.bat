@@ -11,8 +11,28 @@ REM   - 8-12 GB RAM available for the server
 
 title IridescentCraft Server
 
-REM Ensure working directory is where the bat lives
-cd /d "%~dp0"
+REM Create a dedicated server directory so files don't scatter on desktop
+set "SERVER_DIR=%~dp0IridescentCraft Dedicated Server"
+if not exist "%SERVER_DIR%" (
+    mkdir "%SERVER_DIR%"
+    echo [SETUP] Created server directory: %SERVER_DIR%
+)
+
+REM Copy the bat itself into the server dir if it's not already there
+if not exist "%SERVER_DIR%\iridescentserver.bat" (
+    copy /y "%~f0" "%SERVER_DIR%\iridescentserver.bat" >nul
+)
+
+REM If we're NOT already inside the server dir, move into it and restart
+if /I not "%CD%"=="%SERVER_DIR%" (
+    cd /d "%SERVER_DIR%"
+    REM Re-launch from the server directory
+    call "%SERVER_DIR%\iridescentserver.bat" %*
+    exit /b
+)
+
+REM Ensure working directory is the server dir
+cd /d "%SERVER_DIR%"
 
 echo.
 powershell -Command ^
