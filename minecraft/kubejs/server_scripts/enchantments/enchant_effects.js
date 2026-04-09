@@ -167,9 +167,10 @@ EntityEvents.hurt(event => {
   let player = event.entity
   let source = event.source
 
+  let srcType = source && source.type ? String(source.type) : ""
   // ── Heatward: -8% fire damage per level ──
-  if (source && (source.type.includes('fire') || source.type.includes('lava') ||
-      source.type === 'minecraft:on_fire' || source.type === 'minecraft:in_fire')) {
+  if (source && (srcType.includes('fire') || srcType.includes('lava') ||
+      srcType === 'minecraft:on_fire' || srcType === 'minecraft:in_fire')) {
     let heat = getArmorEnchTotal(player, 'icraft:heatward')
     if (heat > 0) {
       event.damage *= Math.max(0.1, 1 - heat * 0.08)
@@ -177,8 +178,8 @@ EntityEvents.hurt(event => {
   }
 
   // ── Voidward: -8% void/wither/darkness damage per level ──
-  if (source && (source.type.includes('void') || source.type.includes('wither') ||
-      source.type === 'minecraft:out_of_world')) {
+  if (source && (srcType.includes('void') || srcType.includes('wither') ||
+      srcType === 'minecraft:out_of_world')) {
     let voidw = getArmorEnchTotal(player, 'icraft:voidward')
     if (voidw > 0) {
       event.damage *= Math.max(0.1, 1 - voidw * 0.08)
@@ -529,7 +530,7 @@ EntityEvents.hurt(event => {
   if (!event.entity || !event.entity.player) return
   let player = event.entity
   let source = event.source
-  if (!source || source.type !== 'minecraft:fall') return
+  if (!source || String(source.type || "") !== 'minecraft:fall') return
 
   let dim = player.level.dimension
   if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
@@ -555,8 +556,8 @@ EntityEvents.hurt(event => {
       dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
       dim !== 'ad_astra:glacio') return
 
-  let isFireDmg = source.type.includes('fire') || source.type.includes('lava') ||
-    source.type === 'minecraft:on_fire' || source.type === 'minecraft:in_fire'
+  let isFireDmg = srcType.includes('fire') || srcType.includes('lava') ||
+    srcType === 'minecraft:on_fire' || srcType === 'minecraft:in_fire'
   if (!isFireDmg) return
 
   let stellar = getArmorEnchTotal(player, 'icraft:stellar_shield')

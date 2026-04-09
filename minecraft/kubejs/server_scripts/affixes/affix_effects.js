@@ -43,13 +43,26 @@ function hasAffix(item, affixName) {
   return false
 }
 
+// Helper: get item from equipment slot name (KubeJS 6 compatible)
+function getEquipItem(player, slot) {
+  try {
+    switch(slot) {
+      case 'mainhand': return player.mainHandItem
+      case 'offhand': return player.offHandItem
+      case 'head': return player.headArmorItem
+      case 'chest': return player.chestArmorItem
+      case 'legs': return player.legsArmorItem
+      case 'feet': return player.feetArmorItem
+      default: return null
+    }
+  } catch(e) { return null }
+}
+
 function hasAnyAffix(player, affixName) {
-  // Check all equipment slots
   let slots = ['head','chest','legs','feet','mainhand','offhand']
   for (let slot of slots) {
-    try {
-      if (hasAffix(player.getItemSlot(slot), affixName)) return true
-    } catch(e) {}
+    let item = getEquipItem(player, slot)
+    if (item && hasAffix(item, affixName)) return true
   }
   return false
 }
@@ -765,7 +778,7 @@ EntityEvents.hurt(event => {
   }
 
   // ── Gloomward: Chance to blind attackers on block (shield affix) ──
-  if (hasAffix(player.getItemSlot('offhand'), "Gloomward")) {
+  if (hasAffix(getEquipItem(player, 'offhand'), "Gloomward")) {
     if (event.source && event.source.actual && Math.random() < 0.15) {
       let attacker = event.source.actual
       if (attacker.living) {
@@ -775,7 +788,7 @@ EntityEvents.hurt(event => {
   }
 
   // ── Repulsing: Blocking creates knockback wave ──
-  if (hasAffix(player.getItemSlot('offhand'), "Repulsing")) {
+  if (hasAffix(getEquipItem(player, 'offhand'), "Repulsing")) {
     let nearby = getNearbyHostiles(player, 2)
     nearby.forEach(e => {
       try {
@@ -785,12 +798,12 @@ EntityEvents.hurt(event => {
   }
 
   // ── Absorbing: Blocking restores HP ──
-  if (hasAffix(player.getItemSlot('offhand'), "Absorbing")) {
+  if (hasAffix(getEquipItem(player, 'offhand'), "Absorbing")) {
     player.heal(0.5)
   }
 
   // ── Fortifying: Blocking grants Resistance I ──
-  if (hasAffix(player.getItemSlot('offhand'), "Fortifying")) {
+  if (hasAffix(getEquipItem(player, 'offhand'), "Fortifying")) {
     player.potionEffects.add('minecraft:resistance', 60, 0, false, true)
   }
 
@@ -944,7 +957,7 @@ global.tick_affixEffects = (event) => {
       let slots = ['head','chest','legs','feet','mainhand','offhand']
       for (let slot of slots) {
         try {
-          let item = player.getItemSlot(slot)
+          let item = getEquipItem(player, slot)
           if (item && !item.isEmpty() && item.isDamageable() && item.damageValue > 0) {
             if (hasAffix(item, "Repairing")) {
               item.damageValue = Math.max(0, item.damageValue - 1)
@@ -968,7 +981,7 @@ global.tick_affixEffects = (event) => {
       let slots = ['head','chest','legs','feet','mainhand','offhand']
       for (let slot of slots) {
         try {
-          let item = player.getItemSlot(slot)
+          let item = getEquipItem(player, slot)
           if (item && !item.isEmpty()) {
             let lore = item.nbt?.display?.Lore
             if (lore) {

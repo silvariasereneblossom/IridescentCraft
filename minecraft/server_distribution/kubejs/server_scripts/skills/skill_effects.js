@@ -118,8 +118,9 @@ EntityEvents.hurt(event => {
 
   // AoE Splash: projectile hits deal splash to nearby enemies
   let src = event.source
-  let isProjectile = src.type && (src.type.includes('arrow') ||
-    src.type.includes('trident') || src.type.includes('fireball'))
+  let srcType = src && src.type ? String(src.type) : ''
+  let isProjectile = srcType && (srcType.includes('arrow') ||
+    srcType.includes('trident') || srcType.includes('fireball'))
   if (isProjectile) {
     let splash = getScore(srv, name, 'icraft_aoe_splash')
     if (splash > 0) {
