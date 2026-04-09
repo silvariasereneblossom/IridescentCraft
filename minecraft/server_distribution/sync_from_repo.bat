@@ -30,12 +30,45 @@ echo   Source: %REPO%
 echo   Dest:   %LOCAL%
 echo.
 
-REM Verify source exists
+REM Verify source exists — fall back to GitHub download if not
 if not exist "%REPO%" (
-    echo ERROR: Repo path not found. Is the network drive mapped?
-    echo   Expected: %REPO%
-    pause
-    exit /b 1
+    echo [INFO] Repo path not found. Downloading from GitHub instead...
+    echo.
+    powershell -ExecutionPolicy Bypass -Command ^
+      "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+      "$zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
+      "$zipFile = $env:TEMP + '\IridescentCraft-sync.zip';" ^
+      "$extractDir = $env:TEMP + '\IridescentCraft-sync-extract';" ^
+      "try {" ^
+      "  Write-Host '  Downloading repository...';" ^
+      "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 60;" ^
+      "  if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) { throw 'Download failed' };" ^
+      "  Write-Host '  Extracting server distribution...';" ^
+      "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
+      "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
+      "  $repoDir = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\server_distribution';" ^
+      "  Write-Host '  Syncing to server...';" ^
+      "  $dest = '%LOCAL%';" ^
+      "  $exclude = @('world','logs','crash-reports','backups','libraries','.cache');" ^
+      "  foreach ($item in Get-ChildItem $repoDir) {" ^
+      "    if ($item.PSIsContainer -and $exclude -contains $item.Name) { continue };" ^
+      "    if ($item.Name -eq 'mods') {" ^
+      "      if (-not (Test-Path \"$dest\mods\.index\")) { New-Item -ItemType Directory -Path \"$dest\mods\.index\" -Force | Out-Null };" ^
+      "      Copy-Item \"$($item.FullName)\.index\*\" \"$dest\mods\.index\" -Recurse -Force;" ^
+      "      Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object { Copy-Item $_.FullName \"$dest\mods\" -Force };" ^
+      "    } else {" ^
+      "      Copy-Item $item.FullName $dest -Recurse -Force;" ^
+      "    }" ^
+      "  };" ^
+      "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
+      "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
+      "  Write-Host '  [OK] Sync from GitHub complete.' -ForegroundColor Green;" ^
+      "} catch {" ^
+      "  Write-Host ('  ERROR: ' + $_.Exception.Message) -ForegroundColor Red;" ^
+      "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
+      "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
+      "}"
+    goto :post_sync
 )
 
 REM Verify destination exists
@@ -86,7 +119,8 @@ if %ROBOCOPY_EXIT% LEQ 3 (
 
 echo.
 
-REM Check for mod updates (new .pw.toml versions → download new JARs, remove old)
+:post_sync
+REM Check for mod updates (new .pw.toml versions -- download new JARs, remove old)
 echo.
 echo [UPDATE] Checking for mod version changes...
 pushd "%LOCAL%"
