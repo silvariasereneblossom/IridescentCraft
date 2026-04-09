@@ -4,20 +4,103 @@ All changes to the master design document are logged here with date, description
 
 ---
 
-## 2026-04-03 — New mods review, Tetra 6.13.0 rollback, mob HP tiers, spell scroll fix, tower loot
+## 2026-04-09 — Server bat improvements, NPC debug text fix
+
+### Server Bat Improvements
+- Server bat now creates a dedicated folder for server files
+- Cleaner separation of server runtime from repo files
+
+### NPC Debug Text Fix
+- Fixed NPC debug text showing in Jade tooltips (Jade + MCA interaction)
+- Debug info no longer leaks into player-facing UI
+
+---
+
+## 2026-04-08 — FTB removal, Progressive Difficulty, treasure bags, tick consolidation, server optimization
+
+### All FTB Mods Removed (8 mods)
+- Removed: FTB Backups, FTB Chunks, FTB Essentials, FTB Library, FTB Quests, FTB Ranks, FTB Teams, FTB Ultimine
+- Replacements: FastBack (git-based backups), LiteMiner + Amber (veinmining), Open Parties and Claims (chunk claiming)
+
+### Majrusz's Progressive Difficulty Added
+- Majrusz's Progressive Difficulty + Majrusz Library added
+- Three-stage difficulty: Normal (T1-T2), Expert (T3, triggered on Nether entry), Master (T4, triggered on Dragon kill)
+- Treasure bags rewritten for all 7 bosses/events with tier-appropriate loot
+- Creeperlings disabled, bleeding kept (symmetrical design), Enderium removed
+
+### Tick Handler Consolidation
+- Reduced from 35 tick handlers to 2 master handlers in `0_tick_master.js`
+- Significant reduction in per-tick overhead
+
+### KubeJS Error Fixes
+- Fixed Ignis Core TypeError
+- Fixed `getItemSlot` usage (not in KubeJS 6 API)
+- Fixed `source.type.includes` on non-string values
+
+### Village Artifact Rates Boosted
+- Smith chest artifact rate: 0.5% -> 5%
+- House chest artifact rate: 0.5% -> 3%
+
+### Stale Mod JAR Cleanup
+- Added stale mod JAR cleanup to `sync_from_repo` script
+- Old/renamed mod JARs no longer persist after sync
+
+### Server Properties Optimized
+- Entity broadcast range: 65% (down from default)
+- Simulation distance: 4 chunks
+- View distance: 6 chunks
+
+---
+
+## 2026-04-07 — Champions removed, Lootr aggressive mode
+
+### Champions Mod Removed
+- Champions Unofficial removed entirely from the modpack
+- Broken rank config system that could not be fixed
+- Unmaintained mod with no upstream activity
+- Server lag from error spam on every mob spawn event
+
+### Lootr Aggressive Mode
+- Enabled `aggressive_mode` in Lootr config
+- Forces more consistent per-player loot chest generation
+
+---
+
+## 2026-04-06 — NecromancerEntity crash fix, PowerShell script fixes
+
+### NecromancerEntity Crash Fix
+- NecromancerEntity from a broken mod caused server crashes during mob scaling
+- Added `BROKEN_ENTITIES` early-exit list in `mob_scaling_unified.js`
+- Entities in the list are skipped before any scaling logic runs
+
+### Trans Flag Banner PowerShell Fix
+- Fixed trans flag banners for PowerShell 5.1 compatibility
+- Replaced backtick-e escape (`\`e`) with `$([char]27)` for ANSI codes
+- Backtick-e only works in PowerShell 7+; 5.1 needs explicit char cast
+
+### Non-ASCII Character Fix in PS1 Files
+- Em-dashes and other non-ASCII characters broke PowerShell 5.1 parsing
+- Replaced all non-ASCII characters with ASCII equivalents in `.ps1` files
+
+---
+
+## 2026-04-05 — Tetra Attribute Rebalancing removed
+
+### Tetra Attribute Rebalancing Removed
+- Mod delisted from CurseForge (no longer available for download)
+- Was already broken by Tetra 6.13.0 mixin changes (rolled back to 6.12.0 on 2026-04-03)
+- Removed from mod index, distributions, and force-skip lists
+
+---
+
+## 2026-04-04 — New mods review, mob HP scaling, spell scroll fix, tower loot
 
 ### New Mods Reviewed + Duplicate Cleanup
 - Removed 3 duplicate mod index entries: Origins (Fabric dupe), CTOV dupe, Pufferfish Skills dupe
-- Fixed Sleep Hunger: wrong version (NeoForge 1.21.1 → Forge 1.20.1)
+- Fixed Sleep Hunger: wrong version (NeoForge 1.21.1 -> Forge 1.20.1)
 - Added Iron's Patreon Library (new required dep for Iron's Spellbooks 3.15.5.1)
 - Re-removed Connected Glass + Trash Cans (still depend on SuperMartijn642 libs)
 - Synced 20 new mod .pw.toml files to server + client distributions
-
-### Tetra 6.13.0 → 6.12.0 Rollback
-- Tetra 6.13.0 broke TSB (ModuleModel class removed), Tetra Attribute Rebalancing (mixin injection fail), and module model deserialization ("no deserializer for type: static")
-- Attempted binary bytecode patch for TSB — failed due to Forge module classloading restrictions
-- Art of Forging downgraded 1.8.5 → 1.8.4 (1.8.5 caused MaterialData NPE on 6.12.0)
-- All Tetra addons confirmed working on 6.12.0
 
 ### Mob Tier HP Scaling (NEW SYSTEM)
 - Basic mobs (zombie, skeleton, spider, creeper, etc.): 3x HP — zombie now 60 HP
@@ -35,7 +118,17 @@ All changes to the master design document are logged here with date, description
 ### Waystone Tower Loot + ToTW Worldgen
 - Waystone Towers now share ToTW loot (curios, artifacts, scrolls, ink, spell books)
 - Waystone Towers use minecraft:chests/stronghold_corridor — added to ToTW LootJS sections
-- ToTW spawn frequency increased: regular spacing 62→45, derelict 55→42
+- ToTW spawn frequency increased: regular spacing 62->45, derelict 55->42
+
+---
+
+## 2026-04-03 — Tetra 6.13.0 rollback, Heracles quest fix, distribution updates
+
+### Tetra 6.13.0 → 6.12.0 Rollback
+- Tetra 6.13.0 broke TSB (ModuleModel class removed), Tetra Attribute Rebalancing (mixin injection fail), and module model deserialization ("no deserializer for type: static")
+- Attempted binary bytecode patch for TSB — failed due to Forge module classloading restrictions
+- Art of Forging downgraded 1.8.5 → 1.8.4 (1.8.5 caused MaterialData NPE on 6.12.0)
+- All Tetra addons confirmed working on 6.12.0
 
 ### Heracles Quest Fix
 - First Blood quest copied to config/heracles/quests/main/ (global path, works for existing worlds)

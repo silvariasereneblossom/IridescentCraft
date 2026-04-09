@@ -46,7 +46,7 @@
     "entity_health": true,
     "enchantment_power": true,
     "zombie_villager": true,
-    "villager_profession": true,
+    "villager_profession": false,
     "mob_breeding": true,
     "entity_health.icons_per_line": 10,
     "total_enchantment_power": true,

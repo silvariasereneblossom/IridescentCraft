@@ -6,19 +6,23 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)What To Do First$(/bold)$(br2)$(li)$(bold)Select your Race and Class.$(/bold) These are the most impactful decisions you'll make early. See the Classes & Races chapter.$(li)$(bold)Open FTB Quests.$(/bold) The Welcome chapter gives you 3 skill points for free \u2014 just for going through it.$(li)$(bold)Find food.$(/bold) Hunger Overhaul makes food drain faster. Diverse food gives you max HP bonuses via Spice of Life."
+      "text": "$(bold)Okay, What Should I Do First?$()$(br2)You spawn in a village \u2014 there are chests all over with useful items. Explore! Grab tools, food, and any spell scrolls you find.$(br2)After that, venture out to nearby structures. They contain even more treasure, items to get you started with some of the mods, and $(thing)Apotheosis gems$() that will be useful later.$(br2)Once you feel comfortable, start working on a permanent base outside the spawn zone! From there, it's up to you."
     },
     {
       "type": "patchouli:text",
-      "text": "$(li)$(bold)Avoid enchanting table anxiety.$(/bold) Apotheosis completely reworks enchanting. Your bookshelf setup determines what enchants are available \u2014 more and better bookshelves unlock better enchants. No Tier 1 rush needed.$(li)$(bold)Don't expect diamonds in chests.$(/bold) They've been removed from all Overworld structure loot. Diamonds are a Tier 2 material \u2014 you'll earn them, not find them.$(li)$(bold)Explore structures.$(/bold) Tier 1 token fragments drop from Overworld dungeon chests. Collect 5 for a full token."
+      "text": "$(bold)Key Early Decisions$()$(br2)$(li)$(bold)Select your Origin, Race, and Class.$() These are the most impactful decisions you'll make. See the $(thing)Classes & Races$() chapter for details.$(li)$(bold)Find diverse food.$() Hunger drains faster than vanilla. Eating a variety of foods gives you max HP bonuses via Spice of Life.$(li)$(bold)Check your keybinds.$() Press $(bold)G$() for Origins, $(bold)B$() for Tetra toolbelt, $(bold)R$() for the Spell Wheel. See the $(thing)Keybinds$() page for the full list."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)What To Ignore For Now$(/bold)$(br2)$(li)The Nether \u2014 it's Tier 3. The portal won't activate until you're ready.$(li)The End \u2014 it's Tier 4.$(li)Twilight Forest \u2014 it's Tier 2 content. You can enter, but mobs will hurt.$(li)Refined Storage \u2014 it's Tier 3.$(li)Mekanism \u2014 it's Tier 3\u20134.$(br2)This doesn't mean you can't look. It means the pack is balanced around those tiers."
+      "text": "$(bold)Useful Tips$()$(br2)$(li)$(bold)Don't rush enchanting.$() Apotheosis reworks enchanting completely. Better bookshelves unlock better enchants \u2014 no need to rush a Tier 1 setup.$(li)$(bold)Don't expect diamonds in chests.$() They've been removed from all Overworld structure loot. Diamonds are a Tier 2 material \u2014 you'll earn them, not find them.$(li)$(bold)Explore structures for tokens.$() Tier 1 token fragments drop from Overworld dungeon chests. Collect 5 for a full token to unlock the next tier."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Waystones$(/bold)$(br2)Waystones generate naturally in all dimensions. They're your free fast-travel network. Activating a waystone registers it permanently \u2014 teleporting between them costs nothing.$(br2)$(bold)Crafting a waystone$(/bold) is intentionally expensive at all tiers, requiring rare boss drop materials. Natural generation handles your travel needs. Crafting is for establishing outposts far from natural spawns."
+      "text": "$(bold)What To Ignore For Now$()$(br2)$(li)The $(bold)Nether$() \u2014 it's Tier 3. The portal won't activate until you're ready.$(li)The $(bold)End$() \u2014 it's Tier 4.$(li)$(bold)Twilight Forest$() \u2014 it's Tier 2 content. You can enter, but mobs will hurt.$(li)$(bold)Refined Storage$() \u2014 it's Tier 3.$(li)$(bold)Mekanism$() \u2014 it's Tier 3\u20134.$(br2)This doesn't mean you can't look. It means the pack is balanced around those tiers."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Waystones$()$(br2)Waystones generate naturally in all dimensions. They're your free fast-travel network. Activating a waystone registers it permanently \u2014 teleporting between them costs nothing.$(br2)$(bold)Crafting a waystone$() is intentionally expensive, requiring rare boss drop materials. Natural generation handles your travel needs. Crafting is for establishing outposts far from natural spawns."
     }
   ]
 }

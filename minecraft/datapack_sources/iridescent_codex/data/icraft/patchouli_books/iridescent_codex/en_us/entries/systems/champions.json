@@ -1,27 +1,37 @@
 {
-  "name": "Champions System",
+  "name": "Progressive Difficulty",
   "icon": "minecraft:golden_apple",
   "category": "icraft:systems",
   "sortnum": 5,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(thing)Champions$() (via Champions Unofficial) are elite mob variants that spawn with custom affixes. They glow, are significantly more dangerous than standard mobs, and drop better loot.$(br2)Champions are the primary source of good early affix items. Killing one is always worth the effort."
+      "text": "$(thing)Progressive Difficulty$() is the core combat scaling system in IridescentCraft. Rather than a flat difficulty, the world escalates in response to your progression through three distinct stages.$(br2)Each stage introduces new mechanics that make the world deadlier \u2014 but also more rewarding. This is not optional. The world $(italic)will$() become harder as you advance."
     },
     {
       "type": "patchouli:text",
-      "title": "Spawn Scaling",
-      "text": "Champion spawn rates scale per dimension:$(br2)$(bold)Overworld$() — ~8% base rate$(br)$(bold)Twilight/Aether$() — ~12%$(br)$(bold)Nether/Undergarden$() — ~16%$(br)$(bold)End/Deep Aether$() — ~20%$(br2)Higher-tier dimensions spawn more Champions and at higher ranks. A Rank 4 Champion in the End is a genuine boss-level encounter."
+      "title": "Difficulty Stages",
+      "text": "$(bold)Normal (T1\u2013T2)$() \u2014 From world start. Standard mob behavior. Mobs have base HP scaling and spawn in basic patterns.$(br2)$(bold)Expert (T3)$() \u2014 Triggered by entering the Nether. Mobs gain new abilities, spawn in larger groups, and elite encounters become more frequent.$(br2)$(bold)Master (T4)$() \u2014 Triggered by killing the Ender Dragon. The world is fully hostile. Every encounter is a real fight."
     },
     {
       "type": "patchouli:text",
-      "title": "Champion Ranks",
-      "text": "$(bold)Rank 1 (Common)$() — 1 affix. Slightly buffed stats.$(br)$(bold)Rank 2 (Elite)$() — 2 affixes. Noticeably stronger.$(br)$(bold)Rank 3 (Champion)$() — 3 affixes. Serious threat. Good loot.$(br)$(bold)Rank 4 (Legendary)$() — 4 affixes. Boss-level threat. Excellent loot.$(br2)Higher ranks are rarer. Rank 4 $(thing)Champions$() are uncommon enough to be memorable encounters."
+      "title": "Mob Groups",
+      "text": "Mobs can spawn in $(thing)leader/follower packs$(). A leader mob spawns with a small squad of followers that coordinate attacks. Leaders are visually distinct and significantly stronger than their followers.$(br2)Pack behavior means you cannot safely ignore trash mobs \u2014 they are backed by something dangerous. Crowd control and AoE become essential as difficulty scales."
     },
     {
       "type": "patchouli:text",
-      "title": "Custom IridescentCraft Affixes",
-      "text": "Champions draw from 16 built-in affixes plus $(bold)5 custom IridescentCraft affixes$():$(br2)$(bold)Commanding$() — Buffs nearby mobs with damage and speed$(br)$(bold)Draining$() — Leeches your mana and XP on hit$(br)$(bold)Hexing$() — Applies random debuffs on attack$(br)$(bold)Leaping$() — Closes distance instantly, punishes ranged kiting$(br)$(bold)Summoning$() — Spawns reinforcement mobs$(br2)$(italic)Commanding + Summoning in a cave is a death sentence.$() Play carefully around multi-affix Champions."
+      "title": "Blood Moon & Undead Army",
+      "text": "$(bold)Blood Moon$() events occur randomly at nightfall. During a Blood Moon, mob spawn rates are dramatically increased and mobs are more aggressive. Staying indoors is a valid strategy. Fighting through one is very profitable.$(br2)$(bold)Undead Army$() raids can target your base. Waves of undead assault your position with increasing intensity. Defending successfully yields strong rewards. Failing means a lot of cleanup."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Treasure Bags",
+      "text": "Boss kills award $(thing)treasure bags$() \u2014 right-click loot containers with per-player drops. Every player who participates in a boss kill receives their own treasure bag, so group play is never punished.$(br2)Treasure bag contents scale with the difficulty stage and the boss tier. They are one of the best sources of progression materials and rare items."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Bleeding Effect",
+      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you. While bleeding, you take damage over time that ignores armor. This is a genuine threat during prolonged fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, instant cure), $(thing)Milk Bucket$() (clears all effects), or $(thing)Golden Apple$() (clears bleeding + provides regen).$(br2)$(italic)Always carry bandages. Bleeding in a mob pack without a cure is how most deaths happen.$(/italic)"
     }
   ]
 }

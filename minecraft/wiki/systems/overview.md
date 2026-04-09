@@ -51,15 +51,39 @@ Each dimension has unique combat mechanics beyond stat scaling:
 - **The Abyss:** Oppressive Darkness (reduced visibility + slowness without light source), Corruption (gradual wither in corrupt biomes), Fear Aura (boss proximity debuffs)
 - **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. 9 advancement overrides, 5 End Apotheosis affixes.
 
-## Champions System
+## Champions System (REMOVED 2026-04-07)
 
-Elite mob spawns with combat affixes. Affix count and spawn rate scale with dimension tier. Per-dimension Champion spawn scaling now implemented.
+Champions Unofficial has been removed from the modpack. The mod had a broken rank config system, was unmaintained, and generated error spam on every mob spawn event causing server lag. Elite mob encounters are now handled by Majrusz's Progressive Difficulty (see below).
 
-16 built-in affixes + 5 custom IridescentCraft affixes:
+## Mob Tier HP Scaling
 
-- **Custom affixes:** Commanding (rally nearby mobs), Draining (lifesteal attacks), Hexing (debuff application), Leaping (gap-closing lunges), Summoning (spawn reinforcements)
+Custom HP multipliers applied via `mob_scaling_unified.js` based on mob category. Stacks multiplicatively with dimension scaling and ascension systems.
 
-Categories: Offensive (Molten, Arctic, Venom, Wither, Desecrating, Enkindling), Defensive (Shielding, Reflecting, Regenerating, Armored, Adaptable), Mobility (Hasty, Knockback, Blink, Leaping), Utility (Commanding, Summoning, Draining, Hexing).
+| Tier | Multiplier | Examples |
+|------|-----------|----------|
+| Basic | 3x HP | Zombie (60 HP), Skeleton, Spider, Creeper, Drowned, Husk, Stray, Witch, Slime |
+| Mid-tier | 1.5x HP | Blaze, Wither Skeleton, Piglin Brute, TF/Aether/Blue Skies mobs, dungeon mobs |
+| Champion | 1.25x HP | Stacks on top of other affixes (from Progressive Difficulty) |
+| Boss | 1x HP | Unchanged, custom HP managed via boss_hp.js |
+| Catch-all | 3x HP | Any unlisted hostile mob defaults to basic tier |
+
+## Progressive Difficulty (Majrusz's)
+
+Three-stage world difficulty scaling tied to progression milestones. Replaces Champions as the primary mob challenge system.
+
+| Stage | Tier Range | Trigger | Effects |
+|-------|-----------|---------|---------|
+| Normal | T1-T2 | Default | Base difficulty, standard mob spawns |
+| Expert | T3 | Nether entry | T3-level mob enhancements, new mob abilities |
+| Master | T4 | Dragon kill | T4-level mob enhancements, full difficulty |
+
+### Treasure Bags
+Majrusz's Progressive Difficulty includes a treasure bag system. Bags have been rewritten for all 7 bosses/events with tier-appropriate loot. Bag contents scale with the current difficulty stage.
+
+### Configuration
+- Creeperlings: disabled
+- Bleeding: kept (symmetrical design with player combat)
+- Enderium: removed
 
 ## Custom Enchantments (24 total)
 

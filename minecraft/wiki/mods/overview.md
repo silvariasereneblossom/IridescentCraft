@@ -1,6 +1,6 @@
 # Mod Overview
 
-420+ mods organized by function and tier availability.
+415+ mods organized by function and tier availability.
 
 ## Core Tech (Tiered)
 
@@ -36,7 +36,7 @@
 
 ## Combat & Scaling
 
-Apotheosis, ScalingMobs, Champions Unofficial, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (+Archery/Armory/Arsenal), Iron's Spells, Improved Mobs, JustLevelingFork, Tetra (+Tetracelium compat, mutil library), Soul Fire'd
+Apotheosis, ScalingMobs, Majrusz's Progressive Difficulty, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (+Archery/Armory/Arsenal), Iron's Spells, Improved Mobs, JustLevelingFork, Tetra (+Tetracelium compat, mutil library), Soul Fire'd
 
 ## Player Systems
 
@@ -75,13 +75,19 @@ Refined Storage (+addons), Sophisticated Backpacks/Storage, Storage Drawers, Pre
 
 ## Scripting
 
-KubeJS (+addons), CraftTweaker, JeiTweaker, LootJS, AStages, FTB Quests
+KubeJS (+addons), CraftTweaker, JeiTweaker, LootJS, AStages
 
 ## Ungated Mods
 
 Building: Chipped, Macaw's suite, Decorative Blocks, ConnectedTexturesMod, Structurize
 
-QoL: JourneyMap, Jade, Jade Addons, AppleSkin, Mouse Tweaks, FTB Ultimine/Chunks/Essentials, Simple Voice Chat, Equipment Compare, Light Overlay, JEED, Transmog
+QoL: JourneyMap, Jade, Jade Addons, AppleSkin, Mouse Tweaks, LiteMiner (veinmining), Simple Voice Chat, Equipment Compare, Light Overlay, JEED, Transmog
+
+Multiplayer: Open Parties and Claims (chunk claiming), Simple Voice Chat
+
+Utilities: FastBack (git-based backups)
+
+Libraries/Dependencies: Majrusz Library, Amber
 
 Performance: ImmediatelyFast, Oculus, LazyDFU [UNOFFICIAL PORT], Alternate Current, Ksyxis
 
@@ -131,6 +137,16 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Pretty Rain | Cloth Config incompatibility | 2026-03-17 |
 | Cherry Village | Unregistered worldgen feature crash | 2026-03-19 |
 | Gods & Heroes RPG Classes | Conflicts with icraft class layer, broken origin translations | 2026-03-19 |
+| Tetra Attribute Rebalancing | Delisted from CurseForge, broken by Tetra 6.13.0 mixin changes | 2026-04-05 |
+| Champions Unofficial | Broken rank config, unmaintained, error spam causing server lag | 2026-04-07 |
+| FTB Backups | Replaced by FastBack (git-based backups) | 2026-04-08 |
+| FTB Chunks | Replaced by Open Parties and Claims | 2026-04-08 |
+| FTB Essentials | Removed (FTB suite cleanup) | 2026-04-08 |
+| FTB Library | Removed (FTB suite cleanup, no longer needed) | 2026-04-08 |
+| FTB Quests | Removed (FTB suite cleanup, Heracles used instead) | 2026-04-08 |
+| FTB Ranks | Removed (FTB suite cleanup) | 2026-04-08 |
+| FTB Teams | Removed (FTB suite cleanup) | 2026-04-08 |
+| FTB Ultimine | Replaced by LiteMiner + Amber (veinmining) | 2026-04-08 |
 
 ## Related Pages
 
