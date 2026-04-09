@@ -1,8 +1,13 @@
 filename = 'amber-forge-1.20.1-1.3.0-beta.2+1.20.1.jar'
 name = 'Amber'
 side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1', '1.20.1' ]
+x-prismlauncher-release-type = 'beta'
+x-prismlauncher-version-number = '1.3.0-beta.2+1.20.1'
 
 [download]
+hash = '30d0c38831110b9ea5dcd4b3db6370f6011d5669a35ca09a802f90cbbcb2ce5bc5dbce130ca28e8bf9286df967a7f9f55e56adff3691e5bf89a2ccc2ff90b3ec'
 hash-format = 'sha512'
 mode = 'url'
 url = 'https://cdn.modrinth.com/data/vjGZJDu5/versions/a7JZrEaN/amber-forge-1.20.1-1.3.0-beta.2%2B1.20.1.jar'
