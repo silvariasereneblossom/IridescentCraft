@@ -41,48 +41,50 @@ powershell -Command ^
 echo.
 
 REM -------------------------------------------------------------------
-REM Phase 0: Download server files from GitHub if not present
+REM Phase 0: Self-Update from GitHub
 REM -------------------------------------------------------------------
-REM If config/ or global_packs/ is missing, download the full server
-REM distribution from the GitHub repo.
-set "NEED_DOWNLOAD=0"
-if not exist "%~dp0config" set "NEED_DOWNLOAD=1"
-if not exist "%~dp0global_packs" set "NEED_DOWNLOAD=1"
-if "%NEED_DOWNLOAD%"=="1" (
-    echo [SETUP] Server files not found — downloading from GitHub...
-    echo.
-    powershell -ExecutionPolicy Bypass -Command ^
-      "try {" ^
-      "  [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-      "  $zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
-      "  $zipFile = $env:TEMP + '\IridescentCraft-server.zip';" ^
-      "  $extractDir = $env:TEMP + '\IridescentCraft-server-extract';" ^
-      "  Write-Host '  Downloading repository...';" ^
-      "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing;" ^
-      "  Write-Host '  Extracting server distribution...';" ^
-      "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
-      "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
-      "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\server_distribution';" ^
-      "  $dest = '%~dp0';" ^
-      "  Write-Host '  Copying server files...';" ^
-      "  Get-ChildItem $src -Exclude 'iridescentserver.bat','iridescentserver.sh' | ForEach-Object {" ^
-      "    if ($_.PSIsContainer) {" ^
-      "      Copy-Item $_.FullName $dest -Recurse -Force;" ^
-      "    } else {" ^
-      "      Copy-Item $_.FullName $dest -Force;" ^
-      "    }" ^
-      "  };" ^
-      "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
-      "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
-      "  Write-Host '  Done.' -ForegroundColor Green;" ^
-      "} catch { Write-Host ('ERROR: ' + $_.Exception.Message) -ForegroundColor Red; exit 1; }"
-    if not exist "%~dp0global_packs" (
-        echo ERROR: Failed to download server files.
-        pause
-        exit /b 1
-    )
-    echo.
-)
+REM Downloads latest server distribution from GitHub every launch.
+REM Overlays configs, scripts, datapacks, .index metadata.
+REM Preserves: world/, logs/, crash-reports/, backups/, libraries/, mods/*.jar
+echo [UPDATE] Checking for updates from GitHub...
+powershell -ExecutionPolicy Bypass -Command ^
+  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+  "$zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
+  "$zipFile = $env:TEMP + '\IridescentCraft-server-update.zip';" ^
+  "$extractDir = $env:TEMP + '\IridescentCraft-server-update';" ^
+  "try {" ^
+  "  Write-Host '  Downloading latest from GitHub...';" ^
+  "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 30;" ^
+  "  if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) { throw 'Download too small or failed' };" ^
+  "  Write-Host '  Extracting...';" ^
+  "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
+  "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
+  "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\server_distribution';" ^
+  "  $dest = '%~dp0';" ^
+  "  $exclude = @('world','logs','crash-reports','backups','libraries','.cache');" ^
+  "  Write-Host '  Syncing configs, scripts, datapacks...';" ^
+  "  foreach ($item in Get-ChildItem $src) {" ^
+  "    if ($item.PSIsContainer -and $exclude -contains $item.Name) { continue };" ^
+  "    if ($item.Name -eq 'mods') {" ^
+  "      if (-not (Test-Path \"$dest\mods\.index\")) { New-Item -ItemType Directory -Path \"$dest\mods\.index\" -Force | Out-Null };" ^
+  "      Copy-Item \"$($item.FullName)\.index\*\" \"$dest\mods\.index\" -Recurse -Force;" ^
+  "      Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object { Copy-Item $_.FullName \"$dest\mods\" -Force };" ^
+  "    } elseif ($item.Name -eq 'iridescentserver.bat' -or $item.Name -eq 'iridescentserver.sh') {" ^
+  "      continue;" ^
+  "    } else {" ^
+  "      Copy-Item $item.FullName $dest -Recurse -Force;" ^
+  "    }" ^
+  "  };" ^
+  "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
+  "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
+  "  Write-Host '  [OK] Update complete.' -ForegroundColor Green;" ^
+  "} catch {" ^
+  "  Write-Host ('  [WARN] Update check failed: ' + $_.Exception.Message) -ForegroundColor Yellow;" ^
+  "  Write-Host '  Continuing with existing files...' -ForegroundColor Yellow;" ^
+  "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
+  "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
+  "}"
+echo.
 
 REM -------------------------------------------------------------------
 REM Phase 1: Check Java
@@ -158,6 +160,34 @@ if exist "mods" (
     call "%~dp0strip_client_mods.bat" >nul 2>&1
 )
 
+REM Update mods (download new, remove old versions)
+if exist "mods\.index" (
+    echo [UPDATE] Syncing mod JARs...
+    powershell -ExecutionPolicy Bypass -File "%~dp0update_mods.ps1" -ModsDir "mods"
+)
+
+REM Clean stale mod JARs not in any .pw.toml
+echo [CLEANUP] Removing stale mod JARs...
+powershell -ExecutionPolicy Bypass -Command ^
+  "$indexDir = 'mods\.index';" ^
+  "$modsDir = 'mods';" ^
+  "if (-not (Test-Path $indexDir)) { exit };" ^
+  "$expected = @{};" ^
+  "Get-ChildItem $indexDir\*.pw.toml | ForEach-Object {" ^
+  "  foreach ($line in Get-Content $_.FullName) {" ^
+  "    if ($line -match '^\s*filename\s*=\s*[''\""](.+)[''\""]') { $expected[$matches[1]] = $true }" ^
+  "  }" ^
+  "};" ^
+  "$removed = 0;" ^
+  "Get-ChildItem $modsDir\*.jar -ErrorAction SilentlyContinue | ForEach-Object {" ^
+  "  if (-not $expected.ContainsKey($_.Name)) {" ^
+  "    Write-Host ('  Removing: ' + $_.Name) -ForegroundColor DarkYellow;" ^
+  "    Remove-Item $_.FullName -Force; $removed++;" ^
+  "  }" ^
+  "};" ^
+  "if ($removed -gt 0) { Write-Host ('  Removed ' + $removed + ' stale JAR(s)') -ForegroundColor Yellow }" ^
+  "else { Write-Host '  No stale JARs.' -ForegroundColor Green }"
+echo.
 
 REM -------------------------------------------------------------------
 REM Phase 3: Accept EULA
