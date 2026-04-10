@@ -3,7 +3,9 @@ title IridescentCraft Server Sync
 setlocal enabledelayedexpansion
 
 set "REPO=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\server_distribution"
+REM Get script directory without trailing backslash
 set "LOCAL=%~dp0"
+if "!LOCAL:~-1!"=="\" set "LOCAL=!LOCAL:~0,-1!"
 
 echo.
 echo ==========================================
@@ -56,25 +58,26 @@ if not exist "%REPO%" (
 )
 
 REM Verify destination exists
-if not exist "%LOCAL%mods" (
+if not exist "%LOCAL%\mods" (
     echo [SETUP] Creating mods directory...
-    mkdir "%LOCAL%mods"
+    mkdir "%LOCAL%\mods"
 )
 
 echo [SYNC] Syncing from local repo...
 echo.
 
 REM Mirror configs, scripts, datapacks (exclude runtime data + mods)
+REM Note: LOCAL has no trailing backslash so paths with spaces are safe
 robocopy "%REPO%" "%LOCAL%" /MIR /MT:4 /NJH /NJS /NDL /NP ^
-    /XD "%LOCAL%world" "%LOCAL%logs" "%LOCAL%crash-reports" "%LOCAL%backups" "%LOCAL%libraries" "%LOCAL%.cache" "%LOCAL%mods" ^
+    /XD "%LOCAL%\world" "%LOCAL%\logs" "%LOCAL%\crash-reports" "%LOCAL%\backups" "%LOCAL%\libraries" "%LOCAL%\.cache" "%LOCAL%\mods" ^
     /XF "server_output.log" "crash-*.log" "usercache.json" "banned-ips.json" "banned-players.json" "ops.json" "whitelist.json" "installer.log"
 
 set ROBOCOPY_EXIT=%errorlevel%
 
 REM Sync mod index and custom JARs
 echo [SYNC] Syncing mod metadata and custom JARs...
-robocopy "%REPO%\mods\.index" "%LOCAL%mods\.index" /MIR /NJH /NJS /NDL /NP >nul
-robocopy "%REPO%\mods" "%LOCAL%mods" *.jar /NJH /NJS /NDL /NP >nul
+robocopy "%REPO%\mods\.index" "%LOCAL%\mods\.index" /MIR /NJH /NJS /NDL /NP >nul
+robocopy "%REPO%\mods" "%LOCAL%\mods" *.jar /NJH /NJS /NDL /NP >nul
 
 echo.
 if %ROBOCOPY_EXIT% LEQ 3 (
@@ -91,10 +94,10 @@ if %ROBOCOPY_EXIT% LEQ 3 (
 echo.
 
 REM Update mods (download new, remove old versions)
-if exist "%LOCAL%mods\.index" (
+if exist "%LOCAL%\mods\.index" (
     echo [UPDATE] Checking for mod version changes...
     pushd "%LOCAL%"
-    powershell -ExecutionPolicy Bypass -File "%LOCAL%update_mods.ps1" -ModsDir "mods"
+    powershell -ExecutionPolicy Bypass -File "%LOCAL%\update_mods.ps1" -ModsDir "mods"
     popd
 )
 
@@ -102,8 +105,8 @@ REM Clean stale mod JARs
 echo.
 echo [CLEANUP] Removing stale mod JARs...
 powershell -ExecutionPolicy Bypass -Command ^
-    "$indexDir = '%LOCAL%mods\.index';" ^
-    "$modsDir = '%LOCAL%mods';" ^
+    "$indexDir = '%LOCAL%\mods\.index';" ^
+    "$modsDir = '%LOCAL%\mods';" ^
     "if (-not (Test-Path $indexDir)) { exit };" ^
     "$expected = @{};" ^
     "Get-ChildItem $indexDir\*.pw.toml | ForEach-Object {" ^
@@ -125,7 +128,7 @@ powershell -ExecutionPolicy Bypass -Command ^
     "else { Write-Host '  No stale JARs found.' -ForegroundColor Green }"
 
 REM Strip client-only mods
-if exist "%LOCAL%strip_client_mods.bat" (
+if exist "%LOCAL%\strip_client_mods.bat" (
     echo.
     echo [CLEANUP] Stripping client-only mods...
     pushd "%LOCAL%"
