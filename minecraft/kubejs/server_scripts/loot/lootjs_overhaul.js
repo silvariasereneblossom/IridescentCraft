@@ -752,7 +752,6 @@ LootJS.modifiers(event => {
     mod.addLoot(LootEntry.of('minecraft:stone_shovel').when(c => c.randomChance(0.05)))
 
     // Magic weapons — boosted chance (~8% scroll, ~5% wand/book)
-    mod.addLoot(LootEntry.lootTable('icraft:magic/scroll_t1').when(c => c.randomChance(0.08)))
     mod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.05)))
     mod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.06)))
 
@@ -853,7 +852,6 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-    .addLoot(LootEntry.lootTable('icraft:magic/scroll_t1').when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.05)))
@@ -864,7 +862,6 @@ LootJS.modifiers(event => {
     .anyDimension('twilightforest:twilight_forest',
       'aether:the_aether', 'deep_aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
-    .addLoot(LootEntry.lootTable('icraft:magic/scroll_t2').when(c => c.randomChance(0.10)))
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.05)))
@@ -873,7 +870,6 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
-    .addLoot(LootEntry.lootTable('icraft:magic/scroll_t3').when(c => c.randomChance(0.12)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.04)))
@@ -882,7 +878,6 @@ LootJS.modifiers(event => {
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
-    .addLoot(LootEntry.lootTable('icraft:magic/scroll_t4').when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:netherite_spell_book').when(c => c.randomChance(0.01)))
     .addLoot(LootEntry.of('irons_spellbooks:epic_ink').when(c => c.randomChance(0.03)))
@@ -1269,10 +1264,6 @@ LootJS.modifiers(event => {
     .removeLoot('botania:mana_diamond')
     .removeLoot('minecraft:arrow')
     .removeLoot('minecraft:spectral_arrow')
-    // Guaranteed magic scroll (mage exploration incentive)
-    .addLoot(LootEntry.lootTable('icraft:magic/scroll_tower'))
-    // 40% chance of a second scroll
-    .addLoot(LootEntry.lootTable('icraft:magic/scroll_tower').when(c => c.randomChance(0.40)))
     // 15% chance of common ink
     .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
     // 8% chance of copper spell book (T1 magic gear)
@@ -1340,7 +1331,7 @@ LootJS.modifiers(event => {
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
   console.log('  - Overworld clutter cleanup: horse armor, spider eyes, etc removed/reduced')
-  console.log('  - Early magic access: scrolls (8%) + copper spell book (3%) in OW chests')
+  console.log('  - Early magic access: Iron's Spellbooks handles scrolls natively; copper spell book (3%) in OW chests')
   console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
   console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
   console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
