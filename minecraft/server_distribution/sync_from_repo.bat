@@ -13,7 +13,10 @@ title IridescentCraft Server Sync
 setlocal enabledelayedexpansion
 
 set "REPO=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\server_distribution"
-set "LOCAL=C:\Users\silvariazemaitis\Desktop\server_distribution"
+REM LOCAL defaults to wherever this script is running from
+set "LOCAL=%~dp0"
+REM Remove trailing backslash
+if "%LOCAL:~-1%"=="\" set "LOCAL=%LOCAL:~0,-1%"
 
 echo.
 powershell -Command ^
@@ -27,7 +30,7 @@ powershell -Command ^
   "[Console]::Write(\"${B}  ==========================================${R}`n\")"
 echo.
 echo   Source: %REPO%
-echo   Dest:   %LOCAL%
+echo   Server: %LOCAL%
 echo.
 
 REM Verify source exists — fall back to GitHub download if not
