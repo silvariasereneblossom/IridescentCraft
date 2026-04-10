@@ -82,6 +82,22 @@ Windows: `[Console]::Write()` with VT processing enabled via P/Invoke.
 Linux: Standard `\033[38;2;R;G;Bm` ANSI codes.
 PS1 files: No banners — the bat handles display.
 
+### Custom Bundled JARs
+Some mods are built from source or manually bundled — they don't have `.pw.toml` entries and are NOT managed by packwiz. These JARs are committed directly to the repo and must be added to the **custom JAR allowlist** in the stale cleanup logic in both `iridescentserver.bat` and `sync_from_repo.bat`, or the self-updater will delete them.
+
+Current custom JARs:
+- `iridescent_codex_data.jar` — Patchouli Codex book (built from `datapack_sources/iridescent_codex/`)
+- `iridescent_origins-1.0.0.jar` — Origins/races/classes (built from `iridescent-origins-mod/`)
+- `mek_walkable_cables-1.0.1.jar` — Mekanism cable coremod
+- `offlineskins-1.20.1-v1.jar` — Offline skin support
+- `zeta_racefix-1.0.0.jar` — Race selection fix
+
+When adding a new custom JAR:
+1. Add the JAR to `mods/` in all three distributions
+2. Add the filename to the `$customJars` array in `iridescentserver.bat` (stale cleanup section)
+3. Add the filename to the `$customJars` array in `sync_from_repo.bat` (stale cleanup section)
+4. Add the filename to `CUSTOM_JARS` in `update_mods.sh`
+
 ### Distribution Sync
 All changes to kubejs, configs, datapacks, or lang files must be synced to all three distributions: main instance, server_distribution, distribution/client.
 
