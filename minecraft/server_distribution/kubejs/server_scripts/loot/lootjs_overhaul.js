@@ -670,18 +670,8 @@ LootJS.modifiers(event => {
     'minecraft:chests/village/village_armorer'
   ]
 
-  // Starter-friendly artifacts for village smiths
-  const villageArtifacts = [
-    'artifacts:umbrella',
-    'artifacts:kitty_slippers',
-    'artifacts:bunny_hoppers',
-    'artifacts:running_shoes',
-    'artifacts:snowshoes',
-    'artifacts:pocket_piston',
-    'artifacts:obsidian_skull',
-    'artifacts:cloud_in_a_bottle'
-  ]
-
+  // Artifacts mod handles artifact injection into village chests natively via GLM
+  // We only handle material/gear adjustments here
   vanillaVillageSmithChests.forEach(table => {
     let modifier = event
       .addLootTableModifier(table)
@@ -711,12 +701,7 @@ LootJS.modifiers(event => {
     modifier.addLoot(LootEntry.of('minecraft:iron_sword').when(c => c.randomChance(0.05)))
     modifier.addLoot(LootEntry.of('minecraft:iron_pickaxe').when(c => c.randomChance(0.05)))
 
-    // Artifacts — rare (5% each, ~33% chance of at least one per chest)
-    villageArtifacts.forEach(artifact => {
-      modifier.addLoot(
-        LootEntry.of(artifact).when(c => c.randomChance(0.05))
-      )
-    })
+    // Artifacts handled by Artifacts mod native GLM injection
   })
 
   // =========================================================================
@@ -760,15 +745,7 @@ LootJS.modifiers(event => {
     mod.addLoot(LootEntry.of('minecraft:iron_sword').enchantRandomly().when(c => c.randomChance(0.03)))
     mod.addLoot(LootEntry.of('minecraft:iron_axe').enchantRandomly().when(c => c.randomChance(0.02)))
 
-    // Artifacts — small chance in house chests too (3% each, ~21% chance of any)
-    const houseArtifacts = [
-      'artifacts:umbrella', 'artifacts:kitty_slippers', 'artifacts:bunny_hoppers',
-      'artifacts:running_shoes', 'artifacts:snowshoes', 'artifacts:pocket_piston',
-      'artifacts:obsidian_skull', 'artifacts:cloud_in_a_bottle'
-    ]
-    houseArtifacts.forEach(artifact => {
-      mod.addLoot(LootEntry.of(artifact).when(c => c.randomChance(0.03)))
-    })
+    // Artifacts handled by Artifacts mod native GLM injection
   })
 
   // =========================================================================
@@ -1010,16 +987,7 @@ LootJS.modifiers(event => {
       'minecraft:chests/underwater_ruin_small',
       'minecraft:chests/buried_treasure',
       'minecraft:chests/ocean_monument')
-    // Water-themed artifacts — high chance
-    .addLoot(
-      LootEntry.of('artifacts:snorkel').when(c => c.randomChance(0.15))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:flippers').when(c => c.randomChance(0.15))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.10))
-    )
+    // Artifacts handled by Artifacts mod native GLM injection into these tables
     // Aquaculture fishing loot
     .addLoot(
       LootEntry.of('minecraft:fishing_rod').when(c => c.randomChance(0.12))
@@ -1029,16 +997,6 @@ LootJS.modifiers(event => {
     )
     .addLoot(
       LootEntry.of('minecraft:heart_of_the_sea').when(c => c.randomChance(0.05))
-    )
-    // General utility artifacts at lower rate
-    .addLoot(
-      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.05))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.04))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.04))
     )
 
   // --- YUNG's Better Ocean Monuments: premium ocean loot ---
