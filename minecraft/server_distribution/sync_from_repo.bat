@@ -36,6 +36,8 @@ echo.
 echo   Source: %REPO%
 echo   Server: %LOCAL%
 echo.
+echo [DEBUG] About to check repo path...
+pause
 
 REM Verify source exists -- fall back to GitHub download if not
 if not exist "%REPO%" (
