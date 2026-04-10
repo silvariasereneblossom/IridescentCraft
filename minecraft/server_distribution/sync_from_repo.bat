@@ -18,9 +18,9 @@ setlocal enabledelayedexpansion
 
 set "REPO=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\server_distribution"
 REM LOCAL defaults to wherever this script is running from
-set "LOCAL=%~dp0"
-REM Remove trailing backslash
-if "%LOCAL:~-1%"=="\" set "LOCAL=%LOCAL:~0,-1%"
+set "LOCAL=%~dp0."
+REM Resolve to canonical path (removes trailing dot and backslash)
+for %%I in ("%LOCAL%") do set "LOCAL=%%~fI"
 
 echo.
 powershell -Command ^
