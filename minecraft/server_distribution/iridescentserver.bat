@@ -178,6 +178,8 @@ powershell -ExecutionPolicy Bypass -Command ^
   "    if ($line -match '^\s*filename\s*=\s*[''\""](.+)[''\""]') { $expected[$matches[1]] = $true }" ^
   "  }" ^
   "};" ^
+  "$customJars = @('iridescent_codex_data.jar','iridescent_origins-1.0.0.jar','mek_walkable_cables-1.0.1.jar','offlineskins-1.20.1-v1.jar','zeta_racefix-1.0.0.jar');" ^
+  "foreach ($c in $customJars) { $expected[$c] = $true };" ^
   "$removed = 0;" ^
   "Get-ChildItem $modsDir\*.jar -ErrorAction SilentlyContinue | ForEach-Object {" ^
   "  if (-not $expected.ContainsKey($_.Name)) {" ^
