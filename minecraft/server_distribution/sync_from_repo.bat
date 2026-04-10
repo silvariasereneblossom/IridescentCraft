@@ -23,21 +23,13 @@ REM Remove trailing backslash
 if "%LOCAL:~-1%"=="\" set "LOCAL=%LOCAL:~0,-1%"
 
 echo.
-powershell -Command ^
-  "Add-Type -MemberDefinition '[DllImport(\"kernel32.dll\")]public static extern bool SetConsoleMode(IntPtr h,int m);[DllImport(\"kernel32.dll\")]public static extern IntPtr GetStdHandle(int h);' -Name W -Namespace C;" ^
-  "$h=[C.W]::GetStdHandle(-11);[C.W]::SetConsoleMode($h,7)|Out-Null;" ^
-  "$B=\"$([char]27)[38;2;91;206;250m\";$P=\"$([char]27)[38;2;245;169;184m\";$W=\"$([char]27)[38;2;255;255;255m\";$R=\"$([char]27)[0m\";" ^
-  "[Console]::Write(\"${B}  ==========================================${R}`n\");" ^
-  "[Console]::Write(\"${P}  IridescentCraft Server Sync${R}`n\");" ^
-  "[Console]::Write(\"${W}  Repo to Local Server${R}`n\");" ^
-  "[Console]::Write(\"${P}  Iridescent Edition${R}`n\");" ^
-  "[Console]::Write(\"${B}  ==========================================${R}`n\")"
+echo ==========================================
+echo   IridescentCraft Server Sync
+echo ==========================================
 echo.
 echo   Source: %REPO%
 echo   Server: %LOCAL%
 echo.
-echo [DEBUG] About to check repo path...
-pause
 
 REM Verify source exists -- fall back to GitHub download if not
 if not exist "%REPO%" (
