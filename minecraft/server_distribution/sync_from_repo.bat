@@ -1,8 +1,12 @@
 @echo off
-REM IridescentCraft Server — Sync from Repo to Local Server
+REM IridescentCraft Server -- Sync from Repo to Local Server
 REM Run this on the Windows Server to pull latest changes from the
 REM network-mapped repo into the local server distribution.
 REM
+REM Debug: show we started
+echo [SYNC] Starting IridescentCraft Server Sync...
+echo Working directory: %CD%
+echo.
 REM Usage: Double-click or run from command prompt.
 REM        Can also be scheduled via Task Scheduler for automatic sync.
 REM
@@ -33,7 +37,7 @@ echo   Source: %REPO%
 echo   Server: %LOCAL%
 echo.
 
-REM Verify source exists — fall back to GitHub download if not
+REM Verify source exists -- fall back to GitHub download if not
 if not exist "%REPO%" (
     echo [INFO] Repo path not found. Downloading from GitHub instead...
     echo.
@@ -85,9 +89,9 @@ if not exist "%LOCAL%" (
 echo [SYNC] Checking for changes...
 echo.
 
-REM Use robocopy to sync — mirrors source to dest
+REM Use robocopy to sync -- mirrors source to dest
 REM /MIR = mirror (copy new/changed, delete removed)
-REM /XD = exclude directories (world, logs, crash-reports, backups — server runtime data)
+REM /XD = exclude directories (world, logs, crash-reports, backups -- server runtime data)
 REM /XF = exclude files (server runtime files that shouldn't be overwritten)
 REM /NJH /NJS = no job header/summary clutter
 REM /NDL = no directory listing
@@ -165,10 +169,10 @@ if exist "%LOCAL%\strip_client_mods.bat" (
     popd
 )
 
-REM Check if server is running — warn if so
+REM Check if server is running -- warn if so
 tasklist /FI "IMAGENAME eq java.exe" 2>nul | find /I "java.exe" >nul
 if %errorlevel% equ 0 (
-    echo [NOTE] Java is running — if this is the MC server, restart it
+    echo [NOTE] Java is running -- if this is the MC server, restart it
     echo        to pick up the changes.
 )
 
