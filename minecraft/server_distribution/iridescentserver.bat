@@ -11,11 +11,36 @@ REM   - 8-12 GB RAM available for the server
 
 title IridescentCraft Server
 
-REM Create a dedicated server directory so files don't scatter
-REM The .icraft_server marker file indicates we're already in the server dir
+REM Check if we're in a system user folder — never run in-place there
+set "IN_SYSTEM_FOLDER=0"
+setlocal enabledelayedexpansion
+for %%D in (Desktop Documents Downloads Music Pictures Videos) do (
+    echo "%~dp0" | findstr /I /C:"\%%D\" >nul 2>&1
+    if not errorlevel 1 set "IN_SYSTEM_FOLDER=1"
+)
+
+REM If in system folder: always create subfolder (ignore .icraft_server)
+REM If not in system folder: create subfolder only if no .icraft_server marker
+if "!IN_SYSTEM_FOLDER!"=="1" (
+    if not exist "%~dp0IridescentCraft Dedicated Server\.icraft_server" (
+        set "SERVER_DIR=%~dp0IridescentCraft Dedicated Server"
+        if not exist "!SERVER_DIR!" mkdir "!SERVER_DIR!"
+        copy /y "%~f0" "!SERVER_DIR!\iridescentserver.bat" >nul
+        echo. > "!SERVER_DIR!\.icraft_server"
+        echo [SETUP] Created server directory. Launching from there...
+        start "" "!SERVER_DIR!\iridescentserver.bat"
+        endlocal
+        exit /b
+    ) else (
+        REM Subfolder already exists — launch from there
+        start "" "%~dp0IridescentCraft Dedicated Server\iridescentserver.bat"
+        endlocal
+        exit /b
+    )
+)
+
 if not exist "%~dp0.icraft_server" (
     set "SERVER_DIR=%~dp0IridescentCraft Dedicated Server"
-    setlocal enabledelayedexpansion
     if not exist "!SERVER_DIR!" mkdir "!SERVER_DIR!"
     copy /y "%~f0" "!SERVER_DIR!\iridescentserver.bat" >nul
     echo. > "!SERVER_DIR!\.icraft_server"
@@ -24,6 +49,7 @@ if not exist "%~dp0.icraft_server" (
     endlocal
     exit /b
 )
+endlocal
 
 REM We're in the server dir — ensure working directory is correct
 cd /d "%~dp0"
