@@ -23,9 +23,13 @@ REM Remove trailing backslash
 if "%LOCAL:~-1%"=="\" set "LOCAL=%LOCAL:~0,-1%"
 
 echo.
-echo ==========================================
-echo   IridescentCraft Server Sync
-echo ==========================================
+powershell -Command ^
+  "$e=[char]27;" ^
+  "[Console]::Write(\"${e}[38;2;91;206;250m  ==========================================${e}[0m`n\");" ^
+  "[Console]::Write(\"${e}[38;2;245;169;184m  IridescentCraft Server Sync${e}[0m`n\");" ^
+  "[Console]::Write(\"${e}[38;2;255;255;255m  Repo to Local Server${e}[0m`n\");" ^
+  "[Console]::Write(\"${e}[38;2;245;169;184m  Iridescent Edition${e}[0m`n\");" ^
+  "[Console]::Write(\"${e}[38;2;91;206;250m  ==========================================${e}[0m`n\")"
 echo.
 echo   Source: %REPO%
 echo   Server: %LOCAL%
