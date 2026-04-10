@@ -1,4 +1,18 @@
 @echo off
+
+REM Block system user folders
+for %%D in (Desktop Documents Downloads Music Pictures Videos) do (
+    echo "%~dp0" | findstr /I /C:"\%%D\" >nul 2>&1
+    if not errorlevel 1 (
+        echo.
+        echo ERROR: Cannot mark a system folder as a server directory!
+        echo Please use a dedicated folder instead.
+        echo.
+        pause
+        exit /b 1
+    )
+)
+
 echo.
 echo This marks the current directory as an IridescentCraft Dedicated Server.
 echo The server launcher will run in-place instead of creating a subfolder.

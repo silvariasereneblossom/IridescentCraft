@@ -11,7 +11,21 @@ REM   - 8-12 GB RAM available for the server
 
 title IridescentCraft Server
 
-REM Create a dedicated server directory so files don't scatter on desktop
+REM Block running directly in system user folders
+for %%D in (Desktop Documents Downloads Music Pictures Videos) do (
+    echo "%~dp0" | findstr /I /C:"\%%D\" >nul 2>&1
+    if not errorlevel 1 (
+        echo.
+        echo ERROR: Do not run the server directly in your %%D folder!
+        echo Please move iridescentserver.bat to its own folder first,
+        echo or just run it and it will create a dedicated server directory.
+        echo.
+        pause
+        exit /b 1
+    )
+)
+
+REM Create a dedicated server directory so files don't scatter
 REM The .icraft_server marker file indicates we're already in the server dir
 if not exist "%~dp0.icraft_server" (
     set "SERVER_DIR=%~dp0IridescentCraft Dedicated Server"
