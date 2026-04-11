@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — Class Artifacts loot table audit + pouch awakening merge
+
+### Boss Entity ID Corrections
+- **Fixed `alexscaves:entities/revenant`** → `alexscaves:entities/atlatitan`. The `revenant` ID doesn't exist in Alex's Caves; I invented it. Audited against the mod jar's loot_tables/entities/ directory and swapped to `atlatitan` (a real Primordial Caves mini-boss)
+- **Fixed `deeperdarker:entities/warden_shrine`** → `deeperdarker:entities/shattered`. `warden_shrine` is a **structure**, not an entity. Cross-referenced with the canonical boss list in `loot_discovery.js.disabled` (`stalker`, `shattered`, `shriek_worm`, `sculk_centipede`, `sculk_leech`) — `shattered` is Deeper Darker's named boss
+- **Verified `alexscaves:entities/watcher`** is valid (I initially flagged it, but it's a real Abyssal Chasm entity)
+
+### Awakenings Merged into Pouch Loot Table
+- Overrode `rpgseteffects:items/artifact_piece_pouch` via KubeJS virtual datapack at `kubejs/data/rpgseteffects/loot_tables/items/artifact_piece_pouch.json`
+- Pool: 14 normal artifacts at weight 10 + 14 awakening variants at weight 2
+- Opening a pouch now has ~17% chance of an awakening (28 total weight, 28 awakening weight out of 168)
+- **Design rationale (from user suggestion):** "awakened versions could be good additions to boss loot pouches" — unified acquisition path. Every boss pouch has a chance at awakening, no separate direct-drop path needed
+- **Removed direct awakening drops from T4 bosses** (were 14 individual 1.4% chances per boss). Replaced with: T4 bosses now drop **2 pouches** instead of 1, giving ~34% chance of at least one awakening per T4 boss kill, vs ~17% at T2
+- AStages T4 gate on awakenings still prevents pre-endgame equipping — a T1 player lucking into an awakening from a T2 pouch just holds it as a trophy until they unlock T4
+
+---
+
 ## 2026-04-11 — Epic RPG: Class Artifacts integration (drops-only, tier-gated)
 
 ### New Mods

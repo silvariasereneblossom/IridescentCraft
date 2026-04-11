@@ -1421,6 +1421,11 @@ LootJS.modifiers(event => {
   // Artifact Piece Pouch: guaranteed drop from T2+ bosses.
   // The pouch's internal loot table picks ONE of the 14 class artifacts on
   // open, keeping Awakening variants out of non-T4 drops.
+  // Artifact Piece Pouch: guaranteed drop from T2+ bosses. The pouch's
+  // loot table is overridden at kubejs/data/rpgseteffects/loot_tables/items/
+  // artifact_piece_pouch.json to include both normal artifacts AND awakening
+  // variants at lower weight. AStages T4 gate still prevents pre-endgame
+  // use of awakenings even if a T2 player lucks into one from a pouch.
   const t2BossPouchDrops = [
     'twilightforest:entities/naga',
     'twilightforest:entities/lich',
@@ -1428,7 +1433,7 @@ LootJS.modifiers(event => {
     'cataclysm:entities/ignis',
     'aether:entities/slider',
     'blue_skies:entities/summoner',
-    'alexscaves:entities/revenant'
+    'alexscaves:entities/atlatitan'
   ]
   t2BossPouchDrops.forEach(table => {
     event
@@ -1436,37 +1441,20 @@ LootJS.modifiers(event => {
       .addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch'))
   })
 
-  // Awakening artifacts: T4 boss drops ONLY (AStages restrictions apply on
-  // pickup so lower-tier players can't equip them even if they find one)
-  const t4AwakeningPool = [
-    'rpgseteffects:phoenix_awakening_artifact',
-    'rpgseteffects:hellbrand_awakening_artifact',
-    'rpgseteffects:hexweaver_awakening_artifact',
-    'rpgseteffects:vaelkhor_awakening_artifact',
-    'rpgseteffects:chronorend_awakening_artifact',
-    'rpgseteffects:moonpiercer_awakening_artifact',
-    'rpgseteffects:stormpiercer_awakening_artifact',
-    'rpgseteffects:blade_dancer_awakening_artifact',
-    'rpgseteffects:sanctum_awakening_artifact',
-    'rpgseteffects:ignisphere_awakening_artifact',
-    'rpgseteffects:shadow_hunter_awakening_artifact',
-    'rpgseteffects:blood_fury_awakening_artifact',
-    'rpgseteffects:wolfheart_awakening_artifact',
-    'rpgseteffects:altharion_awakening_artifact'
-  ]
+  // T4 bosses drop 2 pouches (better awakening odds at endgame) — the pouch
+  // loot table has awakenings at ~1/5 the weight of normals, so avg 2 pouches
+  // = ~34% chance of at least one awakening per T4 boss kill
   const t4BossTables = [
     'minecraft:entities/ender_dragon',
     'cataclysm:entities/ender_guardian',
     'cataclysm:entities/harbinger',
-    'deeperdarker:entities/warden_shrine',
+    'deeperdarker:entities/shattered',
     'alexscaves:entities/watcher'
   ]
   t4BossTables.forEach(table => {
-    t4AwakeningPool.forEach(awakening => {
-      event
-        .addLootTableModifier(table)
-        .addLoot(LootEntry.of(awakening).when(c => c.randomChance(0.014)))
-    })
+    event
+      .addLootTableModifier(table)
+      .addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch').limitCount([2, 2]))
   })
 
   // =========================================================================
