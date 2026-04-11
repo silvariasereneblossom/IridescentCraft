@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — Village artifact rate rework
+
+### Flat 4% Village Artifacts
+- Removed 11 `artifacts:inject/chests/village/*` GLM entries + `celestial_artifacts:chests/village_plains_house` from `kubejs/data/forge/loot_modifiers/global_loot_modifiers.json`
+- **Why:** stacked GLMs were producing ~25-30% artifact rates with 1-2 artifacts per chest, far above the target of 4% flat
+- Added curated pool of 25 artifacts in `lootjs_overhaul.js` (section 6), each rolled at 0.16% per village chest for ~4% combined rate
+- **Excluded artifacts:** `artifacts:plastic_drinking_hat`, `artifacts:novelty_drinking_hat` (user dislike); a "horse one" is also to be excluded pending user identification
+- Applies to all 15 village chest types (smith, house, temple, tannery, fisher, shepherd, butcher, cartographer, mason, etc.)
+- Side benefit: reduces load spike on chest open by cutting the per-chest GLM chain from ~14 modifiers down to our single LootJS modifier
+
+---
+
 ## 2026-04-11 — Equipment Compare full removal + Chunky auto-pregen
 
 ### Equipment Compare Purged

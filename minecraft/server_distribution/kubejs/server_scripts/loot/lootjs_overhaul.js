@@ -132,7 +132,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:overworld')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 10, max: 25 }, treasure: true })
+        .enchantWithLevels(10, 25, true)
         .when(c => c.randomChance(0.075))
     )
 
@@ -144,7 +144,7 @@ LootJS.modifiers(event => {
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 15, max: 30 }, treasure: true })
+        .enchantWithLevels(15, 30, true)
         .when(c => c.randomChance(0.10))
     )
 
@@ -154,7 +154,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 20, max: 30 }, treasure: true })
+        .enchantWithLevels(20, 30, true)
         .when(c => c.randomChance(0.125))
     )
 
@@ -164,7 +164,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: 30, treasure: true })
+        .enchantWithLevels(30, 30, true)
         .when(c => c.randomChance(0.15))
     )
 
@@ -1083,6 +1083,53 @@ LootJS.modifiers(event => {
       Item.of('minecraft:leather_boots').withChance(10)
     ])
 
+  // Flat ~4% curated artifact roll across all village chests.
+  // Replaces the stacked artifacts:inject/chests/village/* + celestial_artifacts
+  // village GLMs that were producing 25-30% artifact rates with multiple items
+  // per chest. Excluded: plastic_drinking_hat, novelty_drinking_hat (user dislike),
+  // and "the horse one" (pending user identification).
+  //
+  // Per-chest rate math: 25 items × 0.16% each = ~4% any-artifact rate.
+  // Independent rolls mean technically a chest COULD spawn two artifacts, but
+  // the probability is ~0.08% per chest — rare enough to ignore.
+  const villageArtifactPool = [
+    'artifacts:snorkel',
+    'artifacts:anglers_hat',
+    'artifacts:villager_hat',
+    'artifacts:superstitious_hat',
+    'artifacts:lucky_scarf',
+    'artifacts:cloud_in_a_bottle',
+    'artifacts:kitty_slippers',
+    'artifacts:running_shoes',
+    'artifacts:power_glove',
+    'artifacts:digging_claws',
+    'artifacts:feral_claws',
+    'artifacts:pickaxe_heater',
+    'artifacts:universal_attractor',
+    'artifacts:umbrella',
+    'artifacts:flippers',
+    'artifacts:charm_of_sinking',
+    'artifacts:cross_necklace',
+    'artifacts:panic_necklace',
+    'artifacts:antidote_vessel',
+    'artifacts:crystal_heart',
+    'artifacts:night_vision_goggles',
+    'artifacts:drama_mask',
+    'artifacts:bunny_hoppers',
+    'artifacts:snowshoes',
+    'artifacts:golden_hook'
+  ]
+  const villageArtifactPerItemChance = 0.0016
+
+  villageChests.forEach(table => {
+    const modifier = event.addLootTableModifier(table)
+    villageArtifactPool.forEach(artifact => {
+      modifier.addLoot(
+        LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
+      )
+    })
+  })
+
   // =========================================================================
   // SECTION 7: TOWER STRUCTURE CURIO DROPS
   // =========================================================================
@@ -1289,7 +1336,7 @@ LootJS.modifiers(event => {
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
   console.log('  - Overworld clutter cleanup: horse armor, spider eyes, etc removed/reduced')
-  console.log('  - Early magic access: Iron's Spellbooks handles scrolls natively; copper spell book (3%) in OW chests')
+  console.log("  - Early magic access: Iron's Spellbooks handles scrolls natively; copper spell book (3%) in OW chests")
   console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
   console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
   console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
