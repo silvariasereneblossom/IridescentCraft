@@ -40,7 +40,7 @@ Apotheosis, ScalingMobs, Majrusz's Progressive Difficulty, Progressive Bosses, C
 
 ## Player Systems
 
-Origins (Forge), Iridescent Origins, Pufferfish's Skills (+AStages), JustLevelingFork, Heracles (quest system), Relics, Artifacts, More Artifacts, Celestial Artifacts
+Origins (Forge), Iridescent Origins, Pufferfish's Skills (+AStages), JustLevelingFork, Heracles (quest system), Relics, Artifacts, More Artifacts, Celestial Artifacts, Epic RPG: Class Artifacts (+XP: Attribute Core dep)
 
 ## Dimensions
 

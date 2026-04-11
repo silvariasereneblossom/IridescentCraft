@@ -122,6 +122,36 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 | Mahou Tsukai | Ultimate magic combat | Tier 4 crafting |
 | Mekanism | Tech endgame (MekaTool) | Tier 4 crafting |
 
+## Class Artifacts (Epic RPG)
+
+14 class-themed curio items from the `rpgseteffects:` namespace, each with a stronger "Awakening" variant. Plus 25 standalone Relics providing single-effect passives. Drops-only — no crafting path exists.
+
+### Acquisition
+
+| Item type | Source | Rate |
+|-----------|--------|------|
+| Fragment Core | Any hostile mob | 4% drop |
+| T1 Relics (movement, utility) | Overworld / Twilight Forest chests | ~0.4% per chest |
+| T2 Relics (combat, immunity) | Blue Skies / Aether chests | ~0.6% per chest |
+| T3 Relics (fire, decay) | Nether / Undergarden chests | ~0.8% per chest |
+| T4 Relics (endgame passives) | End / Deeper Darker / Abyss chests | ~1.0% per chest |
+| Artifact Piece Pouch | T2+ boss kills | 1× from T2 bosses, 2× from T4 bosses |
+| Normal artifacts | Pouch open | 14-way weighted pool, one per pouch |
+| Awakening artifacts | T4 boss direct drops only | 0.7% per awakening × 14 = ~9.3% combined per T4 boss |
+
+### T2 Boss Sources
+Naga, Lich, Hydra (Twilight Forest), Ignis (Cataclysm), Slider (Aether), Summoner (Blue Skies), Atlatitan (Alex's Caves).
+
+### T4 Boss Sources
+Ender Dragon, Ender Guardian, Harbinger (Cataclysm), Shattered (Deeper Darker), Watcher (Alex's Caves).
+
+### AStages Tier Gating
+- Normal artifacts + artifact_piece_pouch → T2 (picked up but not equipped until T2 unlock)
+- Awakening artifacts → T4 (held as trophies until T4)
+
+### Configuration
+Class Artifacts' native elite mob system (tier 1/2/3 Elite/Master/Legendary spawns) is **disabled** via `rpgseteffects-common.toml` — IridescentCraft uses Majrusz's Progressive Difficulty for elite enemies. Both systems at once would create redundant skull-marked mobs with competing boss bars.
+
 ## Food & Hunger
 
 Hunger drain rate increased to 2.5x vanilla baseline. Seed drops from grass reduced to 5%. Structure food loot reduced across all loot tables. Spawn protection area provides slower hunger drain for new players.
