@@ -4,6 +4,21 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — Equipment Compare full removal + Chunky auto-pregen
+
+### Equipment Compare Purged
+- Removed lingering `.pw.toml` metadata and `equipmentcompare-common.toml` from all three distributions (main instance, server_distribution, distribution/client). A previous commit dropped the JAR but left metadata, which would have caused `update_mods.ps1` to re-download on next server launch
+- **Reason:** Equipment Compare's shift-hold tooltip handler intercepted the tooltip render pipeline and broke shift-expand for Relics research tooltips, Mekanism details, Tag Viewer, and Jade details. All four were frozen on "Hold Shift..." prompts with no response
+
+### Chunky Auto-Pregen on First World Load
+- Added `kubejs/server_scripts/pregen/auto_chunky.js` — ServerEvents.loaded hook that runs `/chunky start` around spawn (radius 1500, dimension minecraft:overworld) exactly once per world, tracked via `server.persistentData.icraft_chunky_pregen_started`
+- Set `config/chunky/config.json continueOnRestart: true` in all three distributions so interrupted pre-gens resume automatically
+- chunky-player-pause keeps the task off the main thread while players are online
+- Protocol 7 updated to document the automatic trigger
+- **Why:** prevents recurrence of the 115s main-thread stall from 2026-04-10 by generating all structure-dense chunks (including Dungeon Crawl multi-node dungeons) in the background before testers walk into them
+
+---
+
 ## 2026-04-11 — CurseForge download URL fallback order
 
 ### forgecdn.net Preferred Over curseforge.com/api/v1

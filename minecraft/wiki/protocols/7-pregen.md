@@ -1,6 +1,18 @@
 # Protocol 7: World Pre-Generation (Chunky)
 
-## When to run
+## Automatic (default)
+
+Pre-generation now auto-triggers on first world load via `kubejs/server_scripts/pregen/auto_chunky.js`. The script uses `ServerEvents.loaded` + `server.persistentData` to fire `/chunky start` exactly once per world, with:
+
+- **dimension:** `minecraft:overworld`
+- **center:** 0, 0
+- **radius:** 1500 blocks (~37,500 chunks)
+
+`config/chunky/config.json` has `continueOnRestart: true`, so interrupted pre-gens resume automatically on the next launch. `chunky-player-pause` pauses the task while any player is online, so it's safe to leave running — it'll chip away at the background whenever the server is idle.
+
+The `icraft_chunky_pregen_started` flag in the world's persistent data prevents re-triggering. To force a re-run (e.g., bigger radius), delete the flag: `/data remove storage kubejs:server icraft_chunky_pregen_started` (or just start a fresh world).
+
+## When to run manually
 
 Before opening a fresh world to testers, or whenever a new spawn region is established. Pre-generating chunks moves all worldgen + structure-placement cost (Dungeon Crawl, Better Dungeons, When Dungeons Arise, etc.) to a one-time offline operation, eliminating the multi-second main-thread stalls that happen when players walk into densely-packed structure regions during play.
 
