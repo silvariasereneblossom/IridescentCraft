@@ -4,6 +4,19 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — CurseForge download URL fallback order
+
+### forgecdn.net Preferred Over curseforge.com/api/v1
+- `update_mods.ps1`, `server_install.ps1`, `update_mods.sh` now try `edge.forgecdn.net/files/<part1>/<part2>/<filename>` **first**, with `curseforge.com/api/v1/mods/<projectId>/files/<fileId>/download` as fallback
+- Previously api/v1 was used whenever projectId was present, with forgecdn only as a last resort when projectId was missing — backwards from what works
+- **Why:** api/v1 frequently returns 403 for automated scripts without an API key. forgecdn is the actual CDN and has no auth requirement
+- Triggered by Iron's Patreon Library (`irons_patreon_lib-1.20.1-1.0.1.jar`, file-id 7830104) failing to download
+- Both scripts now walk a candidate URL list per mod and move on to the fallback if the first URL returns a non-jar response
+- Added `Mozilla/5.0 IridescentCraft-Updater` User-Agent to download requests
+- Client-side scripts (`distribution/client/download_mods.ps1`, `install.ps1`) already used forgecdn first — only server-side scripts had the wrong order
+
+---
+
 ## 2026-04-11 — Server self-update SHA check
 
 ### SHA-Based Self-Update

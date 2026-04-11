@@ -144,15 +144,24 @@ foreach ($toml in $tomlFiles) {
         continue
     }
 
-    # Determine download URL
-    $downloadUrl = ""
+    # Determine download URLs (candidates tried in order)
+    $downloadUrls = @()
     if ($mode -eq "url" -and -not [string]::IsNullOrEmpty($url)) {
-        $downloadUrl = $url
-    } elseif ($mode -eq "metadata:curseforge" -and $projectId -and $fileId) {
-        $downloadUrl = "https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download"
+        $downloadUrls += $url
+    } elseif ($mode -eq "metadata:curseforge" -and $fileId) {
+        # Prefer direct forgecdn CDN -- no auth, avoids 403 from api/v1
+        $idStr = $fileId.ToString()
+        $part1 = $idStr.Substring(0, 4)
+        $part2 = $idStr.Substring(4).TrimStart('0')
+        if (-not $part2) { $part2 = '0' }
+        $downloadUrls += "https://edge.forgecdn.net/files/$part1/$part2/$([uri]::EscapeDataString($filename))"
+        # Fallback: CurseForge api/v1 (requires projectId, may 403)
+        if ($projectId) {
+            $downloadUrls += "https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download"
+        }
     }
 
-    if ([string]::IsNullOrEmpty($downloadUrl)) {
+    if ($downloadUrls.Count -eq 0) {
         Write-Host "  WARNING: No URL for $filename" -ForegroundColor DarkYellow
         $failed++
         continue
@@ -163,25 +172,28 @@ foreach ($toml in $tomlFiles) {
     $pct = [math]::Round(($total / $totalFiles) * 100)
     Write-Host "  [$pct%] Downloading: $filename" -NoNewline
 
-    try {
-        # Download to temp file first, then rename -- avoids PowerShell
-        # bracket wildcard issues with filenames like [Forge1.20.1]TetraClip.jar
-        $tempFile = "mods\_download_temp_$total.jar"
-        Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing
+    $downloadSuccess = $false
+    $tempFile = "mods\_download_temp_$total.jar"
+    :urlloop foreach ($downloadUrl in $downloadUrls) {
+        try {
+            Invoke-WebRequest -Uri $downloadUrl -OutFile $tempFile -MaximumRedirection 10 -UseBasicParsing -UserAgent 'Mozilla/5.0 IridescentCraft-Installer'
 
-        if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {
-            # Rename temp to actual filename using .NET (bypasses PS wildcards)
-            [System.IO.File]::Move((Resolve-Path $tempFile).Path, (Join-Path (Get-Location) $modPath))
-            Write-Host " OK" -ForegroundColor Green
-            $downloaded++
-        } else {
+            if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {
+                [System.IO.File]::Move((Resolve-Path $tempFile).Path, (Join-Path (Get-Location) $modPath))
+                Write-Host " OK" -ForegroundColor Green
+                $downloaded++
+                $downloadSuccess = $true
+                break urlloop
+            } else {
+                if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
+            }
+        } catch {
             if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
-            Write-Host " FAILED (bad response)" -ForegroundColor Red
-            $failed++
         }
-    } catch {
-        if (Test-Path "mods\_download_temp_$total.jar") { Remove-Item "mods\_download_temp_$total.jar" -Force }
-        Write-Host " FAILED ($($_.Exception.Message))" -ForegroundColor Red
+    }
+
+    if (-not $downloadSuccess) {
+        Write-Host " FAILED (all URLs)" -ForegroundColor Red
         $failed++
     }
 }

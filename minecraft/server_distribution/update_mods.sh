@@ -81,23 +81,25 @@ for toml in "$INDEX_DIR"/*.pw.toml; do
     [ "$SIDE" = "client" ] && continue
     echo "$FILENAME" | grep -qE "$FORCE_SKIP" && continue
 
-    # Build download URL
-    DL_URL=""
+    # Build candidate download URLs (pipe-delimited, tried in order)
+    DL_URLS=""
     if [ "$MODE" = "url" ] && [ -n "$URL" ]; then
-        DL_URL="$URL"
-    elif [ "$MODE" = "metadata:curseforge" ] && [ -n "$FILE_ID" ] && [ -n "$PROJECT_ID" ]; then
-        # Use CurseForge API endpoint (CDN returns 403 for many files)
-        DL_URL="https://www.curseforge.com/api/v1/mods/$PROJECT_ID/files/$FILE_ID/download"
+        DL_URLS="$URL"
     elif [ "$MODE" = "metadata:curseforge" ] && [ -n "$FILE_ID" ]; then
-        # Fallback CDN URL if no project ID
+        # Prefer direct forgecdn CDN -- no auth, avoids 403 from api/v1
         PART1="${FILE_ID:0:4}"
         PART2="${FILE_ID:4}"
         PART2="$(echo "$PART2" | sed 's/^0*//')"
         [ -z "$PART2" ] && PART2="0"
-        DL_URL="https://edge.forgecdn.net/files/$PART1/$PART2/$(python3 -c "import urllib.parse; print(urllib.parse.quote('$FILENAME'))" 2>/dev/null || echo "$FILENAME")"
+        ENCODED="$(python3 -c "import urllib.parse; print(urllib.parse.quote('$FILENAME'))" 2>/dev/null || echo "$FILENAME")"
+        DL_URLS="https://edge.forgecdn.net/files/$PART1/$PART2/$ENCODED"
+        # Fallback: CurseForge api/v1 (requires projectId, may 403)
+        if [ -n "$PROJECT_ID" ]; then
+            DL_URLS="$DL_URLS|https://www.curseforge.com/api/v1/mods/$PROJECT_ID/files/$FILE_ID/download"
+        fi
     fi
 
-    EXPECTED_MODS["$FILENAME"]="$DL_URL"
+    EXPECTED_MODS["$FILENAME"]="$DL_URLS"
 
     # Track base name for old version detection
     BASE_NAME="$(echo "$FILENAME" | sed 's/-[0-9\.]*.*\.jar$//')"
@@ -162,9 +164,9 @@ DL_SUCCESS=0
 DL_FAILED=0
 
 for mod in "${TO_DOWNLOAD[@]}"; do
-    DL_URL="${EXPECTED_MODS[$mod]}"
+    DL_URLS="${EXPECTED_MODS[$mod]}"
 
-    if [ -z "$DL_URL" ]; then
+    if [ -z "$DL_URLS" ]; then
         echo -e "    ${YELLOW}SKIP (no URL): $mod${RESET}"
         DL_FAILED=$((DL_FAILED + 1))
         continue
@@ -174,16 +176,20 @@ for mod in "${TO_DOWNLOAD[@]}"; do
 
     TMPFILE="$MODS_DIR/_update_temp.jar"
     DL_OK=0
-    for RETRY in 1 2 3; do
-        if curl -sL "$DL_URL" -o "$TMPFILE" --max-redirs 10 --connect-timeout 30 --max-time 120 && \
-           [ -f "$TMPFILE" ] && [ "$(stat -c%s "$TMPFILE" 2>/dev/null || stat -f%z "$TMPFILE" 2>/dev/null)" -gt 1000 ]; then
-            mv "$TMPFILE" "$MODS_DIR/$mod"
-            DL_OK=1
-            break
-        else
-            rm -f "$TMPFILE"
-            [ "$RETRY" -lt 3 ] && sleep 2
-        fi
+    # Walk candidate URLs in order; each URL gets up to 2 attempts
+    IFS='|' read -r -a URL_ARRAY <<< "$DL_URLS"
+    for DL_URL in "${URL_ARRAY[@]}"; do
+        for RETRY in 1 2; do
+            if curl -sL -A 'Mozilla/5.0 IridescentCraft-Updater' "$DL_URL" -o "$TMPFILE" --max-redirs 10 --connect-timeout 30 --max-time 120 && \
+               [ -f "$TMPFILE" ] && [ "$(stat -c%s "$TMPFILE" 2>/dev/null || stat -f%z "$TMPFILE" 2>/dev/null)" -gt 1000 ]; then
+                mv "$TMPFILE" "$MODS_DIR/$mod"
+                DL_OK=1
+                break 2
+            else
+                rm -f "$TMPFILE"
+                [ "$RETRY" -lt 2 ] && sleep 1
+            fi
+        done
     done
 
     if [ "$DL_OK" -eq 1 ]; then

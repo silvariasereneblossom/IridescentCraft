@@ -84,24 +84,25 @@ foreach ($toml in $tomlFiles) {
     }
     if ($skip) { continue }
 
-    # Build download URL
-    $dlUrl = ''
+    # Build candidate download URLs (tried in order)
+    $dlUrls = @()
     if ($mode -eq 'url' -and $url) {
-        $dlUrl = $url
-    } elseif ($mode -eq 'metadata:curseforge' -and $fileId -and $projectId) {
-        # Use CurseForge API endpoint (CDN returns 403 for many files)
-        $dlUrl = "https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download"
+        $dlUrls += $url
     } elseif ($mode -eq 'metadata:curseforge' -and $fileId) {
-        # Fallback: construct CDN URL if no project ID
+        # Prefer direct forgecdn CDN — no auth, no 403 from api/v1
         $idStr = $fileId.ToString()
         $part1 = $idStr.Substring(0, 4)
         $part2 = $idStr.Substring(4).TrimStart('0')
         if (-not $part2) { $part2 = '0' }
-        $dlUrl = "https://edge.forgecdn.net/files/$part1/$part2/$([uri]::EscapeDataString($filename))"
+        $dlUrls += "https://edge.forgecdn.net/files/$part1/$part2/$([uri]::EscapeDataString($filename))"
+        # Fallback: CurseForge API endpoint (may 403 without auth but sometimes works)
+        if ($projectId) {
+            $dlUrls += "https://www.curseforge.com/api/v1/mods/$projectId/files/$fileId/download"
+        }
     }
 
     $expectedMods[$filename] = @{
-        Url = $dlUrl
+        Urls = $dlUrls
         ModrinthId = $modrinthId
         CurseforgeId = $projectId
         TomlName = $toml.Name
@@ -195,9 +196,9 @@ $dlFailed = 0
 
 foreach ($mod in $toDownload) {
     $info = $expectedMods[$mod]
-    $dlUrl = $info.Url
+    $dlUrls = $info.Urls
 
-    if ([string]::IsNullOrEmpty($dlUrl)) {
+    if (-not $dlUrls -or $dlUrls.Count -eq 0) {
         Write-Host "    SKIP (no URL): $mod" -ForegroundColor DarkYellow
         $dlFailed++
         continue
@@ -209,22 +210,26 @@ foreach ($mod in $toDownload) {
     $tempFile = Join-Path $ModsDir "_update_temp.jar"
     $success = $false
 
-    for ($retry = 0; $retry -lt 3; $retry++) {
-        try {
-            $wc = New-Object System.Net.WebClient
-            $wc.DownloadFile($dlUrl, $tempFile)
-            $wc.Dispose()
+    # Walk candidate URLs in order; each URL gets up to 2 attempts
+    :urlloop foreach ($dlUrl in $dlUrls) {
+        for ($retry = 0; $retry -lt 2; $retry++) {
+            try {
+                $wc = New-Object System.Net.WebClient
+                $wc.Headers.Add('User-Agent', 'Mozilla/5.0 IridescentCraft-Updater')
+                $wc.DownloadFile($dlUrl, $tempFile)
+                $wc.Dispose()
 
-            if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {
-                [System.IO.File]::Move((Resolve-Path $tempFile).Path, (Join-Path (Get-Location) $modPath))
-                $success = $true
-                break
-            } else {
+                if ((Test-Path $tempFile) -and (Get-Item $tempFile).Length -gt 1000) {
+                    [System.IO.File]::Move((Resolve-Path $tempFile).Path, (Join-Path (Get-Location) $modPath))
+                    $success = $true
+                    break urlloop
+                } else {
+                    if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
+                }
+            } catch {
                 if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
+                if ($retry -lt 1) { Start-Sleep -Seconds 1 }
             }
-        } catch {
-            if (Test-Path $tempFile) { Remove-Item $tempFile -Force }
-            if ($retry -lt 2) { Start-Sleep -Seconds 2 }
         }
     }
 
