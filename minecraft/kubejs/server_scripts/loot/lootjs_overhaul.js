@@ -126,6 +126,12 @@ LootJS.modifiers(event => {
     )
     .removeLoot('minecraft:enchanted_book')
 
+  // Blacklist Relics horse_flute globally — user dislike (summons a temporary
+  // horse, doesn't really fit our progression design)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .removeLoot('relics:horse_flute')
+
   // Re-add enchanted books at 7.5% — T1 (Overworld)
   event
     .addLootTypeModifier(LootType.CHEST)
@@ -1095,7 +1101,6 @@ LootJS.modifiers(event => {
   const villageArtifactPool = [
     'artifacts:snorkel',
     'artifacts:anglers_hat',
-    'artifacts:villager_hat',
     'artifacts:superstitious_hat',
     'artifacts:lucky_scarf',
     'artifacts:cloud_in_a_bottle',
