@@ -71,6 +71,8 @@ rsync -av --delete \
     --exclude='ops.json' \
     --exclude='whitelist.json' \
     --exclude='installer.log' \
+    --exclude='.icraft_last_sha' \
+    --exclude='.icraft_server' \
     "$REPO/" "$LOCAL/"
 
 # Sync mods/.index metadata (mirror — track added/removed mods)

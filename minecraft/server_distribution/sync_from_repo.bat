@@ -74,7 +74,7 @@ REM Mirror configs, scripts, datapacks (exclude runtime data + mods)
 REM Note: LOCAL has no trailing backslash so paths with spaces are safe
 robocopy "%REPO%" "%LOCAL%" /MIR /MT:4 /NJH /NJS /NDL /NP ^
     /XD "%LOCAL%\world" "%LOCAL%\logs" "%LOCAL%\crash-reports" "%LOCAL%\backups" "%LOCAL%\libraries" "%LOCAL%\.cache" "%LOCAL%\mods" ^
-    /XF "server_output.log" "crash-*.log" "usercache.json" "banned-ips.json" "banned-players.json" "ops.json" "whitelist.json" "installer.log"
+    /XF "server_output.log" "crash-*.log" "usercache.json" "banned-ips.json" "banned-players.json" "ops.json" "whitelist.json" "installer.log" ".icraft_last_sha" ".icraft_server"
 
 set ROBOCOPY_EXIT=%errorlevel%
 

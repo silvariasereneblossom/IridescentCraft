@@ -69,18 +69,35 @@ echo.
 REM -------------------------------------------------------------------
 REM Phase 0: Self-Update from GitHub
 REM -------------------------------------------------------------------
-REM Downloads latest server distribution from GitHub every launch.
-REM Overlays configs, scripts, datapacks, .index metadata.
+REM Checks latest commit SHA via GitHub API. If it matches the stored
+REM SHA in .icraft_last_sha, skips the zip download entirely. Otherwise
+REM downloads main.zip, overlays configs/scripts/datapacks/.index, and
+REM records the new SHA.
 REM Preserves: world/, logs/, crash-reports/, backups/, libraries/, mods/*.jar
 echo [UPDATE] Checking for updates from GitHub...
 powershell -ExecutionPolicy Bypass -Command ^
   "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+  "$apiUrl = 'https://api.github.com/repos/silvariasereneblossom/IridescentCraft/commits/main';" ^
   "$zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
+  "$shaFile = Join-Path '%~dp0' '.icraft_last_sha';" ^
   "$zipFile = $env:TEMP + '\IridescentCraft-server-update.zip';" ^
   "$extractDir = $env:TEMP + '\IridescentCraft-server-update';" ^
+  "$localSha = '';" ^
+  "if (Test-Path $shaFile) { $localSha = (Get-Content $shaFile -Raw).Trim() };" ^
   "try {" ^
-  "  Write-Host '  Downloading latest from GitHub...';" ^
-  "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 30;" ^
+  "  $headers = @{ 'User-Agent' = 'IridescentCraft-Server' };" ^
+  "  $resp = Invoke-RestMethod -Uri $apiUrl -Headers $headers -TimeoutSec 15;" ^
+  "  $remoteSha = $resp.sha;" ^
+  "  if ($remoteSha -eq $localSha) {" ^
+  "    Write-Host ('  [OK] Up to date (commit ' + $remoteSha.Substring(0,7) + ').') -ForegroundColor Green;" ^
+  "    exit 0;" ^
+  "  };" ^
+  "  if ($localSha) {" ^
+  "    Write-Host ('  New commit: ' + $remoteSha.Substring(0,7) + ' (was ' + $localSha.Substring(0,7) + '). Downloading...');" ^
+  "  } else {" ^
+  "    Write-Host ('  First run or missing SHA. Downloading ' + $remoteSha.Substring(0,7) + '...');" ^
+  "  };" ^
+  "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 60;" ^
   "  if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) { throw 'Download too small or failed' };" ^
   "  Write-Host '  Extracting...';" ^
   "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
@@ -101,9 +118,10 @@ powershell -ExecutionPolicy Bypass -Command ^
   "      Copy-Item $item.FullName $dest -Recurse -Force;" ^
   "    }" ^
   "  };" ^
+  "  $remoteSha | Out-File -FilePath $shaFile -Encoding ASCII -NoNewline;" ^
   "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
   "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
-  "  Write-Host '  [OK] Update complete.' -ForegroundColor Green;" ^
+  "  Write-Host ('  [OK] Updated to ' + $remoteSha.Substring(0,7) + '.') -ForegroundColor Green;" ^
   "} catch {" ^
   "  Write-Host ('  [WARN] Update check failed: ' + $_.Exception.Message) -ForegroundColor Yellow;" ^
   "  Write-Host '  Continuing with existing files...' -ForegroundColor Yellow;" ^

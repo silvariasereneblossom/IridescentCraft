@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — Server self-update SHA check
+
+### SHA-Based Self-Update
+- `iridescentserver.bat` / `iridescentserver.sh` Phase 0 now hits the GitHub API (`/repos/.../commits/main`) to get the latest commit SHA before doing anything
+- Compares against `.icraft_last_sha` stored in the server directory. If they match, skips the zip download entirely and prints "Up to date (commit abc1234)"
+- If different (or no stored SHA), downloads + extracts + overlays as before, then records the new SHA
+- **Why:** every launch was re-downloading the full repo zip even when nothing had changed, adding 30s–2min of startup overhead. SHA check is a ~200ms API call
+- `sync_from_repo.bat` / `sync_from_repo.sh` now exclude `.icraft_last_sha` and `.icraft_server` from the mirror so local state isn't wiped
+- Note: `update_mods.ps1` was already diff-based; the slow step was Phase 0 itself, not mod downloads
+
+---
+
 ## 2026-04-11 — Enchanted book loot fix + LootJS parse error + DC debug spam
 
 ### LootJS Overhaul Was Failing to Parse

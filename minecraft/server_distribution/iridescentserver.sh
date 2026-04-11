@@ -42,48 +42,93 @@ echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo ""
 
 # -------------------------------------------------------------------
-# Phase 0: Download server files from GitHub if not present
+# Phase 0: Self-Update from GitHub (SHA-based)
 # -------------------------------------------------------------------
+# Checks latest commit SHA via GitHub API. If it matches the stored
+# SHA in .icraft_last_sha, skips the zip download entirely. Otherwise
+# downloads main.zip, overlays configs/scripts/datapacks/.index, and
+# records the new SHA.
+echo "[UPDATE] Checking for updates from GitHub..."
+
+DOWNLOADER=""
+if command -v curl &> /dev/null; then DOWNLOADER="curl"
+elif command -v wget &> /dev/null; then DOWNLOADER="wget"
+else echo "ERROR: Neither curl nor wget found."; exit 1; fi
+
+SHA_FILE="$SCRIPT_DIR/.icraft_last_sha"
+API_URL="https://api.github.com/repos/silvariasereneblossom/IridescentCraft/commits/main"
+ZIP_URL="https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip"
+ZIP_FILE="/tmp/IridescentCraft-server.zip"
+EXTRACT_DIR="/tmp/IridescentCraft-server-extract"
+
+LOCAL_SHA=""
+[ -f "$SHA_FILE" ] && LOCAL_SHA=$(tr -d '[:space:]' < "$SHA_FILE")
+
+if [ "$DOWNLOADER" = "curl" ]; then
+    REMOTE_SHA=$(curl -s -H "User-Agent: IridescentCraft-Server" --max-time 15 "$API_URL" | grep -m1 '"sha"' | sed -E 's/.*"sha"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
+else
+    REMOTE_SHA=$(wget -qO- --header="User-Agent: IridescentCraft-Server" --timeout=15 "$API_URL" | grep -m1 '"sha"' | sed -E 's/.*"sha"[[:space:]]*:[[:space:]]*"([^"]+)".*/\1/')
+fi
+
+FORCE_INSTALL=0
 if [ ! -d "$SCRIPT_DIR/config" ] || [ ! -d "$SCRIPT_DIR/global_packs" ]; then
-    echo "[SETUP] Server files not found — downloading from GitHub..."
+    FORCE_INSTALL=1
+fi
+
+if [ -n "$REMOTE_SHA" ] && [ "$REMOTE_SHA" = "$LOCAL_SHA" ] && [ "$FORCE_INSTALL" = "0" ]; then
+    echo -e "  ${GREEN}[OK] Up to date (commit ${REMOTE_SHA:0:7}).${NC}"
     echo ""
-
-    DOWNLOADER=""
-    if command -v curl &> /dev/null; then DOWNLOADER="curl"
-    elif command -v wget &> /dev/null; then DOWNLOADER="wget"
-    else echo "ERROR: Neither curl nor wget found."; exit 1; fi
-
-    ZIP_FILE="/tmp/IridescentCraft-server.zip"
-    EXTRACT_DIR="/tmp/IridescentCraft-server-extract"
-
-    echo "  Downloading repository..."
-    if [ "$DOWNLOADER" = "curl" ]; then
-        curl -L -s -o "$ZIP_FILE" "https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip"
+elif [ -z "$REMOTE_SHA" ]; then
+    echo -e "  ${YELLOW}[WARN] Could not reach GitHub API. Continuing with existing files...${NC}"
+    echo ""
+else
+    if [ "$FORCE_INSTALL" = "1" ]; then
+        echo "  First run — downloading ${REMOTE_SHA:0:7}..."
     else
-        wget -q -O "$ZIP_FILE" "https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip"
+        echo "  New commit: ${REMOTE_SHA:0:7} (was ${LOCAL_SHA:0:7}). Downloading..."
     fi
 
-    echo "  Extracting server distribution..."
-    rm -rf "$EXTRACT_DIR"
-    unzip -q "$ZIP_FILE" -d "$EXTRACT_DIR"
-    SRC=$(find "$EXTRACT_DIR" -maxdepth 1 -type d | tail -1)/minecraft/server_distribution
+    if [ "$DOWNLOADER" = "curl" ]; then
+        curl -L -s -o "$ZIP_FILE" "$ZIP_URL"
+    else
+        wget -q -O "$ZIP_FILE" "$ZIP_URL"
+    fi
 
-    echo "  Copying server files..."
-    for item in "$SRC"/*; do
-        base=$(basename "$item")
-        [ "$base" = "iridescentserver.bat" ] && continue
-        [ "$base" = "iridescentserver.sh" ] && continue
-        cp -r "$item" "$SCRIPT_DIR/"
-    done
+    if [ ! -s "$ZIP_FILE" ]; then
+        echo -e "  ${YELLOW}[WARN] Download failed. Continuing with existing files...${NC}"
+    else
+        echo "  Extracting..."
+        rm -rf "$EXTRACT_DIR"
+        unzip -q "$ZIP_FILE" -d "$EXTRACT_DIR"
+        SRC=$(find "$EXTRACT_DIR" -maxdepth 1 -type d | tail -1)/minecraft/server_distribution
 
-    rm -f "$ZIP_FILE"
-    rm -rf "$EXTRACT_DIR"
+        echo "  Syncing configs, scripts, datapacks..."
+        for item in "$SRC"/*; do
+            base=$(basename "$item")
+            [ "$base" = "iridescentserver.bat" ] && continue
+            [ "$base" = "iridescentserver.sh" ] && continue
+            case "$base" in
+                world|logs|crash-reports|backups|libraries|.cache) continue ;;
+            esac
+            if [ "$base" = "mods" ]; then
+                mkdir -p "$SCRIPT_DIR/mods/.index"
+                cp -rf "$item/.index/"* "$SCRIPT_DIR/mods/.index/" 2>/dev/null || true
+                find "$item" -maxdepth 1 -name '*.jar' -exec cp -f {} "$SCRIPT_DIR/mods/" \;
+            else
+                cp -rf "$item" "$SCRIPT_DIR/"
+            fi
+        done
 
-    if [ ! -d "$SCRIPT_DIR/global_packs" ]; then
+        echo -n "$REMOTE_SHA" > "$SHA_FILE"
+        rm -f "$ZIP_FILE"
+        rm -rf "$EXTRACT_DIR"
+        echo -e "  ${GREEN}[OK] Updated to ${REMOTE_SHA:0:7}.${NC}"
+    fi
+
+    if [ ! -d "$SCRIPT_DIR/global_packs" ] && [ "$FORCE_INSTALL" = "1" ]; then
         echo "ERROR: Failed to download server files."
         exit 1
     fi
-    echo -e "  ${GREEN}Done.${NC}"
     echo ""
 fi
 
