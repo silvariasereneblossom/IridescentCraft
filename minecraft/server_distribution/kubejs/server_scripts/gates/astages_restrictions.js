@@ -131,6 +131,22 @@ ServerEvents.loaded(event => {
     'apotheosis:simple_reforging_table',
     'apotheosis:gem_cutting_table',
     'apotheosis:sigil_of_socketing',
+    // Epic RPG Class Artifacts — normal-tier artifacts require T2 to equip
+    'rpgseteffects:altharion_artifact',
+    'rpgseteffects:blade_dancer_artifact',
+    'rpgseteffects:blood_fury_artifact',
+    'rpgseteffects:chronorend_artifact',
+    'rpgseteffects:hellbrand_artifact',
+    'rpgseteffects:hexweaver_artifact',
+    'rpgseteffects:ignisphere_artifact',
+    'rpgseteffects:moonpiercer_artifact',
+    'rpgseteffects:phoenix_artifact',
+    'rpgseteffects:sanctum_artifact',
+    'rpgseteffects:shadow_hunter_artifact',
+    'rpgseteffects:stormpiercer_artifact',
+    'rpgseteffects:vaelkhor_artifact',
+    'rpgseteffects:wolfheart_artifact',
+    'rpgseteffects:artifact_piece_pouch',
   ], 'modpack/item_t2')
 
   // -- Dimension restrictions --
@@ -287,6 +303,21 @@ ServerEvents.loaded(event => {
     'aethersteel:aethersteel_armor_helmet', 'aethersteel:aethersteel_armor_chestplate',
     'aethersteel:aethersteel_armor_leggings', 'aethersteel:aethersteel_armor_boots',
     'aethersteel:aethersteel_upgrade_smithing_template',
+    // Epic RPG Class Artifacts — Awakening variants are T4-only
+    'rpgseteffects:altharion_awakening_artifact',
+    'rpgseteffects:blade_dancer_awakening_artifact',
+    'rpgseteffects:blood_fury_awakening_artifact',
+    'rpgseteffects:chronorend_awakening_artifact',
+    'rpgseteffects:hellbrand_awakening_artifact',
+    'rpgseteffects:hexweaver_awakening_artifact',
+    'rpgseteffects:ignisphere_awakening_artifact',
+    'rpgseteffects:moonpiercer_awakening_artifact',
+    'rpgseteffects:phoenix_awakening_artifact',
+    'rpgseteffects:sanctum_awakening_artifact',
+    'rpgseteffects:shadow_hunter_awakening_artifact',
+    'rpgseteffects:stormpiercer_awakening_artifact',
+    'rpgseteffects:vaelkhor_awakening_artifact',
+    'rpgseteffects:wolfheart_awakening_artifact',
   ], 'modpack/item_t4')
 
   // -- Ore replacement restrictions --
@@ -323,5 +354,5 @@ ServerEvents.loaded(event => {
   console.log('[IridescentCraft] AStages native restrictions registered')
   console.log('  Tier 2: 6 mods + 16 items + 4 dimensions')
   console.log('  Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions')
-  console.log('  Tier 4: 5 mods + 79 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets)')
+  console.log('  Tier 4: 5 mods + 93 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts)')
 })

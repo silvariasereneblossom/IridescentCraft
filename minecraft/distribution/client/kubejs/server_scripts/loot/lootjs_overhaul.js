@@ -1331,6 +1331,145 @@ LootJS.modifiers(event => {
   // chests don't get artifact injections by default.
 
   // =========================================================================
+  // SECTION 8.5: EPIC RPG CLASS ARTIFACTS — DROPS-ONLY INJECTION
+  // =========================================================================
+  // The mod's native loot injection GLMs (overworld/nether/end/treasure) are
+  // blocked by our "replace": true in global_loot_modifiers.json — we don't
+  // whitelist rpgseteffects:loot_injection/*, so they never fire.
+  //
+  // Re-add drops via LootJS with controlled rates + tier gating:
+  //   - Fragment Core: 4% from any hostile mob death (basic resource)
+  //   - Standalone Relics: spread across dimension chests by tier
+  //   - Artifact Piece Pouch: T2+ boss drops only
+  //   - Awakening artifacts: T4 boss drops only (AStages-gated for pickup too)
+  // =========================================================================
+
+  // Fragment Core: minor drop from any hostile mob (replaces crafting path)
+  event
+    .addEntityLootModifier(
+      '@monster'
+    )
+    .addLoot(LootEntry.of('rpgseteffects:fragment_core').when(c => c.randomChance(0.04)))
+
+  // T1 Overworld chest relics (utility-focused — movement, minor passives)
+  const t1Relics = [
+    'rpgseteffects:featherfall_relic',
+    'rpgseteffects:swift_boots_relic',
+    'rpgseteffects:swift_strike_relic',
+    'rpgseteffects:multi_jump_relic',
+    'rpgseteffects:builders_flight_charm',
+    'rpgseteffects:specter_lens',
+    'rpgseteffects:deadly_luck_relic'
+  ]
+  t1Relics.forEach(relic => {
+    event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:overworld', 'twilightforest:twilight_forest')
+      .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.004)))
+  })
+
+  // T2 chest relics (combat + resistance — Blue Skies / Aether)
+  const t2Relics = [
+    'rpgseteffects:brutal_fist_relic',
+    'rpgseteffects:lethal_crit_relic',
+    'rpgseteffects:vampiric_relic',
+    'rpgseteffects:venom_relic',
+    'rpgseteffects:ember_relic',
+    'rpgseteffects:frost_relic',
+    'rpgseteffects:poison_immunity_relic',
+    'rpgseteffects:brambleguard_relic'
+  ]
+  t2Relics.forEach(relic => {
+    event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('blue_skies:everbright', 'blue_skies:everdawn',
+        'aether:the_aether', 'deep_aether:the_aether')
+      .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.006)))
+  })
+
+  // T3 Nether/Undergarden relics (fire, decay, advanced utility)
+  const t3Relics = [
+    'rpgseteffects:fire_immunity_relic',
+    'rpgseteffects:magma_walker_relic',
+    'rpgseteffects:frost_walker_relic',
+    'rpgseteffects:decay_relic',
+    'rpgseteffects:soulthief_relic',
+    'rpgseteffects:blightwake_relic',
+    'rpgseteffects:radiant_burden_relic'
+  ]
+  t3Relics.forEach(relic => {
+    event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+      .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.008)))
+  })
+
+  // T4 End/Deeper Darker/Abyss relics (endgame — strongest passives)
+  const t4Relics = [
+    'rpgseteffects:wither_immunity_relic',
+    'rpgseteffects:beastheart_relic',
+    'rpgseteffects:malicebrand_relic',
+    'rpgseteffects:mirrorspite_relic'
+  ]
+  t4Relics.forEach(relic => {
+    event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+      .addLoot(LootEntry.of(relic).when(c => c.randomChance(0.010)))
+  })
+
+  // Artifact Piece Pouch: guaranteed drop from T2+ bosses.
+  // The pouch's internal loot table picks ONE of the 14 class artifacts on
+  // open, keeping Awakening variants out of non-T4 drops.
+  const t2BossPouchDrops = [
+    'twilightforest:entities/naga',
+    'twilightforest:entities/lich',
+    'twilightforest:entities/hydra',
+    'cataclysm:entities/ignis',
+    'aether:entities/slider',
+    'blue_skies:entities/summoner',
+    'alexscaves:entities/revenant'
+  ]
+  t2BossPouchDrops.forEach(table => {
+    event
+      .addLootTableModifier(table)
+      .addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch'))
+  })
+
+  // Awakening artifacts: T4 boss drops ONLY (AStages restrictions apply on
+  // pickup so lower-tier players can't equip them even if they find one)
+  const t4AwakeningPool = [
+    'rpgseteffects:phoenix_awakening_artifact',
+    'rpgseteffects:hellbrand_awakening_artifact',
+    'rpgseteffects:hexweaver_awakening_artifact',
+    'rpgseteffects:vaelkhor_awakening_artifact',
+    'rpgseteffects:chronorend_awakening_artifact',
+    'rpgseteffects:moonpiercer_awakening_artifact',
+    'rpgseteffects:stormpiercer_awakening_artifact',
+    'rpgseteffects:blade_dancer_awakening_artifact',
+    'rpgseteffects:sanctum_awakening_artifact',
+    'rpgseteffects:ignisphere_awakening_artifact',
+    'rpgseteffects:shadow_hunter_awakening_artifact',
+    'rpgseteffects:blood_fury_awakening_artifact',
+    'rpgseteffects:wolfheart_awakening_artifact',
+    'rpgseteffects:altharion_awakening_artifact'
+  ]
+  const t4BossTables = [
+    'minecraft:entities/ender_dragon',
+    'cataclysm:entities/ender_guardian',
+    'cataclysm:entities/harbinger',
+    'deeperdarker:entities/warden_shrine',
+    'alexscaves:entities/watcher'
+  ]
+  t4BossTables.forEach(table => {
+    t4AwakeningPool.forEach(awakening => {
+      event
+        .addLootTableModifier(table)
+        .addLoot(LootEntry.of(awakening).when(c => c.randomChance(0.014)))
+    })
+  })
+
+  // =========================================================================
   // SECTION 9: ENABLE LOGGING (remove in production)
   // =========================================================================
 

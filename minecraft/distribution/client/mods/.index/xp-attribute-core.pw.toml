@@ -1,0 +1,16 @@
+filename = 'attributecore-2.0.3-forge-release.jar'
+name = 'XP: Attribute Core'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '92220e00801f227f1d8c3eac13a6e311c7f95a839ee0b8f96856b5ef6fe6908109c434214f53280ab8eb17a8a6085206d61629c81f6f2ce2b99e2b1d35d0f4b1'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/7tCK5Wtn/versions/NwyLRyjU/attributecore-2.0.3-forge-release.jar'
+
+[update.modrinth]
+mod-id = '7tCK5Wtn'
+version = 'NwyLRyjU'

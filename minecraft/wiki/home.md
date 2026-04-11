@@ -106,6 +106,7 @@ The canonical design reference for all modpack systems.
 | Client installer rework | Implemented | Switched to repo zip download for reliable binary handling |
 | Resource pack distribution | Implemented | Resource packs now distributed via Paxi |
 | Datapack source reorganization | Implemented | `global_packs/required_data` moved to `datapack_sources` to prevent double-loading |
+| Epic RPG Class Artifacts integration | Implemented | 14 class-themed artifacts + awakening variants + 25 relics. Drops-only (no crafting). T2/T4 AStages gating. Mod's elite system disabled in favor of Progressive Difficulty |
 
 ---
 

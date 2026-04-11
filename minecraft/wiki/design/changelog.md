@@ -4,6 +4,40 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — Epic RPG: Class Artifacts integration (drops-only, tier-gated)
+
+### New Mods
+- **Epic RPG: Class Artifacts** (`rpgseteffects:`, forge 2.0.5) — 14 class-themed curios each with an Awakening variant, plus 25 standalone Relics. Items added to all three distributions
+- **XP: Attribute Core** (`attributecore:`, 2.0.3) — required dependency. Adds ~20 RPG attributes (life_steal, crit_chance, crit_damage, dodge_chance, aoe_healing, golden_guard, extra_jumps, stealth, poison_damage, pet stats, etc.)
+- **Note:** Attribute Core's attributes exist alongside Puffish Attributes (which we use for magic_damage sync). Long-term plan is the Iridescent Attributes consolidation library — see Roadmap / Iron's Spells entry area
+
+### Drops-Only Design
+- **Recipe strip:** `kubejs/server_scripts/compat/class_artifacts_recipes.js` removes all 14 awakening upgrade recipes + magic_leather + artifact_piece_pouch + relics_to_fragment_smelting. No crafting paths remain
+- **LootJS injection in `lootjs_overhaul.js` SECTION 8.5:**
+  - Fragment Core: 4% drop from any `@monster`
+  - 7 T1 Relics: ~0.4% per chest in Overworld / Twilight Forest
+  - 8 T2 Relics: ~0.6% per chest in Blue Skies / Aether
+  - 7 T3 Relics: ~0.8% per chest in Nether / Undergarden
+  - 4 T4 Relics: ~1.0% per chest in End / Deeper Darker / Abyss
+  - Artifact Piece Pouch: guaranteed drop from 7 T2+ boss tables (Naga, Lich, Hydra, Ignis, Slider, Summoner, Revenant). The pouch's internal table picks one of the 14 normal artifacts on open
+  - Awakening artifacts: 1.4% drop from 5 T4 boss tables (Ender Dragon, Ender Guardian, Harbinger, Warden Shrine, Watcher) — each awakening has independent roll
+- **Native GLMs blocked:** `rpgseteffects:loot_injection/{overworld,nether,end,treasure}_artifacts` are never whitelisted in our `global_loot_modifiers.json` `replace: true` list, so the mod's aggressive auto-injection (100% pouch in treasure chests, ~72% relic in overworld chests) is inert
+
+### Config Pre-Seed
+- `rpgseteffects-common.toml`: disables the mod's parallel elite-mob system (`ELITE_CHANCE_TIER_1/2/3 = 0`, `ELITE_SHOW_BOSS_BAR = false`). IridescentCraft uses Majrusz's Progressive Difficulty for elite enemies; running both would create redundant skull-marked mobs with competing boss bars
+
+### AStages Tier Gating
+- All 14 normal artifacts + `artifact_piece_pouch` → T2 (`modpack/item_t2`). T1 players can pick up but not equip
+- All 14 awakening artifacts → T4 (`modpack/item_t4`). Prevents early-game lottery wins from T4 boss drops
+
+### Keybind Fix
+- Journeymap `map_toggle_alt` unbound from `J` (now `key.keyboard.unknown`) so Class Artifacts' inventory menu (default J) doesn't conflict. Journeymap's primary toggle is still `M`
+
+### Long-Term Roadmap Addition
+- Added "Iridescent Attributes Library (post-1.0)" to `wiki/roadmap/planned.md` — goal is to unify Puffish + Attribute Core + Apotheosis attribute concepts under one namespace with a shim that lets mods like Class Artifacts still resolve the attributes they expect
+
+---
+
 ## 2026-04-11 — Village artifact rate rework
 
 ### Flat 4% Village Artifacts

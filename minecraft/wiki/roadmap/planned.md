@@ -75,6 +75,12 @@ Future features, improvements, and technical debt. Organized by priority.
 - Base mod works, KubeJS addon removed (client class references crash server)
 - If custom spell creation needed in future, investigate server-safe alternatives
 
+### Iridescent Attributes Library (post-1.0)
+- Build our own `iridescent_attributes` mod/library that unifies the attribute systems currently scattered across Puffish Attributes, XP: Attribute Core, Apotheosis affixes, and vanilla attribute mods
+- Goal: one canonical namespace for all RPG-style attributes (crit, lifesteal, dodge, magic damage, class stats, etc.) so tooltips stop showing the same concept under three different names
+- Would replace XP: Attribute Core (dependency of Class Artifacts) with a drop-in compatible shim so third-party mods like Class Artifacts still find the attributes they expect
+- **Blocked by:** full release of IridescentCraft — this is a post-1.0 consolidation project, not an alpha/beta blocker
+
 ---
 
 ## Completed (moved from roadmap)

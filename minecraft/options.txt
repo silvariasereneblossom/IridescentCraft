@@ -426,7 +426,7 @@ key_key.journeymap.create_waypoint:key.keyboard.comma
 key_key.journeymap.toggle_waypoints:key.keyboard.z
 key_key.journeymap.fullscreen_create_waypoint:key.keyboard.comma
 key_key.journeymap.fullscreen_chat_position:key.keyboard.unknown
-key_key.journeymap.map_toggle_alt:key.keyboard.j
+key_key.journeymap.map_toggle_alt:key.keyboard.unknown
 key_key.journeymap.fullscreen_waypoints:key.keyboard.unknown
 key_key.journeymap.minimap_toggle_alt:key.keyboard.j:CONTROL
 key_key.journeymap.fullscreen_options:key.keyboard.unknown
