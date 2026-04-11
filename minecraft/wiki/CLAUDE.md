@@ -144,3 +144,4 @@ After significant design changes, update relevant memory files in `/root/.claude
 | 1 | Full harmonization pass | `protocols/1-harmonize.md` |
 | 2 | Random-sample spot-check | `protocols/2-spot-check.md` |
 | 6 | Homepage coverage check | `protocols/6-homepage-coverage.md` |
+| 7 | World pre-generation (Chunky) | `protocols/7-pregen.md` |

@@ -7,7 +7,7 @@
 	#----------------------------------------------------------------------------------------------------+
 	# Enables extended debug logging to help detecting errors. Enabled by default.
 	#
-	extended_debug = true
+	extended_debug = false
 
 ["World Generation"]
 	#----------------------------------------------------------------------------------------------------+

@@ -14,6 +14,20 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### LootJS Overhaul Failing to Parse (Apostrophe Bug)
+- **Status:** Fixed (2026-04-11)
+- **Description:** `lootjs_overhaul.js:1292` contained `'Iron's Spellbooks ...'` — the apostrophe in `Iron's` terminated the single-quoted string, breaking the entire file at parse time. Server logged `rhino.EvaluatorException: missing ) after argument list`. As a result, **none** of the loot overhaul ran: no structure-chest cleanup, no enchanted-book re-adds, no token injection, no village restrictions, no clutter removal.
+- **Root cause:** Plain-string log message used single quotes around content containing an apostrophe.
+- **Fix:** Switched the offending `console.log` to double quotes.
+- **Lesson:** Any string literal containing an English contraction must use double quotes (or escape the apostrophe). Worth a global grep for similar patterns in other server scripts.
+
+### Server Main-Thread Stall During Dungeon Crawl Worldgen
+- **Status:** Mitigated (2026-04-11), pending pre-gen
+- **Description:** On 2026-04-10 the server stalled the main thread for 115 seconds (`Running 114989ms or 2299 ticks behind`), causing the active tester's client to time out. Trace: Dungeon Crawl was generating a multi-node dungeon at (~2782, 73, 1631) right next to the player's position, with cascading Lootr chest conversion errors during chunk placement.
+- **Root cause:** Structure-heavy modpack (7 dungeon mods) + on-demand worldgen on the main thread when a player walks into a fresh region.
+- **Mitigation applied:** Disabled `dungeon_crawl.toml extended_debug` to remove logging overhead. View/sim distance already low (`view-distance=6`, `simulation-distance=4`) in `server_distribution/server.properties`.
+- **Permanent fix:** Run Chunky pre-generation per [Protocol 7](../protocols/7-pregen.md) before opening a fresh world to testers.
+
 ### Blank Enchanted Books in Chest Loot
 - **Status:** Fixed (2026-04-11)
 - **Description:** Chest-generated enchanted books spawned with no `StoredEnchantments` NBT — visible tooltip tags and Apotheosis power range, but zero actual enchantments.

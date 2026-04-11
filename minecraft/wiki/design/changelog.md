@@ -4,7 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
-## 2026-04-11 — Enchanted book loot fix
+## 2026-04-11 — Enchanted book loot fix + LootJS parse error + DC debug spam
+
+### LootJS Overhaul Was Failing to Parse
+- `kubejs/server_scripts/loot/lootjs_overhaul.js:1292` had an unescaped apostrophe inside a single-quoted string (`'Iron's Spellbooks ...'`), which terminated the string early and produced `rhino.EvaluatorException: missing ) after argument list`
+- Effect: the **entire** loot overhaul file failed to load on the server. No structure-chest cleanup, no enchanted-book re-adds, no token injection, no clutter cleanup, no village restrictions ever ran
+- Fixed by switching that line to a double-quoted string
+- Discovered while diagnosing the blank enchanted book report — the books were a downstream symptom of the parse failure, not just the `applyLootFunction` issue (that fix is still correct and now actually runs)
+
+### Dungeon Crawl Debug Logging Disabled
+- `config/dungeon_crawl.toml`: `extended_debug` flipped from `true` → `false` in all three distributions
+- Reason: DC debug spam (`Building dungeoncrawl:default/multipart/node_connector...`) flooded the server log during structure generation. Removing it cuts log noise and reduces overhead during dungeon worldgen
+- Discovered while investigating a 115-second main-thread stall on 2026-04-10 caused by DC generating a multi-node dungeon while a tester was nearby
 
 ### Blank Enchanted Books
 - `kubejs/server_scripts/loot/lootjs_overhaul.js` T1–T4 enchanted-book re-adds now use `.enchantWithLevels(min, max, treasure)` instead of `.applyLootFunction({function:'minecraft:enchant_with_levels', ...})`

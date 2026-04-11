@@ -1289,7 +1289,7 @@ LootJS.modifiers(event => {
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
   console.log('  - Overworld clutter cleanup: horse armor, spider eyes, etc removed/reduced')
-  console.log('  - Early magic access: Iron's Spellbooks handles scrolls natively; copper spell book (3%) in OW chests')
+  console.log("  - Early magic access: Iron's Spellbooks handles scrolls natively; copper spell book (3%) in OW chests")
   console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
   console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
   console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
