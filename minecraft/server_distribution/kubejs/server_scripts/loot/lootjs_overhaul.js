@@ -1423,9 +1423,9 @@ LootJS.modifiers(event => {
   // open, keeping Awakening variants out of non-T4 drops.
   // Artifact Piece Pouch: guaranteed drop from T2+ bosses. The pouch's
   // loot table is overridden at kubejs/data/rpgseteffects/loot_tables/items/
-  // artifact_piece_pouch.json to include both normal artifacts AND awakening
-  // variants at lower weight. AStages T4 gate still prevents pre-endgame
-  // use of awakenings even if a T2 player lucks into one from a pouch.
+  // artifact_piece_pouch.json to contain ONLY the 14 normal artifacts —
+  // awakening variants are never in pouches, they drop directly from T4
+  // bosses only. This keeps awakenings out of T2 loot entirely.
   const t2BossPouchDrops = [
     'twilightforest:entities/naga',
     'twilightforest:entities/lich',
@@ -1441,9 +1441,10 @@ LootJS.modifiers(event => {
       .addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch'))
   })
 
-  // T4 bosses drop 2 pouches (better awakening odds at endgame) — the pouch
-  // loot table has awakenings at ~1/5 the weight of normals, so avg 2 pouches
-  // = ~34% chance of at least one awakening per T4 boss kill
+  // T4 bosses drop 2 pouches (better normal artifact coverage at endgame)
+  // PLUS direct awakening rolls — 0.7% per awakening per boss, 14 awakenings
+  // = ~9.3% combined any-awakening chance per T4 boss kill. Half of what a
+  // pouch-embedded-awakening model would have given, per user tuning.
   const t4BossTables = [
     'minecraft:entities/ender_dragon',
     'cataclysm:entities/ender_guardian',
@@ -1451,10 +1452,28 @@ LootJS.modifiers(event => {
     'deeperdarker:entities/shattered',
     'alexscaves:entities/watcher'
   ]
+  const awakeningPool = [
+    'rpgseteffects:altharion_awakening_artifact',
+    'rpgseteffects:blade_dancer_awakening_artifact',
+    'rpgseteffects:blood_fury_awakening_artifact',
+    'rpgseteffects:chronorend_awakening_artifact',
+    'rpgseteffects:hellbrand_awakening_artifact',
+    'rpgseteffects:hexweaver_awakening_artifact',
+    'rpgseteffects:ignisphere_awakening_artifact',
+    'rpgseteffects:moonpiercer_awakening_artifact',
+    'rpgseteffects:phoenix_awakening_artifact',
+    'rpgseteffects:sanctum_awakening_artifact',
+    'rpgseteffects:shadow_hunter_awakening_artifact',
+    'rpgseteffects:stormpiercer_awakening_artifact',
+    'rpgseteffects:vaelkhor_awakening_artifact',
+    'rpgseteffects:wolfheart_awakening_artifact'
+  ]
   t4BossTables.forEach(table => {
-    event
-      .addLootTableModifier(table)
-      .addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch').limitCount([2, 2]))
+    const modifier = event.addLootTableModifier(table)
+    modifier.addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch').limitCount([2, 2]))
+    awakeningPool.forEach(awakening => {
+      modifier.addLoot(LootEntry.of(awakening).when(c => c.randomChance(0.007)))
+    })
   })
 
   // =========================================================================

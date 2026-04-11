@@ -17,22 +17,7 @@
         { "type": "minecraft:item", "name": "rpgseteffects:shadow_hunter_artifact", "weight": 10 },
         { "type": "minecraft:item", "name": "rpgseteffects:stormpiercer_artifact", "weight": 10 },
         { "type": "minecraft:item", "name": "rpgseteffects:vaelkhor_artifact", "weight": 10 },
-        { "type": "minecraft:item", "name": "rpgseteffects:wolfheart_artifact", "weight": 10 },
-
-        { "type": "minecraft:item", "name": "rpgseteffects:altharion_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:blade_dancer_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:blood_fury_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:chronorend_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:hellbrand_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:hexweaver_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:ignisphere_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:moonpiercer_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:phoenix_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:sanctum_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:shadow_hunter_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:stormpiercer_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:vaelkhor_awakening_artifact", "weight": 2 },
-        { "type": "minecraft:item", "name": "rpgseteffects:wolfheart_awakening_artifact", "weight": 2 }
+        { "type": "minecraft:item", "name": "rpgseteffects:wolfheart_artifact", "weight": 10 }
       ]
     }
   ]

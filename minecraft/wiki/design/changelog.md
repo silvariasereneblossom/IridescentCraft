@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — Awakening tuning: halved rate, T2 locked out
+
+### Pouch Reverted to Normals-Only
+- `kubejs/data/rpgseteffects/loot_tables/items/artifact_piece_pouch.json` now contains only the 14 normal artifacts (weight 10 each). Awakenings removed entirely from the pouch pool
+- **Why:** pouches are item-keyed loot tables, so the same pouch item behaves identically regardless of drop source. To guarantee T2 bosses can't produce awakenings even indirectly, awakenings had to move off the pouch
+
+### Awakenings = T4 Direct Drops, Halved Rate
+- Each of 14 awakenings rolled independently at **0.7%** per T4 boss kill (5 bosses: Ender Dragon, Ender Guardian, Harbinger, Shattered, Watcher)
+- Combined any-awakening chance per T4 boss ≈ **9.3%** (down from ~30.5% when pouches held them)
+- T4 bosses still drop 2 pouches for normal artifact variety
+
+### T2 Awakening Lockout
+- T2 boss kills now yield 0% awakening drops (only normal artifacts via single pouch). Matches user tuning request
+
+---
+
 ## 2026-04-11 — Class Artifacts loot table audit + pouch awakening merge
 
 ### Boss Entity ID Corrections
