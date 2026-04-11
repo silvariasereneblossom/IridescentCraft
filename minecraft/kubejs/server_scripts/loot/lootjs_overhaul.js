@@ -132,7 +132,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:overworld')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 10, max: 25 }, treasure: true })
+        .enchantWithLevels(10, 25, true)
         .when(c => c.randomChance(0.075))
     )
 
@@ -144,7 +144,7 @@ LootJS.modifiers(event => {
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 15, max: 30 }, treasure: true })
+        .enchantWithLevels(15, 30, true)
         .when(c => c.randomChance(0.10))
     )
 
@@ -154,7 +154,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: { min: 20, max: 30 }, treasure: true })
+        .enchantWithLevels(20, 30, true)
         .when(c => c.randomChance(0.125))
     )
 
@@ -164,7 +164,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .applyLootFunction({ function: 'minecraft:enchant_with_levels', levels: 30, treasure: true })
+        .enchantWithLevels(30, 30, true)
         .when(c => c.randomChance(0.15))
     )
 
