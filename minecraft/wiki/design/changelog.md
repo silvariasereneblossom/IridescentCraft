@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — PrismLauncher pre-launch client sync
+
+### SHA-Check Sync Script for Testers
+- Added `sync_client.ps1` + `sync_client.bat` wrapper in both `minecraft/` (dev instance) and `minecraft/distribution/client/` (tester install source)
+- Script logic: detect instance via `$env:INST_MC_DIR` (PrismLauncher provides it) → hit GitHub API for latest main commit SHA → compare to `.icraft_last_sha` → if match, exit fast; if differ, download zip, overlay non-runtime dirs (config/kubejs/global_packs/datapack_sources/defaultconfigs/patchouli_books/resourcepacks/shaderpacks), mirror mods/.index, invoke download_mods.ps1 for new JARs
+- Preserved: world/, logs/, crash-reports/, backups/, libraries/, mods/*.jar, options.txt
+- Failure handling: 10s API timeout + 60s zip timeout, graceful fallback on any error ("Continuing with existing files..." + exit 0). Network hiccups never block a play session
+- `install.ps1` updated to copy both sync_client files into the instance's `.minecraft` during initial install
+
+### Two Sync Modes (Protocol 8)
+- **Mode A (dev):** `git -C "%INST_DIR%" pull --ff-only` as pre-launch — works because Silvaria's instance is a GitHub Desktop clone of the repo. Instant, git-native
+- **Mode B (testers):** `powershell -ExecutionPolicy Bypass -File "%INST_MC_DIR%\sync_client.ps1"` — SHA-check path for installed-not-cloned instances
+- New `wiki/protocols/8-client-sync.md` documents both modes, install location, failure behavior, and exclusion list
+
+---
+
 ## 2026-04-11 — Awakening tuning: halved rate, T2 locked out
 
 ### Pouch Reverted to Normals-Only

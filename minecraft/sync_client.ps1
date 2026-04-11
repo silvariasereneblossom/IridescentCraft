@@ -1,0 +1,192 @@
+# =============================================================================
+# IridescentCraft Client Sync — PrismLauncher pre-launch hook
+# =============================================================================
+# Keeps the local instance's configs/kubejs/datapacks/mods in sync with the
+# GitHub main branch via a SHA-based check. Designed to run as PrismLauncher's
+# per-instance pre-launch command.
+#
+# Behavior:
+#   1. Find the instance .minecraft directory (prefers $env:INST_MC_DIR which
+#      PrismLauncher provides automatically, falls back to detecting by script
+#      location, then searching the PrismLauncher instances folder)
+#   2. Query GitHub API for the latest main commit SHA
+#   3. Compare against .icraft_last_sha in the instance root
+#   4. If match: print "Up to date" and exit 0 (no download)
+#   5. If mismatch or first run: download the repo zip, overlay non-runtime
+#      files onto the instance, write the new SHA, invoke download_mods.ps1
+#      to grab any new JARs (skips existing via filename check)
+#
+# Network failure handling: short timeouts on both the API call and zip
+# download. On any failure, prints a warning and exits 0 so PrismLauncher
+# still launches Minecraft — "continuing with existing files" is always
+# safer than blocking play.
+#
+# Install as pre-launch command in PrismLauncher:
+#   Instance → Settings → Custom Commands → Pre-launch command:
+#   powershell -ExecutionPolicy Bypass -File "$INST_MC_DIR/sync_client.ps1"
+# =============================================================================
+
+$ErrorActionPreference = "Continue"
+[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# -- Step 1: Locate the instance .minecraft directory --
+$instanceMC = $null
+
+if ($env:INST_MC_DIR -and (Test-Path $env:INST_MC_DIR)) {
+    $instanceMC = $env:INST_MC_DIR
+} elseif ($PSScriptRoot -and (Test-Path (Join-Path $PSScriptRoot 'kubejs'))) {
+    # Script lives inside the instance's .minecraft
+    $instanceMC = $PSScriptRoot
+} else {
+    # Fallback: hunt for it in PrismLauncher instances
+    foreach ($dataDir in @("$env:APPDATA\PrismLauncher", "$env:LOCALAPPDATA\PrismLauncher")) {
+        if (-not (Test-Path $dataDir)) { continue }
+        $searchDirs = @($dataDir)
+        if (Test-Path "$dataDir\instances") { $searchDirs += "$dataDir\instances" }
+        foreach ($searchDir in $searchDirs) {
+            $found = Get-ChildItem $searchDir -Directory -ErrorAction SilentlyContinue |
+                Where-Object { $_.Name -like "IridescentCraft*" -and (Test-Path "$($_.FullName)\.minecraft\kubejs") } |
+                Select-Object -First 1
+            if ($found) {
+                $instanceMC = "$($found.FullName)\.minecraft"
+                break
+            }
+        }
+        if ($instanceMC) { break }
+    }
+}
+
+if (-not $instanceMC) {
+    Write-Host "[IridescentCraft Sync] Could not find instance directory. Skipping sync." -ForegroundColor Yellow
+    exit 0
+}
+
+Write-Host "[IridescentCraft Sync] Instance: $instanceMC" -ForegroundColor DarkGray
+
+# -- Step 2: Query GitHub API for latest commit SHA --
+$apiUrl = 'https://api.github.com/repos/silvariasereneblossom/IridescentCraft/commits/main'
+$shaFile = Join-Path $instanceMC '.icraft_last_sha'
+$localSha = ''
+if (Test-Path $shaFile) { $localSha = (Get-Content $shaFile -Raw).Trim() }
+
+$remoteSha = $null
+try {
+    $headers = @{ 'User-Agent' = 'IridescentCraft-Client-Sync' }
+    $resp = Invoke-RestMethod -Uri $apiUrl -Headers $headers -TimeoutSec 10
+    $remoteSha = $resp.sha
+} catch {
+    Write-Host "[IridescentCraft Sync] GitHub API unreachable: $($_.Exception.Message)" -ForegroundColor Yellow
+    Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
+    exit 0
+}
+
+if ($remoteSha -eq $localSha) {
+    Write-Host "[IridescentCraft Sync] Up to date (commit $($remoteSha.Substring(0,7)))." -ForegroundColor Green
+    exit 0
+}
+
+# -- Step 3: Download and overlay new files --
+if ($localSha) {
+    Write-Host "[IridescentCraft Sync] New commit: $($remoteSha.Substring(0,7)) (was $($localSha.Substring(0,7))). Downloading..." -ForegroundColor Cyan
+} else {
+    Write-Host "[IridescentCraft Sync] First sync. Downloading $($remoteSha.Substring(0,7))..." -ForegroundColor Cyan
+}
+
+$zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip'
+$zipFile = Join-Path $env:TEMP 'IridescentCraft-client-sync.zip'
+$extractDir = Join-Path $env:TEMP 'IridescentCraft-client-sync-extract'
+
+try {
+    Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 60
+    if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) {
+        throw 'Download too small or failed'
+    }
+
+    if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
+    Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force
+
+    $srcRoot = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName
+    $src = Join-Path $srcRoot 'minecraft'
+
+    if (-not (Test-Path $src)) {
+        throw "Expected minecraft/ folder not found in downloaded archive"
+    }
+
+    # Overlay non-runtime directories onto the instance
+    $overlayDirs = @('config', 'kubejs', 'global_packs', 'datapack_sources', 'defaultconfigs', 'patchouli_books', 'resourcepacks', 'shaderpacks')
+    $mirrorList = @()
+    foreach ($dir in $overlayDirs) {
+        $srcDir = Join-Path $src $dir
+        if (Test-Path $srcDir) {
+            $destDir = Join-Path $instanceMC $dir
+            Copy-Item -Path $srcDir -Destination $instanceMC -Recurse -Force
+            $mirrorList += $dir
+        }
+    }
+
+    # Sync mods/.index (metadata only — actual JARs handled by download_mods.ps1 below)
+    $srcIndex = Join-Path $src 'mods\.index'
+    $destIndex = Join-Path $instanceMC 'mods\.index'
+    if (Test-Path $srcIndex) {
+        if (-not (Test-Path $destIndex)) { New-Item -ItemType Directory -Path $destIndex -Force | Out-Null }
+        # Mirror: remove stale .pw.toml files, then copy current
+        Get-ChildItem "$destIndex\*.pw.toml" -ErrorAction SilentlyContinue | ForEach-Object {
+            $srcFile = Join-Path $srcIndex $_.Name
+            if (-not (Test-Path $srcFile)) { Remove-Item $_.FullName -Force }
+        }
+        Copy-Item -Path "$srcIndex\*" -Destination $destIndex -Recurse -Force
+        $mirrorList += 'mods/.index'
+    }
+
+    # Selective top-level files (options.txt only if user hasn't customized)
+    foreach ($topFile in @('pack.png', 'icon.png')) {
+        $srcFile = Join-Path $src $topFile
+        if (Test-Path $srcFile) {
+            Copy-Item -Path $srcFile -Destination $instanceMC -Force
+        }
+    }
+
+    Write-Host "[IridescentCraft Sync] Overlaid: $($mirrorList -join ', ')" -ForegroundColor DarkGray
+
+    # Write new SHA
+    Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
+
+    # Cleanup
+    Remove-Item $zipFile -Force -ErrorAction SilentlyContinue
+    Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
+
+    Write-Host "[IridescentCraft Sync] Overlay complete." -ForegroundColor Green
+} catch {
+    Write-Host "[IridescentCraft Sync] Overlay failed: $($_.Exception.Message)" -ForegroundColor Yellow
+    Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
+    Remove-Item $zipFile -Force -ErrorAction SilentlyContinue
+    Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
+    exit 0
+}
+
+# -- Step 4: Download any new mod JARs --
+# download_mods.ps1 is diff-aware — it skips JARs that already exist by filename,
+# so this only hits the network for actually-new mods.
+$downloadScript = Join-Path $instanceMC 'download_mods.ps1'
+if (-not (Test-Path $downloadScript)) {
+    # Downloaded fresh from the archive overlay
+    $downloadScript = Join-Path $src 'distribution\client\download_mods.ps1'
+}
+
+if (Test-Path $downloadScript) {
+    $modsDir = Join-Path $instanceMC 'mods'
+    $indexDir = Join-Path $modsDir '.index'
+    if ((Test-Path $indexDir) -and (Test-Path $modsDir)) {
+        Write-Host "[IridescentCraft Sync] Checking for new mod JARs..." -ForegroundColor Cyan
+        try {
+            & $downloadScript -IndexDir $indexDir -ModsDir $modsDir 2>&1 | Where-Object {
+                $_ -match 'Downloaded|Failed|^\s*\[' -or $_ -match '^\s{2}\S'
+            } | Select-Object -First 50
+        } catch {
+            Write-Host "[IridescentCraft Sync] Mod download step failed (non-fatal): $($_.Exception.Message)" -ForegroundColor Yellow
+        }
+    }
+}
+
+Write-Host "[IridescentCraft Sync] Done — launching..." -ForegroundColor Green
+exit 0

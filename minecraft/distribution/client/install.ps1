@@ -205,6 +205,16 @@ foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
     }
 }
 
+# Copy sync_client scripts into the instance so PrismLauncher's pre-launch
+# command can find them via $INST_MC_DIR. Users set the pre-launch command
+# in PrismLauncher manually — see wiki/protocols/8-client-sync.md
+foreach ($syncFile in @('sync_client.ps1', 'sync_client.bat')) {
+    if (Test-Path "$distDir\$syncFile") {
+        Copy-Item "$distDir\$syncFile" "$mcDir\$syncFile" -Force
+        Write-Host "    $syncFile... OK"
+    }
+}
+
 # Copy custom JARs
 $customJars = Get-ChildItem "$distDir\mods\*.jar" -ErrorAction SilentlyContinue
 if ($customJars) {
