@@ -14,6 +14,12 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Blank Enchanted Books in Chest Loot
+- **Status:** Fixed (2026-04-11)
+- **Description:** Chest-generated enchanted books spawned with no `StoredEnchantments` NBT — visible tooltip tags and Apotheosis power range, but zero actual enchantments.
+- **Root cause:** `lootjs_overhaul.js` re-added tiered enchanted books using `.applyLootFunction({function:'minecraft:enchant_with_levels', ...})`. LootJS 2.x silently drops loot-function raw JSON that isn't pre-deserialized, so the enchant step never ran.
+- **Fix:** Swapped all four tier entries (T1–T4) to the LootJS builder method `.enchantWithLevels(min, max, treasure)`.
+
 ### Apotheosis Tower Loot
 - **Status:** Active
 - **Description:** Some Apotheosis tower chests show gold only. Paxi override may have load order issue causing incomplete loot table replacement.

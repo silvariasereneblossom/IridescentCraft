@@ -4,6 +4,15 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-11 — Enchanted book loot fix
+
+### Blank Enchanted Books
+- `kubejs/server_scripts/loot/lootjs_overhaul.js` T1–T4 enchanted-book re-adds now use `.enchantWithLevels(min, max, treasure)` instead of `.applyLootFunction({function:'minecraft:enchant_with_levels', ...})`
+- Reason: LootJS 2.x silently discards loot functions passed as plain JSON, so books were being placed with no `StoredEnchantments` tag — visible tooltip but zero enchants
+- Affected tiers: Overworld (10–25), TF/Aether/Blue Skies (15–30), Nether/Undergarden (20–30), End/Deeper Darker/Abyss (30)
+
+---
+
 ## 2026-04-09 — Server bat improvements, NPC debug text fix
 
 ### Server Bat Improvements
