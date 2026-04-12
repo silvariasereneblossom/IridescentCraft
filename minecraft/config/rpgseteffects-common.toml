@@ -7,8 +7,10 @@
 # drops from Progressive Difficulty elites instead.
 
 [ui]
-    # Show the J-key Artifacts menu button in inventory
-    showInventoryButton = true
+    # Show the Sets button in the inventory UI. DISABLED because the button
+    # overlaps Minecraft's 2x2 crafting grid — players access the menu via
+    # the J key instead (configurable in-game).
+    showInventoryButton = false
 
 [elite_mobs]
     # Don't display the mod's own boss bar for elite mobs — we use
