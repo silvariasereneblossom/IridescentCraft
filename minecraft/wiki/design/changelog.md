@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-12 — Server Phase 0 paxi datapack verification pass
+
+### Root Cause
+- `icraft_loot_overrides.zip` (549K, Apr 10) and `icraft_progdiff_overrides.zip` (14K, Apr 8) were failing to deploy to the tester's dedicated server during `iridescentserver.bat` Phase 0 overlay, even though the files existed in the repo and `sync_client.ps1` was deploying them correctly to the client
+- `/datapack list` on the running server confirmed neither zip was loaded by Paxi — all older paxi zips (Mar 19) were active
+- Most likely cause: PowerShell 5.1's `Copy-Item -Recurse -Force` hitting some mid-tree condition (large file, write lock, timing) and silently aborting the remainder of that recursion. The two newest files happened to be the last ones reached in the directory walk
+
+### Fix
+- Added an explicit verification pass after the main overlay in `iridescentserver.bat` Phase 0 (and `iridescentserver.sh` for parity)
+- New logic: enumerate every `.zip` in `$src/config/paxi/datapacks/`, check if the destination file exists AND has matching byte count; if not, force-copy individually
+- Also force-copies `datapack_load_order.json` in the same block so stale load orders can't persist
+- Belt-and-suspenders — if the main Copy-Item / cp -rf pass works correctly, the verification pass is a no-op. If the main pass drops files, the verification pass catches them
+
+### Stale Load Order Cleanup
+- `datapack_load_order.json` had 8 duplicate entries (no-extension variants) that Paxi always reported as missing, plus 3 entries for removed mods (iridescent_origins — now a JAR, champions_datapack — Champions removed, and their `.zip` variants). Removed all 11 stale entries, added 4 missing ones (tetra_materials, tetra_overrides, aethersteel_overrides, progdiff_overrides)
+
+---
+
 ## 2026-04-11 — PrismLauncher pre-launch client sync
 
 ### SHA-Check Sync Script for Testers

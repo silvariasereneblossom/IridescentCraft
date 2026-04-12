@@ -119,6 +119,33 @@ else
             fi
         done
 
+        # Belt-and-suspenders: verify every paxi datapack zip by size, force-copy if missing or different
+        PAXI_SRC="$SRC/config/paxi/datapacks"
+        PAXI_DEST="$SCRIPT_DIR/config/paxi/datapacks"
+        if [ -d "$PAXI_SRC" ] && [ -d "$PAXI_DEST" ]; then
+            echo "  Verifying paxi datapacks..."
+            paxi_copied=0
+            for zip in "$PAXI_SRC"/*.zip; do
+                [ -f "$zip" ] || continue
+                zipname=$(basename "$zip")
+                target="$PAXI_DEST/$zipname"
+                src_size=$(stat -c%s "$zip" 2>/dev/null || stat -f%z "$zip" 2>/dev/null)
+                dest_size=0
+                [ -f "$target" ] && dest_size=$(stat -c%s "$target" 2>/dev/null || stat -f%z "$target" 2>/dev/null)
+                if [ "$src_size" != "$dest_size" ]; then
+                    cp -f "$zip" "$target"
+                    paxi_copied=$((paxi_copied + 1))
+                    echo "    [sync] $zipname"
+                fi
+            done
+            if [ -f "$SRC/config/paxi/datapack_load_order.json" ]; then
+                cp -f "$SRC/config/paxi/datapack_load_order.json" "$SCRIPT_DIR/config/paxi/datapack_load_order.json"
+            fi
+            if [ "$paxi_copied" -gt 0 ]; then
+                echo -e "    ${YELLOW}[sync] $paxi_copied paxi datapack(s) force-copied${NC}"
+            fi
+        fi
+
         echo -n "$REMOTE_SHA" > "$SHA_FILE"
         rm -f "$ZIP_FILE"
         rm -rf "$EXTRACT_DIR"

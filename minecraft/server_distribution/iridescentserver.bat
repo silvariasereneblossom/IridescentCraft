@@ -118,6 +118,23 @@ powershell -ExecutionPolicy Bypass -Command ^
   "      Copy-Item $item.FullName $dest -Recurse -Force;" ^
   "    }" ^
   "  };" ^
+  "  $paxiSrc = Join-Path $src 'config\paxi\datapacks';" ^
+  "  $paxiDest = Join-Path $dest 'config\paxi\datapacks';" ^
+  "  if ((Test-Path $paxiSrc) -and (Test-Path $paxiDest)) {" ^
+  "    Write-Host '  Verifying paxi datapacks...';" ^
+  "    $paxiCopied = 0;" ^
+  "    Get-ChildItem $paxiSrc -Filter '*.zip' | ForEach-Object {" ^
+  "      $target = Join-Path $paxiDest $_.Name;" ^
+  "      if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {" ^
+  "        Copy-Item $_.FullName $target -Force;" ^
+  "        $paxiCopied++;" ^
+  "        Write-Host ('    [sync] ' + $_.Name)" ^
+  "      }" ^
+  "    };" ^
+  "    $paxiOrder = Join-Path $src 'config\paxi\datapack_load_order.json';" ^
+  "    if (Test-Path $paxiOrder) { Copy-Item $paxiOrder (Join-Path $dest 'config\paxi\datapack_load_order.json') -Force };" ^
+  "    if ($paxiCopied -gt 0) { Write-Host ('    [sync] ' + $paxiCopied + ' paxi datapack(s) force-copied') -ForegroundColor Yellow }" ^
+  "  };" ^
   "  $remoteSha | Out-File -FilePath $shaFile -Encoding ASCII -NoNewline;" ^
   "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
   "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
