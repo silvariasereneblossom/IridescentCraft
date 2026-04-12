@@ -155,6 +155,25 @@ else
             fi
         fi
 
+        # Verify custom mod JARs (same belt-and-suspenders as paxi zips)
+        MODS_SRC="$SRC/mods"
+        MODS_DEST="$SCRIPT_DIR/mods"
+        if [ -d "$MODS_SRC" ]; then
+            echo "  Verifying custom mod JARs..."
+            for jar in "$MODS_SRC"/*.jar; do
+                [ -f "$jar" ] || continue
+                jarname=$(basename "$jar")
+                target="$MODS_DEST/$jarname"
+                src_size=$(stat -c%s "$jar" 2>/dev/null || stat -f%z "$jar" 2>/dev/null)
+                dest_size=0
+                [ -f "$target" ] && dest_size=$(stat -c%s "$target" 2>/dev/null || stat -f%z "$target" 2>/dev/null)
+                if [ "$src_size" != "$dest_size" ]; then
+                    cp -f "$jar" "$target"
+                    echo "    [sync] $jarname"
+                fi
+            done
+        fi
+
         echo -n "$REMOTE_SHA" > "$SHA_FILE"
         rm -f "$ZIP_FILE"
         rm -rf "$EXTRACT_DIR"

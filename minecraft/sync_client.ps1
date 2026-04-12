@@ -124,6 +124,23 @@ try {
         }
     }
 
+    # Sync custom mod JARs (bundled JARs not managed by packwiz — iridescent_codex_data,
+    # iridescent_origins, mek_walkable_cables, offlineskins, zeta_racefix)
+    $srcMods = Join-Path $src 'mods'
+    $destMods = Join-Path $instanceMC 'mods'
+    if (Test-Path $srcMods) {
+        $customCopied = 0
+        Get-ChildItem $srcMods -Filter '*.jar' -ErrorAction SilentlyContinue | ForEach-Object {
+            $target = Join-Path $destMods $_.Name
+            if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {
+                Copy-Item $_.FullName $target -Force
+                $customCopied++
+                Write-Host "[IridescentCraft Sync]   Custom JAR: $($_.Name)" -ForegroundColor Yellow
+            }
+        }
+        if ($customCopied -gt 0) { $mirrorList += "mods/$customCopied custom JARs" }
+    }
+
     # Sync mods/.index (metadata only — actual JARs handled by download_mods.ps1 below)
     $srcIndex = Join-Path $src 'mods\.index'
     $destIndex = Join-Path $instanceMC 'mods\.index'

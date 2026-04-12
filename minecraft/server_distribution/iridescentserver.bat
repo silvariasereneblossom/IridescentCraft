@@ -142,6 +142,18 @@ powershell -ExecutionPolicy Bypass -Command ^
   "    if (Test-Path $paxiOrder) { Copy-Item $paxiOrder (Join-Path $dest 'config\paxi\datapack_load_order.json') -Force };" ^
   "    if ($paxiCopied -gt 0) { Write-Host ('    [sync] ' + $paxiCopied + ' paxi datapack(s) force-copied') -ForegroundColor Yellow }" ^
   "  };" ^
+  "  Write-Host '  Verifying custom mod JARs...';" ^
+  "  $modsSrc = Join-Path $src 'mods';" ^
+  "  $modsDest = Join-Path $dest 'mods';" ^
+  "  if (Test-Path $modsSrc) {" ^
+  "    Get-ChildItem $modsSrc -Filter '*.jar' | ForEach-Object {" ^
+  "      $target = Join-Path $modsDest $_.Name;" ^
+  "      if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {" ^
+  "        Copy-Item $_.FullName $target -Force;" ^
+  "        Write-Host ('    [sync] ' + $_.Name) -ForegroundColor Yellow" ^
+  "      }" ^
+  "    }" ^
+  "  };" ^
   "  $remoteSha | Out-File -FilePath $shaFile -Encoding ASCII -NoNewline;" ^
   "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
   "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
