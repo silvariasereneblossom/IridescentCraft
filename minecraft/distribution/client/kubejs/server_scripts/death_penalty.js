@@ -119,13 +119,14 @@ EntityEvents.death(event => {
     let durLoss = Math.ceil(maxDur * effectiveLoss)
 
     // Apply damage (stack.damageValue is current damage, higher = more broken)
-    // Clamp to maxDur - 1 so vanilla never sees >= maxDamage (which triggers item destruction)
-    let newDamage = Math.min(stack.damageValue + durLoss, maxDur - 1)
+    // Clamp to maxDur - threshold so vanilla never sees >= maxDamage
+    let threshold = Math.min(20, Math.floor(maxDur * 0.5))
+    let newDamage = Math.min(stack.damageValue + durLoss, maxDur - threshold)
     stack.damageValue = newDamage
 
     // Check if item should go inert
-    if (newDamage >= maxDur - 1) {
-      stack.damageValue = maxDur - 1
+    if (newDamage >= maxDur - threshold) {
+      stack.damageValue = maxDur - threshold
       // Tag as broken via NBT
       if (!stack.nbt) stack.nbt = {}
       stack.nbt.putBoolean(BROKEN_TAG, true)
@@ -169,20 +170,21 @@ ItemEvents.canPickUp(event => {
 // Prevent items from breaking during normal use too
 // Vanilla destroys items the instant damageValue >= maxDamage inside
 // ItemStack.hurtAndBreak(). A poll-based approach can only catch items
-// BEFORE they reach that threshold. We check every 4 ticks (0.2s) and
-// intercept items at maxDamage-1 (1 durability remaining), clamping them
-// there and tagging as broken. This means items go inert with 1 point of
-// durability left — a 1-point compromise that guarantees they never vanish.
+// BEFORE they reach that threshold. We check every 2 ticks (0.1s) and
+// intercept items at maxDamage-20 (20 durability remaining), clamping
+// them there and tagging as broken. The 20-point margin handles rapid
+// multi-hit scenarios (sweeping edge, mob swarms, multi-durability enchants)
+// where 5-15 durability can drain in a single tick.
 global.tick_deathPenaltyBrokenCheck = (event) => {
   const player = event.player
+  const INERT_THRESHOLD = 20
 
   function checkAndMarkBroken(stack) {
     if (stack.isEmpty || !stack.isDamageableItem) return false
-    // Catch at maxDamage - 1 (about to break) OR at maxDamage (already broken
-    // but somehow still exists — e.g. from death penalty clamping)
-    if (stack.damageValue >= stack.maxDamage - 1) {
-      // Clamp to maxDamage - 1 so vanilla never sees >= maxDamage
-      stack.damageValue = stack.maxDamage - 1
+    const threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
+    if (stack.damageValue >= stack.maxDamage - threshold) {
+      // Clamp so vanilla never sees >= maxDamage
+      stack.damageValue = stack.maxDamage - threshold
       if (!stack.nbt || !stack.nbt.getBoolean(BROKEN_TAG)) {
         if (!stack.nbt) stack.nbt = {}
         stack.nbt.putBoolean(BROKEN_TAG, true)
@@ -205,7 +207,7 @@ global.tick_deathPenaltyBrokenCheck = (event) => {
   let oh = player.offHandItem
   if (checkAndMarkBroken(oh)) player.setItemSlot('offhand', oh)
 }
-global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 4, 0)
+global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
 
 
 // =============================================================================
@@ -259,7 +261,8 @@ ItemEvents.rightClicked(event => {
 PlayerEvents.inventoryChanged(event => {
   const stack = event.item
   if (!stack.isEmpty && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG)) {
-    if (stack.damageValue < stack.maxDamage - 1) {
+    let repairThreshold = Math.min(20, Math.floor(stack.maxDamage * 0.5))
+    if (stack.damageValue < stack.maxDamage - repairThreshold) {
       // Item has been repaired past the inert threshold — remove broken tag
       stack.nbt.remove(BROKEN_TAG)
     }
