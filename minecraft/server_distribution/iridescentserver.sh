@@ -103,10 +103,19 @@ else
         SRC=$(find "$EXTRACT_DIR" -maxdepth 1 -type d | tail -1)/minecraft/server_distribution
 
         echo "  Syncing configs, scripts, datapacks..."
+        SELF_UPDATE_STAGED=0
         for item in "$SRC"/*; do
             base=$(basename "$item")
-            [ "$base" = "iridescentserver.bat" ] && continue
-            [ "$base" = "iridescentserver.sh" ] && continue
+            if [ "$base" = "iridescentserver.bat" ] || [ "$base" = "iridescentserver.sh" ]; then
+                # Self-update: stage as .new if content differs, swap after Phase 0
+                current="$SCRIPT_DIR/$base"
+                if [ ! -f "$current" ] || ! cmp -s "$item" "$current"; then
+                    cp -f "$item" "$current.new"
+                    echo "    [update] Staged new $base for post-Phase 0 swap"
+                    [ "$base" = "iridescentserver.sh" ] && SELF_UPDATE_STAGED=1
+                fi
+                continue
+            fi
             case "$base" in
                 world|logs|crash-reports|backups|libraries|.cache) continue ;;
             esac
@@ -150,6 +159,15 @@ else
         rm -f "$ZIP_FILE"
         rm -rf "$EXTRACT_DIR"
         echo -e "  ${GREEN}[OK] Updated to ${REMOTE_SHA:0:7}.${NC}"
+
+        # Self-update swap (Linux): if Phase 0 staged a new .sh, swap and relaunch
+        if [ "$SELF_UPDATE_STAGED" = "1" ] && [ -f "$SCRIPT_DIR/iridescentserver.sh.new" ]; then
+            echo ""
+            echo "[UPDATE] New iridescentserver.sh staged. Applying and relaunching..."
+            mv -f "$SCRIPT_DIR/iridescentserver.sh.new" "$SCRIPT_DIR/iridescentserver.sh"
+            chmod +x "$SCRIPT_DIR/iridescentserver.sh"
+            exec "$SCRIPT_DIR/iridescentserver.sh" "$@"
+        fi
     fi
 
     if [ ! -d "$SCRIPT_DIR/global_packs" ] && [ "$FORCE_INSTALL" = "1" ]; then

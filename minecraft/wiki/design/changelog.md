@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-12 — iridescentserver bat/sh now self-updates
+
+### Self-Update Mechanism
+- Previously `iridescentserver.bat` and `iridescentserver.sh` were self-excluded from the Phase 0 overlay — meaning the self-updater couldn't update itself. Any fix to Phase 0 required the server operator to manually replace the bat file before the fix took effect
+- New behavior: Phase 0 SHA1-compares the incoming bat/sh against the current version. If they differ, stages the new file as `iridescentserver.bat.new` / `.sh.new` alongside the current one
+- Immediately after Phase 0, a Phase 0.5 block checks for the `.new` file:
+  - **Windows (`.bat`):** invokes PowerShell to `Move-Item -Force` the `.new` over the current bat (works on Win10+ because cmd.exe holds the bat with `FILE_SHARE_DELETE`), then `Start-Process` launches a new cmd.exe with the updated bat, then `exit /b 0` terminates the original cmd
+  - **Linux (`.sh`):** plain `mv -f`, `chmod +x`, then `exec` replaces the current process with the updated script, inheriting args
+- **One-time manual step required** to transition to this system: the operator must manually copy the new `iridescentserver.bat/.sh` to their server **once**. After that, all future updates happen automatically
+
+### Why It's Safe to Overwrite a Running Bat
+- On Windows 10+, cmd.exe opens batch files with share modes that include `FILE_SHARE_DELETE`, so another process can delete or rename the file while cmd holds it open. The existing handle continues to reference the old file content, allowing cmd to finish reading its current line, then exit cleanly. The relaunched cmd.exe opens the new file from scratch
+- On Linux, `exec` replaces the process image entirely — the kernel loads the new script fresh, no handle issues
+
+---
+
 ## 2026-04-12 — Server Phase 0 paxi datapack verification pass
 
 ### Root Cause

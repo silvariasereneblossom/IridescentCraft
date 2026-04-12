@@ -113,6 +113,13 @@ powershell -ExecutionPolicy Bypass -Command ^
   "      Copy-Item \"$($item.FullName)\.index\*\" \"$dest\mods\.index\" -Recurse -Force;" ^
   "      Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object { Copy-Item $_.FullName \"$dest\mods\" -Force };" ^
   "    } elseif ($item.Name -eq 'iridescentserver.bat' -or $item.Name -eq 'iridescentserver.sh') {" ^
+  "      $current = Join-Path $dest $item.Name;" ^
+  "      $srcHash = (Get-FileHash $item.FullName -Algorithm SHA1).Hash;" ^
+  "      $destHash = if (Test-Path $current) { (Get-FileHash $current -Algorithm SHA1).Hash } else { '' };" ^
+  "      if ($srcHash -ne $destHash) {" ^
+  "        Copy-Item $item.FullName ($current + '.new') -Force;" ^
+  "        Write-Host ('  [update] Staged new ' + $item.Name + ' for post-Phase 0 swap') -ForegroundColor Cyan" ^
+  "      };" ^
   "      continue;" ^
   "    } else {" ^
   "      Copy-Item $item.FullName $dest -Recurse -Force;" ^
@@ -146,6 +153,27 @@ powershell -ExecutionPolicy Bypass -Command ^
   "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
   "}"
 echo.
+
+REM -------------------------------------------------------------------
+REM Phase 0.5: Self-update swap (if Phase 0 staged a new bat)
+REM -------------------------------------------------------------------
+REM Phase 0 stages iridescentserver.bat.new when a new version is pulled.
+REM We use PowerShell Move-Item to atomically replace the bat, then
+REM exit this cmd.exe and let a fresh one pick up the new version.
+REM
+REM Safety: cmd.exe holds the current .bat open with FILE_SHARE_DELETE
+REM (Win10+), so Move-Item can rename-over the running file. After
+REM exit /b here, cmd.exe releases the handle; the freshly-launched
+REM cmd reads the NEW bat content from disk.
+if exist "%~dp0iridescentserver.bat.new" (
+    echo.
+    echo [UPDATE] New iridescentserver.bat staged. Applying and relaunching...
+    echo.
+    powershell -ExecutionPolicy Bypass -Command ^
+        "Move-Item -LiteralPath '%~dp0iridescentserver.bat.new' -Destination '%~dp0iridescentserver.bat' -Force;" ^
+        "Start-Process -FilePath '%~dp0iridescentserver.bat' -WorkingDirectory '%~dp0'"
+    exit /b 0
+)
 
 REM -------------------------------------------------------------------
 REM Phase 1: Check Java
