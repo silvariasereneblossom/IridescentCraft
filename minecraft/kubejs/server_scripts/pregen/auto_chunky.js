@@ -20,7 +20,7 @@ ServerEvents.loaded(event => {
     return
   }
 
-  const radius = 1500
+  const radius = 2500
   const dimension = 'minecraft:overworld'
 
   console.log('[IridescentCraft] First world load — auto-starting Chunky pre-gen')
