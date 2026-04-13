@@ -311,3 +311,55 @@
 [12:20:12] [INFO] skills/mastery_tax.js#125:     Level 200: 91200 XP
 [12:20:12] [INFO] skills/mastery_tax.js#126:     Level 248: 129600 XP
 [12:20:12] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
+[12:20:24] [INFO] codex_delivery.js#18: [IridescentCraft] loggedIn fired for silvieserene, sweep armed
+[12:20:46] [ERROR] ! Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/wizards/archevoker/ArchevokerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[12:20:46] [ERROR] ! java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/wizards/archevoker/ArchevokerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[12:20:46] [ERROR] !   at io.redspace.ironsspellbooks.entity.mobs.wizards.archevoker.ArchevokerEntity.getItemBySlot(ArchevokerEntity.java)
+[12:20:46] [ERROR] !   at java.lang.reflect.Method.invoke(Method.java:568)
+[12:20:46] [ERROR] !   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[12:20:46] [ERROR] !   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[12:20:46] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[12:20:46] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[12:20:46] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[12:20:46] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[12:20:46] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[12:20:46] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[12:20:46] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[12:20:46] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[12:20:46] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[12:20:46] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[12:20:46] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[12:20:46] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy205.onEvent(Unknown Source)
+[12:20:46] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[12:20:46] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[12:20:46] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[12:20:46] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[12:20:46] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[12:20:46] [ERROR] !   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[12:20:46] [ERROR] !   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[12:20:46] [ERROR] !   at dev.architectury.event.EventFactory$2.handleInvocation(EventFactory.java:81)
+[12:20:46] [ERROR] !   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[12:20:46] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy296.add(Unknown Source)
+[12:20:46] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[12:20:46] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[12:20:46] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[12:20:46] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[12:20:46] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[12:20:46] [ERROR] !   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[12:20:46] [ERROR] !   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157582_(PersistentEntitySectionManager.java:1675)
+[12:20:46] [ERROR] !   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157506_(PersistentEntitySectionManager.java:269)
+[12:20:46] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:355)
+[12:20:46] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[12:20:46] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[12:20:46] [ERROR] !   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[12:20:46] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[12:20:46] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[12:20:46] [ERROR] !   at java.lang.Thread.run(Thread.java:833)
+[12:21:00] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[12:21:02] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[12:21:02] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[12:21:03] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[12:21:04] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[12:21:05] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[12:21:06] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
+[12:21:07] [INFO] codex_delivery.js#89: [IridescentCraft] Sweep ran for silvieserene — no books found
