@@ -170,7 +170,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels(30, true)
+        .enchantWithLevels({min: 30, max: 30}, true)
         .when(c => c.randomChance(0.15))
     )
 
