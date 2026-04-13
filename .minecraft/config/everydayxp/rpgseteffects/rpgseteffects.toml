@@ -1,3 +1,4 @@
+
 [gui]
 	#Show the 'Sets' button in the inventory screen.
 	showInventoryButton = false
@@ -16,3 +17,4 @@
 	#Chance for elite tier 3 (Legendary).
 	#Range: 0.0 ~ 1.0
 	chanceTier3 = 0.0
+

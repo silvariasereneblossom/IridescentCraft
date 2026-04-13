@@ -1,27 +1,27 @@
-[09:55:25] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[09:55:25] [INIT] Loaded plugins:
-[09:55:25] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[09:55:25] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[09:55:25] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[09:55:25] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[09:55:25] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[09:55:25] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[09:55:25] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[09:55:25] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[09:55:25] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[09:55:25] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[09:55:25] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[09:55:25] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[09:55:25] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[09:55:25] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[09:55:25] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[09:55:25] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[09:55:25] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[09:55:25] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[09:55:25] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.004 s
-[09:55:25] [INFO] example.js#5: Hello, World! (Loaded client scripts)
-[09:55:25] [INFO] Loaded script client_scripts:example.js in 0.001 s
-[09:55:25] [INFO] Loaded script client_scripts:jei_hiding.js in 0.0 s
-[09:55:25] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
-[09:55:25] [INFO] Loaded 4/4 KubeJS client scripts in 0.029 s with 0 errors and 0 warnings
-[09:55:36] [INFO] Client resource reload complete!
+[12:07:31] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[12:07:31] [INIT] Loaded plugins:
+[12:07:31] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[12:07:31] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[12:07:31] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[12:07:31] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[12:07:31] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[12:07:31] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[12:07:31] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[12:07:31] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[12:07:31] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[12:07:31] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[12:07:31] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[12:07:31] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[12:07:31] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[12:07:31] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[12:07:31] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[12:07:31] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[12:07:31] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[12:07:31] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[12:07:31] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.004 s
+[12:07:31] [INFO] example.js#5: Hello, World! (Loaded client scripts)
+[12:07:31] [INFO] Loaded script client_scripts:example.js in 0.0 s
+[12:07:31] [INFO] Loaded script client_scripts:jei_hiding.js in 0.0 s
+[12:07:31] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
+[12:07:31] [INFO] Loaded 4/4 KubeJS client scripts in 0.033 s with 0 errors and 0 warnings
+[12:07:42] [INFO] Client resource reload complete!
