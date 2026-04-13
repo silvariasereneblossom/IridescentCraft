@@ -1,8 +1,0 @@
-modLoader="lowcodefml"
-loaderVersion="[40,)"
-
-[[mods]]
-modId="icraftcodex"
-version="1.0.0"
-displayName="IridescentCraft Codex Data"
-description="Patchouli book assets for the Iridescent Codex"
