@@ -115,7 +115,7 @@ set "NEED_RELAUNCH=0"
 for %%F in (iridescentserver.bat phase0_sync.ps1) do (
     if exist "%SDIR%\%%F.new" (
         echo   Applying staged update: %%F
-        powershell -ExecutionPolicy Bypass -Command "Move-Item -LiteralPath '%SDIR%\%%F.new' -Destination '%SDIR%\%%F' -Force"
+        move /y "%SDIR%\%%F.new" "%SDIR%\%%F" >nul 2>&1
         set "NEED_RELAUNCH=1"
     )
 )
