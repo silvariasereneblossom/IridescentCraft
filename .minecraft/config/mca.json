@@ -7,7 +7,7 @@
   "overwriteAllZombiesWithZombieVillagers": false,
   "moddedZombieVillagerWhitelist": [],
   "babyZombieChance": 0.25,
-  "villagerTagsHacks": false,
+  "villagerTagsHacks": true,
   "enableInfection": true,
   "allowGrimReaper": true,
   "villagerChatPrefix": "",

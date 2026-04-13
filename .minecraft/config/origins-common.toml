@@ -2834,8 +2834,6 @@
 		"icraft:race/faefolk/nature_magic" = true
 		"icraft:race/faefolk/iron_weakness" = true
 		"icraft:race/faefolk/fragile" = true
-		"icraft:race/faefolk/armor_weakness" = true
-		"icraft:race/faefolk/swift" = true
 
 	[origins."icraft:revenant"]
 		enabled = true
@@ -2898,9 +2896,6 @@
 		"icraft:race/orc/attack_speed" = true
 		"icraft:race/orc/knockback" = true
 		"icraft:race/orc/hunger_drain" = true
-		"icraft:race/orc/melee_bonus" = true
-		"icraft:race/orc/health_bonus" = true
-		"icraft:race/orc/hunger_fury" = true
 
 	[origins."icraft:ranger"]
 		enabled = true
@@ -2930,7 +2925,6 @@
 		"icraft:race/dwarf/sturdy" = true
 		"icraft:race/dwarf/fire_resist" = true
 		"icraft:race/dwarf/slow" = true
-		"icraft:race/dwarf/miner_appetite" = true
 
 	[origins."icraft:battlemage"]
 		enabled = true
@@ -2945,105 +2939,4 @@
 		"icraft:race/elf/swift" = true
 		"icraft:race/elf/hunger_penalty" = true
 		"icraft:race/elf/fragile" = true
-		"icraft:race/elf/ranged_bonus" = true
-
-	[origins."icraft:ryu"]
-		enabled = true
-		"origins:more_exhaustion" = true
-		"icraft:origin/ryu/all_knowing" = true
-		"icraft:origin/ryu/better_odds" = true
-		"icraft:origin/ryu/big_body" = true
-		"icraft:origin/ryu/dark_color" = true
-		"icraft:origin/ryu/friendly_eyes" = true
-		"icraft:origin/ryu/healing_potions" = true
-		"icraft:origin/ryu/natural_protection" = true
-		"icraft:origin/ryu/so_much_weight" = true
-		"icraft:origin/ryu/sparkly" = true
-		"icraft:origin/ryu/winged" = true
-		"icraft:race/ryu/slow_fall" = true
-		"icraft:race/ryu/meat_preference" = true
-		"icraft:race/ryu/food_healing" = true
-
-	[origins."icraft:artificial_construct"]
-		enabled = true
-		"icraft:origin/artificial-construct/heal" = true
-		"icraft:origin/artificial-construct/less_fall_damage" = true
-		"icraft:origin/artificial-construct/metal_shell" = true
-		"icraft:origin/artificial-construct/no_food" = true
-		"icraft:origin/artificial-construct/no_hunger" = true
-		"icraft:origin/artificial-construct/reach" = true
-
-	[origins."icraft:slimebodied"]
-		enabled = true
-		"icraft:origin/slimebodied/food_efficiency" = true
-		"icraft:origin/slimebodied/reduced_health" = true
-		"icraft:origin/slimebodied/reduced_toughness" = true
-		"icraft:origin/slimebodied/satiety_defense" = true
-		"icraft:origin/slimebodied/slow_metabolism" = true
-		"icraft:origin/slimebodied/food_cooldown" = true
-		"icraft:origin/slimebodied/satiety_floor" = true
-
-	[origins."icraft:witherborn"]
-		enabled = true
-		"icraft:origin/witherborn/food_efficiency" = true
-		"icraft:origin/witherborn/wither_immunity" = true
-		"icraft:origin/witherborn/attack_speed" = true
-		"icraft:origin/witherborn/hunger_drain" = true
-		"icraft:origin/witherborn/hunger_weakness" = true
-		"icraft:origin/witherborn/wither_touch" = true
-
-	[origins."icraft:kirin"]
-		enabled = true
-		"origins:cat_vision" = true
-		"origins:fall_immunity" = true
-		"origins:nine_lives" = true
-		"origins:sprint_jump" = true
-		"icraft:origin/kirin/climb" = true
-		"icraft:origin/kirin/exhaustion" = true
-		"icraft:origin/kirin/jump_boost" = true
-		"icraft:origin/kirin/modify_player_speed" = true
-		"icraft:origin/kirin/unrivaled_speed" = true
-
-	[origins."icraft:fallen_angel"]
-		enabled = true
-		"origins:fall_immunity" = true
-		"icraft:origin/fallen-angel/arms" = true
-		"icraft:origin/fallen-angel/bloodthirsty" = true
-		"icraft:origin/fallen-angel/deadshot" = true
-		"icraft:origin/fallen-angel/fire" = true
-		"icraft:origin/fallen-angel/fragile" = true
-		"icraft:origin/fallen-angel/glowing" = true
-		"icraft:origin/fallen-angel/haste" = true
-		"icraft:origin/fallen-angel/immunity" = true
-		"icraft:origin/fallen-angel/roof" = true
-		"icraft:origin/fallen-angel/translucent" = true
-		"icraft:origin/fallen-angel/velocity" = true
-		"icraft:race/fallen_angel/slow_fall" = true
-		"icraft:race/fallen_angel/damage_bonus" = true
-		"icraft:race/fallen_angel/meat_preference" = true
-
-	[origins."icraft:witch_of_ink"]
-		enabled = true
-		"icraft:origin/witch-of-ink/art_affinity" = true
-		"icraft:origin/witch-of-ink/artistry" = true
-		"icraft:origin/witch-of-ink/aura" = true
-		"icraft:origin/witch-of-ink/eraser" = true
-		"icraft:origin/witch-of-ink/fired" = true
-		"icraft:origin/witch-of-ink/frail" = true
-		"icraft:origin/witch-of-ink/magic_brush" = true
-		"icraft:origin/witch-of-ink/no_eat" = true
-		"icraft:origin/witch-of-ink/no_invisibility" = true
-		"icraft:origin/witch-of-ink/painted_armor" = true
-		"icraft:origin/witch-of-ink/reanimate" = true
-		"icraft:origin/witch-of-ink/witchy" = true
-
-	[origins."icraft:demi_god"]
-		enabled = true
-		"icraft:origin/demi-god/cursed" = true
-		"icraft:origin/demi-god/fire" = true
-		"icraft:origin/demi-god/god_punch" = true
-		"icraft:origin/demi-god/god_speed" = true
-		"icraft:origin/demi-god/health" = true
-		"icraft:origin/demi-god/phase" = true
-		"icraft:origin/demi-god/raw_meat_buff" = true
 
