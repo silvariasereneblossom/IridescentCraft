@@ -85,75 +85,133 @@ if ($remoteSha -eq $localSha) {
     exit 0
 }
 
-# -- Step 3: Download and overlay new files --
-if ($localSha) {
-    Write-Host "[IridescentCraft Sync] New commit: $($remoteSha.Substring(0,7)) (was $($localSha.Substring(0,7))). Downloading..." -ForegroundColor Cyan
-} else {
-    Write-Host "[IridescentCraft Sync] First sync. Downloading $($remoteSha.Substring(0,7))..." -ForegroundColor Cyan
+# -- Step 3: Diff-based sync or full zip fallback --
+$owner = 'silvariasereneblossom'
+$repo = 'IridescentCraft'
+$prefix = 'minecraft/'
+$exclude = @('world', 'logs', 'crash-reports', 'backups', 'libraries', '.cache', 'TesterLogs', 'journeymap')
+$overlayDirs = @('config', 'kubejs', 'global_packs', 'datapack_sources', 'defaultconfigs', 'patchouli_books', 'resourcepacks', 'shaderpacks')
+$mirrorList = @()
+
+$useDiff = $false
+if ($localSha -and $localSha.Length -eq 40) {
+    try {
+        $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
+        $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
+        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -le 300) {
+            $useDiff = $true
+            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed ($($localSha.Substring(0,7)) -> $($remoteSha.Substring(0,7)))" -ForegroundColor Cyan
+        } elseif ($compare.files -and $compare.files.Count -gt 300) {
+            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed (>300) — full download." -ForegroundColor Yellow
+        }
+    } catch {
+        Write-Host "[IridescentCraft Sync] Compare API failed — full download." -ForegroundColor Yellow
+    }
 }
 
-$zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip'
-$zipFile = Join-Path $env:TEMP 'IridescentCraft-client-sync.zip'
-$extractDir = Join-Path $env:TEMP 'IridescentCraft-client-sync-extract'
+if ($useDiff) {
+    # -- Fast path: download only changed files --
+    $rawBase = "https://raw.githubusercontent.com/$owner/$repo/$remoteSha"
+    $synced = 0; $removed = 0
 
-try {
-    Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 60
-    if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) {
-        throw 'Download too small or failed'
-    }
+    foreach ($file in $compare.files) {
+        if (-not $file.filename.StartsWith($prefix)) { continue }
+        $relPath = $file.filename.Substring($prefix.Length)
 
-    if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
-    Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force
+        # Skip excluded dirs
+        $skip = $false
+        foreach ($ex in $exclude) {
+            if ($relPath.StartsWith("$ex/")) { $skip = $true; break }
+        }
+        if ($skip) { continue }
 
-    $srcRoot = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName
-    $src = Join-Path $srcRoot 'minecraft'
+        # Skip non-overlay paths (only sync dirs we care about + mods)
+        $inOverlay = $false
+        foreach ($dir in ($overlayDirs + @('mods'))) {
+            if ($relPath.StartsWith("$dir/") -or $relPath -eq $dir) { $inOverlay = $true; break }
+        }
+        # Also allow top-level files like sync_client.ps1
+        if (-not $inOverlay -and $relPath.Contains('/')) { continue }
 
-    if (-not (Test-Path $src)) {
-        throw "Expected minecraft/ folder not found in downloaded archive"
-    }
+        $target = Join-Path $instanceMC $relPath
 
-    # Overlay non-runtime directories onto the instance
-    $overlayDirs = @('config', 'kubejs', 'global_packs', 'datapack_sources', 'defaultconfigs', 'patchouli_books', 'resourcepacks', 'shaderpacks')
-    $mirrorList = @()
-    foreach ($dir in $overlayDirs) {
-        $srcDir = Join-Path $src $dir
-        if (Test-Path $srcDir) {
-            $destDir = Join-Path $instanceMC $dir
-            Copy-Item -Path $srcDir -Destination $instanceMC -Recurse -Force
-            $mirrorList += $dir
+        if ($file.status -eq 'removed') {
+            if (Test-Path $target) { Remove-Item $target -Force -ErrorAction SilentlyContinue; $removed++ }
+            continue
+        }
+
+        try {
+            $targetDir = Split-Path $target -Parent
+            if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
+            Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $target -UseBasicParsing -TimeoutSec 30
+            $synced++
+        } catch {
+            Write-Host "[IridescentCraft Sync]   [FAIL] $relPath" -ForegroundColor Red
         }
     }
 
-    # Sync custom mod JARs (bundled JARs not managed by packwiz — iridescent_codex_data,
-    # iridescent_origins, mek_walkable_cables, offlineskins, zeta_racefix)
-    $srcMods = Join-Path $src 'mods'
-    $destMods = Join-Path $instanceMC 'mods'
-    if (Test-Path $srcMods) {
-        $customCopied = 0
-        Get-ChildItem $srcMods -Filter '*.jar' -ErrorAction SilentlyContinue | ForEach-Object {
-            $target = Join-Path $destMods $_.Name
-            if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {
-                Copy-Item $_.FullName $target -Force
-                $customCopied++
-                Write-Host "[IridescentCraft Sync]   Custom JAR: $($_.Name)" -ForegroundColor Yellow
+    Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
+    $mirrorList += "$synced file(s) synced"
+    if ($removed -gt 0) { $mirrorList += "$removed removed" }
+    Write-Host "[IridescentCraft Sync] Diff sync complete: $($mirrorList -join ', ')" -ForegroundColor Green
+} else {
+    # -- Slow fallback: full zip download --
+    if (-not $localSha) {
+        Write-Host "[IridescentCraft Sync] First sync. Downloading $($remoteSha.Substring(0,7))..." -ForegroundColor Cyan
+    } else {
+        Write-Host "[IridescentCraft Sync] Downloading $($remoteSha.Substring(0,7))..." -ForegroundColor Cyan
+    }
+
+    $zipUrl = "https://github.com/$owner/$repo/archive/refs/heads/main.zip"
+    $zipFile = Join-Path $env:TEMP 'IridescentCraft-client-sync.zip'
+    $extractDir = Join-Path $env:TEMP 'IridescentCraft-client-sync-extract'
+
+    try {
+        Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 120
+        if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) {
+            throw 'Download too small or failed'
+        }
+
+        if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
+        Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force
+
+        $srcRoot = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName
+        $src = Join-Path $srcRoot 'minecraft'
+        if (-not (Test-Path $src)) { throw "Expected minecraft/ folder not found in archive" }
+
+        foreach ($dir in $overlayDirs) {
+            $srcDir = Join-Path $src $dir
+            if (Test-Path $srcDir) {
+                Copy-Item -Path $srcDir -Destination $instanceMC -Recurse -Force
+                $mirrorList += $dir
             }
         }
-        if ($customCopied -gt 0) { $mirrorList += "mods/$customCopied custom JARs" }
-    }
 
-    # Sync mods/.index (metadata only — actual JARs handled by download_mods.ps1 below)
-    $srcIndex = Join-Path $src 'mods\.index'
-    $destIndex = Join-Path $instanceMC 'mods\.index'
-    if (Test-Path $srcIndex) {
-        if (-not (Test-Path $destIndex)) { New-Item -ItemType Directory -Path $destIndex -Force | Out-Null }
-        # Mirror: remove stale .pw.toml files, then copy current
-        Get-ChildItem "$destIndex\*.pw.toml" -ErrorAction SilentlyContinue | ForEach-Object {
-            $srcFile = Join-Path $srcIndex $_.Name
-            if (-not (Test-Path $srcFile)) { Remove-Item $_.FullName -Force }
+        # Custom mod JARs
+        $srcMods = Join-Path $src 'mods'
+        $destMods = Join-Path $instanceMC 'mods'
+        if (Test-Path $srcMods) {
+            Get-ChildItem $srcMods -Filter '*.jar' -ErrorAction SilentlyContinue | ForEach-Object {
+                $target = Join-Path $destMods $_.Name
+                if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {
+                    Copy-Item $_.FullName $target -Force
+                    Write-Host "[IridescentCraft Sync]   Custom JAR: $($_.Name)" -ForegroundColor Yellow
+                }
+            }
         }
-        Copy-Item -Path "$srcIndex\*" -Destination $destIndex -Recurse -Force
-        $mirrorList += 'mods/.index'
-    }
+
+        # mods/.index
+        $srcIndex = Join-Path $src 'mods\.index'
+        $destIndex = Join-Path $instanceMC 'mods\.index'
+        if (Test-Path $srcIndex) {
+            if (-not (Test-Path $destIndex)) { New-Item -ItemType Directory -Path $destIndex -Force | Out-Null }
+            Get-ChildItem "$destIndex\*.pw.toml" -ErrorAction SilentlyContinue | ForEach-Object {
+                $srcFile = Join-Path $srcIndex $_.Name
+                if (-not (Test-Path $srcFile)) { Remove-Item $_.FullName -Force }
+            }
+            Copy-Item -Path "$srcIndex\*" -Destination $destIndex -Recurse -Force
+            $mirrorList += 'mods/.index'
+        }
 
     # Selective top-level files (options.txt only if user hasn't customized)
     foreach ($topFile in @('pack.png', 'icon.png')) {

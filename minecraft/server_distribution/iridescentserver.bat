@@ -67,103 +67,33 @@ powershell -Command ^
 echo.
 
 REM -------------------------------------------------------------------
-REM Phase 0: Self-Update from GitHub
+REM Phase 0: Self-Update from GitHub (diff-based)
 REM -------------------------------------------------------------------
-REM Checks latest commit SHA via GitHub API. If it matches the stored
-REM SHA in .icraft_last_sha, skips the zip download entirely. Otherwise
-REM downloads main.zip, overlays configs/scripts/datapacks/.index, and
-REM records the new SHA.
-REM Preserves: world/, logs/, crash-reports/, backups/, libraries/, mods/*.jar
+REM Uses phase0_sync.ps1 for diff-based updates: compares commit SHAs,
+REM then downloads ONLY the changed files via GitHub compare API +
+REM raw.githubusercontent.com. Typical sync: 5-10 seconds for 3-10 files.
+REM Falls back to full zip download on first run or when >300 files changed.
+REM
+REM If phase0_sync.ps1 doesn't exist yet (first ever deploy), download it
+REM from raw.githubusercontent.com before calling it.
 echo [UPDATE] Checking for updates from GitHub...
-powershell -ExecutionPolicy Bypass -Command ^
-  "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-  "$apiUrl = 'https://api.github.com/repos/silvariasereneblossom/IridescentCraft/commits/main';" ^
-  "$zipUrl = 'https://github.com/silvariasereneblossom/IridescentCraft/archive/refs/heads/main.zip';" ^
-  "$shaFile = Join-Path '%~dp0' '.icraft_last_sha';" ^
-  "$zipFile = $env:TEMP + '\IridescentCraft-server-update.zip';" ^
-  "$extractDir = $env:TEMP + '\IridescentCraft-server-update';" ^
-  "$localSha = '';" ^
-  "if (Test-Path $shaFile) { $localSha = (Get-Content $shaFile -Raw).Trim() };" ^
-  "try {" ^
-  "  $headers = @{ 'User-Agent' = 'IridescentCraft-Server' };" ^
-  "  $resp = Invoke-RestMethod -Uri $apiUrl -Headers $headers -TimeoutSec 15;" ^
-  "  $remoteSha = $resp.sha;" ^
-  "  if ($remoteSha -eq $localSha) {" ^
-  "    Write-Host ('  [OK] Up to date (commit ' + $remoteSha.Substring(0,7) + ').') -ForegroundColor Green;" ^
-  "    exit 0;" ^
-  "  };" ^
-  "  if ($localSha) {" ^
-  "    Write-Host ('  New commit: ' + $remoteSha.Substring(0,7) + ' (was ' + $localSha.Substring(0,7) + '). Downloading...');" ^
-  "  } else {" ^
-  "    Write-Host ('  First run or missing SHA. Downloading ' + $remoteSha.Substring(0,7) + '...');" ^
-  "  };" ^
-  "  Invoke-WebRequest -Uri $zipUrl -OutFile $zipFile -UseBasicParsing -TimeoutSec 60;" ^
-  "  if (-not (Test-Path $zipFile) -or (Get-Item $zipFile).Length -lt 100000) { throw 'Download too small or failed' };" ^
-  "  Write-Host '  Extracting...';" ^
-  "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
-  "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
-  "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\server_distribution';" ^
-  "  $dest = '%~dp0';" ^
-  "  $exclude = @('world','logs','crash-reports','backups','libraries','.cache');" ^
-  "  Write-Host '  Syncing configs, scripts, datapacks...';" ^
-  "  foreach ($item in Get-ChildItem $src) {" ^
-  "    if ($item.PSIsContainer -and $exclude -contains $item.Name) { continue };" ^
-  "    if ($item.Name -eq 'mods') {" ^
-  "      if (-not (Test-Path \"$dest\mods\.index\")) { New-Item -ItemType Directory -Path \"$dest\mods\.index\" -Force | Out-Null };" ^
-  "      Copy-Item \"$($item.FullName)\.index\*\" \"$dest\mods\.index\" -Recurse -Force;" ^
-  "      Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object { Copy-Item $_.FullName \"$dest\mods\" -Force };" ^
-  "    } elseif ($item.Name -eq 'iridescentserver.bat' -or $item.Name -eq 'iridescentserver.sh') {" ^
-  "      $current = Join-Path $dest $item.Name;" ^
-  "      $srcHash = (Get-FileHash $item.FullName -Algorithm SHA1).Hash;" ^
-  "      $destHash = if (Test-Path $current) { (Get-FileHash $current -Algorithm SHA1).Hash } else { '' };" ^
-  "      if ($srcHash -ne $destHash) {" ^
-  "        Copy-Item $item.FullName ($current + '.new') -Force;" ^
-  "        Write-Host ('  [update] Staged new ' + $item.Name + ' for post-Phase 0 swap') -ForegroundColor Cyan" ^
-  "      };" ^
-  "      continue;" ^
-  "    } else {" ^
-  "      Copy-Item $item.FullName $dest -Recurse -Force;" ^
-  "    }" ^
-  "  };" ^
-  "  $paxiSrc = Join-Path $src 'config\paxi\datapacks';" ^
-  "  $paxiDest = Join-Path $dest 'config\paxi\datapacks';" ^
-  "  if ((Test-Path $paxiSrc) -and (Test-Path $paxiDest)) {" ^
-  "    Write-Host '  Verifying paxi datapacks...';" ^
-  "    $paxiCopied = 0;" ^
-  "    Get-ChildItem $paxiSrc -Filter '*.zip' | ForEach-Object {" ^
-  "      $target = Join-Path $paxiDest $_.Name;" ^
-  "      if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {" ^
-  "        Copy-Item $_.FullName $target -Force;" ^
-  "        $paxiCopied++;" ^
-  "        Write-Host ('    [sync] ' + $_.Name)" ^
-  "      }" ^
-  "    };" ^
-  "    $paxiOrder = Join-Path $src 'config\paxi\datapack_load_order.json';" ^
-  "    if (Test-Path $paxiOrder) { Copy-Item $paxiOrder (Join-Path $dest 'config\paxi\datapack_load_order.json') -Force };" ^
-  "    if ($paxiCopied -gt 0) { Write-Host ('    [sync] ' + $paxiCopied + ' paxi datapack(s) force-copied') -ForegroundColor Yellow }" ^
-  "  };" ^
-  "  Write-Host '  Verifying custom mod JARs...';" ^
-  "  $modsSrc = Join-Path $src 'mods';" ^
-  "  $modsDest = Join-Path $dest 'mods';" ^
-  "  if (Test-Path $modsSrc) {" ^
-  "    Get-ChildItem $modsSrc -Filter '*.jar' | ForEach-Object {" ^
-  "      $target = Join-Path $modsDest $_.Name;" ^
-  "      if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {" ^
-  "        Copy-Item $_.FullName $target -Force;" ^
-  "        Write-Host ('    [sync] ' + $_.Name) -ForegroundColor Yellow" ^
-  "      }" ^
-  "    }" ^
-  "  };" ^
-  "  $remoteSha | Out-File -FilePath $shaFile -Encoding ASCII -NoNewline;" ^
-  "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
-  "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
-  "  Write-Host ('  [OK] Updated to ' + $remoteSha.Substring(0,7) + '.') -ForegroundColor Green;" ^
-  "} catch {" ^
-  "  Write-Host ('  [WARN] Update check failed: ' + $_.Exception.Message) -ForegroundColor Yellow;" ^
-  "  Write-Host '  Continuing with existing files...' -ForegroundColor Yellow;" ^
-  "  Remove-Item $zipFile -Force -ErrorAction SilentlyContinue;" ^
-  "  Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue;" ^
-  "}"
+
+if not exist "%~dp0phase0_sync.ps1" (
+    echo   [SETUP] Downloading sync script...
+    powershell -ExecutionPolicy Bypass -Command ^
+        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+        "try {" ^
+        "  Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/server_distribution/phase0_sync.ps1' -OutFile '%~dp0phase0_sync.ps1' -UseBasicParsing -TimeoutSec 30" ^
+        "} catch {" ^
+        "  Write-Host ('  [WARN] Could not download sync script: ' + $_.Exception.Message) -ForegroundColor Yellow" ^
+        "}"
+)
+
+if exist "%~dp0phase0_sync.ps1" (
+    powershell -ExecutionPolicy Bypass -File "%~dp0phase0_sync.ps1" -ServerDir "%~dp0"
+) else (
+    echo   [WARN] phase0_sync.ps1 not found. Skipping update check.
+)
 echo.
 
 REM -------------------------------------------------------------------
@@ -177,13 +107,20 @@ REM Safety: cmd.exe holds the current .bat open with FILE_SHARE_DELETE
 REM (Win10+), so Move-Item can rename-over the running file. After
 REM exit /b here, cmd.exe releases the handle; the freshly-launched
 REM cmd reads the NEW bat content from disk.
-if exist "%~dp0iridescentserver.bat.new" (
+REM Check for staged self-updates (.new files) from Phase 0
+set "NEED_RELAUNCH=0"
+for %%F in (iridescentserver.bat phase0_sync.ps1) do (
+    if exist "%~dp0%%F.new" (
+        echo   Applying staged update: %%F
+        powershell -ExecutionPolicy Bypass -Command "Move-Item -LiteralPath '%~dp0%%F.new' -Destination '%~dp0%%F' -Force"
+        set "NEED_RELAUNCH=1"
+    )
+)
+if "%NEED_RELAUNCH%"=="1" (
     echo.
-    echo [UPDATE] New iridescentserver.bat staged. Applying and relaunching...
+    echo [UPDATE] Self-update applied. Relaunching...
     echo.
-    powershell -ExecutionPolicy Bypass -Command ^
-        "Move-Item -LiteralPath '%~dp0iridescentserver.bat.new' -Destination '%~dp0iridescentserver.bat' -Force;" ^
-        "Start-Process -FilePath '%~dp0iridescentserver.bat' -WorkingDirectory '%~dp0'"
+    start "" "%~dp0iridescentserver.bat"
     exit /b 0
 )
 
