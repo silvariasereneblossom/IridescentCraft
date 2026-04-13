@@ -1,0 +1,12 @@
+{
+  "name": "Wanderer",
+  "icon": "minecraft:compass",
+  "category": "icraft:classes",
+  "sortnum": 30,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)A jack of all trades. The more you explore, the stronger you become.$()$(br2)HP: +5% | Equip HP: Full$(br2)$(bold)Jack of All Trades$() — +5% attack, speed, and attack speed.$(br)$(bold)Wanderlust$() — +10% XP gain.$(br)$(bold)Seasoned Traveler$() — Each new dimension grants $(item)+5% XP$() and $(item)+2.5% speed$() permanently.$(br2)With 10+ dimensions: up to $(item)+55% XP$() and $(item)+27.5% speed$(). Weak early, dominant late.$(br2)$(bold)Best races:$() $(thing)Human$() (fastest leveling), $(thing)Halfling$() (luck + exploration), $(thing)Kirin$() (absurd speed)"
+    }
+  ]
+}

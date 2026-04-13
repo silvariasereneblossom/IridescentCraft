@@ -1,0 +1,13 @@
+{
+  "name": "Mahou Tsukai",
+  "icon": "mahou_tsukai:mahou_book",
+  "category": "icraft:mods_t4",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Mahou Tsukai is the $(t4)T4$() magic system - body enhancement magic that integrates deeply with the class system.$(br2)$(bold)Role in the pack:$() Mahou Tsukai's spell system is the endgame magic path for $(thing)Archmage$() and $(thing)Battlemage$(). Enhancement magic (buffing self and others) and blade techniques (melee empowerment) are the primary systems.$(br2)$(bold)Initiation:$() Mahou Tsukai requires a $(item)Gaia Spirit Fragment$() (Botania Gaia Guardian drop) for initiation. This is the bridge between $(t3)T3$() and $(t4)T4$() magic.$(br2)$(bold)Class synergy:$() Archmage's Arcane Mastery stacks with Mahou Tsukai's magic power system. The interaction at $(t4)T4$() Archmage + Mahou Tsukai investment is among the highest raw damage outputs in the pack.$(br2)Craft the $(bold)Mahou Tsukai Guidebook$() for the full reference - magic circle construction, spell research, and the Mahou stat system."
+    }
+  ],
+  "advancement": "icraft:stage_tier_4"
+}

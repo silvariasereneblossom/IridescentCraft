@@ -1,0 +1,13 @@
+{
+  "unlocked_by_default": true,
+  "title": {
+    "text": "Sorcery"
+  },
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "minecraft:enchanted_book"
+    }
+  },
+  "background": "minecraft:textures/block/obsidian.png"
+}

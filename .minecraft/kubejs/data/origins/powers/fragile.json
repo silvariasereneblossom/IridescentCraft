@@ -1,0 +1,11 @@
+{
+  "type": "origins:attribute",
+  "modifier": {
+    "attribute": "minecraft:generic.max_health",
+    "value": -0.50,
+    "operation": "multiply_base",
+    "name": "Phantom Fragility"
+  },
+  "name": "Spectral Form",
+  "description": "Your half-phantom nature leaves you with only half the health of a normal being."
+}

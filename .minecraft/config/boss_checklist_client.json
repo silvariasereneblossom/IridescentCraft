@@ -1,0 +1,11 @@
+{
+  "progressionMode": false,
+  "progressionModePlus": false,
+  "animationsEnabled": true,
+  "showConfigScreen": true,
+  "openButtonEnabled": true,
+  "searchBarEnabled": false,
+  "progressBarEnabled": true,
+  "statisticsTabEnabled": true,
+  "openButtonYOffset": 0
+}

@@ -1,0 +1,37 @@
+
+[debug]
+
+	[debug.overlay]
+		#Enable debug overlay
+		show = false
+		#Position of the debug overlay
+		#Allowed Values: TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT
+		anchor = "TOP_RIGHT"
+		#Overlay text size. 1 = standard-sized text
+		#Range: 0.01 ~ 1.7976931348623157E308
+		textscale = 0.75
+
+[metabolism]
+
+	[metabolism.overlay]
+		#Make the metabolism hud visible
+		show = true
+		#Position of the metabolism hud
+		#Allowed Values: TOP_LEFT, TOP_CENTER, TOP_RIGHT, CENTER_LEFT, CENTER, CENTER_RIGHT, BOTTOM_LEFT, BOTTOM_CENTER, BOTTOM_RIGHT
+		anchor = "BOTTOM_LEFT"
+		#Fine-tune the metabolism hud position
+		#Range: > -2147483648
+		offsetX = 0
+		#Fine-tune the metabolism hud position
+		#Range: > -2147483648
+		offsetY = 0
+		#Display scale of the metabolism hud text
+		#Range: 0.0 ~ 1.7976931348623157E308
+		textscale = 0.6
+
+[tooltip]
+	#Show metabolite tooltips
+	show = true
+	#Always show metabolite tooltips
+	always = true
+

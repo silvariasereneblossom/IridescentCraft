@@ -1,0 +1,12 @@
+{
+  "name": "Enderian",
+  "icon": "minecraft:ender_pearl",
+  "category": "icraft:classes",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Children of the Ender Dragon, Enderians slip between spaces with a thought.$()$(br2)$(bold)Origin Traits:$()$(br2)$(bold)Ender Shift$() — $(item)Teleport forward on a 60-second cooldown$(), or throw an ender pearl. After teleporting, deal $(item)+15% damage for 10 seconds$().$(br2)$(bold)Water Discomfort$() — $(warn)Contact with water drains your strength.$()"
+    }
+  ]
+}

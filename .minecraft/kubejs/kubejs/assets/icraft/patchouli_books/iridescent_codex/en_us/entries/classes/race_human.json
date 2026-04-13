@@ -1,0 +1,12 @@
+{
+  "name": "Human",
+  "icon": "minecraft:player_head",
+  "category": "icraft:classes",
+  "sortnum": 15,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Versatile and quick to learn. No innate strengths or weaknesses — their power lies in adaptability.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Quick Learner$() — $(item)+10% XP gain from all sources$(). Compounds significantly over long play sessions.$(br2)$(bold)Versatile$() — No special abilities, no weaknesses. Pairs well with any class.$(br2)$(italic)The safest pick. When in doubt, choose Human and let your Class define you.$()"
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Terramity",
+  "icon": "terramity:terramity_guidebook",
+  "category": "icraft:mods_t1",
+  "sortnum": 10,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Terramity adds atmospheric world generation features — terrain details, cave enhancements, and environmental variety throughout the overworld.$(br2)$(bold)Role in the pack:$() Background world enrichment. Terramity works passively — its additions appear naturally as you explore. No active systems to manage.$(br2)$(bold)Exploration tip:$() Terramity features appear in all biomes but are most visible in caves and cliff faces. Keep an eye out for new stone formations and cave decorations.$(br2)Craft the $(bold)Terramity Guidebook$() for the full reference — all added features, biome interactions, and configuration notes."
+    }
+  ]
+}

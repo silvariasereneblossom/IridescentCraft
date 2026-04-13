@@ -1,0 +1,13 @@
+{
+  "name": "Tier 2 Bosses",
+  "icon": "minecraft:diamond",
+  "category": "icraft:bosses",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(t2)Tier 2$() bosses live in Twilight Forest, Blue Skies, and The Aether. First Simply Swords uniques drop here. Prepare full steel or manasteel.$(br2)$(bold)Twilight Forest:$() Naga (Tempest), Lich (Soulrender), Hydra (Emberblade), Ur-Ghast (Whisperwind 20%), Knight Phantom (Enigma), Snow Queen (Frostfall), Alpha Yeti (Icewhisper).$(br2)$(bold)Blue Skies:$() Summoner, Alchemist, Starlit Crusher, Arachnarch - each drops a unique.$(br2)$(bold)Aether:$() Slider, Valkyrie Queen, Sun Spirit - each drops a unique."
+    }
+  ],
+  "advancement": "icraft:stage_tier_2"
+}

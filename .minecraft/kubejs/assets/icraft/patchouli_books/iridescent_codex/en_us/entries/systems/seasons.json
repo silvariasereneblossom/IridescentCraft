@@ -1,0 +1,12 @@
+{
+  "name": "Seasonal Farming",
+  "icon": "sereneseasons:season_calendar",
+  "category": "icraft:systems",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Serene Seasons adds a seasonal cycle to the Overworld affecting crop growth.$(br2)$(bold)Seasons:$() $(#0a0)Spring$() (normal growth), $(#ff0)Summer$() (peak growth), $(#f80)Autumn$() (slow growth), $(#88f)Winter$() (outdoor crops die).$(br2)$(bold)Winter:$() Most outdoor crops fail and break. Some crops are winter-hardy. Plan harvests before autumn ends.$(br2)$(bold)Year-Round Farming:$() Thermal Phytogenic Insolator (T2 machine, uses RF, ignores seasons) or underground farms (partial protection).$(br2)$(bold)Tip:$() Craft a Season Calendar to track the cycle. Stockpile food in Spring/Summer."
+    }
+  ]
+}

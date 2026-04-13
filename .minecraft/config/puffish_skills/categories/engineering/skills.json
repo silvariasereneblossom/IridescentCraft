@@ -1,0 +1,143 @@
+{
+  "quick_hands_1": {
+    "x": 0,
+    "y": 0,
+    "definition": "quick_hands_1",
+    "root": true
+  },
+  "quick_hands_2": {
+    "x": 0,
+    "y": 56,
+    "definition": "quick_hands_2"
+  },
+  "resource_saver_1": {
+    "x": 0,
+    "y": 112,
+    "definition": "resource_saver_1"
+  },
+  "resource_saver_2": {
+    "x": 0,
+    "y": 168,
+    "definition": "resource_saver_2"
+  },
+  "machine_eff_1": {
+    "x": 0,
+    "y": 224,
+    "definition": "machine_eff_1"
+  },
+  "machine_eff_2": {
+    "x": 0,
+    "y": 280,
+    "definition": "machine_eff_2"
+  },
+  "tool_care_1": {
+    "x": 0,
+    "y": 336,
+    "definition": "tool_care_1"
+  },
+  "tool_care_2": {
+    "x": 0,
+    "y": 392,
+    "definition": "tool_care_2"
+  },
+  "master_touch_1": {
+    "x": -56,
+    "y": 448,
+    "definition": "master_touch_1"
+  },
+  "ench_insight_1": {
+    "x": -56,
+    "y": 504,
+    "definition": "ench_insight_1"
+  },
+  "master_touch_2": {
+    "x": -56,
+    "y": 560,
+    "definition": "master_touch_2"
+  },
+  "repair_master_1": {
+    "x": -56,
+    "y": 616,
+    "definition": "repair_master_1"
+  },
+  "ench_insight_2": {
+    "x": -56,
+    "y": 672,
+    "definition": "ench_insight_2"
+  },
+  "master_touch_3": {
+    "x": -56,
+    "y": 728,
+    "definition": "master_touch_3"
+  },
+  "repair_master_2": {
+    "x": -56,
+    "y": 784,
+    "definition": "repair_master_2"
+  },
+  "ench_insight_3": {
+    "x": -56,
+    "y": 840,
+    "definition": "ench_insight_3"
+  },
+  "master_touch_4": {
+    "x": -56,
+    "y": 896,
+    "definition": "master_touch_4"
+  },
+  "grand_artificer": {
+    "x": -56,
+    "y": 952,
+    "definition": "grand_artificer"
+  },
+  "overclock_1": {
+    "x": 56,
+    "y": 448,
+    "definition": "overclock_1"
+  },
+  "power_surge_1": {
+    "x": 56,
+    "y": 504,
+    "definition": "power_surge_1"
+  },
+  "overclock_2": {
+    "x": 56,
+    "y": 560,
+    "definition": "overclock_2"
+  },
+  "fuel_eff_1": {
+    "x": 56,
+    "y": 616,
+    "definition": "fuel_eff_1"
+  },
+  "power_surge_2": {
+    "x": 56,
+    "y": 672,
+    "definition": "power_surge_2"
+  },
+  "overclock_3": {
+    "x": 56,
+    "y": 728,
+    "definition": "overclock_3"
+  },
+  "fuel_eff_2": {
+    "x": 56,
+    "y": 784,
+    "definition": "fuel_eff_2"
+  },
+  "power_surge_3": {
+    "x": 56,
+    "y": 840,
+    "definition": "power_surge_3"
+  },
+  "overclock_4": {
+    "x": 56,
+    "y": 896,
+    "definition": "overclock_4"
+  },
+  "master_engineer": {
+    "x": 56,
+    "y": 952,
+    "definition": "master_engineer"
+  }
+}

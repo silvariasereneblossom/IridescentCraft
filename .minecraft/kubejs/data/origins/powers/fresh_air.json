@@ -1,0 +1,16 @@
+{
+  "type": "origins:multiple",
+  "name": "Sky Affinity",
+  "description": "You feel at home in open skies. At high altitudes, you gain speed and agility.",
+  "tag_on_gain": {
+    "type": "origins:action_on_callback",
+    "entity_action_added": {
+      "type": "origins:execute_command",
+      "command": "tag @s add icraft_avian"
+    },
+    "entity_action_removed": {
+      "type": "origins:execute_command",
+      "command": "tag @s remove icraft_avian"
+    }
+  }
+}

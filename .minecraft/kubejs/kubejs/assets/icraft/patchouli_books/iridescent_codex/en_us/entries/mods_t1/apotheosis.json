@@ -1,0 +1,12 @@
+{
+  "name": "Apotheosis",
+  "icon": "apotheosis:infusion_table",
+  "category": "icraft:mods_t1",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Apotheosis overhauled enchanting, spawners, potions, and village trades. It is active from $(t1)Tier 1$().$(br2)$(bold)Enchanting overhaul:$() All enchanted books removed from structure loot. Bookshelf tiers determine your enchantment pool. The 'Too Expensive' anvil cap is removed.$(br2)$(bold)Gem sockets:$() Affix items have gem sockets. Gems scale from Flawed (T1) to Perfect (T4). The Gem Cutting Table is T2-gated.$(br2)$(bold)Affix system:$() Random stat rolls on weapons and armor from Common (T1) to Mythic (endgame). Reforging Station lets you reroll affixes using tokens.$(br2)$(bold)Spawner overhaul:$() Apotheosis spawners can be modified with upgrades (speed, range, spawn caps). Farming spawners is a valid progression strategy.$(br2)Craft the $(bold)Chronicle of Shadows$() for the full Apotheosis reference - enchantment mechanics, affix system, gem socketing, boss spawners, and the Adventure module.$(br2)Craft the $(bold)Apoth Chronicle$() for the full Apotheosis reference - enchantment library, gem socketing, boss spawners, village overhaul, and the adventure module."
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Your First Hour",
+  "icon": "minecraft:iron_sword",
+  "category": "icraft:welcome",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)What To Do First$()$(br)$(li)$(bold)Select Race and Class.$() See Classes & Races chapter.$(li)$(bold)Open FTB Quests.$() Welcome chapter gives 3 free skill points.$(li)$(bold)Find food.$() Diverse food gives max HP bonuses via Spice of Life.$(li)$(bold)Explore structures.$() T1 token fragments drop from Overworld dungeon chests. Collect 5 for a full token.$(br2)$(bold)What To Ignore For Now$()$(br)$(li)Nether — $(t3)Tier 3$()$(li)The End — $(t4)Tier 4$()$(li)Twilight Forest — $(t2)Tier 2$()$(li)Refined Storage — $(t3)Tier 3$()$(li)Mekanism — $(t3)Tier 3$()-$(t4)4$()$(br2)$(bold)Waystones$() generate naturally — free fast-travel. Activate to register permanently."
+    }
+  ]
+}

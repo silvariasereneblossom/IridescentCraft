@@ -1,0 +1,35 @@
+
+["1 - General"]
+	#Sets which profile Appetite should use to tweak the hunger system (profile files are located in config/appetite). 
+	#Set this to CUSTOM and edit the custom-profile.toml to adapt each aspect to your preferences.
+	#Allowed Values: PECKISH, HUNGRY, STARVING, CUSTOM
+	profileToUse = "HUNGRY"
+	#Enables appetite to cause exhaustion defined by the choosed profile. Can be used to disable Appetite temporary without uninstalling it.
+	enablesRules = true
+	#Sets the dimensions (ids) in which Appetite rules should be disabled, for example: ["minecraft:the_nether", "minecraft:the_end"])
+	dimensionBlacklist = []
+	#Enables extended mod logging - only used for trouble shooting
+	enableExtendedLogging = false
+	#Decreases saturation or food bar value by 1 after the specified amount of ticks. Setting this to 0 disable this feature.
+	#When setting this value keep in mind that this will add on the exhaustion of all active rules of the selected Appetite profile.
+	#This option will still apply if enablesRules is disabled.
+	#This configuration can be helpful if all players should get a minimum amount of exhaustion every time period regardless what they are actually doing (this will add on vanilla exhaustion).
+	#If you want that players looses one hunger bar value per day set it to 24000.
+	#If players should looses the whole hunger bar on a day set it to 2400.
+	#Range: 0 ~ 96000
+	generalExhaustionAfterTicks = 0
+
+["2 - Frozen Appetite"]
+	#Specifies whether the 'Frozen Appetite' effect can be caused by events. This effect freezes the player's hunger for the intended amount of time
+	#Thereby the hunger and exhaustion value will not drop at all for the whole time of this effect.
+	#If this option is disabled the homonymous potion and froozen food will only cause a negative effect after the amount of frozenAppetitePerDay.
+	enableFrozenAppetite = true
+	#Sets the amount of frozen food items and potions of 'Frozen Appetite' a player can consume per day before they cause a negative effect instead of the wanted one.
+	#Range: 1 ~ 10
+	frozenAppetitePerDay = 3
+	#Determines whether dropped fish should freeze in cold biomes and melt in warm biomes.
+	enableFishFreezing = true
+	#Specifies the amount of ticks a dropped fish item will freeze or a dropped frozen food item will melt and will transform into the other one.
+	#Range: 200 ~ 6000
+	ticksToFreezeOrMelt = 1200
+

@@ -1,0 +1,12 @@
+{
+  "name": "Welcome to IridescentCraft",
+  "icon": "minecraft:book",
+  "category": "icraft:welcome",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)IridescentCraft$() is a progression-focused, expert-lite modpack for 1.20.1 Forge. $(bold)You become absurdly powerful — but the world scales harder.$()$(br2)$(bold)Design Pillars$()$(br)$(li)Open early game. Progressive gates. Earned power.$(li)Every gate solvable via tech, magic, or hybrid.$(li)Bosses are the pinnacle. Best weapons drop from them.$(li)Dying is a cost, not a catastrophe.$(li)Play your way.$(br2)Diamonds are not in Overworld chests. Nether is $(t3)T3$(). End is $(t4)T4$(). Mobs scale by dimension with different abilities.$(br2)$(bold)First Steps:$() Open FTB Quests, select Race and Class, open Skills menu ($(bold)K$()), find a waystone."
+    }
+  ]
+}

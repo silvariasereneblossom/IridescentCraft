@@ -1,0 +1,13 @@
+{
+  "name": "Twilight Forest",
+  "icon": "twilightforest:magic_map",
+  "category": "icraft:mods_t2",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "The Twilight Forest is the primary $(t2)T2$() adventure dimension. Bosses, structures, and the first Simply Swords uniques.$(br2)$(bold)Role in the pack:$() Twilight Forest is the most content-dense $(t2)T2$() dimension. Seven bosses with unique weapons, a full progression path through the forest, and some of the best $(t2)T2$() loot tables.$(br2)$(bold)Boss order:$() The forest has an internal progression. You cannot reach late zones without defeating earlier bosses. Follow the magic map or FTB Quests for the intended order.$(br2)$(bold)IridescentCraft notes:$() Twilight structure chests have had diamonds removed. Tokens and $(t2)T2$() materials replace them. The forest's original loot has been preserved otherwise - Steeleaf and Ironwood armor are valid $(t2)T2$() gear choices.$(br2)$(bold)Twilight materials:$() Steeleaf, Ironwood, Fiery, Knightmetal are all valid $(t2)T2$() gear materials.$(br2)$(bold)No guide book.$() Twilight Forest is largely self-guided - each biome leads naturally to the next boss. The $(bold)Magic Map$() (crafted from a map + 4 diamonds) reveals the full dimension layout and boss locations."
+    }
+  ],
+  "advancement": "icraft:stage_tier_2"
+}

@@ -1,0 +1,31 @@
+
+#.
+#Settings which are more fun and not fit for survival
+[minigame]
+	#.
+	#Enable/Disable all minigame settings
+	minigameEnabled = false
+	#.
+	#Gives you permanent, unremovable Girl Power Effect
+	permaDash = true
+	#.
+	#The level of Girl Power Effect when Perma-Dash is enabled
+	#Range: 0 ~ 255
+	permaDashAmount = 0
+
+#.
+#Settings for the durations of effects
+[durations]
+	#.
+	#How long does Girl Power from the Estrogen Pill last in ticks
+	#Range: 0 ~ 100000
+	estrogenPillDuration = 6000
+	#.
+	#How long does Girl Power from the Crystal Estrogen Pill last in ticks
+	#Range: 0 ~ 100000
+	crystalEstrogenPillDuration = 6000
+	#.
+	#How long does Girl Power from the Crystal Estrogen Pill last in ticks
+	#Range: 0 ~ 100000
+	estrogenChipCookieDuration = 6000
+

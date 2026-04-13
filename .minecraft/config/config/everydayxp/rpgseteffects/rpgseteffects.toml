@@ -1,0 +1,20 @@
+
+[gui]
+	#Show the 'Sets' button in the inventory screen.
+	showInventoryButton = true
+
+[elite_mobs]
+	#Display boss bar for elite mobs on screen.
+	showBossBar = true
+	#List of entity IDs that can never become elite.
+	mobBlacklist = ["minecraft:creeper", "minecraft:slime", "minecraft:magma_cube", "minecraft:phantom", "minecraft:ghast", "minecraft:ender_dragon", "minecraft:wither", "minecraft:warden"]
+	#Chance for elite tier 1 (Elite).
+	#Range: 0.0 ~ 1.0
+	chanceTier1 = 0.02
+	#Chance for elite tier 2 (Master).
+	#Range: 0.0 ~ 1.0
+	chanceTier2 = 0.005
+	#Chance for elite tier 3 (Legendary).
+	#Range: 0.0 ~ 1.0
+	chanceTier3 = 0.001
+

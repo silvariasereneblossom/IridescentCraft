@@ -1,0 +1,20 @@
+# apocalypse:events/call_of_the_shadows.toml
+# This config contains settings related to Apocalypse's 'Call of The Shadows event'.
+
+
+# Category: general
+# General event settings
+
+  # If true, this event is enabled and will trigger if the circumstances are correct. See below settings.
+  # <Boolean> Valid Values: { true, false }, Default: true
+  general.enabled = false
+  # The maximum required block light level for this event to start.
+  # Block light is the light that comes from sources that are not skylight, such as torches or glowstone.
+  # <Integer> Range: 0 ~ 14, Default: 0
+  general.block_light_level = 0
+  # The maximum required sky light level for this event to start.
+  # Sky light is the light that comes from the sky (no way!). Take note that sky light does not decrease if it is
+  #   night, it only decreases when a solid blocks obstruct view to the sky.
+  # <Integer> Range: 0 ~ 14, Default: 0
+  general.sky_light_level = 0
+

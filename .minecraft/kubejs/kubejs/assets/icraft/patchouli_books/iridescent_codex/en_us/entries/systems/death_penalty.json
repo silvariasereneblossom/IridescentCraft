@@ -1,0 +1,12 @@
+{
+  "name": "Death Penalty System",
+  "icon": "minecraft:respawn_anchor",
+  "category": "icraft:systems",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Keep inventory is on.$() Death costs equipment durability based on dimension: Overworld ~10%, T2 ~15%, T3 ~20%, T4 ~25%.$(br2)$(bold)Inert Items:$() At 0 durability, items become inert (no stats/function) but stay in inventory. Repair at anvil or via Mending. Nothing is ever permanently lost.$(br2)$(bold)Soulbound:$() Treasure enchant (structure/boss drops only). Soulbound III = immune to death penalty. I-II reduce loss by 50%/75%.$(br2)$(bold)Wanderer Bonus:$() Survivor passive reduces death durability loss by 25%."
+    }
+  ]
+}

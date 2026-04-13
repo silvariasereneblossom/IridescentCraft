@@ -1,0 +1,12 @@
+{
+  "name": "Battlemage",
+  "icon": "minecraft:blaze_rod",
+  "category": "icraft:classes",
+  "sortnum": 29,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Where sword meets sorcery. Stack magic gear to become deadlier and harder to kill.$()$(br2)HP: +5% | Equip HP: Full$(br2)$(bold)Arcane Strikes$() — +15% melee AND +15% magic damage.$(br)$(bold)Spell Armor$() — +2 bonus armor.$(br)$(bold)Mana Shield$() — DR scaling with magic: Base $(item)Res I$() (20%) / +Faefolk $(item)Res II$() (36%) / +Affixes $(item)Res III$() (48%).$(br2)Stacking magic makes your sword hit harder AND makes you tankier.$(br2)$(bold)Best races:$() $(thing)Faefolk$() (Res II), $(thing)Elf$() (speed+magic), $(thing)Dwarf$() (armor stacking)"
+    }
+  ]
+}

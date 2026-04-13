@@ -1,0 +1,564 @@
+{
+  "steady_aim_1": {
+    "title": "Steady Aim I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_damage",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+5% Ranged Damage"
+  },
+  "steady_aim_2": {
+    "title": "Steady Aim II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_damage",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+5% Ranged Damage"
+  },
+  "quick_hands_1": {
+    "title": "Quick Hands I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+5% Attack Speed"
+  },
+  "quick_hands_2": {
+    "title": "Quick Hands II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.05,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+5% Attack Speed"
+  },
+  "hawk_eye_1": {
+    "title": "Hawk Eye I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_accuracy 3"
+        }
+      }
+    ],
+    "description": "Increased ranged damage"
+  },
+  "hawk_eye_2": {
+    "title": "Hawk Eye II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_accuracy 3"
+        }
+      }
+    ],
+    "description": "Increased ranged damage"
+  },
+  "nimble_1": {
+    "title": "Nimble I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.movement_speed",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+4% Movement Speed"
+  },
+  "nimble_2": {
+    "title": "Nimble II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.movement_speed",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+4% Movement Speed"
+  },
+  "steady_shot_1": {
+    "title": "Steady Shot I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_damage",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+6% Ranged Damage"
+  },
+  "penetration_1": {
+    "title": "Penetration I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_resistance_shred",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+4% Ranged Armor Penetration"
+  },
+  "steady_shot_2": {
+    "title": "Steady Shot II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+8% Ranged Damage"
+  },
+  "kill_shot_1": {
+    "title": "Kill Shot I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_execute_damage 10"
+        }
+      }
+    ],
+    "description": "Bonus damage to low HP targets"
+  },
+  "penetration_2": {
+    "title": "Penetration II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_resistance_shred",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+4% Ranged Armor Penetration"
+  },
+  "steady_shot_3": {
+    "title": "Steady Shot III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_damage",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+8% Ranged Damage"
+  },
+  "kill_shot_2": {
+    "title": "Kill Shot II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_execute_damage 10"
+        }
+      }
+    ],
+    "description": "Bonus damage to low HP targets"
+  },
+  "penetration_3": {
+    "title": "Penetration III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_resistance_shred",
+          "value": 0.04,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+4% Ranged Armor Penetration"
+  },
+  "steady_shot_4": {
+    "title": "Steady Shot IV",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_damage",
+          "value": 0.1,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+10% Ranged Damage"
+  },
+  "deadeye": {
+    "title": "Deadeye",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_damage",
+          "value": 0.15,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "puffish_attributes:ranged_resistance_shred",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+15% Ranged Damage, +8% Ranged Armor Penetration"
+  },
+  "rapid_fire_1": {
+    "title": "Rapid Fire I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+6% Attack Speed"
+  },
+  "arrow_conserv_1": {
+    "title": "Arrow Conservation I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_ammo_save 5"
+        }
+      }
+    ],
+    "description": "Chance to save ammo"
+  },
+  "rapid_fire_2": {
+    "title": "Rapid Fire II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.06,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+6% Attack Speed"
+  },
+  "scatter_shot_1": {
+    "title": "Scatter Shot I",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_aoe_splash 5"
+        }
+      }
+    ],
+    "description": "Projectile splash damage"
+  },
+  "arrow_conserv_2": {
+    "title": "Arrow Conservation II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_ammo_save 5"
+        }
+      }
+    ],
+    "description": "Chance to save ammo"
+  },
+  "rapid_fire_3": {
+    "title": "Rapid Fire III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+8% Attack Speed"
+  },
+  "scatter_shot_2": {
+    "title": "Scatter Shot II",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_aoe_splash 5"
+        }
+      }
+    ],
+    "description": "Projectile splash damage"
+  },
+  "arrow_conserv_3": {
+    "title": "Arrow Conservation III",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_ammo_save 5"
+        }
+      }
+    ],
+    "description": "Chance to save ammo"
+  },
+  "rapid_fire_4": {
+    "title": "Rapid Fire IV",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:bow"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.08,
+          "operation": "multiply_base"
+        }
+      }
+    ],
+    "description": "+8% Attack Speed"
+  },
+  "storm_of_arrows": {
+    "title": "Storm of Arrows",
+    "icon": {
+      "type": "item",
+      "data": {
+        "item": "minecraft:nether_star"
+      }
+    },
+    "rewards": [
+      {
+        "type": "puffish_skills:attribute",
+        "data": {
+          "attribute": "minecraft:generic.attack_speed",
+          "value": 0.15,
+          "operation": "multiply_base"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_ammo_save 10"
+        }
+      },
+      {
+        "type": "puffish_skills:command",
+        "data": {
+          "command": "scoreboard players add @s icraft_aoe_splash 10"
+        }
+      }
+    ],
+    "description": "+15% Attack Speed, Chance to save ammo, Projectile splash damage"
+  }
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Boss Materials",
+  "icon": "kubejs:lich_soul",
+  "category": "icraft:loot",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Boss materials are unique drops used in waystone construction, Class Altar crafting, $(t4)T4$() recipes, and mythic infusion. Each boss's material has specific uses.$(br2)$(bold)T2:$() Naga Scale (armor), Lich Soul (necromantic), Hydra Fang (melee enhancement), Ur-Ghast Tear (aerial items).$(br2)$(bold)T3:$() Harbinger Eye, Ignis Core, Nether Soul Fragment, Gaia Spirit Fragment (Mahou Tsukai initiation).$(br2)$(bold)T4:$() Dragon Heart (mythic infusion base), Dragon Scale (armor), Void Essence (Void Summoner builds), Wither Bone."
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "unlocked_by_default": true,
+  "title": {
+    "text": "Fortitude"
+  },
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "minecraft:iron_chestplate"
+    }
+  },
+  "background": "minecraft:textures/block/iron_block.png"
+}

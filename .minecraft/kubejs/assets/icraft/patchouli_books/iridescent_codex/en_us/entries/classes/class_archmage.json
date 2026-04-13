@@ -1,0 +1,12 @@
+{
+  "name": "Archmage",
+  "icon": "minecraft:enchanted_book",
+  "category": "icraft:classes",
+  "sortnum": 34,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp.$()$(br2)HP: -20% | Equip HP: $(bold)Halved$() | -4 armor, -2 toughness$(br2)$(bold)Arcane Supremacy$() — $(item)+50% magic damage$(). Highest in the game.$(br)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling magic: T1 +0% / T2 +5% / T3 +10% / T4 $(item)+15%$()$(br)$(bold)Glass Frame$() — -4 armor, -2 toughness, halved equip HP.$(br2)$(bold)Best races:$() $(thing)Faefolk$() (+95% magic at T4), $(thing)Elf$() (safer), $(thing)Demi-God$() (+40% HP offsets fragility)"
+    }
+  ]
+}

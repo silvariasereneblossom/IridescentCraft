@@ -1,0 +1,18 @@
+{
+  "parent": "minecraft:story/iron_tools",
+  "display": {
+    "icon": {
+      "item": "minecraft:diamond"
+    },
+    "title": {"translate": "advancements.story.mine_diamond.title"},
+    "description": {"text": "Requires Tier 3 — Diamonds are gated until the Empowered Slayer stage."},
+    "frame": "task",
+    "hidden": true
+  },
+  "criteria": {
+    "stage_gate": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [["stage_gate"]]
+}

@@ -1,0 +1,12 @@
+{
+  "name": "Apotheosis Affixes",
+  "icon": "minecraft:diamond_chestplate",
+  "category": "icraft:systems",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Apotheosis affixes are random modifiers on weapons/armor from mobs and bosses. The pack adds 88 custom affixes plus 5 End-exclusive affixes. Affixes also provide gem sockets.$(br2)$(bold)Tiers:$() Common (T1+, 0-1 sockets), Uncommon (T2+, 1-2), Rare (T2+, 2), Epic (T3+, 2-3), Legendary (T4, 3-4), Mythic (Rift infusion, 4).$(br2)$(bold)Reforging:$() Reforging Station rerolls affixes. Three token tiers: Basic (min Uncommon), Advanced (min Rare), Ultimate (min Epic). Crafted from boss materials.$(br2)$(bold)End Affixes:$() 5 exclusive affixes (Void Proximity, Ender Displacement, Void Corruption) - among the most powerful in the game."
+    }
+  ]
+}

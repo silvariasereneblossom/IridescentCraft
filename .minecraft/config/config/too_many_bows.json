@@ -1,0 +1,73 @@
+{
+  "easyLootEnabled": true,
+  "easyLootDropChance": 0.5,
+  "mediumLootEnabled": true,
+  "mediumLootDropChance": 0.4,
+  "hardLootEnabled": true,
+  "hardLootDropChance": 0.3,
+  "endgameLootEnabled": true,
+  "endgameLootDropChance": 0.2,
+  "emeraldSageXpAmount": 10,
+  "emeraldSageCrimsonNexusBlacklist": [
+    "minecraft:armor_stand",
+    "minecraft:wandering_trader",
+    "dummmmmmy:target_dummy"
+  ],
+  "easyLootTables": [
+    "minecraft:chests/simple_dungeon",
+    "minecraft:chests/abandoned_mineshaft"
+  ],
+  "mediumLootTables": [
+    "minecraft:chests/jungle_temple",
+    "minecraft:chests/pillager_outpost",
+    "minecraft:chests/abandoned_mineshaft",
+    "minecraft:chests/simple_dungeon"
+  ],
+  "hardLootTables": [
+    "minecraft:chests/stronghold_corridor",
+    "minecraft:chests/nether_bridge",
+    "minecraft:chests/bastion_treasure"
+  ],
+  "endgameLootTables": [
+    "minecraft:chests/end_city_treasure",
+    "minecraft:chests/nether_bridge",
+    "minecraft:chests/bastion_treasure"
+  ],
+  "easyLootItems": [
+    "too_many_bows:ancient_sage_bow",
+    "too_many_bows:aethers_call",
+    "too_many_bows:burnt_relic",
+    "too_many_bows:power_crystal",
+    "too_many_bows:emerald_sage_bow",
+    "too_many_bows:torchbearer",
+    "too_many_bows:demons_grasp"
+  ],
+  "mediumLootItems": [
+    "too_many_bows:cyroheart_bow",
+    "too_many_bows:power_crystal",
+    "too_many_bows:torchbearer",
+    "too_many_bows:emerald_sage_bow",
+    "too_many_bows:demons_grasp"
+  ],
+  "hardLootItems": [
+    "too_many_bows:sentinels_wrath",
+    "too_many_bows:cursed_stone",
+    "too_many_bows:solar_bow",
+    "too_many_bows:arc_heavens",
+    "too_many_bows:scatter_bow",
+    "too_many_bows:vitality_weaver",
+    "too_many_bows:spectral_whisper",
+    "too_many_bows:webstring"
+  ],
+  "endgameLootItems": [
+    "too_many_bows:flame_bow",
+    "too_many_bows:dark_bow",
+    "too_many_bows:arcane_bow",
+    "too_many_bows:dragons_breath",
+    "too_many_bows:wind_bow",
+    "too_many_bows:cyroheart_bow",
+    "too_many_bows:shulker_blast",
+    "too_many_bows:astral_bound",
+    "too_many_bows:auroras_grace"
+  ]
+}

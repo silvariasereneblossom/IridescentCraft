@@ -1,0 +1,184 @@
+
+[Pudge]
+
+	[Pudge.Hook]
+		#Maximum load the hook can withstand
+		#Range: 0.0 ~ 20.0
+		strength = 10.0
+		#Damage dealt to an entity on impact
+		#Range: 0.0 ~ 100.0
+		damage = 0.0
+		#Amount of time (in seconds) the hook can withstand fire
+		#Range: 0.0 ~ 60.0
+		resistance = 10.0
+		#Controls interaction with dropped items on the ground
+		affectsItems = true
+		#Controls interaction with non-playable characters
+		affectsNPCs = true
+		#Controls interaction with players
+		affectsPlayers = true
+		#Blocks that will be broken when hit by this hook
+		breakableBlocks = ["#forge:glass", "#forge:glass_panes"]
+		#Blocks this hook can be attached to.
+		#Works as a whitelist. If anything is specified here, the hook will attach only to these blocks
+		hookableBlocks = []
+		#Blocks this hook cannot be attached to.
+		#Works as a blacklist, preventing the hook from being attached to specified blocks
+		reboundableBlocks = ["#forge:gravel", "#minecraft:sand", "minecraft:suspicious_gravel", "minecraft:dirt", "minecraft:mud"]
+
+	[Pudge.Launcher]
+		#Launch velocity of the hook
+		#Range: 0.1 ~ 10.0
+		launchVelocity = 1.5
+		#Controls how fast the launcher reels in the rope
+		#Range: 0.1 ~ 4.0
+		reelingSpeed = 0.7
+		#Controls how high you will be thrown when performing Jump Boost or Tarzan Jump
+		#Range: 0.0 ~ 3.0
+		jumpBoostStrength = 0.6
+		#Controls how far you will be thrown when performing Tarzan Jump
+		#Range: 0.0 ~ 3.0
+		tarzanJumpStrength = 0.6
+		#Allows to adjust your weight advantage/disadvantage over the hooked entity
+		#Range: 0.0 ~ 1000.0
+		shooterWeightFactor = 20.0
+		#Durability of the launcher
+		#Range: 0 ~ 65535
+		durability = 300
+
+	[Pudge.Rope]
+		#Maximal rope length
+		#Range: 1 ~ 80
+		maxLength = 32
+		#Rope width
+		#Range: 1.0 ~ 10.0
+		width = 3.0
+		#Defines how elastic the rope is
+		#Range: 0.0 ~ 0.95
+		elasticity = 0.0
+		#Rope color
+		#Allowed Values: BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY, DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE
+		color = "DARK_RED"
+
+[Spear]
+
+	[Spear.Hook]
+		#Maximum load the hook can withstand
+		#Range: 0.0 ~ 20.0
+		strength = 5.0
+		#Damage dealt to an entity on impact
+		#Range: 0.0 ~ 100.0
+		damage = 2.0
+		#Amount of time (in seconds) the hook can withstand fire
+		#Range: 0.0 ~ 60.0
+		resistance = 5.0
+		#Controls interaction with dropped items on the ground
+		affectsItems = false
+		#Controls interaction with non-playable characters
+		affectsNPCs = true
+		#Controls interaction with players
+		affectsPlayers = true
+		#Blocks that will be broken when hit by this hook
+		breakableBlocks = ["#forge:glass", "#forge:glass_panes"]
+		#Blocks this hook can be attached to.
+		#Works as a whitelist. If anything is specified here, the hook will attach only to these blocks
+		hookableBlocks = []
+		#Blocks this hook cannot be attached to.
+		#Works as a blacklist, preventing the hook from being attached to specified blocks
+		reboundableBlocks = ["#forge:obsidian", "#forge:storage_blocks", "minecraft:bedrock"]
+
+	[Spear.Launcher]
+		#Launch velocity of the hook
+		#Range: 0.1 ~ 10.0
+		launchVelocity = 2.5
+		#Controls how fast the launcher reels in the rope
+		#Range: 0.1 ~ 4.0
+		reelingSpeed = 0.5
+		#Controls how high you will be thrown when performing Jump Boost or Tarzan Jump
+		#Range: 0.0 ~ 3.0
+		jumpBoostStrength = 0.8
+		#Controls how far you will be thrown when performing Tarzan Jump
+		#Range: 0.0 ~ 3.0
+		tarzanJumpStrength = 0.8
+		#Allows to adjust your weight advantage/disadvantage over the hooked entity
+		#Range: 0.0 ~ 1000.0
+		shooterWeightFactor = 4.0
+		#Durability of the launcher
+		#Range: 0 ~ 65535
+		durability = 180
+
+	[Spear.Rope]
+		#Maximal rope length
+		#Range: 1 ~ 80
+		maxLength = 64
+		#Rope width
+		#Range: 1.0 ~ 10.0
+		width = 4.0
+		#Defines how elastic the rope is
+		#Range: 0.0 ~ 0.95
+		elasticity = 0.6
+		#Rope color
+		#Allowed Values: BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY, DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE
+		color = "BLACK"
+
+[Web]
+
+	[Web.Hook]
+		#Maximum load the hook can withstand
+		#Range: 0.0 ~ 20.0
+		strength = 2.0
+		#Damage dealt to an entity on impact
+		#Range: 0.0 ~ 100.0
+		damage = 0.0
+		#Amount of time (in seconds) the hook can withstand fire
+		#Range: 0.0 ~ 60.0
+		resistance = 1.0
+		#Controls interaction with dropped items on the ground
+		affectsItems = true
+		#Controls interaction with non-playable characters
+		affectsNPCs = true
+		#Controls interaction with players
+		affectsPlayers = true
+		#Blocks that will be broken when hit by this hook
+		breakableBlocks = ["#forge:gravel", "#minecraft:sand", "minecraft:suspicious_gravel"]
+		#Blocks this hook can be attached to.
+		#Works as a whitelist. If anything is specified here, the hook will attach only to these blocks
+		hookableBlocks = []
+		#Blocks this hook cannot be attached to.
+		#Works as a blacklist, preventing the hook from being attached to specified blocks
+		reboundableBlocks = ["minecraft:dirt", "minecraft:mud"]
+
+	[Web.Launcher]
+		#Launch velocity of the hook
+		#Range: 0.1 ~ 10.0
+		launchVelocity = 2.0
+		#Controls how fast the launcher reels in the rope
+		#Range: 0.1 ~ 4.0
+		reelingSpeed = 0.8
+		#Controls how high you will be thrown when performing Jump Boost or Tarzan Jump
+		#Range: 0.0 ~ 3.0
+		jumpBoostStrength = 1.0
+		#Controls how far you will be thrown when performing Tarzan Jump
+		#Range: 0.0 ~ 3.0
+		tarzanJumpStrength = 1.0
+		#Allows to adjust your weight advantage/disadvantage over the hooked entity
+		#Range: 0.0 ~ 1000.0
+		shooterWeightFactor = 0.5
+		#Durability of the launcher
+		#Range: 0 ~ 65535
+		durability = 240
+
+	[Web.Rope]
+		#Maximal rope length
+		#Range: 1 ~ 80
+		maxLength = 76
+		#Rope width
+		#Range: 1.0 ~ 10.0
+		width = 6.0
+		#Defines how elastic the rope is
+		#Range: 0.0 ~ 0.95
+		elasticity = 0.95
+		#Rope color
+		#Allowed Values: BLACK, DARK_BLUE, DARK_GREEN, DARK_AQUA, DARK_RED, DARK_PURPLE, GOLD, GRAY, DARK_GRAY, BLUE, GREEN, AQUA, RED, LIGHT_PURPLE, YELLOW, WHITE
+		color = "WHITE"
+

@@ -1,0 +1,12 @@
+{
+  "name": "Paladin",
+  "icon": "minecraft:golden_sword",
+  "category": "icraft:classes",
+  "sortnum": 31,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Tank and support. Self-sustaining with group utility.$()$(br2)HP: +10% | Equip HP: Full$(br2)$(bold)Holy Armor$() — +3 armor, +1 toughness, +10% knockback resistance.$(br)$(bold)Divine Resilience$() — Shield blocking reduces damage. +15% healing effectiveness.$(br)$(bold)Healing Aura$() — Nearby allies regenerate HP passively.$(br2)The only class designed for multiplayer. Healing Aura + tanky stats = ideal frontliner.$(br2)$(bold)Best races:$() $(thing)Dwarf$() (fire res + armor), $(thing)Human$() (versatile), $(thing)Orc$() (attack speed offsets)"
+    }
+  ]
+}

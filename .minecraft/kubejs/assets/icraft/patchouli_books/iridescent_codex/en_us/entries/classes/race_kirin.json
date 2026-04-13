@@ -1,0 +1,12 @@
+{
+  "name": "Kirin",
+  "icon": "minecraft:golden_horse_armor",
+  "category": "icraft:classes",
+  "sortnum": 25,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)A mythical beast of impossible speed. The fastest race in the game.$()$(br2)$(bold)Wall Climber$() — $(item)Scale walls like a spider$().$(br)$(bold)Cat Vision$() — $(item)Natural night vision$().$(br)$(bold)Fall Immunity$() — $(item)Always land safely$().$(br)$(bold)Pounce$() — $(item)Launch forward$(). 25s CD.$(br)$(bold)Unrivaled Speed$() — $(item)Speed II for 12s$(). 60s CD.$(br)$(bold)Sprint Jump$() — Enhanced jumping while sprinting.$(br2)$(bold)Weaknesses:$() $(warn)-20% HP$(), $(warn)high exhaustion rate$().$(br2)$(italic)Pairs best with Samurai, Ranger, or Wanderer. Avoid Vanguard.$()"
+    }
+  ]
+}

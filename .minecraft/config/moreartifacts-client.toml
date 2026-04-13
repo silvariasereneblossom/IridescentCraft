@@ -1,0 +1,7 @@
+
+[General]
+	#Enable artifacts models displaying on the player
+	Enable_Artifact_Models = true
+	#Enable the overlay for the enderian eye cooldown
+	Enderian_Eye_Overlay = true
+

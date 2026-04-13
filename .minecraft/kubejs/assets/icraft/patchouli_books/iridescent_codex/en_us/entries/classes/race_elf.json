@@ -1,0 +1,12 @@
+{
+  "name": "Elf",
+  "icon": "minecraft:oak_leaves",
+  "category": "icraft:classes",
+  "sortnum": 16,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Graceful and keen-eyed, Elves see perfectly in darkness and move with preternatural speed.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Darkvision$() — $(item)Natural night vision$(). See clearly in dim environments.$(br2)$(bold)Elven Grace$() — $(item)+8% movement speed$(). Permanently faster.$(br2)$(bold)Eagle Eye$() — $(item)+15% ranged damage, +5% magic damage$(). Superior at range and with spells.$(br2)$(bold)Fragile Frame$() — $(warn)-1 armor toughness$(). Slender frames offer less protection.$(br2)$(bold)Refined Palate$() — $(warn)Faster hunger drain$(). High metabolism is the cost of speed."
+    }
+  ]
+}

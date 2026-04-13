@@ -1,0 +1,54 @@
+{
+  // --------------------------------------------------------------------------------------------------------
+  //                                    Boss Ultimatum by ElocinDev
+  // --------------------------------------------------------------------------------------------------------
+  //  - What does each config do?
+  //    - entity_regex: The regex to match the entity name. It can be a single entity name (e.g. minecraft:zombie) or a regular expression (e.g. minecraft.*)
+  //    - direct_kill: If true, the event will only execute on direct kill from the boss. If false, it will instead search for nearby bosses in a radius. Performance may be impacted when false.
+  //    - indirect_radius: If direct_kill is false, this is the radius to search for nearby bosses.
+  //    - minimum_hp: The minimum health the entity must have to be considered a boss. This is useful when doing a regex of all entities from a mod, to avoid applying ultimatums to normal mobs.
+  //    - healing_events: A list of healing events that will be applied to the boss when it dies.
+  //  - What does a healing event do?
+  //   Healing events are a series of actions that will be applied based on a few conditions you set.
+  //    - health_gain_per_death: The amount of health the boss will gain when a nearby player dies. This happes every time and is affected by the difficulty and minimum_hp conditions, but it's not part of the ultimatum.
+  //    - ultimatum_death_count: The amount of times the boss must die before it starts performing the ultimatum event. This currently only works in the fabric version, if you are on NeoForge, please use the mod with Connector to get this feature.
+  //    - ultimatum_heals_maxhp: If true, the ultimatum_death_healing value will be set to max health.
+  //    - ultimatum_death_healing: The amount of health the boss will gain when it dies the amount of times set in ultimatum_death_count. If ultimatum_heals_maxhp is set, then the value should be from 0 to 1, so 0.50 would be 50% of the max health.
+  //    - require_difficulty: If true, the ultimatum will only be applied if the difficulty is in the list of difficulties.
+  //    - difficulty: A list of difficulties that the ultimatum will be applied to. The difficulties are: easy, normal, hard. Hardcore is technically hard too, but in hardcore players will die permanently so it's a bit redundant.
+  //    - remove_boss_instead_of_healing: If true, the boss will be removed instead of healing, so it'd completely disappear, forcing the player to resummon or look for another boss.
+  "ultimatums": [
+    {
+      "entity_regex": "example_boss_mod:.*",
+      "direct_kill": true,
+      "indirect_radius": 0,
+      "minimum_hp": 0,
+      "healing_events": [
+        {
+          "health_gain_per_death": 0.1,
+          "ultimatum_death_count": 3,
+          "ultimatum_heals_maxhp": true,
+          "ultimatum_death_healing": 0.5,
+          "require_difficulty": false,
+          "difficulty": [
+            "easy",
+            "normal",
+            "hard"
+          ],
+          "remove_boss_instead_of_healing": false
+        },
+        {
+          "health_gain_per_death": 0.0,
+          "ultimatum_death_count": 3,
+          "ultimatum_heals_maxhp": true,
+          "ultimatum_death_healing": 0.5,
+          "require_difficulty": true,
+          "difficulty": [
+            "hard"
+          ],
+          "remove_boss_instead_of_healing": true
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "name": "Engineering Tree",
+  "icon": "minecraft:crafting_table",
+  "category": "icraft:skills",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Automation/crafting investment. Best for Artificer. 100% command-driven via KubeJS.$()$(br2)$(warn)Engineering effects are KubeJS-dependent (Phase 2). Points will activate retroactively.$()$(br2)$(bold)Nodes:$() Crafting Speed (reduce auto-crafter time), Machine Efficiency (+% processing speed), RF Generation (+% output, up to +25%).$(br2)$(bold)Branches:$() Resource Doubling (+% extra ingot chance) or Blueprint Memory (reduced repair/enchant costs). $(bold)Capstone:$() Master Engineer - machines in 16-block radius +50% speed for 60s every 5 min."
+    }
+  ],
+  "advancement": "icraft:stage_tier_2"
+}

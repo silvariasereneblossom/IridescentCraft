@@ -1,0 +1,12 @@
+{
+  "name": "Origins Guide",
+  "icon": "minecraft:nether_star",
+  "category": "icraft:welcome",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)13 origins$() with distinct powers and tradeoffs. No origin blocks any food type. Environmental effects cause discomfort, not death.$(br2)$(bold)Arachnid$() — Wall climb, webs$(br)$(bold)Avian$() — Sky speed at altitude$(br)$(bold)Blazeborn$() — Fire/lava immune$(br)$(bold)Enderian$() — Teleport, +15% dmg after$(br)$(bold)Feline$() — Silent, night vision, -20% HP$(br)$(bold)Merling$() — Breathe underwater$(br)$(bold)Phantom$() — Phase, half HP, never truly dies$(br)$(bold)Shulk$() — Natural armor, +20% mining$(br)$(bold)Witch of Ink$() — Hyperscaler (200 boss kills)$(br)$(bold)Construct$() — Eat iron, +35% stats max$(br)$(bold)Witherborn$() — Melee Wither, feast-or-famine$(br)$(bold)Slimebodied$() — Unique food economy$(br)$(bold)Mundane$() — No powers or weaknesses"
+    }
+  ]
+}

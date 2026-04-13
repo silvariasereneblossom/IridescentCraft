@@ -1,0 +1,13 @@
+{
+  "name": "Blue Skies",
+  "icon": "blue_skies:lunar_fragment",
+  "category": "icraft:mods_t2",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Blue Skies adds two $(t2)T2$() dimensions: Everbright (light/order) and Everdawn (dark/chaos). Elemental combat throughout.$(br2)$(bold)Role in the pack:$() Elemental damage in Blue Skies bypasses standard armor. Magic resistance (Sorcery tree, $(thing)Battlemage$() class) is more valuable here than raw armor stats.$(br2)$(bold)Bosses:$() Summoner, Alchemist, Starlit Crusher, and Arachnarch each drop a Simply Swords unique.$(br2)$(bold)IridescentCraft notes:$() Blue Skies has 641 loot tables - they've been bulk-covered by the loot overhaul. Token injection rates are slightly higher here than Twilight Forest to account for the dimension's density.$(br2)$(bold)No guide book.$() Blue Skies is exploration-driven. Both dimensions - the Everbright and the Everdawn - contain dungeon loot and boss encounters that guide you forward naturally. JEI covers all crafting recipes."
+    }
+  ],
+  "advancement": "icraft:stage_tier_2"
+}

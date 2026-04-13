@@ -1,0 +1,13 @@
+{
+  "unlocked_by_default": true,
+  "title": {
+    "text": "Marksman"
+  },
+  "icon": {
+    "type": "item",
+    "data": {
+      "item": "minecraft:bow"
+    }
+  },
+  "background": "minecraft:textures/block/oak_planks.png"
+}

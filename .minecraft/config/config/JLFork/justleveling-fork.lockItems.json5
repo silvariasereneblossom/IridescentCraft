@@ -1,0 +1,4 @@
+{
+	// Lock item list — cleared. AStages handles all item/tier gating.
+	lockItemList: []
+}

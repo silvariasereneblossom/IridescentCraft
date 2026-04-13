@@ -1,0 +1,42 @@
+{
+  "type": "apotheosis:attribute",
+  "attribute": "puffish_attributes:critical_damage",
+  "operation": "MULTIPLY_BASE",
+  "values": {
+    "common": {
+      "min": 0.03,
+      "steps": 2,
+      "step": 0.01
+    },
+    "uncommon": {
+      "min": 0.15,
+      "steps": 8,
+      "step": 0.01
+    },
+    "rare": {
+      "min": 0.25,
+      "steps": 8,
+      "step": 0.01
+    },
+    "epic": {
+      "min": 0.4,
+      "steps": 8,
+      "step": 0.01
+    },
+    "mythic": {
+      "min": 0.52,
+      "steps": 3,
+      "step": 0.01
+    },
+    "ancient": {
+      "min": 0.64,
+      "steps": 4,
+      "step": 0.01
+    }
+  },
+  "types": [
+    "sword",
+    "axe",
+    "trident"
+  ]
+}

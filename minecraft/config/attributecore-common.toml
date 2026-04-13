@@ -1,0 +1,6 @@
+
+#AttributeCore Configuration
+[debug]
+	#Enable debug messages (prints to console)
+	debugMode = false
+

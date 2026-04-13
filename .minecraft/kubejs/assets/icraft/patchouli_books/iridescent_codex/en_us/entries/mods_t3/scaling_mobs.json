@@ -1,0 +1,13 @@
+{
+  "name": "Scaling Mobs & Champions",
+  "icon": "minecraft:zombie_head",
+  "category": "icraft:mods_t3",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "ScalingMobs and Champions Unofficial create the dimension-based difficulty scaling that defines the pack's threat progression.$(br2)$(bold)ScalingMobs:$() Applies per-dimension multipliers to mob HP, damage, speed, and armor. These are not flat increases - they are dimension-specific tuning. A $(t3)T3$() Nether blaze is categorically harder than a $(t1)T1$() Overworld blaze.$(br2)$(bold)Champions:$() ~8% of all mobs are Champions (elite variants). Higher rates in harder dimensions. Champion rank determines affix count (1–4).$(br2)$(bold)Improved Mobs:$() Uses PLAYERMEAN mode - mob stats scale to the average player's gear level. On a server, this prevents one endgame player from making the world trivial for new players.$(br2)$(bold)Dynamic Difficulty:$() Scales over time and per-dimension based on how long players have spent there. A base you've lived in for days is more dangerous than one you just entered.$(br2)$(bold)No book.$() Scaling Mobs and Champions Unofficial are configured specifically for this pack - see the $(bold)Systems$() chapter for how difficulty scaling and Champion affixes work in the pack."
+    }
+  ],
+  "advancement": "icraft:stage_tier_3"
+}

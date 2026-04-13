@@ -1,0 +1,12 @@
+{
+  "name": "Champions System",
+  "icon": "minecraft:golden_apple",
+  "category": "icraft:systems",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Champions (via Champions Unofficial) are elite mobs with custom affixes - they glow and drop better loot. Primary source of early affix items.$(br2)$(bold)Spawn Rates:$() Overworld ~8%, Twilight/Aether ~12%, Nether/Undergarden ~16%, End/Deep Aether ~20%.$(br2)$(bold)Ranks:$() 1 (1 affix), 2 (2 affixes), 3 (3 affixes, good loot), 4 (4 affixes, boss-level).$(br2)$(bold)Custom Affixes:$() Commanding (buffs nearby mobs), Draining (leeches mana/XP), Hexing (random debuffs), Leaping (gap close), Summoning (spawns reinforcements)."
+    }
+  ]
+}

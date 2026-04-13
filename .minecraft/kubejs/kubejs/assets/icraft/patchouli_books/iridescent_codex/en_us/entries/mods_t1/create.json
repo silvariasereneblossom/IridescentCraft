@@ -1,0 +1,12 @@
+{
+  "name": "Create",
+  "icon": "create:cogwheel",
+  "category": "icraft:mods_t1",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Create is the primary $(t1)T1$() tech mod - mechanical power, automated crafting, and item transport.$(br2)$(bold)Role:$() First automation engine. Brass is the T1 ceiling material. Mixing recipes transmute T1 materials into small T2 amounts at poor ratios. Nothing is tier-gated - the full mod is available from T1.$(br2)$(bold)Tips:$() Build a brass auto-crafter early. Artificer's Efficient Engineering boosts machine speed. Create uses an in-world Ponder system - hold W on any Create block in JEI for animated tutorials."
+    }
+  ]
+}

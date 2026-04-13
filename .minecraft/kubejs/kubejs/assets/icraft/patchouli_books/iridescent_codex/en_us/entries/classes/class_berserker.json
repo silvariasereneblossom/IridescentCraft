@@ -1,0 +1,12 @@
+{
+  "name": "Berserker",
+  "icon": "minecraft:netherite_axe",
+  "category": "icraft:classes",
+  "sortnum": 27,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)A whirlwind of steel and fury. Scales harder the closer you are to death.$()$(br2)HP: -5% | Equip HP: Full$(br2)$(bold)Brutal Strikes$() — +15% melee damage. Always active.$(br)$(bold)Blood Fury$() — Below 40% HP: +20% melee damage.$(br)$(bold)Thick Skinned$() — +10% armor effectiveness.$(br)$(bold)Battle Trance$() — +5% attack damage, +1 natural armor.$(br2)Blood Fury + Brutal Strikes at low HP = devastating burst.$(br2)$(bold)Best races:$() $(thing)Orc$() (+25% base melee), $(thing)Demi-God$() (safer Blood Fury), $(thing)Dwarf$() (fire res + armor)"
+    }
+  ]
+}

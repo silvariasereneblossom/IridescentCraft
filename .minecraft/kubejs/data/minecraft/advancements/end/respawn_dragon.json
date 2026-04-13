@@ -1,0 +1,18 @@
+{
+  "parent": "minecraft:end/kill_dragon",
+  "display": {
+    "icon": {
+      "item": "minecraft:end_crystal"
+    },
+    "title": {"translate": "advancements.end.respawn_dragon.title"},
+    "description": {"text": "Granted when the Ender Dragon is slain."},
+    "frame": "goal",
+    "hidden": true
+  },
+  "criteria": {
+    "stage_gate": {
+      "trigger": "minecraft:impossible"
+    }
+  },
+  "requirements": [["stage_gate"]]
+}
