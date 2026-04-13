@@ -149,6 +149,7 @@ function isHostileMod(type) {
 // Entities with abstract methods that crash KubeJS on any property access
 const BROKEN_ENTITIES = new Set([
   'irons_spellbooks:necromancer',
+  'irons_spellbooks:archevoker',
 ])
 
 const BOSSES = new Set([

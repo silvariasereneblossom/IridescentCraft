@@ -170,7 +170,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels(30, true)
+        .enchantWithLevels({min: 30, max: 30}, true)
         .when(c => c.randomChance(0.15))
     )
 
@@ -1263,21 +1263,26 @@ LootJS.modifiers(event => {
   // Add guaranteed magic scroll + chance of second for mage exploration.
   // Towers are T1 exploration landmarks — magic-themed, not resource farms.
   // =========================================================================
-  event
-    .addLootTableModifier('totw_reworked:tower_chest')
-    .addLootTableModifier('totw_reworked:ocean_tower_chest')
-    .addLootTableModifier('minecraft:chests/stronghold_corridor')
-    // Remove items that shouldn't be in T1 tower loot
-    .removeLoot('minecraft:diamond')
-    .removeLoot('botania:manasteel_ingot')
-    .removeLoot('botania:mana_pearl')
-    .removeLoot('botania:mana_diamond')
-    .removeLoot('minecraft:arrow')
-    .removeLoot('minecraft:spectral_arrow')
-    // 15% chance of common ink
-    .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
-    // 8% chance of copper spell book (T1 magic gear)
-    .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
+  const towerChestTables = [
+    'totw_reworked:tower_chest',
+    'totw_reworked:ocean_tower_chest',
+    'minecraft:chests/stronghold_corridor'
+  ]
+  towerChestTables.forEach(table => {
+    event
+      .addLootTableModifier(table)
+      // Remove items that shouldn't be in T1 tower loot
+      .removeLoot('minecraft:diamond')
+      .removeLoot('botania:manasteel_ingot')
+      .removeLoot('botania:mana_pearl')
+      .removeLoot('botania:mana_diamond')
+      .removeLoot('minecraft:arrow')
+      .removeLoot('minecraft:spectral_arrow')
+      // 15% chance of common ink
+      .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
+      // 8% chance of copper spell book (T1 magic gear)
+      .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
+  })
 
   // =========================================================================
   // SECTION 8A: VILLAGE CHEST AFFIX GEAR — WHITE/GREEN ONLY
@@ -1344,11 +1349,10 @@ LootJS.modifiers(event => {
   //   - Awakening artifacts: T4 boss drops only (AStages-gated for pickup too)
   // =========================================================================
 
-  // Fragment Core: minor drop from any hostile mob (replaces crafting path)
+  // Fragment Core: minor drop from any mob kill (replaces crafting path)
+  // LootJS doesn't support @monster entity tag — use LootType.ENTITY instead
   event
-    .addEntityLootModifier(
-      '@monster'
-    )
+    .addLootTypeModifier(LootType.ENTITY)
     .addLoot(LootEntry.of('rpgseteffects:fragment_core').when(c => c.randomChance(0.04)))
 
   // T1 Overworld chest relics (utility-focused — movement, minor passives)
