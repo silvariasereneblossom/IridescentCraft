@@ -108,11 +108,14 @@ REM (Win10+), so Move-Item can rename-over the running file. After
 REM exit /b here, cmd.exe releases the handle; the freshly-launched
 REM cmd reads the NEW bat content from disk.
 REM Check for staged self-updates (.new files) from Phase 0
+REM Use SDIR without trailing backslash to avoid %~dp0 + quote breaking PS
+set "SDIR=%~dp0"
+if "%SDIR:~-1%"=="\" set "SDIR=%SDIR:~0,-1%"
 set "NEED_RELAUNCH=0"
 for %%F in (iridescentserver.bat phase0_sync.ps1) do (
-    if exist "%~dp0%%F.new" (
+    if exist "%SDIR%\%%F.new" (
         echo   Applying staged update: %%F
-        powershell -ExecutionPolicy Bypass -Command "Move-Item -LiteralPath '%~dp0%%F.new' -Destination '%~dp0%%F' -Force"
+        powershell -ExecutionPolicy Bypass -Command "Move-Item -LiteralPath '%SDIR%\%%F.new' -Destination '%SDIR%\%%F' -Force"
         set "NEED_RELAUNCH=1"
     )
 )
@@ -120,7 +123,7 @@ if "%NEED_RELAUNCH%"=="1" (
     echo.
     echo [UPDATE] Self-update applied. Relaunching...
     echo.
-    start "" "%~dp0iridescentserver.bat"
+    start "" "%SDIR%\iridescentserver.bat"
     exit /b 0
 )
 
