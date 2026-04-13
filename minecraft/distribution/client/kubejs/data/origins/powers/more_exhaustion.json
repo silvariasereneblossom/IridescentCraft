@@ -1,7 +1,0 @@
-{
-  "type": "origins:exhaust",
-  "name": "Heavy Metabolism",
-  "description": "Your armored body requires more fuel. Hunger drains 25% faster.",
-  "interval": 80,
-  "exhaustion": 0.1
-}
