@@ -42,7 +42,7 @@ ao:true
 prioritizeChunkUpdates:0
 biomeBlendRadius:2
 renderClouds:"true"
-resourcePacks:["mod_resources","vanilla","pridepack8.0.1.zip","fabric","builtin/aether_ctm_fix","Moonlight Mods Dynamic Assets"]
+resourcePacks:["mod_resources","vanilla","pridepack8.0.1.zip","fabric","builtin/aether_ctm_fix","Moonlight Mods Dynamic Assets","file/iridescent_codex_resources.zip"]
 incompatibleResourcePacks:["pridepack8.0.1.zip"]
 lastServer:iridescentcraft.sereneblossom.gay
 lang:en_us
