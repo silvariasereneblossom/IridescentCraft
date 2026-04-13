@@ -50,7 +50,7 @@ if [ ! -d "$DIST_DIR/mods/.index" ]; then
     rm -rf "$REPO_EXTRACT"
     unzip -qo "$REPO_ZIP" -d "$REPO_EXTRACT"
 
-    DIST_DIR="$(find "$REPO_EXTRACT" -maxdepth 1 -type d | tail -1)/minecraft/distribution/client"
+    DIST_DIR="$(find "$REPO_EXTRACT" -maxdepth 1 -type d | tail -1)/.minecraft/distribution/client"
 
     if [ ! -d "$DIST_DIR/mods/.index" ]; then
         echo -e "  ${RED}ERROR: Could not find client distribution in downloaded repo.${RESET}"

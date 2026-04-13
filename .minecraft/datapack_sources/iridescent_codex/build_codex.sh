@@ -12,7 +12,7 @@
 set -e
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(cd "$SCRIPT_DIR/../../.." && pwd)"
-MC="$REPO_ROOT/minecraft"
+MC="$REPO_ROOT/.minecraft"
 
 cd "$SCRIPT_DIR"
 

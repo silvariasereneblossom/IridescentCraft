@@ -83,7 +83,7 @@ if not exist "%~dp0phase0_sync.ps1" (
     powershell -ExecutionPolicy Bypass -Command ^
         "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
         "try {" ^
-        "  Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/minecraft/server_distribution/phase0_sync.ps1' -OutFile '%~dp0phase0_sync.ps1' -UseBasicParsing -TimeoutSec 30" ^
+        "  Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/phase0_sync.ps1' -OutFile '%~dp0phase0_sync.ps1' -UseBasicParsing -TimeoutSec 30" ^
         "} catch {" ^
         "  Write-Host ('  [WARN] Could not download sync script: ' + $_.Exception.Message) -ForegroundColor Yellow" ^
         "}"

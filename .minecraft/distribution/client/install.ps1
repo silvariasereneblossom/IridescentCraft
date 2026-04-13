@@ -58,7 +58,7 @@ if (-not (Test-Path "$distDir\mods\.index")) {
         [System.IO.Compression.ZipFile]::ExtractToDirectory($repoZip, $repoExtract)
 
         $subDir = (Get-ChildItem $repoExtract -Directory | Select-Object -First 1).FullName
-        $srcDir = "$subDir\minecraft\distribution\client"
+        $srcDir = "$subDir\.minecraft\distribution\client"
 
         if (-not (Test-Path "$srcDir\mods\.index")) {
             throw "Could not find client distribution in downloaded repo"

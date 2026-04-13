@@ -2,7 +2,7 @@
 title IridescentCraft Server Sync
 setlocal enabledelayedexpansion
 
-set "REPO=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\server_distribution"
+set "REPO=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution"
 REM Get script directory without trailing backslash
 set "LOCAL=%~dp0"
 if "!LOCAL:~-1!"=="\" set "LOCAL=!LOCAL:~0,-1!"
@@ -36,7 +36,7 @@ if not exist "%REPO%" (
         "  Write-Host '  Extracting...';" ^
         "  if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force };" ^
         "  Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force;" ^
-        "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\minecraft\server_distribution';" ^
+        "  $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + '\.minecraft\server_distribution';" ^
         "  $dest = '%LOCAL%';" ^
         "  $exclude = @('world','logs','crash-reports','backups','libraries','.cache');" ^
         "  Write-Host '  Syncing files...';" ^

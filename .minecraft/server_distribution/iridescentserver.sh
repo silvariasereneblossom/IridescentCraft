@@ -100,7 +100,7 @@ else
         echo "  Extracting..."
         rm -rf "$EXTRACT_DIR"
         unzip -q "$ZIP_FILE" -d "$EXTRACT_DIR"
-        SRC=$(find "$EXTRACT_DIR" -maxdepth 1 -type d | tail -1)/minecraft/server_distribution
+        SRC=$(find "$EXTRACT_DIR" -maxdepth 1 -type d | tail -1)/.minecraft/server_distribution
 
         echo "  Syncing configs, scripts, datapacks..."
         SELF_UPDATE_STAGED=0

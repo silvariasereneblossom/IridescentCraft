@@ -27,7 +27,7 @@ $ErrorActionPreference = "Continue"
 $owner = "silvariasereneblossom"
 $repo = "IridescentCraft"
 $branch = "main"
-$prefix = "minecraft/server_distribution/"
+$prefix = ".minecraft/server_distribution/"
 $headers = @{ 'User-Agent' = 'IridescentCraft-Server' }
 $shaFile = Join-Path $ServerDir '.icraft_last_sha'
 $exclude = @('world', 'logs', 'crash-reports', 'backups', 'libraries', '.cache')
@@ -162,7 +162,7 @@ try {
     if (Test-Path $extractDir) { Remove-Item $extractDir -Recurse -Force }
     Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force
 
-    $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + "\minecraft\server_distribution"
+    $src = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName + "\.minecraft\server_distribution"
     $dest = $ServerDir
 
     Write-Host "  Syncing configs, scripts, datapacks..."

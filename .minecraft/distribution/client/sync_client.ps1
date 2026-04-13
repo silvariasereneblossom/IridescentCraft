@@ -88,7 +88,7 @@ if ($remoteSha -eq $localSha) {
 # -- Step 3: Diff-based sync or full zip fallback --
 $owner = 'silvariasereneblossom'
 $repo = 'IridescentCraft'
-$prefix = 'minecraft/'
+$prefix = '.minecraft/'
 $exclude = @('world', 'logs', 'crash-reports', 'backups', 'libraries', '.cache', 'TesterLogs', 'journeymap')
 $overlayDirs = @('config', 'kubejs', 'global_packs', 'datapack_sources', 'defaultconfigs', 'patchouli_books', 'resourcepacks', 'shaderpacks')
 $mirrorList = @()
@@ -176,8 +176,8 @@ if ($useDiff) {
         Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force
 
         $srcRoot = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName
-        $src = Join-Path $srcRoot 'minecraft'
-        if (-not (Test-Path $src)) { throw "Expected minecraft/ folder not found in archive" }
+        $src = Join-Path $srcRoot '.minecraft'
+        if (-not (Test-Path $src)) { throw "Expected .minecraft/ folder not found in archive" }
 
         foreach ($dir in $overlayDirs) {
             $srcDir = Join-Path $src $dir

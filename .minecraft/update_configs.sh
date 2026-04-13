@@ -93,7 +93,7 @@ if [ ! -d "$DIST_DIR/config" ]; then
     rm -rf "$REPO_EXTRACT"
     unzip -qo "$REPO_ZIP" -d "$REPO_EXTRACT"
 
-    SRC_DIR="$(find "$REPO_EXTRACT" -maxdepth 1 -type d | tail -1)/minecraft/distribution/client"
+    SRC_DIR="$(find "$REPO_EXTRACT" -maxdepth 1 -type d | tail -1)/.minecraft/distribution/client"
 
     rm -rf "$DIST_DIR"
     mkdir -p "$DIST_DIR"

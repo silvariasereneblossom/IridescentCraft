@@ -94,9 +94,7 @@ if (-not (Test-Path "$distDir\config")) {
         [System.IO.Compression.ZipFile]::ExtractToDirectory($repoZip, $repoExtract)
 
         $subDir = (Get-ChildItem $repoExtract -Directory | Select-Object -First 1).FullName
-        # Check both paths - repo may use minecraft/ or .minecraft/
         $srcDir = "$subDir\.minecraft\distribution\client"
-        if (-not (Test-Path $srcDir)) { $srcDir = "$subDir\minecraft\distribution\client" }
 
         if (Test-Path $distDir) { Remove-Item $distDir -Recurse -Force }
         New-Item -ItemType Directory -Path $distDir -Force | Out-Null
