@@ -6,7 +6,20 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Iron's Spellbooks is the $(t1)Tier 1$() spellcasting system. Spell books, mana, and magic combat from the start.$(br2)$(bold)Role in the pack:$() First-available magic combat. Spell books can be found in Overworld dungeons. The Dead King, Fire Boss, and Citadel Keeper are T2–$(t3)T3$() boss encounters from this mod.$(br2)$(bold)Battlemage synergy:$() Iron's Spellbooks is the primary mod for the Battlemage class. Mana Barrier and Arcane Infusion passives directly interact with ISS mana.$(br2)$(bold)Spellcasting schools:$() Fire, Ice, Lightning, Poison, Blood, Eldritch, Holy, Ender, Nature. Not all schools are immediately accessible - higher-level books require finding them in dungeons.$(br2)$(bold)Mini-bosses:$() Archevoker, Cryomancer, Necromancer, and Pyromancer spawn in Overworld structures. They drop $(t2)T2$() token peeks and spell books.$(br2)Craft the $(bold)Arcane Compendium$() for the full Iron's Spellbooks reference - spell scrolls, upgrade paths, and school breakdowns."
+      "text": "Iron's Spellbooks is the Tier 1 spellcasting system. Spell books, mana, and magic combat from the start."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Role in the pack:$(/bold) First-available magic combat. Spell books can be found in Overworld dungeons. The Dead King, Fire Boss, and Citadel Keeper are T2\u2013T3 boss encounters from this mod.$(br2)$(bold)Battlemage synergy:$(/bold) Iron's Spellbooks is the primary mod for the Battlemage class. Mana Barrier and Arcane Infusion passives directly interact with ISS mana."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Spellcasting schools:$(/bold) Fire, Ice, Lightning, Poison, Blood, Eldritch, Holy, Ender, Nature. Not all schools are immediately accessible \u2014 higher-level books require finding them in dungeons.$(br2)$(bold)Mini-bosses:$(/bold) Archevoker, Cryomancer, Necromancer, and Pyromancer spawn in Overworld structures. They drop T2 token peeks and spell books."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "irons_spellbooks:arcane_compendium",
+      "text": "Craft the $(bold)Arcane Compendium$(/bold) for the full Iron's Spellbooks reference \u2014 spell scrolls, upgrade paths, and school breakdowns."
     }
   ]
 }

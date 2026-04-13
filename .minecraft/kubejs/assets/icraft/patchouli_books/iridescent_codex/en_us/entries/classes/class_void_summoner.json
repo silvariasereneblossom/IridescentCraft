@@ -2,11 +2,21 @@
   "name": "Void Summoner",
   "icon": "minecraft:wither_skeleton_skull",
   "category": "icraft:classes",
-  "sortnum": 36,
+  "sortnum": 10,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A puppet master from the shadows. Your servants fight; their violence feeds you.$()$(br2)HP: -10% | Equip HP: $(bold)Halved$()$(br2)$(bold)Dark Pact$() — Tamed/summoned entities deal $(item)+15% damage$().$(br)$(bold)Soul Tether$() — Mob deaths within 16 blocks: $(item)5% lifesteal$() (cap 2 HP) + $(item)10% bonus XP$().$(br)$(bold)Shadow Cloak$() — +10% damage in darkness.$(br2)Pairs with Occultism (T3) and Iron's Spells summons. Personal combat is weak — minions are your weapon.$(br2)$(bold)Best races:$() $(thing)Revenant$() (darkness synergy), $(thing)Demi-God$() (+40% HP), $(thing)Faefolk$() (magic)"
+      "text": "$(italic)A puppet master who commands from the shadows. Your servants fight, and their violence feeds your power.$()$(br2)HP Modifier: -10%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Core Identity:$() Empowered minions + lifesteal."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Dark Pact$() — Tamed/summoned entities deal $(item)+15% damage$(). Your army hits harder.$(br2)$(bold)Soul Tether$() — Mob deaths within 16 blocks: $(item)5% lifesteal$() (capped 2 HP) + $(item)10% bonus XP$(). Your servants feed you.$(br2)$(bold)Shadow Cloak$() — +10% damage in darkness. Caves and night are your domain."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Summoner Playstyle",
+      "text": "Pairs best with Occultism summoning (T3) and Iron's Spells summon spells. Your personal combat is weak — your minions are your weapon. Soul Tether keeps you alive.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Revenant$() — +20% in darkness + Shadow Cloak.$(br)$(thing)Demi-God$() — +40% HP offsets glass cannon.$(br)$(thing)Faefolk$() — Magic bonuses enhance summons."
     }
   ]
 }

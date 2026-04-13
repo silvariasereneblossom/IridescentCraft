@@ -2,11 +2,11 @@
   "name": "Revenant",
   "icon": "minecraft:skeleton_skull",
   "category": "icraft:classes",
-  "sortnum": 20,
+  "sortnum": 18,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Risen from death's grip, Revenants thrive in shadow. The most punishing race in daylight, the most powerful at night.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Shadow Strike$() — $(item)+20% damage and 30% damage reduction in darkness$() and in The Abyss.$(br2)$(bold)Deathless Eyes$() — $(item)Enhanced night vision$(). See even better in darkness than other dark-sighted races.$(br2)$(bold)Sunlight Sensitivity$() — $(warn)Direct sunlight causes Weakness and Slowness$(). Wear a helmet or stay in shade.$(br2)$(bold)Cursed Flesh$() — $(warn)-20% nourishment from food$(). Your undead body struggles to process sustenance."
+      "text": "$(italic)Formerly living. Undead mechanics apply. The pack's most punishing race in daylight, most powerful at night.$(/italic)$(br2)$(bold)Racial Traits:$(/bold)$(br2)$(bold)Dark Power$(/bold) \u2014 +20% damage dealt between 8pm and 4am (in-game time). Stacks with class bonuses.$(br2)$(bold)Night Vision$(/bold) \u2014 Permanent night vision. No visual difference from Human during the day.$(br2)$(bold)Sunlight Weakness$(/bold) \u2014 Direct sunlight: burn effect like a zombie. Helmets and shade prevent this. Plan around it.$(br2)$(bold)Healing Penalty$(/bold) \u2014 Natural regen and most healing potions 30% less effective. Life Steal and Paladin auras unaffected."
     }
   ]
 }

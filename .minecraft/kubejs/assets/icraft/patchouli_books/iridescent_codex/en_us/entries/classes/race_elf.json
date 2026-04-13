@@ -1,12 +1,12 @@
 {
   "name": "Elf",
-  "icon": "minecraft:oak_leaves",
+  "icon": "minecraft:feather",
   "category": "icraft:classes",
-  "sortnum": 16,
+  "sortnum": 13,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Graceful and keen-eyed, Elves see perfectly in darkness and move with preternatural speed.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Darkvision$() — $(item)Natural night vision$(). See clearly in dim environments.$(br2)$(bold)Elven Grace$() — $(item)+8% movement speed$(). Permanently faster.$(br2)$(bold)Eagle Eye$() — $(item)+15% ranged damage, +5% magic damage$(). Superior at range and with spells.$(br2)$(bold)Fragile Frame$() — $(warn)-1 armor toughness$(). Slender frames offer less protection.$(br2)$(bold)Refined Palate$() — $(warn)Faster hunger drain$(). High metabolism is the cost of speed."
+      "text": "$(italic)Swift, graceful, and hungry. Elves are the best mobile fighters but require more food management.$(/italic)$(br2)$(bold)Racial Traits:$(/bold)$(br2)$(bold)Night Vision$(/bold) \u2014 Permanent night vision in dim environments. No UI effect \u2014 seamlessly dark to light.$(br2)$(bold)Swift$(/bold) \u2014 +10% movement speed permanently. Combines very well with Ranger, Samurai, Archmage.$(br2)$(bold)Fragile$(/bold) \u2014 -8% armor effectiveness from all worn armor. The tradeoff for speed.$(br2)$(bold)Hunger Penalty$(/bold) \u2014 +20% food drain rate. Fast metabolism is the cost of being an Elf."
     }
   ]
 }

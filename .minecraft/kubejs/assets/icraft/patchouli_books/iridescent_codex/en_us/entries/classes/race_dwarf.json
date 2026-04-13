@@ -1,12 +1,12 @@
 {
   "name": "Dwarf",
-  "icon": "minecraft:iron_pickaxe",
+  "icon": "minecraft:stone_pickaxe",
   "category": "icraft:classes",
-  "sortnum": 17,
+  "sortnum": 14,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Stout and unyielding, Dwarves were born for the deep places of the world.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Deep Delver$() — $(item)+15% mining speed$(). Born for underground work.$(br2)$(bold)Sturdy Build$() — $(item)+2 armor toughness$(). Dense frames absorb punishment.$(br2)$(bold)Forge-Hardened$() — $(item)50% fire resistance$(). Take half damage from fire sources.$(br2)$(bold)Miner's Appetite$() — Hunger consumption while mining is halved.$(br2)$(bold)Short Legs$() — $(warn)-5% movement speed$(). The cost of being built like a boulder."
+      "text": "$(italic)Sturdy, slow, and made for underground work. Dwarves excel at Tier 1\u20132 play when mining and forging dominate.$(/italic)$(br2)$(bold)Racial Traits:$(/bold)$(br2)$(bold)Mining Speed$(/bold) \u2014 +25% mining speed on stone and ore. Reduces to +15% in non-overworld dimensions.$(br2)$(bold)Fire Resistance$(/bold) \u2014 Permanent fire resistance IV. Lava does not burn you. Blazes deal 40% less damage.$(br2)$(bold)Sturdy$(/bold) \u2014 +8% armor effectiveness from heavy armor (iron, steel, diamond, netherite only).$(br2)$(bold)Slow$(/bold) \u2014 -10% movement speed permanently. The cost of being built like a boulder."
     }
   ]
 }

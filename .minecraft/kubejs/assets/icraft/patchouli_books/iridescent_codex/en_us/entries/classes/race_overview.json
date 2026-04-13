@@ -2,11 +2,15 @@
   "name": "The Race System",
   "icon": "minecraft:player_head",
   "category": "icraft:classes",
-  "sortnum": 14,
+  "sortnum": 11,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Your race is chosen once at character creation and $(bold)cannot be changed.$() Races provide stat modifiers that stack with origin and class.$(br2)$(bold)The Eleven Races:$()$(br)$(li)$(bold)Human$() — Versatile, +10% XP$(li)$(bold)Elf$() — Fast, fragile, ranged/magic$(li)$(bold)Dwarf$() — Slow, hardy, fire-resistant$(li)$(bold)Orc$() — High melee, HP, attack speed$(li)$(bold)Halfling$() — Lucky, food efficient$(li)$(bold)Revenant$() — Undead, night power$(li)$(bold)Faefolk$() — Fast, magic-focused$(li)$(bold)Demi-God$() — Massive HP, phase$(li)$(bold)Ryu$() — Dragon-blooded, 25% DR$(li)$(bold)Fallen Angel$() — +15% dmg, -20% HP$(li)$(bold)Kirin$() — Fastest, wall climb"
+      "text": "Your race is chosen once at character creation and $(bold)cannot be changed.$(/bold) Races modify secondary stats only \u2014 they do not touch your HP% or your damage%. That layer belongs to classes.$(br2)The interaction between race and class is where build identity comes from. The same class played by two different races has meaningfully different feel."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)The Seven Races$(/bold)$(br2)$(li)$(bold)Human$(/bold) \u2014 Versatile. Fastest leveling. $(li)$(bold)Elf$(/bold) \u2014 Fast, fragile, night-adapted.$(li)$(bold)Dwarf$(/bold) \u2014 Slow, hardy, fire-resistant, mining mastery.$(li)$(bold)Orc$(/bold) \u2014 High attack speed, high hunger drain, brutal knockback.$(li)$(bold)Halfling$(/bold) \u2014 Lucky. Efficient. Small hitbox bonus.$(li)$(bold)Faefolk$(/bold) \u2014 Nature-attuned. Iron weakness. Slow fall.$(li)$(bold)Revenant$(/bold) \u2014 Undead. Sunlight weakness. Night power."
     }
   ]
 }

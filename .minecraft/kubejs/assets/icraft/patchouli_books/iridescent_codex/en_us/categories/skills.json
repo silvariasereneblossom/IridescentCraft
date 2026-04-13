@@ -3,5 +3,5 @@
   "description": "Six skill trees \u2014 Warfare, Marksman, Sorcery, Fortitude, Gathering, Engineering. How points are earned, spent, and refunded.",
   "icon": "minecraft:experience_bottle",
   "sortnum": 3,
-  "advancement": "icraft:stage_tier_2"
+  "flag": "icraft:stage_tier_2"
 }

@@ -3,5 +3,5 @@
   "description": "Mods unlocked at Tier 3: Mekanism, Refined Storage, Occultism, Forbidden & Arcanus, and Nether access.",
   "icon": "minecraft:netherite_pickaxe",
   "sortnum": 9,
-  "advancement": "icraft:stage_tier_3"
+  "flag": "icraft:stage_tier_3"
 }

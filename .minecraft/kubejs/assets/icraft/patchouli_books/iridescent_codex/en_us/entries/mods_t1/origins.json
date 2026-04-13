@@ -6,7 +6,15 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Origins is the framework behind $(thing)IridescentCraft$()'s class and race system.$(br2)$(bold)Role in the pack:$() Origins provides the selection UI and the power system. All class and race abilities are implemented as Origins powers in the iridescent_classes and iridescent_races datapacks.$(br2)$(bold)Selection:$() You are prompted to select Race and Class when first joining a world. If you miss it, open the Origins menu (default key: $(bold)O$()).$(br2)$(bold)Limitations to know:$() Origins powers are applied on equip/select. If you change server settings or add mods mid-play, Origins may need a reset. Use /origin set command if your class/race appears broken.$(br2)$(bold)Race is permanent.$() Class respec uses the $(thing)Class Altar$()."
+      "text": "Origins is the framework behind IridescentCraft's class and race system."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Role in the pack:$(/bold) Origins provides the selection UI and the power system. All class and race abilities are implemented as Origins powers in the iridescent_classes and iridescent_races datapacks.$(br2)$(bold)Selection:$(/bold) You are prompted to select Race and Class when first joining a world. If you miss it, open the Origins menu (default key: $(bold)O$(/bold))."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Limitations to know:$(/bold) Origins powers are applied on equip/select. If you change server settings or add mods mid-play, Origins may need a reset. Use /origin set command if your class/race appears broken.$(br2)$(bold)Race is permanent.$(/bold) Class respec uses the Class Altar."
     }
   ]
 }

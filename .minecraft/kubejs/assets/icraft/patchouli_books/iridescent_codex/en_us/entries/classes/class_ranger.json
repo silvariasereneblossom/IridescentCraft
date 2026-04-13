@@ -2,11 +2,21 @@
   "name": "Ranger",
   "icon": "minecraft:bow",
   "category": "icraft:classes",
-  "sortnum": 33,
+  "sortnum": 7,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Mobile glass cannon. Maximum ranged damage. Paper-thin defenses.$()$(br2)HP: -20% | Equip HP: $(bold)Halved$() | -3 armor$(br2)$(bold)Swift$() — +15% movement speed. +10% attack speed. Built for kiting.$(br)$(bold)Eagle Eye$() — +20% projectile damage.$(br)$(bold)Glass Cannon$() — Equipment HP bonuses halved. Base/food/level HP unaffected.$(br2)Highest ranged DPS but dies in 2-3 hits from endgame content.$(br2)$(bold)Best races:$() $(thing)Elf$() (extreme mobility), $(thing)Halfling$() (smaller hitbox), $(thing)Human$() (no weaknesses)"
+      "text": "$(italic)Mobile glass cannon. Maximum ranged damage. Paper-thin defenses. Don't get hit.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Armor Penalty:$() -3 armor"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Swift$() — +15% movement speed. The fastest class. Combined with +10% attack speed, the $(thing)Ranger$() is built for kiting and repositioning.$(br2)$(bold)Eagle Eye$() — +20% projectile damage. Arrows and thrown weapons hit significantly harder.$(br2)$(bold)Glass Cannon$() — Equipment HP bonuses from Vitality enchant, HP affixes, and armor attributes are halved. Base HP, Spice of Life food HP, and level-up HP are unaffected."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Risk and Reward",
+      "text": "The $(thing)Ranger$() has the highest ranged DPS in the game but dies in 2-3 hits from endgame content. Positioning is everything.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$() — +10% speed stacks with Swift for extreme mobility. Night vision for dungeon safety.$(br)$(thing)Halfling$() — Smaller hitbox + food efficiency for sustained kiting.$(br)$(thing)Human$() — No weaknesses, +15% XP to reach glass cannon safety thresholds faster."
     }
   ]
 }

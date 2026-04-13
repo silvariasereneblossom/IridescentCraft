@@ -3,5 +3,5 @@
   "description": "Beyond the sky, beyond the End, beyond everything you know \u2014 the stars are waiting. Space exploration via Ad Astra, gated behind Tier 4.",
   "icon": "ad_astra:tier_1_rocket",
   "sortnum": 11,
-  "advancement": "icraft:stage_tier_4"
+  "flag": "icraft:stage_tier_4"
 }

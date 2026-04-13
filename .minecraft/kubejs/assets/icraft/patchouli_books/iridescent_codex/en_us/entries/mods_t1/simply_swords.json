@@ -6,7 +6,20 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Simply Swords adds 42 unique named weapons. In the pack, all 42 are boss-drop-only.$(br2)$(bold)Role in the pack:$() Simply Swords weapons are the best weapons available. Every unique is assigned to a specific boss with a specific drop chance. They are trophies as much as they are tools.$(br2)$(bold)Weapon types:$() Greatswords, Longswords, Katanas, Spears, Staffs, Warglaives, Scythes, Sabres, and more.$(br2)$(bold)How to get them:$() Kill the matching boss. Drop chances range from 8% (rarest) to 25% (Ender Dragon). There are no other sources.$(br2)$(bold)Enchanting compatibility:$() All Simply Swords uniques are fully compatible with Apotheosis enchanting and affix reforging. A unique weapon with Legendary affixes and max enchants is the endgame weapon ceiling.$(br2)Craft the $(bold)Runic Grimoire$() for the full Simply Swords reference - all 42 unique weapons, runic socket effects, gem interactions, and weapon-specific mechanics."
+      "text": "Simply Swords adds 42 unique named weapons. In IridescentCraft, all 42 are boss-drop-only."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Role in the pack:$(/bold) Simply Swords weapons are the best weapons available. Every unique is assigned to a specific boss with a specific drop chance. They are trophies as much as they are tools.$(br2)$(bold)Weapon types:$(/bold) Greatswords, Longswords, Katanas, Spears, Staffs, Warglaives, Scythes, Sabres, and more."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)How to get them:$(/bold) Kill the matching boss. Drop chances range from 8% (rarest) to 25% (Ender Dragon). There are no other sources.$(br2)$(bold)Enchanting compatibility:$(/bold) All Simply Swords uniques are fully compatible with Apotheosis enchanting and affix reforging. A unique weapon with Legendary affixes and max enchants is the endgame weapon ceiling."
+    },
+    {
+      "type": "patchouli:crafting",
+      "recipe": "simplyswords:runic_grimoire",
+      "text": "Craft the $(bold)Runic Grimoire$(/bold) for the full Simply Swords reference \u2014 all 42 unique weapons, runic socket effects, gem interactions, and weapon-specific mechanics."
     }
   ]
 }

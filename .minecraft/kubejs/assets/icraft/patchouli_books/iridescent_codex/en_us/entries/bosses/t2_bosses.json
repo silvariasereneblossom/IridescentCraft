@@ -6,8 +6,16 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(t2)Tier 2$() bosses live in Twilight Forest, Blue Skies, and The Aether. First Simply Swords uniques drop here. Prepare full steel or manasteel.$(br2)$(bold)Twilight Forest:$() Naga (Tempest), Lich (Soulrender), Hydra (Emberblade), Ur-Ghast (Whisperwind 20%), Knight Phantom (Enigma), Snow Queen (Frostfall), Alpha Yeti (Icewhisper).$(br2)$(bold)Blue Skies:$() Summoner, Alchemist, Starlit Crusher, Arachnarch - each drops a unique.$(br2)$(bold)Aether:$() Slider, Valkyrie Queen, Sun Spirit - each drops a unique."
+      "text": "Tier 2 bosses live in the Twilight Forest, Blue Skies, and The Aether. This is where Simply Swords uniques begin. Prepare in full steel or manasteel before attempting Twilight Forest."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Naga$(/bold) (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Tempest$(/l), Naga Scale.$(br2)$(bold)Lich$(/bold) (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Soulrender$(/l), Lich Soul.$(br2)$(bold)Hydra$(/bold) (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Emberblade$(/l), Hydra Fang.$(br2)$(bold)Ur-Ghast$(/bold) (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Whisperwind$(/l) (20% \u2014 highest T2 rate), Ur-Ghast Tear."
+    },
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Knight Phantom$(/bold) (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Enigma$(/l), tokens.$(br2)$(bold)Snow Queen$(/bold) (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Frostfall$(/l), tokens.$(br2)$(bold)Alpha Yeti$(/bold) (Twilight Forest)$(br)Drops: $(l:icraft:bosses/unique_weapons)Icewhisper$(/l), tokens.$(br2)$(bold)Blue Skies Bosses$(/bold) \u2014 Summoner, Alchemist, Starlit Crusher, Arachnarch. Each drops a unique.$(br2)$(bold)Aether Bosses$(/bold) \u2014 Slider, Valkyrie Queen, Sun Spirit. Each drops a unique."
     }
   ],
-  "advancement": "icraft:stage_tier_2"
+  "flag": "icraft:stage_tier_2"
 }

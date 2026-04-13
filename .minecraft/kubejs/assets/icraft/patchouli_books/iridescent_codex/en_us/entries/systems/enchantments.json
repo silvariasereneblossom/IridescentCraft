@@ -6,7 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The pack adds 29 custom enchantments (24 general + 5 planetary from Ad Astra).$(br2)$(bold)Dimensional Survival:$() Heatward (fire/lava), Voidward (void damage), Depthstrider (pressure), Aether Acclimation (cold/height), Warp Shield (teleportation). Essential for T3+.$(br2)$(bold)Combat:$() Momentum (speed=damage), Adrenaline (low-HP boost), Titan Slayer (boss damage), Crowd Control (AoE slow), Adaptive (resist last damage type), Boss Ward, Steadfast, Nemesis, Last Stand.$(br2)$(bold)Resource:$() Prospector, Lumberjack, Reaping. $(bold)Path Synergy:$() Mana Temper, RF Capacitance, Convergence.$(br2)$(bold)Planetary (Ad Astra):$() 12% drop from planet mobs: Lunar Stride, Thermal Regulation, Pressure Shell, Void Adaptation, Stellar Shield."
+      "text": "$(thing)IridescentCraft$() adds $(bold)29 custom enchantments$() beyond the $(thing)Apotheosis$() and vanilla pools. These include 24 general-purpose enchantments available through enchanting and loot, plus 5 planetary enchantments exclusive to Ad Astra planet mob drops.$(br2)All custom enchantments are registered as real enchantments and work with all Apotheosis systems."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Dimensional Survival",
+      "text": "$(bold)Heatward$() — Fire/lava resistance scaling with level$(br)$(bold)Voidward$() — Void damage reduction$(br)$(bold)Depthstrider$() — Pressure/depth damage resistance$(br)$(bold)Aether Acclimation$() — Cold/height environment resistance$(br)$(bold)Warp Shield$() — Teleportation effect resistance$(br2)$(italic)These are essential for $(t3)Tier 3$()+ dimensional content.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Resource & Combat Enchants",
+      "text": "$(bold)Prospector$() — Passive ore detection$(br)$(bold)Lumberjack$() — Tree-felling radius$(br)$(bold)Reaping$() — Auto-replant on harvest$(br2)$(bold)Momentum$() — Movement-speed-scales damage$(br)$(bold)Adrenaline$() — Low-HP damage boost$(br)$(bold)Titan Slayer$() — Bonus damage to large/boss mobs$(br)$(bold)Crowd Control$() — AoE slow/weaken on hit$(br)$(bold)Adaptive$() — Resistance to most-recently-received damage type"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Anti-Boss, Path Synergy & Utility",
+      "text": "$(bold)Boss Ward$() — Damage reduction from boss entities$(br)$(bold)Steadfast$() — Knockback immunity$(br)$(bold)Nemesis$() — Tracks kills, damage bonus vs previously-fought bosses$(br2)$(bold)Mana Temper$() — Spells power up weapon$(br)$(bold)RF Capacitance$() — Stored RF boosts damage$(br)$(bold)Convergence$() — Bonus when tech+magic gear worn together$(br2)$(bold)Magnetism$() — Item pickup radius$(br)$(bold)Last Stand$() — On near-death: burst damage$(br)$(bold)Vitality$() — Max HP boost$(br)$(bold)Phalanx$() — Group defense aura$(br)$(bold)Quick Draw$() — Offhand swap speed"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Planetary Enchantments (Ad Astra)",
+      "text": "Five enchantments exclusive to Ad Astra planets. Each planet's mobs have a 12% chance to drop their enchanted book:$(br2)$(bold)Lunar Stride$() — Moon. Reduces low-gravity movement penalties.$(br)$(bold)Thermal Regulation$() — Mars. Negates cold and heat environmental damage.$(br)$(bold)Pressure Shell$() — Venus. Reduces acid damage and pressure slowdown.$(br)$(bold)Void Adaptation$() — Glacio. Negates alien debuffs and mining fatigue.$(br)$(bold)Stellar Shield$() — Mercury. Solar radiation and fire resistance on planets.$(br2)$(italic)Collect these on early planets to survive later ones.$()"
     }
   ]
 }

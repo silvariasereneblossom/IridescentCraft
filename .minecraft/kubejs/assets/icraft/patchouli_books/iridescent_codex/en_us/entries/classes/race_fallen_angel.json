@@ -2,11 +2,11 @@
   "name": "Fallen Angel",
   "icon": "minecraft:feather",
   "category": "icraft:classes",
-  "sortnum": 24,
+  "sortnum": 20,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Lethal Grace$() — $(item)+15% all damage$(). Highest racial damage bonus.$(br)$(bold)Bloodthirst$() — $(item)Permanent Strength I$().$(br)$(bold)Dark Expulsion$() — $(item)Launch forward$() + wither cloud. 25s CD.$(br)$(bold)Wither Shot$() — $(item)Fire a wither skull$(). 3s CD.$(br)$(bold)Tattered Wings$() — $(item)Slow fall$().$(br2)$(bold)Weaknesses:$() $(warn)-20% HP$(), $(warn)non-meat food 50% less$(), $(warn)fire vulnerability$(), $(warn)slower under roofs$().$(br)$(bold)Dark Resilience$() — $(item)Immune to Wither, Poison, Instant Damage, Nausea$()."
+      "text": "$(italic)A celestial being cast from grace. Frail but devastatingly lethal.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Wrath$() — $(item)+15% damage from all sources$(). The highest racial damage bonus.$(br2)$(bold)Tattered Wings$() — Slow fall. Not true flight.$(br2)$(bold)Fragile$() — $(warn)-20% max HP$() (4 fewer hearts).$(br2)$(bold)Meat Preference$() — Craves meat to fuel their war.$(br2)$(bold)Fire Vulnerability$() — $(warn)Fire sears deeper than most.$()"
     }
   ]
 }

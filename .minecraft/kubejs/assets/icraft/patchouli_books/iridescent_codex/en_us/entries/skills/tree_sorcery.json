@@ -3,11 +3,21 @@
   "icon": "minecraft:blaze_rod",
   "category": "icraft:skills",
   "sortnum": 3,
+  "flag": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Magic investment. Best for Archmage, Battlemage, Void Summoner.$()$(br2)Spell power, mana pool, and mana regen are Iron's Spellbooks attributes and apply immediately. Cast duration reduction and summon damage bonuses apply immediately. Buff duration extension requires KubeJS (Phase 2).$(br2)$(bold)Nodes$()$(br)$(bold)Spell Power$() - Core trunk via irons_spellbooks:spell_power. Direct multiplier on all spell damage.$(br2)$(bold)Mana Mastery$() - Increases max mana and passive regen. Scales the $(thing)Archmage$()'s Mana Well passive.$(br2)$(bold)Cooldown Reduction$() - Reduces spell cooldowns via irons_spellbooks:cooldown_reduction.$(br2)$(bold)Nodes (cont.)$()$(br)$(bold)Destruction Branch$() - Spell penetration and raw damage. Best for Archmage.$(br2)$(bold)Arcane Branch$() - Mana efficiency and buff duration. Best for support-adjacent $(thing)Battlemage$().$(br2)$(bold)Sorcery Capstone$() - $(bold)Arcane Attunement$() - After 10 consecutive spell kills: spells cost 0 mana for 8s. 120s cooldown."
+      "text": "$(italic)Magic investment. Best for Archmage, Battlemage, Void Summoner.$(/italic)$(br2)Spell power, mana pool, and mana regen are Iron's Spellbooks attributes and apply immediately. Cast duration reduction and summon damage bonuses apply immediately. Buff duration extension requires KubeJS (Phase 2)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Nodes",
+      "text": "$(bold)Spell Power$(/bold) \u2014 Core trunk via irons_spellbooks:spell_power. Direct multiplier on all spell damage.$(br2)$(bold)Mana Mastery$(/bold) \u2014 Increases max mana and passive regen. Scales the Archmage's Mana Well passive.$(br2)$(bold)Cooldown Reduction$(/bold) \u2014 Reduces spell cooldowns via irons_spellbooks:cooldown_reduction."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Nodes (cont.)",
+      "text": "$(bold)Destruction Branch$(/bold) \u2014 Spell penetration and raw damage. Best for Archmage.$(br2)$(bold)Arcane Branch$(/bold) \u2014 Mana efficiency and buff duration. Best for support-adjacent Battlemage.$(br2)$(bold)Sorcery Capstone$(/bold) \u2014 $(bold)Arcane Attunement$(/bold) \u2014 After 10 consecutive spell kills: spells cost 0 mana for 8s. 120s cooldown."
     }
-  ],
-  "advancement": "icraft:stage_tier_2"
+  ]
 }

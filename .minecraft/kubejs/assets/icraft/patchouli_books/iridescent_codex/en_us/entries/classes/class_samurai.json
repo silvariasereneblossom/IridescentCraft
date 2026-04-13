@@ -2,11 +2,21 @@
   "name": "Samurai",
   "icon": "simplyswords:iron_katana",
   "category": "icraft:classes",
-  "sortnum": 28,
+  "sortnum": 2,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Disciplined and precise. Movement is your shield, patience your blade.$()$(br2)HP: +5% | Equip HP: Full$(br2)$(bold)Evasive Stance$() — +8% movement speed.$(br)$(bold)Bushido$() — +10% attack speed.$(br)$(bold)Focus$() — Movement builds absorption shield (up to 10% max HP). Gain $(item)Vorpal I-V$() (Strength) based on tier. 10s cooldown if shield breaks.$(br2)Vorpal: T1 I | T2 II | T3 III | T4 IV+$(br2)$(bold)Best races:$() $(thing)Elf$() (speed), $(thing)Kirin$() (max mobility), $(thing)Fallen Angel$() (+15% dmg + Vorpal)"
+      "text": "$(italic)Disciplined and precise. Movement is your shield, patience your blade. The further you progress, the sharper you become.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Core Identity:$() Movement shield + scaling Vorpal."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Evasive Stance$() — +8% movement speed. Agility over raw HP.$(br2)$(bold)Bushido$() — +10% attack speed. Disciplined bladework.$(br2)$(bold)Focus$() — Movement builds an absorption shield (up to 10% max HP). If the shield breaks, 10s cooldown. Gain $(item)Vorpal I-V$() (Strength) based on progression tier."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Vorpal Scaling",
+      "text": "Vorpal scales with progression tier:$(br)$(bold)T1:$() Vorpal I  |  $(bold)T2:$() Vorpal II$(br)$(bold)T3:$() Vorpal III  |  $(bold)T4:$() Vorpal IV+$(br2)$(bold)Best race pairings:$()$(br)$(thing)Elf$() — Speed for fast shield building.$(br)$(thing)Kirin$() — Maximum mobility + wall climbing.$(br)$(thing)Fallen Angel$() — +15% damage + Vorpal = lethal."
     }
   ]
 }

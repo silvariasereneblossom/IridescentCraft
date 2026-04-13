@@ -2,11 +2,21 @@
   "name": "Berserker",
   "icon": "minecraft:netherite_axe",
   "category": "icraft:classes",
-  "sortnum": 27,
+  "sortnum": 1,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A whirlwind of steel and fury. Scales harder the closer you are to death.$()$(br2)HP: -5% | Equip HP: Full$(br2)$(bold)Brutal Strikes$() — +15% melee damage. Always active.$(br)$(bold)Blood Fury$() — Below 40% HP: +20% melee damage.$(br)$(bold)Thick Skinned$() — +10% armor effectiveness.$(br)$(bold)Battle Trance$() — +5% attack damage, +1 natural armor.$(br2)Blood Fury + Brutal Strikes at low HP = devastating burst.$(br2)$(bold)Best races:$() $(thing)Orc$() (+25% base melee), $(thing)Demi-God$() (safer Blood Fury), $(thing)Dwarf$() (fire res + armor)"
+      "text": "$(italic)A whirlwind of steel and fury. Raw melee power that scales harder the closer you are to death.$()$(br2)HP Modifier: -5%  |  Equipment HP: Full$(br)$(bold)Core Identity:$() +15% base melee damage on all weapons."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Brutal Strikes$() — +15% melee damage with all weapons. Always active, unconditional.$(br2)$(bold)Blood Fury$() — Below 40% HP: +20% melee damage. The core risk/reward passive.$(br2)$(bold)Thick Skinned$() — +10% armor effectiveness. Rewards heavy armor.$(br2)$(bold)Battle Trance$() — +5% attack damage and +1 natural armor. Your constant fury hardens you."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Playstyle",
+      "text": "The $(thing)Berserker$() wants to be in melee range, taking hits. Blood Fury + Brutal Strikes at low HP = devastating burst. Combined with Thick Skinned, you survive longer than your HP suggests.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Orc$() — +10% melee stacks for +25% base.$(br)$(thing)Demi-God$() — +40% HP makes Blood Fury safer.$(br)$(thing)Dwarf$() — Fire resistance + armor stacking."
     }
   ]
 }
