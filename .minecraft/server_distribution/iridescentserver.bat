@@ -262,6 +262,7 @@ powershell -Command ^
 echo.
 
 java ^
+    -noverify ^
     -Xmx10G ^
     -Xms8G ^
     -XX:+UseG1GC ^
