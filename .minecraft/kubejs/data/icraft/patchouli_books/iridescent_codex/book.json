@@ -22,6 +22,7 @@
   "version": "3",
   "use_blocky_font": false,
   "i18n": false,
+  "use_resource_pack": true,
   "macros": {
     "$(t1)": "$(#2d8a2d)",
     "$(t2)": "$(#2d5fa3)",
