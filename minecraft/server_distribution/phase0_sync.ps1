@@ -1,5 +1,5 @@
 # =============================================================================
-# IridescentCraft Server — Phase 0 Diff-Based Sync
+# IridescentCraft Server - Phase 0 Diff-Based Sync
 # =============================================================================
 # Called by iridescentserver.bat on every launch. Compares the local SHA
 # against the latest main commit on GitHub. If they differ:
@@ -59,12 +59,12 @@ if ($localSha -and $localSha.Length -eq 40) {
             $changedFiles = $compare.files
             Write-Host "  New commit: $($remoteSha.Substring(0,7)) (was $($localSha.Substring(0,7))). $($changedFiles.Count) files changed." -ForegroundColor Cyan
         } elseif ($compare.files -and $compare.files.Count -gt 300) {
-            Write-Host "  $($compare.files.Count) files changed (>300) — falling back to full download." -ForegroundColor Yellow
+            Write-Host "  $($compare.files.Count) files changed (>300) - falling back to full download." -ForegroundColor Yellow
         } else {
-            Write-Host "  Compare returned no files — falling back to full download." -ForegroundColor Yellow
+            Write-Host "  Compare returned no files - falling back to full download." -ForegroundColor Yellow
         }
     } catch {
-        Write-Host "  Compare API failed ($($_.Exception.Message)) — falling back to full download." -ForegroundColor Yellow
+        Write-Host "  Compare API failed ($($_.Exception.Message)) - falling back to full download." -ForegroundColor Yellow
     }
 }
 

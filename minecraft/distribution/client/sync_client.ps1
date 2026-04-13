@@ -1,5 +1,5 @@
 # =============================================================================
-# IridescentCraft Client Sync — PrismLauncher pre-launch hook
+# IridescentCraft Client Sync - PrismLauncher pre-launch hook
 # =============================================================================
 # Keeps the local instance's configs/kubejs/datapacks/mods in sync with the
 # GitHub main branch via a SHA-based check. Designed to run as PrismLauncher's
@@ -18,7 +18,7 @@
 #
 # Network failure handling: short timeouts on both the API call and zip
 # download. On any failure, prints a warning and exits 0 so PrismLauncher
-# still launches Minecraft — "continuing with existing files" is always
+# still launches Minecraft - "continuing with existing files" is always
 # safer than blocking play.
 #
 # Install as pre-launch command in PrismLauncher:
@@ -102,10 +102,10 @@ if ($localSha -and $localSha.Length -eq 40) {
             $useDiff = $true
             Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed ($($localSha.Substring(0,7)) -> $($remoteSha.Substring(0,7)))" -ForegroundColor Cyan
         } elseif ($compare.files -and $compare.files.Count -gt 300) {
-            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed (>300) — full download." -ForegroundColor Yellow
+            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed (>300) - full download." -ForegroundColor Yellow
         }
     } catch {
-        Write-Host "[IridescentCraft Sync] Compare API failed — full download." -ForegroundColor Yellow
+        Write-Host "[IridescentCraft Sync] Compare API failed - full download." -ForegroundColor Yellow
     }
 }
 
@@ -240,7 +240,7 @@ if ($useDiff) {
 }
 
 # -- Step 4: Download any new mod JARs --
-# download_mods.ps1 is diff-aware — it skips JARs that already exist by filename,
+# download_mods.ps1 is diff-aware - it skips JARs that already exist by filename,
 # so this only hits the network for actually-new mods.
 $downloadScript = Join-Path $instanceMC 'download_mods.ps1'
 if (-not (Test-Path $downloadScript)) {
@@ -263,5 +263,5 @@ if (Test-Path $downloadScript) {
     }
 }
 
-Write-Host "[IridescentCraft Sync] Done — launching..." -ForegroundColor Green
+Write-Host "[IridescentCraft Sync] Done - launching..." -ForegroundColor Green
 exit 0
