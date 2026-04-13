@@ -1,25 +1,15 @@
-# IridescentCraft pre-seed of Epic RPG: Class Artifacts config.
-#
-# The mod ships its own elite-mob system (3 ranks: Elite/Master/Legendary)
-# that spawns randomly-buffed mobs dropping Set Cores. IridescentCraft already
-# runs Majrusz's Progressive Difficulty for elite-tier enemies, so we zero out
-# Class Artifacts' elite spawns and let LootJS feed Set Core / Fragment Core
-# drops from Progressive Difficulty elites instead.
-
-[ui]
-    # Show the J-key Artifacts menu button in inventory
-    showInventoryButton = true
+#Show the 'Sets' button in the inventory screen.
+# DISABLED - overlaps the 2x2 crafting grid. Use J key instead.
+showInventoryButton = false
 
 [elite_mobs]
-    # Don't display the mod's own boss bar for elite mobs — we use
-    # Progressive Difficulty's elite visuals instead
+    #Display boss bar for elite mobs on screen.
     showBossBar = false
-    # Entity ID blacklist for elite promotion (empty = all eligible,
-    # but tier chances are zero so no promotions will happen)
-    blacklist = []
-    # Chance for tier 1 elite (Elite / single skull) — DISABLED
+    #List of entity IDs that can never become elite.
+    mobBlacklist = ["minecraft:creeper", "minecraft:slime", "minecraft:magma_cube", "minecraft:phantom", "minecraft:ghast", "minecraft:ender_dragon", "minecraft:wither", "minecraft:warden"]
+    #Chance for elite tier 1 (Elite).
     chanceTier1 = 0.0
-    # Chance for tier 2 elite (Master / double skull) — DISABLED
+    #Chance for elite tier 2 (Master).
     chanceTier2 = 0.0
-    # Chance for tier 3 elite (Legendary / triple skull) — DISABLED
+    #Chance for elite tier 3 (Legendary).
     chanceTier3 = 0.0
