@@ -916,6 +916,26 @@ LootJS.modifiers(event => {
     )
   })
 
+  // --- Remove unstackable food entirely (space cloggy in early chests) ---
+  const unstackableFoods = [
+    'minecraft:beetroot_soup',
+    'minecraft:mushroom_stew',
+    'minecraft:suspicious_stew',
+    'minecraft:rabbit_stew',
+    'minecraft:cake'
+  ]
+  unstackableFoods.forEach(food => {
+    foodMod.removeLoot(food)
+  })
+
+  // --- Add small chance of a bed in Overworld chests (early QoL) ---
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .addLoot(
+      LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.06))
+    )
+
   // --- Remove modded foods from structure chests (Overworld only) ---
   // Pam's HarvestCraft and Farmer's Delight foods should be player-crafted.
   // Uses KubeJS @mod filter to match all items from these namespaces.
