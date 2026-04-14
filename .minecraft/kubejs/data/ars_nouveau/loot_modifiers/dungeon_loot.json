@@ -1,0 +1,15 @@
+{
+  "type": "ars_nouveau:dungeon_loot",
+  "common_chance": 0.0,
+  "common_rolls": 0,
+  "conditions": [
+    {
+      "condition": "forge:loot_table_id",
+      "loot_table_id": "minecraft:chests/does_not_exist_disabled"
+    }
+  ],
+  "rare_chance": 0.0,
+  "rare_rolls": 0,
+  "uncommon_chance": 0.0,
+  "uncommon_rolls": 0
+}
