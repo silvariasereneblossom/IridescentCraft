@@ -1300,41 +1300,21 @@ LootJS.modifiers(event => {
   // and boosted magic materials. These are exploration landmarks.
   // =========================================================================
 
-  // Waystone Towers use minecraft:chests/stronghold_corridor — include them here
-  // (Stronghold corridors also benefit from this loot at T3)
-  event
-    .addLootTableModifier('totw_reworked:tower_chest')
-    .addLootTableModifier('minecraft:chests/stronghold_corridor')
-    .addLoot(
-      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.12))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.12))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.12))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.12))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.10))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.08))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.06))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.08))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.06))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:snowshoes').when(c => c.randomChance(0.12))
-    )
+  // Waystone Towers + Stronghold corridors get curio/artifact drops
+  var towerCurioTables = ['totw_reworked:tower_chest', 'minecraft:chests/stronghold_corridor']
+  var towerCurioItems = [
+    ['artifacts:umbrella', 0.12], ['artifacts:kitty_slippers', 0.12],
+    ['artifacts:bunny_hoppers', 0.12], ['artifacts:running_shoes', 0.12],
+    ['artifacts:pocket_piston', 0.10], ['artifacts:universal_attractor', 0.08],
+    ['artifacts:crystal_heart', 0.06], ['artifacts:cloud_in_a_bottle', 0.08],
+    ['artifacts:obsidian_skull', 0.06], ['artifacts:snowshoes', 0.12]
+  ]
+  towerCurioTables.forEach(function(table) {
+    var tcMod = event.addLootTableModifier(table)
+    towerCurioItems.forEach(function(entry) {
+      tcMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
+    })
+  })
 
   // =========================================================================
   // SECTION 8.1: TOWERS OF THE WILD — LOOT CLEANUP + MAGIC SCROLLS
