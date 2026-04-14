@@ -1096,19 +1096,21 @@ LootJS.modifiers(event => {
   })
 
   // --- Village chest sanitization ---
-  // Global modifiers (Ars books, token injection, etc.) apply to ALL Overworld
-  // chests including villages. Strip anything that shouldn't be in a village:
-  // - Ars Nouveau books (T2+ magic, too powerful for starting area)
-  // - T2+ tokens (villages are starting areas, no progression tokens)
-  // - Iron's Spellbooks spell books (handled by ISB GLM, not village-appropriate)
+  // Strip EVERYTHING that shouldn't be in a village. The Artifacts mod appears
+  // to inject via Forge events (not just GLMs), bypassing our replace:true in
+  // global_loot_modifiers.json. Nuclear option: removeLoot @artifacts from all
+  // village tables, then re-add ONLY our curated pool above at 4%.
   villageChests.forEach(table => {
     event.addLootTableModifier(table)
+      .removeLoot('@artifacts')
+      .removeLoot('@celestial_artifacts')
+      .removeLoot('@relics')
       .removeLoot('@ars_nouveau')
+      .removeLoot('@irons_spellbooks')
+      .removeLoot('kubejs:tier1_token')
       .removeLoot('kubejs:tier2_token')
       .removeLoot('kubejs:tier3_token')
       .removeLoot('kubejs:tier4_token')
-      .removeLoot('irons_spellbooks:copper_spell_book')
-      .removeLoot('@irons_spellbooks')
   })
 
   // =========================================================================
