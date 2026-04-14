@@ -1155,6 +1155,22 @@ LootJS.modifiers(event => {
     })
   })
 
+  // --- Village chest sanitization ---
+  // Global modifiers (Ars books, token injection, etc.) apply to ALL Overworld
+  // chests including villages. Strip anything that shouldn't be in a village:
+  // - Ars Nouveau books (T2+ magic, too powerful for starting area)
+  // - T2+ tokens (villages are starting areas, no progression tokens)
+  // - Iron's Spellbooks spell books (handled by ISB GLM, not village-appropriate)
+  villageChests.forEach(table => {
+    event.addLootTableModifier(table)
+      .removeLoot('@ars_nouveau')
+      .removeLoot('kubejs:tier2_token')
+      .removeLoot('kubejs:tier3_token')
+      .removeLoot('kubejs:tier4_token')
+      .removeLoot('irons_spellbooks:copper_spell_book')
+      .removeLoot('@irons_spellbooks')
+  })
+
   // =========================================================================
   // SECTION 7: TOWER STRUCTURE CURIO DROPS
   // =========================================================================
