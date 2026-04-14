@@ -1380,7 +1380,7 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
     .addLoot(
-      LootEntry.of('ars_nouveau:source_gem', [1, 3]).when(c => c.randomChance(0.05))
+      LootEntry.of('ars_nouveau:source_gem').limitCount([1, 3]).when(c => c.randomChance(0.05))
     )
 
   // =========================================================================
