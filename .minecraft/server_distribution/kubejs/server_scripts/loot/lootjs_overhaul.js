@@ -1191,16 +1191,18 @@ LootJS.modifiers(event => {
   // Forge events inject artifacts before LootJS runs. Strip ALL mod artifacts
   // from village chests first, then re-add our curated pool after.
   // Order: Forge injects → LootJS removes → LootJS re-adds at 4%
+  // NOTE: Do NOT use removeLoot('@artifacts') here — it acts as a persistent
+  // filter that also strips our village pool additions (same namespace).
+  // Artifact mod GLMs are already disabled via whitelist. Ars GLM overridden.
+  // Only strip non-artifact items that might leak in.
   villageChests.forEach(table => {
     event.addLootTableModifier(table)
-      .removeLoot('@artifacts')
-      .removeLoot('@celestial_artifacts')
-      .removeLoot('@relics')
       .removeLoot('@ars_nouveau')
       .removeLoot('ars_nouveau:novice_spell_book')
       .removeLoot('ars_nouveau:apprentice_spell_book')
       .removeLoot('ars_nouveau:archmage_spell_book')
       .removeLoot('@irons_spellbooks')
+      .removeLoot('@moreartifacts')
       .removeLoot('kubejs:tier1_token')
       .removeLoot('kubejs:tier2_token')
       .removeLoot('kubejs:tier3_token')
