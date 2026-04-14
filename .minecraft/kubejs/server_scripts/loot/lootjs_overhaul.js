@@ -174,40 +174,7 @@ LootJS.modifiers(event => {
         .when(c => c.randomChance(0.15))
     )
 
-  // --- Ars Nouveau spell books — tier appropriate ---
-  // T1 (Overworld): Novice spell book (5%)
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
-    .addLoot(
-      LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.05))
-    )
-
-  // T2 (TF, Aether, Blue Skies): Apprentice spell book (5%)
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('twilightforest:twilight_forest',
-      'aether:the_aether', 'deep_aether:the_aether',
-      'blue_skies:everbright', 'blue_skies:everdawn')
-    .addLoot(
-      LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.05))
-    )
-
-  // T3 (Nether, Undergarden): Archmage spell book (3%)
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
-    .addLoot(
-      LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.03))
-    )
-
-  // T4 (End, Deeper Darker, Abyss): Archmage spell book (5%)
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
-    .addLoot(
-      LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
-    )
+  // --- Ars Nouveau spell books — MOVED to after global strip (Section 1B) ---
 
   // --- Compass of Return — 2.5% in cave/structure chests only (T1 rare find) ---
   // Overworld: only dungeons, mineshafts, temples, buried treasure, mod structures
@@ -258,6 +225,43 @@ LootJS.modifiers(event => {
     .removeLoot('@artifacts')
     .removeLoot('@celestial_artifacts')
     .removeLoot('@relics')
+    .removeLoot('@ars_nouveau')
+    .removeLoot('@irons_spellbooks')
+
+  // --- Ars Nouveau spell books (re-add AFTER global strip) ---
+  // T1 (Overworld): Novice spell book (5%)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+    .addLoot(
+      LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.05))
+    )
+
+  // T2 (TF, Aether, Blue Skies): Apprentice spell book (5%)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('twilightforest:twilight_forest',
+      'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .addLoot(
+      LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.05))
+    )
+
+  // T3 (Nether, Undergarden): Archmage spell book (3%)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    .addLoot(
+      LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.03))
+    )
+
+  // T4 (End, Deeper Darker, Abyss): Archmage spell book (5%)
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .addLoot(
+      LootEntry.of('ars_nouveau:archmage_spell_book').when(c => c.randomChance(0.05))
+    )
 
   // =========================================================================
   // SECTION 1C: TIERED ARTIFACT RE-INJECTION BY DIMENSION
