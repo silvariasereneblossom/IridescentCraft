@@ -81,6 +81,13 @@ const TIER_4_BOSSES = [
 // =============================================================================
 // BOSS KILL DETECTION
 // =============================================================================
+// Two boss-kill paths:
+//   1. Kill ANY single boss of the appropriate tier → instant unlock (existing)
+//   2. Kill 10 bosses of the appropriate tier cumulatively → unlock
+// Both coexist — path 1 is for "defeat the gatekeeper" players,
+// path 2 is for "grind bosses" players who keep re-fighting the same ones.
+
+const BOSS_KILL_THRESHOLD = 10
 
 EntityEvents.death(event => {
   const entity = event.entity
@@ -90,6 +97,9 @@ EntityEvents.death(event => {
   if (!source || !source.player) return
   const player = source.player
   const entityId = entity.type.toString()
+  const pdata = player.persistentData
+
+  // --- Path 1: Single boss kill instant unlock (existing behavior) ---
 
   // Check Tier 2
   if (!AStages.playerHasStage('tier_2', player) && TIER_2_BOSSES.includes(entityId)) {
@@ -104,6 +114,38 @@ EntityEvents.death(event => {
   // Check Tier 4
   if (!AStages.playerHasStage('tier_4', player) && TIER_4_BOSSES.includes(entityId)) {
     grantTier(player, 'tier_4', entity.name.string)
+  }
+
+  // --- Path 2: Cumulative 10 boss kills per tier ---
+
+  if (!AStages.playerHasStage('tier_2', player) && TIER_2_BOSSES.includes(entityId)) {
+    let kills = pdata.getInt('icraft_t2_boss_kills') + 1
+    pdata.putInt('icraft_t2_boss_kills', kills)
+    if (kills >= BOSS_KILL_THRESHOLD) {
+      grantTier(player, 'tier_2', kills + ' Tier 2 boss kills')
+    } else {
+      player.tell(Text.gold('[IridescentCraft] ').append(Text.white('Tier 2 boss kills: ' + kills + '/' + BOSS_KILL_THRESHOLD)))
+    }
+  }
+
+  if (!AStages.playerHasStage('tier_3', player) && TIER_3_BOSSES.includes(entityId)) {
+    let kills = pdata.getInt('icraft_t3_boss_kills') + 1
+    pdata.putInt('icraft_t3_boss_kills', kills)
+    if (kills >= BOSS_KILL_THRESHOLD) {
+      grantTier(player, 'tier_3', kills + ' Tier 3 boss kills')
+    } else {
+      player.tell(Text.gold('[IridescentCraft] ').append(Text.white('Tier 3 boss kills: ' + kills + '/' + BOSS_KILL_THRESHOLD)))
+    }
+  }
+
+  if (!AStages.playerHasStage('tier_4', player) && TIER_4_BOSSES.includes(entityId)) {
+    let kills = pdata.getInt('icraft_t4_boss_kills') + 1
+    pdata.putInt('icraft_t4_boss_kills', kills)
+    if (kills >= BOSS_KILL_THRESHOLD) {
+      grantTier(player, 'tier_4', kills + ' Tier 4 boss kills')
+    } else {
+      player.tell(Text.gold('[IridescentCraft] ').append(Text.white('Tier 4 boss kills: ' + kills + '/' + BOSS_KILL_THRESHOLD)))
+    }
   }
 
   // Dragon-specific End advancements (granted even if player already has T4)
@@ -396,7 +438,59 @@ AStageEvents.added(event => {
   }
 })
 
+// =============================================================================
+// TOKEN FRAGMENT AUTO-CONSUME — 1000 fragments = instant tier unlock
+// =============================================================================
+// Checks player inventory every 5 seconds. When a player accumulates 1000+
+// token fragments of a tier they haven't unlocked yet, auto-consumes 1000
+// and grants the tier. The fragments disappear, the tier unlocks, done.
+//
+// Fragment item IDs follow the pattern: kubejs:t{N}_token_fragment
+
+const TOKEN_THRESHOLD = 1000
+const TOKEN_TIERS = [
+  { tier: 'tier_2', fragment: 'kubejs:t2_token_fragment' },
+  { tier: 'tier_3', fragment: 'kubejs:t3_token_fragment' },
+  { tier: 'tier_4', fragment: 'kubejs:t4_token_fragment' },
+]
+
+global.tick_tokenAutoConsume = (event) => {
+  const player = event.player
+
+  TOKEN_TIERS.forEach(({ tier, fragment }) => {
+    if (AStages.playerHasStage(tier, player)) return
+
+    // Count fragments across entire inventory
+    let total = 0
+    for (let i = 0; i < player.inventory.size; i++) {
+      let stack = player.inventory.getStackInSlot(i)
+      if (!stack.isEmpty && stack.id === fragment) {
+        total += stack.count
+      }
+    }
+
+    if (total >= TOKEN_THRESHOLD) {
+      // Consume exactly TOKEN_THRESHOLD fragments
+      let toRemove = TOKEN_THRESHOLD
+      for (let i = 0; i < player.inventory.size && toRemove > 0; i++) {
+        let stack = player.inventory.getStackInSlot(i)
+        if (!stack.isEmpty && stack.id === fragment) {
+          let take = Math.min(stack.count, toRemove)
+          stack.count -= take
+          toRemove -= take
+          if (stack.count <= 0) {
+            player.inventory.setStackInSlot(i, Item.empty)
+          }
+        }
+      }
+
+      grantTier(player, tier, TOKEN_THRESHOLD + ' token fragments consumed')
+    }
+  })
+}
+global.registerPlayerTick('tick_tokenAutoConsume', 100, 50)
+
 console.log('[IridescentCraft] Milestone detection loaded')
-console.log('  Tier 2: Boss kill / Thermal Frame / All T2 dims visited')
-console.log('  Tier 3: Boss kill / Mekanism Casing / All T3 dims visited')
-console.log('  Tier 4: Dragon/Gaia kill / Ultimate Circuit')
+console.log('  Tier 2: Boss kill / 10 T2 boss kills / 1000 T2 fragments / Thermal Frame / All T2 dims')
+console.log('  Tier 3: Boss kill / 10 T3 boss kills / 1000 T3 fragments / Mekanism Casing / All T3 dims')
+console.log('  Tier 4: Dragon/Gaia kill / 10 T4 boss kills / 1000 T4 fragments / Ultimate Circuit')
