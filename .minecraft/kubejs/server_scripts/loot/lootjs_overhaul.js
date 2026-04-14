@@ -263,7 +263,6 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/explorify:.*chests.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.15)))
 
   // --- Dungeons Plus: MOVED to Section 4B (common/rare split) ---
 
@@ -279,64 +278,48 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/unwrecked_ships:.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   // --- Better Desert Temples: storage tier (food_storage, storage, pot, wardrobe) ---
   event
     .addLootTableModifier(/betterdeserttemples:.*(?:food_storage|storage|pot|wardrobe)/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.12)))
 
   // --- Better Desert Temples: mid tier (lab, library, statue, tomb) ---
   event
     .addLootTableModifier(/betterdeserttemples:.*(?:lab|library|statue|tomb(?!_pharaoh))/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
 
   // --- Better Desert Temples: pharaoh tier (tomb_pharaoh, pharaoh_hidden) ---
   event
     .addLootTableModifier(/betterdeserttemples:.*pharaoh/)
     .removeLoot('minecraft:diamond')
-    .addWeightedLoot([
-      Item.of('kubejs:tier2_token').withChance(75),
-      Item.of('kubejs:tier3_token').withChance(5)
-    ])
 
   // --- Overhauled Structures: common (chest_1, chest_2) ---
   event
     .addLootTableModifier(/overhauledstructures:.*chest_[12]/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
 
   // --- Overhauled Structures: rare (chest_3, chest_m) ---
   event
     .addLootTableModifier(/overhauledstructures:.*chest_[3m]/)
-    .addWeightedLoot([
-      Item.of('kubejs:tier2_token').withChance(78),
-      Item.of('kubejs:tier3_token').withChance(5)
-    ])
 
   // --- Loot Integrations: easy/village/water = T1 ---
   event
     .addLootTableModifier(/lootintegrations:.*(?:easy|village|water)/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.12)))
 
   // --- Loot Integrations: medium = T2 ---
   event
     .addLootTableModifier(/lootintegrations:.*medium/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
 
   // --- Loot Integrations: hard/nether = T3 ---
   event
     .addLootTableModifier(/lootintegrations:.*(?:hard|nether)/)
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.15)))
 
   // --- Celestial Artifacts ---
   event
     .addLootTableModifier(/celestial_artifacts:.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
   // =========================================================================
   // SECTION 3: TIER 2 STRUCTURE LOOT (Dimensional dungeons)
@@ -351,26 +334,21 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/keebsz:.*\/floor[12]and[23]/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   event
     .addLootTableModifier(/keebsz:.*\/floor[35]and[46]/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.18)))
 
   event
     .addLootTableModifier(/keebsz:.*\/floor[79]and[810]/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
 
   // --- Iron's Spellbooks structures ---
   event
     .addLootTableModifier(/irons_spellbooks:.*chests.*/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
 
   // --- Moog's End Structures (T4 content — allow everything, add T4 tokens + thematic loot) ---
   event
     .addLootTableModifier(/mes:.*chests.*/)
-    .addLoot(LootEntry.of('kubejs:tier4_token').when(c => c.randomChance(0.12)))
     .addLoot(LootEntry.of('minecraft:chorus_fruit').limitCount([4, 8]).when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('minecraft:ender_pearl').limitCount([2, 4]).when(c => c.randomChance(0.05)))
     .addLoot(LootEntry.of('minecraft:shulker_shell').when(c => c.randomChance(0.03)))
@@ -394,24 +372,20 @@ LootJS.modifiers(event => {
     .addLootTableModifier(
       /dungeons_arise:chests\/(fishing_hut|bandit_village|greenwood_pub|giant_mushroom|bathhouse|aviary)\//)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   // T2 structures: temples, towers, foundry
   event
     .addLootTableModifier(
       /dungeons_arise:chests\/(abandoned_temple|bandit_towers|foundry|scorched_mines)\//)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
 
   // T2-T3 structures: heavenly series (challenger, conqueror, rider)
   event
     .addLootTableModifier(/dungeons_arise:chests\/heavenly_/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
 
   // Catch-all treasure tables
   event
     .addLootTableModifier(/dungeons_arise:chests\/.*treasure/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.22)))
 
   // --- Repurposed Structures ---
   // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
@@ -429,26 +403,22 @@ LootJS.modifiers(event => {
       'valhelsia_structures:chests/player_house',
       'valhelsia_structures:chests/witch_hut')
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   // T2: spawner dungeon + treasure
   event
     .addLootTableModifier(
       'valhelsia_structures:chests/spawner_dungeon',
       'valhelsia_structures:chests/treasure')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
 
   // --- IDAS: Integrated Dungeons and Structures (144 tables) ---
   // General overworld structures (T1)
   event
     .addLootTableModifier(/idas:chests\/(?!.*treasure)/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
   // Treasure tables within IDAS (T2)
   event
     .addLootTableModifier(/idas:chests\/.*treasure/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
 
   // --- Integrated Stronghold ---
   // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
@@ -458,12 +428,10 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/dungeons_plus:chests\/.*\/common/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   // Rare chests (T2)
   event
     .addLootTableModifier(/dungeons_plus:chests\/.*\/rare/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
 
   // --- Dungeon Crawl (15 tables) ---
   // Staged dungeon: stages 1-2 = T1, stages 3-5 = T2, treasure = T2-T3
@@ -475,7 +443,6 @@ LootJS.modifiers(event => {
       'dungeoncrawl:chests/supply')
     .removeLoot('minecraft:diamond')
     .removeLoot('minecraft:diamond_block')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   event
     .addLootTableModifier(
@@ -483,26 +450,22 @@ LootJS.modifiers(event => {
       'dungeoncrawl:chests/stage_4',
       'dungeoncrawl:chests/forge',
       'dungeoncrawl:chests/library')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
 
   event
     .addLootTableModifier(
       'dungeoncrawl:chests/stage_5',
       'dungeoncrawl:chests/secret_room',
       'dungeoncrawl:chests/treasure')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.22)))
 
   // --- Structory (39 tables) — T1 overworld ---
   event
     .addLootTableModifier(/structory:.*chests.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
   // --- Structory Towers (49 tables) — T1-T2 overworld ---
   event
     .addLootTableModifier(/structory_towers:.*chests.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
 
   // =========================================================================
   // SECTION 4C: YUNG'S BETTER SERIES
@@ -514,38 +477,32 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/betterdungeons:.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.18)))
 
   // --- YUNG's Better Strongholds (10 tables) ---
   // T2-T3: late overworld (library, corridor, crossing, grand_library, portal_room)
   event
     .addLootTableModifier(/betterstrongholds:.*/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.15)))
 
   // --- YUNG's Better Nether Fortresses (9 tables) ---
   // T3: Nether structures
   event
     .addLootTableModifier(/betterfortresses:.*/)
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.18)))
 
   // --- YUNG's Better Mineshafts ---
   // T1: overworld mineshafts
   event
     .addLootTableModifier(/bettermineshafts:.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
 
   // --- YUNG's Better Ocean Monuments (1 table) ---
   // T2: challenging overworld
   event
     .addLootTableModifier(/betteroceanmonuments:.*/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
 
   // --- YUNG's Better End Island ---
   // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
   // Kept commented out for future reference:
   // event.addLootTableModifier(/betterendisland:.*/)
-  //   .addLoot(LootEntry.of('kubejs:tier4_token').when(c => c.randomChance(0.15)))
 
   // Note: Better Desert Temples already covered in Section 3 above
 
@@ -558,8 +515,6 @@ LootJS.modifiers(event => {
   // T2-T3: Everbright and Everdawn dimensions
   event
     .addLootTableModifier(/blue_skies:chests\/.*/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.05)))
 
   // --- Blue Skies: Runic Arc as very rare structure chest loot (0.5%) ---
   // Supplements the 5% boss drop rate (see loot_overhaul.js).
@@ -572,47 +527,36 @@ LootJS.modifiers(event => {
   // T2-T3: Aether dimension dungeons (bronze/silver/gold)
   event
     .addLootTableModifier(/aether:chests\/.*/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.20)))
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.05)))
 
   // --- Deep Aether (301 tables, targeting chests only) ---
   // T3-T4: Deep Aether brass/gold dungeons
   event
     .addLootTableModifier(/deep_aether:chests\/.*/)
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.22)))
-    .addLoot(LootEntry.of('kubejs:tier4_token').when(c => c.randomChance(0.08)))
 
   // --- Undergarden (215 tables, targeting chests only) ---
   // T2-T3: Undergarden dimension
   event
     .addLootTableModifier(/undergarden:chests\/.*/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.05)))
 
   // --- Deeper and Darker (149 tables, targeting chests only) ---
   // T3: Otherside dimension
   event
     .addLootTableModifier(/deeperdarker:chests\/.*/)
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.20)))
 
   // --- The Abyss structures (13 tables) ---
   // T3: Abyss dimension structures
   event
     .addLootTableModifier(/theabyss:chests\/.*/)
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.18)))
 
   // --- Cataclysm structures (164 tables, targeting chests only) ---
   // T3-T4: high-tier dungeon structures (soul forge, burning arena, sunken city, etc.)
   event
     .addLootTableModifier(/cataclysm:.*chest.*/)
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.22)))
 
   // --- Twilight Forest (532 tables, targeting chests only) ---
   // T2-T3: Twilight Forest dimension
   event
     .addLootTableModifier(/twilightforest:chests\/.*/)
-    .addLoot(LootEntry.of('kubejs:tier2_token').when(c => c.randomChance(0.18)))
-    .addLoot(LootEntry.of('kubejs:tier3_token').when(c => c.randomChance(0.05)))
 
   // =========================================================================
   // SECTION 4E: REMAINING OVERWORLD STRUCTURE MODS
@@ -629,7 +573,6 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/explorations:.*/)
     .removeLoot('minecraft:diamond')
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.10)))
 
   // --- Overhauled Structures: covered in Section 2 (chest_[12], chest_[3m]) ---
 
@@ -665,7 +608,6 @@ LootJS.modifiers(event => {
       .addLootTableModifier(table)
       .removeLoot('minecraft:diamond')
       .removeLoot('minecraft:diamond_horse_armor')
-      .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.12)))
   })
 
   // Village smith chests: remove diamonds, add 20% artifact chance per chest
@@ -987,7 +929,6 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('minecraft:prismarine_shard').limitCount([1, 3]).when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('minecraft:prismarine_crystals').limitCount([1, 2]).when(c => c.randomChance(0.15)))
     .addLoot(LootEntry.of('minecraft:nautilus_shell').when(c => c.randomChance(0.08)))
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.15)))
 
   // --- Vanilla Ocean Monument ---
   // T1-T2 ocean loot: slightly better rewards for underwater combat challenge
@@ -999,7 +940,6 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('minecraft:prismarine_shard').limitCount([2, 5]).when(c => c.randomChance(0.25)))
     .addLoot(LootEntry.of('minecraft:prismarine_crystals').limitCount([2, 4]).when(c => c.randomChance(0.20)))
     .addLoot(LootEntry.of('minecraft:sponge').when(c => c.randomChance(0.10)))
-    .addLoot(LootEntry.of('kubejs:tier1_token').when(c => c.randomChance(0.20)))
 
   // --- Ocean structure curio drops: HEAVILY oceanic/fishing themed ---
   // Ocean structures should feel rewarding for aquatic exploration.
