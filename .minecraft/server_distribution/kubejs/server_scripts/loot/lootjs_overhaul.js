@@ -1596,7 +1596,7 @@ LootJS.modifiers(event => {
         .when(c => c.randomChance(0.10))
     )
     .addLoot(
-      LootEntry.of('irons_spellbooks:scroll')
+      LootEntry.of('irons_spellbooks:common_ink')
         .when(c => c.randomChance(0.08))
     )
     .addLoot(
