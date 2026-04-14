@@ -227,6 +227,7 @@ LootJS.modifiers(event => {
     .removeLoot('@relics')
     .removeLoot('@ars_nouveau')
     .removeLoot('@irons_spellbooks')
+    .removeLoot('@moreartifacts')
 
   // --- Ars Nouveau spell books (re-add AFTER global strip) ---
   // T1 (Overworld): Novice spell book (5%)

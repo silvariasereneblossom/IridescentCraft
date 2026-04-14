@@ -14,25 +14,10 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
-### LootJS Overhaul Failing to Parse (Apostrophe Bug)
-- **Status:** Fixed (2026-04-11)
-- **Description:** `lootjs_overhaul.js:1292` contained `'Iron's Spellbooks ...'` — the apostrophe in `Iron's` terminated the single-quoted string, breaking the entire file at parse time. Server logged `rhino.EvaluatorException: missing ) after argument list`. As a result, **none** of the loot overhaul ran: no structure-chest cleanup, no enchanted-book re-adds, no token injection, no village restrictions, no clutter removal.
-- **Root cause:** Plain-string log message used single quotes around content containing an apostrophe.
-- **Fix:** Switched the offending `console.log` to double quotes.
-- **Lesson:** Any string literal containing an English contraction must use double quotes (or escape the apostrophe). Worth a global grep for similar patterns in other server scripts.
-
 ### Server Main-Thread Stall During Dungeon Crawl Worldgen
-- **Status:** Mitigated (2026-04-11), pending pre-gen
-- **Description:** On 2026-04-10 the server stalled the main thread for 115 seconds (`Running 114989ms or 2299 ticks behind`), causing the active tester's client to time out. Trace: Dungeon Crawl was generating a multi-node dungeon at (~2782, 73, 1631) right next to the player's position, with cascading Lootr chest conversion errors during chunk placement.
-- **Root cause:** Structure-heavy modpack (7 dungeon mods) + on-demand worldgen on the main thread when a player walks into a fresh region.
-- **Mitigation applied:** Disabled `dungeon_crawl.toml extended_debug` to remove logging overhead. View/sim distance already low (`view-distance=6`, `simulation-distance=4`) in `server_distribution/server.properties`.
-- **Permanent fix:** Run Chunky pre-generation per [Protocol 7](../protocols/7-pregen.md) before opening a fresh world to testers.
-
-### Blank Enchanted Books in Chest Loot
-- **Status:** Fixed (2026-04-11)
-- **Description:** Chest-generated enchanted books spawned with no `StoredEnchantments` NBT — visible tooltip tags and Apotheosis power range, but zero actual enchantments.
-- **Root cause:** `lootjs_overhaul.js` re-added tiered enchanted books using `.applyLootFunction({function:'minecraft:enchant_with_levels', ...})`. LootJS 2.x silently drops loot-function raw JSON that isn't pre-deserialized, so the enchant step never ran.
-- **Fix:** Swapped all four tier entries (T1–T4) to the LootJS builder method `.enchantWithLevels(min, max, treasure)`.
+- **Status:** Resolved (2026-04-12) — Chunky auto-pregen now runs on first world load
+- **Description:** On 2026-04-10 the server stalled the main thread for 115 seconds. Dungeon Crawl was generating a multi-node dungeon at (~2782, 73, 1631) right next to the player's position.
+- **Fix:** Disabled `dungeon_crawl.toml extended_debug`, added `auto_chunky.js` (radius 1500 pregen on first world load), chunky-player-pause keeps task off main thread while players are online.
 
 ### Apotheosis Tower Loot
 - **Status:** Active
@@ -303,3 +288,27 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ### AStages Food Blocking (2026-03-30)
 - **Resolved:** AStages mod-wide gates for Thermal, Ars Nouveau, and other mods with food/crop items blocked players from eating/harvesting those items at any tier. Removed mod-wide gates for affected mods.
+
+### LootJS Overhaul Parse Failure (2026-04-11)
+- **Resolved:** Unescaped apostrophe in single-quoted string (`'Iron's Spellbooks ...'`) broke entire loot overhaul file. Switched to double quotes.
+
+### Blank Enchanted Books (2026-04-11)
+- **Resolved:** LootJS 2.x silently discarded loot functions passed as plain JSON. Switched T1-T4 enchanted book re-adds to `.enchantWithLevels(min, max, treasure)`.
+
+### Equipment Compare Tooltip Breakage (2026-04-11)
+- **Resolved:** Equipment Compare's shift-hold tooltip handler broke shift-expand for Relics, Mekanism, Tag Viewer, and Jade. Fully removed from all three distributions.
+
+### ArchevokerEntity Crash (2026-04-12)
+- **Resolved:** Added to `BROKEN_ENTITIES` early-exit list in `mob_scaling_unified.js`.
+
+### Tiered Artifact Loot System (2026-04-12)
+- **Resolved:** Implemented global strip (Section 1B) + per-dimension re-injection (Section 1C) architecture. Artifacts now appear at tier-appropriate rates instead of random mod injection.
+
+### Village Loot Flooding (2026-04-12)
+- **Resolved:** Stacked GLMs were producing ~25-30% artifact rates in village chests. Replaced with curated 25-artifact pool at ~4% combined rate. Diamond/iron gear stripped.
+
+### Class Artifacts Integration (2026-04-11)
+- **Resolved:** Epic RPG: Class Artifacts integrated as drops-only system. Native loot GLMs blocked, LootJS re-adds at controlled tier-gated rates. Native elite mob system disabled.
+
+### Server Self-Update (2026-04-12)
+- **Resolved:** `iridescentserver.bat/.sh` can now update themselves via Phase 0.5 staging mechanism. One-time manual copy required to bootstrap.

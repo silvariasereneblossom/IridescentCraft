@@ -96,6 +96,46 @@ Majrusz's Progressive Difficulty includes a treasure bag system. Bags have been 
 | Path Synergy (4) | Mana Temper, RF Capacitance, Convergence, Primal Force |
 | Utility & Survival (5) | Magnetism, Last Stand, Vitality, Phalanx, Quick Draw |
 
+## Loot System Architecture
+
+Chest loot is fully controlled via a two-phase approach in `lootjs_overhaul.js`:
+
+### Phase 1: Global Strip (Section 1B)
+All items from loot-injecting mods are removed from ALL chest loot globally. This creates a clean slate before any tier-specific content is added. Currently stripped mods:
+- `@artifacts` — Artifacts mod curios/accessories
+- `@celestial_artifacts` — Celestial Artifacts curios
+- `@relics` — Relics mod items
+- `@ars_nouveau` — Ars Nouveau spell books
+- `@irons_spellbooks` — Iron's Spellbooks scrolls/books
+
+Additional mods are blocked at the GLM level via `global_loot_modifiers.json` with `"replace": true`. Only whitelisted GLM entries fire; all others (including `rpgseteffects:loot_injection/*`, and any mod not explicitly listed) are inert.
+
+### Phase 2: Tiered Re-Injection (Section 1C+)
+After stripping, curated item pools are re-injected at tier-appropriate rates per dimension:
+
+| Tier | Dimensions | Combined Artifact Rate | Items |
+|------|-----------|----------------------|-------|
+| T1 | Overworld | ~5% | Utility/movement artifacts (snorkel, running shoes, etc.) |
+| T2 | Twilight Forest, Aether, Blue Skies | ~8% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
+| T3 | Nether, Undergarden | ~10% | Powerful offense artifacts + celestial items |
+| T4 | End, Deeper Darker, Abyss | ~12% | Endgame artifacts + relics items |
+
+### GLM Whitelist (global_loot_modifiers.json)
+Mods with whitelisted GLM entries (these fire normally):
+- `artifacts:` — 18 chest injections + 5 archaeology + 2 entity drops + 1 utility (pickaxe heater smelting)
+- `celestial_artifacts:` — 8 chest injections + 11 entity drops + 5 fishing boxes
+- `relics:` — single `relic_loot` GLM
+- `irons_spellbooks:` — 5 entity drops + 8 chest loot modifiers
+- `alexsmobs:` — 4 entries (ancient_dart, banana_drop, blossom_drop, pigshoes)
+- `tetra:` — 1 entry (bartering_additions)
+
+### Other Loot Controls
+- Enchanted books: removed globally, re-added with `.enchantWithLevels()` at dimension-scaled rates
+- Diamond/netherite gear: stripped from T1/T2 chests
+- Village chests: sanitized with curated 25-artifact pool at ~4% combined rate
+- Clutter items (horse armor, spider eyes, rotten flesh, etc.): removed from structure chests
+- Food mods: stripped from chest loot to prevent bypassing the food/hunger system
+
 ## Apotheosis Affixes
 
 ~95 total designed, 149 implemented (84 JSON datapacks + 65 event-driven).

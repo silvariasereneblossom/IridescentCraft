@@ -4,6 +4,45 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-12 — Loot system overhaul: tiered artifacts, village sanitization, battle towers
+
+### Tiered Artifact Loot System
+- Implemented global strip + per-dimension re-injection architecture for artifact/curio items
+- Section 1B of `lootjs_overhaul.js` strips ALL items from `@artifacts`, `@celestial_artifacts`, `@relics`, `@ars_nouveau`, `@irons_spellbooks` from ALL chest loot globally
+- Section 1C re-injects curated artifact pools at tier-appropriate rates per dimension: T1 (Overworld, ~5% combined, utility/movement items), T2 (TF/Aether/Blue Skies, ~8% combined, combat/defensive), T3 (Nether/Undergarden, ~10% combined, powerful offense), T4 (End/Deeper Darker/Abyss, ~12% combined, endgame power)
+- Ars Nouveau spell books re-added after global strip: Novice (OW 5%), Apprentice (T2 5%), Archmage (T3 3%, T4 5%)
+- `global_loot_modifiers.json` uses `"replace": true` to whitelist only specific GLM entries; all unlisted mod GLMs (including `rpgseteffects:loot_injection/*`) are inert
+
+### Token Removal from Chests
+- Full tier tokens (T1-T4) removed from chest loot; only boss fragments remain as the chest-based progression path
+- Boss kills remain the primary source of full tokens; 10-boss-kill and 1000-fragment tier unlock paths preserved
+
+### Village Chest Sanitization
+- Village chests receive a curated 25-artifact pool at ~4% combined rate (Section 6), replacing stacked GLMs that produced ~25-30% artifact rates
+- Diamond gear, enchanted books, and enchanted golden apples stripped from village chests
+- Iron gear stripped from village chests to prevent early-game equipment flooding
+
+### Battle Tower Consumable Pool
+- Battle tower chests receive a consumable pool with potions, arrows, food, and utility items scaled to the tower's tier
+- Replaces default vanilla loot that was either too generous (diamonds) or useless (string, bones)
+
+### Class Artifacts Integration
+- Epic RPG: Class Artifacts (`rpgseteffects:`) integrated as drops-only system
+- Native loot GLMs blocked via `replace: true` whitelist; LootJS re-adds at controlled rates with tier gating
+- Fragment Core: 4% from any hostile mob; Relics: 0.4%-1.0% per chest by tier; Pouches: T2+ boss drops; Awakenings: T4 boss direct drops at 0.7% each
+
+### Infrastructure and Bug Fixes
+- Patchouli bytecode patch: `athrow` -> `pop` instruction swap to fix crash in Patchouli book rendering
+- Snow fix: `generate_snow_ice=false` in server.properties to prevent snow layer generation issues
+- ArchevokerEntity added to `BROKEN_ENTITIES` list in `mob_scaling_unified.js`
+- `.minecraft` directory rename resolution for PrismLauncher compatibility
+- Equipment Compare fully removed (JAR, pw.toml, config) from all three distributions — broke shift-expand tooltips for Relics, Mekanism, Tag Viewer, Jade
+- Dungeon Crawl spacing increase via config + Chunky auto-pregen on first world load (radius 1500)
+- Phase 0 diff-based sync with SHA check to skip redundant downloads
+- Server self-update mechanism (bat/sh can now update themselves via Phase 0.5)
+
+---
+
 ## 2026-04-12 — iridescentserver bat/sh now self-updates
 
 ### Self-Update Mechanism
