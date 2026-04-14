@@ -1086,20 +1086,10 @@ LootJS.modifiers(event => {
   ]
   const villageArtifactPerItemChance = 0.0016
 
-  villageChests.forEach(table => {
-    const modifier = event.addLootTableModifier(table)
-    villageArtifactPool.forEach(artifact => {
-      modifier.addLoot(
-        LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
-      )
-    })
-  })
-
-  // --- Village chest sanitization ---
-  // Strip EVERYTHING that shouldn't be in a village. The Artifacts mod appears
-  // to inject via Forge events (not just GLMs), bypassing our replace:true in
-  // global_loot_modifiers.json. Nuclear option: removeLoot @artifacts from all
-  // village tables, then re-add ONLY our curated pool above at 4%.
+  // --- Village chest sanitization (runs FIRST) ---
+  // Forge events inject artifacts before LootJS runs. Strip ALL mod artifacts
+  // from village chests first, then re-add our curated pool after.
+  // Order: Forge injects → LootJS removes → LootJS re-adds at 4%
   villageChests.forEach(table => {
     event.addLootTableModifier(table)
       .removeLoot('@artifacts')
@@ -1111,6 +1101,17 @@ LootJS.modifiers(event => {
       .removeLoot('kubejs:tier2_token')
       .removeLoot('kubejs:tier3_token')
       .removeLoot('kubejs:tier4_token')
+  })
+
+  // --- Village artifact pool (runs AFTER sanitization) ---
+  // Re-add curated artifacts at controlled 4% rate
+  villageChests.forEach(table => {
+    const modifier = event.addLootTableModifier(table)
+    villageArtifactPool.forEach(artifact => {
+      modifier.addLoot(
+        LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
+      )
+    })
   })
 
   // =========================================================================
