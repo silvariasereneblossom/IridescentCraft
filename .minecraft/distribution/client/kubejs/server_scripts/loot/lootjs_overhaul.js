@@ -277,8 +277,7 @@ LootJS.modifiers(event => {
   // Utility/movement artifacts. Safe, non-combat.
   const artifactT1Pool = [
     'artifacts:snorkel', 'artifacts:anglers_hat', 'artifacts:superstitious_hat',
-    'artifacts:lucky_scarf', 'artifacts:cloud_in_a_bottle', 'artifacts:kitty_slippers',
-    'artifacts:running_shoes', 'artifacts:umbrella', 'artifacts:flippers',
+    'artifacts:lucky_scarf', 'artifacts:cloud_in_a_bottle',     'artifacts:running_shoes', 'artifacts:umbrella', 'artifacts:flippers',
     'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
     'artifacts:golden_hook'
   ]
@@ -1165,8 +1164,7 @@ LootJS.modifiers(event => {
     'artifacts:superstitious_hat',
     'artifacts:lucky_scarf',
     'artifacts:cloud_in_a_bottle',
-    'artifacts:kitty_slippers',
-    'artifacts:running_shoes',
+        'artifacts:running_shoes',
     'artifacts:power_glove',
     'artifacts:digging_claws',
     'artifacts:feral_claws',
@@ -1185,7 +1183,7 @@ LootJS.modifiers(event => {
     'artifacts:snowshoes',
     'artifacts:golden_hook'
   ]
-  const villageArtifactPerItemChance = 0.08 / 24  // 8% combined across 24 items
+  const villageArtifactPerItemChance = 0.08 / villageArtifactPool.length  // 8% combined
 
   // --- Village chest sanitization (runs FIRST) ---
   // Forge events inject artifacts before LootJS runs. Strip ALL mod artifacts
@@ -1195,9 +1193,17 @@ LootJS.modifiers(event => {
   // filter that also strips our village pool additions (same namespace).
   // Artifact mod GLMs are already disabled via whitelist. Ars GLM overridden.
   // Only strip non-artifact items that might leak in.
-  villageChests.forEach(table => {
-    event.addLootTableModifier(table)
-      .removeLoot('@ars_nouveau')
+  // Strip T1 global pool items from villages (by specific ID, not @namespace)
+  // so villages only get their dedicated 8% village pool.
+  // Also strip Ars/ISB/tokens that might leak in.
+  villageChests.forEach(function(table) {
+    var vSan = event.addLootTableModifier(table)
+    // Remove T1 global pool items individually
+    artifactT1Pool.forEach(function(item) {
+      vSan.removeLoot(item)
+    })
+    // Remove other mod items
+    vSan.removeLoot('@ars_nouveau')
       .removeLoot('ars_nouveau:novice_spell_book')
       .removeLoot('ars_nouveau:apprentice_spell_book')
       .removeLoot('ars_nouveau:archmage_spell_book')
@@ -1237,7 +1243,6 @@ LootJS.modifiers(event => {
       LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.015))
     )
     .addLoot(
-      LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.015))
     )
     .addLoot(
       LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.015))
@@ -1271,7 +1276,6 @@ LootJS.modifiers(event => {
       LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.015))
     )
     .addLoot(
-      LootEntry.of('artifacts:kitty_slippers').when(c => c.randomChance(0.015))
     )
     .addLoot(
       LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.015))
@@ -1308,7 +1312,7 @@ LootJS.modifiers(event => {
   // Waystone Towers + Stronghold corridors get curio/artifact drops
   var towerCurioTables = ['totw_reworked:tower_chest', 'minecraft:chests/stronghold_corridor']
   var towerCurioItems = [
-    ['artifacts:umbrella', 0.12], ['artifacts:kitty_slippers', 0.12],
+    ['artifacts:umbrella', 0.12], [0.12],
     ['artifacts:bunny_hoppers', 0.12], ['artifacts:running_shoes', 0.12],
     ['artifacts:pocket_piston', 0.10], ['artifacts:universal_attractor', 0.08],
     ['artifacts:crystal_heart', 0.06], ['artifacts:cloud_in_a_bottle', 0.08],
