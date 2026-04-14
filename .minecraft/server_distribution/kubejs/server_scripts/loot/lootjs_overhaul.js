@@ -222,9 +222,10 @@ LootJS.modifiers(event => {
   // =========================================================================
   event
     .addLootTypeModifier(LootType.CHEST)
-    .removeLoot('@artifacts')
-    .removeLoot('@celestial_artifacts')
-    .removeLoot('@relics')
+    // NOTE: Do NOT use removeLoot('@artifacts') here — LootJS applies it as a
+    // persistent filter that also strips our own tiered re-additions (same namespace).
+    // Artifact mod injection is controlled via GLM whitelist (replace:true) instead.
+    // Village-specific sanitization handles village chests separately.
     .removeLoot('@ars_nouveau')
     .removeLoot('@irons_spellbooks')
     .removeLoot('@moreartifacts')
