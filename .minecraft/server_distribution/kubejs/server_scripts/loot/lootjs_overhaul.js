@@ -282,7 +282,7 @@ LootJS.modifiers(event => {
     'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
     'artifacts:golden_hook'
   ]
-  const artifactT1PerItem = 0.05 / artifactT1Pool.length
+  const artifactT1PerItem = 0.10 / artifactT1Pool.length
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
@@ -303,7 +303,7 @@ LootJS.modifiers(event => {
     'celestial_artifacts:forest_cloak', 'celestial_artifacts:holy_talisman',
     'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace'
   ]
-  const artifactT2PerItem = 0.08 / artifactT2Pool.length
+  const artifactT2PerItem = 0.12 / artifactT2Pool.length
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
@@ -322,7 +322,7 @@ LootJS.modifiers(event => {
     'relics:ice_skates', 'relics:rage_glove', 'relics:hunter_belt',
     'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe'
   ]
-  const artifactT3PerItem = 0.10 / artifactT3Pool.length
+  const artifactT3PerItem = 0.15 / artifactT3Pool.length
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
@@ -343,7 +343,7 @@ LootJS.modifiers(event => {
     'celestial_artifacts:flight_ring', 'celestial_artifacts:prayer_crown',
     'celestial_artifacts:spirit_crown', 'celestial_artifacts:end_etching'
   ]
-  const artifactT4PerItem = 0.12 / artifactT4Pool.length
+  const artifactT4PerItem = 0.18 / artifactT4Pool.length
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
