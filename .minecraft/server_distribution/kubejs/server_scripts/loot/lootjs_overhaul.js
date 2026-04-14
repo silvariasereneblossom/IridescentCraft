@@ -1193,14 +1193,19 @@ LootJS.modifiers(event => {
   // filter that also strips our village pool additions (same namespace).
   // Artifact mod GLMs are already disabled via whitelist. Ars GLM overridden.
   // Only strip non-artifact items that might leak in.
-  // Strip T1 global pool items from villages (by specific ID, not @namespace)
-  // so villages only get their dedicated 8% village pool.
-  // Also strip Ars/ISB/tokens that might leak in.
+  // Strip T1 global pool items from villages UNLESS they're also in the
+  // village pool (removeLoot by specific ID acts as persistent filter that
+  // would also catch village pool re-additions of the same item).
+  var villagePoolSet = {}
+  villageArtifactPool.forEach(function(item) { villagePoolSet[item] = true })
+
   villageChests.forEach(function(table) {
     var vSan = event.addLootTableModifier(table)
-    // Remove T1 global pool items individually
+    // Remove T1 items that are NOT in the village pool
     artifactT1Pool.forEach(function(item) {
-      vSan.removeLoot(item)
+      if (!villagePoolSet[item]) {
+        vSan.removeLoot(item)
+      }
     })
     // Remove other mod items
     vSan.removeLoot('@ars_nouveau')
