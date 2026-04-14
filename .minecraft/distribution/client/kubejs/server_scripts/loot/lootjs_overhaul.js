@@ -282,7 +282,7 @@ LootJS.modifiers(event => {
     'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
     'artifacts:golden_hook'
   ]
-  const artifactT1PerItem = 0.10 / artifactT1Pool.length
+  const artifactT1PerItem = 0.10 / artifactT1Pool.length  // 10% combined
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
@@ -303,7 +303,7 @@ LootJS.modifiers(event => {
     'celestial_artifacts:forest_cloak', 'celestial_artifacts:holy_talisman',
     'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace'
   ]
-  const artifactT2PerItem = 0.12 / artifactT2Pool.length
+  const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
@@ -322,7 +322,7 @@ LootJS.modifiers(event => {
     'relics:ice_skates', 'relics:rage_glove', 'relics:hunter_belt',
     'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe'
   ]
-  const artifactT3PerItem = 0.15 / artifactT3Pool.length
+  const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
@@ -343,7 +343,7 @@ LootJS.modifiers(event => {
     'celestial_artifacts:flight_ring', 'celestial_artifacts:prayer_crown',
     'celestial_artifacts:spirit_crown', 'celestial_artifacts:end_etching'
   ]
-  const artifactT4PerItem = 0.18 / artifactT4Pool.length
+  const artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   {
     const mod = event
       .addLootTypeModifier(LootType.CHEST)
@@ -1193,7 +1193,7 @@ LootJS.modifiers(event => {
     'artifacts:snowshoes',
     'artifacts:golden_hook'
   ]
-  const villageArtifactPerItemChance = 0.0016
+  const villageArtifactPerItemChance = 0.08 / 24  // 8% combined across 24 items
 
   // --- Village chest sanitization (runs FIRST) ---
   // Forge events inject artifacts before LootJS runs. Strip ALL mod artifacts
