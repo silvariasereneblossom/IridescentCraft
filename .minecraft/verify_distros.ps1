@@ -1,10 +1,14 @@
 # =============================================================================
 # IridescentCraft Distribution Verification
 # Checks critical files exist in server_distribution/ and distribution/client/
+# Run with -Fix to auto-copy missing/stale files
 # =============================================================================
+
+param([switch]$Fix)
 
 $scriptDir = Split-Path -Parent $MyInvocation.MyCommand.Path
 $errors = 0
+$fixed = 0
 
 Write-Host "[Verify] Checking distribution sync..." -ForegroundColor Cyan
 Write-Host ""
@@ -42,57 +46,63 @@ $distros = @("server_distribution", "distribution\client")
 foreach ($distro in $distros) {
     Write-Host "  --- $distro ---" -ForegroundColor White
 
+    # Helper: check + optionally fix
+    function Check-And-Fix($src, $dst, $label) {
+        if (-not (Test-Path $src)) { return }
+        $needsFix = $false
+        if (-not (Test-Path $dst)) {
+            Write-Host "  MISSING: $label" -ForegroundColor Red
+            $needsFix = $true
+        } elseif ((Get-Item $src).Length -ne (Get-Item $dst).Length) {
+            Write-Host "  STALE:   $label" -ForegroundColor Yellow
+            $needsFix = $true
+        }
+        if ($needsFix) {
+            $script:errors++
+            if ($Fix) {
+                $dstDir = Split-Path $dst -Parent
+                if (-not (Test-Path $dstDir)) { New-Item -ItemType Directory -Path $dstDir -Force | Out-Null }
+                Copy-Item $src $dst -Force
+                Write-Host "    FIXED" -ForegroundColor Green
+                $script:fixed++
+            }
+        }
+    }
+
     foreach ($zip in $paxiZips) {
         $src = Join-Path $scriptDir "config\paxi\datapacks\$zip"
         $dst = Join-Path $scriptDir "$distro\config\paxi\datapacks\$zip"
-        if ((Test-Path $src) -and -not (Test-Path $dst)) {
-            Write-Host "  MISSING: $distro\config\paxi\datapacks\$zip" -ForegroundColor Red
-            $errors++
-        } elseif ((Test-Path $src) -and (Test-Path $dst)) {
-            if ((Get-Item $src).Length -ne (Get-Item $dst).Length) {
-                Write-Host "  STALE:   $distro\config\paxi\datapacks\$zip" -ForegroundColor Yellow
-                $errors++
-            }
-        }
+        Check-And-Fix $src $dst "$distro\config\paxi\datapacks\$zip"
     }
 
     foreach ($jar in $customJars) {
         $src = Join-Path $scriptDir "mods\$jar"
         $dst = Join-Path $scriptDir "$distro\mods\$jar"
-        if ((Test-Path $src) -and -not (Test-Path $dst)) {
-            Write-Host "  MISSING: $distro\mods\$jar" -ForegroundColor Red
-            $errors++
-        } elseif ((Test-Path $src) -and (Test-Path $dst)) {
-            if ((Get-Item $src).Length -ne (Get-Item $dst).Length) {
-                Write-Host "  STALE:   $distro\mods\$jar" -ForegroundColor Yellow
-                $errors++
-            }
-        }
+        Check-And-Fix $src $dst "$distro\mods\$jar"
     }
 
     foreach ($script in $kubeScripts) {
         $src = Join-Path $scriptDir $script
         $dst = Join-Path $scriptDir "$distro\$script"
-        if ((Test-Path $src) -and -not (Test-Path $dst)) {
-            Write-Host "  MISSING: $distro\$script" -ForegroundColor Red
-            $errors++
-        }
+        Check-And-Fix $src $dst "$distro\$script"
     }
 
     foreach ($cfg in $configs) {
         $src = Join-Path $scriptDir $cfg
         $dst = Join-Path $scriptDir "$distro\$cfg"
-        if ((Test-Path $src) -and -not (Test-Path $dst)) {
-            Write-Host "  MISSING: $distro\$cfg" -ForegroundColor Red
-            $errors++
-        }
+        Check-And-Fix $src $dst "$distro\$cfg"
     }
 
     Write-Host ""
 }
 
 if ($errors -gt 0) {
-    Write-Host "[Verify] FAILED: $errors file(s) missing or stale" -ForegroundColor Red
+    if ($Fix) {
+        Write-Host "[Verify] Fixed $fixed of $errors issue(s)." -ForegroundColor Yellow
+    } else {
+        Write-Host "[Verify] FAILED: $errors file(s) missing or stale" -ForegroundColor Red
+        Write-Host "[Verify] Run with -Fix to auto-copy: verify_distros.bat -Fix" -ForegroundColor Yellow
+    }
     exit 1
 } else {
     Write-Host "[Verify] All critical files present." -ForegroundColor Green
