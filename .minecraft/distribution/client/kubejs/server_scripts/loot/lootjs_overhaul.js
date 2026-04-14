@@ -283,14 +283,12 @@ LootJS.modifiers(event => {
     'artifacts:golden_hook'
   ]
   const artifactT1PerItem = 0.10 / artifactT1Pool.length  // 10% combined
-  {
-    const mod = event
-      .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:overworld')
-    artifactT1Pool.forEach(item => {
-      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT1PerItem)))
-    })
-  }
+  var modT1 = event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld')
+  artifactT1Pool.forEach(item => {
+    modT1.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT1PerItem)))
+  })
 
   // --- T2 Pool (~8% combined) — Twilight Forest, Aether, Blue Skies ---
   // Combat + defensive artifacts.
@@ -304,15 +302,13 @@ LootJS.modifiers(event => {
     'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace'
   ]
   const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
-  {
-    const mod = event
-      .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
-        'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
-    artifactT2Pool.forEach(item => {
-      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT2PerItem)))
-    })
-  }
+  var modT2 = event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
+      'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+  artifactT2Pool.forEach(item => {
+    modT2.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT2PerItem)))
+  })
 
   // --- T3 Pool (~10% combined) — Nether, Undergarden ---
   // Strong artifacts + some relics.
@@ -323,16 +319,14 @@ LootJS.modifiers(event => {
     'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe'
   ]
   const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
-  {
-    const mod = event
-      .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
-    artifactT3Pool.forEach(item => {
-      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT3PerItem)))
-    })
-  }
+  var modT3 = event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+  artifactT3Pool.forEach(function(item) {
+    modT3.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT3PerItem)))
+  })
 
-  // --- T4 Pool (~12% combined) — End, Deeper Darker, Abyss ---
+  // --- T4 Pool (~16% combined) — End, Deeper Darker, Abyss ---
   // Endgame artifacts + powerful relics.
   const artifactT4Pool = [
     'relics:enders_hand', 'relics:space_dissector', 'relics:shadow_glaive',
@@ -344,14 +338,12 @@ LootJS.modifiers(event => {
     'celestial_artifacts:spirit_crown', 'celestial_artifacts:end_etching'
   ]
   const artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
-  {
-    const mod = event
-      .addLootTypeModifier(LootType.CHEST)
-      .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
-    artifactT4Pool.forEach(item => {
-      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT4PerItem)))
-    })
-  }
+  var modT4 = event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+  artifactT4Pool.forEach(function(item) {
+    modT4.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT4PerItem)))
+  })
 
   // =========================================================================
   // SECTION 2: TIER 1 STRUCTURE LOOT (Overworld)

@@ -457,13 +457,15 @@ const TOKEN_TIERS = [
 global.tick_tokenAutoConsume = (event) => {
   const player = event.player
 
-  TOKEN_TIERS.forEach(({ tier, fragment }) => {
+  TOKEN_TIERS.forEach(function(entry) {
+    var tier = entry.tier
+    var fragment = entry.fragment
     if (AStages.playerHasStage(tier, player)) return
 
     // Count fragments across entire inventory
-    let total = 0
-    for (let i = 0; i < player.inventory.size; i++) {
-      let stack = player.inventory.getStackInSlot(i)
+    var total = 0
+    for (var i = 0; i < player.inventory.size; i++) {
+      var stack = player.inventory.getStackInSlot(i)
       if (!stack.isEmpty && stack.id === fragment) {
         total += stack.count
       }
@@ -471,15 +473,15 @@ global.tick_tokenAutoConsume = (event) => {
 
     if (total >= TOKEN_THRESHOLD) {
       // Consume exactly TOKEN_THRESHOLD fragments
-      let toRemove = TOKEN_THRESHOLD
-      for (let i = 0; i < player.inventory.size && toRemove > 0; i++) {
-        let stack = player.inventory.getStackInSlot(i)
-        if (!stack.isEmpty && stack.id === fragment) {
-          let take = Math.min(stack.count, toRemove)
-          stack.count -= take
+      var toRemove = TOKEN_THRESHOLD
+      for (var j = 0; j < player.inventory.size && toRemove > 0; j++) {
+        var stack2 = player.inventory.getStackInSlot(j)
+        if (!stack2.isEmpty && stack2.id === fragment) {
+          var take = Math.min(stack2.count, toRemove)
+          stack2.count -= take
           toRemove -= take
-          if (stack.count <= 0) {
-            player.inventory.setStackInSlot(i, Item.empty)
+          if (stack2.count <= 0) {
+            player.inventory.setStackInSlot(j, Item.empty)
           }
         }
       }
