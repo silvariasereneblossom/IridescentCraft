@@ -245,6 +245,109 @@ LootJS.modifiers(event => {
     )
 
   // =========================================================================
+  // SECTION 1B: GLOBAL ARTIFACT/CURIO STRIP
+  // =========================================================================
+  // Remove ALL artifact mod items from ALL chest loot globally. This runs
+  // BEFORE any tier-specific re-injection so we start from a clean slate.
+  // Individual sections below re-add curated items at controlled rates.
+  // Village sanitization (Section 6) has its own strip but this catches
+  // everything else — dimension chests, structure chests, etc.
+  // =========================================================================
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .removeLoot('@artifacts')
+    .removeLoot('@celestial_artifacts')
+    .removeLoot('@relics')
+
+  // =========================================================================
+  // SECTION 1C: TIERED ARTIFACT RE-INJECTION BY DIMENSION
+  // =========================================================================
+  // After stripping all artifact mod items globally, re-inject curated pools
+  // at tier-appropriate rates gated by dimension. Each tier has items suited
+  // to its difficulty level. Per-item chance = target_rate / pool_size.
+  // =========================================================================
+
+  // --- T1 Pool (~5% combined) — Overworld ---
+  // Utility/movement artifacts. Safe, non-combat.
+  const artifactT1Pool = [
+    'artifacts:snorkel', 'artifacts:anglers_hat', 'artifacts:superstitious_hat',
+    'artifacts:lucky_scarf', 'artifacts:cloud_in_a_bottle', 'artifacts:kitty_slippers',
+    'artifacts:running_shoes', 'artifacts:umbrella', 'artifacts:flippers',
+    'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
+    'artifacts:golden_hook'
+  ]
+  const artifactT1PerItem = 0.05 / artifactT1Pool.length
+  {
+    const mod = event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:overworld')
+    artifactT1Pool.forEach(item => {
+      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT1PerItem)))
+    })
+  }
+
+  // --- T2 Pool (~8% combined) — Twilight Forest, Aether, Blue Skies ---
+  // Combat + defensive artifacts.
+  const artifactT2Pool = [
+    'artifacts:power_glove', 'artifacts:feral_claws', 'artifacts:pickaxe_heater',
+    'artifacts:cross_necklace', 'artifacts:panic_necklace', 'artifacts:antidote_vessel',
+    'artifacts:crystal_heart', 'artifacts:obsidian_skull',
+    'celestial_artifacts:cross_necklace', 'celestial_artifacts:iron_scabbard',
+    'celestial_artifacts:copper_reinforce_plate', 'celestial_artifacts:amethyst_ring',
+    'celestial_artifacts:forest_cloak', 'celestial_artifacts:holy_talisman',
+    'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace'
+  ]
+  const artifactT2PerItem = 0.08 / artifactT2Pool.length
+  {
+    const mod = event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
+        'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+    artifactT2Pool.forEach(item => {
+      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT2PerItem)))
+    })
+  }
+
+  // --- T3 Pool (~10% combined) — Nether, Undergarden ---
+  // Strong artifacts + some relics.
+  const artifactT3Pool = [
+    'artifacts:night_vision_goggles', 'artifacts:drama_mask',
+    'artifacts:universal_attractor', 'artifacts:charm_of_sinking',
+    'relics:ice_skates', 'relics:rage_glove', 'relics:hunter_belt',
+    'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe'
+  ]
+  const artifactT3PerItem = 0.10 / artifactT3Pool.length
+  {
+    const mod = event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+    artifactT3Pool.forEach(item => {
+      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT3PerItem)))
+    })
+  }
+
+  // --- T4 Pool (~12% combined) — End, Deeper Darker, Abyss ---
+  // Endgame artifacts + powerful relics.
+  const artifactT4Pool = [
+    'relics:enders_hand', 'relics:space_dissector', 'relics:shadow_glaive',
+    'relics:elytra_booster', 'relics:magic_mirror', 'relics:holy_locket',
+    'relics:arrow_quiver', 'relics:wool_mitten',
+    'celestial_artifacts:demon_heart', 'celestial_artifacts:abyss_core',
+    'celestial_artifacts:angel_heart', 'celestial_artifacts:nebula_cube',
+    'celestial_artifacts:flight_ring', 'celestial_artifacts:prayer_crown',
+    'celestial_artifacts:spirit_crown', 'celestial_artifacts:end_etching'
+  ]
+  const artifactT4PerItem = 0.12 / artifactT4Pool.length
+  {
+    const mod = event
+      .addLootTypeModifier(LootType.CHEST)
+      .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    artifactT4Pool.forEach(item => {
+      mod.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT4PerItem)))
+    })
+  }
+
+  // =========================================================================
   // SECTION 2: TIER 1 STRUCTURE LOOT (Overworld)
   // Remove diamonds, add T1 token chance
   // =========================================================================
@@ -1460,13 +1563,54 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
+  // SECTION 8D: KEEBSZ BATTLE TOWER XP / POTION / SCROLL POOL
+  // =========================================================================
+  // Battle towers are combat gauntlets — reward players with consumables
+  // that help them push further: XP bottles, potions, scrolls, ench books.
+  // Applies to ALL Keebsz loot tables (all floors, all biomes).
+  // =========================================================================
+  event
+    .addLootTableModifier(/keebsz:.*/)
+    .addLoot(
+      LootEntry.of('minecraft:experience_bottle').limitCount([1, 3])
+        .when(c => c.randomChance(0.15))
+    )
+    .addLoot(
+      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_healing"}')
+        .when(c => c.randomChance(0.10))
+    )
+    .addLoot(
+      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_strength"}')
+        .when(c => c.randomChance(0.10))
+    )
+    .addLoot(
+      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_swiftness"}')
+        .when(c => c.randomChance(0.10))
+    )
+    .addLoot(
+      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_regeneration"}')
+        .when(c => c.randomChance(0.10))
+    )
+    .addLoot(
+      LootEntry.of('irons_spellbooks:scroll')
+        .when(c => c.randomChance(0.08))
+    )
+    .addLoot(
+      LootEntry.of('minecraft:enchanted_book')
+        .enchantWithLevels({min: 10, max: 25}, true)
+        .when(c => c.randomChance(0.10))
+    )
+
+  // =========================================================================
   // SECTION 9: ENABLE LOGGING (remove in production)
   // =========================================================================
 
   // event.enableLogging()
 
   console.log('[IridescentCraft] LootJS structure chest overhaul loaded')
-  console.log('  - Global enchanted book removal: ALL chest loot')
+  console.log('  - Global artifact strip: @artifacts, @celestial_artifacts, @relics removed from ALL chests')
+  console.log('  - Tiered artifact re-injection: T1(5%) OW, T2(8%) TF/Aether/BS, T3(10%) Nether/UG, T4(12%) End/DD/Abyss')
+  console.log('  - Global enchanted book removal + tier-scaled re-add')
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
   console.log('  - Overworld clutter cleanup: horse armor, spider eyes, etc removed/reduced')
@@ -1475,6 +1619,6 @@ LootJS.modifiers(event => {
   console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
   console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
   console.log('  - Tower curio drops: ~12% per artifact type in tower chests')
-  console.log('  - Village affix gear: white/green only, no epic+')
+  console.log('  - Keebsz Battle Towers: XP bottles, potions, scrolls, enchanted books')
   console.log('  - Boosted magic materials: inks, source gems in structure chests')
 })
