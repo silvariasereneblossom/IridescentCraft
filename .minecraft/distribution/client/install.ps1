@@ -177,6 +177,8 @@ MCLaunchMethod=LauncherPart
 OverrideMemory=true
 MaxMemAlloc=12288
 MinMemAlloc=4096
+OverrideJavaArgs=true
+JvmArgs=-noverify
 iconKey=default
 name=IridescentCraft
 "@ | Set-Content "$instanceDir\instance.cfg" -Encoding UTF8
