@@ -14,11 +14,6 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
-### Server Main-Thread Stall During Dungeon Crawl Worldgen
-- **Status:** Resolved (2026-04-12) — Chunky auto-pregen now runs on first world load
-- **Description:** On 2026-04-10 the server stalled the main thread for 115 seconds. Dungeon Crawl was generating a multi-node dungeon at (~2782, 73, 1631) right next to the player's position.
-- **Fix:** Disabled `dungeon_crawl.toml extended_debug`, added `auto_chunky.js` (radius 1500 pregen on first world load), chunky-player-pause keeps task off main thread while players are online.
-
 ### Apotheosis Tower Loot
 - **Status:** Active
 - **Description:** Some Apotheosis tower chests show gold only. Paxi override may have load order issue causing incomplete loot table replacement.
@@ -55,6 +50,22 @@ Forge requires network channel lists to match between client and server. Mods th
 ### Fast Leaf Decay ConcurrentModificationException
 - **Status:** Known issue (2026-03-17), intermittent
 - **Description:** Fast Leaf Decay occasionally throws ConcurrentModificationException. Non-fatal, does not crash the game. Monitoring.
+
+### IF Latex Rework Script Error
+- **Status:** Known, low priority (pre-existing)
+- **Description:** `if_latex_rework` script occasionally logs a non-fatal error during recipe event. Does not affect gameplay. Will be cleaned up in a future pass.
+
+### Planetary Loot withNBT Error
+- **Status:** Known, low priority (pre-existing)
+- **Description:** `planetary_loot` script has a `withNBT` call that silently fails on certain item types. Ad Astra integration is still in-progress so this is deferred until the planetary loot system is fully implemented.
+
+### Patchouli Codex (Iridescent Codex)
+- **Status:** Tabled pending upstream input
+- **Description:** Codex rendering has edge cases related to Patchouli's bytecode-patched behavior. Waiting on Vazkii (Patchouli maintainer) and/or Sinytra (Connector) for guidance on the best long-term fix. Current bytecode patch (`athrow` -> `pop`) works but is fragile.
+
+### Alpha Testing Status
+- **Status:** Active (as of 2026-04-15)
+- **Description:** Stable alpha build deployed to test server. Loot rates finalized, worldgen tuned, distribution tooling in place. 2 known low-priority pre-existing errors (if_latex_rework, planetary_loot withNBT). Codex tabled. All major systems functional.
 
 ### Custom Item Artwork Needed (72 items)
 - **Status:** TODO — tinted placeholder textures in place, need proper pixel art
@@ -312,3 +323,15 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ### Server Self-Update (2026-04-12)
 - **Resolved:** `iridescentserver.bat/.sh` can now update themselves via Phase 0.5 staging mechanism. One-time manual copy required to bootstrap.
+
+### Server Main-Thread Stall During Dungeon Crawl Worldgen (2026-04-12)
+- **Resolved:** Chunky auto-pregen now runs on first world load (radius 1500). Dungeon Crawl `extended_debug` disabled, chunky-player-pause keeps pregen off main thread while players are online.
+
+### Loot Rate Finalization (2026-04-15)
+- **Resolved:** Artifact rates finalized: Village 8%, T1 10%, T2 12%, T3 14%, T4 16%. LootJS persistent filter issue resolved (global strip removed for artifact/celestial/relics namespaces). Ars Nouveau bytecode-patched. Kitty Slippers removed. Village pool fix applied.
+
+### Worldgen Tuning (2026-04-15)
+- **Resolved:** Snow biome reduction (temperature_offset 0.15, BOP snow biomes disabled). More water worldgen (ridge 0.08, ocean -0.35, erosion 0.10).
+
+### Distribution Sync Tooling (2026-04-15)
+- **Resolved:** `verify_distros.ps1/.bat` added with `-Fix` auto-copy mode. 21 missing distro files discovered and synced.

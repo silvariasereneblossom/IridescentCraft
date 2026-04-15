@@ -4,6 +4,56 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-14/15 — Stable alpha: loot finalization, worldgen tuning, distro tooling
+
+### Ars Nouveau Bytecode Patch
+- Ars Nouveau's `dungeon_loot` GLM injection disabled via bytecode patch (compiled JAR modification)
+- Complementary Ars GLM override: `dungeon_loot.json` with 0% chances deployed via both Paxi datapack and KubeJS to ensure no Ars loot leaks through
+
+### Tiered Artifact Rates Finalized
+- Village chests: 8% combined artifact rate
+- T1 (Overworld): 10%
+- T2 (Twilight Forest, Aether, Blue Skies): 12%
+- T3 (Nether, Undergarden): 14%
+- T4 (End, Deeper Darker, Abyss): 16%
+
+### LootJS Persistent Filter Discovery
+- `removeLoot(@namespace)` in LootJS catches items re-added by earlier modifiers in the same evaluation pass
+- Global strip for `@artifacts`, `@celestial_artifacts`, `@relics` removed — persistent filter was stripping the tiered re-injections immediately after adding them
+- These mods now rely on GLM whitelist + Ars bytecode patch instead of LootJS strip
+
+### Village Pool Fix
+- Village loot strip now only removes T1 items that are NOT in the curated village artifact pool
+- Prevents the strip phase from undoing the village-specific artifact injection
+
+### Kitty Slippers Removed
+- Kitty Slippers removed from all loot pools — conflicts with origin flight design (creeper aggro cancellation interacts poorly with flying origins)
+
+### Lootr Configuration
+- `aggressive_mode` set back to `true` in Lootr config (was temporarily disabled during debugging)
+
+### Snow Biome Reduction
+- Tectonic `temperature_offset` set to 0.15 (shifts biome temperature warmer, reducing snow biome frequency)
+- BOP snow biomes disabled in config
+
+### Water Worldgen Increase
+- Tectonic overrides: `ridge` 0.08, `ocean` -0.35, `erosion` 0.10
+- Results in more rivers, larger oceans, and more varied terrain erosion
+
+### Bug Fixes
+- Tower curio loot: fixed `[0.12]` remnant probability notation (was being parsed as item count, not percentage)
+- Battle Tower loot: `withNBT()` replaced with `Item.of()` constructor (withNBT silently failed on some item types)
+- Source_gem (`ars_nouveau:source_gem`): `limitCount` fix to prevent excessive stack generation
+
+### Distribution Tooling
+- `verify_distros.ps1` and `verify_distros.bat` added with `-Fix` auto-copy mode for automated distribution sync verification
+- 21 missing distro files discovered and synced across all three distributions
+
+### Custom Patched JARs
+- Patchouli and Ars Nouveau now ship as custom bytecode-patched JARs (added to custom JAR allowlist in server scripts)
+
+---
+
 ## 2026-04-12 — Loot system overhaul: tiered artifacts, village sanitization, battle towers
 
 ### Tiered Artifact Loot System

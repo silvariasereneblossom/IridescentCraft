@@ -98,36 +98,43 @@ Majrusz's Progressive Difficulty includes a treasure bag system. Bags have been 
 
 ## Loot System Architecture
 
-Chest loot is fully controlled via a two-phase approach in `lootjs_overhaul.js`:
+Chest loot is fully controlled via a multi-layer approach in `lootjs_overhaul.js`:
 
-### Phase 1: Global Strip (Section 1B)
-All items from loot-injecting mods are removed from ALL chest loot globally. This creates a clean slate before any tier-specific content is added. Currently stripped mods:
-- `@artifacts` — Artifacts mod curios/accessories
-- `@celestial_artifacts` — Celestial Artifacts curios
-- `@relics` — Relics mod items
-- `@ars_nouveau` — Ars Nouveau spell books
-- `@irons_spellbooks` — Iron's Spellbooks scrolls/books
-
-Additional mods are blocked at the GLM level via `global_loot_modifiers.json` with `"replace": true`. Only whitelisted GLM entries fire; all others (including `rpgseteffects:loot_injection/*`, and any mod not explicitly listed) are inert.
-
-### Phase 2: Tiered Re-Injection (Section 1C+)
-After stripping, curated item pools are re-injected at tier-appropriate rates per dimension:
-
-| Tier | Dimensions | Combined Artifact Rate | Items |
-|------|-----------|----------------------|-------|
-| T1 | Overworld | ~5% | Utility/movement artifacts (snorkel, running shoes, etc.) |
-| T2 | Twilight Forest, Aether, Blue Skies | ~8% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
-| T3 | Nether, Undergarden | ~10% | Powerful offense artifacts + celestial items |
-| T4 | End, Deeper Darker, Abyss | ~12% | Endgame artifacts + relics items |
-
-### GLM Whitelist (global_loot_modifiers.json)
-Mods with whitelisted GLM entries (these fire normally):
+### Layer 1: GLM Whitelist (global_loot_modifiers.json)
+`"replace": true` ensures only whitelisted GLM entries fire. All unlisted mod GLMs (including `rpgseteffects:loot_injection/*`) are inert. Whitelisted mods:
 - `artifacts:` — 18 chest injections + 5 archaeology + 2 entity drops + 1 utility (pickaxe heater smelting)
 - `celestial_artifacts:` — 8 chest injections + 11 entity drops + 5 fishing boxes
 - `relics:` — single `relic_loot` GLM
 - `irons_spellbooks:` — 5 entity drops + 8 chest loot modifiers
 - `alexsmobs:` — 4 entries (ancient_dart, banana_drop, blossom_drop, pigshoes)
 - `tetra:` — 1 entry (bartering_additions)
+
+**Note:** Global LootJS strip for `@artifacts`, `@celestial_artifacts`, `@relics` was **removed** due to the persistent filter issue -- `removeLoot(@namespace)` catches items re-added by earlier modifiers in the same LootJS evaluation pass, which was stripping the tiered re-injections immediately after adding them. These mods now rely on the GLM whitelist for controlled injection rates.
+
+### Layer 2: Bytecode Patches
+- **Ars Nouveau** — bytecode-patched to disable `dungeon_loot` GLM injection at the class level. Complementary `dungeon_loot.json` override with 0% chances deployed via Paxi + KubeJS as belt-and-suspenders
+- **Patchouli** — bytecode-patched (`athrow` -> `pop`) for book rendering stability
+
+### Layer 3: LootJS Strip (Section 1B)
+Remaining mods stripped from ALL chest loot via LootJS:
+- `@ars_nouveau` — Ars Nouveau spell books (after bytecode patch prevents GLM injection)
+- `@irons_spellbooks` — Iron's Spellbooks scrolls/books
+
+### Layer 4: Tiered Re-Injection (Section 1C+)
+After stripping, curated item pools are re-injected at tier-appropriate rates per dimension:
+
+| Tier | Dimensions | Combined Artifact Rate | Items |
+|------|-----------|----------------------|-------|
+| Village | Village chests | 8% | Curated village artifact pool |
+| T1 | Overworld | 10% | Utility/movement artifacts (snorkel, running shoes, etc.) |
+| T2 | Twilight Forest, Aether, Blue Skies | 12% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
+| T3 | Nether, Undergarden | 14% | Powerful offense artifacts + celestial items |
+| T4 | End, Deeper Darker, Abyss | 16% | Endgame artifacts + relics items |
+
+### Custom Patched JARs
+The following mods ship as custom bytecode-patched JARs (added to custom JAR allowlist in server scripts):
+- **Patchouli** — `athrow` -> `pop` crash fix
+- **Ars Nouveau** — dungeon_loot GLM injection disabled
 
 ### Other Loot Controls
 - Enchanted books: removed globally, re-added with `.enchantWithLevels()` at dimension-scaled rates
