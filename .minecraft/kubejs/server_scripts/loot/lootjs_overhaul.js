@@ -1317,7 +1317,7 @@ LootJS.modifiers(event => {
   // Waystone Towers + Stronghold corridors get curio/artifact drops
   var towerCurioTables = ['totw_reworked:tower_chest', 'minecraft:chests/stronghold_corridor']
   var towerCurioItems = [
-    ['artifacts:umbrella', 0.12], [0.12],
+    ['artifacts:umbrella', 0.12],
     ['artifacts:bunny_hoppers', 0.12], ['artifacts:running_shoes', 0.12],
     ['artifacts:pocket_piston', 0.10], ['artifacts:universal_attractor', 0.08],
     ['artifacts:crystal_heart', 0.06], ['artifacts:cloud_in_a_bottle', 0.08],
