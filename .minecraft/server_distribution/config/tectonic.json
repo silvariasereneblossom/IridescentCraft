@@ -1,7 +1,7 @@
 {
   "biomes": {
     "temperature_multiplier": 1.0,
-    "temperature_offset": 0.0,
+    "temperature_offset": 0.15,
     "temperature_scale": 0.25,
     "vegetation_multiplier": 1.0,
     "vegetation_offset": 0.0,
