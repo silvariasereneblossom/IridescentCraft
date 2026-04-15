@@ -88,7 +88,7 @@ if ($remoteSha -eq $localSha) {
 # -- Step 3: Diff-based sync or full zip fallback --
 $owner = 'silvariasereneblossom'
 $repo = 'IridescentCraft'
-$prefix = 'minecraft/'
+$prefix = '.minecraft/'
 $exclude = @('world', 'logs', 'crash-reports', 'backups', 'libraries', '.cache', 'TesterLogs', 'journeymap')
 $overlayDirs = @('config', 'kubejs', 'global_packs', 'datapack_sources', 'defaultconfigs', 'patchouli_books', 'resourcepacks', 'shaderpacks')
 $mirrorList = @()
@@ -176,8 +176,8 @@ if ($useDiff) {
         Expand-Archive -Path $zipFile -DestinationPath $extractDir -Force
 
         $srcRoot = (Get-ChildItem $extractDir -Directory | Select-Object -First 1).FullName
-        $src = Join-Path $srcRoot 'minecraft'
-        if (-not (Test-Path $src)) { throw "Expected minecraft/ folder not found in archive" }
+        $src = Join-Path $srcRoot '.minecraft'
+        if (-not (Test-Path $src)) { throw "Expected .minecraft/ folder not found in archive" }
 
         foreach ($dir in $overlayDirs) {
             $srcDir = Join-Path $src $dir
@@ -259,6 +259,30 @@ if (Test-Path $downloadScript) {
             } | Select-Object -First 50
         } catch {
             Write-Host "[IridescentCraft Sync] Mod download step failed (non-fatal): $($_.Exception.Message)" -ForegroundColor Yellow
+        }
+    }
+}
+
+# Ensure -noverify is set in instance.cfg (required for bytecode-patched JARs)
+$instDir = if ($env:INST_DIR) { $env:INST_DIR } elseif ($instanceMC) { Split-Path $instanceMC -Parent } else { $null }
+if ($instDir) {
+    $cfgPath = Join-Path $instDir 'instance.cfg'
+    if (Test-Path $cfgPath) {
+        $cfg = Get-Content $cfgPath -Raw
+        if ($cfg -notmatch 'JvmArgs=.*-noverify') {
+            $cfg = $cfg -replace 'OverrideJavaArgs=false', 'OverrideJavaArgs=true'
+            if ($cfg -match 'JvmArgs=(.*)') {
+                $existing = $matches[1].Trim()
+                if ($existing) {
+                    $cfg = $cfg -replace "JvmArgs=.*", "JvmArgs=-noverify $existing"
+                } else {
+                    $cfg = $cfg -replace "JvmArgs=.*", "JvmArgs=-noverify"
+                }
+            } elseif ($cfg -notmatch 'JvmArgs=') {
+                $cfg = $cfg -replace '(\[General\])', "`$1`nOverrideJavaArgs=true`nJvmArgs=-noverify"
+            }
+            Set-Content $cfgPath $cfg -NoNewline
+            Write-Host "[IridescentCraft Sync] Added -noverify to JVM args (required for patched mods)" -ForegroundColor Yellow
         }
     }
 }

@@ -263,5 +263,29 @@ if (Test-Path $downloadScript) {
     }
 }
 
+# Ensure -noverify is set in instance.cfg (required for bytecode-patched JARs)
+$instDir = if ($env:INST_DIR) { $env:INST_DIR } elseif ($instanceMC) { Split-Path $instanceMC -Parent } else { $null }
+if ($instDir) {
+    $cfgPath = Join-Path $instDir 'instance.cfg'
+    if (Test-Path $cfgPath) {
+        $cfg = Get-Content $cfgPath -Raw
+        if ($cfg -notmatch 'JvmArgs=.*-noverify') {
+            $cfg = $cfg -replace 'OverrideJavaArgs=false', 'OverrideJavaArgs=true'
+            if ($cfg -match 'JvmArgs=(.*)') {
+                $existing = $matches[1].Trim()
+                if ($existing) {
+                    $cfg = $cfg -replace "JvmArgs=.*", "JvmArgs=-noverify $existing"
+                } else {
+                    $cfg = $cfg -replace "JvmArgs=.*", "JvmArgs=-noverify"
+                }
+            } elseif ($cfg -notmatch 'JvmArgs=') {
+                $cfg = $cfg -replace '(\[General\])', "`$1`nOverrideJavaArgs=true`nJvmArgs=-noverify"
+            }
+            Set-Content $cfgPath $cfg -NoNewline
+            Write-Host "[IridescentCraft Sync] Added -noverify to JVM args (required for patched mods)" -ForegroundColor Yellow
+        }
+    }
+}
+
 Write-Host "[IridescentCraft Sync] Done - launching..." -ForegroundColor Green
 exit 0
