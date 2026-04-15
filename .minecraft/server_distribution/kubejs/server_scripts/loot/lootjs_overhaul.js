@@ -1568,19 +1568,19 @@ LootJS.modifiers(event => {
         .when(c => c.randomChance(0.15))
     )
     .addLoot(
-      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_healing"}')
+      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_healing"}'))
         .when(c => c.randomChance(0.10))
     )
     .addLoot(
-      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_strength"}')
+      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_strength"}'))
         .when(c => c.randomChance(0.10))
     )
     .addLoot(
-      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_swiftness"}')
+      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_swiftness"}'))
         .when(c => c.randomChance(0.10))
     )
     .addLoot(
-      LootEntry.of('minecraft:potion').withNBT('{Potion:"minecraft:strong_regeneration"}')
+      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_regeneration"}'))
         .when(c => c.randomChance(0.10))
     )
     .addLoot(
