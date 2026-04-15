@@ -997,6 +997,7 @@ LootJS.modifiers(event => {
   // --- Remove tier-gated mod items from Overworld chests ---
   // These mods inject items into vanilla loot tables but are AStages-gated,
   // causing "Unfamiliar Item" confusion for pre-tier players.
+  // Strip dimension mod items from Overworld chests (tag leakage)
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
@@ -1005,6 +1006,12 @@ LootJS.modifiers(event => {
     .removeLoot('@blue_skies')
     .removeLoot('@twilightforest')
     .removeLoot('@theabyss')
+    .removeLoot('blue_skies:moonstone_shard')
+    .removeLoot('blue_skies:ventium_ingot')
+    .removeLoot('blue_skies:falsite_ingot')
+    .removeLoot('blue_skies:horizonite_ingot')
+    .removeLoot('blue_skies:charoite')
+    .removeLoot('blue_skies:diopside')
 
   // =========================================================================
   // SECTION 5C: OCEAN STRUCTURE LOOT
