@@ -91,6 +91,14 @@ Current custom JARs:
 - `mek_walkable_cables-1.0.1.jar` — Mekanism cable coremod
 - `offlineskins-1.20.1-v1.jar` — Offline skin support
 - `zeta_racefix-1.0.0.jar` — Race selection fix
+- `Patchouli-1.20.1-85-FORGE.jar` — Bytecode patched: athrow→pop in Book.class (disables use_resource_pack enforcement)
+- `ars_nouveau-1.20.1-4.12.7-all.jar` — Bytecode patched: doApply→immediate return in DungeonLootEnhancerModifier.class (disables chest loot injection)
+
+### JVM Requirement: -noverify
+Both bytecode-patched JARs (Patchouli, Ars Nouveau) create dead code paths that the JVM verifier rejects. The `-noverify` flag is REQUIRED on both client and server:
+- **Server:** Already in `iridescentserver.bat` JVM args
+- **Client:** Must be added manually in PrismLauncher: Instance → Settings → Java → JVM arguments → `-noverify`
+This flag is deprecated in Java 17 but functional. It prints a warning but does not affect gameplay.
 
 When adding a new custom JAR:
 1. Add the JAR to `mods/` in all three distributions
