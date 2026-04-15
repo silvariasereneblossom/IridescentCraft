@@ -1,0 +1,18 @@
+filename = 'abridged-2.0.0-forge-1.20.1.jar'
+name = 'Abridged'
+side = 'server'
+x-prismlauncher-dependencies = []
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = '2.0.0'
+
+[download]
+hash = '04c7b07067104d6b0bb24c6064f21a6292312dd030639dd9d87c81f0fa2da371aa55bfb8d5792f47668f059051bbe5af89863670084c1d7b68073d6705e520a3'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/tb5O1ssC/versions/tIM1hajM/abridged-2.0.0-forge-1.20.1.jar'
+
+[update.modrinth]
+mod-id = 'tb5O1ssC'
+version = 'tIM1hajM'
