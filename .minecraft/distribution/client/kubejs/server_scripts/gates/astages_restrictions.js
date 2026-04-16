@@ -114,11 +114,9 @@ ServerEvents.loaded(event => {
     'thermal:dynamo_magmatic', 'thermal:dynamo_numismatic',
     'thermal:dynamo_lapidary', 'thermal:dynamo_disenchantment',
     'thermal:dynamo_gourmand',
-    // Ars Nouveau T2 — spell books and advanced items (NOT source gems)
-    'ars_nouveau:novice_spell_book', 'ars_nouveau:apprentice_spell_book',
-    'ars_nouveau:archmage_spell_book',
+    // Ars Nouveau T2 — apprentice tier (novice + scribes_table are T1/ungated)
+    'ars_nouveau:apprentice_spell_book',
     'ars_nouveau:enchanting_apparatus', 'ars_nouveau:arcane_core',
-    'ars_nouveau:imbuement_chamber', 'ars_nouveau:scribes_table',
     // Botania T2 — advanced materials + gear
     'botania:manasteel_ingot', 'botania:mana_diamond', 'botania:mana_pearl',
     'botania:manasteel_block',
@@ -187,6 +185,9 @@ ServerEvents.loaded(event => {
     // Nether materials (Nether is T3)
     'minecraft:ancient_debris',
     'minecraft:respawn_anchor',
+    // Ars Nouveau T3 — archmage tier + advanced crafting
+    'ars_nouveau:archmage_spell_book',
+    'ars_nouveau:imbuement_chamber',
     // Botania T3 — terrasteel + elementium + all derivatives
     'botania:terrasteel_ingot', 'botania:terrasteel_block',
     'botania:terrasteel_helmet', 'botania:terrasteel_chestplate',

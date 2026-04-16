@@ -273,13 +273,15 @@ LootJS.modifiers(event => {
   // to its difficulty level. Per-item chance = target_rate / pool_size.
   // =========================================================================
 
-  // --- T1 Pool (~5% combined) — Overworld ---
-  // Utility/movement artifacts. Safe, non-combat.
+  // --- T1 Pool (~10% combined) — Overworld ---
+  // Utility/movement artifacts + starter magic items. Safe, non-combat.
   const artifactT1Pool = [
     'artifacts:snorkel', 'artifacts:anglers_hat', 'artifacts:superstitious_hat',
     'artifacts:lucky_scarf', 'artifacts:cloud_in_a_bottle',     'artifacts:running_shoes', 'artifacts:umbrella', 'artifacts:flippers',
     'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
-    'artifacts:golden_hook'
+    'artifacts:golden_hook',
+    'ars_nouveau:novice_spell_book', 'ars_nouveau:source_gem',
+    'irons_spellbooks:common_ink'
   ]
   const artifactT1PerItem = 0.10 / artifactT1Pool.length  // 10% combined
   var modT1 = event
@@ -289,8 +291,8 @@ LootJS.modifiers(event => {
     modT1.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT1PerItem)))
   })
 
-  // --- T2 Pool (~8% combined) — Twilight Forest, Aether, Blue Skies ---
-  // Combat + defensive artifacts.
+  // --- T2 Pool (~12% combined) — Twilight Forest, Aether, Blue Skies ---
+  // Combat + defensive artifacts + mid-tier magic.
   const artifactT2Pool = [
     'artifacts:power_glove', 'artifacts:feral_claws', 'artifacts:pickaxe_heater',
     'artifacts:cross_necklace', 'artifacts:panic_necklace', 'artifacts:antidote_vessel',
@@ -298,7 +300,8 @@ LootJS.modifiers(event => {
     'celestial_artifacts:cross_necklace', 'celestial_artifacts:iron_scabbard',
     'celestial_artifacts:copper_reinforce_plate', 'celestial_artifacts:amethyst_ring',
     'celestial_artifacts:forest_cloak', 'celestial_artifacts:holy_talisman',
-    'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace'
+    'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace',
+    'ars_nouveau:apprentice_spell_book', 'irons_spellbooks:uncommon_ink'
   ]
   const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
@@ -309,13 +312,14 @@ LootJS.modifiers(event => {
     modT2.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT2PerItem)))
   })
 
-  // --- T3 Pool (~10% combined) — Nether, Undergarden ---
-  // Strong artifacts + some relics.
+  // --- T3 Pool (~14% combined) — Nether, Undergarden ---
+  // Strong artifacts + some relics + advanced magic.
   const artifactT3Pool = [
     'artifacts:night_vision_goggles', 'artifacts:drama_mask',
     'artifacts:universal_attractor', 'artifacts:charm_of_sinking',
     'relics:ice_skates', 'relics:rage_glove', 'relics:hunter_belt',
-    'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe'
+    'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe',
+    'ars_nouveau:archmage_spell_book', 'irons_spellbooks:rare_ink'
   ]
   const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
@@ -1218,130 +1222,130 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
-  // SECTION 7: TOWER STRUCTURE CURIO DROPS
+  // SECTION 6B: VILLAGE MAGIC ACCESS
   // =========================================================================
-  // Design doc Part IX: Curios drop from tier-appropriate loot tables.
-  // General utility curios (movement speed, minor buffs) appear in T1 loot.
-  // Tower structures (Structory Towers, Keebsz Battle Towers) get a 15%
-  // chance to contain a random curio item from the artifacts mod.
-  // =========================================================================
-
-  // Structory Towers — ~15% chance for a random utility curio
-  // Uses addLoot with randomChance so it's not guaranteed every chest
-  event
-    .addLootTableModifier(/structory_towers:.*chests.*/)
-    .addLoot(
-      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-    )
-    .addLoot(
-      LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:snowshoes').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.01))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.008))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.01))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.008))
-    )
-
-  // Keebsz Battle Towers — upper floors (7-10) get curio chance (~15%)
-  event
-    .addLootTableModifier(/keebsz:.*\/floor[79]and[810]/)
-    .addLoot(
-      LootEntry.of('artifacts:umbrella').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-    )
-    .addLoot(
-      LootEntry.of('artifacts:bunny_hoppers').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:running_shoes').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:snowshoes').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:pocket_piston').when(c => c.randomChance(0.015))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:universal_attractor').when(c => c.randomChance(0.01))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:crystal_heart').when(c => c.randomChance(0.008))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:cloud_in_a_bottle').when(c => c.randomChance(0.01))
-    )
-    .addLoot(
-      LootEntry.of('artifacts:obsidian_skull').when(c => c.randomChance(0.008))
-    )
-
-  // =========================================================================
-  // SECTION 8: TOWERS OF THE WILD — CURIO + MAGIC LOOT
-  // =========================================================================
-  // Towers of the Wild chests get guaranteed curio/artifact chance (100%)
-  // and boosted magic materials. These are exploration landmarks.
+  // Villages are T1 starting areas. Add starter magic items so players
+  // discover the magic system early. Iron's Spellbooks scrolls require ink
+  // to craft, so we inject common_ink (crafting material) + copper spell book
+  // (starter permanent magic item). Ars Nouveau novice book + source gems
+  // provide early access to the now-ungated Ars system.
+  // Uses separate addLootTableModifier calls per table (no chaining).
   // =========================================================================
 
-  // Waystone Towers + Stronghold corridors get curio/artifact drops
-  var towerCurioTables = ['totw_reworked:tower_chest', 'minecraft:chests/stronghold_corridor']
-  var towerCurioItems = [
-    ['artifacts:umbrella', 0.12],
-    ['artifacts:bunny_hoppers', 0.12], ['artifacts:running_shoes', 0.12],
-    ['artifacts:pocket_piston', 0.10], ['artifacts:universal_attractor', 0.08],
-    ['artifacts:crystal_heart', 0.06], ['artifacts:cloud_in_a_bottle', 0.08],
-    ['artifacts:obsidian_skull', 0.06], ['artifacts:snowshoes', 0.12]
-  ]
-  towerCurioTables.forEach(function(table) {
-    var tcMod = event.addLootTableModifier(table)
-    towerCurioItems.forEach(function(entry) {
-      tcMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
-    })
+  // Iron's Spellbooks starter materials in villages
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table)
+      .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.20)))
+  })
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table)
+      .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.05)))
+  })
+
+  // Ars Nouveau starter items in villages
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table)
+      .addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.08)))
+  })
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table)
+      .addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 3]).when(c => c.randomChance(0.15)))
   })
 
   // =========================================================================
-  // SECTION 8.1: TOWERS OF THE WILD — LOOT CLEANUP + MAGIC SCROLLS
+  // SECTION 7: TOWER STRUCTURE CURIO DROPS + MAGIC LOOT (REBUILT)
   // =========================================================================
-  // Remove tier-breaking items (diamonds, manasteel, excess arrows).
-  // Add guaranteed magic scroll + chance of second for mage exploration.
-  // Towers are T1 exploration landmarks — magic-themed, not resource farms.
+  // Tower structures get curated curio drops at 8% per item (reduced from
+  // 12-15%) plus magic starter items. Structory Towers and Keebsz share
+  // a common curio pool but Keebsz gets floor-tiered loot in Section 8D.
   // =========================================================================
-  const towerChestTables = [
-    'totw_reworked:tower_chest',
-    'totw_reworked:ocean_tower_chest',
-    'minecraft:chests/stronghold_corridor'
+
+  // Shared tower curio pool (used by Structory Towers, Keebsz upper floors, TotW)
+  var towerCurioPool = [
+    ['artifacts:umbrella', 0.08],
+    ['artifacts:bunny_hoppers', 0.08],
+    ['artifacts:running_shoes', 0.08],
+    ['artifacts:snowshoes', 0.08],
+    ['artifacts:pocket_piston', 0.08],
+    ['artifacts:universal_attractor', 0.06],
+    ['artifacts:crystal_heart', 0.05],
+    ['artifacts:cloud_in_a_bottle', 0.06],
+    ['artifacts:obsidian_skull', 0.05]
   ]
-  towerChestTables.forEach(table => {
-    event
-      .addLootTableModifier(table)
-      // Remove items that shouldn't be in T1 tower loot
-      .removeLoot('minecraft:diamond')
-      .removeLoot('botania:manasteel_ingot')
-      .removeLoot('botania:mana_pearl')
-      .removeLoot('botania:mana_diamond')
-      .removeLoot('minecraft:arrow')
-      .removeLoot('minecraft:spectral_arrow')
-      // 15% chance of common ink
-      .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
-      // 8% chance of copper spell book (T1 magic gear)
-      .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
+
+  // --- Structory Towers — strip + rebuild ---
+  // Strip diamonds (already done in Section 4B), add magic + curios
+  var stMod = event.addLootTableModifier(/structory_towers:.*chests.*/)
+  stMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.10)))
+  stMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.10)))
+  stMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.08)))
+  towerCurioPool.forEach(function(entry) {
+    stMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
+  })
+
+  // =========================================================================
+  // SECTION 8: TOWERS OF THE WILD — STRIP + REBUILD (REBUILT)
+  // =========================================================================
+  // TotW chests: strip tier-breaking items, add guaranteed source_gem +
+  // common_ink, curio drops at 8% per item, magic books, enchanted books.
+  // These are T1 exploration landmarks — magic-themed, not resource farms.
+  // =========================================================================
+
+  // --- TotW tower_chest + ocean_tower_chest: strip + rebuild ---
+  var totwTables = ['totw_reworked:tower_chest', 'totw_reworked:ocean_tower_chest']
+  totwTables.forEach(function(table) {
+    var totwMod = event.addLootTableModifier(table)
+    // Strip tier-breaking items
+    totwMod.removeLoot('minecraft:diamond')
+    totwMod.removeLoot('botania:manasteel_ingot')
+    totwMod.removeLoot('botania:mana_pearl')
+    totwMod.removeLoot('botania:mana_diamond')
+    totwMod.removeLoot('minecraft:arrow')
+    totwMod.removeLoot('minecraft:spectral_arrow')
+    // Guaranteed magic materials (1 each)
+    totwMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 1]))
+    totwMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]))
+    // 15% novice spell book
+    totwMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.15)))
+    // 10% copper spell book
+    totwMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.10)))
+    // 10% enchanted book (levels 5-15)
+    totwMod.addLoot(
+      LootEntry.of('minecraft:enchanted_book')
+        .enchantWithLevels({min: 5, max: 15}, true)
+        .when(c => c.randomChance(0.10))
+    )
+    // Curio drops at 8% each
+    towerCurioPool.forEach(function(entry) {
+      totwMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
+    })
+  })
+
+  // --- Waystone Towers (stronghold_corridor) — slightly higher rates ---
+  // These are harder to find, so bump rates up
+  var waystoneMod = event.addLootTableModifier('minecraft:chests/stronghold_corridor')
+  // Strip tier-breaking items
+  waystoneMod.removeLoot('minecraft:diamond')
+  waystoneMod.removeLoot('botania:manasteel_ingot')
+  waystoneMod.removeLoot('botania:mana_pearl')
+  waystoneMod.removeLoot('botania:mana_diamond')
+  waystoneMod.removeLoot('minecraft:arrow')
+  waystoneMod.removeLoot('minecraft:spectral_arrow')
+  // 20% novice spell book (higher than TotW)
+  waystoneMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.20)))
+  // 15% copper spell book
+  waystoneMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.15)))
+  // 12% source gem [2-4]
+  waystoneMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([2, 4]).when(c => c.randomChance(0.12)))
+  // 10% enchanted book (levels 5-15)
+  waystoneMod.addLoot(
+    LootEntry.of('minecraft:enchanted_book')
+      .enchantWithLevels({min: 5, max: 15}, true)
+      .when(c => c.randomChance(0.10))
+  )
+  // Curio drops at 8% each (same pool)
+  towerCurioPool.forEach(function(entry) {
+    waystoneMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
   })
 
   // =========================================================================
@@ -1541,43 +1545,84 @@ LootJS.modifiers(event => {
   })
 
   // =========================================================================
-  // SECTION 8D: KEEBSZ BATTLE TOWER XP / POTION / SCROLL POOL
+  // SECTION 8D: KEEBSZ BATTLE TOWER — 3-TIER FLOOR SYSTEM (REBUILT)
   // =========================================================================
-  // Battle towers are combat gauntlets — reward players with consumables
-  // that help them push further: XP bottles, potions, scrolls, ench books.
-  // Applies to ALL Keebsz loot tables (all floors, all biomes).
+  // Battle towers are combat gauntlets with escalating rewards.
+  // Floor 1-3: T1 starter loot (XP, common magic, source gems)
+  // Floor 4-6: T2 mid-tier (better XP, uncommon materials, potions)
+  // Floor 7-10: T3 endgame (rare materials, diamonds allowed, rare inks)
   // =========================================================================
-  event
-    .addLootTableModifier(/keebsz:.*/)
-    .addLoot(
-      LootEntry.of('minecraft:experience_bottle').limitCount([1, 3])
-        .when(c => c.randomChance(0.15))
-    )
-    .addLoot(
-      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_healing"}'))
-        .when(c => c.randomChance(0.10))
-    )
-    .addLoot(
-      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_strength"}'))
-        .when(c => c.randomChance(0.10))
-    )
-    .addLoot(
-      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_swiftness"}'))
-        .when(c => c.randomChance(0.10))
-    )
-    .addLoot(
-      LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_regeneration"}'))
-        .when(c => c.randomChance(0.10))
-    )
-    .addLoot(
-      LootEntry.of('irons_spellbooks:common_ink')
-        .when(c => c.randomChance(0.08))
-    )
-    .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels({min: 10, max: 25}, true)
-        .when(c => c.randomChance(0.10))
-    )
+
+  // --- Floor 1-3 (keebsz:*/floor[12]and[23]) ---
+  var keebszLow = event.addLootTableModifier(/keebsz:.*\/floor[12]and[23]/)
+  keebszLow.removeLoot('minecraft:diamond')
+  keebszLow.addLoot(
+    LootEntry.of('minecraft:experience_bottle').limitCount([1, 3])
+      .when(c => c.randomChance(0.15))
+  )
+  keebszLow.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.10)))
+  keebszLow.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.08)))
+  keebszLow.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.05)))
+  // 8% random T1 artifact (pick one from pool)
+  var keebszLowArtifactChance = 0.08 / artifactT1Pool.length
+  artifactT1Pool.forEach(function(item) {
+    keebszLow.addLoot(LootEntry.of(item).when(c => c.randomChance(keebszLowArtifactChance)))
+  })
+
+  // --- Floor 4-6 (keebsz:*/floor[35]and[46]) ---
+  var keebszMid = event.addLootTableModifier(/keebsz:.*\/floor[35]and[46]/)
+  keebszMid.removeLoot('minecraft:diamond')
+  keebszMid.addLoot(
+    LootEntry.of('minecraft:experience_bottle').limitCount([2, 5])
+      .when(c => c.randomChance(0.15))
+  )
+  // 12% uncommon materials (iron blocks, gold blocks)
+  keebszMid.addLoot(LootEntry.of('minecraft:iron_block').when(c => c.randomChance(0.06)))
+  keebszMid.addLoot(LootEntry.of('minecraft:gold_block').when(c => c.randomChance(0.06)))
+  // 10% apprentice spell book
+  keebszMid.addLoot(LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.10)))
+  // 10% potions (healing, strength)
+  keebszMid.addLoot(
+    LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_healing"}'))
+      .when(c => c.randomChance(0.05))
+  )
+  keebszMid.addLoot(
+    LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_strength"}'))
+      .when(c => c.randomChance(0.05))
+  )
+  // 10% enchanted book (levels 10-20)
+  keebszMid.addLoot(
+    LootEntry.of('minecraft:enchanted_book')
+      .enchantWithLevels({min: 10, max: 20}, true)
+      .when(c => c.randomChance(0.10))
+  )
+
+  // --- Floor 7-10 (keebsz:*/floor[79]and[810]) ---
+  var keebszHigh = event.addLootTableModifier(/keebsz:.*\/floor[79]and[810]/)
+  keebszHigh.addLoot(
+    LootEntry.of('minecraft:experience_bottle').limitCount([3, 8])
+      .when(c => c.randomChance(0.20))
+  )
+  // 15% rare materials (diamonds allowed at high floors)
+  keebszHigh.addLoot(LootEntry.of('minecraft:diamond').limitCount([1, 3]).when(c => c.randomChance(0.15)))
+  // 12% rare inks
+  keebszHigh.addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.12)))
+  // 10% enchanted book (levels 20-30)
+  keebszHigh.addLoot(
+    LootEntry.of('minecraft:enchanted_book')
+      .enchantWithLevels({min: 20, max: 30}, true)
+      .when(c => c.randomChance(0.10))
+  )
+  // 8% T2/T3 artifact from pool
+  var keebszHighArtifactPool = artifactT2Pool.concat(artifactT3Pool)
+  var keebszHighArtifactChance = 0.08 / keebszHighArtifactPool.length
+  keebszHighArtifactPool.forEach(function(item) {
+    keebszHigh.addLoot(LootEntry.of(item).when(c => c.randomChance(keebszHighArtifactChance)))
+  })
+  // Curio drops at 8% each for upper floors
+  towerCurioPool.forEach(function(entry) {
+    keebszHigh.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
+  })
 
   // =========================================================================
   // SECTION 9: ENABLE LOGGING (remove in production)
@@ -1587,16 +1632,19 @@ LootJS.modifiers(event => {
 
   console.log('[IridescentCraft] LootJS structure chest overhaul loaded')
   console.log('  - Global artifact strip: @artifacts, @celestial_artifacts, @relics removed from ALL chests')
-  console.log('  - Tiered artifact re-injection: T1(5%) OW, T2(8%) TF/Aether/BS, T3(10%) Nether/UG, T4(12%) End/DD/Abyss')
+  console.log('  - Tiered artifact re-injection: T1(10%) OW, T2(12%) TF/Aether/BS, T3(14%) Nether/UG, T4(16%) End/DD/Abyss')
+  console.log('  - Tiered pools now include: Ars Nouveau books + source gems, Iron\'s Spellbooks inks')
   console.log('  - Global enchanted book removal + tier-scaled re-add')
   console.log('  - Structure token injection: 22+ mods covered')
   console.log('  - Vanilla diamond removal: 16 OW chest tables')
   console.log('  - Overworld clutter cleanup: horse armor, spider eyes, etc removed/reduced')
-  console.log("  - Early magic access: Iron's Spellbooks handles scrolls natively; copper spell book (3%) in OW chests")
+  console.log('  - Village magic access: common_ink (20%), copper_spell_book (5%), novice_spell_book (8%), source_gem (15%)')
   console.log('  - Village chest restrictions: iron/leather gear, no powerful items')
   console.log('  - Overworld food reduction: 90% non-meat, modded foods removed')
   console.log('  - Ocean structure loot: T1 tokens + water curios in ocean chests')
-  console.log('  - Tower curio drops: ~12% per artifact type in tower chests')
-  console.log('  - Keebsz Battle Towers: XP bottles, potions, scrolls, enchanted books')
+  console.log('  - TotW rebuilt: guaranteed source_gem + ink, 15% novice book, 10% copper book, 8% curios')
+  console.log('  - Waystone Towers rebuilt: 20% novice book, 15% copper book, 12% source gems')
+  console.log('  - Structory Towers rebuilt: 10% source_gem, 10% ink, 8% novice book, 8% curios')
+  console.log('  - Keebsz 3-tier floors: F1-3 T1 starter, F4-6 T2 mid, F7-10 T3 endgame')
   console.log('  - Boosted magic materials: inks, source gems in structure chests')
 })
