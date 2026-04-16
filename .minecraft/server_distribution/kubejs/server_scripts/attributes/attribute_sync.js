@@ -1,5 +1,5 @@
 // =============================================================================
-// Iridescent Attributes — Sync Handlers (Medium)
+// Iridescent Attributes — Sync Handlers (v0.3 Full)
 // =============================================================================
 // Reads unified icraft:* attributes from players and propagates them to
 // mod-specific systems. Runs as a player tick handler via 0_tick_master.js.
@@ -32,6 +32,15 @@ function getAttr(player, attr, fallback) {
 // --- COMBAT STAT APPLICATION ---
 // Single hurt handler for all combat attribute processing.
 // Order: dodge -> magic_resistance -> armor_pen -> crit -> spell_power -> lifesteal
+//
+// XP Attribute Core compatibility (v0.3):
+// Reads attributecore:* values and stacks them on top of icraft:* values.
+// This avoids sync/double-application issues — both sources are read fresh
+// each combat event and summed together.
+//   attributecore:crit_chance    -> adds to icraft:crit_chance
+//   attributecore:critical_damage -> adds to icraft:crit_damage
+//   attributecore:life_steal     -> adds to icraft:lifesteal
+//   attributecore:dodge_chance   -> adds to icraft:dodge_chance
 
 EntityEvents.hurt(function(event) {
   var entity = event.entity
@@ -40,6 +49,9 @@ EntityEvents.hurt(function(event) {
   // ── Dodge (defender is player) ──
   if (entity.player) {
     var dodgeChance = getAttr(entity, 'icraft:dodge_chance', 0)
+    // Stack attributecore dodge on top
+    dodgeChance += getAttr(entity, 'attributecore:dodge_chance', 0)
+
     if (dodgeChance > 0 && Math.random() < dodgeChance) {
       event.cancel()
       entity.tell(Text.gray('[Dodge] Attack evaded!'))
@@ -64,6 +76,11 @@ EntityEvents.hurt(function(event) {
     var lifesteal  = getAttr(attacker, 'icraft:lifesteal', 0)
     var spellPower = getAttr(attacker, 'icraft:spell_power', 1.0)
     var armorPen   = getAttr(attacker, 'icraft:armor_penetration', 0)
+
+    // Stack XP Attribute Core values on top of icraft base
+    critChance += getAttr(attacker, 'attributecore:crit_chance', 0)
+    critDamage += getAttr(attacker, 'attributecore:critical_damage', 0)
+    lifesteal  += getAttr(attacker, 'attributecore:life_steal', 0)
 
     // ── Armor Penetration ──
     // Scales with both penetration % and target's armor value.
@@ -225,8 +242,9 @@ PlayerEvents.loggedOut(function(event) {
   delete lastHealthMap[event.player.username]
 })
 
-console.log('[IridescentCraft] Attribute sync handlers loaded (medium)')
+console.log('[IridescentCraft] Attribute sync handlers loaded (v0.3 full)')
 console.log('  Combat: crit/dodge/lifesteal/armor_pen/magic_res via EntityEvents.hurt')
+console.log('  Combat: XP Attribute Core stacking (crit_chance, critical_damage, life_steal, dodge_chance)')
 console.log('  Magic: spell_power + mana_regen + CDR sync every 5s')
 console.log('  Utility: xp_multiplier via PlayerEvents.xpChange')
 console.log('  Utility: healing_received via tick health tracking')
