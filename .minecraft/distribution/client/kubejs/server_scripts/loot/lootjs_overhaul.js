@@ -1165,54 +1165,33 @@ LootJS.modifiers(event => {
   // Per-chest rate math: 25 items × 0.16% each = ~4% any-artifact rate.
   // Independent rolls mean technically a chest COULD spawn two artifacts, but
   // the probability is ~0.08% per chest — rare enough to ignore.
+  // Village-only artifact pool: combat/utility focused + Cloud in a Bottle
+  // These items do NOT overlap with the T1 global pool, so no persistent
+  // filter conflicts. Villages get ONLY this pool (T1 global stripped).
   const villageArtifactPool = [
-    'artifacts:snorkel',
-    'artifacts:anglers_hat',
-    'artifacts:superstitious_hat',
-    'artifacts:lucky_scarf',
     'artifacts:cloud_in_a_bottle',
-        'artifacts:running_shoes',
     'artifacts:power_glove',
-    'artifacts:digging_claws',
     'artifacts:feral_claws',
-    'artifacts:pickaxe_heater',
-    'artifacts:universal_attractor',
-    'artifacts:umbrella',
-    'artifacts:flippers',
-    'artifacts:charm_of_sinking',
     'artifacts:cross_necklace',
     'artifacts:panic_necklace',
     'artifacts:antidote_vessel',
     'artifacts:crystal_heart',
+    'artifacts:obsidian_skull',
     'artifacts:night_vision_goggles',
     'artifacts:drama_mask',
-    'artifacts:bunny_hoppers',
-    'artifacts:snowshoes',
-    'artifacts:golden_hook'
+    'artifacts:universal_attractor',
+    'artifacts:pickaxe_heater'
   ]
   const villageArtifactPerItemChance = 0.08 / villageArtifactPool.length  // 8% combined
 
   // --- Village chest sanitization (runs FIRST) ---
-  // Forge events inject artifacts before LootJS runs. Strip ALL mod artifacts
-  // from village chests first, then re-add our curated pool after.
-  // Order: Forge injects → LootJS removes → LootJS re-adds at 4%
-  // NOTE: Do NOT use removeLoot('@artifacts') here — it acts as a persistent
-  // filter that also strips our village pool additions (same namespace).
-  // Artifact mod GLMs are already disabled via whitelist. Ars GLM overridden.
-  // Only strip non-artifact items that might leak in.
-  // Strip T1 global pool items from villages UNLESS they're also in the
-  // village pool (removeLoot by specific ID acts as persistent filter that
-  // would also catch village pool re-additions of the same item).
-  var villagePoolSet = {}
-  villageArtifactPool.forEach(function(item) { villagePoolSet[item] = true })
-
+  // Strip ALL T1 global pool items from villages so villages only get
+  // the dedicated village pool above. Also strip mod leakage.
   villageChests.forEach(function(table) {
     var vSan = event.addLootTableModifier(table)
-    // Remove T1 items that are NOT in the village pool
+    // Remove ALL T1 items (no overlap with village pool)
     artifactT1Pool.forEach(function(item) {
-      if (!villagePoolSet[item]) {
-        vSan.removeLoot(item)
-      }
+      vSan.removeLoot(item)
     })
     // Remove other mod items
     vSan.removeLoot('@ars_nouveau')
