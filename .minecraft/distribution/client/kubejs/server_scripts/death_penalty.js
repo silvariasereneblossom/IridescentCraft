@@ -120,16 +120,19 @@ EntityEvents.death(event => {
 
     // Apply damage (stack.damageValue is current damage, higher = more broken)
     // Clamp to maxDur - threshold so vanilla never sees >= maxDamage
-    let threshold = Math.min(20, Math.floor(maxDur * 0.5))
-    let newDamage = Math.min(stack.damageValue + durLoss, maxDur - threshold)
-    stack.damageValue = newDamage
+    var threshold = Math.min(20, Math.floor(maxDur * 0.5))
+    var targetDamage = stack.damageValue + durLoss
 
-    // Check if item should go inert
-    if (newDamage >= maxDur - threshold) {
-      stack.damageValue = maxDur - threshold
-      // Tag as broken via NBT
+    if (targetDamage >= maxDur - threshold) {
+      // Item would go inert — use setDamageValue via NBT to avoid
+      // triggering vanilla's break logic in the damageValue setter
+      targetDamage = maxDur - threshold
       if (!stack.nbt) stack.nbt = {}
+      stack.nbt.putInt('Damage', targetDamage)
       stack.nbt.putBoolean(BROKEN_TAG, true)
+    } else {
+      // Safe range — normal damage application
+      stack.nbt.putInt('Damage', targetDamage)
     }
   }
 
