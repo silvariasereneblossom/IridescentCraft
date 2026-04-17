@@ -1,65 +1,65 @@
 // =============================================================================
-// CLASS ATTRIBUTE BONUSES — Applies icraft: attribute modifiers per class
+// CLASS ATTRIBUTE BONUSES -- Applies icraft attribute modifiers per class
 // =============================================================================
 // Uses the class detection from class_passives.js (classCache via getClass()).
-// Sets attribute base values via /attribute command every 5 seconds.
+// Sets attribute values via player.persistentData (setAttr from attribute_sync.js).
 //
 // When a player has no class (or switches class), attributes are reset to
-// their registration defaults before applying the new class bonuses.
+// their defaults before applying the new class bonuses.
 // =============================================================================
 
-// Default base values matching iridescent_attributes.js registration
+// Default base values (must match attribute_sync.js ATTR_DEFAULTS)
 var ATTR_DEFAULTS = {
-  'icraft:spell_power':      1.0,
-  'icraft:mana_regen':       1.0,
-  'icraft:cooldown_reduction': 0.0,
-  'icraft:magic_resistance':  0.0,
-  'icraft:crit_chance':       0.05,
-  'icraft:crit_damage':       1.5,
-  'icraft:lifesteal':         0.0,
-  'icraft:dodge_chance':      0.0,
-  'icraft:armor_penetration': 0.0,
-  'icraft:xp_multiplier':     1.0,
-  'icraft:healing_received':  1.0
+  'spell_power':       1.0,
+  'mana_regen':        1.0,
+  'cooldown_reduction': 0.0,
+  'magic_resistance':  0.0,
+  'crit_chance':       0.05,
+  'crit_damage':       1.5,
+  'lifesteal':         0.0,
+  'dodge_chance':      0.0,
+  'armor_penetration': 0.0,
+  'xp_multiplier':     1.0,
+  'healing_received':  1.0
 }
 
 // Class -> attribute bonuses (base values to SET, not additive deltas)
 var CLASS_ATTRIBUTES = {
   'archmage': {
-    'icraft:spell_power': 1.25,
-    'icraft:mana_regen':  1.2
+    'spell_power': 1.25,
+    'mana_regen':  1.2
   },
   'battlemage': {
-    'icraft:spell_power':       1.15,
-    'icraft:magic_resistance':  0.15
+    'spell_power':       1.15,
+    'magic_resistance':  0.15
   },
   'berserker': {
-    'icraft:crit_damage': 1.8,
-    'icraft:lifesteal':   0.05
+    'crit_damage': 1.8,
+    'lifesteal':   0.05
   },
   'samurai': {
-    'icraft:crit_chance':       0.15,
-    'icraft:armor_penetration': 0.10
+    'crit_chance':       0.15,
+    'armor_penetration': 0.10
   },
   'ranger': {
-    'icraft:crit_chance':  0.13,
-    'icraft:dodge_chance': 0.05
+    'crit_chance':  0.13,
+    'dodge_chance': 0.05
   },
   'paladin': {
-    'icraft:healing_received': 1.25
+    'healing_received': 1.25
   },
   'vanguard': {
-    'icraft:dodge_chance': 0.08
+    'dodge_chance': 0.08
   },
   'wanderer': {
-    'icraft:xp_multiplier': 1.15
+    'xp_multiplier': 1.15
   },
   'artificer': {
-    'icraft:cooldown_reduction': 0.10
+    'cooldown_reduction': 0.10
   },
   'void_summoner': {
-    'icraft:lifesteal':    0.08,
-    'icraft:spell_power':  1.10
+    'lifesteal':    0.08,
+    'spell_power':  1.10
   }
 }
 
@@ -85,11 +85,7 @@ function applyClassAttributeBonuses(player) {
   // Reset all icraft attributes to defaults first
   var attrs = Object.keys(ATTR_DEFAULTS)
   for (var i = 0; i < attrs.length; i++) {
-    var attr = attrs[i]
-    var defaultVal = ATTR_DEFAULTS[attr]
-    player.server.runCommandSilent(
-      'attribute ' + name + ' ' + attr + ' base set ' + defaultVal
-    )
+    setAttr(player, attrs[i], ATTR_DEFAULTS[attrs[i]])
   }
 
   // Apply new class bonuses
@@ -97,21 +93,15 @@ function applyClassAttributeBonuses(player) {
     var bonuses = CLASS_ATTRIBUTES[playerClass]
     var bonusAttrs = Object.keys(bonuses)
     for (var j = 0; j < bonusAttrs.length; j++) {
-      var bAttr = bonusAttrs[j]
-      var bVal = bonuses[bAttr]
-      player.server.runCommandSilent(
-        'attribute ' + name + ' ' + bAttr + ' base set ' + bVal
-      )
+      setAttr(player, bonusAttrs[j], bonuses[bonusAttrs[j]])
     }
   }
 
   lastAppliedClass[name] = playerClass
 }
 
-// ── Server tick: apply class attribute bonuses every 5 seconds ──
+// -- Server tick: apply class attribute bonuses every 5 seconds --
 global.tick_classAttributeBonuses = function(event) {
-  var tick = event.server.tickCount
-
   event.server.players.forEach(function(player) {
     applyClassAttributeBonuses(player)
   })
@@ -123,7 +113,7 @@ PlayerEvents.loggedIn(function(event) {
   delete lastAppliedClass[event.player.username]
 })
 
-console.log('[IridescentCraft] Class attribute bonuses loaded')
+console.log('[IridescentCraft] Class attribute bonuses loaded (v0.4 persistent NBT)')
 console.log('  Archmage: spell_power +25%, mana_regen +20%')
 console.log('  Battlemage: spell_power +15%, magic_resistance +15%')
 console.log('  Berserker: crit_damage +30%, lifesteal +5%')

@@ -1,31 +1,32 @@
 // =============================================================================
-// IRIDESCENT ATTRIBUTES — Chat Commands (v0.3)
+// IRIDESCENT ATTRIBUTES -- Chat Commands (v0.4 Persistent NBT)
 // =============================================================================
-// !stats / !attributes — Show current attribute values
-// !class              — Show current class info and bonuses
+// !stats / !attributes -- Show current attribute values
+// !class              -- Show current class info and bonuses
 //
 // Uses getAttr() from attribute_sync.js (loaded alphabetically before this).
+// Uses getAttrCore() from attribute_sync.js for attributecore values.
 // Uses getClass() from origins/class_passives.js.
 // =============================================================================
 
 // Attribute display names for the stats readout
 var STAT_DISPLAY = {
   magic: [
-    { attr: 'icraft:spell_power',       name: 'Spell Power',       isPercent: true,  baseline: 1.0 },
-    { attr: 'icraft:mana_regen',        name: 'Mana Regen',        isPercent: true,  baseline: 1.0 },
-    { attr: 'icraft:cooldown_reduction', name: 'Cooldown Reduction', isPercent: true,  baseline: 0.0 },
-    { attr: 'icraft:magic_resistance',  name: 'Magic Resistance',  isPercent: true,  baseline: 0.0 }
+    { attr: 'spell_power',       name: 'Spell Power',       isPercent: true,  baseline: 1.0 },
+    { attr: 'mana_regen',        name: 'Mana Regen',        isPercent: true,  baseline: 1.0 },
+    { attr: 'cooldown_reduction', name: 'Cooldown Reduction', isPercent: true,  baseline: 0.0 },
+    { attr: 'magic_resistance',  name: 'Magic Resistance',  isPercent: true,  baseline: 0.0 }
   ],
   combat: [
-    { attr: 'icraft:crit_chance',       name: 'Crit Chance',       isPercent: true,  baseline: 0.0 },
-    { attr: 'icraft:crit_damage',       name: 'Crit Damage',       isPercent: false, baseline: 0.0, suffix: 'x' },
-    { attr: 'icraft:lifesteal',         name: 'Lifesteal',         isPercent: true,  baseline: 0.0 },
-    { attr: 'icraft:dodge_chance',      name: 'Dodge Chance',      isPercent: true,  baseline: 0.0 },
-    { attr: 'icraft:armor_penetration', name: 'Armor Penetration', isPercent: true,  baseline: 0.0 }
+    { attr: 'crit_chance',       name: 'Crit Chance',       isPercent: true,  baseline: 0.0 },
+    { attr: 'crit_damage',       name: 'Crit Damage',       isPercent: false, baseline: 0.0, suffix: 'x' },
+    { attr: 'lifesteal',         name: 'Lifesteal',         isPercent: true,  baseline: 0.0 },
+    { attr: 'dodge_chance',      name: 'Dodge Chance',      isPercent: true,  baseline: 0.0 },
+    { attr: 'armor_penetration', name: 'Armor Penetration', isPercent: true,  baseline: 0.0 }
   ],
   utility: [
-    { attr: 'icraft:xp_multiplier',    name: 'XP Multiplier',     isPercent: false, baseline: 0.0, suffix: 'x' },
-    { attr: 'icraft:healing_received',  name: 'Healing Received',  isPercent: false, baseline: 0.0, suffix: 'x' }
+    { attr: 'xp_multiplier',    name: 'XP Multiplier',     isPercent: false, baseline: 0.0, suffix: 'x' },
+    { attr: 'healing_received',  name: 'Healing Received',  isPercent: false, baseline: 0.0, suffix: 'x' }
   ]
 }
 
@@ -62,13 +63,13 @@ function formatStatLine(player, statDef) {
 
   // Also read attributecore equivalent if present
   var acMap = {
-    'icraft:crit_chance':       'attributecore:crit_chance',
-    'icraft:crit_damage':       'attributecore:critical_damage',
-    'icraft:lifesteal':         'attributecore:life_steal',
-    'icraft:dodge_chance':      'attributecore:dodge_chance'
+    'crit_chance':  'attributecore:crit_chance',
+    'crit_damage':  'attributecore:critical_damage',
+    'lifesteal':    'attributecore:life_steal',
+    'dodge_chance': 'attributecore:dodge_chance'
   }
   if (acMap[statDef.attr]) {
-    var acVal = getAttr(player, acMap[statDef.attr], 0)
+    var acVal = getAttrCore(player, acMap[statDef.attr], 0)
     if (acVal > 0) val += acVal
   }
 
@@ -159,7 +160,7 @@ function showClass(player) {
   player.tell(Text.of('\u00a76\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550\u2550'))
 }
 
-// ─── Chat Command Listener ───
+// --- Chat Command Listener ---
 PlayerEvents.chat(function(event) {
   var msg = event.message.trim()
 
@@ -176,6 +177,6 @@ PlayerEvents.chat(function(event) {
   }
 })
 
-console.log('[IridescentCraft] Attribute chat commands loaded')
-console.log('  !stats / !attributes — Show attribute values')
-console.log('  !class — Show class info and bonuses')
+console.log('[IridescentCraft] Attribute chat commands loaded (v0.4)')
+console.log('  !stats / !attributes -- Show attribute values')
+console.log('  !class -- Show class info and bonuses')
