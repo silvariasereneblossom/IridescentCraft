@@ -1,7 +1,7 @@
 {
   "biomes": {
     "temperature_multiplier": 1.0,
-    "temperature_offset": 0.15,
+    "temperature_offset": 0.25,
     "temperature_scale": 0.25,
     "vegetation_multiplier": 1.0,
     "vegetation_offset": 0.0,
@@ -19,7 +19,7 @@
   },
   "continents": {
     "continents_scale": 0.13,
-    "erosion_scale": 0.10,
+    "erosion_scale": 0.1,
     "flat_terrain_skew": 0.1,
     "jungle_pillars": true,
     "ocean_offset": -0.35,
