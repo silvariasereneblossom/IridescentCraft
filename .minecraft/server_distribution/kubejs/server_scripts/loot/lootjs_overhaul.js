@@ -138,7 +138,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:overworld')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels({min: 10, max: 25}, true)
+        .enchantRandomly()
         .when(c => c.randomChance(0.075))
     )
 
@@ -150,7 +150,7 @@ LootJS.modifiers(event => {
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels({min: 15, max: 30}, true)
+        .enchantRandomly()
         .when(c => c.randomChance(0.10))
     )
 
@@ -160,7 +160,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels({min: 20, max: 30}, true)
+        .enchantRandomly()
         .when(c => c.randomChance(0.125))
     )
 
@@ -170,7 +170,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels({min: 30, max: 30}, true)
+        .enchantRandomly()
         .when(c => c.randomChance(0.15))
     )
 
@@ -1312,7 +1312,7 @@ LootJS.modifiers(event => {
     // 10% enchanted book (levels 5-15)
     totwMod.addLoot(
       LootEntry.of('minecraft:enchanted_book')
-        .enchantWithLevels({min: 5, max: 15}, true)
+        .enchantRandomly()
         .when(c => c.randomChance(0.10))
     )
     // Curio drops at 8% each
@@ -1340,7 +1340,7 @@ LootJS.modifiers(event => {
   // 10% enchanted book (levels 5-15)
   waystoneMod.addLoot(
     LootEntry.of('minecraft:enchanted_book')
-      .enchantWithLevels({min: 5, max: 15}, true)
+      .enchantRandomly()
       .when(c => c.randomChance(0.10))
   )
   // Curio drops at 8% each (same pool)
@@ -1593,7 +1593,7 @@ LootJS.modifiers(event => {
   // 10% enchanted book (levels 10-20)
   keebszMid.addLoot(
     LootEntry.of('minecraft:enchanted_book')
-      .enchantWithLevels({min: 10, max: 20}, true)
+      .enchantRandomly()
       .when(c => c.randomChance(0.10))
   )
 
@@ -1610,7 +1610,7 @@ LootJS.modifiers(event => {
   // 10% enchanted book (levels 20-30)
   keebszHigh.addLoot(
     LootEntry.of('minecraft:enchanted_book')
-      .enchantWithLevels({min: 20, max: 30}, true)
+      .enchantRandomly()
       .when(c => c.randomChance(0.10))
   )
   // 8% T2/T3 artifact from pool
