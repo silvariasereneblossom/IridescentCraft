@@ -13,23 +13,23 @@
 // =============================================================================
 
 ServerEvents.loaded(event => {
-  const server = event.server
-  const data = server.persistentData
+  var server = event.server
+  var data = server.persistentData
 
   if (data.getBoolean('icraft_chunky_pregen_started')) {
     return
   }
 
-  const radius = 2500
-  const dimension = 'minecraft:overworld'
+  var radius = 2500
+  var dimension = 'minecraft:overworld'
 
-  console.log('[IridescentCraft] First world load — auto-starting Chunky pre-gen')
-  console.log(`[IridescentCraft]   dimension: ${dimension}, radius: ${radius}`)
+  console.log('[IridescentCraft] First world load - auto-starting Chunky pre-gen')
+  console.log('[IridescentCraft]   dimension: ' + dimension + ', radius: ' + radius)
 
   try {
-    server.runCommandSilent(`chunky world ${dimension}`)
+    server.runCommandSilent('chunky world ' + dimension)
     server.runCommandSilent('chunky center 0 0')
-    server.runCommandSilent(`chunky radius ${radius}`)
+    server.runCommandSilent('chunky radius ' + radius)
     server.runCommandSilent('chunky start')
     data.putBoolean('icraft_chunky_pregen_started', true)
     console.log('[IridescentCraft] Chunky pre-gen kicked off. chunky-player-pause will pause it when players join.')
