@@ -220,7 +220,7 @@
 	"Additional Equipment Chance" = 0.15000000596046448
 	#Adds additional x*difficulty% to base equip chance
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Equipment Addition" = 0.15000000596046448
+	"Equipment Addition" = 0.05
 	#Chance for an equipment to have a random armor trim
 	#Range: 0.0 ~ 1.0
 	"Armor Trim Chance" = 0.05000000074505806
@@ -264,7 +264,7 @@
 	"Round HP" = 0.5
 	#Damage will be multiplied by 1 + difficulty*0.008*x. Set to 0 to disable
 	#Range: 0.0 ~ 1.7976931348623157E308
-	"Damage Increase Multiplier" = 0.4
+	"Damage Increase Multiplier" = 0.2
 	#Damage will be multiplied by at maximum this. Set to 0 means no limit
 	#Range: 0.0 ~ 1.7976931348623157E308
 	"Max Damage Increase" = 1.5

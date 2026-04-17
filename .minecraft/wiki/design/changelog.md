@@ -4,6 +4,51 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-17 — Tiered damage tuning + Ars Nouveau glyph loot
+
+### Tester feedback — full-iron players one-shotted on Overworld
+
+Root-cause audit identified three compounding systems inflating T1 damage well past the 1.0x design envelope. Retuned each, keeping the tier architecture intact (Majrusz stage values, ScalingMobs cap, ImprovedMobs scaling factors).
+
+#### Majrusz's Difficulty (`majruszsdifficulty.json`)
+`mobs_spawn_stronger` tiered by game stage (Normal = T1-T2, Expert = T3, Master = T4):
+
+| Field | Normal (was → now) | Expert (was → now) | Master (was → now) |
+|---|---|---|---|
+| `damage_bonus` | 3.5 → **1.5** | 7.0 → **3.0** | 10.0 → **5.0** |
+| `health_bonus` | 0.5 → **0.25** | 0.75 → **0.5** | 1.55 → **1.0** |
+
+Previously, Normal added +3.5 flat damage to every Overworld mob, pushing a baseline zombie from 3 to 6.5 damage and compounding with dimension multipliers in higher tiers (e.g. a Nether zombie at `(3 + 7) × 5 = 50` before armor).
+
+#### ScalingMobs (`scaling_mobs/main.toml`)
+- `Damage Scale Rate` 0.03 → **0.015** (per MC day)
+- `Max Scaled Damage` `+inf` → **0.20** (hard cap at +20%)
+
+Previously uncapped — by day 20 Overworld mobs were at +60% damage on top of Majrusz, negating the 1.0x tier design. The cap plus halved rate keep daily ramp modest.
+
+#### Improved Mobs (`improvedmobs/common.toml`)
+- `Equipment Addition` 0.15 → **0.05** (difficulty-scaled equipment chance)
+- `Damage Increase Multiplier` 0.4 → **0.2** (difficulty-scaled damage factor)
+
+### Ars Nouveau glyphs added to chest loot
+
+Tester feedback: Ars Nouveau spell books appear useless (intentionally blank caster tools that require glyphs inscribed at a Scribes Table). Added tiered glyph pools to `lootjs_overhaul.js` so players build their spell toolkit alongside dimensional progression. Forms (projectile/touch/self/aoe) front-loaded in T1–T2 so spellbooks function from the start.
+
+| Tier | Dimensions | Glyphs | Combined rate |
+|---|---|---|---|
+| T1 | Overworld | 18 (Forms + basic effects/augments) | ~12% |
+| T2 | TF, Aether, Blue Skies | 25 (more forms, mobility, utility augments) | ~14% |
+| T3 | Nether, Undergarden | 22 (advanced effects, linger form) | ~15% |
+| T4 | End, Deeper Darker, Abyss | 12 (summons, rune, endgame augments) | ~18% |
+
+Rolled independently per item (same pattern as the tiered artifact pools).
+
+### Verification note — "blank books" (Ars Nouveau fix in place)
+
+Vanilla enchanted book fix (2026-04-11 `.enchantWithLevels`) is still in place at all 8 call sites; the "blank books" tester complaint refers to Ars Nouveau spell books, now addressed by the glyph loot injection above.
+
+---
+
 ## 2026-04-14/15 — Stable alpha: loot finalization, worldgen tuning, distro tooling
 
 ### Ars Nouveau Bytecode Patch

@@ -34,13 +34,13 @@
 [Damage]
 	#The decimal amount that hostile mobs' damage increase per day
 	#Range: 0.0 ~ Infinity
-	"Damage Scale Rate" = 0.03
+	"Damage Scale Rate" = 0.015
 	#The decimal amount of the mobs' base damage in the beginning
 	#Range: 0.0 ~ Infinity
 	"Mob Damage Base" = 0.0
 	#The maximum amount that hostile mobs' damage can scale to
 	#Range: 0.0 ~ Infinity
-	"Max Scaled Damage" = +inf
+	"Max Scaled Damage" = 0.2
 
 [Speed]
 	#The decimal amount that hostile mobs' speed increase per day

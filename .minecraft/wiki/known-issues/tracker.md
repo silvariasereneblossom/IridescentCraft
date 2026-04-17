@@ -103,6 +103,16 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
+### Full-Iron One-Shots on Overworld (2026-04-17)
+- **Reported:** Tester feedback — players in full iron getting one-shotted on Overworld.
+- **Root cause:** Three compounding systems pushed T1 damage past the 1.0x design envelope: Majrusz's `mobs_spawn_stronger` added +3.5 flat damage at Normal stage (turning a 3-damage zombie into 6.5), ScalingMobs had uncapped daily damage scaling (+3%/day), and Improved Mobs' difficulty-scaled equipment enchants layered on top.
+- **Resolved:** Tiered all three systems. Majrusz `damage_bonus` 3.5/7.0/10.0 → 1.5/3.0/5.0, `health_bonus` 0.5/0.75/1.55 → 0.25/0.5/1.0 (Normal/Expert/Master). ScalingMobs `Damage Scale Rate` 0.03 → 0.015, `Max Scaled Damage` capped at 0.20. Improved Mobs `Equipment Addition` 0.15 → 0.05, `Damage Increase Multiplier` 0.4 → 0.2. Synced to all three distributions.
+
+### Ars Nouveau Glyphs Missing from Loot (2026-04-17)
+- **Reported:** Tester feedback — Ars Nouveau spell books "blank" / useless.
+- **Root cause:** Spell books are caster tools that require glyphs inscribed at a Scribes Table, but no glyphs existed in any chest loot. Players couldn't obtain glyphs without deep research progression.
+- **Resolved:** Added tiered glyph pools to `lootjs_overhaul.js` — T1 18 glyphs (Forms + basic effects/augments) at ~12%, T2 25 at ~14%, T3 22 at ~15%, T4 12 at ~18%. Forms (projectile/touch/self/aoe) front-loaded so spellbooks function from T1.
+
 ### KubeJS TypeError Spam (2026-04-08)
 - **Resolved:** Fixed `source.type.includes` called on non-string values, `getItemSlot` not available in KubeJS 6 API. Ignis Core TypeError also resolved. All three errors eliminated from server logs.
 
