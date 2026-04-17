@@ -170,7 +170,15 @@ try {
         if ($item.PSIsContainer -and $exclude -contains $item.Name) { continue }
         if ($item.Name -eq 'mods') {
             if (-not (Test-Path "$dest\mods\.index")) { New-Item -ItemType Directory -Path "$dest\mods\.index" -Force | Out-Null }
+            # Mirror .index: copy new/changed, DELETE stale pw.toml files
             Copy-Item "$($item.FullName)\.index\*" "$dest\mods\.index" -Recurse -Force
+            Get-ChildItem "$dest\mods\.index" -Filter '*.pw.toml' -ErrorAction SilentlyContinue | ForEach-Object {
+                $srcToml = Join-Path "$($item.FullName)\.index" $_.Name
+                if (-not (Test-Path $srcToml)) {
+                    Remove-Item $_.FullName -Force
+                    Write-Host "    [cleanup] Removed stale: $($_.Name)" -ForegroundColor Yellow
+                }
+            }
             Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object { Copy-Item $_.FullName "$dest\mods" -Force }
         } elseif ($selfUpdateFiles -contains $item.Name) {
             $current = Join-Path $dest $item.Name
