@@ -1,0 +1,23 @@
+{
+  "name": "Marksman Tree",
+  "icon": "minecraft:bow",
+  "category": "icraft:skills",
+  "sortnum": 2,
+  "flag": "icraft:stage_tier_2",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Ranged investment. Best for Ranger, Samurai.$(/italic)$(br2)Arrow damage, draw speed, and ammo efficiency are attribute-based and apply immediately. Ammo save and AoE splash require KubeJS event hooks (Phase 2 \u2014 partially implemented)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Nodes",
+      "text": "$(bold)Arrow Damage$(/bold) \u2014 Core trunk via apothic_attributes:arrow_damage. Scales cleanly with Ranger's Eagle Eye passive.$(br2)$(bold)Draw Speed$(/bold) \u2014 Reduces bow charge time. At max investment: bows are nearly instant draw.$(br2)$(bold)Precision Branch$(/bold) \u2014 Reduces arrow spread, increases effective range. Ideal for long-range Ranger play."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Nodes (cont.)",
+      "text": "$(bold)Barrage Branch$(/bold) \u2014 Increases arrow count per shot (multishot-style) and adds small AoE on impact. KubeJS-dependent.$(br2)$(bold)Marksman Capstone$(/bold) \u2014 $(bold)True Shot$(/bold) \u2014 Fully charged shots always crit. Crits deal +50% damage instead of +50% vanilla crit."
+    }
+  ]
+}

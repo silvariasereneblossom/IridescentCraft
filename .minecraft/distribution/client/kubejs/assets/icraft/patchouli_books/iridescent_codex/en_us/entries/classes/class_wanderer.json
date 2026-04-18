@@ -1,0 +1,22 @@
+{
+  "name": "Wanderer",
+  "icon": "minecraft:compass",
+  "category": "icraft:classes",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)A jack of all trades. The more you explore, the stronger you become.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)$(bold)Core Identity:$() Generalist with exploration scaling."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Jack of All Trades$() — +5% attack damage, +5% speed, +5% attack speed. Modest bonuses to everything.$(br2)$(bold)Wanderlust$() — +10% XP gain from all sources.$(br2)$(bold)Seasoned Traveler$() — Each new dimension permanently grants $(item)+5% XP$() and $(item)+2.5% speed$(). Stacks with every dimension discovered."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Exploration Scaling",
+      "text": "With 10+ dimensions, a fully-explored Wanderer gains up to $(item)+55% XP$() and $(item)+27.5% speed$() permanently. $(note)Hyperscaling$() — weak early, dominant late.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Human$() — +10% XP stacks. Fastest leveling.$(br)$(thing)Halfling$() — Luck + food efficiency + exploration.$(br)$(thing)Kirin$() — Speed stacking reaches absurd levels."
+    }
+  ]
+}

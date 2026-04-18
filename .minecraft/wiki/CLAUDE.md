@@ -86,7 +86,7 @@ PS1 files: No banners — the bat handles display.
 Some mods are built from source or manually bundled — they don't have `.pw.toml` entries and are NOT managed by packwiz. These JARs are committed directly to the repo and must be added to the **custom JAR allowlist** in the stale cleanup logic in both `iridescentserver.bat` and `sync_from_repo.bat`, or the self-updater will delete them.
 
 Current custom JARs:
-- `iridescent_codex_data.jar` — Patchouli Codex book, shipped as a proper Forge content mod (`lowcodefml` loader, no Java). Ships `META-INF/mods.toml` so Forge loads it at mod-load time and Patchouli registers the book before any player NBT validation. Built from `datapack_sources/iridescent_codex/` via `build_codex.sh`.
+- `iridescent_codex_data.jar` — Patchouli Codex book, shipped as a Forge content mod (`lowcodefml` loader, no Java). Ships `META-INF/mods.toml` so Forge loads it at mod-load time. **Belt-and-suspenders:** identical `book.json` is ALSO present at `kubejs/data/icraft/patchouli_books/iridescent_codex/book.json` (with full content in `kubejs/assets/...`) as a fallback — whichever registration path Patchouli honors, the book ends up registered consistently. Built from `datapack_sources/iridescent_codex/` via `build_codex.sh`. Do NOT re-add the Paxi zip variant — that had mismatched `use_resource_pack` and was the original source of "Invalid book ID" conflicts.
 - `iridescent_origins-1.0.0.jar` — Origins/races/classes (built from `iridescent-origins-mod/`)
 - `mek_walkable_cables-1.0.1.jar` — Mekanism cable coremod
 - `offlineskins-1.20.1-v1.jar` — Offline skin support

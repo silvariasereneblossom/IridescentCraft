@@ -1,0 +1,37 @@
+{
+  "name": "Progressive Difficulty",
+  "icon": "minecraft:golden_apple",
+  "category": "icraft:systems",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(thing)Progressive Difficulty$() is the core combat scaling system in IridescentCraft. Rather than a flat difficulty, the world escalates in response to your progression through three distinct stages.$(br2)Each stage introduces new mechanics that make the world deadlier \u2014 but also more rewarding. This is not optional. The world $(italic)will$() become harder as you advance."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Difficulty Stages",
+      "text": "$(bold)Normal (T1\u2013T2)$() \u2014 From world start. Standard mob behavior. Mobs have base HP scaling and spawn in basic patterns.$(br2)$(bold)Expert (T3)$() \u2014 Triggered by entering the Nether. Mobs gain new abilities, spawn in larger groups, and elite encounters become more frequent.$(br2)$(bold)Master (T4)$() \u2014 Triggered by killing the Ender Dragon. The world is fully hostile. Every encounter is a real fight."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Mob Groups",
+      "text": "Mobs can spawn in $(thing)leader/follower packs$(). A leader mob spawns with a small squad of followers that coordinate attacks. Leaders are visually distinct and significantly stronger than their followers.$(br2)Pack behavior means you cannot safely ignore trash mobs \u2014 they are backed by something dangerous. Crowd control and AoE become essential as difficulty scales."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Blood Moon & Undead Army",
+      "text": "$(bold)Blood Moon$() events occur randomly at nightfall. During a Blood Moon, mob spawn rates are dramatically increased and mobs are more aggressive. Staying indoors is a valid strategy. Fighting through one is very profitable.$(br2)$(bold)Undead Army$() raids can target your base. Waves of undead assault your position with increasing intensity. Defending successfully yields strong rewards. Failing means a lot of cleanup."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Treasure Bags",
+      "text": "Boss kills award $(thing)treasure bags$() \u2014 right-click loot containers with per-player drops. Every player who participates in a boss kill receives their own treasure bag, so group play is never punished.$(br2)Treasure bag contents scale with the difficulty stage and the boss tier. They are one of the best sources of progression materials and rare items."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Bleeding Effect",
+      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you. While bleeding, you take damage over time that ignores armor. This is a genuine threat during prolonged fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, instant cure), $(thing)Milk Bucket$() (clears all effects), or $(thing)Golden Apple$() (clears bleeding + provides regen).$(br2)$(italic)Always carry bandages. Bleeding in a mob pack without a cure is how most deaths happen.$(/italic)"
+    }
+  ]
+}

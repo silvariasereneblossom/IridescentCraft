@@ -1,0 +1,22 @@
+{
+  "name": "Paladin",
+  "icon": "minecraft:golden_sword",
+  "category": "icraft:classes",
+  "sortnum": 5,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Tank and support. Self-sustaining with group utility. The 'I keep everyone alive' class.$()$(br2)HP Modifier: +10%  |  Equipment HP: Full$(br)$(bold)Weapon Affinities:$() Swords and shields (bonus)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Passive Abilities",
+      "text": "$(bold)Holy Armor$() — +3 armor, +1 toughness, +10% knockback resistance. The $(thing)Paladin$() is naturally tanky without sacrificing damage as heavily as the $(thing)Vanguard$().$(br2)$(bold)Divine Resilience$() — Shield blocking reduces incoming damage further. +15% effectiveness from all healing sources.$(br2)$(bold)Healing Aura$() — Nearby allies regenerate HP passively. The core group utility power."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Group Play",
+      "text": "The $(thing)Paladin$() is the only class specifically designed for multiplayer. Healing Aura makes nearby players significantly more durable, and the tanky stats let the $(thing)Paladin$() stand at the front.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Dwarf$() — Fire resistance + heavy armor effectiveness = the ultimate frontliner.$(br)$(thing)Human$() — Versatile bonus adapts to any group role.$(br)$(thing)Orc$() — Attack speed lets you deal respectable damage while tanking."
+    }
+  ]
+}

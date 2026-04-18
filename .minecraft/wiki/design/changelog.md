@@ -24,6 +24,24 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-18 (evening) — Iridescent Codex: restore KubeJS registration as fallback
+
+Tester screenshot shows "Invalid book: icraft:iridescent_codex" still present after the morning's lowcodefml fix. Either `lowcodefml` doesn't expose the jar's `data/` to Patchouli's scanner the way a `javafml` mod does, or the client's `sync_client.ps1` size-diff missed the jar update — not worth debugging exhaustively.
+
+### Fix — belt-and-suspenders registration
+
+Restored the KubeJS `data/icraft/patchouli_books/iridescent_codex/book.json` and `kubejs/assets/icraft/patchouli_books/iridescent_codex/en_us/{categories,entries}/*` copies alongside the mod jar. Both sources ship an **identical** `book.json` (verified byte-for-byte, both `use_resource_pack: true`), so whichever registration path Patchouli honors, the book ends up registered with consistent config. Paxi zip (the one with mismatched `use_resource_pack` that was the original conflict source) stays deleted.
+
+### Architecture note
+
+Two registration paths, both benign if both fire:
+1. Mod jar `data/icraft/patchouli_books/iridescent_codex/book.json` — registered at mod-load time (if lowcodefml works as expected for Patchouli)
+2. KubeJS datapack `kubejs/data/icraft/patchouli_books/iridescent_codex/book.json` — registered during datapack reload (proven working per the 2026-04-16 log showing `iridescent_codex_resources.zip` as a loaded pack)
+
+If the user still sees "Invalid book" after pulling this commit, the next debugging step is to have them check the in-game mods list for `Iridescent Codex` — its presence/absence will tell us if lowcodefml is the issue or if their client simply hasn't synced the new jar.
+
+---
+
 ## 2026-04-18 — Iridescent Codex shipped as proper Forge content mod
 
 Tester feedback: "Invalid book ID" error on world join (both singleplayer and dedicated server). Untabled from upstream input — diagnosed independently.

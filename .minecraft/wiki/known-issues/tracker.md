@@ -106,8 +106,10 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ### Iridescent Codex "Invalid book ID" on World Join (2026-04-18)
 - **Reported:** Tester feedback — "Invalid book ID" error on world join, both singleplayer and dedicated server.
-- **Root cause:** Four copies of `book.json` existed across the modpack. Three were reachable by Patchouli, with inconsistent `use_resource_pack` config: KubeJS datapack had `true`, Paxi zip had it missing (defaults to `false`), and the mod jar had no `mods.toml` so Forge ignored it entirely. Patchouli registered whichever source won the load-order race, and client vs server could land on different winners — exactly what causes "Invalid book ID" at NBT validation on join.
-- **Resolved:** Shipped the codex jar as a proper Forge content mod via `lowcodefml` modLoader (no Java required). Patchouli now registers the book at mod-load time, before any NBT validation. Deleted the Paxi zip, the KubeJS `data/` + `assets/` copies, and the orphan `kubejs/kubejs/` nested copies. Single source of truth is now the mod jar. `codex_delivery.js` still handles first-join delivery.
+- **Root cause:** Four copies of `book.json` existed across the modpack with inconsistent `use_resource_pack` config. KubeJS datapack had `true`, Paxi zip had it missing (defaults to `false`), mod jar had no `mods.toml` so Forge ignored it entirely. Patchouli registered whichever source won the load-order race, and client vs server could land on different winners.
+- **First attempt (morning):** Added `META-INF/mods.toml` to the codex jar (`lowcodefml` loader) to register via Forge's mod loading. Deleted Paxi zip + KubeJS copies to eliminate duplicates.
+- **Tester follow-up:** Screenshot showed "Invalid book" still present — either lowcodefml doesn't expose the jar's `data/` to Patchouli's scanner, or client `sync_client.ps1` size-diff missed the jar update.
+- **Resolved (evening):** Belt-and-suspenders — restored the KubeJS `data/` + `assets/` registration alongside the mod jar. Both ship **identical** `book.json` (byte-for-byte matched), so whichever path Patchouli honors, the book registers consistently. Paxi zip (the original conflict source) stays deleted.
 
 ### Full-Iron One-Shots on Overworld (2026-04-17 / revised 2026-04-18)
 - **Reported:** Tester feedback — players in full iron getting one-shotted on Overworld.
