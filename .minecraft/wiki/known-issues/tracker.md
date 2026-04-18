@@ -99,6 +99,11 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
+### Blank Enchanted Books in Loot (2026-04-18)
+- **Reported:** Tester feedback — enchanted books in chests still appearing empty (no stored enchantments) despite the 2026-04-11 `.enchantWithLevels` fix.
+- **Root cause:** A global `removeLoot('minecraft:enchanted_book')` at lines 118-130 of `lootjs_overhaul.js` created a persistent filter (documented 2026-04-15) that caught our tier re-adds in the same evaluation pass, stripping either the entries or their `.enchantWithLevels(...)` function and leaving blank books.
+- **Resolved:** Deleted the global strip. Vanilla loot tables now generate their own naturally-enchanted books; our tier re-adds layer tier-scaled enchants on top at per-dimension rates. Synced to all 3 distros.
+
 ### Iridescent Codex "Invalid book ID" on World Join (2026-04-18)
 - **Reported:** Tester feedback — "Invalid book ID" error on world join, both singleplayer and dedicated server.
 - **Root cause:** Four copies of `book.json` existed across the modpack. Three were reachable by Patchouli, with inconsistent `use_resource_pack` config: KubeJS datapack had `true`, Paxi zip had it missing (defaults to `false`), and the mod jar had no `mods.toml` so Forge ignored it entirely. Patchouli registered whichever source won the load-order race, and client vs server could land on different winners — exactly what causes "Invalid book ID" at NBT validation on join.

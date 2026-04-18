@@ -44,13 +44,15 @@ LootJS.modifiers(event => {
   // =========================================================================
   // SECTION 1: ENCHANTED BOOK REBALANCE
   // =========================================================================
-  // Remove vanilla enchanted book generation, then re-add at tier-appropriate
-  // rates. Apotheosis enhances the enchanting table but books should still
-  // appear in loot as exciting finds — just not everywhere.
+  // Layer tier-scaled enchanted books on top of vanilla loot-table generation.
+  // We do NOT strip vanilla books first — `removeLoot('minecraft:enchanted_book')`
+  // creates a persistent filter in LootJS 2.x that catches our re-adds in the
+  // same evaluation pass, producing blank/unenchanted books (confirmed 2026-04-18).
   //
-  // Rates scale by dimension difficulty:
-  //   Overworld/Aether/Blue Skies: 7.5%
-  //   Nether/Twilight Forest/Undergarden: 10%
+  // Tier re-add rates (layered on top of vanilla's ~5-10%):
+  //   Overworld: 7.5%
+  //   Twilight Forest/Aether/Blue Skies: 10%
+  //   Nether/Undergarden: 12.5%
   //   End/Deeper and Darker/The Abyss: 15%
   //
   // Also adds Ars Nouveau spell books at tier-appropriate rates.
@@ -114,20 +116,6 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .removeLoot('@rftoolsdim')
     .removeLoot('@mahoutsukai')
-
-  // First remove all vanilla enchanted books globally
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension(
-      'minecraft:overworld', 'minecraft:the_nether', 'minecraft:the_end',
-      'twilightforest:twilight_forest',
-      'blue_skies:everbright', 'blue_skies:everdawn',
-      'aether:the_aether', 'deep_aether:the_aether',
-      'undergarden:undergarden',
-      'deeperdarker:otherside',
-      'theabyss:the_abyss'
-    )
-    .removeLoot('minecraft:enchanted_book')
 
   // Blacklist Relics horse_flute globally — user dislike (summons a temporary
   // horse, doesn't really fit our progression design)

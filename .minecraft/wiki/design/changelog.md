@@ -4,6 +4,26 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-18 — Blank enchanted books in loot (persistent filter removal)
+
+Tester feedback: enchanted books in chest loot were still appearing blank (no stored enchantments) despite the 2026-04-11 `.enchantWithLevels` fix.
+
+### Root cause
+
+Line 118-130 of `lootjs_overhaul.js` did a global `removeLoot('minecraft:enchanted_book')` before our tier re-adds. Per the 2026-04-15 LootJS persistent-filter discovery, `removeLoot('specific:item_id')` catches items re-added by **later** modifiers in the same evaluation pass. Our tier re-adds (lines 143, 155, 165, 175) were being caught by this filter — either stripped entirely or having their `.enchantWithLevels(...)` function eaten — leaving blank books in chests.
+
+The 2026-04-11 fix correctly identified the signature issue (switched to `enchantWithLevels` with a proper `NumberProvider`) but the persistent-filter interaction wasn't discovered until a later LootJS audit (2026-04-15), at which point the namespace strips were removed for artifacts/celestial/relics — but this specific-item strip was missed.
+
+### Fix
+
+Deleted the global enchanted-book strip block. Vanilla loot tables now generate their own enchanted books (with Minecraft's native random enchant selection, at vanilla rates of ~5-10% depending on table), and our tier re-adds layer tier-scaled enchants on top at the per-dimension rates we want.
+
+### Tradeoff noted in implementation
+
+Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vanilla can roll enchantments we'd consider "too good for T1" (e.g. Sharpness V on Overworld chests). If that becomes a visible economy issue, the next step is a surgical per-enchantment filter rather than a blanket book strip.
+
+---
+
 ## 2026-04-18 — Iridescent Codex shipped as proper Forge content mod
 
 Tester feedback: "Invalid book ID" error on world join (both singleplayer and dedicated server). Untabled from upstream input — diagnosed independently.
