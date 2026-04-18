@@ -59,13 +59,9 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Status:** Known, low priority (pre-existing)
 - **Description:** `planetary_loot` script has a `withNBT` call that silently fails on certain item types. Ad Astra integration is still in-progress so this is deferred until the planetary loot system is fully implemented.
 
-### Patchouli Codex (Iridescent Codex)
-- **Status:** Tabled pending upstream input
-- **Description:** Codex rendering has edge cases related to Patchouli's bytecode-patched behavior. Waiting on Vazkii (Patchouli maintainer) and/or Sinytra (Connector) for guidance on the best long-term fix. Current bytecode patch (`athrow` -> `pop`) works but is fragile.
-
 ### Alpha Testing Status
-- **Status:** Active (as of 2026-04-15)
-- **Description:** Stable alpha build deployed to test server. Loot rates finalized, worldgen tuned, distribution tooling in place. 2 known low-priority pre-existing errors (if_latex_rework, planetary_loot withNBT). Codex tabled. All major systems functional.
+- **Status:** Active (as of 2026-04-18)
+- **Description:** Stable alpha build deployed to test server. Loot rates finalized, worldgen tuned, distribution tooling in place. Codex shipped as proper Forge content mod. 2 known low-priority pre-existing errors (if_latex_rework, planetary_loot withNBT). All major systems functional.
 
 ### Custom Item Artwork Needed (72 items)
 - **Status:** TODO — tinted placeholder textures in place, need proper pixel art
@@ -102,6 +98,11 @@ Forge requires network channel lists to match between client and server. Mods th
 - [ ] Farmer's Delight cooking conversion — 70 recipes
 
 ## Resolved
+
+### Iridescent Codex "Invalid book ID" on World Join (2026-04-18)
+- **Reported:** Tester feedback — "Invalid book ID" error on world join, both singleplayer and dedicated server.
+- **Root cause:** Four copies of `book.json` existed across the modpack. Three were reachable by Patchouli, with inconsistent `use_resource_pack` config: KubeJS datapack had `true`, Paxi zip had it missing (defaults to `false`), and the mod jar had no `mods.toml` so Forge ignored it entirely. Patchouli registered whichever source won the load-order race, and client vs server could land on different winners — exactly what causes "Invalid book ID" at NBT validation on join.
+- **Resolved:** Shipped the codex jar as a proper Forge content mod via `lowcodefml` modLoader (no Java required). Patchouli now registers the book at mod-load time, before any NBT validation. Deleted the Paxi zip, the KubeJS `data/` + `assets/` copies, and the orphan `kubejs/kubejs/` nested copies. Single source of truth is now the mod jar. `codex_delivery.js` still handles first-join delivery.
 
 ### Full-Iron One-Shots on Overworld (2026-04-17 / revised 2026-04-18)
 - **Reported:** Tester feedback — players in full iron getting one-shotted on Overworld.

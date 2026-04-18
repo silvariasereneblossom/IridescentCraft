@@ -4,6 +4,54 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-18 — Iridescent Codex shipped as proper Forge content mod
+
+Tester feedback: "Invalid book ID" error on world join (both singleplayer and dedicated server). Untabled from upstream input — diagnosed independently.
+
+### Root cause
+
+Four copies of `data/icraft/patchouli_books/iridescent_codex/book.json` existed, three of them reachable by Patchouli, with **inconsistent `use_resource_pack` config** between sources:
+
+| Source | `use_resource_pack` | Loaded? |
+|---|---|---|
+| `mods/iridescent_codex_data.jar` (no `mods.toml`) | `true` | ❌ Forge ignored the jar — no mod descriptor |
+| `kubejs/data/.../book.json` | `true` | ✅ KubeJS datapack |
+| `config/paxi/datapacks/iridescent_codex.zip` | **missing (default false)** | ✅ Paxi datapack |
+| `kubejs/kubejs/data/.../book.json` | `true` | ❌ KubeJS doesn't scan that nested path |
+
+Patchouli resolved the book from whichever source won the load-order race, and server vs client could land on different winners — which is exactly the signature of "Invalid book ID" at NBT validation on join.
+
+### Fix — proper Forge content mod
+
+Added `META-INF/mods.toml` to the codex jar using the `lowcodefml` modLoader (Forge's data-only mod loader — no Java classes required). Forge now loads the jar at mod-load time and Patchouli registers `icraft:iridescent_codex` before any player NBT is validated on world join.
+
+```toml
+modLoader = "lowcodefml"
+loaderVersion = "[47,)"
+
+[[mods]]
+  modId = "iridescent_codex_data"
+  version = "1.0.0"
+  displayName = "Iridescent Codex"
+```
+
+Build script `datapack_sources/iridescent_codex/build_codex.sh` picks up `META-INF/` automatically via its `jar cf . -C . .` step — no script changes needed.
+
+### Removed duplicate registrations
+
+- `config/paxi/datapacks/iridescent_codex.zip` (all 3 distros)
+- `kubejs/data/icraft/patchouli_books/iridescent_codex/` (all 3 distros)
+- `kubejs/assets/icraft/patchouli_books/iridescent_codex/` (all 3 distros)
+- `kubejs/kubejs/data|assets/icraft/patchouli_books/iridescent_codex/` (orphaned, main only)
+
+Single source of truth is now the mod jar. `codex_delivery.js` still handles first-join delivery and the backup crafting recipe.
+
+### Known-issues tracker
+
+Removed "Tabled pending upstream input" status — issue resolved without Vazkii/Sinytra guidance.
+
+---
+
 ## 2026-04-18 — Revert Majrusz health_bonus, keep damage_bonus tuning
 
 Follow-up tester feedback: the one-shot complaint was about incoming damage, not mob tankiness. Reducing HP made mobs feel too squishy without addressing the actual issue.

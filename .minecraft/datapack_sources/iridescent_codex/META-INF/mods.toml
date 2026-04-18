@@ -1,0 +1,17 @@
+modLoader = "lowcodefml"
+loaderVersion = "[47,)"
+license = "All Rights Reserved"
+
+[[mods]]
+  modId = "iridescent_codex_data"
+  version = "1.0.0"
+  displayName = "Iridescent Codex"
+  authors = "Silvaria"
+  description = '''
+The Iridescent Codex — Patchouli guidebook for the IridescentCraft modpack.
+
+Ships as a proper Forge content mod (lowcodefml, no Java) so Patchouli
+registers the book at mod-loading time, before any player NBT validation
+on world join. This avoids the "Invalid book ID" error that occurs when
+Patchouli books are delivered only via datapacks loaded after world join.
+'''

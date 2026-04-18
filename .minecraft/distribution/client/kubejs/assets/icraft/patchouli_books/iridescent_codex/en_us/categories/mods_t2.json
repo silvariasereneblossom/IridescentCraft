@@ -1,7 +1,0 @@
-{
-  "name": "Tier 2 Mods",
-  "description": "Mods unlocked at Tier 2: Thermal Series, Ars Nouveau, Industrial Foregoing, and dimensional content.",
-  "icon": "minecraft:diamond",
-  "sortnum": 8,
-  "advancement": "icraft:stage_tier_2"
-}
