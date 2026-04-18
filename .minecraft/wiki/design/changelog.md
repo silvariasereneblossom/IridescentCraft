@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-18 — Revert Majrusz health_bonus, keep damage_bonus tuning
+
+Follow-up tester feedback: the one-shot complaint was about incoming damage, not mob tankiness. Reducing HP made mobs feel too squishy without addressing the actual issue.
+
+Reverted `mobs_spawn_stronger.health_bonus` to vanilla defaults across all three distributions:
+
+| Stage | Previous (2026-04-17) | Reverted to |
+|---|---|---|
+| Normal | 0.25 | **0.5** |
+| Expert | 0.5 | **0.75** |
+| Master | 1.0 | **1.55** |
+
+`damage_bonus` tuning (1.5 / 3.0 / 5.0), ScalingMobs cap, and Improved Mobs factors from 2026-04-17 remain in place — those directly address the incoming-damage issue.
+
+---
+
 ## 2026-04-17 — Tiered damage tuning + Ars Nouveau glyph loot
 
 ### Tester feedback — full-iron players one-shotted on Overworld

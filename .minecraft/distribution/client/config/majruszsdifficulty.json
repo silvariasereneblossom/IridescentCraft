@@ -350,9 +350,9 @@
     "mobs_spawn_stronger": {
       "is_enabled": true,
       "health_bonus": {
-        "__default": 0.25,
-        "expert": 0.5,
-        "master": 1.0
+        "__default": 0.5,
+        "expert": 0.75,
+        "master": 1.55
       },
       "damage_bonus": {
         "__default": 1.5,

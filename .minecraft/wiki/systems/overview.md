@@ -73,11 +73,11 @@ Three-stage world difficulty scaling tied to progression milestones. Replaces Ch
 
 | Stage | Tier Range | Trigger | `damage_bonus` | `health_bonus` |
 |-------|-----------|---------|----------------|----------------|
-| Normal | T1-T2 | Default | +1.5 flat | +25% |
-| Expert | T3 | Nether entry | +3.0 flat | +50% |
-| Master | T4 | Dragon kill | +5.0 flat | +100% |
+| Normal | T1-T2 | Default | +1.5 flat | +50% |
+| Expert | T3 | Nether entry | +3.0 flat | +75% |
+| Master | T4 | Dragon kill | +5.0 flat | +155% |
 
-Flat damage bonus from `mobs_spawn_stronger` stacks on top of the per-dimension damage multiplier in `mob_scaling_unified.js`. Values tuned 2026-04-17 after tester feedback on one-shot deaths in full iron.
+Flat damage bonus from `mobs_spawn_stronger` stacks on top of the per-dimension damage multiplier in `mob_scaling_unified.js`. Damage values tuned 2026-04-17 after tester feedback on one-shot deaths. Health bonus left at defaults (tester feedback confirmed 2026-04-18 that tankiness wasn't the issue — incoming damage was).
 
 ### Treasure Bags
 Majrusz's Progressive Difficulty includes a treasure bag system. Bags have been rewritten for all 7 bosses/events with tier-appropriate loot. Bag contents scale with the current difficulty stage.

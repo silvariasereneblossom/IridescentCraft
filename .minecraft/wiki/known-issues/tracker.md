@@ -103,10 +103,11 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
-### Full-Iron One-Shots on Overworld (2026-04-17)
+### Full-Iron One-Shots on Overworld (2026-04-17 / revised 2026-04-18)
 - **Reported:** Tester feedback — players in full iron getting one-shotted on Overworld.
 - **Root cause:** Three compounding systems pushed T1 damage past the 1.0x design envelope: Majrusz's `mobs_spawn_stronger` added +3.5 flat damage at Normal stage (turning a 3-damage zombie into 6.5), ScalingMobs had uncapped daily damage scaling (+3%/day), and Improved Mobs' difficulty-scaled equipment enchants layered on top.
-- **Resolved:** Tiered all three systems. Majrusz `damage_bonus` 3.5/7.0/10.0 → 1.5/3.0/5.0, `health_bonus` 0.5/0.75/1.55 → 0.25/0.5/1.0 (Normal/Expert/Master). ScalingMobs `Damage Scale Rate` 0.03 → 0.015, `Max Scaled Damage` capped at 0.20. Improved Mobs `Equipment Addition` 0.15 → 0.05, `Damage Increase Multiplier` 0.4 → 0.2. Synced to all three distributions.
+- **Resolved:** Tiered damage values. Majrusz `damage_bonus` 3.5/7.0/10.0 → 1.5/3.0/5.0 (Normal/Expert/Master). ScalingMobs `Damage Scale Rate` 0.03 → 0.015, `Max Scaled Damage` capped at 0.20. Improved Mobs `Equipment Addition` 0.15 → 0.05, `Damage Increase Multiplier` 0.4 → 0.2. Synced to all three distributions.
+- **Revision (2026-04-18):** Initial pass also reduced Majrusz `health_bonus` (0.5/0.75/1.55 → 0.25/0.5/1.0). Reverted to defaults after tester feedback confirmed incoming damage was the issue — mob tankiness wasn't the problem and reducing HP made mobs feel squishy.
 
 ### Ars Nouveau Glyphs Missing from Loot (2026-04-17)
 - **Reported:** Tester feedback — Ars Nouveau spell books "blank" / useless.
