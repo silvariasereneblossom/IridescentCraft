@@ -24,6 +24,23 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — Loot fixes: glyph tiering, sapling cleanup, village accessories
+
+Three tester-reported loot issues fixed in `lootjs_overhaul.js`:
+
+### Glyph tiering — off-tier strip
+T2+ glyphs were leaking into Overworld chests despite the dimension-scoped add modifiers. Added explicit per-dimension strips that remove glyphs above the current tier. Overworld strips T2+T3+T4 pools; T2 dims strip T3+T4; T3 dims strip T4. Runs on separate event chains from the adds to avoid LootJS's persistent-filter behavior catching re-adds in the same chain.
+
+### Sapling removal from all chests
+Saplings are clutter — trees are everywhere. Added `removeLoot('#forge:saplings')` + `removeLoot('#minecraft:saplings')` to the global Section 1B strip, covering vanilla + BoP + Aether + Blue Skies saplings in one pass.
+
+### Village combat accessories — never spawned on modded villages
+Tester reported never finding the village artifact pool items (power_glove, feral_claws, cross_necklace, etc.). Two fixes:
+- Bumped `villageArtifactPerItemChance` from 8% combined to 15% combined.
+- Added `moddedVillagePatterns` regex list (CTOV, VillagesAndPillages, RepurposedStructures village_*, Townstead) and applied the same sanitize + artifact-pool injection to those patterns. The old code only covered the 15 vanilla village loot tables; players spawning in CTOV villages never got any of the injected artifacts.
+
+---
+
 ## 2026-04-19 — Codex "Invalid book" + blank enchanted books: BOTH root-caused
 
 After extended thrash on these two bugs, the real root causes were found via bytecode inspection of Patchouli and vanilla Minecraft.

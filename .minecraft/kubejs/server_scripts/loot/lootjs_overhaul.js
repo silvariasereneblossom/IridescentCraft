@@ -230,6 +230,10 @@ LootJS.modifiers(event => {
     .removeLoot('@ars_nouveau')
     .removeLoot('@irons_spellbooks')
     .removeLoot('@moreartifacts')
+    // Saplings are useless clutter in chests — trees are everywhere. Uses
+    // the Forge common tag which aggregates vanilla + BoP + Aether + BlueSkies.
+    .removeLoot('#forge:saplings')
+    .removeLoot('#minecraft:saplings')
 
   // --- Ars Nouveau spell books (re-add AFTER global strip) ---
   // T1 (Overworld): Novice spell book (5%)
@@ -341,6 +345,22 @@ LootJS.modifiers(event => {
   glyphT4.forEach(g => {
     glyphModT4.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT4PerItem)))
   })
+
+  // --- Off-tier glyph strips (keep T2+ glyphs out of T1, T3+ out of T2, etc.) ---
+  // Runs AFTER glyph add modifiers on a separate event chain. LootJS's
+  // persistent-filter quirk catches re-adds in the same chain, but independent
+  // modifiers seem to evaluate cleanly against each other.
+  const _glyphStripOW = event.addLootTypeModifier(LootType.CHEST).anyDimension('minecraft:overworld')
+  glyphT2.concat(glyphT3, glyphT4).forEach(g => { _glyphStripOW.removeLoot(g) })
+
+  const _glyphStripT2 = event.addLootTypeModifier(LootType.CHEST)
+    .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
+      'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
+  glyphT3.concat(glyphT4).forEach(g => { _glyphStripT2.removeLoot(g) })
+
+  const _glyphStripT3 = event.addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
+  glyphT4.forEach(g => { _glyphStripT3.removeLoot(g) })
 
   // =========================================================================
   // SECTION 1C: TIERED ARTIFACT RE-INJECTION BY DIMENSION
@@ -1263,7 +1283,17 @@ LootJS.modifiers(event => {
     'artifacts:universal_attractor',
     'artifacts:pickaxe_heater'
   ]
-  const villageArtifactPerItemChance = 0.08 / villageArtifactPool.length  // 8% combined
+  const villageArtifactPerItemChance = 0.15 / villageArtifactPool.length  // ~15% combined (bumped 2026-04-19 from 8%; user reported never seeing them)
+
+  // Modded village chest patterns — CTOV, VillagesAndPillages, etc. generate
+  // their own custom villages whose loot tables aren't in the vanilla list.
+  // Regex match catches any chest path containing "village" under these mods.
+  const moddedVillagePatterns = [
+    /^ctov:chests\//,
+    /^villagesandpillages:.*chests.*/,
+    /^repurposed_structures:chests\/village_/,
+    /^townstead:.*chests?\//,
+  ]
 
   // --- Village chest sanitization (runs FIRST) ---
   // Strip ALL T1 global pool items from villages so villages only get
@@ -1288,9 +1318,21 @@ LootJS.modifiers(event => {
   })
 
   // --- Village artifact pool (runs AFTER sanitization) ---
-  // Re-add curated artifacts at controlled 4% rate
+  // Re-add curated artifacts at ~15% combined rate
   villageChests.forEach(table => {
     const modifier = event.addLootTableModifier(table)
+    villageArtifactPool.forEach(artifact => {
+      modifier.addLoot(
+        LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
+      )
+    })
+  })
+
+  // Same artifact pool for modded village chests (CTOV, VnP, etc.). The
+  // vanilla villageChests list missed these entirely before 2026-04-19,
+  // which is why the user "never saw" the village accessories.
+  moddedVillagePatterns.forEach(pattern => {
+    const modifier = event.addLootTableModifier(pattern)
     villageArtifactPool.forEach(artifact => {
       modifier.addLoot(
         LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
