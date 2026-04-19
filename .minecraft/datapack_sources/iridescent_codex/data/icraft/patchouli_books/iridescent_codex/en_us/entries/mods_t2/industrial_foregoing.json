@@ -21,5 +21,5 @@
       "text": "$(bold)No book needed.$(/bold) Industrial Foregoing is fully documented in JEI. Every machine has tooltips explaining its function. The $(bold)IFWiki$(/bold) at ftb.fandom.com covers advanced setups like the Mob Duplicator and Infinity Drill."
     }
   ],
-  "flag": "icraft:stage_tier_2"
+  "advancement": "icraft:stage_tier_2"
 }

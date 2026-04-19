@@ -21,5 +21,5 @@
       "text": "$(bold)Note: Jet Suit Removed$(/bold)$(br)Ad Astra's Jet Suit has been removed from the pack. MekaSuit fills this role more appropriately within the progression system. The Jet Suit recipe does not exist.$(br2)$(bold)Soulbound is Critical$(/bold)$(br)Space death penalties are severe (22-30%). Soulbound III on your space suit is almost mandatory for planet exploration."
     }
   ],
-  "flag": "icraft:stage_tier_4"
+  "advancement": "icraft:stage_tier_4"
 }

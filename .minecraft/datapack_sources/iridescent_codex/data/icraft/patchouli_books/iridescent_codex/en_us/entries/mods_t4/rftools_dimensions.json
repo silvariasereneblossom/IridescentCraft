@@ -21,5 +21,5 @@
       "text": "$(bold)No book needed.$(/bold) RFTools Dimensions is documented in JEI and the $(bold)RFTools wiki$(/bold). The Dimension Builder and Dimlet system are the core loop \u2014 craft Dimlets to define dimension properties, insert into a Dimension Tab, and power the builder."
     }
   ],
-  "flag": "icraft:stage_tier_4"
+  "advancement": "icraft:stage_tier_4"
 }

@@ -29,5 +29,5 @@
       "text": "$(bold)Preparation Checklist$(/bold)$(br)\u2022 MekaSuit (minimum)$(br)\u2022 Soulbound III on all gear$(br)\u2022 Thermal Regulation enchantment (level 3)$(br)\u2022 Void Adaptation enchantment$(br)\u2022 Full Vitality enchantment$(br)\u2022 Established RF infrastructure (Flux Networks recommended)$(br)\u2022 Emergency waystone or recall method$(br)\u2022 High-tier healing items$(br2)$(italic)Do not come here unprepared. Glacio will kill you.$(/italic)"
     }
   ],
-  "flag": "icraft:stage_tier_4"
+  "advancement": "icraft:stage_tier_4"
 }

@@ -3,7 +3,7 @@
   "icon": "kubejs:rift_shard",
   "category": "icraft:loot",
   "sortnum": 4,
-  "flag": "icraft:stage_tier_4",
+  "advancement": "icraft:stage_tier_4",
   "pages": [
     {
       "type": "patchouli:text",

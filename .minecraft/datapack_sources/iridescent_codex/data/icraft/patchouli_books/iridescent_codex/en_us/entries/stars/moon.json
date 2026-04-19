@@ -25,5 +25,5 @@
       "text": "$(bold)Lunar Stride Enchantment$(/bold)$(br)Moon mobs have a $(bold)12% chance$(/bold) to drop an enchanted book of $(bold)Lunar Stride$(/bold) (max level 3). This armor enchantment:$(br)\u2022 Reduces fall damage by 33% per level$(br)\u2022 Grants Jump Boost on all planets$(br)\u2022 At level 3, negates fall damage entirely$(br2)Essential for melee builds in low gravity."
     }
   ],
-  "flag": "icraft:stage_tier_4"
+  "advancement": "icraft:stage_tier_4"
 }

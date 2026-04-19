@@ -3,7 +3,7 @@
   "icon": "minecraft:blaze_rod",
   "category": "icraft:skills",
   "sortnum": 3,
-  "flag": "icraft:stage_tier_2",
+  "advancement": "icraft:stage_tier_2",
   "pages": [
     {
       "type": "patchouli:text",

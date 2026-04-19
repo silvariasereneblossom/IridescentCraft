@@ -25,5 +25,5 @@
       "text": "$(bold)Planetary Enchantments$(/bold)$(br)Each planet's mobs drop unique enchanted books (12% chance) that protect against that planet's hazards:$(br)\u2022 $(bold)Moon$(/bold) \u2192 Lunar Stride$(br)\u2022 $(bold)Mars$(/bold) \u2192 Thermal Regulation$(br)\u2022 $(bold)Mercury$(/bold) \u2192 Stellar Shield$(br)\u2022 $(bold)Venus$(/bold) \u2192 Pressure Shell$(br)\u2022 $(bold)Glacio$(/bold) \u2192 Void Adaptation$(br2)Collect these on early planets to survive later ones."
     }
   ],
-  "flag": "icraft:stage_tier_4"
+  "advancement": "icraft:stage_tier_4"
 }
