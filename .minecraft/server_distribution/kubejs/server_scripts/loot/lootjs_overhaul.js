@@ -58,6 +58,24 @@ LootJS.modifiers(event => {
   // Also adds Ars Nouveau spell books at tier-appropriate rates.
   // =========================================================================
 
+  // --- Strip blank enchanted books (added 2026-04-19) ---
+  // Tester reported `minecraft:enchanted_book{}` still showing up in chests
+  // even after the 2026-04-18 switch to `LootEntry.of('minecraft:book').enchantWithLevels`.
+  // Likely source: modded loot tables that inject raw enchanted_book without
+  // an enchant_with_levels function. Use a predicate-based strip so the
+  // persistent filter only matches BLANK books (empty StoredEnchantments),
+  // letting vanilla + our re-adds pass through untouched.
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .removeLoot(function(stack) {
+      if (!stack || stack.isEmpty()) return false
+      if (stack.id !== 'minecraft:enchanted_book') return false
+      var tag = stack.hasTag() ? stack.getTag() : null
+      if (!tag) return true
+      if (!tag.contains('StoredEnchantments', 9)) return true // NBT tag type 9 = list
+      return tag.getList('StoredEnchantments', 10).isEmpty()
+    })
+
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
   event
     .addEntityLootModifier('minecraft:pig')

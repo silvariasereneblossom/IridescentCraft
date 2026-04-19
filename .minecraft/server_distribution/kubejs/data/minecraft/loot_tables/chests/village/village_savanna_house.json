@@ -21,16 +21,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:grass",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:tall_grass",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
           "functions": [
             {
               "add": false,
@@ -59,27 +49,6 @@
             }
           ],
           "name": "minecraft:wheat_seeds",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:emerald",
-          "weight": 2
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:acacia_sapling",
           "weight": 2
         },
         {

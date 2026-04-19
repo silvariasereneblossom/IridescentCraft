@@ -10,10 +10,6 @@
         },
         {
           "type": "minecraft:item",
-          "name": "minecraft:green_dye"
-        },
-        {
-          "type": "minecraft:item",
           "functions": [
             {
               "add": false,
@@ -63,26 +59,6 @@
         {
           "type": "minecraft:item",
           "name": "minecraft:book"
-        },
-        {
-          "type": "minecraft:item",
-          "name": "minecraft:dead_bush",
-          "weight": 1
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
-          "name": "minecraft:emerald"
         },
         {
           "type": "minecraft:item",
