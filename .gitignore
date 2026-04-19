@@ -10,6 +10,13 @@ resourcepacks/
 !**/config/paxi/resourcepacks/**
 shaderpacks/
 saves/
+
+# Runtime-generated world / map data (regenerates on play, never commit)
+.minecraft/journeymap/data/
+.minecraft/region/
+.minecraft/placeholderlevel/
+.minecraft/backups/
+
 *.zip
 !global_packs/required_data/*.zip
 !server_distribution/global_packs/required_data/*.zip
