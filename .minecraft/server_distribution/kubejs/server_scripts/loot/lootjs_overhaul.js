@@ -124,6 +124,7 @@ LootJS.modifiers(event => {
     .removeLoot('relics:horse_flute')
 
   // Re-add enchanted books at 7.5% — T1 (Overworld)
+  console.log('[icraft-loot] Registering T1 enchanted_book re-add (Overworld, 7.5%, levels 10-25)')
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
@@ -134,6 +135,7 @@ LootJS.modifiers(event => {
     )
 
   // Re-add enchanted books at 10% — T2 (TF, Aether, Blue Skies)
+  console.log('[icraft-loot] Registering T2 enchanted_book re-add (TF/Aether/BlueSkies, 10%, levels 15-30)')
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest',
@@ -146,6 +148,7 @@ LootJS.modifiers(event => {
     )
 
   // Re-add enchanted books at 12.5% — T3 (Nether, Undergarden)
+  console.log('[icraft-loot] Registering T3 enchanted_book re-add (Nether/Undergarden, 12.5%, levels 20-30)')
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
@@ -156,6 +159,7 @@ LootJS.modifiers(event => {
     )
 
   // Re-add enchanted books at 15% — T4 (End, Deeper Darker, Abyss)
+  console.log('[icraft-loot] Registering T4 enchanted_book re-add (End/DD/Abyss, 15%, level 30)')
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
