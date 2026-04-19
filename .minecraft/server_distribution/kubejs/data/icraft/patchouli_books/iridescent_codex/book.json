@@ -18,7 +18,7 @@
   "flip_sound": "patchouli:page_flip",
   "index_icon": "minecraft:enchanted_book",
   "pamphlet": false,
-  "show_progress": true,
+  "show_progress": false,
   "version": "3",
   "use_blocky_font": false,
   "i18n": false,
