@@ -1,3 +1,7 @@
+param(
+    [switch]$Force
+)
+
 # =============================================================================
 # IridescentCraft Client Sync - PrismLauncher pre-launch hook
 # =============================================================================
@@ -20,6 +24,10 @@
 # download. On any failure, prints a warning and exits 0 so PrismLauncher
 # still launches Minecraft - "continuing with existing files" is always
 # safer than blocking play.
+#
+# -Force flag: delete .icraft_last_sha before syncing to force a full
+# re-download. Useful when instance state has drifted from the repo despite
+# the marker saying "up to date" (e.g., the 2026-04-19 stale-config bug).
 #
 # Install as pre-launch command in PrismLauncher:
 #   Instance → Settings → Custom Commands → Pre-launch command:
@@ -66,6 +74,14 @@ Write-Host "[IridescentCraft Sync] Instance: $instanceMC" -ForegroundColor DarkG
 # -- Step 2: Query GitHub API for latest commit SHA --
 $apiUrl = 'https://api.github.com/repos/silvariasereneblossom/IridescentCraft/commits/main'
 $shaFile = Join-Path $instanceMC '.icraft_last_sha'
+
+# -Force: delete marker so sync treats this as first-run and falls back to
+# the full-zip overlay path, which copies every overlay dir via robocopy.
+if ($Force -and (Test-Path $shaFile)) {
+    Remove-Item $shaFile -Force -ErrorAction SilentlyContinue
+    Write-Host "[IridescentCraft Sync] -Force: deleted .icraft_last_sha to trigger full re-sync." -ForegroundColor Yellow
+}
+
 $localSha = ''
 if (Test-Path $shaFile) { $localSha = (Get-Content $shaFile -Raw).Trim() }
 
@@ -98,11 +114,15 @@ if ($localSha -and $localSha.Length -eq 40) {
     try {
         $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
         $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
-        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -le 300) {
+        # GitHub's compare API caps .files[] at exactly 300. At-cap means
+        # silently truncated: we MUST fall back to full-zip or we'll miss
+        # files. (This was the 2026-04-19 server bug that left tuned configs
+        # stale for days despite the SHA marker saying "up to date".)
+        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -lt 300) {
             $useDiff = $true
             Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed ($($localSha.Substring(0,7)) -> $($remoteSha.Substring(0,7)))" -ForegroundColor Cyan
-        } elseif ($compare.files -and $compare.files.Count -gt 300) {
-            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed (>300) - full download." -ForegroundColor Yellow
+        } elseif ($compare.files -and $compare.files.Count -ge 300) {
+            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files (API cap = truncated) - full download." -ForegroundColor Yellow
         }
     } catch {
         Write-Host "[IridescentCraft Sync] Compare API failed - full download." -ForegroundColor Yellow
@@ -112,7 +132,7 @@ if ($localSha -and $localSha.Length -eq 40) {
 if ($useDiff) {
     # -- Fast path: download only changed files --
     $rawBase = "https://raw.githubusercontent.com/$owner/$repo/$remoteSha"
-    $synced = 0; $removed = 0
+    $synced = 0; $removed = 0; $errors = 0
 
     foreach ($file in $compare.files) {
         if (-not $file.filename.StartsWith($prefix)) { continue }
@@ -147,12 +167,22 @@ if ($useDiff) {
             $synced++
         } catch {
             Write-Host "[IridescentCraft Sync]   [FAIL] $relPath" -ForegroundColor Red
+            $errors++
         }
     }
 
-    Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
+    # Only write SHA on a clean sync. If any file failed, leaving the marker
+    # stale forces the next run to retry the same diff (or fall back to
+    # full-zip if the diff has since grown past the API cap).
+    if ($errors -eq 0) {
+        Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
+    } else {
+        Write-Host "[IridescentCraft Sync] $errors file(s) failed - NOT writing SHA marker. Next launch will retry." -ForegroundColor Yellow
+    }
+
     $mirrorList += "$synced file(s) synced"
     if ($removed -gt 0) { $mirrorList += "$removed removed" }
+    if ($errors -gt 0)  { $mirrorList += "$errors error(s)" }
     Write-Host "[IridescentCraft Sync] Diff sync complete: $($mirrorList -join ', ')" -ForegroundColor Green
 } else {
     # -- Slow fallback: full zip download --
@@ -182,7 +212,16 @@ if ($useDiff) {
         foreach ($dir in $overlayDirs) {
             $srcDir = Join-Path $src $dir
             if (Test-Path $srcDir) {
-                Copy-Item -Path $srcDir -Destination $instanceMC -Recurse -Force
+                # Use robocopy for reliable directory overwrites. PowerShell
+                # 5.1's Copy-Item -Recurse -Force has known quirks with
+                # existing destination trees; robocopy is purpose-built for
+                # this and exits 0-7 on success, 8+ on error.
+                $destDir = Join-Path $instanceMC $dir
+                if (-not (Test-Path $destDir)) { New-Item -ItemType Directory -Path $destDir -Force | Out-Null }
+                & robocopy $srcDir $destDir /E /NFL /NDL /NJH /NJS /R:2 /W:2 | Out-Null
+                if ($LASTEXITCODE -gt 7) {
+                    throw "robocopy failed for $dir -> $destDir (exit $LASTEXITCODE)"
+                }
                 $mirrorList += $dir
             }
         }

@@ -10,8 +10,18 @@ REM   "%INST_MC_DIR%\sync_client.bat"
 REM
 REM Or directly (using PowerShell):
 REM   powershell -ExecutionPolicy Bypass -File "%INST_MC_DIR%\sync_client.ps1"
+REM
+REM -Force: delete .icraft_last_sha so the next sync does a full-zip
+REM download. Use after a drift is detected:
+REM   sync_client.bat -Force
 
 setlocal
 set "SCRIPT_DIR=%~dp0"
-powershell -ExecutionPolicy Bypass -File "%SCRIPT_DIR%sync_client.ps1"
+
+set "FORCE_ARG="
+if /i "%1"=="-Force"  set "FORCE_ARG=-Force"
+if /i "%1"=="--force" set "FORCE_ARG=-Force"
+if /i "%1"=="/force"  set "FORCE_ARG=-Force"
+
+powershell -ExecutionPolicy Bypass -File "%SCRIPT_DIR%sync_client.ps1" %FORCE_ARG%
 exit /b 0
