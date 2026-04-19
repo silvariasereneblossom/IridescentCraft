@@ -195,6 +195,7 @@ Major change from vanilla: Nether is Tier 3, End is Tier 4.
 
 - Source generation, spell crafting, Imbuement Chamber
 - Gate: Tier 2 unlock
+- **Glyph acquisition via chest loot** — Ars Nouveau spell books are blank caster tools with no built-in spells; glyphs must be inscribed at a Scribes Table to make them functional. Because vanilla Ars progression gates glyphs behind research that's too slow for an expert-lite pack, we seed glyphs into chests per tier. Forms (`projectile`, `touch`, `self`, `aoe`) are front-loaded in T1–T2 so a spell book is immediately useful once the player finds their first form + effect pair. See Part XIX Loot Table Overhaul for per-tier glyph pool composition and rates.
 
 ### Tier 3: Occultism + Forbidden & Arcanus
 
@@ -577,6 +578,19 @@ Dungeon Crawl, Dungeons Plus, Epic Dungeons, Stalwart Dungeons, Integrated Dunge
 - Legendary gems
 - Creative-adjacent items
 - Ultimate curios
+
+### Ars Nouveau Glyph Injection
+
+Ars Nouveau spell books (novice / apprentice / archmage) are caster tools, not pre-built spells — they require glyphs inscribed at a Scribes Table. Vanilla Ars progression gates glyphs behind Scribes Table research that's too slow for this pack's expert-lite pacing, so glyphs are seeded into chest loot per tier. Forms (`projectile`, `touch`, `self`, `aoe`) are front-loaded in T1–T2 so a spell book becomes functional the moment a player pairs a form glyph with any effect glyph.
+
+| Tier | Dimensions | Pool contents | Combined rate |
+|------|------------|---------------|---------------|
+| T1 | Overworld | Forms (projectile/touch/self) + basic effects (harm, heal, ignite, break, place_block, grow, harvest, light, smelt, evaporate, extract, conjure_water) + amplify/extend_time/duration_down augments (18 glyphs) | ~12% |
+| T2 | Twilight Forest, Aether, Blue Skies | Forms (aoe, underfoot) + mobility/utility effects (launch, leap, glide, bounce, slowfall, freeze, gust, snare, pull, toss, cold_snap, fortune, fell, pickup, exchange, crush, cut) + accelerate/decelerate/dampen/pierce/split/sensitive augments (25 glyphs) | ~14% |
+| T3 | Nether, Undergarden | Linger form + advanced effects (lightning, firework, phantom_block, wall, fangs, hex, explosion, wind_shear, invisibility, blink, delay, gravity, animate_block, craft, ender_inventory, redstone_signal, interact, flare, infuse) + rotate/orbit augments (22 glyphs) | ~15% |
+| T4 | End, Deeper Darker, Abyss | Endgame effects (rune, wither, summon_undead/decoy/steed/vex/wolves, sense_magic, intangible) + dispel/randomize/name augments (12 glyphs) | ~18% |
+
+Rolled independently per-item per chest (same pattern as the tiered artifact pools in Section 1C of `lootjs_overhaul.js`).
 
 ### Implementation
 
