@@ -59,12 +59,16 @@ if ($localSha -and $localSha.Length -eq 40) {
         $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
         $compare = Invoke-RestMethod -Uri $compareUrl -Headers $headers -TimeoutSec 30
 
-        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -le 300) {
+        # GitHub's compare API caps the .files array at 300. If we're AT the
+        # cap, the response is silently truncated and we MUST fall back to
+        # full-zip or we'll silently miss files (the bug that left the 2026-04-17
+        # config changes stale on the server for days).
+        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -lt 300) {
             $useDiff = $true
             $changedFiles = $compare.files
             Write-Host "  New commit: $($remoteSha.Substring(0,7)) (was $($localSha.Substring(0,7))). $($changedFiles.Count) files changed." -ForegroundColor Cyan
-        } elseif ($compare.files -and $compare.files.Count -gt 300) {
-            Write-Host "  $($compare.files.Count) files changed (>300) - falling back to full download." -ForegroundColor Yellow
+        } elseif ($compare.files -and $compare.files.Count -ge 300) {
+            Write-Host "  $($compare.files.Count) files changed (API caps at 300 = truncated) - falling back to full download." -ForegroundColor Yellow
         } else {
             Write-Host "  Compare returned no files - falling back to full download." -ForegroundColor Yellow
         }
@@ -137,8 +141,14 @@ if ($useDiff) {
         }
     }
 
-    # Write new SHA
-    $remoteSha | Out-File -FilePath $shaFile -Encoding ASCII -NoNewline
+    # Only write SHA if EVERY file downloaded successfully. If any failed,
+    # leaving .icraft_last_sha unchanged forces the next run to retry the
+    # same diff (or fall back to full-zip if >= 300 files).
+    if ($errors -eq 0) {
+        $remoteSha | Out-File -FilePath $shaFile -Encoding ASCII -NoNewline
+    } else {
+        Write-Host "  [WARN] $errors file(s) failed to download - NOT writing SHA marker. Next run will retry." -ForegroundColor Yellow
+    }
 
     $summary = "  [OK] Synced $synced file(s)"
     if ($removed -gt 0) { $summary += ", removed $removed" }
@@ -189,7 +199,22 @@ try {
                 Write-Host "    [staged] $($item.Name)" -ForegroundColor Cyan
             }
         } else {
-            Copy-Item $item.FullName $dest -Recurse -Force
+            # Use robocopy for directories to guarantee overwriting existing
+            # files reliably (PowerShell 5.1's Copy-Item -Recurse -Force has
+            # quirks with pre-existing directory trees). Robocopy exit codes
+            # 0-7 are success; 8+ is error.
+            if ($item.PSIsContainer) {
+                $destSubdir = Join-Path $dest $item.Name
+                if (-not (Test-Path $destSubdir)) { New-Item -ItemType Directory -Path $destSubdir -Force | Out-Null }
+                & robocopy $item.FullName $destSubdir /E /NFL /NDL /NJH /NJS /R:2 /W:2 | Out-Null
+                if ($LASTEXITCODE -gt 7) {
+                    throw "robocopy failed for $($item.Name) -> $destSubdir (exit $LASTEXITCODE)"
+                }
+                Write-Host "    [robocopy] $($item.Name)" -ForegroundColor Green
+            } else {
+                Copy-Item $item.FullName $dest -Force
+                Write-Host "    [copy]     $($item.Name)" -ForegroundColor Green
+            }
         }
     }
 

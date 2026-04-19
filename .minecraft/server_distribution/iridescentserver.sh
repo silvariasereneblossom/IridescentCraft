@@ -20,6 +20,20 @@ FORGE_INSTALLER_URL="https://maven.minecraftforge.net/net/minecraftforge/forge/$
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# -Force flag: delete the SHA marker so the next sync does a full download.
+# Use when the server state has drifted from the repo despite the marker
+# claiming "up to date" (e.g., after a sync silently missed files).
+if [ "$1" = "-Force" ] || [ "$1" = "--force" ] || [ "$1" = "/force" ]; then
+    SHA_FILE_FORCE="$SCRIPT_DIR/.icraft_last_sha"
+    if [ -f "$SHA_FILE_FORCE" ]; then
+        rm -f "$SHA_FILE_FORCE"
+        echo "[FORCE] Deleted .icraft_last_sha — next sync will download fresh."
+    else
+        echo "[FORCE] No .icraft_last_sha present — already a full-sync run."
+    fi
+    echo ""
+fi
+
 # ANSI 24-bit RGB color codes
 # Trans flag: #5BCEFA (blue), #F5A9B8 (pink), #FFFFFF (white)
 TF_BLUE='\033[38;2;91;206;250m'

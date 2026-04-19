@@ -72,10 +72,27 @@ REM -------------------------------------------------------------------
 REM Uses phase0_sync.ps1 for diff-based updates: compares commit SHAs,
 REM then downloads ONLY the changed files via GitHub compare API +
 REM raw.githubusercontent.com. Typical sync: 5-10 seconds for 3-10 files.
-REM Falls back to full zip download on first run or when >300 files changed.
+REM Falls back to full zip download on first run or when >=300 files changed.
 REM
 REM If phase0_sync.ps1 doesn't exist yet (first ever deploy), download it
 REM from raw.githubusercontent.com before calling it.
+
+REM -Force flag: delete the SHA marker to trigger a full re-sync. Use this
+REM when the server state doesn't match the repo despite the marker saying
+REM "up to date" (e.g., after a diff-sync missed files silently).
+if /i "%1"=="-Force"     set "FORCE_SYNC=1"
+if /i "%1"=="--force"    set "FORCE_SYNC=1"
+if /i "%1"=="/force"     set "FORCE_SYNC=1"
+if defined FORCE_SYNC (
+    if exist "%~dp0.icraft_last_sha" (
+        del /f /q "%~dp0.icraft_last_sha" >nul 2>&1
+        echo [FORCE] Deleted .icraft_last_sha — next sync will download the full repo zip.
+    ) else (
+        echo [FORCE] No .icraft_last_sha present — already a full-sync run.
+    )
+    echo.
+)
+
 echo [UPDATE] Checking for updates from GitHub...
 
 if not exist "%~dp0phase0_sync.ps1" (
