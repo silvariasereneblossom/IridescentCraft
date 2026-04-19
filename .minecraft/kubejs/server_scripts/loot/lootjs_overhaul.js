@@ -196,7 +196,7 @@ LootJS.modifiers(event => {
       /explorify:.*chests.*/,
       /structory:.*chests.*/,
       /dungeons_plus:.*/,
-      /whendungeonsarise:.*/,
+      /dungeons_arise:.*/,
       /valhelsia_structures:.*chests.*/,
       /repurposed_structures:.*chests.*/
     )
@@ -495,27 +495,9 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/betterdeserttemples:.*pharaoh/)
     .removeLoot('minecraft:diamond')
 
-  // --- Overhauled Structures: common (chest_1, chest_2) ---
-  event
-    .addLootTableModifier(/overhauledstructures:.*chest_[12]/)
-    .removeLoot('minecraft:diamond')
-
-  // --- Overhauled Structures: rare (chest_3, chest_m) ---
-  event
-    .addLootTableModifier(/overhauledstructures:.*chest_[3m]/)
-
-  // --- Loot Integrations: easy/village/water = T1 ---
-  event
-    .addLootTableModifier(/lootintegrations:.*(?:easy|village|water)/)
-    .removeLoot('minecraft:diamond')
-
-  // --- Loot Integrations: medium = T2 ---
-  event
-    .addLootTableModifier(/lootintegrations:.*medium/)
-
-  // --- Loot Integrations: hard/nether = T3 ---
-  event
-    .addLootTableModifier(/lootintegrations:.*(?:hard|nether)/)
+  // [Removed 2026-04-19] Overhauled Structures — mod not installed.
+  // [Removed 2026-04-19] Loot Integrations — mod not installed. If either
+  // mod is re-added later, restore from git history.
 
   // --- Celestial Artifacts ---
   event
