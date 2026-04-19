@@ -14,6 +14,28 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-19 — Codex empty even after the modId fix was correct
+
+**Symptom:** After the prior session's `modId="icraft"` fix, the book was now registered (no "Invalid book ID" tooltip), but opening it showed empty contents. Client log: `Error loading and compiling book icraft:iridescent_codex, using empty contents / RuntimeException: Entry in file .../t1_bosses.json does not have a valid category`. Warnings: `Queried for unknown config flag: icraft:stage_tier_3/4`.
+
+**Dead ends:**
+- Verified the jar was updated: `unzip -p .../stars.json` returned the new `"advancement": "icraft:stage_tier_4"`. Concluded "deployment is correct, something else is broken."
+- Verified `datapack_sources/iridescent_codex/` was consistent (all `"advancement"`). Concluded the repo state was clean.
+- Checked the deployed jar's `data/` and `assets/` folders — both had the correct `"advancement"` content across all 13 categories. The jar was fine.
+
+**Actual root cause:** Minecraft's resource pack priority. The log line `Reloading ResourceManager: mod_resources, vanilla, KubeJS Resource Pack [assets], ...` shows KubeJS Resource Pack loads **after** mod_resources — later packs **override** earlier ones. A leftover `kubejs/assets/icraft/patchouli_books/iridescent_codex/` folder from the pre-jar era still had every category JSON using `"flag": "icraft:stage_tier_N"` gating. KubeJS's resource pack won over the jar, Patchouli 1.20.1-85 didn't recognize the old `"flag"` key, category parse failed, and every entry pointing to those categories reported "does not have a valid category."
+
+Same pattern, second layer: `server_distribution/global_packs/required_data/iridescent_codex.zip` — a stale Paxi 3.x legacy datapack from before the jar migration — was being auto-loaded by Minecraft (`Found new data pack iridescent_codex.zip, loading it automatically`) and also still had `"flag"` content.
+
+**What fixed it:** Deleted `kubejs/assets/icraft/patchouli_books/iridescent_codex/` and `kubejs/data/icraft/patchouli_books/iridescent_codex/` in all 3 distros. The jar ships both `assets/` and `data/` so no content is lost — just the shadowing fallback removed. Also deleted `server_distribution/global_packs/required_data/iridescent_codex.zip`. Only the jar and source-tracked `datapack_sources/iridescent_codex/` remain.
+
+**Takeaway:**
+- When migrating content between delivery mechanisms (KubeJS fallback → jar → Paxi → etc.), the OLD mechanism's files must be actively deleted. "The new one takes priority" is usually wrong — resource pack load order often puts user/runtime content AFTER mods, so legacy copies shadow the authoritative source. Always check the `Reloading ResourceManager` line in the log to see the actual pack order, and hunt down every copy of the content.
+- CLAUDE.md explicitly said "KubeJS data/ + assets/ copies are kept as a harmless fallback." They were not harmless — they were stale. A "fallback" that diverges from the authoritative source is a latent landmine. If you keep a fallback, it has to be regenerated from source in the same build step that builds the authoritative artifact, or dropped.
+- `find .minecraft -path "*/patchouli_books/iridescent_codex*"` run early in a codex-debugging session would have surfaced all four copies (jar, datapack_sources, kubejs/assets, kubejs/data, global_packs/required_data) in one shot.
+
+---
+
 ## 2026-04-19 — Rivers never generated across many tests
 
 **Symptom:** Tester reported never seeing a single river across multiple fresh worlds, even after a commit explicitly labeled "More water".
