@@ -21,5 +21,5 @@
       "text": "$(bold)No guide book.$(/bold) Blue Skies is exploration-driven. Both dimensions \u2014 the Everbright and the Everdawn \u2014 contain dungeon loot and boss encounters that guide you forward naturally. JEI covers all crafting recipes."
     }
   ],
-  "flag": "icraft:stage_tier_2"
+  "advancement": "icraft:stage_tier_2"
 }

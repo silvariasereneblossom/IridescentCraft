@@ -4,6 +4,30 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-19 — Rivers never generating (Tectonic + BoP custom region)
+
+Tester feedback: rivers have never appeared on any tested world, even across multiple freshly-seeded tests after the 2026-04-15 "More water" commit (3b14ec9d).
+
+### Root cause (two issues stacked)
+
+1. **Tectonic knobs moved in the wrong direction.** Commit 3b14ec9d set `ridge_scale 0.12→0.08` and `erosion_scale 0.14→0.10` under the commit message "More water". In Tectonic, *lower* ridge_scale means less-prominent ridges, and *lower* erosion_scale means less-eroded terrain — both reduce the frequency and depth of river channels. The intent was right; the direction was inverted.
+
+2. **BoP Paxi datapack had no river biomes.** `config/paxi/datapacks/bop_biome_weights.zip` ships `data/custom/worldgen/region/bop_custom_region.json`, a `type: terra:overworld` TerraBlender region listing 20 landmass biomes (BoP biomes plus `icraft:cherry_river_meadow`, `icraft:cherry_mountains`). Neither `minecraft:river` nor `minecraft:frozen_river` were in the biome pool, so whenever TerraBlender selected this region for a river parameter point, it substituted a landmass biome. With a region weight sum of ~128 and no river entries, rivers lost most biome-selection contests.
+
+The zip was also a pre-built artifact with no `datapack_sources/` folder — it had been silently committed as-is without a source-tracked build, which is why the missing rivers were easy to miss during earlier loot/biome audits.
+
+### Fix
+
+- `config/tectonic.json` (all 3 distros): `ridge_scale 0.08 → 0.3`, `erosion_scale 0.1 → 0.4`. These are slightly above Tectonic's defaults (0.23 ridges, 0.375 erosion), biased toward more pronounced ridges and stronger river carving.
+- `datapack_sources/bop_biome_weights/` created by extracting the existing zip, then `bop_custom_region.json` patched to prepend `minecraft:river` (weight 20) and `minecraft:frozen_river` (weight 6). Region rebuilt and redeployed to all 3 distros with identical MD5.
+- `ocean_offset` left at `-0.35` — that's fine for overall ocean/land ratio and wasn't the issue.
+
+### Tradeoff
+
+Higher ridge_scale and erosion_scale will produce more dramatic vertical variation and more carved valleys, not just rivers. Mountain biomes will be taller and more cliffed; plains will feel less flat. If testers report terrain feels too chaotic, the walk-back is to lower ridge_scale toward 0.23 while keeping rivers in the biome pool. River biomes competing against BoP biomes at weight 20/6 means they should appear at ~20% of region parameter points, which may produce slightly more rivers than vanilla — acceptable since the goal was "more rivers and water" per the 2026-04-15 commit intent. New chunks only; existing worlds keep their river-less terrain.
+
+---
+
 ## 2026-04-18 — Blank enchanted books in loot (persistent filter removal)
 
 Tester feedback: enchanted books in chest loot were still appearing blank (no stored enchantments) despite the 2026-04-11 `.enchantWithLevels` fix.

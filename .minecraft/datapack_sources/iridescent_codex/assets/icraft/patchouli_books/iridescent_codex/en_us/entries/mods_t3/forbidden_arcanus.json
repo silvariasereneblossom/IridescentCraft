@@ -22,5 +22,5 @@
       "text": "Craft the $(bold)Tome of Arcana$(/bold) for the full Forbidden & Arcanus reference \u2014 Arcana magic, cursed items, and Corruptus lore."
     }
   ],
-  "flag": "icraft:stage_tier_3"
+  "advancement": "icraft:stage_tier_3"
 }

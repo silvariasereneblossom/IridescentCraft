@@ -19,11 +19,11 @@
   },
   "continents": {
     "continents_scale": 0.13,
-    "erosion_scale": 0.1,
+    "erosion_scale": 0.4,
     "flat_terrain_skew": 0.1,
     "jungle_pillars": true,
     "ocean_offset": -0.35,
-    "ridge_scale": 0.08,
+    "ridge_scale": 0.3,
     "river_lanterns": true,
     "rolling_hills": true,
     "underground_rivers": true

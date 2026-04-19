@@ -3,5 +3,5 @@
   "description": "Endgame mods unlocked at Tier 4: Mekanism advanced, Mahou Tsukai, RFTools Dimensions, and Ascension.",
   "icon": "minecraft:dragon_egg",
   "sortnum": 10,
-  "flag": "icraft:stage_tier_4"
+  "advancement": "icraft:stage_tier_4"
 }

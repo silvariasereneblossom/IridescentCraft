@@ -302,6 +302,9 @@ Forge requires network channel lists to match between client and server. Mods th
 ### Tectonic Terrain Tuning (2026-03-17)
 - **Resolved:** vertical_scale 1.155→0.8 (-31%), ridge_scale reduced.
 
+### Rivers Never Generating (2026-04-19)
+- **Resolved:** Two issues combined. (1) Prior "more water" commit 3b14ec9d had direction inverted: `ridge_scale 0.08` and `erosion_scale 0.10` are both *below* Tectonic defaults and produce flatter, less-carved terrain with fewer river channels. Restored above defaults: `ridge_scale 0.3`, `erosion_scale 0.4`. (2) `bop_biome_weights.zip` → `bop_custom_region.json` (a `terra:overworld` region) listed 20 landmass biomes but neither `minecraft:river` nor `minecraft:frozen_river`, so BoP's region was outcompeting vanilla for the river parameter slots. Added `minecraft:river` (weight 20) + `minecraft:frozen_river` (weight 6). Source-tracked the zip at `datapack_sources/bop_biome_weights/` (previously it was a pre-built zip with no source). New chunks only.
+
 ### Improved Mobs Rebalance (2026-03-17)
 - **Resolved:** 3 in-game day grace period, equipment/damage caps halved, diamond→iron for mob breaking tools.
 
