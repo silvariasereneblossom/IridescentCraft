@@ -194,7 +194,7 @@ LootJS.modifiers(event => {
       'minecraft:chests/underwater_ruin_small',
       /dungeoncrawl:.*chests.*/,
       /explorify:.*chests.*/,
-      /structory:.*chests.*/,
+      /^structory:.+/,
       /dungeons_plus:.*/,
       /dungeons_arise:.*/,
       /valhelsia_structures:.*chests.*/,
@@ -472,7 +472,7 @@ LootJS.modifiers(event => {
   // --- Villages & Pillages ---
   // No T1 tokens — villages are starting areas, not progression structures
   event
-    .addLootTableModifier(/villagesandpillages:.*chests.*/)
+    .addLootTableModifier(/^villagesandpillages:.+/)
     .removeLoot('minecraft:diamond')
 
   // --- Unwrecked Ships ---
@@ -530,8 +530,11 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/irons_spellbooks:.*chests.*/)
 
   // --- Moog's End Structures (T4 content — allow everything, add T4 tokens + thematic loot) ---
+  // MES loot tables live at data/mes/loot_tables/*.json (no /chests/ subfolder)
+  // e.g. mes:cathedral_rare, mes:mega_ship_treasure, mes:houses_common.
+  // Old regex /mes:.*chests.*/ matched zero tables (audit 2026-04-19).
   event
-    .addLootTableModifier(/mes:.*chests.*/)
+    .addLootTableModifier(/^mes:.+/)
     .addLoot(LootEntry.of('minecraft:chorus_fruit').limitCount([4, 8]).when(c => c.randomChance(0.08)))
     .addLoot(LootEntry.of('minecraft:ender_pearl').limitCount([2, 4]).when(c => c.randomChance(0.05)))
     .addLoot(LootEntry.of('minecraft:shulker_shell').when(c => c.randomChance(0.03)))
@@ -642,7 +645,7 @@ LootJS.modifiers(event => {
 
   // --- Structory (39 tables) — T1 overworld ---
   event
-    .addLootTableModifier(/structory:.*chests.*/)
+    .addLootTableModifier(/^structory:.+/)
     .removeLoot('minecraft:diamond')
 
   // --- Structory Towers (49 tables) — T1-T2 overworld ---
@@ -1272,8 +1275,8 @@ LootJS.modifiers(event => {
   // Regex match catches any chest path containing "village" under these mods.
   const moddedVillagePatterns = [
     /^ctov:chests\//,
-    /^villagesandpillages:.*chests.*/,
-    /^repurposed_structures:chests\/village_/,
+    /^villagesandpillages:.+/,
+    /^repurposed_structures:chests\/villages\//,
     /^townstead:.*chests?\//,
   ]
 
@@ -1459,7 +1462,7 @@ LootJS.modifiers(event => {
   // Village chests: low chance for basic (white/green) gear
   const villageChestPatterns = [
     /minecraft:chests\/village\/.*/,
-    /villagesandpillages:.*chests.*/,
+    /^villagesandpillages:.+/,
     /ctov:.*chests.*/
   ]
 

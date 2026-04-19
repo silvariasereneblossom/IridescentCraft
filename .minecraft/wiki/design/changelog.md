@@ -24,6 +24,30 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — Loot modifier REGEX audit (paths actually matched)
+
+Follow-up to the namespace audit: verified each regex-based `addLootTableModifier` pattern by fetching the real mod jars and listing their `loot_tables/**/*.json` paths to confirm the pattern actually matches something. Found 4 regex misses that were modifying **zero tables**:
+
+| Pattern | Problem | Fix |
+|---|---|---|
+| `/mes:.*chests.*/` | MES loot tables live at `data/mes/loot_tables/*.json` directly — no `chests/` subfolder | `/^mes:.+/` |
+| `/structory:.*chests.*/` (2 uses) | Structory uses `extra/harvest/library/mood/outcast/ruin/` subfolders — no `chests/` | `/^structory:.+/` |
+| `/villagesandpillages:.*chests.*/` (3 uses) | VnP uses singular `*_chest.json` under `village_witch/house/` — the regex required plural "chests" | `/^villagesandpillages:.+/` |
+| `/^repurposed_structures:chests\/village_/` | RS uses plural `chests/villages/<biome>_house.json` | `/^repurposed_structures:chests\/villages\//` |
+
+Net: every loot modifier regex now matches at least one real loot table in its target mod's jar. Confirmed via downloading and inspecting DungeonsArise, dungeons-plus, yungs-better-desert-temples, moogs-end-structures, structory, valhelsia-structures, villages-and-pillages, repurposed-structures, and explorations jars — jars deleted after inspection.
+
+Other regex patterns verified as correct (they DO match):
+- `/dungeons_arise:chests\/.*treasure/` — matches `chests/aviary/aviary_treasure` etc.
+- `/dungeons_arise:chests\/heavenly_/` — matches `chests/heavenly_challenger/*` etc.
+- `/dungeons_plus:chests\/.*\/common/` + `/rare/` — matches `chests/<dungeon>/common` pattern
+- `/betterdeserttemples:.*(?:food_storage|storage|pot|wardrobe|lab|library|statue|tomb|pharaoh)/` — all keywords match real table paths
+- `/repurposed_structures:.*chests.*/` (broad) — matches `chests/*` across 20+ subfolders
+- `/valhelsia_structures:.*chests.*/` — matches `chests/{castle,forge,kitchen,miscellaneous,player_house,treasure,...}`
+- `/explorations:.*/` — matches `chests/{campsite,desert_ruin,floating_island,jungle_temple,shrine,...}`
+
+---
+
 ## 2026-04-19 — Loot modifier namespace audit
 
 Audited all 122 `addLootTableModifier` / `addLootTypeModifier` calls in `lootjs_overhaul.js` against the installed mod list (`mods/.index/*.pw.toml`). Three real findings:
