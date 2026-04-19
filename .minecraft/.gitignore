@@ -11,6 +11,10 @@ saves/
 !global_packs/required_data/*.zip
 !config/paxi/pridepack8.0.1.zip
 !config/paxi/datapacks/*.zip
+!server_distribution/config/paxi/datapacks/*.zip
+!distribution/client/config/paxi/datapacks/*.zip
+!server_distribution/global_packs/required_data/*.zip
+!distribution/client/global_packs/required_data/*.zip
 *.rar
 
 # Runtime-generated configs (mods write on startup)
