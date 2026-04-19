@@ -1,38 +1,71 @@
+param(
+    [string]$ServerDir = ''
+)
+
 # =============================================================================
 # IridescentCraft Server Diagnostic Dump
 # =============================================================================
-# Captures everything needed to diagnose sync / script / config issues into a
-# single file: icraft_diagnostic.txt. Push that file to the repo so Claude
-# can read it without back-and-forth round trips.
+# Captures server state into icraft_diagnostic.txt.
 #
-# Usage (from the server directory):
-#   powershell -ExecutionPolicy Bypass -File diagnose.ps1
-#
-# Or from anywhere:
-#   powershell -ExecutionPolicy Bypass -File diagnose.ps1 -ServerDir "<path>"
-#
-# Output: <ServerDir>\icraft_diagnostic.txt
+# Run from the server directory:
+#   powershell -ExecutionPolicy Bypass -NoProfile -File diagnose.ps1
+# Or use the diagnose.bat wrapper which captures errors:
+#   diagnose.bat
 # =============================================================================
 
-param(
-    [string]$ServerDir = (Get-Location).Path
-)
+# --- Force unbuffered output + immediate startup banner ---------------------
+$ErrorActionPreference = 'Continue'
+$ProgressPreference    = 'SilentlyContinue'
 
-$ServerDir = $ServerDir.TrimEnd('\', '/', '"')
+Write-Host ''
+Write-Host '========================================================================' -ForegroundColor Cyan
+Write-Host '  IridescentCraft Diagnostic Starting' -ForegroundColor Cyan
+Write-Host '========================================================================' -ForegroundColor Cyan
+Write-Host ''
+Write-Host "  PowerShell version: $($PSVersionTable.PSVersion)" -ForegroundColor Yellow
+Write-Host "  Running from:       $(Get-Location)" -ForegroundColor Yellow
+Write-Host "  Script location:    $PSScriptRoot" -ForegroundColor Yellow
+Write-Host "  ServerDir arg:      '$ServerDir'" -ForegroundColor Yellow
+Write-Host ''
 
-# Auto-detect nested "IridescentCraft Dedicated Server" subfolder — the bat
-# relaunches inside a subfolder on first run, so from outside we need to walk in.
+# --- Resolve ServerDir ------------------------------------------------------
+if (-not $ServerDir) {
+    # Prefer the script's own directory, since that's where diagnose.ps1 lives
+    if ($PSScriptRoot) { $ServerDir = $PSScriptRoot }
+    else                { $ServerDir = (Get-Location).Path }
+}
+$ServerDir = $ServerDir.TrimEnd('\', '/', '"', ' ')
+
+# Auto-detect the nested "IridescentCraft Dedicated Server" subdir
 $nested = Join-Path $ServerDir 'IridescentCraft Dedicated Server'
 if ((Test-Path (Join-Path $nested '.icraft_server')) -and (-not (Test-Path (Join-Path $ServerDir '.icraft_server')))) {
+    Write-Host "  Auto-detected nested server subdir" -ForegroundColor Cyan
     $ServerDir = $nested
-    Write-Host "[diag] Auto-detected nested server dir: $ServerDir" -ForegroundColor Cyan
+}
+
+Write-Host "  Resolved ServerDir: $ServerDir" -ForegroundColor Green
+Write-Host ''
+
+if (-not (Test-Path $ServerDir)) {
+    Write-Host "ERROR: ServerDir does not exist: $ServerDir" -ForegroundColor Red
+    Write-Host 'Pass a valid path via -ServerDir or run from the server directory.' -ForegroundColor Red
+    exit 1
 }
 
 $OutFile = Join-Path $ServerDir 'icraft_diagnostic.txt'
-if (Test-Path $OutFile) { Remove-Item $OutFile -Force }
+Write-Host "  Output file:        $OutFile" -ForegroundColor Green
+Write-Host ''
 
-function Log([string]$msg = '') { Add-Content -Path $OutFile -Value $msg -Encoding UTF8 }
+# Wrap everything below in try/catch so any error is surfaced instead of failing silently
+try {
+
+if (Test-Path $OutFile) { Remove-Item $OutFile -Force -ErrorAction SilentlyContinue }
+
+function Log([string]$msg = '') {
+    Add-Content -Path $OutFile -Value $msg -Encoding ASCII -ErrorAction Continue
+}
 function Section([string]$title) {
+    Write-Host "[diag] $title" -ForegroundColor Cyan
     Log ''
     Log '========================================================================'
     Log "  $title"
@@ -41,17 +74,18 @@ function Section([string]$title) {
 function DumpFile([string]$path, [int]$head = 30, [int]$tail = 30) {
     if (-not (Test-Path $path)) { Log "  (MISSING: $path)"; return }
     $item = Get-Item $path
-    $hash = (Get-FileHash $path -Algorithm SHA256 -ErrorAction SilentlyContinue).Hash
+    $hash = ''
+    try { $hash = (Get-FileHash $path -Algorithm SHA256).Hash } catch {}
     Log "  path:   $path"
     Log "  size:   $($item.Length) bytes"
     Log "  mtime:  $($item.LastWriteTime)"
     Log "  sha256: $hash"
     Log ''
-    $content = Get-Content $path -ErrorAction SilentlyContinue
-    if (-not $content) { Log '  (empty or unreadable)'; return }
+    $content = @(Get-Content $path -ErrorAction SilentlyContinue)
+    if (-not $content -or $content.Count -eq 0) { Log '  (empty or unreadable)'; return }
     if ($content.Count -le ($head + $tail + 5)) {
         Log '  -- full content --'
-        $content | ForEach-Object { Log $_ }
+        foreach ($l in $content) { Log $l }
     } else {
         Log "  -- first $head lines --"
         $content[0..($head - 1)] | ForEach-Object { Log $_ }
@@ -62,15 +96,16 @@ function DumpFile([string]$path, [int]$head = 30, [int]$tail = 30) {
 }
 function Grep([string]$path, [string]$pattern) {
     if (-not (Test-Path $path)) { Log "  (MISSING: $path)"; return }
-    $m = Select-String -Path $path -Pattern $pattern -AllMatches -ErrorAction SilentlyContinue
-    if (-not $m) { Log "  NO MATCHES for /$pattern/ in $(Split-Path $path -Leaf)" }
-    else {
-        Log "  $(@($m).Count) match(es) for /$pattern/:"
+    $m = @(Select-String -Path $path -Pattern $pattern -AllMatches -ErrorAction SilentlyContinue)
+    if (-not $m -or $m.Count -eq 0) {
+        Log "  NO MATCHES for /$pattern/ in $(Split-Path $path -Leaf)"
+    } else {
+        Log "  $($m.Count) match(es) for /$pattern/:"
         foreach ($hit in $m) { Log "    L$($hit.LineNumber): $($hit.Line.TrimStart())" }
     }
 }
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'ENVIRONMENT'
 Log "server_dir:      $ServerDir"
 Log "diagnostic_time: $(Get-Date -Format 'yyyy-MM-dd HH:mm:ss zzz')"
@@ -78,25 +113,25 @@ Log "hostname:        $env:COMPUTERNAME"
 Log "user:            $env:USERNAME"
 Log "ps_version:      $($PSVersionTable.PSVersion)"
 Log "dir_exists:      $(Test-Path $ServerDir)"
-$marker = Join-Path $ServerDir '.icraft_server'
-Log ".icraft_server:  $(Test-Path $marker)"
+Log ".icraft_server:  $(Test-Path (Join-Path $ServerDir '.icraft_server'))"
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'SYNC MARKER'
 $shaFile = Join-Path $ServerDir '.icraft_last_sha'
 if (Test-Path $shaFile) {
-    Log "  .icraft_last_sha: $((Get-Content $shaFile -Raw).Trim())"
+    Log "  .icraft_last_sha: $((Get-Content $shaFile -Raw -ErrorAction SilentlyContinue).Trim())"
     Log "  marker_mtime:     $((Get-Item $shaFile).LastWriteTime)"
 } else {
-    Log '  .icraft_last_sha: MISSING (will trigger full zip download next sync)'
+    Log '  .icraft_last_sha: MISSING (would trigger full zip download next sync)'
 }
 
-# -----------------------------------------------------------------------------
-Section 'CODEX JAR (iridescent_codex_data.jar)'
+# ---------------------------------------------------------------------------
+Section 'CODEX JAR'
 $codexJar = Join-Path $ServerDir 'mods\iridescent_codex_data.jar'
 if (Test-Path $codexJar) {
     $item = Get-Item $codexJar
-    $hash = (Get-FileHash $codexJar -Algorithm SHA256).Hash
+    $hash = ''
+    try { $hash = (Get-FileHash $codexJar -Algorithm SHA256).Hash } catch {}
     Log "  size:   $($item.Length) bytes"
     Log "  mtime:  $($item.LastWriteTime)"
     Log "  sha256: $hash"
@@ -124,71 +159,62 @@ if (Test-Path $codexJar) {
         Log "  (jar inspection error: $($_.Exception.Message))"
     }
 } else {
-    Log '  mods/iridescent_codex_data.jar: MISSING'
+    Log "  MISSING: $codexJar"
 }
 
-# -----------------------------------------------------------------------------
-Section 'LOOTJS_OVERHAUL.JS (enchanted book re-add path)'
+# ---------------------------------------------------------------------------
+Section 'LOOTJS_OVERHAUL.JS'
 $lootScript = Join-Path $ServerDir 'kubejs\server_scripts\loot\lootjs_overhaul.js'
 if (Test-Path $lootScript) {
     $item = Get-Item $lootScript
-    $hash = (Get-FileHash $lootScript -Algorithm SHA256).Hash
+    $hash = ''
+    try { $hash = (Get-FileHash $lootScript -Algorithm SHA256).Hash } catch {}
     Log "  size:   $($item.Length) bytes"
     Log "  mtime:  $($item.LastWriteTime)"
     Log "  sha256: $hash"
-    Log "  lines:  $((Get-Content $lootScript).Count)"
+    $content = @(Get-Content $lootScript)
+    Log "  lines:  $($content.Count)"
     Log ''
     Grep $lootScript 'icraft-loot'
     Log ''
-    Log '  -- lines 115-180 (enchanted book re-add section) --'
-    $content = Get-Content $lootScript
+    Log '  -- lines 115-180 --'
     $start = [Math]::Max(0, 114)
     $end = [Math]::Min($content.Count - 1, 179)
     for ($i = $start; $i -le $end; $i++) { Log ("  L{0,4}: {1}" -f ($i + 1), $content[$i]) }
 } else {
-    Log '  kubejs/server_scripts/loot/lootjs_overhaul.js: MISSING'
+    Log "  MISSING: $lootScript"
 }
 
-# -----------------------------------------------------------------------------
-Section 'MOB_EQUIPMENT.JS (Necromancer guard)'
+# ---------------------------------------------------------------------------
+Section 'MOB_EQUIPMENT.JS'
 $mobEquip = Join-Path $ServerDir 'kubejs\server_scripts\scaling\mob_equipment.js'
 if (Test-Path $mobEquip) {
     $item = Get-Item $mobEquip
-    $hash = (Get-FileHash $mobEquip -Algorithm SHA256).Hash
+    $hash = ''
+    try { $hash = (Get-FileHash $mobEquip -Algorithm SHA256).Hash } catch {}
     Log "  size:   $($item.Length) bytes"
     Log "  mtime:  $($item.LastWriteTime)"
     Log "  sha256: $hash"
     Log ''
     Grep $mobEquip 'MOB_EQUIP_BROKEN_ENTITIES|necromancer'
 } else {
-    Log '  kubejs/server_scripts/scaling/mob_equipment.js: MISSING'
+    Log "  MISSING: $mobEquip"
 }
 
-# -----------------------------------------------------------------------------
-Section 'CODEX DELIVERY SCRIPT'
-$delivery = Join-Path $ServerDir 'kubejs\server_scripts\codex_delivery.js'
-if (Test-Path $delivery) {
-    $item = Get-Item $delivery
-    Log "  mtime: $($item.LastWriteTime)"
-    Log "  sha256: $((Get-FileHash $delivery -Algorithm SHA256).Hash)"
-} else {
-    Log '  MISSING'
-}
-
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'LOOTR CONFIG'
 $lootr = Join-Path $ServerDir 'config\lootr-common.toml'
 if (Test-Path $lootr) {
     Log "  mtime: $((Get-Item $lootr).LastWriteTime)"
     Grep $lootr '^(aggressive_mode|disable|convert_wooden_chests)\s*='
-} else { Log '  MISSING' }
+} else { Log "  MISSING: $lootr" }
 
-# -----------------------------------------------------------------------------
-Section 'MAJRUSZ CONFIG (damage_bonus block)'
+# ---------------------------------------------------------------------------
+Section 'MAJRUSZ CONFIG (mobs_spawn_stronger)'
 $maj = Join-Path $ServerDir 'config\majruszsdifficulty.json'
 if (Test-Path $maj) {
     Log "  mtime: $((Get-Item $maj).LastWriteTime)"
-    $content = Get-Content $maj
+    $content = @(Get-Content $maj)
     for ($i = 0; $i -lt $content.Count; $i++) {
         if ($content[$i] -match 'mobs_spawn_stronger') {
             $end = [Math]::Min($content.Count - 1, $i + 14)
@@ -196,25 +222,25 @@ if (Test-Path $maj) {
             break
         }
     }
-} else { Log '  MISSING' }
+} else { Log "  MISSING: $maj" }
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'SCALINGMOBS CONFIG'
 $sm = Join-Path $ServerDir 'config\scaling_mobs\main.toml'
 if (Test-Path $sm) {
     Log "  mtime: $((Get-Item $sm).LastWriteTime)"
     Grep $sm '(Damage Scale Rate|Max Scaled Damage)'
-} else { Log '  MISSING' }
+} else { Log "  MISSING: $sm" }
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'IMPROVEDMOBS CONFIG'
 $im = Join-Path $ServerDir 'config\improvedmobs\common.toml'
 if (Test-Path $im) {
     Log "  mtime: $((Get-Item $im).LastWriteTime)"
     Grep $im '(Equipment Addition|Damage Increase Multiplier)'
-} else { Log '  MISSING' }
+} else { Log "  MISSING: $im" }
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'CUSTOM JARS IN mods/'
 $modsDir = Join-Path $ServerDir 'mods'
 if (Test-Path $modsDir) {
@@ -233,17 +259,16 @@ if (Test-Path $modsDir) {
             Log ("  {0,-50} MISSING" -f $c)
         }
     }
-    $jarCount = (Get-ChildItem $modsDir -Filter '*.jar' -ErrorAction SilentlyContinue).Count
+    $jarCount = @(Get-ChildItem $modsDir -Filter '*.jar' -ErrorAction SilentlyContinue).Count
     Log ''
     Log "  total jars in mods/: $jarCount"
-} else { Log '  mods/ MISSING' }
+} else { Log "  MISSING: $modsDir" }
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'KUBEJS STARTUP LOG (full)'
-$startupLog = Join-Path $ServerDir 'logs\kubejs\startup.log'
-DumpFile $startupLog 500 500
+DumpFile (Join-Path $ServerDir 'logs\kubejs\startup.log') 500 500
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'KUBEJS SERVER LOG (last 300 lines)'
 $serverLog = Join-Path $ServerDir 'logs\kubejs\server.log'
 if (Test-Path $serverLog) {
@@ -254,16 +279,33 @@ if (Test-Path $serverLog) {
     Log ''
     Log '  -- last 300 lines --'
     Get-Content $serverLog -Tail 300 -ErrorAction SilentlyContinue | ForEach-Object { Log $_ }
-} else { Log '  MISSING' }
+} else { Log "  MISSING: $serverLog" }
 
-# -----------------------------------------------------------------------------
+# ---------------------------------------------------------------------------
 Section 'DONE'
 Log "Diagnostic complete. Push this file to the repo so Claude can read it."
 
 Write-Host ''
-Write-Host '[diag] Diagnostic written to:' -ForegroundColor Green
-Write-Host "       $OutFile" -ForegroundColor Cyan
+Write-Host '[diag] Diagnostic complete.' -ForegroundColor Green
+Write-Host "[diag] Output written to: $OutFile" -ForegroundColor Cyan
 Write-Host ''
-Write-Host '[diag] Push this file to the repo (any path works, e.g. place it in' -ForegroundColor Yellow
-Write-Host '       .minecraft\TesterLogs\ or the repo root) and commit + push.' -ForegroundColor Yellow
+Write-Host '[diag] Next: copy icraft_diagnostic.txt into your local repo,' -ForegroundColor Yellow
+Write-Host '[diag] commit, and push. Place anywhere (e.g. .minecraft\TesterLogs\).' -ForegroundColor Yellow
 Write-Host ''
+
+} catch {
+    Write-Host ''
+    Write-Host '========================================================================' -ForegroundColor Red
+    Write-Host '  DIAGNOSTIC SCRIPT ERROR' -ForegroundColor Red
+    Write-Host '========================================================================' -ForegroundColor Red
+    Write-Host "Exception: $($_.Exception.Message)" -ForegroundColor Red
+    Write-Host "Stack:" -ForegroundColor Red
+    Write-Host $_.ScriptStackTrace -ForegroundColor Red
+    Write-Host ''
+    # Also try to write the error into the output file
+    if ($OutFile) {
+        "DIAGNOSTIC SCRIPT ERROR: $($_.Exception.Message)" | Out-File -Append -FilePath $OutFile -Encoding ASCII -ErrorAction SilentlyContinue
+        $_.ScriptStackTrace | Out-File -Append -FilePath $OutFile -Encoding ASCII -ErrorAction SilentlyContinue
+    }
+    exit 2
+}
