@@ -45,6 +45,9 @@ call :delete "*ProbeJS*"
 REM --- References client classes ---
 call :delete "*irons_spells_js*"
 
+REM --- Crashes with Create (BlockStarLightEngine.initNibble ISE) ---
+call :delete "*starlight*"
+
 REM --- Disabled mods that may linger from manual copies ---
 call :delete "*gh_classes*"
 call :delete "*champions*"

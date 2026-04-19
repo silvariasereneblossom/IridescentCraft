@@ -64,6 +64,9 @@ delete_mod "*ProbeJS*"
 # --- References client classes ---
 delete_mod "*irons_spells_js*"
 
+# --- Crashes with Create (BlockStarLightEngine.initNibble ISE) ---
+delete_mod "*starlight*"
+
 # --- Disabled mods that may linger from manual copies ---
 delete_mod "*gh_classes*"
 

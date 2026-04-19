@@ -93,7 +93,8 @@ $forceSkip = @(
     "trashcans",
     "ftbbackups", "ftbchunks", "ftbessentials", "ftblibrary",
     "ftbquests", "ftbranks", "ftbteams", "ftbultimine",
-    "mca-social"           # Depends on SuperMartijn642, removed
+    "mca-social",          # Depends on SuperMartijn642, removed
+    "starlight"            # Create + Starlight: BlockStarLightEngine.initNibble ISE crash (known 2026-04-03)
 )
 
 $tomlFiles = Get-ChildItem "$indexDir\*.pw.toml"

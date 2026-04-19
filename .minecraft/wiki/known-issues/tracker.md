@@ -22,9 +22,6 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Status:** Retuning 2026-04-19 — flipped `aggressive_mode` from `true` to `false` (all 3 distros). Lootr's own comment warns aggressive mode "may prevent certain chests from properly converted even though eligible"; tester report of "every village chest is vanilla" suggests it was blocking village worldgen conversions. Non-aggressive mode checks all block entities naively — slight TPS cost but reliable conversion.
 - **Previous description:** Some chests near spawn generate as vanilla (not Lootr per-player chests). Possibly timing-related during initial worldgen chunk generation.
 
-### Create + Starlight Crash
-- **Status:** Active (first reported 2026-04-03)
-- **Description:** Sporadic `IllegalStateException` in `BlockStarLightEngine.initNibble` when Create contraption renders in chunk with incomplete light data. Known Create + Starlight incompatibility. Low priority.
 
 ### Three-Prompt Character Creation
 - **Status:** Working as intended (confirmed 2026-03-14)
@@ -98,6 +95,11 @@ Forge requires network channel lists to match between client and server. Mods th
 - [ ] Farmer's Delight cooking conversion — 70 recipes
 
 ## Resolved
+
+### Create + Starlight Crash — removed (2026-04-19)
+- **Reported:** Sporadic `IllegalStateException` in `BlockStarLightEngine.initNibble` when Create contraptions rendered in chunks with incomplete light data. Known Create + Starlight incompatibility, first seen 2026-04-03.
+- **Previous state:** Starlight's `.pw.toml` deletions had been staged in the working tree but never committed, so a `-Force` full-zip resync re-pulled the file and the installer re-downloaded the jar.
+- **Resolved:** Committed the `.pw.toml` deletions in `server_distribution/mods/.index/` and `distribution/client/mods/.index/`. Added `"starlight"` to the `$forceSkip` array in `server_install.ps1` (installer won't fetch the jar) and `delete_mod "*starlight*"` to `strip_client_mods.bat`/`.sh` (any leakage gets stripped post-install). Belt-and-suspenders.
 
 ### Sync Pipeline Silent Drift (2026-04-19)
 - **Reported:** Tester's server had `.icraft_last_sha` matching latest commit but 3 config files were still at vanilla defaults (Majrusz damage_bonus 3.5/7/10, ScalingMobs uncapped, ImprovedMobs 0.15 / 0.4).
