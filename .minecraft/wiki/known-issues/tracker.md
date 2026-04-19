@@ -99,6 +99,20 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
+### Sync Pipeline Silent Drift (2026-04-19)
+- **Reported:** Tester's server had `.icraft_last_sha` matching latest commit but 3 config files were still at vanilla defaults (Majrusz damage_bonus 3.5/7/10, ScalingMobs uncapped, ImprovedMobs 0.15 / 0.4).
+- **Root cause:** `phase0_sync.ps1` (server) and `sync_client.ps1` (client) had two bugs in their diff-based sync path: (a) SHA marker was written even if individual file downloads failed, so failed files never retried; (b) GitHub compare API caps `.files` at 300 and the threshold was `> 300`, meaning diffs of exactly 300 were treated as complete but were actually silently truncated.
+- **Resolved:** Only write SHA on clean sync (`$errors -eq 0`). Treat `>= 300` files as API-truncated and fall back to full-zip. Full-zip path now uses `robocopy /E` instead of `Copy-Item -Recurse -Force` for reliable directory overwrites. Added `-Force` flag to both bats so drift can be cleared without manually deleting the marker. Also shipped `diagnose.ps1` + `diagnose.bat` in `server_distribution/` to capture server state into a single diagnostic file for remote review.
+
+### Codex Category "Loading Error" — flag vs advancement gating (2026-04-19)
+- **Reported:** Codex opened but one category showed "Loading error! (Hover for info)"; hover revealed "Entry does not have a valid category."
+- **Root cause:** 6 categories + 36 entries used Patchouli's `"flag": "icraft:stage_tier_N"` field. Patchouli's `flag` checks config flags registered via `/patchouli flag` or `patchouli_flags` config — `icraft:stage_tier_N` was never registered there, so flag check returned false, categories stayed hidden, and entries referencing them were reported as orphaned.
+- **Resolved:** Replaced `"flag":` with `"advancement":` across all 6 categories + 36 entries. Patchouli's `advancement` field reads Minecraft advancements — AStages grants `icraft:stage_tier_2/3/4` as real advancements via `kubejs/data/icraft/advancements/stage_tier_*.json`. Same intent, wired through the actually-implemented mechanism.
+
+### Codex Landing-Page Text/Progress-Bar Overlap (2026-04-19)
+- **Reported:** Book opens correctly but `landing_text` "Chapters expand as you grow in power" was overlapping the `show_progress: true` progress bar.
+- **Resolved:** Set `"show_progress": false` in `book.json`. The codex is a reference guide, not a progression tracker.
+
 ### Codex "Invalid book" — modId mismatch with book.json path (2026-04-19)
 - **Reported:** Persistent "Invalid book: icraft:iridescent_codex" tooltip on the codex item, through multiple attempted fixes (lowcodefml → javafml → KubeJS fallback).
 - **Root cause:** Patchouli's `BookRegistry.init()` scans `data/{modId}/patchouli_books/` where `{modId}` is the scanning mod's own modId (confirmed via bytecode inspection of `lambda$init$2`). Our jar's modId was `iridescent_codex_data` but the book.json lives at `data/icraft/patchouli_books/iridescent_codex/book.json` — Patchouli was scanning the wrong directory and silently not registering the book.

@@ -24,6 +24,63 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — Loot modifier namespace audit
+
+Audited all 122 `addLootTableModifier` / `addLootTypeModifier` calls in `lootjs_overhaul.js` against the installed mod list (`mods/.index/*.pw.toml`). Three real findings:
+
+1. **Dead references — `overhauledstructures:`** (2 modifier blocks). Mod not installed. Deleted.
+2. **Dead references — `lootintegrations:`** (3 modifier blocks). Mod not installed. Deleted.
+3. **Namespace typo — `whendungeonsarise:` → `dungeons_arise:`**. Verified by fetching the DungeonsArise jar: actual datapack path is `data/dungeons_arise/loot_tables/...`. The old regex matched nothing.
+
+Net: 5 dead modifier blocks removed, 1 typo corrected, -54 lines. Kept `blue_skies:`, `irons_spellbooks:`, `theabyss:` — initial audit pass incorrectly flagged these as uninstalled but the pw.toml filenames (`blue-skies.pw.toml`, `irons-spells-n-spellbooks.pw.toml`, `the-abyss-chapter-ii.pw.toml`) are hyphenated versions of underscored modids; all three are live.
+
+Vanilla village modifiers (`minecraft:chests/village/*`) kept despite CTOV replacing most vanilla villages — they still hit biomes CTOV doesn't cover, and removing them would be a net coverage loss with no upside.
+
+---
+
+## 2026-04-19 — Tower spawn frequency bump (icraft_tower_overrides datapack)
+
+New Paxi datapack `icraft_tower_overrides.zip` (source at `datapack_sources/icraft_tower_overrides/`) overrides structure_set placement for Apotheosis tome towers and TOTW Reworked towers. Loaded last in Paxi order so it wins over upstream:
+
+| Structure | Before | After |
+|---|---|---|
+| `apotheosis:tower_main` | spacing 26, sep 15 | **20 / 12** |
+| `apotheosis:tower_leaf/sand/spruce` | 26 / 20 | **20 / 14** |
+| `totw_reworked:regular` | 62 / 35 (Waystone variant active) | **48 / 25** |
+
+Apotheosis values confirmed by fetching `Apotheosis-1.20.1-7.4.8.jar` from the CurseForge CDN and reading the shipped structure_set JSONs. All 4 Apotheosis towers share loot table `apotheosis:chests/tome_tower`. Jar deleted after audit.
+
+---
+
+## 2026-04-19 — Sync pipeline fixes (phase0_sync.ps1 + sync_client.ps1)
+
+Tester's server had `.icraft_last_sha` matching latest commit but 3 config files still at vanilla defaults (Majrusz damage_bonus 3.5/7/10 instead of 1.5/3/5 etc.). Root cause was two bugs in the diff-based sync:
+
+1. **SHA marker written on errors.** If `Invoke-WebRequest` threw (404, timeout), try/catch caught it and incremented `$errors` but the SHA still got written at the end. Next run saw "up to date" and never retried the missed files.
+2. **GitHub compare API cap.** The API caps `files[]` at exactly 300. Threshold of `> 300` meant a diff of exactly 300 was treated as complete but was actually silently truncated.
+
+Both bugs applied to `phase0_sync.ps1` (server) and `sync_client.ps1` (client).
+
+**Fixes (commits `c09f2ac7` + `616fb54c`):**
+- Only write `.icraft_last_sha` when `$errors -eq 0`
+- Treat `>= 300` files as truncated, fall back to full-zip download
+- Full-zip overlay uses `robocopy /E` instead of `Copy-Item -Recurse -Force` (PS 5.1 has known quirks overwriting existing directory trees)
+- Added `-Force` / `--force` / `/force` flag to `iridescentserver.bat/.sh` and `sync_client.bat` — deletes the SHA marker before sync to force a full-zip re-download
+
+Also added `diagnose.ps1` + `diagnose.bat` in `server_distribution/` — one-shot diagnostic dump that captures `.icraft_last_sha`, key file hashes + contents, kubejs logs, and config values into `icraft_diagnostic.txt` for remote review when the server drifts from the repo.
+
+---
+
+## 2026-04-19 — Codex tier-gating: flag: → advancement:
+
+The codex rendered correctly after the `modId="icraft"` fix, but tapping some categories showed "Loading error! (Hover for info) → Entry does not have a valid category". Cause: 6 categories + 36 entries used Patchouli's `"flag": "icraft:stage_tier_N"` field. Patchouli's `flag` field checks a config flag registered via `/patchouli flag` or `patchouli_flags` config — `icraft:stage_tier_N` was never registered with Patchouli, so the check always returned false, the gated categories stayed hidden, and entries referencing them were treated as orphaned.
+
+**Fix:** replaced `"flag":` with `"advancement":` across all 6 categories and 36 entries. Patchouli's `advancement` field reads actual Minecraft advancements, and AStages already grants `icraft:stage_tier_2/3/4` as real advancements via `kubejs/data/icraft/advancements/stage_tier_*.json`. Same intent (chapters unlock per progression tier), but using the mechanism that's actually wired up.
+
+Also disabled `show_progress` on the book (`"show_progress": false`) to fix the landing-page text/bar overlap — the codex is a reference guide not a progression tracker, and the progress bar was colliding with the `landing_text` "Chapters expand as you grow in power" line.
+
+---
+
 ## 2026-04-19 — Loot fixes: glyph tiering, sapling cleanup, village accessories
 
 Three tester-reported loot issues fixed in `lootjs_overhaul.js`:
