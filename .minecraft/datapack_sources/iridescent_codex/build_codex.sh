@@ -23,7 +23,7 @@ rm -rf "$BUILD_DIR"
 mkdir -p "$BUILD_DIR"
 # Compile the stub annotation + our Mod class together. Only our class ends
 # up in the jar; the stub is just so javac can resolve the annotation.
-javac -d "$BUILD_DIR" -source 17 -target 17 \
+javac -encoding UTF-8 -d "$BUILD_DIR" -source 17 -target 17 \
     stub/net/minecraftforge/fml/common/Mod.java \
     src/com/iridescentcraft/codex/IridescentCodex.java
 

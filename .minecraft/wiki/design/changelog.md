@@ -24,6 +24,48 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — Codex "Invalid book" + blank enchanted books: BOTH root-caused
+
+After extended thrash on these two bugs, the real root causes were found via bytecode inspection of Patchouli and vanilla Minecraft.
+
+### Bug 1: "Invalid book: icraft:iridescent_codex" — modId mismatch
+
+Patchouli's `BookRegistry.init()` iterates `ModList.get().getMods()`. For each mod, it scans a path computed as `"data/%s/%s"` formatted with `mod.getId()` + `"patchouli_books"` — i.e. `data/{modId}/patchouli_books/`. **The modId used for the scan is the mod's OWN modId from its mods.toml, not the namespace of the data directory.**
+
+Our jar's modId was `iridescent_codex_data`, but our book.json lives at `data/icraft/patchouli_books/iridescent_codex/book.json`. Patchouli was scanning `data/iridescent_codex_data/patchouli_books/` which doesn't exist in our jar — the book was silently never registered on either client or server. That's why the tooltip showed "Invalid book: icraft:iridescent_codex" (item NBT says this book ID, Patchouli's registry has no such book, → fallback "Invalid book" text).
+
+All the earlier fixes (lowcodefml → javafml, adding the KubeJS fallback, etc.) missed this because the registration LOOKED correct on paper but the scanner was pointing at the wrong directory.
+
+**Fix:** changed the mod's modId from `iridescent_codex_data` to `icraft` in both `META-INF/mods.toml` and the `@Mod` annotation on `IridescentCodex.java`. Path now aligns: Patchouli scans `data/icraft/patchouli_books/`, finds `iridescent_codex/book.json`, registers the book as `icraft:iridescent_codex` — matching the NBT the codex_delivery.js script stamps on delivered books. Jar filename stays `iridescent_codex_data.jar` so custom-JAR allowlists (iridescentserver.bat, sync_from_repo.bat, update_mods.ps1) are unaffected.
+
+### Bug 2: Blank enchanted books in chest loot
+
+Vanilla Minecraft `EnchantmentHelper.enchantItem(random, stack, level, treasure)`:
+
+```java
+boolean isBook = itemStack.is(Items.BOOK);  // checks plain book, not enchanted_book
+if (isBook) {
+    itemStack = new ItemStack(Items.ENCHANTED_BOOK);
+}
+for (EnchantmentInstance instance : list) {
+    if (isBook) {
+        EnchantedBookItem.addEnchantment(itemStack, instance);  // writes StoredEnchantments NBT
+    } else {
+        itemStack.enchant(instance.enchantment, instance.level);  // writes Enchantments NBT
+    }
+}
+```
+
+Our loot modifiers were doing `LootEntry.of('minecraft:enchanted_book').enchantWithLevels(...)`. Because the input is already `enchanted_book` (not plain `book`), the function falls into the `else` branch and writes enchantments to the `Enchantments` NBT tag — which is for items that USE enchantments. Enchanted books DISPLAY from `StoredEnchantments`, so they appeared blank in-game despite actually having enchantment data elsewhere.
+
+Vanilla loot tables always use `{"name": "minecraft:book", ...}` and rely on the function itself converting plain book → enchanted book; that's the only code path that writes to the correct NBT tag.
+
+**Fix:** changed all 8 `LootEntry.of('minecraft:enchanted_book')` uses to `LootEntry.of('minecraft:book')` in `lootjs_overhaul.js` (4 tier re-adds + 4 structure-specific: TotW, Waystone Towers, Keebsz mid, Keebsz high). The `.enchantWithLevels(UniformGenerator.between(...), true)` calls now work correctly.
+
+Synced to all 3 distros.
+
+---
+
 ## 2026-04-19 — NecromancerEntity crash: add missing guard in mob_equipment.js
 
 Log review of `kubejs/startup.log` (after user pushed 2026-04-18 22:27 session logs) showed the `NecromancerEntity.getItemBySlot ... is abstract` crash still firing every tick a Necromancer spawned. The 2026-04-06 fix added a `BROKEN_ENTITIES` guard, but only to `mob_scaling_unified.js` — `mob_equipment.js` was still hitting the same entity via `entity.mainHandItem` / `entity.getItemBySlot('chest')` in `hasExistingGear()`.

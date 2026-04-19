@@ -99,6 +99,16 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
+### Codex "Invalid book" — modId mismatch with book.json path (2026-04-19)
+- **Reported:** Persistent "Invalid book: icraft:iridescent_codex" tooltip on the codex item, through multiple attempted fixes (lowcodefml → javafml → KubeJS fallback).
+- **Root cause:** Patchouli's `BookRegistry.init()` scans `data/{modId}/patchouli_books/` where `{modId}` is the scanning mod's own modId (confirmed via bytecode inspection of `lambda$init$2`). Our jar's modId was `iridescent_codex_data` but the book.json lives at `data/icraft/patchouli_books/iridescent_codex/book.json` — Patchouli was scanning the wrong directory and silently not registering the book.
+- **Resolved:** Changed the mod's modId from `iridescent_codex_data` to `icraft` in both `META-INF/mods.toml` and the `@Mod` annotation. Jar filename unchanged (custom-JAR allowlists unaffected). Path now aligns with Patchouli's scan. Rebuilt via `build_codex.sh`; synced to all 3 distros.
+
+### Blank Enchanted Books — wrong loot entry item type (2026-04-19)
+- **Reported:** Enchanted books in chest loot spawn with no visible enchantments, despite the 2026-04-11 `.enchantWithLevels` fix and the 2026-04-18 persistent-filter-strip removal.
+- **Root cause:** Vanilla `EnchantmentHelper.enchantItem()` checks `stack.is(Items.BOOK)` (plain book). On a plain book it creates a new enchanted_book ItemStack and writes to `StoredEnchantments` NBT via `EnchantedBookItem.addEnchantment()`. If the input stack is already `enchanted_book`, that check is false and the function falls into the `else` branch that calls `stack.enchant()`, which writes to `Enchantments` NBT — but enchanted books display from `StoredEnchantments`, so the book appears blank.
+- **Resolved:** Changed all 8 `LootEntry.of('minecraft:enchanted_book')` uses in `lootjs_overhaul.js` to `LootEntry.of('minecraft:book')`. The `.enchantWithLevels(...)` function now converts the plain book to an enchanted book itself and writes to the correct NBT tag, matching vanilla loot tables.
+
 ### NecromancerEntity Crash — Incomplete Guard (2026-04-19)
 - **Reported:** Log review showed `NecromancerEntity.getItemBySlot ... is abstract` crash still firing on every Necromancer spawn; the 2026-04-06 fix was incomplete.
 - **Root cause:** `BROKEN_ENTITIES` guard only lived in `mob_scaling_unified.js`. `mob_equipment.js` accesses item slots too (via `entity.mainHandItem` + `entity.getItemBySlot('chest')` in `hasExistingGear()`) with no guard. Try/catch in that function doesn't help — Rhino's JS `catch` doesn't intercept Java `Error` subclasses like `AbstractMethodError`; they propagate unwrapped to KubeJS's event-handler wrapper.

@@ -124,12 +124,18 @@ LootJS.modifiers(event => {
     .removeLoot('relics:horse_flute')
 
   // Re-add enchanted books at 7.5% — T1 (Overworld)
+  // NOTE: LootEntry.of must be 'minecraft:book' (not enchanted_book).
+  // EnchantmentHelper.enchantItem() checks `stack.is(Items.BOOK)` and only
+  // writes to StoredEnchantments NBT for plain books — converting the stack
+  // to enchanted_book as part of the function. Starting from enchanted_book
+  // drops to the else branch which writes to the wrong NBT tag, so the
+  // book appears blank to the player. Vanilla loot tables mirror this.
   console.log('[icraft-loot] Registering T1 enchanted_book re-add (Overworld, 7.5%, levels 10-25)')
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
+      LootEntry.of('minecraft:book')
         .enchantWithLevels(UniformGenerator.between(10, 25), true)
         .when(c => c.randomChance(0.075))
     )
@@ -142,7 +148,7 @@ LootJS.modifiers(event => {
       'aether:the_aether', 'deep_aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
+      LootEntry.of('minecraft:book')
         .enchantWithLevels(UniformGenerator.between(15, 30), true)
         .when(c => c.randomChance(0.10))
     )
@@ -153,7 +159,7 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
+      LootEntry.of('minecraft:book')
         .enchantWithLevels(UniformGenerator.between(20, 30), true)
         .when(c => c.randomChance(0.125))
     )
@@ -164,7 +170,7 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
+      LootEntry.of('minecraft:book')
         .enchantWithLevels(ConstantValue.exactly(30), true)
         .when(c => c.randomChance(0.15))
     )
@@ -1382,7 +1388,7 @@ LootJS.modifiers(event => {
     totwMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.10)))
     // 10% enchanted book (levels 5-15)
     totwMod.addLoot(
-      LootEntry.of('minecraft:enchanted_book')
+      LootEntry.of('minecraft:book')
         .enchantWithLevels(UniformGenerator.between(5, 15), true)
         .when(c => c.randomChance(0.10))
     )
@@ -1410,7 +1416,7 @@ LootJS.modifiers(event => {
   waystoneMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([2, 4]).when(c => c.randomChance(0.12)))
   // 10% enchanted book (levels 5-15)
   waystoneMod.addLoot(
-    LootEntry.of('minecraft:enchanted_book')
+    LootEntry.of('minecraft:book')
       .enchantWithLevels(UniformGenerator.between(5, 15), true)
       .when(c => c.randomChance(0.10))
   )
@@ -1663,7 +1669,7 @@ LootJS.modifiers(event => {
   )
   // 10% enchanted book (levels 10-20)
   keebszMid.addLoot(
-    LootEntry.of('minecraft:enchanted_book')
+    LootEntry.of('minecraft:book')
       .enchantWithLevels(UniformGenerator.between(10, 20), true)
       .when(c => c.randomChance(0.10))
   )
@@ -1680,7 +1686,7 @@ LootJS.modifiers(event => {
   keebszHigh.addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.12)))
   // 10% enchanted book (levels 20-30)
   keebszHigh.addLoot(
-    LootEntry.of('minecraft:enchanted_book')
+    LootEntry.of('minecraft:book')
       .enchantWithLevels(UniformGenerator.between(20, 30), true)
       .when(c => c.randomChance(0.10))
   )
