@@ -1395,6 +1395,25 @@ LootJS.modifiers(event => {
   // These are T1 exploration landmarks — magic-themed, not resource farms.
   // =========================================================================
 
+  // --- Apotheosis tome_tower: strip diamond, add magic materials ---
+  // Single shared table across all 4 biome-variant towers (main/leaf/sand/spruce).
+  // Native pool weights include diamond(30) which violates T1/T2 tier design.
+  // Apoth's tome/affix-item loot (table refs) stays — that's the core reward.
+  var apothMod = event.addLootTableModifier('apotheosis:chests/tome_tower')
+  apothMod.removeLoot('minecraft:diamond')
+  // Guaranteed magic materials (matches TOTW flavor — these are thematic towers)
+  apothMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.60)))
+  apothMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]).when(c => c.randomChance(0.40)))
+  // 10% novice spell book, 8% copper spell book (discovery magic items)
+  apothMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.10)))
+  apothMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
+  // 10% enchanted book (matches TOTW tier)
+  apothMod.addLoot(
+    LootEntry.of('minecraft:book')
+      .enchantWithLevels(UniformGenerator.between(5, 15), true)
+      .when(c => c.randomChance(0.10))
+  )
+
   // --- TotW tower_chest + ocean_tower_chest: strip + rebuild ---
   var totwTables = ['totw_reworked:tower_chest', 'totw_reworked:ocean_tower_chest']
   totwTables.forEach(function(table) {
