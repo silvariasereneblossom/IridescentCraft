@@ -24,6 +24,16 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — Lootr aggressive_mode flipped off (village chests all vanilla)
+
+Tester feedback: every village chest is generating as vanilla (not converted to Lootr per-player chests).
+
+**Root cause:** `aggressive_mode = true` in `lootr-common.toml`. Lootr's own config comment: "aggressive mode may prevent certain chests from properly converted even though eligible." Per the earlier known-issue, this was already partially affecting spawn-adjacent chests; the village-wide symptom is the same mechanism at larger scale — village worldgen happens in parallel threads during initial chunk gen and aggressive mode is missing them.
+
+**Fix:** `aggressive_mode = false` across all 3 distros. Non-aggressive mode checks all block entities naively during ticking — costs a small amount of TPS but converts reliably. Acceptable tradeoff for a small-tester server.
+
+---
+
 ## 2026-04-18 (evening) — Iridescent Codex: restore KubeJS registration as fallback
 
 Tester screenshot shows "Invalid book: icraft:iridescent_codex" still present after the morning's lowcodefml fix. Either `lowcodefml` doesn't expose the jar's `data/` to Patchouli's scanner the way a `javafml` mod does, or the client's `sync_client.ps1` size-diff missed the jar update — not worth debugging exhaustively.

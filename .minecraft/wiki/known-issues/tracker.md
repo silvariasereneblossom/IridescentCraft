@@ -19,8 +19,8 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Description:** Some Apotheosis tower chests show gold only. Paxi override may have load order issue causing incomplete loot table replacement.
 
 ### Lootr Chest Conversion
-- **Status:** Active
-- **Description:** Some chests near spawn generate as vanilla (not Lootr per-player chests). Possibly timing-related during initial worldgen chunk generation.
+- **Status:** Retuning 2026-04-19 — flipped `aggressive_mode` from `true` to `false` (all 3 distros). Lootr's own comment warns aggressive mode "may prevent certain chests from properly converted even though eligible"; tester report of "every village chest is vanilla" suggests it was blocking village worldgen conversions. Non-aggressive mode checks all block entities naively — slight TPS cost but reliable conversion.
+- **Previous description:** Some chests near spawn generate as vanilla (not Lootr per-player chests). Possibly timing-related during initial worldgen chunk generation.
 
 ### Create + Starlight Crash
 - **Status:** Active (first reported 2026-04-03)
