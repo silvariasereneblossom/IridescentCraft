@@ -24,6 +24,27 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — Codex: rebuild as proper javafml mod (lowcodefml didn't register)
+
+Tester confirmed via in-game Mods list that the `lowcodefml` codex jar **was loaded** (`State: done`) but Patchouli still reported "Invalid book: icraft:iridescent_codex". That rules out Forge-side loading and pins the issue on Patchouli's `BookRegistry.init()` scanner not iterating `lowcodefml` mods' `data/` the same way it does `javafml` mods. The KubeJS `data/` + `assets/` fallback from yesterday didn't help either — Patchouli's book registration scans mod jars only, not runtime-loaded data packs.
+
+### Fix — javafml entrypoint with a minimal @Mod class
+
+Mirrored the pattern of the existing working `iridescent_origins-1.0.0.jar`: added a compiled Java class at `com/iridescentcraft/codex/IridescentCodex.class` with `@net.minecraftforge.fml.common.Mod("iridescent_codex_data")` annotation.
+
+Build pipeline changes (`datapack_sources/iridescent_codex/`):
+- `src/com/iridescentcraft/codex/IridescentCodex.java` — 6-line `@Mod` entrypoint
+- `stub/net/minecraftforge/fml/common/Mod.java` — annotation stub so `javac` can resolve `@Mod` without the Forge jar on classpath (stub class is NOT packed into the final jar)
+- `build_codex.sh` — compiles both → extracts only `IridescentCodex.class` → packs jar → deploys
+
+`META-INF/mods.toml` now uses `modLoader="javafml"` with `forge`/`minecraft`/`patchouli` dependencies (`patchouli` ordered `AFTER`, so the mod registers after Patchouli's plugin is available).
+
+### Kept for safety
+
+The KubeJS `data/` + `assets/` book content from yesterday's belt-and-suspenders fix stays in place. Harmless: byte-identical `book.json` with `use_resource_pack: true`, so any registration that happens to fire from a content reload matches the mod-jar registration. Can be cleaned up once testers confirm the javafml mod registers the book reliably.
+
+---
+
 ## 2026-04-19 — Lootr aggressive_mode flipped off (village chests all vanilla)
 
 Tester feedback: every village chest is generating as vanilla (not converted to Lootr per-player chests).
