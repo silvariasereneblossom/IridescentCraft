@@ -1,60 +1,27 @@
-[23:34:13] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[23:34:13] [INIT] Loaded plugins:
-[23:34:13] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[23:34:13] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[23:34:13] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[23:34:13] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[23:34:13] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[23:34:13] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[23:34:13] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[23:34:13] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[23:34:13] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[23:34:13] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[23:34:13] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[23:34:13] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[23:34:13] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[23:34:13] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[23:34:13] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[23:34:13] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.06 s
-[23:34:13] [INFO] Loaded script startup_scripts:custom_items.js in 0.016 s
-[23:34:13] [INFO] Loaded script startup_scripts:endgame_items.js in 0.006 s
-[23:34:13] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
-[23:34:13] [INFO] Loaded script startup_scripts:example.js in 0.002 s
-[23:34:13] [INFO] Loaded script startup_scripts:iridescent_attributes.js in 0.001 s
-[23:34:13] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
-[23:34:13] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
-[23:34:13] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
-[23:34:13] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.001 s
-[23:34:13] [INFO] Loaded 6/6 KubeJS startup scripts in 0.517 s with 0 errors and 0 warnings
-[23:34:13] [ERROR] ! Error in 'StartupEvents.registry': Registry for type 'minecraft:attribute' doesn't have any builders registered!
-[23:34:13] [ERROR] ! java.lang.IllegalArgumentException: Registry for type 'minecraft:attribute' doesn't have any builders registered!
-[23:34:13] [ERROR] !   at …kubejs.registry.RegistryEventJS.create(RegistryEventJS.java:44)
-[23:34:13] [ERROR] !   at java.lang.reflect.Method.invoke(Method.java:569)
-[23:34:13] [ERROR] !   at …rhino.MemberBox.invoke(MemberBox.java:160)
-[23:34:13] [ERROR] !   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
-[23:34:13] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
-[23:34:13] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
-[23:34:13] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
-[23:34:13] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[23:34:13] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
-[23:34:13] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
-[23:34:13] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[23:34:13] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
-[23:34:13] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
-[23:34:13] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
-[23:34:13] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
-[23:34:13] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy198.onEvent(Unknown Source)
-[23:34:13] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
-[23:34:13] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
-[23:34:13] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:264)
-[23:34:13] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
-[23:34:13] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:205)
-[23:34:13] [ERROR] !   at …kubejs.registry.RegistryInfo.fireRegistryEvent(RegistryInfo.java:426)
-[23:34:13] [ERROR] !   at …kubejs.KubeJS.<init>(KubeJS.java:154)
-[23:34:13] [ERROR] !   at …kubejs.forge.KubeJSForge.<init>(KubeJSForge.java:51)
-[23:34:13] [ERROR] !   at java.lang.reflect.Constructor.newInstanceWithCaller(Constructor.java:500)
-[23:34:13] [ERROR] !   at java.lang.reflect.Constructor.newInstance(Constructor.java:481)
-[23:34:13] [ERROR] !   at net.minecraftforge.fml.javafmlmod.FMLModContainer.constructMod(FMLModContainer.java:77)
-[23:34:13] [ERROR] !   at net.minecraftforge.fml.ModContainer.lambda$buildTransitionHandler$5(ModContainer.java:126)
-[23:34:13] [ERROR] !   at java.util.concurrent.CompletableFuture$AsyncRun.run(CompletableFuture.java:1804)
-[23:34:13] [ERROR] !   at java.util.concurrent.CompletableFuture$AsyncRun.exec(CompletableFuture.java:1796)
+[17:37:02] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[17:37:02] [INIT] Loaded plugins:
+[17:37:02] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[17:37:02] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[17:37:02] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[17:37:02] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[17:37:02] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[17:37:02] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[17:37:02] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[17:37:02] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[17:37:02] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[17:37:02] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[17:37:02] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[17:37:02] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[17:37:02] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[17:37:02] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[17:37:02] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[17:37:03] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.061 s
+[17:37:03] [INFO] Loaded script startup_scripts:custom_items.js in 0.015 s
+[17:37:03] [INFO] Loaded script startup_scripts:endgame_items.js in 0.006 s
+[17:37:03] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
+[17:37:03] [INFO] Loaded script startup_scripts:example.js in 0.002 s
+[17:37:03] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
+[17:37:03] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
+[17:37:03] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
+[17:37:03] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.002 s
+[17:37:03] [INFO] Loaded 5/5 KubeJS startup scripts in 0.526 s with 0 errors and 0 warnings
