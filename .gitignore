@@ -12,7 +12,7 @@ shaderpacks/
 saves/
 
 # Runtime-generated world / map data (regenerates on play, never commit)
-.minecraft/journeymap/data/
+.minecraft/journeymap/
 .minecraft/region/
 .minecraft/placeholderlevel/
 .minecraft/backups/
