@@ -19,8 +19,8 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Description:** Some Apotheosis tower chests show gold only. Paxi override may have load order issue causing incomplete loot table replacement.
 
 ### Lootr Chest Conversion
-- **Status:** Active
-- **Description:** Some chests near spawn generate as vanilla (not Lootr per-player chests). Possibly timing-related during initial worldgen chunk generation.
+- **Status:** Retuning 2026-04-19 — flipped `aggressive_mode` from `true` to `false` (all 3 distros). Lootr's own comment warns aggressive mode "may prevent certain chests from properly converted even though eligible"; tester report of "every village chest is vanilla" suggests it was blocking village worldgen conversions. Non-aggressive mode checks all block entities naively — slight TPS cost but reliable conversion.
+- **Previous description:** Some chests near spawn generate as vanilla (not Lootr per-player chests). Possibly timing-related during initial worldgen chunk generation.
 
 ### Create + Starlight Crash
 - **Status:** Active (first reported 2026-04-03)
@@ -104,7 +104,10 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Root cause:** A global `removeLoot('minecraft:enchanted_book')` at lines 118-130 of `lootjs_overhaul.js` created a persistent filter (documented 2026-04-15) that caught our tier re-adds in the same evaluation pass, stripping either the entries or their `.enchantWithLevels(...)` function and leaving blank books.
 - **Resolved:** Deleted the global strip. Vanilla loot tables now generate their own naturally-enchanted books; our tier re-adds layer tier-scaled enchants on top at per-dimension rates. Synced to all 3 distros.
 
-### Iridescent Codex "Invalid book ID" on World Join (2026-04-18)
+### Iridescent Codex "Invalid book ID" on World Join (2026-04-18 → 2026-04-19)
+- **Reported:** Tester — "Invalid book ID" on world join, both singleplayer and dedicated server.
+- **Diagnostic (tester screenshot of in-game Mods list, 2026-04-19):** The `lowcodefml` codex mod **was loading** (State: done), but Patchouli still reported "Invalid book". Rules out Forge-side loading; pins the issue on Patchouli's `BookRegistry.init()` not iterating `lowcodefml` mods' `data/` the way it does `javafml` mods.
+- **Resolved (2026-04-19):** Rebuilt the codex jar as a proper `javafml` mod with a compiled `@Mod` class (`com.iridescentcraft.codex.IridescentCodex`), mirroring the working `iridescent_origins-1.0.0.jar` pattern. Build pipeline: `src/` contains the @Mod entrypoint, `stub/` contains a Forge annotation stub so `javac` can compile without the Forge jar on classpath (only the real class ends up in the output). `mods.toml` switched to `modLoader="javafml"` with forge/minecraft/patchouli dependencies. KubeJS fallback kept in place as a harmless safety net.
 - **Reported:** Tester feedback — "Invalid book ID" error on world join, both singleplayer and dedicated server.
 - **Root cause:** Four copies of `book.json` existed across the modpack with inconsistent `use_resource_pack` config. KubeJS datapack had `true`, Paxi zip had it missing (defaults to `false`), mod jar had no `mods.toml` so Forge ignored it entirely. Patchouli registered whichever source won the load-order race, and client vs server could land on different winners.
 - **First attempt (morning):** Added `META-INF/mods.toml` to the codex jar (`lowcodefml` loader) to register via Forge's mod loading. Deleted Paxi zip + KubeJS copies to eliminate duplicates.

@@ -24,6 +24,37 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — Codex: rebuild as proper javafml mod (lowcodefml didn't register)
+
+Tester confirmed via in-game Mods list that the `lowcodefml` codex jar **was loaded** (`State: done`) but Patchouli still reported "Invalid book: icraft:iridescent_codex". That rules out Forge-side loading and pins the issue on Patchouli's `BookRegistry.init()` scanner not iterating `lowcodefml` mods' `data/` the same way it does `javafml` mods. The KubeJS `data/` + `assets/` fallback from yesterday didn't help either — Patchouli's book registration scans mod jars only, not runtime-loaded data packs.
+
+### Fix — javafml entrypoint with a minimal @Mod class
+
+Mirrored the pattern of the existing working `iridescent_origins-1.0.0.jar`: added a compiled Java class at `com/iridescentcraft/codex/IridescentCodex.class` with `@net.minecraftforge.fml.common.Mod("iridescent_codex_data")` annotation.
+
+Build pipeline changes (`datapack_sources/iridescent_codex/`):
+- `src/com/iridescentcraft/codex/IridescentCodex.java` — 6-line `@Mod` entrypoint
+- `stub/net/minecraftforge/fml/common/Mod.java` — annotation stub so `javac` can resolve `@Mod` without the Forge jar on classpath (stub class is NOT packed into the final jar)
+- `build_codex.sh` — compiles both → extracts only `IridescentCodex.class` → packs jar → deploys
+
+`META-INF/mods.toml` now uses `modLoader="javafml"` with `forge`/`minecraft`/`patchouli` dependencies (`patchouli` ordered `AFTER`, so the mod registers after Patchouli's plugin is available).
+
+### Kept for safety
+
+The KubeJS `data/` + `assets/` book content from yesterday's belt-and-suspenders fix stays in place. Harmless: byte-identical `book.json` with `use_resource_pack: true`, so any registration that happens to fire from a content reload matches the mod-jar registration. Can be cleaned up once testers confirm the javafml mod registers the book reliably.
+
+---
+
+## 2026-04-19 — Lootr aggressive_mode flipped off (village chests all vanilla)
+
+Tester feedback: every village chest is generating as vanilla (not converted to Lootr per-player chests).
+
+**Root cause:** `aggressive_mode = true` in `lootr-common.toml`. Lootr's own config comment: "aggressive mode may prevent certain chests from properly converted even though eligible." Per the earlier known-issue, this was already partially affecting spawn-adjacent chests; the village-wide symptom is the same mechanism at larger scale — village worldgen happens in parallel threads during initial chunk gen and aggressive mode is missing them.
+
+**Fix:** `aggressive_mode = false` across all 3 distros. Non-aggressive mode checks all block entities naively during ticking — costs a small amount of TPS but converts reliably. Acceptable tradeoff for a small-tester server.
+
+---
+
 ## 2026-04-18 (evening) — Iridescent Codex: restore KubeJS registration as fallback
 
 Tester screenshot shows "Invalid book: icraft:iridescent_codex" still present after the morning's lowcodefml fix. Either `lowcodefml` doesn't expose the jar's `data/` to Patchouli's scanner the way a `javafml` mod does, or the client's `sync_client.ps1` size-diff missed the jar update — not worth debugging exhaustively.

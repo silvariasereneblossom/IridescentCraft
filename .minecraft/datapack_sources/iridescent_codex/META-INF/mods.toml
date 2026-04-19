@@ -1,17 +1,38 @@
-modLoader = "lowcodefml"
-loaderVersion = "[47,)"
-license = "All Rights Reserved"
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
 
 [[mods]]
-  modId = "iridescent_codex_data"
-  version = "1.0.0"
-  displayName = "Iridescent Codex"
-  authors = "Silvaria"
-  description = '''
+modId="iridescent_codex_data"
+version="1.0.0"
+displayName="Iridescent Codex"
+authors="Silvaria"
+description='''
 The Iridescent Codex — Patchouli guidebook for the IridescentCraft modpack.
 
-Ships as a proper Forge content mod (lowcodefml, no Java) so Patchouli
-registers the book at mod-loading time, before any player NBT validation
-on world join. This avoids the "Invalid book ID" error that occurs when
-Patchouli books are delivered only via datapacks loaded after world join.
+Shipped as a proper javafml content mod (mirroring iridescent_origins' pattern)
+so Patchouli's BookRegistry scan finds data/icraft/patchouli_books/iridescent_codex/book.json
+at mod-load time. Earlier lowcodefml attempt loaded the jar but Patchouli's
+mod-iteration scanner didn't surface its data/ — hence the switch.
 '''
+
+[[dependencies.iridescent_codex_data]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.iridescent_codex_data]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.iridescent_codex_data]]
+    modId="patchouli"
+    mandatory=true
+    versionRange="[1.20.1-85,)"
+    ordering="AFTER"
+    side="BOTH"
