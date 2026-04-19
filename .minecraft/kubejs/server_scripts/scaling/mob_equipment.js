@@ -19,10 +19,20 @@
 //   quality scales with difficulty while this script scales with dimension
 // =============================================================================
 
+// Entities with abstract getItemBySlot / setItemSlot that crash on access.
+// Keep in sync with the BROKEN_ENTITIES list in mob_scaling_unified.js.
+// Rhino's try/catch does NOT catch java.lang.Error subclasses like
+// AbstractMethodError, so we must early-exit BEFORE any item-slot access.
+const MOB_EQUIP_BROKEN_ENTITIES = new Set([
+  'irons_spellbooks:necromancer',
+  'irons_spellbooks:archevoker',
+])
+
 EntityEvents.spawned(event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
+  if (MOB_EQUIP_BROKEN_ENTITIES.has(entity.type)) return
   if (entity.persistentData.contains('icraft_equipped')) return
 
   // Skip mobs that already have equipment (from IM or native spawns)

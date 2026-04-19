@@ -99,6 +99,11 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
+### NecromancerEntity Crash — Incomplete Guard (2026-04-19)
+- **Reported:** Log review showed `NecromancerEntity.getItemBySlot ... is abstract` crash still firing on every Necromancer spawn; the 2026-04-06 fix was incomplete.
+- **Root cause:** `BROKEN_ENTITIES` guard only lived in `mob_scaling_unified.js`. `mob_equipment.js` accesses item slots too (via `entity.mainHandItem` + `entity.getItemBySlot('chest')` in `hasExistingGear()`) with no guard. Try/catch in that function doesn't help — Rhino's JS `catch` doesn't intercept Java `Error` subclasses like `AbstractMethodError`; they propagate unwrapped to KubeJS's event-handler wrapper.
+- **Resolved:** Added `MOB_EQUIP_BROKEN_ENTITIES` set + early-exit guard at the top of `mob_equipment.js`'s spawned handler. Documented cross-file sync requirement in both files.
+
 ### Blank Enchanted Books in Loot (2026-04-18)
 - **Reported:** Tester feedback — enchanted books in chests still appearing empty (no stored enchantments) despite the 2026-04-11 `.enchantWithLevels` fix.
 - **Root cause:** A global `removeLoot('minecraft:enchanted_book')` at lines 118-130 of `lootjs_overhaul.js` created a persistent filter (documented 2026-04-15) that caught our tier re-adds in the same evaluation pass, stripping either the entries or their `.enchantWithLevels(...)` function and leaving blank books.

@@ -24,6 +24,22 @@ Combined rate per chest bumps up 5-10% vs. the old strip-and-replace model. Vani
 
 ---
 
+## 2026-04-19 — NecromancerEntity crash: add missing guard in mob_equipment.js
+
+Log review of `kubejs/startup.log` (after user pushed 2026-04-18 22:27 session logs) showed the `NecromancerEntity.getItemBySlot ... is abstract` crash still firing every tick a Necromancer spawned. The 2026-04-06 fix added a `BROKEN_ENTITIES` guard, but only to `mob_scaling_unified.js` — `mob_equipment.js` was still hitting the same entity via `entity.mainHandItem` / `entity.getItemBySlot('chest')` in `hasExistingGear()`.
+
+### Why the try/catch didn't save us
+
+`hasExistingGear()` wraps the call in try/catch, but Rhino's JS `catch` does **not** catch `java.lang.Error` subclasses — `AbstractMethodError` propagates unwrapped, through to KubeJS's event handler which logs it.
+
+### Fix
+
+Added `MOB_EQUIP_BROKEN_ENTITIES` set at the top of `mob_equipment.js` (same two entries: `irons_spellbooks:necromancer`, `irons_spellbooks:archevoker`) with an early-exit guard before any item-slot access. Documented the cross-file sync requirement in both files.
+
+Synced to all 3 distros.
+
+---
+
 ## 2026-04-19 — Codex: rebuild as proper javafml mod (lowcodefml didn't register)
 
 Tester confirmed via in-game Mods list that the `lowcodefml` codex jar **was loaded** (`State: done`) but Patchouli still reported "Invalid book: icraft:iridescent_codex". That rules out Forge-side loading and pins the issue on Patchouli's `BookRegistry.init()` scanner not iterating `lowcodefml` mods' `data/` the same way it does `javafml` mods. The KubeJS `data/` + `assets/` fallback from yesterday didn't help either — Patchouli's book registration scans mod jars only, not runtime-loaded data packs.

@@ -146,7 +146,11 @@ function isHostileMod(type) {
 }
 
 // ── Boss Blacklist ──
-// Entities with abstract methods that crash KubeJS on any property access
+// Entities with abstract methods that crash KubeJS on any property access.
+// Rhino's try/catch does NOT catch java.lang.Error subclasses (e.g.
+// AbstractMethodError), so every handler that accesses item slots or
+// similar must guard against these entities BEFORE the call. Keep this
+// list in sync with MOB_EQUIP_BROKEN_ENTITIES in mob_equipment.js.
 const BROKEN_ENTITIES = new Set([
   'irons_spellbooks:necromancer',
   'irons_spellbooks:archevoker',
