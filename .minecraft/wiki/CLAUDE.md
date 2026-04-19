@@ -140,6 +140,11 @@ After every major change (new features, balance changes, new items/origins/class
 4. **Design doc** (`wiki/design/master.md`) — update affected sections when initial design is modified
 5. **Public GitHub wiki** — clone `https://github.com/silvariasereneblossom/IridescentCraft.wiki.git` to `/tmp/icraft-wiki`, update matching pages, commit and push. Uses `[[Page Name]]` link syntax (not file paths). Sidebar is `_Sidebar.md`.
 
+**Internal-only pages (do NOT mirror to the public wiki):**
+- `wiki/dev/lessons-learned.md` — postmortem log for stalled/failed implementations. Contains candid retro notes that belong in the engineering log, not on the user-facing wiki.
+
+When mirroring, skip any page whose top includes the HTML comment `<!-- INTERNAL ONLY -->` or is listed above.
+
 This is a blocking requirement — changelogs must be updated in the same session as the changes, not deferred to later.
 
 ### Memory Updates

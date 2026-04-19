@@ -30,6 +30,9 @@ The canonical design reference for all modpack systems.
 ### Known Issues
 - [Issue Tracker](known-issues/tracker.md) — Active bugs, testing needed, resolved
 
+### Dev (internal-only)
+- [Lessons Learned](dev/lessons-learned.md) — Postmortems for stalled/failed implementations. **Not mirrored to public wiki.**
+
 ### Roadmap
 - [Planned Changes](roadmap/planned.md) — Future features, improvements, and technical debt
 
