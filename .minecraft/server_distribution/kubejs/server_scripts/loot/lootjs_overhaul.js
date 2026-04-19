@@ -890,19 +890,19 @@ LootJS.modifiers(event => {
   ]
 
   // Artifacts mod handles artifact injection into village chests natively via GLM
-  // We only handle material/gear adjustments here
+  // We only handle material/gear adjustments here.
+  //
+  // 2026-04-19: DO NOT strip iron gear here. removeLoot(specific_item) has
+  // persistent-filter behavior that eats later addLoot/addWeightedLoot calls
+  // for the same item id in the same evaluation pass — the village-weaponsmith
+  // weighted pool at line ~1316 was being silently stripped, which is why
+  // testers "rarely saw weapons." Let vanilla village smith tables drop iron
+  // gear naturally and add our curated layer on top.
   vanillaVillageSmithChests.forEach(table => {
     let modifier = event
       .addLootTableModifier(table)
       .removeLoot('minecraft:diamond')
       .removeLoot('minecraft:diamond_horse_armor')
-      // Remove most gear — villages shouldn't be armouries
-      .removeLoot('minecraft:iron_sword')
-      .removeLoot('minecraft:iron_pickaxe')
-      .removeLoot('minecraft:iron_helmet')
-      .removeLoot('minecraft:iron_chestplate')
-      .removeLoot('minecraft:iron_leggings')
-      .removeLoot('minecraft:iron_boots')
 
     // T1 materials — iron, gold, copper (scarce)
     modifier.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 2]).when(c => c.randomChance(0.10)))
@@ -964,7 +964,36 @@ LootJS.modifiers(event => {
     mod.addLoot(LootEntry.of('minecraft:iron_sword').enchantRandomly().when(c => c.randomChance(0.03)))
     mod.addLoot(LootEntry.of('minecraft:iron_axe').enchantRandomly().when(c => c.randomChance(0.02)))
 
+    // --- QoL + village-flavor items (added 2026-04-19) ---
+    // Bed: every village has one in most houses, but vanilla chests never
+    // drop one. 20% per house chest = finding one every ~5 houses.
+    mod.addLoot(LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.20)))
+    // Iron bars: window/jail accent, thematic village building material.
+    mod.addLoot(LootEntry.of('minecraft:iron_bars').limitCount([2, 6]).when(c => c.randomChance(0.15)))
+    // Lanterns: village lighting, also useful caving tool.
+    mod.addLoot(LootEntry.of('minecraft:lantern').limitCount([1, 2]).when(c => c.randomChance(0.12)))
+    // Bells: distinctive village-found item, not craftable without blaze rod.
+    mod.addLoot(LootEntry.of('minecraft:bell').when(c => c.randomChance(0.04)))
+    // Boat + hay — farming/transport flavor.
+    mod.addLoot(LootEntry.of('minecraft:oak_boat').when(c => c.randomChance(0.06)))
+    mod.addLoot(LootEntry.of('minecraft:hay_block').limitCount([1, 3]).when(c => c.randomChance(0.10)))
+
     // Artifacts handled by Artifacts mod native GLM injection
+  })
+
+  // --- Village house clutter strip ---
+  // Vanilla village house tables drop a lot of low-value filler (feather
+  // spam, mass string, excess wheat seeds). Don't strip the items that our
+  // later pools re-add — per the persistent-filter rule, that would eat
+  // those re-adds too. Limit to items we're confident we don't want anywhere.
+  villageHouseChests.forEach(table => {
+    event
+      .addLootTableModifier(table)
+      .removeLoot('minecraft:feather')
+      .removeLoot('minecraft:porkchop') // raw pork — replaced by the food pool
+      .removeLoot('minecraft:chicken') // raw chicken
+      .removeLoot('minecraft:rabbit_foot') // brewing clutter
+      .removeLoot('minecraft:rabbit_hide')
   })
 
   // =========================================================================
