@@ -653,6 +653,91 @@ LootJS.modifiers(event => {
     .addLootTableModifier(/structory_towers:.*chests.*/)
     .removeLoot('minecraft:diamond')
 
+  // --- Epic Dungeons / "overhauledstructures" (12 tables, Overworld) ---
+  // Mod namespace is `overhauledstructures` (NOT `epic_dungeons`). Prior audit
+  // mistakenly marked this dead and removed coverage. Jar inspection 2026-04-19
+  // confirmed: spawns in `#minecraft:is_overworld`, native tables drop
+  // netherite_ingot (~4.5%) and diamond armor (~1.5%) in chest_3 — hard T1 break.
+  //
+  // Three dungeon families from structure files:
+  //   ovdb_* -> overhauleddungeonbasic  (general dungeon)
+  //   ovdp_* -> overhauleddungeonprison (decrepit theme)
+  //   ovds_* -> overhauleddungeonspiders (web/venom theme)
+  // Each family has 4 tiers: _chest_1, _chest_2, _chest_3, _chest_m (master).
+  //
+  // Overhaul = strip tier-breaking items, then inject thematic T1 content
+  // matching each family's flavor, with tier-scaled rates.
+
+  var overhauledAllTables = [
+    /overhauledstructures:chests\/ovdb_loot_tables\/.*/,
+    /overhauledstructures:chests\/ovdp_loot_tables\/.*/,
+    /overhauledstructures:chests\/ovds_loot_tables\/.*/
+  ]
+
+  // --- Universal strip: kill tier-breakers across all 12 tables ---
+  var ovdStrip = event.addLootTableModifier.apply(event, overhauledAllTables)
+  var ovdTierBreakers = [
+    'minecraft:diamond', 'minecraft:netherite_ingot', 'minecraft:netherite_scrap',
+    'minecraft:diamond_helmet', 'minecraft:diamond_chestplate',
+    'minecraft:diamond_leggings', 'minecraft:diamond_boots',
+    'minecraft:diamond_sword', 'minecraft:diamond_axe',
+    'minecraft:diamond_pickaxe', 'minecraft:diamond_shovel', 'minecraft:diamond_hoe',
+    'minecraft:netherite_helmet', 'minecraft:netherite_chestplate',
+    'minecraft:netherite_leggings', 'minecraft:netherite_boots',
+    'minecraft:netherite_sword', 'minecraft:netherite_axe',
+    'minecraft:netherite_pickaxe', 'minecraft:netherite_shovel', 'minecraft:netherite_hoe',
+    'minecraft:budding_amethyst' // not a tier break, but removes a clutter item
+  ]
+  ovdTierBreakers.forEach(function(item) { ovdStrip.removeLoot(item) })
+
+  // --- Universal T1 magic/progression kit (all 12 tables) ---
+  var ovdUniversal = event.addLootTableModifier.apply(event, overhauledAllTables)
+  ovdUniversal.addLoot(LootEntry.of('kubejs:tier1_token').limitCount([1, 2]).when(c => c.randomChance(0.50)))
+  ovdUniversal.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.25)))
+  ovdUniversal.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]).when(c => c.randomChance(0.15)))
+  ovdUniversal.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.06)))
+  ovdUniversal.addLoot(
+    LootEntry.of('minecraft:book')
+      .enchantWithLevels(UniformGenerator.between(5, 15), true)
+      .when(c => c.randomChance(0.08))
+  )
+
+  // --- Family ovdb (basic): dungeoneering supplies ---
+  var ovdbMod = event.addLootTableModifier(/overhauledstructures:chests\/ovdb_loot_tables\/.*/)
+  ovdbMod.addLoot(LootEntry.of('minecraft:torch').limitCount([2, 6]).when(c => c.randomChance(0.60)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:bread').limitCount([2, 4]).when(c => c.randomChance(0.35)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.25)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:map').when(c => c.randomChance(0.15)))
+  ovdbMod.addLoot(LootEntry.of('minecraft:compass').when(c => c.randomChance(0.05)))
+
+  // --- Family ovdp (prison): decrepit theme ---
+  var ovdpMod = event.addLootTableModifier(/overhauledstructures:chests\/ovdp_loot_tables\/.*/)
+  ovdpMod.addLoot(LootEntry.of('minecraft:chain').limitCount([2, 6]).when(c => c.randomChance(0.50)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:rotten_flesh').limitCount([3, 8]).when(c => c.randomChance(0.40)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:bone').limitCount([2, 5]).when(c => c.randomChance(0.40)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:soul_lantern').when(c => c.randomChance(0.15)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:name_tag').when(c => c.randomChance(0.06)))
+  ovdpMod.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 2]).when(c => c.randomChance(0.15)))
+
+  // --- Family ovds (spiders): web/venom theme ---
+  var ovdsMod = event.addLootTableModifier(/overhauledstructures:chests\/ovds_loot_tables\/.*/)
+  ovdsMod.addLoot(LootEntry.of('minecraft:string').limitCount([4, 12]).when(c => c.randomChance(0.70)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:cobweb').limitCount([2, 6]).when(c => c.randomChance(0.45)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:spider_eye').limitCount([1, 4]).when(c => c.randomChance(0.40)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:fermented_spider_eye').when(c => c.randomChance(0.15)))
+  ovdsMod.addLoot(LootEntry.of('minecraft:poisonous_potato').when(c => c.randomChance(0.08)))
+
+  // --- Tier 3 + Master chests: bonus magic drops (each family's chest_3 + chest_m) ---
+  // chest_3 = final room; chest_m = master reward. Higher magic-item chances
+  // to reward players who clear the dungeon.
+  var ovdMaster = event.addLootTableModifier(
+    /overhauledstructures:chests\/ovd[bps]_loot_tables\/ovd[bps]_chest_(3|m)/
+  )
+  ovdMaster.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.18)))
+  ovdMaster.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.14)))
+  ovdMaster.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([2, 4]).when(c => c.randomChance(0.50)))
+  ovdMaster.addLoot(LootEntry.of('kubejs:tier1_token').limitCount([1, 1]).when(c => c.randomChance(0.40))) // extra on top of universal
+
   // =========================================================================
   // SECTION 4C: YUNG'S BETTER SERIES
   // All confirmed in loot table registry scan

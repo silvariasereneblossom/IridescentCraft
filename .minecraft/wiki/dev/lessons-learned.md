@@ -14,6 +14,24 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-19 — Audit deleted Epic Dungeons coverage because its namespace didn't match its slug
+
+**Symptom:** Tester reported finding netherite and diamond gear in Overworld chests well before reaching any gated dimension. Commit archeology showed the regex-audit session had proudly "removed dead `overhauledstructures` and `lootintegrations` blocks" from `lootjs_overhaul.js`.
+
+**Dead ends:**
+- The regex-audit session checked the modpack's `.pw.toml` list for a mod named `overhauledstructures` and didn't find one, concluding the namespace was dead legacy code.
+- Nothing flagged that the search should have been the *other direction*: given the namespace, find which mod ships that data folder.
+
+**Actual root cause:** Namespace-vs-slug mismatch. The mod file is `Epic Dungeons-0.1.04-Forge-1.19-1.20.1.jar`, the packwiz slug is `epic-dungeons-a-roguelike-minecraft`, the display name is "Epic Dungeons: A Roguelike Minecraft", but the mod's internal data is shipped at `data/overhauledstructures/...`. Checking the `.pw.toml` list will never turn that up. The dungeons spawn in `#minecraft:is_overworld` with spacing 32/24, their top-tier chest (`ovdb_chest_3`) drops netherite_ingot at ~4.5% and diamond armor at ~1.5%, and since the LootJS coverage was removed, all 12 chest tables were shipping unmodified.
+
+**What fixed it:** Downloaded the jar (3MB from Modrinth) and ran `unzip -l | grep data/` to list the actual data namespace. Re-added an overhauledstructures block in LootJS with a proper overhaul (strip + thematic per-family additions for the three dungeon families ovdb/ovdp/ovds) rather than just restoring the old block.
+
+**Takeaway:**
+- Before deleting a LootJS regex as "dead", run `unzip -l mods/*.jar | grep -i <namespace>` across the actual installed jars — don't trust the packwiz slug list alone. The slug is the *download* identifier; the namespace is the *data* identifier; they are allowed to be arbitrarily different and Epic Dungeons exploits that gap.
+- When auditing structure mods generally, fetch the 5 MiB of relevant jars and inspect `data/<namespace>/loot_tables/` directly. A speculative audit from `.pw.toml` metadata can confidently mislead — this session proved that by producing two different "final" reports, one from metadata-only (said Epic Dungeons had no data) and one from jar inspection (caught the tier break).
+
+---
+
 ## 2026-04-19 — Codex empty even after the modId fix was correct
 
 **Symptom:** After the prior session's `modId="icraft"` fix, the book was now registered (no "Invalid book ID" tooltip), but opening it showed empty contents. Client log: `Error loading and compiling book icraft:iridescent_codex, using empty contents / RuntimeException: Entry in file .../t1_bosses.json does not have a valid category`. Warnings: `Queried for unknown config flag: icraft:stage_tier_3/4`.
