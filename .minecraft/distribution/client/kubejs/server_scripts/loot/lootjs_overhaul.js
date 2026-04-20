@@ -318,13 +318,37 @@ LootJS.modifiers(event => {
   // (projectile/touch/self/aoe) so T1-T2 players can actually cast. Per-item
   // chance = target_rate / pool_size, rolled independently per chest.
 
+  // 2026-04-20: glyph tier arrays rebuilt from Ars Nouveau's own config
+  // (config/ars_nouveau/glyph_*.toml, `glyph_tier` field). Our previous
+  // manual categorization disagreed with the mod's own tiering on >20
+  // glyphs — most infamously placing `heal`, `smelt`, `conjure_water`,
+  // `extend_time`, `duration_down` in T1 (AN marks them T2), and putting
+  // `launch`, `leap`, `bounce`, `pull`, `snare`, `toss`, `fell` in T2 (AN
+  // marks them T1). That's why tester saw "T2 glyphs" in Overworld
+  // villages — our T1 add list contained AN-T2 glyphs, so they legitimately
+  // spawned in Overworld.
+  //
+  // AN has 3 tiers (ONE/TWO/THREE, plus CREATIVE which we ignore). Mapping
+  // to our 4 dimension tiers:
+  //   AN T1 (35 glyphs) -> Overworld (our T1)
+  //   AN T2 (28 glyphs) -> TF/Aether/Blue Skies (our T2)
+  //   AN T3 (14 glyphs) -> Nether/Undergarden + End/DD/Abyss (our T3 + T4)
+  // Arrays are exhaustive per AN's config — any future AN update adding
+  // glyphs will need manual re-sync.
+
   const glyphT1 = [
-    'ars_nouveau:glyph_projectile', 'ars_nouveau:glyph_touch', 'ars_nouveau:glyph_self',
-    'ars_nouveau:glyph_harm', 'ars_nouveau:glyph_heal', 'ars_nouveau:glyph_ignite',
-    'ars_nouveau:glyph_break', 'ars_nouveau:glyph_place_block', 'ars_nouveau:glyph_grow',
-    'ars_nouveau:glyph_harvest', 'ars_nouveau:glyph_light', 'ars_nouveau:glyph_smelt',
-    'ars_nouveau:glyph_evaporate', 'ars_nouveau:glyph_extract', 'ars_nouveau:glyph_conjure_water',
-    'ars_nouveau:glyph_amplify', 'ars_nouveau:glyph_extend_time', 'ars_nouveau:glyph_duration_down'
+    'ars_nouveau:glyph_amplify', 'ars_nouveau:glyph_bounce', 'ars_nouveau:glyph_break',
+    'ars_nouveau:glyph_craft', 'ars_nouveau:glyph_cut', 'ars_nouveau:glyph_delay',
+    'ars_nouveau:glyph_dispel', 'ars_nouveau:glyph_evaporate', 'ars_nouveau:glyph_fell',
+    'ars_nouveau:glyph_freeze', 'ars_nouveau:glyph_gust', 'ars_nouveau:glyph_harm',
+    'ars_nouveau:glyph_harvest', 'ars_nouveau:glyph_ignite', 'ars_nouveau:glyph_interact',
+    'ars_nouveau:glyph_launch', 'ars_nouveau:glyph_leap', 'ars_nouveau:glyph_light',
+    'ars_nouveau:glyph_phantom_block', 'ars_nouveau:glyph_pickup', 'ars_nouveau:glyph_place_block',
+    'ars_nouveau:glyph_projectile', 'ars_nouveau:glyph_pull', 'ars_nouveau:glyph_randomize',
+    'ars_nouveau:glyph_redstone_signal', 'ars_nouveau:glyph_rotate', 'ars_nouveau:glyph_rune',
+    'ars_nouveau:glyph_self', 'ars_nouveau:glyph_sensitive', 'ars_nouveau:glyph_snare',
+    'ars_nouveau:glyph_summon_steed', 'ars_nouveau:glyph_summon_wolves', 'ars_nouveau:glyph_toss',
+    'ars_nouveau:glyph_touch', 'ars_nouveau:glyph_underfoot'
   ]
   const glyphT1PerItem = 0.12 / glyphT1.length  // ~12% combined
   var glyphModT1 = event
@@ -335,15 +359,16 @@ LootJS.modifiers(event => {
   })
 
   const glyphT2 = [
-    'ars_nouveau:glyph_aoe', 'ars_nouveau:glyph_underfoot',
-    'ars_nouveau:glyph_launch', 'ars_nouveau:glyph_leap', 'ars_nouveau:glyph_glide',
-    'ars_nouveau:glyph_bounce', 'ars_nouveau:glyph_slowfall', 'ars_nouveau:glyph_freeze',
-    'ars_nouveau:glyph_gust', 'ars_nouveau:glyph_snare', 'ars_nouveau:glyph_pull',
-    'ars_nouveau:glyph_toss', 'ars_nouveau:glyph_cold_snap', 'ars_nouveau:glyph_fortune',
-    'ars_nouveau:glyph_fell', 'ars_nouveau:glyph_pickup', 'ars_nouveau:glyph_exchange',
-    'ars_nouveau:glyph_crush', 'ars_nouveau:glyph_cut',
-    'ars_nouveau:glyph_accelerate', 'ars_nouveau:glyph_decelerate', 'ars_nouveau:glyph_dampen',
-    'ars_nouveau:glyph_pierce', 'ars_nouveau:glyph_split', 'ars_nouveau:glyph_sensitive'
+    'ars_nouveau:glyph_accelerate', 'ars_nouveau:glyph_animate_block', 'ars_nouveau:glyph_aoe',
+    'ars_nouveau:glyph_cold_snap', 'ars_nouveau:glyph_conjure_water', 'ars_nouveau:glyph_crush',
+    'ars_nouveau:glyph_dampen', 'ars_nouveau:glyph_decelerate', 'ars_nouveau:glyph_duration_down',
+    'ars_nouveau:glyph_ender_inventory', 'ars_nouveau:glyph_exchange', 'ars_nouveau:glyph_explosion',
+    'ars_nouveau:glyph_extend_time', 'ars_nouveau:glyph_extract', 'ars_nouveau:glyph_firework',
+    'ars_nouveau:glyph_flare', 'ars_nouveau:glyph_fortune', 'ars_nouveau:glyph_gravity',
+    'ars_nouveau:glyph_grow', 'ars_nouveau:glyph_heal', 'ars_nouveau:glyph_infuse',
+    'ars_nouveau:glyph_invisibility', 'ars_nouveau:glyph_name', 'ars_nouveau:glyph_pierce',
+    'ars_nouveau:glyph_sense_magic', 'ars_nouveau:glyph_slowfall', 'ars_nouveau:glyph_smelt',
+    'ars_nouveau:glyph_wind_shear'
   ]
   const glyphT2PerItem = 0.14 / glyphT2.length  // ~14% combined
   var glyphModT2 = event
@@ -355,14 +380,11 @@ LootJS.modifiers(event => {
   })
 
   const glyphT3 = [
-    'ars_nouveau:glyph_linger',
-    'ars_nouveau:glyph_lightning', 'ars_nouveau:glyph_firework', 'ars_nouveau:glyph_phantom_block',
-    'ars_nouveau:glyph_wall', 'ars_nouveau:glyph_fangs', 'ars_nouveau:glyph_hex',
-    'ars_nouveau:glyph_explosion', 'ars_nouveau:glyph_wind_shear', 'ars_nouveau:glyph_invisibility',
-    'ars_nouveau:glyph_blink', 'ars_nouveau:glyph_delay', 'ars_nouveau:glyph_gravity',
-    'ars_nouveau:glyph_animate_block', 'ars_nouveau:glyph_craft', 'ars_nouveau:glyph_ender_inventory',
-    'ars_nouveau:glyph_redstone_signal', 'ars_nouveau:glyph_interact', 'ars_nouveau:glyph_flare',
-    'ars_nouveau:glyph_infuse', 'ars_nouveau:glyph_rotate', 'ars_nouveau:glyph_orbit'
+    'ars_nouveau:glyph_blink', 'ars_nouveau:glyph_fangs', 'ars_nouveau:glyph_glide',
+    'ars_nouveau:glyph_hex', 'ars_nouveau:glyph_intangible', 'ars_nouveau:glyph_lightning',
+    'ars_nouveau:glyph_linger', 'ars_nouveau:glyph_orbit', 'ars_nouveau:glyph_split',
+    'ars_nouveau:glyph_summon_decoy', 'ars_nouveau:glyph_summon_undead', 'ars_nouveau:glyph_summon_vex',
+    'ars_nouveau:glyph_wall', 'ars_nouveau:glyph_wither'
   ]
   const glyphT3PerItem = 0.15 / glyphT3.length  // ~15% combined
   var glyphModT3 = event
@@ -372,15 +394,12 @@ LootJS.modifiers(event => {
     glyphModT3.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT3PerItem)))
   })
 
-  const glyphT4 = [
-    'ars_nouveau:glyph_rune', 'ars_nouveau:glyph_wither',
-    'ars_nouveau:glyph_summon_undead', 'ars_nouveau:glyph_summon_decoy',
-    'ars_nouveau:glyph_summon_steed', 'ars_nouveau:glyph_summon_vex',
-    'ars_nouveau:glyph_summon_wolves', 'ars_nouveau:glyph_sense_magic',
-    'ars_nouveau:glyph_intangible', 'ars_nouveau:glyph_dispel',
-    'ars_nouveau:glyph_randomize', 'ars_nouveau:glyph_name'
-  ]
-  const glyphT4PerItem = 0.18 / glyphT4.length  // ~18% combined
+  // AN has 3 tiers — no T4. End/DD/Abyss chests still get glyph drops,
+  // but they pull from AN T3 (the highest tier AN defines). Kept the
+  // glyphT4 variable as an alias of glyphT3 so downstream `.concat(glyphT4)`
+  // calls continue to work unchanged.
+  const glyphT4 = glyphT3
+  const glyphT4PerItem = 0.18 / glyphT4.length  // ~18% combined (now for AN T3 glyphs at End/DD/Abyss rate)
   var glyphModT4 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
