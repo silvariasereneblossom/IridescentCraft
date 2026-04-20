@@ -237,37 +237,59 @@ PlayerEvents.chat(event => {
       event.cancel()
       console.log('[codex/chat] origindump: player=' + player.username + ' starting')
 
-      // Route 1: in-game chat via tellraw with NBT interpolation. Tester can
-      // screenshot this OR copy it out of their chat log.
+      // 2026-04-20: prior version called player.server.runCommand() (non-silent)
+      // to route /data get output to the server log. That threw
+      // `JavaException: ev.latvian.mods.kubejs.event.EventExit: result` from
+      // inside a chat handler — KubeJS uses EventExit internally to signal
+      // command result return values, which doesn't play well when wrapped
+      // in another event's handler. Always use runCommandSilent inside chat.
+      //
+      // Three diagnostic routes (all silent, all safe):
+
+      // 1. Full NBT to player chat via tellraw. Screenshottable.
       player.server.runCommandSilent(
         'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"cardinal_components.\\"origins:origin\\"","entity":"' + player.username + '"}]'
       )
 
-      // Route 2: server log via non-silent /data get — when the server is the
-      // command sender, /data get output lands in the server console + log
-      // where we can grep for it. Takes effect alongside the tellraw.
-      player.server.runCommand(
-        'data get entity ' + player.username + ' cardinal_components."origins:origin"'
-      )
-
-      // Route 3: direct introspection — check each of the 10 class IDs and
-      // log which (if any) matches. No NBT dump needed; the boolean is enough
-      // to diagnose "no magic class detected" reports.
-      const ALL_CLASSES = ['berserker','samurai','battlemage','wanderer','paladin',
-                           'vanguard','ranger','archmage','artificer','void_summoner']
-      let found = []
-      ALL_CLASSES.forEach(function(c) {
+      // 2. Per-layer Origin check — for each layer (origin/race/class), test
+      //    every icraft origin id and log the match. This surfaces the real
+      //    NBT path without needing /data get.
+      const ALL_ORIGINS = [
+        // Origin layer candidates
+        'witch_of_ink','artificial_construct','witherborn','slimebodied',
+        // Race layer candidates
+        'demigod','ryu','fallen_angel','kirin','elf','dwarf','orc','halfling',
+        'faefolk','revenant',
+        // Class layer candidates
+        'berserker','samurai','battlemage','wanderer','paladin','vanguard',
+        'ranger','archmage','artificer','void_summoner'
+      ]
+      let matched = []
+      ALL_ORIGINS.forEach(function(o) {
         try {
           let r = player.server.runCommandSilent(
-            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:' + c + '"}]}}}]'
+            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:' + o + '"}]}}}]'
           )
-          if (r > 0) found.push('icraft:' + c)
+          if (r > 0) matched.push('icraft:' + o)
         } catch (e) {}
       })
-      let result = found.length ? found.join(', ') : '<none>'
-      console.log('[codex/chat] origindump: ' + player.username + ' has classes = ' + result)
-      player.tell('\u00a76[Debug]\u00a7r Classes detected: \u00a7e' + result + '\u00a7r')
-      player.tell('\u00a77(Full NBT above; also in server log via /data get)')
+
+      // 3. Also probe the 9 vanilla origins (user might be Human/Phantom/etc.)
+      const VANILLA_ORIGINS = ['arachnid','blazeborn','enderian','merling','phantom',
+                               'shulk','elytrian','feline','avian','human']
+      VANILLA_ORIGINS.forEach(function(o) {
+        try {
+          let r = player.server.runCommandSilent(
+            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"origins:' + o + '"}]}}}]'
+          )
+          if (r > 0) matched.push('origins:' + o)
+        } catch (e) {}
+      })
+
+      let result = matched.length ? matched.join(', ') : '<none matched any known origin/race/class>'
+      console.log('[codex/chat] origindump: ' + player.username + ' matched = ' + result)
+      player.tell('\u00a76[Debug]\u00a7r Matched origins: \u00a7e' + result + '\u00a7r')
+      player.tell('\u00a77(Full NBT in chat above this message)')
     } catch (e) {
       console.warn('[codex/chat] origindump threw: ' + e)
     }
