@@ -14,7 +14,7 @@
 function isPhantom(player) {
   try {
     let result = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"origins:phantom"}]}}}]`
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"origins:phantom"}]}}}]`
     )
     return result > 0
   } catch (e) {

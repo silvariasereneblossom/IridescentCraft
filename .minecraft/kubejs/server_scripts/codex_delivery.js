@@ -34,7 +34,7 @@ function codex_detectMagicClass(player) {
     let c = MAGIC_CLASSES[i]
     try {
       let r = player.server.runCommandSilent(
-        `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:${c}"}]}}}]`
+        `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:${c}"}]}}}]`
       )
       if (r > 0) return c
     } catch (e) {
@@ -193,7 +193,7 @@ global.tick_codexOriginDump = function(event) {
 
       // Route 1: chat dump of full NBT via tellraw
       player.server.runCommandSilent(
-        'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"cardinal_components.\\"origins:origin\\"","entity":"' + player.username + '"}]'
+        'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"ForgeCaps.\\"origins:origins\\".Origins","entity":"' + player.username + '"}]'
       )
 
       // Route 2: probe every known origin/race/class id, log matches
@@ -201,7 +201,7 @@ global.tick_codexOriginDump = function(event) {
       ORIGIN_PROBE_ICRAFT.forEach(function(o) {
         try {
           let r = player.server.runCommandSilent(
-            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:' + o + '"}]}}}]'
+            'execute if entity ' + player.username + '[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:' + o + '"}]}}}]'
           )
           if (r > 0) matched.push('icraft:' + o)
         } catch (e) {}
@@ -209,7 +209,7 @@ global.tick_codexOriginDump = function(event) {
       ORIGIN_PROBE_VANILLA.forEach(function(o) {
         try {
           let r = player.server.runCommandSilent(
-            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"origins:' + o + '"}]}}}]'
+            'execute if entity ' + player.username + '[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"origins:' + o + '"}]}}}]'
           )
           if (r > 0) matched.push('origins:' + o)
         } catch (e) {}

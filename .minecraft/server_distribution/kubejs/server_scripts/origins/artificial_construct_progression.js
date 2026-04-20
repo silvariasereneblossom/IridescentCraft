@@ -14,7 +14,7 @@
 function isArtificialConstruct(player) {
   try {
     let result = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:artificial_construct"}]}}}]`
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:artificial_construct"}]}}}]`
     )
     return result > 0
   } catch (e) {

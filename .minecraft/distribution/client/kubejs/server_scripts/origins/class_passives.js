@@ -6,7 +6,7 @@
 function hasClass(player, className) {
   try {
     let r = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:${className}"}]}}}]`
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:${className}"}]}}}]`
     )
     return r > 0
   } catch (e) {
@@ -239,7 +239,7 @@ global.tick_classPassives = (event) => {
     event.server.players.forEach(player => {
       try {
         let isOrc = player.server.runCommandSilent(
-          `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:orc"}]}}}]`
+          `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:orc"}]}}}]`
         )
         if (isOrc <= 0) return
 

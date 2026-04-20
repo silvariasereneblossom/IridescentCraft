@@ -17,7 +17,7 @@
 function isBattlemage(player) {
   try {
     let result = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:battlemage"}]}}}]`
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:battlemage"}]}}}]`
     )
     return result > 0
   } catch (e) {
@@ -31,14 +31,14 @@ function getMagicBonus(player) {
 
   try {
     let isFaefolk = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:faefolk"}]}}}]`
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:faefolk"}]}}}]`
     )
     if (isFaefolk > 0) bonus += 0.30
   } catch (e) {}
 
   try {
     let isElf = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:elf"}]}}}]`
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:elf"}]}}}]`
     )
     if (isElf > 0) bonus += 0.05
   } catch (e) {}

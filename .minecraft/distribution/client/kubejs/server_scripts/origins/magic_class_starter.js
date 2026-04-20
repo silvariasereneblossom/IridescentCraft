@@ -34,7 +34,7 @@ function magicStarter_detectClass(player) {
     let c = MAGIC_CLASSES[i]
     try {
       let r = player.server.runCommandSilent(
-        `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:${c}"}]}}}]`
+        `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:${c}"}]}}}]`
       )
       if (r > 0) return c
     } catch (e) {
