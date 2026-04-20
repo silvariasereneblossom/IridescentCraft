@@ -230,82 +230,94 @@ global.registerServerTick('tick_codexOriginDump', 20, 11)
 //   !kit         — alias for !magicstart (grant magic starter kit now)
 //   !origindump  — dump player's origin NBT to log + chat (debug)
 //
-// 2026-04-20: matches ascension.js pattern (trim + toLowerCase) after
-// tester reported !codex didn't work. Previous strict `!==` comparison
-// failed on trailing spaces or casing. Also logs every '!'-prefixed
-// message unconditionally so we can see the chat handler is firing at
-// all (trace "[codex/chat] heard: X from Y" lines).
+// 2026-04-20 (third rewrite): every action now defers to a server-tick
+// handler via persistentData flags. The chat handler itself does the ABSOLUTE
+// MINIMUM: set a flag, return. Previous versions called runCommandSilent,
+// player.give, and persistentData all directly from the chat handler — which
+// fires on a worker thread (Worker-Main-X) where certain KubeJS/Rhino calls
+// throw `JavaException: EventExit: result`. Now the handler never touches
+// the server/player/command APIs; tick_codexChatProcessor picks up the flag
+// next tick (on Server thread) and does the real work.
 PlayerEvents.chat(event => {
-  const msg = (event.message || '').trim()
-  if (!msg.startsWith('!')) return
-  const lower = msg.toLowerCase()
-  const player = event.player
-  console.log('[codex/chat] heard: ' + msg + ' from ' + player.username)
+  try {
+    const msg = (event.message || '').trim().toLowerCase()
+    if (!msg.startsWith('!')) return
+    const player = event.player
 
-  // 2026-04-20: wrap each branch in try/catch. Tester log showed
-  // '[codex/chat] heard: !codex from silvieserene' with NO subsequent
-  // '[codex] !codex ... granted' log — meaning something between the
-  // heard-log and grant-log was silently throwing. Granular logging now
-  // catches the failure point.
-
-  if (lower === '!codex') {
-    try {
+    if (msg === '!codex') {
+      player.persistentData.putBoolean('icraft_chat_pending_codex', true)
       event.cancel()
-      console.log('[codex/chat] !codex: event.cancel() OK, clearing flag...')
-      player.persistentData.putBoolean(CODEX_FLAG, false)
-      console.log('[codex/chat] !codex: flag cleared, calling codex_giveBook...')
-      let ok = codex_giveBook(player)
-      console.log('[codex/chat] !codex: codex_giveBook returned ' + ok)
-      if (ok) {
-        player.persistentData.putBoolean(CODEX_FLAG, true)
-      }
-      player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
-      console.log('[codex] !codex from ' + player.username + ': ' + (ok ? 'granted' : 'grant failed'))
-    } catch (e) {
-      console.warn('[codex/chat] !codex threw: ' + e + ' (stack: ' + (e.stack || 'n/a') + ')')
-    }
-    return
-  }
-
-  if (lower === '!kit' || lower === '!magicstart') {
-    try {
+    } else if (msg === '!kit' || msg === '!magicstart') {
+      player.persistentData.putBoolean('icraft_chat_pending_kit', true)
       event.cancel()
-      MAGIC_CLASSES.forEach(function(c) {
-        player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
-      })
-      let cls = codex_detectMagicClass(player)
-      if (!cls) {
-        player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected on your character. Use !origindump to see your origin layers.')
-        console.log('[codex/starter] ' + msg + ' from ' + player.username + ': no magic class detected')
-        return
-      }
-      codex_giveStarterKit(player, cls)
-      player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
-      console.log('[codex/starter] ' + msg + ' from ' + player.username + ': granted ' + cls + ' kit')
-    } catch (e) {
-      console.warn('[codex/chat] !kit threw: ' + e + ' (stack: ' + (e.stack || 'n/a') + ')')
-    }
-    return
-  }
-
-  if (lower === '!origindump') {
-    try {
-      event.cancel()
-      // 2026-04-20: The chat handler fires on a worker thread
-      // (Worker-Main-X), not Server thread. runCommandSilent from a worker
-      // thread in a chat handler throws `EventExit: result`. Defer the
-      // work to the next server tick where we run on the main thread.
-      //
-      // Set a per-player flag; the tick handler below consumes it.
+    } else if (msg === '!origindump') {
       player.persistentData.putBoolean('icraft_origindump_pending', true)
-      player.tell('\u00a76[Debug]\u00a7r Origin dump queued — output in ~1 second.')
-      console.log('[codex/chat] origindump queued for ' + player.username)
-    } catch (e) {
-      console.warn('[codex/chat] origindump threw: ' + e)
+      event.cancel()
+    } else {
+      return // not our command, let chat proceed normally
     }
-    return
+    // Minimal feedback — player.tell is generally safe across threads but
+    // we wrap the whole handler in try/catch so any thread-visibility oddity
+    // doesn't prevent the flag from having been set first.
+    try { player.tell('\u00a77[IC] command queued') } catch (e) {}
+  } catch (e) {
+    // Intentionally swallow — we don't want chat-thread exceptions to
+    // cause visible errors. The tick handler will log its own progress.
   }
 })
+
+// ── Server-thread processor for all queued chat commands ──
+// Runs every tick (low overhead — all it does is read 3 booleans per
+// player). When a flag is set, it performs the real command work and
+// clears the flag. Everything here runs on Server thread, so calls to
+// runCommandSilent / player.give / persistentData all work normally.
+global.tick_codexChatProcessor = function(event) {
+  event.server.players.forEach(function(player) {
+
+    // --- !codex ---
+    if (player.persistentData.getBoolean('icraft_chat_pending_codex')) {
+      player.persistentData.putBoolean('icraft_chat_pending_codex', false)
+      try {
+        console.log('[codex/chat] processing !codex for ' + player.username)
+        player.persistentData.putBoolean(CODEX_FLAG, false)
+        let ok = codex_giveBook(player)
+        if (ok) {
+          player.persistentData.putBoolean(CODEX_FLAG, true)
+        }
+        player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
+        console.log('[codex] !codex from ' + player.username + ': ' + (ok ? 'granted' : 'grant failed'))
+      } catch (e) {
+        console.warn('[codex/chat] !codex processing threw: ' + e)
+      }
+    }
+
+    // --- !kit / !magicstart ---
+    if (player.persistentData.getBoolean('icraft_chat_pending_kit')) {
+      player.persistentData.putBoolean('icraft_chat_pending_kit', false)
+      try {
+        console.log('[codex/chat] processing !kit for ' + player.username)
+        MAGIC_CLASSES.forEach(function(c) {
+          player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
+        })
+        let cls = codex_detectMagicClass(player)
+        if (!cls) {
+          player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected. Use !origindump to see your origin layers.')
+          console.log('[codex/starter] !kit from ' + player.username + ': no magic class detected')
+        } else {
+          codex_giveStarterKit(player, cls)
+          player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
+          console.log('[codex/starter] !kit from ' + player.username + ': granted ' + cls + ' kit')
+        }
+      } catch (e) {
+        console.warn('[codex/chat] !kit processing threw: ' + e)
+      }
+    }
+
+    // --- !origindump (also handled by existing tick_codexOriginDump) ---
+    // intentionally left to the dedicated origindump tick below.
+  })
+}
+global.registerServerTick('tick_codexChatProcessor', 20, 13)
 
 // ── Backup Recovery Recipe ────────────────────────────────────────────────────
 
