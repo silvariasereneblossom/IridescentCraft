@@ -169,6 +169,62 @@ global.tick_codexStarterCheck = function(event) {
 }
 global.registerServerTick('tick_codexStarterCheck', 100, 5)
 
+// ── Deferred origindump processor (runs on Server thread) ──
+// KubeJS PlayerEvents.chat fires on a worker thread; runCommandSilent from
+// a worker thread inside a chat handler throws `EventExit: result`.
+// Instead, the chat handler sets `icraft_origindump_pending = true` and
+// this tick (on Server thread) performs the actual dump.
+const ORIGIN_PROBE_ICRAFT = [
+  'witch_of_ink','artificial_construct','witherborn','slimebodied',
+  'demigod','ryu','fallen_angel','kirin','elf','dwarf','orc','halfling',
+  'faefolk','revenant',
+  'berserker','samurai','battlemage','wanderer','paladin','vanguard',
+  'ranger','archmage','artificer','void_summoner'
+]
+const ORIGIN_PROBE_VANILLA = ['arachnid','blazeborn','enderian','merling','phantom',
+                              'shulk','elytrian','feline','avian','human']
+
+global.tick_codexOriginDump = function(event) {
+  event.server.players.forEach(function(player) {
+    if (!player.persistentData.getBoolean('icraft_origindump_pending')) return
+    player.persistentData.putBoolean('icraft_origindump_pending', false)
+    try {
+      console.log('[codex/origindump] processing for ' + player.username)
+
+      // Route 1: chat dump of full NBT via tellraw
+      player.server.runCommandSilent(
+        'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"cardinal_components.\\"origins:origin\\"","entity":"' + player.username + '"}]'
+      )
+
+      // Route 2: probe every known origin/race/class id, log matches
+      let matched = []
+      ORIGIN_PROBE_ICRAFT.forEach(function(o) {
+        try {
+          let r = player.server.runCommandSilent(
+            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:' + o + '"}]}}}]'
+          )
+          if (r > 0) matched.push('icraft:' + o)
+        } catch (e) {}
+      })
+      ORIGIN_PROBE_VANILLA.forEach(function(o) {
+        try {
+          let r = player.server.runCommandSilent(
+            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"origins:' + o + '"}]}}}]'
+          )
+          if (r > 0) matched.push('origins:' + o)
+        } catch (e) {}
+      })
+
+      let result = matched.length ? matched.join(', ') : '<none matched known origins>'
+      console.log('[codex/origindump] ' + player.username + ' matched = ' + result)
+      player.tell('\u00a76[Debug]\u00a7r Matched: \u00a7e' + result + '\u00a7r')
+    } catch (e) {
+      console.warn('[codex/origindump] dump failed for ' + player.username + ': ' + e)
+    }
+  })
+}
+global.registerServerTick('tick_codexOriginDump', 20, 11)
+
 // ── Admin/tester chat commands ──
 //   !codex       — force-deliver codex + re-arm starter check
 //   !kit         — alias for !magicstart (grant magic starter kit now)
@@ -235,61 +291,15 @@ PlayerEvents.chat(event => {
   if (lower === '!origindump') {
     try {
       event.cancel()
-      console.log('[codex/chat] origindump: player=' + player.username + ' starting')
-
-      // 2026-04-20: prior version called player.server.runCommand() (non-silent)
-      // to route /data get output to the server log. That threw
-      // `JavaException: ev.latvian.mods.kubejs.event.EventExit: result` from
-      // inside a chat handler — KubeJS uses EventExit internally to signal
-      // command result return values, which doesn't play well when wrapped
-      // in another event's handler. Always use runCommandSilent inside chat.
+      // 2026-04-20: The chat handler fires on a worker thread
+      // (Worker-Main-X), not Server thread. runCommandSilent from a worker
+      // thread in a chat handler throws `EventExit: result`. Defer the
+      // work to the next server tick where we run on the main thread.
       //
-      // Three diagnostic routes (all silent, all safe):
-
-      // 1. Full NBT to player chat via tellraw. Screenshottable.
-      player.server.runCommandSilent(
-        'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"cardinal_components.\\"origins:origin\\"","entity":"' + player.username + '"}]'
-      )
-
-      // 2. Per-layer Origin check — for each layer (origin/race/class), test
-      //    every icraft origin id and log the match. This surfaces the real
-      //    NBT path without needing /data get.
-      const ALL_ORIGINS = [
-        // Origin layer candidates
-        'witch_of_ink','artificial_construct','witherborn','slimebodied',
-        // Race layer candidates
-        'demigod','ryu','fallen_angel','kirin','elf','dwarf','orc','halfling',
-        'faefolk','revenant',
-        // Class layer candidates
-        'berserker','samurai','battlemage','wanderer','paladin','vanguard',
-        'ranger','archmage','artificer','void_summoner'
-      ]
-      let matched = []
-      ALL_ORIGINS.forEach(function(o) {
-        try {
-          let r = player.server.runCommandSilent(
-            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:' + o + '"}]}}}]'
-          )
-          if (r > 0) matched.push('icraft:' + o)
-        } catch (e) {}
-      })
-
-      // 3. Also probe the 9 vanilla origins (user might be Human/Phantom/etc.)
-      const VANILLA_ORIGINS = ['arachnid','blazeborn','enderian','merling','phantom',
-                               'shulk','elytrian','feline','avian','human']
-      VANILLA_ORIGINS.forEach(function(o) {
-        try {
-          let r = player.server.runCommandSilent(
-            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"origins:' + o + '"}]}}}]'
-          )
-          if (r > 0) matched.push('origins:' + o)
-        } catch (e) {}
-      })
-
-      let result = matched.length ? matched.join(', ') : '<none matched any known origin/race/class>'
-      console.log('[codex/chat] origindump: ' + player.username + ' matched = ' + result)
-      player.tell('\u00a76[Debug]\u00a7r Matched origins: \u00a7e' + result + '\u00a7r')
-      player.tell('\u00a77(Full NBT in chat above this message)')
+      // Set a per-player flag; the tick handler below consumes it.
+      player.persistentData.putBoolean('icraft_origindump_pending', true)
+      player.tell('\u00a76[Debug]\u00a7r Origin dump queued — output in ~1 second.')
+      console.log('[codex/chat] origindump queued for ' + player.username)
     } catch (e) {
       console.warn('[codex/chat] origindump threw: ' + e)
     }
