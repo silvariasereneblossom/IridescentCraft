@@ -1001,16 +1001,17 @@ LootJS.modifiers(event => {
 
   // --- Village house clutter strip ---
   // Vanilla village house tables drop a lot of low-value filler (feather
-  // spam, mass string, excess wheat seeds). Don't strip the items that our
-  // later pools re-add — per the persistent-filter rule, that would eat
-  // those re-adds too. Limit to items we're confident we don't want anywhere.
+  // spam, excess wheat seeds). Don't strip items that our later pools
+  // re-add — per the persistent-filter rule, that would eat those re-adds too.
+  // Limit to items we're confident we don't want anywhere.
+  //
+  // Keep meat (porkchop, chicken): it IS food and T1 players need early
+  // calories. Only strip non-food filler. (2026-04-20 tester preference.)
   villageHouseChests.forEach(table => {
     event
       .addLootTableModifier(table)
       .removeLoot('minecraft:feather')
-      .removeLoot('minecraft:porkchop') // raw pork — replaced by the food pool
-      .removeLoot('minecraft:chicken') // raw chicken
-      .removeLoot('minecraft:rabbit_foot') // brewing clutter
+      .removeLoot('minecraft:rabbit_foot') // brewing clutter, not meat
       .removeLoot('minecraft:rabbit_hide')
   })
 
@@ -1400,7 +1401,7 @@ LootJS.modifiers(event => {
     'artifacts:universal_attractor',
     'artifacts:pickaxe_heater'
   ]
-  const villageArtifactPerItemChance = 0.15 / villageArtifactPool.length  // ~15% combined (bumped 2026-04-19 from 8%; user reported never seeing them)
+  const villageArtifactPerItemChance = 0.10 / villageArtifactPool.length  // ~10% combined — matches overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19)
 
   // Modded village chest patterns — CTOV, VillagesAndPillages, etc. generate
   // their own custom villages whose loot tables aren't in the vanilla list.
