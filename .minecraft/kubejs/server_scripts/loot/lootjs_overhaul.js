@@ -1373,6 +1373,13 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:golden_horse_armor')
       .removeLoot('minecraft:iron_horse_armor')
       .removeLoot('minecraft:enchanted_golden_apple')
+      // Belt-and-suspenders: strip rotten_flesh per-table in addition to the
+      // global Overworld strip in Section 5A. Tester reported 2026-04-20
+      // that rotten flesh was still appearing in village chests despite the
+      // global strip — likely because the global strip's LootType.CHEST +
+      // anyDimension filter isn't matching village loot contexts the way
+      // per-table modifiers do. Per-table strip is unambiguous.
+      .removeLoot('minecraft:rotten_flesh')
   })
 
   // Add guaranteed basic gear to smith village chests
