@@ -5,6 +5,74 @@
 const CODEX_NBT = '{"patchouli:book":"icraft:iridescent_codex"}'
 const CODEX_FLAG = 'icraft_codex_given'
 
+// Magic class starter kit — piggybacks on codex delivery so it fires from
+// the same proven-reliable PlayerEvents.loggedIn hook. The standalone
+// magic_class_starter.js still provides `!magicstart` as a manual backup.
+const MAGIC_STARTER_KITS = {
+  archmage: [
+    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { item: 'ars_nouveau:novice_spell_book',     count: 1 },
+    { item: 'ars_nouveau:source_gem',            count: 5 },
+    { item: 'irons_spellbooks:common_ink',       count: 2 }
+  ],
+  battlemage: [
+    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { item: 'ars_nouveau:source_gem',            count: 3 },
+    { item: 'irons_spellbooks:common_ink',       count: 1 }
+  ],
+  void_summoner: [
+    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { item: 'irons_spellbooks:common_ink',       count: 1 },
+    { item: 'minecraft:ender_pearl',             count: 1 }
+  ]
+}
+const MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner']
+const MAGIC_FLAG_PREFIX = 'icraft_magic_starter_'
+
+function codex_detectMagicClass(player) {
+  for (let i = 0; i < MAGIC_CLASSES.length; i++) {
+    let c = MAGIC_CLASSES[i]
+    try {
+      let r = player.server.runCommandSilent(
+        `execute if entity ${player.username}[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:${c}"}]}}}]`
+      )
+      if (r > 0) return c
+    } catch (e) {
+      console.warn('[codex/starter] NBT query failed for ' + player.username + '/' + c + ': ' + e)
+    }
+  }
+  return null
+}
+
+function codex_giveStarterKit(player, className) {
+  let kit = MAGIC_STARTER_KITS[className]
+  if (!kit) return false
+  kit.forEach(function(entry) {
+    try {
+      player.give(Item.of(entry.item, entry.count))
+    } catch (e) {
+      console.warn('[codex/starter] Give failed for ' + entry.item + ': ' + e)
+    }
+  })
+  let displayName = className.replace('_', ' ').replace(/\b\w/g, function(c) { return c.toUpperCase() })
+  player.tell('\u00a76[Starter Kit]\u00a7r A ' + displayName + "'s catalyst has been added to your inventory.")
+  player.tell('Find spells and glyphs in loot chests to grow your repertoire.')
+  return true
+}
+
+function codex_tryGrantStarter(player) {
+  let className = codex_detectMagicClass(player)
+  if (!className) return false
+  let flagKey = MAGIC_FLAG_PREFIX + className
+  if (player.persistentData.getBoolean(flagKey)) return false
+  if (codex_giveStarterKit(player, className)) {
+    player.persistentData.putBoolean(flagKey, true)
+    console.log('[codex/starter] Gave ' + className + ' kit to ' + player.username)
+    return true
+  }
+  return false
+}
+
 function codex_giveBook(player) {
   try {
     player.give(Item.of('patchouli:guide_book', CODEX_NBT))
@@ -56,8 +124,38 @@ PlayerEvents.loggedIn(event => {
   }
 
   player.persistentData.putInt('icraft_book_sweep_ticks', 1200)
-  console.log('[codex] loggedIn fired for ' + player.username + ', sweep armed')
+  // Arm a 3-second delayed magic-starter check. Origin NBT isn't reliably
+  // populated during loggedIn itself, especially on first class selection,
+  // so we wait a short beat and then scan.
+  player.persistentData.putInt('icraft_starter_check_ticks', 60)
+  console.log('[codex] loggedIn fired for ' + player.username + ', sweep + starter check armed')
 })
+
+// ── Delayed starter-kit check (fires ~3s after loggedIn) ──
+global.tick_codexStarterCheck = function(event) {
+  event.server.players.forEach(function(player) {
+    let left = player.persistentData.getInt('icraft_starter_check_ticks')
+    if (!left || left <= 0) return
+    left -= 20
+    if (left > 0) {
+      player.persistentData.putInt('icraft_starter_check_ticks', left)
+      return
+    }
+    player.persistentData.putInt('icraft_starter_check_ticks', 0)
+    try {
+      let granted = codex_tryGrantStarter(player)
+      if (!granted) {
+        let cls = codex_detectMagicClass(player)
+        console.log('[codex/starter] check for ' + player.username +
+                    ': detected=' + (cls || 'none') +
+                    (cls ? ' flag=' + player.persistentData.getBoolean(MAGIC_FLAG_PREFIX + cls) : ''))
+      }
+    } catch (e) {
+      console.warn('[codex/starter] check failed for ' + player.username + ': ' + e)
+    }
+  })
+}
+global.registerServerTick('tick_codexStarterCheck', 20, 5)
 
 // ── Admin/tester chat command: !codex force-delivers the book ──
 // Useful when auto-delivery missed (persistent flag stale, /clear wiped
@@ -72,6 +170,8 @@ PlayerEvents.chat(event => {
     player.persistentData.putBoolean(CODEX_FLAG, true)
     console.log('[codex] !codex from ' + player.username + ': granted')
   }
+  // Also arm the starter check in case they just picked a magic class.
+  player.persistentData.putInt('icraft_starter_check_ticks', 60)
 })
 
 // ── Backup Recovery Recipe ────────────────────────────────────────────────────
