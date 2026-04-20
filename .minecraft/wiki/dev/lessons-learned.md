@@ -14,6 +14,29 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-20 — Manual tier arrays disagreed with the mod's own tier config on 20+ glyphs
+
+**Symptom:** Tester running `/loot give village_plains_house` 30 times saw "T2 glyphs" appearing in Overworld village loot, despite a per-table strip targeting `glyphT2.concat(glyphT3, glyphT4)` on every village table. Strip appeared to work for some glyphs but not others.
+
+**Dead ends:**
+- Audited the strip code for persistent-filter bugs, event-thread issues, registration timing
+- Rewrote the per-table strip pattern twice
+- Doubted that `removeLoot` was firing on the village modifier chain
+- Never verified that our `glyphT1` / `glyphT2` arrays matched what Ars Nouveau actually considers T1/T2
+
+**Actual root cause:** Ars Nouveau has its own per-glyph `glyph_tier` config field (in `config/ars_nouveau/glyph_X.toml`). Our manually curated arrays disagreed with that authoritative config on 20+ glyphs. Specifically, `glyphT1` — the list we INJECT into Overworld chests — contained multiple AN-T2 glyphs (`heal`, `smelt`, `conjure_water`, `extend_time`, `duration_down`, `grow`). Those were legitimately getting injected in Overworld because they were on our "T1 is fine for Overworld" list. The village strip was correctly removing OUR glyphT2 array, but "T2 from the mod's perspective" ≠ "T2 from our array's perspective."
+
+The user described the symptom crisply: "the glyphs themselves are marked by tiers outside our tiering system."
+
+**What fixed it:** Parsed `config/ars_nouveau/glyph_*.toml` for the `glyph_tier = N` field on every glyph, rebuilt all 4 tier arrays from the mod's authoritative config. 35 / 28 / 14 glyphs for T1/T2/T3 (AN has no T4; our End/Abyss dims now pull from AN T3).
+
+**Takeaway:**
+- **When a mod defines its own tier/classification system, use it as the source of truth.** Don't create a parallel manual classification unless you're explicitly overriding the mod's intent — and if you are, write a test that verifies the overrides stay in sync.
+- This was the *same shape* as the Origins NBT bug from the same day: a path/mapping that looked reasonable and was wrong, silently producing off-expected behavior for months. In both cases, **the mod jar / config had the authoritative answer**; our code carried stale conventions.
+- When a strip list and an add list both exist for the same concept, sanity check: every item in the ADD list should match the same classification that the strip list uses. Mine did not.
+
+---
+
 ## 2026-04-20 — Every origin-keyed script queried a NBT path that didn't exist
 
 **Symptom:** Starter kit never fires. Class passives never trigger. Every `origin_effects` / `phantom_undeath` / `battlemage_mana_shield` check silently returns false for every player, every time. Symptoms reported across multiple sessions:
