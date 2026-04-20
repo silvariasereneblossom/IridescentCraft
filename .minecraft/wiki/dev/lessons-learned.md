@@ -14,6 +14,41 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-20 — Every origin-keyed script queried a NBT path that didn't exist
+
+**Symptom:** Starter kit never fires. Class passives never trigger. Every `origin_effects` / `phantom_undeath` / `battlemage_mana_shield` check silently returns false for every player, every time. Symptoms reported across multiple sessions:
+- "Archmage starter kit didn't come through" — seven sessions in a row
+- Passive attack-damage modifier never applied
+- Race-specific race powers never activated
+
+**Dead ends:**
+- Rewrote the chat command handlers three times to defer to server-tick
+- Added polling windows with 3-minute detection cycles
+- Debated worker-thread vs main-thread command execution
+- Fought `EventExit: result` exceptions at length
+- Never once ran `/data get entity @s cardinal_components."origins:origin"` to confirm the path existed
+
+**Actual root cause:** The codebase has ~9 server scripts that query Origins data via `execute if entity <player>[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:X"}]}}}]`. This path is from the original **Fabric** Origins mod (apace100), which uses **Cardinal Components** as its data storage system. This pack uses **Origins-Forge (edwinmindcraft's fork, 1.10.0.9)**, which is a complete rewrite on top of **Forge Capabilities**, not Cardinal Components. Data is stored under:
+
+```
+ForgeCaps."origins:origins".Origins[].layer   (string, e.g. "origins:class")
+ForgeCaps."origins:origins".Origins[].origin  (string, e.g. "icraft:archmage")
+```
+
+Notice also: `OriginLayers` → `Origins`, `Origin` → `origin` (lowercase). Every dimension of the path was wrong. The NBT selector returned zero matches for every player and every class, which `execute if entity` reports as return value 0, which the scripts interpret as "player doesn't have this class" → silently skip. Nobody noticed for months.
+
+Confirmation via tester running the query directly: `Found no elements matching cardinal_components`.
+
+**What fixed it:** Fetched the Origins jar from Modrinth (`origins-forge-1.20.1-1.10.0.9-all.jar`), disassembled `OriginsEventHandler.attachCapabilities` and `OriginContainer.serializeNBT`, read the capability identifier from the constant pool (`origins:origins`) and the serialization key (`Origins` list of `{layer, origin, choseOneAutomatically}`). Mass-rewrote the NBT pattern across all 9 affected scripts via a single `str.replace`.
+
+**Takeaway:**
+- **When a convention-based path keeps returning no data for every case, stop debugging downstream. Confirm the path exists.** A single `/data get entity @s <path>` from the tester would have collapsed months of ambiguity. The day I finally asked for it, the answer came back in 30 seconds.
+- **Don't trust path conventions inherited from similar mods.** Origins-Forge looks like Origins-Fabric at the user level, but its storage is completely different. A pattern copied from one mod to another can be wrong in every character and still parse without error.
+- **When multiple scripts share a query pattern, a wrong pattern fails everywhere at once and hides itself.** Nobody flagged the class passive, the starter kit, or the race power failing — because each one only affects one player's one feature, and testers mention whichever symptom hit them today, not the overall pattern.
+- **Disassemble the dependency when in doubt.** `javap -v` on the relevant class took two minutes and found the answer. The jar is authoritative; documentation, comments, and analogs from other mods are not.
+
+---
+
 ## 2026-04-20 — `const` redeclaration in one KubeJS script crashes the load of another
 
 **Symptom:** Tester: starter pack still doesn't come through, `!codex` / `!magicstart` commands do nothing, village loot changes still aren't landing. Three days of escalating fixes had each sounded plausible but none actually landed for the user. Today's fresh log finally showed the real issue.
