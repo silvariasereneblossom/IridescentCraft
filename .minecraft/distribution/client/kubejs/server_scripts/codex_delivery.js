@@ -157,21 +157,73 @@ global.tick_codexStarterCheck = function(event) {
 }
 global.registerServerTick('tick_codexStarterCheck', 20, 5)
 
-// ── Admin/tester chat command: !codex force-delivers the book ──
-// Useful when auto-delivery missed (persistent flag stale, /clear wiped
-// inventory without us noticing, testing a fresh character, etc.).
+// ── Admin/tester chat commands ──
+//   !codex       — force-deliver codex + re-arm starter check
+//   !kit         — alias for !magicstart (grant magic starter kit now)
+//   !origindump  — dump player's origin NBT to log + chat (debug)
+//
+// 2026-04-20: matches ascension.js pattern (trim + toLowerCase) after
+// tester reported !codex didn't work. Previous strict `!==` comparison
+// failed on trailing spaces or casing. Also logs every '!'-prefixed
+// message unconditionally so we can see the chat handler is firing at
+// all (trace "[codex/chat] heard: X from Y" lines).
 PlayerEvents.chat(event => {
-  if (event.message !== '!codex') return
-  event.cancel()
+  const msg = (event.message || '').trim()
+  if (!msg.startsWith('!')) return
+  const lower = msg.toLowerCase()
   const player = event.player
-  // Clear the flag so any logic that keys off it knows the book is fresh
-  player.persistentData.putBoolean(CODEX_FLAG, false)
-  if (codex_giveBook(player)) {
-    player.persistentData.putBoolean(CODEX_FLAG, true)
-    console.log('[codex] !codex from ' + player.username + ': granted')
+  console.log('[codex/chat] heard: ' + msg + ' from ' + player.username)
+
+  if (lower === '!codex') {
+    event.cancel()
+    player.persistentData.putBoolean(CODEX_FLAG, false)
+    if (codex_giveBook(player)) {
+      player.persistentData.putBoolean(CODEX_FLAG, true)
+      console.log('[codex] !codex from ' + player.username + ': granted')
+    }
+    player.persistentData.putInt('icraft_starter_check_ticks', 60)
+    return
   }
-  // Also arm the starter check in case they just picked a magic class.
-  player.persistentData.putInt('icraft_starter_check_ticks', 60)
+
+  if (lower === '!kit' || lower === '!magicstart') {
+    event.cancel()
+    // Reset every per-class flag then try a grant
+    MAGIC_CLASSES.forEach(function(c) {
+      player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
+    })
+    let cls = codex_detectMagicClass(player)
+    if (!cls) {
+      player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected on your character. Use !origindump to see your origin layers.')
+      console.log('[codex/starter] ' + msg + ' from ' + player.username + ': no magic class detected')
+      return
+    }
+    codex_giveStarterKit(player, cls)
+    player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
+    console.log('[codex/starter] ' + msg + ' from ' + player.username + ': granted ' + cls + ' kit')
+    return
+  }
+
+  if (lower === '!origindump') {
+    event.cancel()
+    // Read the player's own origin NBT via data get and pipe to chat/log.
+    // This lets us confirm the exact layer/origin NBT paths at runtime —
+    // useful when magic_class_starter says detected=none despite a class
+    // picker visibly completing.
+    try {
+      let r = player.server.runCommandSilent(
+        'data get entity ' + player.username + ' cardinal_components."origins:origin"'
+      )
+      player.tell('\u00a76[Debug]\u00a7r Origin NBT dumped to server log (see [codex/chat] origindump lines).')
+      console.log('[codex/chat] origindump for ' + player.username + ': (server log — use /data get for full)')
+      // Also dump via tellraw so the tester can screenshot it
+      player.server.runCommandSilent(
+        'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"cardinal_components.\\"origins:origin\\"","entity":"' + player.username + '"}]'
+      )
+    } catch (e) {
+      console.warn('[codex/chat] origindump failed for ' + player.username + ': ' + e)
+    }
+    return
+  }
 })
 
 // ── Backup Recovery Recipe ────────────────────────────────────────────────────

@@ -132,19 +132,21 @@ global.tick_magicClassStarterLoginCheck = function(event) {
 global.registerServerTick('tick_magicClassStarterLoginCheck', 20, 3)
 
 // ── Admin chat command: !magicstart clears the flag and re-runs detection ──
-// Lets the tester (or a team member) force the kit to fire on themselves
-// if the auto-detection missed for any reason.
+// 2026-04-20: now matches the trim + toLowerCase pattern used in
+// ascension.js (and codex_delivery.js). Prior strict `!==` comparison
+// failed on trailing spaces or casing. Duplicated here as a backup; the
+// primary handler is now in codex_delivery.js which also handles !kit.
 PlayerEvents.chat(event => {
-  if (event.message !== '!magicstart') return
+  const msg = (event.message || '').trim().toLowerCase()
+  if (msg !== '!magicstart') return
   event.cancel()
   let player = event.player
-  // Clear any prior flag so the check can re-grant
   MAGIC_CLASSES.forEach(function(c) {
     player.persistentData.putBoolean(FLAG_PREFIX + c, false)
   })
   let cls = magicStarter_detectClass(player)
   if (!cls) {
-    player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected on your character.')
+    player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected on your character. Use !origindump to debug.')
     console.log('[magic-starter] !magicstart from ' + player.username + ': no magic class detected')
     return
   }
