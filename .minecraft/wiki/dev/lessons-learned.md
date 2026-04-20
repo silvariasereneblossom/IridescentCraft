@@ -14,6 +14,34 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-20 — `const` redeclaration in one KubeJS script crashes the load of another
+
+**Symptom:** Tester: starter pack still doesn't come through, `!codex` / `!magicstart` commands do nothing, village loot changes still aren't landing. Three days of escalating fixes had each sounded plausible but none actually landed for the user. Today's fresh log finally showed the real issue.
+
+**Dead ends:**
+- Day 1: added script; no fire. Assumed NBT query wrong.
+- Day 2: added logging + login hook + poll; still no fire. Assumed class cache timing.
+- Day 3: piggybacked onto codex_delivery (proven working); still no fire. Assumed origin-picker delay.
+- Each day I edited *more* code thinking the root cause was subtler; the actual root cause was a **parse-time crash I introduced on Day 3** that killed the sibling script outright.
+
+**Actual root cause:** The Day 3 piggyback commit added `const MAGIC_CLASSES` and `const MAGIC_STARTER_KITS` to `codex_delivery.js`. The same names were already declared `const` in `origins/magic_class_starter.js`. KubeJS/Rhino evaluates all `server_scripts/` files in a **single shared global scope**. The second file to parse (alphabetically after `codex_*`) hit `TypeError: redeclaration of const MAGIC_CLASSES` at *parse time* — the whole file failed to load. That killed its `PlayerEvents.chat` registration for `!magicstart` and its polling tick. The one-shot check I added to codex_delivery fired once at T+18s, found the class not yet picked, and never retried.
+
+Evidence in the log:
+```
+[main/ERROR] [KubeJS Server/]: TypeError: TypeError: redeclaration of const MAGIC_CLASSES.
+```
+Immediately followed by `magic_class_starter.js` being absent from the `Loaded script server_scripts:origins/...` list.
+
+**What fixed it:** `magic_class_starter.js` now reads `MAGIC_CLASSES`, `MAGIC_STARTER_KITS`, `MAGIC_FLAG_PREFIX` from the shared global scope (set by `codex_delivery.js`) rather than redeclaring them. Also converted the one-shot check to a 3-minute polling window so origin-picker delays no longer matter.
+
+**Takeaway:**
+- **KubeJS server_scripts share one global scope.** A `const` at top level of one file is visible to every other file — and a same-name `const` in another file is a parse error that aborts that file's load. This is not JavaScript module isolation; it's a single script context.
+- When "a script I just modified doesn't seem to run," check the log for `TypeError: redeclaration of const` or `SyntaxError` lines BEFORE assuming timing/NBT/API issues. A parse error in KubeJS server_scripts is a silent killer — the rest of the modpack keeps running fine, just the one file is dead.
+- For constants shared between two related scripts: declare them in *one* file only, read via `typeof X !== 'undefined' ? X : fallback` pattern from the other. Or better: consolidate the related logic into one file and delete the other.
+- Three rounds of "add more features to fix it" when a single earlier check of the error log would have found the cause. After each failed fix, *grep the log for ERROR before editing code again*.
+
+---
+
 ## 2026-04-20 — Catch-all `@modid` strips silently eat every subsequent same-namespace re-add
 
 **Symptom:** Tester reported for the third day in a row that Ars Nouveau glyphs weren't showing up in village chests, and white beds never spawned in any village container. I'd added the relevant `addLoot` calls explicitly and verified they were syntactically correct, so each day I kept adding MORE items to the re-add lists, thinking I was fixing a missing injection. None of them landed.
