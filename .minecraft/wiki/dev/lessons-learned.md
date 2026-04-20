@@ -14,6 +14,28 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-20 — Catch-all `@modid` strips silently eat every subsequent same-namespace re-add
+
+**Symptom:** Tester reported for the third day in a row that Ars Nouveau glyphs weren't showing up in village chests, and white beds never spawned in any village container. I'd added the relevant `addLoot` calls explicitly and verified they were syntactically correct, so each day I kept adding MORE items to the re-add lists, thinking I was fixing a missing injection. None of them landed.
+
+**Dead ends:**
+- Three days of bumping up per-item rates (0.05 → 0.08 → 0.15 for some items) assuming low rates were the cause. With 15 tables × 20% per chest × 5 chests opened, probability says you'd see at least one bed even at 6%. The "zero observations" signal should have flagged a hard-zero bug (something deleting the item) rather than a low-rate rolling issue.
+- I kept using `git blame` and reading the add lines to check correctness. The add lines were always fine.
+- I didn't think to look *above* the re-adds in the same code path for a matching strip. The strip was 50 lines earlier, in a different "section" of the file, and used a namespace tag (`@ars_nouveau`) instead of a specific item id — which looked like "strip unwanted mod items" to me, not "strip every single re-add I'll do later."
+
+**Actual root cause:** LootJS's persistent-filter rule extends to **namespace tag** strips, not just specific-id strips. `removeLoot('@ars_nouveau')` establishes a filter on the *entire* `ars_nouveau:` namespace for the remainder of the evaluation pass. Any later `addLoot(LootEntry.of('ars_nouveau:source_gem'))` in *any* modifier on the same table silently gets caught by that filter and removed. Same for `@irons_spellbooks` killing `copper_spell_book` + `common_ink` re-adds, and `@moreartifacts` killing every artifact add intended to recover the T1 pool.
+
+The re-add code was correct. The namespace strip was the killer, from a SANITIZATION block comment describing it as stripping "mod leakage." In practice it was stripping every intentional add too.
+
+**What fixed it:** Replaced each `@modid` strip with specific item IDs for the items we actually don't want (apprentice/archmage spell books for Ars Nouveau, tier tokens for KubeJS). Left the rest of each namespace alone so the re-adds can land.
+
+**Takeaway:**
+- The 2026-04-18 persistent-filter lesson was written about specific-id strips. Update that rule in mental model: **`@modid` strips propagate the same filter behavior, scaled up to every item in that namespace.** A single `removeLoot('@modname')` can neuter fifty downstream `addLoot` calls for items from that mod, silently.
+- When a tester reports "I never see item X" across many observations, default to a hard-zero hypothesis (something is deleting it) before a low-rate one (rolls aren't coming up). "Never" is signal; "rarely" is statistics.
+- When reading LootJS code, read the ENTIRE modifier chain for a given table before reasoning about what lands. Sections in the file are organizational, not execution-scoped. A strip in Section 6A will eat an add in Section 6B on the same table. Best to grep by table id (or regex of table id) to see every modifier it's part of before changing any of them.
+
+---
+
 ## 2026-04-20 — Lootr aggressive_mode oscillation: two failure modes, neither "off"
 
 **Symptom:** Tester: "first village chests aren't converting at all — shared inventory, regular vanilla chest." Server log: `[noobanidus.mods.lootr.api.LootrAPI/]: There are over 5000 entries in the pending conversion list.`

@@ -1440,19 +1440,24 @@ LootJS.modifiers(event => {
   // --- Village chest sanitization (runs FIRST) ---
   // Strip ALL T1 global pool items from villages so villages only get
   // the dedicated village pool above. Also strip mod leakage.
+  //
+  // 2026-04-20: removed @ars_nouveau / @irons_spellbooks / @moreartifacts
+  // tag-based catch-alls. Per the LootJS persistent-filter rule, those tag
+  // strips were silently eating every same-namespace item re-added later in
+  // the same pass — including T1 glyphs from SECTION 2's global Overworld
+  // adds, and the novice_spell_book / source_gem / copper_spell_book /
+  // common_ink re-adds in SECTION 6B. Only keep strips for items we
+  // explicitly don't want in villages (higher-tier spell books, tier tokens).
   villageChests.forEach(function(table) {
     var vSan = event.addLootTableModifier(table)
-    // Remove ALL T1 items (no overlap with village pool)
+    // Remove ALL T1 global-pool items (handled by village artifact pool instead)
     artifactT1Pool.forEach(function(item) {
       vSan.removeLoot(item)
     })
-    // Remove other mod items
-    vSan.removeLoot('@ars_nouveau')
-      .removeLoot('ars_nouveau:novice_spell_book')
-      .removeLoot('ars_nouveau:apprentice_spell_book')
+    // Strip higher-tier spell books that shouldn't appear in starter-area villages
+    vSan.removeLoot('ars_nouveau:apprentice_spell_book')
       .removeLoot('ars_nouveau:archmage_spell_book')
-      .removeLoot('@irons_spellbooks')
-      .removeLoot('@moreartifacts')
+      // Tier tokens: villages are starting areas, not progression structures
       .removeLoot('kubejs:tier1_token')
       .removeLoot('kubejs:tier2_token')
       .removeLoot('kubejs:tier3_token')
@@ -1480,6 +1485,29 @@ LootJS.modifiers(event => {
         LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
       )
     })
+  })
+
+  // --- White bed: on EVERY village chest, not just the 5 house tables ---
+  // 2026-04-20: bed was only added inside villageHouseChests.forEach (5 tables),
+  // so tester opening a butcher/tannery/fisher/smith never saw one. Add to
+  // the full 15-table villageChests + modded patterns.
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table)
+      .addLoot(LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.20)))
+  })
+  moddedVillagePatterns.forEach(function(pattern) {
+    event.addLootTableModifier(pattern)
+      .addLoot(LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.20)))
+  })
+
+  // --- Rotten flesh strip: modded villages (CTOV/VnP) weren't covered ---
+  // 2026-04-20: per-table rotten_flesh strip in SECTION 6 only hits the 15
+  // vanilla village tables. Modded village regex patterns add loot via their
+  // own tables that are subject to the global Overworld strip — which is
+  // known to miss under Lootr aggressive_mode wrapping. Per-pattern strip.
+  moddedVillagePatterns.forEach(function(pattern) {
+    event.addLootTableModifier(pattern)
+      .removeLoot('minecraft:rotten_flesh')
   })
 
   // =========================================================================
