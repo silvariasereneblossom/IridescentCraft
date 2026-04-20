@@ -3,19 +3,75 @@
 // =============================================================================
 
 const CODEX_NBT = '{"patchouli:book":"icraft:iridescent_codex"}'
+const CODEX_FLAG = 'icraft_codex_given'
+
+function codex_giveBook(player) {
+  try {
+    player.give(Item.of('patchouli:guide_book', CODEX_NBT))
+    player.tell('\u00a76[The Iridescent Codex]\u00a7r has been added to your inventory.')
+    player.tell('Right-click to open. It covers every system, class, and mod in this pack.')
+    return true
+  } catch (e) {
+    console.warn('[codex] Give failed for ' + player.username + ': ' + e)
+    return false
+  }
+}
+
+// Scan inventory for an existing codex (matches the NBT). Used to re-grant
+// if the flag is set but the book was lost (creative purge, /clear, death
+// in keepInventory=false, etc.).
+function codex_playerHasCodex(player) {
+  try {
+    let r = player.server.runCommandSilent(
+      `clear ${player.username} patchouli:guide_book{"patchouli:book":"icraft:iridescent_codex"} 0`
+    )
+    // `/clear ... <count=0>` returns the matching-item count without clearing.
+    return r > 0
+  } catch (e) {
+    console.warn('[codex] inventory check failed for ' + player.username + ': ' + e)
+    return false
+  }
+}
 
 // ── First-Join Delivery ───────────────────────────────────────────────────────
 
 PlayerEvents.loggedIn(event => {
   const player = event.player
-  if (!player.persistentData.getBoolean('icraft_codex_given')) {
-    player.give(Item.of('patchouli:guide_book', CODEX_NBT))
-    player.persistentData.putBoolean('icraft_codex_given', true)
-    player.tell('\u00a76[The Iridescent Codex]\u00a7r has been added to your inventory.')
-    player.tell('Right-click to open. It covers every system, class, and mod in this pack.')
+  let flagSet = player.persistentData.getBoolean(CODEX_FLAG)
+  let hasBook = flagSet ? codex_playerHasCodex(player) : false
+
+  if (!flagSet) {
+    // Never given — give now.
+    if (codex_giveBook(player)) {
+      player.persistentData.putBoolean(CODEX_FLAG, true)
+      console.log('[codex] First-join delivery to ' + player.username)
+    }
+  } else if (!hasBook) {
+    // Flag set but book missing — re-grant silently (lost to /clear, death, etc.)
+    if (codex_giveBook(player)) {
+      console.log('[codex] Re-delivered to ' + player.username + ' (flag was set but book missing)')
+    }
+  } else {
+    console.log('[codex] ' + player.username + ' already has the book, skipping delivery')
   }
+
   player.persistentData.putInt('icraft_book_sweep_ticks', 1200)
-  console.log('[IridescentCraft] loggedIn fired for ' + player.username + ', sweep armed')
+  console.log('[codex] loggedIn fired for ' + player.username + ', sweep armed')
+})
+
+// ── Admin/tester chat command: !codex force-delivers the book ──
+// Useful when auto-delivery missed (persistent flag stale, /clear wiped
+// inventory without us noticing, testing a fresh character, etc.).
+PlayerEvents.chat(event => {
+  if (event.message !== '!codex') return
+  event.cancel()
+  const player = event.player
+  // Clear the flag so any logic that keys off it knows the book is fresh
+  player.persistentData.putBoolean(CODEX_FLAG, false)
+  if (codex_giveBook(player)) {
+    player.persistentData.putBoolean(CODEX_FLAG, true)
+    console.log('[codex] !codex from ' + player.username + ': granted')
+  }
 })
 
 // ── Backup Recovery Recipe ────────────────────────────────────────────────────
