@@ -4,7 +4,9 @@ mods/*.jar
 !mods/iridescent_origins-*.jar
 !mods/Patchouli-*.jar
 !mods/ars_nouveau-*.jar
-resourcepacks/
+/resourcepacks/
+/distribution/client/resourcepacks/
+/server_distribution/resourcepacks/
 shaderpacks/
 saves/
 *.zip
@@ -15,6 +17,9 @@ saves/
 !distribution/client/config/paxi/datapacks/*.zip
 !server_distribution/global_packs/required_data/*.zip
 !distribution/client/global_packs/required_data/*.zip
+!config/paxi/resourcepacks/*.zip
+!distribution/client/config/paxi/resourcepacks/*.zip
+!server_distribution/config/paxi/resourcepacks/*.zip
 *.rar
 
 # Runtime-generated configs (mods write on startup)
