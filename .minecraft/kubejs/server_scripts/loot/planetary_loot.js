@@ -23,16 +23,14 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:moon')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:lunar_stride",lvl:1s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:lunar_stride",lvl:1s}]}'))
         .when(c => c.randomChance(0.30))
     )
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:moon')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:lunar_stride",lvl:2s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:lunar_stride",lvl:2s}]}'))
         .when(c => c.randomChance(0.10))
     )
 
@@ -41,16 +39,14 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:mars')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:thermal_regulation",lvl:1s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:thermal_regulation",lvl:1s}]}'))
         .when(c => c.randomChance(0.30))
     )
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:mars')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:thermal_regulation",lvl:2s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:thermal_regulation",lvl:2s}]}'))
         .when(c => c.randomChance(0.10))
     )
 
@@ -59,16 +55,14 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:mercury')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:stellar_shield",lvl:1s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:stellar_shield",lvl:1s}]}'))
         .when(c => c.randomChance(0.30))
     )
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:mercury')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:stellar_shield",lvl:2s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:stellar_shield",lvl:2s}]}'))
         .when(c => c.randomChance(0.10))
     )
 
@@ -77,16 +71,14 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:venus')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:pressure_shell",lvl:1s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:pressure_shell",lvl:1s}]}'))
         .when(c => c.randomChance(0.30))
     )
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:venus')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:pressure_shell",lvl:2s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:pressure_shell",lvl:2s}]}'))
         .when(c => c.randomChance(0.10))
     )
 
@@ -95,16 +87,14 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:glacio')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:void_adaptation",lvl:1s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:void_adaptation",lvl:1s}]}'))
         .when(c => c.randomChance(0.30))
     )
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('ad_astra:glacio')
     .addLoot(
-      LootEntry.of('minecraft:enchanted_book')
-        .withNBT('{StoredEnchantments:[{id:"icraft:void_adaptation",lvl:2s}]}')
+      LootEntry.of(Item.of('minecraft:enchanted_book', '{StoredEnchantments:[{id:"icraft:void_adaptation",lvl:2s}]}'))
         .when(c => c.randomChance(0.10))
     )
 
