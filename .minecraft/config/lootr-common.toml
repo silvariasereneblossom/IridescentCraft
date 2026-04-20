@@ -14,7 +14,7 @@ convert_wooden_chests = true
 #whether or not the entire forge:chests/trapped tag should be added to the conversion list for structures (if they are backed by RandomizableContainerBlockEntity
 convert_trapped_chests = true
 #lootr will automatically log all unresolved tables (i.e., for containers that have a loot table associated with them but, for whatever reason, the lookup for this table returns empty). setting this option to true additionally informs players when they open containers.
-report_unresolved_tables = false
+report_unresolved_tables = true
 #a list of additional chests that should be converted (in the format of ["modid:name", "modid:other_name"], must be a tile entity instance of RandomizableContainerBlockEntity)
 additional_chests = []
 #a list of additional trapped chests that should be converted (in the format of ["modid:name", "modid:other_name"], must be a tile entity instance of RandomizableContainerBlockEntity)
