@@ -233,23 +233,43 @@ PlayerEvents.chat(event => {
   }
 
   if (lower === '!origindump') {
-    event.cancel()
-    // Read the player's own origin NBT via data get and pipe to chat/log.
-    // This lets us confirm the exact layer/origin NBT paths at runtime —
-    // useful when magic_class_starter says detected=none despite a class
-    // picker visibly completing.
     try {
-      let r = player.server.runCommandSilent(
-        'data get entity ' + player.username + ' cardinal_components."origins:origin"'
-      )
-      player.tell('\u00a76[Debug]\u00a7r Origin NBT dumped to server log (see [codex/chat] origindump lines).')
-      console.log('[codex/chat] origindump for ' + player.username + ': (server log — use /data get for full)')
-      // Also dump via tellraw so the tester can screenshot it
+      event.cancel()
+      console.log('[codex/chat] origindump: player=' + player.username + ' starting')
+
+      // Route 1: in-game chat via tellraw with NBT interpolation. Tester can
+      // screenshot this OR copy it out of their chat log.
       player.server.runCommandSilent(
         'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"cardinal_components.\\"origins:origin\\"","entity":"' + player.username + '"}]'
       )
+
+      // Route 2: server log via non-silent /data get — when the server is the
+      // command sender, /data get output lands in the server console + log
+      // where we can grep for it. Takes effect alongside the tellraw.
+      player.server.runCommand(
+        'data get entity ' + player.username + ' cardinal_components."origins:origin"'
+      )
+
+      // Route 3: direct introspection — check each of the 10 class IDs and
+      // log which (if any) matches. No NBT dump needed; the boolean is enough
+      // to diagnose "no magic class detected" reports.
+      const ALL_CLASSES = ['berserker','samurai','battlemage','wanderer','paladin',
+                           'vanguard','ranger','archmage','artificer','void_summoner']
+      let found = []
+      ALL_CLASSES.forEach(function(c) {
+        try {
+          let r = player.server.runCommandSilent(
+            'execute if entity ' + player.username + '[nbt={cardinal_components:{"origins:origin":{OriginLayers:[{Origin:"icraft:' + c + '"}]}}}]'
+          )
+          if (r > 0) found.push('icraft:' + c)
+        } catch (e) {}
+      })
+      let result = found.length ? found.join(', ') : '<none>'
+      console.log('[codex/chat] origindump: ' + player.username + ' has classes = ' + result)
+      player.tell('\u00a76[Debug]\u00a7r Classes detected: \u00a7e' + result + '\u00a7r')
+      player.tell('\u00a77(Full NBT above; also in server log via /data get)')
     } catch (e) {
-      console.warn('[codex/chat] origindump failed for ' + player.username + ': ' + e)
+      console.warn('[codex/chat] origindump threw: ' + e)
     }
     return
   }
