@@ -106,22 +106,6 @@
               "function": "minecraft:set_count"
             }
           ],
-          "name": "minecraft:spruce_log",
-          "weight": 3
-        },
-        {
-          "type": "minecraft:item",
-          "functions": [
-            {
-              "add": false,
-              "count": {
-                "type": "minecraft:uniform",
-                "max": 2.0,
-                "min": 1.0
-              },
-              "function": "minecraft:set_count"
-            }
-          ],
           "name": "minecraft:raw_copper",
           "weight": 3
         },

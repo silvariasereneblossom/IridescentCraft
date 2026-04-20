@@ -1024,7 +1024,9 @@ LootJS.modifiers(event => {
   // string (50%), bones (50%), name tags (60%).
   // =========================================================================
 
-  // --- Full removals: horse armor, spider eyes, poisonous potatoes ---
+  // --- Full removals: horse armor, spider eyes, poisonous potatoes,
+  //     rotten flesh, bulk wood + stone (2026-04-20 tester preference:
+  //     "strip rotten meat, all wood and stone in chests") ---
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
@@ -1035,13 +1037,28 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:spider_eye')
     .removeLoot('minecraft:fermented_spider_eye')
     .removeLoot('minecraft:poisonous_potato')
-
-  // --- Rotten flesh: 80% reduction (remove then re-add at 20% chance) ---
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .anyDimension('minecraft:overworld')
     .removeLoot('minecraft:rotten_flesh')
-    .addLoot(LootEntry.of('minecraft:rotten_flesh').when(c => c.randomChance(0.20)))
+    // Wood: all log + plank variants via tags
+    .removeLoot('#minecraft:logs')
+    .removeLoot('#minecraft:planks')
+    // Stone: common cheap gathering stones (keep sandstone/end_stone/nether_bricks
+    // since those are dimension flavor, not Overworld filler)
+    .removeLoot('minecraft:stone')
+    .removeLoot('minecraft:cobblestone')
+    .removeLoot('minecraft:mossy_cobblestone')
+    .removeLoot('minecraft:granite')
+    .removeLoot('minecraft:andesite')
+    .removeLoot('minecraft:diorite')
+    .removeLoot('minecraft:polished_granite')
+    .removeLoot('minecraft:polished_andesite')
+    .removeLoot('minecraft:polished_diorite')
+    .removeLoot('minecraft:deepslate')
+    .removeLoot('minecraft:cobbled_deepslate')
+    .removeLoot('minecraft:polished_deepslate')
+    .removeLoot('minecraft:tuff')
+    .removeLoot('minecraft:stone_bricks')
+    .removeLoot('minecraft:cracked_stone_bricks')
+    .removeLoot('minecraft:mossy_stone_bricks')
 
   // --- Gunpowder: 50% reduction ---
   event
