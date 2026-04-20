@@ -1447,7 +1447,8 @@ LootJS.modifiers(event => {
   // the same pass — including T1 glyphs from SECTION 2's global Overworld
   // adds, and the novice_spell_book / source_gem / copper_spell_book /
   // common_ink re-adds in SECTION 6B. Only keep strips for items we
-  // explicitly don't want in villages (higher-tier spell books, tier tokens).
+  // explicitly don't want in villages (higher-tier spell books, tier tokens,
+  // T2+ glyphs).
   villageChests.forEach(function(table) {
     var vSan = event.addLootTableModifier(table)
     // Remove ALL T1 global-pool items (handled by village artifact pool instead)
@@ -1462,6 +1463,17 @@ LootJS.modifiers(event => {
       .removeLoot('kubejs:tier2_token')
       .removeLoot('kubejs:tier3_token')
       .removeLoot('kubejs:tier4_token')
+    // Defensive: strip T2+ glyphs explicitly. The global off-tier strip at
+    // line ~371 uses LootType.CHEST + anyDimension('minecraft:overworld'),
+    // which under Lootr's aggressive_mode wrapping doesn't reliably match
+    // village loot contexts. Per-table strip is unambiguous.
+    glyphT2.concat(glyphT3, glyphT4).forEach(function(g) { vSan.removeLoot(g) })
+  })
+
+  // Same T2+ glyph guard for modded village patterns (CTOV, VnP, etc.)
+  moddedVillagePatterns.forEach(function(pattern) {
+    var vSanMod = event.addLootTableModifier(pattern)
+    glyphT2.concat(glyphT3, glyphT4).forEach(function(g) { vSanMod.removeLoot(g) })
   })
 
   // --- Village artifact pool (runs AFTER sanitization) ---
