@@ -65,15 +65,39 @@ LootJS.modifiers(event => {
   // an enchant_with_levels function. Use a predicate-based strip so the
   // persistent filter only matches BLANK books (empty StoredEnchantments),
   // letting vanilla + our re-adds pass through untouched.
+  // 2026-04-20 (rewrite): tester confirmed the predicate wasn't catching
+  // blank books even though they clearly have empty NBT `{}`. Likely cause:
+  // KubeJS's `.id` extension getter isn't available on raw ItemStack objects
+  // passed to a LootJS predicate. Rewrote to use the raw Forge ItemStack
+  // API which is always present:
+  //   stack.getItem().builtInRegistryHolder().key().location().toString()
+  // Wrapped in defensive try/catch so any one failed extraction falls back
+  // cleanly instead of aborting the predicate (returning false = "don't
+  // strip this item", same behavior as the prior bug — but at least we
+  // won't throw).
   event
     .addLootTypeModifier(LootType.CHEST)
     .removeLoot(function(stack) {
-      if (!stack || stack.isEmpty()) return false
-      if (stack.id !== 'minecraft:enchanted_book') return false
-      var tag = stack.hasTag() ? stack.getTag() : null
-      if (!tag) return true
-      if (!tag.contains('StoredEnchantments', 9)) return true // NBT tag type 9 = list
-      return tag.getList('StoredEnchantments', 10).isEmpty()
+      try {
+        if (!stack || stack.isEmpty()) return false
+        // Resolve item id via raw Forge API — not KubeJS extensions
+        var id = ''
+        try {
+          id = String(stack.getItem().builtInRegistryHolder().key().location())
+        } catch (e) {
+          // Fallback: try KubeJS extension if raw API fails
+          id = String(stack.id || '')
+        }
+        if (id !== 'minecraft:enchanted_book') return false
+        // Any enchanted_book without StoredEnchantments list content is blank
+        var tag = (stack.hasTag && stack.hasTag()) ? stack.getTag() : null
+        if (!tag) return true
+        if (!tag.contains('StoredEnchantments', 9)) return true // 9 = ListTag
+        var list = tag.getList('StoredEnchantments', 10) // 10 = CompoundTag
+        return !list || list.size() === 0
+      } catch (e) {
+        return false
+      }
     })
 
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
