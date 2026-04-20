@@ -186,32 +186,49 @@ PlayerEvents.chat(event => {
   const player = event.player
   console.log('[codex/chat] heard: ' + msg + ' from ' + player.username)
 
+  // 2026-04-20: wrap each branch in try/catch. Tester log showed
+  // '[codex/chat] heard: !codex from silvieserene' with NO subsequent
+  // '[codex] !codex ... granted' log — meaning something between the
+  // heard-log and grant-log was silently throwing. Granular logging now
+  // catches the failure point.
+
   if (lower === '!codex') {
-    event.cancel()
-    player.persistentData.putBoolean(CODEX_FLAG, false)
-    if (codex_giveBook(player)) {
-      player.persistentData.putBoolean(CODEX_FLAG, true)
-      console.log('[codex] !codex from ' + player.username + ': granted')
+    try {
+      event.cancel()
+      console.log('[codex/chat] !codex: event.cancel() OK, clearing flag...')
+      player.persistentData.putBoolean(CODEX_FLAG, false)
+      console.log('[codex/chat] !codex: flag cleared, calling codex_giveBook...')
+      let ok = codex_giveBook(player)
+      console.log('[codex/chat] !codex: codex_giveBook returned ' + ok)
+      if (ok) {
+        player.persistentData.putBoolean(CODEX_FLAG, true)
+      }
+      player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
+      console.log('[codex] !codex from ' + player.username + ': ' + (ok ? 'granted' : 'grant failed'))
+    } catch (e) {
+      console.warn('[codex/chat] !codex threw: ' + e + ' (stack: ' + (e.stack || 'n/a') + ')')
     }
-    player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
     return
   }
 
   if (lower === '!kit' || lower === '!magicstart') {
-    event.cancel()
-    // Reset every per-class flag then try a grant
-    MAGIC_CLASSES.forEach(function(c) {
-      player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
-    })
-    let cls = codex_detectMagicClass(player)
-    if (!cls) {
-      player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected on your character. Use !origindump to see your origin layers.')
-      console.log('[codex/starter] ' + msg + ' from ' + player.username + ': no magic class detected')
-      return
+    try {
+      event.cancel()
+      MAGIC_CLASSES.forEach(function(c) {
+        player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
+      })
+      let cls = codex_detectMagicClass(player)
+      if (!cls) {
+        player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected on your character. Use !origindump to see your origin layers.')
+        console.log('[codex/starter] ' + msg + ' from ' + player.username + ': no magic class detected')
+        return
+      }
+      codex_giveStarterKit(player, cls)
+      player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
+      console.log('[codex/starter] ' + msg + ' from ' + player.username + ': granted ' + cls + ' kit')
+    } catch (e) {
+      console.warn('[codex/chat] !kit threw: ' + e + ' (stack: ' + (e.stack || 'n/a') + ')')
     }
-    codex_giveStarterKit(player, cls)
-    player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
-    console.log('[codex/starter] ' + msg + ' from ' + player.username + ': granted ' + cls + ' kit')
     return
   }
 

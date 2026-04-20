@@ -376,13 +376,19 @@ PlayerEvents.loggedIn(event => {
 // Runs every 5 seconds
 // =============================================================================
 
+// 2026-04-20: hoisted `allTiers` to module scope as MILESTONE_ALL_TIERS.
+// Previously declared inside the tick with `const`; Rhino threw
+// 'TypeError: redeclaration of var allTiers' on EVERY tick (every 5s).
+// KubeJS/Rhino doesn't garbage-collect the inner const binding between
+// tick invocations the way standard JS does.
+const MILESTONE_ALL_TIERS = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
+
 global.tick_milestoneTierEnsure = (event) => {
   event.server.players.forEach(player => {
     let isCreative = player.creative
 
     if (isCreative) {
-      const allTiers = ['tier_1', 'tier_2', 'tier_3', 'tier_4']
-      allTiers.forEach(t => {
+      MILESTONE_ALL_TIERS.forEach(t => {
         if (!AStages.playerHasStage(t, player)) {
           AStages.addStageToPlayer(t, player)
         }

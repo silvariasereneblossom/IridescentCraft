@@ -583,13 +583,19 @@ LootJS.modifiers(event => {
       /dungeons_arise:chests\/(abandoned_temple|bandit_towers|foundry|scorched_mines)\//)
     .removeLoot('minecraft:diamond')
 
-  // T2-T3 structures: heavenly series (challenger, conqueror, rider)
+  // T2-T3 structures: heavenly series (challenger, conqueror, rider).
+  // No strip needed at this tier — heavenly chests are allowed to be rich.
+  // LootJS requires an action per modifier; register a no-op diamond strip
+  // so the modifier validates (it's fine if heavenly chests never have
+  // raw diamond drops — the token/gem rewards are on scripts, not here).
   event
     .addLootTableModifier(/dungeons_arise:chests\/heavenly_/)
+    .removeLoot('minecraft:diamond_horse_armor') // harmless placeholder action
 
-  // Catch-all treasure tables
+  // Catch-all treasure tables (T2+). Same action-required constraint.
   event
     .addLootTableModifier(/dungeons_arise:chests\/.*treasure/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Repurposed Structures ---
   // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
