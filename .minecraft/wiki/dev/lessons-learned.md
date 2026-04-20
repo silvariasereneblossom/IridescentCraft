@@ -14,6 +14,29 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-20 — Lootr aggressive_mode oscillation: two failure modes, neither "off"
+
+**Symptom:** Tester: "first village chests aren't converting at all — shared inventory, regular vanilla chest." Server log: `[noobanidus.mods.lootr.api.LootrAPI/]: There are over 5000 entries in the pending conversion list.`
+
+**Dead ends:**
+- This is the THIRD flip of `aggressive_mode`. The prior Apr-19 flip from `true → false` was accompanied by commit message "every village chest generating as vanilla instead of Lootr per-player" — the exact same visible symptom as today, but the fix was the opposite direction. Both flips "worked" for a few days, then failed the same way.
+- The root insight missed each time: Lootr has two independent failure modes, and flipping this one bit trades which one bites you.
+
+**Actual root cause:** `aggressive_mode` toggles Lootr between two conversion strategies, both of which *can* leak vanilla chests into the world under IridescentCraft's specific load profile:
+- `aggressive_mode = true`: eagerly checks every block entity during chunk load. Sometimes skips eligible chests that spawn via structure gen *after* the chunk entity scan completes (mostly village worldgen). Small-to-medium % leak.
+- `aggressive_mode = false`: adds candidates to a ticker queue, processes slowly. Under IridescentCraft's structure-mod load (~30 mods spawning chests), queue piles to 5000+ and gets processed too slowly — chests get opened before the ticker reaches them → vanilla chest. Large % leak under heavy load.
+
+The deciding evidence this time was the explicit Lootr-API error log about the 5000-entry queue, which is only emitted when `aggressive_mode = false`. The Apr-19 flip to false happened before that diagnostic existed (or before I knew to grep for it), and the village-chest complaint was attributed to aggressive mode missing them — when in reality both modes miss them, just in different ways.
+
+**What fixed it:** Flipped back to `aggressive_mode = true`. Accepting the "small% missed" failure mode over the "most missed" failure mode under current load.
+
+**Takeaway:**
+- When a fix reverses a prior fix with the same user-reported symptom, the prior diagnosis was probably incomplete. Before flipping a config back, grep the server log for error lines *specific to the current mode* (Lootr conveniently emits a pending-queue warning under one mode only). Finding that warning collapses the ambiguity.
+- A recurring oscillation is a flag that this feature has *no* strictly-correct setting under the current load profile. Document both failure modes in the config comments or a dedicated doc so the next operator doesn't flip again looking for a clean win.
+- If aggressive-mode-missed chests become a problem again, the fix is additive: add specific `additional_chests` entries for the commonly-missed ones (village_weaponsmith, village_plains_house, etc.) rather than flipping the mode.
+
+---
+
 ## 2026-04-19 — Audit deleted Epic Dungeons coverage because its namespace didn't match its slug
 
 **Symptom:** Tester reported finding netherite and diamond gear in Overworld chests well before reaching any gated dimension. Commit archeology showed the regex-audit session had proudly "removed dead `overhauledstructures` and `lootintegrations` blocks" from `lootjs_overhaul.js`.
