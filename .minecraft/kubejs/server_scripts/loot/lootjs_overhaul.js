@@ -987,46 +987,55 @@ LootJS.modifiers(event => {
     'minecraft:chests/village/village_taiga_house'
   ]
 
+  // 2026-04-20: restructured from per-item `.addLoot(entry.when(randomChance))`
+  // to addWeightedLoot pools. Tester ran 30x /loot give and saw ZERO beds
+  // despite a 20% bed add — statistically impossible with a real 20% rate.
+  // addLoot+randomChance adds appear to silently no-op in this LootJS build
+  // for per-item independent rolls on vanilla tables. The working pattern
+  // (confirmed by tester: 'iron weapons do come from the smith table') is
+  // addWeightedLoot, which rolls ONE guaranteed item from a weighted pool.
+  //
+  // Split into three weighted pools — rolls once each — so each village
+  // house chest gets: 1 QoL flavor item + 1 tool/weapon + magic-materials.
   villageHouseChests.forEach(table => {
     let mod = event.addLootTableModifier(table)
 
-    // Wood tools — common starter gear (~15% each)
-    mod.addLoot(LootEntry.of('minecraft:wooden_sword').when(c => c.randomChance(0.15)))
-    mod.addLoot(LootEntry.of('minecraft:wooden_pickaxe').when(c => c.randomChance(0.15)))
-    mod.addLoot(LootEntry.of('minecraft:wooden_axe').when(c => c.randomChance(0.12)))
-    mod.addLoot(LootEntry.of('minecraft:wooden_shovel').when(c => c.randomChance(0.10)))
-    mod.addLoot(LootEntry.of('minecraft:wooden_hoe').when(c => c.randomChance(0.08)))
+    // Pool 1: QoL flavor — one of these per chest. Bed is weighted 30/100
+    // so ~30% of chests give a bed. Iron bars second at 20.
+    mod.addWeightedLoot([
+      Item.of('minecraft:white_bed').withChance(30),
+      Item.of('minecraft:iron_bars').withChance(20),
+      Item.of('minecraft:lantern').withChance(15),
+      Item.of('minecraft:hay_block').withChance(15),
+      Item.of('minecraft:oak_boat').withChance(12),
+      Item.of('minecraft:bell').withChance(8)
+    ])
 
-    // Stone tools — less common (~8% each)
-    mod.addLoot(LootEntry.of('minecraft:stone_sword').when(c => c.randomChance(0.08)))
-    mod.addLoot(LootEntry.of('minecraft:stone_pickaxe').when(c => c.randomChance(0.08)))
-    mod.addLoot(LootEntry.of('minecraft:stone_axe').when(c => c.randomChance(0.06)))
-    mod.addLoot(LootEntry.of('minecraft:stone_shovel').when(c => c.randomChance(0.05)))
+    // Pool 2: starter tools — one of these per chest. Wood-heavy since
+    // this is T1 entry loot. Stone tools lower weight.
+    mod.addWeightedLoot([
+      Item.of('minecraft:wooden_sword').withChance(18),
+      Item.of('minecraft:wooden_pickaxe').withChance(18),
+      Item.of('minecraft:wooden_axe').withChance(15),
+      Item.of('minecraft:wooden_shovel').withChance(10),
+      Item.of('minecraft:wooden_hoe').withChance(8),
+      Item.of('minecraft:stone_sword').withChance(10),
+      Item.of('minecraft:stone_pickaxe').withChance(10),
+      Item.of('minecraft:stone_axe').withChance(7),
+      Item.of('minecraft:stone_shovel').withChance(4)
+    ])
 
-    // Magic weapons — boosted chance (~8% scroll, ~5% wand/book)
-    mod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.05)))
-    mod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.06)))
+    // Pool 3: magic materials — one of these per chest. Heavy on ink
+    // since spell books need it; books themselves are rarer.
+    mod.addWeightedLoot([
+      Item.of('irons_spellbooks:common_ink').withChance(40),
+      Item.of('ars_nouveau:source_gem').withChance(35),
+      Item.of('irons_spellbooks:copper_spell_book').withChance(15),
+      Item.of('ars_nouveau:novice_spell_book').withChance(10)
+    ])
 
-    // Enchanted iron weapons — very rare, exciting early finds
-    // Apotheosis will naturally apply affixes to enchanted gear via its system
-    mod.addLoot(LootEntry.of('minecraft:iron_sword').enchantRandomly().when(c => c.randomChance(0.03)))
-    mod.addLoot(LootEntry.of('minecraft:iron_axe').enchantRandomly().when(c => c.randomChance(0.02)))
-
-    // --- QoL + village-flavor items (added 2026-04-19) ---
-    // Bed: every village has one in most houses, but vanilla chests never
-    // drop one. 20% per house chest = finding one every ~5 houses.
-    mod.addLoot(LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.20)))
-    // Iron bars: window/jail accent, thematic village building material.
-    mod.addLoot(LootEntry.of('minecraft:iron_bars').limitCount([2, 6]).when(c => c.randomChance(0.15)))
-    // Lanterns: village lighting, also useful caving tool.
-    mod.addLoot(LootEntry.of('minecraft:lantern').limitCount([1, 2]).when(c => c.randomChance(0.12)))
-    // Bells: distinctive village-found item, not craftable without blaze rod.
-    mod.addLoot(LootEntry.of('minecraft:bell').when(c => c.randomChance(0.04)))
-    // Boat + hay — farming/transport flavor.
-    mod.addLoot(LootEntry.of('minecraft:oak_boat').when(c => c.randomChance(0.06)))
-    mod.addLoot(LootEntry.of('minecraft:hay_block').limitCount([1, 3]).when(c => c.randomChance(0.10)))
-
-    // Artifacts handled by Artifacts mod native GLM injection
+    // Artifacts handled by Artifacts mod native GLM injection (and our
+    // villageArtifactPool re-adds in section 6).
   })
 
   // --- Village house clutter strip ---
@@ -1403,13 +1412,27 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:golden_horse_armor')
       .removeLoot('minecraft:iron_horse_armor')
       .removeLoot('minecraft:enchanted_golden_apple')
-      // Belt-and-suspenders: strip rotten_flesh per-table in addition to the
-      // global Overworld strip in Section 5A. Tester reported 2026-04-20
-      // that rotten flesh was still appearing in village chests despite the
-      // global strip — likely because the global strip's LootType.CHEST +
-      // anyDimension filter isn't matching village loot contexts the way
-      // per-table modifiers do. Per-table strip is unambiguous.
+      // Per-table strips — the global Section 5A overworld strip's
+      // LootType.CHEST + anyDimension filter doesn't reliably match
+      // village loot contexts. 2026-04-20 tester confirmed the rotten_flesh
+      // strip works here; also confirmed string was still very frequent
+      // and wood/stone still present, both of which the global strip
+      // was supposed to handle. Move to per-table.
       .removeLoot('minecraft:rotten_flesh')
+      .removeLoot('minecraft:string')
+      .removeLoot('minecraft:gunpowder')
+      .removeLoot('minecraft:bone')
+      .removeLoot('minecraft:name_tag')
+      .removeLoot('minecraft:spider_eye')
+      .removeLoot('minecraft:poisonous_potato')
+      // Wood + stone that the global strip missed
+      .removeLoot('#minecraft:logs')
+      .removeLoot('#minecraft:planks')
+      .removeLoot('minecraft:stone')
+      .removeLoot('minecraft:cobblestone')
+      .removeLoot('minecraft:granite')
+      .removeLoot('minecraft:andesite')
+      .removeLoot('minecraft:diorite')
   })
 
   // Add guaranteed basic gear to smith village chests
