@@ -18,30 +18,19 @@
 //     selections that complete mid-login)
 //   - Admin chat command `!magicstart` resets the flag and retries
 
-const MAGIC_STARTER_KITS = {
-  archmage: [
-    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
-    { item: 'ars_nouveau:novice_spell_book',     count: 1 },
-    { item: 'ars_nouveau:source_gem',            count: 5 },
-    { item: 'irons_spellbooks:common_ink',       count: 2 }
-  ],
-  battlemage: [
-    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
-    { item: 'ars_nouveau:source_gem',            count: 3 },
-    { item: 'irons_spellbooks:common_ink',       count: 1 }
-  ],
-  void_summoner: [
-    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
-    { item: 'irons_spellbooks:common_ink',       count: 1 },
-    { item: 'minecraft:ender_pearl',             count: 1 }
-  ]
-}
-
-const MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner']
-const FLAG_PREFIX = 'icraft_magic_starter_'
+// 2026-04-20: constants MAGIC_STARTER_KITS, MAGIC_CLASSES, and the FLAG_PREFIX
+// are declared authoritatively in codex_delivery.js (which runs the primary
+// starter kit flow). Redeclaring them here as `const` caused a runtime
+// "TypeError: redeclaration of const MAGIC_CLASSES" that aborted the entire
+// load of this file — no polling, no !magicstart handler.
+// Read them off the shared global scope instead. codex_delivery.js loads
+// first (alphabetical order), so they're already bound when this runs.
+var MAGIC_STARTER_KITS_SHARED = (typeof MAGIC_STARTER_KITS !== 'undefined') ? MAGIC_STARTER_KITS : null
+var MAGIC_CLASSES_SHARED = (typeof MAGIC_CLASSES !== 'undefined') ? MAGIC_CLASSES : ['archmage', 'battlemage', 'void_summoner']
+var FLAG_PREFIX = (typeof MAGIC_FLAG_PREFIX !== 'undefined') ? MAGIC_FLAG_PREFIX : 'icraft_magic_starter_'
 
 function magicStarter_detectClass(player) {
-  for (let i = 0; i < MAGIC_CLASSES.length; i++) {
+  for (let i = 0; i < MAGIC_CLASSES_SHARED.length; i++) {
     let c = MAGIC_CLASSES[i]
     try {
       let r = player.server.runCommandSilent(
@@ -56,7 +45,7 @@ function magicStarter_detectClass(player) {
 }
 
 function magicStarter_giveKit(player, className) {
-  let kit = MAGIC_STARTER_KITS[className]
+  let kit = (MAGIC_STARTER_KITS_SHARED || {})[className]
   if (!kit) {
     console.warn('[magic-starter] No kit defined for class "' + className + '"')
     return
@@ -141,7 +130,7 @@ PlayerEvents.chat(event => {
   if (msg !== '!magicstart') return
   event.cancel()
   let player = event.player
-  MAGIC_CLASSES.forEach(function(c) {
+  MAGIC_CLASSES_SHARED.forEach(function(c) {
     player.persistentData.putBoolean(FLAG_PREFIX + c, false)
   })
   let cls = magicStarter_detectClass(player)

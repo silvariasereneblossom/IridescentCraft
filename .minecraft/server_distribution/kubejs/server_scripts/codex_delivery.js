@@ -124,38 +124,50 @@ PlayerEvents.loggedIn(event => {
   }
 
   player.persistentData.putInt('icraft_book_sweep_ticks', 1200)
-  // Arm a 3-second delayed magic-starter check. Origin NBT isn't reliably
-  // populated during loggedIn itself, especially on first class selection,
-  // so we wait a short beat and then scan.
-  player.persistentData.putInt('icraft_starter_check_ticks', 60)
-  console.log('[codex] loggedIn fired for ' + player.username + ', sweep + starter check armed')
+  // Arm a 3-minute polling window for the magic-starter check. Origin NBT
+  // isn't reliably populated during loggedIn (origin-picker UI may still be
+  // open), so we poll every ~5s for 3 minutes until a class is detected
+  // and the kit is granted. Stops immediately on success.
+  player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
+  console.log('[codex] loggedIn fired for ' + player.username + ', sweep + starter-poll armed (3min)')
 })
 
-// ── Delayed starter-kit check (fires ~3s after loggedIn) ──
+// ── Polled starter-kit check ──
+// 2026-04-20: reworked from a one-shot 3s countdown to a proper poll.
+// Tester logs showed the one-shot firing at T+18s with detected=none, which
+// means the origin-picker UI was still open or had just closed without the
+// NBT settling. With a 3-minute polling window we catch the class as soon
+// as the player confirms their Class layer selection, no matter how long
+// they took reading through the prompts.
+//
+// Storage: `icraft_starter_poll_ticks` counts down from 3600 (3 minutes)
+// and decrements by 100 ticks per call. We re-arm it on every login.
+// Stops as soon as a kit is granted (per-class flag flips to true).
 global.tick_codexStarterCheck = function(event) {
   event.server.players.forEach(function(player) {
-    let left = player.persistentData.getInt('icraft_starter_check_ticks')
+    let left = player.persistentData.getInt('icraft_starter_poll_ticks')
     if (!left || left <= 0) return
-    left -= 20
-    if (left > 0) {
-      player.persistentData.putInt('icraft_starter_check_ticks', left)
-      return
-    }
-    player.persistentData.putInt('icraft_starter_check_ticks', 0)
+    left -= 100
+    player.persistentData.putInt('icraft_starter_poll_ticks', Math.max(0, left))
     try {
       let granted = codex_tryGrantStarter(player)
-      if (!granted) {
+      if (granted) {
+        // Stop polling after success
+        player.persistentData.putInt('icraft_starter_poll_ticks', 0)
+      }
+      // Log occasional trace — once every 30s so the log isn't spammed
+      if (left % 600 === 0) {
         let cls = codex_detectMagicClass(player)
-        console.log('[codex/starter] check for ' + player.username +
+        console.log('[codex/starter] poll for ' + player.username +
                     ': detected=' + (cls || 'none') +
-                    (cls ? ' flag=' + player.persistentData.getBoolean(MAGIC_FLAG_PREFIX + cls) : ''))
+                    ' ticks_left=' + left)
       }
     } catch (e) {
-      console.warn('[codex/starter] check failed for ' + player.username + ': ' + e)
+      console.warn('[codex/starter] poll failed for ' + player.username + ': ' + e)
     }
   })
 }
-global.registerServerTick('tick_codexStarterCheck', 20, 5)
+global.registerServerTick('tick_codexStarterCheck', 100, 5)
 
 // ── Admin/tester chat commands ──
 //   !codex       — force-deliver codex + re-arm starter check
@@ -181,7 +193,7 @@ PlayerEvents.chat(event => {
       player.persistentData.putBoolean(CODEX_FLAG, true)
       console.log('[codex] !codex from ' + player.username + ': granted')
     }
-    player.persistentData.putInt('icraft_starter_check_ticks', 60)
+    player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
     return
   }
 
