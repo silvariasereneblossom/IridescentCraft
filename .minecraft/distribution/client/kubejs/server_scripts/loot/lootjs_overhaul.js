@@ -1549,80 +1549,72 @@ LootJS.modifiers(event => {
   })
 
   // --- Village artifact pool (runs AFTER sanitization) ---
-  // Re-add curated artifacts at ~15% combined rate
-  villageChests.forEach(table => {
-    const modifier = event.addLootTableModifier(table)
-    villageArtifactPool.forEach(artifact => {
-      modifier.addLoot(
-        LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
-      )
-    })
-  })
+  // 2026-04-20: reworked from per-item `.addLoot(entry.when(randomChance))`
+  // to a single weighted pool. The per-item pattern produced ~1 artifact
+  // in 30 rolls (tester-confirmed) against an expected ~3 at 10% combined,
+  // same failure mode as the bed add — `addLoot+randomChance` isn't
+  // reliably firing in this LootJS build. `addWeightedLoot` is the
+  // proven-working pattern (per the smith table).
+  //
+  // Each chest has `artifactChestChance` probability to roll ANY artifact
+  // from the weighted pool; when it does, exactly one item is picked by
+  // weight. Rate is "artifact appears in one of every ~10 chests" by
+  // default, tunable via the chance constant.
+  const villageArtifactChestChance = 0.12 // ~12% of village chests get an artifact
 
-  // Same artifact pool for modded village chests (CTOV, VnP, etc.). The
-  // vanilla villageChests list missed these entirely before 2026-04-19,
-  // which is why the user "never saw" the village accessories.
-  moddedVillagePatterns.forEach(pattern => {
-    const modifier = event.addLootTableModifier(pattern)
-    villageArtifactPool.forEach(artifact => {
-      modifier.addLoot(
-        LootEntry.of(artifact).when(c => c.randomChance(villageArtifactPerItemChance))
-      )
-    })
-  })
-
-  // --- White bed: on EVERY village chest, not just the 5 house tables ---
-  // 2026-04-20: bed was only added inside villageHouseChests.forEach (5 tables),
-  // so tester opening a butcher/tannery/fisher/smith never saw one. Add to
-  // the full 15-table villageChests + modded patterns.
   villageChests.forEach(function(table) {
     event.addLootTableModifier(table)
-      .addLoot(LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.20)))
+      .addWeightedLoot([
+        Item.of('minecraft:air').withChance(Math.round((1 - villageArtifactChestChance) * 100)),
+      ].concat(villageArtifactPool.map(function(id) {
+        return Item.of(id).withChance(Math.round((villageArtifactChestChance / villageArtifactPool.length) * 100))
+      })))
   })
+
   moddedVillagePatterns.forEach(function(pattern) {
     event.addLootTableModifier(pattern)
-      .addLoot(LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.20)))
+      .addWeightedLoot([
+        Item.of('minecraft:air').withChance(Math.round((1 - villageArtifactChestChance) * 100)),
+      ].concat(villageArtifactPool.map(function(id) {
+        return Item.of(id).withChance(Math.round((villageArtifactChestChance / villageArtifactPool.length) * 100))
+      })))
   })
 
   // --- Rotten flesh strip: modded villages (CTOV/VnP) weren't covered ---
-  // 2026-04-20: per-table rotten_flesh strip in SECTION 6 only hits the 15
-  // vanilla village tables. Modded village regex patterns add loot via their
-  // own tables that are subject to the global Overworld strip — which is
-  // known to miss under Lootr aggressive_mode wrapping. Per-pattern strip.
+  // Per-pattern strip (the global Overworld strip is unreliable).
   moddedVillagePatterns.forEach(function(pattern) {
     event.addLootTableModifier(pattern)
       .removeLoot('minecraft:rotten_flesh')
   })
 
   // =========================================================================
-  // SECTION 6B: VILLAGE MAGIC ACCESS
+  // SECTION 6B: VILLAGE QOL POOL — bed + magic, all 15 tables (addWeightedLoot)
   // =========================================================================
-  // Villages are T1 starting areas. Add starter magic items so players
-  // discover the magic system early. Iron's Spellbooks scrolls require ink
-  // to craft, so we inject common_ink (crafting material) + copper spell book
-  // (starter permanent magic item). Ars Nouveau novice book + source gems
-  // provide early access to the now-ungated Ars system.
-  // Uses separate addLootTableModifier calls per table (no chaining).
-  // =========================================================================
+  // 2026-04-20 rewrite: previously used per-item
+  //   .addLoot(LootEntry.of(X).when(c => c.randomChance(P)))
+  // which tester confirmed silently no-ops (30 /loot give rolls, 0 beds
+  // against an expected ~6). `addWeightedLoot` is the proven-working pattern.
+  //
+  // Every village chest (all 15 + modded patterns) gets ONE weighted roll.
+  // 30% of rolls yield a bed, 25% yield magic material, 15% yield a copper
+  // spell book, 10% a novice spell book, 20% air (= nothing). villageHouseChests
+  // (5 tables) get three additional weighted pools from the earlier block
+  // (QoL flavor, starter tools, magic) so houses are richer by design.
 
-  // Iron's Spellbooks starter materials in villages
-  villageChests.forEach(function(table) {
-    event.addLootTableModifier(table)
-      .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.20)))
-  })
-  villageChests.forEach(function(table) {
-    event.addLootTableModifier(table)
-      .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.05)))
-  })
+  const villageQoLPool = [
+    Item.of('minecraft:air').withChance(20),
+    Item.of('minecraft:white_bed').withChance(30),
+    Item.of('irons_spellbooks:common_ink').withChance(25),
+    Item.of('ars_nouveau:source_gem').withChance(15),
+    Item.of('irons_spellbooks:copper_spell_book').withChance(7),
+    Item.of('ars_nouveau:novice_spell_book').withChance(3)
+  ]
 
-  // Ars Nouveau starter items in villages
   villageChests.forEach(function(table) {
-    event.addLootTableModifier(table)
-      .addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.08)))
+    event.addLootTableModifier(table).addWeightedLoot(villageQoLPool)
   })
-  villageChests.forEach(function(table) {
-    event.addLootTableModifier(table)
-      .addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 3]).when(c => c.randomChance(0.15)))
+  moddedVillagePatterns.forEach(function(pattern) {
+    event.addLootTableModifier(pattern).addWeightedLoot(villageQoLPool)
   })
 
   // =========================================================================
