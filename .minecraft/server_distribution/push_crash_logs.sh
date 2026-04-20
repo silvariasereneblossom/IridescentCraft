@@ -1,8 +1,9 @@
 #!/usr/bin/env bash
 # =============================================================================
-# IridescentCraft — Collect + auto-push server logs
-# Copies last 3 crash reports, ALL kubejs/*.log files, and logs/latest.log
-# into TesterLogs/Server Logs/, then git adds + commits + pushes.
+# IridescentCraft — Collect server logs for transfer to repo
+# Copies last 3 crash reports, ALL kubejs/*.log files, logs/latest.log, and
+# logs/debug.log into TesterLogs/Server Logs/ for manual transfer to the
+# dev machine's repo copy (server is not itself a git repo).
 # =============================================================================
 
 set -euo pipefail
@@ -34,7 +35,7 @@ if [ -d "logs/kubejs" ]; then
     done
 fi
 
-# --- logs/latest.log (full vanilla server log) ---
+# --- logs/latest.log (vanilla server log) ---
 if [ -f "logs/latest.log" ]; then
     cp -f "logs/latest.log" "$DEST/latest.log"
     echo "  Server: latest.log"
@@ -47,33 +48,10 @@ if [ -f "logs/debug.log" ]; then
 fi
 
 echo ""
-echo "[Logs] Files copied to $DEST"
-
-# --- Auto git add + commit + push (only if in a git repo with git on PATH) ---
-if ! command -v git >/dev/null 2>&1; then
-    echo ""
-    echo "[Logs] git not on PATH — skipping auto-push. Commit manually."
-    exit 0
-fi
-
-if ! git rev-parse --git-dir >/dev/null 2>&1; then
-    echo ""
-    echo "[Logs] Not inside a git repo — skipping auto-push."
-    exit 0
-fi
-
+echo "[Logs] Files copied to: $(pwd)/$DEST"
 echo ""
-echo "[Logs] Auto-pushing to remote..."
-git add "$DEST"
-STAMP="$(date +%Y-%m-%d_%H:%M)"
-if git commit -m "Push server logs $STAMP" 2>/dev/null; then
-    if git push; then
-        echo "  [Logs] Pushed."
-    else
-        echo "  [Logs] git push FAILED — fix credentials or resolve manually."
-    fi
-else
-    echo "  Nothing to commit (files unchanged) — skipping push."
-fi
-
+echo "[Logs] To share with the dev machine:"
+echo "  1. Copy the \"$DEST\" folder contents back to your"
+echo "     repo's server_distribution/TesterLogs/Server Logs/ folder"
+echo "  2. git add + commit + push from the dev machine"
 echo ""
