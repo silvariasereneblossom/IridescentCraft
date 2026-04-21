@@ -4,6 +4,27 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-21 — Codex macro fix ($(/bold) was rendering as literal text) + magic starter kit cleanup
+
+### Codex rendering errors
+
+Tester reported "grammatical/formatting errors" inside the codex. Root cause was an invalid macro pattern used consistently across 151 entry files: `$(/bold)` / `$(/italic)` / `$(/warn)` as closing tags. Patchouli does not support HTML-style per-formatter closers for these — only `$()` (reset all active formatting) or `$(/l)` (explicit link close) are recognized. Unrecognized `$(/name)` macros render as the literal text on screen, which is what the tester saw.
+
+Swept both `datapack_sources/iridescent_codex/assets/` and `.../data/` for `$(/bold)` (531 occurrences), `$(/italic)` (38), `$(/warn)` (3) and replaced each with `$()`. Left `$(/l)` untouched (valid). Rebuilt `iridescent_codex_data.jar` via `build_codex.sh`; new jar deployed to all 3 distros at identical MD5.
+
+### Magic class starter kit — worker-thread handler removed
+
+`magic_class_starter.js` had a duplicated `!magicstart` `PlayerEvents.chat` handler that called `runCommandSilent` directly from the chat-worker thread, which throws `JavaException: EventExit: result` (same pattern as the earlier codex chat-handler crash). The primary handler in `codex_delivery.js` now handles `!magicstart` / `!kit` through the `tick_codexChatProcessor` defer-to-tick pattern, so the duplicate was deleted. Also fixed a stray reference in `magicStarter_detectClass` that indexed the unaliased `MAGIC_CLASSES` global instead of the `MAGIC_CLASSES_SHARED` fallback — would have thrown `ReferenceError` if this file ever loaded before `codex_delivery.js`.
+
+### Files changed
+
+- `datapack_sources/iridescent_codex/data/**/*.json` — 151 entry files, macro fix
+- `datapack_sources/iridescent_codex/assets/**/*.json` — same 151 files (mirror)
+- `mods/iridescent_codex_data.jar` (all 3 distros) — rebuilt
+- `kubejs/server_scripts/origins/magic_class_starter.js` (all 3 distros) — duplicate handler removed + var fix
+
+---
+
 ## 2026-04-21 — Village chest loot pool: dedupe bed, restore realistic artifact rate, whitelist-strip non-curated artifacts
 
 ### Changes

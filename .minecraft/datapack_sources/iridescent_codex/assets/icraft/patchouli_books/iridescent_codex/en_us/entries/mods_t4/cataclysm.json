@@ -10,15 +10,15 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Cataclysm is the hardest T3 content. Five ultra-bosses (Netherite Monstrosity, Ignis, The Harbinger, The Leviathan, Maledictus) each in enormous purpose-built structures.$(br2)$(bold)Loot:$(/bold) Cataclysm structures have some of the highest token drop rates in T3. Boss materials from Cataclysm bosses are among the best T3 crafting components."
+      "text": "$(bold)Role in the pack:$() Cataclysm is the hardest T3 content. Five ultra-bosses (Netherite Monstrosity, Ignis, The Harbinger, The Leviathan, Maledictus) each in enormous purpose-built structures.$(br2)$(bold)Loot:$() Cataclysm structures have some of the highest token drop rates in T3. Boss materials from Cataclysm bosses are among the best T3 crafting components."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Prep requirement:$(/bold) Full terrasteel or enderium gear is the minimum recommended for Cataclysm boss attempts. Maledictus and The Harbinger in particular are calibrated for well-geared T3 players.$(br2)$(bold)Unique weapons:$(/bold) 8 Simply Swords uniques drop from Cataclysm bosses \u2014 the most of any single mod."
+      "text": "$(bold)Prep requirement:$() Full terrasteel or enderium gear is the minimum recommended for Cataclysm boss attempts. Maledictus and The Harbinger in particular are calibrated for well-geared T3 players.$(br2)$(bold)Unique weapons:$() 8 Simply Swords uniques drop from Cataclysm bosses \u2014 the most of any single mod."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$(/bold) Cataclysm is boss-focused \u2014 documentation comes from fighting. Each boss drops a $(bold)Trophy$(/bold) that can be placed for display. JEI covers all weapon and armor recipes unlocked by boss materials."
+      "text": "$(bold)No guide book.$() Cataclysm is boss-focused \u2014 documentation comes from fighting. Each boss drops a $(bold)Trophy$() that can be placed for display. JEI covers all weapon and armor recipes unlocked by boss materials."
     }
   ],
   "advancement": "icraft:stage_tier_3"

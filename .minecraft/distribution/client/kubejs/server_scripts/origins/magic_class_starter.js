@@ -31,7 +31,7 @@ var FLAG_PREFIX = (typeof MAGIC_FLAG_PREFIX !== 'undefined') ? MAGIC_FLAG_PREFIX
 
 function magicStarter_detectClass(player) {
   for (let i = 0; i < MAGIC_CLASSES_SHARED.length; i++) {
-    let c = MAGIC_CLASSES[i]
+    let c = MAGIC_CLASSES_SHARED[i]
     try {
       let r = player.server.runCommandSilent(
         `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:${c}"}]}}}]`
@@ -120,29 +120,13 @@ global.tick_magicClassStarterLoginCheck = function(event) {
 }
 global.registerServerTick('tick_magicClassStarterLoginCheck', 20, 3)
 
-// ── Admin chat command: !magicstart clears the flag and re-runs detection ──
-// 2026-04-20: now matches the trim + toLowerCase pattern used in
-// ascension.js (and codex_delivery.js). Prior strict `!==` comparison
-// failed on trailing spaces or casing. Duplicated here as a backup; the
-// primary handler is now in codex_delivery.js which also handles !kit.
-PlayerEvents.chat(event => {
-  const msg = (event.message || '').trim().toLowerCase()
-  if (msg !== '!magicstart') return
-  event.cancel()
-  let player = event.player
-  MAGIC_CLASSES_SHARED.forEach(function(c) {
-    player.persistentData.putBoolean(FLAG_PREFIX + c, false)
-  })
-  let cls = magicStarter_detectClass(player)
-  if (!cls) {
-    player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected on your character. Use !origindump to debug.')
-    console.log('[magic-starter] !magicstart from ' + player.username + ': no magic class detected')
-    return
-  }
-  magicStarter_giveKit(player, cls)
-  player.persistentData.putBoolean(FLAG_PREFIX + cls, true)
-  console.log('[magic-starter] !magicstart from ' + player.username + ': granted ' + cls + ' kit')
-})
+// 2026-04-21: removed duplicate `!magicstart` chat handler that lived here.
+// It called runCommandSilent / player.give directly from a chat handler —
+// which fires on a worker thread and throws `JavaException: EventExit: result`.
+// The primary `!magicstart` / `!kit` handler in codex_delivery.js defers to a
+// server-tick processor (`tick_codexChatProcessor`), the only thread-safe way
+// to run these ops. This file still owns the polling and login-check paths
+// because those run from server ticks, which are already on the server thread.
 
 console.log('[IridescentCraft] Magic class starter kit loaded')
 console.log('  - Archmage: copper + novice spell books, 5 source gems, 2 ink')

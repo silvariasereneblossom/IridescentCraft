@@ -10,12 +10,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Notable creatures:$(/bold) The $(bold)Void Worm$(/bold) (end boss), $(bold)Cachalot Whale$(/bold) (ocean), $(bold)Laviathan$(/bold) (sky), and $(bold)Murmur$(/bold) (underground) are boss-tier encounters. Most creatures drop unique materials used in Apotheosis gem crafting.$(br2)$(bold)IridescentCraft interactions:$(/bold) Several Alex's Mobs creatures appear in boss loot tables and drop tokens."
+      "text": "$(bold)Notable creatures:$() The $(bold)Void Worm$() (end boss), $(bold)Cachalot Whale$() (ocean), $(bold)Laviathan$() (sky), and $(bold)Murmur$() (underground) are boss-tier encounters. Most creatures drop unique materials used in Apotheosis gem crafting.$(br2)$(bold)IridescentCraft interactions:$() Several Alex's Mobs creatures appear in boss loot tables and drop tokens."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "alexsmobs:animal_dictionary",
-      "text": "Craft the $(bold)Animal Dictionary$(/bold) for a full bestiary \u2014 every creature, its drops, its habitat, and any tameable/rideable behavior."
+      "text": "Craft the $(bold)Animal Dictionary$() for a full bestiary \u2014 every creature, its drops, its habitat, and any tameable/rideable behavior."
     }
   ]
 }

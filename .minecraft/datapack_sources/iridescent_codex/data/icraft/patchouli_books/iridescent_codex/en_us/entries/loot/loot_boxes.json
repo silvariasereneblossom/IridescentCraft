@@ -6,22 +6,22 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Loot boxes are right-click-to-open containers that drop a curated set of items from a specific loot table. They are earned through FTB Quests \u2014 completing additional quest paths beyond your required one always rewards a loot box.$(br2)$(bold)Six loot box tiers:$(/bold) Iron \u00b7 Steel \u00b7 Tier 3 \u00b7 Tier 4 \u00b7 Crucible \u00b7 Mythic"
+      "text": "Loot boxes are right-click-to-open containers that drop a curated set of items from a specific loot table. They are earned through FTB Quests \u2014 completing additional quest paths beyond your required one always rewards a loot box.$(br2)$(bold)Six loot box tiers:$() Iron \u00b7 Steel \u00b7 Tier 3 \u00b7 Tier 4 \u00b7 Crucible \u00b7 Mythic"
     },
     {
       "type": "patchouli:text",
       "title": "Iron Loot Box (T1)",
-      "text": "$(bold)Contents:$(/bold)$(br)2\u20134 Tier 1 tokens, 1\u20132 uncommon Apotheosis gems (flawed/chipped), 3\u20135 boss materials (Overworld-tier), 1 Common Apotheosis affix reforge token, 1\u20132 Iron's Spells scrolls (Tier 1)$(br2)$(bold)Earned by:$(/bold) Completing a non-required T1 quest path."
+      "text": "$(bold)Contents:$()$(br)2\u20134 Tier 1 tokens, 1\u20132 uncommon Apotheosis gems (flawed/chipped), 3\u20135 boss materials (Overworld-tier), 1 Common Apotheosis affix reforge token, 1\u20132 Iron's Spells scrolls (Tier 1)$(br2)$(bold)Earned by:$() Completing a non-required T1 quest path."
     },
     {
       "type": "patchouli:text",
       "title": "Steel Loot Box (T2)",
-      "text": "$(bold)Contents:$(/bold)$(br)2\u20134 Tier 2 tokens, 1\u20132 normal/flawless gems, 3\u20135 Twilight/Aether boss materials, 1 Uncommon/Rare affix token, 1 Ars Nouveau spell recipe, 1 random Simply Swords unique (5% \u2014 low but possible)$(br2)$(bold)Earned by:$(/bold) Completing a non-required T2 quest path."
+      "text": "$(bold)Contents:$()$(br)2\u20134 Tier 2 tokens, 1\u20132 normal/flawless gems, 3\u20135 Twilight/Aether boss materials, 1 Uncommon/Rare affix token, 1 Ars Nouveau spell recipe, 1 random Simply Swords unique (5% \u2014 low but possible)$(br2)$(bold)Earned by:$() Completing a non-required T2 quest path."
     },
     {
       "type": "patchouli:text",
       "title": "Tier 3, 4, Crucible & Mythic",
-      "text": "$(bold)Tier 3 Box:$(/bold) T3 tokens, flawless/perfect gems, Cataclysm boss materials, Epic affix token, Refined Storage pattern$(br2)$(bold)Tier 4 Box:$(/bold) T4 tokens, perfect gems, end-tier boss materials, Legendary affix token$(br2)$(bold)Crucible Box:$(/bold) Mixed high-tier materials + guaranteed unique weapon(rift-sourced)$(br2)$(bold)Mythic Box:$(/bold) Rift Shards, endgame materials, chance at Mythic I\u2013II infusion component"
+      "text": "$(bold)Tier 3 Box:$() T3 tokens, flawless/perfect gems, Cataclysm boss materials, Epic affix token, Refined Storage pattern$(br2)$(bold)Tier 4 Box:$() T4 tokens, perfect gems, end-tier boss materials, Legendary affix token$(br2)$(bold)Crucible Box:$() Mixed high-tier materials + guaranteed unique weapon(rift-sourced)$(br2)$(bold)Mythic Box:$() Rift Shards, endgame materials, chance at Mythic I\u2013II infusion component"
     }
   ]
 }

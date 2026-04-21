@@ -10,15 +10,15 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Elemental damage in Blue Skies bypasses standard armor. Magic resistance (Sorcery tree, Battlemage class) is more valuable here than raw armor stats.$(br2)$(bold)Bosses:$(/bold) Summoner, Alchemist, Starlit Crusher, and Arachnarch each drop a Simply Swords unique."
+      "text": "$(bold)Role in the pack:$() Elemental damage in Blue Skies bypasses standard armor. Magic resistance (Sorcery tree, Battlemage class) is more valuable here than raw armor stats.$(br2)$(bold)Bosses:$() Summoner, Alchemist, Starlit Crusher, and Arachnarch each drop a Simply Swords unique."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)IridescentCraft notes:$(/bold) Blue Skies has 641 loot tables \u2014 they've been bulk-covered by the loot overhaul. Token injection rates are slightly higher here than Twilight Forest to account for the dimension's density."
+      "text": "$(bold)IridescentCraft notes:$() Blue Skies has 641 loot tables \u2014 they've been bulk-covered by the loot overhaul. Token injection rates are slightly higher here than Twilight Forest to account for the dimension's density."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)No guide book.$(/bold) Blue Skies is exploration-driven. Both dimensions \u2014 the Everbright and the Everdawn \u2014 contain dungeon loot and boss encounters that guide you forward naturally. JEI covers all crafting recipes."
+      "text": "$(bold)No guide book.$() Blue Skies is exploration-driven. Both dimensions \u2014 the Everbright and the Everdawn \u2014 contain dungeon loot and boss encounters that guide you forward naturally. JEI covers all crafting recipes."
     }
   ],
   "advancement": "icraft:stage_tier_2"

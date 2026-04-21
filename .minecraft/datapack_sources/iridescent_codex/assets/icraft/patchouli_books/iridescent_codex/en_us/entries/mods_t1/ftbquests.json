@@ -10,11 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Opening:$(/bold) Default key $(bold)P$(/bold) or click the shield icon in the HUD.$(br2)$(bold)Nine chapters:$(/bold) Welcome \u00b7 Tier 1\u20134 \u00b7 Crucible \u00b7 Community \u00b7 Prestige \u00b7 Classes & Skills.$(br2)$(bold)Five paths per tier:$(/bold) Grinding, Magic, Combat, Exploration, Engineering. Complete any one to advance."
+      "text": "$(bold)Opening:$() Default key $(bold)P$() or click the shield icon in the HUD.$(br2)$(bold)Nine chapters:$() Welcome \u00b7 Tier 1\u20134 \u00b7 Crucible \u00b7 Community \u00b7 Prestige \u00b7 Classes & Skills.$(br2)$(bold)Five paths per tier:$() Grinding, Magic, Combat, Exploration, Engineering. Complete any one to advance."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Skill points:$(/bold) Every quest path rewards skill points. Completing all 5 paths in a tier gives approximately 10 extra points beyond the minimum. This is the primary reason to complete non-required paths.$(br2)$(bold)Loot boxes:$(/bold) Non-required path completions reward loot boxes. The Prestige chapter gives endgame rewards."
+      "text": "$(bold)Skill points:$() Every quest path rewards skill points. Completing all 5 paths in a tier gives approximately 10 extra points beyond the minimum. This is the primary reason to complete non-required paths.$(br2)$(bold)Loot boxes:$() Non-required path completions reward loot boxes. The Prestige chapter gives endgame rewards."
     }
   ]
 }

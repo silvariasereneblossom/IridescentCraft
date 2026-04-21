@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Note:$(/bold) If this is Primal Magic's Grimoire, it covers the full Thaumaturgy system \u2014 research, wand crafting, Vis management, and ritual circles.$(br2)The Grimoire is craftable if lost \u2014 check JEI for the recipe under its mod tab."
+      "text": "$(bold)Note:$() If this is Primal Magic's Grimoire, it covers the full Thaumaturgy system \u2014 research, wand crafting, Vis management, and ritual circles.$(br2)The Grimoire is craftable if lost \u2014 check JEI for the recipe under its mod tab."
     }
   ]
 }

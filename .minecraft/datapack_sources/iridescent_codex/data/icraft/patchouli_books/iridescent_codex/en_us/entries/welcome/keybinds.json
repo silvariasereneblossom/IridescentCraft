@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "IridescentCraft adds many mods, each with their own keybinds. This reference covers the most important ones so you are not fumbling through menus mid-combat.$(br2)$(italic)All keybinds can be rebound in Options \u203a Controls \u203a Key Binds. If a key listed here does not work, check there first \u2014 it may be unbound or conflicting.$(/italic)"
+      "text": "IridescentCraft adds many mods, each with their own keybinds. This reference covers the most important ones so you are not fumbling through menus mid-combat.$(br2)$(italic)All keybinds can be rebound in Options \u203a Controls \u203a Key Binds. If a key listed here does not work, check there first \u2014 it may be unbound or conflicting.$()"
     },
     {
       "type": "patchouli:text",
@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Mod Keybinds",
-      "text": "$(bold)G$() \u2014 Origins menu$(br)$(bold)O$() \u2014 View your current origin$(br)$(bold)' (Apostrophe)$() \u2014 Curios equipment screen$(br)$(bold)B$() \u2014 Tetra toolbelt$(br)$(bold); (Semicolon)$() \u2014 Ars Nouveau spellbook$(br)$(bold)\\ (Backslash)$() \u2014 Open backpack$(br)$(bold), (Comma)$() \u2014 JourneyMap waypoint$(br)$(bold)Caps Lock$() \u2014 Voice Chat push-to-talk$(br2)$(italic)Unbound keys can be assigned in Options \u203a Controls.$(/italic)"
+      "text": "$(bold)G$() \u2014 Origins menu$(br)$(bold)O$() \u2014 View your current origin$(br)$(bold)' (Apostrophe)$() \u2014 Curios equipment screen$(br)$(bold)B$() \u2014 Tetra toolbelt$(br)$(bold); (Semicolon)$() \u2014 Ars Nouveau spellbook$(br)$(bold)\\ (Backslash)$() \u2014 Open backpack$(br)$(bold), (Comma)$() \u2014 JourneyMap waypoint$(br)$(bold)Caps Lock$() \u2014 Voice Chat push-to-talk$(br2)$(italic)Unbound keys can be assigned in Options \u203a Controls.$()"
     }
   ]
 }

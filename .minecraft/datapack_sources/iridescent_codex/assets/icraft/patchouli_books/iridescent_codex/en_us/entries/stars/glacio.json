@@ -6,27 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Glacio \u2014 The Final Frontier$(/bold)$(br)Difficulty: $(bold)12.0x$(/bold) (the hardest content in the pack)$(br)Death Penalty: $(bold)30%$(/bold)$(br2)A world in the Proxima Centauri system. Alien biomes, extreme cold, and the most dangerous creatures you will ever face. Glacio is harder than the End, harder than Oblivion's Rift. This is where the pack ends."
+      "text": "$(bold)Glacio \u2014 The Final Frontier$()$(br)Difficulty: $(bold)12.0x$() (the hardest content in the pack)$(br)Death Penalty: $(bold)30%$()$(br2)A world in the Proxima Centauri system. Alien biomes, extreme cold, and the most dangerous creatures you will ever face. Glacio is harder than the End, harder than Oblivion's Rift. This is where the pack ends."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Environmental Hazards$(/bold)$(br)\u2022 $(bold)Extreme cold$(/bold) \u2014 2 HP damage every 5 seconds$(br)\u2022 $(bold)Mining fatigue$(/bold) from the alien environment$(br)\u2022 Alien mobs are fast, strong, and resistant$(br2)$(bold)Champion Density$(/bold)$(br)Glacio has the highest Champion spawn rate in the pack (25%). Champions here have a 60% chance of gaining custom affixes. Expect Commanding and Summoning champions frequently."
+      "text": "$(bold)Environmental Hazards$()$(br)\u2022 $(bold)Extreme cold$() \u2014 2 HP damage every 5 seconds$(br)\u2022 $(bold)Mining fatigue$() from the alien environment$(br)\u2022 Alien mobs are fast, strong, and resistant$(br2)$(bold)Champion Density$()$(br)Glacio has the highest Champion spawn rate in the pack (25%). Champions here have a 60% chance of gaining custom affixes. Expect Commanding and Summoning champions frequently."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Why Come Here?$(/bold)$(br)Glacio contains the exclusive materials needed to craft $(bold)MekaSuit Mk2$(/bold) \u2014 the ultimate armor set. Combined with Aethersteel and Primordial Essence from Oblivion's Rift, Glacio materials complete the most powerful gear in the game.$(br2)$(bold)Alien Ruins$(/bold)$(br)Crashed ships and technology caches hold loot found nowhere else. Possible dimension-specific affixes make Glacio gear truly unique."
+      "text": "$(bold)Why Come Here?$()$(br)Glacio contains the exclusive materials needed to craft $(bold)MekaSuit Mk2$() \u2014 the ultimate armor set. Combined with Aethersteel and Primordial Essence from Oblivion's Rift, Glacio materials complete the most powerful gear in the game.$(br2)$(bold)Alien Ruins$()$(br)Crashed ships and technology caches hold loot found nowhere else. Possible dimension-specific affixes make Glacio gear truly unique."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Planetary Rock Extraction$(/bold)$(br)Crush $(bold)Glacio Stone$(/bold) in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Alien Isotope$(/bold) (20%) \u2014 alien-tech integration$(br)\u2022 $(bold)Cryogenic Element$(/bold) (20%) \u2014 cryo-fusion technology$(br)\u2022 Ice Shards (30%)"
+      "text": "$(bold)Planetary Rock Extraction$()$(br)Crush $(bold)Glacio Stone$() in Create Crushing Wheels or a Thermal Pulverizer to extract:$(br)\u2022 $(bold)Alien Isotope$() (20%) \u2014 alien-tech integration$(br)\u2022 $(bold)Cryogenic Element$() (20%) \u2014 cryo-fusion technology$(br)\u2022 Ice Shards (30%)"
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Void Adaptation Enchantment$(/bold)$(br)Glacio mobs have a $(bold)12% chance$(/bold) to drop an enchanted book of $(bold)Void Adaptation$(/bold) (max level 2). This armor enchantment:$(br)\u2022 Negates mining fatigue from alien environments$(br)\u2022 Provides immunity to alien debuffs$(br)\u2022 Even level 1 removes Glacio's mining fatigue$(br2)Combined with Thermal Regulation for cold immunity, these two enchantments make Glacio survivable."
+      "text": "$(bold)Void Adaptation Enchantment$()$(br)Glacio mobs have a $(bold)12% chance$() to drop an enchanted book of $(bold)Void Adaptation$() (max level 2). This armor enchantment:$(br)\u2022 Negates mining fatigue from alien environments$(br)\u2022 Provides immunity to alien debuffs$(br)\u2022 Even level 1 removes Glacio's mining fatigue$(br2)Combined with Thermal Regulation for cold immunity, these two enchantments make Glacio survivable."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Preparation Checklist$(/bold)$(br)\u2022 MekaSuit (minimum)$(br)\u2022 Soulbound III on all gear$(br)\u2022 Thermal Regulation enchantment (level 3)$(br)\u2022 Void Adaptation enchantment$(br)\u2022 Full Vitality enchantment$(br)\u2022 Established RF infrastructure (Flux Networks recommended)$(br)\u2022 Emergency waystone or recall method$(br)\u2022 High-tier healing items$(br2)$(italic)Do not come here unprepared. Glacio will kill you.$(/italic)"
+      "text": "$(bold)Preparation Checklist$()$(br)\u2022 MekaSuit (minimum)$(br)\u2022 Soulbound III on all gear$(br)\u2022 Thermal Regulation enchantment (level 3)$(br)\u2022 Void Adaptation enchantment$(br)\u2022 Full Vitality enchantment$(br)\u2022 Established RF infrastructure (Flux Networks recommended)$(br)\u2022 Emergency waystone or recall method$(br)\u2022 High-tier healing items$(br2)$(italic)Do not come here unprepared. Glacio will kill you.$()"
     }
   ],
   "advancement": "icraft:stage_tier_4"

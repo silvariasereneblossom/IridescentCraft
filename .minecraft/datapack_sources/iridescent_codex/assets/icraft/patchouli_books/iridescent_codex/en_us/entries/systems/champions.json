@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Bleeding Effect",
-      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you. While bleeding, you take damage over time that ignores armor. This is a genuine threat during prolonged fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, instant cure), $(thing)Milk Bucket$() (clears all effects), or $(thing)Golden Apple$() (clears bleeding + provides regen).$(br2)$(italic)Always carry bandages. Bleeding in a mob pack without a cure is how most deaths happen.$(/italic)"
+      "text": "Mobs can inflict the $(thing)Bleeding$() effect on you. While bleeding, you take damage over time that ignores armor. This is a genuine threat during prolonged fights.$(br2)$(bold)Cures:$() $(thing)Bandages$() (crafted, instant cure), $(thing)Milk Bucket$() (clears all effects), or $(thing)Golden Apple$() (clears bleeding + provides regen).$(br2)$(italic)Always carry bandages. Bleeding in a mob pack without a cure is how most deaths happen.$()"
     }
   ]
 }

@@ -6,19 +6,19 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Space will kill you without protection.$(/bold)$(br2)There are three tiers of space-capable armor in this pack. Each enables survival on different planets. Choose based on where you are going."
+      "text": "$(bold)Space will kill you without protection.$()$(br2)There are three tiers of space-capable armor in this pack. Each enables survival on different planets. Choose based on where you are going."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Basic Space Suit$(/bold)$(br)Ad Astra's default suit. Provides oxygen containment and basic protection. Sufficient for the $(bold)Moon$(/bold) and $(bold)Mars$(/bold). Crafted from Netherite and Ad Astra materials.$(br2)$(bold)Netherite Space Suit$(/bold)$(br)Upgraded suit requiring Mars-specific materials. Provides enhanced heat/cold protection. Required for $(bold)Venus$(/bold) and $(bold)Mercury$(/bold) survival."
+      "text": "$(bold)Basic Space Suit$()$(br)Ad Astra's default suit. Provides oxygen containment and basic protection. Sufficient for the $(bold)Moon$() and $(bold)Mars$(). Crafted from Netherite and Ad Astra materials.$(br2)$(bold)Netherite Space Suit$()$(br)Upgraded suit requiring Mars-specific materials. Provides enhanced heat/cold protection. Required for $(bold)Venus$() and $(bold)Mercury$() survival."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)MekaSuit$(/bold)$(br)Mekanism's power armor fills the Jet Suit niche \u2014 flight, space survival, and modular upgrades. Already gated behind T4 Mekanism progression. Your primary space exploration armor.$(br2)$(bold)MekaSuit Mk2$(/bold)$(br)The $(italic)ultimate$(/italic) armor in the pack. Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence. The only space armor that accepts Apotheosis affixes, custom enchantments, and socket gems."
+      "text": "$(bold)MekaSuit$()$(br)Mekanism's power armor fills the Jet Suit niche \u2014 flight, space survival, and modular upgrades. Already gated behind T4 Mekanism progression. Your primary space exploration armor.$(br2)$(bold)MekaSuit Mk2$()$(br)The $(italic)ultimate$() armor in the pack. Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence. The only space armor that accepts Apotheosis affixes, custom enchantments, and socket gems."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Note: Jet Suit Removed$(/bold)$(br)Ad Astra's Jet Suit has been removed from the pack. MekaSuit fills this role more appropriately within the progression system. The Jet Suit recipe does not exist.$(br2)$(bold)Soulbound is Critical$(/bold)$(br)Space death penalties are severe (22-30%). Soulbound III on your space suit is almost mandatory for planet exploration."
+      "text": "$(bold)Note: Jet Suit Removed$()$(br)Ad Astra's Jet Suit has been removed from the pack. MekaSuit fills this role more appropriately within the progression system. The Jet Suit recipe does not exist.$(br2)$(bold)Soulbound is Critical$()$(br)Space death penalties are severe (22-30%). Soulbound III on your space suit is almost mandatory for planet exploration."
     }
   ],
   "advancement": "icraft:stage_tier_4"

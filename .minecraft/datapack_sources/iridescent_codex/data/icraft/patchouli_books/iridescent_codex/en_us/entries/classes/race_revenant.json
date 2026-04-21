@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Formerly living. Undead mechanics apply. The pack's most punishing race in daylight, most powerful at night.$(/italic)$(br2)$(bold)Racial Traits:$(/bold)$(br2)$(bold)Dark Power$(/bold) \u2014 +20% damage dealt between 8pm and 4am (in-game time). Stacks with class bonuses.$(br2)$(bold)Night Vision$(/bold) \u2014 Permanent night vision. No visual difference from Human during the day.$(br2)$(bold)Sunlight Weakness$(/bold) \u2014 Direct sunlight: burn effect like a zombie. Helmets and shade prevent this. Plan around it.$(br2)$(bold)Healing Penalty$(/bold) \u2014 Natural regen and most healing potions 30% less effective. Life Steal and Paladin auras unaffected."
+      "text": "$(italic)Formerly living. Undead mechanics apply. The pack's most punishing race in daylight, most powerful at night.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Dark Power$() \u2014 +20% damage dealt between 8pm and 4am (in-game time). Stacks with class bonuses.$(br2)$(bold)Night Vision$() \u2014 Permanent night vision. No visual difference from Human during the day.$(br2)$(bold)Sunlight Weakness$() \u2014 Direct sunlight: burn effect like a zombie. Helmets and shade prevent this. Plan around it.$(br2)$(bold)Healing Penalty$() \u2014 Natural regen and most healing potions 30% less effective. Life Steal and Paladin auras unaffected."
     }
   ]
 }

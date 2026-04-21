@@ -96,6 +96,16 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
+### Codex Macro Rendering: `$(/bold)` showing as literal text (2026-04-21)
+- **Reported:** Tester saw grammatical/formatting errors inside the codex.
+- **Root cause:** 151 codex entry files used HTML-style closing macros `$(/bold)`, `$(/italic)`, `$(/warn)` (572 occurrences total) to close formatting. Patchouli only recognizes `$()` as the formatting reset — unrecognized `$(/name)` macros render as literal text on screen.
+- **Resolved:** Replaced all three variants with `$()` across `datapack_sources/iridescent_codex/data/` and `.../assets/`. `$(/l)` (valid link closer) left untouched. Rebuilt jar via `build_codex.sh`, identical MD5 across all 3 distros.
+
+### Magic Class Starter Kit: Duplicate Worker-Thread Chat Handler (2026-04-21)
+- **Reported:** Audit during starter-kit status check.
+- **Root cause:** `magic_class_starter.js` had a `!magicstart` chat handler that called `runCommandSilent` directly, matching the known worker-thread pattern that throws `JavaException: EventExit: result`. Same bug we fixed in `codex_delivery.js` two sessions ago, but the duplicate copy in this file slipped through. Also a stale `MAGIC_CLASSES` reference that would throw if the file ever loaded before `codex_delivery.js`.
+- **Resolved:** Deleted the duplicate chat handler. Primary `!kit` / `!magicstart` handler lives in `codex_delivery.js` and defers through `tick_codexChatProcessor`. Fixed the `MAGIC_CLASSES` vs `MAGIC_CLASSES_SHARED` reference.
+
 ### Village Chest Loot: Double-Beds and Non-Curated Artifacts (2026-04-21)
 - **Reported:** Tester feedback from a 14-chest /loot give sweep: "I saw 2 beds in one chest once, and there's an artifact in every chest. The artifacts don't seem to be restricted to our curated list either." Three distinct bugs stacked.
 - **Root cause A — double-bed:** `white_bed` appeared in two overlapping weighted pools for the 5 `villageHouseChests` tables (plains/desert/savanna/snowy/taiga): once in their dedicated house QoL flavor pool at weight 30, and again in the general `villageQoLPool` at weight 35. Houses rolled on both pools in the same pass.

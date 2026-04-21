@@ -10,12 +10,12 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$(/bold) Background world enrichment. Terramity works passively \u2014 its additions appear naturally as you explore. No active systems to manage.$(br2)$(bold)Exploration tip:$(/bold) Terramity features appear in all biomes but are most visible in caves and cliff faces. Keep an eye out for new stone formations and cave decorations."
+      "text": "$(bold)Role in the pack:$() Background world enrichment. Terramity works passively \u2014 its additions appear naturally as you explore. No active systems to manage.$(br2)$(bold)Exploration tip:$() Terramity features appear in all biomes but are most visible in caves and cliff faces. Keep an eye out for new stone formations and cave decorations."
     },
     {
       "type": "patchouli:crafting",
       "recipe": "terramity:terramity_guidebook",
-      "text": "Craft the $(bold)Terramity Guidebook$(/bold) for the full reference \u2014 all added features, biome interactions, and configuration notes."
+      "text": "Craft the $(bold)Terramity Guidebook$() for the full reference \u2014 all added features, biome interactions, and configuration notes."
     }
   ]
 }
