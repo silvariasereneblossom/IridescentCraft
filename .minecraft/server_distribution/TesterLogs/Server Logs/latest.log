@@ -8374,3 +8374,758 @@ java.lang.NullPointerException: Cannot invoke "org.popcraft.chunky.Chunky.getCom
 [21Apr2026 02:30:46.647] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=131, y=-29, z=-322} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
 [21Apr2026 02:30:46.661] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=128, y=15, z=-270} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
 [21Apr2026 02:30:46.661] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=131, y=15, z=-267} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:30:48.061] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-126, y=-21, z=-152} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:30:48.061] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-125, y=-21, z=-153} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:00.291] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-17, y=-28, z=-93} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:00.889] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-11, y=-28, z=-87} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:01.088] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=32, y=-46, z=-348} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:01.089] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=33, y=-46, z=-347} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:01.973] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-121, y=-15, z=-246} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:01.974] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-121, y=-15, z=-245} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:01.974] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-121, y=-15, z=-244} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:01.975] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-121, y=-14, z=-244} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:01.975] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-123, y=-15, z=-247} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:02.023] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-128, y=22, z=-302} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:02.025] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-125, y=22, z=-301} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:03.384] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-73, y=-18, z=-96} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:04.922] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=135, y=-13, z=-173} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:04.957] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=133, y=-18, z=-156} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:07.864] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-87, y=63, z=-343} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:07.865] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-91, y=15, z=-352} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:09.916] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=32, y=-12, z=-356} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:09.916] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=33, y=-12, z=-356} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:09.917] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=32, y=-12, z=-356} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:10.350] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=154, y=-23, z=-226} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:10.351] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=152, y=-23, z=-223} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:10.524] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=154, y=-29, z=-170} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:11.584] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-70, y=-45, z=-73} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:11.584] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-67, y=-45, z=-79} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:12.275] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-145, y=-5, z=-128} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:12.275] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-144, y=-5, z=-124} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:14.007] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-40, y=-34, z=-70} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:14.217] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#243: [codex/starter] poll for silvieserene: detected=none ticks_left=3000 Origins={"origins:class":"icraft:archmage","origins:gender":"origins_gender:female","origins:origin":"icraft:witch_of_ink","origins:race":"icraft:faefolk"}
+[21Apr2026 02:31:14.448] [Worker-Main-17/WARN] [net.minecraft.world.entity.EntityType/]: Skipping Entity with id guardvillagers:guard
+[21Apr2026 02:31:14.777] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-120, y=-50, z=-367} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:14.778] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-123, y=-50, z=-367} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.306] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-132, y=-23, z=-196} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.306] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-127, y=-23, z=-194} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.328] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-143, y=-10, z=-327} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.329] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-142, y=-10, z=-327} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.329] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-141, y=-10, z=-327} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.329] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-144, y=-10, z=-329} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.352] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-133, y=-30, z=-223} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.353] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-133, y=-30, z=-228} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:15.455] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=131, y=40, z=-363} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:16.859] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=144, y=-10, z=-332} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:16.859] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=145, y=-10, z=-332} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:16.860] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=145, y=-9, z=-332} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:16.860] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=146, y=-10, z=-332} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:16.861] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=146, y=-9, z=-332} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:16.861] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=143, y=-10, z=-335} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:17.749] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.750] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.751] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.751] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.751] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.751] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.752] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.752] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CEnumParameter
+[21Apr2026 02:31:17.752] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.752] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.752] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.752] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.753] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.753] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.753] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.753] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.754] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.754] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.754] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.755] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CEnumParameter
+[21Apr2026 02:31:17.755] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.755] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.756] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CEnumParameter
+[21Apr2026 02:31:17.756] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.756] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CEnumParameter
+[21Apr2026 02:31:17.756] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CEnumParameter
+[21Apr2026 02:31:17.756] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.757] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.757] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.757] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.757] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.758] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.758] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.758] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.758] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.758] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:17.759] [Server thread/WARN] [net.minecraft.network.syncher.SynchedEntityData/]: defineId called for: class forge.net.mca.entity.ZombieVillagerEntityMCA from class forge.net.mca.util.network.datasync.CDataParameter
+[21Apr2026 02:31:18.448] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=152, y=4, z=-117} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:18.449] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=153, y=4, z=-120} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:19.509] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=133, y=-28, z=-78} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:19.509] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=134, y=-28, z=-75} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:19.790] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:31:19.791] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:31:19.792] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:31:19.793] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[21Apr2026 02:31:19.794] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[21Apr2026 02:31:19.795] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[21Apr2026 02:31:19.795] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[21Apr2026 02:31:19.795] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[21Apr2026 02:31:19.795] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[21Apr2026 02:31:19.795] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[21Apr2026 02:31:19.795] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[21Apr2026 02:31:19.795] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:31:19.796] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:31:19.796] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:31:19.796] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:31:19.796] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:31:19.796] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:31:20.461] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 28425ms or 568 ticks behind
+[21Apr2026 02:31:22.645] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:22.646] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:22.646] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:31:22.646] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:31:22.646] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:22.647] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:31:22.648] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[21Apr2026 02:31:22.649] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[21Apr2026 02:31:22.650] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[21Apr2026 02:31:22.651] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:31:22.651] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:31:22.651] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:31:22.651] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:31:22.651] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:31:22.651] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:31:23.717] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:23.717] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:23.718] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:31:23.718] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:31:23.718] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:31:23.718] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:31:23.718] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:31:23.719] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:31:23.720] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[21Apr2026 02:31:23.721] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[21Apr2026 02:31:23.722] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[21Apr2026 02:31:23.722] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[21Apr2026 02:31:23.722] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[21Apr2026 02:31:23.722] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[21Apr2026 02:31:23.722] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[21Apr2026 02:31:23.722] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[21Apr2026 02:31:23.722] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[21Apr2026 02:31:23.723] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:31:23.723] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:31:23.723] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:31:23.723] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:31:23.723] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:31:23.723] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:31:34.153] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:34.153] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:31:34.154] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:31:34.155] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[21Apr2026 02:31:34.156] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:31:34.157] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:31:34.158] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:31:34.158] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:31:41.129] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 5693ms or 113 ticks behind
+[21Apr2026 02:31:41.909] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement ['X' Marks the Spot]
+[21Apr2026 02:31:43.539] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Simple Farming]
+[21Apr2026 02:31:43.940] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Tools of the Trade]
+[21Apr2026 02:31:50.656] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from VERY_HIGH (avg. 56.49299240112305) to NORMAL (avg. 43.865997314453125)
+[21Apr2026 02:31:53.220] [Server thread/INFO] [com.mojang.datafixers.DataFixerBuilder/]: 0 Datafixer optimizations took 0 milliseconds
+[21Apr2026 02:31:55.474] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#243: [codex/starter] poll for silvieserene: detected=none ticks_left=2400 Origins={"origins:class":"icraft:archmage","origins:gender":"origins_gender:female","origins:origin":"icraft:witch_of_ink","origins:race":"icraft:faefolk"}
+[21Apr2026 02:31:55.639] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Getting an Upgrade]
+[21Apr2026 02:31:57.659] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-56, y=37, z=-379} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:57.660] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-56, y=37, z=-383} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:57.860] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-112, y=-49, z=-367} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:57.860] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-114, y=-49, z=-373} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:58.108] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=22, y=-20, z=-378} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:58.514] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2429ms or 48 ticks behind
+[21Apr2026 02:31:59.750] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=145, y=-16, z=-381} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:31:59.752] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=142, y=-16, z=-378} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:07.701] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 43.865997314453125) to HIGH (avg. 51.86397171020508)
+[21Apr2026 02:32:14.561] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-100, y=-4, z=-390} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:14.561] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-104, y=-4, z=-390} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:14.562] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-96, y=-4, z=-391} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:14.562] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-99, y=-4, z=-394} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:14.771] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-68, y=-32, z=-385} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:14.824] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-51, y=22, z=-402} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:14.825] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-48, y=22, z=-401} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:15.094] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-35, y=-10, z=-385} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:15.519] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=31, y=-18, z=-390} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:15.520] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=33, y=-18, z=-385} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:15.765] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=53, y=26, z=-395} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:15.857] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from HIGH (avg. 51.86397171020508) to MEDIUM (avg. 48.78759765625)
+[21Apr2026 02:32:17.824] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:32:17.824] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:32:17.825] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:32:17.826] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[21Apr2026 02:32:17.827] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:32:17.828] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:32:18.365] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Amateur Archaeologist]
+[21Apr2026 02:32:19.536] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2001ms or 40 ticks behind
+[21Apr2026 02:32:28.022] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#243: [codex/starter] poll for silvieserene: detected=none ticks_left=1800 Origins={"origins:class":"icraft:archmage","origins:gender":"origins_gender:female","origins:origin":"icraft:witch_of_ink","origins:race":"icraft:faefolk"}
+[21Apr2026 02:32:37.728] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Magery]
+[21Apr2026 02:32:43.869] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-152, y=-10, z=-309} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:43.870] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-158, y=-10, z=-309} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:44.231] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-157, y=2, z=-286} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:44.231] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-160, y=2, z=-289} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:44.673] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-155, y=-7, z=-190} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:44.673] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-153, y=-7, z=-191} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:44.996] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-148, y=-18, z=-115} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:45.771] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-153, y=-17, z=-90} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:45.771] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-157, y=-17, z=-95} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:32:48.006] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from MEDIUM (avg. 47.58068084716797) to HIGH (avg. 50.746585845947266)
+[21Apr2026 02:32:53.569] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 2035ms or 40 ticks behind
+[21Apr2026 02:33:00.262] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#243: [codex/starter] poll for silvieserene: detected=none ticks_left=1200 Origins={"origins:class":"icraft:archmage","origins:gender":"origins_gender:female","origins:origin":"icraft:witch_of_ink","origins:race":"icraft:faefolk"}
+[21Apr2026 02:33:11.530] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from HIGH (avg. 54.53714370727539) to NORMAL (avg. 44.560855865478516)
+[21Apr2026 02:33:28.553] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Delightful Decade]
+[21Apr2026 02:33:29.803] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#243: [codex/starter] poll for silvieserene: detected=none ticks_left=600 Origins={"origins:class":"icraft:archmage","origins:gender":"origins_gender:female","origins:origin":"icraft:witch_of_ink","origins:race":"icraft:faefolk"}
+[21Apr2026 02:33:40.766] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 41.76620101928711) to MEDIUM (avg. 48.46941375732422)
+[21Apr2026 02:33:59.797] [Server thread/INFO] [KubeJS Server/]: codex_delivery.js#243: [codex/starter] poll for silvieserene: detected=none ticks_left=0 Origins={"origins:class":"icraft:archmage","origins:gender":"origins_gender:female","origins:origin":"icraft:witch_of_ink","origins:race":"icraft:faefolk"}
+[21Apr2026 02:34:01.907] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=175, y=32, z=-195} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:01.917] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=169, y=32, z=-201} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:01.919] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=169, y=-10, z=-201} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:01.920] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=163, y=-10, z=-207} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.145] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=170, y=-35, z=-368} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.159] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=173, y=26, z=-346} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.159] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=172, y=26, z=-343} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.161] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=178, y=-47, z=-348} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.161] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=177, y=-47, z=-348} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.161] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=178, y=-47, z=-348} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.173] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=162, y=-34, z=-361} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:03.433] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from MEDIUM (avg. 47.0437126159668) to HIGH (avg. 50.947265625)
+[21Apr2026 02:34:18.428] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=53, y=26, z=-401} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:20.090] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-133, y=-46, z=-400} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:20.099] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-128, y=-46, z=-406} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:20.236] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:34:20.237] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:34:20.237] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:34:20.237] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:34:20.237] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:34:20.237] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:34:20.237] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:34:20.238] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157582_(PersistentEntitySectionManager.java:1675)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157506_(PersistentEntitySectionManager.java:269)
+[21Apr2026 02:34:20.239] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:355)
+[21Apr2026 02:34:20.240] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:34:20.240] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:34:20.240] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:34:20.240] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:34:20.240] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:34:20.240] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:34:20.341] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=138, y=-38, z=-415} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:20.342] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=137, y=-38, z=-413} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:29.571] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-175, y=-13, z=-130} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:30.671] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-170, y=47, z=-376} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:30.671] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-167, y=47, z=-375} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:34:33.912] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from HIGH (avg. 50.577720642089844) to NORMAL (avg. 43.403343200683594)
+[21Apr2026 02:34:48.182] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 43.403343200683594) to LOW (avg. 39.581878662109375)
+[21Apr2026 02:34:54.589] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Janez'/133, l='ServerLevel[world]', x=-49.58, y=68.06, z=-204.34] died, message: 'Janez was slain by Gnome'
+[21Apr2026 02:34:55.728] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 39.581878662109375) to NORMAL (avg. 44.028812408447266)
+[21Apr2026 02:35:00.731] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:35:00.732] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:35:00.733] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[21Apr2026 02:35:00.734] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:35:00.735] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:35:10.917] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 44.028812408447266) to HIGH (avg. 49.47171401977539)
+[21Apr2026 02:35:17.472] [Server thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Klaudija'/167, l='ServerLevel[world]', x=-69.95, y=67.00, z=-200.03] died, message: 'Klaudija was slain by Gnome'
+[21Apr2026 02:35:18.535] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from HIGH (avg. 49.47171401977539) to NORMAL (avg. 45.01952362060547)
+[21Apr2026 02:35:20.392] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-64, y=-17, z=-431} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.393] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-65, y=-17, z=-431} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.393] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-64, y=-17, z=-431} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.407] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-101, y=22, z=-422} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.407] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-101, y=23, z=-422} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.407] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-100, y=22, z=-422} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.408] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-100, y=23, z=-422} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.408] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-99, y=22, z=-422} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.408] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-98, y=22, z=-420} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.476] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-120, y=-41, z=-428} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.476] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-117, y=-41, z=-429} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.492] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-141, y=-34, z=-427} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.493] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-138, y=-34, z=-430} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.493] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-137, y=9, z=-428} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.493] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-139, y=9, z=-427} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.621] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=92, y=0, z=-426} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:20.621] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=89, y=0, z=-428} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:26.237] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=173, y=-49, z=-427} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:31.269] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=179, y=-30, z=-319} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:31.270] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=181, y=-30, z=-318} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:31.334] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=181, y=-39, z=-302} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:31.335] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=184, y=-39, z=-303} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:31.733] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=181, y=-39, z=-156} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:31.759] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=175, y=-11, z=-172} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:31.760] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=174, y=-11, z=-168} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:32.073] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Wizard Tower]
+[21Apr2026 02:35:37.682] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-17, y=1, z=-447} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:37.683] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-16, y=1, z=-444} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:38.008] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=66, y=13, z=-440} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:38.011] [Worker-Main-2/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=76, y=-49, z=-442} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.577] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=198, y=29, z=-219} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.578] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=198, y=30, z=-219} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.578] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=199, y=29, z=-219} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.579] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=200, y=29, z=-219} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.593] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=199, y=-22, z=-243} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.594] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=205, y=-22, z=-237} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.920] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=197, y=-48, z=-282} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:40.921] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=205, y=-48, z=-284} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:41.009] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=201, y=-47, z=-319} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:41.010] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=202, y=-47, z=-320} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:44.204] [Worker-Main-16/WARN] [ModernFix/]: Skipped emitting ENTITY_MOUNT game event for entity Spider['Mother's Guards'/4086, l='ServerLevel[world]', x=70.30, y=-4.90, z=-459.30] as it would cause deadlock
+[21Apr2026 02:35:44.228] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=145, y=36, z=-456} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:44.409] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-57, y=30, z=-459} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:44.409] [Worker-Main-7/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-58, y=30, z=-462} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:44.495] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=16, y=-48, z=-465} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:44.495] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=16, y=-48, z=-457} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:35:49.197] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:35:49.197] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:35:49.198] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:35:49.198] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:35:49.198] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:35:49.198] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:35:49.198] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:35:49.198] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:35:49.199] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:35:49.200] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:35:49.201] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:35:49.201] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:35:49.201] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:35:49.201] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:35:49.201] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157582_(PersistentEntitySectionManager.java:1675)
+[21Apr2026 02:35:49.201] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157506_(PersistentEntitySectionManager.java:269)
+[21Apr2026 02:35:49.201] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:355)
+[21Apr2026 02:35:49.202] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:35:49.202] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:35:49.202] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:35:49.202] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:35:49.202] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:35:49.202] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:36:09.082] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=206, y=-50, z=-161} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:09.082] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=207, y=-50, z=-161} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:09.083] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=207, y=-49, z=-161} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:09.083] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=208, y=-50, z=-161} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:09.083] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=208, y=-49, z=-161} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:09.084] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=209, y=-50, z=-163} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:09.084] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=202, y=-50, z=-164} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:09.085] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=199, y=-50, z=-162} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:26.767] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene was slain by Dr. Mudi Schnoz
+[21Apr2026 02:36:28.691] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:36:28.691] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:36:28.691] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:36:28.692] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157582_(PersistentEntitySectionManager.java:1675)
+[21Apr2026 02:36:28.693] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157506_(PersistentEntitySectionManager.java:269)
+[21Apr2026 02:36:28.694] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:355)
+[21Apr2026 02:36:28.694] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:36:28.694] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:36:28.694] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:36:28.694] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:36:28.694] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:36:28.694] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:36:28.696] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:36:28.697] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:36:28.698] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157582_(PersistentEntitySectionManager.java:1675)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157506_(PersistentEntitySectionManager.java:269)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:355)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:36:28.699] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:36:34.070] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 41.85420227050781) to HIGH (avg. 52.507354736328125)
+[21Apr2026 02:36:48.179] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from HIGH (avg. 52.507354736328125) to NORMAL (avg. 41.33030319213867)
+[21Apr2026 02:36:56.758] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=15, y=-26, z=-60} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:56.759] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=17, y=-26, z=-60} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:56.926] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-45, y=17, z=-58} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:56.927] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=-44, y=17, z=-61} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:57.013] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=78, y=-40, z=-54} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:36:57.013] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=77, y=-40, z=-56} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:03.178] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 41.33030319213867) to LOW (avg. 37.04411697387695)
+[21Apr2026 02:37:03.816] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=203, y=-16, z=-134} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:03.817] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=207, y=-16, z=-135} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:06.909] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=222, y=33, z=-282} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:06.909] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=222, y=33, z=-281} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:06.910] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=222, y=33, z=-280} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:06.910] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=219, y=33, z=-279} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:07.966] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=229, y=44, z=-201} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:08.017] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=235, y=4, z=-211} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:08.018] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=238, y=4, z=-209} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:08.112] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=238, y=-29, z=-120} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:08.113] [Worker-Main-18/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=241, y=-29, z=-124} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:08.135] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=204, y=-19, z=-106} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:08.845] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=219, y=-25, z=-302} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:08.845] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=216, y=-25, z=-299} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:09.230] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=168, y=12, z=-94} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:09.288] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=203, y=7, z=-88} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:09.289] [Worker-Main-16/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=204, y=7, z=-87} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:09.313] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=176, y=-52, z=-93} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:11.262] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 37.04411697387695) to MEDIUM (avg. 46.93824005126953)
+[21Apr2026 02:37:12.242] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=222, y=-24, z=-319} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:12.243] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=217, y=-40, z=-326} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:12.243] [Worker-Main-5/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=219, y=-40, z=-330} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:12.804] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=232, y=-11, z=-337} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:12.805] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=234, y=-11, z=-337} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:12.818] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=233, y=-2, z=-344} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:16.310] [Worker-Main-1/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=245, y=27, z=-230} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:16.338] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=252, y=-44, z=-342} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:16.339] [Worker-Main-17/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=253, y=-44, z=-343} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:16.535] [Worker-Main-9/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=245, y=27, z=-224} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:16.636] [Worker-Main-11/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=241, y=44, z=-204} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:16.701] [Worker-Main-6/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=241, y=27, z=-189} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:37:19.100] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from MEDIUM (avg. 46.93824005126953) to NORMAL (avg. 40.913177490234375)
+[21Apr2026 02:37:20.720] [Server thread/ERROR] [KubeJS Server/]: Error in 'EntityEvents.spawned': Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:37:20.721] [Server thread/ERROR] [KubeJS Server/]: java.lang.AbstractMethodError: Method io/redspace/ironsspellbooks/entity/mobs/necromancer/NecromancerEntity.getItemBySlot(Lnet/minecraft/world/entity/EquipmentSlot;)Lnet/minecraft/world/item/ItemStack; is abstract
+[21Apr2026 02:37:20.721] [Server thread/ERROR] [KubeJS Server/]:   at io.redspace.ironsspellbooks.entity.mobs.necromancer.NecromancerEntity.getItemBySlot(NecromancerEntity.java)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.reflect.Method.invoke(Method.java:569)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.doTopCall(Context.java:1374)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[21Apr2026 02:37:20.722] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.Context.callSync(Context.java:1357)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy196.onEvent(Unknown Source)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at …kubejs.entity.KubeJSEntityEventHandler.entitySpawned(KubeJSEntityEventHandler.java:42)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:236)
+[21Apr2026 02:37:20.723] [Server thread/ERROR] [KubeJS Server/]:   at dev.architectury.event.forge.__EventHandlerImplCommon_event_EntityJoinLevelEvent.invoke(.dynamic)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157538_(PersistentEntitySectionManager.java:79)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.entity.PersistentEntitySectionManager.m_157533_(PersistentEntitySectionManager.java:71)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8872_(ServerLevel.java:860)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_7967_(ServerLevel.java:815)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.Streams$StreamBuilderImpl.forEachRemaining(Streams.java:411)
+[21Apr2026 02:37:20.724] [Server thread/ERROR] [KubeJS Server/]:   at java.util.stream.ReferencePipeline$Head.forEach(ReferencePipeline.java:762)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.ServerLevelAccessor.m_47205_(ServerLevelAccessor.java:11)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47038_(NaturalSpawner.java:179)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47045_(NaturalSpawner.java:118)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.world.level.NaturalSpawner.m_47029_(NaturalSpawner.java:108)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_8490_(ServerChunkCache.java:358)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerChunkCache.m_201698_(ServerChunkCache.java:312)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:305)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[21Apr2026 02:37:20.725] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[21Apr2026 02:37:20.726] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[21Apr2026 02:37:20.726] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[21Apr2026 02:37:20.726] [Server thread/ERROR] [KubeJS Server/]:   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[21Apr2026 02:37:20.726] [Server thread/ERROR] [KubeJS Server/]:   at java.lang.Thread.run(Thread.java:840)
+[21Apr2026 02:37:25.967] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 40.913177490234375) to MEDIUM (avg. 47.64120864868164)
+[21Apr2026 02:37:33.178] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from MEDIUM (avg. 47.64120864868164) to NORMAL (avg. 42.175079345703125)
+[21Apr2026 02:37:41.863] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene has made the advancement [Acquire Hardware]
+[21Apr2026 02:37:48.177] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 42.175079345703125) to LOW (avg. 39.03827667236328)
+[21Apr2026 02:38:03.812] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=252, y=-37, z=-159} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:38:03.812] [Worker-Main-8/ERROR] [noobanidus.mods.lootr.api.LootrAPI/]: Block entity at BlockPos{x=246, y=-37, z=-162} had its loot table set before its level was set. It's not possible to determine its dimension, so presuming the overworld.
+[21Apr2026 02:38:08.160] [Server thread/INFO] [net.minecraft.server.network.ServerGamePacketListenerImpl/]: silvieserene lost connection: Disconnected
+[21Apr2026 02:38:08.161] [Server thread/INFO] [net.minecraft.server.MinecraftServer/]: silvieserene left the game
+[21Apr2026 02:38:08.165] [Server thread/INFO] [xaero.pac.OpenPartiesAndClaims/]: Updating all forceload tickets for 7f115983-f49f-3639-abb2-bc6bdb6e831e
+[21Apr2026 02:38:08.167] [Server thread/INFO] [voicechat/]: [voicechat] Disconnecting client silvieserene
+[21Apr2026 02:38:18.176] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from LOW (avg. 39.561161041259766) to VERY_LOW (avg. 1.375104546546936)

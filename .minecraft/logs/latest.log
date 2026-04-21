@@ -6669,3 +6669,1024 @@ java.util.NoSuchElementException: No value present
 [21Apr2026 01:48:01.335] [Render thread/WARN] [structurize/]: Client logged off. Resetting Pack Meta and Reloading State
 [21Apr2026 01:48:01.337] [Structurize IO Worker #0/INFO] [structurize/]: Registered structure pack: silvieserene
 [21Apr2026 01:48:01.337] [Structurize IO Worker #0/WARN] [structurize/]: Finished discovering Client Structure packs
+[21Apr2026 02:27:41.266] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[21Apr2026 02:27:41.266] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[21Apr2026 02:27:41.283] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
+[21Apr2026 02:27:41.284] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to 10.0.0.10, 25565
+[21Apr2026 02:29:34.157] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[21Apr2026 02:29:34.158] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[21Apr2026 02:29:34.161] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
+[21Apr2026 02:29:34.162] [Render thread/INFO] [net.minecraft.client.gui.screens.ConnectScreen/]: Connecting to 10.0.0.10, 25565
+[21Apr2026 02:29:38.894] [Netty Client IO #4/INFO] [Puzzles Lib/]: Reloading server config for mutantmonsters
+[21Apr2026 02:29:39.193] [Netty Client IO #4/WARN] [net.minecraftforge.common.ForgeConfigSpec/CORE]: Configuration file SimpleCommentedConfig:{biggerstacks=SimpleCommentedConfig:{Increase transfer rate=true}} is not correct. Correcting
+[21Apr2026 02:29:40.094] [Netty Client IO #4/INFO] [Puzzles Lib/]: Reloading server config for easyanvils
+[21Apr2026 02:29:42.594] [Netty Client IO #4/INFO] [quickstack/]: [quickstack]: Configuration changed.
+[21Apr2026 02:29:44.193] [Netty Client IO #4/INFO] [Puzzles Lib/]: Reloading server config for easymagic
+[21Apr2026 02:29:44.343] [Netty Client IO #4/INFO] [FluxNetworks/Energy]: Energy blacklist loaded: 1 block entries, 0 item entries
+[21Apr2026 02:29:45.244] [Netty Client IO #4/INFO] [com.tom.createores.CreateOreExcavation/]: Create Ore Excavation config just got changed on the file system!
+[21Apr2026 02:29:46.543] [Netty Client IO #4/INFO] [net.minecraftforge.network.NetworkHooks/]: Connected to a modded server.
+[21Apr2026 02:29:47.547] [Render thread/INFO] [Oculus/]: Reloading pipeline on dimension change: NamespacedId{namespace='minecraft', name='overworld'} => NamespacedId{namespace='minecraft', name='overworld'}
+[21Apr2026 02:29:47.547] [Render thread/INFO] [Oculus/]: Destroying pipeline NamespacedId{namespace='minecraft', name='overworld'}
+[21Apr2026 02:29:47.547] [Render thread/INFO] [Oculus/]: Creating pipeline for dimension NamespacedId{namespace='minecraft', name='overworld'}
+[21Apr2026 02:29:47.550] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:aberration could not find uniform named InSize in the specified shader program.
+[21Apr2026 02:29:47.555] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:cel could not find sampler named DiffuseDepthSampler in the specified shader program.
+[21Apr2026 02:29:47.555] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:cel could not find uniform named EstrogenFarPlane in the specified shader program.
+[21Apr2026 02:29:47.562] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:aberration could not find uniform named InSize in the specified shader program.
+[21Apr2026 02:29:47.564] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:cel could not find sampler named DiffuseDepthSampler in the specified shader program.
+[21Apr2026 02:29:47.564] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:cel could not find uniform named EstrogenFarPlane in the specified shader program.
+[21Apr2026 02:29:47.566] [Render thread/INFO] [ChunkBuilder/]: Started 2 worker threads
+[21Apr2026 02:29:47.569] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Just Enough Resources 1.20.1-1.4.0.247 Release is broken on servers. Please Remove it.
+[21Apr2026 02:29:47.569] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] For more information you can read this
+[21Apr2026 02:29:47.569] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] This message was sent by Truly Modular.
+[21Apr2026 02:29:47.570] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received class net.minecraftforge.client.event.ClientPlayerNetworkEvent$LoggingIn
+[21Apr2026 02:29:47.570] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from DISABLED to ENABLED
+[21Apr2026 02:29:47.571] [Render thread/INFO] [voicechat/]: [voicechat] Sending secret request to the server
+[21Apr2026 02:29:47.571] [Render thread/WARN] [voicechat/]: [voicechat] Failed to open audio device 'OpenAL Soft on Realtek HD Audio 2nd output (Realtek(R) Audio)', falling back to default
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: Initializing sound physics for voice chat audio
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: Initializing Sound Physics
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: EFX Extension recognized
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: Max auxiliary sends: 2
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: Aux slot 1 created
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: Aux slot 2 created
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: Aux slot 3 created
+[21Apr2026 02:29:47.587] [Render thread/INFO] [Sound Physics - General/]: Aux slot 4 created
+[21Apr2026 02:29:47.588] [Render thread/INFO] [Sound Physics - General/]: EFX ready
+[21Apr2026 02:29:47.588] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] ProbeJS is enabled! You should exclude .probe generated when you finished development, and disable the mod by: /probejs disable
+[21Apr2026 02:29:47.608] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Congratulations! Your code passed linting!
+[21Apr2026 02:29:47.608] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] To learn about how to use ProbeJS (or report issue), please go to the Github Page
+[21Apr2026 02:29:47.612] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 1593 de.melanx.jea.api.client.IAdvancementInfo
+[21Apr2026 02:29:47.614] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being added at runtime: 1593 de.melanx.jea.api.client.IAdvancementInfo
+[21Apr2026 02:29:47.617] [Render thread/INFO] [io.redspace.ironsspellbooks.IronsSpellbooks/]: Handling spell config sync 0 files
+[21Apr2026 02:29:47.618] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] [Mekanism] Broken tags in Mekanism recipes detected, please check server logs for details. You will be missing some recipes and machines may not accept expected inputs.
+[21Apr2026 02:29:47.618] [Render thread/INFO] [ModdingLegacy/blue_skies/]: Recieved ToolHandleTypeManager from the server
+[21Apr2026 02:29:47.618] [Render thread/INFO] [ModdingLegacy/blue_skies/]: Recieved SnowcapOvenFreezingManager from the server
+[21Apr2026 02:29:47.618] [Render thread/INFO] [ModdingLegacy/blue_skies/]: Recieved HorizoniteForgeFuelManager from the server
+[21Apr2026 02:29:47.618] [Render thread/INFO] [ModdingLegacy/blue_skies/]: Recieved AlchemyRecipeManager from the server
+[21Apr2026 02:29:47.618] [Render thread/INFO] [ModdingLegacy/blue_skies/]: Recieved JournalEntryManager from the server
+[21Apr2026 02:29:47.618] [Render thread/INFO] [ModdingLegacy/blue_skies/]: Recieved JournalSectionManager from the server
+[21Apr2026 02:29:47.618] [Render thread/INFO] [ModdingLegacy/blue_skies/]: Recieved JournalRequirementManager from the server
+[21Apr2026 02:29:47.619] [Render thread/INFO] [Supplementaries/]: Synced Flute Songs
+[21Apr2026 02:29:47.619] [Render thread/INFO] [Supplementaries/]: Synced Captured Mobs settings
+[21Apr2026 02:29:47.619] [Render thread/INFO] [Supplementaries/]: Synced Globe data
+[21Apr2026 02:29:47.619] [Render thread/INFO] [Supplementaries/]: Synced Hourglass data
+[21Apr2026 02:29:47.619] [Render thread/INFO] [placebo/]: Starting sync for enchanting_stats
+[21Apr2026 02:29:47.619] [Render thread/INFO] [Apotheosis : Enchantment/]: Registered 31 enchanting_stats.
+[21Apr2026 02:29:47.619] [Render thread/INFO] [placebo/]: Starting sync for rarities
+[21Apr2026 02:29:47.620] [Render thread/INFO] [Apotheosis : Adventure/]: Registered 6 rarities.
+[21Apr2026 02:29:47.620] [Render thread/INFO] [placebo/]: Starting sync for affixes
+[21Apr2026 02:29:47.623] [Render thread/INFO] [Apotheosis : Adventure/]: Registered 136 affixes.
+[21Apr2026 02:29:47.624] [Render thread/WARN] [Apotheosis : Adventure/]: Insufficient number of affixes to satisfy the loot rules (ignoring backup rules) of rarity apotheosis:mythic for category helmetRequired: 3; Provided: 2
+[21Apr2026 02:29:47.624] [Render thread/WARN] [Apotheosis : Adventure/]: Insufficient number of affixes to satisfy the loot rules (ignoring backup rules) of rarity apotheosis:mythic for category bootsRequired: 3; Provided: 2
+[21Apr2026 02:29:47.624] [Render thread/WARN] [Apotheosis : Adventure/]: Insufficient number of affixes to satisfy the loot rules (ignoring backup rules) of rarity apotheosis:ancient for category helmetRequired: 4; Provided: 2
+[21Apr2026 02:29:47.624] [Render thread/WARN] [Apotheosis : Adventure/]: Insufficient number of affixes to satisfy the loot rules (ignoring backup rules) of rarity apotheosis:ancient for category bootsRequired: 4; Provided: 2
+[21Apr2026 02:29:47.624] [Render thread/WARN] [Apotheosis : Adventure/]: Insufficient number of affixes to satisfy the loot rules (ignoring backup rules) of rarity apotheosis:ancient for category pickaxeRequired: 5; Provided: 4
+[21Apr2026 02:29:47.624] [Render thread/WARN] [Apotheosis : Adventure/]: Insufficient number of affixes to satisfy the loot rules (ignoring backup rules) of rarity apotheosis:ancient for category shovelRequired: 5; Provided: 4
+[21Apr2026 02:29:47.624] [Render thread/INFO] [placebo/]: Starting sync for gems
+[21Apr2026 02:29:47.626] [Render thread/INFO] [Apotheosis : Adventure/]: Registered 34 gems.
+[21Apr2026 02:29:47.626] [Render thread/INFO] [Iron Jetpacks/]: Loaded 14 jetpacks from the server
+[21Apr2026 02:29:47.641] [Render thread/INFO] [dev.corgitaco.enhancedcelestials.EnhancedCelestials/]: Possible lunar events for dimension "minecraft:overworld" are [enhancedcelestials:super_harvest_moon, enhancedcelestials:harvest_moon, enhancedcelestials:super_blood_moon, enhancedcelestials:super_blue_moon, enhancedcelestials:blood_moon, enhancedcelestials:super_moon, enhancedcelestials:blue_moon].
+[21Apr2026 02:29:47.700] [Render thread/INFO] [inventoryhud/]: Curios has been initialized with 35 slot(s) after 1 tries
+[21Apr2026 02:29:48.708] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/electrum_ingot recipe (createaddition:rolling/electrum_ingot) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:48.718] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/electrum_plate recipe (createaddition:rolling/electrum_plate) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:48.943] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/gold_ingot recipe (createaddition:rolling/gold_ingot) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:48.949] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/straw recipe (createaddition:rolling/straw) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:49.030] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/copper_ingot recipe (createaddition:rolling/copper_ingot) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:49.274] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/iron_ingot recipe (createaddition:rolling/iron_ingot) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:49.352] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/brass_ingot recipe (createaddition:rolling/brass_ingot) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:49.614] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/iron_plate recipe (createaddition:rolling/iron_plate) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:49.626] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/gold_plate recipe (createaddition:rolling/gold_plate) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:49.807] [Netty Client IO #4/WARN] [com.simibubi.create.Create/]: Your custom createaddition:rolling/copper_plate recipe (createaddition:rolling/copper_plate) specified a duration. Durations have no impact on this type of recipe.
+[21Apr2026 02:29:49.830] [Netty Client IO #4/INFO] [net.bettercombat.logic.WeaponRegistry/]: Decoded and decompressed Weapon Attribute registry in 2 string chunks
+[21Apr2026 02:29:49.842] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/the_immolator
+[21Apr2026 02:29:49.843] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/arcane_crystal_dust_from_clibano_combusting
+[21Apr2026 02:29:49.843] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@2882b731=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_freeze_rcp
+[21Apr2026 02:29:49.844] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@5f1950ac=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ender_powder_rcp
+[21Apr2026 02:29:49.844] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@2bdb8314=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:immortal_substance_rcp
+[21Apr2026 02:29:49.845] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@3f71a25=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:wine
+[21Apr2026 02:29:49.845] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@3ef11e55=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:mead
+[21Apr2026 02:29:49.846] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@2bf8b517=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:aurel_crystal_rcp
+[21Apr2026 02:29:49.846] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@5ccc405f=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:beer
+[21Apr2026 02:29:49.846] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@67515fd1=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:somnium_upgrade_usage_rcp
+[21Apr2026 02:29:49.847] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/arcane_crystal_from_clibano_combusting
+[21Apr2026 02:29:49.847] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@51e4f6d8=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:cider
+[21Apr2026 02:29:49.847] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@3fdaa1fe=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_home_rcp
+[21Apr2026 02:29:49.848] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/gauntlet_of_maelstrom
+[21Apr2026 02:29:49.848] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@12ad0e2=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:sake
+[21Apr2026 02:29:49.848] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@6ce8a8c1=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_slide_rcp
+[21Apr2026 02:29:49.848] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@1accc1b2=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_jugger_rcp
+[21Apr2026 02:29:49.849] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/coal_from_clibano_combusting
+[21Apr2026 02:29:49.849] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/deorum_nugget_from_clibano_combusting
+[21Apr2026 02:29:49.850] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@70f34644=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_speed_rcp
+[21Apr2026 02:29:49.850] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: apotheosis:fletching/apotheosis:fletching/explosive_arrow
+[21Apr2026 02:29:49.850] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@27093578=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_electro_rcp
+[21Apr2026 02:29:49.851] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/void_forge
+[21Apr2026 02:29:49.851] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/wrath_of_the_desert
+[21Apr2026 02:29:49.852] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@e8e2ff8=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:frost_crystal_rcp
+[21Apr2026 02:29:49.853] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@7233aeca=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:tenebris_powder_rcp
+[21Apr2026 02:29:49.854] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/ignitium_elytra_chestplate
+[21Apr2026 02:29:49.854] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: apotheosis:fletching/apotheosis:fletching/arrow
+[21Apr2026 02:29:49.854] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: apotheosis:fletching/apotheosis:fletching/obsidian_arrow
+[21Apr2026 02:29:49.856] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@189817ae=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:anti_infection_rcp
+[21Apr2026 02:29:49.856] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@76d45330=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_pocket_box_rcp
+[21Apr2026 02:29:49.856] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@9da43fd=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ender_crystal_rcp
+[21Apr2026 02:29:49.857] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@66f0e9f2=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_firestorm_rcp
+[21Apr2026 02:29:49.858] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@3e8db7e5=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:frost_powder_rcp
+[21Apr2026 02:29:49.858] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/diamond_from_clibano_combusting
+[21Apr2026 02:29:49.860] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@6a143ed7=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:anti_fear_essence_rcp
+[21Apr2026 02:29:49.860] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@318a5dc3=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_thunder_rcp
+[21Apr2026 02:29:49.861] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/copper_ingot_from_clibano_combusting
+[21Apr2026 02:29:49.862] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:purple_squash_from_blue_squash
+[21Apr2026 02:29:49.862] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: brewinandchewin:fermenting/culturaldelights:fermenting/pickle
+[21Apr2026 02:29:49.862] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: apotheosis:fletching/apotheosis:fletching/iron_mining_arrow
+[21Apr2026 02:29:49.862] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/gauntlet_of_bulwark
+[21Apr2026 02:29:49.863] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@50549d79=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:warped_crystal_rcp
+[21Apr2026 02:29:49.864] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:golden_dart_from_poison
+[21Apr2026 02:29:49.864] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@3b53a09=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:lurker_juice_rcp
+[21Apr2026 02:29:49.864] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@489c4e2e=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_nature_rcp
+[21Apr2026 02:29:49.865] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@2b9b66bb=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:aurel_powder_rcp
+[21Apr2026 02:29:49.865] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@5fd089e4=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:crimson_crystal_rcp
+[21Apr2026 02:29:49.865] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:skyroot_poison_bucket_from_poison
+[21Apr2026 02:29:49.866] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/iron_ingot_from_clibano_combusting
+[21Apr2026 02:29:49.866] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@759f8565=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_flight_rcp
+[21Apr2026 02:29:49.866] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@5fd848c6=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:warped_powder_rcp
+[21Apr2026 02:29:49.867] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: apotheosis:fletching/apotheosis:fletching/diamond_mining_arrow
+[21Apr2026 02:29:49.867] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@2f865338=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:somnium_upgrade_cooldown_rcp
+[21Apr2026 02:29:49.867] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/void_assault_shoulder_weapon
+[21Apr2026 02:29:49.868] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@74427085=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:vit_powder_rcp
+[21Apr2026 02:29:49.868] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:gravitite_ore_from_poison
+[21Apr2026 02:29:49.868] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@7dff77c5=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:somnium_upgrade_damage_rcp
+[21Apr2026 02:29:49.869] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@60fc8ec4=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_fire_rcp
+[21Apr2026 02:29:49.869] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@7d7e0e70=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ardor_powder_rcp
+[21Apr2026 02:29:49.869] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@1a5f8f02=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:hollow_crystal_rcp
+[21Apr2026 02:29:49.869] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/iron_ingot_from_clibano_combusting_raw_iron
+[21Apr2026 02:29:49.869] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@1c1892d3=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_invisibility_rcp
+[21Apr2026 02:29:49.870] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/gold_ingot_from_clibano_combusting
+[21Apr2026 02:29:49.870] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@1816b53a=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:somnium_upgrade_regen_rcp
+[21Apr2026 02:29:49.870] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/lapis_lazuli_from_clibano_combusting
+[21Apr2026 02:29:49.871] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@151625c6=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_telekinetic_rcp
+[21Apr2026 02:29:49.872] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/copper_ingot_from_clibano_combusting_raw_copper
+[21Apr2026 02:29:49.872] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@73d78ff9=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_seeker_rcp
+[21Apr2026 02:29:49.873] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@2b81055a=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_teleport_rcp
+[21Apr2026 02:29:49.873] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@613ca75=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:fear_powder_rcp
+[21Apr2026 02:29:49.873] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: cataclysm:weapon_fusion/cataclysm:weapon_infusion/brontes
+[21Apr2026 02:29:49.875] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@220ff764=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_firestrike_rcp
+[21Apr2026 02:29:49.876] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@6d680c9b=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_curse_rcp
+[21Apr2026 02:29:49.876] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/gold_ingot_from_clibano_combusting_raw_gold
+[21Apr2026 02:29:49.878] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@4e607fb9=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:caverna_powder_rcp
+[21Apr2026 02:29:49.879] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@56384462=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:cauim
+[21Apr2026 02:29:49.879] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:purple_squash_from_green_squash
+[21Apr2026 02:29:49.880] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@b513d16=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_fangs_rcp
+[21Apr2026 02:29:49.880] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@2670e433=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:hollow_powder_rcp
+[21Apr2026 02:29:49.881] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@6b20caf3=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:abyss_powder_rcp
+[21Apr2026 02:29:49.881] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@7f2f98a1=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_blackstrike_rcp
+[21Apr2026 02:29:49.882] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@7d14b3df=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_regen_rcp
+[21Apr2026 02:29:49.882] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@5ce49132=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:crimson_powder_rcp
+[21Apr2026 02:29:49.882] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@317eaf0f=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:caverna_crystal_rcp
+[21Apr2026 02:29:49.882] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:blueberry_from_poison
+[21Apr2026 02:29:49.882] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@3217d311=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:abyss_crystal_rcp
+[21Apr2026 02:29:49.883] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:quicksoil_from_poison
+[21Apr2026 02:29:49.883] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/rune_from_clibano_combusting
+[21Apr2026 02:29:49.883] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@6a4504c7=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_eagle_rcp
+[21Apr2026 02:29:49.883] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: deep_aether:poison_recipe/deep_aether:holystone_from_poison
+[21Apr2026 02:29:49.883] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/emerald_from_clibano_combusting
+[21Apr2026 02:29:49.884] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: apotheosis:fletching/apotheosis:fletching/spectral_arrow
+[21Apr2026 02:29:49.884] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: apotheosis:fletching/apotheosis:fletching/broadhead_arrow
+[21Apr2026 02:29:49.884] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: forbidden_arcanus:clibano_combustion/forbidden_arcanus:clibano_combustion/netherite_scrap_from_clibano_combusting
+[21Apr2026 02:29:49.884] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: estrogen:entity_interaction/estrogen:entity_interaction/horse_urine_bottle
+[21Apr2026 02:29:49.884] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@12d065bc=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_time_rcp
+[21Apr2026 02:29:49.885] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@5612a63e=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:tiswin
+[21Apr2026 02:29:49.885] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@5a9178b6=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:vodka
+[21Apr2026 02:29:49.886] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@18b02c1f=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/theabyss:ring_of_ocean_rcp
+[21Apr2026 02:29:49.886] [Render thread/WARN] [net.minecraft.client.ClientRecipeBook/]: Unknown recipe category: [!!!com.mojang.logging.LogUtils$1ToString@95c5730=>java.lang.NullPointerException:Cannot invoke "Object.toString()" because the return value of "java.util.function.Supplier.get()" is null!!!]/simplefarming:whiskey
+[21Apr2026 02:29:49.891] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received class net.minecraftforge.client.event.RecipesUpdatedEvent
+[21Apr2026 02:29:50.270] [Render thread/INFO] [Modonomicon/]: Building books ...
+[21Apr2026 02:29:50.270] [Render thread/INFO] [Modonomicon/]: Books built.
+[21Apr2026 02:29:50.270] [Render thread/INFO] [Modonomicon/]: Pre-rendering markdown ...
+[21Apr2026 02:29:50.287] [Render thread/INFO] [Modonomicon/]: Finished pre-rendering markdown.
+[21Apr2026 02:29:50.365] [Render thread/ERROR] [Moonlight/]: Failed to restore original behavior for item: lunch_basket, net.mehvahdjukaar.moonlight.api.util.DispenserHelper$PlaceBlockDispenseBehavior@5e9d0978
+[21Apr2026 02:29:50.421] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received class net.minecraftforge.event.TagsUpdatedEvent
+[21Apr2026 02:29:50.421] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from ENABLED to JEI_STARTED
+[21Apr2026 02:29:50.421] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Starting JEI...
+[21Apr2026 02:29:50.421] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes...
+[21Apr2026 02:29:50.424] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering item subtypes took 3.434 ms
+[21Apr2026 02:29:50.424] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes...
+[21Apr2026 02:29:50.425] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering fluid subtypes took 451.2 ?s
+[21Apr2026 02:29:50.425] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients...
+[21Apr2026 02:29:50.504] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.504] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.504] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.504] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.505] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.505] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: java.lang.RuntimeException: Creative tab placement misses exceeded failsafe, aborting logic
+[21Apr2026 02:29:50.505] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/zeta@1.0-31/org.violetmoon.zeta.registry.CreativeTabManager.buildContents(CreativeTabManager.java:173)
+[21Apr2026 02:29:50.505] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260)
+[21Apr2026 02:29:50.505] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252)
+[21Apr2026 02:29:50.505] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/javafmllanguage@1.20.1-47.4.6/net.minecraftforge.fml.javafmlmod.FMLModContainer.acceptEvent(FMLModContainer.java:121)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/fmlcore@1.20.1-47.4.6/net.minecraftforge.fml.ModLoader.lambda$postEvent$29(ModLoader.java:326)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/fmlcore@1.20.1-47.4.6/net.minecraftforge.fml.ModList.forEachModInOrder(ModList.java:227)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/fmlcore@1.20.1-47.4.6/net.minecraftforge.fml.ModLoader.postEvent(ModLoader.java:326)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/forge@47.4.6/net.minecraftforge.common.ForgeHooks.onCreativeModeTabBuildContents(ForgeHooks.java:1634)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.m_269498_$mixinextras$wrapped$36(CreativeModeTab.java:129)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.mixinextras$bridge$m_269498_$mixinextras$wrapped$36$37(CreativeModeTab.java)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.wrapMethod$zhd000$modernfix$buildContentsIfChanged(CreativeModeTab.java:532)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.m_269498_(CreativeModeTab.java)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory.create(ItemStackListFactory.java:80)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.plugins.vanilla.VanillaPlugin.registerIngredients(VanillaPlugin.java:168)
+[21Apr2026 02:29:50.506] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.load.PluginLoader.lambda$registerIngredients$2(PluginLoader.java:79)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.load.PluginLoader.registerIngredients(PluginLoader.java:79)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:106)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718)
+[21Apr2026 02:29:50.507] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.main.Main.main(Main.java:218)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.6/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.6/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.6/net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.Launcher.run(Launcher.java:108)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.Launcher.main(Launcher.java:78)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at cpw.mods.bootstraplauncher@1.1.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129)
+[21Apr2026 02:29:50.508] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70)
+[21Apr2026 02:29:50.509] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.509] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: Creative tab loop found when adding Block{quark:monster_box} next to Block{minecraft:spawner}
+[21Apr2026 02:29:50.510] [Render thread/ERROR] [zeta/]: For more info enable Creative Verbose Logging in the Zeta config, or set Force Creative Tab Appends to true to disable this behavior
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: java.lang.RuntimeException: Creative tab placement misses exceeded failsafe, aborting logic
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/zeta@1.0-31/org.violetmoon.zeta.registry.CreativeTabManager.buildContents(CreativeTabManager.java:173)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/javafmllanguage@1.20.1-47.4.6/net.minecraftforge.fml.javafmlmod.FMLModContainer.acceptEvent(FMLModContainer.java:121)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/fmlcore@1.20.1-47.4.6/net.minecraftforge.fml.ModLoader.lambda$postEvent$29(ModLoader.java:326)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/java.lang.Iterable.forEach(Iterable.java:75)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/fmlcore@1.20.1-47.4.6/net.minecraftforge.fml.ModList.forEachModInOrder(ModList.java:227)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at LAYER PLUGIN/fmlcore@1.20.1-47.4.6/net.minecraftforge.fml.ModLoader.postEvent(ModLoader.java:326)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/forge@47.4.6/net.minecraftforge.common.ForgeHooks.onCreativeModeTabBuildContents(ForgeHooks.java:1634)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.m_269498_$mixinextras$wrapped$36(CreativeModeTab.java:129)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.mixinextras$bridge$m_269498_$mixinextras$wrapped$36$37(CreativeModeTab.java)
+[21Apr2026 02:29:50.510] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.wrapMethod$zhd000$modernfix$buildContentsIfChanged(CreativeModeTab.java:532)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.world.item.CreativeModeTab.m_269498_(CreativeModeTab.java)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory.create(ItemStackListFactory.java:80)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.plugins.vanilla.VanillaPlugin.registerIngredients(VanillaPlugin.java:168)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.load.PluginLoader.lambda$registerIngredients$2(PluginLoader.java:79)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.load.PluginLoader.registerIngredients(PluginLoader.java:79)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:106)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/jei@15.20.0.129/mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at TRANSFORMER/minecraft@1.20.1/net.minecraft.client.main.Main.main(Main.java:218)
+[21Apr2026 02:29:50.511] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.6/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.6/net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/fmlloader@1.20.1-47.4.6/net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.Launcher.run(Launcher.java:108)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.Launcher.main(Launcher.java:78)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at MC-BOOTSTRAP/cpw.mods.modlauncher@10.0.9/cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at cpw.mods.bootstraplauncher@1.1.2/cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at java.base/java.lang.reflect.Method.invoke(Method.java:568)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115)
+[21Apr2026 02:29:50.512] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129)
+[21Apr2026 02:29:50.513] [Render thread/INFO] [STDERR/]: [org.violetmoon.zeta.registry.CreativeTabManager:buildContents:173]: 	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70)
+[21Apr2026 02:29:50.515] [Render thread/WARN] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Item Group has no display items and no search tab display items. Items from this group will be missing from the JEI ingredient list. Operator Utilities
+[21Apr2026 02:29:50.664] [Render thread/INFO] [net.acetheeldritchking.art_of_forging.ArtOfForging/]: Registering AoF schematics with Tetra creative tab
+[21Apr2026 02:29:50.765] [Render thread/WARN] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Item Group has no display items and no search tab display items. Items from this group will be missing from the JEI ingredient list. Modonomicon
+[21Apr2026 02:29:50.843] [Render thread/WARN] [mezz.jei.library.plugins.vanilla.ingredients.ItemStackListFactory/]: Item Group has no display items and no search tab display items. Items from this group will be missing from the JEI ingredient list. Chisels & Bits Clipboard
+[21Apr2026 02:29:50.862] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering ingredients: jei:minecraft took 436.6 milliseconds
+[21Apr2026 02:29:50.863] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering ingredients took 438.3 ms
+[21Apr2026 02:29:50.863] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering extra ingredients...
+[21Apr2026 02:29:50.864] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering extra ingredients took 924.2 ?s
+[21Apr2026 02:29:50.864] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering search ingredient aliases...
+[21Apr2026 02:29:50.865] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering search ingredient aliases took 432.8 ?s
+[21Apr2026 02:29:50.865] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories...
+[21Apr2026 02:29:50.894] [Render thread/WARN] [jeresources/]: Failed loading villager cartographer registered at cartographer
+[21Apr2026 02:29:50.894] [Render thread/WARN] [jeresources/]: Exception caught when registering villager
+java.lang.NullPointerException: Cannot invoke "net.minecraft.world.entity.Entity.m_9236_()" because "trader" is null
+	at net.minecraft.world.entity.npc.VillagerTrades$TreasureMapForEmeralds.handler$klk000$supplementaries$turnToQuill(VillagerTrades.java:551) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.world.entity.npc.VillagerTrades$TreasureMapForEmeralds.m_213663_(VillagerTrades.java) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at jeresources.collection.TradeList.addMerchantRecipe(TradeList.java:58) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.collection.TradeList.addITradeList(TradeList.java:69) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.AbstractVillagerEntry.addITradeLists(AbstractVillagerEntry.java:29) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.AbstractVillagerEntry.<init>(AbstractVillagerEntry.java:22) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.VillagerEntry.<init>(VillagerEntry.java:19) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.util.VillagersHelper.initRegistry(VillagersHelper.java:23) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.compatibility.Compatibility.init(Compatibility.java:33) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.proxy.CommonProxy.initCompatibility(CommonProxy.java:14) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.JEIConfig.registerCategories(JEIConfig.java:98) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at mezz.jei.library.load.PluginLoader.lambda$createRecipeCategories$5(PluginLoader.java:119) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeCategories(PluginLoader.java:119) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeManager(PluginLoader.java:154) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:115) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[minecraft-1.20.1-client.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67) ~[?:?]
+	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115) ~[?:?]
+	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129) ~[?:?]
+	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70) ~[?:?]
+[21Apr2026 02:29:51.061] [Render thread/WARN] [jeresources/]: Failed loading villager stargazer registered at stargazer
+[21Apr2026 02:29:51.061] [Render thread/WARN] [jeresources/]: Exception caught when registering villager
+java.lang.NullPointerException: Cannot invoke "net.minecraft.world.entity.Entity.m_9236_()" because "trader" is null
+	at com.legacy.blue_skies.entities.villager.SkiesVillagerTrades$EmeraldForMapTrade.m_213663_(SkiesVillagerTrades.java:417) ~[blue_skies-1.20.1-1.3.31.jar%23669!/:1.3.31]
+	at jeresources.collection.TradeList.addMerchantRecipe(TradeList.java:58) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.collection.TradeList.addITradeList(TradeList.java:69) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.AbstractVillagerEntry.addITradeLists(AbstractVillagerEntry.java:29) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.AbstractVillagerEntry.<init>(AbstractVillagerEntry.java:22) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.VillagerEntry.<init>(VillagerEntry.java:19) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.util.VillagersHelper.initRegistry(VillagersHelper.java:23) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.compatibility.Compatibility.init(Compatibility.java:33) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.proxy.CommonProxy.initCompatibility(CommonProxy.java:14) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.JEIConfig.registerCategories(JEIConfig.java:98) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at mezz.jei.library.load.PluginLoader.lambda$createRecipeCategories$5(PluginLoader.java:119) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeCategories(PluginLoader.java:119) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeManager(PluginLoader.java:154) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:115) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[minecraft-1.20.1-client.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67) ~[?:?]
+	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115) ~[?:?]
+	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129) ~[?:?]
+	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70) ~[?:?]
+[21Apr2026 02:29:51.068] [Render thread/WARN] [jeresources/]: Failed loading villager shoveler registered at shoveler
+[21Apr2026 02:29:51.069] [Render thread/WARN] [jeresources/]: Exception caught when registering villager
+java.lang.NullPointerException: Cannot invoke "net.minecraft.world.entity.Entity.m_9236_()" because "trader" is null
+	at com.legacy.blue_skies.entities.villager.SkiesVillagerTrades$ToolWithFalsiteTrade.m_213663_(SkiesVillagerTrades.java:528) ~[blue_skies-1.20.1-1.3.31.jar%23669!/:1.3.31]
+	at jeresources.collection.TradeList.addMerchantRecipe(TradeList.java:58) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.collection.TradeList.addITradeList(TradeList.java:69) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.AbstractVillagerEntry.addITradeLists(AbstractVillagerEntry.java:29) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.AbstractVillagerEntry.<init>(AbstractVillagerEntry.java:22) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.VillagerEntry.<init>(VillagerEntry.java:19) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.util.VillagersHelper.initRegistry(VillagersHelper.java:23) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.compatibility.Compatibility.init(Compatibility.java:33) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.proxy.CommonProxy.initCompatibility(CommonProxy.java:14) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.JEIConfig.registerCategories(JEIConfig.java:98) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at mezz.jei.library.load.PluginLoader.lambda$createRecipeCategories$5(PluginLoader.java:119) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeCategories(PluginLoader.java:119) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeManager(PluginLoader.java:154) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:115) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[minecraft-1.20.1-client.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67) ~[?:?]
+	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115) ~[?:?]
+	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129) ~[?:?]
+	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70) ~[?:?]
+[21Apr2026 02:29:51.143] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering categories: minecraft:jeresources took 276.6 milliseconds
+[21Apr2026 02:29:51.146] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering categories took 280.2 ms
+[21Apr2026 02:29:51.146] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions...
+[21Apr2026 02:29:51.146] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering vanilla category extensions took 547.0 ?s
+[21Apr2026 02:29:51.146] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts...
+[21Apr2026 02:29:51.148] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipe catalysts took 1.770 ms
+[21Apr2026 02:29:51.148] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building recipe registry...
+[21Apr2026 02:29:51.150] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building recipe registry took 1.835 ms
+[21Apr2026 02:29:51.150] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins...
+[21Apr2026 02:29:51.150] [Render thread/INFO] [mezz.jei.library.load.registration.AdvancedRegistration/]: Added recipe manager plugin: class io.redspace.ironsspellbooks.jei.AlchemistCauldronAdvancedHandler
+[21Apr2026 02:29:51.150] [Render thread/INFO] [mezz.jei.library.load.registration.AdvancedRegistration/]: Added recipe manager plugin: class cofh.thermal.expansion.compat.jei.plugins.PotionFluidRecipeManagerPlugin
+[21Apr2026 02:29:51.150] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering advanced plugins took 427.5 ?s
+[21Apr2026 02:29:51.150] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes...
+[21Apr2026 02:29:53.636] [Render thread/ERROR] [mezz.jei.library.util.IngredientSupplierHelper/]: Found a broken recipe, failed to setRecipe with RecipeLayoutBuilder: Apotheosis apotheosis:socketing class dev.shadowsoffire.apotheosis.adventure.socket.SocketingRecipe
+
+java.lang.IndexOutOfBoundsException: Index 0 out of bounds for length 0
+	at jdk.internal.util.Preconditions.outOfBounds(Preconditions.java:64) ~[?:?]
+	at jdk.internal.util.Preconditions.outOfBoundsCheckIndex(Preconditions.java:70) ~[?:?]
+	at jdk.internal.util.Preconditions.checkIndex(Preconditions.java:266) ~[?:?]
+	at java.util.Objects.checkIndex(Objects.java:361) ~[?:?]
+	at java.util.ArrayList.set(ArrayList.java:441) ~[?:?]
+	at dev.shadowsoffire.apotheosis.adventure.socket.SocketingRecipe.m_5874_(SocketingRecipe.java:63) ~[Apotheosis-1.20.1-7.4.8.jar%23633!/:7.4.8]
+	at mezz.jei.library.util.RecipeUtil.assembleResultItem(RecipeUtil.java:28) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.plugins.vanilla.anvil.SmithingCategoryExtension.setOutput(SmithingCategoryExtension.java:65) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.plugins.vanilla.anvil.SmithingRecipeCategory.setRecipe(SmithingRecipeCategory.java:59) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.plugins.vanilla.anvil.SmithingRecipeCategory.setRecipe(SmithingRecipeCategory.java:24) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.util.IngredientSupplierHelper.getIngredientSupplier(IngredientSupplierHelper.java:22) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.recipes.RecipeManagerInternal.addRecipe(RecipeManagerInternal.java:148) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.recipes.RecipeManagerInternal.addRecipes(RecipeManagerInternal.java:121) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.registration.RecipeRegistration.addRecipes(RecipeRegistration.java:52) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.plugins.vanilla.VanillaPlugin.registerRecipes(VanillaPlugin.java:252) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.lambda$createRecipeManager$13(PluginLoader.java:182) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeManager(PluginLoader.java:182) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:115) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[minecraft-1.20.1-client.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67) ~[?:?]
+	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115) ~[?:?]
+	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129) ~[?:?]
+	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70) ~[?:?]
+[21Apr2026 02:29:54.121] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: jei:minecraft took 2.970 seconds
+[21Apr2026 02:29:54.143] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: apotheosis:spawner took 11.63 milliseconds
+[21Apr2026 02:29:54.261] [Render thread/INFO] [fastsuite/]: Constructed recipe list for minecraft:crafting in 6.526 ms. 15926/16499 recipes are parallelized.
+[21Apr2026 02:29:54.547] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: industrialforegoing:default took 396.2 milliseconds
+[21Apr2026 02:29:54.721] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: minecraft:domum_ornamentum took 162.0 milliseconds
+[21Apr2026 02:29:54.734] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: occultism:jei took 11.42 milliseconds
+[21Apr2026 02:29:55.011] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: chipped:chipped took 273.8 milliseconds
+[21Apr2026 02:29:55.029] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: valhelsia_structures:main took 17.71 milliseconds
+[21Apr2026 02:29:56.675] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: irons_spellbooks:jei_plugin took 1.645 seconds
+[21Apr2026 02:29:56.902] [Render thread/ERROR] [mezz.jei.library.util.IngredientSupplierHelper/]: Found a broken recipe, failed to setRecipe with RecipeLayoutBuilder: jeresources.jei.villager.VillagerWrapper@44c73eec
+
+java.util.NoSuchElementException: No value present
+	at java.util.Optional.get(Optional.java:143) ~[?:?]
+	at jeresources.util.VillagersHelper.getPoiBlocks(VillagersHelper.java:56) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.VillagerEntry.hasPois(VillagerEntry.java:59) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.villager.VillagerWrapper.hasPois(VillagerWrapper.java:47) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.villager.VillagerCategory.setRecipe(VillagerCategory.java:47) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.villager.VillagerCategory.setRecipe(VillagerCategory.java:20) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at mezz.jei.library.util.IngredientSupplierHelper.getIngredientSupplier(IngredientSupplierHelper.java:22) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.recipes.RecipeManagerInternal.addRecipe(RecipeManagerInternal.java:148) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.recipes.RecipeManagerInternal.addRecipes(RecipeManagerInternal.java:121) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.registration.RecipeRegistration.addRecipes(RecipeRegistration.java:52) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at jeresources.jei.JEIConfig.registerRecipes(JEIConfig.java:77) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at mezz.jei.library.load.PluginLoader.lambda$createRecipeManager$13(PluginLoader.java:182) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeManager(PluginLoader.java:182) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:115) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[minecraft-1.20.1-client.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67) ~[?:?]
+	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115) ~[?:?]
+	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129) ~[?:?]
+	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70) ~[?:?]
+[21Apr2026 02:29:56.903] [Render thread/ERROR] [mezz.jei.library.util.IngredientSupplierHelper/]: Found a broken recipe, failed to setRecipe with RecipeLayoutBuilder: jeresources.jei.villager.VillagerWrapper@1f37762
+
+java.util.NoSuchElementException: No value present
+	at java.util.Optional.get(Optional.java:143) ~[?:?]
+	at jeresources.util.VillagersHelper.getPoiBlocks(VillagersHelper.java:56) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.entry.VillagerEntry.hasPois(VillagerEntry.java:59) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.villager.VillagerWrapper.hasPois(VillagerWrapper.java:47) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.villager.VillagerCategory.setRecipe(VillagerCategory.java:47) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at jeresources.jei.villager.VillagerCategory.setRecipe(VillagerCategory.java:20) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at mezz.jei.library.util.IngredientSupplierHelper.getIngredientSupplier(IngredientSupplierHelper.java:22) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.recipes.RecipeManagerInternal.addRecipe(RecipeManagerInternal.java:148) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.recipes.RecipeManagerInternal.addRecipes(RecipeManagerInternal.java:121) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.registration.RecipeRegistration.addRecipes(RecipeRegistration.java:52) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at jeresources.jei.JEIConfig.registerRecipes(JEIConfig.java:77) ~[JustEnoughResources-1.20.1-1.4.0.247.jar%23823!/:1.4.0.247]
+	at mezz.jei.library.load.PluginLoader.lambda$createRecipeManager$13(PluginLoader.java:182) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginCaller.callOnPlugins(PluginCaller.java:25) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.load.PluginLoader.createRecipeManager(PluginLoader.java:182) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.library.startup.JeiStarter.start(JeiStarter.java:115) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.transitionState(StartEventObserver.java:130) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at mezz.jei.forge.startup.StartEventObserver.onEvent(StartEventObserver.java:98) ~[jei-1.20.1-forge-15.20.0.129.jar%23816!/:15.20.0.129]
+	at net.minecraftforge.eventbus.EventBus.doCastFilter(EventBus.java:260) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.lambda$addListener$11(EventBus.java:252) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:315) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraftforge.eventbus.EventBus.post(EventBus.java:296) ~[eventbus-6.0.5.jar%23137!/:?]
+	at net.minecraft.client.multiplayer.ClientPacketListener.m_5859_(ClientPacketListener.java:1451) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:35) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.game.ClientboundUpdateTagsPacket.m_5797_(ClientboundUpdateTagsPacket.java:11) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.network.protocol.PacketUtils.m_263899_(PacketUtils.java:22) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91383_(Minecraft.java:1106) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.Minecraft.m_91374_(Minecraft.java:718) ~[client-1.20.1-20230612.114412-srg.jar%231050!/:?]
+	at net.minecraft.client.main.Main.main(Main.java:218) ~[minecraft-1.20.1-client.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.runTarget(CommonLaunchHandler.java:111) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonLaunchHandler.clientService(CommonLaunchHandler.java:99) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at net.minecraftforge.fml.loading.targets.CommonClientLaunchHandler.lambda$makeService$0(CommonClientLaunchHandler.java:25) ~[fmlloader-1.20.1-47.4.6.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandlerDecorator.launch(LaunchServiceHandlerDecorator.java:30) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:53) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.LaunchServiceHandler.launch(LaunchServiceHandler.java:71) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.run(Launcher.java:108) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.Launcher.main(Launcher.java:78) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:26) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.modlauncher.BootstrapLaunchConsumer.accept(BootstrapLaunchConsumer.java:23) ~[modlauncher-10.0.9.jar:?]
+	at cpw.mods.bootstraplauncher.BootstrapLauncher.main(BootstrapLauncher.java:141) ~[bootstraplauncher-1.1.2.jar:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke0(Native Method) ~[?:?]
+	at jdk.internal.reflect.NativeMethodAccessorImpl.invoke(NativeMethodAccessorImpl.java:77) ~[?:?]
+	at jdk.internal.reflect.DelegatingMethodAccessorImpl.invoke(DelegatingMethodAccessorImpl.java:43) ~[?:?]
+	at java.lang.reflect.Method.invoke(Method.java:568) ~[?:?]
+	at io.github.zekerzhayard.forgewrapper.installer.Main.main(Main.java:67) ~[?:?]
+	at org.prismlauncher.launcher.impl.StandardLauncher.launch(StandardLauncher.java:115) ~[?:?]
+	at org.prismlauncher.EntryPoint.listen(EntryPoint.java:129) ~[?:?]
+	at org.prismlauncher.EntryPoint.main(EntryPoint.java:70) ~[?:?]
+[21Apr2026 02:29:56.904] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: minecraft:jeresources took 229.3 milliseconds
+[21Apr2026 02:29:56.972] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: ironfurnaces:plugin_ironfurnaces took 66.87 milliseconds
+[21Apr2026 02:29:56.973] [Render thread/INFO] [jea/]: Collected 1593 advancement criterion recipes.
+[21Apr2026 02:29:57.070] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: mekanism:jei_plugin took 95.45 milliseconds
+[21Apr2026 02:29:57.083] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: zeta:zeta took 12.33 milliseconds
+[21Apr2026 02:29:57.087] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 13 net.minecraft.world.item.ItemStack
+[21Apr2026 02:29:57.107] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: ars_nouveau:main took 14.16 milliseconds
+[21Apr2026 02:29:57.823] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: twilightforest:jei_plugin took 704.9 milliseconds
+[21Apr2026 02:29:57.847] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: farmersdelight:jei_plugin took 23.74 milliseconds
+[21Apr2026 02:29:57.875] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: thermal:expansion took 28.53 milliseconds
+[21Apr2026 02:29:57.931] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: sophisticatedstorage:default took 55.07 milliseconds
+[21Apr2026 02:29:59.684] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: create:jei_plugin took 1.754 seconds
+[21Apr2026 02:29:59.819] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: forbidden_arcanus:main took 133.9 milliseconds
+[21Apr2026 02:29:59.828] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 86 net.minecraft.world.item.ItemStack
+[21Apr2026 02:29:59.828] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 9 net.minecraftforge.fluids.FluidStack
+[21Apr2026 02:29:59.864] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 1 net.minecraft.world.item.ItemStack
+[21Apr2026 02:29:59.864] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: estrogen:jei_plugin took 31.89 milliseconds
+[21Apr2026 02:29:59.889] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering recipes: createestrogen:jei_plugin took 24.69 milliseconds
+[21Apr2026 02:29:59.889] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes took 8.739 s
+[21Apr2026 02:29:59.899] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers...
+[21Apr2026 02:29:59.900] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering recipes transfer handlers took 765.1 ?s
+[21Apr2026 02:29:59.900] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building runtime...
+[21Apr2026 02:29:59.900] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers...
+[21Apr2026 02:29:59.900] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering gui handlers took 647.1 ?s
+[21Apr2026 02:29:59.900] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime...
+[21Apr2026 02:29:59.901] [Render thread/INFO] [mezz.jei.gui.startup.JeiGuiStarter/]: Starting JEI GUI
+[21Apr2026 02:29:59.901] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient list...
+[21Apr2026 02:30:00.062] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient list took 161.2 ms
+[21Apr2026 02:30:00.062] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient filter...
+[21Apr2026 02:30:00.091] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Adding 35370 ingredients
+[21Apr2026 02:30:05.001] [pool-51-thread-1/ERROR] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:forge_gui is running and has taken 5.100 seconds so far
+[21Apr2026 02:30:05.851] [Render thread/INFO] [mezz.jei.gui.ingredients.IngredientFilter/]: Added 35370 ingredients
+[21Apr2026 02:30:05.851] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building ingredient filter took 5.789 s
+[21Apr2026 02:30:05.859] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Registering Runtime: jei:forge_gui took 5.958 seconds
+[21Apr2026 02:30:05.859] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Registering Runtime took 5.959 s
+[21Apr2026 02:30:05.859] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Building runtime took 5.960 s
+[21Apr2026 02:30:05.859] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime...
+[21Apr2026 02:30:05.859] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 5 net.minecraft.world.item.ItemStack
+[21Apr2026 02:30:05.876] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 5 net.minecraft.world.item.ItemStack
+[21Apr2026 02:30:05.876] [Render thread/INFO] [mezz.jei.library.load.PluginCallerTimerRunnable/]: Sending Runtime: kubejs:jei took 16.44 milliseconds
+[21Apr2026 02:30:05.880] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime took 21.34 ms
+[21Apr2026 02:30:05.881] [Render thread/INFO] [mezz.jei.core.util.LoggedTimer/]: Starting JEI took 15.46 s
+[21Apr2026 02:30:05.881] [Render thread/INFO] [com.alessandro.astages.AStages/]: Started CACHE building!
+[21Apr2026 02:30:06.050] [Render thread/INFO] [com.alessandro.astages.AStages/]: Ended CACHE building! In 356.0 ms!
+[21Apr2026 02:30:06.050] [Render thread/INFO] [com.alessandro.astages.AStages/]: AStages client recipe update started!
+[21Apr2026 02:30:06.050] [Render thread/INFO] [com.alessandro.astages.AStages/]: AStages recipe update completed in 0 ms!
+[21Apr2026 02:30:06.355] [Render thread/INFO] [Cucumber Library/]: Loaded cucumber-tags.json in 0 ms
+[21Apr2026 02:30:06.377] [Render thread/INFO] [kittyconfig/]: Received configs from server: [createestrogen/common, estrogen/common]
+[21Apr2026 02:30:06.378] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 1593 de.melanx.jea.api.client.IAdvancementInfo
+[21Apr2026 02:30:06.379] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being added at runtime: 1593 de.melanx.jea.api.client.IAdvancementInfo
+[21Apr2026 02:30:06.506] [Render thread/ERROR] [ModularItem API/]: Module modules/blade/blade_katana.json contains invalid property healthPercent-old
+[21Apr2026 02:30:06.506] [Render thread/ERROR] [ModularItem API/]: This indicates either a broken Module, Outdated API version or missing dependency!
+[21Apr2026 02:30:06.506] [Render thread/ERROR] [ModularItem API/]: Module modules/blade/blade_katana.json contains invalid property armor_pen-old
+[21Apr2026 02:30:06.506] [Render thread/ERROR] [ModularItem API/]: This indicates either a broken Module, Outdated API version or missing dependency!
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Loaded 239 Materials
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Found 170 Enchantments
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Loaded 82 Synergies
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Loaded 1027 Skins
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Loaded 1 Injectors/Property Substitutors
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Loaded 160 Modules
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Loaded 58 Modular Converters
+[21Apr2026 02:30:06.722] [Render thread/INFO] [ModularItem API/]: Client load took 2940796.1130999997 ms
+[21Apr2026 02:30:06.780] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] [The Iridescent Codex] has been added to your inventory.
+[21Apr2026 02:30:06.780] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Right-click to open. It covers every system, class, and mod in this pack.
+[21Apr2026 02:30:06.780] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] ? Warning: stage tier_1 not recognized!
+[21Apr2026 02:30:06.780] [Render thread/INFO] [com.alessandro.astages.AStages/]: AStages client recipe update started!
+[21Apr2026 02:30:06.780] [Render thread/INFO] [com.alessandro.astages.AStages/]: AStages recipe update completed in 0 ms!
+[21Apr2026 02:30:06.780] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] KubeJS errors found [3]! Run '/kubejs errors server' for more info
+[21Apr2026 02:30:06.782] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] [Load My F***ing Tags]: It seems that some tags are a bit cooked. Look at the Logs for more details on broken functions. Click me for more info about this feature.
+[21Apr2026 02:30:06.787] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:aberration could not find uniform named InSize in the specified shader program.
+[21Apr2026 02:30:06.790] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:cel could not find sampler named DiffuseDepthSampler in the specified shader program.
+[21Apr2026 02:30:06.790] [Render thread/WARN] [net.minecraft.client.renderer.EffectInstance/]: Shader estrogen:cel could not find uniform named EstrogenFarPlane in the specified shader program.
+[21Apr2026 02:30:06.792] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[21Apr2026 02:30:06.793] [Render thread/INFO] [ChunkBuilder/]: Started 2 worker threads
+[21Apr2026 02:30:06.793] [Render thread/INFO] [com.alessandro.astages.AStages/]: Started CACHE building!
+[21Apr2026 02:30:06.962] [Render thread/INFO] [com.alessandro.astages.AStages/]: Ended CACHE building! In 524.6 ms!
+[21Apr2026 02:30:06.962] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 268 net.minecraft.world.item.ItemStack
+[21Apr2026 02:30:06.964] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 259 net.minecraft.world.item.ItemStack
+[21Apr2026 02:30:06.965] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 1110 net.minecraft.world.item.ItemStack
+[21Apr2026 02:30:06.971] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 10 net.minecraftforge.fluids.FluidStack
+[21Apr2026 02:30:06.971] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 1 net.minecraftforge.fluids.FluidStack
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 34 net.minecraft.world.effect.MobEffectInstance
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 18 de.melanx.jea.api.client.IAdvancementInfo
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 18 mekanism.api.chemical.pigment.PigmentStack
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 22 net.minecraftforge.fluids.FluidStack
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 14 mekanism.api.chemical.slurry.SlurryStack
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 132 de.melanx.jea.api.client.IAdvancementInfo
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 8 mekanism.api.chemical.infuse.InfusionStack
+[21Apr2026 02:30:06.972] [Render thread/INFO] [mezz.jei.library.ingredients.IngredientManager/]: Ingredients are being removed at runtime: 27 mekanism.api.chemical.gas.GasStack
+[21Apr2026 02:30:06.972] [Render thread/INFO] [com.alessandro.astages.AStages/]: AStages client recipe update started!
+[21Apr2026 02:30:06.972] [Render thread/INFO] [com.alessandro.astages.AStages/]: AStages recipe update completed in 0 ms!
+[21Apr2026 02:30:06.972] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded   2 tiers
+[21Apr2026 02:30:06.972] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded   9 tweaks
+[21Apr2026 02:30:06.974] [Render thread/INFO] [se.mickelus.mutil.data.MergingDataStore/]: Loaded 339 materials
+[21Apr2026 02:30:06.978] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded 255 improvements
+[21Apr2026 02:30:06.985] [Render thread/INFO] [se.mickelus.mutil.data.MergingDataStore/]: Loaded 151 modules
+[21Apr2026 02:30:07.074] [Render thread/INFO] [se.mickelus.tetra.client.model.ModularModelLoader/]: Clearing model cache for 10 items, let's get bakin'
+[21Apr2026 02:30:07.075] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded   0 enchantments
+[21Apr2026 02:30:07.075] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded  28 synergies
+[21Apr2026 02:30:07.076] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded  94 replacements
+[21Apr2026 02:30:07.081] [Render thread/INFO] [se.mickelus.mutil.data.MergingDataStore/]: Loaded 558 schematics
+[21Apr2026 02:30:07.160] [Render thread/INFO] [se.mickelus.mutil.data.MergingDataStore/]: Loaded  55 crafting_effects
+[21Apr2026 02:30:07.162] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded  55 repairs
+[21Apr2026 02:30:07.165] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded   2 actions
+[21Apr2026 02:30:07.166] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded   0 unlocks
+[21Apr2026 02:30:07.166] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded   0 archetypes
+[21Apr2026 02:30:07.166] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded   1 item_effects
+[21Apr2026 02:30:07.166] [Render thread/INFO] [se.mickelus.mutil.data.DataStore/]: Loaded  28 modifier_effects
+[21Apr2026 02:30:07.167] [Render thread/INFO] [YetAnotherConfigLib/]: Serializing class com.seniors.justlevelingfork.handler.HandlerCommonConfig to 'C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\config\JLFork\justleveling-fork.common.json5'
+[21Apr2026 02:30:07.168] [Render thread/INFO] [YetAnotherConfigLib/]: Serializing class com.seniors.justlevelingfork.handler.HandlerCommonConfig to 'C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\config\JLFork\justleveling-fork.common.json5'
+[21Apr2026 02:30:07.169] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] [SebastrnLib] If you're getting this message, it means you've installed either Refined Cooking or Applied Cooking. If you want to know more about them, you can craft the manual/book called Sebastrn's Mods!, you can find it using JEI or REI!
+[21Apr2026 02:30:07.169] [Render thread/INFO] [Moonlight/]: Synced moonlight-common.toml configs
+[21Apr2026 02:30:07.170] [Render thread/INFO] [Jade/]: Received config from the server: {}
+[21Apr2026 02:30:07.170] [Render thread/INFO] [Moonlight/]: Synced supplementaries-common.toml configs
+[21Apr2026 02:30:07.228] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Table Of Expieriance]
+[21Apr2026 02:30:07.228] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has completed the challenge [The Undead]
+[21Apr2026 02:30:07.229] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Terramity]
+[21Apr2026 02:30:07.230] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 238 advancements
+[21Apr2026 02:30:07.232] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 997.6 ?s
+[21Apr2026 02:30:07.232] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 526.6 ?s
+[21Apr2026 02:30:07.234] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 451.8 ?s
+[21Apr2026 02:30:07.234] [Render thread/WARN] [patchouli/]: Recipe minecraft:bookshelf (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.234] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 92.90 ?s
+[21Apr2026 02:30:07.235] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 47.50 ?s
+[21Apr2026 02:30:07.235] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 40.80 ?s
+[21Apr2026 02:30:07.236] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 397.0 ?s
+[21Apr2026 02:30:07.236] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 212.9 ?s
+[21Apr2026 02:30:07.239] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 144.4 ?s
+[21Apr2026 02:30:07.260] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 106.6 ?s
+[21Apr2026 02:30:07.260] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 46.60 ?s
+[21Apr2026 02:30:07.261] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 38.00 ?s
+[21Apr2026 02:30:07.264] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 1.149 ms
+[21Apr2026 02:30:07.264] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: thermal:lumium_rail
+[21Apr2026 02:30:07.264] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 663.2 ?s
+[21Apr2026 02:30:07.265] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: thermal:prismarine_rail
+[21Apr2026 02:30:07.265] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: thermal:lumium_rail
+[21Apr2026 02:30:07.265] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: thermal:underwater_minecart
+[21Apr2026 02:30:07.265] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: thermal:fluid_minecart
+[21Apr2026 02:30:07.265] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: thermal:crossover_rail
+[21Apr2026 02:30:07.265] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: thermal:energy_minecart
+[21Apr2026 02:30:07.266] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 605.3 ?s
+[21Apr2026 02:30:07.275] [Render thread/WARN] [cofh.thermal.core.compat.patchouli.CraftingProcessor/]: Thermalpedia missing the crafting recipe: thermal:storage/apple_block
+[21Apr2026 02:30:07.275] [Render thread/WARN] [cofh.thermal.core.compat.patchouli.CraftingProcessor/]: Thermalpedia missing the crafting recipe: thermal:storage/carrot_block
+[21Apr2026 02:30:07.275] [Render thread/WARN] [cofh.thermal.core.compat.patchouli.CraftingProcessor/]: Thermalpedia missing the crafting recipe: thermal:storage/potato_block
+[21Apr2026 02:30:07.275] [Render thread/WARN] [cofh.thermal.core.compat.patchouli.CraftingProcessor/]: Thermalpedia missing the crafting recipe: thermal:storage/beetroot_block
+[21Apr2026 02:30:07.285] [Render thread/WARN] [cofh.thermal.core.compat.patchouli.CraftingProcessor/]: Thermalpedia missing the crafting recipe: thermal:storage/charcoal_block
+[21Apr2026 02:30:07.285] [Render thread/WARN] [cofh.thermal.core.compat.patchouli.CraftingProcessor/]: Thermalpedia missing the crafting recipe: thermal:storage/gunpowder_block
+[21Apr2026 02:30:07.288] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 59.10 ?s
+[21Apr2026 02:30:07.288] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 55.20 ?s
+[21Apr2026 02:30:07.288] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 27.70 ?s
+[21Apr2026 02:30:07.289] [Render thread/WARN] [patchouli/]: Recipe irons_spellbooks:cryomancer_helmet (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.289] [Render thread/WARN] [patchouli/]: Recipe irons_spellbooks:pyromancer_helmet (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.289] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 217.3 ?s
+[21Apr2026 02:30:07.289] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 132.4 ?s
+[21Apr2026 02:30:07.290] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 111.0 ?s
+[21Apr2026 02:30:07.291] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 567.1 ?s
+[21Apr2026 02:30:07.292] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 326.3 ?s
+[21Apr2026 02:30:07.292] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: minecraft:ultra_sniffer_fur
+[21Apr2026 02:30:07.293] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 283.3 ?s
+[21Apr2026 02:30:07.294] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 247.7 ?s
+[21Apr2026 02:30:07.294] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 118.1 ?s
+[21Apr2026 02:30:07.294] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 99.90 ?s
+[21Apr2026 02:30:07.294] [Render thread/WARN] [patchouli/]: Recipe ad_astra:nasa_workbench (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.294] [Render thread/WARN] [patchouli/]: Recipe ad_astra:jet_suit_helmet (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.294] [Render thread/WARN] [patchouli/]: Recipe ad_astra:jet_suit_boots (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.295] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 120.8 ?s
+[21Apr2026 02:30:07.295] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 81.30 ?s
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: apotheosis:infusion_table
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: rftools:dimension_editor
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: mahou_tsukai:mahou_book
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: kubejs:iron_loot_box
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: blue_skies:lunar_fragment
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: footwork:combat_manual
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: terramity:terramity_guidebook
+[21Apr2026 02:30:07.295] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: irons_spellbooks:fire_spell_book
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: ars_nouveau:spell_book_1
+[21Apr2026 02:30:07.296] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 64.90 ?s
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe occultism:dictionary_of_spirits (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe apotheosis:enchanting/tome (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe apotheosis:apoth_chronicle (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe simplyswords:runic_grimoire (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe forbidden_arcanus:tome_of_arcana (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe terramity:terramity_guidebook (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe footwork:combat_manual (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe irons_spellbooks:arcane_compendium (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Recipe mahoutsukai:mahou_tsukai_guidebook (of type minecraft:crafting) not found
+[21Apr2026 02:30:07.296] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 11.20 ?s
+[21Apr2026 02:30:07.296] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 7.800 ?s
+[21Apr2026 02:30:07.296] [Render thread/WARN] [patchouli/]: Invalid icon item stack: Unknown item ID: appliedcooking:kitchen_station
+[21Apr2026 02:30:07.296] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 6.800 ?s
+[21Apr2026 02:30:07.296] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 237.8 ?s
+[21Apr2026 02:30:07.297] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 214.5 ?s
+[21Apr2026 02:30:07.298] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 180.5 ?s
+[21Apr2026 02:30:07.310] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 83.00 ?s
+[21Apr2026 02:30:07.310] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 71.00 ?s
+[21Apr2026 02:30:07.310] [Render thread/INFO] [patchouli/]: BookContentResourceListenerLoader: Files found in 56.10 ?s
+[21Apr2026 02:30:07.318] [Render thread/INFO] [ModernFix/]: Cleared 2045 unneeded book NBT tags
+[21Apr2026 02:30:07.338] [Render thread/INFO] [net.minecraft.client.renderer.texture.TextureAtlas/]: Created: 512x32x0 miapi:textures/atlas/materials.png-atlas
+[21Apr2026 02:30:07.339] [Render thread/INFO] [ModularItem API/]: Created material atlas with size 256x14
+[21Apr2026 02:30:07.591] [Render thread/WARN] [ModernFix/]: Time from main menu to in-game was 33.428165 seconds
+[21Apr2026 02:30:07.591] [Render thread/WARN] [ModernFix/]: Total time to load game and open world was 113.713165 seconds
+[21Apr2026 02:30:11.873] [Render thread/INFO] [voicechat/]: [voicechat] Received secret
+[21Apr2026 02:30:11.873] [Render thread/INFO] [voicechat/]: [voicechat] Connecting to voice chat server: '10.0.0.10:24454'
+[21Apr2026 02:30:11.873] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:11.874] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] [Simple Voice Chat] Press V to set up
+[21Apr2026 02:30:12.874] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:13.876] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:14.880] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:15.882] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:16.884] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:17.886] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:18.887] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:19.888] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:20.889] [VoiceChatAuthenticationThread/INFO] [voicechat/]: [voicechat] Trying to authenticate voice chat connection
+[21Apr2026 02:30:21.889] [VoiceChatAuthenticationThread/WARN] [voicechat/]: [voicechat] Trying to authenticate voice chat connection (this message will not be logged again)
+[21Apr2026 02:30:24.284] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Glass Cannon class detected. Equipment HP bonuses halved.
+[21Apr2026 02:30:29.756] [Thread-195/WARN] [ModularItem API/]: Couldnt retrieve Miapi Permissions
+[21Apr2026 02:30:45.167] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] [OriginDump] {"origins:class":"icraft:archmage","origins:gender":"origins_gender:female","origins:origin":"icraft:witch_of_ink","origins:race":"icraft:faefolk"}
+[21Apr2026 02:31:41.915] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement ['X' Marks the Spot]
+[21Apr2026 02:31:41.998] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 239 advancements
+[21Apr2026 02:31:43.549] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Simple Farming]
+[21Apr2026 02:31:43.650] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 248 advancements
+[21Apr2026 02:31:43.952] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Tools of the Trade]
+[21Apr2026 02:31:44.018] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 251 advancements
+[21Apr2026 02:31:47.921] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 252 advancements
+[21Apr2026 02:31:55.644] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Getting an Upgrade]
+[21Apr2026 02:31:55.693] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 261 advancements
+[21Apr2026 02:32:18.378] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Amateur Archaeologist]
+[21Apr2026 02:32:18.411] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 264 advancements
+[21Apr2026 02:32:37.746] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Magery]
+[21Apr2026 02:32:37.778] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 267 advancements
+[21Apr2026 02:32:55.029] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Urban: Help! Help!
+[21Apr2026 02:33:28.570] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Delightful Decade]
+[21Apr2026 02:33:28.637] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 268 advancements
+[21Apr2026 02:34:04.683] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 297 advancements
+[21Apr2026 02:34:14.975] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 02:34:29.805] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 298 advancements
+[21Apr2026 02:35:32.090] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Wizard Tower]
+[21Apr2026 02:35:32.123] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 298 advancements
+[21Apr2026 02:35:59.229] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 299 advancements
+[21Apr2026 02:36:26.752] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] ? Death penalty: 10% durability loss (overworld)
+[21Apr2026 02:36:26.786] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene was slain by Dr. Mudi Schnoz
+[21Apr2026 02:36:26.869] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 299 advancements
+[21Apr2026 02:36:38.963] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Majda: Help! Help!
+[21Apr2026 02:36:42.966] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] Majda: Get away! Get away!
+[21Apr2026 02:37:35.075] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 302 advancements
+[21Apr2026 02:37:41.880] [Render thread/INFO] [net.minecraft.client.gui.components.ChatComponent/]: [CHAT] silvieserene has made the advancement [Acquire Hardware]
+[21Apr2026 02:37:41.914] [Render thread/INFO] [net.minecraft.advancements.AdvancementList/]: Loaded 308 advancements
+[21Apr2026 02:38:08.138] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[21Apr2026 02:38:08.139] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received class net.minecraftforge.client.event.ClientPlayerNetworkEvent$LoggingOut
+[21Apr2026 02:38:08.139] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from JEI_STARTED to DISABLED
+[21Apr2026 02:38:08.139] [Render thread/INFO] [mezz.jei.library.startup.JeiStarter/]: Stopping JEI
+[21Apr2026 02:38:08.139] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable...
+[21Apr2026 02:38:08.139] [Render thread/INFO] [mezz.jei.forge.plugins.forge.ForgeGuiPlugin/]: Stopping JEI GUI
+[21Apr2026 02:38:08.141] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable took 2.633 ms
+[21Apr2026 02:38:08.142] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[21Apr2026 02:38:08.152] [Render thread/INFO] [voicechat/]: [voicechat] Clearing audio channels
+[21Apr2026 02:38:08.157] [Render thread/INFO] [voicechat/]: [voicechat] Disconnecting voicechat
+[21Apr2026 02:38:08.354] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[21Apr2026 02:38:08.358] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
+[21Apr2026 02:38:08.361] [Render thread/WARN] [structurize/]: Client logged off. Resetting Pack Meta and Reloading State
+[21Apr2026 02:38:08.362] [Structurize IO Worker #0/INFO] [structurize/]: Registered structure pack: silvieserene
+[21Apr2026 02:38:08.362] [Structurize IO Worker #0/WARN] [structurize/]: Finished discovering Client Structure packs
+[21Apr2026 02:38:11.602] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[21Apr2026 02:38:11.603] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[21Apr2026 02:38:11.604] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[21Apr2026 02:38:11.607] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[21Apr2026 02:38:11.620] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
