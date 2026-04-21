@@ -129,8 +129,36 @@ PlayerEvents.loggedIn(event => {
   // open), so we poll every ~5s for 3 minutes until a class is detected
   // and the kit is granted. Stops immediately on success.
   player.persistentData.putInt('icraft_starter_poll_ticks', 3600)
-  console.log('[codex] loggedIn fired for ' + player.username + ', sweep + starter-poll armed (3min)')
+  // 2026-04-21: tester reported `!origindump` typed in chat produced no
+  // diagnostic output (chat message showed up in log but the KubeJS handler
+  // either didn't fire or swallowed the flag set). Arm a delayed auto-
+  // origindump on login so we always get diagnostic data without relying
+  // on the chat path. Countdown is 400 ticks (~20s) — long enough for the
+  // Origins picker UI to close, short enough to hit the log before the
+  // tester walks away.
+  player.persistentData.putInt('icraft_auto_origindump_ticks', 400)
+  console.log('[codex] loggedIn fired for ' + player.username + ', sweep + starter-poll armed (3min), auto-origindump armed (~20s)')
 })
+
+// Auto-origindump: counts down from 400 on each login and sets the
+// `icraft_origindump_pending` flag when it hits 0. The existing
+// `tick_codexOriginDump` picks up that flag and writes the diagnostic.
+// Runs every 20 ticks = 1s, so ~20 ticks of this handler = 20s wallclock.
+global.tick_codexAutoOrigindump = function(event) {
+  event.server.players.forEach(function(player) {
+    let left = player.persistentData.getInt('icraft_auto_origindump_ticks')
+    if (!left || left <= 0) return
+    left -= 20
+    if (left <= 0) {
+      player.persistentData.putInt('icraft_auto_origindump_ticks', 0)
+      player.persistentData.putBoolean('icraft_origindump_pending', true)
+      console.log('[codex/origindump] auto-armed for ' + player.username + ' — dump will run next origindump tick')
+    } else {
+      player.persistentData.putInt('icraft_auto_origindump_ticks', left)
+    }
+  })
+}
+global.registerServerTick('tick_codexAutoOrigindump', 20, 17)
 
 // ── Polled starter-kit check ──
 // 2026-04-20: reworked from a one-shot 3s countdown to a proper poll.
@@ -191,6 +219,22 @@ global.tick_codexOriginDump = function(event) {
     try {
       console.log('[codex/origindump] processing for ' + player.username)
 
+      // Route 0: log raw ForgeCaps subtree from player.nbt directly.
+      // This is the most reliable diagnostic because it doesn't depend on
+      // the tellraw/command pipeline — we're just reading the entity NBT
+      // via the KubeJS API. If this is empty or absent, the fork stores
+      // origin data somewhere entirely different.
+      try {
+        let full = player.nbt
+        let fc = full ? full.ForgeCaps : null
+        console.log('[codex/origindump] ' + player.username + ' ForgeCaps = ' + (fc ? String(fc) : '<null>'))
+        // Also dump the raw origins:origins subtree if present
+        let oo = fc ? fc.get('origins:origins') : null
+        console.log('[codex/origindump] ' + player.username + ' ForgeCaps[origins:origins] = ' + (oo ? String(oo) : '<null>'))
+      } catch (e) {
+        console.warn('[codex/origindump] raw NBT read failed for ' + player.username + ': ' + e)
+      }
+
       // Route 1: chat dump of full NBT via tellraw
       player.server.runCommandSilent(
         'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"ForgeCaps.\\"origins:origins\\".Origins","entity":"' + player.username + '"}]'
@@ -241,6 +285,10 @@ global.registerServerTick('tick_codexOriginDump', 20, 11)
 PlayerEvents.chat(event => {
   try {
     const msg = (event.message || '').trim().toLowerCase()
+    // 2026-04-21 diag: tester typed `!origindump` and got nothing in the log,
+    // nor was the message canceled (it broadcast to chat). Log every IC-command
+    // candidate at entry so we can confirm the handler fires at all.
+    if (msg.startsWith('!')) console.log('[codex/chat] received candidate: ' + msg)
     if (!msg.startsWith('!')) return
     const player = event.player
 
