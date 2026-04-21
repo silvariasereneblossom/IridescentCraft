@@ -165,13 +165,56 @@ EntityEvents.hurt(function(event) {
   }
 })
 
-// --- XP MULTIPLIER ---
-// Disabled 2026-04-21: KubeJS 2001.6.5-build.16 does not expose
-// PlayerEvents.xpChange ("Unknown event 'PlayerEvents.xpChange'"). The
-// Forge PlayerXpEvent.PickupXp hook is not reflected into KubeJS's
-// PlayerEvents group in this build. xp_multiplier attribute is now inert
-// until we find a working hook or move to a tick-based polling approach
-// that diffs totalExperience per player per tick.
+// --- XP MULTIPLIER (tick-diff) ---
+// 2026-04-22: KubeJS 2001.6.5-build.16 doesn't expose PlayerEvents.xpChange,
+// so we poll player.xp (which maps to Forge Player.totalExperience —
+// verified by decompiling PlayerKJS.kjs$getXp → f_36079_) once per second
+// and diff against the last-seen value. Positive diffs are real XP gains
+// (orb pickup, mob kill bonus, furnace XP, etc.); negative diffs are
+// spends (anvil, enchanting table, death) and we just update the cache.
+//
+// Grant pattern: bonus = floor(diff * (xpMult - 1.0)). After granting
+// via player.addXP(bonus), totalExperience increases by `bonus` too, so
+// we update the cache AFTER the grant to avoid a feedback loop where
+// next tick diffs against the pre-grant value and re-grants the same bonus.
+//
+// Skip work entirely when xpMult <= 1.0 (no bonus would be added anyway).
+// Also cache the current XP without granting, so if xpMult later rises
+// above 1.0 we don't retroactively award pre-penalty XP.
+global.tick_xpMultiplier = function(event) {
+  event.server.players.forEach(function(player) {
+    try {
+      var current = player.xp
+      var hasLast = player.persistentData.contains('icraft_last_total_xp')
+      if (!hasLast) {
+        // First observation this session — initialize, skip grant.
+        player.persistentData.putInt('icraft_last_total_xp', current)
+        return
+      }
+      var last = player.persistentData.getInt('icraft_last_total_xp')
+      var diff = current - last
+      if (diff <= 0) {
+        // Spent XP or no change — advance the cache without granting.
+        player.persistentData.putInt('icraft_last_total_xp', current)
+        return
+      }
+      var xpMult = getAttr(player, 'xp_multiplier', 1.0)
+      if (xpMult > 1.0) {
+        var bonus = Math.floor(diff * (xpMult - 1.0))
+        if (bonus > 0) {
+          player.addXP(bonus)
+        }
+      }
+      // Cache the post-grant total so the next tick's diff is zero for
+      // the portion we just awarded. Re-read player.xp because addXP
+      // mutated it when xpMult > 1.0.
+      player.persistentData.putInt('icraft_last_total_xp', player.xp)
+    } catch (e) {
+      console.warn('[xpMult] tick failed for ' + player.username + ': ' + e)
+    }
+  })
+}
+global.registerServerTick('tick_xpMultiplier', 20, 9)
 
 // --- HEALING RECEIVED MODIFIER ---
 // KubeJS doesn't expose LivingHealEvent directly. Workaround: track health

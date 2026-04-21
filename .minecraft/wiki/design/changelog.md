@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-22 — xp_multiplier attribute wired via totalExperience tick-diff
+
+Previous session disabled `PlayerEvents.xpChange` (doesn't exist in KubeJS 2001.6.5-build.16). Replaced with a 1-second server-tick handler (`tick_xpMultiplier` at interval=20, offset=9) that diffs `player.xp` (verified via PlayerKJS bytecode to map to `Player.totalExperience` / `f_36079_`) against a cached last-seen value in `persistentData`.
+
+Flow: on each tick, read current XP. First observation of a session caches without granting. Subsequent ticks compute `diff = current - last`. Negative diffs (anvil/enchant spends, death penalties) advance the cache silently. Positive diffs compute `bonus = floor(diff * (xpMult - 1.0))`; if `xpMult > 1.0`, grant via `player.addXP(bonus)` (maps to `giveExperiencePoints`). Cache updates to post-grant XP so the next tick's diff for our own bonus is zero — no feedback loop.
+
+Granularity is 1 second. Batch XP events (end portal back-home dump, mass mob kill) resolve in a single tick because the diff is cumulative.
+
+---
+
 ## 2026-04-21 — Predicate filter silently ALWAYS_FALSE (artifacts + blank books) + origindump log surfaced that player.Origins was empty
 
 ### Critical filter bug
