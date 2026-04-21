@@ -75,30 +75,35 @@ LootJS.modifiers(event => {
   // cleanly instead of aborting the predicate (returning false = "don't
   // strip this item", same behavior as the prior bug — but at least we
   // won't throw).
-  event
-    .addLootTypeModifier(LootType.CHEST)
-    .removeLoot(function(stack) {
-      try {
-        if (!stack || stack.isEmpty()) return false
-        // Resolve item id via raw Forge API — not KubeJS extensions
-        var id = ''
-        try {
-          id = String(stack.getItem().builtInRegistryHolder().key().location())
-        } catch (e) {
-          // Fallback: try KubeJS extension if raw API fails
-          id = String(stack.id || '')
-        }
-        if (id !== 'minecraft:enchanted_book') return false
-        // Any enchanted_book without StoredEnchantments list content is blank
-        var tag = (stack.hasTag && stack.hasTag()) ? stack.getTag() : null
-        if (!tag) return true
-        if (!tag.contains('StoredEnchantments', 9)) return true // 9 = ListTag
-        var list = tag.getList('StoredEnchantments', 10) // 10 = CompoundTag
-        return !list || list.size() === 0
-      } catch (e) {
-        return false
+  // 2026-04-21 (simpler): use string matching on the tag.toString() instead
+  // of Java API introspection. ItemStack.getTag().toString() yields compact
+  // NBT like `{StoredEnchantments:[...]}`. A blank enchanted book either
+  // has no tag, or its tag string doesn't contain 'StoredEnchantments:[{'
+  // (the start of a non-empty enchantment list). This is more robust
+  // across Rhino/KubeJS API quirks than walking ListTag programmatically.
+  var blankEnchantedBookFilter = function(stack) {
+    try {
+      if (!stack || stack.isEmpty()) return false
+      // Fast path: KubeJS extension first (works in most contexts)
+      var id = String(stack.id || '')
+      if (!id) {
+        try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {}
       }
-    })
+      if (id !== 'minecraft:enchanted_book') return false
+      var tag = stack.getTag ? stack.getTag() : null
+      if (!tag) return true
+      var nbtStr = String(tag)
+      // A properly-enchanted book serializes as {StoredEnchantments:[{id:"...",lvl:Ns}]}.
+      // Strip 'StoredEnchantments:[' and check if there's at least one '{' before ']'.
+      var idx = nbtStr.indexOf('StoredEnchantments:[')
+      if (idx < 0) return true
+      var after = nbtStr.substring(idx + 20) // length of 'StoredEnchantments:['
+      var bracketClose = after.indexOf(']')
+      var brace = after.indexOf('{')
+      return (brace < 0 || (bracketClose >= 0 && brace > bracketClose))
+    } catch (e) { return false }
+  }
+  event.addLootTypeModifier(LootType.CHEST).removeLoot(blankEnchantedBookFilter)
 
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
   event
@@ -1459,6 +1464,10 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:name_tag')
       .removeLoot('minecraft:spider_eye')
       .removeLoot('minecraft:poisonous_potato')
+      // 2026-04-21: per-table blank enchanted book strip. The global
+      // LootType.CHEST predicate-based strip at Section 1 handles most
+      // cases, but belt-and-suspenders on villages specifically.
+      .removeLoot(blankEnchantedBookFilter)
       // Wood + stone that the global strip missed
       .removeLoot('#minecraft:logs')
       .removeLoot('#minecraft:planks')
