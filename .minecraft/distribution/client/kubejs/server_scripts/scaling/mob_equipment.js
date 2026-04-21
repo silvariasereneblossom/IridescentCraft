@@ -30,12 +30,24 @@ const MOB_EQUIP_BROKEN_ENTITIES = new Set([
   'irons_spellbooks:pyromancer',
   'irons_spellbooks:priest',
 ])
+// 2026-04-22: even after extending the set the log STILL showed
+// NecromancerEntity.getItemBySlot AbstractMethodError in spawned handlers.
+// All AbstractSpellCastingMob subclasses in irons_spellbooks share the
+// abstract slot-access bug (necromancer + necromancer/*, wizards/*, etc.).
+// Rather than enumerate every subclass, skip all `irons_spellbooks:*`
+// entities from equipment scaling. We lose equipment on wizard mobs —
+// fine, their mod-native loot + spell kit is their thing.
+function isIronsSpellbooksMob(type) {
+  var s = String(type || '')
+  return s.indexOf('irons_spellbooks:') === 0
+}
 
 EntityEvents.spawned(event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
   if (MOB_EQUIP_BROKEN_ENTITIES.has(entity.type)) return
+  if (isIronsSpellbooksMob(entity.type)) return
   if (entity.persistentData.contains('icraft_equipped')) return
 
   // Skip mobs that already have equipment (from IM or native spawns)

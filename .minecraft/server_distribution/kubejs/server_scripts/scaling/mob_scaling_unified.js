@@ -20,6 +20,11 @@ EntityEvents.spawned(event => {
 
     // Skip entities with broken abstract methods that crash on property access
     if (BROKEN_ENTITIES.has(type)) return
+    // 2026-04-22: namespace-level skip for irons_spellbooks wizard mobs.
+    // All AbstractSpellCastingMob subclasses share the abstract slot bug;
+    // enumerate-by-id missed variants. Scaling wizard HP isn't critical —
+    // their mod-native tuning is fine.
+    if (String(type || '').indexOf('irons_spellbooks:') === 0) return
 
     // Skip already-processed mobs (single flag for both systems)
     if (entity.persistentData.contains('icraft_scaled')) return

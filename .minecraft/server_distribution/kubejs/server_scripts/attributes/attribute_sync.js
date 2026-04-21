@@ -12,7 +12,7 @@
 // - dodge_chance      -> dodge roll via EntityEvents.hurt
 // - armor_penetration -> effective armor bypass via EntityEvents.hurt
 // - magic_resistance  -> magic damage reduction via EntityEvents.hurt
-// - xp_multiplier    -> XP gain scaling via PlayerEvents.xpChange
+// - xp_multiplier    -> XP gain scaling via tick-diff of player.xp (totalExperience)
 // - healing_received  -> heal bonus via tick handler workaround
 // - mana_regen        -> synced to ISB mana regen attribute
 // - cooldown_reduction -> synced to ISB cooldown attribute
@@ -295,5 +295,5 @@ console.log('[IridescentCraft] Attribute sync handlers loaded (v0.4 persistent N
 console.log('  Combat: crit/dodge/lifesteal/armor_pen/magic_res via EntityEvents.hurt')
 console.log('  Combat: XP Attribute Core stacking (crit_chance, critical_damage, life_steal, dodge_chance)')
 console.log('  Magic: mana_regen + CDR sync to ISB every 5s')
-console.log('  Utility: xp_multiplier via PlayerEvents.xpChange')
+console.log('  Utility: xp_multiplier via tick_xpMultiplier (1s totalExperience diff)')
 console.log('  Utility: healing_received via tick health tracking')

@@ -44,15 +44,24 @@ ServerEvents.recipes(event => {
   }
 
   // Create Crushing: 1 log → small amount of latex
-  event.recipes.create.crushing([
-    Fluid.of('industrialforegoing:latex', 50)
-  ], '#minecraft:logs').processingTime(200).id('icraft:log_crush_to_latex')
+  // 2026-04-22: same 2-arg constructor rejection as mixing; wrapped.
+  try {
+    event.recipes.create.crushing([
+      Fluid.of('industrialforegoing:latex', 50)
+    ], '#minecraft:logs').processingTime(200).id('icraft:log_crush_to_latex')
+  } catch (e) {
+    console.warn('[latex-rework] Create crushing recipe registration failed (known issue): ' + e)
+  }
 
   // Thermal Crucible: logs → latex fluid
-  event.recipes.thermal.crucible(
-    Fluid.of('industrialforegoing:latex', 100),
-    '#minecraft:logs'
-  ).energy(4000).id('icraft:log_crucible_to_latex')
+  try {
+    event.recipes.thermal.crucible(
+      Fluid.of('industrialforegoing:latex', 100),
+      '#minecraft:logs'
+    ).energy(4000).id('icraft:log_crucible_to_latex')
+  } catch (e) {
+    console.warn('[latex-rework] Thermal crucible recipe registration failed: ' + e)
+  }
 
   // =========================================================================
   // SECTION B: MEKANISM HDPE → LATEX ITEMS (1:9 ratio)
