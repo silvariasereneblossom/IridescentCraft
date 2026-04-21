@@ -96,9 +96,8 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues (new)
 
-### Magic Class Starter Kit — verification pending on NBT probe
-- **Status:** Delivery path is threading-safe (post-2026-04-21 cleanup), but tester's log from 22:47 showed the 3-minute starter poll ran to completion with `detected=none` for every probe call. The code queries `execute if entity <player>[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:X"}]}}}]` for each magic class, so either (a) tester's character wasn't a magic class, or (b) the NBT path is still misaligned on this Origins fork even after the 2026-04-20 ForgeCaps rewrite.
-- **Next step:** tester to run `!origindump` in chat on a fresh character. The handler writes the full origin NBT and matched origin IDs to the server log; that diagnostic will reveal whether the probe path is right.
+### Magic Class Starter Kit — verification pending on NBT probe (ROOT CAUSE FOUND)
+- **Status:** Root cause identified 2026-04-21 by decompiling the Origins-Forge jar. `OriginContainer.serializeNBT` writes `Origins` as a CompoundTag of `{layer_id: origin_id_string}`, not a ListTag of `{origin}` objects. Every probe in the codebase used the list shape and silently returned 0. Rewrote all 17 probes across 9 scripts to use the correct compound shape with explicit layer ids. Unblocked, but still needs an in-game test — tester to restart, roll a magic class, confirm the kit arrives within ~5s of class selection.
 
 ## Resolved
 

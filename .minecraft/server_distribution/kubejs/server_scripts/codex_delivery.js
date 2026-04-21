@@ -30,11 +30,19 @@ const MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner']
 const MAGIC_FLAG_PREFIX = 'icraft_magic_starter_'
 
 function codex_detectMagicClass(player) {
+  // 2026-04-21: audited the Origins-Forge jar — OriginContainer.serializeNBT()
+  // writes `Origins` as a CompoundTag of `{layer_id: origin_id_string}`,
+  // NOT a ListTag of `{origin, layer}` objects. Every earlier probe using
+  // `Origins:[{origin:"icraft:X"}]` returned 0 because a list-style NBT
+  // match can't succeed against a compound-shaped value. Correct probe:
+  //   {Origins:{"origins:class":"icraft:archmage"}}
+  // Class layer resource id is `origins:class` (file lives at
+  // data/origins/origin_layers/class.json in iridescent_origins-mod).
   for (let i = 0; i < MAGIC_CLASSES.length; i++) {
     let c = MAGIC_CLASSES[i]
     try {
       let r = player.server.runCommandSilent(
-        `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:${c}"}]}}}]`
+        `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:${c}"}}}}]`
       )
       if (r > 0) return c
     } catch (e) {
@@ -240,24 +248,29 @@ global.tick_codexOriginDump = function(event) {
         'tellraw ' + player.username + ' ["",{"text":"[OriginDump] ","color":"gold"},{"nbt":"ForgeCaps.\\"origins:origins\\".Origins","entity":"' + player.username + '"}]'
       )
 
-      // Route 2: probe every known origin/race/class id, log matches
+      // Route 2: probe every known origin/race/class id, log matches.
+      // 2026-04-21: rewritten after jar audit — NBT stores Origins as a
+      // CompoundTag of `{layer_id: origin_id_string}`, not a ListTag of
+      // `{origin}` objects. We try all three layers per ID since the probe
+      // list mixes origins, races, and classes.
+      const LAYER_IDS = ['origins:class', 'origins:race', 'origins:origin']
       let matched = []
-      ORIGIN_PROBE_ICRAFT.forEach(function(o) {
-        try {
-          let r = player.server.runCommandSilent(
-            'execute if entity ' + player.username + '[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:' + o + '"}]}}}]'
-          )
-          if (r > 0) matched.push('icraft:' + o)
-        } catch (e) {}
-      })
-      ORIGIN_PROBE_VANILLA.forEach(function(o) {
-        try {
-          let r = player.server.runCommandSilent(
-            'execute if entity ' + player.username + '[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"origins:' + o + '"}]}}}]'
-          )
-          if (r > 0) matched.push('origins:' + o)
-        } catch (e) {}
-      })
+      function probe(fullId) {
+        for (let li = 0; li < LAYER_IDS.length; li++) {
+          try {
+            let r = player.server.runCommandSilent(
+              'execute if entity ' + player.username +
+              '[nbt={ForgeCaps:{"origins:origins":{Origins:{"' + LAYER_IDS[li] + '":"' + fullId + '"}}}}]'
+            )
+            if (r > 0) {
+              matched.push(fullId + ' (' + LAYER_IDS[li] + ')')
+              return
+            }
+          } catch (e) {}
+        }
+      }
+      ORIGIN_PROBE_ICRAFT.forEach(function(o) { probe('icraft:' + o) })
+      ORIGIN_PROBE_VANILLA.forEach(function(o) { probe('origins:' + o) })
 
       let result = matched.length ? matched.join(', ') : '<none matched known origins>'
       console.log('[codex/origindump] ' + player.username + ' matched = ' + result)

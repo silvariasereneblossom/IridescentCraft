@@ -14,6 +14,32 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-21 — Origin NBT probe: list-shaped query against compound-shaped data (hit #2 in the same session)
+
+**Symptom:** After the 2026-04-20 "ForgeCaps rewrite" we believed the origin-detection probe was fixed. Tester logs kept showing `detected=none` for every magic-class probe over a full 3-minute poll window. Even the `!origindump` fallback (which probes vanilla+icraft origins via the same NBT pattern) matched nothing. Two sessions of poll-timeout reports with nothing to show for it.
+
+**Dead ends:**
+- Assumed the 2026-04-20 rewrite that swapped `cardinal_components` → `ForgeCaps` had landed correctly — it had, but only on the capability key, not on the interior NBT shape.
+- Added a polling loop, thinking the UI was still open during login. Polling didn't help because the probe itself never matched.
+- Added an auto-origindump on login + a raw `player.nbt` read path. Both would have helped diagnose, but the fix came before the tester logged in to use them.
+- Suspected threading issues with the chat handler when `!origindump` produced no log output.
+
+**Actual root cause:** Decompiled `origins-forge-1.20.1-1.10.0.9-all.jar` (OriginContainer.serializeNBT bytecode) and found the actual shape. `Origins` is a `CompoundTag` of `{layer_id_string: origin_id_string}`, not a `ListTag` of `{origin: "..."}` objects. Every probe in the codebase used the list shape:
+```
+{Origins:[{origin:"icraft:archmage"}]}          // what we wrote
+{Origins:{"origins:class":"icraft:archmage"}}   // what the jar actually writes
+```
+A NBT match on a list structure against a compound value can never succeed, so the probe always returned 0. This was silently wrong across 17 call sites in 9 scripts (magic-class detection, class_passives gating, witherborn/slimebodied hooks, skill_effects, phantom_undeath, battlemage_mana_shield, artificial_construct_progression, witch_of_ink_progression).
+
+**What fixed it:** Rewrote all 17 probes to use the compound shape with an explicit layer id (`origins:class` for classes, `origins:race` for races, `origins:origin` for the vanilla+custom origin layer). Built a Python script to do the literal rewrites, hand-edited the 6 remaining template patterns (with `${varname}` interpolations). For the origindump which iterates across all three layer types, now probes all three layers per ID and reports which layer matched.
+
+**Takeaway:**
+- **When a bug resists a fix, decompile the jar instead of guessing at the shape.** Our ForgeCaps rewrite last session fixed the capability *name* but kept the wrong *interior shape* — both had to match reality. One audit of OriginContainer.serializeNBT would have told us both facts at once, in 10 minutes.
+- `execute if entity [nbt={...}]` fails silently on shape mismatches. There's no error, no warning, just `r === 0` every time. Where silent failure is this cheap, a single passing test with a known-good character is worth the debugging it saves.
+- This is the exact same failure shape as the glyph tier bug two days ago: a parallel manual model that drifted from the mod's own data. The mod jar is the source of truth — our probes should be generated from (or asserted against) its actual serialization code.
+
+---
+
 ## 2026-04-21 — Village T1 artifact strip was string-matched against a type-level broadcast
 
 **Symptom:** Tester reported uncurated artifacts appearing in village chests (artifact names not present in `villageArtifactPool`), even though Section 6 had a per-item strip that explicitly called `vSan.removeLoot(id)` on every element of `artifactT1Pool`.

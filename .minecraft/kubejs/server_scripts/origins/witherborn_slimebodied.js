@@ -6,7 +6,7 @@
 function hasOrigin(player, originId) {
   try {
     let r = player.server.runCommandSilent(
-      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"${originId}"}]}}}]`
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:origin":"${originId}"}}}}]`
     )
     return r > 0
   } catch (e) { return false }

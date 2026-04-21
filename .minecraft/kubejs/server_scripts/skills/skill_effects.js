@@ -482,22 +482,22 @@ global.tick_skillEffects = (event) => {
         try {
           // Archmage class: +50%
           let r1 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:archmage"}]}}}]`
+            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:archmage"}}}}]`
           )
           if (r1 > 0) magicBonus += 0.50
           // Battlemage class: +15%
           let r2 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:battlemage"}]}}}]`
+            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:battlemage"}}}}]`
           )
           if (r2 > 0) magicBonus += 0.15
           // Faefolk race: +30%
           let r3 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:faefolk"}]}}}]`
+            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:faefolk"}}}}]`
           )
           if (r3 > 0) magicBonus += 0.30
           // Elf race: +5%
           let r4 = player.server.runCommandSilent(
-            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:elf"}]}}}]`
+            `execute if entity ${name}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:elf"}}}}]`
           )
           if (r4 > 0) magicBonus += 0.05
         } catch(e) {}

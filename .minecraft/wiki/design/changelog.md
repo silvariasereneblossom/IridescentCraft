@@ -4,6 +4,49 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-21 — Origin NBT probe shape corrected across 9 scripts
+
+### Root cause
+
+Tester typed `!origindump` on a live server and the handler produced zero log output. Even after adding auto-origindump on login + a raw-NBT diagnostic route, we had enough evidence to know the chat handler was firing but every single origin probe was returning `r === 0`. Decompiled `origins-forge-1.20.1-1.10.0.9-all.jar` (`io/github/edwinmindcraft/origins/common/capabilities/OriginContainer.serializeNBT` bytecode) and found the truth: the `Origins` key inside `ForgeCaps."origins:origins"` is a **CompoundTag** of `{layer_id: origin_id_string}`, not a ListTag of `{origin:"..."}` objects. The capability key was right all along — the interior shape was wrong.
+
+### Fix
+
+Rewrote every origin NBT probe across the codebase. Old shape:
+```
+{Origins:[{origin:"icraft:archmage"}]}
+```
+New shape:
+```
+{Origins:{"origins:class":"icraft:archmage"}}
+```
+
+11 literal probes auto-rewritten by layer (using a Python script that maps icraft-class names to `origins:class`, icraft-race names to `origins:race`, everything else to `origins:origin`). 6 template probes (with `${varname}` interpolation) hand-fixed with the layer known from context. The codex origindump rewrites the probe to try all three layers per ID so it keeps working as a general diagnostic.
+
+### Scripts touched
+
+- `kubejs/server_scripts/codex_delivery.js` — magic class detection + origindump
+- `kubejs/server_scripts/origins/magic_class_starter.js` — duplicated detection helper
+- `kubejs/server_scripts/origins/class_passives.js` — per-class gating
+- `kubejs/server_scripts/origins/witch_of_ink_progression.js` — witch gating
+- `kubejs/server_scripts/origins/witherborn_slimebodied.js` — wither/slime hit hooks
+- `kubejs/server_scripts/origins/phantom_undeath.js` — phantom revive
+- `kubejs/server_scripts/origins/battlemage_mana_shield.js` — mana shield gating
+- `kubejs/server_scripts/origins/artificial_construct_progression.js` — construct hooks
+- `kubejs/server_scripts/skills/skill_effects.js` — class/race skill effects
+
+All 3 distros synced. Lessons-learned entry at `wiki/dev/lessons-learned.md` (2026-04-21 top entry) documents the jar-audit approach.
+
+### Starter kit impact
+
+This was the actual root cause of `detected=none` — every poll in `tick_codexStarterCheck` ran `execute if entity [...Origins:[{origin:"icraft:archmage"}]...]` against a player whose NBT contained `Origins:{"origins:class":"icraft:archmage"}`. With the probe shape fixed, next login by a magic-class player should hit the class-layer probe on the first tick and grant the kit.
+
+### Impact on other origin-gated features
+
+All origin-gated passives (class_passives, phantom_undeath, battlemage_mana_shield, witherborn/slimebodied hit hooks, skill_effects class bonuses, witch_of_ink progression, artificial_construct progression) have also been silently failing since their introduction because they all used the same bad shape. Those will start working on the next server restart.
+
+---
+
 ## 2026-04-21 — Village accessory double-stack, terrain flattening, cherry biome boost
 
 ### Village accessory double-stack
