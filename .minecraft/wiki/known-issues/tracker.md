@@ -94,6 +94,34 @@ Forge requires network channel lists to match between client and server. Mods th
 - [ ] Food system overhaul — hunger drain 2.5x, seed drops 5%, structure food reduction
 - [ ] Farmer's Delight cooking conversion — 70 recipes
 
+## LMFT (Load My Fucking Tags) Audit — 2026-04-22
+
+LMFT intercepts invalid tag entries that would otherwise crash the server at datapack reload, logging each as an `[ERROR]` and skipping that one entry. The `[ERROR]` level is misleading — these are **non-fatal** by design; they're LMFT doing its job. Each line means "this entry in this tag was dropped; continue." Categorized below:
+
+### Fixed this session
+
+- **`twilightforest:portal/activator` ← `kubejs:reality_progression_token_t1`** — OUR bug. Our `kubejs/data/twilightforest/tags/items/portal/activator.json` referenced a nonexistent item. The T1 token was renamed `kubejs:twilight_progression_token_t2` (T2 was the pack's naming scheme for the TF-tier unlock). Swapped the tag to reference the correct item. TF portals will now actually accept the token.
+
+### External mod data — not fixable from our side
+
+| Tag | Missing entry | Mod shipping bad data | Impact |
+|-----|---------------|----------------------|--------|
+| `forge:bosses` | `cataclysm:old_netherite_monstrosity` | cataclysm_ut | Deprecated entity — same mod also ships the `cataclysm_ut:kill_monstrosity2` advancement against the same missing id. Remove cataclysm_ut or wait for update. |
+| `ad_astra:can_survive_in_acid_rain` | `minecraft:lander` | ad_astra_more_structures | Wrong registry — `lander` is an entity, not a biome. Mod bug. |
+| `forge:is_eyestalker` | `#forge:is_end` | enemyexpansion | References `#forge:is_end` biome tag which doesn't exist on this build. |
+| `idas:has_structure/byg_redwood_biomes` | `byg:redwood_thicket` | idas_forge | BYG biome not registered. Either BYG version mismatch or biome removed. |
+| `idas:has_structure/bygmohogany_biomes` | `byg:tropical_rainforest` | idas_forge | Same. |
+| `ctov:wares/cardboard_box` | `wares:cardboard_box` | ctov | Wares mod not installed. Benign — CTOV gracefully handles Wares absence otherwise. |
+| `ctov:wares/sealed_delivery_agreement` | `wares:sealed_delivery_agreement` | ctov | Same. |
+| `minecraft:mineable/pickaxe` | `theabyss:infused_magma` | TATOS | Abyss item renamed/removed. |
+| `quark:wraith_spawnable` | `quark:soul_stone` | bygonenether | Quark renamed `soul_stone`. Bygonenether points at old id. |
+| `minecraft:tick` | `cataclysm_ut:main` | cataclysm_ut | Function tag references a function that doesn't exist. |
+| `minecraft:load` | `chunky_player_pause:main` | chunky-player-pause | Same. |
+
+### Option to suppress the noise
+
+We could ship per-mod override tag files in `kubejs/data/<namespace>/tags/**/*.json` that re-declare each affected tag without the bad entry (`"replace": true` + our preferred list). That would make LMFT silent. But each file has to be hand-maintained when the upstream mod updates, and the current behavior — gracefully logging + skipping — is already correct; only the log volume changes. Left as-is for now.
+
 ## Session Log Audit — 2026-04-21 (02:23 server start)
 
 ### Fixed this session
