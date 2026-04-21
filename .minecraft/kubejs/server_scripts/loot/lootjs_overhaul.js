@@ -1560,24 +1560,22 @@ LootJS.modifiers(event => {
   // from the weighted pool; when it does, exactly one item is picked by
   // weight. Rate is "artifact appears in one of every ~10 chests" by
   // default, tunable via the chance constant.
-  const villageArtifactChestChance = 0.12 // ~12% of village chests get an artifact
-
-  villageChests.forEach(function(table) {
-    event.addLootTableModifier(table)
-      .addWeightedLoot([
-        Item.of('minecraft:air').withChance(Math.round((1 - villageArtifactChestChance) * 100)),
-      ].concat(villageArtifactPool.map(function(id) {
-        return Item.of(id).withChance(Math.round((villageArtifactChestChance / villageArtifactPool.length) * 100))
-      })))
+  // 2026-04-21 DIAGNOSTIC: tester reports artifact + QoL pools "definitely
+  // not working" after the addWeightedLoot rewrite. Dropped the air
+  // (nothing) slots entirely so every village chest gets EXACTLY ONE
+  // artifact guaranteed. If every roll now contains one artifact, the
+  // pattern works and we need to tune rates back down. If rolls still
+  // produce zero artifacts, addWeightedLoot isn't reaching village tables
+  // and we need a different injection strategy entirely.
+  const villageArtifactWeighted = villageArtifactPool.map(function(id) {
+    return Item.of(id).withChance(10) // uniform weight per artifact
   })
 
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table).addWeightedLoot(villageArtifactWeighted)
+  })
   moddedVillagePatterns.forEach(function(pattern) {
-    event.addLootTableModifier(pattern)
-      .addWeightedLoot([
-        Item.of('minecraft:air').withChance(Math.round((1 - villageArtifactChestChance) * 100)),
-      ].concat(villageArtifactPool.map(function(id) {
-        return Item.of(id).withChance(Math.round((villageArtifactChestChance / villageArtifactPool.length) * 100))
-      })))
+    event.addLootTableModifier(pattern).addWeightedLoot(villageArtifactWeighted)
   })
 
   // --- Rotten flesh strip: modded villages (CTOV/VnP) weren't covered ---
@@ -1601,13 +1599,16 @@ LootJS.modifiers(event => {
   // (5 tables) get three additional weighted pools from the earlier block
   // (QoL flavor, starter tools, magic) so houses are richer by design.
 
+  // 2026-04-21: dropped the air (nothing) slot so every village chest gets
+  // one QoL item. Diagnostic step — if tester /loot give now produces
+  // ~1 bed/ink/gem per roll, the pattern works and we can re-introduce
+  // the air slot. If still zero, addWeightedLoot itself isn't firing.
   const villageQoLPool = [
-    Item.of('minecraft:air').withChance(20),
-    Item.of('minecraft:white_bed').withChance(30),
-    Item.of('irons_spellbooks:common_ink').withChance(25),
-    Item.of('ars_nouveau:source_gem').withChance(15),
-    Item.of('irons_spellbooks:copper_spell_book').withChance(7),
-    Item.of('ars_nouveau:novice_spell_book').withChance(3)
+    Item.of('minecraft:white_bed').withChance(35),
+    Item.of('irons_spellbooks:common_ink').withChance(30),
+    Item.of('ars_nouveau:source_gem').withChance(20),
+    Item.of('irons_spellbooks:copper_spell_book').withChance(10),
+    Item.of('ars_nouveau:novice_spell_book').withChance(5)
   ]
 
   villageChests.forEach(function(table) {
