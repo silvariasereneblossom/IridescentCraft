@@ -1,19 +1,42 @@
 @echo off
 setlocal enabledelayedexpansion
 REM =============================================================================
-REM IridescentCraft — Collect server logs for transfer to repo
-REM Copies last 3 crash reports, ALL kubejs/*.log files, logs/latest.log, and
-REM logs/debug.log into TesterLogs/Server Logs/ for manual transfer to the
-REM dev machine's repo copy (server is not itself a git repo).
+REM IridescentCraft — Push server logs directly to the repo via network drive
+REM Primary destination: Z:\...\PrismLauncher\instances\IridescentCraft\.minecraft\
+REM                      server_distribution\TesterLogs\Server Logs\
+REM (network drive on the Windows Server mapped to the dev machine's repo copy)
+REM
+REM Fallback: local server_distribution\TesterLogs\Server Logs\ if Z: isn't
+REM mounted, so the script still works offline. Historically everything went
+REM to the local path and the user had to manually transfer — which is why
+REM logs kept appearing stale in the repo.
 REM =============================================================================
 
 cd /d "%~dp0"
 
-set "DEST=TesterLogs\Server Logs"
-if not exist "%DEST%" mkdir "%DEST%"
+set "REMOTE_DEST=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution\TesterLogs\Server Logs"
+set "LOCAL_DEST=TesterLogs\Server Logs"
 
-echo.
-echo [Logs] Collecting server logs...
+REM Detect whether Z: is mounted and the repo TesterLogs folder exists.
+REM We check for the server_distribution directory root under the mapped
+REM PrismLauncher instance — if that's there, the repo is accessible.
+set "REPO_ROOT=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution"
+if exist "%REPO_ROOT%" (
+    set "DEST=%REMOTE_DEST%"
+    set "MODE=repo"
+    if not exist "%REMOTE_DEST%" mkdir "%REMOTE_DEST%"
+    echo.
+    echo [Logs] Pushing directly to repo via Z: ^(mapped network drive^)
+    echo [Logs]   -^> %REMOTE_DEST%
+) else (
+    set "DEST=%LOCAL_DEST%"
+    set "MODE=local"
+    if not exist "%LOCAL_DEST%" mkdir "%LOCAL_DEST%"
+    echo.
+    echo [Logs] Z: not mounted or repo path not found — falling back to local:
+    echo [Logs]   -^> %~dp0%LOCAL_DEST%
+    echo [Logs] ^(You'll need to transfer this folder back to the repo manually.^)
+)
 echo.
 
 REM --- Last 3 crash reports (sorted newest first) ---
@@ -53,12 +76,13 @@ if exist "logs\debug.log" (
 )
 
 echo.
-echo [Logs] Files copied to: %~dp0%DEST%
-echo.
-echo [Logs] To share with the dev machine:
-echo   1. Copy the "%DEST%" folder contents back to your
-echo      repo's server_distribution\TesterLogs\Server Logs\ folder
-echo   2. git add + commit + push from the dev machine
+if "%MODE%"=="repo" (
+    echo [Logs] Done. Files are now on the repo drive — commit + push from
+    echo [Logs] the dev machine.
+) else (
+    echo [Logs] Done. Files are in the local server_distribution folder.
+    echo [Logs] Copy them to the repo and commit there.
+)
 echo.
 pause
 exit /b 0
