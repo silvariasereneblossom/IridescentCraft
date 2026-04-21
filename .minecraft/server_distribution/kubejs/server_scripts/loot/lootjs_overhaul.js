@@ -1575,6 +1575,42 @@ LootJS.modifiers(event => {
     glyphT2.concat(glyphT3, glyphT4).forEach(function(g) { vSanMod.removeLoot(g) })
   })
 
+  // --- Predicate catch-all: strip any artifact/relic NOT in village pool ---
+  // 2026-04-21: per-item string strips at line ~1554 weren't catching T1
+  // broadcast leaks (tester reported uncurated artifacts appearing in village
+  // chests with artifacts outside villageArtifactPool). Hypothesis: string
+  // removeLoot on a table modifier doesn't reliably strip items injected by
+  // a type-level modifier in a different registration. A predicate runs at
+  // roll time and evaluates whatever is actually in the pool, so it catches
+  // leaks regardless of which modifier added them.
+  var villageArtifactWhitelist = {}
+  villageArtifactPool.forEach(function(id) { villageArtifactWhitelist[id] = true })
+  var nonCuratedArtifactFilter = function(stack) {
+    try {
+      if (!stack || stack.isEmpty()) return false
+      var id = String(stack.id || '')
+      if (!id) {
+        try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {}
+      }
+      if (!id) return false
+      // Target artifact-like namespaces that leak via the global T1/T2/T3/T4
+      // broadcasts. Only strip if the item is NOT in the village curated pool.
+      var isArtifactNs = (
+        id.indexOf('artifacts:') === 0 ||
+        id.indexOf('relics:') === 0 ||
+        id.indexOf('celestial_artifacts:') === 0
+      )
+      if (!isArtifactNs) return false
+      return !villageArtifactWhitelist[id]
+    } catch (e) { return false }
+  }
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table).removeLoot(nonCuratedArtifactFilter)
+  })
+  moddedVillagePatterns.forEach(function(pattern) {
+    event.addLootTableModifier(pattern).removeLoot(nonCuratedArtifactFilter)
+  })
+
   // --- Village artifact pool (runs AFTER sanitization) ---
   // 2026-04-20: reworked from per-item `.addLoot(entry.when(randomChance))`
   // to a single weighted pool. The per-item pattern produced ~1 artifact

@@ -4,6 +4,26 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-21 — Village chest loot pool: dedupe bed, restore realistic artifact rate, whitelist-strip non-curated artifacts
+
+### Changes
+
+1. **Bed dedupe.** `white_bed` was present in two overlapping weighted pools for the five village house tables (`villageHouseChests`): once in the dedicated house QoL flavor pool at line ~990 (weight 30), and again in the general `villageQoLPool` applied to all 15 village tables (line ~1633). Two rolls per chest meant testers observed two beds occasionally. Removed the bed entry from `villageQoLPool`; houses still get a bed from their dedicated flavor pool.
+
+2. **Artifact rate restored to ~12%.** An earlier diagnostic commit had set `villageArtifactWeighted` to only 12 artifact entries with no air slot, which meant every chest rolled an artifact guaranteed. Restored the air slot at weight 440 against 12 x weight 5 artifacts (total 60); expected artifact-per-chest rate ~12%.
+
+3. **Non-curated artifact strip switched to predicate.** Per-item string `removeLoot` on village tables wasn't catching artifacts injected by the Section 1C type-level `addLootTypeModifier(LootType.CHEST).anyDimension('minecraft:overworld')` T1 broadcast. Switched to a predicate-based `removeLoot(function(stack) { ... })` that whitelists `villageArtifactPool` and strips anything else from `artifacts:` / `relics:` / `celestial_artifacts:` namespaces. Predicate runs at roll time, so it's robust to registration-order quirks between type-level and table-level modifiers.
+
+Rationale for (3) lives in `wiki/dev/lessons-learned.md` (2026-04-21 entry).
+
+### Files changed
+
+- `kubejs/server_scripts/loot/lootjs_overhaul.js` — dedupe + air slot + predicate strip
+- `wiki/dev/lessons-learned.md` — postmortem entry
+- `wiki/known-issues/tracker.md` — entry moved to resolved
+
+---
+
 ## 2026-04-19 — Rivers never generating (Tectonic + BoP custom region)
 
 Tester feedback: rivers have never appeared on any tested world, even across multiple freshly-seeded tests after the 2026-04-15 "More water" commit (3b14ec9d).

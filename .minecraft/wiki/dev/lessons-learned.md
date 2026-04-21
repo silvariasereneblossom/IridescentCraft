@@ -14,6 +14,26 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-21 — Village T1 artifact strip was string-matched against a type-level broadcast
+
+**Symptom:** Tester reported uncurated artifacts appearing in village chests (artifact names not present in `villageArtifactPool`), even though Section 6 had a per-item strip that explicitly called `vSan.removeLoot(id)` on every element of `artifactT1Pool`.
+
+**Dead ends:**
+- Double-checked that `artifactT1Pool` was the correct array being iterated
+- Verified the village sanitization block ran after the T1 broadcast registration (it did, line 1551 vs line 450)
+- Considered and rejected moving the T1 broadcast behind a `.notTable(villagePattern)` filter (not confirmed available in LootJS 2.13.1's fluent builder, would need jar introspection)
+
+**Actual root cause:** `event.addLootTableModifier(table).removeLoot('id_string')` on a village table cannot reliably strip items injected by `event.addLootTypeModifier(LootType.CHEST).anyDimension(OW).addLoot(LootEntry.of(id))` — the type-level injection produces the item as part of a different modifier pipeline and the string-based per-table strip's scope doesn't cross that boundary. It's the same pattern-shape as the earlier Bed failure: a modifier that looked registered but silently no-opped because of LootJS's internal ordering.
+
+**What fixed it:** Switched the village artifact strip from string-matched per-item removals to a predicate-based `removeLoot(function(stack) {...})`. A predicate runs at roll time and inspects whatever ended up in the pool, so it catches type-level broadcast leaks regardless of registration order. The predicate whitelists `villageArtifactPool` and strips anything else from the `artifacts:` / `relics:` / `celestial_artifacts:` namespaces.
+
+**Takeaway:**
+- **When you have a global broadcast and a local exception, don't rely on string-matched removals** — they're a point-in-time name match and can miss injections from sibling modifier chains. Predicate filters evaluate at roll time against the actual pool contents, so they're robust to ordering.
+- Blank enchanted book stripping (line ~84) had already established the predicate pattern and proven it works — should have reached for that pattern from the start.
+- Design lesson: if the pool we want in villages is a small curated set, **whitelist at the village, don't blacklist at the source**. "Strip everything but these 12 items" is simpler and more robust than "try to exclude villages from the 15-item broadcast."
+
+---
+
 ## 2026-04-20 — Manual tier arrays disagreed with the mod's own tier config on 20+ glyphs
 
 **Symptom:** Tester running `/loot give village_plains_house` 30 times saw "T2 glyphs" appearing in Overworld village loot, despite a per-table strip targeting `glyphT2.concat(glyphT3, glyphT4)` on every village table. Strip appeared to work for some glyphs but not others.

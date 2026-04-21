@@ -96,6 +96,16 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Resolved
 
+### Village Chest Loot: Double-Beds and Non-Curated Artifacts (2026-04-21)
+- **Reported:** Tester feedback from a 14-chest /loot give sweep: "I saw 2 beds in one chest once, and there's an artifact in every chest. The artifacts don't seem to be restricted to our curated list either." Three distinct bugs stacked.
+- **Root cause A — double-bed:** `white_bed` appeared in two overlapping weighted pools for the 5 `villageHouseChests` tables (plains/desert/savanna/snowy/taiga): once in their dedicated house QoL flavor pool at weight 30, and again in the general `villageQoLPool` at weight 35. Houses rolled on both pools in the same pass.
+- **Root cause B — 100% artifact rate:** An earlier diagnostic commit had rebuilt `villageArtifactWeighted` as 12 artifacts only, no air slot. Any weighted pool without an air entry guarantees a hit every roll.
+- **Root cause C — non-curated leak:** Section 1C broadcasts the full 15-item `artifactT1Pool` to every Overworld chest via `addLootTypeModifier(LootType.CHEST).anyDimension('minecraft:overworld').addLoot(...)`. The village sanitization tried to strip those with per-item string `removeLoot('id')`, but the type-level injection isn't reliably stripped by table-level string removals in a sibling modifier pipeline.
+- **Resolved:**
+  - Removed bed entry from `villageQoLPool` (houses still get one from their flavor pool).
+  - Restored `Item.of('minecraft:air').withChance(440)` at the front of `villageArtifactWeighted` (12 artifacts at weight 5 = total 60, vs 440 air = ~12% artifact rate).
+  - Added a predicate-based `removeLoot(function(stack) {...})` that whitelists `villageArtifactPool` and strips anything else from `artifacts:` / `relics:` / `celestial_artifacts:` namespaces. Predicate evaluates at roll time against the actual pool, so it catches type-level broadcast leaks regardless of registration order. Full rationale in `wiki/dev/lessons-learned.md` (2026-04-21).
+
 ### Create + Starlight Crash — removed (2026-04-19)
 - **Reported:** Sporadic `IllegalStateException` in `BlockStarLightEngine.initNibble` when Create contraptions rendered in chunks with incomplete light data. Known Create + Starlight incompatibility, first seen 2026-04-03.
 - **Previous state:** Starlight's `.pw.toml` deletions had been staged in the working tree but never committed, so a `-Force` full-zip resync re-pulled the file and the installer re-downloaded the jar.
