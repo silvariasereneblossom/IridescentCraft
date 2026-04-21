@@ -585,10 +585,12 @@ LootJS.modifiers(event => {
 
   event
     .addLootTableModifier(/keebsz:.*\/floor[79]and[810]/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Iron's Spellbooks structures ---
   event
     .addLootTableModifier(/irons_spellbooks:.*chests.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Moog's End Structures (T4 content — allow everything, add T4 tokens + thematic loot) ---
   // MES loot tables live at data/mes/loot_tables/*.json (no /chests/ subfolder)
@@ -672,6 +674,7 @@ LootJS.modifiers(event => {
   // Treasure tables within IDAS (T2)
   event
     .addLootTableModifier(/idas:chests\/.*treasure/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Integrated Stronghold ---
   // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
@@ -685,6 +688,7 @@ LootJS.modifiers(event => {
   // Rare chests (T2)
   event
     .addLootTableModifier(/dungeons_plus:chests\/.*\/rare/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Dungeon Crawl (15 tables) ---
   // Staged dungeon: stages 1-2 = T1, stages 3-5 = T2, treasure = T2-T3
@@ -820,11 +824,13 @@ LootJS.modifiers(event => {
   // T2-T3: late overworld (library, corridor, crossing, grand_library, portal_room)
   event
     .addLootTableModifier(/betterstrongholds:.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- YUNG's Better Nether Fortresses (9 tables) ---
   // T3: Nether structures
   event
     .addLootTableModifier(/betterfortresses:.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- YUNG's Better Mineshafts ---
   // T1: overworld mineshafts
@@ -836,6 +842,7 @@ LootJS.modifiers(event => {
   // T2: challenging overworld
   event
     .addLootTableModifier(/betteroceanmonuments:.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- YUNG's Better End Island ---
   // NOT PRESENT in modpack (confirmed by loot_overhaul.js discovery scan)
@@ -853,6 +860,7 @@ LootJS.modifiers(event => {
   // T2-T3: Everbright and Everdawn dimensions
   event
     .addLootTableModifier(/blue_skies:chests\/.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Blue Skies: Runic Arc as very rare structure chest loot (0.5%) ---
   // Supplements the 5% boss drop rate (see loot_overhaul.js).
@@ -865,36 +873,43 @@ LootJS.modifiers(event => {
   // T2-T3: Aether dimension dungeons (bronze/silver/gold)
   event
     .addLootTableModifier(/aether:chests\/.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Deep Aether (301 tables, targeting chests only) ---
   // T3-T4: Deep Aether brass/gold dungeons
   event
     .addLootTableModifier(/deep_aether:chests\/.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Undergarden (215 tables, targeting chests only) ---
   // T2-T3: Undergarden dimension
   event
     .addLootTableModifier(/undergarden:chests\/.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Deeper and Darker (149 tables, targeting chests only) ---
   // T3: Otherside dimension
   event
     .addLootTableModifier(/deeperdarker:chests\/.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- The Abyss structures (13 tables) ---
   // T3: Abyss dimension structures
   event
     .addLootTableModifier(/theabyss:chests\/.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Cataclysm structures (164 tables, targeting chests only) ---
   // T3-T4: high-tier dungeon structures (soul forge, burning arena, sunken city, etc.)
   event
     .addLootTableModifier(/cataclysm:.*chest.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Twilight Forest (532 tables, targeting chests only) ---
   // T2-T3: Twilight Forest dimension
   event
     .addLootTableModifier(/twilightforest:chests\/.*/)
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // =========================================================================
   // SECTION 4E: REMAINING OVERWORLD STRUCTURE MODS
