@@ -669,6 +669,7 @@ LootJS.modifiers(event => {
     .addLootTableModifier(
       'valhelsia_structures:chests/spawner_dungeon',
       'valhelsia_structures:chests/treasure')
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- IDAS: Integrated Dungeons and Structures (144 tables) ---
   // General overworld structures (T1)
@@ -712,12 +713,14 @@ LootJS.modifiers(event => {
       'dungeoncrawl:chests/stage_4',
       'dungeoncrawl:chests/forge',
       'dungeoncrawl:chests/library')
+    .removeLoot('minecraft:diamond_horse_armor')
 
   event
     .addLootTableModifier(
       'dungeoncrawl:chests/stage_5',
       'dungeoncrawl:chests/secret_room',
       'dungeoncrawl:chests/treasure')
+    .removeLoot('minecraft:diamond_horse_armor')
 
   // --- Structory (39 tables) — T1 overworld ---
   event
