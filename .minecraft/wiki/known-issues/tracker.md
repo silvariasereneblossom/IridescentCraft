@@ -94,7 +94,22 @@ Forge requires network channel lists to match between client and server. Mods th
 - [ ] Food system overhaul — hunger drain 2.5x, seed drops 5%, structure food reduction
 - [ ] Farmer's Delight cooking conversion — 70 recipes
 
-## Active Issues (new)
+## Session Log Audit — 2026-04-21 (02:23 server start)
+
+### Fixed this session
+- **Lootr `aggressive_mode` regressed to `true` across all 3 distros.** The 2026-04-19 fix flipped it to `false` to stop "every village chest is vanilla"; somehow it came back as `true`. Flipped back to `false` in `main/config/lootr-common.toml`, `server_distribution/config/lootr-common.toml`, `distribution/client/config/lootr-common.toml`. This is the root cause of the tester's "Wizard Tower non-converted chests" report — aggressive mode skips the per-block-entity check and misses structures whose chests arrive through non-standard placement paths (Structory Towers' wizard tower included).
+- **`PlayerEvents.xpChange` doesn't exist in KubeJS 2001.6.5-build.16.** Startup log had `Unknown event 'PlayerEvents.xpChange'` on `attribute_sync.js:171`. Disabled that block with a comment explaining the fork/version gap. `xp_multiplier` attribute is inert until we find a working hook (candidate: tick-based diff of `player.totalExperience`).
+- **`create:mixing` constructor signature rejected in `if_latex_rework.js`.** `Constructor for create:mixing with 2 arguments not found` on line 35. Wrapped that one recipe in try/catch so it fails loud-but-isolated — the rest of the latex pipeline (crushing, crucible, HDPE conversion) still registers cleanly.
+
+### Documented, low severity (benign or external)
+
+- **`AttributeFix` emits ~50 "Attribute ID 'apotheosis:X' does not belong to a known attribute" warnings on startup.** Apotheosis registers `apotheosis:mining_speed`, `apotheosis:fire_damage`, `apotheosis:crit_damage`, etc. at a later load phase than AttributeFix's verification pass. This is a well-known AttributeFix+Apotheosis load-order quirk — the attributes *are* registered at runtime; AttributeFix just skips validating them. The "Apotheosis gem in tower showing undefined attribute" tester report may be downstream of this: if a gem's affix references one of these attributes and the client's translation file doesn't have `attribute.name.apotheosis.*` entries populated, the tooltip renders the raw key. Not actionable from the server side — needs a client-side en_us lang audit.
+- **Recipe parse warnings (~40 lines):** `botania:brew/*` failing because Botania's brew registry is null at recipe-parse time; `*_smithing` recipes missing `template` ingredient (1.20.1 smithing API changes); `deeperdarker:resonarium_*` smithing, `stalwart_dungeons:wartedtungsten*`, `traveloptics:*_weapon` etc. — all fall back to vanilla gracefully. These are mod-shipped recipes, not our code. Harmless.
+- **Apotheosis enchantment level warnings (~15 lines):** `Enchantment minecraft:protection has min/max power 232/200 at level 9, making this level unobtainable.` Intentional — we've raised max levels to 10 via config; natural enchanting tables can't reach those levels but Apotheosis gear can via affixes. Not an error.
+- **`cataclysm_ut:kill_monstrosity2` advancement unknown entity.** Cataclysm Ultimate Tweaks ships an advancement referencing `cataclysm:old_netherite_monstrosity` which the currently-loaded Cataclysm version no longer registers. Benign (advancement is just unobtainable). Remove Cataclysm Ultimate Tweaks or wait for it to update.
+- **`NecromancerEntity` / `CryomancerEntity` AbstractMethodError in `EntityEvents.spawned`.** Ongoing known issue — `BROKEN_ENTITIES` guard in `mob_scaling_unified.js` covers Necromancer; need to extend the same set + early-exit to `CryomancerEntity` (class path: `io.redspace.ironsspellbooks.entity.mobs.wizards.cryomancer`). Tracked separately in the "Active Issues" block below.
+
+### Active Issues (new)
 
 ### Magic Class Starter Kit — verification pending on NBT probe (ROOT CAUSE FOUND)
 - **Status:** Root cause identified 2026-04-21 by decompiling the Origins-Forge jar. `OriginContainer.serializeNBT` writes `Origins` as a CompoundTag of `{layer_id: origin_id_string}`, not a ListTag of `{origin}` objects. Every probe in the codebase used the list shape and silently returned 0. Rewrote all 17 probes across 9 scripts to use the correct compound shape with explicit layer ids. Unblocked, but still needs an in-game test — tester to restart, roll a magic class, confirm the kit arrives within ~5s of class selection.

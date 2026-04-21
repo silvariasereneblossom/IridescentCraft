@@ -23,16 +23,25 @@ ServerEvents.recipes(event => {
 
   // Create Mixing: 4 logs + water → latex bucket
   // (Mixing basin with water simulates the extraction process at scale)
-  event.recipes.create.mixing(
-    Fluid.of('industrialforegoing:latex', 250),
-    [
-      '#minecraft:logs',
-      '#minecraft:logs',
-      '#minecraft:logs',
-      '#minecraft:logs',
-      Fluid.of('minecraft:water', 500)
-    ]
-  ).heated().id('icraft:logs_to_latex_mixing')
+  // 2026-04-21: Create's mixing constructor in this build rejects our
+  // 2-arg call ("Constructor for create:mixing with 2 arguments not found").
+  // Wrapped in try/catch so the rest of the latex pipeline (crushing +
+  // crucible + HDPE conversion) still registers. Re-audit Create's KubeJS
+  // bindings later to find the correct signature for this version.
+  try {
+    event.recipes.create.mixing(
+      Fluid.of('industrialforegoing:latex', 250),
+      [
+        '#minecraft:logs',
+        '#minecraft:logs',
+        '#minecraft:logs',
+        '#minecraft:logs',
+        Fluid.of('minecraft:water', 500)
+      ]
+    ).heated().id('icraft:logs_to_latex_mixing')
+  } catch (e) {
+    console.warn('[latex-rework] Create mixing recipe registration failed (known issue, crushing + crucible still active): ' + e)
+  }
 
   // Create Crushing: 1 log → small amount of latex
   event.recipes.create.crushing([

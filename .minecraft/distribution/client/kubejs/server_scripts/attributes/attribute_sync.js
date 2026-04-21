@@ -166,28 +166,12 @@ EntityEvents.hurt(function(event) {
 })
 
 // --- XP MULTIPLIER ---
-// Scales XP gains by xp_multiplier. Only triggers when xp_multiplier != 1.0.
-// PlayerEvents.xpChange fires when the player gains or loses XP points.
-PlayerEvents.xpChange(function(event) {
-  // Only modify positive XP gains (not losses/spending)
-  if (event.amount <= 0) return
-
-  var player = event.player
-  var xpMult = getAttr(player, 'xp_multiplier', 1.0)
-
-  if (xpMult > 1.0) {
-    // Calculate bonus XP (the event already includes the base amount)
-    var bonus = Math.floor(event.amount * (xpMult - 1.0))
-    if (bonus > 0) {
-      // Schedule bonus XP grant for next tick to avoid recursion
-      player.server.scheduleInTicks(1, function() {
-        try {
-          player.giveExperiencePoints(bonus)
-        } catch (e) {}
-      })
-    }
-  }
-})
+// Disabled 2026-04-21: KubeJS 2001.6.5-build.16 does not expose
+// PlayerEvents.xpChange ("Unknown event 'PlayerEvents.xpChange'"). The
+// Forge PlayerXpEvent.PickupXp hook is not reflected into KubeJS's
+// PlayerEvents group in this build. xp_multiplier attribute is now inert
+// until we find a working hook or move to a tick-based polling approach
+// that diffs totalExperience per player per tick.
 
 // --- HEALING RECEIVED MODIFIER ---
 // KubeJS doesn't expose LivingHealEvent directly. Workaround: track health

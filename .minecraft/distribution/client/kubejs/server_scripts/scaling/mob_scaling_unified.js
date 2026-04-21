@@ -154,6 +154,9 @@ function isHostileMod(type) {
 const BROKEN_ENTITIES = new Set([
   'irons_spellbooks:necromancer',
   'irons_spellbooks:archevoker',
+  'irons_spellbooks:cryomancer',
+  'irons_spellbooks:pyromancer',
+  'irons_spellbooks:priest',
 ])
 
 const BOSSES = new Set([
