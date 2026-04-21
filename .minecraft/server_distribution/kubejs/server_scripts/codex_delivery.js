@@ -304,11 +304,17 @@ global.tick_codexOriginDump = function(event) {
       // re-enters the block each tick and throws "redeclaration of var
       // LAYER_IDS". Switched to `var`, which re-assigns cleanly.
       var LAYER_IDS = ['origins:class', 'origins:race', 'origins:origin']
-      let matched = []
-      function probe(fullId) {
-        for (let li = 0; li < LAYER_IDS.length; li++) {
+      var matched = []
+      // 2026-04-21: was `function probe(fullId) {...}` as a block-scoped
+      // declaration inside this try. Rhino's strict mode treats inner
+      // function declarations in blocks as uninitialized until the statement
+      // executes, and the forEach callback closure captures `probe` but
+      // finds it undefined when invoked. Switched to `var probe = function`
+      // form — the `var` hoists and the assignment lands before the forEach.
+      var probe = function(fullId) {
+        for (var li = 0; li < LAYER_IDS.length; li++) {
           try {
-            let r = player.server.runCommandSilent(
+            var r = player.server.runCommandSilent(
               'execute if entity ' + player.username +
               '[nbt={ForgeCaps:{"origins:origins":{Origins:{"' + LAYER_IDS[li] + '":"' + fullId + '"}}}}]'
             )
@@ -322,9 +328,22 @@ global.tick_codexOriginDump = function(event) {
       ORIGIN_PROBE_ICRAFT.forEach(function(o) { probe('icraft:' + o) })
       ORIGIN_PROBE_VANILLA.forEach(function(o) { probe('origins:' + o) })
 
-      let result = matched.length ? matched.join(', ') : '<none matched known origins>'
+      var result = matched.length ? matched.join(', ') : '<none matched known origins>'
       console.log('[codex/origindump] ' + player.username + ' matched = ' + result)
       player.tell('\u00a76[Debug]\u00a7r Matched: \u00a7e' + result + '\u00a7r')
+
+      // 2026-04-21: piggyback a starter-kit grant attempt right after the
+      // origindump. At this point the probe has confirmed Origins are
+      // populated (matched array is non-empty). This is faster than waiting
+      // for the next tick_codexStarterCheck tick (which runs every 5s and
+      // only actually grants when flag is false + detect succeeds); this
+      // path fires immediately when we KNOW the NBT is good.
+      try {
+        var grantResult = codex_tryGrantStarter(player)
+        console.log('[codex/origindump] immediate-grant attempt result=' + grantResult)
+      } catch (ge) {
+        console.warn('[codex/origindump] immediate-grant threw for ' + player.username + ': ' + ge)
+      }
     } catch (e) {
       console.warn('[codex/origindump] dump failed for ' + player.username + ': ' + e)
     }
