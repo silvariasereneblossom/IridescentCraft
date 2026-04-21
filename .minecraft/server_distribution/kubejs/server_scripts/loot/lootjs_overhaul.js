@@ -1747,13 +1747,14 @@ LootJS.modifiers(event => {
     /ctov:.*chests.*/
   ]
 
-  villageChestPatterns.forEach(pattern => {
-    event
-      .addLootTableModifier(pattern)
-      // Note: Apotheosis affix filtering requires NBT inspection which
-      // Ingredient.custom() can't do reliably in LootJS. Removed for now.
-      // High-tier affixes in villages are rare enough to not be game-breaking.
-  })
+  // 2026-04-21: DELETED a dead modifier block that had been registering
+  // event.addLootTableModifier(pattern) with NO action chained (the
+  // Apotheosis-affix filter was commented out but the modifier
+  // registration remained). LootJS throws 'No actions were added to the
+  // modifier' on such calls and aborts the ENTIRE remaining modifier
+  // callback — killing every village QoL pool, artifact pool, magic
+  // access block, and so on. Hence zero beds / artifacts in tester's
+  // 30x /loot give. The block is now fully removed.
 
   // =========================================================================
   // SECTION 8B: BOOSTED MAGIC MATERIALS IN STRUCTURE CHESTS
