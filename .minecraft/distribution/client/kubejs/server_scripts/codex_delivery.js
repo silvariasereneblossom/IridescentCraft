@@ -253,7 +253,10 @@ global.tick_codexOriginDump = function(event) {
       // CompoundTag of `{layer_id: origin_id_string}`, not a ListTag of
       // `{origin}` objects. We try all three layers per ID since the probe
       // list mixes origins, races, and classes.
-      const LAYER_IDS = ['origins:class', 'origins:race', 'origins:origin']
+      // 2026-04-21 bugfix: was `const LAYER_IDS` inside the try; Rhino
+      // re-enters the block each tick and throws "redeclaration of var
+      // LAYER_IDS". Switched to `var`, which re-assigns cleanly.
+      var LAYER_IDS = ['origins:class', 'origins:race', 'origins:origin']
       let matched = []
       function probe(fullId) {
         for (let li = 0; li < LAYER_IDS.length; li++) {

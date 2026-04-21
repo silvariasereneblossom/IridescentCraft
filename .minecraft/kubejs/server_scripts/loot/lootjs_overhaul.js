@@ -38,6 +38,13 @@
 
 var UniformGenerator = Java.loadClass('net.minecraft.world.level.storage.loot.providers.number.UniformGenerator')
 var ConstantValue = Java.loadClass('net.minecraft.world.level.storage.loot.providers.number.ConstantValue')
+// 2026-04-21: LootJS 2.13.1 `removeLoot(js_function)` doesn't auto-wrap a JS
+// predicate — the TypeWrapper first tries `IngredientJS.of(fn)`, gets an empty
+// ingredient, logs "Invalid ingredient for filter: Unknown", and installs
+// ItemFilter.ALWAYS_FALSE (= strip nothing). Predicate filters must go through
+// `ItemFilter.custom(fn)` explicitly, which the API exposes as a static method
+// on the ItemFilter interface.
+var ItemFilter = Java.loadClass('com.almostreliable.lootjs.filters.ItemFilter')
 
 LootJS.modifiers(event => {
 
@@ -103,7 +110,7 @@ LootJS.modifiers(event => {
       return (brace < 0 || (bracketClose >= 0 && brace > bracketClose))
     } catch (e) { return false }
   }
-  event.addLootTypeModifier(LootType.CHEST).removeLoot(blankEnchantedBookFilter)
+  event.addLootTypeModifier(LootType.CHEST).removeLoot(ItemFilter.custom(blankEnchantedBookFilter))
 
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
   event
@@ -1470,7 +1477,7 @@ LootJS.modifiers(event => {
       // 2026-04-21: per-table blank enchanted book strip. The global
       // LootType.CHEST predicate-based strip at Section 1 handles most
       // cases, but belt-and-suspenders on villages specifically.
-      .removeLoot(blankEnchantedBookFilter)
+      .removeLoot(ItemFilter.custom(blankEnchantedBookFilter))
       // Wood + stone that the global strip missed
       .removeLoot('#minecraft:logs')
       .removeLoot('#minecraft:planks')
@@ -1636,10 +1643,10 @@ LootJS.modifiers(event => {
     } catch (e) { return false }
   }
   villageChests.forEach(function(table) {
-    event.addLootTableModifier(table).removeLoot(nonCuratedArtifactFilter)
+    event.addLootTableModifier(table).removeLoot(ItemFilter.custom(nonCuratedArtifactFilter))
   })
   moddedVillagePatterns.forEach(function(pattern) {
-    event.addLootTableModifier(pattern).removeLoot(nonCuratedArtifactFilter)
+    event.addLootTableModifier(pattern).removeLoot(ItemFilter.custom(nonCuratedArtifactFilter))
   })
 
   // --- Village artifact pool (runs AFTER sanitization) ---

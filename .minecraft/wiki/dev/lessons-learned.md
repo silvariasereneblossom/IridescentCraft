@@ -14,6 +14,28 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-21 — LootJS JS-function predicates silently become ALWAYS_FALSE
+
+**Symptom:** Predicate filters for village artifact stripping (`event.addLootTableModifier(table).removeLoot(function(stack) {...})`) and for blank-enchanted-book stripping (`event.addLootTypeModifier(LootType.CHEST).removeLoot(blankEnchantedBookFilter)`) appeared registered but never actually stripped anything. Tester reports of "artifact in every chest" and "blank enchanted books still appearing" persisted across multiple fix attempts.
+
+**Dead ends:**
+- Assumed `removeLoot(predicate)` accepted a JS function because `ItemFilter extends Predicate<ItemStack>` and KubeJS usually auto-wraps.
+- Blamed ordering between type-level injects and table-level removes. Predicate strips still silently no-opped after reordering.
+- Switched `addWeightedLoot([air, ...artifacts])` to per-item `addLoot(.when(randomChance))` to work around what I thought was an air-dropping bug. Only the *rate* issue would be fixed by this — the non-curated-artifact leak is a separate filter problem.
+
+**Actual root cause:** Decompiled `lootjs.jar` (`com.almostreliable.lootjs.kube.LootJSPlugin.ofItemFilter`). When `removeLoot(x)` is called from JS, the TypeWrapper runs `ofItemFilter(x)`: it first calls `IngredientJS.of(x)`, which returns an *empty* ingredient when given a function. The code then logs `"LootJS: Invalid ingredient for filter: Unknown"` and returns `ItemFilter.ALWAYS_FALSE`. The strip is registered, but with a filter that never matches anything. The warning was right there in `kubejs-server.log` (16x for village filters, 16x for blank book fallback, once for the global strip) — we just hadn't read the WARN lines.
+
+The correct pattern is `removeLoot(ItemFilter.custom(fn))`. `ItemFilter.custom(Predicate)` is the static factory that wraps a JS function into a real `ItemFilter`. Without the explicit wrap, the Ingredient path swallows the function.
+
+**What fixed it:** Loaded `com.almostreliable.lootjs.filters.ItemFilter` via `Java.loadClass` at the top of `lootjs_overhaul.js` and wrapped both predicate-based `removeLoot` call sites with `ItemFilter.custom(fn)`.
+
+**Takeaway:**
+- **Read WARN lines, not just ERROR lines.** The startup log had `"LootJS: Invalid ingredient for filter: Unknown"` fire 30+ times per server start. Every one of those was a silently-broken filter. We'd been reading ERROR-level output and missing the WARN that pointed straight at the cause.
+- Same pattern as the Origin NBT probe: an API that accepts `Object`-typed arguments routes through a best-effort parser that falls back to a safe no-op on failure. Silent safe no-ops are the worst UX for authors because the thing *looks* registered. Treat WARN spam during mod-integration work as first-class signal.
+- The jar audit reflex applies here too. LootJS's overload resolution was not guessable from the API surface alone — the log said "Invalid ingredient" but the real answer was inside `ofItemFilter`'s bytecode.
+
+---
+
 ## 2026-04-21 — Origin NBT probe: list-shaped query against compound-shaped data (hit #2 in the same session)
 
 **Symptom:** After the 2026-04-20 "ForgeCaps rewrite" we believed the origin-detection probe was fixed. Tester logs kept showing `detected=none` for every magic-class probe over a full 3-minute poll window. Even the `!origindump` fallback (which probes vanilla+icraft origins via the same NBT pattern) matched nothing. Two sessions of poll-timeout reports with nothing to show for it.

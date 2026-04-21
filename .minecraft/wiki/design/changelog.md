@@ -4,6 +4,32 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-21 — Predicate filter silently ALWAYS_FALSE (artifacts + blank books) + origindump log surfaced that player.Origins was empty
+
+### Critical filter bug
+
+Fresh tester log revealed three stacked issues:
+
+1. **Predicate filters were silent no-ops.** Startup log had `"LootJS: Invalid ingredient for filter: Unknown"` firing 30+ times per server start. Decompiled LootJS 2.13.1's `LootJSPlugin.ofItemFilter`: when a JS function is passed to `removeLoot(fn)`, the TypeWrapper runs `IngredientJS.of(fn)`, gets an empty ingredient, logs the warning, and installs `ItemFilter.ALWAYS_FALSE` (= strip nothing). The strip is registered but never matches anything. That's why both the village non-curated-artifact predicate and the blank-enchanted-book predicate have been silently doing nothing for days. Correct pattern is `removeLoot(ItemFilter.custom(fn))` — the explicit `custom` factory wraps the JS function into a real `ItemFilter`. Added `var ItemFilter = Java.loadClass('com.almostreliable.lootjs.filters.ItemFilter')` at top of `lootjs_overhaul.js` and wrapped both call sites.
+
+2. **`tick_codexOriginDump` threw every tick.** `const LAYER_IDS = [...]` inside a try block re-executes each tick; Rhino throws `TypeError: redeclaration of var LAYER_IDS`. Switched to `var` so reassignment is fine.
+
+3. **Player's `ForgeCaps."origins:origins".Origins` compound was empty (`{}`).** The tester's character has no origins selected at all (`HadAllOrigins: 0b, Origins: {}`). Apoli `Powers:[]` also empty. This is why every class probe returned `detected=none` on the live run. Origin detection is correct behavior here — the player just hasn't actually selected an origin/race/class via the in-game picker yet. The in-game "I'm Archmage" impression is either from a different character or an Origins UI display (which shows the *chosen* origin even before the capability is persisted during login-flow).
+
+### Fix files
+
+- `kubejs/server_scripts/loot/lootjs_overhaul.js` (all 3 distros) — ItemFilter.custom wrap for both predicate filters
+- `kubejs/server_scripts/codex_delivery.js` (all 3 distros) — LAYER_IDS const → var
+
+### Next test
+
+- Tester needs to actually complete the Origins selection UI on login (Origin → Race → Class). `!origindump` will now return without throwing and show the actual compound.
+- If Origins compound is populated but kit still doesn't fire, the probe is still wrong — full postmortem in `wiki/dev/lessons-learned.md`.
+
+Full postmortem at `wiki/dev/lessons-learned.md` (2026-04-21 top entry).
+
+---
+
 ## 2026-04-21 — Village artifact always-firing + starter kit diagnostic feedback
 
 ### Village artifact "nearly every chest"
