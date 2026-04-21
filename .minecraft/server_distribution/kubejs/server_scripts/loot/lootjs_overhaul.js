@@ -1643,32 +1643,29 @@ LootJS.modifiers(event => {
   })
 
   // --- Village artifact pool (runs AFTER sanitization) ---
-  // 2026-04-20: reworked from per-item `.addLoot(entry.when(randomChance))`
-  // to a single weighted pool. The per-item pattern produced ~1 artifact
-  // in 30 rolls (tester-confirmed) against an expected ~3 at 10% combined,
-  // same failure mode as the bed add — `addLoot+randomChance` isn't
-  // reliably firing in this LootJS build. `addWeightedLoot` is the
-  // proven-working pattern (per the smith table).
+  // 2026-04-21 (third rewrite): tester reported artifacts landing in NEARLY
+  // EVERY chest, despite a weighted pool designed for ~11% rate. Root cause
+  // is almost certainly that LootJS 2.13.1 drops `Item.of('minecraft:air')`
+  // from `addWeightedLoot` pools (air isn't a real insertable item), which
+  // collapses the pool to just-artifacts and makes every roll pick one.
   //
-  // Each chest has `artifactChestChance` probability to roll ANY artifact
-  // from the weighted pool; when it does, exactly one item is picked by
-  // weight. Rate is "artifact appears in one of every ~10 chests" by
-  // default, tunable via the chance constant.
-  // 2026-04-21: diagnostic confirmed — addWeightedLoot works once the
-  // upstream bare-modifier abort is fixed. Restored air slot to give a
-  // realistic rate instead of guaranteed-every-chest. With 12 artifacts
-  // at weight 5 each (total 60) + air at weight 440, ~12% of chests
-  // yield an artifact; the other 88% yield air (nothing added).
-  const villageArtifactWeighted = [Item.of('minecraft:air').withChance(440)]
-    .concat(villageArtifactPool.map(function(id) {
-      return Item.of(id).withChance(5)
-    }))
-
+  // Switched back to per-item `addLoot(entry.when(randomChance))` at 1%
+  // per item. For 11 items: P(at least one) = 1 - 0.99^11 ≈ 10.5%,
+  // matching the intended target. This is the same pattern the enchanted
+  // book adds at lines 181-222 use reliably (those consistently fire at
+  // 7.5%/10%/12.5%/15% per tester reports).
+  const villageArtifactPerItem = 0.01
   villageChests.forEach(function(table) {
-    event.addLootTableModifier(table).addWeightedLoot(villageArtifactWeighted)
+    var vMod = event.addLootTableModifier(table)
+    villageArtifactPool.forEach(function(id) {
+      vMod.addLoot(LootEntry.of(id).when(c => c.randomChance(villageArtifactPerItem)))
+    })
   })
   moddedVillagePatterns.forEach(function(pattern) {
-    event.addLootTableModifier(pattern).addWeightedLoot(villageArtifactWeighted)
+    var vMod = event.addLootTableModifier(pattern)
+    villageArtifactPool.forEach(function(id) {
+      vMod.addLoot(LootEntry.of(id).when(c => c.randomChance(villageArtifactPerItem)))
+    })
   })
 
   // --- Rotten flesh strip: modded villages (CTOV/VnP) weren't covered ---
