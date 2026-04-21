@@ -1587,16 +1587,15 @@ LootJS.modifiers(event => {
   // from the weighted pool; when it does, exactly one item is picked by
   // weight. Rate is "artifact appears in one of every ~10 chests" by
   // default, tunable via the chance constant.
-  // 2026-04-21 DIAGNOSTIC: tester reports artifact + QoL pools "definitely
-  // not working" after the addWeightedLoot rewrite. Dropped the air
-  // (nothing) slots entirely so every village chest gets EXACTLY ONE
-  // artifact guaranteed. If every roll now contains one artifact, the
-  // pattern works and we need to tune rates back down. If rolls still
-  // produce zero artifacts, addWeightedLoot isn't reaching village tables
-  // and we need a different injection strategy entirely.
-  const villageArtifactWeighted = villageArtifactPool.map(function(id) {
-    return Item.of(id).withChance(10) // uniform weight per artifact
-  })
+  // 2026-04-21: diagnostic confirmed — addWeightedLoot works once the
+  // upstream bare-modifier abort is fixed. Restored air slot to give a
+  // realistic rate instead of guaranteed-every-chest. With 12 artifacts
+  // at weight 5 each (total 60) + air at weight 440, ~12% of chests
+  // yield an artifact; the other 88% yield air (nothing added).
+  const villageArtifactWeighted = [Item.of('minecraft:air').withChance(440)]
+    .concat(villageArtifactPool.map(function(id) {
+      return Item.of(id).withChance(5)
+    }))
 
   villageChests.forEach(function(table) {
     event.addLootTableModifier(table).addWeightedLoot(villageArtifactWeighted)
@@ -1626,14 +1625,18 @@ LootJS.modifiers(event => {
   // (5 tables) get three additional weighted pools from the earlier block
   // (QoL flavor, starter tools, magic) so houses are richer by design.
 
-  // 2026-04-21: dropped the air (nothing) slot so every village chest gets
-  // one QoL item. Diagnostic step — if tester /loot give now produces
-  // ~1 bed/ink/gem per roll, the pattern works and we can re-introduce
-  // the air slot. If still zero, addWeightedLoot itself isn't firing.
+  // 2026-04-21: removed bed from this pool. House tables already include
+  // bed in their dedicated QoL flavor pool (villageHouseChests block
+  // earlier), so leaving bed here caused tester to see two beds in one
+  // house chest occasionally. This pool is now magic-materials-only and
+  // applies to all 15 tables — houses already get bed + other flavor
+  // from their richer 3-pool setup, non-houses (smith/butcher/tannery/etc.)
+  // get magic materials from here. Air slot gives ~40% of chests NO
+  // magic material (most chests have some magic material ~60%).
   const villageQoLPool = [
-    Item.of('minecraft:white_bed').withChance(35),
+    Item.of('minecraft:air').withChance(40),
     Item.of('irons_spellbooks:common_ink').withChance(30),
-    Item.of('ars_nouveau:source_gem').withChance(20),
+    Item.of('ars_nouveau:source_gem').withChance(15),
     Item.of('irons_spellbooks:copper_spell_book').withChance(10),
     Item.of('ars_nouveau:novice_spell_book').withChance(5)
   ]
