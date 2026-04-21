@@ -6608,3 +6608,29 @@ java.util.NoSuchElementException: No value present
 [21Apr2026 15:17:35.714] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
 [21Apr2026 15:17:39.901] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Nika'/104, l='ClientLevel', x=34.55, y=73.69, z=-248.43] died, message: 'Nika died because of Direwolf'
 [21Apr2026 15:17:44.154] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 15:17:46.257] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 15:17:56.865] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 15:17:56.865] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 15:18:07.991] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 15:18:09.542] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Pavel'/107, l='ClientLevel', x=38.09, y=73.77, z=-224.56] died, message: 'Pavel died because of Zombie'
+[21Apr2026 15:18:27.391] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Urška'/106, l='ClientLevel', x=34.62, y=71.00, z=-219.67] died, message: 'Urška died because of Zombie'
+[21Apr2026 15:18:49.692] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 15:18:50.526] [Render thread/WARN] [io.github.apace100.apoli.Apoli/]: Received unknown attacker
+[21Apr2026 15:18:55.665] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Ema'/92, l='ClientLevel', x=34.29, y=73.54, z=-186.79] died, message: 'Ema died because of Gnome'
+[21Apr2026 15:19:03.221] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Andreja'/162, l='ClientLevel', x=26.92, y=72.00, z=-217.50] died, message: 'Andreja died because of Zombie'
+[21Apr2026 15:24:11.059] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Nuša'/105, l='ClientLevel', x=31.66, y=71.96, z=-234.30] died, message: 'Nuša died because of Direwolf'
+[21Apr2026 15:24:19.750] [Render thread/INFO] [net.minecraft.world.entity.npc.Villager/]: Villager VillagerEntityMCA['Edvard'/223, l='ClientLevel', x=11.52, y=69.95, z=-224.20] died, message: 'Edvard died because of Direwolf'
+[21Apr2026 15:38:51.464] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[21Apr2026 15:38:51.472] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[21Apr2026 15:38:51.476] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[21Apr2026 15:38:51.477] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver received class net.minecraftforge.client.event.ClientPlayerNetworkEvent$LoggingOut
+[21Apr2026 15:38:51.477] [Render thread/INFO] [mezz.jei.forge.startup.StartEventObserver/]: JEI StartEventObserver transitioning state from JEI_STARTED to DISABLED
+[21Apr2026 15:38:51.477] [Render thread/INFO] [mezz.jei.library.startup.JeiStarter/]: Stopping JEI
+[21Apr2026 15:38:51.477] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable...
+[21Apr2026 15:38:51.477] [Render thread/INFO] [mezz.jei.forge.plugins.forge.ForgeGuiPlugin/]: Stopping JEI GUI
+[21Apr2026 15:38:51.479] [Render thread/INFO] [mezz.jei.library.load.PluginCaller/]: Sending Runtime Unavailable took 2.087 ms
+[21Apr2026 15:38:51.479] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[21Apr2026 15:38:51.504] [Render thread/INFO] [voicechat/]: [voicechat] Clearing audio channels
+[21Apr2026 15:38:51.514] [Render thread/INFO] [voicechat/]: [voicechat] Disconnecting voicechat
+[21Apr2026 15:38:51.720] [Render thread/INFO] [ChunkBuilder/]: Stopping worker threads
+[21Apr2026 15:38:51.724] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
