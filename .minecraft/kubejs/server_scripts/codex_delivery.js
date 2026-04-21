@@ -191,12 +191,27 @@ global.tick_codexStarterCheck = function(event) {
         // Stop polling after success
         player.persistentData.putInt('icraft_starter_poll_ticks', 0)
       }
-      // Log occasional trace — once every 30s so the log isn't spammed
+      // Log occasional trace — once every 30s so the log isn't spammed.
+      // 2026-04-21: also dump the raw Origins compound so we can see if/when
+      // the capability populates. Tester reported picking a class but the
+      // NBT stayed empty — need per-poll visibility to diagnose whether the
+      // persistence is actually landing server-side.
       if (left % 600 === 0) {
         let cls = codex_detectMagicClass(player)
+        var originsStr = '<unavailable>'
+        try {
+          var full = player.nbt
+          var fc = full ? full.ForgeCaps : null
+          var oo = fc ? fc.get('origins:origins') : null
+          if (oo) {
+            var origins = oo.get ? oo.get('Origins') : null
+            originsStr = origins ? String(origins) : '<Origins key missing>'
+          }
+        } catch (e) { originsStr = '<read threw: ' + e + '>' }
         console.log('[codex/starter] poll for ' + player.username +
                     ': detected=' + (cls || 'none') +
-                    ' ticks_left=' + left)
+                    ' ticks_left=' + left +
+                    ' Origins=' + originsStr)
       }
     } catch (e) {
       console.warn('[codex/starter] poll failed for ' + player.username + ': ' + e)
