@@ -30,26 +30,43 @@ const MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner']
 const MAGIC_FLAG_PREFIX = 'icraft_magic_starter_'
 
 function codex_detectMagicClass(player) {
-  // 2026-04-21: audited the Origins-Forge jar — OriginContainer.serializeNBT()
-  // writes `Origins` as a CompoundTag of `{layer_id: origin_id_string}`,
-  // NOT a ListTag of `{origin, layer}` objects. Every earlier probe using
-  // `Origins:[{origin:"icraft:X"}]` returned 0 because a list-style NBT
-  // match can't succeed against a compound-shaped value. Correct probe:
-  //   {Origins:{"origins:class":"icraft:archmage"}}
-  // Class layer resource id is `origins:class` (file lives at
-  // data/origins/origin_layers/class.json in iridescent_origins-mod).
-  for (let i = 0; i < MAGIC_CLASSES.length; i++) {
-    let c = MAGIC_CLASSES[i]
-    try {
-      let r = player.server.runCommandSilent(
-        `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:${c}"}}}}]`
-      )
-      if (r > 0) return c
-    } catch (e) {
-      console.warn('[codex/starter] NBT query failed for ' + player.username + '/' + c + ': ' + e)
+  // 2026-04-22: switched from `execute if entity [nbt=...]` probe to
+  // direct NBT read via player.nbt. Tester's previous run showed the
+  // origindump Route 2 (same compound-shape probe) returning "<none
+  // matched known origins>" even though Route 0 (direct player.nbt
+  // read) successfully showed Origins populated with icraft:archmage
+  // on the origins:class layer. Something in the execute-if NBT-matcher
+  // is not recursing into the nested compound correctly in this Forge
+  // build. Route 0's direct path is proven-working — use it for
+  // detection too.
+  //
+  // Path: player.nbt.ForgeCaps."origins:origins".Origins."origins:class"
+  // Returns the short class name (without "icraft:" prefix) if it matches
+  // one of the magic classes; null otherwise.
+  try {
+    var nbt = player.nbt
+    if (!nbt) return null
+    var fc = nbt.ForgeCaps
+    if (!fc) return null
+    var oo = fc.get ? fc.get('origins:origins') : null
+    if (!oo) return null
+    var origins = oo.get ? oo.get('Origins') : null
+    if (!origins || !origins.getString) return null
+    var classId = String(origins.getString('origins:class') || '')
+    if (!classId) return null
+    // classId is a full resource id like "icraft:archmage". Strip the
+    // prefix and see if the bare name is in MAGIC_CLASSES.
+    var bare = classId
+    var colon = classId.indexOf(':')
+    if (colon >= 0) bare = classId.substring(colon + 1)
+    for (var i = 0; i < MAGIC_CLASSES.length; i++) {
+      if (MAGIC_CLASSES[i] === bare) return bare
     }
+    return null
+  } catch (e) {
+    console.warn('[codex/starter] detectMagicClass threw for ' + player.username + ': ' + e)
+    return null
   }
-  return null
 }
 
 function codex_giveStarterKit(player, className) {
@@ -429,20 +446,21 @@ global.tick_codexChatProcessor = function(event) {
         MAGIC_CLASSES.forEach(function(c) {
           player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
         })
-        // Also probe non-magic classes so the !kit response can tell the
-        // player *what* class we detected, even when they don't qualify
-        // for a kit. Otherwise "No magic class detected" is ambiguous —
-        // could be "you're not a magic class" or "the probe is broken."
-        var NON_MAGIC_CLASSES = ['berserker','samurai','wanderer','paladin','vanguard','ranger','artificer']
+        // Read whatever is on the origins:class layer directly via NBT —
+        // the execute-if probe path doesn't match reliably in this Forge
+        // build. Report the bare class name regardless of whether it's
+        // in the magic set; this disambiguates "you're not a magic class"
+        // from "the probe is broken."
         var detectedAnyClass = null
         try {
-          for (var i = 0; i < NON_MAGIC_CLASSES.length; i++) {
-            var c2 = NON_MAGIC_CLASSES[i]
-            var r2 = player.server.runCommandSilent(
-              'execute if entity ' + player.username +
-              '[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:' + c2 + '"}}}}]'
-            )
-            if (r2 > 0) { detectedAnyClass = c2; break }
+          var _nbt = player.nbt
+          var _fc = _nbt ? _nbt.ForgeCaps : null
+          var _oo = _fc && _fc.get ? _fc.get('origins:origins') : null
+          var _origins = _oo && _oo.get ? _oo.get('Origins') : null
+          var _classId = _origins && _origins.getString ? String(_origins.getString('origins:class') || '') : ''
+          if (_classId) {
+            var _colon = _classId.indexOf(':')
+            detectedAnyClass = _colon >= 0 ? _classId.substring(_colon + 1) : _classId
           }
         } catch (e) {}
         let cls = codex_detectMagicClass(player)

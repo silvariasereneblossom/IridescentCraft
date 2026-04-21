@@ -30,18 +30,32 @@ var MAGIC_CLASSES_SHARED = (typeof MAGIC_CLASSES !== 'undefined') ? MAGIC_CLASSE
 var FLAG_PREFIX = (typeof MAGIC_FLAG_PREFIX !== 'undefined') ? MAGIC_FLAG_PREFIX : 'icraft_magic_starter_'
 
 function magicStarter_detectClass(player) {
-  for (let i = 0; i < MAGIC_CLASSES_SHARED.length; i++) {
-    let c = MAGIC_CLASSES_SHARED[i]
-    try {
-      let r = player.server.runCommandSilent(
-        `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:${c}"}}}}]`
-      )
-      if (r > 0) return c
-    } catch (e) {
-      console.warn('[magic-starter] NBT query failed for ' + player.username + '/' + c + ': ' + e)
+  // 2026-04-22: switched to direct player.nbt read (see codex_delivery.js
+  // codex_detectMagicClass for rationale). `execute if entity [nbt=...]`
+  // is not matching the nested compound in this Forge build even when the
+  // target compound clearly contains the probe's key/value pair.
+  try {
+    var nbt = player.nbt
+    if (!nbt) return null
+    var fc = nbt.ForgeCaps
+    if (!fc) return null
+    var oo = fc.get ? fc.get('origins:origins') : null
+    if (!oo) return null
+    var origins = oo.get ? oo.get('Origins') : null
+    if (!origins || !origins.getString) return null
+    var classId = String(origins.getString('origins:class') || '')
+    if (!classId) return null
+    var bare = classId
+    var colon = classId.indexOf(':')
+    if (colon >= 0) bare = classId.substring(colon + 1)
+    for (var i = 0; i < MAGIC_CLASSES_SHARED.length; i++) {
+      if (MAGIC_CLASSES_SHARED[i] === bare) return bare
     }
+    return null
+  } catch (e) {
+    console.warn('[magic-starter] detectClass threw for ' + player.username + ': ' + e)
+    return null
   }
-  return null
 }
 
 function magicStarter_giveKit(player, className) {
