@@ -4,6 +4,51 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-21 — Village accessory double-stack, terrain flattening, cherry biome boost
+
+### Village accessory double-stack
+
+Tester reported that after the village pool fix the curated list was appearing correctly, but occasionally two accessories in one chest. Root cause: `artifacts:cloud_in_a_bottle` was in BOTH `villageArtifactPool` (the curated weighted pool) and `artifactT1Pool` (the type-level broadcast that injects into all Overworld chests). The whitelist-based predicate let the T1 broadcast's cloud through, so a village chest could receive one artifact from the weighted pool and a cloud from the T1 broadcast in the same roll.
+
+Fix is two-part:
+1. Removed `cloud_in_a_bottle` from `villageArtifactPool`. Cloud still spawns elsewhere in the Overworld via T1 broadcast — villages now just don't get it via their curated pool. Village pool is 11 items.
+2. Predicate now strips every item in `artifactT1Pool` from villages unconditionally (not just "not in whitelist" — specifically targeting the broadcast source). The T2/T3/T4 broadcasts don't target Overworld dimensions so they don't leak in. Didn't include T2+ in the strip because `villageArtifactPool` includes T2+ items (`power_glove`, `cross_necklace`, etc.) and a blanket T2+ strip would also eat the village pool's own weighted rolls.
+
+Effective artifact rate: 11 items × weight 5 = 55, vs air weight 440, ≈ 11% per chest. Close to the 12% target.
+
+### Terrain flattening
+
+Tester reported terrain feels too mountainous after the 2026-04-19 rivers fix bumped `ridge_scale` from 0.08 to 0.3 and `erosion_scale` from 0.1 to 0.4. Those settings drive river carving, so they stay. Flattening comes from two orthogonal knobs:
+- `vertical_scale`: 0.8 → 0.6 (reduces overall elevation amplitude ~25%)
+- `flat_terrain_skew`: 0.1 → 0.3 (Tectonic's direct "more flat areas" dial)
+
+Mountains will still exist where ridges are high, but their heights are lower and the prevalence of flat land is 3x greater. Rivers should remain at the 2026-04-19 frequency.
+
+### BoP cherry biome boost
+
+Tester asked for cherry biomes and custom derivatives to appear more often. Adjusted the `bop_custom_region.json` TerraBlender region:
+- Added `minecraft:cherry_grove` (weight 12) — vanilla cherry biome wasn't in the region at all
+- Added `biomesoplenty:cherry_blossom_grove` (weight 20) — BoP's dedicated cherry biome
+- `icraft:cherry_river_meadow`: 20 → 35
+- `icraft:cherry_mountains`: 15 → 25
+- `biomesoplenty:orchard`: 8 → 15 (already cherry-adjacent)
+- `biomesoplenty:snowblossom_grove`: 4 → 8 (pink-flowered, thematically paired)
+
+Total region weight 160 → 215. Cherry-focused biomes 35 → 115 (≈ 54% of region rolls). Rebuilt `bop_biome_weights.zip` via `zip -r -X` (reproducible), deployed identical MD5 to all 3 distros. Affects new chunks only; existing worlds keep their biome layout.
+
+### Magic starter kit — diagnostic still pending
+
+Tester's `kubejs-server.log` from 22:47-22:51 showed the polling loop running the full 3 minutes with `detected=none` for every poll, then timing out. No `!origindump` command was run, so we can't tell whether the player picked a magic class at all (in which case "no kit" is correct behavior) or whether the NBT probe path is still misaligned on this fork. **Next diagnostic step:** ask tester to run `!origindump` in chat on a fresh join, which writes the player's full origin NBT to the server log. Until then, starter kit is unblocked-but-unverified.
+
+### Files changed
+
+- `kubejs/server_scripts/loot/lootjs_overhaul.js` (all 3 distros) — predicate + village pool rework
+- `config/tectonic.json` (all 3 distros) — vertical_scale + flat_terrain_skew
+- `datapack_sources/bop_biome_weights/data/custom/worldgen/region/bop_custom_region.json` — biome weights
+- `config/paxi/datapacks/bop_biome_weights.zip` (all 3 distros) — rebuilt
+
+---
+
 ## 2026-04-21 — Codex macro fix ($(/bold) was rendering as literal text) + magic starter kit cleanup
 
 ### Codex rendering errors

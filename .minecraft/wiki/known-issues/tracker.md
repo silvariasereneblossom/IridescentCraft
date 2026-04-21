@@ -94,7 +94,18 @@ Forge requires network channel lists to match between client and server. Mods th
 - [ ] Food system overhaul — hunger drain 2.5x, seed drops 5%, structure food reduction
 - [ ] Farmer's Delight cooking conversion — 70 recipes
 
+## Active Issues (new)
+
+### Magic Class Starter Kit — verification pending on NBT probe
+- **Status:** Delivery path is threading-safe (post-2026-04-21 cleanup), but tester's log from 22:47 showed the 3-minute starter poll ran to completion with `detected=none` for every probe call. The code queries `execute if entity <player>[nbt={ForgeCaps:{"origins:origins":{Origins:[{origin:"icraft:X"}]}}}]` for each magic class, so either (a) tester's character wasn't a magic class, or (b) the NBT path is still misaligned on this Origins fork even after the 2026-04-20 ForgeCaps rewrite.
+- **Next step:** tester to run `!origindump` in chat on a fresh character. The handler writes the full origin NBT and matched origin IDs to the server log; that diagnostic will reveal whether the probe path is right.
+
 ## Resolved
+
+### Village Chest Accessory Double-Stack (2026-04-21)
+- **Reported:** Tester saw the curated village artifact pool land, but occasionally two accessories in one chest.
+- **Root cause:** `artifacts:cloud_in_a_bottle` lived in BOTH `villageArtifactPool` (the weighted per-village pool) and `artifactT1Pool` (the Overworld-wide type-level broadcast). The whitelist-based village predicate let cloud through, so a village chest could pull one artifact from the weighted roll AND a cloud from the T1 broadcast in the same generation pass.
+- **Resolved:** Removed `cloud_in_a_bottle` from `villageArtifactPool` and tightened the village predicate to strip any item in `artifactT1Pool` unconditionally. Village pool is now 11 items at weight 5 each (≈ 11% artifact rate against air weight 440). Cloud still appears in non-village Overworld chests via the T1 broadcast.
 
 ### Codex Macro Rendering: `$(/bold)` showing as literal text (2026-04-21)
 - **Reported:** Tester saw grammatical/formatting errors inside the codex.

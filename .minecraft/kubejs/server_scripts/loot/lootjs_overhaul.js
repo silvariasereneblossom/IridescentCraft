@@ -1507,11 +1507,14 @@ LootJS.modifiers(event => {
   // Per-chest rate math: 25 items × 0.16% each = ~4% any-artifact rate.
   // Independent rolls mean technically a chest COULD spawn two artifacts, but
   // the probability is ~0.08% per chest — rare enough to ignore.
-  // Village-only artifact pool: combat/utility focused + Cloud in a Bottle
-  // These items do NOT overlap with the T1 global pool, so no persistent
-  // filter conflicts. Villages get ONLY this pool (T1 global stripped).
+  // Village-only artifact pool: combat/utility focused, curated mid-tier set.
+  // 2026-04-21: removed `artifacts:cloud_in_a_bottle` — it was also in
+  // artifactT1Pool (Overworld broadcast), so it had two independent sources
+  // per village chest (T1 broadcast + village weighted roll), producing the
+  // observed double-accessory stacking. Cloud still spawns everywhere else
+  // in the Overworld via the T1 broadcast; villages now get only these 11
+  // items that are unique to the village pool.
   const villageArtifactPool = [
-    'artifacts:cloud_in_a_bottle',
     'artifacts:power_glove',
     'artifacts:feral_claws',
     'artifacts:cross_necklace',
@@ -1575,16 +1578,37 @@ LootJS.modifiers(event => {
     glyphT2.concat(glyphT3, glyphT4).forEach(function(g) { vSanMod.removeLoot(g) })
   })
 
-  // --- Predicate catch-all: strip any artifact/relic NOT in village pool ---
+  // --- Predicate catch-all: strip any artifact that isn't from the village pool ---
   // 2026-04-21: per-item string strips at line ~1554 weren't catching T1
   // broadcast leaks (tester reported uncurated artifacts appearing in village
-  // chests with artifacts outside villageArtifactPool). Hypothesis: string
-  // removeLoot on a table modifier doesn't reliably strip items injected by
-  // a type-level modifier in a different registration. A predicate runs at
+  // chests with artifacts outside villageArtifactPool). Predicate runs at
   // roll time and evaluates whatever is actually in the pool, so it catches
   // leaks regardless of which modifier added them.
-  var villageArtifactWhitelist = {}
-  villageArtifactPool.forEach(function(id) { villageArtifactWhitelist[id] = true })
+  //
+  // 2026-04-21 (second pass): tester reported possible accessory double-stacking
+  // — suspicion that the T1 broadcast was adding `artifacts:cloud_in_a_bottle`
+  // alongside the village pool's own roll (they share that item). Confirmed:
+  // `cloud_in_a_bottle` is in BOTH `villageArtifactPool` (whitelist) and
+  // `artifactT1Pool` (broadcast source). Whitelist-based predicate let the
+  // broadcast's cloud through, and the village pool's independent weighted
+  // roll could also produce a cloud in the same chest.
+  //
+  // Fix: strip only the T1 broadcast items (only pool that injects into
+  // Overworld villages). T2/T3/T4 broadcasts target non-Overworld dimensions
+  // and don't leak here. The T1 pool is where the `cloud_in_a_bottle`
+  // double-stack came from — it's in both artifactT1Pool (broadcast) and
+  // villageArtifactPool (curated). Strip it from villages unconditionally
+  // and let the village's own addWeightedLoot roll be its only source.
+  //
+  // IMPORTANT: do NOT add artifactT2Pool/T3/T4 items to this strip set.
+  // villageArtifactPool contains items that are BOTH T2+ broadcast entries
+  // (power_glove, cross_necklace, panic_necklace, etc.) AND village-curated.
+  // A strip including those would also strip the village pool's own rolls,
+  // because removeLoot on a table applies after addWeightedLoot too.
+  var t1BroadcastItemSet = {}
+  artifactT1Pool.forEach(function(id) { t1BroadcastItemSet[id] = true })
+  var villageArtifactWhitelistSet = {}
+  villageArtifactPool.forEach(function(id) { villageArtifactWhitelistSet[id] = true })
   var nonCuratedArtifactFilter = function(stack) {
     try {
       if (!stack || stack.isEmpty()) return false
@@ -1593,15 +1617,22 @@ LootJS.modifiers(event => {
         try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {}
       }
       if (!id) return false
-      // Target artifact-like namespaces that leak via the global T1/T2/T3/T4
-      // broadcasts. Only strip if the item is NOT in the village curated pool.
+      // Strip 1: any T1 broadcast item. These come from Section 1C's
+      // `addLootTypeModifier(LootType.CHEST).anyDimension(OW)` injection
+      // and are always wrong for villages (villages get their own pool).
+      // Eliminates the cloud_in_a_bottle double-stack.
+      if (t1BroadcastItemSet[id]) return true
+      // Strip 2: any artifact/relic item from a namespace we care about that
+      // isn't one of our curated items. Use an explicit whitelist of what
+      // villages ARE allowed to produce (villageArtifactPool), so uncurated
+      // mod artifacts get stripped while curated T2+ items pass through.
       var isArtifactNs = (
         id.indexOf('artifacts:') === 0 ||
         id.indexOf('relics:') === 0 ||
         id.indexOf('celestial_artifacts:') === 0
       )
       if (!isArtifactNs) return false
-      return !villageArtifactWhitelist[id]
+      return !villageArtifactWhitelistSet[id]
     } catch (e) { return false }
   }
   villageChests.forEach(function(table) {
