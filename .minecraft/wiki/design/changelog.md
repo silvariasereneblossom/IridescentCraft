@@ -4,6 +4,34 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-21 — Village artifact always-firing + starter kit diagnostic feedback
+
+### Village artifact "nearly every chest"
+
+Tester reported artifacts were still landing in nearly every chest after the predicate-strip + air-slot fixes. The predicate strip was working (non-curated artifacts from the T1 broadcast got stripped), but our own `villageArtifactWeighted` pool was firing 100% of the time instead of the target 11%.
+
+Strongly suspected cause: LootJS 2.13.1 `addWeightedLoot` drops `Item.of('minecraft:air')` entries from the weighted pool (air is not an insertable item, so the serializer silently strips it). That collapses the pool from `[air×440, artifact×5×11]` to just `[artifact×5×11]`, and every roll picks an artifact.
+
+Fix: switched village artifact injection from `addWeightedLoot` (with failed air rarity dial) to per-item `addLoot(LootEntry.of(id).when(c => c.randomChance(0.01)))`. 11 items at 1% each gives `P(≥1 artifact) = 1 − 0.99^11 ≈ 10.5%`, matching the intended rate. This is the same pattern the enchanted-book re-adds use at lines 181-222, which tester confirmed fires correctly at 7.5/10/12.5/15% per tier.
+
+### Starter kit: `!kit` diagnostic output
+
+Tester reported `!kit` did nothing, even though `!origindump` worked in the same session (confirming the NBT probe shape fix landed). Without seeing whether a non-magic class was detected, we can't tell if the kit logic is broken or just correctly refusing because the player chose a non-magic class.
+
+Added non-magic-class probe to the `!kit` tick processor. Response now tells the player exactly what class the server sees:
+- Magic class detected → grants kit as before.
+- Non-magic class detected (berserker/samurai/wanderer/paladin/vanguard/ranger/artificer) → `[Starter Kit] Detected class: <name> (not a magic class — no catalyst starter kit for this class).`
+- No class on origins:class layer at all → falls back to the "Use !origindump" hint, meaning something's wrong with origin selection.
+
+This gives us per-invocation diagnostic feedback in chat + log without needing the tester to push logs.
+
+### Files changed
+
+- `kubejs/server_scripts/loot/lootjs_overhaul.js` (all 3 distros) — village artifact pool switched to per-item randomChance
+- `kubejs/server_scripts/codex_delivery.js` (all 3 distros) — !kit probes non-magic classes for feedback
+
+---
+
 ## 2026-04-21 — Origin NBT probe shape corrected across 9 scripts
 
 ### Root cause

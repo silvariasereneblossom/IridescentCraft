@@ -360,10 +360,31 @@ global.tick_codexChatProcessor = function(event) {
         MAGIC_CLASSES.forEach(function(c) {
           player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
         })
+        // Also probe non-magic classes so the !kit response can tell the
+        // player *what* class we detected, even when they don't qualify
+        // for a kit. Otherwise "No magic class detected" is ambiguous —
+        // could be "you're not a magic class" or "the probe is broken."
+        var NON_MAGIC_CLASSES = ['berserker','samurai','wanderer','paladin','vanguard','ranger','artificer']
+        var detectedAnyClass = null
+        try {
+          for (var i = 0; i < NON_MAGIC_CLASSES.length; i++) {
+            var c2 = NON_MAGIC_CLASSES[i]
+            var r2 = player.server.runCommandSilent(
+              'execute if entity ' + player.username +
+              '[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:' + c2 + '"}}}}]'
+            )
+            if (r2 > 0) { detectedAnyClass = c2; break }
+          }
+        } catch (e) {}
         let cls = codex_detectMagicClass(player)
         if (!cls) {
-          player.tell('\u00a7c[Starter Kit]\u00a7r No magic class detected. Use !origindump to see your origin layers.')
-          console.log('[codex/starter] !kit from ' + player.username + ': no magic class detected')
+          if (detectedAnyClass) {
+            player.tell('\u00a7e[Starter Kit]\u00a7r Detected class: \u00a7b' + detectedAnyClass + '\u00a7r (not a magic class — no catalyst starter kit for this class).')
+            console.log('[codex/starter] !kit from ' + player.username + ': non-magic class detected=' + detectedAnyClass)
+          } else {
+            player.tell('\u00a7c[Starter Kit]\u00a7r No class detected. Use !origindump to see what Origins captured for your layers.')
+            console.log('[codex/starter] !kit from ' + player.username + ': no class on origins:class layer')
+          }
         } else {
           codex_giveStarterKit(player, cls)
           player.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
