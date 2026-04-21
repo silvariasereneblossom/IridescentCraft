@@ -53,31 +53,63 @@ function codex_detectMagicClass(player) {
 }
 
 function codex_giveStarterKit(player, className) {
+  console.log('[codex/starter] giveStarterKit ENTER: player=' + player.username + ' class=' + className)
   let kit = MAGIC_STARTER_KITS[className]
-  if (!kit) return false
+  if (!kit) {
+    console.warn('[codex/starter] giveStarterKit: no kit config for class "' + className + '" — bailing')
+    return false
+  }
+  console.log('[codex/starter] giveStarterKit: kit has ' + kit.length + ' entries')
+  let giveAttempts = 0
+  let giveSuccesses = 0
   kit.forEach(function(entry) {
+    giveAttempts++
     try {
-      player.give(Item.of(entry.item, entry.count))
+      // Build the stack explicitly so we can log its state before the give.
+      // In KubeJS 6, Item.of(id, count) returns an ItemStack. Some mods
+      // (notably curios) intercept player.give and may move the stack into
+      // a non-inventory slot without logging. Capture before + after counts
+      // so we can tell the difference between "give threw" and "give ate the
+      // stack silently."
+      var stack = Item.of(entry.item, entry.count)
+      console.log('[codex/starter] give: attempting ' + entry.item + ' x' + entry.count +
+                  ' (stack resolved: ' + (stack && !stack.isEmpty ? 'ok' : 'EMPTY/null') + ')')
+      player.give(stack)
+      giveSuccesses++
+      console.log('[codex/starter] give: ' + entry.item + ' x' + entry.count + ' — player.give returned without throw')
     } catch (e) {
-      console.warn('[codex/starter] Give failed for ' + entry.item + ': ' + e)
+      console.warn('[codex/starter] give FAILED for ' + entry.item + ': ' + e)
     }
   })
-  let displayName = className.replace('_', ' ').replace(/\b\w/g, function(c) { return c.toUpperCase() })
-  player.tell('\u00a76[Starter Kit]\u00a7r A ' + displayName + "'s catalyst has been added to your inventory.")
-  player.tell('Find spells and glyphs in loot chests to grow your repertoire.')
+  console.log('[codex/starter] giveStarterKit: ' + giveSuccesses + '/' + giveAttempts + ' items delivered without throw')
+  try {
+    let displayName = className.replace('_', ' ').replace(/\b\w/g, function(c) { return c.toUpperCase() })
+    player.tell('\u00a76[Starter Kit]\u00a7r A ' + displayName + "'s catalyst has been added to your inventory.")
+    player.tell('Find spells and glyphs in loot chests to grow your repertoire.')
+    console.log('[codex/starter] giveStarterKit: tell messages sent')
+  } catch (e) {
+    console.warn('[codex/starter] giveStarterKit: tell threw: ' + e)
+  }
   return true
 }
 
 function codex_tryGrantStarter(player) {
   let className = codex_detectMagicClass(player)
   if (!className) return false
+  console.log('[codex/starter] tryGrantStarter: detected=' + className + ' for ' + player.username)
   let flagKey = MAGIC_FLAG_PREFIX + className
-  if (player.persistentData.getBoolean(flagKey)) return false
+  let flagValue = player.persistentData.getBoolean(flagKey)
+  if (flagValue) {
+    console.log('[codex/starter] tryGrantStarter: flag ' + flagKey + ' already true for ' + player.username + ' — skipping grant')
+    return false
+  }
+  console.log('[codex/starter] tryGrantStarter: flag ' + flagKey + ' is false, calling giveStarterKit')
   if (codex_giveStarterKit(player, className)) {
     player.persistentData.putBoolean(flagKey, true)
-    console.log('[codex/starter] Gave ' + className + ' kit to ' + player.username)
+    console.log('[codex/starter] tryGrantStarter: flag set true, grant complete for ' + player.username)
     return true
   }
+  console.warn('[codex/starter] tryGrantStarter: giveStarterKit returned false for ' + player.username)
   return false
 }
 
