@@ -419,6 +419,79 @@ global.tick_codexChatProcessor = function(event) {
 }
 global.registerServerTick('tick_codexChatProcessor', 20, 13)
 
+// ── Real slash commands (ServerEvents.commandRegistry) ──
+// 2026-04-21: tester typed `!kit` and `!origindump` — the vanilla chat log
+// shows both messages broadcast to chat, but NO `[codex/chat]` diagnostic
+// fired. PlayerEvents.chat is simply not firing in this KubeJS 2001.6.5
+// build for unknown reasons (other handlers in ascension.js /
+// attribute_commands.js are equally silent). Switched to registering real
+// Brigadier slash commands via ServerEvents.commandRegistry, which go
+// through MinecraftServer's CommandDispatcher — a separate codepath that
+// we've confirmed fires (KubeJSCommands routes through it too).
+//
+// Usage in-game (with slash):
+//   /icraftkit            — detect class, grant kit if magic class
+//   /icraftkit <class>    — force-grant for named class (archmage/battlemage/void_summoner)
+//   /icraftorigindump     — dump raw Origins NBT + probed class to log + chat
+ServerEvents.commandRegistry(event => {
+  const { commands: Commands, arguments: Arguments } = event
+
+  event.register(
+    Commands.literal('icraftkit')
+      .requires(src => src.hasPermission(0))
+      .executes(ctx => {
+        let sp
+        try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
+        console.log('[codex/cmd] /icraftkit from ' + sp.username)
+        // Clear all magic-class flags so the kit re-fires even if a prior
+        // grant set one of them.
+        MAGIC_CLASSES.forEach(function(c) {
+          sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + c, false)
+        })
+        let cls = codex_detectMagicClass(sp)
+        if (cls) {
+          codex_giveStarterKit(sp, cls)
+          sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + cls, true)
+          console.log('[codex/cmd] /icraftkit: granted ' + cls + ' kit to ' + sp.username)
+          return 1
+        }
+        // No magic class detected — help the tester diagnose.
+        sp.tell('\u00a7c[Starter Kit]\u00a7r No class detected on origins:class layer. Try `/icraftkit <archmage|battlemage|void_summoner>` to force-grant, or check `/icraftorigindump`.')
+        console.log('[codex/cmd] /icraftkit: no magic class detected for ' + sp.username)
+        return 0
+      })
+      .then(Commands.literal('archmage').executes(ctx => icraftkit_force(ctx, 'archmage')))
+      .then(Commands.literal('battlemage').executes(ctx => icraftkit_force(ctx, 'battlemage')))
+      .then(Commands.literal('void_summoner').executes(ctx => icraftkit_force(ctx, 'void_summoner')))
+  )
+
+  event.register(
+    Commands.literal('icraftorigindump')
+      .requires(src => src.hasPermission(0))
+      .executes(ctx => {
+        let sp
+        try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
+        sp.persistentData.putBoolean('icraft_origindump_pending', true)
+        sp.tell('\u00a76[OriginDump]\u00a7r queued — check server log for full NBT dump.')
+        console.log('[codex/cmd] /icraftorigindump from ' + sp.username + ' queued')
+        return 1
+      })
+  )
+})
+
+// Helper for the forced-class variant of /icraftkit. Defined as a module-scope
+// function so both literal branches above can share it without recreating the
+// grant logic.
+function icraftkit_force(ctx, className) {
+  let sp
+  try { sp = ctx.source.getPlayerOrException() } catch (e) { return 0 }
+  sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + className, false)
+  codex_giveStarterKit(sp, className)
+  sp.persistentData.putBoolean(MAGIC_FLAG_PREFIX + className, true)
+  console.log('[codex/cmd] /icraftkit ' + className + ' (forced) granted to ' + sp.username)
+  return 1
+}
+
 // ── Backup Recovery Recipe ────────────────────────────────────────────────────
 
 ServerEvents.recipes(event => {
