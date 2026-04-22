@@ -1,9 +1,0 @@
-Manifest-Version: 1.0
-Specification-Title: iridescent_biomes
-Specification-Vendor: Silvaria
-Specification-Version: 1
-Implementation-Title: iridescent_biomes
-Implementation-Version: 1.0.0
-Implementation-Vendor: Silvaria
-Implementation-Timestamp: 2026-04-22T14:27:23+0000
-
