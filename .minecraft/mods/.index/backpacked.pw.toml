@@ -1,0 +1,29 @@
+filename = 'backpacked-forge-1.20.1-3.0.9.jar'
+name = 'Backpacked'
+side = ''
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+x-prismlauncher-version-number = 'Backpacked 3.0.9'
+
+[download]
+hash = '8f5e3d11e3d93e0a25c6ecf32a6f7e0f6cf96591'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7866682
+project-id = 352835
+
+[[x-prismlauncher-dependencies]]
+addonId = '459701'
+type = 'OPTIONAL'
+
+[[x-prismlauncher-dependencies]]
+addonId = '549225'
+type = 'REQUIRED'
+
+[[x-prismlauncher-dependencies]]
+addonId = '457570'
+type = 'OPTIONAL'

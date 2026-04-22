@@ -1,29 +1,29 @@
-[15:13:15] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[15:13:15] [INIT] Loaded plugins:
-[15:13:15] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[15:13:15] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[15:13:15] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[15:13:15] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[15:13:15] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[15:13:15] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[15:13:15] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[15:13:15] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[15:13:15] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[15:13:15] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[15:13:15] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[15:13:15] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[15:13:15] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[15:13:15] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[15:13:15] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[15:13:15] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[15:13:15] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[15:13:15] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[15:13:15] [INFO] attribute_tooltips.js#9: [IridescentCraft] Attribute tooltips loaded (v0.4 -- no-op, use !stats)
-[15:13:15] [INFO] Loaded script client_scripts:attribute_tooltips.js in 0.0 s
-[15:13:15] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.011 s
-[15:13:15] [INFO] example.js#5: Hello, World! (Loaded client scripts)
-[15:13:15] [INFO] Loaded script client_scripts:example.js in 0.0 s
-[15:13:15] [INFO] Loaded script client_scripts:jei_hiding.js in 0.0 s
-[15:13:15] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
-[15:13:15] [INFO] Loaded 5/5 KubeJS client scripts in 0.049 s with 0 errors and 0 warnings
-[15:13:29] [INFO] Client resource reload complete!
+[19:54:56] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[19:54:56] [INIT] Loaded plugins:
+[19:54:56] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[19:54:56] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[19:54:56] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[19:54:56] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[19:54:56] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[19:54:56] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[19:54:56] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[19:54:56] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[19:54:56] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[19:54:56] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[19:54:56] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[19:54:56] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[19:54:56] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[19:54:56] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[19:54:56] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[19:54:56] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[19:54:56] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[19:54:56] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[19:54:56] [INFO] attribute_tooltips.js#9: [IridescentCraft] Attribute tooltips loaded (v0.4 -- no-op, use !stats)
+[19:54:56] [INFO] Loaded script client_scripts:attribute_tooltips.js in 0.0 s
+[19:54:56] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.012 s
+[19:54:56] [INFO] example.js#5: Hello, World! (Loaded client scripts)
+[19:54:56] [INFO] Loaded script client_scripts:example.js in 0.002 s
+[19:54:56] [INFO] Loaded script client_scripts:jei_hiding.js in 0.0 s
+[19:54:56] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
+[19:54:56] [INFO] Loaded 5/5 KubeJS client scripts in 0.051 s with 0 errors and 0 warnings
+[19:55:11] [INFO] Client resource reload complete!

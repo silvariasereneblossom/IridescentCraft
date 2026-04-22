@@ -1,0 +1,25 @@
+filename = 'framework-forge-1.20.1-0.8.0.jar'
+name = 'Framework'
+side = ''
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'beta'
+x-prismlauncher-version-number = 'Framework 0.8.0'
+
+[download]
+hash = '27347879f8760a7bc0b4bd71977abc50e498811c'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7573740
+project-id = 549225
+
+[[x-prismlauncher-dependencies]]
+addonId = '457570'
+type = 'OPTIONAL'
+
+[[x-prismlauncher-dependencies]]
+addonId = '459701'
+type = 'OPTIONAL'
