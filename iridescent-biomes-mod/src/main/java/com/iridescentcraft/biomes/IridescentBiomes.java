@@ -35,7 +35,7 @@ public class IridescentBiomes {
         event.enqueueWork(() -> {
             Regions.register(new IcraftCherryRegion(
                     new ResourceLocation(ICRAFT, "cherry_region"),
-                    5
+                    8
             ));
         });
     }
