@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "NNN",
+    "NSN",
+    "NNN"
+  ],
+  "key": {
+    "N": { "item": "minecraft:netherite_block" },
+    "S": { "tag": "curios:curio" }
+  },
+  "result": { "item": "more_curios_slots:extra_back_slot" },
+  "conditions": [
+    {
+      "type": "forge:not",
+      "value": { "type": "forge:tag_empty", "tag": "curios:curio" }
+    }
+  ]
+}

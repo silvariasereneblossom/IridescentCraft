@@ -1,0 +1,7 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": ["X"],
+  "key": { "X": { "item": "minecraft:air" } },
+  "result": { "item": "minecraft:air" },
+  "conditions": [ { "type": "forge:false" } ]
+}
