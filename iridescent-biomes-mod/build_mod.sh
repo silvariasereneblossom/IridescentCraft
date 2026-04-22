@@ -24,6 +24,18 @@ OUT="$SCRIPT_DIR/build/libs/$JAR_NAME"
 
 cd "$SCRIPT_DIR"
 
+echo "[Biomes Build] Pre-check: feature-order cycle detector ..."
+# Fails fast if our biome JSONs would produce a server-crash at world load.
+# First run downloads vanilla + BoP reference jars into tools/.cache/; later
+# runs are sub-second from cache.
+if ! python3 tools/check_feature_cycles.py; then
+  echo ""
+  echo "[Biomes Build] ABORTED: cycle detector reported conflicts."
+  echo "[Biomes Build] Fix the biome JSONs above before rebuilding."
+  exit 1
+fi
+echo ""
+
 echo "[Biomes Build] Running ./gradlew build ..."
 ./gradlew build --no-daemon
 
