@@ -455,13 +455,26 @@ LootJS.modifiers(event => {
     'ars_nouveau:novice_spell_book', 'ars_nouveau:source_gem',
     'irons_spellbooks:common_ink'
   ]
-  const artifactT1PerItem = 0.10 / artifactT1Pool.length  // 10% combined
+  // 2026-04-22: was 15 independent addLoot calls at ~0.67% each. Math
+  // said 0.1 artifacts/chest expected, but variance allowed 2-4 in
+  // unlucky chests — tester reported a Waystone Towers chest (backed by
+  // minecraft:chests/stronghold_corridor) dropping 4 artifacts at once.
+  //
+  // Rewritten using addAlternativesLoot: entries are evaluated in order,
+  // first to pass its .when() fires, rest skipped. With each alternative
+  // at 10%/15 ≈ 0.667% randomChance:
+  //   P(any fires)  = 1 - 0.99333^15 ≈ 10% ← overall rate held steady
+  //   P(exactly 1)  = same as P(any), because at most 1 alternative fires
+  //   P(multiple)   = 0 (structural)
+  // So Overworld chests now get at most 1 T1 artifact from this path.
   var modT1 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
-  artifactT1Pool.forEach(item => {
-    modT1.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT1PerItem)))
+  var t1PerAlt = 0.10 / artifactT1Pool.length
+  var t1Alternatives = artifactT1Pool.map(function(item) {
+    return LootEntry.of(item).when(function(c) { return c.randomChance(t1PerAlt) })
   })
+  modT1.addAlternativesLoot.apply(modT1, t1Alternatives)
 
   // --- T2 Pool (~12% combined) — Twilight Forest, Aether, Blue Skies ---
   // Combat + defensive artifacts + mid-tier magic.
