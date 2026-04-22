@@ -1,0 +1,16 @@
+filename = 'more_curios_slots-1.3.jar'
+name = 'More Curios Slots'
+side = 'both'
+x-prismlauncher-loaders = [ 'neoforge', 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '5e8c7bbbcb1b93f17582e11443ffc1b0ad79b7124baac6292a566819283ad8dc2a2db9e854df52c378468a963331512c97f2be201718caed709ea827b8ff4777'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/v4mOUzHT/versions/US5dWUzD/more_curios_slots-1.3.jar'
+
+[update.modrinth]
+mod-id = 'v4mOUzHT'
+version = 'US5dWUzD'
