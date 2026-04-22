@@ -1720,19 +1720,23 @@ LootJS.modifiers(event => {
     event.addLootTableModifier(pattern).addWeightedLoot(villageQoLPool)
   })
 
-  // --- Nature's Compass — 5% per village chest (tester request 2026-04-22) ---
-  // Useful tool for locating our icraft:cherry_river_meadow and
-  // icraft:cherry_mountains biomes (which now actually generate after the
-  // minecraft:is_overworld biome-tag fix). Village chests feel thematically
-  // appropriate — the villager NPCs are the ones who'd point you at
-  // interesting biomes in-world.
+  // --- Nature's Compass + base Sophisticated Backpack — village chest adds ---
+  // Nature's Compass at 5%: useful for locating our icraft:cherry_river_meadow
+  // and icraft:cherry_mountains biomes (which generate after the
+  // minecraft:is_overworld tag fix 2026-04-22).
+  // Sophisticated Backpacks base variant at 4%: leather+chest+string crafting
+  // tier, 27 slots when placed, also wearable via the Curios back slot.
+  // Gives T1 players a real inventory bump in a pack-coherent way without
+  // spawning the upgraded tiers (iron/gold/diamond/netherite) prematurely.
   villageChests.forEach(function(table) {
     event.addLootTableModifier(table)
       .addLoot(LootEntry.of('naturescompass:naturescompass').when(c => c.randomChance(0.05)))
+      .addLoot(LootEntry.of('sophisticatedbackpacks:backpack').when(c => c.randomChance(0.04)))
   })
   moddedVillagePatterns.forEach(function(pattern) {
     event.addLootTableModifier(pattern)
       .addLoot(LootEntry.of('naturescompass:naturescompass').when(c => c.randomChance(0.05)))
+      .addLoot(LootEntry.of('sophisticatedbackpacks:backpack').when(c => c.randomChance(0.04)))
   })
 
   // =========================================================================
