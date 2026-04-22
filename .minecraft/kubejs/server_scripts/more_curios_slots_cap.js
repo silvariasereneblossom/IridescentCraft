@@ -18,38 +18,52 @@
 // data/more_curios_slots/recipes/ overrides).
 // =============================================================================
 
-const ICRAFT_SLOT_CAP = 3
-const ICRAFT_SLOTS = [
-  'curio', 'ring', 'necklace', 'bracelet', 'belt',
-  'back', 'body', 'charm', 'spellstone'
-]
+// Per-slot cap overrides. Default is +3 across the board; `back` gets
+// +4 per tester 2026-04-22 ("add a single additional back addon") — the
+// back slot is where Sophisticated Backpacks, capes, wings, and Relics
+// shields all land, so giving it one more addon is worth the extra
+// crafting cost.
+const ICRAFT_DEFAULT_CAP = 3
+const ICRAFT_SLOT_CAPS = {
+  curio: 3,
+  ring: 3,
+  necklace: 3,
+  bracelet: 3,
+  belt: 3,
+  back: 4,
+  body: 3,
+  charm: 3,
+  spellstone: 3
+}
+const ICRAFT_SLOTS = Object.keys(ICRAFT_SLOT_CAPS)
 
 ICRAFT_SLOTS.forEach(function(slot) {
   const itemId = 'more_curios_slots:extra_' + slot + '_slot'
   const flagKey = 'icraft_slot_bonus_' + slot
+  const cap = ICRAFT_SLOT_CAPS[slot] || ICRAFT_DEFAULT_CAP
 
   ItemEvents.firstRightClicked(itemId, event => {
     try {
       const player = event.player
       if (!player || player.level.isClientSide) return
       const current = player.persistentData.getInt(flagKey)
-      if (current >= ICRAFT_SLOT_CAP) {
+      if (current >= cap) {
         event.cancel()
         player.tell(
           '\u00a7c[Curios Slot]\u00a7r Your \u00a7e' + slot +
-          '\u00a7r slot has already reached the \u00a7c+' + ICRAFT_SLOT_CAP +
+          '\u00a7r slot has already reached the \u00a7c+' + cap +
           '\u00a7r cap. Extra slot item not consumed.'
         )
         return
       }
       player.persistentData.putInt(flagKey, current + 1)
       console.log('[icraft/curios-cap] ' + player.username + ' used extra_' + slot +
-                  '_slot (now at +' + (current + 1) + ' of +' + ICRAFT_SLOT_CAP + ')')
+                  '_slot (now at +' + (current + 1) + ' of +' + cap + ')')
     } catch (e) {
       console.warn('[icraft/curios-cap] handler threw for ' + itemId + ': ' + e)
     }
   })
 })
 
-console.log('[IridescentCraft] More Curios Slots cap handler loaded (+' +
-            ICRAFT_SLOT_CAP + ' per slot; ' + ICRAFT_SLOTS.length + ' slot types tracked)')
+console.log('[IridescentCraft] More Curios Slots cap handler loaded (' +
+            ICRAFT_SLOTS.length + ' slot types; back=+4, others=+3)')
