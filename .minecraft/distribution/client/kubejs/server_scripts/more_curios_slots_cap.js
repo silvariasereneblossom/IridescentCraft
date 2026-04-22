@@ -18,11 +18,10 @@
 // data/more_curios_slots/recipes/ overrides).
 // =============================================================================
 
-// Per-slot cap overrides. Default is +3 across the board; `back` gets
-// +4 per tester 2026-04-22 ("add a single additional back addon") — the
-// back slot is where Sophisticated Backpacks, capes, wings, and Relics
-// shields all land, so giving it one more addon is worth the extra
-// crafting cost.
+// Per-slot cap overrides. Default is +3 across the board; `back` is
+// capped at +1 per tester 2026-04-22 — back slot items (Sophisticated
+// Backpacks, capes, wings, Relics shields) are big, so only one extra
+// addon is allowed there.
 const ICRAFT_DEFAULT_CAP = 3
 const ICRAFT_SLOT_CAPS = {
   curio: 3,
@@ -30,7 +29,7 @@ const ICRAFT_SLOT_CAPS = {
   necklace: 3,
   bracelet: 3,
   belt: 3,
-  back: 4,
+  back: 1,
   body: 3,
   charm: 3,
   spellstone: 3
@@ -66,4 +65,4 @@ ICRAFT_SLOTS.forEach(function(slot) {
 })
 
 console.log('[IridescentCraft] More Curios Slots cap handler loaded (' +
-            ICRAFT_SLOTS.length + ' slot types; back=+4, others=+3)')
+            ICRAFT_SLOTS.length + ' slot types; back=+1, others=+3)')
