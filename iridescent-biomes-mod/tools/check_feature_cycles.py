@@ -6,6 +6,18 @@ Loads every biome JSON known to this pack (vanilla MC 1.20.1 + BiomesOPlenty +
 our iridescent-biomes-mod resources) and checks each of the 11 GenerationStep
 indices for cyclic ordering constraints.
 
+LIMITATION: this only audits against vanilla + BoP. The pack ships 400+ other
+mods, some of which add biomes (aether, deep-aether, blue-skies, undergarden,
+deeperdarker, twilightforest, the-abyss, ad-astra, quark, terramity, etc.).
+A PASS here means our biomes are consistent with vanilla + BoP ordering. A
+cycle can still form at runtime if our step 9 contains features that have a
+relative order declared by some mod biome we haven't audited.
+
+SAFE PATTERN: match a vanilla biome's step 9 verbatim. Vanilla doesn't crash,
+and any mod biome consistent with vanilla is consistent with us. If you want
+custom vegetation, layer it in via Forge biome modifiers (data/forge/
+biome_modifier/) which don't touch FeatureSorter.
+
 A cycle means two or more biomes declare contradicting relative orders for a
 shared pair of features. Minecraft's FeatureSorter crashes the server on world
 load when this happens, so we want to catch it at build time before the jar
