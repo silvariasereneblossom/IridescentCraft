@@ -91,7 +91,6 @@ LootJS.modifiers(event => {
   var blankEnchantedBookFilter = function(stack) {
     try {
       if (!stack || stack.isEmpty()) return false
-      // Fast path: KubeJS extension first (works in most contexts)
       var id = String(stack.id || '')
       if (!id) {
         try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {}
@@ -100,14 +99,17 @@ LootJS.modifiers(event => {
       var tag = stack.getTag ? stack.getTag() : null
       if (!tag) return true
       var nbtStr = String(tag)
-      // A properly-enchanted book serializes as {StoredEnchantments:[{id:"...",lvl:Ns}]}.
-      // Strip 'StoredEnchantments:[' and check if there's at least one '{' before ']'.
-      var idx = nbtStr.indexOf('StoredEnchantments:[')
-      if (idx < 0) return true
-      var after = nbtStr.substring(idx + 20) // length of 'StoredEnchantments:['
-      var bracketClose = after.indexOf(']')
-      var brace = after.indexOf('{')
-      return (brace < 0 || (bracketClose >= 0 && brace > bracketClose))
+      // A valid enchanted book serializes as:
+      //   {StoredEnchantments:[{id:"namespace:name",lvl:Ns}]}
+      // 2026-04-22 (third rewrite): prior check only asked whether a '{'
+      // appeared before the list's ']'. That passed empty-compound cases
+      // `StoredEnchantments:[{}]` as "has content" — they're blank but
+      // still have the brace. Rewrote as a regex that requires the list
+      // to contain at least one `id:"X:Y"` pair with non-empty namespace
+      // and name. Catches `[]`, `[{}]`, `[{id:""}]`, missing key, and
+      // {id:"",lvl:0s} patterns.
+      if (nbtStr.indexOf('StoredEnchantments:[') < 0) return true
+      return !/StoredEnchantments:\[[^\]]*id:"[^"]+:[^"]+"/.test(nbtStr)
     } catch (e) { return false }
   }
   event.addLootTypeModifier(LootType.CHEST).removeLoot(ItemFilter.custom(blankEnchantedBookFilter))
