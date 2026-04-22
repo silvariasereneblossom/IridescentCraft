@@ -69,14 +69,13 @@
       "minecraft:ore_copper_large",
       "minecraft:ore_clay"
     ],
+    [],
     [
       "minecraft:spring_water",
       "minecraft:spring_lava"
     ],
     [
-      "minecraft:glow_lichen"
-    ],
-    [
+      "minecraft:glow_lichen",
       "minecraft:trees_cherry",
       "biomesoplenty:cherry_twiglet_tree",
       "minecraft:flower_cherry",
