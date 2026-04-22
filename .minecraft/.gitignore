@@ -2,8 +2,23 @@ mods/*.jar
 !mods/iridescent_codex_data.jar
 !mods/iridescent_classes.jar
 !mods/iridescent_origins-*.jar
+!mods/iridescent_biomes-*.jar
 !mods/Patchouli-*.jar
 !mods/ars_nouveau-*.jar
+# Nested distro mod allowlists (server_distribution + distribution/client).
+# `mods/*.jar` above matches at any depth, so these need their own negations.
+!server_distribution/mods/iridescent_codex_data.jar
+!server_distribution/mods/iridescent_classes.jar
+!server_distribution/mods/iridescent_origins-*.jar
+!server_distribution/mods/iridescent_biomes-*.jar
+!server_distribution/mods/Patchouli-*.jar
+!server_distribution/mods/ars_nouveau-*.jar
+!distribution/client/mods/iridescent_codex_data.jar
+!distribution/client/mods/iridescent_classes.jar
+!distribution/client/mods/iridescent_origins-*.jar
+!distribution/client/mods/iridescent_biomes-*.jar
+!distribution/client/mods/Patchouli-*.jar
+!distribution/client/mods/ars_nouveau-*.jar
 /resourcepacks/
 /distribution/client/resourcepacks/
 /server_distribution/resourcepacks/

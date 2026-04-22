@@ -1,0 +1,15 @@
+Java Launcher: /usr/lib/jvm/java-17-openjdk-amd64/bin/java
+Arguments: '--task, SRG_TO_MCP, --input, /root/.gradle/caches/modules-2/files-2.1/com.github.glitchfiend/TerraBlender-forge/1.20.1-3.0.1.10/379b061730628e1db4145d98170be752674b4eab/TerraBlender-forge-1.20.1-3.0.1.10.jar, --output, /root/.gradle/caches/forge_gradle/deobf_dependencies/com/github/glitchfiend/TerraBlender-forge/1.20.1-3.0.1.10_mapped_official_1.20.1/TerraBlender-forge-1.20.1-3.0.1.10_mapped_official_1.20.1.jar, --mcp, /root/.gradle/caches/forge_gradle/mcp_repo/net/minecraft/mapping/1.20.1/mapping-1.20.1-mapping.zip, --strip-signatures'
+Classpath:
+ - /root/.gradle/caches/forge_gradle/maven_downloader/net/minecraftforge/installertools/1.4.4/installertools-1.4.4-fatjar.jar
+Working directory: /root/IridescentCraft/iridescent-biomes-mod/build/_RenameSrg2Mcp_-690374219
+Main class: net.minecraftforge.installertools.ConsoleTool
+====================================
+Task: SRG_TO_MCP
+Input:  /root/.gradle/caches/modules-2/files-2.1/com.github.glitchfiend/TerraBlender-forge/1.20.1-3.0.1.10/379b061730628e1db4145d98170be752674b4eab/TerraBlender-forge-1.20.1-3.0.1.10.jar
+Output: /root/.gradle/caches/forge_gradle/deobf_dependencies/com/github/glitchfiend/TerraBlender-forge/1.20.1-3.0.1.10_mapped_official_1.20.1/TerraBlender-forge-1.20.1-3.0.1.10_mapped_official_1.20.1.jar
+MCP:    /root/.gradle/caches/forge_gradle/mcp_repo/net/minecraft/mapping/1.20.1/mapping-1.20.1-mapping.zip
+Loading MCP Data
+Processing ZIP file
+Stripped Manifest of sha digests
+Process complete
