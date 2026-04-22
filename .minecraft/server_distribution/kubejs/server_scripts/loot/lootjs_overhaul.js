@@ -1049,30 +1049,31 @@ LootJS.modifiers(event => {
   villageHouseChests.forEach(table => {
     let mod = event.addLootTableModifier(table)
 
-    // Pool 1: QoL flavor — one of these per chest. Bed is weighted 30/100
-    // so ~30% of chests give a bed. Iron bars second at 20.
-    mod.addWeightedLoot([
-      Item.of('minecraft:white_bed').withChance(30),
-      Item.of('minecraft:iron_bars').withChance(20),
-      Item.of('minecraft:lantern').withChance(15),
-      Item.of('minecraft:hay_block').withChance(15),
-      Item.of('minecraft:oak_boat').withChance(12),
-      Item.of('minecraft:bell').withChance(8)
-    ])
+    // Pool 1: QoL flavor — per-item independent chances. 2026-04-22:
+    // addWeightedLoot collapses to "always one item" (no air filler
+    // usable). Tester asked for bed to drop from 30% to 10%, so we
+    // switched to independent rolls to tune each item directly. Expected
+    // items per chest ≈ 0.80 (sum of probabilities). Occasional 2+ items
+    // are fine given these are all flavor/starter items.
+    mod.addLoot(LootEntry.of('minecraft:white_bed').when(c => c.randomChance(0.10)))
+    mod.addLoot(LootEntry.of('minecraft:iron_bars').when(c => c.randomChance(0.20)))
+    mod.addLoot(LootEntry.of('minecraft:lantern').when(c => c.randomChance(0.15)))
+    mod.addLoot(LootEntry.of('minecraft:hay_block').when(c => c.randomChance(0.15)))
+    mod.addLoot(LootEntry.of('minecraft:oak_boat').when(c => c.randomChance(0.12)))
+    mod.addLoot(LootEntry.of('minecraft:bell').when(c => c.randomChance(0.08)))
 
-    // Pool 2: starter tools — one of these per chest. Wood-heavy since
-    // this is T1 entry loot. Stone tools lower weight.
-    mod.addWeightedLoot([
-      Item.of('minecraft:wooden_sword').withChance(18),
-      Item.of('minecraft:wooden_pickaxe').withChance(18),
-      Item.of('minecraft:wooden_axe').withChance(15),
-      Item.of('minecraft:wooden_shovel').withChance(10),
-      Item.of('minecraft:wooden_hoe').withChance(8),
-      Item.of('minecraft:stone_sword').withChance(10),
-      Item.of('minecraft:stone_pickaxe').withChance(10),
-      Item.of('minecraft:stone_axe').withChance(7),
-      Item.of('minecraft:stone_shovel').withChance(4)
-    ])
+    // Pool 2: starter tools — halved from the prior weighted pool per
+    // tester request ("tools in half or so"). Independent per-item rolls
+    // at roughly half the earlier weight. Expected tools per chest ≈ 0.49.
+    mod.addLoot(LootEntry.of('minecraft:wooden_sword').when(c => c.randomChance(0.09)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_pickaxe').when(c => c.randomChance(0.09)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_axe').when(c => c.randomChance(0.07)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_shovel').when(c => c.randomChance(0.05)))
+    mod.addLoot(LootEntry.of('minecraft:wooden_hoe').when(c => c.randomChance(0.04)))
+    mod.addLoot(LootEntry.of('minecraft:stone_sword').when(c => c.randomChance(0.05)))
+    mod.addLoot(LootEntry.of('minecraft:stone_pickaxe').when(c => c.randomChance(0.05)))
+    mod.addLoot(LootEntry.of('minecraft:stone_axe').when(c => c.randomChance(0.03)))
+    mod.addLoot(LootEntry.of('minecraft:stone_shovel').when(c => c.randomChance(0.02)))
 
     // Pool 3: magic materials — one of these per chest. Heavy on ink
     // since spell books need it; books themselves are rarer.
@@ -1717,6 +1718,21 @@ LootJS.modifiers(event => {
   })
   moddedVillagePatterns.forEach(function(pattern) {
     event.addLootTableModifier(pattern).addWeightedLoot(villageQoLPool)
+  })
+
+  // --- Nature's Compass — 5% per village chest (tester request 2026-04-22) ---
+  // Useful tool for locating our icraft:cherry_river_meadow and
+  // icraft:cherry_mountains biomes (which now actually generate after the
+  // minecraft:is_overworld biome-tag fix). Village chests feel thematically
+  // appropriate — the villager NPCs are the ones who'd point you at
+  // interesting biomes in-world.
+  villageChests.forEach(function(table) {
+    event.addLootTableModifier(table)
+      .addLoot(LootEntry.of('naturescompass:naturescompass').when(c => c.randomChance(0.05)))
+  })
+  moddedVillagePatterns.forEach(function(pattern) {
+    event.addLootTableModifier(pattern)
+      .addLoot(LootEntry.of('naturescompass:naturescompass').when(c => c.randomChance(0.05)))
   })
 
   // =========================================================================
