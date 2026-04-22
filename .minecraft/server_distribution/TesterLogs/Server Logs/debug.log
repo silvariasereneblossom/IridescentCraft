@@ -50011,3 +50011,14 @@ Caused by: java.lang.IllegalStateException: Feature order cycle found, involved 
 [22Apr2026 19:13:41.148] [Config file watcher thread/DEBUG] [portb.configlib.ConfigLib/]: Got ENTRY_MODIFY for ars_nouveau-server.toml, ignoring
 [22Apr2026 19:13:41.148] [Config file watcher thread/DEBUG] [portb.configlib.ConfigLib/]: Got ENTRY_MODIFY for ars_nouveau-server.toml, ignoring
 [22Apr2026 19:13:41.150] [Server thread/INFO] [journeymap/]: Loading JourneyMap Forge Configs
+[22Apr2026 19:14:40.967] [Worker-Main-11/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-11 shutdown
+[22Apr2026 19:15:40.966] [Worker-Main-7/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-7 shutdown
+[22Apr2026 19:16:40.965] [Worker-Main-8/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-8 shutdown
+[22Apr2026 19:17:40.965] [Worker-Main-9/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-9 shutdown
+[22Apr2026 19:18:40.964] [Worker-Main-6/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-6 shutdown
+[22Apr2026 19:19:40.964] [Worker-Main-1/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-1 shutdown
+[22Apr2026 19:20:40.964] [Worker-Main-2/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-2 shutdown
+[22Apr2026 19:21:40.963] [Worker-Main-3/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-3 shutdown
+[22Apr2026 19:22:40.963] [Worker-Main-4/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-4 shutdown
+[22Apr2026 19:23:40.961] [Worker-Main-5/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-5 shutdown
+[22Apr2026 19:24:40.961] [Worker-Main-10/DEBUG] [Smooth Boot (Reloaded)/]: Worker-Main-10 shutdown
