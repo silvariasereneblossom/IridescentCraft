@@ -13,7 +13,7 @@ import terrablender.api.Regions;
  * TerraBlender 3.x on 1.20.1 does not read datapack-declared regions — custom
  * biomes need Java-side registration to get parameter points in an overworld
  * biome source. This tiny mod registers one region of weight 8 that adds
- * iridescent_biomes:cherry_river_meadow and iridescent_biomes:cherry_mountains
+ * iridescent_biomes:cherry_river_valley and iridescent_biomes:cherry_mountains
  * via explicit Climate ParameterPoints.
  *
  * Biome JSON definitions + is_overworld + is_mountain tags ship inside this

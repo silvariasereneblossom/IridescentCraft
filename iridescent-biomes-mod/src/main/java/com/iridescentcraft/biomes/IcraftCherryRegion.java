@@ -35,7 +35,7 @@ import java.util.function.Consumer;
  *   depth        : 0.0 (surface) ... 1.0 (deep cave)
  *   weirdness    : -1.0 ... 1.0 (valley vs plateau ridge position)
  *
- * cherry_river_meadow — warm temperate, humid, near-inland, rolling:
+ * cherry_river_valley — warm temperate, humid, near-inland, rolling:
  *   temp 0.1..0.3, hum 0.3..0.55, cont -0.1..0.2, erosion 0.05..0.45
  * cherry_mountains — cool, modestly humid, inland mountain tops:
  *   temp -0.2..0.1, hum 0.1..0.3, cont 0.25..0.55, erosion -1.0..-0.375
@@ -44,9 +44,9 @@ import java.util.function.Consumer;
  * parameter cluster (which sits around temp 0.5, hum 0.7, erosion 0-0.05).
  */
 public class IcraftCherryRegion extends Region {
-    public static final ResourceKey<Biome> CHERRY_RIVER_MEADOW = ResourceKey.create(
+    public static final ResourceKey<Biome> CHERRY_RIVER_VALLEY = ResourceKey.create(
             Registries.BIOME,
-            new ResourceLocation(IridescentBiomes.MODID, "cherry_river_meadow")
+            new ResourceLocation(IridescentBiomes.MODID, "cherry_river_valley")
     );
     public static final ResourceKey<Biome> CHERRY_MOUNTAINS = ResourceKey.create(
             Registries.BIOME,
@@ -60,7 +60,7 @@ public class IcraftCherryRegion extends Region {
     @Override
     public void addBiomes(Registry<Biome> registry,
                           Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-        // cherry_river_meadow — warm temperate humid near-inland rolling
+        // cherry_river_valley — warm temperate humid near-inland rolling
         this.addBiome(mapper, Climate.parameters(
                 Climate.Parameter.span(0.1f, 0.3f),   // temperature
                 Climate.Parameter.span(0.3f, 0.55f),  // humidity
@@ -69,7 +69,7 @@ public class IcraftCherryRegion extends Region {
                 Climate.Parameter.point(0.0f),        // depth (surface)
                 Climate.Parameter.span(-0.3f, 0.3f),  // weirdness (common rareness)
                 0.0f                                   // offset
-        ), CHERRY_RIVER_MEADOW);
+        ), CHERRY_RIVER_VALLEY);
 
         // cherry_mountains — cool, modestly humid, inland high terrain
         this.addBiome(mapper, Climate.parameters(
