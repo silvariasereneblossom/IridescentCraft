@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "majruszsdifficulty:sonic_boom_scroll"}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "irons_spellbooks:scroll", "functions": [{"function": "irons_spellbooks:randomize_spell", "quality": {"min": 0.3, "max": 0.7}}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "irons_spellbooks:gold_spell_book", "weight": 15},
+        {"type": "minecraft:item", "name": "apotheosis:gem", "weight": 25, "functions": [{"function": "minecraft:set_nbt", "tag": "{gem:\"apotheosis:random\"}"}]},
+        {"type": "minecraft:empty", "weight": 60}
+      ]
+    },
+    {
+      "rolls": {"min": 4, "max": 7, "type": "minecraft:uniform"},
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:echo_shard", "weight": 30, "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]},
+        {"type": "minecraft:item", "name": "minecraft:sculk_catalyst", "weight": 15},
+        {"type": "minecraft:item", "name": "minecraft:recovery_compass", "weight": 10},
+        {"type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 30, "functions": [{"function": "minecraft:set_count", "count": {"min": 4, "max": 8}}]},
+        {"type": "minecraft:item", "name": "minecraft:sculk_sensor", "weight": 15}
+      ]
+    }
+  ]
+}

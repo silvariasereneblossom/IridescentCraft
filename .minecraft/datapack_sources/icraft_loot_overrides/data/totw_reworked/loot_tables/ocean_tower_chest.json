@@ -1,0 +1,151 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": {
+        "min": 3,
+        "max": 5,
+        "type": "minecraft:uniform"
+      },
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 8,
+          "name": "minecraft:iron_ingot",
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 2, "type": "minecraft:uniform" } }]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "minecraft:prismarine_shard",
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 2, "max": 4, "type": "minecraft:uniform" } }]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:prismarine_crystals",
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 3, "type": "minecraft:uniform" } }]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 6,
+          "name": "minecraft:emerald",
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 2, "type": "minecraft:uniform" } }]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 4,
+          "name": "minecraft:ender_pearl"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 5,
+          "name": "minecraft:amethyst_shard",
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 3, "type": "minecraft:uniform" } }]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "minecraft:experience_bottle",
+          "functions": [{ "function": "minecraft:set_count", "count": { "min": 1, "max": 3, "type": "minecraft:uniform" } }]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "minecraft:heart_of_the_sea"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "minecraft:book",
+          "functions": [{ "function": "minecraft:enchant_with_levels", "levels": 25, "treasure": true }]
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 3,
+          "name": "irons_spellbooks:common_ink"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "irons_spellbooks:copper_spell_book"
+        }
+      ]
+    },
+    {
+      "comment": "Guaranteed magic scroll",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "irons_spellbooks:scroll"
+        }
+      ]
+    },
+    {
+      "comment": "40% chance second scroll",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 2,
+          "name": "irons_spellbooks:scroll"
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 3
+        }
+      ]
+    },
+    {
+      "comment": "12% chance artifact",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "artifacts:snorkel"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "artifacts:flippers"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "artifacts:aqua_dashers"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "artifacts:umbrella"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "artifacts:crystal_heart"
+        },
+        {
+          "type": "minecraft:item",
+          "weight": 1,
+          "name": "artifacts:cloud_in_a_bottle"
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 44
+        }
+      ]
+    },
+    {
+      "comment": "Map always included",
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:map"
+        }
+      ]
+    }
+  ]
+}

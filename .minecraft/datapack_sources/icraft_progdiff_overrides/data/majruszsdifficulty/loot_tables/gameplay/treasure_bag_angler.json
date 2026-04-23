@@ -1,0 +1,39 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "aquaculture:neptunium_fishing_rod", "weight": 2, "functions": [{"function": "minecraft:enchant_randomly"}]},
+        {"type": "minecraft:item", "name": "minecraft:fishing_rod", "weight": 3, "functions": [{"function": "minecraft:set_damage", "damage": {"min": 0.6, "max": 0.9}}, {"function": "minecraft:enchant_randomly"}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "aquaculture:double_hook", "weight": 3},
+        {"type": "minecraft:item", "name": "aquaculture:nether_star_hook", "weight": 1},
+        {"type": "minecraft:item", "name": "aquaculture:diamond_hook", "weight": 2},
+        {"type": "minecraft:empty", "weight": 4}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "aquaculture:neptunium_ingot", "weight": 3, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 2}}]},
+        {"type": "minecraft:item", "name": "irons_spellbooks:scroll", "weight": 2, "functions": [{"function": "irons_spellbooks:randomize_spell", "quality": {"min": 0.0, "max": 0.3}}]},
+        {"type": "minecraft:empty", "weight": 5}
+      ]
+    },
+    {
+      "rolls": {"min": 3, "max": 5, "type": "minecraft:uniform"},
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 40},
+        {"type": "minecraft:item", "name": "minecraft:raw_iron", "weight": 25, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 3}}]},
+        {"type": "minecraft:item", "name": "minecraft:raw_gold", "weight": 15, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 2}}]},
+        {"type": "minecraft:item", "name": "minecraft:nautilus_shell", "weight": 10},
+        {"type": "minecraft:item", "name": "minecraft:scute", "weight": 10}
+      ]
+    }
+  ]
+}

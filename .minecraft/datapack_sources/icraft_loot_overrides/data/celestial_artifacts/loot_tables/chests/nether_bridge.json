@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "conditions": [{"condition": "minecraft:random_chance", "chance": 0.04}],
+      "entries": [
+        {"type": "minecraft:item", "name": "celestial_artifacts:red_ruby_bracelet", "weight": 2},
+        {"type": "minecraft:item", "name": "celestial_artifacts:thunder_ring", "weight": 1},
+        {"type": "minecraft:empty", "weight": 2}
+      ]
+    }
+  ]
+}

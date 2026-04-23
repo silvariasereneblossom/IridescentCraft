@@ -1,6 +1,5 @@
 mods/*.jar
 # Keep custom IridescentCraft jars (coremods and data mods)
-!mods/iridescent_classes.jar
 !mods/iridescent_origins-*.jar
 !mods/iridescent_codex_data.jar
 !mods/iridescent_biomes-*.jar

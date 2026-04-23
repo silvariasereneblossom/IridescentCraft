@@ -1,0 +1,37 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "aquaculture:neptunium_sword", "weight": 2},
+        {"type": "minecraft:item", "name": "aquaculture:neptunium_chestplate", "weight": 2},
+        {"type": "minecraft:item", "name": "minecraft:trident", "weight": 1, "functions": [{"function": "minecraft:set_damage", "damage": {"min": 0.7, "max": 0.95}}, {"function": "minecraft:enchant_randomly"}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "aquaculture:neptunium_ingot", "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:heart_of_the_sea", "weight": 25},
+        {"type": "minecraft:item", "name": "aquaculture:neptunium_boots", "weight": 15},
+        {"type": "minecraft:item", "name": "irons_spellbooks:scroll", "weight": 25, "functions": [{"function": "irons_spellbooks:randomize_spell", "quality": {"min": 0.2, "max": 0.5}}]},
+        {"type": "minecraft:empty", "weight": 35}
+      ]
+    },
+    {
+      "rolls": {"min": 5, "max": 8, "type": "minecraft:uniform"},
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:prismarine_crystals", "weight": 30, "functions": [{"function": "minecraft:set_count", "count": {"min": 4, "max": 8}}]},
+        {"type": "minecraft:item", "name": "minecraft:prismarine_shard", "weight": 30, "functions": [{"function": "minecraft:set_count", "count": {"min": 4, "max": 8}}]},
+        {"type": "minecraft:item", "name": "minecraft:wet_sponge", "weight": 20, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 3}}]},
+        {"type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 20, "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]}
+      ]
+    }
+  ]
+}

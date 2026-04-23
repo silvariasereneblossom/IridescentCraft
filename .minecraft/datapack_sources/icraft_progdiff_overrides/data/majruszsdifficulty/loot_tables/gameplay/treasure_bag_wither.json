@@ -1,0 +1,36 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "majruszsdifficulty:wither_sword", "weight": 1, "functions": [{"function": "minecraft:enchant_randomly"}]},
+        {"type": "minecraft:item", "name": "majruszsdifficulty:infernal_sponge", "weight": 2, "functions": [{"function": "minecraft:set_count", "count": 2}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "irons_spellbooks:scroll", "functions": [{"function": "irons_spellbooks:randomize_spell", "quality": {"min": 0.3, "max": 0.7}}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "irons_spellbooks:gold_spell_book", "weight": 20},
+        {"type": "minecraft:item", "name": "irons_spellbooks:rare_ink", "weight": 25, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 2}}]},
+        {"type": "minecraft:item", "name": "minecraft:nether_star", "weight": 10},
+        {"type": "minecraft:item", "name": "minecraft:wither_skeleton_skull", "weight": 15},
+        {"type": "minecraft:empty", "weight": 30}
+      ]
+    },
+    {
+      "rolls": {"min": 5, "max": 8, "type": "minecraft:uniform"},
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:blaze_rod", "weight": 40, "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]},
+        {"type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 35, "functions": [{"function": "minecraft:set_count", "count": {"min": 3, "max": 6}}]},
+        {"type": "minecraft:item", "name": "minecraft:nether_wart", "weight": 25, "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]}
+      ]
+    }
+  ]
+}

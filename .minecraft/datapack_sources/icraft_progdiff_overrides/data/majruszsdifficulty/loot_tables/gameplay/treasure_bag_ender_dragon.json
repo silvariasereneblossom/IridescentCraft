@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:chest",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "aethersteel:aethersteel_ingot", "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:book", "functions": [{"function": "minecraft:enchant_with_levels", "levels": {"min": 25, "max": 30}, "treasure": true}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "irons_spellbooks:scroll", "functions": [{"function": "irons_spellbooks:randomize_spell", "quality": {"min": 0.5, "max": 1.0}}]}
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        {"type": "minecraft:item", "name": "irons_spellbooks:diamond_spell_book", "weight": 25},
+        {"type": "minecraft:item", "name": "irons_spellbooks:epic_ink", "weight": 30, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 2}}]},
+        {"type": "minecraft:item", "name": "minecraft:elytra", "weight": 5},
+        {"type": "minecraft:empty", "weight": 940}
+      ]
+    },
+    {
+      "rolls": {"min": 6, "max": 10, "type": "minecraft:uniform"},
+      "entries": [
+        {"type": "minecraft:item", "name": "minecraft:dragon_breath", "weight": 35, "functions": [{"function": "minecraft:set_count", "count": {"min": 3, "max": 6}}]},
+        {"type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 35, "functions": [{"function": "minecraft:set_count", "count": {"min": 4, "max": 8}}]},
+        {"type": "minecraft:item", "name": "minecraft:ender_pearl", "weight": 20, "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]},
+        {"type": "minecraft:item", "name": "minecraft:end_crystal", "weight": 10}
+      ]
+    }
+  ]
+}
