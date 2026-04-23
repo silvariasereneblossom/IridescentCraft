@@ -1,8 +1,14 @@
 # IridescentCraft pre-seed of Epic RPG: Class Artifacts config.
 
 #Show the 'Sets' button in the inventory screen.
-# DISABLED - overlaps the 2x2 crafting grid. Use J key instead.
-showInventoryButton = false
+# Re-enabled 2026-04-23: inspecting InventoryButtonOverlay bytecode shows the
+# button renders at (guiLeft+139, guiTop+67) with size 30x12. The 2x2 crafting
+# grid ends at y=55, result slot at y=44 — the button sits BELOW them, not
+# overlapping. The "overlaps crafting grid" comment from the initial pre-seed
+# was incorrect. Without this button, players have no GUI entry point to the
+# Set Equipment Screen (artifact + relic slots) and relic item tooltips say
+# "Equip in Relic Slot" pointing at a slot nobody can see.
+showInventoryButton = true
 
 [elite_mobs]
     #Display boss bar for elite mobs on screen.
