@@ -1,52 +1,75 @@
 // =============================================================================
-// ENCHANTED BOOK TOOLTIP — restore enchantment name line
+// ENCHANTED BOOK TOOLTIP — restore enchantment name line (v2 2026-04-23)
 // =============================================================================
-// Apotheosis 7.3+ rewrites enchanted-book tooltips via an @Redirect mixin
-// on ItemStack.appendEnchantmentNames. The replacement method builds a
-// `realLevels` map from `stack.getAllEnchantments()`, which for an enchanted
-// BOOK returns the `Enchantments` NBT tag (empty — books store enchants
-// in `StoredEnchantments`). The method then calls
-// `realLevels.remove(enchant).intValue()` per NBT entry, which NPEs on
-// null. The NPE is caught silently and NO enchant line is added to the
-// tooltip — so vanilla shows "Enchanted Book" with the enchant line
-// missing, while the metadata line ("Discoverable | Lootable | ...") from
-// a separate path still renders later in the tooltip.
+// Apotheosis 7.3+ @Redirect's ItemStack.appendEnchantmentNames. Its
+// replacement builds a realLevels map from stack.getAllEnchantments(), which
+// for enchanted BOOKS returns the `Enchantments` NBT (empty — books store
+// enchants in `StoredEnchantments`). The replacement NPEs on null lookup,
+// the NPE is caught silently, and no enchant line is appended.
 //
-// Jar-audit confirmed: dev.shadowsoffire.apotheosis.mixin.ItemStackMixin
-// at offset apoth_enchTooltipRewrite, specifically the realLevels lookup.
+// v1 (2026-04-21): used stack.nbt.getList(...) + stack.nbt.getCompound(...).
+// Script loaded with 0 errors but produced no visible tooltip — the MapJS
+// getList path silently fails on enchanted books in this KubeJS version.
 //
-// Workaround: read StoredEnchantments ourselves and inject the standard
-// "Name Level" line at tooltip position 1 (right after the item name).
+// v2 (this file): parse the stringified NBT with regex (the same approach
+// lootjs_overhaul.js uses for its blank-book stripper, confirmed working).
+// Also splits Text creation into simple steps so failures in one part
+// don't swallow everything silently.
 // =============================================================================
+
+var BOOK_TOOLTIP_DIAG_LOGGED = false
 
 ItemEvents.tooltip(event => {
   event.addAdvanced('minecraft:enchanted_book', (stack, advanced, text) => {
     try {
-      const nbt = stack.nbt
-      if (!nbt) return
-      const stored = nbt.getList ? nbt.getList('StoredEnchantments', 10) : null
-      if (!stored || stored.size() <= 0) return
-      // Insert each enchant as `enchantment.<namespace>.<name> Level`.
-      // We use vanilla's translation key so the client renders the real
-      // localized enchantment name (e.g., "Piercing I"). Styled gray
-      // italic to match vanilla.
-      let insertAt = 1
-      for (let i = 0; i < stored.size(); i++) {
-        const entry = stored.getCompound(i)
-        const id = String(entry.getString('id') || '')
-        if (!id || id.indexOf(':') < 0) continue
-        const lvl = entry.getShort ? entry.getShort('lvl') : (entry.getInt ? entry.getInt('lvl') : 0)
-        const parts = id.split(':')
-        const translationKey = 'enchantment.' + parts[0] + '.' + parts[1]
-        const levelKey = 'enchantment.level.' + lvl
-        // Compose as translatable name + space + translatable level
-        const nameComp = Text.translate(translationKey)
-        const line = Text.of('').append(nameComp).append(' ').append(Text.translate(levelKey)).gray()
-        text.add(insertAt + i, line)
+      if (!stack || stack.isEmpty()) return
+      var tag = stack.nbt
+      if (!tag) return
+      var nbtStr = String(tag)
+
+      // One-shot diagnostic on first call per client session. Confirms the
+      // callback is firing and shows the actual NBT shape we're seeing.
+      if (!BOOK_TOOLTIP_DIAG_LOGGED) {
+        BOOK_TOOLTIP_DIAG_LOGGED = true
+        console.info('[book-tooltip-fix] first fire; nbt=' + nbtStr.substring(0, 200))
+      }
+
+      // Locate the StoredEnchantments list body.
+      var listMatch = nbtStr.match(/StoredEnchantments:\[(.*?)\]/)
+      if (!listMatch) return
+      var listBody = listMatch[1]
+      if (!listBody || listBody.length < 5) return
+
+      // Parse entries like {id:"namespace:name",lvl:Ns} — brackets
+      // single-level, no nested braces, so a greedy-by-entry regex is safe.
+      var entryRe = /\{[^{}]*?id:"([^"]+:[^"]+)"[^{}]*?lvl:(-?\d+)s?[^{}]*?\}/g
+      var m
+      var shown = 0
+      while ((m = entryRe.exec(listBody)) !== null) {
+        var id = m[1]
+        var lvl = parseInt(m[2], 10)
+        if (!id || !isFinite(lvl)) continue
+
+        var parts = id.split(':')
+        if (parts.length !== 2) continue
+
+        // Vanilla pattern: enchantment.<namespace>.<path>
+        var nameKey = 'enchantment.' + parts[0] + '.' + parts[1]
+        var lvlKey = 'enchantment.level.' + lvl
+
+        // Build the line piecewise so a failure in one step is visible.
+        var nameComp = Text.translate(nameKey)
+        var lvlComp = Text.translate(lvlKey)
+        var line = Text.of(' ').append(nameComp).append(' ').append(lvlComp).gray()
+        // Strip the leading space — using Text.of('') sometimes collapsed weirdly.
+        text.add(1 + shown, line)
+        shown++
       }
     } catch (e) {
-      // Swallow silently — worst case, tooltip just shows the same missing-line
-      // state as before; we don't want to break other tooltips.
+      // Error path — always log so we can diagnose. Won't spam since it
+      // only fires when the callback throws, which shouldn't be on
+      // every tooltip render.
+      console.warn('[book-tooltip-fix] error: ' + e)
     }
   })
 })

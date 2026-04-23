@@ -160,6 +160,44 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(LootEntry.of('relics:space_dissector').when(c => c.randomChance(0.01)))
 
+  // ── TERRAMITY GUN + AMMO + GUN-ARMOR STRIP ──
+  // Design: bosses and structures from Terramity stay; guns/ammo/ammo-
+  // crafting/armor sets do not fit the pack's RPG progression.
+  // Recipe removal lives in recipes/recipe_audit.js Section I. This block
+  // catches loot-side sources (chests, mob drops, boss drops that reference
+  // these items) so stripped items can't sneak in via world-gen loot either.
+  // Enchantments are disabled via Apotheosis config (Discoverable/Lootable
+  // both false for the 12 gun enchants).
+  let terramityGunStrip = [
+    // Firearms
+    'terramity:basic_pistol', 'terramity:basic_rifle', 'terramity:advanced_pistol',
+    'terramity:advanced_automatic_rifle', 'terramity:advanced_burst_rifle',
+    'terramity:suppressed_advanced_pistol', 'terramity:anti_material_rifle',
+    'terramity:antimatter_rifle', 'terramity:conductite_laser_rifle',
+    'terramity:elite_rifle', 'terramity:flintlock_pistol', 'terramity:plague_pistol',
+    'terramity:big_iron', 'terramity:asphodel', 'terramity:handcannon',
+    'terramity:meteor_cannon', 'terramity:moondrill_cannon', 'terramity:railgun',
+    'terramity:rocket_launcher', 'terramity:pump_action_shotgun',
+    'terramity:sawed_off_shotgun', 'terramity:flare_gun',
+    'terramity:hellspec_super_shotgun',
+    // Projectiles + ammo
+    'terramity:gunkshot_projectile', 'terramity:flare_gun_projectile',
+    'terramity:enderswap_projectile', 'terramity:shadowflame_bullet',
+    'terramity:steel_shell', 'terramity:chthonic_shell_casing',
+    'terramity:daemonium_shotshells', 'terramity:daemonium_shotshell_projectile',
+    'terramity:hellspec_shotshells',
+    'terramity:copper_round', 'terramity:gold_round',
+    'terramity:antimatter_round', 'terramity:dimlite_round',
+    'terramity:iridium_round', 'terramity:suppressed_gold_round',
+    // Gun crafting + ammo containers
+    'terramity:gunsmith_station', 'terramity:advanced_gun_parts',
+    'terramity:ammo_bag', 'terramity:ammo_box', 'terramity:bottomless_ammo_box',
+  ]
+  let terramityChestStrip = event.addLootTypeModifier(LootType.CHEST)
+  terramityGunStrip.forEach(id => terramityChestStrip.removeLoot(id))
+  let terramityEntityStrip = event.addLootTypeModifier(LootType.ENTITY)
+  terramityGunStrip.forEach(id => terramityEntityStrip.removeLoot(id))
+
   // Shadow Glaive — rare T2/T3 drop
   event
     .addLootTypeModifier(LootType.CHEST)
