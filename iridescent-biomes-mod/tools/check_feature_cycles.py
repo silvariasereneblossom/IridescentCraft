@@ -3,25 +3,24 @@
 Biome feature-order cycle detector.
 
 Loads every biome JSON known to this pack (vanilla MC 1.20.1 + BiomesOPlenty +
-our iridescent-biomes-mod resources) and checks each of the 11 GenerationStep
-indices for cyclic ordering constraints.
-
-LIMITATION: this only audits against vanilla + BoP. The pack ships 400+ other
-mods, some of which add biomes (aether, deep-aether, blue-skies, undergarden,
-deeperdarker, twilightforest, the-abyss, ad-astra, quark, terramity, etc.).
-A PASS here means our biomes are consistent with vanilla + BoP ordering. A
-cycle can still form at runtime if our step 9 contains features that have a
-relative order declared by some mod biome we haven't audited.
-
-SAFE PATTERN: match a vanilla biome's step 9 verbatim. Vanilla doesn't crash,
-and any mod biome consistent with vanilla is consistent with us. If you want
-custom vegetation, layer it in via Forge biome modifiers (data/forge/
-biome_modifier/) which don't touch FeatureSorter.
+our iridescent-biomes-mod resources + a shortlist of other biome-shipping mods
+resolved from ../../.minecraft/mods/.index/*.pw.toml) and checks each of the 11
+GenerationStep indices for cyclic ordering constraints.
 
 A cycle means two or more biomes declare contradicting relative orders for a
 shared pair of features. Minecraft's FeatureSorter crashes the server on world
 load when this happens, so we want to catch it at build time before the jar
 ships.
+
+COVERAGE: vanilla + BoP + every mod named in MODDED_SHORTLIST below. The
+shortlist is the set of mods known to register biomes (aether family, ad-astra,
+the-abyss, undergarden, deeperdarker, quark, structory, terramity, etc.). Add
+to the list when a new biome-shipping mod joins the pack.
+
+SAFE PATTERN: match a vanilla biome's step 9 verbatim. Vanilla doesn't crash,
+and any mod biome consistent with vanilla is consistent with us. If you want
+custom vegetation, layer it in via Forge biome modifiers (data/forge/
+biome_modifier/) which don't touch FeatureSorter.
 
 Usage:
     python3 tools/check_feature_cycles.py
@@ -34,11 +33,12 @@ the first run).
 
 from __future__ import annotations
 
-import glob
 import json
 import os
+import re
 import subprocess
 import sys
+import urllib.parse
 import urllib.request
 from collections import defaultdict
 from pathlib import Path
@@ -47,6 +47,7 @@ ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "tools" / ".cache"
 CACHE.mkdir(exist_ok=True)
 OUR_BIOMES_DIR = ROOT / "src/main/resources/data/icraft/worldgen/biome"
+PACK_INDEX = ROOT.parent / ".minecraft" / "mods" / ".index"
 
 # Pinned versions matching pack's current deps. Bump when you update MC or BoP.
 MC_VERSION = "1.20.1"
@@ -58,6 +59,71 @@ VANILLA_JAR = CACHE / f"vanilla-server-{MC_VERSION}.jar"
 BOP_JAR = CACHE / f"bop-{BOP_VERSION}.jar"
 VANILLA_BIOMES = CACHE / "biomes-vanilla"
 BOP_BIOMES = CACHE / "biomes-bop"
+MODDED_CACHE = CACHE / "modded"
+MODDED_BIOMES = CACHE / "biomes-modded"
+
+# Mods known to register biomes. Entries must match the packwiz toml stem in
+# .minecraft/mods/.index/. If a mod is missing, the audit skips it with a note.
+MODDED_SHORTLIST = [
+    "aether",
+    "deep-aether",
+    "ad-astra",
+    "ad-astra-more-structures",
+    "the-abyss-chapter-ii",
+    "the-undergarden",
+    "deeperdarker",
+    "quark",
+    "structory",
+    "structory-towers",
+    "terramity",
+    "savage-and-ravage",
+    "bygone-nether",
+    "blueprint",
+    "twilight-aether",
+    "dungeons-plus",
+    "rftools-dimensions",
+    "naturalist",
+    "tectonic",
+    "the-twilight-forest",
+    "blue-skies",
+    "supplementaries",
+]
+
+# Namespaces whose biomes live in their own dimensions (separate chunk generator)
+# and therefore never share a FeatureSorter graph with overworld biomes. Biomes
+# from these namespaces still get loaded but are EXCLUDED from the cycle audit
+# to avoid false positives. Vanilla nether/end biomes are also excluded by the
+# per-biome classifier below.
+NON_OVERWORLD_NAMESPACES = {
+    "twilightforest",       # Twilight Forest dimension
+    "aether",               # Aether dimension
+    "aether_redux",
+    "deep_aether",          # subdimensions inside Aether
+    "blue_skies",            # Everbright + Everdawn
+    "the_abyss",             # The Abyss dimension(s)
+    "undergarden",           # Undergarden dimension
+    "deeperdarker",          # Otherside dimension
+    "ad_astra",              # planets
+    "bygonenether",          # nether-only
+    "twilightaether",
+}
+
+# Specific minecraft:* biomes that live in non-overworld chunk generators.
+NON_OVERWORLD_VANILLA = {
+    "minecraft:nether_wastes", "minecraft:soul_sand_valley", "minecraft:crimson_forest",
+    "minecraft:warped_forest", "minecraft:basalt_deltas",
+    "minecraft:the_end", "minecraft:end_highlands", "minecraft:end_midlands",
+    "minecraft:end_barrens", "minecraft:small_end_islands", "minecraft:the_void",
+}
+
+
+def is_overworld(biome_id: str) -> bool:
+    ns = biome_id.split(":", 1)[0]
+    if ns in NON_OVERWORLD_NAMESPACES:
+        return False
+    if biome_id in NON_OVERWORLD_VANILLA:
+        return False
+    return True
 
 
 def fetch(url: str, dest: Path) -> None:
@@ -99,6 +165,120 @@ def extract_bop_biomes() -> None:
     )
 
 
+_quote_re = re.compile(r"""^(\w[\w-]*)\s*=\s*['"](.+?)['"]\s*$""")
+_num_re = re.compile(r"""^(\w[\w-]*)\s*=\s*(\d+)\s*$""")
+
+
+def parse_toml(path: Path) -> dict:
+    """
+    Minimal extractor for the fields we care about in packwiz .pw.toml files:
+    filename, mode, url, file-id, project-id. Section-agnostic.
+    """
+    out: dict[str, str] = {}
+    for raw in path.read_text().splitlines():
+        line = raw.strip()
+        m = _quote_re.match(line)
+        if m:
+            out[m.group(1)] = m.group(2)
+            continue
+        m = _num_re.match(line)
+        if m:
+            out[m.group(1)] = m.group(2)
+    return out
+
+
+def resolve_mod_url(stem: str) -> tuple[str, str] | None:
+    """
+    Given a toml stem like "aether", return (filename, download_url) or None
+    if the toml is missing or lacks a resolvable URL. Mirrors the URL shaping
+    done by .minecraft/download_mods.ps1 for curseforge-metadata entries.
+    """
+    toml = PACK_INDEX / f"{stem}.pw.toml"
+    if not toml.exists():
+        return None
+    data = parse_toml(toml)
+    filename = data.get("filename")
+    if not filename:
+        return None
+    mode = data.get("mode", "url")
+    url = data.get("url", "")
+    if mode == "url" and url:
+        return filename, url
+    if mode == "metadata:curseforge":
+        fid = data.get("file-id", "")
+        if not fid:
+            return None
+        p1 = fid[:4]
+        p2 = fid[4:].lstrip("0") or "0"
+        # filename may contain spaces or other chars urllib rejects as control
+        enc = urllib.parse.quote(filename)
+        return filename, f"https://edge.forgecdn.net/files/{p1}/{p2}/{enc}"
+    return None
+
+
+def extract_modded_biomes() -> dict[str, Path]:
+    """
+    For each entry in MODDED_SHORTLIST: download the jar into tools/.cache/modded/,
+    scan for data/*/worldgen/biome/*.json members, and dump each namespace's
+    biomes into tools/.cache/biomes-modded/<namespace>/. Returns a dict mapping
+    namespace -> biomes dir for namespaces that actually shipped biomes.
+    """
+    MODDED_CACHE.mkdir(exist_ok=True)
+    MODDED_BIOMES.mkdir(exist_ok=True)
+
+    import zipfile
+
+    ns_dirs: dict[str, Path] = {}
+    missing: list[str] = []
+    no_biomes: list[str] = []
+
+    for stem in MODDED_SHORTLIST:
+        resolved = resolve_mod_url(stem)
+        if not resolved:
+            missing.append(stem)
+            continue
+        filename, url = resolved
+        jar_path = MODDED_CACHE / filename
+        try:
+            fetch(url, jar_path)
+        except Exception as e:
+            print(f"  [cycle-check]   skip {stem}: download failed ({e})", flush=True)
+            continue
+
+        found_any = False
+        try:
+            with zipfile.ZipFile(jar_path) as zf:
+                for name in zf.namelist():
+                    # e.g. "data/undergarden/worldgen/biome/dense_forest.json"
+                    m = re.match(r"^data/([a-z0-9_\-.]+)/worldgen/biome/([A-Za-z0-9_\-./]+)\.json$", name)
+                    if not m:
+                        continue
+                    ns = m.group(1)
+                    if ns in ("minecraft", "biomesoplenty", "icraft", "forge"):
+                        continue
+                    basename = Path(m.group(2)).name
+                    out_dir = MODDED_BIOMES / ns
+                    out_dir.mkdir(exist_ok=True)
+                    out_path = out_dir / f"{basename}.json"
+                    if not out_path.exists():
+                        with zf.open(name) as src, out_path.open("wb") as dst:
+                            dst.write(src.read())
+                    ns_dirs[ns] = out_dir
+                    found_any = True
+        except zipfile.BadZipFile:
+            print(f"  [cycle-check]   skip {stem}: not a valid zip", flush=True)
+            continue
+
+        if not found_any:
+            no_biomes.append(stem)
+
+    if missing:
+        print(f"  [cycle-check] missing tomls: {', '.join(missing)}", flush=True)
+    if no_biomes:
+        print(f"  [cycle-check] no biome JSONs in: {', '.join(no_biomes)}", flush=True)
+    return ns_dirs
+
+
 def load_biomes() -> dict[str, list[list[str]]]:
     biomes: dict[str, list[list[str]]] = {}
     for p in sorted(VANILLA_BIOMES.glob("*.json")):
@@ -107,6 +287,11 @@ def load_biomes() -> dict[str, list[list[str]]]:
     for p in sorted(BOP_BIOMES.glob("*.json")):
         with p.open() as f:
             biomes["biomesoplenty:" + p.stem] = json.load(f).get("features", [])
+    for ns_dir in sorted(MODDED_BIOMES.glob("*/")):
+        ns = ns_dir.name
+        for p in sorted(ns_dir.glob("*.json")):
+            with p.open() as f:
+                biomes[f"{ns}:{p.stem}"] = json.load(f).get("features", [])
     for p in sorted(OUR_BIOMES_DIR.glob("*.json")):
         with p.open() as f:
             biomes["icraft:" + p.stem] = json.load(f).get("features", [])
@@ -115,12 +300,13 @@ def load_biomes() -> dict[str, list[list[str]]]:
 
 def find_step_cycles(biomes: dict[str, list[list[str]]], step_idx: int):
     """
-    Returns (cycles, adj) where cycles is a list of (a, b, c, src_ab, src_bc, src_ca)
-    for every 3-node cycle in step_idx's ordering graph. adj[a][b] is the set of
-    biomes that contributed the a→b edge.
+    Returns a list of cycle tuples. adj[a][b] is the set of biomes that
+    contributed the a->b edge within this step.
     """
     adj: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
     for bname, feats in biomes.items():
+        if not is_overworld(bname):
+            continue
         if step_idx >= len(feats):
             continue
         step = feats[step_idx]
@@ -157,15 +343,19 @@ def find_step_cycles(biomes: dict[str, list[list[str]]], step_idx: int):
 
 def format_sources(srcs):
     srcs = sorted(srcs)
-    if len(srcs) <= 3:
+    if len(srcs) <= 4:
         return ", ".join(srcs)
-    return ", ".join(srcs[:3]) + f" (+{len(srcs) - 3} more)"
+    return ", ".join(srcs[:4]) + f" (+{len(srcs) - 4} more)"
 
 
 def main() -> int:
     print("[cycle-check] extracting reference biome JSONs ...", flush=True)
     extract_vanilla_biomes()
     extract_bop_biomes()
+    ns_dirs = extract_modded_biomes()
+    if ns_dirs:
+        print(f"[cycle-check] pulled biomes from {len(ns_dirs)} modded namespaces: "
+              f"{', '.join(sorted(ns_dirs))}", flush=True)
     biomes = load_biomes()
     print(f"[cycle-check] loaded {len(biomes)} biomes", flush=True)
 
@@ -194,9 +384,9 @@ def main() -> int:
     if total:
         print(f"\n[cycle-check] FAILED: {total} cycles across 11 steps — server will crash on world load")
         print("[cycle-check] Fix: reorder the offending features in our biome JSONs to match")
-        print("[cycle-check] the vanilla/BoP biomes' relative order for shared feature pairs.")
+        print("[cycle-check] the vanilla/BoP/modded biomes' relative order for shared feature pairs.")
         return 1
-    print("[cycle-check] PASS: all 11 steps cycle-free across", len(biomes), "biomes")
+    print(f"[cycle-check] PASS: all 11 steps cycle-free across {len(biomes)} biomes")
     return 0
 
 

@@ -80,7 +80,13 @@
       "minecraft:spring_water",
       "minecraft:spring_lava"
     ],
-    [],
+    [
+      "minecraft:glow_lichen",
+      "minecraft:patch_tall_grass_2",
+      "minecraft:patch_grass_plain",
+      "minecraft:flower_cherry",
+      "minecraft:trees_cherry"
+    ],
     [
       "minecraft:freeze_top_layer"
     ]
