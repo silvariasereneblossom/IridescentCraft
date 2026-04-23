@@ -17,6 +17,26 @@ saves/
 .minecraft/region/
 .minecraft/placeholderlevel/
 .minecraft/backups/
+.minecraft/world/
+.minecraft/logs/
+.minecraft/crash-reports/
+.minecraft/modernfix/
+.minecraft/local/
+.minecraft/poi/
+.minecraft/moddata/
+.minecraft/immersive_library/
+.minecraft/prettypipesprefs/
+.minecraft/usercache.json
+.minecraft/usernamecache.json
+.minecraft/banned-*.json
+.minecraft/ops.json
+.minecraft/whitelist.json
+# Runtime crash logs shipped by testers — keep committed under TesterLogs/ but
+# block loose crash-logs that accumulate at distro root
+.minecraft/server_distribution/logs/
+.minecraft/server_distribution/crash-reports/
+.minecraft/distribution/client/logs/
+.minecraft/distribution/client/crash-reports/
 
 *.zip
 !global_packs/required_data/*.zip

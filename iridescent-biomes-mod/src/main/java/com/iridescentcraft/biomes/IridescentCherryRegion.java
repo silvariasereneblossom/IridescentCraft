@@ -13,8 +13,9 @@ import terrablender.api.RegionType;
 import java.util.function.Consumer;
 
 /**
- * Adds the two icraft:cherry_* biomes to the overworld parameter-point pool
- * using explicit Climate.ParameterPoint values via addBiome (not addBiomeSimilar).
+ * Adds the two iridescent_biomes:cherry_* biomes to the overworld parameter-point
+ * pool using explicit Climate.ParameterPoint values via addBiome (not
+ * addBiomeSimilar).
  *
  * Why explicit ParameterPoints instead of addBiomeSimilar:
  * An audit of the pack's 444 mods (2026-04-23) showed that every other
@@ -43,7 +44,7 @@ import java.util.function.Consumer;
  * These are deliberately narrow and don't overlap vanilla cherry_grove's
  * parameter cluster (which sits around temp 0.5, hum 0.7, erosion 0-0.05).
  */
-public class IcraftCherryRegion extends Region {
+public class IridescentCherryRegion extends Region {
     public static final ResourceKey<Biome> CHERRY_RIVER_VALLEY = ResourceKey.create(
             Registries.BIOME,
             new ResourceLocation(IridescentBiomes.MODID, "cherry_river_valley")
@@ -53,7 +54,7 @@ public class IcraftCherryRegion extends Region {
             new ResourceLocation(IridescentBiomes.MODID, "cherry_mountains")
     );
 
-    public IcraftCherryRegion(ResourceLocation name, int weight) {
+    public IridescentCherryRegion(ResourceLocation name, int weight) {
         super(name, RegionType.OVERWORLD, weight);
     }
 

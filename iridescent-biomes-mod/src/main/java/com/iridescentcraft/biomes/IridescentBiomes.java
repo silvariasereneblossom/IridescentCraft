@@ -38,7 +38,7 @@ public class IridescentBiomes {
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Region registration must run on the main thread — enqueueWork handles it.
         event.enqueueWork(() -> {
-            Regions.register(new IcraftCherryRegion(
+            Regions.register(new IridescentCherryRegion(
                     new ResourceLocation(MODID, "cherry_region"),
                     8
             ));

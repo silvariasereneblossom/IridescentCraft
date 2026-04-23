@@ -9,7 +9,7 @@ Living documentation for IridescentCraft, a progression-focused expert-lite Mine
 ### Design
 The canonical design reference for all modpack systems.
 
-- [Master Design Document](design/master.md) — Complete system specifications (Parts I-XII)
+- [Master Design Document](design/master.md) — Complete system specifications (Parts I-XXIX)
 - [Design Changelog](design/changelog.md) — Tracked changes to design across sessions
 
 ### Progression
@@ -33,6 +33,7 @@ The canonical design reference for all modpack systems.
 ### Dev (internal-only)
 - [Lessons Learned](dev/lessons-learned.md) — Postmortems for stalled/failed implementations. **Not mirrored to public wiki.**
 - [Deployment and Utility Guide](dev/deployment-and-utility-guide.md) — How code reaches client/server, phase0_sync flow, custom-jar allowlist, utility scripts. **Not mirrored to public wiki.**
+- [Code Review 2026-04-23](dev/code-review-2026-04-23.md) — Full-codebase audit findings + 11 remaining followups. **Not mirrored to public wiki.**
 
 ### Roadmap
 - [Planned Changes](roadmap/planned.md) — Future features, improvements, and technical debt
