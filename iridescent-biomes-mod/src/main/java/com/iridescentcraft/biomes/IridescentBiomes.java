@@ -31,23 +31,12 @@ public class IridescentBiomes {
     }
 
     private void commonSetup(final FMLCommonSetupEvent event) {
-        // Diagnostic build: TerraBlender Region registration is DISABLED to
-        // prove whether cherry_mountains/cherry_river_meadow being in the
-        // overworld ModdedBiomeSource.possibleBiomes() is what closes the
-        // cycle FeatureSorter reports. With this commented out, our biomes
-        // are registered in the biome registry (they exist in the data, tags,
-        // etc.) but no overworld parameter points map to them, so they should
-        // NOT appear in Blueprint's FeatureSorter input list.
-        // If the server loads: the mere presence of our biome in possibleBiomes
-        // is triggering the cycle, independent of its content.
-        // If the server still crashes: the cycle is unrelated to our biome's
-        // presence and we've been chasing the wrong thing.
-        //
-        // event.enqueueWork(() -> {
-        //     Regions.register(new IcraftCherryRegion(
-        //             new ResourceLocation(ICRAFT, "cherry_region"),
-        //             8
-        //     ));
-        // });
+        // Region registration must run on the main thread — enqueueWork handles it.
+        event.enqueueWork(() -> {
+            Regions.register(new IcraftCherryRegion(
+                    new ResourceLocation(ICRAFT, "cherry_region"),
+                    8
+            ));
+        });
     }
 }
