@@ -5,7 +5,15 @@ noAdvancementBooks = []
 #Enable testing mode. By default this doesn't do anything, but you can use the config flag in your books if you want. Config Flag: testing_mode
 testingMode = false
 #Set this to the ID of a book to have it show up in players' inventories, replacing the recipe book.
-inventoryButtonBook = "icraft:iridescent_codex"
+# Disabled 2026-04-23: Patchouli's MixinInventoryScreen.onGuiInitPost hijacks
+# the FIRST ImageButton it finds on the screen and replaces it with this
+# book's button. With Sophisticated Backpacks / Waystones / Quark all
+# registering their own ImageButtons during ScreenInitPost, the "first"
+# button is non-deterministic — the codex button was landing in a bad
+# position below the armor column and stealing the other mod's button
+# function. The codex is auto-given via kubejs/server_scripts/codex_delivery.js;
+# players open it by right-clicking the book item.
+inventoryButtonBook = ""
 #Set this to true to use Shift instead of Ctrl for the inventory quick lookup feature.
 useShiftForQuickLookup = false
 #Set how text overflow should be coped with: overflow the text off the page, truncate overflowed text, or resize everything to fit. Relogin after changing.
