@@ -300,8 +300,14 @@ def load_biomes() -> dict[str, list[list[str]]]:
 
 def find_step_cycles(biomes: dict[str, list[list[str]]], step_idx: int):
     """
-    Returns a list of cycle tuples. adj[a][b] is the set of biomes that
-    contributed the a->b edge within this step.
+    Build the ordering graph and detect *any* cycle length. Matches vanilla
+    FeatureSorter: each biome's consecutive pairs (a, b) at this step
+    contribute an a->b edge. Earlier versions of this detector only caught
+    2-cycles and 3-cycles and missed longer ones.
+
+    Returns a list of tuples:
+      ("2-cycle", a, b, None, adj[a][b], adj[b][a], None)
+      ("ncycle", path_list, None, None, edge_sources, None, None)
     """
     adj: dict[str, dict[str, set[str]]] = defaultdict(lambda: defaultdict(set))
     for bname, feats in biomes.items():
@@ -310,14 +316,16 @@ def find_step_cycles(biomes: dict[str, list[list[str]]], step_idx: int):
         if step_idx >= len(feats):
             continue
         step = feats[step_idx]
-        for i, a in enumerate(step):
-            for b in step[i + 1:]:
-                adj[a][b].add(bname)
+        # Vanilla FeatureSorter only adds edges between *consecutive* features,
+        # not all-pairs within a step. Match that precisely.
+        for i in range(len(step) - 1):
+            adj[step[i]][step[i + 1]].add(bname)
 
     cycles = []
-    # 2-cycles (direct contradictions) first — these are the actual root bugs
+
+    # Direct 2-cycles first — clearest report.
     seen_pairs = set()
-    for a, succs in adj.items():
+    for a, succs in list(adj.items()):
         for b in succs:
             if b in adj and a in adj[b]:
                 pair = tuple(sorted([a, b]))
@@ -326,18 +334,57 @@ def find_step_cycles(biomes: dict[str, list[list[str]]], step_idx: int):
                 seen_pairs.add(pair)
                 cycles.append(("2-cycle", a, b, None, adj[a][b], adj[b][a], None))
 
-    # 3-cycles only if no 2-cycle exists (every 3-cycle will be transitive shadow
-    # of the 2-cycle, so reporting 2-cycles first keeps the output focused).
-    if not cycles:
-        for a in adj:
-            for b in adj[a]:
-                if b not in adj:
-                    continue
-                for c in adj[b]:
-                    if c not in adj:
-                        continue
-                    if a in adj[c]:
-                        cycles.append(("3-cycle", a, b, c, adj[a][b], adj[b][c], adj[c][a]))
+    if cycles:
+        return cycles
+
+    # General cycle detection: DFS with recursion stack. Record each unique
+    # cycle once (shortest-first, canonicalized by rotation to lowest label).
+    WHITE, GRAY, BLACK = 0, 1, 2
+    color: dict[str, int] = {}
+    parent: dict[str, str] = {}
+    found: list[list[str]] = []
+
+    def dfs(u: str):
+        color[u] = GRAY
+        for v in adj.get(u, ()):
+            if color.get(v, WHITE) == GRAY:
+                # Reconstruct cycle u..v in reverse using parent[]
+                cyc = [v]
+                x = u
+                while x != v and x is not None:
+                    cyc.append(x)
+                    x = parent.get(x)
+                cyc.reverse()
+                found.append(cyc)
+            elif color.get(v, WHITE) == WHITE:
+                parent[v] = u
+                dfs(v)
+        color[u] = BLACK
+
+    # Python's default recursion cap would trip on long chains of 500+ features.
+    sys.setrecursionlimit(20000)
+    for node in list(adj.keys()):
+        if color.get(node, WHITE) == WHITE:
+            dfs(node)
+
+    # Deduplicate by canonical rotation
+    seen: set[tuple] = set()
+    for cyc in found:
+        if len(cyc) < 2:
+            continue
+        mn = min(range(len(cyc)), key=lambda i: cyc[i])
+        canon = tuple(cyc[mn:] + cyc[:mn])
+        if canon in seen:
+            continue
+        seen.add(canon)
+        # Collect biomes that contributed each edge of the cycle.
+        edge_sources: set[str] = set()
+        for i in range(len(canon)):
+            a = canon[i]
+            b = canon[(i + 1) % len(canon)]
+            edge_sources |= adj.get(a, {}).get(b, set())
+        cycles.append(("ncycle", list(canon), None, None, edge_sources, None, None))
+
     return cycles
 
 
@@ -372,11 +419,13 @@ def main() -> int:
                     print(f"    {a} -> {b}    (from: {format_sources(s_ab)})")
                     print(f"    {b} -> {a}    (from: {format_sources(s_ba)})")
                 else:
-                    _, a, b, c_, s_ab, s_bc, s_ca = c
-                    print(f"  3-cycle:")
-                    print(f"    {a} -> {b}    (from: {format_sources(s_ab)})")
-                    print(f"    {b} -> {c_}   (from: {format_sources(s_bc)})")
-                    print(f"    {c_} -> {a}    (from: {format_sources(s_ca)})")
+                    _, path, _, _, srcs, _, _ = c
+                    print(f"  {len(path)}-cycle:")
+                    for i in range(len(path)):
+                        a = path[i]
+                        b = path[(i + 1) % len(path)]
+                        print(f"    {a} -> {b}")
+                    print(f"    involved biomes: {format_sources(srcs)}")
             if len(cycles) > 5:
                 print(f"  ... {len(cycles) - 5} more")
             total += len(cycles)
