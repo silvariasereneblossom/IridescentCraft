@@ -1736,8 +1736,8 @@ LootJS.modifiers(event => {
   })
 
   // --- Nature's Compass + base Sophisticated Backpack — village chest adds ---
-  // Nature's Compass at 5%: useful for locating our icraft:cherry_river_meadow
-  // and icraft:cherry_mountains biomes (which generate after the
+  // Nature's Compass at 5%: useful for locating our iridescent_biomes:cherry_river_meadow
+  // and iridescent_biomes:cherry_mountains biomes (which generate after the
   // minecraft:is_overworld tag fix 2026-04-22).
   // Sophisticated Backpacks base variant at 4%: leather+chest+string crafting
   // tier, 27 slots when placed, also wearable via the Curios back slot.

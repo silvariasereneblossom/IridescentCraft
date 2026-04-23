@@ -46,11 +46,11 @@ import java.util.function.Consumer;
 public class IcraftCherryRegion extends Region {
     public static final ResourceKey<Biome> CHERRY_RIVER_MEADOW = ResourceKey.create(
             Registries.BIOME,
-            new ResourceLocation(IridescentBiomes.ICRAFT, "cherry_river_meadow")
+            new ResourceLocation(IridescentBiomes.MODID, "cherry_river_meadow")
     );
     public static final ResourceKey<Biome> CHERRY_MOUNTAINS = ResourceKey.create(
             Registries.BIOME,
-            new ResourceLocation(IridescentBiomes.ICRAFT, "cherry_mountains")
+            new ResourceLocation(IridescentBiomes.MODID, "cherry_mountains")
     );
 
     public IcraftCherryRegion(ResourceLocation name, int weight) {

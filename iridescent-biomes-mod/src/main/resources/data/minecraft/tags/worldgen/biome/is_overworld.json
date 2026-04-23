@@ -1,7 +1,7 @@
 {
   "replace": false,
   "values": [
-    "icraft:cherry_river_meadow",
-    "icraft:cherry_mountains"
+    "iridescent_biomes:cherry_river_meadow",
+    "iridescent_biomes:cherry_mountains"
   ]
 }
