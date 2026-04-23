@@ -143,6 +143,7 @@ After every major change (new features, balance changes, new items/origins/class
 
 **Internal-only pages (do NOT mirror to the public wiki):**
 - `wiki/dev/lessons-learned.md` — postmortem log for stalled/failed implementations. Contains candid retro notes that belong in the engineering log, not on the user-facing wiki.
+- `wiki/dev/deployment-and-utility-guide.md` — internal deployment reference (phase0_sync internals, custom-jar allowlist, utility scripts). Names private paths/network shares.
 
 When mirroring, skip any page whose top includes the HTML comment `<!-- INTERNAL ONLY -->` or is listed above.
 

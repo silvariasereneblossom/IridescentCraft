@@ -32,6 +32,7 @@ The canonical design reference for all modpack systems.
 
 ### Dev (internal-only)
 - [Lessons Learned](dev/lessons-learned.md) — Postmortems for stalled/failed implementations. **Not mirrored to public wiki.**
+- [Deployment and Utility Guide](dev/deployment-and-utility-guide.md) — How code reaches client/server, phase0_sync flow, custom-jar allowlist, utility scripts. **Not mirrored to public wiki.**
 
 ### Roadmap
 - [Planned Changes](roadmap/planned.md) — Future features, improvements, and technical debt
