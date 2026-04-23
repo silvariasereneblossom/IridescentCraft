@@ -14,6 +14,44 @@ This page is for honest retro, not for user-facing docs. Write freely. Order is 
 
 ---
 
+## 2026-04-23 — Cherry biome FeatureSorter cycle crash: orphan datapack in a shadow namespace
+
+**Symptom:** Server crashed at world load with `java.lang.IllegalStateException: Feature order cycle found, involved sources: [minecraft:lush_caves, icraft:cherry_mountains, biomesoplenty:moor]`, thrown from `com.teamabnormals.blueprint.common.world.modification.ModdedBiomeSlicesManager.lambda$onServerAboutToStart$3`. Every world gen chunk after server start raised it. Persisted across ~20 iterations of "fix the biome JSON" / "fix the TerraBlender region" / "fix the tags."
+
+**Dead ends (in order attempted, each session-days long):**
+- Reordered step 9 features to match vanilla `cherry_grove` (same prefix, same suffix, verbatim copy). Crash persisted.
+- Added biomes to `#minecraft:is_overworld` and `#minecraft:is_mountain` tags thinking a modifier-targeting mismatch was the issue. Crash persisted.
+- **Removed** both tags thinking a tag-targeted modifier was injecting cycling features. Crash persisted.
+- Wrote a Python FeatureSorter-cycle detector (`tools/check_feature_cycles.py`) running against vanilla + BoP + all 444-mod-pack biomes with per-step consecutive-pair edges and general DFS cycle detection. **Detector PASSED across 241 biomes** — told me there was no cycle to find.
+- Set `features: [[], [], ..., []]` (all eleven steps empty) in both biome JSONs. Crash persisted — cherry_mountains was still listed as "involved source" with zero declared features, which should have been impossible.
+- Disabled the TerraBlender region registration entirely. Server loaded clean. That pointed at "biome presence in `possibleBiomes()` is the trigger, not content" — which was half-right but the *wrong* biome was the one in possibleBiomes.
+- Rewrote from `addBiomeSimilar(CHERRY_GROVE, ...)` to `addBiome(explicit ClimateParameterPoint, ...)` — the method every other working biome mod in the pack uses. Audited all 444 jars; found we were the only `addBiomeSimilar` caller. Crash persisted.
+- Flipped `mods.toml` ordering from `BEFORE` to `AFTER` for both `terrablender` and `biomesoplenty` (BoP's setting). Load order did change (our region moved from index 1 to later). Crash persisted.
+- Removed tectonic (lithostitched `river_lichen` modifier targeting `#is_overworld`). No effect.
+- Removed lionfishapi (its `lionfishapi:original` slice forces Blueprint to run FeatureSorter regardless of Blueprint's own `OriginalModdedBiomeProvider` check). Didn't get to test cleanly.
+
+**Actual root cause:** The pack had **two independent systems registering the same biome IDs**. One was the `iridescent-biomes-mod` Java mod we'd been iterating on. The other was `datapack_sources/icraft_biomes/` — an early prototype datapack that had been compiled into `config/paxi/datapacks/icraft_biomes.zip` and was still being auto-loaded by Paxi every world load. The zip's `data/minecraft/tags/worldgen/biome/is_overworld.json` listed `icraft:cherry_mountains` and `icraft:cherry_river_meadow`. When the mod's registration was healthy, both systems registered the same biomes and there was no visible conflict. When the mod moved to the `iridescent_biomes:` namespace (or was disabled, or had empty features, etc.), the `icraft:` biomes from the datapack remained — registered in the biome registry, tagged `#is_overworld` (so every overworld-scoped biome modifier still injected features into them), but not placed in any TerraBlender region. Blueprint's `ModdedBiomeSlicesManager.onServerAboutToStart` FeatureSorter pass saw those orphans in the biome set with feature lists that couldn't be reconciled against their missing parameter points — the cycle report was correct; I was just looking at the wrong biome the whole time.
+
+The crash message "involved sources: [..., icraft:cherry_mountains, ...]" was literally accurate. The `icraft:cherry_mountains` involved in the cycle was *not* the mod's biome — it was the orphaned datapack biome with the same local name, a different namespace, and no placement.
+
+**What actually fixed it:** commit `8c85d818`.
+- Deleted `datapack_sources/icraft_biomes/` (the source).
+- Deleted `config/paxi/datapacks/icraft_biomes.zip` from all three distros.
+- Moved the mod's own biome files from `data/icraft/worldgen/biome/` → `data/iridescent_biomes/worldgen/biome/` so the mod's `modId` matches its biome namespace (the convention every working TerraBlender biome mod in the pack follows).
+- Updated tag values, Java ResourceLocation literals, and pack-side references (`kubejs/server_scripts/loot/lootjs_overhaul.js`) to the new namespace.
+
+**Takeaways:**
+
+1. **When a crash names a resource ID, `grep -r` the entire pack for that ID before analysing the failure.** If more than one file defines/declares it, that ambiguity is usually the bug. I should have been running `grep -rn "icraft:cherry_mountains" .minecraft/` on session 1, not session 15. Added to mental checklist: any FeatureSorter/registry/world-gen crash naming a specific ID → grep-sweep first.
+2. **`datapack_sources/*` directories can contain stale builds.** When the mod-based implementation of a datapack replaces the datapack source, delete the `datapack_sources/<name>/` folder AND the compiled zip under `config/paxi/datapacks/` in the same commit. Otherwise the zip keeps running indefinitely, invisible to anyone not looking at the Paxi directory.
+3. **Mod `modId` should match biome namespace.** Every working TerraBlender biome mod in this pack (BoP, Quark, aeroblender, etc.) puts biomes under its own `modId`. We were putting ours under `icraft:` — owned by `iridescent_origins` — which would have been OK if that were the only registration point, but combined with an orphan datapack in the same namespace it was catastrophic. Rule: new biome mod → biome namespace == modId, no exceptions.
+4. **`tools/check_feature_cycles.py` was correct; my interpretation was wrong.** The detector audits biome JSONs on disk (from vanilla + BoP + shortlist of modded jars + our mod's `src/main/resources/`). It does NOT scan `config/paxi/datapacks/*.zip` or `.minecraft/kubejs/data/`. So the orphan datapack's biomes were invisible to it. Added to the detector's LIMITATION docstring going forward. When a detector says "no cycle" but production crashes, the detector's input set is wrong — expand the input, don't distrust the algorithm.
+5. **The Blueprint stack trace was telling the truth.** "Involved sources: [three biomes]" meant those three biomes were the ones with inconsistent state. The fact that I couldn't reproduce the cycle in my simulation just meant my simulation was missing one of the three — it wasn't missing cherry_mountains (I had that), it was missing the SECOND cherry_mountains with a different namespace. Lesson: when a crash identifies specific IDs, enumerate *every* registration of that ID in the environment, not just the one you built.
+
+**Time cost:** ~20 crash-and-fix iterations, two full session days. A single early `grep -rn "cherry_mountains" .minecraft/` would have surfaced the datapack in 5 minutes.
+
+---
+
 ## 2026-04-21 — LootJS JS-function predicates silently become ALWAYS_FALSE
 
 **Symptom:** Predicate filters for village artifact stripping (`event.addLootTableModifier(table).removeLoot(function(stack) {...})`) and for blank-enchanted-book stripping (`event.addLootTypeModifier(LootType.CHEST).removeLoot(blankEnchantedBookFilter)`) appeared registered but never actually stripped anything. Tester reports of "artifact in every chest" and "blank enchanted books still appearing" persisted across multiple fix attempts.

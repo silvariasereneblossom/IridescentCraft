@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-23 — Custom cherry biomes finally spawn: orphan-datapack cleanup + namespace rename
+
+Two custom overworld biomes went live today: `iridescent_biomes:cherry_river_meadow` and `iridescent_biomes:cherry_mountains`, registered via `iridescent-biomes-mod`'s TerraBlender region with explicit `Climate.ParameterPoint` values.
+
+The shipping state is: mod jar at `.minecraft/mods/iridescent_biomes-1.0.0.jar` (all three distros), biome JSONs inside the jar at `data/iridescent_biomes/worldgen/biome/`, biomes in `#minecraft:is_overworld` and `#minecraft:is_mountain`, features verbatim-vanilla-cherry_grove, TerraBlender region weight 8 at disjoint climate coords from vanilla cherry_grove so we don't compete for its spawn points.
+
+Background: the pack had been crashing at world load for ~20 iterations with `Feature order cycle found, involved sources: [minecraft:lush_caves, icraft:cherry_mountains, biomesoplenty:moor]`. The root cause was not any of the suspects chased during those iterations (feature ordering, tag membership, TerraBlender registration method, mod load order, Tectonic, LionfishAPI). It was a stale Paxi datapack at `config/paxi/datapacks/icraft_biomes.zip` that had been auto-loaded since before the Java mod existed and kept registering orphan biomes in a conflicting namespace. Once the Java mod either moved namespace or disabled itself, the datapack biomes remained — tagged `#is_overworld`, receiving injected features, but placed nowhere. Blueprint's FeatureSorter saw them and cycled. Commit `8c85d818` deleted the datapack + renamed the mod's own biomes to the matching `iridescent_biomes:` namespace. Full retro in `wiki/dev/lessons-learned.md`.
+
+Player-facing: Nature's Compass can now locate both biomes. `cherry_river_meadow` spawns in warm temperate humid near-inland rolling terrain. `cherry_mountains` spawns on cool modestly-humid inland mountain tops. Both use vanilla cherry_grove's features (flower_cherry, trees_cherry, cherry-themed step 9) so they'll look like cherry forests, just at different climate zones from vanilla cherry_grove.
+
+---
+
 ## 2026-04-22 — xp_multiplier attribute wired via totalExperience tick-diff
 
 Previous session disabled `PlayerEvents.xpChange` (doesn't exist in KubeJS 2001.6.5-build.16). Replaced with a 1-second server-tick handler (`tick_xpMultiplier` at interval=20, offset=9) that diffs `player.xp` (verified via PlayerKJS bytecode to map to `Player.totalExperience` / `f_36079_`) against a cached last-seen value in `persistentData`.
