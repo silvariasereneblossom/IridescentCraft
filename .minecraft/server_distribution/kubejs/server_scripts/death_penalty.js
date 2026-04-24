@@ -251,15 +251,20 @@ try {
   console.warn('[durability] Curios API not loadable: ' + e + '  -- curios slots will not be scanned')
 }
 
-global.tick_durabilityFullSweep = (event) => {
-  const player = event.player
+// Rhino (KubeJS 6) rejects const/let inside try blocks that re-run each
+// tick as "redeclaration of var X" after the first successful call. This
+// function is invoked every 10 ticks per player, so every local inside it
+// must be declared with `var`, not `const`/`let`. See memory:
+// feedback_wiki_reference.md, project_biome_cycle_audit.md.
+global.tick_durabilityFullSweep = function(event) {
+  var player = event.player
 
   // --- Vanilla inventory (all 36 slots: hotbar 0-8 + main 9-35) ---
   try {
-    const inv = player.inventory
-    const size = inv.containerSize
-    for (let i = 0; i < size; i++) {
-      let item = inv.getItem(i)
+    var inv = player.inventory
+    var size = inv.containerSize
+    for (var i = 0; i < size; i++) {
+      var item = inv.getItem(i)
       if (checkAndMarkBroken(item)) {
         inv.setItem(i, item)
         console.log('[durability] clamped ' + item.item.id + ' (slot ' + i + ') for ' + player.username)
@@ -272,17 +277,17 @@ global.tick_durabilityFullSweep = (event) => {
   // --- Curios slots ---
   if (!CuriosApi_durability) return
   try {
-    const opt = CuriosApi_durability.getCuriosInventory(player)
+    var opt = CuriosApi_durability.getCuriosInventory(player)
     if (!opt || !opt.isPresent()) return
-    const handler = opt.get()
-    const equipped = handler.getEquippedCurios()   // IItemHandlerModifiable
+    var handler = opt.get()
+    var equipped = handler.getEquippedCurios()   // IItemHandlerModifiable
     if (!equipped) return
-    const slots = equipped.getSlots()
-    for (let i = 0; i < slots; i++) {
-      let item = equipped.getStackInSlot(i)
-      if (checkAndMarkBroken(item)) {
-        equipped.setStackInSlot(i, item)
-        console.log('[durability] clamped curio ' + item.item.id + ' (slot ' + i + ') for ' + player.username)
+    var slots = equipped.getSlots()
+    for (var ci = 0; ci < slots; ci++) {
+      var citem = equipped.getStackInSlot(ci)
+      if (checkAndMarkBroken(citem)) {
+        equipped.setStackInSlot(ci, citem)
+        console.log('[durability] clamped curio ' + citem.item.id + ' (slot ' + ci + ') for ' + player.username)
       }
     }
   } catch (e) {
