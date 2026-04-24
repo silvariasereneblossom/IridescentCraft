@@ -36,13 +36,15 @@ import java.util.function.Consumer;
  *   depth        : 0.0 (surface) ... 1.0 (deep cave)
  *   weirdness    : -1.0 ... 1.0 (valley vs plateau ridge position)
  *
- * cherry_river_valley — warm temperate, humid, near-inland, rolling:
- *   temp 0.1..0.3, hum 0.3..0.55, cont -0.1..0.2, erosion 0.05..0.45
- * cherry_mountains — cool, modestly humid, inland mountain tops:
+ * cherry_river_valley — temperate-warm, humid lowlands, flat-to-rolling
+ *   temp 0.05..0.35, hum 0.25..0.6, cont -0.1..0.3, erosion 0.15..0.55
+ *   (widened 2026-04-24 for "more common, flatter than mountain valley")
+ * cherry_mountains — cool, modestly humid, inland high terrain (rare):
  *   temp -0.2..0.1, hum 0.1..0.3, cont 0.25..0.55, erosion -1.0..-0.375
  *
- * These are deliberately narrow and don't overlap vanilla cherry_grove's
- * parameter cluster (which sits around temp 0.5, hum 0.7, erosion 0-0.05).
+ * These don't overlap vanilla cherry_grove's parameter cluster (which sits
+ * around temp 0.5, hum 0.7, erosion 0-0.05). The two icraft biomes have
+ * disjoint erosion ranges, so they never compete at the same climate point.
  */
 public class IridescentCherryRegion extends Region {
     public static final ResourceKey<Biome> CHERRY_RIVER_VALLEY = ResourceKey.create(
@@ -61,15 +63,25 @@ public class IridescentCherryRegion extends Region {
     @Override
     public void addBiomes(Registry<Biome> registry,
                           Consumer<Pair<Climate.ParameterPoint, ResourceKey<Biome>>> mapper) {
-        // cherry_river_valley — warm temperate humid near-inland rolling
+        // cherry_river_valley — warm temperate humid lowlands, flat-to-rolling
+        // Widened from the initial ship-spec (2026-04-24) to make this the
+        // common cherry biome in the world:
+        //   temperature:    0.1..0.3  -> 0.05..0.35 (covers temperate-warm)
+        //   humidity:       0.3..0.55 -> 0.25..0.6  (moderate-humid swath)
+        //   continentalness: -0.1..0.2 -> -0.1..0.3 (coast to mid-inland)
+        //   erosion:       0.05..0.45 -> 0.15..0.55 (shifted flatter; now spans
+        //                              rolling-to-near-flat instead of pure rolling)
+        // Parameter-space coverage ~2.8x vs initial. Erosion range disjoint
+        // from cherry_mountains (-1.0..-0.375), so the two don't compete at
+        // shared climate points. "Hills nearby, no sharp mountain walls."
         this.addBiome(mapper, Climate.parameters(
-                Climate.Parameter.span(0.1f, 0.3f),   // temperature
-                Climate.Parameter.span(0.3f, 0.55f),  // humidity
-                Climate.Parameter.span(-0.1f, 0.2f),  // continentalness (coast-nearinland)
-                Climate.Parameter.span(0.05f, 0.45f), // erosion (rolling)
-                Climate.Parameter.point(0.0f),        // depth (surface)
-                Climate.Parameter.span(-0.3f, 0.3f),  // weirdness (common rareness)
-                0.0f                                   // offset
+                Climate.Parameter.span(0.05f, 0.35f),  // temperature
+                Climate.Parameter.span(0.25f, 0.6f),   // humidity
+                Climate.Parameter.span(-0.1f, 0.3f),   // continentalness (coast-midinland)
+                Climate.Parameter.span(0.15f, 0.55f),  // erosion (flatter rolling)
+                Climate.Parameter.point(0.0f),         // depth (surface)
+                Climate.Parameter.span(-0.3f, 0.3f),   // weirdness (common rareness)
+                0.0f                                    // offset
         ), CHERRY_RIVER_VALLEY);
 
         // cherry_mountains — cool, modestly humid, inland high terrain
