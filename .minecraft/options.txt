@@ -216,7 +216,7 @@ key_key.cataclysm.boots_ability:key.keyboard.v
 key_dropoff.key.dump:key.keyboard.x
 key_dropoff.key.deposit:key.keyboard.c
 key_key.attributecore.open_attributes:key.keyboard.o
-key_key.rpgseteffects.open_sets:key.keyboard.j
+key_key.rpgseteffects.open_sets:key.keyboard.k
 key_mod.chiselsandbits.keys.key.modded-tool.open:key.keyboard.r
 key_mod.chiselsandbits.keys.key.modded-tool.cycle.left:key.keyboard.unknown
 key_mod.chiselsandbits.keys.key.modded-tool.cycle.right:key.keyboard.unknown
