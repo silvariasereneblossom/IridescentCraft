@@ -88,9 +88,15 @@
     "Enable Held Items" = true
 
     # BLOCKBREAK: Mobs break blocks to reach players.
-    # YES — design doc specifies Nether mobs break weak blocks,
-    # End mobs break any block. At low difficulty this barely triggers.
-    "Enable Block Breaking" = true
+    # Disabled 2026-04-24 — original design allowed T3/T4 weak-block
+    # breaks to match the dimension-tier AI scaling, but Improved Mobs
+    # is global (no per-dimension), so the feature was also active in
+    # the Overworld at T1, trashing player torches/planks/doors at
+    # starter bases. User directive: "mobs that can break blocks —
+    # that needs to come out". Disabled entirely; the Tier 3/4 combat
+    # pressure now comes from ScalingMobs stat multipliers + flanking
+    # AI instead of block destruction.
+    "Enable Block Breaking" = false
 
     # Block break whitelist — which blocks CAN be broken.
     # Design doc Tier 3: "break weak blocks (wood, glass)"

@@ -56,6 +56,12 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Status:** Known, low priority (pre-existing)
 - **Description:** `planetary_loot` script has a `withNBT` call that silently fails on certain item types. Ad Astra integration is still in-progress so this is deferred until the planetary loot system is fully implemented.
 
+### Mob Behavior Audit (2026-04-24)
+- **Status:** Two issues resolved, one cause-unknown with defensive mitigation — needs in-game verification
+- **Issue 1 — mobs breaking blocks:** `config/improvedmobs-common.toml` had `Enable Block Breaking = true`. The mod is global (no per-dimension setting), so even though the design-doc intent was for T3/T4 mobs to break weak blocks, the behavior was active in the Overworld at T1 too, destroying player torches / planks / doors at starter bases. Disabled globally. Secondary: `config/Undead_mobs.toml` `"Allows hunter to destroy fence or doors"` also flipped to false. Cataclysm boss arena-break zones (`ignore_mobgriefing = true`) left alone since those are boss-fight mechanics, not everyday griefing.
+- **Issue 2 — spider dropped diamond + ender_eye:** Could NOT identify the specific injector. Checked: no mod overrides `data/minecraft/loot_tables/entities/spider.json`, no mod's GLM JSON contains literal `"minecraft:diamond"` or `"minecraft:ender_eye"`, no KubeJS script adds either to entity drops, our `replace: true` in `global_loot_modifiers.json` should be blocking Apotheosis's `affix_loot` and `gems` GLMs, and it wasn't an Apotheosis boss (no name, no glow). The injector must be a Java-side mixin from a mod we haven't pinned down. **Defensive fix:** added a second `addLootTypeModifier(LootType.ENTITY)` block in `loot_overhaul.js` that strips `minecraft:diamond`, `minecraft:diamond_block`, `minecraft:emerald_block`, `minecraft:ender_eye`, `minecraft:netherite_ingot/scrap/block`, `minecraft:ancient_debris`, and `minecraft:elytra` from every entity loot pool unconditionally. Intentionally NOT stripped: ender_pearl (enderman), totem_of_undying (evoker), nether_star (wither), emerald (villager throws) — these are legitimate vanilla mob drops we don't want to break.
+- **Verify:** Tester to (a) confirm mobs no longer destroy planks/doors/glass at their Overworld base, (b) kill a large sample of normal spiders and confirm no diamond/ender_eye drops.
+
 ### T1 Magic Audit Fixes (2026-04-24)
 - **Status:** Resolved — needs in-game verification
 - **Description:** Six connected issues found during T1 magic audit:

@@ -9,7 +9,8 @@
 
 [hunter]
 	#Can also be turned off with griefing gamemode
-	"Allows hunter to destroy fence or doors" = true
+	# 2026-04-24: disabled — user directive to remove mob block-breaking globally.
+	"Allows hunter to destroy fence or doors" = false
 	"Allows hunter to hunt animals" = true
 	"Allows hunter to life steal" = true
 	#Hunters will usaully eat any dropped meat they find

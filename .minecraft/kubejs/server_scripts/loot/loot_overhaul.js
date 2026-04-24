@@ -891,15 +891,29 @@ LootJS.modifiers(event => {
 
 
     // =====================================================================
-    // SECTION 7: MOB EQUIPMENT STRIPPING
+    // SECTION 7: MOB DROP STRIPPING — gear + tier-gated raw materials
     // Design doc Section 28: "Mob farms producing Apotheosis affix gear
     //   trivializes gear progression"
-    // Strip high-tier equipment from mob drops in lower dimensions
-    // to prevent gear flooding from mob farms.
+    //
+    // Two concerns here:
+    //   1. Top-tier gear drops (design-doc level gripe) — covered by the
+    //      diamond/netherite tool+armor strip below.
+    //   2. 2026-04-24: raw tier-gated materials (diamond, emerald_block,
+    //      ender_eye, ender_pearl, nether_star, netherite_*) appearing on
+    //      ordinary mobs. Tester killed a vanilla spider that dropped
+    //      minecraft:diamond + minecraft:ender_eye. Source could not be
+    //      identified via JSON grep — no mod's loot_tables/entities/spider
+    //      override, no GLM with those literal strings, no KubeJS script
+    //      adds them. It must be an in-code (Java mixin) injector we
+    //      haven't pinned down. Defensive fix: unconditionally strip these
+    //      items from every entity loot pool so the source doesn't matter.
+    //      If a future boss needs to drop one of these (e.g., wither drops
+    //      nether_star), that boss's own loot table will need to re-add
+    //      via a more specific modifier scoped to that entity.
     // =====================================================================
 
-    // Remove diamond+ gear from entity drops in overworld
-    // (mobs shouldn't drop gear above the tier they're in)
+    // Tier-gated gear strip (unchanged — still blocks diamond/netherite
+    // equipment flooding from mob-farm loops).
     event.addLootTypeModifier(LootType.ENTITY)
         .removeLoot("minecraft:diamond_sword")
         .removeLoot("minecraft:diamond_helmet")
@@ -913,6 +927,35 @@ LootJS.modifiers(event => {
         .removeLoot("minecraft:netherite_chestplate")
         .removeLoot("minecraft:netherite_leggings")
         .removeLoot("minecraft:netherite_boots")
+
+    // Raw tier-gated material strip — unconditional, all entities, all
+    // dimensions. Scoped narrowly to items that NEVER legitimately drop
+    // from any vanilla mob: diamond/diamond_block (only from ores and
+    // chests), ender_eye (crafted-only), ancient_debris/netherite_*
+    // (only from mining), elytra (end city chest only), diamond_block
+    // and netherite_block (never generated as drops).
+    //
+    // Intentionally NOT stripped here (legitimate mob drops we don't
+    // want to break):
+    //   - ender_pearl — endermen drop these
+    //   - totem_of_undying — evokers drop these (farmable by design
+    //     in vanilla; if we want to gate, use a per-entity modifier)
+    //   - nether_star — wither drops this
+    //   - dragon_egg — dragon drops (as a block, not entity drop, but
+    //     don't risk the coupling)
+    //   - emerald — villagers can throw these; we don't want to break
+    //     that interaction (we strip emerald_block only, since that's
+    //     never a mob drop)
+    event.addLootTypeModifier(LootType.ENTITY)
+        .removeLoot("minecraft:diamond")
+        .removeLoot("minecraft:diamond_block")
+        .removeLoot("minecraft:emerald_block")
+        .removeLoot("minecraft:ender_eye")
+        .removeLoot("minecraft:netherite_ingot")
+        .removeLoot("minecraft:netherite_scrap")
+        .removeLoot("minecraft:netherite_block")
+        .removeLoot("minecraft:ancient_debris")
+        .removeLoot("minecraft:elytra")
 
 
     // =====================================================================
