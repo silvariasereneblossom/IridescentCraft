@@ -178,25 +178,33 @@ ItemEvents.canPickUp(event => {
 // them there and tagging as broken. The 20-point margin handles rapid
 // multi-hit scenarios (sweeping edge, mob swarms, multi-durability enchants)
 // where 5-15 durability can drain in a single tick.
+//
+// 2026-04-24: originally only scanned armor + mainhand + offhand. Tester
+// reported items still shattering — the hotbar (slots 0-8 other than the
+// currently-held one), the main inventory (slots 9-35), and Curios slots
+// weren't being scanned. Added the broader sweep as `tick_durabilityFullSweep`
+// below at a 10-tick cadence (every 0.5s), which covers everything the
+// 2-tick fast path misses. Items in Curios slots reach here via CuriosApi
+// unified handler iteration.
+const INERT_THRESHOLD = 20
+
+function checkAndMarkBroken(stack) {
+  if (stack.isEmpty || !stack.isDamageableItem) return false
+  const threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
+  if (stack.damageValue >= stack.maxDamage - threshold) {
+    // Clamp so vanilla never sees >= maxDamage
+    stack.damageValue = stack.maxDamage - threshold
+    if (!stack.nbt || !stack.nbt.getBoolean(BROKEN_TAG)) {
+      if (!stack.nbt) stack.nbt = {}
+      stack.nbt.putBoolean(BROKEN_TAG, true)
+      return true
+    }
+  }
+  return false
+}
+
 global.tick_deathPenaltyBrokenCheck = (event) => {
   const player = event.player
-  const INERT_THRESHOLD = 20
-
-  function checkAndMarkBroken(stack) {
-    if (stack.isEmpty || !stack.isDamageableItem) return false
-    const threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
-    if (stack.damageValue >= stack.maxDamage - threshold) {
-      // Clamp so vanilla never sees >= maxDamage
-      stack.damageValue = stack.maxDamage - threshold
-      if (!stack.nbt || !stack.nbt.getBoolean(BROKEN_TAG)) {
-        if (!stack.nbt) stack.nbt = {}
-        stack.nbt.putBoolean(BROKEN_TAG, true)
-        return true
-      }
-    }
-    return false
-  }
-
   ARMOR_SLOTS.forEach(slot => {
     let item = player.getEquipment(slot)
     if (checkAndMarkBroken(item)) {
@@ -211,6 +219,59 @@ global.tick_deathPenaltyBrokenCheck = (event) => {
   if (checkAndMarkBroken(oh)) player.setItemSlot('offhand', oh)
 }
 global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
+
+// Slower full-inventory + Curios sweep. Catches damageable items that aren't
+// in the player's actively-equipped slots (hotbar slots other than the held
+// one, main inventory, Curios trinkets). Uses Java.loadClass for the Curios
+// API because KubeJS doesn't expose it directly. Guarded so Curios absence
+// (shouldn't happen in this pack, but still) doesn't break the rest of the
+// sweep.
+let CuriosApi_durability = null
+try {
+  CuriosApi_durability = Java.loadClass('top.theillusivec4.curios.api.CuriosApi')
+} catch (e) {
+  console.warn('[durability] Curios API not loadable: ' + e + '  -- curios slots will not be scanned')
+}
+
+global.tick_durabilityFullSweep = (event) => {
+  const player = event.player
+
+  // --- Vanilla inventory (all 36 slots: hotbar 0-8 + main 9-35) ---
+  try {
+    const inv = player.inventory
+    const size = inv.containerSize
+    for (let i = 0; i < size; i++) {
+      let item = inv.getItem(i)
+      if (checkAndMarkBroken(item)) {
+        inv.setItem(i, item)
+        console.log('[durability] clamped ' + item.item.id + ' (slot ' + i + ') for ' + player.username)
+      }
+    }
+  } catch (e) {
+    console.warn('[durability] inventory sweep threw for ' + player.username + ': ' + e)
+  }
+
+  // --- Curios slots ---
+  if (!CuriosApi_durability) return
+  try {
+    const opt = CuriosApi_durability.getCuriosInventory(player)
+    if (!opt || !opt.isPresent()) return
+    const handler = opt.get()
+    const equipped = handler.getEquippedCurios()   // IItemHandlerModifiable
+    if (!equipped) return
+    const slots = equipped.getSlots()
+    for (let i = 0; i < slots; i++) {
+      let item = equipped.getStackInSlot(i)
+      if (checkAndMarkBroken(item)) {
+        equipped.setStackInSlot(i, item)
+        console.log('[durability] clamped curio ' + item.item.id + ' (slot ' + i + ') for ' + player.username)
+      }
+    }
+  } catch (e) {
+    console.warn('[durability] curios sweep threw for ' + player.username + ': ' + e)
+  }
+}
+global.registerPlayerTick('tick_durabilityFullSweep', 10, 0)
 
 
 // =============================================================================
