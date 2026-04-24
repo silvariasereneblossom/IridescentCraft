@@ -5,6 +5,10 @@ mods/*.jar
 !mods/iridescent_biomes-*.jar
 !mods/zeta_racefix-*.jar
 !mods/mek_walkable_cables-*.jar
+# Bytecode-patched third-party jars — same filename as the original
+# download, but with our edits. Downloader skips if file exists; these
+# exemptions make sure git tracks them and the sync ships them.
+!mods/class-artifacts-forge-*.jar
 resourcepacks/
 !**/config/paxi/resourcepacks/
 !**/config/paxi/resourcepacks/**
