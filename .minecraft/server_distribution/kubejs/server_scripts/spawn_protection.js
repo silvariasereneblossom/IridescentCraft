@@ -5,7 +5,12 @@
 // Only protects the Overworld spawn area.
 // =============================================================================
 
-const SPAWN_PROTECTION_RADIUS = 64
+// 2026-04-24: reduced 64 -> 32. The 64 radius covered most of a starting
+// village plus the surrounding countryside, effectively walling off a
+// 128x128 zone. 32 keeps the core village protected but lets outlying
+// buildings / crops / terrain be interacted with — reinforces the "leave
+// to build your base" philosophy without fully locking the village edges.
+const SPAWN_PROTECTION_RADIUS = 32
 
 function isInSpawnZone(event) {
   if (event.level.dimension != 'minecraft:overworld') return false
