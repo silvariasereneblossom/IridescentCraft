@@ -56,6 +56,17 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Status:** Known, low priority (pre-existing)
 - **Description:** `planetary_loot` script has a `withNBT` call that silently fails on certain item types. Ad Astra integration is still in-progress so this is deferred until the planetary loot system is fully implemented.
 
+### T1 Magic Audit Fixes (2026-04-24)
+- **Status:** Resolved — needs in-game verification
+- **Description:** Six connected issues found during T1 magic audit:
+  1. Ars Nouveau was documented as T2 but shipped a vanilla-workbench novice_spell_book recipe (book + 4 iron tools), so the entry path was actually T1 all along. Design doc updated to reflect that.
+  2. Village house chests had a Pool 3 magic roll stacking with the overworld T1 rule — total ~100%+ magic item coverage per chest. Pool 3 removed.
+  3. Village house JSON overrides had a scroll entry at weight 1 vs empty 39 (~2.5%) but no `irons_spellbooks:randomize_spell` function — scrolls dropped with blank NBT and no spell attached (unusable). Added the randomize_spell function to all 5 village house JSONs.
+  4. Magic-class starter kits (archmage/battlemage/void_summoner) gave a copper_spell_book with no spell inscribed — useless until players learned a spell. Added two pre-NBT'd scrolls per kit using `ISpellContainer.createScrollContainer` bridge.
+  5. No Codex entry for T1 magic. Added `early_magic.json` (sortnum=2) covering scrolls, spell books, Ars entry path, Scribes Table, and casting.
+  6. `ars_nouveau:novice_spell_book` was checked — already craftable on vanilla workbench, no recipe override needed.
+- **Verify:** Tester to: (a) break 10+ village chests and confirm scrolls drop usable with a random spell, (b) roll a magic class and confirm kit includes two scrolls with specific pre-rolled spells, (c) confirm village chests have ~one magic-related item instead of two, (d) confirm Early Magic Tutorial entry appears in Codex T1 category, (e) confirm novice_spell_book crafts at vanilla workbench.
+
 ### Alpha Testing Status
 - **Status:** Active (as of 2026-04-18)
 - **Description:** Stable alpha build deployed to test server. Loot rates finalized, worldgen tuned, distribution tooling in place. Codex shipped as proper Forge content mod. 2 known low-priority pre-existing errors (if_latex_rework, planetary_loot withNBT). All major systems functional.

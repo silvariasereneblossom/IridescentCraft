@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-24 — T1 magic audit: Ars Nouveau promoted to T1 entry path, village chest stacking removed, starter kit scrolls NBT'd
+
+Six improvements to make T1 magic genuinely accessible from the first day rather than gated behind tier tokens or unusable loot.
+
+**Design doc Part VI rewritten**: Tier 1 now lists Botania + Iron's Spellbooks + Ars Nouveau (entry path). The Tier 2 Ars section was narrowed to "deep source infrastructure" (Imbuement Chamber, ritual brazier, industrial-scale Sourcelinks). The entry path — `novice_spell_book` + Scribes Table + T1 glyph chest loot — lives at T1 because Ars ships a vanilla-workbench recipe (book + 4 iron tools) that unlocks the spell book immediately, and we already seed T1 glyphs into Overworld chest loot.
+
+**Village chest magic stacking removed**: `lootjs_overhaul.js` previously added a Pool 3 guaranteed weighted roll (40% common_ink / 35% source_gem / 15% copper_spell_book / 10% novice_spell_book) on top of the overworld T1 rule (copper 3%, iron 1%, common_ink 5%). Every village house chest was getting one guaranteed magic item plus a chance of another — ~100% magic coverage, way too much for a T1 starter area. Pool 3 removed entirely. Villages now pick up magic via the overworld T1 rule only.
+
+**Village scroll NBT bug fixed**: Our village house JSON overrides contained a scroll entry at weight 1 vs empty 39 (~2.5%), but the entry had no `irons_spellbooks:randomize_spell` function — so scrolls were dropping with blank NBT and zero spell attached (unusable). Added the randomize_spell function to all 5 village house JSONs (plains, desert, savanna, snowy, taiga) with quality 0.0–0.2 so village scrolls roll low-tier spells, matching T1 accessibility.
+
+**Class kit scrolls pre-NBT'd**: `codex_delivery.js` magic kits (archmage, battlemage, void_summoner) previously gave a copper_spell_book (no spell inscribed — useless until the player learns a spell) plus raw materials. Added two pre-NBT'd scrolls per kit using a Java.loadClass bridge to `ISpellContainer.createScrollContainer(AbstractSpell, level, ItemStack)`. Archmage: magic_missile + firebolt. Battlemage: magic_arrow + fang_strike. Void Summoner: magic_missile + summon_vex. New players of a magic class can cast on first login.
+
+**Early Magic Codex tutorial**: added `datapack_sources/iridescent_codex/data/icraft/patchouli_books/iridescent_codex/en_us/entries/mods_t1/early_magic.json` (sortnum=2, right after botania). Covers: scrolls (loot + kit), copper spell books, novice_spell_book workbench recipe, Scribes Table glyph inscribing, form+effect rule, and Source vs Mana. Rebuilt iridescent_codex_data.jar and deployed to all 3 distros.
+
+**ars_nouveau:novice_spell_book** was checked against its own shipped recipe and confirmed craftable at T1: vanilla workbench, shapeless, `minecraft:book + iron_shovel + iron_pickaxe + iron_axe + iron_sword`. No KubeJS recipe override needed.
+
+---
+
 ## 2026-04-23 — Custom cherry biomes finally spawn: orphan-datapack cleanup + namespace rename
 
 Two custom overworld biomes went live today: `iridescent_biomes:cherry_river_valley` and `iridescent_biomes:cherry_mountains`, registered via `iridescent-biomes-mod`'s TerraBlender region with explicit `Climate.ParameterPoint` values.

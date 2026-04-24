@@ -185,16 +185,17 @@ Major change from vanilla: Nether is Tier 3, End is Tier 4.
 
 ## Part VI: Magic Progression Path
 
-### Tier 1: Botania + Iron’s Spells ‘n Spellbooks
+### Tier 1: Botania + Iron’s Spells ‘n Spellbooks + Ars Nouveau (glyph loot)
 
 - Botania: Mana generation, runic crafting, Orechid, mana blaster
-- Iron’s Spells: Basic scrolls, staves, combat magic — combat magic is available from the start
+- Iron’s Spells: Basic scrolls (pre-rolled random spell), copper spell books, combat magic available from the start. Village chest scrolls and overworld T1 loot drop usable (randomize_spell-backed) scrolls, and the Archmage / Battlemage / Void Summoner class kits ship with two pre-NBT'd low-tier scrolls baked in (magic_missile, firebolt, magic_arrow, fang_strike, summon_vex).
+- Ars Nouveau: novice_spell_book is craftable on the vanilla workbench (book + iron shovel/pickaxe/axe/sword — no Imbuement Chamber needed) and T1 glyphs seed into chest loot. Players can inscribe at a Scribes Table and cast from day one once they find their first form + effect pair. Source generation (basic sourcelink, imbuement, spell-crafting block tier) still gates behind T2, but the entry path into Ars is open at T1.
 - Available immediately
 
-### Tier 2: Ars Nouveau
+### Tier 2: Ars Nouveau (deep source infrastructure)
 
-- Source generation, spell crafting, Imbuement Chamber
-- Gate: Tier 2 unlock
+- Source generation (expanded), spell crafting bench, Imbuement Chamber, ritual brazier
+- Gate: Tier 2 unlock for the industrial-scale source network; the entry path (novice_spell_book + Scribes Table + T1 glyph loot) is already open at T1 (see above).
 - **Glyph acquisition via chest loot** — Ars Nouveau spell books are blank caster tools with no built-in spells; glyphs must be inscribed at a Scribes Table to make them functional. Because vanilla Ars progression gates glyphs behind research that's too slow for an expert-lite pack, we seed glyphs into chests per tier. Forms (`projectile`, `touch`, `self`, `aoe`) are front-loaded in T1–T2 so a spell book is immediately useful once the player finds their first form + effect pair. See Part XIX Loot Table Overhaul for per-tier glyph pool composition and rates.
 
 ### Tier 3: Occultism + Forbidden & Arcanus

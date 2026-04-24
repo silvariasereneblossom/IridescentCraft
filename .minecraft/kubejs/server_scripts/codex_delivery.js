@@ -8,20 +8,51 @@ const CODEX_FLAG = 'icraft_codex_given'
 // Magic class starter kit — piggybacks on codex delivery so it fires from
 // the same proven-reliable PlayerEvents.loggedIn hook. The standalone
 // magic_class_starter.js still provides `!magicstart` as a manual backup.
+//
+// Entries are plain `{item, count}` OR `{scroll: spellId, level}` for
+// pre-NBT'd Iron's Spellbooks scrolls. Scrolls are built via the
+// ISpellContainer.createScrollContainer bridge so they drop usable (with
+// a known spell baked in) rather than empty — that's the one case where
+// plain Item.of() produces an inert NBT-less stack.
+const SpellRegistry_codex = Java.loadClass('io.redspace.ironsspellbooks.api.registry.SpellRegistry')
+const ISpellContainer_codex = Java.loadClass('io.redspace.ironsspellbooks.api.spells.ISpellContainer')
+
+function codex_makeScroll(spellId, level) {
+  try {
+    var spell = SpellRegistry_codex.getSpell(spellId)
+    if (!spell) {
+      console.warn('[codex/starter] makeScroll: unknown spell ' + spellId + ' — falling back to plain scroll')
+      return Item.of('irons_spellbooks:scroll').getInternal()
+    }
+    var stack = Item.of('irons_spellbooks:scroll').getInternal()
+    ISpellContainer_codex.createScrollContainer(spell, level, stack)
+    return stack
+  } catch (e) {
+    console.warn('[codex/starter] makeScroll failed for ' + spellId + ': ' + e)
+    return Item.of('irons_spellbooks:scroll').getInternal()
+  }
+}
+
 const MAGIC_STARTER_KITS = {
   archmage: [
     { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
+    { scroll: 'irons_spellbooks:firebolt',        level: 1 },
     { item: 'ars_nouveau:novice_spell_book',     count: 1 },
     { item: 'ars_nouveau:source_gem',            count: 5 },
     { item: 'irons_spellbooks:common_ink',       count: 2 }
   ],
   battlemage: [
     { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { scroll: 'irons_spellbooks:magic_arrow',     level: 1 },
+    { scroll: 'irons_spellbooks:fang_strike',     level: 1 },
     { item: 'ars_nouveau:source_gem',            count: 3 },
     { item: 'irons_spellbooks:common_ink',       count: 1 }
   ],
   void_summoner: [
     { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
+    { scroll: 'irons_spellbooks:summon_vex',      level: 1 },
     { item: 'irons_spellbooks:common_ink',       count: 1 },
     { item: 'minecraft:ender_pearl',             count: 1 }
   ]
@@ -88,14 +119,22 @@ function codex_giveStarterKit(player, className) {
       // a non-inventory slot without logging. Capture before + after counts
       // so we can tell the difference between "give threw" and "give ate the
       // stack silently."
-      var stack = Item.of(entry.item, entry.count)
-      console.log('[codex/starter] give: attempting ' + entry.item + ' x' + entry.count +
+      var stack, label
+      if (entry.scroll) {
+        // NBT'd Iron's Spellbooks scroll — bridged through ISpellContainer.
+        stack = codex_makeScroll(entry.scroll, entry.level || 1)
+        label = 'scroll[' + entry.scroll + ' L' + (entry.level || 1) + ']'
+      } else {
+        stack = Item.of(entry.item, entry.count)
+        label = entry.item + ' x' + entry.count
+      }
+      console.log('[codex/starter] give: attempting ' + label +
                   ' (stack resolved: ' + (stack && !stack.isEmpty ? 'ok' : 'EMPTY/null') + ')')
       player.give(stack)
       giveSuccesses++
-      console.log('[codex/starter] give: ' + entry.item + ' x' + entry.count + ' — player.give returned without throw')
+      console.log('[codex/starter] give: ' + label + ' — player.give returned without throw')
     } catch (e) {
-      console.warn('[codex/starter] give FAILED for ' + entry.item + ': ' + e)
+      console.warn('[codex/starter] give FAILED for ' + (entry.scroll || entry.item) + ': ' + e)
     }
   })
   console.log('[codex/starter] giveStarterKit: ' + giveSuccesses + '/' + giveAttempts + ' items delivered without throw')

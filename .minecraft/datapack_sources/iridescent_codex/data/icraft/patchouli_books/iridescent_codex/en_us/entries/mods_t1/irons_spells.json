@@ -2,7 +2,7 @@
   "name": "Iron's Spellbooks",
   "icon": "irons_spellbooks:fire_spell_book",
   "category": "icraft:mods_t1",
-  "sortnum": 2,
+  "sortnum": 3,
   "pages": [
     {
       "type": "patchouli:text",

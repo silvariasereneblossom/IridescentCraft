@@ -1128,14 +1128,13 @@ LootJS.modifiers(event => {
     mod.addLoot(LootEntry.of('minecraft:stone_axe').when(c => c.randomChance(0.03)))
     mod.addLoot(LootEntry.of('minecraft:stone_shovel').when(c => c.randomChance(0.02)))
 
-    // Pool 3: magic materials — one of these per chest. Heavy on ink
-    // since spell books need it; books themselves are rarer.
-    mod.addWeightedLoot([
-      Item.of('irons_spellbooks:common_ink').withChance(40),
-      Item.of('ars_nouveau:source_gem').withChance(35),
-      Item.of('irons_spellbooks:copper_spell_book').withChance(15),
-      Item.of('ars_nouveau:novice_spell_book').withChance(10)
-    ])
+    // Pool 3 (magic materials) was a guaranteed weighted roll of 40% ink
+    // / 35% gem / 15% copper / 10% novice. Removed 2026-04-24: this stacked
+    // on top of the overworld T1 rule below (Section 5A3) so village chests
+    // got roughly 100% + 9% = far too much magic gear for a T1 starter area.
+    // Villages now pick up magic via the overworld T1 rule only (copper 3%,
+    // iron 1%, common_ink 5%) plus the native scroll entry in the village
+    // house JSON override (~2.5% with a rolled random spell).
 
     // Artifacts handled by Artifacts mod native GLM injection (and our
     // villageArtifactPool re-adds in section 6).
