@@ -43,6 +43,20 @@ Future features, improvements, and technical debt. Organized by priority.
 - Need proper 16x16 pixel art for: progression tokens, boss materials, alloys, rings, endgame items, MekaSuit Mk2, planetary elements, Compass of Return
 - Location: `assets/kubejs/textures/item/` as 16x16 PNGs
 
+### Tier-gated Sophisticated Backpacks mob-backpack loot
+- **Status:** Idea parked 2026-04-24. Currently disabled via `defaultconfigs/sophisticatedbackpacks-server.toml` (`chance = 0.0`, `addLoot = false`).
+- **Opportunity:** SB's `EntityBackpackAdditionsConfig` ships a per-entity loot table mapping (`entityLootTableList`, format `"EntityRegistryName|LootTableName"`) plus difficulty-scaled tier selection (`leatherWeight` → `netheriteWeight` and `minBackpackTierMidDifficulty` / `HighDifficulty`). The tier-scaling is already built to track local difficulty, which lines up with our dimension progression. Could turn this into a "rare treasure hunt" mechanic rather than a silent loot injector.
+- **Design sketch:**
+  - Overworld hostiles (zombie/skeleton/creeper/spider/husk/stray/drowned) → tier-appropriate T1 chest table (our own `icraft:chests/t1_mob_backpack`)
+  - Twilight Forest / Aether / Blue Skies mobs → T2 table
+  - Nether mobs → T3 table
+  - End mobs → T4 table
+  - New icraft loot tables with flavor items matching each tier, NOT full dungeon loot (we want this to be a taste, not a bypass of structure exploration)
+  - `chance = 0.005` (0.5%, half the default) so it's genuinely rare
+  - `backpackDropChance = 1.0` — if it spawned with one, reward the kill
+- **Implementation path:** (a) author `data/icraft/loot_tables/mob_backpack/tX.json` for each tier; (b) update `defaultconfigs/sophisticatedbackpacks-server.toml` `entityLootTableList` to map our shortlist of supported mobs to the icraft tables; (c) document in Codex (Systems > Drops).
+- **Not doing now:** wait for tester to confirm SB was the spider-drop injector (pending dropdiag data) before re-enabling. Also wants a proper design pass on which mobs are eligible so we don't silently re-introduce the same "random diamond out of nowhere" surprise the tester already flagged.
+
 ### Balance Testing Backlog
 - Witch of Ink progression (boss counter, Penthesilea capstone)
 - Artificial Construct iron eating + upgrade ladder
