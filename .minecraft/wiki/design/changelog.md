@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-24 — Three-distro parity audit: server_distribution/global_packs cleanup
+
+Ran a full parity sweep of main, server_distribution, and distribution/client across kubejs/, config/, datapack_sources/, global_packs/, and custom mod jars. Almost everything was already byte-identical: KubeJS server_scripts (71), startup_scripts (5), client_scripts (minus correctly-server-omitted `attribute_tooltips.js`), data/ (181 files), assets/ (7), all 7 custom mod jars, all 17 datapacks in `config/paxi/datapacks/`. Top-level config/ drift was expected shape (client-only `.toml` files absent from server, runtime `.bak` files).
+
+The one real issue: `server_distribution/global_packs/required_data/` held 9 orphan zips that main and client didn't have. 7 were byte-identical duplicates of files already loaded from `config/paxi/datapacks/` — Paxi had been loading each twice per server boot. 2 were pre-mod-migration ghosts (`iridescent_classes.zip`, `iridescent_races.zip`) registering `icraft:class` / `icraft:race` origin layers alongside the mod's authoritative `origins:class` / `origins:race`. The orphan race.json still referenced `origins-plus-plus:*` IDs despite the mod having reimplemented those four races under `icraft:*`. Same class of issue as the `icraft_biomes.zip` orphan that caused the April FeatureSorter biome-cycle crash; caught here before it manifested.
+
+All 9 deleted. Also swept three dead `iridescent_classes.jar` allowlist entries from `.minecraft/.gitignore` (the jar never existed; also a migration remnant). Commit `02564333`. Verified `iridescentserver.sh`, `sync_from_repo.*`, `phase0_sync.ps1`, and `server_install.*` have no logic to restore the deleted files — permanent.
+
+---
+
 ## 2026-04-24 — T1 magic audit: Ars Nouveau promoted to T1 entry path, village chest stacking removed, starter kit scrolls NBT'd
 
 Six improvements to make T1 magic genuinely accessible from the first day rather than gated behind tier tokens or unusable loot.
