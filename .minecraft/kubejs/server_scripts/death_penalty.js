@@ -188,8 +188,26 @@ ItemEvents.canPickUp(event => {
 // unified handler iteration.
 const INERT_THRESHOLD = 20
 
+// Mods that already have native "broken but in inventory" handling. Our
+// clamp + icraft_broken tag would collide with their own damaged-beyond-
+// repair state, so we skip these namespaces entirely and let the mod's
+// own logic run.
+//   - tetra: modular weapons have a built-in durability-protection state;
+//     our clamp would trigger before Tetra's threshold and double-stamp.
+// Extend this list if other mods surface with the same collision.
+const NATIVE_BREAK_PROTECTION_NS = ['tetra:']
+
+function hasNativeBreakProtection(stack) {
+  const id = String(stack.item.id)
+  for (let i = 0; i < NATIVE_BREAK_PROTECTION_NS.length; i++) {
+    if (id.indexOf(NATIVE_BREAK_PROTECTION_NS[i]) === 0) return true
+  }
+  return false
+}
+
 function checkAndMarkBroken(stack) {
   if (stack.isEmpty || !stack.isDamageableItem) return false
+  if (hasNativeBreakProtection(stack)) return false
   const threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
   if (stack.damageValue >= stack.maxDamage - threshold) {
     // Clamp so vanilla never sees >= maxDamage
