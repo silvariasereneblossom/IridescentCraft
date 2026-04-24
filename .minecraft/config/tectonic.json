@@ -20,10 +20,10 @@
   "continents": {
     "continents_scale": 0.13,
     "erosion_scale": 0.4,
-    "flat_terrain_skew": 0.3,
+    "flat_terrain_skew": 0.55,
     "jungle_pillars": true,
     "ocean_offset": -0.35,
-    "ridge_scale": 0.3,
+    "ridge_scale": 0.2,
     "river_lanterns": true,
     "rolling_hills": true,
     "underground_rivers": true
@@ -38,7 +38,7 @@
     "max_y": 320,
     "min_y": -64,
     "ultrasmooth": false,
-    "vertical_scale": 0.6
+    "vertical_scale": 0.5
   },
   "islands": {
     "enabled": true,
