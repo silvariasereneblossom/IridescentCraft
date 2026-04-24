@@ -65,4 +65,12 @@ when_dungeons/
 yungs_*/
 *.jar
 !minecraft/**/*.jar
+# Patched third-party jars shipped alongside the downloaded originals.
+# The earlier 'mods/*.jar + !mods/xxx.jar' block only matches
+# top-level mods/, not the three-distro mods/ paths — and the later
+# blanket *.jar rule above catches them again. These explicit rules
+# re-exempt the patched jars across all three distros.
+!.minecraft/mods/class-artifacts-forge-*.jar
+!.minecraft/server_distribution/mods/class-artifacts-forge-*.jar
+!.minecraft/distribution/client/mods/class-artifacts-forge-*.jar
 .claude/worktrees/
