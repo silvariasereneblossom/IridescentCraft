@@ -1,0 +1,30 @@
+#Server Settings
+[server]
+
+	[server.entityBackpackAdditions]
+		#Chance of an entity spawning with Backpack
+		#Range: 0.0 ~ 1.0
+		# 2026-04-24: Zeroed out to stop random mobs (default list includes
+		# spider, zombie, skeleton, creeper, husk, stray, drowned, plus ~10 more)
+		# from spawning with a loot-stuffed backpack that drops on kill. Tester
+		# report: normal spiders dropping minecraft:diamond + minecraft:ender_eye
+		# + minecraft:iron_pickaxe; the iron pickaxe is Improved Mobs equipment,
+		# the diamond + ender_eye are SB backpack contents rolled from a vanilla
+		# dungeon chest loot table. Disable the feature entirely; if we want it
+		# back later (as a tester-friendly "rare treasure" mechanic), re-enable
+		# here with a specific entity list rather than the default everything.
+		chance = 0.0
+		#Turns on/off addition of loot into backpacks
+		# Belt-and-suspenders: even if `chance` ever gets accidentally flipped
+		# back, no loot goes into the backpack.
+		addLoot = false
+		#Turns on/off buffing the entity that wears backpack with potion effects. These are scaled based on how much loot is added.
+		buffWithPotionEffects = false
+		#Turns on/off buffing the entity that wears backpack with additional health. Health is scaled based on backpack tier the mob wears.
+		buffHealth = false
+		#Turns on/off equiping the entity that wears backpack with armor. What armor material and how enchanted is scaled based on backpack tier the mob wears.
+		equipWithArmor = false
+		#Turns on/off a chance that the entity that wears backpack gets jukebox upgrade and plays a music disc.
+		playJukebox = false
+		#Determines whether backpack drops to fake players if killed by them in addition to real ones that it always drops to
+		dropToFakePlayers = false
