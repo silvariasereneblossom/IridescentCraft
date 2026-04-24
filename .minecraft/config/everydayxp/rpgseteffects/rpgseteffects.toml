@@ -1,9 +1,6 @@
 
 [gui]
 	#Show the 'Sets' button in the inventory screen.
-	# Enabled: the button renders at (guiLeft+139, guiTop+67) — below the
-	# crafting grid — and is the ONLY GUI entry point to the Set Equipment
-	# Screen where artifact + relic slots live.
 	showInventoryButton = true
 
 [elite_mobs]
