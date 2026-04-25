@@ -25,5 +25,20 @@ logoFile="iridescent_modular_spells.png"
     ordering="NONE"
     side="BOTH"
 
-# Phase 0: no other mod deps. Phase 1+ adds Tetra as mandatory + ISS/Ars
-# as optional soft-deps so the mod loads on packs without them.
+# ISS is a hard dep in Phase 1 — we subclass io.redspace.ironsspellbooks.item.SpellBook
+# directly, so the JVM will fail class-load if ISS is absent. Phase 2 may
+# move to soft-dep with reflection if we need a non-ISS-pack distribution.
+[[dependencies.${mod_id}]]
+    modId="irons_spellbooks"
+    mandatory=true
+    versionRange="[3.0.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# Curios is required because ISS's SpellBook extends CurioBaseItem.
+[[dependencies.${mod_id}]]
+    modId="curios"
+    mandatory=true
+    versionRange="[5.0.0,)"
+    ordering="AFTER"
+    side="BOTH"

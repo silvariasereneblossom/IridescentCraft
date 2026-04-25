@@ -1,5 +1,6 @@
 package com.iridescentcraft.modspells;
 
+import com.iridescentcraft.modspells.item.ModularItemRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -9,17 +10,14 @@ import com.mojang.logging.LogUtils;
 /**
  * Iridescent Modular Spells -- @Mod entrypoint.
  *
- * Phase 0 scope: empty registration; the mod loads on the test server
- * without crashing and produces a build-pipeline-validated jar that the
- * three distros can pick up via the custom-jar allowlist.
+ * Phase 1 scope: one modular ISS Copper Spell Book with two NBT-based
+ * module slots (cover, pages), three materials (leather, iron, diamond),
+ * smithing-table upgrade recipe, server-tick attribute application.
  *
- * Phase 1+ will add:
- *  - DeferredRegister<Item> for the modular item set
- *  - Tetra ModularItem subclasses for ISS spell books
- *  - Soft-dep handlers for Iron's Spellbooks + Ars Nouveau
+ * Tetra integration deferred to Phase 2 -- Phase 1 uses plain NBT for
+ * module storage to validate the player experience cheaply.
  *
- * License: MIT (mod is our own implementation; design influenced by but
- * not derived from the ARR-licensed [TSB] Tetra Spell Book mod).
+ * License: MIT.
  */
 @Mod(IridescentModularSpells.MODID)
 public class IridescentModularSpells {
@@ -29,8 +27,10 @@ public class IridescentModularSpells {
 
     public IridescentModularSpells() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
-        // Phase 0: no registration yet. Logged so we can confirm the
-        // mod loaded on the dedicated test server.
-        LOGGER.info("[IridescentModularSpells] Phase 0 scaffolding loaded -- no items registered yet");
+
+        // Item registration (DeferredRegister)
+        ModularItemRegistry.ITEMS.register(modBus);
+
+        LOGGER.info("[IridescentModularSpells] Phase 1 loaded -- modular ISS spell books available");
     }
 }
