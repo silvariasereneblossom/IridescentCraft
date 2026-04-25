@@ -19,9 +19,13 @@
           "RED",
           "BOLD"
         ],
+        "_comment_iridescentcraft": "2026-04-25: narrowed from regex .* (any non-overworld) to T3+ dimensions only. Twilight Forest, Aether, Blue Skies are T2 in our progression and shouldn't trigger expert features (creeper chain reaction, drowned lightning, jockey spawn, etc.). Expert kicks in once you hit Nether/Undergarden/DeeperDarker/Abyss.",
         "triggers": {
           "dimensions": [
-            "{regex}.*"
+            "minecraft:the_nether",
+            "undergarden:undergarden",
+            "deeperdarker:otherside",
+            "theabyss:the_abyss"
           ],
           "entities": []
         },

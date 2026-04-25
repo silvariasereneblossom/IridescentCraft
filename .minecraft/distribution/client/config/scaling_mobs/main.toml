@@ -8,7 +8,13 @@
 	#Range: 0.0 ~ Infinity
 	"Player Scale Favor" = 10.0
 	#If true, mob stats will increase exponentially
-	"Use Exponential Scaling" = false
+	# 2026-04-25: flipped to true. Combined with halved per-day scale rates,
+	# this gives the curve we want: gentle early days, steeper late game.
+	# Linear at 0.03/day = 1.9x HP at day 30, 2.8x at day 60. Exponential
+	# at 0.015/day = ~1.56x at day 30, ~2.45x at day 60 — but the SHAPE of
+	# growth is concave-up, so day 1-7 mobs are nearly vanilla while day 60+
+	# bites harder than the linear equivalent at the same midpoint.
+	"Use Exponential Scaling" = true
 	#If true, mob scaling speed will increase with more players in the world, up to 2x with 5 players
 	#Scaling will also cease if no players are on the server
 	"Scale with Player Count" = true
@@ -29,7 +35,9 @@
 [Health]
 	#The decimal amount that hostile mobs' health increase per day
 	#Range: 0.0 ~ Infinity
-	"Health Scale Rate" = 0.03
+	# 2026-04-25: halved from 0.03 to 0.015 alongside flipping
+	# Use Exponential Scaling = true for the easier-early/harder-late curve.
+	"Health Scale Rate" = 0.015
 	#The decimal amount of the mobs' base health in the beginning
 	#Range: 0.0 ~ Infinity
 	"Mob Health Base" = 0.0
@@ -40,7 +48,8 @@
 [Damage]
 	#The decimal amount that hostile mobs' damage increase per day
 	#Range: 0.0 ~ Infinity
-	"Damage Scale Rate" = 0.015
+	# 2026-04-25: halved 0.015 -> 0.0075 to match the easier-early curve.
+	"Damage Scale Rate" = 0.0075
 	#The decimal amount of the mobs' base damage in the beginning
 	#Range: 0.0 ~ Infinity
 	"Mob Damage Base" = 0.0
@@ -51,7 +60,8 @@
 [Speed]
 	#The decimal amount that hostile mobs' speed increase per day
 	#Range: 0.0 ~ Infinity
-	"Speed Scale Rate" = 0.005
+	# 2026-04-25: halved 0.005 -> 0.0025 (easier-early curve).
+	"Speed Scale Rate" = 0.0025
 	#The decimal amount of the mobs' base speed in the beginning
 	#Range: 0.0 ~ Infinity
 	"Mob Speed Base" = 0.0
@@ -62,7 +72,8 @@
 ["Armor Piercing"]
 	#The decimal amount of increase to mobs' damage that ignores armor per day
 	#Range: 0.0 ~ Infinity
-	"Armor Piercing Scale Rate" = 0.01
+	# 2026-04-25: halved 0.01 -> 0.005 (easier-early curve).
+	"Armor Piercing Scale Rate" = 0.005
 	#The decimal amount of mobs' damage that ignores armor in the beginning
 	#Range: 0.0 ~ Infinity
 	"Armor Piercing Base" = 0.0

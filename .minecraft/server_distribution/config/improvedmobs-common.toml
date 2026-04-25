@@ -34,9 +34,12 @@
     "Difficulty Max" = 200.0
 
     # Difficulty increase per in-game day (24000 ticks).
-    # Default is 1.5. We use 1.0 for slower ramp — players need time to
-    # gear up between tiers. At 1.0/day, reaching max takes ~200 days.
-    "Difficulty Increase" = 1.0
+    # Default is 1.5. We use 0.5 for an even slower ramp consistent with
+    # the easier-early/harder-late curve. At 0.5/day, difficulty reaches
+    # 100 (half cap) at day 200. Equipment quality + enchant level scaling
+    # stays minimal in early/mid game and only ramps significantly at
+    # extended playtimes.
+    "Difficulty Increase" = 0.5
 
     # Difficulty decrease when player dies. Provides slight mercy mechanic.
     # Design doc doesn't specify this but 1.5 penalty reduction helps prevent
