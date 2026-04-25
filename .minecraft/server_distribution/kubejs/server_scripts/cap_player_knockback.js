@@ -37,6 +37,10 @@ try {
   var Player_kb = Java.loadClass('net.minecraft.world.entity.player.Player')
 
   var KNOCKBACK_CAP = 1.5
+  // Vanilla unit-vector ratios are length 1.0. Anything >1.5 is a mod
+  // bug producing un-normalized direction. Cap at 1.5 (slack for natural
+  // floating-point variance) and renormalize to 1.0 if exceeded.
+  var RATIO_CAP = 1.5
 
   var handler = new Consumer_kb({
     accept: function(event) {
@@ -86,8 +90,37 @@ try {
           var key = attacker ? String(attacker.getType().toString()) : 'unknown'
           if (!global._kb_cap_seen[key]) {
             global._kb_cap_seen[key] = true
-            console.log('[knockback_cap] CAPPED ' + strength.toFixed(2) +
+            console.log('[knockback_cap] CAPPED strength ' + strength.toFixed(2) +
                         ' -> ' + KNOCKBACK_CAP + ' from ' + key)
+          }
+        }
+
+        // 2026-04-25: tester captured event #7 with strength=0.4 (normal) but
+        // ratioX=-16.382 ratioZ=7.571. Vanilla LivingEntity.knockback expects
+        // a unit-direction (sqrt(rx^2+rz^2) ~= 1.0); the player gets pushed
+        // by `strength * ratio_component`. Magnitudes of 16+ launch the
+        // player ~16x further than intended. Some mod (Apotheosis affix,
+        // arrow-velocity mod, etc.) is passing the raw projectile delta
+        // vector instead of normalizing first.
+        //
+        // Surgical fix: if the ratio magnitude exceeds RATIO_CAP, normalize
+        // the direction back to unit length. Keeps the direction intent
+        // (which way the player is pushed) but caps the magnitude.
+        var rMag = Math.sqrt(ratioX * ratioX + ratioZ * ratioZ)
+        if (rMag > RATIO_CAP) {
+          var scale = 1.0 / rMag  // normalize back to unit vector
+          event.setRatioX(ratioX * scale)
+          event.setRatioZ(ratioZ * scale)
+          if (!global._kb_ratio_seen) global._kb_ratio_seen = {}
+          var src2 = null
+          try { src2 = event.getSource ? event.getSource() : null } catch (e) {}
+          var atk2 = null
+          try { atk2 = src2 ? src2.getEntity() : null } catch (e) {}
+          var k2 = atk2 ? String(atk2.getType().toString()) : 'unknown'
+          if (!global._kb_ratio_seen[k2]) {
+            global._kb_ratio_seen[k2] = true
+            console.log('[knockback_cap] CAPPED ratio mag=' + rMag.toFixed(2) +
+                        ' -> 1.0 from ' + k2)
           }
         }
       } catch (e) {

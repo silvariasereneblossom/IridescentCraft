@@ -66,6 +66,7 @@ try {
     var scanned = 0
     var hostile = 0
     var killed = 0
+    var typeBuckets = {}  // entity-type id -> count, for diagnosis
     var iter = entities.iterator()
     while (iter.hasNext()) {
       var e = iter.next()
@@ -74,7 +75,19 @@ try {
         if (e === sp) continue
         if (e.distanceToSqr(sp) > radiusSq) continue
         var type = e.getType()
-        if (type.getCategory() != MobCategory_dsp.MONSTER) continue
+        // Bucket the entity-type for diagnostic logging when killed=0.
+        var typeId = '?'
+        try { typeId = String(type.builtInRegistryHolder().key().location()) } catch (_) {}
+        typeBuckets[typeId] = (typeBuckets[typeId] || 0) + 1
+        // Compare via .equals() not != -- Rhino enum identity is unreliable
+        // when the JavaClass wrapper round-trips the enum value.
+        var cat = type.getCategory()
+        var isMonster = false
+        try { isMonster = cat.equals(MobCategory_dsp.MONSTER) } catch (_) {
+          // Fallback: name comparison
+          try { isMonster = String(cat.name()) === 'MONSTER' } catch (_) {}
+        }
+        if (!isMonster) continue
         hostile++
         try { if (type.is(BOSSES_TAG)) continue } catch (_) {}
         try {
@@ -88,6 +101,13 @@ try {
     }
     console.log('[icraft_despawn] ' + sp.username + ' radius=' + radius +
                 ' scanned=' + scanned + ' hostile=' + hostile + ' killed=' + killed)
+    // When killed=0 dump the type bucket so we can see what's actually nearby
+    // (lets us tell "no hostile mobs in range" from "filter is broken").
+    if (killed === 0 && scanned > 0) {
+      var bucketStr = ''
+      for (var k in typeBuckets) bucketStr += k + ':' + typeBuckets[k] + ' '
+      console.log('[icraft_despawn] killed=0; nearby types: ' + bucketStr.trim())
+    }
     return killed
   }
 
