@@ -207,6 +207,15 @@ ServerEvents.loaded(event => {
     'apotheosis:reforging_table',
     'apotheosis:sigil_of_rebirth',
     'apotheosis:sigil_of_withdrawal',
+    // Forbidden Arcanus T3 entry — gates the whole F&A progression chain
+    // since arcane crystal is the prerequisite material for nearly everything
+    // F&A. Mod is intentionally not blanket-gated (per the comment above)
+    // because some passive/food items leak into early game, so we gate the
+    // key progression material individually here.
+    'forbidden_arcanus:arcane_crystal',
+    'forbidden_arcanus:arcane_crystal_block',
+    'forbidden_arcanus:arcane_crystal_ore',
+    'forbidden_arcanus:deepslate_arcane_crystal_ore',
   ], 'modpack/item_t3')
 
   // -- Ore replacement restrictions --
@@ -215,6 +224,8 @@ ServerEvents.loaded(event => {
   stageOre('tier_3', 'minecraft:ancient_debris', 'minecraft:netherrack', 'modpack/ore_ancient_debris')
   stageOre('tier_3', 'mekanism:osmium_ore', 'minecraft:stone', 'modpack/ore_osmium')
   stageOre('tier_3', 'mekanism:deepslate_osmium_ore', 'minecraft:deepslate', 'modpack/ore_osmium_deep')
+  stageOre('tier_3', 'forbidden_arcanus:arcane_crystal_ore', 'minecraft:stone', 'modpack/ore_arcane_crystal')
+  stageOre('tier_3', 'forbidden_arcanus:deepslate_arcane_crystal_ore', 'minecraft:deepslate', 'modpack/ore_arcane_crystal_deep')
 
   // -- Dimension restrictions --
   stageDimension('tier_3', 'undergarden:undergarden', 'modpack/dim_undergarden')
