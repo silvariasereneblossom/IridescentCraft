@@ -208,17 +208,37 @@ function hasNativeBreakProtection(stack) {
 function checkAndMarkBroken(stack) {
   if (stack.isEmpty || !stack.isDamageableItem) return false
   if (hasNativeBreakProtection(stack)) return false
-  const threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
-  if (stack.damageValue >= stack.maxDamage - threshold) {
-    // Clamp so vanilla never sees >= maxDamage
-    stack.damageValue = stack.maxDamage - threshold
-    if (!stack.nbt || !stack.nbt.getBoolean(BROKEN_TAG)) {
-      if (!stack.nbt) stack.nbt = {}
-      stack.nbt.putBoolean(BROKEN_TAG, true)
-      return true
-    }
-  }
-  return false
+  var threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
+  if (stack.damageValue < stack.maxDamage - threshold) return false
+
+  // Past threshold -- clamp AND (re-)mark broken.
+  //
+  // 2026-04-24 bugfix: previous version only returned true on first-time
+  // tag (when nbt was null or broken flag wasn't set yet). Tester observed
+  // the clamp working but broken tooltip never appearing + item still
+  // usable. Root cause: once tagged on tick N, subsequent ticks re-clamped
+  // damageValue (which KubeJS writes through) but returned false, so
+  // callers skipped setItem() / setItemSlot(). Vanilla only marks a slot
+  // dirty for client-sync when setItem fires; pure in-place mutation of
+  // a retrieved stack doesn't broadcast. Result: server had the NBT, the
+  // client never saw it, and the server-side effect handlers may have
+  // been reading a round-tripped stack the client reported back minus
+  // the tag. Fix: return true whenever the stack's state isn't already
+  // stable (damage at exact clamp + broken tag set), so the setItem
+  // always fires on transitions but idle stable items don't re-sync
+  // every 2 ticks.
+  var targetDamage = stack.maxDamage - threshold
+  var alreadyTagged = stack.nbt && stack.nbt.getBoolean(BROKEN_TAG)
+  var stable = (stack.damageValue === targetDamage) && alreadyTagged
+  if (stable) return false
+
+  stack.damageValue = targetDamage
+  if (!stack.nbt) stack.nbt = {}
+  stack.nbt.putBoolean(BROKEN_TAG, true)
+  // One-shot log on the state transition so we can verify in tester
+  // logs that the sync fires when expected (not every tick).
+  console.log('[durability] marked broken: ' + String(stack.item.id))
+  return true
 }
 
 global.tick_deathPenaltyBrokenCheck = (event) => {
