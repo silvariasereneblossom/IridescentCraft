@@ -66,10 +66,19 @@ try {
       while (it.hasNext()) {
         var itemEntity = it.next()
         var stack = itemEntity.getItem()
-        var itemId = String(stack.getItem().getDescriptionId())
-        var itemCount = stack.getCount()
-        var nbt = stack.getTag()
-        var nbtStr = nbt ? String(nbt) : '<none>'
+        var itemId = '?'
+        var itemCount = 1
+        var nbtStr = '<none>'
+        try { itemId = String(stack.getItem().getDescriptionId()) } catch (_) {}
+        try { itemCount = stack.getCount() } catch (_) {}
+        // Rhino sometimes can't resolve stack.getTag() -- try fallbacks.
+        try {
+          var nbt = null
+          try { nbt = stack.getTag() } catch (_) {}
+          if (!nbt) { try { nbt = stack.tag } catch (_) {} }
+          if (!nbt) { try { nbt = stack.m_41783_() } catch (_) {} }  // SRG
+          if (nbt) nbtStr = String(nbt)
+        } catch (_) {}
         console.log('[dropdiag:' + phase + ']   - ' + itemId + ' x' + itemCount +
                     ' NBT=' + (nbtStr.length > 200 ? nbtStr.substring(0, 200) + '...' : nbtStr))
       }

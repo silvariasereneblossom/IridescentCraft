@@ -46,21 +46,37 @@ try {
   // ourselves via getType().getCategory().
   var doDespawn = function(sp, radius) {
     var level = sp.level
+    if (!level) {
+      console.warn('[icraft_despawn] sp.level is null/undefined for ' + sp.username)
+      return 0
+    }
     var aabb = sp.getBoundingBox().inflate(radius)
     var radiusSq = radius * radius
 
+    var entities = null
+    try { entities = level.getEntities(sp, aabb) } catch (ee) {
+      console.warn('[icraft_despawn] level.getEntities threw: ' + ee)
+      return 0
+    }
+    if (!entities) {
+      console.warn('[icraft_despawn] level.getEntities returned null')
+      return 0
+    }
+
+    var scanned = 0
+    var hostile = 0
     var killed = 0
-    var entities = level.getEntities(sp, aabb)
     var iter = entities.iterator()
     while (iter.hasNext()) {
       var e = iter.next()
+      scanned++
       try {
         if (e === sp) continue
         if (e.distanceToSqr(sp) > radiusSq) continue
         var type = e.getType()
         if (type.getCategory() != MobCategory_dsp.MONSTER) continue
+        hostile++
         try { if (type.is(BOSSES_TAG)) continue } catch (_) {}
-        // Skip tamed/owned entities (player summons, pets the player owns)
         try {
           if (e instanceof OwnableEntity_dsp && e.getOwnerUUID() != null) continue
         } catch (_) {}
@@ -70,6 +86,8 @@ try {
         // Per-entity isolation -- one weird entity shouldn't abort the sweep
       }
     }
+    console.log('[icraft_despawn] ' + sp.username + ' radius=' + radius +
+                ' scanned=' + scanned + ' hostile=' + hostile + ' killed=' + killed)
     return killed
   }
 
