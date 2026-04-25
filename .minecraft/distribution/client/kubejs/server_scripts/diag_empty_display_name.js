@@ -41,8 +41,27 @@ try {
       // Alert if empty or whitespace-only.
       if (displayStr.length === 0 || displayStr.trim().length === 0) {
         if (!global._empty_name_seen) global._empty_name_seen = {}
+        // 2026-04-25: builtInRegistryHolder() returned ? for 22 entities in
+        // the prior test -- Rhino bridge can't traverse Holder.Reference.key()
+        // for some types. Use ForgeRegistries.ENTITY_TYPES.getKey() as primary,
+        // with the EntityType.toString() regex parse as fallback.
         var typeId = '?'
-        try { typeId = String(e.getType().builtInRegistryHolder().key().location()) } catch (_) {}
+        try {
+          var FR = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
+          var rl = FR.ENTITY_TYPES.getKey(e.getType())
+          if (rl) typeId = String(rl)
+        } catch (_) {}
+        if (typeId === '?') {
+          try { typeId = String(e.getType().builtInRegistryHolder().key().location()) } catch (_) {}
+        }
+        if (typeId === '?') {
+          try {
+            var raw = String(e.getType().toString())
+            var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
+            if (m) typeId = m[1] + ':' + m[2]
+            else typeId = raw
+          } catch (_) {}
+        }
         var hasCustom = false
         try { hasCustom = e.hasCustomName() } catch (_) {}
         var customStr = '<none>'

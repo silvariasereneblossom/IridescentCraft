@@ -137,6 +137,25 @@ try {
       }
     }
 
+    // 2026-04-25: Ars Nouveau caches max mana via IManaCap.setMaxMana(int)
+    // and only recomputes on PlayerLoggedInEvent / Respawn / Equip changes.
+    // Our attribute modifier sits on ars_nouveau:ars_nouveau.perk.max_mana
+    // but the cap displayed in the bar (ManaCap NBT) doesn't refresh until
+    // one of those events fires. Force-kick the cache here whenever the
+    // class changes so the player sees the buff immediately.
+    try {
+      var manaUtil = Java.loadClass('com.hollingsworth.arsnouveau.api.util.ManaUtil')
+      var capReg = Java.loadClass('com.hollingsworth.arsnouveau.setup.registry.CapabilityRegistry')
+      var manaResult = manaUtil.calcMaxMana(player)  // also re-applies their internal modifier
+      var capOpt = capReg.getMana(player)
+      if (capOpt) {
+        var cap = capOpt.orElse(null)
+        if (cap) cap.setMaxMana(manaResult.getRealMax())
+      }
+    } catch (e) {
+      // Ars Nouveau absent or API changed -- silent skip
+    }
+
     lastClassApplied[name] = playerClass
   }
 

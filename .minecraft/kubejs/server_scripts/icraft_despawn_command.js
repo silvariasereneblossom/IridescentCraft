@@ -76,8 +76,26 @@ try {
         if (e.distanceToSqr(sp) > radiusSq) continue
         var type = e.getType()
         // Bucket the entity-type for diagnostic logging when killed=0.
+        // builtInRegistryHolder() returned ? for 22 entities in the prior
+        // test -- Rhino bridge can't traverse Holder.Reference.key() for
+        // some types. Use ForgeRegistries.getKey() as primary path.
         var typeId = '?'
-        try { typeId = String(type.builtInRegistryHolder().key().location()) } catch (_) {}
+        try {
+          var FR_dsp = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
+          var rl = FR_dsp.ENTITY_TYPES.getKey(type)
+          if (rl) typeId = String(rl)
+        } catch (_) {}
+        if (typeId === '?') {
+          try { typeId = String(type.builtInRegistryHolder().key().location()) } catch (_) {}
+        }
+        if (typeId === '?') {
+          try {
+            var raw = String(type.toString())
+            var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
+            if (m) typeId = m[1] + ':' + m[2]
+            else typeId = raw
+          } catch (_) {}
+        }
         typeBuckets[typeId] = (typeBuckets[typeId] || 0) + 1
         // Compare via .equals() not != -- Rhino enum identity is unreliable
         // when the JavaClass wrapper round-trips the enum value.
