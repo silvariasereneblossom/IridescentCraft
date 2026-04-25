@@ -145,6 +145,7 @@ After every major change (new features, balance changes, new items/origins/class
 - `wiki/dev/lessons-learned.md` — postmortem log for stalled/failed implementations. Contains candid retro notes that belong in the engineering log, not on the user-facing wiki.
 - `wiki/dev/deployment-and-utility-guide.md` — internal deployment reference (phase0_sync internals, custom-jar allowlist, utility scripts). Names private paths/network shares.
 - `wiki/dev/code-review-2026-04-23.md` — full-codebase code review findings; names internal issues and followups.
+- `wiki/mechanics/game-mechanics.md` — implementation deep-dive (which scripts fire, in what order, with what math). Companion to the design doc — intent vs reality. Names file paths and SRG internals; not for public consumption.
 
 When mirroring, skip any page whose top includes the HTML comment `<!-- INTERNAL ONLY -->` or is listed above.
 
