@@ -44,11 +44,14 @@ try {
       // returned null and caused NPEs in the goalSelector access below.)
       var isZombie = false
       try {
-        if (Zombie.isInstance(entity)) isZombie = true
+        // Rhino Java interop: use JS `instanceof` with class on RHS, NOT
+        // ClassWrapper.isInstance(obj). The latter throws "no public
+        // instance field or method named isInstance" because Rhino's
+        // JavaClass wrapper only exposes static methods + constructors,
+        // not java.lang.Class instance methods.
+        if (entity instanceof Zombie) isZombie = true
       } catch (e) {}
       if (!isZombie) {
-        // Fallback for wrapped/proxied entity objects where isInstance
-        // can't see through the wrapper -- check entity type.
         try {
           var typeId = String(entity.getType().toString())
           if (ZOMBIE_TYPE_PATTERN.test(typeId)) isZombie = true
@@ -82,7 +85,7 @@ try {
       }
       if (!goalSelector) return
 
-      goalSelector.removeAllGoals(function(g) { return BreakDoorGoal.isInstance(g) })
+      goalSelector.removeAllGoals(function(g) { return g instanceof BreakDoorGoal })
     } catch (e) {
       console.warn('[no_door_break] spawned-handler threw: ' + e)
     }
