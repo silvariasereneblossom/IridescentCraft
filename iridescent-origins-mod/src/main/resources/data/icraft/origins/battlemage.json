@@ -11,5 +11,5 @@
   "order": 3,
   "impact": 2,
   "name": "Battlemage",
-  "description": "Where sword meets sorcery. Battlemages deal 15% bonus melee and magic damage alike, and their Mana Shield grows stronger with every magic bonus they accumulate. Stack arcane power to become both deadlier and harder to kill."
+  "description": "Where sword meets sorcery. Battlemages deal 15% bonus melee and magic damage alike, and their Mana Shield grows stronger with every magic bonus they accumulate. Stack arcane power to become both deadlier and harder to kill. Their mana pool runs at ~1.9x the baseline."
 }

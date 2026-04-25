@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)A puppet master who commands from the shadows. Your servants fight, and their violence feeds your power.$()$(br2)HP Modifier: -10%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)$(bold)Core Identity:$() Empowered minions + lifesteal."
+      "text": "$(italic)A puppet master who commands from the shadows. Your servants fight, and their violence feeds your power.$()$(br2)HP Modifier: -10%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)~1.9x base$() (~187 from default 100)$(br)$(bold)Core Identity:$() Empowered minions + lifesteal."
     },
     {
       "type": "patchouli:text",

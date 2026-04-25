@@ -1,0 +1,5 @@
+{
+  "type": "origins:simple",
+  "name": "Expanded Mana",
+  "description": "Mana pool runs at ~1.9x the baseline. Sustained spellcasting from the shadows is part of dominion."
+}

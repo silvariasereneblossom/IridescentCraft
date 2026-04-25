@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
   "name": "Mana Attunement",
-  "description": "Spell kills restore mana. Standing still for 3 seconds grants +10% spell damage. Melee damage reduced by 25%."
+  "description": "Mana pool runs at 2.5x the baseline. Spell kills restore mana. Standing still for 3 seconds grants +10% spell damage. Melee damage reduced by 25%."
 }

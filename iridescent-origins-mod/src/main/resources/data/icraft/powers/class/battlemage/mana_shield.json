@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
   "name": "Mana Shield",
-  "description": "When hit while holding a magic item: 15% chance to negate damage. Melee kills restore small amount of mana."
+  "description": "Mana pool runs at ~1.9x the baseline. When hit while holding a magic item: 15% chance to negate damage. Melee kills restore small amount of mana."
 }
