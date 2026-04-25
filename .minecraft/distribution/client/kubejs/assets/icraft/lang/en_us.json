@@ -102,7 +102,28 @@
   "icraft.witch-of-ink.gnome": "Gnome",
 
   "_TATOS_skeleton_fixes": "TATOS ships entity.abyssbadskelletion.name (wrong format) instead of entity.theabyss.abyssbadskelletion. Restoring a working name and disambiguating IceSkeleton vs HauntedSkeleton (both ship as 'Ice Skeleton' in vanilla TATOS lang).",
-  "entity.abyssbadskelletion.name": "Abyss Skeleton",
   "entity.theabyss.haunted_skeleton": "Haunted Skeleton",
-  "entity.theabyss.ice_skeleton": "Ice Skeleton"
+  "entity.theabyss.ice_skeleton": "Ice Skeleton",
+
+  "_TATOS_full_legacy_lang_fix": "TATOS ships 20 entity translation keys in the legacy MCreator-generated 'entity.<id>.name' format that Minecraft 1.20.1 doesn't resolve. All 20 listed below with sensible display names. If TATOS upstream fixes its lang, these become harmless overrides.",
+  "entity.abyssbadskelletion.name": "Abyss Skeleton",
+  "entity.abysscorruptedcow.name": "Corrupted Cow",
+  "entity.abysscreeper.name": "Abyss Creeper",
+  "entity.abyssgolem.name": "Abyss Golem",
+  "entity.abyssguard.name": "Abyss Guard",
+  "entity.abyssguardnether.name": "Nether Abyss Guard",
+  "entity.abyssnethergolem.name": "Nether Abyss Golem",
+  "entity.abyssnetherguard.name": "Nether Abyss Guard",
+  "entity.abysssoulzombie.name": "Soul Zombie",
+  "entity.abyssspider.name": "Abyss Spider",
+  "entity.abysszombie.name": "Abyss Zombie",
+  "entity.deathhorse.name": "Death Horse",
+  "entity.endspider.name": "End Spider",
+  "entity.exomzombie.name": "Exom Zombie",
+  "entity.liromzombie.name": "Lirom Zombie",
+  "entity.netherhorse.name": "Nether Horse",
+  "entity.netherscorpion.name": "Nether Scorpion",
+  "entity.soulguard.name": "Soul Guard",
+  "entity.testhrse.name": "Test Horse",
+  "entity.witherblaze.name": "Wither Blaze"
 }
