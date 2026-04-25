@@ -1,0 +1,35 @@
+{
+  "replace": false,
+  "values": [
+    "theabyss:haunted_skeleton",
+    "theabyss:ice_skeleton",
+    "theabyss:abyssbadskelletion",
+    "theabyss:infected_zombie",
+    "theabyss:shattered_zombie",
+    "theabyss:mud_zombie",
+
+    "occultism:possessed_skeleton",
+    "occultism:possessed_endermite",
+    "occultism:possessed_enderman",
+    "occultism:possessed_ghast",
+    "occultism:possessed_hoglin",
+    "occultism:possessed_phantom",
+    "occultism:possessed_shulker",
+    "occultism:possessed_warden",
+    "occultism:possessed_weak_shulker",
+    "occultism:possessed_elder_guardian",
+    "occultism:wild_hunt_skeleton",
+    "occultism:wild_hunt_wither_skeleton",
+
+    "terramity:elite_skeleton",
+
+    "nether_zombies:magma_cube_zombie",
+    "nether_zombies:crimson_zombie",
+    "nether_zombies:soul_zombie",
+    "nether_zombies:strider_zombie",
+    "nether_zombies:warped_zombie",
+
+    "mca:male_zombie_villager",
+    "mca:female_zombie_villager"
+  ]
+}

@@ -99,5 +99,10 @@
   "power.icraft.origin/kirin/dislike_of_water.name": "",
   "power.icraft.origin/kirin/dislike_of_water.description": "",
 
-  "icraft.witch-of-ink.gnome": "Gnome"
+  "icraft.witch-of-ink.gnome": "Gnome",
+
+  "_TATOS_skeleton_fixes": "TATOS ships entity.abyssbadskelletion.name (wrong format) instead of entity.theabyss.abyssbadskelletion. Restoring a working name and disambiguating IceSkeleton vs HauntedSkeleton (both ship as 'Ice Skeleton' in vanilla TATOS lang).",
+  "entity.abyssbadskelletion.name": "Abyss Skeleton",
+  "entity.theabyss.haunted_skeleton": "Haunted Skeleton",
+  "entity.theabyss.ice_skeleton": "Ice Skeleton"
 }
