@@ -191,7 +191,8 @@
         "icraft:classes/race_kirin",
         "icraft:systems/champions",
         "icraft:welcome/origins_guide",
-        "icraft:welcome/keybinds"
+        "icraft:welcome/keybinds",
+        "icraft:mods_t1/early_magic"
       ],
       "bookmarks": [],
       "completedManualQuests": []
