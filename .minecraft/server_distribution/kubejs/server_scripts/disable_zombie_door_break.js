@@ -1,5 +1,5 @@
 // =============================================================================
-// DISABLE ZOMBIE DOOR-BREAKING (vanilla BreakDoorGoal)
+// DISABLE BREAK-DOOR GOAL (vanilla + any modded mob that ships one)
 // =============================================================================
 // Azukaar's Fair Difficulty Overhaul force-sets vanilla difficulty to Hard
 // (perPlayer = true in its config, which requires Hard underneath so it can
@@ -10,10 +10,13 @@
 // control it, and flipping the mobGriefing gamerule would also kill
 // endermen pickup and Cataclysm boss arena destruction we want to keep.
 //
-// Surgical fix: on EntityEvents.spawned, detect Zombie-class mobs (vanilla
-// zombie, husk, drowned, zombie_villager -- all subclass Zombie and all
-// inherit BreakDoorGoal) and strip the goal from the goalSelector so the
-// mob keeps every other AI behavior but can no longer break doors.
+// 2026-04-25: tester reported "skeleton riding a spider broke a door."
+// Vanilla skeletons don't have BreakDoorGoal, so this is a modded
+// undead variant that added the goal in its own AI. Rather than chasing
+// every mod that does this, the handler is now class-generic: any Mob
+// spawning with BreakDoorGoal in its goalSelector gets it stripped,
+// regardless of the mob's base class. Zombies, modded skeletons,
+// netherzombies variants -- all handled by the same predicate.
 //
 // Memory: feedback_jar_audit.md (decompile when probes silently no-op),
 // feedback_wiki_reference.md (Rhino scoping -- use var in reentrant blocks).
@@ -21,43 +24,18 @@
 
 try {
   var BreakDoorGoal = Java.loadClass('net.minecraft.world.entity.ai.goal.BreakDoorGoal')
-  var Zombie = Java.loadClass('net.minecraft.world.entity.monster.Zombie')
-
-  // Resource-location style entity IDs (what entity.getType().toString() tends
-  // to resolve to after translation-key stripping). Vanilla zombie hierarchy:
-  //   Zombie <- ZombieVillager
-  //         <- Husk
-  //         <- Drowned
-  //         (Zombified piglin is intentionally kept -- that's a Nether mob
-  //          with no door-break goal anyway.)
-  var ZOMBIE_TYPE_PATTERN = /minecraft:(zombie|husk|drowned|zombie_villager)$|\.minecraft\.(zombie|husk|drowned|zombie_villager)$/
+  var Mob = Java.loadClass('net.minecraft.world.entity.Mob')
 
   EntityEvents.spawned(event => {
     try {
       var entity = event.entity
       if (!entity) return
-
-      // In KubeJS 6 EntityEvents.spawned, `event.entity` IS the Java-wrapped
-      // entity directly -- there's no nested getInternal() layer like there
-      // is for ItemStack. Use Zombie.isInstance(entity) straight against the
-      // wrapper. (Previous version called entity.getInternal() which
-      // returned null and caused NPEs in the goalSelector access below.)
-      var isZombie = false
-      try {
-        // Rhino Java interop: use JS `instanceof` with class on RHS, NOT
-        // ClassWrapper.isInstance(obj). The latter throws "no public
-        // instance field or method named isInstance" because Rhino's
-        // JavaClass wrapper only exposes static methods + constructors,
-        // not java.lang.Class instance methods.
-        if (entity instanceof Zombie) isZombie = true
-      } catch (e) {}
-      if (!isZombie) {
-        try {
-          var typeId = String(entity.getType().toString())
-          if (ZOMBIE_TYPE_PATTERN.test(typeId)) isZombie = true
-        } catch (e) {}
-      }
-      if (!isZombie) return
+      // Skip non-Mob entities (items, projectiles, players). They don't
+      // have a goalSelector. Rhino Java interop: use JS `instanceof` with
+      // the class on RHS, NOT ClassWrapper.isInstance(obj) -- the latter
+      // throws because Rhino's JavaClass wrapper only exposes static
+      // members.
+      if (!(entity instanceof Mob)) return
 
       // Access the goalSelector. Try Mojang name first (KubeJS typically
       // runs with Mojang mappings exposed), then SRG. Wrap in try/catch
@@ -72,7 +50,6 @@ try {
         // success by stashing it on global (not per-mob).
         if (!global._no_door_break_goalSelectorField) {
           try {
-            var Mob = Java.loadClass('net.minecraft.world.entity.Mob')
             var f = Mob.class.getDeclaredField('f_21345_')
             f.setAccessible(true)
             global._no_door_break_goalSelectorField = f
@@ -85,13 +62,29 @@ try {
       }
       if (!goalSelector) return
 
-      goalSelector.removeAllGoals(function(g) { return g instanceof BreakDoorGoal })
+      // Strip and log: when we successfully strip BreakDoorGoal from a
+      // mob, log its entity type the FIRST time we see that type. Builds
+      // a usage-driven list of which modded mobs were silently shipping
+      // door-break -- shows up in the server log as
+      //   [no_door_break] stripped BreakDoorGoal from new type: <id>
+      // so we can audit what was found across a session.
+      var stripped = goalSelector.removeAllGoals(function(g) {
+        return g instanceof BreakDoorGoal
+      })
+      if (stripped) {
+        if (!global._no_door_break_seenTypes) global._no_door_break_seenTypes = {}
+        var typeId = String(entity.getType().toString())
+        if (!global._no_door_break_seenTypes[typeId]) {
+          global._no_door_break_seenTypes[typeId] = true
+          console.log('[no_door_break] stripped BreakDoorGoal from new type: ' + typeId)
+        }
+      }
     } catch (e) {
       console.warn('[no_door_break] spawned-handler threw: ' + e)
     }
   })
 
-  console.log('[IridescentCraft] disable_zombie_door_break loaded (strips BreakDoorGoal on zombie-class spawn)')
+  console.log('[IridescentCraft] disable_zombie_door_break loaded (strips BreakDoorGoal on ANY Mob spawn -- vanilla + modded)')
 } catch (e) {
   console.warn('[IridescentCraft] disable_zombie_door_break bootstrap FAILED: ' + e)
 }
