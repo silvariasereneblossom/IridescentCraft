@@ -75,7 +75,7 @@ try {
     if (!attr) console.log('[mana_pool] attribute not registered (mod absent?): ' + MANA_ATTRS[i])
   }
 
-  function upsertModifier(player, attr, uuidStr, name, amount, op) {
+  var upsertModifier = function(player, attr, uuidStr, name, amount, op) {
     if (!attr) return
     var inst = null
     try { inst = player.getAttribute(attr) } catch (e) { return }
@@ -98,7 +98,7 @@ try {
   // when a class changes.
   var lastClassApplied = {}
 
-  function applyManaPoolBonuses(player) {
+  var applyManaPoolBonuses = function(player) {
     var name = player.username
     var playerClass = null
     try { playerClass = getClass(player) } catch (e) { return }  // class_passives.js not loaded yet
