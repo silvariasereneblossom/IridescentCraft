@@ -9,10 +9,12 @@
 // that bypasses LivingKnockBackEvent entirely -- a mod (Apotheosis affix,
 // Better Combat, etc.) directly setting deltaMovement on the player.
 //
-// Strategy: subscribe to LivingHurtEvent on the player, sample
-// player.getDeltaMovement() before AND right after, log the delta.
-// Anything with a Y-velocity spike of |dy| > 0.5 (vanilla knockback caps Y
-// at 0.4) flags as suspicious. Per-attacker-type one-shot to avoid spam.
+// 2026-04-25 hotfix: previous version used Vec3 FIELD access (d.y) which
+// Rhino can't coerce to primitive double cleanly -- NPE in
+// FieldAndMethods.getDefaultValue, swallowed try/catch DOESN'T catch
+// because the failure is in the Java->JS bridge BEFORE the function body.
+// Result: every player damage event crashed -> Neruina kicked the player.
+// Switched to Vec3.y() METHOD form (record-style accessor in 1.20.1).
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try).
 // =============================================================================
@@ -24,18 +26,21 @@ try {
   var Consumer_dpv = Java.loadClass('java.util.function.Consumer')
   var Player_dpv = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  // Stash the player's Y-velocity before-state, sampled at HIGHEST priority
-  // (runs first). Then a LOWEST-priority handler reads after-state and
-  // logs the delta. Same idiom as dropdiag.
+  // Helper: read Vec3 component via method form (safe in Rhino).
+  var vy = function(vec3) {
+    try { return vec3.y() } catch (_) {}
+    // Fallback to field via String coercion (avoids the field/method NPE bug)
+    try { return parseFloat(String(vec3.y)) } catch (_) {}
+    return 0.0
+  }
+
   var preHandler = new Consumer_dpv({
     accept: function(event) {
       try {
         var v = event.getEntity()
         if (!(v instanceof Player_dpv)) return
         var d = v.getDeltaMovement()
-        v.getPersistentData().putDouble('_pre_dx', d.x)
-        v.getPersistentData().putDouble('_pre_dy', d.y)
-        v.getPersistentData().putDouble('_pre_dz', d.z)
+        v.getPersistentData().putDouble('_pre_dy', vy(d))
       } catch (_) {}
     }
   })
@@ -48,10 +53,10 @@ try {
         var d = v.getDeltaMovement()
         var pd = v.getPersistentData()
         var preDy = pd.contains('_pre_dy') ? pd.getDouble('_pre_dy') : 0.0
-        var ddy = d.y - preDy
-        // Vanilla cap on ground = 0.4. We allow generous slack (>0.6) before
+        var postDy = vy(d)
+        var ddy = postDy - preDy
+        // Vanilla cap on ground = 0.4. Allow generous slack (>0.6) before
         // flagging since affix-injected knockback can legitimately spike.
-        // The "skyward" launches reported are probably >> 1.0.
         if (Math.abs(ddy) <= 0.6) return
 
         var src = null
@@ -59,20 +64,14 @@ try {
         var atk = null
         try { atk = src ? src.getEntity() : null } catch (e) {}
         var atkType = atk ? String(atk.getType().toString()) : 'unknown'
-        var srcMsg = 'no-src'
-        try {
-          if (src) {
-            srcMsg = String(src.m_19385_ ? src.m_19385_() : src.type || src.msgId || 'unknown')
-          }
-        } catch (_) {}
 
         if (!global._velo_seen) global._velo_seen = {}
-        var key = atkType + '/' + srcMsg
+        var key = atkType
         if (!global._velo_seen[key]) {
           global._velo_seen[key] = true
           console.warn('[velo_spike] player Y-vel spike dy=' + ddy.toFixed(3) +
-                       ' (pre=' + preDy.toFixed(3) + ' post=' + d.y.toFixed(3) +
-                       ') from attacker=' + atkType + ' source=' + srcMsg)
+                       ' (pre=' + preDy.toFixed(3) + ' post=' + postDy.toFixed(3) +
+                       ') from attacker=' + atkType)
         }
       } catch (_) {}
     }
@@ -83,7 +82,7 @@ try {
   MinecraftForge_dpv.EVENT_BUS.addListener(EventPriority_dpv.LOWEST, false,
                                            LivingHurtEvent_dpv, postHandler)
 
-  console.log('[IridescentCraft] diag_player_velocity loaded (Y-vel spike detector on LivingHurtEvent)')
+  console.log('[IridescentCraft] diag_player_velocity loaded (Y-vel spike detector via Vec3.y() method form)')
 } catch (e) {
   console.warn('[IridescentCraft] diag_player_velocity bootstrap FAILED: ' + e)
 }
