@@ -1,0 +1,29 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="MIT"
+issueTrackerURL="https://github.com/silvariasereneblossom/IridescentCraft/issues"
+
+[[mods]]
+modId="${mod_id}"
+version="${version}"
+displayName="${mod_name}"
+authors="${mod_authors}"
+description='''${mod_description}'''
+logoFile="iridescent_modular_spells.png"
+
+[[dependencies.${mod_id}]]
+    modId="forge"
+    mandatory=true
+    versionRange="[${forge_version},)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[${minecraft_version},1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+# Phase 0: no other mod deps. Phase 1+ adds Tetra as mandatory + ISS/Ars
+# as optional soft-deps so the mod loads on packs without them.
