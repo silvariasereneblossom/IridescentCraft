@@ -1749,17 +1749,6 @@
         "value": 1024
       }
     },
-    "undead_revamp2:cheroattackspeed": {
-      "enabled": false,
-      "min": {
-        "default": 1,
-        "value": 1
-      },
-      "max": {
-        "default": 20,
-        "value": 20
-      }
-    },
     "attributecore:lightning_damage": {
       "enabled": false,
       "min": {
@@ -1769,6 +1758,17 @@
       "max": {
         "default": 1024,
         "value": 1024
+      }
+    },
+    "undead_revamp2:cheroattackspeed": {
+      "enabled": false,
+      "min": {
+        "default": 1,
+        "value": 1
+      },
+      "max": {
+        "default": 20,
+        "value": 20
       }
     },
     "apotheosis:prot_shred": {
@@ -2541,17 +2541,6 @@
         "value": 1000000
       }
     },
-    "undead_revamp2:returnvauleundead": {
-      "enabled": false,
-      "min": {
-        "default": 0,
-        "value": 0
-      },
-      "max": {
-        "default": 3,
-        "value": 3
-      }
-    },
     "miapi:generic.shielding_armor": {
       "enabled": false,
       "min": {
@@ -2561,6 +2550,17 @@
       "max": {
         "default": 1024,
         "value": 1024
+      }
+    },
+    "undead_revamp2:returnvauleundead": {
+      "enabled": false,
+      "min": {
+        "default": 0,
+        "value": 0
+      },
+      "max": {
+        "default": 3,
+        "value": 3
       }
     },
     "attributecore:healing_received": {

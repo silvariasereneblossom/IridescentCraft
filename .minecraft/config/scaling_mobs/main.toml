@@ -8,24 +8,12 @@
 	#Range: 0.0 ~ Infinity
 	"Player Scale Favor" = 10.0
 	#If true, mob stats will increase exponentially
-	# 2026-04-25: flipped to true. Combined with halved per-day scale rates,
-	# this gives the curve we want: gentle early days, steeper late game.
-	# Linear at 0.03/day = 1.9x HP at day 30, 2.8x at day 60. Exponential
-	# at 0.015/day = ~1.56x at day 30, ~2.45x at day 60 — but the SHAPE of
-	# growth is concave-up, so day 1-7 mobs are nearly vanilla while day 60+
-	# bites harder than the linear equivalent at the same midpoint.
 	"Use Exponential Scaling" = true
 	#If true, mob scaling speed will increase with more players in the world, up to 2x with 5 players
 	#Scaling will also cease if no players are on the server
 	"Scale with Player Count" = true
 	#After this day in the Minecraft world, all hostile mobs will be immune to burning in daylight
 	#Range: > 0
-	# 2026-04-24: was 7. Flipped to 999999 (effectively disabled) so the
-	# daytime sunlight-burn remains a permanent danger. Design doc: night
-	# dangerous, well-lit bases safe, daytime outside purges undead.
-	# Aggression is further boosted by kubejs/server_scripts/sunlight_smite.js
-	# which applies extra damage to #minecraft:undead-tagged mobs exposed
-	# to direct sky. Keeping them vulnerable to base burn is part of that.
 	"Mobs Stop Burning on Day" = 999999
 	#A list of mobs that will scale, even if they're not monsters
 	"Mob Whitelist" = []
@@ -35,8 +23,6 @@
 [Health]
 	#The decimal amount that hostile mobs' health increase per day
 	#Range: 0.0 ~ Infinity
-	# 2026-04-25: halved from 0.03 to 0.015 alongside flipping
-	# Use Exponential Scaling = true for the easier-early/harder-late curve.
 	"Health Scale Rate" = 0.015
 	#The decimal amount of the mobs' base health in the beginning
 	#Range: 0.0 ~ Infinity
@@ -48,7 +34,6 @@
 [Damage]
 	#The decimal amount that hostile mobs' damage increase per day
 	#Range: 0.0 ~ Infinity
-	# 2026-04-25: halved 0.015 -> 0.0075 to match the easier-early curve.
 	"Damage Scale Rate" = 0.0075
 	#The decimal amount of the mobs' base damage in the beginning
 	#Range: 0.0 ~ Infinity
@@ -60,7 +45,6 @@
 [Speed]
 	#The decimal amount that hostile mobs' speed increase per day
 	#Range: 0.0 ~ Infinity
-	# 2026-04-25: halved 0.005 -> 0.0025 (easier-early curve).
 	"Speed Scale Rate" = 0.0025
 	#The decimal amount of the mobs' base speed in the beginning
 	#Range: 0.0 ~ Infinity
@@ -72,7 +56,6 @@
 ["Armor Piercing"]
 	#The decimal amount of increase to mobs' damage that ignores armor per day
 	#Range: 0.0 ~ Infinity
-	# 2026-04-25: halved 0.01 -> 0.005 (easier-early curve).
 	"Armor Piercing Scale Rate" = 0.005
 	#The decimal amount of mobs' damage that ignores armor in the beginning
 	#Range: 0.0 ~ Infinity
