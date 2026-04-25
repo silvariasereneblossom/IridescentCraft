@@ -36,34 +36,52 @@ try {
     try {
       var entity = event.entity
       if (!entity) return
-      // Fast class-based check via instanceof on the underlying MC entity.
-      // Covers vanilla + any mod zombie that extends Zombie.class (some
-      // modded variants do, e.g. stalwart_dungeons wrappers). If the mod
-      // defines its own unrelated base class, we fall back to the type
-      // regex for the explicit vanilla set below.
-      var raw = entity.getInternal ? entity.getInternal() : null
+
+      // In KubeJS 6 EntityEvents.spawned, `event.entity` IS the Java-wrapped
+      // entity directly -- there's no nested getInternal() layer like there
+      // is for ItemStack. Use Zombie.isInstance(entity) straight against the
+      // wrapper. (Previous version called entity.getInternal() which
+      // returned null and caused NPEs in the goalSelector access below.)
       var isZombie = false
-      if (raw && Zombie.isInstance(raw)) {
-        isZombie = true
-      } else {
-        var typeId = String(entity.getType ? entity.getType().toString() : entity.type)
-        if (ZOMBIE_TYPE_PATTERN.test(typeId)) isZombie = true
+      try {
+        if (Zombie.isInstance(entity)) isZombie = true
+      } catch (e) {}
+      if (!isZombie) {
+        // Fallback for wrapped/proxied entity objects where isInstance
+        // can't see through the wrapper -- check entity type.
+        try {
+          var typeId = String(entity.getType().toString())
+          if (ZOMBIE_TYPE_PATTERN.test(typeId)) isZombie = true
+        } catch (e) {}
       }
       if (!isZombie) return
 
-      // Remove BreakDoorGoal from the goal selector. Mob.goalSelector is
-      // accessible via SRG f_21345_ at runtime; in Mojang mappings it's
-      // `goalSelector`. KubeJS Rhino usually exposes the Mojang name since
-      // it loads mappings; if not, fall back to reflection.
-      var goalSelector = raw.f_21345_ || raw.goalSelector
+      // Access the goalSelector. Try Mojang name first (KubeJS typically
+      // runs with Mojang mappings exposed), then SRG. Wrap in try/catch
+      // so field-not-found on one doesn't abort the whole handler.
+      var goalSelector = null
+      try { goalSelector = entity.goalSelector } catch (e) {}
       if (!goalSelector) {
-        console.warn('[no_door_break] could not access goalSelector on ' +
-                     String(entity.getType()))
-        return
+        try { goalSelector = entity.f_21345_ } catch (e) {}
       }
+      if (!goalSelector) {
+        // Last resort: reflection. Cache the field lookup after first
+        // success by stashing it on global (not per-mob).
+        if (!global._no_door_break_goalSelectorField) {
+          try {
+            var Mob = Java.loadClass('net.minecraft.world.entity.Mob')
+            var f = Mob.class.getDeclaredField('f_21345_')
+            f.setAccessible(true)
+            global._no_door_break_goalSelectorField = f
+          } catch (e) {
+            console.warn('[no_door_break] reflection fallback failed: ' + e)
+            return
+          }
+        }
+        goalSelector = global._no_door_break_goalSelectorField.get(entity)
+      }
+      if (!goalSelector) return
 
-      // removeAllGoals(Predicate<Goal>) — strip anything that's a
-      // BreakDoorGoal. Rhino auto-wraps the JS function as Predicate.
       goalSelector.removeAllGoals(function(g) { return BreakDoorGoal.isInstance(g) })
     } catch (e) {
       console.warn('[no_door_break] spawned-handler threw: ' + e)

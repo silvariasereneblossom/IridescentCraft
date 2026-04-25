@@ -34,9 +34,28 @@ try {
       var drops = event.getDrops()
       var count = drops ? drops.size() : 0
 
-      var source = event.getSource()
-      var killer = source ? source.getEntity() : null
-      var killerName = killer ? String(killer.getType().toString()) : 'null'
+      // DamageSource exposes getEntity() but KubeJS's wrapper doesn't always
+      // expose it via Rhino reflection (seen: "Cannot find function getEntity
+      // in object DamageSource"). Best-effort -- wrap in its own try/catch so
+      // the main drops-logging still runs on DamageSource edge cases. Try SRG
+      // name first (Forge 1.20.1 retains SRG at runtime), fall back to the
+      // direct-entity JS property name.
+      var killerName = 'unknown'
+      try {
+        var source = event.getSource()
+        if (source) {
+          var killer = null
+          try { killer = source.m_7639_() } catch (e) {}       // SRG for getEntity
+          if (!killer) {
+            try { killer = source.getEntity() } catch (e) {}
+          }
+          if (!killer) {
+            try { killer = source.entity } catch (e) {}         // JS property
+          }
+          if (killer) killerName = String(killer.getType().toString())
+          else killerName = 'via ' + String(source.m_19385_ ? source.m_19385_() : source.type || source.msgId || 'unknown')
+        }
+      } catch (e) {}
 
       console.log('[dropdiag:' + phase + '] ' + entityType + ' killed by ' + killerName +
                   ' at ' + Math.round(entity.getX()) + ',' +

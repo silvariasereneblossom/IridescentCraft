@@ -297,9 +297,14 @@ global.tick_durabilityFullSweep = function(event) {
   // --- Curios slots ---
   if (!CuriosApi_durability) return
   try {
+    // CuriosApi.getCuriosInventory returns LazyOptional, not Optional --
+    // LazyOptional.get() does not exist in Forge 1.20.1. Use orElse(null)
+    // which is the canonical "resolve or null" pattern. isPresent() works
+    // on LazyOptional fine.
     var opt = CuriosApi_durability.getCuriosInventory(player)
     if (!opt || !opt.isPresent()) return
-    var handler = opt.get()
+    var handler = opt.orElse(null)
+    if (!handler) return
     var equipped = handler.getEquippedCurios()   // IItemHandlerModifiable
     if (!equipped) return
     var slots = equipped.getSlots()
