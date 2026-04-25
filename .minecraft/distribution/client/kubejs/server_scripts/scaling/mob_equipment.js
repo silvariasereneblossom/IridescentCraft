@@ -37,17 +37,38 @@ const MOB_EQUIP_BROKEN_ENTITIES = new Set([
 // Rather than enumerate every subclass, skip all `irons_spellbooks:*`
 // entities from equipment scaling. We lose equipment on wizard mobs —
 // fine, their mod-native loot + spell kit is their thing.
-function isIronsSpellbooksMob(type) {
-  var s = String(type || '')
-  return s.indexOf('irons_spellbooks:') === 0
+//
+// 2026-04-25: AbstractMethodError still firing despite the prefix check.
+// Root cause: KubeJS `entity.type` returns the translation-key form
+// (e.g. "entity.irons_spellbooks.necromancer"), NOT the resource-location
+// form ("irons_spellbooks:necromancer"). The Set lookup AND the prefix
+// indexOf('irons_spellbooks:') both miss. Fix: normalize via the registry
+// holder's key.location() (always the canonical "ns:path" form), with a
+// regex fallback for the translation-key form. Use this canonical id
+// everywhere we compare entity types in this file.
+function entityResId(entity) {
+  try {
+    return String(entity.getType().builtInRegistryHolder().key().location())
+  } catch (e) {}
+  try {
+    var raw = String(entity.getType().toString())
+    // "entity.irons_spellbooks.necromancer" -> "irons_spellbooks:necromancer"
+    var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
+    if (m) return m[1] + ':' + m[2]
+    return raw
+  } catch (e) { return '' }
+}
+function isIronsSpellbooksMob(resId) {
+  return String(resId || '').indexOf('irons_spellbooks:') === 0
 }
 
 EntityEvents.spawned(event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
-  if (MOB_EQUIP_BROKEN_ENTITIES.has(entity.type)) return
-  if (isIronsSpellbooksMob(entity.type)) return
+  var resId = entityResId(entity)
+  if (MOB_EQUIP_BROKEN_ENTITIES.has(resId)) return
+  if (isIronsSpellbooksMob(resId)) return
   if (entity.persistentData.contains('icraft_equipped')) return
 
   // Skip mobs that already have equipment (from IM or native spawns)

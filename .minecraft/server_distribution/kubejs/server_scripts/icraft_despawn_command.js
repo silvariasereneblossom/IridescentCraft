@@ -24,7 +24,6 @@
 // =============================================================================
 
 try {
-  var Mob_dsp = Java.loadClass('net.minecraft.world.entity.Mob')
   var MobCategory_dsp = Java.loadClass('net.minecraft.world.entity.MobCategory')
   var Registries_dsp = Java.loadClass('net.minecraft.core.registries.Registries')
   var TagKey_dsp = Java.loadClass('net.minecraft.tags.TagKey')
@@ -37,13 +36,22 @@ try {
     ResourceLocation_dsp.tryParse('forge:bosses')
   )
 
+  // 2026-04-25: original implementation used
+  //   level.getEntitiesOfClass(Java.loadClass('...Mob'), aabb)
+  // which returned an empty collection. Likely cause: Rhino doesn't
+  // unwrap the JavaClass wrapper to a raw java.lang.Class<T> on the
+  // Class<T> generic parameter. Switched to Level.getEntities(Entity
+  // except, AABB) which has no Class parameter -- returns ALL entities
+  // in the AABB except the given one. We then filter by MobCategory
+  // ourselves via getType().getCategory().
   var doDespawn = function(sp, radius) {
     var level = sp.level
     var aabb = sp.getBoundingBox().inflate(radius)
     var radiusSq = radius * radius
 
     var killed = 0
-    var iter = level.getEntitiesOfClass(Mob_dsp, aabb).iterator()
+    var entities = level.getEntities(sp, aabb)
+    var iter = entities.iterator()
     while (iter.hasNext()) {
       var e = iter.next()
       try {

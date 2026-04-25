@@ -16,15 +16,29 @@ EntityEvents.spawned(event => {
     if (!entity || !entity.living) return
     if (entity.player) return
 
-    let type = entity.type
+    // 2026-04-25: KubeJS `entity.type` returns the translation-key form
+    // ("entity.<ns>.<path>"), not the resource-location form ("ns:path").
+    // BROKEN_ENTITIES Set lookups + indexOf('irons_spellbooks:') prefix
+    // checks both miss with the translation-key form. Resolve the canonical
+    // resource id via the registry holder and use that for all comparisons.
+    let resId = ''
+    try { resId = String(entity.getType().builtInRegistryHolder().key().location()) } catch (e) {
+      try {
+        let raw = String(entity.getType().toString())
+        let m = raw.match(/^entity\.([^.]+)\.(.+)$/)
+        if (m) resId = m[1] + ':' + m[2]
+        else resId = raw
+      } catch (e2) {}
+    }
+    let type = resId  // keep alias for downstream code that uses `type`
 
     // Skip entities with broken abstract methods that crash on property access
-    if (BROKEN_ENTITIES.has(type)) return
+    if (BROKEN_ENTITIES.has(resId)) return
     // 2026-04-22: namespace-level skip for irons_spellbooks wizard mobs.
     // All AbstractSpellCastingMob subclasses share the abstract slot bug;
     // enumerate-by-id missed variants. Scaling wizard HP isn't critical —
     // their mod-native tuning is fine.
-    if (String(type || '').indexOf('irons_spellbooks:') === 0) return
+    if (resId.indexOf('irons_spellbooks:') === 0) return
 
     // Skip already-processed mobs (single flag for both systems)
     if (entity.persistentData.contains('icraft_scaled')) return
