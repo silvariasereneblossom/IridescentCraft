@@ -25,6 +25,7 @@
 
 try {
   var MobCategory_dsp = Java.loadClass('net.minecraft.world.entity.MobCategory')
+  var Monster_dsp = Java.loadClass('net.minecraft.world.entity.monster.Monster')
   var Registries_dsp = Java.loadClass('net.minecraft.core.registries.Registries')
   var TagKey_dsp = Java.loadClass('net.minecraft.tags.TagKey')
   var ResourceLocation_dsp = Java.loadClass('net.minecraft.resources.ResourceLocation')
@@ -97,13 +98,18 @@ try {
           } catch (_) {}
         }
         typeBuckets[typeId] = (typeBuckets[typeId] || 0) + 1
-        // Compare via .equals() not != -- Rhino enum identity is unreliable
-        // when the JavaClass wrapper round-trips the enum value.
-        var cat = type.getCategory()
+        // Triple-fallback hostile detection. Rhino enum identity is
+        // unreliable when the JavaClass wrapper round-trips the enum
+        // value, so try Monster instanceof first (covers all vanilla +
+        // most modded hostiles since they extend Monster), then enum
+        // equals(), then string-name comparison.
         var isMonster = false
-        try { isMonster = cat.equals(MobCategory_dsp.MONSTER) } catch (_) {
-          // Fallback: name comparison
-          try { isMonster = String(cat.name()) === 'MONSTER' } catch (_) {}
+        try { isMonster = e instanceof Monster_dsp } catch (_) {}
+        if (!isMonster) {
+          try { isMonster = type.getCategory().equals(MobCategory_dsp.MONSTER) } catch (_) {}
+        }
+        if (!isMonster) {
+          try { isMonster = String(type.getCategory().name()) === 'MONSTER' } catch (_) {}
         }
         if (!isMonster) continue
         hostile++
