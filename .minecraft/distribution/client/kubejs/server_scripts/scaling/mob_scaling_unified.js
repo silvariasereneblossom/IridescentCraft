@@ -217,7 +217,6 @@ const BASIC_MOBS = new Set([
   'creeper_overhaul:snowy_creeper', 'creeper_overhaul:swamp_creeper',
   'creeper_overhaul:savannah_creeper',
   'enemy_expansion:undead_warrior', 'enemy_expansion:undead_archer',
-  'the_undead_revamped:zombie_brute',
 ])
 
 // ── Mid-Tier Mobs (1.5x HP) ──
