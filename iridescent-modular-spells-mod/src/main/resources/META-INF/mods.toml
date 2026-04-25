@@ -28,17 +28,25 @@ logoFile="iridescent_modular_spells.png"
 # ISS is a hard dep in Phase 1 — we subclass io.redspace.ironsspellbooks.item.SpellBook
 # directly, so the JVM will fail class-load if ISS is absent. Phase 2 may
 # move to soft-dep with reflection if we need a non-ISS-pack distribution.
+#
+# versionRange="[0,)" because ISS's declared version string is literally
+# "1.20.1-3.15.5.1" — a Forge Maven-comparator-style version with the MC
+# version as prefix. `[3.0.0,)` fails: comparator reads "1" from "1.20.1-..."
+# and treats it as major-1, which is < 3. We accept any present version
+# and rely on the pack having a compatible ISS installed.
 [[dependencies.${mod_id}]]
     modId="irons_spellbooks"
     mandatory=true
-    versionRange="[3.0.0,)"
+    versionRange="[0,)"
     ordering="AFTER"
     side="BOTH"
 
 # Curios is required because ISS's SpellBook extends CurioBaseItem.
+# Same permissive range — Curios versions like "5.14.1+1.20.1" also have
+# unusual format that confuses Forge's range parser.
 [[dependencies.${mod_id}]]
     modId="curios"
     mandatory=true
-    versionRange="[5.0.0,)"
+    versionRange="[0,)"
     ordering="AFTER"
     side="BOTH"
