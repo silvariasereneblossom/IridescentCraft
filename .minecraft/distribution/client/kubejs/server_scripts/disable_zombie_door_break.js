@@ -62,21 +62,44 @@ try {
       }
       if (!goalSelector) return
 
-      // Strip and log: when we successfully strip BreakDoorGoal from a
-      // mob, log its entity type the FIRST time we see that type. Builds
-      // a usage-driven list of which modded mobs were silently shipping
-      // door-break -- shows up in the server log as
-      //   [no_door_break] stripped BreakDoorGoal from new type: <id>
-      // so we can audit what was found across a session.
-      var stripped = goalSelector.removeAllGoals(function(g) {
-        return g instanceof BreakDoorGoal
-      })
-      if (stripped) {
+      // 2026-04-25 fix: Mob.getGoalSelector().removeAllGoals(Predicate)
+      // returns VOID, not boolean -- the earlier `if (stripped)` was
+      // always falsy and never logged anything, even when goals were
+      // successfully stripped. Now we count BreakDoorGoal instances on
+      // the goal-list before removing, then log if non-zero. Per-type
+      // one-shot so the log doesn't spam.
+      //
+      // Plus a one-shot ALWAYS-LOG of the first 5 entity types we see
+      // on spawn at all (regardless of whether they had BreakDoorGoal).
+      // Lets us verify the handler is actually firing on every Mob spawn.
+      if (!global._no_door_break_seenAny) global._no_door_break_seenAny = {}
+      var typeId = String(entity.getType().toString())
+      if (!global._no_door_break_seenAny[typeId] &&
+          Object.keys(global._no_door_break_seenAny).length < 30) {
+        global._no_door_break_seenAny[typeId] = true
+        console.log('[no_door_break] handler fired on first spawn of: ' + typeId)
+      }
+
+      // Count matches before removing (removeAllGoals returns void, so we
+      // can't use its return value).
+      var goals = goalSelector.getAvailableGoals()
+      var matchCount = 0
+      try {
+        var it = goals.iterator()
+        while (it.hasNext()) {
+          var wg = it.next()
+          if (wg.getGoal() instanceof BreakDoorGoal) matchCount++
+        }
+      } catch (e) {}
+
+      goalSelector.removeAllGoals(function(g) { return g instanceof BreakDoorGoal })
+
+      if (matchCount > 0) {
         if (!global._no_door_break_seenTypes) global._no_door_break_seenTypes = {}
-        var typeId = String(entity.getType().toString())
         if (!global._no_door_break_seenTypes[typeId]) {
           global._no_door_break_seenTypes[typeId] = true
-          console.log('[no_door_break] stripped BreakDoorGoal from new type: ' + typeId)
+          console.log('[no_door_break] stripped ' + matchCount +
+                      ' BreakDoorGoal(s) from new type: ' + typeId)
         }
       }
     } catch (e) {

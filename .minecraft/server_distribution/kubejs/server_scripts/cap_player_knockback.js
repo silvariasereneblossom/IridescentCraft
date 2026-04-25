@@ -43,21 +43,51 @@ try {
       try {
         var victim = event.getEntity()
         if (!(victim instanceof Player_kb)) return
+
         var strength = event.getStrength()
+        var ratioX = event.getRatioX()
+        var ratioZ = event.getRatioZ()
+
+        // 2026-04-25 diagnostic: previous version only logged when
+        // strength > cap. Tester reported being launched skyward but
+        // no logs fired -- meaning either the event isn't reaching us,
+        // or the launch comes from ratio/Y manipulation rather than
+        // strength. Vanilla LivingEntity.knockback() caps Y impulse at
+        // 0.4, so high strength alone shouldn't fling skyward. We need
+        // to see the actual values being passed.
+        //
+        // Log first 10 events with full values so we can diagnose, then
+        // back off to logging only capped events. Per-attacker-type
+        // dedup so it's not spam-prone.
+        if (!global._kb_seen_count) global._kb_seen_count = 0
+        if (global._kb_seen_count < 10) {
+          global._kb_seen_count++
+          var src1 = null
+          try { src1 = event.getSource ? event.getSource() : null } catch (e) {}
+          var atk1 = null
+          try { atk1 = src1 ? src1.getEntity() : null } catch (e) {}
+          var atkName = atk1 ? String(atk1.getType().toString()) : 'unknown'
+          var srcName = src1 ? String(src1.type ? src1.type : src1) : 'no-src'
+          console.log('[knockback_cap] event #' + global._kb_seen_count +
+                      ' strength=' + strength.toFixed(3) +
+                      ' ratioX=' + ratioX.toFixed(3) +
+                      ' ratioZ=' + ratioZ.toFixed(3) +
+                      ' attacker=' + atkName +
+                      ' source=' + srcName)
+        }
+
         if (strength > KNOCKBACK_CAP) {
           event.setStrength(KNOCKBACK_CAP)
-          // First-time-per-source-class log so we know what sources
-          // were getting through (helps tune the cap or audit affix
-          // damage). Keyed by attacker entity type.
           if (!global._kb_cap_seen) global._kb_cap_seen = {}
-          var src = event.getSource ? event.getSource() : null
-          var attacker = src ? src.getEntity() : null
+          var src = null
+          try { src = event.getSource ? event.getSource() : null } catch (e) {}
+          var attacker = null
+          try { attacker = src ? src.getEntity() : null } catch (e) {}
           var key = attacker ? String(attacker.getType().toString()) : 'unknown'
           if (!global._kb_cap_seen[key]) {
             global._kb_cap_seen[key] = true
-            console.log('[knockback_cap] capped ' + strength.toFixed(2) +
-                        ' -> ' + KNOCKBACK_CAP + ' from ' + key +
-                        ' (first occurrence)')
+            console.log('[knockback_cap] CAPPED ' + strength.toFixed(2) +
+                        ' -> ' + KNOCKBACK_CAP + ' from ' + key)
           }
         }
       } catch (e) {
