@@ -60,3 +60,12 @@ logoFile="iridescent_modular_spells.png"
     versionRange="[0,)"
     ordering="AFTER"
     side="BOTH"
+
+# Phase 6: Tetra is a hard dep -- our books implement IModularItem so
+# JVM class-load will fail if Tetra is absent. Same permissive [0,) range.
+[[dependencies.${mod_id}]]
+    modId="tetra"
+    mandatory=true
+    versionRange="[0,)"
+    ordering="AFTER"
+    side="BOTH"

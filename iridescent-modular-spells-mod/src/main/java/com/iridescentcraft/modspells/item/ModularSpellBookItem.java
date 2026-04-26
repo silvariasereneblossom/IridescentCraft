@@ -1,67 +1,95 @@
 package com.iridescentcraft.modspells.item;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Multimap;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import se.mickelus.tetra.data.DataManager;
+import se.mickelus.tetra.gui.GuiModuleOffsets;
+import se.mickelus.tetra.items.modular.IModularItem;
+import se.mickelus.tetra.module.SchematicRegistry;
+import se.mickelus.tetra.module.data.EffectData;
+import se.mickelus.tetra.module.data.ItemProperties;
+import se.mickelus.tetra.module.data.SynergyData;
+import se.mickelus.tetra.module.data.ToolData;
+import se.mickelus.tetra.module.schematic.RepairSchematic;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Modular ISS spell book base. Subclasses ISS's {@link SpellBook} so we
  * inherit spell-casting, curio behavior, and the standard book item
- * lifecycle for free.
+ * lifecycle for free; implements Tetra's {@link IModularItem} so the book
+ * is recognized by the Tetra workbench.
  *
- * <p>Module slots are stored in a single CompoundTag at NBT key
- * {@code imodspells_slots}. Each slot maps a slot name -> material id:
- * <pre>
- *   imodspells_slots: {
- *     cover: "leather",
- *     pages: "iron"
- *   }
- * </pre>
+ * <p>Phase 6B: skeleton only. {@code getMajorModuleKeys} reports the slot
+ * layout so the book appears in the workbench, but no schemas/modules
+ * exist yet, so installed-module set is empty. Stat bonuses still come
+ * from the legacy {@code imodspells_slots} NBT system via
+ * {@link com.iridescentcraft.modspells.event.AttributeApplier}.
  *
- * <p>Phase 1 ships only two slot names (cover, pages) and three materials
- * (leather, iron, diamond). Bonuses are computed per-stack from this NBT
- * and applied to the holder's attributes by
- * {@link com.iridescentcraft.modspells.event.AttributeApplier} on a
- * server tick.
+ * <p>Phase 6C registers the slot schemas + per-material variants;
+ * Phase 6D migrates legacy NBT into Tetra's Modules NBT and retires
+ * AttributeApplier + AnvilModuleInstaller.
  *
- * <p>Phase 2 will pivot to Tetra's data-driven module system, but the
- * NBT key stays so existing books migrate without breaking.
+ * <p>Tetra slot layout (5 majors, no minors): {@code core},
+ * {@code front_cover}, {@code back_cover}, {@code spine}, {@code pages}.
+ * The {@code core} slot picks which underlying ISS book the modular
+ * variant represents (copper / iron / gold / diamond / netherite); the
+ * other four slots accept Tetra material tags.
  */
-public class ModularSpellBookItem extends SpellBook {
+public class ModularSpellBookItem extends SpellBook implements IModularItem {
 
-    /** NBT root for slot data. */
+    /** Tetra item identifier for repair-schematic + cache namespacing. */
+    public static final String TETRA_IDENTIFIER = "iridescent_modular_spells:iss_book";
+
+    /** Tetra slot keys (used by IModularItem; matches `slots` field in modules/<key>.json). */
+    public static final String TETRA_SLOT_CORE = "iss_book/core";
+    public static final String TETRA_SLOT_FRONT_COVER = "iss_book/front_cover";
+    public static final String TETRA_SLOT_BACK_COVER = "iss_book/back_cover";
+    public static final String TETRA_SLOT_SPINE = "iss_book/spine";
+    public static final String TETRA_SLOT_PAGES = "iss_book/pages";
+
+    private static final String[] MAJOR_KEYS = {
+            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
+            TETRA_SLOT_SPINE, TETRA_SLOT_PAGES
+    };
+
+    private final Cache<String, Multimap<Attribute, AttributeModifier>> attributeCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+    private final Cache<String, ToolData> toolCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+    private final Cache<String, EffectData> effectCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+    private final Cache<String, ItemProperties> propertyCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+
+    private final SynergyData[] synergies = new SynergyData[0];
+
+    // ===== Legacy Phase 1-5 imodspells_slots NBT system (retired in 6D) =====
+
     public static final String SLOTS_NBT_KEY = "imodspells_slots";
-
-    /** Slot names valid in Phase 1. */
     public static final String SLOT_COVER = "cover";
     public static final String SLOT_PAGES = "pages";
 
-    /**
-     * Material registry for Phase 1. Each material declares its stat
-     * contributions per slot. Numbers are expressed as multipliers
-     * (e.g. 0.05 = +5% of the underlying attribute). The
-     * {@link AttributeKey} enumerates which stat is modified.
-     *
-     * <p>Phase 2 moves these to JSON data so designers can rebalance
-     * without recompiling.
-     */
     public static final Map<String, Map<AttributeKey, Double>> COVER_BONUSES = new HashMap<>();
     public static final Map<String, Map<AttributeKey, Double>> PAGES_BONUSES = new HashMap<>();
 
     static {
-        // -- Cover slot bonuses (Phase 2: full ISS material progression) --
-        // Cover leans toward "max" stats: max mana, spell power.
-        // Tiers:  leather/copper (T1)  ->  iron/gold (T2)  ->  diamond (T3)  ->  netherite (T4)
         COVER_BONUSES.put("leather",
                 Map.of(AttributeKey.MAX_MANA, 0.05));
         COVER_BONUSES.put("copper",
@@ -79,8 +107,6 @@ public class ModularSpellBookItem extends SpellBook {
                 Map.of(AttributeKey.SPELL_POWER, 0.20,
                        AttributeKey.MAX_MANA, 0.10));
 
-        // -- Pages slot bonuses --
-        // Pages lean toward "rate" stats: regen, cooldown reduction.
         PAGES_BONUSES.put("leather",
                 Map.of(AttributeKey.SPELL_POWER, 0.02));
         PAGES_BONUSES.put("copper",
@@ -100,9 +126,87 @@ public class ModularSpellBookItem extends SpellBook {
 
     public ModularSpellBookItem(int maxSpellSlots, Properties properties) {
         super(maxSpellSlots, properties);
+        DataManager.instance.moduleData.onReload(this::clearCaches);
+        SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, TETRA_IDENTIFIER));
     }
 
-    /** Return the material installed in the named slot, or null if empty. */
+    // ===== IModularItem contract =====
+
+    @Override
+    public Item getItem() {
+        return this;
+    }
+
+    @Override
+    public void clearCaches() {
+        attributeCache.invalidateAll();
+        toolCache.invalidateAll();
+        effectCache.invalidateAll();
+        propertyCache.invalidateAll();
+    }
+
+    @Override
+    public String[] getMajorModuleKeys(ItemStack itemStack) {
+        return MAJOR_KEYS;
+    }
+
+    @Override
+    public String[] getMinorModuleKeys(ItemStack itemStack) {
+        return new String[0];
+    }
+
+    @Override
+    public String[] getRequiredModules(ItemStack itemStack) {
+        // 6B: nothing required so books work without modules. 6D will lock
+        // in all 5 majors once schemas land + migration runs.
+        return new String[0];
+    }
+
+    public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[]{-22, 9, 5, 18, -15, -4, 5, 0, -15, 22});
+    }
+
+    public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[0]);
+    }
+
+    @Override
+    public int getHoneBase(ItemStack itemStack) {
+        return 450;
+    }
+
+    @Override
+    public int getHoneIntegrityMultiplier(ItemStack itemStack) {
+        return 200;
+    }
+
+    @Override
+    public boolean canGainHoneProgress(ItemStack itemStack) {
+        return false;
+    }
+
+    @Override
+    public SynergyData[] getAllSynergyData(ItemStack itemStack) {
+        return synergies;
+    }
+
+    @Override
+    public Cache<String, Multimap<Attribute, AttributeModifier>> getAttributeModifierCache() {
+        return attributeCache;
+    }
+
+    @Override
+    public Cache<String, EffectData> getEffectDataCache() {
+        return effectCache;
+    }
+
+    @Override
+    public Cache<String, ItemProperties> getPropertyCache() {
+        return propertyCache;
+    }
+
+    // ===== Legacy NBT slot accessors (used by AttributeApplier through 6C) =====
+
     public static String getSlotMaterial(ItemStack stack, String slotName) {
         if (stack.isEmpty() || stack.getTag() == null) return null;
         CompoundTag slots = stack.getTag().getCompound(SLOTS_NBT_KEY);
@@ -112,7 +216,6 @@ public class ModularSpellBookItem extends SpellBook {
         return material.isEmpty() ? null : material;
     }
 
-    /** Set (or clear with null) the material installed in the named slot. */
     public static void setSlotMaterial(ItemStack stack, String slotName, String material) {
         CompoundTag tag = stack.getOrCreateTag();
         CompoundTag slots = tag.getCompound(SLOTS_NBT_KEY);
@@ -124,11 +227,6 @@ public class ModularSpellBookItem extends SpellBook {
         tag.put(SLOTS_NBT_KEY, slots);
     }
 
-    /**
-     * Compute the total bonus for a given attribute across all slots on
-     * the given stack. Returns a multiplier (e.g. 0.10 = +10%) summed
-     * additively across slots (no compounding).
-     */
     public static double getTotalBonus(ItemStack stack, AttributeKey key) {
         if (!(stack.getItem() instanceof ModularSpellBookItem)) return 0.0;
         double total = 0.0;
@@ -143,7 +241,6 @@ public class ModularSpellBookItem extends SpellBook {
         return total;
     }
 
-    /** Tooltip — show installed modules + bonus summary. */
     @Override
     public void appendHoverText(ItemStack stack, Level level,
                                 List<Component> tooltip, TooltipFlag flag) {
@@ -154,7 +251,6 @@ public class ModularSpellBookItem extends SpellBook {
         appendSlotLine(tooltip, stack, SLOT_COVER, "Cover");
         appendSlotLine(tooltip, stack, SLOT_PAGES, "Pages");
 
-        // Bonus summary
         Map<AttributeKey, Double> totals = new LinkedHashMap<>();
         for (AttributeKey k : AttributeKey.values()) {
             double v = getTotalBonus(stack, k);
@@ -169,6 +265,9 @@ public class ModularSpellBookItem extends SpellBook {
                         .withStyle(ChatFormatting.AQUA));
             });
         }
+
+        // Tetra module breakdown — empty in 6B, populated once schemas land in 6C.
+        tooltip.addAll(this.getTooltip(stack, level, flag));
     }
 
     private static void appendSlotLine(List<Component> tooltip, ItemStack stack,
@@ -183,17 +282,11 @@ public class ModularSpellBookItem extends SpellBook {
         tooltip.add(line.withStyle(ChatFormatting.GRAY));
     }
 
-    /**
-     * Attribute keys our module system can bonus. Each maps to either
-     * a vanilla attribute or an ISS / mod attribute resolved at runtime
-     * by AttributeApplier (so we don't hard-fail if ISS is absent).
-     */
     public enum AttributeKey {
         SPELL_POWER("Spell Power", "irons_spellbooks:spell_power"),
         MAX_MANA("Max Mana", "irons_spellbooks:max_mana"),
         MANA_REGEN("Mana Regen", "irons_spellbooks:mana_regen"),
         COOLDOWN_REDUCTION("Cooldown Reduction", "irons_spellbooks:cooldown_reduction"),
-        // Phase 3: Ars Nouveau-side attributes for cloth-cover modular books
         ARS_MAX_MANA("Max Mana (Ars)", "ars_nouveau:ars_nouveau.perk.max_mana"),
         ARS_SPELL_DAMAGE("Spell Damage (Ars)", "ars_nouveau:ars_nouveau.perk.spell_damage");
 

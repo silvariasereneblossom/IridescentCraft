@@ -34,6 +34,6 @@ public class IridescentModularSpells {
         // Enchantment registration (Phase 4 -- book-exclusive enchants)
         ModEnchantmentRegistry.ENCHANTMENTS.register(modBus);
 
-        LOGGER.info("[IridescentModularSpells] Phase 4 loaded -- ISS+Ars modular books, custom enchants");
+        LOGGER.info("[IridescentModularSpells] Phase 6B loaded -- IModularItem skeleton on ISS+Ars books (Tetra workbench-aware)");
     }
 }

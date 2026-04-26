@@ -1,43 +1,78 @@
 package com.iridescentcraft.modspells.item;
 
+import com.google.common.cache.Cache;
+import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.Multimap;
 import com.hollingsworth.arsnouveau.api.spell.SpellTier;
 import com.hollingsworth.arsnouveau.common.items.SpellBook;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import se.mickelus.tetra.data.DataManager;
+import se.mickelus.tetra.gui.GuiModuleOffsets;
+import se.mickelus.tetra.items.modular.IModularItem;
+import se.mickelus.tetra.module.SchematicRegistry;
+import se.mickelus.tetra.module.data.EffectData;
+import se.mickelus.tetra.module.data.ItemProperties;
+import se.mickelus.tetra.module.data.SynergyData;
+import se.mickelus.tetra.module.data.ToolData;
+import se.mickelus.tetra.module.schematic.RepairSchematic;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
 
 /**
  * Modular Ars Nouveau spell book. Subclasses Ars's {@link SpellBook} to
- * inherit glyph-casting, tier semantics, and the standard book lifecycle.
+ * inherit glyph-casting, tier semantics, and the standard book lifecycle;
+ * implements Tetra's {@link IModularItem} so the book is recognized by
+ * the Tetra workbench.
  *
- * <p>Cover/pages slot mechanics mirror {@link ModularSpellBookItem} (same
- * NBT key {@code imodspells_slots}) but the materials are CLOTH-themed
- * rather than metal/leather, and the bonuses target Ars-side attributes
- * (max mana, spell damage) rather than ISS attributes.
+ * <p>Phase 6B: skeleton only. {@code getMajorModuleKeys} reports a
+ * 4-slot layout. Stat bonuses still come from the legacy
+ * {@code imodspells_slots} NBT system via
+ * {@link com.iridescentcraft.modspells.event.AttributeApplier}.
  *
- * <p>Phase 3 cloth materials:
- * <ul>
- *   <li>{@code white_wool}     -- T1 entry (vanilla)</li>
- *   <li>{@code manaweave_cloth} -- T2 (Botania)</li>
- *   <li>{@code sorcerer_robes}  -- T3 (Ars Nouveau native)</li>
- *   <li>{@code spell_cloth}     -- T4 (Botania endgame)</li>
- * </ul>
- *
- * <p>The shared {@link AttributeApplier} discovers both ISS and Ars
- * modular books at scan time and sums per-key totals so cross-system
- * synergy at the player level still works for shared keys (none in the
- * default config; can be extended).
+ * <p>Tetra slot layout (4 majors, no minors): {@code front_cover},
+ * {@code back_cover}, {@code dye}, {@code spine}. No {@code core} slot
+ * (each Ars tier is its own item — Novice / Apprentice / Archmage —
+ * because Ars's SpellBook constructor takes a SpellTier param at item
+ * registration time and SpellTier is fixed for the lifetime of the item).
  */
-public class ModularArsSpellBookItem extends SpellBook {
+public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
+
+    public static final String TETRA_IDENTIFIER = "iridescent_modular_spells:ars_book";
+
+    public static final String TETRA_SLOT_FRONT_COVER = "ars_book/front_cover";
+    public static final String TETRA_SLOT_BACK_COVER = "ars_book/back_cover";
+    public static final String TETRA_SLOT_DYE = "ars_book/dye";
+    public static final String TETRA_SLOT_SPINE = "ars_book/spine";
+
+    private static final String[] MAJOR_KEYS = {
+            TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER, TETRA_SLOT_DYE, TETRA_SLOT_SPINE
+    };
+
+    private final Cache<String, Multimap<Attribute, AttributeModifier>> attributeCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+    private final Cache<String, ToolData> toolCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+    private final Cache<String, EffectData> effectCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+    private final Cache<String, ItemProperties> propertyCache =
+            CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
+
+    private final SynergyData[] synergies = new SynergyData[0];
+
+    // ===== Legacy Phase 1-5 imodspells_slots NBT system (retired in 6D) =====
 
     public static final String SLOTS_NBT_KEY = ModularSpellBookItem.SLOTS_NBT_KEY;
     public static final String SLOT_COVER = ModularSpellBookItem.SLOT_COVER;
@@ -47,7 +82,6 @@ public class ModularArsSpellBookItem extends SpellBook {
     public static final Map<String, Map<ModularSpellBookItem.AttributeKey, Double>> PAGES_BONUSES = new HashMap<>();
 
     static {
-        // Cover (cloth) -- "max" bias: Ars max mana + spell damage scaling
         COVER_BONUSES.put("white_wool",
                 Map.of(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA, 0.05));
         COVER_BONUSES.put("manaweave_cloth",
@@ -60,7 +94,6 @@ public class ModularArsSpellBookItem extends SpellBook {
                 Map.of(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA, 0.20,
                        ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.15));
 
-        // Pages (cloth) -- "rate" bias: spell damage + ISS spell power for cross-mod synergy
         PAGES_BONUSES.put("white_wool",
                 Map.of(ModularSpellBookItem.AttributeKey.ARS_SPELL_DAMAGE, 0.02));
         PAGES_BONUSES.put("manaweave_cloth",
@@ -75,7 +108,84 @@ public class ModularArsSpellBookItem extends SpellBook {
 
     public ModularArsSpellBookItem(Properties properties, SpellTier tier) {
         super(properties, tier);
+        DataManager.instance.moduleData.onReload(this::clearCaches);
+        SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, TETRA_IDENTIFIER));
     }
+
+    // ===== IModularItem contract =====
+
+    @Override
+    public Item getItem() {
+        return this;
+    }
+
+    @Override
+    public void clearCaches() {
+        attributeCache.invalidateAll();
+        toolCache.invalidateAll();
+        effectCache.invalidateAll();
+        propertyCache.invalidateAll();
+    }
+
+    @Override
+    public String[] getMajorModuleKeys(ItemStack itemStack) {
+        return MAJOR_KEYS;
+    }
+
+    @Override
+    public String[] getMinorModuleKeys(ItemStack itemStack) {
+        return new String[0];
+    }
+
+    @Override
+    public String[] getRequiredModules(ItemStack itemStack) {
+        return new String[0];
+    }
+
+    public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[]{5, 18, -15, -1, 5, -1, -15, 18});
+    }
+
+    public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[0]);
+    }
+
+    @Override
+    public int getHoneBase(ItemStack itemStack) {
+        return 450;
+    }
+
+    @Override
+    public int getHoneIntegrityMultiplier(ItemStack itemStack) {
+        return 200;
+    }
+
+    @Override
+    public boolean canGainHoneProgress(ItemStack itemStack) {
+        return false;
+    }
+
+    @Override
+    public SynergyData[] getAllSynergyData(ItemStack itemStack) {
+        return synergies;
+    }
+
+    @Override
+    public Cache<String, Multimap<Attribute, AttributeModifier>> getAttributeModifierCache() {
+        return attributeCache;
+    }
+
+    @Override
+    public Cache<String, EffectData> getEffectDataCache() {
+        return effectCache;
+    }
+
+    @Override
+    public Cache<String, ItemProperties> getPropertyCache() {
+        return propertyCache;
+    }
+
+    // ===== Legacy NBT slot accessors (used by AttributeApplier through 6C) =====
 
     public static String getSlotMaterial(ItemStack stack, String slotName) {
         if (stack.isEmpty() || stack.getTag() == null) return null;
@@ -135,6 +245,9 @@ public class ModularArsSpellBookItem extends SpellBook {
                         .withStyle(ChatFormatting.AQUA));
             });
         }
+
+        // Tetra module breakdown — empty in 6B, populated once schemas land in 6C.
+        tooltip.addAll(this.getTooltip(stack, level, flag));
     }
 
     private static void appendSlotLine(List<Component> tooltip, ItemStack stack,

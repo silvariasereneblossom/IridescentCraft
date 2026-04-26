@@ -50,8 +50,14 @@ dependencies {
     // Geckolib is a transitive dep of Ars (SpellBook implements GeoItem).
     // Compile-only since the runtime jar is loaded by the pack.
     compileOnly fg.deobf("blank:geckolib-forge:1.20.1-4.8.3")
-    // Tetra deferred to Phase 4+:
-    // compileOnly fg.deobf(files("$projectDir/libs/tetra-1.20.1-6.12.0.jar"))
+    // Phase 6: Tetra integration. Books implement
+    // se.mickelus.tetra.items.modular.IModularItem so they appear in
+    // the Tetra workbench and use Tetra's module + stat system.
+    compileOnly fg.deobf("blank:tetra:1.20.1-6.12.0")
+    // tetra-mutil — Tetra's data-loading lib; DataManager.moduleData uses
+    // se.mickelus.mutil.data.DataStore which is in this jar. Needed at
+    // compile-time even though Tetra brings it transitively at runtime.
+    compileOnly fg.deobf("blank:mutil:1.20.1-6.3.0")
 }
 
 jar {
