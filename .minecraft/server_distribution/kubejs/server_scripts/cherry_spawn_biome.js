@@ -157,22 +157,39 @@ try {
                       villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ() +
                       ' biome=' + villageBiome)
           if (villageBiome === TARGET_BIOME) {
-            // Match! Set spawn at the village. KubeJS's ServerLevel wrapper
-            // doesn't always expose setSharedSpawnPos by name -- try the
-            // Forge-added setDefaultSpawnPos, the LevelData path, and the
-            // SRG name as fallbacks. (Tester crash on 6f05caee:
-            //   TypeError: Cannot find function setSharedSpawnPos in
-            //   object ServerLevel[world])
-            if (applySpawnPos(ow, villagePos)) {
-              console.log('[icraft_spawn] SUCCESS: world spawn -> cherry village at ' +
-                          villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ())
+            // Match! findNearestMapStructure returns Y=0 (no surface query);
+            // resolve the actual ground Y via the heightmap before stashing.
+            var surfaceY = villagePos.getY()
+            try {
+              surfaceY = ow.getHeight(
+                Java.loadClass('net.minecraft.world.level.levelgen.Heightmap$Types').MOTION_BLOCKING_NO_LEAVES,
+                villagePos.getX(), villagePos.getZ()
+              )
+            } catch (_) {}
+            var safePos = new BlockPos_cs(villagePos.getX(), surfaceY, villagePos.getZ())
+
+            // 1. Set world spawn (compass + bedless respawn)
+            // 2. Stash the position in level NBT so PlayerEvents.loggedIn
+            //    can teleport first-time players directly to the village
+            //    (setSharedSpawnPos alone only affects WORLD spawn -- the
+            //    player's actual first-join landing depends on player.dat
+            //    state, server spawn-radius scatter, etc.)
+            if (applySpawnPos(ow, safePos)) {
               try {
-                if (pdata) pdata.putBoolean('icraft_cherry_spawn_set', true)
+                if (pdata) {
+                  pdata.putBoolean('icraft_cherry_spawn_set', true)
+                  pdata.putInt('icraft_cherry_village_x', safePos.getX())
+                  pdata.putInt('icraft_cherry_village_y', safePos.getY())
+                  pdata.putInt('icraft_cherry_village_z', safePos.getZ())
+                }
               } catch (_) {}
+              console.log('[icraft_spawn] SUCCESS: world spawn -> cherry village at ' +
+                          safePos.getX() + ',' + safePos.getY() + ',' + safePos.getZ() +
+                          ' (player first-join teleport armed)')
               return
             } else {
               console.warn('[icraft_spawn] all setSpawnPos paths failed for village at ' +
-                           villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ())
+                           safePos.getX() + ',' + safePos.getY() + ',' + safePos.getZ())
               return
             }
           }
@@ -215,8 +232,45 @@ try {
     setSpawnToCherryRiverValley(event.server)
   })
 
+  // Player first-join teleport. setSharedSpawnPos sets WORLD spawn but the
+  // first-time player's actual landing position is influenced by player.dat
+  // (existing players keep their saved spawn) and server-property
+  // spawn-radius scatter. This handler explicitly teleports first-time
+  // players to the cherry village position stashed in level NBT.
+  PlayerEvents.loggedIn(function(event) {
+    try {
+      var player = event.player
+      if (!player) return
+      if (player.persistentData.contains('icraft_cherry_first_spawned')) return
+
+      var ow = event.server.overworld()
+      var pdata = ow.getPersistentData ? ow.getPersistentData() : null
+      if (!pdata || !pdata.contains('icraft_cherry_village_x')) return
+
+      var x = pdata.getInt('icraft_cherry_village_x')
+      var y = pdata.getInt('icraft_cherry_village_y')
+      var z = pdata.getInt('icraft_cherry_village_z')
+
+      // Center the player on the block + +1 to land on top of the surface
+      try { player.teleportTo(x + 0.5, y + 1, z + 0.5) } catch (e) {
+        // Fallback: vanilla SRG teleport name
+        try { player.m_6021_(x + 0.5, y + 1, z + 0.5) } catch (e2) {
+          console.warn('[icraft_spawn] first-join teleport failed for ' +
+                       player.username + ': ' + e + ' / ' + e2)
+          return
+        }
+      }
+      player.persistentData.putBoolean('icraft_cherry_first_spawned', true)
+      console.log('[icraft_spawn] first-join teleport: ' + player.username +
+                  ' -> ' + x + ',' + y + ',' + z + ' (cherry village)')
+    } catch (e) {
+      console.warn('[icraft_spawn] PlayerEvents.loggedIn handler threw: ' + e)
+    }
+  })
+
   console.log('[IridescentCraft] cherry_spawn_biome v2 loaded -- search for ' +
-              TARGET_BIOME + ' + village; max ' + MAX_ATTEMPTS + ' attempts')
+              TARGET_BIOME + ' + village; max ' + MAX_ATTEMPTS +
+              ' attempts; first-join teleport armed')
 } catch (e) {
   console.warn('[IridescentCraft] cherry_spawn_biome bootstrap FAILED: ' + e)
 }
