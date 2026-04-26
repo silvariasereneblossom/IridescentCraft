@@ -11,34 +11,18 @@ REM   - 8-12 GB RAM available for the server
 
 title IridescentCraft Server
 
-REM Check if we're in a system user folder — never run in-place there
-set "IN_SYSTEM_FOLDER=0"
+REM One-click bootstrap: when the bat is run from a folder that doesn't
+REM contain the install marker (.icraft_server), set up a clean subfolder
+REM `IridescentCraft Dedicated Server\`, copy the bat there, and relaunch
+REM from there. Marker check is on the *current* folder so the relaunched
+REM instance (which lives inside the subfolder, with marker present) falls
+REM through to the rest of the script instead of creating a nested folder.
+REM
+REM Single source of truth: .icraft_server. Earlier versions had a separate
+REM "system folder detection" branch (Downloads/Desktop/etc.) with its check
+REM pointed at the nested subfolder's marker, which caused infinite folder
+REM nesting when the relaunched instance still saw \Downloads\ in its path.
 setlocal enabledelayedexpansion
-for %%D in (Desktop Documents Downloads Music Pictures Videos) do (
-    echo "%~dp0" | findstr /I /C:"\%%D\" >nul 2>&1
-    if not errorlevel 1 set "IN_SYSTEM_FOLDER=1"
-)
-
-REM If in system folder: always create subfolder (ignore .icraft_server)
-REM If not in system folder: create subfolder only if no .icraft_server marker
-if "!IN_SYSTEM_FOLDER!"=="1" (
-    if not exist "%~dp0IridescentCraft Dedicated Server\.icraft_server" (
-        set "SERVER_DIR=%~dp0IridescentCraft Dedicated Server"
-        if not exist "!SERVER_DIR!" mkdir "!SERVER_DIR!"
-        copy /y "%~f0" "!SERVER_DIR!\iridescentserver.bat" >nul
-        echo. > "!SERVER_DIR!\.icraft_server"
-        echo [SETUP] Created server directory. Launching from there...
-        start "" "!SERVER_DIR!\iridescentserver.bat"
-        endlocal
-        exit /b
-    ) else (
-        REM Subfolder already exists — launch from there
-        start "" "%~dp0IridescentCraft Dedicated Server\iridescentserver.bat"
-        endlocal
-        exit /b
-    )
-)
-
 if not exist "%~dp0.icraft_server" (
     set "SERVER_DIR=%~dp0IridescentCraft Dedicated Server"
     if not exist "!SERVER_DIR!" mkdir "!SERVER_DIR!"

@@ -20,6 +20,26 @@ FORGE_INSTALLER_URL="https://maven.minecraftforge.net/net/minecraftforge/forge/$
 SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
 cd "$SCRIPT_DIR"
 
+# One-click bootstrap: when the .sh is run from a folder that doesn't
+# contain the install marker (.icraft_server), set up a clean subfolder
+# `IridescentCraft-Dedicated-Server/`, copy the script there, exec into
+# it. Mirrors the Windows .bat behavior — users who curl this single file
+# into Downloads get a clean install location instead of spilling
+# server_distribution into their downloads dir.
+#
+# Single source of truth: .icraft_server. The relaunched instance lives
+# inside the subfolder with marker present, falls through to phase 0.
+if [ ! -f "$SCRIPT_DIR/.icraft_server" ]; then
+    SERVER_DIR="$SCRIPT_DIR/IridescentCraft-Dedicated-Server"
+    mkdir -p "$SERVER_DIR"
+    cp -f "$0" "$SERVER_DIR/iridescentserver.sh"
+    chmod +x "$SERVER_DIR/iridescentserver.sh"
+    touch "$SERVER_DIR/.icraft_server"
+    echo "[SETUP] Created server directory: $SERVER_DIR"
+    echo "[SETUP] Launching from there..."
+    exec "$SERVER_DIR/iridescentserver.sh" "$@"
+fi
+
 # -Force flag: delete the SHA marker so the next sync does a full download.
 # Use when the server state has drifted from the repo despite the marker
 # claiming "up to date" (e.g., after a sync silently missed files).
