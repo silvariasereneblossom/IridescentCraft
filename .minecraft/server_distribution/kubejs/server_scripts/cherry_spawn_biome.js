@@ -129,7 +129,12 @@ try {
           console.log('[icraft_spawn]   no village within ' + VILLAGE_SEARCH_CHUNKS +
                       ' chunks of cherry biome center')
         } else {
-          var villagePos = villageResult.getFirst()
+          // 1.20.1 ServerLevel.findNearestMapStructure returns BlockPos
+          // directly (not Pair<BlockPos, Holder<Structure>> like
+          // findClosestBiome3d does). Tester's first run threw
+          //   TypeError: Cannot find function getFirst in object BlockPos{...}
+          // because v2 first draft assumed Pair. Use the result as-is.
+          var villagePos = villageResult
           var villageBiome = biomeIdAt(ow, villagePos)
           console.log('[icraft_spawn]   nearest village at ' +
                       villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ() +
