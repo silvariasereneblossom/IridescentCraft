@@ -1165,14 +1165,14 @@ LootJS.modifiers(event => {
   // =========================================================================
   // Tester report 2026-04-26: iron ingots are too scarce in T1 chests --
   // never observed iron in village chests despite vanilla loot tables
-  // including it. Add 25% chance for iron_ingot (1-3 stack) to every T1
+  // including it. Add 15% chance for iron_ingot (1-3 stack) to every T1
   // overworld chest type. Stacks with vanilla rolls. Village smith chests
   // already get 30% via Section 5; this catches the rest.
   //
-  // Why: iron is the entry-tier crafting material for almost every gating
-  // path (tetra modules, magic books, T2 progression). Forcing players
-  // to mine for early iron when chest exploration is happening anyway
-  // is just friction.
+  // Why 15% (not 25%): by the time players explore these structures they
+  // should already have decent mined iron supply. The baseline isn't to
+  // bootstrap iron access -- it's to supplement frequent repairs as
+  // gear chips during exploration. Per tester directive 2026-04-26.
 
   const T1_IRON_BASELINE_CHESTS = [
     'minecraft:chests/simple_dungeon',
@@ -1209,9 +1209,9 @@ LootJS.modifiers(event => {
 
   T1_IRON_BASELINE_CHESTS.forEach(table => {
     event.addLootTableModifier(table)
-      .addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.25)))
+      .addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.15)))
   })
-  console.log('[icraft-loot] T1 iron baseline: 25% iron_ingot (1-3) added to ' +
+  console.log('[icraft-loot] T1 iron baseline: 15% iron_ingot (1-3) added to ' +
               T1_IRON_BASELINE_CHESTS.length + ' overworld chest types')
 
   // =========================================================================
