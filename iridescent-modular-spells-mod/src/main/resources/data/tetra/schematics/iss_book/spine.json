@@ -1,0 +1,21 @@
+{
+    "slots": [ "iss_book/spine" ],
+    "materialSlotCount": 1,
+    "displayType": "major",
+    "glyph": {
+        "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
+        "textureX": 0,
+        "textureY": 0
+    },
+    "translation": {
+        "integrity": 1
+    },
+    "outcomes": [
+        {
+            "materials": [ "tetra:metal/", "tetra:skin/", "tetra:fibre/" ],
+            "countFactor": 1,
+            "moduleKey": "iss_book/spine",
+            "moduleVariant": "spine/"
+        }
+    ]
+}

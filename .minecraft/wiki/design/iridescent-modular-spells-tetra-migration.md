@@ -109,3 +109,89 @@ Files under `src/main/resources/data/iridescent_modular_spells/tetra/`:
 - Custom Tetra schematics (no-recipe synthesis at workbench) — defer to Phase 7
 - Module enchantments via Tetra's improvement system — defer to Phase 7
 - Multi-slot modules (e.g., a single material affecting both cover + pages) — defer to Phase 7
+
+---
+
+## 6C concrete plan (2026-04-26 finalized)
+
+### Slot model (4 majors, no `core`)
+- ISS: `iss_book/{front_cover, back_cover, spine, pages}` — drop `iss_book/core` from `getMajorModuleKeys`. Each item is tier-locked at registration time, no in-place tier swap.
+- Ars: `ars_book/{front_cover, back_cover, spine, dye}` — already 4 majors.
+
+### Lining model (Tetra-canonical via improvement schematics)
+- Front/back covers each have **two install schematics**:
+  - **Main install** (`displayType: major`, `materialSlotCount: 1`): consumes a cover material from Tetra built-in categories (`skin/`, `metal/`, `bone/`, `gem/`).
+  - **Lining install** (`displayType: improvement`, `materialSlotCount: 1`): consumes a lining material; outcome routes by category to one of three improvement keys.
+- 3 lining categories with thematic stat bonuses:
+  - `fabric/` (wool, manaweave_cloth, sorcerer_robes, spell_cloth, silk) → **mana_regen** ("steady flow")
+  - `fibre/` (paper, parchment) → **cast_time_reduction** ("quick page turns")
+  - `skin/` (leather, rabbit_hide, vellum) → **max_mana** ("vessel volume")
+  - Magic-flavor cloths sit inside `fabric/` and get stronger numbers via Tetra's `count` multiplier — no separate stat type.
+- Spine slot: 1-mat install only, no lining (cooldown_reduction).
+- Pages slot: 1-mat install only, no lining (cast_time_reduction).
+- Ars `dye` slot: cosmetic, no stat bonus (matches TSB pattern).
+
+### Stat values (start point, easy to rebalance)
+```
+front_cover.main:                          **spell_power 0.005     (per material count)
+front_cover.lining (improvement, +1 lvl):
+    fabric:  **mana_regen        0.015
+    fibre:   **cast_time_reduce  0.015
+    skin:    +max_mana             8 flat
+back_cover.main:                           +max_mana 5             (per material count)
+back_cover.lining (improvement):
+    fabric:  **mana_regen        0.020
+    fibre:   **cooldown_reduce   0.010
+    skin:    +max_mana             8 flat
+spine:                                     **cooldown_reduce 0.010
+pages:                                     **cast_time_reduce 0.010
+```
+ISS keys use `irons_spellbooks:*`; Ars keys use `ars_nouveau:ars_nouveau.perk.*` with the same value pattern (separate improvement JSONs per system since the attribute namespaces don't bridge).
+
+### File inventory (~32 JSONs)
+
+```
+data/iridescent_modular_spells/tetra/
+├── modules/
+│   ├── iss_book/{front_cover,back_cover,spine,pages}.json    (4)
+│   └── ars_book/{front_cover,back_cover,spine,dye}.json      (4)
+├── schematics/
+│   ├── iss_book/
+│   │   ├── front_cover_main.json   back_cover_main.json
+│   │   ├── front_cover_lining.json back_cover_lining.json
+│   │   ├── spine.json              pages.json                (6)
+│   └── ars_book/                   (mirror of above)         (6)
+├── improvements/
+│   ├── iss_book_lining_{fabric,fibre,skin}.json              (3)
+│   └── ars_book_lining_{fabric,fibre,skin}.json              (3)
+└── replacements/
+    ├── {copper,iron,gold,diamond,netherite}_spell_book.json  (5)
+    └── {novice,apprentice,archmage}_spell_book.json          (3)
+```
+
+### Replacements
+Each replacement converts the vanilla ISS/Ars book → our modular variant on first inventory tick, pre-installing default modules so the book is functional out-of-box (cover=leather/main + paper/lining; back_cover=leather/main + paper/lining; spine=iron; pages=paper).
+
+### Java change in 6C
+Drop `iss_book/core` from `MAJOR_KEYS` in `ModularSpellBookItem.java`. No code change in `ModularArsSpellBookItem.java` (already 4 slots).
+
+---
+
+## Phase 7 — Elemental Class Layer (deferred design, 2026-04-26 spec)
+
+**Add alongside** existing 10 classes (don't replace Archmage).
+
+| Class | Element | School bonus | Drawbacks vs Archmage |
+|---|---|---|---|
+| Pyromancer | Fire | +50% fire_spell_power | -10% melee (vs Archmage's -25%); no stacking magic baseline |
+| Cryomancer | Ice | +50% ice_spell_power | -10% melee |
+| Necromancer | Blood/Eldritch | +50% blood_spell_power + +50% eldritch_spell_power | -10% melee |
+| Priest | Holy | +50% holy_spell_power | -10% melee; +bonus heal-aura passive |
+| Druid | Nature | +50% nature_spell_power | -10% melee; passive friendliness with neutral mobs |
+| Stormcaller | Lightning | +50% lightning_spell_power | -10% melee |
+
+**Design intent**: Elementalists trade Archmage's broad +50-65% all-school magic for specialized +50% to ONE school, but with milder downsides. They're not stronger than Archmage on their school, but they're not glass cannons either. **No starter armor** (player request).
+
+**Boss-drop integration**: Elemental classes synergize naturally with Phase 6F boss-drop books — a Pyromancer killing the ISS `fire_boss` to get the `blaze_spell_book` is the canon progression loop.
+
+**Out of scope for Phase 7 design pass**: starter kits, codex entries, AStages tier gates — those come once class JSONs exist.

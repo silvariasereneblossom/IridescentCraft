@@ -1,0 +1,24 @@
+{
+    "type": "tetra:basic_major_module",
+    "slots": [ "iss_book/pages" ],
+    "improvements": [],
+    "variants": [
+        {
+            "materials": [ "tetra:fibre/", "tetra:skin/" ],
+            "key": "pages/",
+            "extract": {
+                "tertiaryAttributes": {
+                    "**irons_spellbooks:cast_time_reduction": 0.010
+                },
+                "integrity": 0,
+                "glyph": {
+                    "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
+                    "textureX": 0,
+                    "textureY": 0
+                },
+                "availableTextures": [ "" ],
+                "models": []
+            }
+        }
+    ]
+}

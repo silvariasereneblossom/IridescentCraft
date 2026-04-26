@@ -1,0 +1,48 @@
+{
+    "slots": [ "iss_book/front_cover" ],
+    "materialSlotCount": 1,
+    "displayType": "improvement",
+    "glyph": {
+        "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
+        "textureX": 0,
+        "textureY": 0
+    },
+    "requirement": {
+        "type": "tetra:and",
+        "requirements": [
+            { "type": "tetra:not", "requirement": { "type": "tetra:improvement", "improvement": "iss_book_lining_fabric" } },
+            { "type": "tetra:not", "requirement": { "type": "tetra:improvement", "improvement": "iss_book_lining_fibre" } },
+            { "type": "tetra:not", "requirement": { "type": "tetra:improvement", "improvement": "iss_book_lining_skin" } }
+        ]
+    },
+    "outcomes": [
+        {
+            "material": {
+                "items": [
+                    "minecraft:white_wool", "minecraft:black_wool", "minecraft:gray_wool", "minecraft:red_wool",
+                    "minecraft:blue_wool", "minecraft:green_wool", "minecraft:yellow_wool", "minecraft:purple_wool",
+                    "ars_nouveau:manaweave_cloth", "ars_nouveau:sorcerers_robes", "botania:manaweave_cloth", "botania:spell_cloth",
+                    "minecraft:string"
+                ]
+            },
+            "improvements": { "iss_book_lining_fabric": 1 }
+        },
+        {
+            "material": {
+                "items": [
+                    "minecraft:paper", "ars_nouveau:parchment",
+                    "minecraft:sugar_cane", "minecraft:wheat"
+                ]
+            },
+            "improvements": { "iss_book_lining_fibre": 1 }
+        },
+        {
+            "material": {
+                "items": [
+                    "minecraft:leather", "minecraft:rabbit_hide"
+                ]
+            },
+            "improvements": { "iss_book_lining_skin": 1 }
+        }
+    ]
+}

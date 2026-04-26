@@ -1,0 +1,9 @@
+[
+  {
+    "key": "iss_book_lining_fibre",
+    "level": 1,
+    "attributes": {
+      "**irons_spellbooks:cast_time_reduction": 0.015
+    }
+  }
+]

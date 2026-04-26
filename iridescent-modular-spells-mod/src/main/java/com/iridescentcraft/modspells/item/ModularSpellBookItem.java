@@ -59,15 +59,16 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
      *  path, where ':' is illegal. */
     public static final String TETRA_IDENTIFIER = "iridescent_iss_book";
 
-    /** Tetra slot keys (used by IModularItem; matches `slots` field in modules/<key>.json). */
-    public static final String TETRA_SLOT_CORE = "iss_book/core";
+    /** Tetra slot keys (used by IModularItem; matches `slots` field in modules/<key>.json).
+     *  No `core` slot — each ISS modular item is tier-locked at registration (5 separate
+     *  items for copper/iron/gold/diamond/netherite). */
     public static final String TETRA_SLOT_FRONT_COVER = "iss_book/front_cover";
     public static final String TETRA_SLOT_BACK_COVER = "iss_book/back_cover";
     public static final String TETRA_SLOT_SPINE = "iss_book/spine";
     public static final String TETRA_SLOT_PAGES = "iss_book/pages";
 
     private static final String[] MAJOR_KEYS = {
-            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
+            TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
             TETRA_SLOT_SPINE, TETRA_SLOT_PAGES
     };
 
@@ -165,7 +166,9 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     }
 
     public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[]{-22, 9, 5, 18, -15, -4, 5, 0, -15, 22});
+        // 4-slot layout: front_cover (top-left), back_cover (top-right),
+        // spine (bottom-left), pages (bottom-right).
+        return new GuiModuleOffsets(new int[]{5, 18, -15, -1, 5, -1, -15, 18});
     }
 
     public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {

@@ -1,0 +1,21 @@
+{
+    "type": "tetra:basic_major_module",
+    "slots": [ "ars_book/dye" ],
+    "improvements": [],
+    "variants": [
+        {
+            "materials": [ "tetra:fabric/", "tetra:fibre/" ],
+            "key": "dye/",
+            "extract": {
+                "integrity": 0,
+                "glyph": {
+                    "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
+                    "textureX": 0,
+                    "textureY": 0
+                },
+                "availableTextures": [ "" ],
+                "models": []
+            }
+        }
+    ]
+}

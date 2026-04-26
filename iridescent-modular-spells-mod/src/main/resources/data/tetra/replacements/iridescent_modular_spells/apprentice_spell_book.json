@@ -1,0 +1,18 @@
+[
+    {
+        "conditions": [
+            { "type": "forge:mod_loaded", "modid": "ars_nouveau" }
+        ],
+        "predicate": {
+            "items": [ "ars_nouveau:apprentice_spell_book" ]
+        },
+        "item": "iridescent_modular_spells:modular_apprentice_spell_book",
+        "modules": {
+            "ars_book/front_cover": [ "ars_book/front_cover", "front_cover/iron" ],
+            "ars_book/back_cover":  [ "ars_book/back_cover",  "back_cover/iron" ],
+            "ars_book/spine":       [ "ars_book/spine",       "spine/iron" ],
+            "ars_book/dye":         [ "ars_book/dye",         "dye/string" ]
+        },
+        "improvements": {}
+    }
+]
