@@ -49,9 +49,30 @@ AStages enforces per-player tier restrictions on:
 ## Material Progression
 
 - **Tier 1:** Iron, Copper, Brass, Tin, Bronze. No diamonds.
-- **Tier 2:** Steel, Manasteel, Signalum, Lumium, Steeleaf, Ironwood, Fiery. Limited diamonds.
-- **Tier 3:** Full diamond, Terrasteel, Elementium, Enderium, Osmium, Refined Obsidian, Ancient Debris.
-- **Tier 4:** Netherite, Gaia Ingots, Dragon materials, Antimatter, Atomic Alloy.
+- **Tier 2:** Steel, Manasteel, Signalum, Lumium, Steeleaf, Ironwood, Fiery. Limited diamonds. Plus **Terramity sapphire / topaz / ruby / dimlite / gaianite** (T2 dim-bound — see below).
+- **Tier 3:** Full diamond, Terrasteel, Elementium, Enderium, Osmium, Refined Obsidian, Ancient Debris. Plus **Terramity iridium / profaned / iridescent**, vanilla **quartz** (overworld_quartz mod's injection killed; quartz from Nether only).
+- **Tier 4:** Netherite, Gaia Ingots, Dragon materials, Antimatter, Atomic Alloy. Plus **Terramity onyx** (End-only).
+
+## Terramity ore tier-dim mapping (2026-04-26)
+
+Per the 2026-04-26 worldgen rebalance, all 11 Terramity overworld ores were stripped from overworld via `forge:none` biome_modifier overrides and re-injected into tier-appropriate dimensions. Stat-driven tier assignment per the Terramity armor/tool audit:
+
+| Material | Tier | Stat tier (audit) | Target dim(s) |
+|---|---|---|---|
+| sapphire (cold) | T2 | Diamond-tier dura, T1 attack | Aether + Blue Skies Everdawn |
+| topaz (hot) | T2 | identical to sapphire | Twilight Forest + Blue Skies Everbright |
+| igneo_ruby | T2 | identical to sapphire | Twilight Forest |
+| gaianite_cluster | T2 | (lush flora) | Twilight Forest |
+| dimlite | T2 | T2 tools, no armor | Twilight Forest |
+| iridium | T3 | netherite-tier (atk 14, dura 3046) | Undergarden + Deeper Darker |
+| profaned | T3 | crafting reagent | Undergarden + Deeper Darker |
+| iridescent | T3 | crafting reagent | Undergarden + Deeper Darker |
+| daemonium | T4 | endgame | Nether (unchanged) |
+| onyx | T4 | endgame End | End (unchanged) |
+| nether_iridium / nether_ruby / bedrock_black_matter | -- | (multi-source variants) | Nether (unchanged) |
+| end_iridium / end_onyx | T4 | (End-only) | End (unchanged) |
+
+**Tetra integration:** 6 ore-mined Terramity materials (sapphire, topaz, ruby, onyx, dimlite, iridium) have Tetra material entries with unique perks. Sapphire/topaz/ruby/onyx have IDENTICAL raw stats per audit, so differentiation is via perks (Fire Resistance / Fire-on-hit / +50% fire damage / +15% minion damage). See [Tetra-Materials](https://github.com/silvariasereneblossom/IridescentCraft/wiki/Tetra-Materials) on the public wiki.
 
 ## Related Pages
 

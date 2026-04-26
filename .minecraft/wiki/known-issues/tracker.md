@@ -56,6 +56,26 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Status:** Known, low priority (pre-existing)
 - **Description:** `planetary_loot` script has a `withNBT` call that silently fails on certain item types. Ad Astra integration is still in-progress so this is deferred until the planetary loot system is fully implemented.
 
+### EnemyExpansion direct-velocity bypass (2026-04-26)
+- **Status:** Mitigated — three-layer defense; no further crashes reported
+- **Description:** EnemyExpansion mob procedures (DireLeapProcedure, VampireAttackProcedure, ExplosiveLaunchHappensProcedure) call `Entity.setDeltaMovement(Vec3)` DIRECTLY, bypassing Forge's `LivingKnockBackEvent`. The vampflyer's per-tick `enemyexpansion:explosive_launch` mob effect could accumulate skyward velocity on the player.
+- **Mitigation:** (a) `cap_player_knockback.js` clamps strength + ratio in `LivingKnockBackEvent` (covers vanilla Punch); (b) `diag_player_velocity.js` compares pre/post Y-velocity at `LivingHurtEvent` HIGHEST/LOWEST and resets if delta > 0.8 (catches Vampire procedure direct-set); (c) `enemyexpansion_explosive_launch_blocker.js` 4Hz tick-scans players for the explosive_launch effect and removes it (kills the per-tick procedure source). Also: `enemyexpansion:vampflyer/vampbiter/vampire` added to `#minecraft:undead` tag so the 100-dmg sunlight purge clears them at dawn.
+
+### Spider drop mystery (diamond + ender_eye + iron_pick) (2026-04-26)
+- **Status:** Symptom resolved, root cause not positively identified
+- **Description:** Tester reported vanilla spiders dropping diamond + ender_eye + iron_pick. Static analysis exhausted: Apotheosis (3 priority bands), Multiplayerbosses, Mahoutsukai, ConfigurableExtraMobDrops, ImprovedMobs, Sophisticated Backpacks all ruled out. No mod overrides `data/minecraft/loot_tables/entities/spider.json` and our GLM allowlist uses `"replace": true`.
+- **Mitigation:** `loot_overhaul.js` LootJS strips `minecraft:diamond` + `minecraft:ender_eye` from any ENTITY loot type. Empirically resolves the symptom; tester confirms recent spider kills clean. `dropdiag` would catch the actual injector if it fires again — leave armed for forensics.
+
+### Blank entity death messages (2026-04-26)
+- **Status:** Resolved
+- **Description:** Tester died with death message `silvieserene was shot by ` (literal blank trailing slot). For this to happen, the killer's `getDisplayName()` must return an empty Component — something deliberately set `customName = Component.empty()` on the mob. Likely a Townstead farmer-mob or similar mob-naming mod.
+- **Fix:** `fix_empty_display_name.js` clears empty customName at spawn time so the entity falls back to its type translation. `diag_empty_display_name.js` continues logging which mob types are producing the empties — diagnostic still armed for upstream identification.
+
+### TATOS overworld spawns + legacy lang format (2026-04-26)
+- **Status:** Resolved
+- **Description:** TATOS abyss skeletons spawning in overworld (one rode a spider and broke a player's door). Plus 20 TATOS entities ship `entity.<id>.name` legacy MCreator-generated translation keys that 1.20.1 doesn't resolve, rendering as blank names.
+- **Fix:** `tatos_dimension_lock.js` confines `theabyss:*` (and `abyss:*`) mobs to the 4 TATOS dims (`the_abyss`, `spectral_world`, `frost_world`, `pocket_dimension`) via `EntityEvents.spawned` discard. Catches Java-code spawns, structure spawners, command spawns, mod cross-injection. 20-entry lang fix in `kubejs/assets/icraft/lang/en_us.json`.
+
 ### Three-distro parity audit + server_distribution/global_packs cleanup (2026-04-24)
 - **Status:** Resolved — no tester verification needed; preemptive cleanup
 - **Description:** Walked main, server_distribution, and distribution/client for kubejs/, config/, datapack_sources/, global_packs/, mods/, and top-level KubeJS assets. KubeJS server_scripts (71), startup_scripts (5), client_scripts (with `attribute_tooltips.js` correctly server-omitted), data/ (181 files), assets/ (7 files), and all 7 custom mod jars — byte-identical across three distros. config/paxi/datapacks/ (17 zips) — byte-identical. Config drift in top-level config/ was expected shape (client-only `.toml` files absent from server, runtime `.bak` files, mod caches).

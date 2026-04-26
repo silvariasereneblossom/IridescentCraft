@@ -148,7 +148,20 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | FTB Teams | Removed (FTB suite cleanup) | 2026-04-08 |
 | FTB Ultimine | Replaced by LiteMiner + Amber (veinmining) | 2026-04-08 |
 
+## Custom Mods
+
+The pack ships 9 custom-bundled jars (4 in-house source builds + 2 bytecode-patched + 3 utility), tracked in the **custom-JAR allowlist** so the self-updater doesn't delete them. Highlights:
+
+- **iridescent_modular_spells-0.1.0.jar** — 8 modular spell books (5 ISS metal-cover + 3 Ars cloth-cover) with 6 cover materials, 4 magic-exclusive enchants (mana_capacity / mana_flow / magic_crit_chance / magic_crit_damage), and a magic-crit hook (vanilla magic doesn't crit by default — this adds it).
+- **iridescent_origins-1.0.0.jar** — Origins/races/classes (3-prompt selection on first join).
+- **iridescent_biomes-1.0.0.jar** — TerraBlender region for cherry_river_valley + cherry_mountains.
+- **iridescent_codex_data.jar** — Patchouli Codex book (modId `icraft`).
+- **Patchouli + ars_nouveau** — bytecode-patched (require `-noverify` JVM flag).
+
+See [Custom Mods](custom.md) for the full list, build instructions, and architectural notes.
+
 ## Related Pages
 
 - [Master Design Document](../design/master.md) — Full mod list and tier assignments
 - [Progression](../progression/overview.md) — How tiers gate mod access
+- [Custom Mods](custom.md) — In-house + bytecode-patched mod reference
