@@ -59,25 +59,43 @@ public class ModularSpellBookItem extends SpellBook {
     public static final Map<String, Map<AttributeKey, Double>> PAGES_BONUSES = new HashMap<>();
 
     static {
-        // -- Cover slot bonuses (Phase 1) --
+        // -- Cover slot bonuses (Phase 2: full ISS material progression) --
         // Cover leans toward "max" stats: max mana, spell power.
+        // Tiers:  leather/copper (T1)  ->  iron/gold (T2)  ->  diamond (T3)  ->  netherite (T4)
         COVER_BONUSES.put("leather",
                 Map.of(AttributeKey.MAX_MANA, 0.05));
+        COVER_BONUSES.put("copper",
+                Map.of(AttributeKey.MAX_MANA, 0.05,
+                       AttributeKey.MANA_REGEN, 0.03));
         COVER_BONUSES.put("iron",
                 Map.of(AttributeKey.SPELL_POWER, 0.05,
                        AttributeKey.MAX_MANA, 0.05));
+        COVER_BONUSES.put("gold",
+                Map.of(AttributeKey.MANA_REGEN, 0.10,
+                       AttributeKey.MAX_MANA, 0.05));
         COVER_BONUSES.put("diamond",
                 Map.of(AttributeKey.SPELL_POWER, 0.15));
+        COVER_BONUSES.put("netherite",
+                Map.of(AttributeKey.SPELL_POWER, 0.20,
+                       AttributeKey.MAX_MANA, 0.10));
 
         // -- Pages slot bonuses --
         // Pages lean toward "rate" stats: regen, cooldown reduction.
         PAGES_BONUSES.put("leather",
                 Map.of(AttributeKey.SPELL_POWER, 0.02));
+        PAGES_BONUSES.put("copper",
+                Map.of(AttributeKey.MANA_REGEN, 0.03));
         PAGES_BONUSES.put("iron",
                 Map.of(AttributeKey.MANA_REGEN, 0.05));
+        PAGES_BONUSES.put("gold",
+                Map.of(AttributeKey.MANA_REGEN, 0.10,
+                       AttributeKey.COOLDOWN_REDUCTION, 0.05));
         PAGES_BONUSES.put("diamond",
                 Map.of(AttributeKey.SPELL_POWER, 0.10,
                        AttributeKey.COOLDOWN_REDUCTION, 0.05));
+        PAGES_BONUSES.put("netherite",
+                Map.of(AttributeKey.SPELL_POWER, 0.15,
+                       AttributeKey.COOLDOWN_REDUCTION, 0.10));
     }
 
     public ModularSpellBookItem(int maxSpellSlots, Properties properties) {

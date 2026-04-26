@@ -335,7 +335,7 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
     .addLoot(
-      LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.05))
+      LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025))
     )
 
   // T2 (TF, Aether, Blue Skies): Apprentice spell book (5%)
@@ -872,7 +872,7 @@ LootJS.modifiers(event => {
   var ovdMaster = event.addLootTableModifier(
     /overhauledstructures:chests\/ovd[bps]_loot_tables\/ovd[bps]_chest_(3|m)/
   )
-  ovdMaster.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.18)))
+  ovdMaster.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   ovdMaster.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.14)))
   ovdMaster.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([2, 4]).when(c => c.randomChance(0.50)))
   ovdMaster.addLoot(LootEntry.of('kubejs:tier1_token').limitCount([1, 1]).when(c => c.randomChance(0.40))) // extra on top of universal
@@ -1762,7 +1762,7 @@ LootJS.modifiers(event => {
     Item.of('irons_spellbooks:common_ink').withChance(30),
     Item.of('ars_nouveau:source_gem').withChance(15),
     Item.of('irons_spellbooks:copper_spell_book').withChance(10),
-    Item.of('ars_nouveau:novice_spell_book').withChance(5)
+    Item.of('ars_nouveau:novice_spell_book').withChance(2)
   ]
 
   villageChests.forEach(function(table) {
@@ -1817,7 +1817,7 @@ LootJS.modifiers(event => {
   var stMod = event.addLootTableModifier(/structory_towers:.*chests.*/)
   stMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.10)))
   stMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.10)))
-  stMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.08)))
+  stMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   towerCurioPool.forEach(function(entry) {
     stMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
   })
@@ -1840,7 +1840,7 @@ LootJS.modifiers(event => {
   apothMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.60)))
   apothMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]).when(c => c.randomChance(0.40)))
   // 10% novice spell book, 8% copper spell book (discovery magic items)
-  apothMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.10)))
+  apothMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   apothMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
   // 10% enchanted book (matches TOTW tier)
   apothMod.addLoot(
@@ -1864,7 +1864,7 @@ LootJS.modifiers(event => {
     totwMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 1]))
     totwMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]))
     // 15% novice spell book
-    totwMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.15)))
+    totwMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
     // 10% copper spell book
     totwMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.10)))
     // 10% enchanted book (levels 5-15)
@@ -1890,7 +1890,7 @@ LootJS.modifiers(event => {
   waystoneMod.removeLoot('minecraft:arrow')
   waystoneMod.removeLoot('minecraft:spectral_arrow')
   // 20% novice spell book (higher than TotW)
-  waystoneMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.20)))
+  waystoneMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   // 15% copper spell book
   waystoneMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.15)))
   // 12% source gem [2-4]
@@ -2120,7 +2120,7 @@ LootJS.modifiers(event => {
       .when(c => c.randomChance(0.15))
   )
   keebszLow.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.10)))
-  keebszLow.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.08)))
+  keebszLow.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   keebszLow.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.05)))
   // 8% random T1 artifact (pick one from pool)
   var keebszLowArtifactChance = 0.08 / artifactT1Pool.length

@@ -24,4 +24,33 @@ public class ModularItemRegistry {
                             5,                                // 5 spell slots, matching copper_spell_book
                             new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
                     ));
+
+    // Phase 2: full ISS book tier coverage. Spell-slot counts mirror ISS upstream.
+    public static final RegistryObject<Item> MODULAR_IRON_SPELL_BOOK =
+            ITEMS.register("modular_iron_spell_book",
+                    () -> new ModularSpellBookItem(
+                            10,
+                            new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
+                    ));
+
+    public static final RegistryObject<Item> MODULAR_GOLD_SPELL_BOOK =
+            ITEMS.register("modular_gold_spell_book",
+                    () -> new ModularSpellBookItem(
+                            10,
+                            new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON)
+                    ));
+
+    public static final RegistryObject<Item> MODULAR_DIAMOND_SPELL_BOOK =
+            ITEMS.register("modular_diamond_spell_book",
+                    () -> new ModularSpellBookItem(
+                            15,
+                            new Item.Properties().stacksTo(1).rarity(Rarity.RARE)
+                    ));
+
+    public static final RegistryObject<Item> MODULAR_NETHERITE_SPELL_BOOK =
+            ITEMS.register("modular_netherite_spell_book",
+                    () -> new ModularSpellBookItem(
+                            15,
+                            new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant()
+                    ));
 }
