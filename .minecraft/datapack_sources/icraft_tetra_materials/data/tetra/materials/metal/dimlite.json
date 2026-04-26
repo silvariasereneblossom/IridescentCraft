@@ -1,0 +1,17 @@
+{
+    "key": "dimlite",
+    "category": "metal",
+    "primary": 6.5,
+    "secondary": 3.0,
+    "tertiary": 5.5,
+    "durability": 1400,
+    "integrityCost": 3,
+    "integrityGain": 7,
+    "magicCapacity": 130,
+    "toolLevel": "minecraft:diamond",
+    "toolEfficiency": 8,
+    "tints": { "glyph": "ffec99", "texture": "ffec99" },
+    "textures": [ "shiny", "metal" ],
+    "material": { "items": [ "terramity:dimlite_ingot" ] },
+    "requiredTools": { "hammer_dig": "minecraft:diamond" }
+}

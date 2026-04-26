@@ -1,0 +1,17 @@
+{
+    "key": "topaz",
+    "category": "gem",
+    "primary": 6.5,
+    "secondary": 3.5,
+    "tertiary": 3.2,
+    "durability": 950,
+    "integrityCost": 3,
+    "integrityGain": 6,
+    "magicCapacity": 90,
+    "toolLevel": "minecraft:diamond",
+    "toolEfficiency": 7.5,
+    "tints": { "glyph": "ffd700", "texture": "ffd700" },
+    "textures": [ "shiny", "default" ],
+    "material": { "items": [ "terramity:topaz" ] },
+    "requiredTools": { "hammer_dig": "minecraft:diamond" }
+}

@@ -1,0 +1,17 @@
+{
+    "key": "ruby",
+    "category": "gem",
+    "primary": 7.0,
+    "secondary": 3.0,
+    "tertiary": 3.5,
+    "durability": 1000,
+    "integrityCost": 3,
+    "integrityGain": 6,
+    "magicCapacity": 90,
+    "toolLevel": "minecraft:diamond",
+    "toolEfficiency": 7.5,
+    "tints": { "glyph": "e0202f", "texture": "e0202f" },
+    "textures": [ "shiny", "default" ],
+    "material": { "items": [ "terramity:ruby" ] },
+    "requiredTools": { "hammer_dig": "minecraft:diamond" }
+}

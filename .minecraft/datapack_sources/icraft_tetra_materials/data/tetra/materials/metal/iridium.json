@@ -1,0 +1,17 @@
+{
+    "key": "iridium",
+    "category": "metal",
+    "primary": 8.0,
+    "secondary": 4.0,
+    "tertiary": 4.0,
+    "durability": 2200,
+    "integrityCost": 4,
+    "integrityGain": 9,
+    "magicCapacity": 100,
+    "toolLevel": "minecraft:netherite",
+    "toolEfficiency": 10,
+    "tints": { "glyph": "aabbbb", "texture": "aabbbb" },
+    "textures": [ "shiny", "heavy", "metal" ],
+    "material": { "items": [ "terramity:iridium" ] },
+    "requiredTools": { "hammer_dig": "minecraft:netherite" }
+}
