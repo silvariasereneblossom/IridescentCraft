@@ -368,6 +368,31 @@ Same pattern, second layer: `server_distribution/global_packs/required_data/irid
 
 ---
 
+## 2026-04-26 — Tetra schematic identifier rejected `:` in path
+
+**Symptom:** Server start crashed during `RegisterEvent` dispatch for `iridescent_modular_spells`:
+```
+net.minecraft.ResourceLocationException: Non [a-z0-9/._-] character in path of location: tetra:repair/iridescent_modular_spells:iss_book
+    at se.mickelus.tetra.module.SchematicRegistry.registerSchematic
+    at ModularSpellBookItem.<init>:130
+```
+Cascading registry failures in Moonlight + Supplementaries downstream of our crash.
+
+**Dead ends:**
+- Suspected duplicate `registerSchematic` calls (5 ISS items shared the same `TETRA_IDENTIFIER`). Decompiled `SchematicRegistry.registerSchematic` — it's a `Map.put`, duplicates overwrite silently. Not the cause.
+- Suspected mod load order — Tetra's `instance` field not initialized when our `<init>` ran. Tetra is `ordering=AFTER` in our mods.toml dep so it loads first. Not the cause.
+- Suspected access-transformer issues. Build had succeeded cleanly, no AT mismatches.
+
+**Actual root cause:** Tetra's `registerSchematic` constructs `new ResourceLocation("tetra", "repair/" + identifier)`. Our identifier was `iridescent_modular_spells:iss_book`. The `:` character is **legal** in a ResourceLocation but only as the namespace/path separator — it is **not legal inside the path**. Our identifier became part of the path, so the `:` triggered `ResourceLocationException`.
+
+**What fixed it:** Renamed `TETRA_IDENTIFIER` from `iridescent_modular_spells:iss_book` → `iridescent_iss_book` (and `:ars_book` → `iridescent_ars_book`). Underscore separator only. Hotfix in commit `7083c3a2`.
+
+**Takeaway:**
+- **Tetra item identifiers must obey `[a-z0-9/._-]`** because they get composed into a ResourceLocation path. No colons, no namespace prefix.
+- General rule: when an API takes a "string identifier" and uses it to build a ResourceLocation, treat it as a *path* string, not a fully-qualified resource location. Apply path-character validation up front.
+
+---
+
 ## Template (for future entries)
 
 ```markdown

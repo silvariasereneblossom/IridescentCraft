@@ -4,6 +4,31 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-26 (cont.) — Phase 6C-6F-1 Tetra workbench + book roster + buffs
+
+Same dev day, continued from earlier sessions below.
+
+- **Modular Spells Phase 6C (`9b8526ae`)** — 32 JSONs under `data/tetra/` give the modular books actual workbench functionality. Slot model: 4 majors (`{front_cover, back_cover, spine, pages}` for ISS; `{front_cover, back_cover, spine, dye}` for Ars), no `core` slot — items are tier-locked at registration. Lining model uses Tetra-canonical `displayType: improvement` schematics: covers each have a main-install schematic (1 mat) + a separate lining-install schematic (1 mat) that routes by item-list to one of three improvement keys (`fabric`/`fibre`/`skin`) with thematic stat bonuses. Replacements wire vanilla ISS/Ars books → modular variants on first inventory tick.
+
+- **6B hotfix (`7083c3a2`)** — Server start crashed on `ResourceLocationException: Non [a-z0-9/._-] character in path of location: tetra:repair/iridescent_modular_spells:iss_book`. Tetra's `SchematicRegistry.registerSchematic` builds `new ResourceLocation("tetra", "repair/" + identifier)`, so the identifier becomes part of the RL *path* — `:` is illegal there. Renamed `TETRA_IDENTIFIER` from `iridescent_modular_spells:iss_book` → `iridescent_iss_book` (and same shape for Ars). Underscore-only, RL-path-legal. Lesson: **Tetra item identifiers must be `[a-z0-9/._-]` only** — saved as forbidden-character note.
+
+- **Phase 6F-1 (`a07429f8`)** — Roster expansion + intrinsic buffs + ISS boss-drop wiring. Three deliverables:
+  - **7 new modular ISS book variants**: `dragonskin`, `druidic`, `blaze`, `evoker`, `necronomicon`, `villager`, `rotten`. Each tier-locked, registered with appropriate max-spell-slots, models pointing at ISS textures, replacement files for vanilla→modular auto-conversion. Total roster now 12 ISS + 3 Ars = 15 modular variants.
+  - **Per-book `BookKind` intrinsic stat overlay**. Refactored `ModularSpellBookItem` to take a `BookKind` enum constructor param. The class's `getAttributeModifiers(SlotContext, UUID, ItemStack)` now chains three layers — super (ISS vanilla intrinsics, preserved), `BookKind.intrinsicModifiers` (Phase 6F overlay), `getAttributeModifiersCached` (Tetra slot/lining attrs from Phase 6C). All three stack additively. Per-(kind, attribute) stable UUIDs prevent re-equip duplicate stacking. Buff numbers: tier-baseline mana floor (+25 T2 / +50 T3 / +100 T4), themed schools at +20-30% (e.g. dragonskin = +25% Ender on top of vanilla +10% = +35% baseline before slot/lining). Mage power curve is **uncapped by design** — mages weak early, highest peaks late (memory: `feedback_mage_power_curve.md`).
+  - **ISS boss-drop hooks** — `kubejs/server_scripts/loot/iss_boss_drops.js` (8 entity loot modifiers via LootJS) + `iss_boss_first_kill.js` (per-player guaranteed first-kill drops via `EntityEvents.death` + `persistentData.icraft_first_kill_<bossname>`).
+    - **First-kill guarantees**: `dead_king` → necronomicon (T4), `archevoker` → evoker_spell_book (T3), `fire_boss` → blaze_spell_book (T3), `valkyrie_queen` → magehunter (T3).
+    - **Sustained drops**: `dead_king` → blood_staff 50%, `citadel_keeper` → keeper_flamberge 40%, `cryomancer` mob → ice_staff 15% + ice_rune 25%, `pyromancer` mob → pyromancer armor pieces ~10% each + fire_rune 20%, `aether:cockatrice` → lightning_rod 25%, `twilight:snow_queen` → ice_staff 50%, `twilight:alpha_yeti` → ice_staff 25%, `aether:valkyrie_queen` → magehunter 30%, vanilla `phantom` (during thunderstorm only) → lightning_rod 5%.
+
+  Tetra replacement files mean random vanilla ISS book drops auto-convert on inventory tick — no need to rewrite every loot table.
+
+- **Phase 6F-2 + 6F-3 deferred to follow-up sessions**: held-item-buff KubeJS hook for vanilla ISS staves + magehunter pillager strip; armor/curio/rune/upgrade-orb gates + held-item buff coverage for those item categories.
+
+- **Phase 7 design captured** (`wiki/design/iridescent-modular-spells-tetra-migration.md`) — 6 elemental subclasses (Pyromancer/Cryomancer/Necromancer/Priest/Druid/Stormcaller), each +50% to one school, -10% melee malus (vs Archmage's -25%), no starter armor, add-alongside not replace. Implementation deferred.
+
+- **Tetra forbidden-character lesson** captured in `wiki/dev/lessons-learned.md` — `SchematicRegistry.registerSchematic` constructs a ResourceLocation path from the identifier, so identifiers must obey `[a-z0-9/._-]` (no `:`).
+
+---
+
 ## 2026-04-26 (cont.) — Phase 6A+6B Tetra integration + Mutant Monsters block-break
 
 Continuation of the same dev day, after the main session below.

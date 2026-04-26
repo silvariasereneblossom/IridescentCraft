@@ -35,23 +35,48 @@ Patchouli Codex book. Shipped as a **javafml content mod** with a minimal compil
 
 **Build:** `bash build_codex.sh` — compiles + packs + deploys to all 3 distros. Jar filename remains `iridescent_codex_data.jar` so the custom-JAR allowlists don't need updating on rebuild.
 
-### iridescent_modular_spells-0.1.0.jar
+### iridescent_modular_spells-0.2.0.jar
 
-**Added 2026-04-26.** Modular spell book mod spanning ISS + Ars Nouveau ecosystems. 8 books, 6 cover materials, 4 custom magic enchants, magic-crit hook.
+**Added 2026-04-26.** Modular spell book mod spanning ISS + Ars Nouveau ecosystems with full Tetra workbench integration. License-clean reimplementation of CurseForge's TSB (TSB is All Rights Reserved; we mirror its API-driven structure but write our own code/data).
 
-**Books:**
-| Variant | Tier | Inherits from | Slot count |
-|---|---|---|---|
-| modular_copper_spell_book | T1 | ISS `SpellBook` | 5 |
-| modular_iron_spell_book | T2 | ISS `SpellBook` | 10 |
-| modular_gold_spell_book | T2 | ISS `SpellBook` | 10 |
-| modular_diamond_spell_book | T3 | ISS `SpellBook` | 15 |
-| modular_netherite_spell_book | T4 | ISS `SpellBook` | 15 |
-| modular_novice_spell_book | T1 | Ars `SpellBook` (Tier ONE) | per Ars |
-| modular_apprentice_spell_book | T2 | Ars `SpellBook` (Tier TWO) | per Ars |
-| modular_archmage_spell_book | T3 | Ars `SpellBook` (Tier THREE) | per Ars |
+**Books (15 modular variants):**
+| Variant | Tier | Inherits from | Slot count | Source |
+|---|---|---|---|---|
+| modular_copper_spell_book | T1 | ISS `SpellBook` | 5 | crafted (vanilla → modular auto-convert) |
+| modular_iron_spell_book | T2 | ISS `SpellBook` | 10 | crafted |
+| modular_gold_spell_book | T2 | ISS `SpellBook` | 10 | crafted |
+| modular_druidic_spell_book | T2 | ISS `SpellBook` | 10 | rare world loot |
+| modular_villager_spell_book | T2 | ISS `SpellBook` | 8 | cleric trade |
+| modular_rotten_spell_book | T2 | ISS `SpellBook` | 8 | rare world loot (-15% spell_resist trade-off) |
+| modular_diamond_spell_book | T3 | ISS `SpellBook` | 15 | crafted |
+| modular_dragonskin_spell_book | T3 | ISS `SpellBook` | 12 | crafted from Ender Dragon dragonskin |
+| modular_blaze_spell_book | T3 | ISS `SpellBook` | 12 | **first-kill: ISS fire_boss** (then 50% sustained from blaze drop) |
+| modular_evoker_spell_book | T3 | ISS `SpellBook` | 12 | **first-kill: ISS archevoker** |
+| modular_netherite_spell_book | T4 | ISS `SpellBook` | 15 | smithing |
+| modular_necronomicon_spell_book | T4 | ISS `SpellBook` | 15 | **first-kill: ISS dead_king** |
+| modular_novice_spell_book | T1 | Ars `SpellBook` (Tier ONE) | per Ars | craft / vanilla → modular auto-convert |
+| modular_apprentice_spell_book | T2 | Ars `SpellBook` (Tier TWO) | per Ars | craft |
+| modular_archmage_spell_book | T3 | Ars `SpellBook` (Tier THREE) | per Ars | craft |
 
-**Slot system:** NBT key `imodspells_slots`, two slots per book (`cover` + `pages`). Material installed in each slot grants attribute bonuses summed via `AttributeApplier` server tick.
+**Per-book intrinsic stat overlay (BookKind enum):** Each item adds Phase 6F buff modifiers on top of ISS's vanilla intrinsics. Stats stack additively across 3 layers in `getAttributeModifiers(SlotContext, UUID, ItemStack)`:
+1. `super` — ISS vanilla per-book intrinsics (preserved)
+2. `BookKind.intrinsicModifiers` — Phase 6F overlay (e.g. dragonskin: +25% Ender + +50 max_mana on top of ISS's +10% Ender → +35% Ender baseline)
+3. `getAttributeModifiersCached` — Tetra slot/lining attrs from installed modules
+
+Mage power curve is **uncapped by design** — mages weak early, highest peaks at T3-T4.
+
+**Tetra slot model (4 majors per book, no `core` slot — items are tier-locked):**
+- ISS: `iss_book/{front_cover, back_cover, spine, pages}`
+- Ars: `ars_book/{front_cover, back_cover, spine, dye}`
+- Front + back covers each have a separate **lining install** (Tetra-canonical `displayType: improvement`) — fabric/fibre/skin lining categories with thematic stat bonuses.
+
+**Tetra replacement system:** vanilla `irons_spellbooks:<X>_spell_book` and `ars_nouveau:<X>_spell_book` items auto-convert to our modular variants on first inventory tick, with default modules pre-installed. No need to rewrite vanilla loot tables.
+
+**ISS boss-drop wiring (Phase 6F-1):**
+- **First-kill guarantees** (per-player, `EntityEvents.death` + persistentData): `dead_king` → necronomicon, `archevoker` → evoker_spell_book, `fire_boss` → blaze_spell_book, `aether:valkyrie_queen` → magehunter
+- **Sustained drops** (LootJS): `dead_king` → blood_staff 50%, `citadel_keeper` → keeper_flamberge 40%, ISS `cryomancer` mob → ice_staff 15%, ISS `pyromancer` mob → pyromancer armor pieces ~10% each, `aether:cockatrice` → lightning_rod 25%, `twilight:snow_queen` → ice_staff 50%, `twilight:alpha_yeti` → ice_staff 25%, `aether:valkyrie_queen` → magehunter 30%, vanilla `phantom` (during thunderstorm) → lightning_rod 5%
+
+**Legacy `imodspells_slots` NBT system** (Phase 1-5) still active for stat-bonus computation through Phase 6C. Phase 6D will run the migration to Tetra Modules NBT and retire `AttributeApplier` + `AnvilModuleInstaller`.
 
 **Cover materials (ISS metal):** leather (T1) → copper (T1) → iron (T2) → gold (T2) → diamond (T3) → netherite (T4)
 **Cover materials (Ars cloth):** white_wool (T1) → manaweave_cloth (T2 Botania) → sorcerer_robes (T3 Ars) → spell_cloth (T4 Botania endgame)

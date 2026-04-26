@@ -152,7 +152,7 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 
 The pack ships 9 custom-bundled jars (4 in-house source builds + 2 bytecode-patched + 3 utility), tracked in the **custom-JAR allowlist** so the self-updater doesn't delete them. Highlights:
 
-- **iridescent_modular_spells-0.1.0.jar** — 8 modular spell books (5 ISS metal-cover + 3 Ars cloth-cover) with 6 cover materials, 4 magic-exclusive enchants (mana_capacity / mana_flow / magic_crit_chance / magic_crit_damage), and a magic-crit hook (vanilla magic doesn't crit by default — this adds it).
+- **iridescent_modular_spells-0.2.0.jar** — 15 modular spell books (12 ISS + 3 Ars) with full Tetra workbench integration. Per-book intrinsic stat overlay (BookKind enum) stacks on top of ISS vanilla. 4-slot model (front/back covers + spine + pages) with Tetra-canonical lining improvements on covers. Phase 6F-1 added 7 themed books (dragonskin/druidic/blaze/evoker/necronomicon/villager/rotten); blaze/evoker/necronomicon are guaranteed first-kill drops from ISS bosses. Magic enchants + magic-crit hook from earlier phases remain.
 - **iridescent_origins-1.0.0.jar** — Origins/races/classes (3-prompt selection on first join).
 - **iridescent_biomes-1.0.0.jar** — TerraBlender region for cherry_river_valley + cherry_mountains.
 - **iridescent_codex_data.jar** — Patchouli Codex book (modId `icraft`).
