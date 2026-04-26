@@ -4,6 +4,15 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-26 (cont.) — Phase 6A+6B Tetra integration + Mutant Monsters block-break
+
+Continuation of the same dev day, after the main session below.
+
+- **Modular Spells Phase 6A+6B (ec4cff4a)** — Foundational rework toward native Tetra workbench integration. Phase 6A enables Tetra (6.12.0) + tetra-mutil (6.3.0) as compileOnly deps, declares Tetra as mandatory in mods.toml. Phase 6B adds `IModularItem` skeleton on `ModularSpellBookItem` (5 ISS metal variants, slot keys `iss_book/{core,front_cover,back_cover,spine,pages}`) and `ModularArsSpellBookItem` (3 Ars tier variants, slot keys `ars_book/{front_cover,back_cover,dye,spine}`). All 12 abstract methods implemented with sensible defaults; `getRequiredModules` empty so books still work without Tetra modules. AttributeApplier remains authoritative for stat bonuses through Phase 6C — Phase 6D will run the imodspells_slots → Tetra Modules NBT migration and retire AttributeApplier + AnvilModuleInstaller. Mod version bump 0.1.0 → 0.2.0. Reason: tester confirmed (this session) that full Tetra integration mirroring TSB on CurseForge was always the design intent, but TSB is All Rights Reserved so we mirror its API-driven structure (slot model, ISS/Ars stat keys) and write our own code/data. Migration design doc at `wiki/design/iridescent-modular-spells-tetra-migration.md`.
+- **Mutant Monsters block-break suppression** — `kubejs/server_scripts/mutant_monsters_no_griefing.js`: 18-line `BlockEvents.broken` handler that cancels any block-break by an entity in the `mutantmonsters:` namespace. Mutant zombie's pillar-up and mutant creeper's charged explosion both call `Level.destroyBlock()` directly which bypasses the `mobGriefing=false` default we shipped earlier today. Mob damage is preserved; only terrain mutation is suppressed.
+
+---
+
 ## 2026-04-26 — Modular Spells mod completed + worldgen rebalance arc + combat survivability
 
 Major session covering five interconnected workstreams. All changes shipped + tested.
