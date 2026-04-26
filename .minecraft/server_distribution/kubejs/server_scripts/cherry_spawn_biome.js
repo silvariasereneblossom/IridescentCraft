@@ -49,6 +49,23 @@ try {
     ResourceLocation_cs.tryParse('minecraft:village')
   )
 
+  // KubeJS's ServerLevel wrapper hides setSharedSpawnPos by name. Try several
+  // paths: Forge's setDefaultSpawnPos, LevelData.setSpawn, the m_ SRG names.
+  // First success wins. Returns true if any path succeeded, false otherwise.
+  var applySpawnPos = function(ow, pos) {
+    // Path 1: Forge's setDefaultSpawnPos(BlockPos, float)
+    try { ow.setDefaultSpawnPos(pos, 0.0); return true } catch (_) {}
+    // Path 2: vanilla setSharedSpawnPos by name (sometimes exposed)
+    try { ow.setSharedSpawnPos(pos, 0.0); return true } catch (_) {}
+    // Path 3: SRG name for setSharedSpawnPos (Forge 1.20.1)
+    try { ow.m_8615_(pos, 0.0); return true } catch (_) {}
+    // Path 4: through LevelData (always present, vanilla path)
+    try { ow.getLevelData().setSpawn(pos, 0.0); return true } catch (_) {}
+    // Path 5: through serverLevelData getter (KubeJS variant)
+    try { ow.getServerLevelData().setSpawn(pos, 0.0); return true } catch (_) {}
+    return false
+  }
+
   var biomeIdAt = function(ow, pos) {
     try {
       var holder = ow.getBiome(pos)
@@ -140,14 +157,24 @@ try {
                       villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ() +
                       ' biome=' + villageBiome)
           if (villageBiome === TARGET_BIOME) {
-            // Match! Set spawn at the village
-            ow.setSharedSpawnPos(villagePos, 0.0)
-            console.log('[icraft_spawn] SUCCESS: world spawn -> cherry village at ' +
-                        villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ())
-            try {
-              if (pdata) pdata.putBoolean('icraft_cherry_spawn_set', true)
-            } catch (_) {}
-            return
+            // Match! Set spawn at the village. KubeJS's ServerLevel wrapper
+            // doesn't always expose setSharedSpawnPos by name -- try the
+            // Forge-added setDefaultSpawnPos, the LevelData path, and the
+            // SRG name as fallbacks. (Tester crash on 6f05caee:
+            //   TypeError: Cannot find function setSharedSpawnPos in
+            //   object ServerLevel[world])
+            if (applySpawnPos(ow, villagePos)) {
+              console.log('[icraft_spawn] SUCCESS: world spawn -> cherry village at ' +
+                          villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ())
+              try {
+                if (pdata) pdata.putBoolean('icraft_cherry_spawn_set', true)
+              } catch (_) {}
+              return
+            } else {
+              console.warn('[icraft_spawn] all setSpawnPos paths failed for village at ' +
+                           villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ())
+              return
+            }
           }
           // village exists but not in cherry; advance search past this cherry
         }
@@ -162,14 +189,19 @@ try {
 
       // No cherry+village combo found; fall back to just cherry biome center
       if (bestCherryFallback) {
-        ow.setSharedSpawnPos(bestCherryFallback, 0.0)
-        console.log('[icraft_spawn] FALLBACK: spawn -> cherry biome center at ' +
-                    bestCherryFallback.getX() + ',' + bestCherryFallback.getY() + ',' +
-                    bestCherryFallback.getZ() + ' (no village found in any cherry biome ' +
-                    'within ' + MAX_ATTEMPTS + ' attempts)')
-        try {
-          if (pdata) pdata.putBoolean('icraft_cherry_spawn_set', true)
-        } catch (_) {}
+        if (applySpawnPos(ow, bestCherryFallback)) {
+          console.log('[icraft_spawn] FALLBACK: spawn -> cherry biome center at ' +
+                      bestCherryFallback.getX() + ',' + bestCherryFallback.getY() + ',' +
+                      bestCherryFallback.getZ() + ' (no village found in any cherry biome ' +
+                      'within ' + MAX_ATTEMPTS + ' attempts)')
+          try {
+            if (pdata) pdata.putBoolean('icraft_cherry_spawn_set', true)
+          } catch (_) {}
+        } else {
+          console.warn('[icraft_spawn] all setSpawnPos paths failed for cherry fallback at ' +
+                       bestCherryFallback.getX() + ',' + bestCherryFallback.getY() + ',' +
+                       bestCherryFallback.getZ())
+        }
       } else {
         console.warn('[icraft_spawn] FAILED: no cherry biome found at all; ' +
                      'spawn unchanged. Increase BIOME_SEARCH_RADIUS or generate more terrain.')
