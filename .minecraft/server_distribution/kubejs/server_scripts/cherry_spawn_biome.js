@@ -37,7 +37,16 @@ try {
   var Registries_cs = Java.loadClass('net.minecraft.core.registries.Registries')
   var ResourceLocation_cs = Java.loadClass('net.minecraft.resources.ResourceLocation')
 
-  var TARGET_BIOME = 'iridescent_biomes:cherry_river_valley'
+  // 2026-04-26 v2.3: tester logs showed villages consistently generate in
+  // cherry_mountains but never in cherry_river_valley -- river-valley terrain
+  // has too much water for vanilla village placement even with the
+  // has_structure/village_plains tag override. Accept BOTH cherry biomes
+  // as valid targets; user gets a cherry-themed spawn either way.
+  var TARGET_BIOMES = [
+    'iridescent_biomes:cherry_river_valley',
+    'iridescent_biomes:cherry_mountains'
+  ]
+  var TARGET_BIOME = TARGET_BIOMES[0]  // primary target for log messages
   var BIOME_SEARCH_RADIUS = 12000  // blocks; was 8000 in v1, expanded for new worlds
   var Y_STEP = 32
   var XZ_STEP = 64
@@ -76,12 +85,19 @@ try {
     } catch (e) { return null }
   }
 
+  var isCherryBiome = function(idStr) {
+    for (var i = 0; i < TARGET_BIOMES.length; i++) {
+      if (TARGET_BIOMES[i] === idStr) return true
+    }
+    return false
+  }
+
   var cherryPredicate = new Predicate_cs({
     test: function(biomeHolder) {
       try {
         var key = biomeHolder.unwrapKey()
         if (!key.isPresent()) return false
-        return String(key.get().location()) === TARGET_BIOME
+        return isCherryBiome(String(key.get().location()))
       } catch (e) { return false }
     }
   })
@@ -156,7 +172,7 @@ try {
           console.log('[icraft_spawn]   nearest village at ' +
                       villagePos.getX() + ',' + villagePos.getY() + ',' + villagePos.getZ() +
                       ' biome=' + villageBiome)
-          if (villageBiome === TARGET_BIOME) {
+          if (isCherryBiome(villageBiome)) {
             // Match! findNearestMapStructure returns Y=0 (no surface query);
             // resolve the actual ground Y via the heightmap before stashing.
             var surfaceY = villagePos.getY()
