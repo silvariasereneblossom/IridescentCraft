@@ -1235,6 +1235,13 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:leather_horse_armor')
     .removeLoot('minecraft:spider_eye')
     .removeLoot('minecraft:fermented_spider_eye')
+    // 2026-04-26: Terramity fairy_dust appearing in T1 overworld chests via
+    // Terramity's subterranean_shrine + trial_spire loot tables (their
+    // structures spawn in overworld biomes). Player progression intent:
+    // fairy_dust comes from killing the 3 Terramity fairy mobs (proper
+    // progression path), not from generic chest exploration. Strip from
+    // every overworld CHEST loot type.
+    .removeLoot('terramity:fairy_dust')
     .removeLoot('minecraft:poisonous_potato')
     .removeLoot('minecraft:rotten_flesh')
     // Wood: all log + plank variants via tags
