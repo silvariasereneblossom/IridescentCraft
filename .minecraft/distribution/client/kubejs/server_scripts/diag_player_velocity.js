@@ -45,6 +45,26 @@ try {
     }
   })
 
+  // 2026-04-26: Promoted from logger to active clamper. EnemyExpansion uses
+  // Entity.setDeltaMovement() directly (bypasses LivingKnockBackEvent), so
+  // cap_player_knockback.js can't see those launches. This handler caps the
+  // player's post-hit Y-velocity to vanilla max (pre + 0.4) when a procedure
+  // (Vampire, ExplosiveLaunch, etc.) bumped it past safety threshold (0.8).
+  // X/Z velocity left alone -- vanilla knockback() normalizes ratios so
+  // horizontal launches go through the normal path our other handler caps.
+  var SKYWARD_THRESHOLD = 0.8   // delta from pre to post that triggers clamp
+  var VANILLA_GROUND_Y_CAP = 0.4 // post = pre + this is the vanilla maximum
+
+  var setDelta = function(entity, x, y, z) {
+    // Need a Vec3 instance. Java.loadClass returns class wrapper; instantiate
+    // via reflection-friendly path: Vec3 is a public constructor.
+    try {
+      var Vec3 = Java.loadClass('net.minecraft.world.phys.Vec3')
+      entity.setDeltaMovement(new Vec3(x, y, z))
+      return true
+    } catch (_) { return false }
+  }
+
   var postHandler = new Consumer_dpv({
     accept: function(event) {
       try {
@@ -55,9 +75,6 @@ try {
         var preDy = pd.contains('_pre_dy') ? pd.getDouble('_pre_dy') : 0.0
         var postDy = vy(d)
         var ddy = postDy - preDy
-        // Vanilla cap on ground = 0.4. Allow generous slack (>0.6) before
-        // flagging since affix-injected knockback can legitimately spike.
-        if (Math.abs(ddy) <= 0.6) return
 
         var src = null
         try { src = event.getSource() } catch (e) {}
@@ -65,13 +82,33 @@ try {
         try { atk = src ? src.getEntity() : null } catch (e) {}
         var atkType = atk ? String(atk.getType().toString()) : 'unknown'
 
-        if (!global._velo_seen) global._velo_seen = {}
-        var key = atkType
-        if (!global._velo_seen[key]) {
-          global._velo_seen[key] = true
-          console.warn('[velo_spike] player Y-vel spike dy=' + ddy.toFixed(3) +
-                       ' (pre=' + preDy.toFixed(3) + ' post=' + postDy.toFixed(3) +
-                       ') from attacker=' + atkType)
+        // Active clamp: only for SKYWARD (positive Y) spikes that exceed
+        // the vanilla ground cap by a generous margin. Leaves negative Y
+        // (falling) alone -- gravity is fine.
+        if (ddy > SKYWARD_THRESHOLD) {
+          // Read x/z via field access (need primitive doubles for Vec3 ctor)
+          var dx = 0.0, dz = 0.0
+          try { dx = d.x() } catch (_) {}
+          try { dz = d.z() } catch (_) {}
+          var newY = preDy + VANILLA_GROUND_Y_CAP
+          if (setDelta(v, dx, newY, dz)) {
+            if (!global._velo_clamp_seen) global._velo_clamp_seen = {}
+            if (!global._velo_clamp_seen[atkType]) {
+              global._velo_clamp_seen[atkType] = true
+              console.log('[velo_clamp] CLAMPED player Y-vel: pre=' + preDy.toFixed(3) +
+                          ' post=' + postDy.toFixed(3) + ' (delta=' + ddy.toFixed(3) +
+                          ') -> ' + newY.toFixed(3) + ' from attacker=' + atkType)
+            }
+          }
+        } else if (Math.abs(ddy) > 0.6) {
+          // Below clamp threshold but above logging threshold -- diag only
+          if (!global._velo_seen) global._velo_seen = {}
+          if (!global._velo_seen[atkType]) {
+            global._velo_seen[atkType] = true
+            console.warn('[velo_spike] player Y-vel spike dy=' + ddy.toFixed(3) +
+                         ' (pre=' + preDy.toFixed(3) + ' post=' + postDy.toFixed(3) +
+                         ') from attacker=' + atkType + ' (under clamp threshold)')
+          }
         }
       } catch (_) {}
     }
