@@ -94,7 +94,21 @@ ServerEvents.loaded(event => {
 
   // -- Individual item restrictions --
   stageItems('tier_2', [
-    // Thermal T2 — machines and ingots only (NOT food/crops/seeds/decorative)
+    // Thermal T2 — RAW METALS (lead/tin/silver/nickel) -- 2026-04-26 user
+    // directive: gate thermal raw metals at T2. Apatite/cinnabar/niter/sulfur
+    // (crafting reagents) intentionally NOT gated here; alloys (steel/invar/
+    // electrum/etc.) already in this T2 list below.
+    'thermal:lead_ore', 'thermal:deepslate_lead_ore', 'thermal:nether_lead_ore',
+    'thermal:tin_ore', 'thermal:deepslate_tin_ore',
+    'thermal:silver_ore', 'thermal:deepslate_silver_ore',
+    'thermal:nickel_ore', 'thermal:deepslate_nickel_ore', 'thermal:nether_nickel_ore',
+    'thermal:lead_ingot', 'thermal:lead_block',
+    'thermal:tin_ingot', 'thermal:tin_block',
+    'thermal:silver_ingot', 'thermal:silver_block',
+    'thermal:nickel_ingot', 'thermal:nickel_block',
+    'thermal:raw_lead', 'thermal:raw_tin', 'thermal:raw_silver', 'thermal:raw_nickel',
+    'thermal:lead_nugget', 'thermal:tin_nugget', 'thermal:silver_nugget', 'thermal:nickel_nugget',
+    // Thermal T2 — machines and alloys (NOT food/crops/seeds/decorative)
     'thermal:machine_frame',
     'thermal:steel_ingot', 'thermal:steel_block',
     'thermal:invar_ingot', 'thermal:invar_block',
@@ -171,6 +185,18 @@ ServerEvents.loaded(event => {
 
   // -- Individual item restrictions --
   stageItems('tier_3', [
+    // Quartz — overworld_quartz mod injects nether_quartz into overworld;
+    // 2026-04-26 user directive: quartz comes from Nether (T3) only. Stripped
+    // overworld_quartz biome injection via icraft_worldgen_overrides datapack
+    // and gating items here so vanilla nether_quartz_ore + quartz blocks
+    // require T3 stage.
+    'minecraft:nether_quartz_ore', 'minecraft:quartz',
+    'minecraft:quartz_block', 'minecraft:smooth_quartz',
+    'minecraft:chiseled_quartz_block', 'minecraft:quartz_pillar',
+    'minecraft:quartz_bricks',
+    'minecraft:quartz_stairs', 'minecraft:quartz_slab',
+    'minecraft:smooth_quartz_stairs', 'minecraft:smooth_quartz_slab',
+    'overworld_quartz:overworld_quartz_ore', 'overworld_quartz:deepslate_quartz_ore',
     // Diamond raw + derivatives
     'minecraft:diamond', 'minecraft:diamond_block',
     'minecraft:diamond_sword', 'minecraft:diamond_pickaxe',
