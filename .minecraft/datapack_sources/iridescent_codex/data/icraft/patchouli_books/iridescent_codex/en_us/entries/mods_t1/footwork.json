@@ -1,6 +1,6 @@
 {
   "name": "Footwork",
-  "icon": "footwork:combat_manual",
+  "icon": "minecraft:writable_book",
   "category": "icraft:mods_t1",
   "sortnum": 11,
   "pages": [

@@ -1,6 +1,6 @@
 {
   "name": "RFTools Dimensions",
-  "icon": "rftools:dimension_editor",
+  "icon": "rftoolsdim:dimension_editor",
   "category": "icraft:mods_t4",
   "sortnum": 2,
   "pages": [
