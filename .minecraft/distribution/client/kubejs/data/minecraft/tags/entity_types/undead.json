@@ -7,6 +7,11 @@
     "theabyss:infected_zombie",
     "theabyss:shattered_zombie",
     "theabyss:mud_zombie",
+    "theabyss:infected_phantom",
+    "theabyss:abysszombie",
+    "theabyss:abysssoulzombie",
+    "theabyss:exomzombie",
+    "theabyss:liromzombie",
 
     "occultism:possessed_skeleton",
     "occultism:possessed_endermite",
@@ -30,6 +35,47 @@
     "nether_zombies:warped_zombie",
 
     "mca:male_zombie_villager",
-    "mca:female_zombie_villager"
+    "mca:female_zombie_villager",
+
+    "bygonenether:wither_skeleton_horse",
+    "bygonenether:wither_skeleton_knight",
+    "bygonenether:wraither",
+
+    "mutantmonsters:mutant_skeleton",
+    "mutantmonsters:mutant_zombie",
+    "mutantmonsters:mutant_zombie_villager",
+
+    "netherskeletons:basalt_skeleton",
+    "netherskeletons:charred_skeleton",
+    "netherskeletons:crimson_skeleton",
+    "netherskeletons:crying_obby_skeleton",
+    "netherskeletons:netherborn_skeleton",
+    "netherskeletons:skelly_ghast",
+    "netherskeletons:skelly_piglin",
+    "netherskeletons:soul_skeleton",
+    "netherskeletons:warped_skeleton",
+
+    "twilightforest:knight_phantom",
+    "twilightforest:lich_minion",
+    "twilightforest:loyal_zombie",
+    "twilightforest:rising_zombie",
+    "twilightforest:skeleton_druid",
+    "twilightforest:wraith",
+
+    "savage_and_ravage:skeleton_villager",
+    "quark:wraith",
+
+    "enemyexpansion:vampbiter",
+    "enemyexpansion:vampflyer",
+    "enemyexpansion:vampire",
+
+    "azukaarsfairdifficultyoverhaul:raised_zombie",
+    "cataclysm:ignited_revenant",
+
+    "ad_astra:zombified_mogler",
+    "ad_astra:zombified_pygro",
+
+    "alexsmobs:spectre",
+    "alexsmobs:skelewag"
   ]
 }
