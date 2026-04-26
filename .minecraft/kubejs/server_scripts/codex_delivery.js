@@ -131,8 +131,14 @@ function codex_giveStarterKit(player, className) {
         stack = Item.of(entry.item, entry.count)
         label = entry.item + ' x' + entry.count
       }
+      // 2026-04-26 fix: stack.isEmpty is a METHOD on ItemStack, not a
+      // property -- '!stack.isEmpty' was always truthy (method ref),
+      // so the log always falsely reported 'EMPTY/null' regardless of
+      // actual state. Call it as a method.
+      var stackOk = false
+      try { stackOk = stack && !stack.isEmpty() } catch (_) {}
       console.log('[codex/starter] give: attempting ' + label +
-                  ' (stack resolved: ' + (stack && !stack.isEmpty ? 'ok' : 'EMPTY/null') + ')')
+                  ' (stack resolved: ' + (stackOk ? 'ok' : 'EMPTY/null') + ')')
       player.give(stack)
       giveSuccesses++
       console.log('[codex/starter] give: ' + label + ' — player.give returned without throw')
