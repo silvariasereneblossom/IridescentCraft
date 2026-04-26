@@ -4,6 +4,79 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-26 — Modular Spells mod completed + worldgen rebalance arc + combat survivability
+
+Major session covering five interconnected workstreams. All changes shipped + tested.
+
+### Iridescent Modular Spells mod (Phases 2-5 complete)
+
+8 modular spell books spanning ISS + Ars Nouveau ecosystems with NBT-stored cover/pages slots, custom enchants, and tier gating.
+
+- **Phase 2 (b04c4eb8, 180c1152, bb9d6aaa)** — Full ISS spell book coverage. 4 new books (`modular_iron`, `modular_gold`, `modular_diamond`, `modular_netherite`) extending ISS's `SpellBook` for full T1→T4 progression. Material list expanded from 3 (leather/iron/diamond) to 6 (added copper/gold/netherite). Cover bonuses lean "max" (max_mana, spell_power); pages bonuses lean "rate" (mana_regen, cooldown_reduction). 4 new shapeless recipes (`<tier>_spell_book + leather` → modular variant; cover material customization via existing AnvilModuleInstaller).
+- **Phase 3 (bc8cf447)** — Ars Nouveau modular spell books. New `ModularArsSpellBookItem` extends Ars's `SpellBook` for glyph-casting compatibility. 3 books (`modular_novice`, `modular_apprentice`, `modular_archmage`) with cloth-cover progression: white_wool (T1) → manaweave_cloth (T2 Botania) → sorcerer_robes (T3 Ars) → spell_cloth (T4 Botania endgame). Cover bonuses target Ars `max_mana` + `spell_damage` attributes; T3+ pages cross-buff ISS `spell_power` for cross-system synergy. AttributeKey enum extended with `ARS_MAX_MANA` + `ARS_SPELL_DAMAGE`. Build deps: `ars_nouveau` + `geckolib` (transitive — Ars's SpellBook implements GeoItem) added as compileOnly.
+- **Phase 4 (f78f981e)** — 4 book-exclusive enchants registered via DeferredRegister with custom `EnchantmentCategory` filtering only modular books: `mana_capacity` I-V (+5%/lv max mana), `mana_flow` I-III (+5%/lv mana regen), `magic_crit_chance` I-III (+5%/lv crit roll), `magic_crit_damage` I-III (+25%/lv crit damage). The first two flow through AttributeApplier alongside slot-material bonuses. The latter two need a magic-crit hook since vanilla magic doesn't crit — new server script `magic_crit_hook.js` intercepts magic-typed `LivingHurtEvent`, rolls held book's chance enchant level + player's existing `icraft_crit_chance` attribute (cross-system melee/magic synergy), and multiplies damage on hit.
+- **Phase 5 (a83d624a, e6485ba0, 85d0b5b5)** — Polish closing the arc:
+  - **Codex**: 6-page `mods_t1/modular_spells.json` walkthrough (what modular books are, ISS metal-cover tiers, Ars cloth-cover tiers, slot bonus design, custom enchants, tier gates).
+  - **AStages tier gates**: T2 (modular_iron + modular_gold + modular_apprentice), T3 (modular_diamond + modular_archmage), T4 (modular_netherite). T1 (modular_copper + modular_novice) ungated as start tier.
+  - **Caster starter kits**: Archmage / Battlemage / Void Summoner now ship with the modular variants instead of vanilla ISS/Ars books — install cover/pages materials + custom enchants from day 1.
+  - **Item icons**: 8 model JSONs written. ISS modular books inherit ISS's full 3D model via `parent` reference. Ars books fall back to vanilla `book` / `enchanted_book` / `writable_book` (Ars uses GeckoLib which requires per-item GeoItem renderer registration to inherit; deferred to future Phase 5.5).
+  - **Codex icon audit**: 7 broken icons fixed across mods_t1/t2/t4 entries (apotheosis:infusion_table → salvaging_table; mahou_tsukai → mahoutsukai namespace; ars_nouveau:spell_book_1 → novice_spell_book; etc.).
+
+### Worldgen rebalance arc
+
+- **Cherry River Valley spawn (d4013cd7, 7f020442)** — `cherry_spawn_biome.js` runs once per world on serverLoaded, locates `iridescent_biomes:cherry_river_valley` within 8000 blocks of default spawn, sets shared spawn position. New first-time-player default spawn, compass needle, and bed-less respawn target.
+- **Terramity ore tier-dim migration (a5c0b2a5, 7f020442)** — All 11 Terramity overworld ore biome_modifiers nullified via `forge:none` overrides. Each material re-injected into tier-appropriate dimensions per stat audit:
+  - **T2 cold (sapphire)** → Aether + Blue Skies Everdawn
+  - **T2 hot (topaz)** → Twilight Forest + Blue Skies Everbright
+  - **T2 (ruby, dimlite, gaianite)** → Twilight Forest
+  - **T3 (iridium, profaned, iridescent)** → Undergarden + Deeper Darker
+  - Nether/End ores (daemonium, nether_iridium, nether_ruby, end_iridium, end_onyx) untouched.
+  - **Hotfix (7f020442)**: each dual-target ore split into 2 biome_modifier files since Forge's `forge:add_features` `biomes` field doesn't accept arrays containing tag references — only single strings or arrays of explicit biome IDs.
+- **Quartz nether-only (d4013cd7)** — overworld_quartz mod's biome injection nullified; AStages T3 gate added on `nether_quartz_ore`, all quartz blocks, and `overworld_quartz:*` items.
+- **Worldgen frequency tweaks (dc714bcf)** — Thermal lead/tin/silver/nickel placed_features count -15%; vanilla iron + copper +25%; Create zinc +25%; Mekanism world.toml `perChunk` for 10 ore veins reduced ~15% (Mekanism uses `configurable_constant` so config TOML edit instead of datapack).
+- **AStages thermal raw metals → T2 (d4013cd7)** — lead/tin/silver/nickel raw + ingots + ores + nuggets + blocks all gated at tier_2.
+
+### Tetra Terramity material integration (0cf129fc)
+
+6 ore-mined Terramity materials get Tetra material entries with unique perks (vs raw stats — sapphire/topaz/ruby/onyx have identical in-mod stats, differentiation via perk):
+- **sapphire** (T2 cold gem) — Fire Resistance passive while held
+- **topaz** (T2 hot gem) — Sets target on fire 2s on hit
+- **ruby** (T2 fire gem) — +50% damage when source is fire-typed
+- **onyx** (T4 dark gem from End) — +15% damage from owned/tamed minions of holder (synergy with summoner classes)
+- **dimlite** (T2 glow metal) — Night Vision passive while held (effective self-light source)
+- **iridium** (T3 metal) — +50% melee knockback on hit (true unit-vector physics)
+
+Perks applied via `tetra_terramity_perks.js` — scans player mainhand for Tetra items whose modules contain one of the 6 materials (NBT key endsWith `_material`), applies effect via tick handler (passives) or `EntityEvents.hurt` (on-hit).
+
+### Combat survivability (Faefolk/WoI/Archmage early-game pain)
+
+- **T1 damage softener (dc714bcf)** — `player_t1_damage_softener.js` multiplies incoming damage × 0.7 (-30%) for players with tier_1 stage AND NOT tier_2. Auto-disables once they progress past overworld. 7-dmg geared zombie hit becomes ~5 dmg → 2-shot becomes 3-shot.
+- **ImprovedMobs Equipment Chance** 0.30 → 0.15 (dc714bcf) — half the mobs spawn with gear, halving burst-damage incidence.
+- **Sunlight clear-out (dc714bcf)** — `sunlight_smite.js` damage per tick bumped 2.0 → 100.0; any non-boss undead in direct sky during day one-shot killed at next tick boundary (~0.5s after exposure). Drops preserved.
+- **Modded undead tag audit (5c244b82)** — `data/minecraft/tags/entity_types/undead.json` expanded from 26 → 63 entries. Added netherskeletons (9), bygonenether wither variants (3), mutantmonsters mutants (3), savage_and_ravage skeleton_villager, twilightforest non-boss undead (6), enemyexpansion vampires (3), terramity legacy zombies (4 via TATOS legacy id format), ad_astra zombified pygros, alexsmobs spectre/skelewag, cataclysm:ignited_revenant, etc. Bosses excluded.
+- **Mana pool buffs (b04c4eb8, 180c1152, 8ec5e1f4)** — `mana_pool_bonuses.js` applies via `irons_spellbooks:max_mana` AND `ars_nouveau:ars_nouveau.perk.max_mana`: global +25% baseline (MULTIPLY_BASE) for every player; Archmage MULTIPLY_TOTAL +1.0 (2x on top); Battlemage / Void Summoner MULTIPLY_TOTAL +0.5 (1.5x on top). Resulting max_mana from default 100 base: Non-mage=125, Battlemage/VS=187, Archmage=250. Ars Nouveau caches max via `IManaCap.setMaxMana` and only recomputes on login/respawn/equip events — script also calls `ManaUtil.calcMaxMana(player)` + `setMaxMana()` on class change to force-kick the cache.
+
+### EnemyExpansion knockback bypass investigation + fix (a18aacc5)
+
+EnemyExpansion uses `Entity.setDeltaMovement(Vec3)` DIRECTLY in its mob procedures (DireLeapProcedure, VampireAttackProcedure, ExplosiveLaunchHappensProcedure), bypassing `LivingKnockBackEvent` entirely. Three layers of defense added:
+1. `cap_player_knockback.js` — clamp ratio + strength in `LivingKnockBackEvent` (catches vanilla Punch enchant).
+2. `diag_player_velocity.js` (promoted from logger to clamper) — at LivingHurtEvent.HIGHEST snapshot pre-Y, at LIVINGHurtEvent.LOWEST clamp post-Y if delta > 0.8 to `pre + 0.4` (vanilla cap). Catches Vampire procedure direct setDeltaMovement.
+3. `enemyexpansion_explosive_launch_blocker.js` — 4Hz tick scan of all players, removes `enemyexpansion:explosive_launch` mob effect on sight. Kills the per-tick procedure at its source.
+
+### TATOS dimension lock (73d2e2f6)
+
+`tatos_dimension_lock.js` confines all `theabyss:*` (and `abyss:*`) mobs to the 4 TATOS dimensions (`the_abyss`, `spectral_world`, `frost_world`, `pocket_dimension`). Subscribes to `EntityEvents.spawned`, `entity.discard()`s any TATOS spawn outside those dims. Catches Java-code spawns, structure spawners, command-summoned, mod cross-injection. Also: 20-entry TATOS legacy lang fix (`entity.<id>.name` MCreator format that 1.20.1 doesn't resolve) — abyssbadskelletion/abysscorruptedcow/abysszombie/etc. all rendered properly now.
+
+### Misc fixes
+
+- **`/icraft despawn <radius>` command (cb8d89a4, 45112263, fbcd15e2, dce72e5d)** — Op-only KubeJS command for clearing nearby hostiles. Triple-fallback hostile detection (instanceof `Monster.class` + MobCategory `equals(MONSTER)` + name string compare) since Rhino enum identity is unreliable across JavaClass wrapper round-trips. Skips bosses (`#forge:bosses`), tamed entities (`OwnableEntity`), and players. `entity.discard()` not kill — clean reset, drops not preserved.
+- **Empty customName fix (1a8a1f0f)** — `fix_empty_display_name.js` clears empty Component names at spawn so death messages show entity type name instead of `silvieserene was shot by ` (literal blank). `diag_empty_display_name.js` continues logging which mod is producing them (Townstead-flavored pigs caught at 45,64,-62 in tester logs).
+- **Vec3 field NPE hotfix (6c27d44d)** — `diag_player_velocity.js` Phase 1 used Vec3 field access (`d.y`) which Rhino's FieldAndMethods.getDefaultValue NPEs on inside Field.get(null) when coercing to primitive. Bridge-level NPE bypassed JS try/catch, crashed the player tick, Neruina kicked tester. Fixed by switching to method form `d.y()` (record-style accessor in 1.20.1).
+- **Rhino scoping memory** (`feedback_rhino_scoping.md`) — Two traps documented: function declarations inside try blocks aren't reliably hoisted (use `var X = function() {}`); Vec3 field access NPEs (use method form).
+- **Forge biome_modifier memory** (`feedback_forge_biome_modifier.md`) — `biomes` field is tag OR array-of-ids, never array containing tags; split into one file per tag.
+
+---
+
 ## 2026-04-24 — Three-distro parity audit: server_distribution/global_packs cleanup
 
 Ran a full parity sweep of main, server_distribution, and distribution/client across kubejs/, config/, datapack_sources/, global_packs/, and custom mod jars. Almost everything was already byte-identical: KubeJS server_scripts (71), startup_scripts (5), client_scripts (minus correctly-server-omitted `attribute_tooltips.js`), data/ (181 files), assets/ (7), all 7 custom mod jars, all 17 datapacks in `config/paxi/datapacks/`. Top-level config/ drift was expected shape (client-only `.toml` files absent from server, runtime `.bak` files).
