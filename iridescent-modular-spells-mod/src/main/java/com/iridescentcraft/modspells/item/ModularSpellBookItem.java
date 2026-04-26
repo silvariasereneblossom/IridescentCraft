@@ -54,8 +54,10 @@ import java.util.concurrent.TimeUnit;
  */
 public class ModularSpellBookItem extends SpellBook implements IModularItem {
 
-    /** Tetra item identifier for repair-schematic + cache namespacing. */
-    public static final String TETRA_IDENTIFIER = "iridescent_modular_spells:iss_book";
+    /** Tetra item identifier for repair-schematic + cache namespacing.
+     *  Must match [a-z0-9/._-] only — Tetra builds it into a ResourceLocation
+     *  path, where ':' is illegal. */
+    public static final String TETRA_IDENTIFIER = "iridescent_iss_book";
 
     /** Tetra slot keys (used by IModularItem; matches `slots` field in modules/<key>.json). */
     public static final String TETRA_SLOT_CORE = "iss_book/core";

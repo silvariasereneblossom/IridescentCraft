@@ -50,7 +50,8 @@ import java.util.concurrent.TimeUnit;
  */
 public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
 
-    public static final String TETRA_IDENTIFIER = "iridescent_modular_spells:ars_book";
+    /** Tetra item identifier — RL-path-safe (no ':'). See ModularSpellBookItem. */
+    public static final String TETRA_IDENTIFIER = "iridescent_ars_book";
 
     public static final String TETRA_SLOT_FRONT_COVER = "ars_book/front_cover";
     public static final String TETRA_SLOT_BACK_COVER = "ars_book/back_cover";
