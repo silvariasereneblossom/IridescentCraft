@@ -52,7 +52,12 @@ try {
   var UNDEAD_TAG_FORGE = TagKey_ss.create(Registries_ss.ENTITY_TYPE,
     new ResourceLocation_ss('forge', 'undead'))
 
-  var DAMAGE_PER_TICK = 2.0   // half a heart per 10-tick cycle = 4 HP/sec
+  // 2026-04-26: user directive "sunlight should flat out clear out entities".
+  // Bumped from 2.0 (4 HP/sec; ~5s to kill a vanilla zombie) to 100.0 which
+  // one-shots any non-boss undead in a single tick. Drops still spawn on death
+  // (so loot economy unaffected); mobs simply don't survive their first
+  // direct-sky frame after our 10-tick cadence catches them.
+  var DAMAGE_PER_TICK = 100.0
 
   var isUndead = function(entity) {
     try {

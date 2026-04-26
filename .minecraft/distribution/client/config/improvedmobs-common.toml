@@ -209,8 +209,11 @@
     # The base equip chance controls how many mobs get gear at all.
 
     # Base chance for a mob to spawn with any equipment (0.0-1.0)
-    # 30% is a balanced starting point. Difficulty scales quality, not quantity.
-    "Equipment Chance" = 0.30
+    # 2026-04-26: tester reported 1-2 shot deaths at T1 with Faefolk/WoI/Archmage.
+    # Reduced 0.30 -> 0.15: half the mobs spawn with gear, halving the burst-damage
+    # incidence. Combined with T1 player damage softener in
+    # player_t1_damage_softener.js for the early-game survivability bump.
+    "Equipment Chance" = 0.15
 
     # Whether to apply enchantments to equipment
     # YES — design doc says Tier 3+ mobs have enchanted gear
