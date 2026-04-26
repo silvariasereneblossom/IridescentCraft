@@ -35,22 +35,25 @@ function codex_makeScroll(spellId, level) {
 
 const MAGIC_STARTER_KITS = {
   archmage: [
-    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    // 2026-04-26 Phase 5: caster classes start with MODULAR variants so
+    // they can immediately install cover/pages materials + the custom
+    // magic enchants (mana_capacity / mana_flow / arcane_edge / arcane_devastation).
+    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
     { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
     { scroll: 'irons_spellbooks:firebolt',        level: 1 },
-    { item: 'ars_nouveau:novice_spell_book',     count: 1 },
+    { item: 'iridescent_modular_spells:modular_novice_spell_book', count: 1 },
     { item: 'ars_nouveau:source_gem',            count: 5 },
     { item: 'irons_spellbooks:common_ink',       count: 2 }
   ],
   battlemage: [
-    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
     { scroll: 'irons_spellbooks:magic_arrow',     level: 1 },
     { scroll: 'irons_spellbooks:fang_strike',     level: 1 },
     { item: 'ars_nouveau:source_gem',            count: 3 },
     { item: 'irons_spellbooks:common_ink',       count: 1 }
   ],
   void_summoner: [
-    { item: 'irons_spellbooks:copper_spell_book', count: 1 },
+    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
     { scroll: 'irons_spellbooks:magic_missile',   level: 1 },
     { scroll: 'irons_spellbooks:summon_vex',      level: 1 },
     { item: 'irons_spellbooks:common_ink',       count: 1 },

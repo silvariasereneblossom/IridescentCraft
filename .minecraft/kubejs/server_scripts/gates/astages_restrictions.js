@@ -131,6 +131,10 @@ ServerEvents.loaded(event => {
     // Ars Nouveau T2 — apprentice tier (novice + scribes_table are T1/ungated)
     'ars_nouveau:apprentice_spell_book',
     'ars_nouveau:enchanting_apparatus', 'ars_nouveau:arcane_core',
+    // 2026-04-26 Phase 5: modular spell book T2 tier (iron/gold ISS + apprentice Ars)
+    'iridescent_modular_spells:modular_iron_spell_book',
+    'iridescent_modular_spells:modular_gold_spell_book',
+    'iridescent_modular_spells:modular_apprentice_spell_book',
     // Botania T2 — advanced materials + gear
     'botania:manasteel_ingot', 'botania:mana_diamond', 'botania:mana_pearl',
     'botania:manasteel_block',
@@ -214,6 +218,9 @@ ServerEvents.loaded(event => {
     // Ars Nouveau T3 — archmage tier + advanced crafting
     'ars_nouveau:archmage_spell_book',
     'ars_nouveau:imbuement_chamber',
+    // 2026-04-26 Phase 5: modular spell book T3 tier (diamond ISS + archmage Ars)
+    'iridescent_modular_spells:modular_diamond_spell_book',
+    'iridescent_modular_spells:modular_archmage_spell_book',
     // Botania T3 — terrasteel + elementium + all derivatives
     'botania:terrasteel_ingot', 'botania:terrasteel_block',
     'botania:terrasteel_helmet', 'botania:terrasteel_chestplate',
@@ -273,6 +280,8 @@ ServerEvents.loaded(event => {
 
   // -- Mekanism advanced items (mod is T3, these specific items need T4) --
   stageItems('tier_4', [
+    // 2026-04-26 Phase 5: modular spell book T4 tier (netherite ISS)
+    'iridescent_modular_spells:modular_netherite_spell_book',
     'mekanism:digital_miner',
     'mekanism:fusion_reactor_controller',
     'mekanism:mekasuit_helmet', 'mekanism:mekasuit_bodyarmor',
