@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#twilightforest:in_twilight_forest",
+  "features": "terramity:deepslate_dimlite_ore",
+  "step": "underground_ores"
+}

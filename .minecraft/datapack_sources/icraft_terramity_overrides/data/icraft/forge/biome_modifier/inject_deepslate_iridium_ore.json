@@ -1,0 +1,12 @@
+{
+  "type": "forge:add_features",
+  "biomes": [
+    "#undergarden:is_undergarden",
+    "deeperdarker:blooming_caverns",
+    "deeperdarker:deeplands",
+    "deeperdarker:echoing_forest",
+    "deeperdarker:overcast_columns"
+  ],
+  "features": "terramity:deepslate_iridium_ore",
+  "step": "underground_ores"
+}
