@@ -1,6 +1,7 @@
 package com.iridescentcraft.modspells.event;
 
 import com.iridescentcraft.modspells.IridescentModularSpells;
+import com.iridescentcraft.modspells.enchant.ModEnchantmentRegistry;
 import com.iridescentcraft.modspells.item.ModularArsSpellBookItem;
 import com.iridescentcraft.modspells.item.ModularSpellBookItem;
 import net.minecraft.core.registries.Registries;
@@ -107,6 +108,26 @@ public class AttributeApplier {
                 double v = ModularArsSpellBookItem.getTotalBonus(stack, key);
                 if (v != 0.0) totals.merge(key, v, Double::sum);
             }
+        } else {
+            return; // not a modular book; skip enchant scan
+        }
+
+        // Phase 4: enchant-driven bonuses (in addition to slot-material bonuses).
+        // Each level adds 5% to the relevant attribute. Crit-chance/damage
+        // enchants are NOT applied to the attribute system here -- they're
+        // read directly at LivingHurtEvent time by the magic-crit hook.
+        int manaCap = ModEnchantmentRegistry.getLevel(stack, ModEnchantmentRegistry.MANA_CAPACITY);
+        if (manaCap > 0) {
+            totals.merge(ModularSpellBookItem.AttributeKey.MAX_MANA,
+                         manaCap * 0.05, Double::sum);
+            // ISS Ars synergy: Ars books with mana_capacity also boost Ars mana
+            totals.merge(ModularSpellBookItem.AttributeKey.ARS_MAX_MANA,
+                         manaCap * 0.05, Double::sum);
+        }
+        int manaFlow = ModEnchantmentRegistry.getLevel(stack, ModEnchantmentRegistry.MANA_FLOW);
+        if (manaFlow > 0) {
+            totals.merge(ModularSpellBookItem.AttributeKey.MANA_REGEN,
+                         manaFlow * 0.05, Double::sum);
         }
     }
 

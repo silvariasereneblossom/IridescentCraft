@@ -1,4 +1,15 @@
 {
-  "item.iridescent_modular_spells.modular_copper_spell_book": "Modular Copper Spell Book",
-  "itemGroup.iridescent_modular_spells": "Iridescent Modular Spells"
+  "item.iridescent_modular_spells.modular_copper_spell_book":     "Modular Copper Spell Book",
+  "item.iridescent_modular_spells.modular_iron_spell_book":       "Modular Iron Spell Book",
+  "item.iridescent_modular_spells.modular_gold_spell_book":       "Modular Gold Spell Book",
+  "item.iridescent_modular_spells.modular_diamond_spell_book":    "Modular Diamond Spell Book",
+  "item.iridescent_modular_spells.modular_netherite_spell_book":  "Modular Netherite Spell Book",
+  "item.iridescent_modular_spells.modular_novice_spell_book":     "Modular Novice Spell Book",
+  "item.iridescent_modular_spells.modular_apprentice_spell_book": "Modular Apprentice Spell Book",
+  "item.iridescent_modular_spells.modular_archmage_spell_book":   "Modular Archmage Spell Book",
+
+  "enchantment.iridescent_modular_spells.mana_capacity":     "Mana Capacity",
+  "enchantment.iridescent_modular_spells.mana_flow":         "Mana Flow",
+  "enchantment.iridescent_modular_spells.magic_crit_chance": "Arcane Edge",
+  "enchantment.iridescent_modular_spells.magic_crit_damage": "Arcane Devastation"
 }

@@ -1,5 +1,6 @@
 package com.iridescentcraft.modspells;
 
+import com.iridescentcraft.modspells.enchant.ModEnchantmentRegistry;
 import com.iridescentcraft.modspells.item.ModularItemRegistry;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
@@ -30,7 +31,9 @@ public class IridescentModularSpells {
 
         // Item registration (DeferredRegister)
         ModularItemRegistry.ITEMS.register(modBus);
+        // Enchantment registration (Phase 4 -- book-exclusive enchants)
+        ModEnchantmentRegistry.ENCHANTMENTS.register(modBus);
 
-        LOGGER.info("[IridescentModularSpells] Phase 1 loaded -- modular ISS spell books available");
+        LOGGER.info("[IridescentModularSpells] Phase 4 loaded -- ISS+Ars modular books, custom enchants");
     }
 }
