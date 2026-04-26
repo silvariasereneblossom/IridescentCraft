@@ -1,0 +1,11 @@
+{
+  "structures": [
+    { "structure": "icraft:cherry_village", "weight": 1 }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 73648291,
+    "separation": 4,
+    "spacing": 10
+  }
+}
