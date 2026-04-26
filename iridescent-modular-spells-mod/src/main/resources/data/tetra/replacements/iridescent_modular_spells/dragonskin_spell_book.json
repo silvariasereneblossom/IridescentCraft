@@ -1,0 +1,18 @@
+[
+    {
+        "conditions": [
+            { "type": "forge:mod_loaded", "modid": "irons_spellbooks" }
+        ],
+        "predicate": {
+            "items": [ "irons_spellbooks:dragonskin_spell_book" ]
+        },
+        "item": "iridescent_modular_spells:modular_dragonskin_spell_book",
+        "modules": {
+            "iss_book/front_cover": [ "iss_book/front_cover", "front_cover/leather" ],
+            "iss_book/back_cover":  [ "iss_book/back_cover",  "back_cover/leather" ],
+            "iss_book/spine":       [ "iss_book/spine",       "spine/diamond" ],
+            "iss_book/pages":       [ "iss_book/pages",       "pages/leather" ]
+        },
+        "improvements": {}
+    }
+]

@@ -2,18 +2,22 @@ package com.iridescentcraft.modspells.item;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import io.redspace.ironsspellbooks.item.SpellBook;
 import net.minecraft.ChatFormatting;
+import net.minecraft.core.registries.Registries;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import se.mickelus.tetra.data.DataManager;
 import se.mickelus.tetra.gui.GuiModuleOffsets;
 import se.mickelus.tetra.items.modular.IModularItem;
@@ -23,45 +27,43 @@ import se.mickelus.tetra.module.data.ItemProperties;
 import se.mickelus.tetra.module.data.SynergyData;
 import se.mickelus.tetra.module.data.ToolData;
 import se.mickelus.tetra.module.schematic.RepairSchematic;
+import top.theillusivec4.curios.api.SlotContext;
 
 import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.UUID;
 import java.util.concurrent.TimeUnit;
 
 /**
- * Modular ISS spell book base. Subclasses ISS's {@link SpellBook} so we
- * inherit spell-casting, curio behavior, and the standard book item
- * lifecycle for free; implements Tetra's {@link IModularItem} so the book
- * is recognized by the Tetra workbench.
+ * Modular ISS spell book base — extends ISS's {@link SpellBook}, implements
+ * Tetra's {@link IModularItem}, and adds a per-book intrinsic stat buff
+ * pass on top.
  *
- * <p>Phase 6B: skeleton only. {@code getMajorModuleKeys} reports the slot
- * layout so the book appears in the workbench, but no schemas/modules
- * exist yet, so installed-module set is empty. Stat bonuses still come
- * from the legacy {@code imodspells_slots} NBT system via
- * {@link com.iridescentcraft.modspells.event.AttributeApplier}.
+ * <p><b>Stacking model</b> for {@code getAttributeModifiers(curios)}:
+ * <ol>
+ *   <li>{@code super.getAttributeModifiers(...)} — preserves ISS's vanilla
+ *       book-specific modifiers (dragonskin's +10% Ender, gold's +15%
+ *       cast time, etc.)</li>
+ *   <li>{@link BookKind#intrinsicModifiers()} — our tier-buff overlay,
+ *       e.g. dragonskin gets bumped to +25% Ender + +50 max_mana on top
+ *       of the ISS baseline.</li>
+ *   <li>{@code getAttributeModifiersCached(stack)} — Tetra slot/lining
+ *       attrs from installed modules.</li>
+ * </ol>
+ * Result: vanilla ISS intent + our Phase 6F buff + slot/lining bonuses
+ * all stack additively. Mage power curve is uncapped per design (see
+ * memory: feedback_mage_power_curve.md).
  *
- * <p>Phase 6C registers the slot schemas + per-material variants;
- * Phase 6D migrates legacy NBT into Tetra's Modules NBT and retires
- * AttributeApplier + AnvilModuleInstaller.
- *
- * <p>Tetra slot layout (5 majors, no minors): {@code core},
- * {@code front_cover}, {@code back_cover}, {@code spine}, {@code pages}.
- * The {@code core} slot picks which underlying ISS book the modular
- * variant represents (copper / iron / gold / diamond / netherite); the
- * other four slots accept Tetra material tags.
+ * <p>Tetra slot layout (4 majors): {@code front_cover}, {@code back_cover},
+ * {@code spine}, {@code pages}. No {@code core} slot — each ISS modular
+ * variant is tier-locked to its book identity at registration.
  */
 public class ModularSpellBookItem extends SpellBook implements IModularItem {
 
-    /** Tetra item identifier for repair-schematic + cache namespacing.
-     *  Must match [a-z0-9/._-] only — Tetra builds it into a ResourceLocation
-     *  path, where ':' is illegal. */
     public static final String TETRA_IDENTIFIER = "iridescent_iss_book";
 
-    /** Tetra slot keys (used by IModularItem; matches `slots` field in modules/<key>.json).
-     *  No `core` slot — each ISS modular item is tier-locked at registration (5 separate
-     *  items for copper/iron/gold/diamond/netherite). */
     public static final String TETRA_SLOT_FRONT_COVER = "iss_book/front_cover";
     public static final String TETRA_SLOT_BACK_COVER = "iss_book/back_cover";
     public static final String TETRA_SLOT_SPINE = "iss_book/spine";
@@ -82,6 +84,7 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
             CacheBuilder.newBuilder().maximumSize(1000L).expireAfterWrite(5L, TimeUnit.MINUTES).build();
 
     private final SynergyData[] synergies = new SynergyData[0];
+    private final BookKind kind;
 
     // ===== Legacy Phase 1-5 imodspells_slots NBT system (retired in 6D) =====
 
@@ -93,52 +96,36 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public static final Map<String, Map<AttributeKey, Double>> PAGES_BONUSES = new HashMap<>();
 
     static {
-        COVER_BONUSES.put("leather",
-                Map.of(AttributeKey.MAX_MANA, 0.05));
-        COVER_BONUSES.put("copper",
-                Map.of(AttributeKey.MAX_MANA, 0.05,
-                       AttributeKey.MANA_REGEN, 0.03));
-        COVER_BONUSES.put("iron",
-                Map.of(AttributeKey.SPELL_POWER, 0.05,
-                       AttributeKey.MAX_MANA, 0.05));
-        COVER_BONUSES.put("gold",
-                Map.of(AttributeKey.MANA_REGEN, 0.10,
-                       AttributeKey.MAX_MANA, 0.05));
-        COVER_BONUSES.put("diamond",
-                Map.of(AttributeKey.SPELL_POWER, 0.15));
-        COVER_BONUSES.put("netherite",
-                Map.of(AttributeKey.SPELL_POWER, 0.20,
-                       AttributeKey.MAX_MANA, 0.10));
+        COVER_BONUSES.put("leather",   Map.of(AttributeKey.MAX_MANA, 0.05));
+        COVER_BONUSES.put("copper",    Map.of(AttributeKey.MAX_MANA, 0.05, AttributeKey.MANA_REGEN, 0.03));
+        COVER_BONUSES.put("iron",      Map.of(AttributeKey.SPELL_POWER, 0.05, AttributeKey.MAX_MANA, 0.05));
+        COVER_BONUSES.put("gold",      Map.of(AttributeKey.MANA_REGEN, 0.10, AttributeKey.MAX_MANA, 0.05));
+        COVER_BONUSES.put("diamond",   Map.of(AttributeKey.SPELL_POWER, 0.15));
+        COVER_BONUSES.put("netherite", Map.of(AttributeKey.SPELL_POWER, 0.20, AttributeKey.MAX_MANA, 0.10));
 
-        PAGES_BONUSES.put("leather",
-                Map.of(AttributeKey.SPELL_POWER, 0.02));
-        PAGES_BONUSES.put("copper",
-                Map.of(AttributeKey.MANA_REGEN, 0.03));
-        PAGES_BONUSES.put("iron",
-                Map.of(AttributeKey.MANA_REGEN, 0.05));
-        PAGES_BONUSES.put("gold",
-                Map.of(AttributeKey.MANA_REGEN, 0.10,
-                       AttributeKey.COOLDOWN_REDUCTION, 0.05));
-        PAGES_BONUSES.put("diamond",
-                Map.of(AttributeKey.SPELL_POWER, 0.10,
-                       AttributeKey.COOLDOWN_REDUCTION, 0.05));
-        PAGES_BONUSES.put("netherite",
-                Map.of(AttributeKey.SPELL_POWER, 0.15,
-                       AttributeKey.COOLDOWN_REDUCTION, 0.10));
+        PAGES_BONUSES.put("leather",   Map.of(AttributeKey.SPELL_POWER, 0.02));
+        PAGES_BONUSES.put("copper",    Map.of(AttributeKey.MANA_REGEN, 0.03));
+        PAGES_BONUSES.put("iron",      Map.of(AttributeKey.MANA_REGEN, 0.05));
+        PAGES_BONUSES.put("gold",      Map.of(AttributeKey.MANA_REGEN, 0.10, AttributeKey.COOLDOWN_REDUCTION, 0.05));
+        PAGES_BONUSES.put("diamond",   Map.of(AttributeKey.SPELL_POWER, 0.10, AttributeKey.COOLDOWN_REDUCTION, 0.05));
+        PAGES_BONUSES.put("netherite", Map.of(AttributeKey.SPELL_POWER, 0.15, AttributeKey.COOLDOWN_REDUCTION, 0.10));
     }
 
-    public ModularSpellBookItem(int maxSpellSlots, Properties properties) {
+    public ModularSpellBookItem(BookKind kind, int maxSpellSlots, Properties properties) {
         super(maxSpellSlots, properties);
+        this.kind = kind;
         DataManager.instance.moduleData.onReload(this::clearCaches);
         SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, TETRA_IDENTIFIER));
+    }
+
+    public BookKind getBookKind() {
+        return kind;
     }
 
     // ===== IModularItem contract =====
 
     @Override
-    public Item getItem() {
-        return this;
-    }
+    public Item getItem() { return this; }
 
     @Override
     public void clearCaches() {
@@ -149,25 +136,15 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     }
 
     @Override
-    public String[] getMajorModuleKeys(ItemStack itemStack) {
-        return MAJOR_KEYS;
-    }
+    public String[] getMajorModuleKeys(ItemStack itemStack) { return MAJOR_KEYS; }
 
     @Override
-    public String[] getMinorModuleKeys(ItemStack itemStack) {
-        return new String[0];
-    }
+    public String[] getMinorModuleKeys(ItemStack itemStack) { return new String[0]; }
 
     @Override
-    public String[] getRequiredModules(ItemStack itemStack) {
-        // 6B: nothing required so books work without modules. 6D will lock
-        // in all 5 majors once schemas land + migration runs.
-        return new String[0];
-    }
+    public String[] getRequiredModules(ItemStack itemStack) { return new String[0]; }
 
     public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        // 4-slot layout: front_cover (top-left), back_cover (top-right),
-        // spine (bottom-left), pages (bottom-right).
         return new GuiModuleOffsets(new int[]{5, 18, -15, -1, 5, -1, -15, 18});
     }
 
@@ -176,38 +153,47 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     }
 
     @Override
-    public int getHoneBase(ItemStack itemStack) {
-        return 450;
-    }
+    public int getHoneBase(ItemStack itemStack) { return 450; }
 
     @Override
-    public int getHoneIntegrityMultiplier(ItemStack itemStack) {
-        return 200;
-    }
+    public int getHoneIntegrityMultiplier(ItemStack itemStack) { return 200; }
 
     @Override
-    public boolean canGainHoneProgress(ItemStack itemStack) {
-        return false;
-    }
+    public boolean canGainHoneProgress(ItemStack itemStack) { return false; }
 
     @Override
-    public SynergyData[] getAllSynergyData(ItemStack itemStack) {
-        return synergies;
-    }
+    public SynergyData[] getAllSynergyData(ItemStack itemStack) { return synergies; }
 
     @Override
-    public Cache<String, Multimap<Attribute, AttributeModifier>> getAttributeModifierCache() {
-        return attributeCache;
-    }
+    public Cache<String, Multimap<Attribute, AttributeModifier>> getAttributeModifierCache() { return attributeCache; }
 
     @Override
-    public Cache<String, EffectData> getEffectDataCache() {
-        return effectCache;
-    }
+    public Cache<String, EffectData> getEffectDataCache() { return effectCache; }
 
     @Override
-    public Cache<String, ItemProperties> getPropertyCache() {
-        return propertyCache;
+    public Cache<String, ItemProperties> getPropertyCache() { return propertyCache; }
+
+    // ===== Curios attribute pipeline — the stacking entry point =====
+
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(SlotContext slotContext, UUID uuid, ItemStack stack) {
+        ArrayListMultimap<Attribute, AttributeModifier> result = ArrayListMultimap.create();
+        // Layer 1: ISS vanilla intrinsics (max_mana, spell_power, etc. set by parent SpellBook)
+        result.putAll(super.getAttributeModifiers(slotContext, uuid, stack));
+        // Layer 2: our per-BookKind buff overlay (Phase 6F intrinsic buffs)
+        if (kind != null) {
+            kind.intrinsicModifiers(uuid).forEach(result::put);
+        }
+        // Layer 3: Tetra slot + lining attrs (Phase 6C). Skip if isBroken.
+        if (!isBroken(stack)) {
+            try {
+                Multimap<Attribute, AttributeModifier> tetraAttrs = getAttributeModifiersCached(stack);
+                if (tetraAttrs != null) result.putAll(tetraAttrs);
+            } catch (Throwable t) {
+                // Tetra cache miss / data not loaded yet — skip silently
+            }
+        }
+        return result;
     }
 
     // ===== Legacy NBT slot accessors (used by AttributeApplier through 6C) =====
@@ -215,8 +201,7 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public static String getSlotMaterial(ItemStack stack, String slotName) {
         if (stack.isEmpty() || stack.getTag() == null) return null;
         CompoundTag slots = stack.getTag().getCompound(SLOTS_NBT_KEY);
-        if (slots.isEmpty()) return null;
-        if (!slots.contains(slotName)) return null;
+        if (slots.isEmpty() || !slots.contains(slotName)) return null;
         String material = slots.getString(slotName);
         return material.isEmpty() ? null : material;
     }
@@ -224,11 +209,8 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public static void setSlotMaterial(ItemStack stack, String slotName, String material) {
         CompoundTag tag = stack.getOrCreateTag();
         CompoundTag slots = tag.getCompound(SLOTS_NBT_KEY);
-        if (material == null || material.isEmpty()) {
-            slots.remove(slotName);
-        } else {
-            slots.putString(slotName, material);
-        }
+        if (material == null || material.isEmpty()) slots.remove(slotName);
+        else slots.putString(slotName, material);
         tag.put(SLOTS_NBT_KEY, slots);
     }
 
@@ -236,23 +218,17 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
         if (!(stack.getItem() instanceof ModularSpellBookItem)) return 0.0;
         double total = 0.0;
         String cover = getSlotMaterial(stack, SLOT_COVER);
-        if (cover != null && COVER_BONUSES.containsKey(cover)) {
-            total += COVER_BONUSES.get(cover).getOrDefault(key, 0.0);
-        }
+        if (cover != null && COVER_BONUSES.containsKey(cover)) total += COVER_BONUSES.get(cover).getOrDefault(key, 0.0);
         String pages = getSlotMaterial(stack, SLOT_PAGES);
-        if (pages != null && PAGES_BONUSES.containsKey(pages)) {
-            total += PAGES_BONUSES.get(pages).getOrDefault(key, 0.0);
-        }
+        if (pages != null && PAGES_BONUSES.containsKey(pages)) total += PAGES_BONUSES.get(pages).getOrDefault(key, 0.0);
         return total;
     }
 
     @Override
-    public void appendHoverText(ItemStack stack, Level level,
-                                List<Component> tooltip, TooltipFlag flag) {
+    public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
 
-        tooltip.add(Component.literal("Modular Slots:")
-                .withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
+        tooltip.add(Component.literal("Modular Slots:").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
         appendSlotLine(tooltip, stack, SLOT_COVER, "Cover");
         appendSlotLine(tooltip, stack, SLOT_PAGES, "Pages");
 
@@ -262,28 +238,21 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
             if (v != 0.0) totals.put(k, v);
         }
         if (!totals.isEmpty()) {
-            tooltip.add(Component.literal("Total Bonuses:")
-                    .withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
+            tooltip.add(Component.literal("Total Bonuses:").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
             totals.forEach((k, v) -> {
                 String pct = String.format("%+.1f%%", v * 100.0);
-                tooltip.add(Component.literal("  " + pct + " " + k.displayName)
-                        .withStyle(ChatFormatting.AQUA));
+                tooltip.add(Component.literal("  " + pct + " " + k.displayName).withStyle(ChatFormatting.AQUA));
             });
         }
 
-        // Tetra module breakdown — empty in 6B, populated once schemas land in 6C.
         tooltip.addAll(this.getTooltip(stack, level, flag));
     }
 
-    private static void appendSlotLine(List<Component> tooltip, ItemStack stack,
-                                       String slotKey, String displayName) {
+    private static void appendSlotLine(List<Component> tooltip, ItemStack stack, String slotKey, String displayName) {
         String material = getSlotMaterial(stack, slotKey);
         MutableComponent line = Component.literal("  " + displayName + ": ");
-        if (material == null) {
-            line.append(Component.literal("(empty)").withStyle(ChatFormatting.DARK_GRAY));
-        } else {
-            line.append(Component.literal(material).withStyle(ChatFormatting.YELLOW));
-        }
+        if (material == null) line.append(Component.literal("(empty)").withStyle(ChatFormatting.DARK_GRAY));
+        else line.append(Component.literal(material).withStyle(ChatFormatting.YELLOW));
         tooltip.add(line.withStyle(ChatFormatting.GRAY));
     }
 
@@ -303,4 +272,103 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
             this.attributeId = attributeId;
         }
     }
+
+    /**
+     * Per-book intrinsic stat overlay. Stacks ON TOP of ISS vanilla
+     * book-specific modifiers (so dragonskin keeps its +10% Ender from
+     * ISS AND gets our +25% buff overlay → net +35% Ender at the book
+     * level alone, before slot/lining/class bonuses).
+     *
+     * <p>UUIDs are stable per attribute-name so re-equipping the same
+     * book doesn't pile up duplicate modifiers — the Curios attribute
+     * pipeline upserts by UUID.
+     */
+    public enum BookKind {
+        // T1 — entry, no intrinsic
+        COPPER(),
+
+        // T2 — generic mid-tier baseline
+        IRON(
+                e("**irons_spellbooks:spell_power", 0.05),
+                e("irons_spellbooks:max_mana", 25.0)
+        ),
+        GOLD(
+                e("irons_spellbooks:max_mana", 25.0)
+                // ISS already adds +15% cast_time — preserve, don't double
+        ),
+        DRUIDIC(
+                e("**irons_spellbooks:nature_spell_power", 0.20),
+                e("irons_spellbooks:max_mana", 25.0)
+        ),
+        VILLAGER(
+                e("**irons_spellbooks:cast_time_reduction", 0.15),
+                e("**irons_spellbooks:holy_spell_power", 0.15),
+                e("irons_spellbooks:max_mana", 25.0)
+        ),
+        ROTTEN(
+                e("**irons_spellbooks:spell_power", 0.15)
+                // ISS already applies -15% spell_resist as the trade-off; preserve
+        ),
+
+        // T3 — themed power
+        DIAMOND(
+                e("**irons_spellbooks:spell_power", 0.10),
+                e("irons_spellbooks:max_mana", 50.0),
+                e("**irons_spellbooks:cooldown_reduction", 0.05)
+        ),
+        DRAGONSKIN(
+                e("**irons_spellbooks:ender_spell_power", 0.25),
+                e("irons_spellbooks:max_mana", 50.0)
+        ),
+        BLAZE(
+                e("**irons_spellbooks:fire_spell_power", 0.25),
+                e("irons_spellbooks:max_mana", 50.0)
+        ),
+        EVOKER(
+                e("**irons_spellbooks:evocation_spell_power", 0.25),
+                e("**irons_spellbooks:summon_damage", 0.10),
+                e("irons_spellbooks:max_mana", 50.0)
+        ),
+
+        // T4 — endgame
+        NETHERITE(
+                e("**irons_spellbooks:spell_power", 0.15),
+                e("irons_spellbooks:max_mana", 100.0)
+                // ISS already adds +20% cdr — preserve
+        ),
+        NECRONOMICON(
+                e("**irons_spellbooks:blood_spell_power", 0.30),
+                e("**irons_spellbooks:eldritch_spell_power", 0.30),
+                e("**irons_spellbooks:cooldown_reduction", 0.10),
+                e("irons_spellbooks:max_mana", 100.0)
+        );
+
+        private final IntrinsicEntry[] entries;
+        private static final String MOD_NAME = "iridescent_book_intrinsic";
+
+        BookKind(IntrinsicEntry... entries) {
+            this.entries = entries;
+        }
+
+        /** Build the (Attribute → Modifier) map for this book kind. UUIDs derived from kind+attribute so they're stable per item. */
+        public Map<Attribute, AttributeModifier> intrinsicModifiers(UUID slotUuid) {
+            Map<Attribute, AttributeModifier> out = new LinkedHashMap<>();
+            for (IntrinsicEntry entry : entries) {
+                Attribute attr = ForgeRegistries.ATTRIBUTES.getValue(ResourceLocation.tryParse(entry.attributeId));
+                if (attr == null) continue;          // missing attribute (mod absent / typo); skip silently
+                UUID stableUuid = UUID.nameUUIDFromBytes((this.name() + "/" + entry.attributeId).getBytes());
+                out.put(attr, new AttributeModifier(stableUuid, MOD_NAME, entry.amount, entry.operation));
+            }
+            return out;
+        }
+    }
+
+    private static IntrinsicEntry e(String attributeId, double amount) {
+        boolean multiplicative = attributeId.startsWith("**");
+        String id = multiplicative ? attributeId.substring(2) : attributeId;
+        return new IntrinsicEntry(id, amount,
+                multiplicative ? AttributeModifier.Operation.MULTIPLY_BASE : AttributeModifier.Operation.ADDITION);
+    }
+
+    private record IntrinsicEntry(String attributeId, double amount, AttributeModifier.Operation operation) {}
 }
