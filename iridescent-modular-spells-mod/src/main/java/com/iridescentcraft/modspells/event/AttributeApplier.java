@@ -1,6 +1,7 @@
 package com.iridescentcraft.modspells.event;
 
 import com.iridescentcraft.modspells.IridescentModularSpells;
+import com.iridescentcraft.modspells.item.ModularArsSpellBookItem;
 import com.iridescentcraft.modspells.item.ModularSpellBookItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.resources.ResourceLocation;
@@ -95,10 +96,17 @@ public class AttributeApplier {
 
     private static void scanStack(ItemStack stack,
                                   Map<ModularSpellBookItem.AttributeKey, Double> totals) {
-        if (!(stack.getItem() instanceof ModularSpellBookItem)) return;
-        for (ModularSpellBookItem.AttributeKey key : ModularSpellBookItem.AttributeKey.values()) {
-            double v = ModularSpellBookItem.getTotalBonus(stack, key);
-            if (v != 0.0) totals.merge(key, v, Double::sum);
+        if (stack.getItem() instanceof ModularSpellBookItem) {
+            for (ModularSpellBookItem.AttributeKey key : ModularSpellBookItem.AttributeKey.values()) {
+                double v = ModularSpellBookItem.getTotalBonus(stack, key);
+                if (v != 0.0) totals.merge(key, v, Double::sum);
+            }
+        } else if (stack.getItem() instanceof ModularArsSpellBookItem) {
+            // Phase 3: Ars cloth-cover modular books -- same key set, different bonus map
+            for (ModularSpellBookItem.AttributeKey key : ModularSpellBookItem.AttributeKey.values()) {
+                double v = ModularArsSpellBookItem.getTotalBonus(stack, key);
+                if (v != 0.0) totals.merge(key, v, Double::sum);
+            }
         }
     }
 

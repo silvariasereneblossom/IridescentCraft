@@ -192,7 +192,10 @@ public class ModularSpellBookItem extends SpellBook {
         SPELL_POWER("Spell Power", "irons_spellbooks:spell_power"),
         MAX_MANA("Max Mana", "irons_spellbooks:max_mana"),
         MANA_REGEN("Mana Regen", "irons_spellbooks:mana_regen"),
-        COOLDOWN_REDUCTION("Cooldown Reduction", "irons_spellbooks:cooldown_reduction");
+        COOLDOWN_REDUCTION("Cooldown Reduction", "irons_spellbooks:cooldown_reduction"),
+        // Phase 3: Ars Nouveau-side attributes for cloth-cover modular books
+        ARS_MAX_MANA("Max Mana (Ars)", "ars_nouveau:ars_nouveau.perk.max_mana"),
+        ARS_SPELL_DAMAGE("Spell Damage (Ars)", "ars_nouveau:ars_nouveau.perk.spell_damage");
 
         public final String displayName;
         public final String attributeId;

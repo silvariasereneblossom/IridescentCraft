@@ -50,3 +50,13 @@ logoFile="iridescent_modular_spells.png"
     versionRange="[0,)"
     ordering="AFTER"
     side="BOTH"
+
+# Phase 3: Ars Nouveau is a hard dep -- ModularArsSpellBookItem extends
+# com.hollingsworth.arsnouveau.common.items.SpellBook so JVM will fail
+# class-load without Ars present. Same permissive [0,) range.
+[[dependencies.${mod_id}]]
+    modId="ars_nouveau"
+    mandatory=true
+    versionRange="[0,)"
+    ordering="AFTER"
+    side="BOTH"

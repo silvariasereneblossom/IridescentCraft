@@ -43,11 +43,15 @@ dependencies {
     // the renamed jar via flatDir.
     compileOnly fg.deobf("blank:curios-forge:5.14.1-1.20.1")
 
-    // Tetra + Ars: Phase 1 doesn't need them yet (we use simpler NBT-based
-    // modules first, integrate with Tetra's full data-driven system in Phase 2).
-    // Keep the jars staged under libs/ so Phase 2 just needs to flip the lines:
+    // Phase 3: Ars Nouveau modular spell books. We subclass
+    // com.hollingsworth.arsnouveau.common.items.SpellBook so this is required
+    // at compile time. flatDir-resolved (jar at libs/) so fg.deobf works.
+    compileOnly fg.deobf("blank:ars_nouveau:1.20.1-4.12.7-all")
+    // Geckolib is a transitive dep of Ars (SpellBook implements GeoItem).
+    // Compile-only since the runtime jar is loaded by the pack.
+    compileOnly fg.deobf("blank:geckolib-forge:1.20.1-4.8.3")
+    // Tetra deferred to Phase 4+:
     // compileOnly fg.deobf(files("$projectDir/libs/tetra-1.20.1-6.12.0.jar"))
-    // compileOnly fg.deobf(files("$projectDir/libs/ars_nouveau-1.20.1-4.12.7-all.jar"))
 }
 
 jar {
