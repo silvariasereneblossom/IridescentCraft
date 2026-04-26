@@ -1,6 +1,6 @@
 {
   "type": "forge:add_features",
-  "biomes": ["#twilightforest:in_twilight_forest", "#blue_skies:everbright"],
+  "biomes": "#twilightforest:in_twilight_forest",
   "features": "terramity:topaz_ore",
   "step": "underground_ores"
 }

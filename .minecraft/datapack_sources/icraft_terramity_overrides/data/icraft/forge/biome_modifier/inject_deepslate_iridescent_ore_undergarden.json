@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#undergarden:is_undergarden",
+  "features": "terramity:deepslate_iridescent_ore",
+  "step": "underground_ores"
+}

@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#blue_skies:everbright",
+  "features": "terramity:topaz_ore",
+  "step": "underground_ores"
+}

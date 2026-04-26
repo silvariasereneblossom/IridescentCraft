@@ -1,0 +1,6 @@
+{
+  "type": "forge:add_features",
+  "biomes": "#blue_skies:everdawn",
+  "features": "terramity:sapphire_ore",
+  "step": "underground_ores"
+}

@@ -1,6 +1,6 @@
 {
   "type": "forge:add_features",
-  "biomes": ["#aether:is_aether", "#blue_skies:everdawn"],
+  "biomes": "#aether:is_aether",
   "features": "terramity:sapphire_ore",
   "step": "underground_ores"
 }
