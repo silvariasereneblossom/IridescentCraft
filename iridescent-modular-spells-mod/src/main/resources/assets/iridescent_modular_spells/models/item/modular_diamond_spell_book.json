@@ -1,3 +1,6 @@
 {
-  "parent": "irons_spellbooks:item/diamond_spell_book"
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "irons_spellbooks:item/diamond_spell_book"
+  }
 }
