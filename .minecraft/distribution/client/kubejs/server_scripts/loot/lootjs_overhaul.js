@@ -1054,8 +1054,10 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:diamond')
       .removeLoot('minecraft:diamond_horse_armor')
 
-    // T1 materials — iron, gold, copper (scarce)
-    modifier.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 2]).when(c => c.randomChance(0.10)))
+    // T1 materials — iron, gold, copper. 2026-04-26: bumped iron 0.10 -> 0.30
+    // per tester report 'never seen iron in village chests'. Vanilla weights
+    // are low; this guarantees a meaningful chance in armorer/toolsmith/weaponsmith.
+    modifier.addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.30)))
     modifier.addLoot(LootEntry.of('minecraft:gold_ingot').limitCount([1, 1]).when(c => c.randomChance(0.05)))
     modifier.addLoot(LootEntry.of('minecraft:copper_ingot').limitCount([1, 3]).when(c => c.randomChance(0.08)))
     modifier.addLoot(LootEntry.of('create:brass_ingot').limitCount([1, 1]).when(c => c.randomChance(0.04)))
@@ -1070,7 +1072,9 @@ LootJS.modifiers(event => {
     modifier.addLoot(LootEntry.of('minecraft:iron_sword').when(c => c.randomChance(0.05)))
     modifier.addLoot(LootEntry.of('minecraft:iron_pickaxe').when(c => c.randomChance(0.05)))
 
-    // Artifacts handled by Artifacts mod native GLM injection
+    // Artifacts injection: now active as of 2026-04-26 (added all chest GLMs
+    // to global_loot_modifiers.json allowlist; was previously suppressed by
+    // replace:true even though comment claimed it was working).
   })
 
   // =========================================================================
@@ -1155,6 +1159,60 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:rabbit_foot') // brewing clutter, not meat
       .removeLoot('minecraft:rabbit_hide')
   })
+
+  // =========================================================================
+  // SECTION 4E: T1 IRON BASELINE -- guarantee iron in all overworld chests
+  // =========================================================================
+  // Tester report 2026-04-26: iron ingots are too scarce in T1 chests --
+  // never observed iron in village chests despite vanilla loot tables
+  // including it. Add 25% chance for iron_ingot (1-3 stack) to every T1
+  // overworld chest type. Stacks with vanilla rolls. Village smith chests
+  // already get 30% via Section 5; this catches the rest.
+  //
+  // Why: iron is the entry-tier crafting material for almost every gating
+  // path (tetra modules, magic books, T2 progression). Forcing players
+  // to mine for early iron when chest exploration is happening anyway
+  // is just friction.
+
+  const T1_IRON_BASELINE_CHESTS = [
+    'minecraft:chests/simple_dungeon',
+    'minecraft:chests/abandoned_mineshaft',
+    'minecraft:chests/jungle_temple',
+    'minecraft:chests/desert_pyramid',
+    'minecraft:chests/igloo_chest',
+    'minecraft:chests/woodland_mansion',
+    'minecraft:chests/ruined_portal',
+    'minecraft:chests/buried_treasure',
+    'minecraft:chests/shipwreck_supply',
+    'minecraft:chests/shipwreck_map',
+    'minecraft:chests/shipwreck_treasure',
+    'minecraft:chests/pillager_outpost',
+    'minecraft:chests/underwater_ruin_big',
+    'minecraft:chests/underwater_ruin_small',
+    'minecraft:chests/spawn_bonus_chest',
+    'minecraft:chests/stronghold_corridor',
+    'minecraft:chests/stronghold_crossing',
+    'minecraft:chests/village/village_plains_house',
+    'minecraft:chests/village/village_desert_house',
+    'minecraft:chests/village/village_savanna_house',
+    'minecraft:chests/village/village_snowy_house',
+    'minecraft:chests/village/village_taiga_house',
+    'minecraft:chests/village/village_butcher',
+    'minecraft:chests/village/village_cartographer',
+    'minecraft:chests/village/village_fisher',
+    'minecraft:chests/village/village_fletcher',
+    'minecraft:chests/village/village_mason',
+    'minecraft:chests/village/village_shepherd',
+    'minecraft:chests/village/village_tannery',
+    'minecraft:chests/village/village_temple'
+  ]
+
+  T1_IRON_BASELINE_CHESTS.forEach(table => {
+    event.addLootTableModifier(table)
+      .addLoot(LootEntry.of('minecraft:iron_ingot').limitCount([1, 3]).when(c => c.randomChance(0.25)))
+  })
+  console.log('[icraft-loot] T1 iron baseline: 25% iron_ingot (1-3) added to ' +
+              T1_IRON_BASELINE_CHESTS.length + ' overworld chest types')
 
   // =========================================================================
   // SECTION 5A: OVERWORLD CHEST CLUTTER CLEANUP
