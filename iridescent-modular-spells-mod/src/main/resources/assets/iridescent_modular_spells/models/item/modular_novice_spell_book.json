@@ -1,3 +1,1 @@
-{
-  "parent": "minecraft:item/book"
-}
+{ "parent": "ars_nouveau:item/novice_spell_book" }
