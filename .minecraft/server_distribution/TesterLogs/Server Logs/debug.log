@@ -184,3 +184,4 @@
 [27Apr2026 02:00:38.647] [Config file watcher thread/DEBUG] [portb.configlib.ConfigLib/]: Got ENTRY_MODIFY for fml.toml, ignoring
 [27Apr2026 02:00:38.648] [Config file watcher thread/DEBUG] [portb.configlib.ConfigLib/]: Got ENTRY_MODIFY for fml.toml, ignoring
 [27Apr2026 02:00:38.852] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from NORMAL (avg. 41.39720153808594) to MEDIUM (avg. 46.78139877319336)
+[27Apr2026 02:00:52.934] [Server thread/INFO] [APTweaks(Core)/]: [APTweaks:Core] ? Server load changed from MEDIUM (avg. 46.78139877319336) to LOW (avg. 35.072837829589844)
