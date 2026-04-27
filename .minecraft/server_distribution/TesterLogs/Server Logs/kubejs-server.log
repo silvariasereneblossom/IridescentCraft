@@ -30866,3 +30866,793 @@
 [01:58:58] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:spider killed by via Function at 233,69,526 has 1 drop(s)
 [01:58:58] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.string x1 NBT=<none>
 [02:00:32] [INFO] disable_zombie_door_break.js#101: [no_door_break] stripped 1 BreakDoorGoal(s) from new type: minecraft:husk
+[02:05:15] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 352,126,553 has 1 drop(s)
+[02:05:15] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:05:15] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 352,126,553 has 1 drop(s)
+[02:05:15] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:05:29] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 355,126,566 has 1 drop(s)
+[02:05:29] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:05:29] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 355,126,566 has 1 drop(s)
+[02:05:29] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:05:42] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 352,126,560 has 1 drop(s)
+[02:05:42] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:05:42] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 352,126,560 has 1 drop(s)
+[02:05:42] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:07:34] [INFO] disable_zombie_door_break.js#101: [no_door_break] stripped 1 BreakDoorGoal(s) from new type: enemyexpansion:slugger
+[02:07:36] [INFO] disable_zombie_door_break.js#101: [no_door_break] stripped 1 BreakDoorGoal(s) from new type: enemyexpansion:sprinter
+[02:08:30] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 662,79,638 has 1 drop(s)
+[02:08:30] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:08:30] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 662,79,638 has 1 drop(s)
+[02:08:30] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:11:18] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 931,166,620 has 1 drop(s)
+[02:11:18] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:11:18] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 931,166,620 has 1 drop(s)
+[02:11:18] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:11:36] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 928,168,628 has 1 drop(s)
+[02:11:36] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:11:36] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 928,168,628 has 1 drop(s)
+[02:11:36] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:12:31] [INFO] cap_player_knockback.js#75: [knockback_cap] event #8 strength=0.400 ratioX=-2.983 ratioZ=9.000 attacker=unknown source=no-src
+[02:12:36] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 901,121,612 has 1 drop(s)
+[02:12:36] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:12:36] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 901,121,612 has 1 drop(s)
+[02:12:36] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:15:28] [INFO] codex_delivery.js#225: [codex] Re-delivered to Falendria (flag was set but book missing)
+[02:15:28] [INFO] codex_delivery.js#245: [codex] loggedIn fired for Falendria, sweep + starter-poll armed (3min), auto-origindump armed (~20s)
+[02:15:28] [INFO] origins/magic_class_starter.js#111: [magic-starter] Login hook armed for Falendria
+[02:15:28] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:29] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:29] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:29] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:15:30] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:30] [INFO] origins/magic_class_starter.js#125: [magic-starter] Login check for Falendria: detected=battlemage
+[02:15:31] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:33] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:34] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:35] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:35] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:35] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:15:36] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:37] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:38] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for Falendria — no books found
+[02:15:40] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:40] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:15:45] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:45] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:15:48] [INFO] codex_delivery.js#260: [codex/origindump] auto-armed for Falendria — dump will run next origindump tick
+[02:15:49] [INFO] codex_delivery.js#340: [codex/origindump] processing for Falendria
+[02:15:49] [INFO] codex_delivery.js#350: [codex/origindump] Falendria ForgeCaps = {"absolutely:stuffed":{hunger_pool:0.0f},"aether:aether_player":{CanGetPortal:0b,CanShowPatreonMessage:1b,CanSpawnInAether:0b,HasSeenSunSpirit:0b,LifeShardCount:0,LoginsUntilPatreonMessage:-1,RemedyStartDuration:0,SavedHealth:0.0f},"apoli:powers":{Powers:[{Data:{Status:1b},Sources:["origins:arachnid"],Type:"origins:climbing_toggle"},{Data:{CurrentStacks:1},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/haste"},{Data:{},Sources:["icraft:battlemage"],Type:"icraft:class/battlemage/spell_armor"},{Data:{CurrentStacks:1},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/glowing"},{Data:{},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/arms"},{Data:{},Sources:["origins:arachnid"],Type:"origins:master_of_webs_no_slowdown"},{Data:{},Sources:["origins:arachnid"],Type:"origins:climbing"},{Data:{},Sources:["icraft:battlemage"],Type:"icraft:class/battlemage/arcane_strikes"},{Data:{},Sources:["origins:arachnid"],Type:"origins:arthropod"},{Data:{LastUseTime:1584813L},Sources:["origins:arachnid"],Type:"origins:master_of_webs_webbing"},{Data:{},Sources:["icraft:battlemage"],Type:"icraft:class/battlemage/hp_modifier"},{Data:{},Sources:["origins_gender:female"],Type:"origins_gender:female"},{Data:{},Sources:["icraft:fallen_angel"],Type:"icraft:race/fallen_angel/meat_preference"},{Data:{},Sources:["icraft:battlemage"],Type:"icraft:class/battlemage/mana_shield"},{Data:{},Sources:["origins:arachnid"],Type:"origins:master_of_webs_punch_through"},{Data:{},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/fire"},{Data:{},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/immunity"},{Data:{CurrentStacks:1},Sources:["icraft:fallen_angel"],Type:"icraft:race/fallen_angel/slow_fall"},{Data:{},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/fragile"},{Data:{},Sources:["origins:arachnid"],Type:"origins:fragile"},{Data:{LastUseTime:1299110L},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/velocity"},{Data:{},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/translucent"},{Data:{CurrentStacks:0},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/roof"},{Data:{},Sources:["origins:arachnid"],Type:"origins:master_of_webs_web_crafting"},{Data:{CurrentStacks:1},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/bloodthirsty"},{Data:{},Sources:["origins:arachnid"],Type:"origins:carnivore"},{Data:{},Sources:["origins:arachnid"],Type:"origins:master_of_webs_climbing"},{Data:{},Sources:["icraft:fallen_angel"],Type:"origins:fall_immunity"},{Data:{FinishedStartDelay:0b,IsFiringProjectiles:0b,LastUseTime:1299110L,ShotProjectiles:0},Sources:["icraft:fallen_angel"],Type:"icraft:origin/fallen-angel/deadshot"},{Data:{},Sources:["origins:arachnid"],Type:"origins:master_of_webs_sense"},{Data:{},Sources:["origins:arachnid"],Type:"origins:climbing_climbing"},{Data:{},Sources:["icraft:fallen_angel"],Type:"icraft:race/fallen_angel/damage_bonus"},{Data:{},Sources:["origins:arachnid"],Type:"origins:master_of_webs"}]},"ars_nouveau:mana":{book_tier:0,current:156.0d,glyph:0,max:156},"ars_nouveau:player_data":{familiars:{size:0},glyphs:{glyph0:"ars_nouveau:glyph_rune",glyph1:"ars_nouveau:glyph_freeze",glyph10:"ars_nouveau:glyph_delay",glyph11:"ars_nouveau:glyph_interact",glyph2:"ars_nouveau:glyph_launch",glyph3:"ars_nouveau:glyph_evaporate",glyph4:"ars_nouveau:glyph_place_block",glyph5:"ars_nouveau:glyph_cut",glyph6:"ars_nouveau:glyph_craft",glyph7:"ars_nouveau:glyph_harvest",glyph8:"ars_nouveau:glyph_rotate",glyph9:"ars_nouveau:glyph_summon_wolves",size:12}},"art_of_forging:carnage":{carnage:0},"art_of_forging:conquer":{conquer:0},"art_of_forging:devouring":{devouring:0},"art_of_forging:karma":{karma:0},"art_of_forging:soul_charge":{soul_charge:0},"art_of_forging:subjugation":{subjugation:0},"astages:properties":{},"blue_skies:player_capability":{ArcInventory:[{Count:0b,Slot:0b,id:"minecraft:air"},{Count:0b,Slot:1b,id:"minecraft:air"},{Count:0b,Slot:2b,id:"minecraft:air"},{Count:0b,Slot:3b,id:"minecraft:air"}],EverbrightProgression:0b,EverdawnProgression:0b,FullDuskInvis:0b,KeystoneTeleportPos:{X:0,Y:0,Z:0},NatureHealth:0.0f,OpenedBlueLore:0b,SupporterPetAudible:0b,SupporterPetEnabled:0b,SupporterPetID:0b,SupporterStyleID:0b,UsedBlueLore:0b},"botania:kept_items":{stacks:[]},"brewinandchewin:raging":{stacks:0,ticks_until_reset:0},"brewinandchewin:tipsy_numbed_hearts":{numbed_health:0.0f,ticks_until_damage:0},"calio:ability_holder":{},"cataclysm:charge_cap":{ChargeDamage:0.0f,ChargeTime:0,KnockbackSpeed:0.0f,dx:0.0f,dz:0.0f,isCharge:0b,timer:0},"cataclysm:hook_cap":{hasHook:0b},"cataclysm:parry_cap":{frame:0},"cataclysm:render_rush_cap":{damage:0.0f,isRush:0b,timer:0},"cataclysm:tentacle_cap":{getLastTentacleID:0,hasTentacle:0b},"celestial_artifacts:curios_cache":{},"celestial_core:fire_data":{data:{}},"celestial_core:flags":{flags:["CHAOS","LIFE","NIHILITY"]},"comforts:sleep_data":{sleepTime:0L,tiredTime:0L,wakeTime:0L},"curios:inventory":{Curios:[{Identifier:"catastrophe",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"scroll",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"pendant",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"heart",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"etching",StacksHandler:{Cosmetics:{Items:[],Size:0},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[],Size:0},SavedBaseSize:0,Stacks:{Items:[],Size:0},Visible:1b}},{Identifier:"head",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"necklace",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[{Count:1b,Slot:0,id:"artifacts:cross_necklace",tag:{abilities:{invulnerability:{points:0,stats:{modifier:0.38065d}}},leveling:{experience:0,level:10,points:10}}}],Size:1},Visible:1b}},{Identifier:"back",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"body",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"rings",StacksHandler:{Cosmetics:{Items:[],Size:2},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0},{Render:1b,Slot:1}],Size:2},SavedBaseSize:2,Stacks:{Items:[],Size:2},Visible:1b}},{Identifier:"bracelet",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"hands",StacksHandler:{Cosmetics:{Items:[],Size:2},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:0b,Slot:0},{Render:1b,Slot:1}],Size:2},SavedBaseSize:2,Stacks:{Items:[{Count:1b,Slot:0,id:"artifacts:power_glove",tag:{abilities:{power:{points:0,stats:{amount:0.97078d}}},leveling:{experience:0,level:10,points:10},time:6}}],Size:2},Visible:1b}},{Identifier:"glove",StacksHandler:{Cosmetics:{Items:[],Size:2},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0},{Render:1b,Slot:1}],Size:2},SavedBaseSize:2,Stacks:{Items:[],Size:2},Visible:1b}},{Identifier:"ring",StacksHandler:{Cosmetics:{Items:[],Size:3},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0},{Render:1b,Slot:1},{Render:1b,Slot:2}],Size:3},SavedBaseSize:3,Stacks:{Items:[],Size:3},Visible:1b}},{Identifier:"waist",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"belt",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"talisman",StacksHandler:{Cosmetics:{Items:[],Size:0},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[],Size:0},SavedBaseSize:0,Stacks:{Items:[],Size:0},Visible:1b}},{Identifier:"feet",StacksHandler:{Cosmetics:{Items:[],Size:2},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:0b,Slot:0},{Render:0b,Slot:1}],Size:2},SavedBaseSize:2,Stacks:{Items:[{Count:1b,Slot:0,id:"artifacts:running_shoes",tag:{abilities:{runner:{points:0,stats:{speed:0.50807d}}},leveling:{experience:0,level:10,points:10},speed:0.1d}},{Count:1b,Slot:1,id:"artifacts:bunny_hoppers",tag:{abilities:{hold:{points:0,stats:{duration:3.67582d}}},leveling:{experience:260,level:3,points:3},time:0,toggled:1b}}],Size:2},Visible:1b}},{Identifier:"charm",StacksHandler:{Cosmetics:{Items:[],Size:2},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0},{Render:1b,Slot:1}],Size:2},SavedBaseSize:2,Stacks:{Items:[{Count:1b,Slot:0,id:"artifacts:antidote_vessel",tag:{abilities:{antidote:{points:0,stats:{amount:0.23177d}},devourer:{points:0,stats:{duration:1.17354d}}},leveling:{experience:0,level:15,points:15}}},{Count:1b,Slot:1,id:"artifacts:obsidian_skull",tag:{abilities:{hell:{points:0,stats:{duration:45.4832d}}},cooldown:60,leveling:{experience:686,level:7,points:7},time:0}}],Size:2},Visible:1b}},{Identifier:"spellbook",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[{Count:1b,Slot:0,id:"irons_spellbooks:iron_spell_book",tag:{"irons_spellbooks:spell_container":{data:[{id:"irons_spellbooks:heal",index:0,level:5},{id:"irons_spellbooks:poison_breath",index:1,level:3}],maxSpells:6,mustEquip:1b,spellWheel:1b}}}],Size:1},Visible:1b}},{Identifier:"aether_accessory",StacksHandler:{Cosmetics:{Items:[],Size:2},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0},{Render:1b,Slot:1}],Size:2},SavedBaseSize:2,Stacks:{Items:[],Size:2},Visible:0b}},{Identifier:"aether_cape",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:0b}},{Identifier:"aether_gloves",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:0b}},{Identifier:"aether_pendant",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:0b}},{Identifier:"aether_ring",StacksHandler:{Cosmetics:{Items:[],Size:2},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0},{Render:1b,Slot:1}],Size:2},SavedBaseSize:2,Stacks:{Items:[],Size:2},Visible:0b}},{Identifier:"aether_shield",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:0b}},{Identifier:"an_focus",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}},{Identifier:"thighs",StacksHandler:{Cosmetics:{Items:[],Size:1},DropRule:"DEFAULT",HasCosmetic:0b,RenderToggle:1b,Renders:{Renders:[{Render:1b,Slot:0}],Size:1},SavedBaseSize:1,Stacks:{Items:[],Size:1},Visible:1b}}]},"deep_aether:deep_aether_player":{},"fluxnetworks:flux_player":{superAdmin:0b,wirelessMode:0,wirelessNetwork:0},"forbidden_arcanus:aureal":{Aureal:0,Corruption:0,CorruptionTimer:0},"hunger_overhaul:player_variables":{GluttonyTimer:0.0d,SoundTimer:0.0d},"improvedmobs:player_cap":{Difficulty:4.5999994f,Paused:0b},"ironfurnaces:furnaces_list":{count:0,furnaces:{}},"ironfurnaces:show_config":{show:0},"justlevelingfork:aptitudes":{aptitude.building:1,aptitude.constitution:1,aptitude.defense:1,aptitude.dexterity:1,aptitude.intelligence:1,aptitude.luck:1,aptitude.magic:1,aptitude.strength:1,betterCombatEntityRange:0.0d,counterAttack:0b,counterAttackTimer:0,passive.armor:0,passive.armor_toughness:0,passive.attack_damage:0,passive.attack_knockback:0,passive.attack_speed:0,passive.beneficial_effect:0,passive.block_reach:0,passive.break_speed:0,passive.critical_damage:0,passive.entity_reach:0,passive.knockback_resistance:0,passive.luck:0,passive.magic_resist:0,passive.max_health:0,passive.movement_speed:0,passive.projectile_damage:0,playerTitle:"titleless",skill.alchemy_manipulation:0b,skill.athletics:0b,skill.berserker:0b,skill.cat_eyes:0b,skill.convergence:0b,skill.counter_attack:0b,skill.critical_roll:0b,skill.diamond_skin:0b,skill.fighting_spirit:0b,skill.haggler:0b,skill.life_eater:0b,skill.limit_breaker:0b,skill.lion_heart:0b,skill.lucky_drop:0b,skill.obsidian_smasher:0b,skill.one_handed:0b,skill.quick_reposition:0b,skill.safe_port:0b,skill.scholar:0b,skill.snow_walker:0b,skill.stealth_mastery:0b,skill.treasure_hunter:0b,skill.turtle_shield:0b,skill.wormhole_storage:0b,title.administrator:0b,title.alchemist:0b,title.alchemist_great:0b,title.businessman:0b,title.dragon_slayer:0b,title.driver_boat:0b,title.driver_cart:0b,title.enchanter:0b,title.enchanter_great:0b,title.enchanter_master:0b,title.fighter:0b,title.fighter_great:0b,title.fisherman:0b,title.fisherman_great:0b,title.fisherman_master:0b,title.hero:0b,title.lucky_one:0b,title.lucky_one_great:0b,title.magician:0b,title.magician_great:0b,title.miner:0b,title.miner_great:0b,title.mob_killer:0b,title.mob_killer_great:0b,title.mob_killer_master:0b,title.player_killer:0b,title.ranger:0b,title.ranger_great:0b,title.rider_horse:0b,title.rider_pig:0b,title.rider_strider:0b,title.rookie:1b,title.survivor:0b,title.tank:0b,title.tank_great:0b,title.titleless:1b,title.traveler_end:0b,title.traveler_nether:0b,title.villain:0b,title.warrior:0b,title.warrior_great:0b},"keepdurable:player_variables":{PlayerDeaths:0.0d,PlayerDeathsMax:5.0d},"l2library:conditionals":{data:{},tickSinceDeath:11019},"l2screentracker:screen_tracker":{},"mahoutsukai:living_mahou":{MAHOUTSUKAI_AUTHORITY_HIT:0b,MAHOUTSUKAI_KODOKU:1},"mahoutsukai:mahou":{MAHOUTSUKAI_CANCEL_TIME:0L,MAHOUTSUKAI_FAE_SPAWN:1b,MAHOUTSUKAI_LAST_RECIPE_CLOTH:0b,MAHOUTSUKAI_MANA_FULL:1b,MAHOUTSUKAI_MANA_UP_COUNTER:100,MAHOUTSUKAI_PAGE:0,MAHOUTSUKAI_PLAYER_CHARGE_RATE:0.1d,MAHOUTSUKAI_PLAYER_DAMAGE_EXCHANGE_USES:0,MAHOUTSUKAI_PLAYER_DEATH_COLLECTION_USES_LEFT:0.0f,MAHOUTSUKAI_PLAYER_HAS_MAGIC:0b,MAHOUTSUKAI_PLAYER_MAX_MANA:100,MAHOUTSUKAI_PLAYER_POSSESSING:0b,MAHOUTSUKAI_PLAYER_PREV_PITCH:0.0f,MAHOUTSUKAI_PLAYER_PREV_YAW:0.0f,MAHOUTSUKAI_PLAYER_PROTECTIVE_DISPLACEMENT_USES:0,MAHOUTSUKAI_PLAYER_STORED_MANA:100,MAHOUTSUKAI_SHOW_MAHOU:1b},"mahoutsukai:mahou_settings":{intsettings:[{key:0,values:[I;255,94,204,255,94,204]},{key:1,values:[I;216,0,0,0,0,0]},{key:2,values:[I;255,255,150,0,0,0]},{key:3,values:[I;244,237,64,0,0,0]},{key:4,values:[I;255,50,50,0,0,0]},{key:5,values:[I;150,0,0,0,0,0]},{key:6,values:[I;224,64,0,0,0,0]},{key:7,values:[I;140,82,191,0,0,0]},{key:8,values:[I;166,125,224,0,0,0]},{key:9,values:[I;179,255,255,179,255,255]}]},"mcjtylib:preferences":{buffStyle:"botright",buffX:-20,buffY:-20,style:"flat gradient"},"mekanism:radiation":{radiation:1.0E-7d},"mutantmonsters:seismic_waves":{},"occultism:double_jump":{jumps:0},"occultism:familiar_settings":{bat_familiar:1b,beaver_familiar:1b,beholder_familiar:1b,blacksmith_familiar:1b,chimera_familiar:1b,cthulhu_familiar:1b,deer_familiar:1b,devil_familiar:1b,dragon_familiar:1b,fairy_familiar:1b,goat_familiar:1b,greedy_familiar:1b,guardian_familiar:1b,headless_familiar:1b,mummy_familiar:1b,otherworld_bird:1b,shub_niggurath_familiar:1b},"origins:origins":{HadAllOrigins:1b,Origins:{"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}},"polymorph:player_recipe_data":{},"relics:data":{researchData:{}},"rpgseteffects:set_equipment":{Items:[]},"solcarrot:food":{foodList:["minecraft:cooked_beef","minecraft:cooked_mutton","minecraft:cooked_porkchop"]},"structure_gel:gel_entity":{portal:"structure_gel:empty"},"tenshilib:patreon":{Color:0,Location:2,ShouldRender:1b},"theabyss:player_variables":{AbyssCloak:0b,AbyssCrystalResearch:0b,AbyssX:0.0d,AbyssY:0.0d,AbyssZ:0.0d,ArmorPotionLevel:0.0d,AurelCrystalResearch:0b,BarComp:0b,BookSpawn:0b,CavernaCrystalResearch:0b,ClockActive:0b,ClockX:0.0d,ClockY:0.0d,ClockZ:0.0d,ConfigBook:0b,CrimsonCrystalResearch:0b,DestriyAfterLifeItem:0b,EA_Intro:0b,EmptySomnium:0b,EnableManaBar:0b,EnableSomnium:1b,EndX:0.0d,EndY:0.0d,EndZ:0.0d,EnderCrystalResearch:0b,EternalAbyss:0b,FearEffect:1b,FireworkOnJoin:0b,FirstJoin:0b,FoundBody:0b,Freeze:0.0d,FriendMode:0b,FrostCrystalResearch:0b,GetConfigVersion:"",GetDimension:'""',HasAbsorb:0b,HasArmor:0b,HasExtraHP:0b,HollowCrystalResearch:0b,HolyPlayer:0b,HomeX:280.5d,HomeY:163.6875d,HomeZ:543.5d,HudX:0.0d,HudY:0.0d,Infected:0.0d,LPMMode:0b,Mana:0.0d,ManaBarToggle:0b,ManaBlinkAnimation:0b,ManaCooldown:1.0d,ManaDamage:0.0d,ManaDurability:1.0d,ManaRegenUpgrade:0.0d,ManaUpgrade:1.0d,NetherX:0.0d,NetherY:0.0d,NetherZ:0.0d,NightbladeX:0.0d,NightbladeY:0.0d,NightbladeZ:0.0d,OverworldX:0.0d,OverworldY:0.0d,OverworldZ:0.0d,P3:0b,P4:0b,P5:0b,P6:0b,PX:0b,ParticlesOnDeath:0b,PlayerRep:0.0d,Playername:"",PocketDimension:0b,PocketPlayerX:0.0d,PocketPlayerY:0.0d,PocketPlayerZ:0.0d,Prolog:1b,RECIPES:{Count:0b,id:"minecraft:air"},RadioEvent:0b,RingOfHome:1b,SaveFD:0.0d,SaveHP:0.0d,SaveX:0.0d,SaveY:0.0d,SaveZ:0.0d,SleepEvent:0b,SleepEvent2:0b,SomniumHandler:1b,WalkParticles:0b,WandAbility:"",WarpedCrystalResearch:0b},"twilightforest:cap_feather_fan_fall":{featherFanFalling:0b},"twilightforest:cap_shield":{permshields:0,tempshields:0},"twilightforest:cap_thrown":{throwCooldown:0,throwX:0.0d,throwY:0.0d,throwZ:0.0d,yetiThrown:0b},"twilightforest:giant_pick_mine":{giantBlockConversion:0,giantPickBreaking:0b,giantPickMining:0L}}
+[02:15:49] [INFO] codex_delivery.js#353: [codex/origindump] Falendria ForgeCaps[origins:origins] = {HadAllOrigins:1b,Origins:{"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}}
+[02:15:49] [INFO] codex_delivery.js#397: [codex/origindump] Falendria matched = <none matched known origins>
+[02:15:49] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:49] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:15:49] [INFO] codex_delivery.js#408: [codex/origindump] immediate-grant attempt result=false
+[02:15:50] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:50] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:15:54] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:54] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:15:54] [INFO] codex_delivery.js#308: [codex/starter] poll for Falendria: detected=battlemage ticks_left=3000 Origins={"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}
+[02:15:59] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:15:59] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:04] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:04] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:09] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:09] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:14] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:14] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:19] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:19] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:24] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:24] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:24] [INFO] codex_delivery.js#308: [codex/starter] poll for Falendria: detected=battlemage ticks_left=2400 Origins={"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}
+[02:16:29] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:29] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:34] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:34] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:39] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:39] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:44] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:44] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:50] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:50] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:56] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:16:56] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:16:56] [INFO] codex_delivery.js#308: [codex/starter] poll for Falendria: detected=battlemage ticks_left=1800 Origins={"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}
+[02:17:02] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:02] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:09] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:09] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:14] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:14] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:19] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:19] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:25] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:25] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:30] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:30] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:30] [INFO] codex_delivery.js#308: [codex/starter] poll for Falendria: detected=battlemage ticks_left=1200 Origins={"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}
+[02:17:35] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:35] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:40] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:40] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:46] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:46] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:51] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:51] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:17:56] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:17:56] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:01] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:18:01] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:01] [INFO] codex_delivery.js#308: [codex/starter] poll for Falendria: detected=battlemage ticks_left=600 Origins={"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}
+[02:18:06] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:18:06] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:12] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:18:12] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:17] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:18:17] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:23] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:18:23] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:26] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 1012,100,558 has 1 drop(s)
+[02:18:26] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:18:26] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 1012,100,558 has 1 drop(s)
+[02:18:26] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:18:29] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:18:29] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:34] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=battlemage for Falendria
+[02:18:34] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_battlemage already true for Falendria — skipping grant
+[02:18:34] [INFO] codex_delivery.js#308: [codex/starter] poll for Falendria: detected=battlemage ticks_left=0 Origins={"origins:class":"icraft:battlemage","origins:gender":"origins_gender:female","origins:origin":"origins:arachnid","origins:race":"icraft:fallen_angel"}
+[02:20:01] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:20:01] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:20:01] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:20:01] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:20:01] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:20:01] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:20:01] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:20:01] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:20:01] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:20:01] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:20:01] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:20:01] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:20:01] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:20:01] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:20:01] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:20:01] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:20:01] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:20:01] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:20:01] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:20:01] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:20:01] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:20:01] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:20:01] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:20:01] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:20:01] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:20:01] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:20:01] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:20:01] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:20:01] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:20:01] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:20:01] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:20:01] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:20:01] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:20:01] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:20:01] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:20:01] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:20:01] [ERROR] !   at io.redspace.ironsspellbooks.damage.DamageSources.applyDamage(DamageSources.java:61)
+[02:20:01] [ERROR] !   at io.redspace.ironsspellbooks.entity.spells.poison_breath.PoisonBreathProjectile.m_5790_(PoisonBreathProjectile.java:59)
+[02:20:01] [ERROR] !   at io.redspace.ironsspellbooks.entity.spells.AbstractConeProjectile.m_8119_(AbstractConeProjectile.java:153)
+[02:20:01] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_8647_(ServerLevel.java:694)
+[02:20:01] [ERROR] !   at net.minecraft.entity.TickOptimizer.handleGuardEntityTick(TickOptimizer.java:62)
+[02:20:01] [ERROR] !   at net.minecraft.entity.TickOptimizer.entityTicking(TickOptimizer.java:25)
+[02:20:01] [ERROR] !   at net.minecraft.world.level.Level.m_46653_(Level.java:2541)
+[02:20:01] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_184063_(ServerLevel.java:343)
+[02:20:01] [ERROR] !   at net.minecraft.world.level.entity.EntityTickList.m_156910_(EntityTickList.java:54)
+[02:20:01] [ERROR] !   at net.minecraft.server.level.ServerLevel.m_8793_(ServerLevel.java:323)
+[02:20:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:893)
+[02:20:01] [ERROR] !   at net.minecraft.server.dedicated.DedicatedServer.m_5703_(DedicatedServer.java:283)
+[02:20:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[02:20:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[02:20:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:20:01] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:22:30] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 994,77,486 has 1 drop(s)
+[02:22:30] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:22:30] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 994,77,486 has 1 drop(s)
+[02:22:30] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:23:02] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 972,104,561 has 1 drop(s)
+[02:23:02] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:23:02] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 972,104,561 has 1 drop(s)
+[02:23:02] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:23:32] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 986,94,545 has 1 drop(s)
+[02:23:32] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:23:32] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 986,94,545 has 1 drop(s)
+[02:23:32] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:24:12] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:24:12] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:24:12] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:24:12] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:24:12] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:24:12] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:24:12] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:24:12] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:24:12] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:24:12] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:24:12] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:24:12] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:24:12] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:24:12] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:24:12] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:24:12] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:24:12] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:12] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:24:12] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:24:12] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:12] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:24:12] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:24:12] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:24:12] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:24:12] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:24:12] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:24:12] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:24:12] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:24:12] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:24:12] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:24:12] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:24:12] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:24:12] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:24:12] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:24:12] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:24:12] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:24:12] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:24:12] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:24:12] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:24:12] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:24:12] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:24:12] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:24:12] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:24:12] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:24:12] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:24:12] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:24:12] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:24:12] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:24:12] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:24:12] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:24:12] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:24:12] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:24:12] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:24:12] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:24:12] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:24:12] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:24:15] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:24:15] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:24:15] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:24:15] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:24:15] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:24:15] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:24:15] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:24:15] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:24:15] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:24:15] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:24:15] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:24:15] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:24:15] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:24:15] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:24:15] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:24:15] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:24:15] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:15] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:24:15] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:24:15] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:15] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:24:15] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:24:15] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:24:15] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:24:15] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:24:15] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:24:15] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:24:15] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:24:15] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:24:15] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:24:15] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:24:15] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:24:15] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:24:15] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:24:15] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:24:15] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:24:15] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:24:15] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:24:15] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:24:15] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18701_(BlockableEventLoop.java:139)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.mixinextras$bridge$m_18701_$298(MinecraftServer.java)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.wrapOperation$zhi000$modernfix$managedBlock(MinecraftServer.java:1856)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:733)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:24:15] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:24:15] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 985,103,543 has 1 drop(s)
+[02:24:15] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:24:15] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 985,103,543 has 1 drop(s)
+[02:24:15] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:24:15] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:24:15] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:24:15] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:24:15] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:24:15] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:24:15] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:24:15] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:24:15] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:24:15] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:24:15] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:24:15] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:24:15] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:24:15] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:24:15] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:24:15] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:24:15] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:24:15] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:15] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:24:15] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:24:15] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:15] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:24:15] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:24:15] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:24:15] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:24:15] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:24:15] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:24:15] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:24:15] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:24:15] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:24:15] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:24:15] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:24:15] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:24:15] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:24:15] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:24:15] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:24:15] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:24:15] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:24:15] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:24:15] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:24:15] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:24:15] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:24:15] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:24:15] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:24:15] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:24:23] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:24:23] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:24:23] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:24:23] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:24:23] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:24:23] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:24:23] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:24:23] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:24:23] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:24:23] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:24:23] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:24:23] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:24:23] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:24:23] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:24:23] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:24:23] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:24:23] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:23] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:24:23] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:24:23] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:23] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:24:23] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:24:23] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:24:23] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:24:23] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:24:23] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:24:23] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:24:23] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:24:23] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:24:23] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:24:23] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:24:23] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:24:23] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:24:23] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:24:23] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:24:23] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:24:23] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:24:23] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:24:23] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:24:23] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:24:23] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:24:23] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:24:23] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:24:23] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:24:23] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:24:23] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:24:23] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:24:23] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:24:23] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:24:23] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:24:23] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:24:23] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:24:23] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:24:23] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:24:23] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:24:23] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:24:50] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 985,103,543 has 2 drop(s)
+[02:24:50] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:24:50] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.golden_chestplate x1 NBT=<none>
+[02:24:50] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 985,103,543 has 2 drop(s)
+[02:24:50] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:24:50] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.golden_chestplate x1 NBT=<none>
+[02:24:51] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:24:51] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:24:51] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:24:51] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:24:51] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:24:51] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:24:51] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:24:51] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:24:51] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:24:51] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:24:51] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:24:51] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:24:51] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:24:51] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:24:51] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:24:51] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:24:51] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:51] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:24:51] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:24:51] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:51] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:24:51] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:24:51] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:24:51] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:24:51] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:24:51] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:24:51] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:24:51] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:24:51] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:24:51] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:24:51] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:24:51] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:24:51] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:24:51] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:24:51] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:24:51] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:24:51] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:24:51] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:24:51] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:24:51] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:24:51] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:24:51] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:24:51] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:24:51] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:24:51] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:24:51] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:24:51] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:24:51] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:24:51] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:24:51] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:24:51] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:24:51] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:24:51] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:24:51] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:24:51] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:24:51] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:24:56] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:24:56] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:24:56] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:24:56] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:24:56] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:24:56] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:24:56] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:24:56] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:24:56] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:24:56] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:24:56] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:24:56] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:24:56] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:24:56] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:24:56] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:24:56] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:24:56] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:56] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:24:56] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:24:56] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:24:56] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:24:56] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:24:56] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:24:56] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:24:56] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:24:56] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:24:56] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:24:56] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:24:56] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:24:56] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:24:56] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:24:56] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:24:56] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:24:56] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:24:56] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:24:56] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:24:56] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:24:56] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:24:56] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:24:56] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:24:56] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:24:56] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:24:56] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:24:56] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:24:56] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:24:56] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:24:56] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:24:56] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:24:56] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:24:56] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:24:56] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:24:56] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:24:56] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:24:56] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:24:56] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:24:56] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:25:01] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:25:01] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:25:01] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:25:01] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:25:01] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:25:01] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:25:01] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:25:01] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:25:01] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:25:01] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:25:01] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:25:01] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:25:01] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:25:01] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:25:01] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:25:01] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:25:01] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:25:01] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:25:01] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:25:01] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:25:01] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:25:01] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:25:01] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:25:01] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:25:01] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:25:01] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:25:01] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:25:01] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:25:01] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:25:01] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:25:01] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:25:01] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:25:01] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:25:01] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:25:01] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:25:01] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:25:01] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:25:01] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:25:01] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:25:01] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:25:01] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:25:01] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:25:01] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:25:01] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:25:01] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:25:01] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:25:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:25:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:25:01] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:25:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:25:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:25:01] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:25:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:25:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:25:01] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:25:01] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:25:33] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:25:33] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:25:33] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:25:33] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:25:33] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:25:33] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:25:33] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:25:33] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:25:33] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:25:33] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:25:33] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:25:33] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:25:33] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:25:33] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:25:33] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:25:33] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:25:33] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:25:33] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:25:33] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:25:33] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:25:33] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:25:33] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:25:33] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:25:33] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:25:33] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:25:33] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:25:33] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:25:33] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:25:33] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:25:33] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:25:33] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:25:33] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:25:33] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:25:33] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:25:33] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:25:33] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:25:33] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:25:33] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:25:33] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:25:33] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:25:33] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:25:33] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:25:33] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:25:33] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:25:33] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:25:33] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:25:33] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:25:33] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:25:33] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:25:33] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:25:33] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:25:33] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:25:33] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:25:33] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:25:33] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:25:33] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:25:42] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 986,103,544 has 2 drop(s)
+[02:25:42] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:25:42] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.iron_pickaxe x1 NBT=<none>
+[02:25:42] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 986,103,544 has 3 drop(s)
+[02:25:42] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:25:42] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.iron_pickaxe x1 NBT=<none>
+[02:25:42] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.apotheosis.gem x1 NBT=<none>
+[02:26:18] [ERROR] ! attributes/attribute_sync.js#141: Error in 'EntityEvents.hurt': Java class "dev.latvian.mods.kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage".
+[02:26:18] [ERROR] ! …rhino.EvaluatorException: Java class "…kubejs.entity.LivingEntityHurtEventJS" has no public instance field or method named "damage". (server_scripts:attributes/attribute_sync.js#141)
+[02:26:18] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[02:26:18] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[02:26:18] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[02:26:18] [ERROR] !   at …rhino.Context.reportRuntimeError2(Context.java:150)
+[02:26:18] [ERROR] !   at …rhino.JavaMembers.reportMemberNotFound(JavaMembers.java:866)
+[02:26:18] [ERROR] !   at …rhino.JavaMembers.put(JavaMembers.java:329)
+[02:26:18] [ERROR] !   at …rhino.NativeJavaObject.put(NativeJavaObject.java:701)
+[02:26:18] [ERROR] !   at …rhino.ScriptableObject.putProperty(ScriptableObject.java:1088)
+[02:26:18] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1357)
+[02:26:18] [ERROR] !   at …rhino.ScriptRuntime.setObjectProp(ScriptRuntime.java:1353)
+[02:26:18] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:796)
+[02:26:18] [ERROR] !   at script(server_scripts:attributes/attribute_sync.js:141)
+[02:26:18] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[02:26:18] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[02:26:18] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:26:18] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[02:26:18] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[02:26:18] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[02:26:18] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[02:26:18] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[02:26:18] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy199.onEvent(Unknown Source)
+[02:26:18] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[02:26:18] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[02:26:18] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[02:26:18] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[02:26:18] [ERROR] !   at …kubejs.entity.KubeJSEntityEventHandler.livingHurt(KubeJSEntityEventHandler.java:37)
+[02:26:18] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:229)
+[02:26:18] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_LivingAttackEvent.invoke(.dynamic)
+[02:26:18] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[02:26:18] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[02:26:18] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[02:26:18] [ERROR] !   at net.minecraftforge.common.ForgeHooks.onLivingAttack(ForgeHooks.java:270)
+[02:26:18] [ERROR] !   at net.minecraft.world.entity.LivingEntity.m_6469_(LivingEntity.java:1059)
+[02:26:18] [ERROR] !   at net.minecraft.world.entity.monster.Zombie.m_6469_(Zombie.java:267)
+[02:26:18] [ERROR] !   at net.mcreator.enemyexpansion.entity.SluggerEntity.m_6469_(SluggerEntity.java:138)
+[02:26:18] [ERROR] !   at net.minecraft.world.entity.player.Player.m_5706_(Player.java:1142)
+[02:26:18] [ERROR] !   at net.minecraft.server.level.ServerPlayer.m_5706_(ServerPlayer.java:1400)
+[02:26:18] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl$1.m_141994_(ServerGamePacketListenerImpl.java:1487)
+[02:26:18] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket$1.m_142457_(ServerboundInteractPacket.java:166)
+[02:26:18] [ERROR] !   at net.minecraft.network.protocol.game.ServerboundInteractPacket.m_179617_(ServerboundInteractPacket.java:66)
+[02:26:18] [ERROR] !   at net.minecraft.server.network.ServerGamePacketListenerImpl.m_6946_(ServerGamePacketListenerImpl.java:1455)
+[02:26:18] [ERROR] !   at net.bettercombat.network.ServerNetwork.lambda$initializeHandlers$5(ServerNetwork.java:199)
+[02:26:18] [ERROR] !   at net.minecraft.server.TickTask.run(TickTask.java:18)
+[02:26:18] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_6367_(BlockableEventLoop.java:156)
+[02:26:18] [ERROR] !   at net.minecraft.util.thread.ReentrantBlockableEventLoop.m_6367_(ReentrantBlockableEventLoop.java:23)
+[02:26:18] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:770)
+[02:26:18] [ERROR] !   at net.minecraft.server.MinecraftServer.m_6367_(MinecraftServer.java:161)
+[02:26:18] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_7245_(BlockableEventLoop.java:130)
+[02:26:18] [ERROR] !   at net.minecraft.server.MinecraftServer.m_129961_(MinecraftServer.java:753)
+[02:26:18] [ERROR] !   at net.minecraft.server.MinecraftServer.m_7245_(MinecraftServer.java:747)
+[02:26:18] [ERROR] !   at net.minecraft.util.thread.BlockableEventLoop.m_18699_(BlockableEventLoop.java:115)
+[02:26:18] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130012_(MinecraftServer.java:732)
+[02:26:18] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:665)
+[02:26:18] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[02:26:18] [ERROR] !   at java.lang.Thread.run(Thread.java:840)
+[02:30:16] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 1098,26,550 has 1 drop(s)
+[02:30:16] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:30:16] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 1098,26,550 has 1 drop(s)
+[02:30:16] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:32:09] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 1057,7,521 has 1 drop(s)
+[02:32:09] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:32:09] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 1057,7,521 has 1 drop(s)
+[02:32:09] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:36:05] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 1265,85,567 has 1 drop(s)
+[02:36:05] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:36:05] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 1265,85,567 has 1 drop(s)
+[02:36:05] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:36:40] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 1274,58,474 has 1 drop(s)
+[02:36:40] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:36:40] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 1274,58,474 has 1 drop(s)
+[02:36:40] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:36:47] [INFO] disable_zombie_door_break.js#101: [no_door_break] stripped 1 BreakDoorGoal(s) from new type: enemyexpansion:equestrian
+[02:36:54] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 1277,101,542 has 1 drop(s)
+[02:36:54] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:36:54] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 1277,101,542 has 1 drop(s)
+[02:36:54] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:36:59] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 1273,101,544 has 1 drop(s)
+[02:36:59] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:36:59] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 1273,101,544 has 1 drop(s)
+[02:36:59] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:37:12] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 1287,103,542 has 1 drop(s)
+[02:37:12] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:37:12] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 1287,103,542 has 1 drop(s)
+[02:37:12] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:37:58] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 1192,0,477 has 1 drop(s)
+[02:37:58] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:37:58] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 1192,0,477 has 1 drop(s)
+[02:37:58] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:39:06] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 1178,63,549 has 1 drop(s)
+[02:39:06] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:39:06] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 1178,63,549 has 1 drop(s)
+[02:39:06] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:39:06] [INFO] cap_player_knockback.js#75: [knockback_cap] event #9 strength=0.400 ratioX=10.203 ratioZ=1.691 attacker=unknown source=no-src
+[02:39:15] [INFO] cap_player_knockback.js#75: [knockback_cap] event #10 strength=0.400 ratioX=-0.668 ratioZ=0.562 attacker=unknown source=no-src
+[02:39:22] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 1222,88,547 has 1 drop(s)
+[02:39:22] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:39:22] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 1222,88,547 has 1 drop(s)
+[02:39:22] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:39:37] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:spider killed by via Function at 1261,104,570 has 1 drop(s)
+[02:39:37] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.string x1 NBT=<none>
+[02:39:37] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:spider killed by via Function at 1261,104,570 has 1 drop(s)
+[02:39:37] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.string x1 NBT=<none>
+[02:41:07] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 1263,85,569 has 1 drop(s)
+[02:41:07] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:41:07] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 1263,85,569 has 1 drop(s)
+[02:41:07] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:46:46] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 2348,69,454 has 1 drop(s)
+[02:46:46] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:46:46] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 2348,69,454 has 1 drop(s)
+[02:46:46] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:47:40] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:skeleton killed by via Function at 2344,54,458 has 1 drop(s)
+[02:47:40] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.bone x1 NBT=<none>
+[02:47:40] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:skeleton killed by via Function at 2344,54,458 has 1 drop(s)
+[02:47:40] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.bone x1 NBT=<none>
+[02:49:04] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:phantom killed by via Function at 2420,104,463 has 1 drop(s)
+[02:49:04] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.phantom_membrane x1 NBT=<none>
+[02:49:04] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:phantom killed by via Function at 2420,104,463 has 1 drop(s)
+[02:49:04] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.phantom_membrane x1 NBT=<none>
+[02:49:21] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:HIGHEST] minecraft:zombie killed by via Function at 2436,7,491 has 1 drop(s)
+[02:49:21] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:HIGHEST]   - item.minecraft.rotten_flesh x1 NBT=<none>
+[02:49:21] [INFO] loot/diagnose_mob_drops.js#60: [dropdiag:LOWEST] minecraft:zombie killed by via Function at 2436,7,491 has 1 drop(s)
+[02:49:21] [INFO] loot/diagnose_mob_drops.js#82: [dropdiag:LOWEST]   - item.minecraft.rotten_flesh x1 NBT=<none>

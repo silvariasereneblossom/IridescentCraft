@@ -6904,3 +6904,8 @@ java.io.FileNotFoundException: tetra:textures/gui/wizard_glyphs.png
 [27Apr2026 00:28:56.695] [Render thread/WARN] [structurize/]: Client logged off. Resetting Pack Meta and Reloading State
 [27Apr2026 00:28:56.697] [Structurize IO Worker #0/INFO] [structurize/]: Registered structure pack: silvieserene
 [27Apr2026 00:28:56.697] [Structurize IO Worker #0/WARN] [structurize/]: Finished discovering Client Structure packs
+[27Apr2026 02:32:36.869] [Render thread/INFO] [net.minecraft.client.Minecraft/]: Stopping!
+[27Apr2026 02:32:36.873] [CullThread/INFO] [STDOUT/]: [dev.tr7zw.entityculling.CullTask:run:89]: Shutting down culling task!
+[27Apr2026 02:32:36.889] [Render thread/INFO] [FluxNetworks/]: Released client Flux Networks cache
+[27Apr2026 02:32:36.901] [Render thread/INFO] [inventoryhud/]: Curios disabled
+[27Apr2026 02:32:36.941] [Render thread/INFO] [Entity Texture Features/]: [ETF]: emissive suffixes loaded: {_e}
