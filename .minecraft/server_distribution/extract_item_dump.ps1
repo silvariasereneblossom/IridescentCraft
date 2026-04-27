@@ -38,7 +38,7 @@ function Extract-Once {
         return $false
     }
 
-    $rawLines = Select-String -Path $Source -Pattern '\[ITEM_DUMP\] ' -SimpleMatch
+    $rawLines = Select-String -Path $Source -Pattern '[ITEM_DUMP] ' -SimpleMatch
     if (-not $rawLines -or $rawLines.Count -eq 0) {
         Write-Host "[extract_item_dump] no [ITEM_DUMP] lines in log yet" -ForegroundColor Yellow
         return $false
