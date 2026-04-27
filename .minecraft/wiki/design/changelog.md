@@ -4,6 +4,20 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-27 (cont.) — Phase 6F-3 follow-up: FA + Stalwart + Mahou synergy
+
+Three audit-driven follow-ups after the main 6F-3 push:
+
+- **Forbidden Arcanus mob drops unblocked** (`global_loot_modifiers.json`) — FA ships 6 entity-drop GLMs (zombie_arm from zombies, dragon_scale x2-3 from Ender Dragon, plus bat/drowned/enderman/squid additions) that were silently blocked by our `replace: true` allowlist. Players were getting zero FA mob drops. Allowlisted all 6 — restores intended FA progression.
+
+- **`stalwart_dungeons_drops.js`** (7 modifiers) — Stalwart's 7 nether mini-boss entities (awful_ghast, nether_keeper, incomplete_wither, giddy_blaze, reinforced_blaze, shelterer, shelterer_without_armor) get T3 ISS magic synergy on top of vanilla loot. Tougher mini-bosses get rare_ink + fire/blood/cooldown runes; weaker ones get uncommon_ink + fire_rune. incomplete_wither has 10% diamond_spell_book chance.
+
+- **`mahou_synergy_drops.js`** (14 modifiers) — Mahou Tsukai is a T4 player-spell mod with no mob drops natively; reagents (attuned_emerald, attuned_diamond, fae_essence, kodoku) are crafted via vanilla means. To give Mahou-class testers organic acquisition paths, Mahou reagents are now injected as low-rate drops on thematically-aligned bosses across other mods: T2 reagents (attuned_emerald + fae_essence) on TF Lich/Hydra + Aether Sun Spirit + BS Summoner + vanilla Evoker; T3 reagents (attuned_diamond + kodoku) on Cataclysm Ignis/Harbinger/Maledictus/Ancient Remnant + ISS Dead King; T4 reagents (attuned_diamond at higher count) on Cataclysm Ender Guardian, vanilla Warden, Ender Dragon.
+
+**Coverage tally**: 67 → ~88 entities now covered. This concludes the Phase 6F mob-drop expansion. Structure loot audit (separate question) verified existing coverage was already extensive — no new files shipped on that side beyond the FA GLM allowlist update.
+
+---
+
 ## 2026-04-27 — Phase 6F-2/3 modded mob coverage expansion + Alex's Mobs full pass
 
 50 new entity-loot modifiers across 5 new KubeJS files in `kubejs/server_scripts/loot/`. Pre-existing coverage was 17 entities; new total is ~67 entities with explicit LootJS rules. Internal boss-kill counter at `gates/milestone_detection.js` already auto-grants AStages tiers — these new drops are synergy/balance, not progression tokens (token concept rejected as design conflict; we already track kills internally).
