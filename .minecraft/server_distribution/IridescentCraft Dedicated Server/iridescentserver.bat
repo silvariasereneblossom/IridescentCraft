@@ -232,29 +232,25 @@ if exist "mods\.index" (
     powershell -ExecutionPolicy Bypass -File "%~dp0update_mods.ps1" -ModsDir "mods"
 )
 
-REM Clean stale mod JARs not in any .pw.toml
+REM Clean stale mod JARs not in any .pw.toml. The full logic lives in
+REM cleanup_stale_jars.ps1 — moved out of inline cmd because the inline
+REM ^-continued PowerShell with embedded `\""` was hitting cmd quote-
+REM escape edge cases that occasionally dropped customJars entries
+REM (deleting our own custom-bundled jars: ars_nouveau, iridescent_biomes,
+REM iridescent_modular_spells were being wiped, causing the next launch
+REM to crash with "no existing paths" for the missing custom jar).
 echo [CLEANUP] Removing stale mod JARs...
-powershell -ExecutionPolicy Bypass -Command ^
-  "$indexDir = 'mods\.index';" ^
-  "$modsDir = 'mods';" ^
-  "if (-not (Test-Path $indexDir)) { exit };" ^
-  "$expected = @{};" ^
-  "Get-ChildItem $indexDir\*.pw.toml | ForEach-Object {" ^
-  "  foreach ($line in Get-Content $_.FullName) {" ^
-  "    if ($line -match '^\s*filename\s*=\s*[''\""](.+)[''\""]') { $expected[$matches[1]] = $true }" ^
-  "  }" ^
-  "};" ^
-  "$customJars = @('iridescent_codex_data.jar','iridescent_origins-1.0.0.jar','iridescent_biomes-1.0.0.jar','iridescent_modular_spells-0.2.0.jar','mek_walkable_cables-1.0.1.jar','offlineskins-1.20.1-v1.jar','zeta_racefix-1.0.0.jar','Patchouli-1.20.1-85-FORGE.jar','ars_nouveau-1.20.1-4.12.7-all.jar');" ^
-  "foreach ($c in $customJars) { $expected[$c] = $true };" ^
-  "$removed = 0;" ^
-  "Get-ChildItem $modsDir\*.jar -ErrorAction SilentlyContinue | ForEach-Object {" ^
-  "  if (-not $expected.ContainsKey($_.Name)) {" ^
-  "    Write-Host ('  Removing: ' + $_.Name) -ForegroundColor DarkYellow;" ^
-  "    Remove-Item $_.FullName -Force; $removed++;" ^
-  "  }" ^
-  "};" ^
-  "if ($removed -gt 0) { Write-Host ('  Removed ' + $removed + ' stale JAR(s)') -ForegroundColor Yellow }" ^
-  "else { Write-Host '  No stale JARs.' -ForegroundColor Green }"
+if not exist "%~dp0cleanup_stale_jars.ps1" (
+    echo   [SETUP] Downloading cleanup script...
+    powershell -ExecutionPolicy Bypass -Command ^
+        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+        "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/cleanup_stale_jars.ps1' -OutFile '%~dp0cleanup_stale_jars.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
+)
+if exist "%~dp0cleanup_stale_jars.ps1" (
+    powershell -ExecutionPolicy Bypass -File "%~dp0cleanup_stale_jars.ps1"
+) else (
+    echo   [WARN] cleanup_stale_jars.ps1 not found, skipping cleanup.
+)
 echo.
 
 REM -------------------------------------------------------------------
