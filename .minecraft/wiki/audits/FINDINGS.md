@@ -16,6 +16,9 @@ Single source of truth for actionable findings across all per-mod audits. Update
 
 | # | Mod | Finding | Action | Source |
 |---|-----|---------|--------|--------|
+| 1.5a | art_of_forging | **22 EPIC/RARE items completely ungated, 0 refs** — multi-tier weapons (ancient/demonic axe/blade/flail), sigils, demonic curios, rending scissors chain | Allocate ancient → T2, demonic → T4, devils_soul_gem/sigils → T3; verify recipes and either stage-gate, recipe-strip, or Tetra-replacement | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 1.5b | too_many_bows | **31 EPIC/RARE items ungated, 0 refs** — 14 EPIC named bows + 4 reagents. Bow-class build is currently broken-OP. Plus `rift_shard` namespace collision with our `kubejs:rift_shard` | Allocate 14 bows to T2/T3/T4 chest pools by element/theme; rename or document the rift_shard collision | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 1.5c | moreartifacts | **32 EPIC/RARE curios mostly ungated, 2 refs** — Dragon → T4, Hero → mid-tier, Sculk → T4 theming clear | Add 32 items to existing T2/T3/T4 chest pools in `lootjs_overhaul.js` | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
 | 2 | simplyswords | Section E removal list has 7 stale IDs (silent no-ops) and 4 renamed-but-not-updated IDs (recipe gates are bypassed for those weapons). Plus ~17 boss-allocated weapons missing from the removal list entirely | Refresh `tier_gated_recipes.js` Section E: drop 7 stale, rename 4, add 17 missing. Final list ~38 entries | [simplyswords.md](simplyswords.md) |
 | 3 | simplyswords | Lichblade chain entry point unclear — `slumbering_lichblade` not in removal list and not in any boss-drop allocation. Either chain has no entry point OR can be crafted bypassing the gate | Verify slumbering_lichblade source; either add to Section E + add T2 loot drop, or document drop source | [simplyswords.md](simplyswords.md) |
 | 4 | terramity | ~15 EPIC non-gun items completely ungated (7 melee weapons + 8 curios). Includes `kamehameha`, `planet_buster`, `divine_intervention`, `nyxs_necklace`, `dragon_band`, `sacred_speed_bracelets`, etc. | Add I.3 sub-block to `recipe_audit.js` for non-gun EPIC content. Create `kubejs/server_scripts/loot/terramity_boss_drops.js` to allocate 7 melee EPICs to specific bosses | [terramity.md](terramity.md) |
@@ -42,6 +45,18 @@ Single source of truth for actionable findings across all per-mod audits. Update
 |---|-----|---------|--------|--------|
 | 35 | blue_skies | 4 EPIC boss spawn eggs ungated (`summoner_spawn_egg`, `alchemist_spawn_egg`, `starlit_crusher_spawn_egg`, `arachnarch_spawn_egg`). If craftable or chest-droppable = boss-summon-on-demand exploit | JEI uses-lookup; if recipes exist, add to Section L removal; if in chest loot, lootjs strip | [boss_mods.md](boss_mods.md) |
 | 36 | blue_skies | `debug_sword` (EPIC) — developer/debug item; verify creative-only (no recipe, no loot path) | JEI spot-check | [boss_mods.md](boss_mods.md) |
+
+### Items added 2026-04-27 (long-tail magic + boss mods batch)
+
+| # | Mod | Finding | Action | Source |
+|---|-----|---------|--------|--------|
+| 37 | bygonenether | `netherite_bell` (EPIC, ungated) — verify not in low-tier chest loot | LootJS spot-check | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 38 | multiplayerbosses | `lootbag` (EPIC, ungated) — verify mod's bosses spawn only in tier-appropriate dimensions | Check spawn tables | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 39 | majestic_menaces | `ancient_eye` (RARE, ungated) — likely Teikoku Senshi summon item | Verify acquisition path | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 40 | savage_and_ravage | 27 items, 0 refs — verify no OP weapons/curios | Spot-check items | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 41 | meetyourfight | 4 bosses partially gated (16 refs) — verify all have HP scaling + tier-appropriate drops | Spot-check | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 42 | (cross-cutting) | 5th non-vanilla rarity confirmed in mahoutsukai (uses internal Mahou tiers) | Update README cross-cutting C count | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 43 | (process) | Add a "any items not in any of our gating files?" check before merging new content mods | Process improvement; surfaced because art_of_forging + too_many_bows + moreartifacts each shipped without gating | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
 
 (Earlier P2 items unchanged below)
 
@@ -104,9 +119,9 @@ Three `obsidian_skull` items across mods, two `cross_necklace` items, three ring
 
 ## Counts so far
 
-- **12 audits done covering 18 mods** (cataclysm, simplyswords, terramity, forbidden_arcanus, theabyss, celestial_artifacts, botania, occultism, rpgseteffects, mekanism+ad_astra, ars_nouveau+irons_spellbooks, boss-mods-batch [alexsmobs+twilightforest+blue_skies+aether+deep_aether])
-- **36 actionable findings** (1 P0, 8 P1, 19 P2, 8 P3)
-- **~70 items needing JEI spot-checks** across all mods
+- **13 audits done covering 42 mods** (the per-mod audits + 2 batch audits covering 5 + 24 mods)
+- **43 actionable findings** (1 P0, 11 P1, 23 P2, 8 P3)
+- **~155 items needing fixes** across all mods (the 3 P1 ungated mods alone account for ~85)
 - **2 GREENLIT audits** (rpgseteffects, mekanism+ad_astra)
-- **150 mods remaining** in priority queue
-- **5 cross-cutting patterns identified:** (A) recipe-removal ID drift, (B) three-layer gate, (B2) chokepoint gating, (C) non-vanilla rarity, (D) Tetra replacement files
+- **126 mods remaining** in priority queue
+- **5 cross-cutting patterns identified:** (A) recipe-removal ID drift, (B) three-layer gate, (B2) chokepoint gating, (C) non-vanilla rarity (now 5 mods), (D) Tetra replacement files
