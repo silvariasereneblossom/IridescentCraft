@@ -291,22 +291,14 @@ if not exist "%~dp0extract_item_dump.ps1" (
         "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/extract_item_dump.ps1' -OutFile '%~dp0extract_item_dump.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
 )
 
-if exist "%~dp0extract_item_dump.ps1" (
-    REM Skip the watcher if all_items.tsv already exists. Strip trailing
-    REM backslash from %~dp0 before passing to PowerShell — PowerShell's
-    REM argv parser treats `\"` as an escape, breaking the
-    REM trailing-backslash-quoted path argument and causing the watcher
-    REM to fail silently. Use !VAR! delayed expansion so the strip
-    REM happens at runtime, not parse time.
-    setlocal enabledelayedexpansion
-    set "WATCH_DIR=%~dp0"
-    if "!WATCH_DIR:~-1!"=="\" set "WATCH_DIR=!WATCH_DIR:~0,-1!"
-    if not exist "!WATCH_DIR!\kubejs\exports\all_items.tsv" (
-        echo [DUMP] Spawning background watcher for item-dump extraction...
-        start "" /B powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "!WATCH_DIR!\extract_item_dump.ps1" -ServerDir "!WATCH_DIR!" -Watch
-    )
-    endlocal
-)
+REM Reuse SDIR from Phase 0.5 (already has trailing backslash stripped).
+REM Avoid setlocal/endlocal inside an if-block — known cmd parser issues
+REM that cause the script to exit unexpectedly without an error message.
+if not exist "%SDIR%\extract_item_dump.ps1" goto :phase35_done
+if exist "%SDIR%\kubejs\exports\all_items.tsv" goto :phase35_done
+echo [DUMP] Spawning background watcher for item-dump extraction...
+start "" /B powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "%SDIR%\extract_item_dump.ps1" -ServerDir "%SDIR%" -Watch
+:phase35_done
 
 REM -------------------------------------------------------------------
 REM Phase 4: Launch server
