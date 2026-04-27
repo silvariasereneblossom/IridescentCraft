@@ -163,6 +163,12 @@ ServerEvents.loaded(event => {
     'rpgseteffects:vaelkhor_artifact',
     'rpgseteffects:wolfheart_artifact',
     'rpgseteffects:artifact_piece_pouch',
+    // art_of_forging T2 — Ancient weapons (audit Phase 2.3, 2026-04-27)
+    // Ancient items drop from simple_dungeon + ancient_city chests (mod
+    // GLM). T2 stage gates use, since Ancient City is T3 but the items
+    // can also drop from T1-T2 dungeons. Demonic upgrades are T4-staged.
+    'art_of_forging:ancient_axe', 'art_of_forging:ancient_blade',
+    'art_of_forging:ancient_flail',
   ], 'modpack/item_t2')
 
   // -- Dimension restrictions --
@@ -249,6 +255,12 @@ ServerEvents.loaded(event => {
     'forbidden_arcanus:arcane_crystal_block',
     'forbidden_arcanus:arcane_crystal_ore',
     'forbidden_arcanus:deepslate_arcane_crystal_ore',
+    // art_of_forging T3 — Sigil + Dark Orb (audit Phase 2.3, 2026-04-27)
+    // Sigil of Eden drops from Wither @ 30% (T3-T4 boundary).
+    // Devils Soul Gem (Dark Orb) sourcing unclear (no recipe, no native
+    // loot table) — T3 stage as defensive precaution against creative leak.
+    'art_of_forging:sigil_of_eden',
+    'art_of_forging:devils_soul_gem',
   ], 'modpack/item_t3')
 
   // -- Ore replacement restrictions --
@@ -365,6 +377,15 @@ ServerEvents.loaded(event => {
     'rpgseteffects:stormpiercer_awakening_artifact',
     'rpgseteffects:vaelkhor_awakening_artifact',
     'rpgseteffects:wolfheart_awakening_artifact',
+    // art_of_forging T4 — Demonic upgrades + enigmatic_construct
+    // (audit Phase 2.3, 2026-04-27)
+    // Demonic chain crafted from Ancient (T2-staged) + 4x shards_of_malice
+    // (Wither Skeleton T3 drop). Enigmatic Construct requires dragon_soul
+    // (Ender Dragon T4 drop) + endsteel + forged_steel. Items are mod-
+    // internally tier-gated through their material requirements; T4 stage
+    // is additional defense against creative leaks or chest_loot bypass.
+    'art_of_forging:demonic_axe', 'art_of_forging:demonic_blade',
+    'art_of_forging:demonic_flail', 'art_of_forging:enigmatic_construct',
   ], 'modpack/item_t4')
 
   // -- Ore replacement restrictions --
