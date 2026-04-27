@@ -4,7 +4,7 @@
 
 > This document is the canonical source of truth for IridescentCraft's design intent. It describes *what the systems are and why* — not the per-mod numerical configuration. **Numbers, tables, recipe lists, drop rates, mod rosters, and other implementation specifics live in [`master-appendix.md`](master-appendix.md).** When implementation changes, log it in [`changelog.md`](changelog.md) and update both docs as needed.
 >
-> **Migration status (2026-04-27):** the previous monolithic 8,370-line master is preserved at [`master-LEGACY.md`](master-LEGACY.md) during the rewrite. Sections marked _migrated_ in the table of contents below have been moved to this doc and/or the appendix; sections marked _pending_ still live in the legacy file. Migration is happening over multiple sessions.
+> **Migration status (2026-04-27):** all 16 parts migrated to this doc. The previous monolithic 8,370-line master is preserved at [`master-LEGACY.md`](master-LEGACY.md) for historical reference and as the source for several appendix sections still in stub form. The legacy file will be removed once the appendix is fully populated (target: a future session).
 
 ---
 
@@ -21,13 +21,13 @@
 | VII | [Magic System](#part-vii-magic-system) | migrated |
 | VIII | [Tech System](#part-viii-tech-system) | migrated |
 | IX | [Equipment Systems](#part-ix-equipment-systems) | migrated |
-| X | Endgame Loops | pending — see legacy Parts II-B + XXIX (rifts/mythic forge in design doc + ascension) |
-| XI | Death & Penalty | pending — see legacy Part XXVII |
-| XII | Quest System & Codex | pending — see legacy Part XXIV |
-| XIII | Loot Economy | pending — see legacy Parts XIX + XXVI |
-| XIV | Storage, XP, Travel, Food | pending — see legacy Parts XIII–XVI |
-| XV | Building & QoL | pending — see legacy Part XXII |
-| XVI | Implementation Status Matrix | pending — see [`Home.md`](../home.md) status table |
+| X | [Endgame Loops](#part-x-endgame-loops) | migrated |
+| XI | [Death & Penalty](#part-xi-death--penalty) | migrated |
+| XII | [Quest System & Codex](#part-xii-quest-system--codex) | migrated |
+| XIII | [Loot Economy](#part-xiii-loot-economy) | migrated |
+| XIV | [Storage, XP, Travel, Food](#part-xiv-storage-xp-travel-food) | migrated |
+| XV | [Building & QoL](#part-xv-building--qol) | migrated |
+| XVI | [Implementation Status Matrix](#part-xvi-implementation-status-matrix) | migrated |
 
 The appendix has its own table of contents — see [`master-appendix.md`](master-appendix.md).
 
@@ -408,16 +408,237 @@ For the full curio chest-pool composition + Simply Swords boss allocation + cust
 
 ---
 
-## Parts X-XVI
+## Part X: Endgame Loops
 
-These sections live in [`master-LEGACY.md`](master-LEGACY.md) until session 3 migrates them. Pending:
+T4 is not the finish line — it's the starting line for the **endgame meta-loops**. The pack ships three: **Oblivion's Rift** (procedural dungeons), the **Mythic Forge** (uniques crafting), and **Ascension** (prestige cycle). These overlap and feed each other.
 
-- Part X: Endgame Loops (Rifts + Mythic Forge + Ascension)
-- Part XI: Death & Penalty
-- Part XII: Quest System & Codex
-- Part XIII: Loot Economy (boss drops + chest pools + cross-mod ink/rune economy in detail)
-- Part XIV: Storage, XP, Travel, Food
-- Part XV: Building & QoL
-- Part XVI: Implementation Status Matrix
+### Oblivion's Rift
 
-For implementation status of every system, see the [Implementation Status table on Home](../home.md).
+Rifts are the pack's procedural-dungeon endgame. Each Rift run:
+
+1. Player crafts a `kubejs:rift_keystone` (T4 reagent: Dragon Heart + Void Essence + `botania:gaia_ingot` + `minecraft:nether_star` + `kubejs:icraft_rift_shard`).
+2. Keystone is consumed at a Rift Anchor block to enter a procedurally-generated dungeon (RFTools Dimensions backbone, structure datapacks fill the content).
+3. Dungeon depth scales loot quality. The deeper floors drop `kubejs:icraft_rift_shard` (renamed 2026-04-27 from the original `kubejs:rift_shard` to resolve a `too_many_bows:rift_shard` namespace collision), `kubejs:void_fragment`, and rare `kubejs:rift_core`.
+4. Death inside the Rift returns the player to base; keystone is consumed regardless of completion.
+
+Compendium tracking captures every Rift-shard pickup (advancement at 10/50/250 shards), Rift Keystone craft, Rift Core acquisition, and Primordial Essence acquisition. See `kubejs/server_scripts/endgame/rift_mechanics.js`.
+
+### Mythic Forge
+
+The Mythic Forge is the **uniques-crafting endgame**. Crafted from `kubejs:icraft_rift_shard` + Mekanism Teleportation Core + Crying Obsidian + Steel Casing + Netherite (recipe in `endgame/mythic_forge.js`), it serves as the workbench for 5 endgame products:
+
+1. **Mythic Catalyst I-V** — escalating power tokens used as "apply this Mythic effect to gear" reagents.
+2. **Mythic Reforge Token** — apotheosis-style gear-modifier reset, costs 3 Primordial Essences.
+3. **Voidheart Blade** (sword) — base: `simplyswords:awakened_lichblade` (Ancient Remnant T4 drop). On-kill damage stacking.
+4. **Oblivion Aegis** (chestplate) — base: netherite chestplate. Death-delay protection.
+5. **Riftwalker Boots** — base: netherite boots. Teleport + speed.
+6. **Oblivion Crown** (helmet) — base: netherite helmet. Wallhack + first-strike.
+
+All 4 unique items use `kubejs:rift_blueprint` as a slot ingredient — Blueprints drop from Rift completions (procedural dungeon endgame integration).
+
+### Ascension
+
+The Ascension system is the **prestige cycle**. After T4 + Glacio + Mythic Forge endgame, the player can ascend — losing some progression but gaining permanent stat multipliers + access to ascension-only content. Ascension consumes `kubejs:icraft_rift_shard` + `kubejs:void_fragment` + `botania:gaia_ingot` + `cataclysm:void_core` + `cataclysm:monstrous_horn`. 5 ascension levels available; mob scaling intensifies per level (per-character flag in persistentData).
+
+Ascension creates an explicit reset cycle for veteran players: tier flags reset, ascension-flag persists, mob HP/damage scales 1.2× per level. The pack's late-game endgame is "how high can you ascend before the world breaks you?"
+
+For Mythic Forge recipe matrices, ascension scaling formulas, and Rift floor loot tables, see [`master-appendix.md` Section E](master-appendix.md#e-custom-items-registry) (custom items registry includes the full endgame chain).
+
+---
+
+## Part XI: Death & Penalty
+
+The pack's death model is **inventory-kept, durability-cost**. Players never lose items on death; the cost is durability damage to equipped armor + held weapon, scaled by the dimension where they died.
+
+### Why this model
+
+Vanilla "drop everything" punishes dimensional exploration too harshly for a pack designed around 9 dimensions. "Keep everything for free" undervalues death entirely. The middle path is **scaled durability damage** — the player keeps their gear (no item loss), but their gear takes a percentage hit that scales with dimension difficulty. A T1 Overworld death is a slap on the wrist (10% durability on iron = cheap repair). A T4 End death is significant (25% durability on netherite = expensive but capped repair).
+
+### What happens at 0 durability
+
+**Items don't break.** This is the Hytale-inspired twist: at 0 durability, items become **inert** (cannot deal damage, provide armor, or mine) but stay in the inventory with a "(Broken)" tooltip indicator. Repair restores them to functioning gear. This eliminates "I'm afraid to use my best gear" syndrome — the worst case is "you have to repair before using" not "you destroyed your gear."
+
+Implementation: `kubejs/server_scripts/death_penalty.js` cancels the break event at 0 durability, sets a `broken=true` NBT tag, and items check that tag before applying their effects. Repair removes the tag.
+
+### Soulbound enchantment
+
+Repurposed from Ensorcellation as the pack's **most valuable enchant**:
+
+- **Soulbound I**: 50% of death durability loss prevented.
+- **Soulbound II**: 75% of death durability loss prevented.
+- **Soulbound III**: 100% durability loss prevented + items cannot go inert from death.
+
+Treasure enchant (high Arcana required). Soulbound III completely negates the death penalty for that item — the endgame insurance policy.
+
+For the dimension-by-dimension durability-loss scale (10% Overworld → 25% End) and repair-cost cap formula, see [`master-appendix.md` Section D](master-appendix.md#d-apotheosis-tables).
+
+---
+
+## Part XII: Quest System & Codex
+
+The pack ships two complementary documentation/quest systems: **Heracles** (active quest tracker) and **Patchouli Codex** (lore/reference book).
+
+### Heracles quests
+
+Heracles is the pack's quest engine (replacing the deprecated FTB Quests for our purposes). Quests serve three roles:
+
+1. **Tier-unlock alternative paths** — every tier transition has a "complete this quest" option as one of the 4-5 unlock options (per Part III). The Twilight Lich quest, the Botania Mana Diamond quest, the Create Automation Demonstration quest — all are valid T2 unlock paths.
+2. **Boss-hunting tracking** — kill X T3 bosses to unlock a Mythic Catalyst recipe. Kill the Ender Guardian to unlock the Riftwalker Boots schematic.
+3. **Optional-side rewards** — food diversity tracking (Spice of Life integration), automation milestones, exploration completionism, dimension-specific challenges.
+
+Quests are not the *only* path through any system; they're a parallel rail that rewards engagement.
+
+### Patchouli Codex
+
+Codex is the **lore + reference** layer. The pack ships `iridescent_codex_data.jar` as a custom-bundled JAR (modId `icraft`, see CLAUDE.md "Custom Bundled JARs"). 11 categories, 80+ entries:
+
+- **Choosing Your Build** — origin/race/class guide for new players.
+- **Origins Guide** — full 13-origin breakdown with abilities + tradeoffs.
+- **Classes** — 10-class combat-role guide.
+- **Champions / Enchantments / Affixes** — combat system reference.
+- **Tier System** — what each tier unlocks (kept in sync with this design doc).
+- **Mods Overview** — per-mod role + tier placement.
+- **Compendium milestones** — achievements + tracking notes.
+
+Codex entries are **advancement-gated** — entries about T4 content show only after the player has unlocked T4. This keeps the codex spoiler-light for early players while still serving as the canonical in-game reference.
+
+Implementation: `kubejs/server_scripts/codex_delivery.js` gives the codex book on first join. The book uses Patchouli's bytecode-patched jar (resource-pack enforcement disabled — see [Section J of the appendix](master-appendix.md#j-bytecode-patches)).
+
+---
+
+## Part XIII: Loot Economy
+
+The pack's loot economy is **the most-distributed system in the pack** — 322 references to ISS alone, 88 entities with explicit LootJS rules, 4 dimension-banded chest pools, 8 boss-drop allocation files. This part summarizes the design intent; the exact tables live in [`master-appendix.md` Section C](master-appendix.md#c-boss--loot-mapping).
+
+### The cross-mod ink/rune economy
+
+The pack's most distinctive loot mechanic is the **Iron's Spellbooks ink/rune/upgrade-orb economy distributed across every boss tier**. Every dimension's bosses contribute reagents to the shared ISS ecosystem:
+
+- **Tier 1-2 mobs**: common_ink + uncommon_ink. Mostly Alex's Mobs + Twilight Forest mobs.
+- **Tier 2 bosses**: rare_ink + T2 runes (fire/ice/nature/protection) + tier-themed simplyswords uniques.
+- **Tier 3 bosses**: epic_ink + T3 runes (blood/ender/cooldown/lightning) + upgrade orbs (fire/ender/lightning).
+- **Tier 4 bosses**: legendary_ink + Mahou reagents (attuned_emerald/attuned_diamond/fae_essence/kodoku, per `mahou_synergy_drops.js`).
+
+Mahou Tsukai is **the connective-tissue beneficiary** — the mod has no native mob drops, so the pack injects Mahou reagents into other mods' bosses (Cataclysm Ender Guardian, Vanilla Warden, Ender Dragon all drop Mahou reagents). This is a 2026-04-27 design correction making Mahou a viable T4 magic mod for combat-focused players.
+
+### The 4 chest pools
+
+Curio + artifact + relic + spell-book chest loot is distributed across 4 tier-banded pools in `loot/lootjs_overhaul.js` Section 1:
+
+| Pool | Dimensions | Combined drop rate | Pool size (post-audit) |
+|------|------------|-------------------:|-----------------------:|
+| T1 | Overworld | ~10% | 19 items |
+| T2 | Twilight, Aether, Blue Skies, Deep Aether | ~12% | 31 items |
+| T3 | Nether, Undergarden | ~14% | 38 items |
+| T4 | End, Deeper Darker, Abyss | ~16% | 33 items |
+
+Per-tier rates increase modestly as the player progresses (signal of "you're getting better stuff"). Per-item rate is the combined rate divided by pool size — so each individual item is a 0.3-0.5% chance per chest. Roll independently per item.
+
+The audit pass (Phases 2.1, 2.2, 4.3, 2026-04-27) added 100+ items across all 4 pools — moreartifacts (32), too_many_bows (30), celestial_artifacts (42 chat-color triage). Pre-audit pool sizes were ~16 per tier; post-audit pools span the listed sizes above.
+
+### The 8 boss-drop loot files
+
+Boss-specific drops live in 8 dedicated files under `kubejs/server_scripts/loot/`:
+
+1. `iss_boss_drops.js` — 5 ISS bosses + ISS mob types (cryomancer, pyromancer)
+2. `iss_boss_first_kill.js` — guaranteed first-kill drops (necronomicon from Dead King, evoker_spell_book from Archevoker, etc.)
+3. `cataclysm_boss_drops.js` — 8 Cataclysm bosses with ISS reagent + simplyswords weapon drops
+4. `twilight_boss_drops.js` — 8 Twilight bosses with ISS reagents + simplyswords uniques (Tempest from Naga, Soulrender from Lich, etc.)
+5. `blue_skies_drops.js` — 4 Blue Skies bosses + Runic Arc allocation
+6. `alexsmobs_drops.js` — 21 Alex's Mobs entities (with mimicream nerf to 1%)
+7. `stalwart_dungeons_drops.js` — 7 nether mini-bosses
+8. `mahou_synergy_drops.js` — 14 cross-mod boss → Mahou reagent drops
+9. `dimensional_boss_drops.js` — 11 cross-dimensional bosses (Aether, Deep Aether, Undergarden, Mutant Monsters, Warden)
+10. `terramity_boss_drops.js` — 7 terramity non-gun melee weapons (audit Phase 4.1, 2026-04-27)
+
+(That's 10, not 8 — the 8 was the count *before* the 2026-04-27 audit added the Mahou synergy + Terramity allocations. Documenting the post-audit reality.)
+
+### What's intentionally NOT in chest loot
+
+- **Simply Swords uniques** — recipe-stripped + not in any chest pool. Boss-drop only.
+- **Cataclysm boss-set armor** (Knight, Ignitium, Cursium, Witherite) — recipe-stripped + boss-only.
+- **Theabyss boss-set armor** (Knight, Unorithe, Ragnarok, Dragon, Death) — recipe-stripped + boss-only.
+- **MekaSuit Mk2 components** — recipe-stripped + Mythic Forge endgame only.
+- **Custom mythic uniques** (Voidheart Blade, etc.) — Mythic Forge crafting only.
+- **Awakening artifacts** (rpgseteffects) — direct T4 boss drops only (pouch table strips them at T2).
+
+This lockdown ensures the boss-drop tier holds: getting the boss-only items requires actually fighting the bosses.
+
+For the full 88-entity boss → loot mapping with drop chances, see [`master-appendix.md` Section C](master-appendix.md#c-boss--loot-mapping).
+
+---
+
+## Part XIV: Storage, XP, Travel, Food
+
+Four smaller systems clustered together. Each has its own progression curve, but the curves are mostly orthogonal to the main tier system.
+
+### Storage progression
+
+| Tier | Storage | Transport |
+|------|---------|-----------|
+| T1 | Sophisticated Backpacks (iron), Storage Drawers (basic) | Pretty Pipes, Create belts |
+| T2 | Sophisticated upgrades (steel), Drawers upgrades | Thermal Ducts, IF basic transport |
+| T3 | Refined Storage (digital — see Part VIII), Sophisticated (diamond) | XNet, IF advanced |
+| T4 | RS advanced (Infinity Booster, Extra Disks), Sophisticated (netherite) | Mekanism QIO, RFTools |
+
+**EnderChests/EnderStorage** are gated to T4 — cross-dimensional item transfer is endgame, not a starter convenience.
+
+**Flux Networks** is ungated (cross-dimensional RF is fine — server bootstrapping is acceptable).
+
+### XP economy
+
+XP is **plentiful with many things to spend it on**. Sources: mob kills (dimension-multiplied), XP from Crops, boss kills, quest rewards, villager emerald-to-XP trades, cooking/crafting XP. Sinks: JustLevelingFork leveling, Pufferfish Skills investment, Apotheosis enchanting (flat-cost not exponential), Relic leveling, anvil operations (Easy Anvils reduces but doesn't eliminate cost), Reforging.
+
+Mods that make XP more accessible (Tax Free Levels, Easy Anvils, Easy Magic, Table of Experience) are intentional — the sinks are what matter, and players should always have something valuable to invest XP in.
+
+### Travel
+
+**Free teleportation philosophy**: exploration should feel liberating, not punishing.
+
+- **Waystones**: finding/activating is free in all dimensions. Crafting a waystone is expensive (rare custom boss drops) at all tiers. Waystone Towers generate naturally as a fast-travel network. Cross-dimensional teleport works freely between activated waystones.
+- **Iron Jetpacks**: T1 (low-tier), better with mat tier. Early flight intentional.
+- **Icarus**: T3-gated per implementation status (audit Phase 4.4 confirmed clean).
+- **Origins flight**: ungated, intentional.
+- **Elytra Slot**: available when elytra is obtained (T4 from End naturally).
+
+### Food + hunger
+
+**Major progression system** — food diversity = HP bonuses = survival in harder dimensions.
+
+Mod stack: Hunger Overhaul (faster drain), Spice of Life: Carrot Edition (diverse-eating HP bonuses), Farmer's Delight + addons (complex cooking), Pam's HarvestCraft 2 (hundreds of crops), Cooking for Blockheads (kitchen multiblock), Brewin' and Chewin' (fermentation), Simple Farming, Sleep Hunger.
+
+Design: all food and farming is **ungated from T1** — no crop/recipe staging. Players who diversify gain Spice of Life HP bonuses; players who eat only steak struggle in T3+ dimensions due to missing HP bonuses. **Natural soft-gate**: best food diversity requires dimensional ingredients (Nether's Delight = T3, Alex's Delight = mid-tier, etc.).
+
+This makes cooking a parallel progression that rewards engagement without hard-blocking.
+
+---
+
+## Part XV: Building & QoL
+
+Both **completely ungated from T1**. The pack's stance: building and QoL features should never feel restricted; they make the world more livable, not more powerful.
+
+### Building mods
+
+Chipped, Macaw's suite (Bridges, Fences, Furniture, Roofs, Trapdoors), Decorative Blocks, Decorative LGBT Wall Flags, Valhelsia Furniture, Domum Ornamentum, ConnectedTexturesMod, Connected Glass, Rechiseled (status: removed due to a SuperMartijn642 Core Lib load order issue per implementation history), chisels-and-bits, Structurize.
+
+### QoL mods
+
+JourneyMap, Jade, AppleSkin, Mouse Tweaks, Controlling, Inventory HUD+, Overflowing Bars, Fast Leaf Decay, TrashSlot, Trash Cans, FTB Ultimine, FTB Chunks, FTB Essentials, No Chat Reports, Simple Voice Chat, all performance mods (Embeddium, ModernFix, etc.).
+
+These mods support the pack's "expert-lite" identity: powerful tooling, low overhead, no busywork.
+
+---
+
+## Part XVI: Implementation Status Matrix
+
+For the live implementation status of every system in the pack, see the **Implementation Status table on [Home](../home.md)**. The table lists every major system + sub-system + mod-integration with a "Implemented / In Progress / Planned" status flag.
+
+The status table is the source of truth for "what's shipped." This design doc is the source of truth for "what's intended." The two stay loosely synchronized — when intent changes, this doc updates; when implementation changes, the status table updates and the changelog logs the change. Cross-checks happen via the design changelog at [`changelog.md`](changelog.md).
+
+For per-mod balance audit verdicts (which mods are GREENLIT, LIGHT POLISH, MEDIUM REWORK, etc.), see the private internal repo's `audits/` directory. That repo is the contributor-only living-document for ongoing balance work.
+
+---
+
+## Appendix
+
+For all numerical data, recipe state, drop tables, mod rosters, custom item registries, KubeJS script index, and bytecode-patch references, see [`master-appendix.md`](master-appendix.md).
