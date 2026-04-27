@@ -9,7 +9,9 @@ IridescentCraft is a 420-mod Minecraft 1.20.1 Forge modpack with RPG progression
 ## Repository Structure
 
 - `wiki/home.md` — Wiki homepage with section index and implementation status
-- `wiki/design/master.md` — **Master design document** (canonical source of truth for all systems)
+- `wiki/design/master.md` — **Master design document** (canonical design intent — Parts I-III migrated 2026-04-27; Parts IV-XVI in progress, see `master-LEGACY.md`)
+- `wiki/design/master-appendix.md` — Numerical reference: tier material lists, recipe state, boss → loot mapping, Apotheosis tables, custom items registry, mod roster, stage restrictions, datapack overrides, KubeJS script index, bytecode patches
+- `wiki/design/master-LEGACY.md` — Frozen pre-rewrite master (8,370 lines), preserved during migration
 - `wiki/design/changelog.md` — Log of all design changes made across sessions
 - `wiki/progression/overview.md` — Tier system, dimension gates, quest structure
 - `wiki/classes/overview.md` — 10 classes, 11 races, 13 origins, glass cannon mechanics
@@ -62,8 +64,8 @@ NOT available (will crash):
 
 ## Design Document Protocol
 
-The master design document lives at `wiki/design/master.md`. When any design changes are made during a session:
-1. Update the relevant section in `wiki/design/master.md`
+The master design document lives at `wiki/design/master.md` (design intent) + `wiki/design/master-appendix.md` (numerical/tabular reference). When any design changes are made during a session:
+1. Update the relevant section in `master.md` (intent) and/or `master-appendix.md` (numbers/lists/tables) — keep them in sync
 2. Add an entry to `wiki/design/changelog.md` with date, what changed, and why
 3. Commit the wiki changes along with the implementation
 
