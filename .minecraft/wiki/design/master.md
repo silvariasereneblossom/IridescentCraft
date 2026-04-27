@@ -223,6 +223,57 @@ Boss kills are tracked in `gates/milestone_detection.js` — the per-player T2/T
 
 The pack's design accepts that *some* builds will be broken — that's the power-fantasy point. What it doesn't accept is broken-via-exploit. Every audit-driven gate (the 5 Mekanism processing-recipe blocks, the Botania Orechid datapack, the Occultism miner override, the 6 cataclysm boss-themed weapon allocations) closes a path that would let a low-tier player skip into broken-tier gear without earning it. See [Section B in the appendix](master-appendix.md#b-tier-skip-recipe-state) for the running ledger.
 
+### Dimensional combat mechanics
+
+Beyond stat scaling, each dimension has its own **combat identity** — unique mob behaviors, environmental hazards, and play-feel modifiers that demand different strategies. Damage scales fastest, HP scales moderately. Combat in harder dimensions is *dangerous* — players must respect enemies, not just out-stat them.
+
+Three principles guide the per-dimension design:
+
+- **Enemies are lethal but killable.** A well-geared player tears through trash but respects elites and fears bosses.
+- **Every dimension feels mechanically unique.** Not just stat inflation — each dimension has combat behaviors and enemy mechanics that demand different strategies.
+- **Build diversity matters in combat.** A Berserker and a Vanguard fighting the same mob should have fundamentally different experiences, not just "faster" or "slower" versions of the same fight.
+
+#### Combat identity by dimension
+
+**Tier 1 — Overworld: Learning Ground.** Vanilla mob behavior, no surprises. The baseline. Nighttime mob density increases (motivation to prepare). Full moon nights spike spawn rate + Champion %. Basic AI only — mobs don't use gear, don't break blocks, don't coordinate.
+
+**Tier 2 — Twilight Forest: The Dark Forest.** Dense canopy, ambushes from limited visibility. Mobs have a 15% chance to spawn briefly invisible (Canopy Ambush). Boss arenas have a +10% damage / 1 HP/s regen aura on nearby mobs (Twilight Corruption — clear trash before pulling). Twilight-native mobs share aggro within 16 blocks (Pack Tactics). 20% of mobs equip dropped weapons. Environmental: thorn hedges damage on contact, permanent fog reduces visibility.
+
+**Tier 2 — Blue Skies: Elemental Gauntlet.** Two dimensions (Everbright/Everdawn) with elemental themes. 30% of mob damage is converted to elemental (fire/ice) — bypasses standard armor but is mitigated by elemental resistance enchants. Periodic elemental storms (every 10-15 min) buff matching-element mobs for 2 minutes. Mobs at high altitude (Y>128) gain +5% speed. Ranged mobs prioritize high-ground; melee mobs try to knock players off platform edges.
+
+**Tier 2 — The Aether: Aerial Warfare.** Vertical combat, narrow platforms, lethal falls. 40% of mobs fly or hover. Updraft zones launch entities upward. Cloud cover above Y>192 hides 10% of mobs until close range (soft ambush). Rare gravity wells halve fall damage but double knockback. Valkyrie-type mobs have parry mechanics — block frontal attacks periodically.
+
+**Tier 3 — The Undergarden: Toxic Attrition.** The environment drains you. 25% of mob hits apply 5-second poison (scales with dimension multiplier). Mobs have natural damage reduction that regenerates if not hit for 5 seconds (Fungal Armor — sustained aggression rewarded). Detection range extends to 24 blocks in darkness; light sources reduce it. Standing still 10+ seconds applies Weakness I (Decay Aura — keep moving).
+
+**Tier 3 — Deeper Darker: Horror Survival.** Stealth matters. Sprinting/breaking blocks/fighting generates "noise" extending mob aggro radius from 24 to 8 blocks when sneaking. Mobs near sculk gain +15% damage + vibration detection through walls. Mobs in light-level-0 gain +20% all stats; light-level-7+ lose 10%. Below Y=-32, all entities take 1 damage / 30s (Rift Pressure). Mobs don't make warning sounds — no aggro growls before attacks.
+
+**Tier 3 — The Nether: Relentless Aggression.** Permanent aggro from 20 blocks. 30% of melee damage is fire (bypasses armor; Heatward enchant mitigates). Killing Blazes has 20% chance to spawn 2 smaller "Ember" adds. Mobs inside Nether Fortresses gain +10% all stats and resist knockback (set-piece encounters). Lava-adjacent mobs regen 2% HP/s. Improved Mobs runs at maximum aggression: ALL mobs use found gear, piglins flank in 4-6 hunting parties, hoglins charge toward lava (intentional environmental kills).
+
+**Tier 3 — The Abyss.** Oppressive darkness mechanic — visibility tuning + slow corruption stat-debuff buildup + scripted fear aura near specific mob types. Sculk-adjacent + abyss-adjacent mob synergies. (Companion to Deeper Darker thematically.)
+
+**Tier 4 — Deep Aether: Ascension Trial.** Aerial combat + escalated difficulty + multi-phase mob attack patterns. Celestial Events every 20 minutes give mobs +25% all stats (50% more loot). Random wind shears push players + projectiles off-course. 20% of mobs spawn with one-hit absorption shields (rewards sustained combat over alpha-strike). Procedural Ascension Towers — each floor +5% stats, top floor mini-boss. Combo attacks (2-3 hit sequences with increasing damage), telegraphed special attacks (1-second windup), allies heal each other if not interrupted.
+
+**Tier 4 — The End: The Crucible.** Three zones with escalating mechanics, each adding to the previous:
+
+- *Outer Islands*: Mobs gain +1% damage per block closer to void (Y<10). 15% of attacks apply 2-4 block teleport in random direction. Shulkers fire in coordinated volleys.
+- *Deep End / End Cities*: Adds Void Corruption stacks (-2% HP / +3% damage per stack, max 10, leaving End clears). Killing Endermen has 10% chance to teleport in 3-5 already-aggro'd Endermen. 10% of mobs phase through walls briefly.
+- *Dragon's Domain*: Adds +15% all stats to mobs while Dragon is alive. Void Storms every 10 min deal 3 damage/s to all entities not under shelter. Reality Fracture reverses player controls for 2 seconds (purple particle warning 1s before). Champions in Dragon's Domain ALWAYS roll 4 affixes.
+
+Full Improved Mobs config in the End: ALL mobs use found gear + enchanted weapons, mobs break any block (including obsidian, slowly), ranged mobs suppress while melee flanks, target glass cannons in multiplayer, Endermen teleport behind for backstabs, elite mobs adapt to player behavior (kiters → mobs speed up; face-tankers → mobs spread out).
+
+**Tier 4 — Ad Astra Planets.** Each has its own atmosphere and mechanics. Oxygen drain without tank, atmospheric pressure cryogenic damage on Glacio. Champion rate 50-60% depending on planet. Glacio is the post-T4 endgame.
+
+#### Combat feel summary
+
+| Tier | Trash kill speed (avg build) | Player threat level | Combat feel |
+|------|-----------------------------:|---------------------|-------------|
+| 1 | 1-2 hits | Low (10+ hits to die) | Tutorial. Learn mechanics, get comfortable. |
+| 2 | 2-3 hits | Moderate (6-8 hits) | Engaging. Pay attention. Ambushes and elements start. |
+| 3 | 3-5 hits | High (4-6 hits) | Intense. Mechanics demand specific strategies. Poison/stealth/fire pressure. |
+| 4 | 4-8 hits (build-dependent) | Lethal (3-4 hits glass cannon) | Endgame. Every fight matters. Environmental + mob synergy. One mistake = death. |
+
+For the underlying numerical tables — per-class HP / DPS estimates, kill-speed targets per build, full per-dimension multiplier table, Champion affix tiers, affix pool composition, Progressive Bosses scaling, regular mob equipment percentages — see [`master-appendix.md` Section D](master-appendix.md#d-apotheosis-tables--scaling).
+
 ---
 
 ## Part VI: Player Character

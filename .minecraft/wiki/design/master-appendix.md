@@ -397,23 +397,31 @@ Boss-source determined gem tier:
 - T3 bosses (Cataclysm, F&A, Stalwart) → Rare / Epic gems.
 - T4 bosses (Ender Dragon, Gaia Guardian, Ancient Remnant, Wither) → Legendary / Mythic gems.
 
-### D.4 Champion spawn rates by dimension
+### D.4 Dimension stat multipliers (full)
 
-| Dimension | Health Multi | Damage Multi | Champion Spawn % |
-|-----------|-------------:|-------------:|-----------------:|
-| Overworld | 1.0× | 1.0× | 15% |
-| Twilight Forest | 1.5× | 1.5× | 20% |
-| Blue Skies | 2.0× | 2.0× | 25% |
-| The Aether | 2.5× | 2.5× | 30% |
-| The Undergarden | 3.0× | 3.0× | 35% |
-| Deeper Darker | 3.5× | 3.5× | 40% |
-| The Abyss | 3.5× | 3.5× | 40% |
-| The Nether | 4.0× | 4.0× | 50% |
-| Deep Aether | 5.0× | 5.0× | 50% |
-| The End | 6.0×–10.0× | 6.0×–10.0× | 60% |
-| Ad Astra (any planet) | 5.0×-7.0× | 5.0×-7.0× | 50% (Glacio: 60%) |
+Four stats scale independently per dimension. **Damage scales fastest, HP moderately, Speed and Armor minimally.**
+
+Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
+
+| Dimension | Tier | HP × | DMG × | Speed × | Armor × | Champion % | Champion affixes | Mob gear % | Notes |
+|-----------|-----:|-----:|------:|--------:|--------:|-----------:|------------------|-----------:|-------|
+| Overworld | 1 | 1.0 | 1.0 | 1.0 | 1.0 | 5-15% | 1 (basic) | 5% leather/iron | Baseline |
+| Twilight Forest | 2 | 1.8 | 2.0 | 1.05 | 1.3 | 7-20% | 1-2 | 20% iron-tier | Canopy ambushes |
+| Blue Skies | 2 | 2.0 | 2.3 | 1.05 | 1.4 | 8-25% | 1-2 | 25% iron-tier | Elemental damage |
+| The Aether | 2 | 2.2 | 2.5 | 1.08 | 1.5 | 8-30% | 1-2 | 25% iron/steel | Aerial combat |
+| Undergarden | 3 | 3.0 | 3.5 | 1.10 | 2.0 | 10-35% | 2-3 | 40% steel/diamond | Toxic attrition |
+| Deeper Darker | 3 | 3.5 | 4.0 | 1.10 | 2.2 | 10-40% | 2-3 | 45% diamond-tier | Horror stealth |
+| The Abyss | 3 | 3.5 | 4.0 | 1.10 | 2.2 | 10-40% | 2-3 | 45% diamond-tier | Oppressive darkness |
+| The Nether | 3 | 4.0 | 5.0 | 1.12 | 2.5 | 12-50% | 2-3 (fire-weighted) | 50% diamond/netherite | Soulfire bypass |
+| Deep Aether | 4 | 5.0 | 6.5 | 1.15 | 3.0 | 13-50% | 3-4 | 60% netherite | Multi-phase |
+| End — Outer Islands | 4 | 6.0 | 8.0 | 1.15 | 3.5 | 14-60% | 3-4 | 70% netherite | Void proximity |
+| End — Deep End / Cities | 4 | 7.5 | 9.0 | 1.18 | 4.0 | 15% | 3-4 (void-weighted) | 75% netherite | Phase shift |
+| End — Dragon's Domain | 4 | 10.0 | 12.0 | 1.20 | 5.0 | 15% | **4 guaranteed** | 80% netherite + enchanted | Dragon influence |
+| Ad Astra (any planet) | 4 | 5.0-7.0 | 5.0-7.0 | 1.15-1.18 | 3.0-4.0 | 50% (Glacio: 60%) | 3-4 | 60-75% | Per-planet atmospheric |
 
 Implementation: `kubejs/server_scripts/scaling/mob_scaling_unified.js`.
+
+The "Champion %" range covers the spawn-rate jitter from Champions Unofficial config; lower bound is the natural-spawn rate, upper bound includes structure-spawn boosts.
 
 ### D.5 Death durability loss by dimension
 
@@ -431,25 +439,223 @@ Implementation: `kubejs/server_scripts/scaling/mob_scaling_unified.js`.
 
 Soulbound enchant: I = 50% prevention, II = 75%, III = 100% (and items don't go inert from death). Implementation: `kubejs/server_scripts/death_penalty.js`.
 
-### D.6 Boss HP base values (excerpt, T3-T4)
+### D.6 Boss HP base values + Progressive Bosses scaling
 
-| Boss | Base HP |
-|------|--------:|
-| `cataclysm:netherite_monstrosity` | 900 |
-| `cataclysm:ignis` | 1000 |
-| `cataclysm:the_harbinger` | 800 |
-| `cataclysm:the_leviathan` | 850 |
-| `cataclysm:maledictus` | 900 |
-| `cataclysm:ender_guardian` | 1500 |
-| `cataclysm:ancient_remnant` | 2500 |
-| `cataclysm:void_blossom` | 2000 |
-| `cataclysm:ender_golem` | 1200 |
-| `cataclysm:ignited_revenant` | 1000 |
-| `irons_spellbooks:dead_king` | 800 |
-| `irons_spellbooks:fire_boss` | 700 |
-| `irons_spellbooks:citadel_keeper` | 600 |
+Per-boss base HP at first kill. All bosses scale with Progressive Bosses (per-world, not per-player).
 
-Plus Progressive Bosses scaling: each kill increments boss HP for next encounter. Ender Dragon base 1000 HP + scale-per-kill. Implementation: `kubejs/server_scripts/scaling/boss_hp.js` + `boss_progressive.js`.
+| Boss | Tier | First kill HP | 10th kill HP |
+|------|-----:|--------------:|-------------:|
+| Twilight Naga | 2 | 300 | 600 |
+| Twilight Lich | 2 | 400 | 800 |
+| Twilight Hydra | 2 | 500 | 1,000 |
+| Ur-Ghast | 2 | 600 | 1,200 |
+| Blue Skies bosses (Summoner / Alchemist / Starlit Crusher / Arachnarch) | 2 | 350-500 | 700-1,000 |
+| Aether bosses (Slider / Valkyrie Queen / Sun Spirit) | 2 | 400-550 | 800-1,100 |
+| `irons_spellbooks:citadel_keeper` | 3 | 600 | 1,200 |
+| `irons_spellbooks:fire_boss` | 3 | 700 | 1,400 |
+| `irons_spellbooks:dead_king` | 3 | 800 | 1,600 |
+| Wither | 3 | 600 | 1,200 |
+| Cataclysm Harbinger (Deeper Darker boss) | 3 | 800 | 1,600 |
+| `cataclysm:the_leviathan` | 3 | 850 | 1,700 |
+| `cataclysm:maledictus` | 3 | 900 | 1,800 |
+| `cataclysm:netherite_monstrosity` | 3 | 900 | 1,800 |
+| `cataclysm:ignis` | 3 | 1,000 | 2,000 |
+| `cataclysm:ignited_revenant` | 3 | 1,000 | 2,000 |
+| Meet Your Fight bosses | 3 | 700-1,000 | 1,400-2,000 |
+| `cataclysm:ender_golem` | 4 | 1,200 | 2,400 |
+| Ender Dragon | 4 | 1,000 | 2,000 |
+| Gaia Guardian | 4 | 1,200 | 2,400 |
+| `cataclysm:ender_guardian` | 4 | 1,500 | 3,000 |
+| `cataclysm:void_blossom` | 4 | 2,000 | 4,000 |
+| `cataclysm:ancient_remnant` | 4 | 2,500 | 5,000 |
+
+Implementation: `kubejs/server_scripts/scaling/boss_hp.js` + `boss_progressive.js`.
+
+#### Progressive Bosses per-kill scaling
+
+Per-world, not per-player. Encourages varied boss hunting rather than farming one boss.
+
+| Kill count | HP bonus | Damage bonus | Speed bonus | New mechanics |
+|-----------:|---------:|-------------:|------------:|---------------|
+| 1st | base | base | base | Base moveset |
+| 2nd | +15% | +10% | +3% | — |
+| 3rd | +30% | +20% | +5% | +1 new attack pattern |
+| 5th | +50% | +35% | +8% | +1 additional phase |
+| 10th | +100% | +60% | +12% | Full enhanced moveset |
+| 15th+ | +150% (cap) | +80% (cap) | +15% (cap) | Maximum difficulty |
+
+#### Progressive Bosses drop-quality scaling
+
+Bosses drop slightly better gear at higher kill counts — incentivizes repeated farming as difficulty rises.
+
+| Kill count | Drop quality |
+|-----------:|--------------|
+| 1st-3rd | Base drops |
+| 4th-6th | +10% chance for higher affix rarity |
+| 7th-10th | +20% chance, bonus enchantment level |
+| 10th+ | +25% chance, guaranteed additional drop |
+
+### D.7 Apotheosis-spawned random world bosses
+
+Independent from designed bosses. Spawn at random per-chunk-per-cycle in each dimension, level scales with dimension tier.
+
+| Dimension | Spawn rate | Base stats × | Level range |
+|-----------|-----------:|-------------:|------------:|
+| Overworld | 2% | 1.0 | 1-10 |
+| Tier 2 dimensions | 4% | 2.0 | 10-25 |
+| Tier 3 dimensions | 6% | 3.5 | 25-50 |
+| Tier 4 dimensions | 8% | 6.0 | 50-80 |
+| End — Dragon's Domain | 10% | 10.0 | 80-100 |
+
+Apotheosis bosses drop gear with affixes matching their level. Higher level → better affix rarity.
+
+### D.8 Estimated player power (Tier 4, well-geared)
+
+Power across class archetypes after accounting for class modifiers, equipment HP halving, Vitality enchant, Spice of Life HP bonuses, JustLevelingFork, Apotheosis affixes, gem socketing, and typical enchantment setups.
+
+| Stat | Glass Cannon (Ranger / Archmage / Void Summoner) | Hybrid (Samurai / Battlemage / Wanderer / Artificer) | Tank (Vanguard / Paladin) |
+|------|--------------------------------------------------|------------------------------------------------------|---------------------------|
+| Max HP | 80-120 (40-60 hearts) | 140-180 (70-90 hearts) | 220-300 (110-150 hearts) |
+| Effective HP (after damage reduction) | 160-300 | 350-540 | 700-1,200 |
+| Damage Per Hit | 50-90 | 40-65 | 25-45 |
+| Attack Speed | High | Moderate | Low-Moderate |
+| Sustained DPS | 80-140 | 60-100 | 30-55 |
+
+### D.9 Target kill speeds (Tier 4 End, regular mob)
+
+How long T4 fights should feel from each side. These are the design targets that drive the multipliers in D.4.
+
+**Player vs regular mob**
+
+| Player build | Hits to kill trash | Hits to kill Elite/Champion |
+|--------------|-------------------:|----------------------------:|
+| Berserker (melee DPS) | 2-3 | 8-12 |
+| Ranger / Archmage (ranged DPS) | 2-4 | 8-15 |
+| Samurai / Battlemage (hybrid) | 3-5 | 10-18 |
+| Wanderer | 4-6 | 12-20 |
+| Paladin | 5-7 | 15-22 |
+| Vanguard (tank) | 7-10 | 20-30 |
+| Artificer | 4-6 | 12-20 |
+| Void Summoner (via minions) | 4-8 (minion swarm) | 15-25 (minion swarm) |
+
+**Regular mob vs player**
+
+| Player build | Hits to die (regular mob) | Hits to die (Champion) | Hits to die (Boss) |
+|--------------|--------------------------:|-----------------------:|-------------------:|
+| Ranger / Archmage | 3-4 | 2 | 1 |
+| Void Summoner | 4-5 | 2-3 | 1-2 |
+| Berserker | 5-6 | 3-4 | 1-2 |
+| Samurai / Battlemage / Wanderer | 6-8 | 4-5 | 2-3 |
+| Artificer | 6-8 | 4-5 | 2-3 |
+| Paladin | 8-10 | 5-7 | 3-4 |
+| Vanguard | 10-14 | 7-9 | 4-6 |
+
+These numbers are the design targets — actual gameplay numbers WILL drift via emergent interaction of 7+ gear-enhancement layers, 10 classes, dimension mechanics, and mob scaling. Expect 2-3 full tuning passes minimum during playtesting; start at 80% of designed values and tune up.
+
+### D.10 Champion affix pool
+
+Champions draw from this pool. Affix count scales with dimension (see D.4). Affixes are *combat behavior* modifiers, separate from Apotheosis gear affixes.
+
+#### Offensive affixes
+
+| Affix | Effect |
+|-------|--------|
+| Molten | Melee attacks apply fire (2s). Leaves fire trail when moving. |
+| Arctic | Melee attacks apply Slowness II (3s). Projectiles apply Slowness I. |
+| Venom | Attacks apply Poison II (4s). Poison damage scales with dimension multiplier. |
+| Wither | Attacks apply Wither I (3s). Kills heal Champion 10% max HP. |
+| Desecrating | Leaves damaging ground area on hit location (3s, 2-block radius). |
+| Enkindling | Sets nearby blocks on fire. Increases fire spread rate. |
+
+#### Defensive affixes
+
+| Affix | Effect |
+|-------|--------|
+| Shielding | Periodically generates damage-absorbing shield (one-hit absorb every 10s). |
+| Reflecting | 15% of damage taken reflected to attacker. |
+| Regenerating | Heals 2% max HP per second when not hit for 3s. |
+| Armored | +50% armor effectiveness. |
+| Adaptable | After 5 hits of same damage type, gains 25% resistance to that type. |
+
+#### Mobility affixes
+
+| Affix | Effect |
+|-------|--------|
+| Hasty | +30% movement speed (permanent). |
+| Knockback | Melee attacks have extreme knockback (3× normal). |
+| Blink | Teleports to player when taking ranged damage (anti-kiting). |
+| Leaping | Jumps 4 blocks high. AoE shockwave on landing (2 damage, 3-block radius). |
+
+#### Utility affixes
+
+| Affix | Effect |
+|-------|--------|
+| Commanding | Nearby non-Champion mobs gain +10% damage (aura). |
+| Summoning | Spawns 2 weaker copies when below 50% HP (once per Champion). |
+| Draining | Hits steal 5% of player's current mana / stamina. |
+| Hexing | Hits have 20% chance to apply random negative potion effect (2s). |
+
+#### Dimension-weighted affixes
+
+Certain affixes are weighted higher in specific dimensions (matches the dimension's combat identity):
+
+| Dimension | Weighted affixes |
+|-----------|------------------|
+| Twilight Forest | Commanding, Venom (forest creatures hunt in packs) |
+| Blue Skies | Arctic / Molten (elemental theme) |
+| The Aether | Leaping, Hasty, Knockback (aerial combat) |
+| Undergarden | Venom, Regenerating, Adaptable (attrition theme) |
+| Deeper Darker | Blink, Shielding, Hexing (horror stealth) |
+| The Nether | Molten, Enkindling, Desecrating (fire and destruction) |
+| Deep Aether | Shielding, Leaping, Commanding (celestial warriors) |
+| The End | Blink, Draining, Wither, Adaptable (void corruption) |
+
+#### Champion drop quality by affix count
+
+Champions drop better loot than regular mobs, scaling with affix count.
+
+| Affix count | Loot bonus | Affix-gear chance | XP |
+|------------:|------------|-------------------|-----|
+| 1 | +50% loot quantity | Uncommon Apotheosis gear | base |
+| 2 | +100% loot | Rare gear | bonus XP |
+| 3 | +150% loot | Epic gear | guaranteed bonus XP |
+| 4 | +200% loot | Epic / Legendary gear, guaranteed enchanted book | large XP orb |
+
+### D.11 Regular mob equipment progression
+
+Mob spawn-with-gear rates per dimension (Improved Mobs config). Independent from Champion gear.
+
+| Dimension | % equipped | Equipment tier | Enchantment level |
+|-----------|-----------:|----------------|------------------:|
+| Tier 1 | 5% | Leather / iron (random pieces) | None |
+| Tier 2 | 20-25% | Iron / steel | 0-1 (basic) |
+| Tier 3 | 40-50% | Steel / diamond | 1-3 (moderate) |
+| Tier 4 (Deep Aether) | 60% | Diamond / netherite | 2-4 |
+| Tier 4 (End — outer/deep) | 70-80% | Netherite | 3-5 |
+| Tier 4 (End — Dragon's Domain) | 80% | Netherite + enchanted | 5+ |
+
+Champion mobs spawn with one tier above the base for their dimension, plus a chance at affix-bearing gear (which drops on kill — Champions are a player-affix-gear source).
+
+### D.12 Implementation notes
+
+These targets drive 7 implementation layers:
+
+1. **ScalingMobs** — dimension HP / damage / speed / armor multipliers (D.4).
+2. **Champions Unofficial** — affix pools, spawn rates, tier scaling, dimension-weighted affixes (D.10).
+3. **Improved Mobs** — per-dimension AI (gear usage, block-breaking, coordination, difficulty escalation).
+4. **Progressive Bosses** — per-kill scaling (D.6).
+5. **KubeJS mob event handlers** — dimension-specific mechanics (Twilight ambush, Undergarden spores, End displacement, Nether soulfire).
+6. **Loot table integration** — Champion drops, boss drops, gear scaling per dimension.
+7. **Boss HP overrides** — custom HP via `kubejs/server_scripts/scaling/boss_hp.js` (D.6).
+
+End multi-zone implementation (Outer Islands / Deep End / Dragon's Domain) lives in `kubejs/server_scripts/end/dragon_exploration_gate.js` with biome-based scaling. Environmental hazard scripting (Void Corruption stacks, Celestial Events, Void Storms, Reality Fracture) lives in `kubejs/server_scripts/scaling/dimension_mechanics.js`.
+
+**Critical playtesting note:** all numbers in D.4-D.11 are *theoretical*. The interaction of 7+ gear-enhancement layers, 10 classes, dimension mechanics, and mob scaling creates emergent complexity that can only be balanced through iterative playtesting. Recommended testing approach:
+
+1. Test with a "standard" build (Samurai, mid-tier gear, moderate enchants) as the baseline.
+2. Test extremes: naked Archmage vs End mobs, full Vanguard vs Overworld mobs.
+3. Test multiplayer: Vanguard + Archmage duo vs designed solo difficulty.
+4. Adjust multipliers in 10% increments until kill-speed targets are met.
 
 ---
 
