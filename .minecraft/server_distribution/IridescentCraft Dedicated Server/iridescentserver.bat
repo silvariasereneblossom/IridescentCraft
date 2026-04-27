@@ -271,6 +271,35 @@ if %errorlevel% neq 0 (
 )
 
 REM -------------------------------------------------------------------
+REM Phase 3.5: Background item-dump extraction
+REM -------------------------------------------------------------------
+REM dump_items.js (KubeJS) writes [ITEM_DUMP] prefix lines into
+REM kubejs-server.log on first ServerEvents.loaded. KubeJS's class filter
+REM blocks java.io.FileWriter, so the script can't write a TSV directly —
+REM it dumps to console.log() and we extract here.
+REM
+REM Spawn extract_item_dump.ps1 -Watch in the background. It tails
+REM kubejs-server.log, waits for the dump-complete marker, then writes
+REM kubejs/exports/all_items.tsv and exits. Server keeps running while
+REM this is happening.
+REM
+REM If extract_item_dump.ps1 isn't on disk yet (first run after sync),
+REM fetch it from raw.githubusercontent.com first.
+if not exist "%~dp0extract_item_dump.ps1" (
+    powershell -ExecutionPolicy Bypass -Command ^
+        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+        "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/extract_item_dump.ps1' -OutFile '%~dp0extract_item_dump.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
+)
+
+if exist "%~dp0extract_item_dump.ps1" (
+    REM Skip the watcher if all_items.tsv already exists (one-shot semantics)
+    if not exist "%~dp0kubejs\exports\all_items.tsv" (
+        echo [DUMP] Spawning background watcher for item-dump extraction...
+        start "" /B powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "%~dp0extract_item_dump.ps1" -ServerDir "%~dp0" -Watch
+    )
+)
+
+REM -------------------------------------------------------------------
 REM Phase 4: Launch server
 REM -------------------------------------------------------------------
 echo.
@@ -315,9 +344,18 @@ java ^
     @libraries/net/minecraftforge/forge/1.20.1-47.4.6/win_args.txt nogui %*
 
 REM -------------------------------------------------------------------
-REM Phase 5: Post-exit crash log
+REM Phase 5: Post-exit hooks
 REM -------------------------------------------------------------------
 set EXIT_CODE=%errorlevel%
+
+REM Item-dump extraction safety net: run once in non-watch mode in case
+REM the background watcher in Phase 3.5 missed the marker (e.g. server
+REM stopped before dump completed, or the watcher crashed). Cheap
+REM idempotent operation — overwrites all_items.tsv if it already exists.
+if exist "%~dp0extract_item_dump.ps1" if exist "%~dp0kubejs-server.log" (
+    powershell -ExecutionPolicy Bypass -File "%~dp0extract_item_dump.ps1" -ServerDir "%~dp0" 2>nul
+)
+
 
 if %EXIT_CODE% neq 0 (
     echo.
