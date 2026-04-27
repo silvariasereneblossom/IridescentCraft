@@ -271,34 +271,16 @@ if %errorlevel% neq 0 (
 )
 
 REM -------------------------------------------------------------------
-REM Phase 3.5: Background item-dump extraction
-REM -------------------------------------------------------------------
-REM dump_items.js (KubeJS) writes [ITEM_DUMP] prefix lines into
-REM kubejs-server.log on first ServerEvents.loaded. KubeJS's class filter
-REM blocks java.io.FileWriter, so the script can't write a TSV directly —
-REM it dumps to console.log() and we extract here.
+REM Phase 3.5 was background-watcher; backed out. Item-dump extraction
+REM happens post-server-stop in Phase 5. KubeJS dump_items.js still
+REM writes [ITEM_DUMP] lines to kubejs-server.log on world load; after
+REM the server is stopped (e.g. via /stop in console), Phase 5 runs
+REM extract_item_dump.ps1 in one-shot mode to produce all_items.tsv.
 REM
-REM Spawn extract_item_dump.ps1 -Watch in the background. It tails
-REM kubejs-server.log, waits for the dump-complete marker, then writes
-REM kubejs/exports/all_items.tsv and exits. Server keeps running while
-REM this is happening.
-REM
-REM If extract_item_dump.ps1 isn't on disk yet (first run after sync),
-REM fetch it from raw.githubusercontent.com first.
-if not exist "%~dp0extract_item_dump.ps1" (
-    powershell -ExecutionPolicy Bypass -Command ^
-        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
-        "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/extract_item_dump.ps1' -OutFile '%~dp0extract_item_dump.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
-)
-
-REM Reuse SDIR from Phase 0.5 (already has trailing backslash stripped).
-REM Avoid setlocal/endlocal inside an if-block — known cmd parser issues
-REM that cause the script to exit unexpectedly without an error message.
-if not exist "%SDIR%\extract_item_dump.ps1" goto :phase35_done
-if exist "%SDIR%\kubejs\exports\all_items.tsv" goto :phase35_done
-echo [DUMP] Spawning background watcher for item-dump extraction...
-start "" /B powershell -ExecutionPolicy Bypass -WindowStyle Hidden -File "%SDIR%\extract_item_dump.ps1" -ServerDir "%SDIR%" -Watch
-:phase35_done
+REM Why backed out: `start "" /B powershell ...` was failing the bat at
+REM that line on user's host. Tried fixes for setlocal-in-if-block and
+REM trailing-backslash-quote issues; failure point was the start/B call
+REM itself. Post-stop extraction is more robust.
 
 REM -------------------------------------------------------------------
 REM Phase 4: Launch server
