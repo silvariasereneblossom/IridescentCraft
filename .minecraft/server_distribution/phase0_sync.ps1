@@ -16,7 +16,7 @@ param(
     [string]$ServerDir = (Get-Location).Path
 )
 
-# Strip trailing backslash — %~dp0 includes one, which combined with
+# Strip trailing backslash - %~dp0 includes one, which combined with
 # the closing double-quote in the bat creates \" that PS interprets as
 # a literal quote, corrupting the path.
 $ServerDir = $ServerDir.TrimEnd('\', '/', '"')
