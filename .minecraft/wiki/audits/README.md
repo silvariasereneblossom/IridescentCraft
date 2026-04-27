@@ -109,5 +109,6 @@ Each audit is ~120-200 lines and consumes meaningful context per session. Pace a
 ## See also
 
 - [FINDINGS.md](FINDINGS.md) — consolidated actionable findings tracker (P0/P1/P2/P3 priority list, fix-plan source)
+- [FIX_PLAN.md](FIX_PLAN.md) — comprehensive 8-phase fix plan with effort estimates, decision points, and risk register
 - `wiki/dev/lessons-learned.md` — postmortem log (also internal-only)
 - `wiki/design/master.md` — canonical design doc (sourcing reference)
