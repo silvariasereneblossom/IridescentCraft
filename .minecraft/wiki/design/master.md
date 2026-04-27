@@ -4,7 +4,7 @@
 
 > This document is the canonical source of truth for IridescentCraft's design intent. It describes *what the systems are and why* — not the per-mod numerical configuration. **Numbers, tables, recipe lists, drop rates, mod rosters, and other implementation specifics live in [`master-appendix.md`](master-appendix.md).** When implementation changes, log it in [`changelog.md`](changelog.md) and update both docs as needed.
 >
-> **Migration status (2026-04-27):** all 16 parts migrated to this doc. The previous monolithic 8,370-line master is preserved at [`master-LEGACY.md`](master-LEGACY.md) for historical reference and as the source for several appendix sections still in stub form. The legacy file will be removed once the appendix is fully populated (target: a future session).
+> **Migration status (2026-04-27):** rewrite complete. All 16 parts migrated to this doc; the appendix is fully populated. The previous monolithic 8,370-line master has been removed; its content is now distributed between this doc, the appendix, and `wiki/design/changelog.md`. Earlier git history of the legacy doc remains in the public IridescentCraft repo.
 
 ---
 
