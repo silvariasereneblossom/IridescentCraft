@@ -4,6 +4,31 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-27 — Phase 6F-2/3 modded mob coverage expansion + Alex's Mobs full pass
+
+50 new entity-loot modifiers across 5 new KubeJS files in `kubejs/server_scripts/loot/`. Pre-existing coverage was 17 entities; new total is ~67 entities with explicit LootJS rules. Internal boss-kill counter at `gates/milestone_detection.js` already auto-grants AStages tiers — these new drops are synergy/balance, not progression tokens (token concept rejected as design conflict; we already track kills internally).
+
+- **`alexsmobs_drops.js`** (21 modifiers) — full pass on Alex's Mobs:
+  - **Mimicream nerf**: stripped from `alexsmobs:mimicube` natural drops, re-injected at **1%** (vanilla rate was ~50% via `count{min:-1,max:1}` math). Mimicream enables item duplication; vanilla rate broke economy at any tier.
+  - **T4 mobs** (void_worm, mimicube, enderiophage, laviathan): legendary/epic ink + ender/fire runes + matching upgrade orbs at low chance
+  - **T3 nether/underground** (bone_serpent, straddler, soul_vulture, crimson_mosquito, warped_mosco, murmur, hammerhead_shark, frostmoth, cosmaw): rare/uncommon ink + element-themed runes
+  - **T2 dangerous overworld** (crocodile, komodo_dragon, anaconda, caiman, snow_leopard, dropbear, leafcutter_ant_queen, cachalot_whale): common/uncommon ink + minor rune drops at low chance
+  - **T1 passive entities** (birds, raccoons, frogs, etc.) untouched — vanilla drops fine
+
+- **`twilight_boss_drops.js`** (6 modifiers) — TF T2 progression bosses (naga, lich, hydra, ur_ghast, minoshroom, knight_phantom) get magic synergy on top of canonical TF drops. Element-themed: Lich → magic (gold_spell_book 15%), Hydra → fire_upgrade_orb, Ur-Ghast → diamond_spell_book 15% + fire/cooldown runes.
+
+- **`cataclysm_boss_drops.js`** (8 modifiers) — netherite_monstrosity, ignis, the_harbinger, ender_guardian (T4), maledictus, ancient_remnant, the_leviathan, coralssus. Ignis/Ender Guardian get small-chance T3+ spell book drops (diamond_spell_book 15% / netherite_spell_book 10% respectively).
+
+- **`blue_skies_drops.js`** (4 modifiers) — summoner, alchemist, starlit_crusher, arachnarch. Summoner (magic theme) drops gold_spell_book 15% + Ars source_gem; Alchemist drops elixir potions; Starlit_Crusher drops lightning_upgrade_orb 15%.
+
+- **`dimensional_boss_drops.js`** (11 modifiers) — Aether (slider, sun_spirit), Deep Aether (eots_controller — T4 sky-end), vanilla Warden (T4 sculk), Undergarden (forgotten_guardian, forgotten, rotbeast), Mutant Monsters (zombie/skeleton/creeper/enderman). Synergy crossovers tier-appropriate for each.
+
+**Boss-kill tracking confirmation**: `gates/milestone_detection.js:122-147` reads/writes `icraft_t{2,3,4}_boss_kills` persistentData on each death event of a tracked boss. Hits the threshold → AStages tier_X granted. No physical progression-token items needed; the concept was rejected as design conflict with this internal flow.
+
+Mage power curve remains uncapped per `feedback_mage_power_curve.md` — the new high-tier ink/rune/orb drops feed mage stat stacking deliberately.
+
+---
+
 ## 2026-04-26 (cont.) — Phase 6C-6F-1 Tetra workbench + book roster + buffs
 
 Same dev day, continued from earlier sessions below.
