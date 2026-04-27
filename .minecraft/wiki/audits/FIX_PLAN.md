@@ -216,6 +216,19 @@ This is the single biggest mechanical PR in the plan — ~50 items affected. Rec
 
 ---
 
+## TODO — Phases 5-7 deferred 2026-04-27
+
+**Status:** explicitly deferred. All 3 phases require in-game verification on the
+Windows side and don't block continued audit/fix progress. Phase 1-4 closed all
+code-side P1 findings. Phases 5-7 are reactive: verify in-game, fix what
+actually leaks.
+
+To resume: pick up at "Phase 5" (spawner_mover behavior test) or jump to
+"Phase 6" (the ~70-item JEI verification sweep). Fix Plan body below remains
+unchanged for reference.
+
+---
+
 ## Phase 5 — P1 MISC: botania spawner_mover
 
 **Goal:** close the spawner_mover dupe vector.

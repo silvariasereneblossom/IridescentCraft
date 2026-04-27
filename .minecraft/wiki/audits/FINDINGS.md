@@ -37,7 +37,7 @@ Single source of truth for actionable findings across all per-mod audits. Update
 | 31 | irons_spellbooks | 10 IRONS_SPELLBOOKS_CINDEROUS-rarity items have no entries in our drop tables (pyrium_staff, legionnaire_flamberge, hellrazor, unchained_book, pyrium_ingot, cinderous_soulcaller, cinderous_soul_rune, betrayer_signet, music_disc + disc_fragment) | Verify native ISS structure or boss source; if unobtainable in survival, document or remove | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
 | 32 | irons_spellbooks | 5+ EPIC structure-loot items (paladin_chestplate, infernal_sorcerer_chestplate, gold_crown, eldritch_manuscript, hither_thither_wand, etc.) — verify they come from intended ISS structures only | LootJS spot-check; if leak to generic chest pools, add strips | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
 | 33 | irons_spellbooks | `eldritch_manuscript` is a progression-unlock for Eldritch Spellbook tier; verify acquisition path is gated | Highest priority of the structure-loot concerns | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
-| 34 | (cross-cutting) | When updating ars_nouveau jar, must re-apply DungeonLootEnhancerModifier athrow→pop bytecode patch (currently in `ars_nouveau-1.20.1-4.12.7-all.jar`); same for Patchouli jar's Book.use_resource_pack patch | Add a checklist item to mod-update protocol | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
+| 34 | (cross-cutting) | When updating ars_nouveau jar, must re-apply DungeonLootEnhancerModifier athrow→pop bytecode patch; same for Patchouli jar's Book.use_resource_pack patch | **FIXED 2026-04-27 (Phase 8.3):** Added "Bytecode-patched JARs — re-apply after mod updates" section to `wiki/protocols/8-client-sync.md`. Documents both jars, what each patch does, the `-noverify` JVM requirement, and a 6-step re-apply checklist. Cross-references CLAUDE.md "Custom Bundled JARs" so the protocol is discoverable from both directions. | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
 
 ### Items added 2026-04-27 (boss mods batch audit)
 
@@ -56,7 +56,7 @@ Single source of truth for actionable findings across all per-mod audits. Update
 | 40 | savage_and_ravage | 27 items, 0 refs — verify no OP weapons/curios | Spot-check items | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
 | 41 | meetyourfight | 4 bosses partially gated (16 refs) — verify all have HP scaling + tier-appropriate drops | Spot-check | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
 | 42 | (cross-cutting) | 5th non-vanilla rarity confirmed in mahoutsukai (uses internal Mahou tiers) | Update README cross-cutting C count | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
-| 43 | (process) | Add a "any items not in any of our gating files?" check before merging new content mods | Process improvement; surfaced because art_of_forging + too_many_bows + moreartifacts each shipped without gating | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
+| 43 | (process) | Add a "any items not in any of our gating files?" check before merging new content mods | **FIXED 2026-04-27 (Phase 8.2):** Created `wiki/protocols/9-new-mod-audit.md` — pre-merge checklist for new content mods. Covers JEI dump diff, rarity categorization, gating decision matrix (10 approaches mapped to use-cases), cross-cutting checks (non-vanilla rarity, namespace collision, native GLM), datapack creation flow, and anti-patterns observed during the audit pass (TODO rot, stale IDs, ungated EPICs, blanket-gating mods with passive items, unmigrated renames). 3 mods that triggered this finding (art_of_forging, too_many_bows, moreartifacts) are now closed. | [long_tail_magic_and_bosses.md](long_tail_magic_and_bosses.md) |
 
 (Earlier P2 items unchanged below)
 
@@ -65,7 +65,7 @@ Single source of truth for actionable findings across all per-mod audits. Update
 |---|-----|---------|--------|--------|
 | 10 | cataclysm | Materials sourcing chain unverified — witherite/enderite/ignitium/cursium ore→ingot smelting may be bypassable | JEI uses-lookup; if bypassable, add tier guard in `tier_gated_recipes.js` | [cataclysm.md](cataclysm.md) |
 | 11 | cataclysm | `emp` item — verify it doesn't trivialize Mekanism reactor / IF Laser Drill | In-game test against Mekanism reactor + IF Laser Drill | [cataclysm.md](cataclysm.md) |
-| 12 | cataclysm | `mechanical_fusion_anvil` overlap with our `void_forge`/`infernal_forge` | Design decision: keep, disable, or merge | [cataclysm.md](cataclysm.md) |
+| 12 | cataclysm | `mechanical_fusion_anvil` overlap with our `void_forge`/`infernal_forge` | **FIXED 2026-04-27 (Phase 8.4 / locked-in decision #2):** Recipe removed in `recipe_audit.js` Section J.3. Added to T4 stage list as defense-in-depth against creative leaks. Existing `void_forge` (Ender Guardian) and `infernal_forge` (Ignis) cover the boss-tier crafting station role; mechanical_fusion_anvil was triple-overlap. | [cataclysm.md](cataclysm.md) |
 | 13 | forbidden_arcanus | `soul_extractor` recipe — verify requires arcane_crystal (T3) for transitive gating | JEI uses-lookup | [forbidden_arcanus.md](forbidden_arcanus.md) |
 | 14 | forbidden_arcanus | RARE/UNCOMMON curios (spectral_eye_amulet, eternal_obsidian_skull, obsidian_skull/_shield, orb_of_temporary_flight, xpetrified_orb, darkstone_upgrade_smithing_template) — verify each routes through Hephaestus Forge or arcane_crystal | JEI uses-lookup x6 | [forbidden_arcanus.md](forbidden_arcanus.md) |
 | 15 | botania | `missile_rod`, `terraform_rod`, `astrolabe`, `flight_tiara`, `diva_charm`, `laputa_shard` — verify recipes transitively gate to T3 via terrasteel/elementium | JEI uses-lookup x6 | [botania.md](botania.md) |
@@ -86,9 +86,9 @@ Single source of truth for actionable findings across all per-mod audits. Update
 | 25 | simplyswords | 11 Simply Swords weapons reserved for future bosses (NovaBosses/Ultimate Bosses/Brutal Bosses) — when those mods are integrated, allocate per Section 8 plan | Future work; not actionable now | [simplyswords.md](simplyswords.md) |
 | 26 | simplyswords | 7 unassigned weapons leaking via crafting | **DECIDED 2026-04-27: ADD ALL TO SECTION E.** Stat lookup confirmed mixed power (+3.0 to +8.0 dmgMod, hearthflame is netherite-tier). Slumbering_lichblade is endgame chain entry — freebie access breaks Voidheart Mythic Forge gate. Section E creative-only until allocated to future bosses. | [simplyswords.md](simplyswords.md) |
 | 27 | terramity | `mechanical_fusion_anvil` (also a F&A reference) — design decision on tool overlap | Design pass | [terramity.md](terramity.md) |
-| 28 | forbidden_arcanus | `reinforced_deorum_blacksmith_gavel` whitelist as Tetra hammer-equivalent for modular spell book repair (cross-mod synergy) | Design decision | [forbidden_arcanus.md](forbidden_arcanus.md) |
+| 28 | forbidden_arcanus | `reinforced_deorum_blacksmith_gavel` whitelist as Tetra hammer-equivalent for modular spell book repair (cross-mod synergy) | **DEFERRED to Phase 5-7 (in-game) — locked-in decision #3 confirmed APPROACH but Tetra's hammer mechanic is capability-based, not tag-based; needs in-game test of whether F&A's `BlacksmithGavelItem` already satisfies Tetra's RepairSchematic tier check, OR if a tetra:tools/hammer items tag override is needed via datapack. F&A jar shows `BlacksmithGavelItem.class` — runtime inspection required.** | [forbidden_arcanus.md](forbidden_arcanus.md) |
 | 29 | theabyss | When next abyss boss gets explicit treatment, allocate the unallocated EPIC trophy/reagent items to those bosses per Knight/Unorithe pattern | Future work | [theabyss.md](theabyss.md) |
-| 30 | (cross-cutting) | Add a startup-scripts check that all `icraft_*_overrides` datapacks referenced in code comments actually exist on disk. The occultism TODO silently rotted because nothing validated the contract | Process improvement | [occultism.md](occultism.md) |
+| 30 | (cross-cutting) | Add a startup-scripts check that all `icraft_*_overrides` datapacks referenced in code comments actually exist on disk | **FIXED 2026-04-27 (Phase 8.1):** Created `tools/validate_datapack_references.sh` — dev-time bash script that scans `kubejs/` for `icraft_*_overrides` references, compares against `datapack_sources/` directories, `config/paxi/datapacks/*.zip`, and `config/paxi/datapack_load_order.json`. Reports STALE refs (in code, no source dir), UNBUILT (source exists, no zip), and ORDER UNDEFINED (zip exists, not in load order). On first run surfaced 2 real issues: `icraft_terramity_overrides` and `icraft_worldgen_overrides` were not in load order — added to all 3 distros. Closes the "TODO comment rotted" pattern. | [occultism.md](occultism.md) |
 
 ## Cross-cutting patterns
 
@@ -117,11 +117,16 @@ Spirit miners, Mana Pool conversions, Imbuement, Clibano combustion, Crushing re
 ### E. Curio stacking risk
 Three `obsidian_skull` items across mods, two `cross_necklace` items, three rings-of-X overlaps. → **Fix-plan item:** in-game curio-slot duplication test. Bonus question: do the curio mods all use compatible slot types, or do some bypass slot competition?
 
-## Counts so far
+## Counts (post-Phase-8)
 
-- **13 audits done covering 42 mods** (the per-mod audits + 2 batch audits covering 5 + 24 mods)
-- **43 actionable findings** (1 P0, 11 P1, 23 P2, 8 P3)
-- **~155 items needing fixes** across all mods (the 3 P1 ungated mods alone account for ~85)
+- **13 audits done covering 42 mods** (per-mod + 2 batch audits)
+- **43 actionable findings**
+- **Status:**
+  - **P0:** 1/1 FIXED (Phase 1 — occultism miners)
+  - **P1:** 11/11 FIXED (Phases 2-4 — content gating, recipe drift, coverage gaps)
+  - **P2:** 0/23 fixed; **deferred to Phases 5-7** (need in-game JEI session)
+  - **P3:** 5/8 FIXED (Phases 3.1, 4.4, 8.4); 1 deferred (Tetra hammer in-game test); 2 = future work (NovaBosses allocation, theabyss next-boss)
+  - **Cross-cutting (process):** 4/5 closed via Phase 3.3 (stale-ID validator) + 8.1 (datapack-ref validator) + 8.2 (new-mod protocol) + 8.3 (bytecode-patch checklist); pattern E (mod-internal-rarity) is documentation-only, no fix needed
 - **2 GREENLIT audits** (rpgseteffects, mekanism+ad_astra)
-- **126 mods remaining** in priority queue
-- **5 cross-cutting patterns identified:** (A) recipe-removal ID drift, (B) three-layer gate, (B2) chokepoint gating, (C) non-vanilla rarity (now 5 mods), (D) Tetra replacement files
+- **126 mods remaining** in priority queue (mid-tier content + decoration + utility — mostly LIGHT POLISH expected)
+- **5 cross-cutting patterns identified:** (A) recipe-removal ID drift, (B) three-layer gate, (B2) chokepoint gating, (C) non-vanilla rarity (5 mods), (D) Tetra replacement files

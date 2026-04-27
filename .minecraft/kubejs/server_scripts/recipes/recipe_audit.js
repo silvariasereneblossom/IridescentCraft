@@ -335,6 +335,14 @@ ServerEvents.recipes(event => {
   event.remove({ id: 'mekanism:refined_obsidian_leggings' })
   event.remove({ id: 'mekanism:refined_obsidian_boots' })
 
+  // J.3: Cataclysm Mechanical Fusion Anvil — design decision (locked-in #2,
+  // 2026-04-27): merge with our existing void_forge/infernal_forge crafting
+  // stations to avoid triple-overlap of T4 crafting blocks. The cataclysm
+  // mod's mechanical_fusion_anvil duplicates functionality already covered
+  // by void_forge (Ender Guardian) and infernal_forge (Ignis). Removing the
+  // recipe + add to T4 stage list as defense against creative leak.
+  event.remove({ output: 'cataclysm:mechanical_fusion_anvil' })
+
 
 
   // ═══ SECTION K: THE ABYSS — RING RECIPE REMOVAL ═══

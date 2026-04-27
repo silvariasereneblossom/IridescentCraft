@@ -403,6 +403,11 @@ ServerEvents.loaded(event => {
     // immortal_substance has revive semantics and warrants T4 gate)
     'theabyss:crown_of_nosaj', 'theabyss:amuled_of_nosaj',
     'theabyss:immortal_substance',
+    // cataclysm T4 — mechanical_fusion_anvil
+    // (audit Phase 8.4 / locked-in decision #2, 2026-04-27)
+    // Merged with void_forge/infernal_forge — mod-level duplication.
+    // Recipe removed in recipe_audit.js J.3; T4 stage as defense.
+    'cataclysm:mechanical_fusion_anvil',
   ], 'modpack/item_t4')
 
   // -- Ore replacement restrictions --

@@ -94,3 +94,31 @@ Deliberately excluded (preserved from the instance):
 
 - **Silvaria's own dev instance:** Mode A (git pull). Fastest and the git history gives you rollback if something goes wrong
 - **Tester instances:** Mode B (sync_client.ps1). Handles the zip-download path cleanly, no git required
+
+## Bytecode-patched JARs — re-apply after mod updates
+
+<!-- Audit Phase 8.3 closure (FINDINGS #34) -->
+
+Two JARs in `mods/` are bytecode-patched. Updating either via packwiz/Modrinth/CurseForge replaces the patched binary with vanilla, silently breaking pack-internal balance.
+
+**Patched jars + what they do:**
+
+| JAR | Patch | Why |
+|-----|-------|-----|
+| `Patchouli-1.20.1-85-FORGE.jar` | `athrow → pop` in `Book.class` | Disables `use_resource_pack` enforcement so we can ship the codex without forcing the player's resource pack settings |
+| `ars_nouveau-1.20.1-4.12.7-all.jar` | `doApply → immediate return` in `DungeonLootEnhancerModifier.class` | Disables Ars Nouveau's chest loot injection so our curated chest pools aren't drowned in Ars items |
+
+Both patches require **`-noverify` JVM arg** because the patches create dead code paths the JVM verifier rejects (see CLAUDE.md "JVM Requirement: -noverify").
+
+### Re-apply checklist
+
+When updating either mod:
+
+1. **Don't merge the update** until you've decided whether to keep the patch
+2. Locate the original patched JAR in git history: `git log --all --oneline -- '.minecraft/mods/<jar>.jar'`
+3. Re-apply the bytecode patch on the new version using the same approach (asm-based class file edit, javap to verify the bytecode delta is what you expect)
+4. Replace the unpatched JAR in all 3 distros (`mods/`, `server_distribution/mods/`, `distribution/client/mods/`)
+5. Update the version in `.pw.toml` if needed but DO NOT let packwiz re-download — the URL points to the unpatched upstream
+6. Test: launch the dev instance, confirm the patched behavior holds (Patchouli book still opens without resource pack enforcement; Ars chest loot doesn't auto-inject)
+
+**Anti-pattern:** running `packwiz update <mod>` and forgetting either jar exists. Mitigation — these jars are listed in CLAUDE.md "Custom Bundled JARs" + this protocol; reviewers must check before merging mod updates.
