@@ -36,6 +36,13 @@ Single source of truth for actionable findings across all per-mod audits. Update
 | 33 | irons_spellbooks | `eldritch_manuscript` is a progression-unlock for Eldritch Spellbook tier; verify acquisition path is gated | Highest priority of the structure-loot concerns | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
 | 34 | (cross-cutting) | When updating ars_nouveau jar, must re-apply DungeonLootEnhancerModifier athrow→pop bytecode patch (currently in `ars_nouveau-1.20.1-4.12.7-all.jar`); same for Patchouli jar's Book.use_resource_pack patch | Add a checklist item to mod-update protocol | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
 
+### Items added 2026-04-27 (boss mods batch audit)
+
+| # | Mod | Finding | Action | Source |
+|---|-----|---------|--------|--------|
+| 35 | blue_skies | 4 EPIC boss spawn eggs ungated (`summoner_spawn_egg`, `alchemist_spawn_egg`, `starlit_crusher_spawn_egg`, `arachnarch_spawn_egg`). If craftable or chest-droppable = boss-summon-on-demand exploit | JEI uses-lookup; if recipes exist, add to Section L removal; if in chest loot, lootjs strip | [boss_mods.md](boss_mods.md) |
+| 36 | blue_skies | `debug_sword` (EPIC) — developer/debug item; verify creative-only (no recipe, no loot path) | JEI spot-check | [boss_mods.md](boss_mods.md) |
+
 (Earlier P2 items unchanged below)
 
 
@@ -97,9 +104,9 @@ Three `obsidian_skull` items across mods, two `cross_necklace` items, three ring
 
 ## Counts so far
 
-- **11 audits done covering 13 mods** (cataclysm, simplyswords, terramity, forbidden_arcanus, theabyss, celestial_artifacts, botania, occultism, rpgseteffects, mekanism+ad_astra, ars_nouveau+irons_spellbooks)
-- **34 actionable findings** (1 P0, 8 P1, 17 P2, 8 P3)
-- **~65 items needing JEI spot-checks** across all mods
-- **2 GREENLIT audits** (rpgseteffects, mekanism+ad_astra) — both achieved through different patterns (drops-only design vs. comprehensive cross-mod tier-skip blocking)
-- **155 mods remaining** in priority queue
+- **12 audits done covering 18 mods** (cataclysm, simplyswords, terramity, forbidden_arcanus, theabyss, celestial_artifacts, botania, occultism, rpgseteffects, mekanism+ad_astra, ars_nouveau+irons_spellbooks, boss-mods-batch [alexsmobs+twilightforest+blue_skies+aether+deep_aether])
+- **36 actionable findings** (1 P0, 8 P1, 19 P2, 8 P3)
+- **~70 items needing JEI spot-checks** across all mods
+- **2 GREENLIT audits** (rpgseteffects, mekanism+ad_astra)
+- **150 mods remaining** in priority queue
 - **5 cross-cutting patterns identified:** (A) recipe-removal ID drift, (B) three-layer gate, (B2) chokepoint gating, (C) non-vanilla rarity, (D) Tetra replacement files

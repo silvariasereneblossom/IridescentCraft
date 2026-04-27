@@ -66,13 +66,13 @@ Each audit file follows this template:
 | 9 | [rpgseteffects](rpgseteffects.md) | **GREENLIT** | 2026-04-27 | Cleanest audit so far — drops-only design, 100% coverage (28 EPIC + 26 RARE + 4 UNCOMMON all individually allocated). Benchmark audit; zero findings. |
 | 10 | [mekanism + ad_astra](mekanism_ad_astra.md) | **GREENLIT** | 2026-04-27 | Second benchmark — most tier-skip-blocked mod pair (Enriching/Combining/Purifying/Injecting/Mixing all blocked); NASA workbench + 4-rocket + MekaSuit Mk2 progression fully wired; ~192 refs across 17 files. Zero findings. |
 | 11 | [ars_nouveau + irons_spellbooks](ars_nouveau_irons_spellbooks.md) | LIGHT POLISH | 2026-04-27 | Most-integrated mod pair (322 refs across ~25 files). ISS distributes reagents across 8 boss-drop files for cross-dimensional magic economy. **Tetra replacement files** = new efficient gating pattern. ISS introduces 4th non-vanilla rarity (CINDEROUS, 10 items). Concerns: 10 Cinderous + 5 EPIC structure-loot items need source verification. |
+| 12 | [boss mods batch (alexsmobs + twilightforest + blue_skies + aether + deep_aether)](boss_mods.md) | LIGHT POLISH | 2026-04-27 | 5 mods / 2,176 items audited together (each individually small but share boss-drop pattern). 4 dimensions T2-staged, Aethersteel T4 chain. Concerns: 4 Blue Skies boss spawn eggs ungated + debug_sword need verification. |
 
 ## Status — priority queue
 
 Order chosen by design-surface weight (heaviest first). Adjust based on what surfaces in earlier audits.
 
-1. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
-3. **all remaining** — sweep pass for the long tail (~140 mods)
+1. **all remaining** — sweep pass for the long tail (~150 mods, batched by category — see batch-audit pattern from boss_mods.md)
 
 ## Cross-cutting findings
 
