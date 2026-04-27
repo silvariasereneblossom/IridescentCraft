@@ -73,13 +73,14 @@ LootJS.modifiers(event => {
     .addEntityLootModifier('aether:valkyrie_queen')
     .addLoot(LootEntry.of('irons_spellbooks:magehunter').when(c => c.randomChance(0.30)))
 
-  // ---- Vanilla phantom — lightning_rod 5% during thunderstorms ----
-  // Fallback path so the rod isn't gated only behind Aether mod.
+  // ---- Vanilla phantom — lightning_rod 5% (rare fallback so the rod
+  // isn't gated only behind Aether mod). Originally I gated this to
+  // thunderstorms only via c.thundering(), but that method doesn't
+  // exist in LootJS 2.13.1 and the entire entity-modifier failed to
+  // register. Stripped the weather check; 5% sustained is fine.
   event
     .addEntityLootModifier('minecraft:phantom')
-    .addLoot(LootEntry.of('irons_spellbooks:lightning_rod')
-      .when(c => c.randomChance(0.05))
-      .when(c => c.thundering()))
+    .addLoot(LootEntry.of('irons_spellbooks:lightning_rod').when(c => c.randomChance(0.05)))
 
   console.log('[iss_boss_drops] registered 8 entity loot modifiers')
 })
