@@ -9,9 +9,8 @@ IridescentCraft is a 420-mod Minecraft 1.20.1 Forge modpack with RPG progression
 ## Repository Structure
 
 - `wiki/home.md` — Wiki homepage with section index and implementation status
-- `wiki/design/master.md` — **Master design document** (canonical design intent — Parts I-III migrated 2026-04-27; Parts IV-XVI in progress, see `master-LEGACY.md`)
-- `wiki/design/master-appendix.md` — Numerical reference: tier material lists, recipe state, boss → loot mapping, Apotheosis tables, custom items registry, mod roster, stage restrictions, datapack overrides, KubeJS script index, bytecode patches
-- `wiki/design/master-LEGACY.md` — Frozen pre-rewrite master (8,370 lines), preserved during migration
+- `wiki/design/master.md` — **Master design document** (644 lines, canonical design intent — rewritten 2026-04-27, all 16 parts migrated, no numbers)
+- `wiki/design/master-appendix.md` — **Master design appendix** (956 lines, numerical reference: tier material lists, recipe state, boss → loot mapping, Apotheosis tables, custom items registry, mod roster, stage restrictions, datapack overrides, KubeJS script index, bytecode patches)
 - `wiki/design/changelog.md` — Log of all design changes made across sessions
 - `wiki/progression/overview.md` — Tier system, dimension gates, quest structure
 - `wiki/classes/overview.md` — 10 classes, 11 races, 13 origins, glass cannon mechanics
