@@ -44,9 +44,11 @@ Each audit file follows this template:
 ```
 
 **Verdict scale:**
+- **GREENLIT** — 100% coverage; zero findings; benchmark for other audits
 - **LIGHT POLISH** — design is sound, 1-3 small spot-checks
-- **MEDIUM REWORK** — coverage drift or gaps; ~10-30 items need touching
-- **HEAVY POLISH** — half the mod is well-handled, half is unhandled (the cataclysm/terramity split pattern)
+- **MEDIUM POLISH** — coverage drift or gaps; ~10-30 items need touching
+- **MEDIUM REWORK** — coverage exists but missing/broken pieces (e.g., undeployed datapack)
+- **HEAVY POLISH** — half the mod is well-handled, half is unhandled (cataclysm/terramity split pattern)
 - **LARGE REWORK** — most items leak; gates need rebuilding
 
 ## Status — completed
@@ -61,13 +63,13 @@ Each audit file follows this template:
 | 6 | [celestial_artifacts](celestial_artifacts.md) | MEDIUM POLISH | 2026-04-27 | 16 EPIC curios half-allocated to T2/T4 pools; 14 EPIC + 32 chat-color items outside gating; potential duplicate-curio stacking with Artifacts mod |
 | 7 | [botania](botania.md) | LIGHT POLISH | 2026-04-27 | Cleanest tier model in the pack (mana→manasteel→terrasteel→elementium→gaia); Orechid datapack covers tier-skip; main concern is `spawner_mover` dupe-vector check |
 | 8 | [occultism](occultism.md) | **MEDIUM REWORK** | 2026-04-27 | **CRITICAL: dimensional miners ungated** — `recipe_audit.js:137` TODO never closed, `icraft_occultism_overrides` datapack does not exist. Players can craft a Djinni miner at T2 and get diamonds without entering Nether. Highest-priority fix in audit pass so far. |
+| 9 | [rpgseteffects](rpgseteffects.md) | **GREENLIT** | 2026-04-27 | Cleanest audit so far — drops-only design, 100% coverage (28 EPIC + 26 RARE + 4 UNCOMMON all individually allocated). Benchmark audit; zero findings. |
 
 ## Status — priority queue
 
 Order chosen by design-surface weight (heaviest first). Adjust based on what surfaces in earlier audits.
 
-1. **rpgseteffects** — set-bonus mechanics
-2. **mekanism** + **ad_astra** — tech tree pair (audit together)
+1. **mekanism** + **ad_astra** — tech tree pair (audit together)
 3. **ars_nouveau, irons_spellbooks** — magic mods
 4. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
 5. **all remaining** — sweep pass for the long tail (~140 mods)
