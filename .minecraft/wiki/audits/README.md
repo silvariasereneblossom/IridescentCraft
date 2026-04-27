@@ -60,17 +60,17 @@ Each audit file follows this template:
 | 5 | [theabyss](theabyss.md) | MEDIUM POLISH | 2026-04-27 | Most-wired mod in pack (118 refs across 16 files); singular/plural drift on `ring_of_ghost`(s); ~12 EPIC totems/trophies/reagents need spot-checks |
 | 6 | [celestial_artifacts](celestial_artifacts.md) | MEDIUM POLISH | 2026-04-27 | 16 EPIC curios half-allocated to T2/T4 pools; 14 EPIC + 32 chat-color items outside gating; potential duplicate-curio stacking with Artifacts mod |
 | 7 | [botania](botania.md) | LIGHT POLISH | 2026-04-27 | Cleanest tier model in the pack (mana→manasteel→terrasteel→elementium→gaia); Orechid datapack covers tier-skip; main concern is `spawner_mover` dupe-vector check |
+| 8 | [occultism](occultism.md) | **MEDIUM REWORK** | 2026-04-27 | **CRITICAL: dimensional miners ungated** — `recipe_audit.js:137` TODO never closed, `icraft_occultism_overrides` datapack does not exist. Players can craft a Djinni miner at T2 and get diamonds without entering Nether. Highest-priority fix in audit pass so far. |
 
 ## Status — priority queue
 
 Order chosen by design-surface weight (heaviest first). Adjust based on what surfaces in earlier audits.
 
-1. **occultism** — partially audited; ritual items + miners
-3. **rpgseteffects** — set-bonus mechanics
-4. **mekanism** + **ad_astra** — tech tree pair (audit together)
-5. **ars_nouveau, irons_spellbooks** — magic mods
-6. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
-7. **all remaining** — sweep pass for the long tail (~140 mods)
+1. **rpgseteffects** — set-bonus mechanics
+2. **mekanism** + **ad_astra** — tech tree pair (audit together)
+3. **ars_nouveau, irons_spellbooks** — magic mods
+4. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
+5. **all remaining** — sweep pass for the long tail (~140 mods)
 
 ## Cross-cutting findings
 
@@ -102,5 +102,6 @@ Each audit is ~120-200 lines and consumes meaningful context per session. Pace a
 
 ## See also
 
+- [FINDINGS.md](FINDINGS.md) — consolidated actionable findings tracker (P0/P1/P2/P3 priority list, fix-plan source)
 - `wiki/dev/lessons-learned.md` — postmortem log (also internal-only)
 - `wiki/design/master.md` — canonical design doc (sourcing reference)
