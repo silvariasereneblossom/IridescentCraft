@@ -491,7 +491,9 @@ LootJS.modifiers(event => {
     'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
     'artifacts:golden_hook',
     'ars_nouveau:novice_spell_book', 'ars_nouveau:source_gem',
-    'irons_spellbooks:common_ink'
+    'irons_spellbooks:common_ink',
+    // moreartifacts T1 — flavor curios (audit Phase 2.1, 2026-04-27)
+    'moreartifacts:melody_plushie', 'moreartifacts:lucky_emerald_ring'
   ]
   // 2026-04-22: was 15 independent addLoot calls at ~0.67% each. Math
   // said 0.1 artifacts/chest expected, but variance allowed 2-4 in
@@ -524,7 +526,11 @@ LootJS.modifiers(event => {
     'celestial_artifacts:copper_reinforce_plate', 'celestial_artifacts:amethyst_ring',
     'celestial_artifacts:forest_cloak', 'celestial_artifacts:holy_talisman',
     'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace',
-    'ars_nouveau:apprentice_spell_book', 'irons_spellbooks:uncommon_ink'
+    'ars_nouveau:apprentice_spell_book', 'irons_spellbooks:uncommon_ink',
+    // moreartifacts T2 — defensive curios + mid-tier accessories
+    // (audit Phase 2.1, 2026-04-27 — Hero/Ankh → T2 per locked-in mapping)
+    'moreartifacts:hero_shield', 'moreartifacts:ankh_shield', 'moreartifacts:ankh_charm',
+    'moreartifacts:vanir_mask', 'moreartifacts:tainted_mirror'
   ]
   const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
@@ -542,7 +548,17 @@ LootJS.modifiers(event => {
     'artifacts:universal_attractor', 'artifacts:charm_of_sinking',
     'relics:ice_skates', 'relics:rage_glove', 'relics:hunter_belt',
     'relics:roller_skates', 'relics:bastion_ring', 'relics:midnight_robe',
-    'ars_nouveau:archmage_spell_book', 'irons_spellbooks:rare_ink'
+    'ars_nouveau:archmage_spell_book', 'irons_spellbooks:rare_ink',
+    // moreartifacts T3 — fire/decay/Nether-themed RARE curios
+    // (audit Phase 2.1, 2026-04-27)
+    'moreartifacts:blazing_treads', 'moreartifacts:envenomed_quiver',
+    'moreartifacts:molten_quiver', 'moreartifacts:fire_stone',
+    'moreartifacts:venom_stone', 'moreartifacts:decay_stone',
+    'moreartifacts:necroplasm_amulet', 'moreartifacts:netherite_headgear',
+    'moreartifacts:obsidian_shield', 'moreartifacts:recall_potion',
+    'moreartifacts:withered_bezoar', 'moreartifacts:wither_shard',
+    'moreartifacts:gilded_scarf', 'moreartifacts:ruby_ring',
+    'moreartifacts:mechanical_claw', 'moreartifacts:ice_stone'
   ]
   const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
@@ -561,7 +577,14 @@ LootJS.modifiers(event => {
     'celestial_artifacts:demon_heart', 'celestial_artifacts:abyss_core',
     'celestial_artifacts:angel_heart', 'celestial_artifacts:nebula_cube',
     'celestial_artifacts:flight_ring', 'celestial_artifacts:prayer_crown',
-    'celestial_artifacts:spirit_crown', 'celestial_artifacts:end_etching'
+    'celestial_artifacts:spirit_crown', 'celestial_artifacts:end_etching',
+    // moreartifacts T4 — End/Sculk-themed endgame curios
+    // (audit Phase 2.1, 2026-04-27 — Dragon/Sculk → T4 per locked-in mapping)
+    'moreartifacts:ender_dragon_claw', 'moreartifacts:dragon_eye',
+    'moreartifacts:enderian_treads', 'moreartifacts:sculk_treads',
+    'moreartifacts:enderian_eye', 'moreartifacts:shulked_clock',
+    'moreartifacts:shulker_heart', 'moreartifacts:true_enderian_scarf',
+    'moreartifacts:echo_glove'
   ]
   const artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event
