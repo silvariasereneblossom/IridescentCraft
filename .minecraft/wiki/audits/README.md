@@ -64,15 +64,15 @@ Each audit file follows this template:
 | 7 | [botania](botania.md) | LIGHT POLISH | 2026-04-27 | Cleanest tier model in the pack (mana→manasteel→terrasteel→elementium→gaia); Orechid datapack covers tier-skip; main concern is `spawner_mover` dupe-vector check |
 | 8 | [occultism](occultism.md) | **MEDIUM REWORK** | 2026-04-27 | **CRITICAL: dimensional miners ungated** — `recipe_audit.js:137` TODO never closed, `icraft_occultism_overrides` datapack does not exist. Players can craft a Djinni miner at T2 and get diamonds without entering Nether. Highest-priority fix in audit pass so far. |
 | 9 | [rpgseteffects](rpgseteffects.md) | **GREENLIT** | 2026-04-27 | Cleanest audit so far — drops-only design, 100% coverage (28 EPIC + 26 RARE + 4 UNCOMMON all individually allocated). Benchmark audit; zero findings. |
+| 10 | [mekanism + ad_astra](mekanism_ad_astra.md) | **GREENLIT** | 2026-04-27 | Second benchmark — most tier-skip-blocked mod pair (Enriching/Combining/Purifying/Injecting/Mixing all blocked); NASA workbench + 4-rocket + MekaSuit Mk2 progression fully wired; ~192 refs across 17 files. Zero findings. |
 
 ## Status — priority queue
 
 Order chosen by design-surface weight (heaviest first). Adjust based on what surfaces in earlier audits.
 
-1. **mekanism** + **ad_astra** — tech tree pair (audit together)
-3. **ars_nouveau, irons_spellbooks** — magic mods
-4. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
-5. **all remaining** — sweep pass for the long tail (~140 mods)
+1. **ars_nouveau, irons_spellbooks** — magic mods
+2. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
+3. **all remaining** — sweep pass for the long tail (~140 mods)
 
 ## Cross-cutting findings
 

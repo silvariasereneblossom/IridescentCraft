@@ -85,8 +85,8 @@ Three `obsidian_skull` items across mods, two `cross_necklace` items, three ring
 
 ## Counts so far
 
-- **9 mods audited** (cataclysm, simplyswords, terramity, forbidden_arcanus, theabyss, celestial_artifacts, botania, occultism, rpgseteffects)
+- **10 audits done covering 11 mods** (cataclysm, simplyswords, terramity, forbidden_arcanus, theabyss, celestial_artifacts, botania, occultism, rpgseteffects, mekanism+ad_astra)
 - **30 actionable findings** (1 P0, 8 P1, 13 P2, 8 P3)
 - **~50 items needing JEI spot-checks** across all mods
-- **159 mods remaining** in priority queue
-- **rpgseteffects is the benchmark** (GREENLIT, 100% coverage, zero findings) — when other content mods reach this maturity, audit pass is done
+- **2 GREENLIT audits** (rpgseteffects, mekanism+ad_astra) — both achieved through different patterns (drops-only design vs. comprehensive cross-mod tier-skip blocking)
+- **157 mods remaining** in priority queue
