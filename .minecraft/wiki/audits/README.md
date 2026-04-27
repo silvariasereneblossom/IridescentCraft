@@ -57,17 +57,17 @@ Each audit file follows this template:
 | 2 | [simplyswords](simplyswords.md) | MEDIUM REWORK | 2026-04-27 | 7 stale removal IDs + 4 renames + ~17 missing IDs in `tier_gated_recipes.js` Section E |
 | 3 | [terramity](terramity.md) | HEAVY POLISH | 2026-04-27 | Gun strip is gold-standard; ~15 EPIC curios/non-gun weapons completely ungated |
 | 4 | [forbidden_arcanus](forbidden_arcanus.md) | LIGHT POLISH | 2026-04-27 | Transitive gating via Hephaestus Forge + Arcane Crystal is the most leveraged pattern in the pack; ~7 items need spot-checks |
+| 5 | [theabyss](theabyss.md) | MEDIUM POLISH | 2026-04-27 | Most-wired mod in pack (118 refs across 16 files); singular/plural drift on `ring_of_ghost`(s); ~12 EPIC totems/trophies/reagents need spot-checks |
 
 ## Status — priority queue
 
 Order chosen by design-surface weight (heaviest first). Adjust based on what surfaces in earlier audits.
 
-1. **theabyss** — dimensional content + 30 rings already removed; verify rest
-3. **celestial_artifacts** — endgame curio mod
-4. **botania** — flowers + recipe surface; will be the largest single audit
-5. **occultism** — partially audited; ritual items + miners
-6. **rpgseteffects** — set-bonus mechanics
-7. **mekanism** + **ad_astra** — tech tree pair (audit together)
+1. **celestial_artifacts** — endgame curio mod
+2. **botania** — flowers + recipe surface; will be the largest single audit
+3. **occultism** — partially audited; ritual items + miners
+4. **rpgseteffects** — set-bonus mechanics
+5. **mekanism** + **ad_astra** — tech tree pair (audit together)
 8. **forbidden_and_arcanus, ars_nouveau, irons_spellbooks** — magic mods
 9. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
 10. **all remaining** — sweep pass for the long tail (~140 mods)
