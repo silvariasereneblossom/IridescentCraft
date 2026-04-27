@@ -292,7 +292,10 @@ ServerEvents.recipes(event => {
     P:'minecraft:phantom_membrane'
   }).id('icraft:feathered_wings_t3')
 
-  // I.2: Dragon Wings → T3 (diamond + dragon breath, naturally T3+ material)
+  // I.2: Dragon Wings → T4 effective (dragon_breath requires Ender Dragon
+  // kill, so the recipe is ingredient-gated to T4 regardless of the diamond
+  // tier of the other reagents). Recipe id stays `dragon_wings_t3` for
+  // back-compat with any AStages restriction file referencing it.
   event.shaped('icarus:black_dragon_wings', ['HDH','BPB','B B'], {
     H:'minecraft:honeycomb', D:'minecraft:diamond', B:'minecraft:dragon_breath',
     P:'minecraft:phantom_membrane'
