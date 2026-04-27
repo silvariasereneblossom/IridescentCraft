@@ -198,6 +198,32 @@ LootJS.modifiers(event => {
   let terramityEntityStrip = event.addLootTypeModifier(LootType.ENTITY)
   terramityGunStrip.forEach(id => terramityEntityStrip.removeLoot(id))
 
+  // ── TERRAMITY NON-GUN EPIC CURIO/MELEE STRIP ──
+  // (audit Phase 4.1, 2026-04-27 — companion to the I.3 recipe removal in
+  // recipes/recipe_audit.js. Strips the same items from chest+entity loot
+  // so they can't bypass the recipe gate via worldgen. Boss-drop allocation
+  // for the 7 melee weapons happens in loot/terramity_boss_drops.js, which
+  // runs AFTER this strip — the strip applies to GENERIC chest pools, the
+  // boss allocation adds them back on specific tier-appropriate boss kills.)
+  let terramityCurioStrip = [
+    // Melee weapons (boss-allocated separately; stripped from generic loot)
+    'terramity:blasphemic_rapture', 'terramity:unholy_lance',
+    'terramity:davy_jones', 'terramity:olympus',
+    'terramity:divine_intervention', 'terramity:planet_buster',
+    'terramity:kamehameha',
+    // Curios (no boss allocation — pack-internal balance: not appropriate
+    // at any tier, even endgame; mod-internal +stat curios that conflict
+    // with our class/origin/Tetra/curios system)
+    'terramity:antimatter_pacemaker', 'terramity:nyxs_necklace',
+    'terramity:antiprism', 'terramity:null_scarf',
+    'terramity:dragon_band', 'terramity:sacred_speed_bracelets',
+    'terramity:angel_feather', 'terramity:fortunes_favor'
+  ]
+  let terramityCurioChestStrip = event.addLootTypeModifier(LootType.CHEST)
+  terramityCurioStrip.forEach(id => terramityCurioChestStrip.removeLoot(id))
+  let terramityCurioEntityStrip = event.addLootTypeModifier(LootType.ENTITY)
+  terramityCurioStrip.forEach(id => terramityCurioEntityStrip.removeLoot(id))
+
   // Shadow Glaive — rare T2/T3 drop
   event
     .addLootTypeModifier(LootType.CHEST)
@@ -508,7 +534,11 @@ LootJS.modifiers(event => {
     'moreartifacts:melody_plushie', 'moreartifacts:lucky_emerald_ring',
     // too_many_bows T1 — utility bows (audit Phase 2.2, 2026-04-27)
     'too_many_bows:dark_bow', 'too_many_bows:hunter_bow',
-    'too_many_bows:flame_bow', 'too_many_bows:torchbearer'
+    'too_many_bows:flame_bow', 'too_many_bows:torchbearer',
+    // celestial_artifacts T1 — flavor (audit Phase 4.3, 2026-04-27 chat-color
+    // triage: yellow/pink → T1 per locked-in mapping)
+    'celestial_artifacts:yellow_duck', 'celestial_artifacts:angel_desire',
+    'celestial_artifacts:sakura_hairpin'
   ]
   // 2026-04-22: was 15 independent addLoot calls at ~0.67% each. Math
   // said 0.1 artifacts/chest expected, but variance allowed 2-4 in
@@ -551,7 +581,15 @@ LootJS.modifiers(event => {
     'too_many_bows:frostbite', 'too_many_bows:tidal_bow', 'too_many_bows:verdant_viper',
     'too_many_bows:burnt_relic', 'too_many_bows:sentinels_wrath',
     'too_many_bows:vitality_weaver', 'too_many_bows:verdant_vigor',
-    'too_many_bows:webstring'
+    'too_many_bows:webstring',
+    // celestial_artifacts T2 — green/dark_green/red curios + EPIC defensive
+    // (audit Phase 4.3, 2026-04-27)
+    'celestial_artifacts:precious_bracelet', 'celestial_artifacts:spirit_necklace',
+    'celestial_artifacts:emerald_ring', 'celestial_artifacts:emerald_necklace',
+    'celestial_artifacts:emerald_bracelet', 'celestial_artifacts:gaia_totem',
+    'celestial_artifacts:ring_of_life', 'celestial_artifacts:spirit_bracelet',
+    'celestial_artifacts:spirit_arrow_bag', 'celestial_artifacts:bearing_stamen',
+    'celestial_artifacts:red_ruby_bracelet', 'celestial_artifacts:scarlet_bracelet'
   ]
   const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
@@ -587,7 +625,20 @@ LootJS.modifiers(event => {
     'too_many_bows:necro_flame_bow',
     'too_many_bows:cursed_stone', 'too_many_bows:soul_fragment',
     'too_many_bows:radiance', 'too_many_bows:wind_glove',
-    'too_many_bows:stormbound_signet'
+    'too_many_bows:stormbound_signet',
+    // celestial_artifacts T3 — 9 EPIC corruption + 8 dark_purple + 2 dark_aqua
+    // (audit Phase 4.3, 2026-04-27 — closes the T2->T4 cliff per audit
+    // recommendation; mid-power corruption/abyss-themed curios)
+    'celestial_artifacts:cursed_protector', 'celestial_artifacts:destroyer_badge',
+    'celestial_artifacts:gluttony_badge', 'celestial_artifacts:greedy_heart',
+    'celestial_artifacts:magic_horseshoe', 'celestial_artifacts:twisted_brain',
+    'celestial_artifacts:sacrificial_object', 'celestial_artifacts:soul_box',
+    'celestial_artifacts:ender_protector',
+    'celestial_artifacts:war_dead_badge', 'celestial_artifacts:corrupt_badge',
+    'celestial_artifacts:hidden_bracelet', 'celestial_artifacts:shadow_pendant',
+    'celestial_artifacts:demon_curse', 'celestial_artifacts:cursed_talisman',
+    'celestial_artifacts:twisted_scabbard', 'celestial_artifacts:catastrophe_scroll',
+    'celestial_artifacts:abyss_will_badge', 'celestial_artifacts:lock_of_abyss'
   ]
   const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
@@ -619,7 +670,14 @@ LootJS.modifiers(event => {
     'too_many_bows:dragons_breath', 'too_many_bows:astral_bound',
     'too_many_bows:spectral_whisper', 'too_many_bows:shulker_blast',
     'too_many_bows:arc_heavens', 'too_many_bows:twin_shadows',
-    'too_many_bows:power_crystal', 'too_many_bows:dead_eyes_pendant'
+    'too_many_bows:power_crystal', 'too_many_bows:dead_eyes_pendant',
+    // celestial_artifacts T4 — endgame curios (4 EPIC + 3 dark_purple peak + 1 gold)
+    // (audit Phase 4.3, 2026-04-27)
+    'celestial_artifacts:ender_jump_scepter', 'celestial_artifacts:evil_eye',
+    'celestial_artifacts:the_end_dust', 'celestial_artifacts:chaotic_pendant',
+    'celestial_artifacts:cursed_totem', 'celestial_artifacts:twisted_heart',
+    'celestial_artifacts:twisted_scroll',
+    'celestial_artifacts:heart_of_revenge'
   ]
   const artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event

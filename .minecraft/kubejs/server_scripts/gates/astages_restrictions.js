@@ -261,6 +261,18 @@ ServerEvents.loaded(event => {
     // loot table) — T3 stage as defensive precaution against creative leak.
     'art_of_forging:sigil_of_eden',
     'art_of_forging:devils_soul_gem',
+    // theabyss T3 — totems + exotic curios + reagents
+    // (audit Phase 4.2, 2026-04-27 — Abyss is T3 dimension; these
+    // items live within the Abyss progression and warrant T3 stage gate
+    // even when they don't have explicit AStages presence)
+    // 3 totems: highest priority (revive/utility semantics — locking out
+    // pre-T3 revive farming)
+    'theabyss:totem_of_thunder', 'theabyss:totem_of_abyss',
+    'theabyss:totem_of_time',
+    // 6 trophies/reagents/curios from mid-Abyss content
+    'theabyss:eye_of_abyss', 'theabyss:dream_shifter',
+    'theabyss:node_shard', 'theabyss:enchanted_bottle_of_somnium',
+    'theabyss:clock_of_time', 'theabyss:artifact_of_after_life',
   ], 'modpack/item_t3')
 
   // -- Ore replacement restrictions --
@@ -386,6 +398,11 @@ ServerEvents.loaded(event => {
     // is additional defense against creative leaks or chest_loot bypass.
     'art_of_forging:demonic_axe', 'art_of_forging:demonic_blade',
     'art_of_forging:demonic_flail', 'art_of_forging:enigmatic_construct',
+    // theabyss T4 — Nosaj boss trophies + immortality reagent
+    // (audit Phase 4.2, 2026-04-27 — Nosaj is the deepest Abyss boss;
+    // immortal_substance has revive semantics and warrants T4 gate)
+    'theabyss:crown_of_nosaj', 'theabyss:amuled_of_nosaj',
+    'theabyss:immortal_substance',
   ], 'modpack/item_t4')
 
   // -- Ore replacement restrictions --

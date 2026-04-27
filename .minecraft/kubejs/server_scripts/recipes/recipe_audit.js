@@ -296,6 +296,25 @@ ServerEvents.recipes(event => {
     'terramity:gundalfs_hat_helmet',
   ].forEach(id => event.remove({ output: id }))
 
+  // I.3: Terramity non-gun EPIC content — recipe removal
+  // (audit Phase 4.1, 2026-04-27 — closes the audit's "non-gun curios + melee
+  // weapons completely ungated" finding. The original Section I covered only
+  // guns + gun-armor; this sub-block covers melee weapons + curios that ALSO
+  // don't fit the pack's RPG progression at low tiers. Recipes removed; loot
+  // allocation in loot/terramity_boss_drops.js.)
+  ;[
+    // 7 EPIC non-gun melee weapons (boss-themed; allocated to T3-T4 bosses)
+    'terramity:blasphemic_rapture', 'terramity:unholy_lance',
+    'terramity:davy_jones', 'terramity:olympus',
+    'terramity:divine_intervention', 'terramity:planet_buster',
+    'terramity:kamehameha',
+    // 8 EPIC curios (out-of-tier-range +stat / proc accessories)
+    'terramity:antimatter_pacemaker', 'terramity:nyxs_necklace',
+    'terramity:antiprism', 'terramity:null_scarf',
+    'terramity:dragon_band', 'terramity:sacred_speed_bracelets',
+    'terramity:angel_feather', 'terramity:fortunes_favor',
+  ].forEach(id => event.remove({ output: id }))
+
   // NOTE: Terramity has no custom enchantments in the enchantment registry.
   // "enchanter_merlin" is a boss mob entity, not an enchantment — kept.
 
