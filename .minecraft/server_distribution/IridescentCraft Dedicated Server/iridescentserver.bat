@@ -1,5 +1,5 @@
 @echo off
-REM IridescentCraft Server — Unified Installer + Launcher (Windows)
+REM IridescentCraft Server - Unified Installer + Launcher (Windows)
 REM Forge 1.20.1-47.4.6 with 420+ mods
 REM
 REM First run:  Installs Forge, downloads mods, then starts the server
@@ -35,7 +35,7 @@ if not exist "%~dp0.icraft_server" (
 )
 endlocal
 
-REM We're in the server dir — ensure working directory is correct
+REM We're in the server dir - ensure working directory is correct
 cd /d "%~dp0"
 
 echo.
@@ -70,9 +70,9 @@ if /i "%1"=="/force"     set "FORCE_SYNC=1"
 if defined FORCE_SYNC (
     if exist "%~dp0.icraft_last_sha" (
         del /f /q "%~dp0.icraft_last_sha" >nul 2>&1
-        echo [FORCE] Deleted .icraft_last_sha — next sync will download the full repo zip.
+        echo [FORCE] Deleted .icraft_last_sha - next sync will download the full repo zip.
     ) else (
-        echo [FORCE] No .icraft_last_sha present — already a full-sync run.
+        echo [FORCE] No .icraft_last_sha present - already a full-sync run.
     )
     echo.
 )
@@ -105,7 +105,7 @@ REM Move-overwrites the running .bat (Win10+ supports FILE_SHARE_DELETE),
 REM then exit /b lets cmd.exe release the handle so the relaunched cmd
 REM reads the NEW content.
 REM
-REM Diagnostic-friendly: errors from move and start are NOT silenced —
+REM Diagnostic-friendly: errors from move and start are NOT silenced -
 REM if the swap fails, you'll see it in the console (helps catch perms
 REM issues, file-lock conflicts, or path quoting problems).
 set "SDIR=%~dp0"
@@ -131,7 +131,7 @@ if "%SWAP_ERROR%"=="1" (
     echo [UPDATE] Re-run with: iridescentserver.bat -Force  to retry the full sync.
     echo.
 )
-REM Cross-platform counterpart cleanup — apply iridescentserver.sh.new
+REM Cross-platform counterpart cleanup - apply iridescentserver.sh.new
 REM if phase0_sync staged it. The .sh isn't used on Windows but we keep it
 REM up-to-date so testers who push from a Windows server-host don't ship
 REM stale .sh content. No relaunch needed for .sh changes.
@@ -167,7 +167,7 @@ REM -------------------------------------------------------------------
 REM Phase 2: Install if needed (Forge + mods)
 REM -------------------------------------------------------------------
 if not exist "libraries\net\minecraftforge\forge\1.20.1-47.4.6" (
-    echo [INSTALL] Forge not found — running first-time setup...
+    echo [INSTALL] Forge not found - running first-time setup...
     echo.
     if not exist "forge-1.20.1-47.4.6-installer.jar" (
         echo [INSTALL] Downloading Forge installer...
@@ -233,7 +233,7 @@ if exist "mods\.index" (
 )
 
 REM Clean stale mod JARs not in any .pw.toml. The full logic lives in
-REM cleanup_stale_jars.ps1 — moved out of inline cmd because the inline
+REM cleanup_stale_jars.ps1 - moved out of inline cmd because the inline
 REM ^-continued PowerShell with embedded `\""` was hitting cmd quote-
 REM escape edge cases that occasionally dropped customJars entries
 REM (deleting our own custom-bundled jars: ars_nouveau, iridescent_biomes,
@@ -327,19 +327,28 @@ REM Phase 5: Post-exit hooks
 REM -------------------------------------------------------------------
 set EXIT_CODE=%errorlevel%
 
-REM Item-dump extraction safety net: run once in non-watch mode in case
-REM the background watcher in Phase 3.5 missed the marker (e.g. server
-REM stopped before dump completed, or the watcher crashed). Cheap
-REM idempotent operation — overwrites all_items.tsv if it already exists.
-if exist "%~dp0extract_item_dump.ps1" if exist "%~dp0kubejs-server.log" (
-    powershell -ExecutionPolicy Bypass -File "%~dp0extract_item_dump.ps1" -ServerDir "%~dp0" 2>nul
+REM Item-dump extraction: extracts [ITEM_DUMP] lines from kubejs-server.log
+REM into kubejs/exports/all_items.tsv. Reuses SDIR (already trailing-slash-
+REM stripped from Phase 0.5). Errors NOT silenced so we can debug if it
+REM produces nothing.
+if exist "%SDIR%\extract_item_dump.ps1" if exist "%SDIR%\kubejs-server.log" (
+    echo [DUMP] Running extract_item_dump.ps1 ...
+    powershell -ExecutionPolicy Bypass -File "%SDIR%\extract_item_dump.ps1" -ServerDir "%SDIR%"
+    if exist "%SDIR%\kubejs\exports\all_items.tsv" (
+        echo [DUMP] Output: %SDIR%\kubejs\exports\all_items.tsv
+    ) else (
+        echo [DUMP] WARNING: all_items.tsv not produced. Check for [ITEM_DUMP] lines in kubejs-server.log.
+    )
+) else (
+    if not exist "%SDIR%\extract_item_dump.ps1" echo [DUMP] extract_item_dump.ps1 missing - skipping extraction.
+    if not exist "%SDIR%\kubejs-server.log"     echo [DUMP] kubejs-server.log missing - skipping extraction.
 )
 
 
 if %EXIT_CODE% neq 0 (
     echo.
     echo ==========================================
-    echo   SERVER CRASHED — Exit code: %EXIT_CODE%
+    echo   SERVER CRASHED - Exit code: %EXIT_CODE%
     echo ==========================================
     echo.
 
