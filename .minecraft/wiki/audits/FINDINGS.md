@@ -27,6 +27,18 @@ Single source of truth for actionable findings across all per-mod audits. Update
 
 ## P2 — Medium (balance polish)
 
+### Items added 2026-04-27 (ars_nouveau + irons_spellbooks audit)
+
+| # | Mod | Finding | Action | Source |
+|---|-----|---------|--------|--------|
+| 31 | irons_spellbooks | 10 IRONS_SPELLBOOKS_CINDEROUS-rarity items have no entries in our drop tables (pyrium_staff, legionnaire_flamberge, hellrazor, unchained_book, pyrium_ingot, cinderous_soulcaller, cinderous_soul_rune, betrayer_signet, music_disc + disc_fragment) | Verify native ISS structure or boss source; if unobtainable in survival, document or remove | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
+| 32 | irons_spellbooks | 5+ EPIC structure-loot items (paladin_chestplate, infernal_sorcerer_chestplate, gold_crown, eldritch_manuscript, hither_thither_wand, etc.) — verify they come from intended ISS structures only | LootJS spot-check; if leak to generic chest pools, add strips | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
+| 33 | irons_spellbooks | `eldritch_manuscript` is a progression-unlock for Eldritch Spellbook tier; verify acquisition path is gated | Highest priority of the structure-loot concerns | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
+| 34 | (cross-cutting) | When updating ars_nouveau jar, must re-apply DungeonLootEnhancerModifier athrow→pop bytecode patch (currently in `ars_nouveau-1.20.1-4.12.7-all.jar`); same for Patchouli jar's Book.use_resource_pack patch | Add a checklist item to mod-update protocol | [ars_nouveau_irons_spellbooks.md](ars_nouveau_irons_spellbooks.md) |
+
+(Earlier P2 items unchanged below)
+
+
 | # | Mod | Finding | Action | Source |
 |---|-----|---------|--------|--------|
 | 10 | cataclysm | Materials sourcing chain unverified — witherite/enderite/ignitium/cursium ore→ingot smelting may be bypassable | JEI uses-lookup; if bypassable, add tier guard in `tier_gated_recipes.js` | [cataclysm.md](cataclysm.md) |
@@ -85,8 +97,9 @@ Three `obsidian_skull` items across mods, two `cross_necklace` items, three ring
 
 ## Counts so far
 
-- **10 audits done covering 11 mods** (cataclysm, simplyswords, terramity, forbidden_arcanus, theabyss, celestial_artifacts, botania, occultism, rpgseteffects, mekanism+ad_astra)
-- **30 actionable findings** (1 P0, 8 P1, 13 P2, 8 P3)
-- **~50 items needing JEI spot-checks** across all mods
+- **11 audits done covering 13 mods** (cataclysm, simplyswords, terramity, forbidden_arcanus, theabyss, celestial_artifacts, botania, occultism, rpgseteffects, mekanism+ad_astra, ars_nouveau+irons_spellbooks)
+- **34 actionable findings** (1 P0, 8 P1, 17 P2, 8 P3)
+- **~65 items needing JEI spot-checks** across all mods
 - **2 GREENLIT audits** (rpgseteffects, mekanism+ad_astra) — both achieved through different patterns (drops-only design vs. comprehensive cross-mod tier-skip blocking)
-- **157 mods remaining** in priority queue
+- **155 mods remaining** in priority queue
+- **5 cross-cutting patterns identified:** (A) recipe-removal ID drift, (B) three-layer gate, (B2) chokepoint gating, (C) non-vanilla rarity, (D) Tetra replacement files

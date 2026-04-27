@@ -65,13 +65,13 @@ Each audit file follows this template:
 | 8 | [occultism](occultism.md) | **MEDIUM REWORK** | 2026-04-27 | **CRITICAL: dimensional miners ungated** — `recipe_audit.js:137` TODO never closed, `icraft_occultism_overrides` datapack does not exist. Players can craft a Djinni miner at T2 and get diamonds without entering Nether. Highest-priority fix in audit pass so far. |
 | 9 | [rpgseteffects](rpgseteffects.md) | **GREENLIT** | 2026-04-27 | Cleanest audit so far — drops-only design, 100% coverage (28 EPIC + 26 RARE + 4 UNCOMMON all individually allocated). Benchmark audit; zero findings. |
 | 10 | [mekanism + ad_astra](mekanism_ad_astra.md) | **GREENLIT** | 2026-04-27 | Second benchmark — most tier-skip-blocked mod pair (Enriching/Combining/Purifying/Injecting/Mixing all blocked); NASA workbench + 4-rocket + MekaSuit Mk2 progression fully wired; ~192 refs across 17 files. Zero findings. |
+| 11 | [ars_nouveau + irons_spellbooks](ars_nouveau_irons_spellbooks.md) | LIGHT POLISH | 2026-04-27 | Most-integrated mod pair (322 refs across ~25 files). ISS distributes reagents across 8 boss-drop files for cross-dimensional magic economy. **Tetra replacement files** = new efficient gating pattern. ISS introduces 4th non-vanilla rarity (CINDEROUS, 10 items). Concerns: 10 Cinderous + 5 EPIC structure-loot items need source verification. |
 
 ## Status — priority queue
 
 Order chosen by design-surface weight (heaviest first). Adjust based on what surfaces in earlier audits.
 
-1. **ars_nouveau, irons_spellbooks** — magic mods
-2. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
+1. **alexsmobs, twilightforest, blue_skies, aether** — boss mods
 3. **all remaining** — sweep pass for the long tail (~140 mods)
 
 ## Cross-cutting findings
@@ -88,9 +88,12 @@ Terramity's gun strip is the cleanest model in the pack — `recipes/recipe_audi
 Forbidden Arcanus's Hephaestus Forge + Arcane Crystal pattern is the *most efficient* gating model — gate one or two chokepoints (workstations or required reagents) and dozens of downstream items inherit the gate without per-item flags. When auditing a mod with a clear progression chokepoint (workbench, station, key reagent), prefer this over per-item lists.
 
 ### C. Mod uses non-vanilla rarity
-Forbidden Arcanus surfaced an oddity: zero EPIC items in JEI despite having endgame content, because the mod uses its own internal Soul/Aureal tier system rather than vanilla `Rarity`. Other "magic mod" audits should expect this pattern. Any future "rarity-based" sweeps (loot strips, filters, balance heuristics) need to NOT rely on the rarity column alone — verify against the gating chain instead.
+**Confirmed in 4 mods so far:** forbidden_arcanus (0 EPIC despite endgame; uses Soul/Aureal tiers), celestial_artifacts (32 chat-color items using ChatFormatting names), occultism (0 EPIC, 225 COMMON; uses Foliot/Djinni/Afrit/Marid spirit tiers), irons_spellbooks (10 items with custom `IRONS_SPELLBOOKS_CINDEROUS` Rarity enum value). **This is a stable pattern, especially among magic mods.** Any future "rarity-based" sweeps (loot strips, filters, balance heuristics) need to NOT rely on the rarity column alone — verify against the gating chain instead.
 
-### C. Audit cadence
+### D. Tetra replacement files (transparent gating)
+ISS audit surfaced an *efficient new gating pattern*: `data/tetra/replacements/*.json` files auto-convert any vanilla item into our gated/modular variant on inventory tick. **No recipe-removal needed, no loot-strip needed** — the vanilla item simply becomes the gated one when the player picks it up. Used for: 8 vanilla ISS spell books → 8 modular ISS spell books. Reusable for any "we want a modified version of an existing item" scenario.
+
+### E. Audit cadence
 Each audit is ~120-200 lines and consumes meaningful context per session. Pace at 2-4 audits per session. Some big mods (botania, mekanism+ad_astra, forbidden_arcanus) probably warrant their own session.
 
 ## Workflow
