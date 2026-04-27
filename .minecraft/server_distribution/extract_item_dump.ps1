@@ -20,7 +20,29 @@ param(
 )
 
 $ServerDir = $ServerDir.TrimEnd('\', '/', '"')
-$LogFile = Join-Path $ServerDir 'kubejs-server.log'
+
+# Search for kubejs-server.log in known locations. Different Forge/KubeJS
+# versions place the file in different dirs.
+$candidates = @(
+    (Join-Path $ServerDir 'kubejs-server.log'),
+    (Join-Path $ServerDir 'logs\kubejs-server.log'),
+    (Join-Path $ServerDir 'logs\kubejs\server.log')
+)
+$LogFile = $null
+foreach ($c in $candidates) {
+    if (Test-Path $c) {
+        $hasDump = (Select-String -Path $c -Pattern '[ITEM_DUMP] ' -SimpleMatch -Quiet -ErrorAction SilentlyContinue)
+        if ($hasDump) { $LogFile = $c; break }
+        if (-not $LogFile) { $LogFile = $c }  # fall back to first existing if none have dump
+    }
+}
+if (-not $LogFile) {
+    Write-Host "[extract_item_dump] kubejs-server.log not found in any of:" -ForegroundColor Yellow
+    foreach ($c in $candidates) { Write-Host "    $c" -ForegroundColor Yellow }
+    exit 1
+}
+Write-Host "[extract_item_dump] using log: $LogFile" -ForegroundColor Cyan
+
 $ExportDir = Join-Path $ServerDir 'kubejs/exports'
 $ExportFile = Join-Path $ExportDir 'all_items.tsv'
 
