@@ -56,13 +56,13 @@ Each audit file follows this template:
 | 1 | [cataclysm](cataclysm.md) | LIGHT POLISH | 2026-04-27 | Materials sourcing chain to verify |
 | 2 | [simplyswords](simplyswords.md) | MEDIUM REWORK | 2026-04-27 | 7 stale removal IDs + 4 renames + ~17 missing IDs in `tier_gated_recipes.js` Section E |
 | 3 | [terramity](terramity.md) | HEAVY POLISH | 2026-04-27 | Gun strip is gold-standard; ~15 EPIC curios/non-gun weapons completely ungated |
+| 4 | [forbidden_arcanus](forbidden_arcanus.md) | LIGHT POLISH | 2026-04-27 | Transitive gating via Hephaestus Forge + Arcane Crystal is the most leveraged pattern in the pack; ~7 items need spot-checks |
 
 ## Status — priority queue
 
 Order chosen by design-surface weight (heaviest first). Adjust based on what surfaces in earlier audits.
 
-1. **forbidden_arcanus** — late-game magic items, partial gating exists
-2. **theabyss** — dimensional content + 30 rings already removed; verify rest
+1. **theabyss** — dimensional content + 30 rings already removed; verify rest
 3. **celestial_artifacts** — endgame curio mod
 4. **botania** — flowers + recipe surface; will be the largest single audit
 5. **occultism** — partially audited; ritual items + miners
@@ -81,6 +81,12 @@ Identified in simplyswords. Section E in `tier_gated_recipes.js` and similar lis
 
 ### B. Three-layer gate pattern
 Terramity's gun strip is the cleanest model in the pack — `recipes/recipe_audit.js` (recipe removal) + `loot/lootjs_overhaul.js` (chest+entity loot strip) + Apotheosis config (enchant disable). When future audits surface "doesn't-fit-the-pack" content, replicate this triple-lock.
+
+### B2. Transitive (chokepoint) gating
+Forbidden Arcanus's Hephaestus Forge + Arcane Crystal pattern is the *most efficient* gating model — gate one or two chokepoints (workstations or required reagents) and dozens of downstream items inherit the gate without per-item flags. When auditing a mod with a clear progression chokepoint (workbench, station, key reagent), prefer this over per-item lists.
+
+### C. Mod uses non-vanilla rarity
+Forbidden Arcanus surfaced an oddity: zero EPIC items in JEI despite having endgame content, because the mod uses its own internal Soul/Aureal tier system rather than vanilla `Rarity`. Other "magic mod" audits should expect this pattern. Any future "rarity-based" sweeps (loot strips, filters, balance heuristics) need to NOT rely on the rarity column alone — verify against the gating chain instead.
 
 ### C. Audit cadence
 Each audit is ~120-200 lines and consumes meaningful context per session. Pace at 2-4 audits per session. Some big mods (botania, mekanism+ad_astra, forbidden_arcanus) probably warrant their own session.
