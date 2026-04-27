@@ -95,13 +95,15 @@ Mirror the existing `lootjs_overhaul.js` artifacts/relics/celestial chest pools.
 - **T4 chest/boss pool**: `dragons_breath`, `astral_bound`, `spectral_whisper`, `shulker_blast`, `arc_heavens`, `twin_shadows`
 - **Reagents**: `cursed_stone` (T2-T3), `soul_fragment` (T2-T3), `rift_shard` (rename to avoid collision), `power_crystal` (T3-T4)
 
-**Sub-task: rift_shard collision.** `too_many_bows:rift_shard` and our `kubejs:rift_shard` (used in `endgame/rift_mechanics.js` as ascension reagent). Two options:
-- **(A)** Document the collision in the in-game codex; players need to read tooltips to distinguish. Zero code changes.
-- **(B)** Strip `too_many_bows:rift_shard` from chest loot via lootjs and rename our internal reference to `kubejs:icraft_rift_shard` for clarity. Higher-effort, cleaner long-term.
+**Sub-task: rift_shard collision — locked to OPTION B (strip + rename).**
 
-**Recommendation:** option A first — document. If tester confusion surfaces, escalate to B.
+Tasks (do in order to avoid breakage):
+1. Strip `too_many_bows:rift_shard` from chest loot via lootjs (likely just a `removeLoot` call where the mod's GLM injects)
+2. Add rename mapping: `kubejs:rift_shard` → `kubejs:icraft_rift_shard`
+3. Update all references in `endgame/rift_mechanics.js`, `endgame/ascension.js`, `loot/lootjs_overhaul.js`
+4. Add a one-time KubeJS migration: on player login, convert any old `kubejs:rift_shard` items in inventory/Ender Chest to the new ID (avoids destroying tester progress)
 
-**Deliverable:** ~18 LootEntry additions, plus the codex tooltip update.
+**Deliverable:** ~18 LootEntry additions + rift_shard rename across the endgame stack.
 
 ### 2.3 art_of_forging (22 items, recipe verification required)
 
@@ -374,18 +376,36 @@ Add to mod-update protocol: when updating Patchouli or ars_nouveau jars, must re
 
 Across 4-6 sessions, this is a 3-4 week part-time effort or a focused 2-week sprint.
 
-## Decision points needing user input
+## Decision points — RESOLVED 2026-04-27
 
-These can't be auto-resolved by the plan — user input needed before Phase 7 lands:
+All 6 decision points answered by user. Locked in:
 
-1. **`too_many_bows:rift_shard` collision** — option A (document) or option B (strip + rename)?
-2. **`mechanical_fusion_anvil` (cataclysm)** — keep, disable, or merge with void_forge/infernal_forge?
-3. **`reinforced_deorum_blacksmith_gavel` (F&A)** — whitelist as Tetra hammer-equivalent for cross-mod synergy?
-4. **`simplyswords` 7 unassigned weapons** — add to Section E (creative-only) or leave craftable as freebies?
-5. **art_of_forging tier mapping** — confirm proposed Ancient→T2 / Demonic→T4 split or refine?
-6. **moreartifacts T3 pool additions** — review the proposed list and confirm theming?
+1. **`too_many_bows:rift_shard` collision → STRIP + RENAME** (option B)
+   - LootJS strip `too_many_bows:rift_shard` from chest pools
+   - Rename our internal reference from `kubejs:rift_shard` to `kubejs:icraft_rift_shard` (or similar) for unambiguous identification
+   - Update all references in `endgame/rift_mechanics.js`, `loot/lootjs_overhaul.js`, ascension reagents, etc.
 
-Surfacing these *before* doing the work prevents rework.
+2. **`mechanical_fusion_anvil` → MERGE with void_forge/infernal_forge**
+   - Disable/remove `cataclysm:mechanical_fusion_anvil` recipe and loot
+   - Existing `cataclysm:void_forge` (Ender Guardian) and `cataclysm:infernal_forge` (Ignis) cover the boss-tier crafting station role
+   - Avoids triple-overlap of T4 crafting stations
+
+3. **`reinforced_deorum_blacksmith_gavel` → WHITELIST as Tetra hammer-equivalent**
+   - Add to Tetra hammer tool tag (or equivalent material list) so it can be used for modular spell book repair at Tetra workbench
+   - Cross-mod synergy without breaking balance: gavel itself is Hephaestus-Forge-gated (T3-T4)
+
+4. **`simplyswords` 7 unassigned weapons → ADD ALL TO SECTION E (creative-only until assigned)**
+   - Confirmed via stat lookup in `simplyswords_main/weapon_attributes.json5`
+   - Damage modifiers range +3.0 (harbinger, T2-T3 baseline) to +8.0 (hearthflame, netherite-tier)
+   - **Slumbering_lichblade is the entry point to the awakened_lichblade endgame chain** — freebie access bypasses the Voidheart Blade Mythic Forge gate
+   - Section 8 design intent already states "reserved for future bosses" — making them freebies contradicts that
+   - All 7 to Section E: `harbinger`, `hearthflame`, `magiscythe`, `magispear`, `ribboncleaver`, `slumbering_lichblade`, `wickpiercer`
+
+5. **art_of_forging tier mapping → CONFIRMED** (Ancient → T2, Demonic → T4, sigils/devils_soul_gem → T3)
+
+6. **moreartifacts T3 pool additions → CONFIRMED** (Dragon → T4, Hero/Ankh → T2 mid-tier, Sculk → T4)
+
+These decisions feed Phase 2.2-2.3, Phase 4, Phase 7. No further user input needed before Phase 1 starts.
 
 ## Risk register
 
