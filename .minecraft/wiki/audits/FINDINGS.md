@@ -8,9 +8,9 @@ Single source of truth for actionable findings across all per-mod audits. Update
 
 ## P0 — Critical (progression integrity)
 
-| # | Mod | Finding | Action | Source |
-|---|-----|---------|--------|--------|
-| 1 | occultism | **Dimensional miners (Foliot/Djinni/Afrit/Marid) ungated** — `recipe_audit.js:137` TODO never closed; `icraft_occultism_overrides` datapack does not exist; players can craft a Djinni miner at T2 and get diamonds without entering Nether, or Afrit miner at T3 for ancient_debris-equivalents | **Create `datapack_sources/icraft_occultism_overrides/data/occultism/recipes/miners/` mirroring botania pattern; strip diamond/ancient_debris/netherite_scrap from each miner's result table** | [occultism.md](occultism.md) |
+| # | Mod | Finding | Action | Source | Status |
+|---|-----|---------|--------|--------|--------|
+| 1 | occultism | **Dimensional miners (Foliot/Djinni/Afrit/Marid) ungated** — `recipe_audit.js:137` TODO never closed; `icraft_occultism_overrides` datapack did not exist; players could craft a Foliot/Djinni miner at T1-T2 and get diamonds (weight 218) without any tier gating | **FIXED 2026-04-27 (Phase 1):** Created `datapack_sources/icraft_occultism_overrides/` with 8 ore-recipe overrides. Restricts diamond/emerald/arcane_crystal/osmium/nether_quartz/nether_gold/xpetrified_ore from `ores` tag (any miner) to `deeps` tag (T3+ Afrit/Marid). Dimensional_shard_ore restricted to `master` (T4 Marid only). Datapack zipped + deployed to all 3 distros + load order updated. recipe_audit.js:137 TODO closed. | [occultism.md](occultism.md) |
 
 ## P1 — High (tier-skip vectors, recipe drift)
 

@@ -129,12 +129,15 @@ ServerEvents.recipes(event => {
   event.remove({ type: 'occultism:spirit_trade', output: 'minecraft:diamond' })
   event.remove({ type: 'occultism:spirit_trade', output: 'minecraft:emerald' })
 
-  // E.4: Occultism Ritual — dimensional miners that bypass ore removal
-  // Dimensional miners are the main Occultism exploit vector.
-  // The miner spirits produce ores based on the dimension they're in.
-  // This is config-based (occultism miner recipes in data/occultism/recipes/miners/)
-  // and should be handled via datapack overrides, not KubeJS.
-  // NOTE: Verify icraft_occultism_overrides datapack handles this.
+  // E.4: Occultism Ritual — dimensional miners that bypass ore removal.
+  // Handled via the icraft_occultism_overrides datapack:
+  //   datapack_sources/icraft_occultism_overrides/data/occultism/recipes/miner/ores/
+  // Restricts diamond/emerald/arcane_crystal/osmium/nether_quartz/nether_gold/
+  // xpetrified_ore from the `ores` ingredient tag (Foliot+ accessible) to the
+  // `deeps` tag (T3+ Afrit/Marid only). Dimensional_shard_ore is gated to
+  // `master` (T4 Marid only). This closes the audit's P0 finding from
+  // 2026-04-27 — without this datapack a Foliot Miner could produce diamond
+  // (weight 218) without any tier gating. See wiki/audits/occultism.md.
 
   // E.5: Botania Orechid — already handled via datapack (see tier_gated_recipes.js)
   // The Orechid transforms stone into ores based on weighted tables.
