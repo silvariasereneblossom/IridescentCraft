@@ -651,9 +651,152 @@ This is what makes the cross-mod material economy feel coherent. A diamond picka
 
 ## Part X — Endgame Loops
 
-T4 is not the finish line — it is the **starting line for the endgame meta-loops**. The pack ships three: Oblivion's Rift (procedural dungeons), the Mythic Forge (uniques crafting), and Ascension (prestige cycle). These overlap and feed each other.
+T4 is not the finish line — it is the **starting line for five interlocking endgame meta-loops**. Each loop generates progression for the others; players move between them naturally rather than picking one and stopping.
 
-### Oblivion's Rift
+### The five loops
+
+| Loop | What it offers | Gates into |
+|------|----------------|------------|
+| 1. **Oblivion's Rift** | Procedural infinite dungeon. Floor depth scales loot quality. The pack's primary endgame activity. | Provides materials for Loop 2 (Mythic Gear). |
+| 2. **Mythic Gear Chase** | Vertical power with diminishing returns and a hard ceiling. Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown, MekaSuit Mk2, Mythic Catalysts I–V. | Lets the player push deeper into Loop 1. |
+| 3. **Build Diversity** | Horizontal replayability through class/build experimentation. Every class experiences the Rift differently — Berserker rushes trash, Vanguard pushes deeper floors, Void Summoner trivializes some floor modifiers but struggles with Silenced. | Different builds approach Loop 1 differently. |
+| 4. **The Compendium** | Collection, achievements, cosmetic chase. Massive completionist checklist — Bestiary, Boss Chronicle, Rift Records, Gear Collection. | Tracks all four other loops; long-tail completionist target. |
+| 5. **Creative Endgame** | Megabuilding with endgame-exclusive materials and tools. RFTools custom dimensions + Mythic Forge trophies + decorative endgame. | Uses resources from all other loops. |
+
+> **Soft endpoint.** Killing the Ancient Remnant (Cataclysm) + completing the final quest chain = "you beat the pack" — credits-equivalent moment, unique trophy, bragging rights. That's hour ~150–200. The next 200+ hours come from these five loops feeding into each other.
+
+### Loop 1 — Oblivion's Rift
+
+Rifts are the procedural-dungeon endgame. Each Rift run:
+
+1. Player crafts a **Rift Keystone** (T4 reagents: Dragon Heart + Void Essence + Gaia Ingot + Nether Star + Iridescent Rift Shard).
+2. The Keystone is consumed at a Rift Anchor block to enter a procedurally-generated dungeon (RFTools Dimensions backbone, structure datapacks fill the content).
+3. **Dungeon depth scales loot quality.** Deeper floors drop Iridescent Rift Shard, Void Fragment, and the rare Rift Core.
+4. **Rift floor modifiers** randomize each run — Silenced (no spells), Disarmed (no ranged), Thorned (reflect damage), Volatile (mob explosions on death), etc. Some modifiers hard-counter specific builds; others trivialize them.
+5. Death inside the Rift returns the player to base; the keystone is consumed regardless of completion.
+
+The **Void Coffer** (T4 craftable) allows banking items mid-Rift without losing them on death.
+
+Compendium tracking captures every Rift-shard pickup, Rift Keystone craft, Rift Core acquisition, and Primordial Essence acquisition. Floor depth records feed into Loop 4.
+
+### Loop 2 — Mythic Gear Chase
+
+The Mythic Forge is the **uniques-crafting endgame**. Crafted from Iridescent Rift Shard + Mekanism Teleportation Core + Crying Obsidian + Steel Casing + Netherite, it serves as the workbench for six endgame products:
+
+1. **Mythic Catalysts I–V** — escalating power tokens used as "apply this Mythic effect to gear" reagents.
+2. **Mythic Reforge Token** — Apotheosis-style gear-modifier reset (3 Primordial Essences).
+3. **Voidheart Blade** (sword) — base: `simplyswords:awakened_lichblade` (Ancient Remnant T4 drop). On-kill damage stacking.
+4. **Oblivion Aegis** (chestplate) — base: netherite chestplate. Death-delay protection.
+5. **Riftwalker Boots** — base: netherite boots. Teleport + speed.
+6. **Oblivion Crown** (helmet) — base: netherite helmet. Wallhack vision + first-strike bonus.
+
+All four Mythic Uniques use **Rift Blueprints** as a slot ingredient. Blueprints drop from Rift completions, integrating Loops 1 and 2.
+
+### Loop 3 — Build Diversity
+
+Endgame replayability comes from **respeccing class and re-running the Rift differently**. Each of the 10 classes experiences the Rift fundamentally differently:
+
+- Berserker rushes through trash but struggles with kiting floor guardians.
+- Ranger handles floor guardians easily but gets overwhelmed by trash swarms.
+- Vanguard is slow but nearly unkillable — pushes deeper floors than DPS classes.
+- Void Summoner trivializes some floor modifiers (Thorned, Volatile) but struggles with Silenced.
+- Some Rift floor modifiers hard-counter specific builds (Silenced = bad for Archmage, Disarmed = bad for Ranger).
+
+The Compendium (Loop 4) includes class-specific Rift challenges that reward completing the same content with different builds.
+
+> **Why respec exists at endgame.** The Class Altar respec cost (1 boss drop + 30 levels) is sized for endgame players. Respeccing 5–6 times over a long playthrough is the intended cadence — the player tries Berserker, then Vanguard, then Void Summoner, each on a fresh Rift run.
+
+### Loop 4 — The Compendium
+
+The Compendium is the **completionist endgame** — a massive in-game checklist tracking everything the player has accomplished. Implemented as a quest-book chapter + custom advancement triggers. **Not just a checklist** — every Compendium entry has a tangible reward: cosmetic, functional, or both.
+
+#### Compendium categories
+
+**Bestiary (enemy tracking).** Every unique enemy type tracked. ~80–100 mob types across all dimensions.
+
+| Milestone | Kills | Reward |
+|-----------|------:|--------|
+| Discovered | 1 | Entry appears in Bestiary |
+| Studied | 25 | Mob's HP, damage, and weaknesses visible (Jade HUD) |
+| Expert | 100 | +5% damage vs this mob type (permanent passive) |
+| Master | 500 | +10% damage vs this mob type + cosmetic trophy item |
+
+A **Champion Bestiary** tracks affix combinations separately. Encountering every affix at least once unlocks "Champion Scholar" + the *Champion's Eye* curio (see Champion affixes from 16 blocks away).
+
+**Boss Chronicle.** Tracks every boss killed and at what Progressive Bosses difficulty.
+
+| Milestone | Reward |
+|-----------|--------|
+| First kill of any boss | Chronicle entry + boss lore text |
+| Kill every T2 boss | Title: *Dungeon Delver* |
+| Kill every T3 boss | Title: *Realm Walker* |
+| Kill every T4 boss | Title: *God-Killer* + unique cape cosmetic |
+| Kill Ancient Remnant at 10th+ difficulty | Title: *Rift Conqueror* + Rift Trophy (placeable, animated) |
+| Kill every boss at 5th+ difficulty | *Veteran's Medal* curio (+3% all stats, +10% XP) |
+| Kill every boss at 10th+ difficulty | *Legend's Insignia* curio (+5% all stats, +15% XP, +10% loot) |
+
+**Rift Records.** Track deepest floor reached.
+
+| Milestone | Reward |
+|-----------|--------|
+| Reach Floor 5 | Title: *Rift Diver* |
+| Reach Floor 10 | *Rift Compass* curio (shows Rift loot tier of current floor) |
+| Reach Floor 15 | Title: *Rift Veteran* + cosmetic armor overlay |
+| Reach Floor 20 | Title: *Void Walker* + Riftwalker Boots blueprint guaranteed |
+| Reach Floor 25 | Title: *Rift Breaker* + unique weapon cosmetic (void aura) |
+| Reach Floor 30 | Title: *The Unfathomable* + animated void armor cosmetic set |
+| Complete a run with every floor modifier active | Title: *Masochist* |
+
+**Gear Collection.** Track unique items discovered, equipped, and crafted.
+
+| Milestone | Reward |
+|-----------|--------|
+| Equip 1 Legendary affix item | Collection entry |
+| Equip items from every material tier | Title: *Well-Equipped* |
+| Obtain all 7 Mythic Unique blueprints | Title: *Mythic Collector* + display pedestal recipe |
+| Craft all 7 Mythic Unique items | Title: *Mythic Forgemaster* + Mythic Forge operates 50% faster |
+| Obtain a "perfect" affix item (max affixes, all Legendary) | Achievement entry |
+
+**100% Compendium completion** is the "true endgame" — estimated 400+ hours. Requires mastering every class, clearing deep Rift floors, killing every boss at high Progressive difficulty, collecting all Mythic items, and exploring everything.
+
+### Loop 5 — Creative Endgame
+
+T4 unlocks **RFTools Dimensions** — players can create custom dimensions with controlled biomes, terrain, and lighting. Custom dimension templates unlock via Compendium milestones.
+
+- **Decorative trophies.** Compendium milestones unlock placeable trophy blocks: animated boss heads, glowing Rift floor markers, class mastery statues, dimensional trophies.
+- **Megabuilding materials.** Endgame-exclusive materials (Aethersteel blocks, Gaia Ingot blocks, planetary stones, ascension sigils) become decorative palette options.
+- **Ongoing engagement.** Maintaining a custom dimension costs RF — endgame megabuilders stay engaged with the tech systems.
+
+### Ascension — the prestige cycle
+
+After T4 + Glacio + Mythic Forge endgame, the player can **ascend** — losing some progression but gaining permanent stat multipliers and access to ascension-only content.
+
+Ascension consumes Iridescent Rift Shard + Void Fragment + Gaia Ingot + Cataclysm Void Core + Cataclysm Monstrous Horn. **Five ascension levels** (A1–A5) are available. Mob HP and damage scale 1.2× per level (A5 = 2.0× HP, 2.0× damage on top of dimension multipliers). The pack's late-game endgame is *"how high can you ascend before the world breaks you?"*
+
+> **Design intent — irreversibility.** Ascension is per-character and irreversible. No toggling on/off to farm easy content with A5 rewards. Stat bonuses are percentage-based, so they don't trivialize early content — they keep pace with scaling enemies.
+
+#### Ascension feature surface (design — partial implementation)
+
+The Ascension system is designed to layer multiple difficulty + reward features on top of the base scaling. Some are shipped; others are deferred design.
+
+| Feature | What it does | Status |
+|---------|--------------|--------|
+| **Mob HP/damage scaling** | 1.2× per ascension level, multiplicative with dimension scaling | Shipped |
+| **Stat bonus per level** | Permanent +5% per stat per A-level, capped at A5 | Shipped |
+| **Ascension Sigils** | Curio item per A-level, occupies a curio slot, competes with other curios | Shipped |
+| **Nemesis System** | Mobs that kill the player gain a "nemesis" tag + stats; killing them grants bonus rewards | Future |
+| **Corrupted Champions** | At A2+, Champions roll for "Corrupted" status — extra affix + special loot table | Future |
+| **Rift Echoes** | At A3+, 20% chance after a boss death spawns a shadow copy with reduced HP + 2 random Rift modifiers | Future |
+| **Night Raids** | At A4+, scheduled wave events every 3rd night | Future |
+| **Corruption Zones** | At A2+, scripted zones with area effects; A5 zones persist and expand | Future |
+| **Gauntlet Challenges** | Weekly-rotating quest set with KubeJS-driven rotation | Future |
+| **Oblivion Trial** | Special RFTools dimension with forced sequential floors, no Void Coffer banking, death = clear inventory | Future |
+
+> **Implementation note.** The "Future" features above ship as design specs but not as runtime systems yet. Each has a documented fallback simplification (e.g., Nemesis System → flat +XP bonus on death recovery; Corruption Zones → static pre-placed zones; Rift Echoes → flat % material drop chance from all bosses at A3+) that preserves the core value proposition without the full implementation.
+
+→ Mythic Forge recipe matrix, ascension scaling formulas, Rift floor loot tables: [Appendix §E](master-appendix.md#e-custom-items-registry).
+
+---
 
 Rifts are the procedural-dungeon endgame. Each Rift run:
 
@@ -734,7 +877,42 @@ Heracles is the pack's quest engine. Quests serve three roles:
 2. **Boss-hunting tracking.** Kill X T3 bosses to unlock a Mythic Catalyst recipe. Kill the Ender Guardian to unlock the Riftwalker Boots schematic.
 3. **Optional-side rewards.** Food diversity tracking (Spice of Life integration), automation milestones, exploration completionism, dimension-specific challenges.
 
-> **Design intent.** Quests are not the *only* path through any system. They are a parallel rail that rewards engagement.
+> **Design intent.** Quests are not the *only* path through any system. They are a parallel rail that rewards engagement. Players who ignore the quest book can still advance through KubeJS-detected milestones (boss kills, key crafts, dimension entry).
+
+### Quest book chapter structure
+
+The book is organized as a **hub-and-spoke layout** with branching paths inside each tier chapter. Skill-point rewards are tuned so completing one full path per tier covers the player's needs; completing multiple paths grants bonus skill points.
+
+| Chapter | Status | Skill points (min → max) | Notes |
+|---------|--------|--------------------------|-------|
+| **Welcome** | Always available | 3 | Tutorial, character introduction, codex orientation |
+| **Tier 1** | Always available | 5 → 15 | 5 paths (Tech / Magic / Combat / Exploration / Hybrid). Min path-only; max all paths + bonuses |
+| **Tier 2** | Locks until T1 complete | ~5 → 20 | Same path structure, more depth |
+| **Tier 3** | Locks until T2 complete | ~5 → 20 | Same; introduces hybrid path |
+| **Tier 4** | Locks until T3 complete | ~5 → 15 | Endgame entry |
+| **Crucible** | Locks until T4 complete | 5 | Mythic Forge milestones, Rift records, Compendium-aligned challenges |
+| **Community** | Always visible | 0 | Server-wide buff observation quests; no individual reward |
+| **Prestige** | Locks until ascension unlocked | 0 | Ascension-specific tracking; bonuses are A-level perks, not skill points |
+
+**Total skill points from quests across all chapters: ~80–95.** Combined with mob-kill XP across the six skill trees, a heavy endgame player reaches ~120–150 total skill points (out of the ~180 theoretical maximum).
+
+#### Path branching inside each chapter
+
+Each tier chapter follows the same **hub structure**:
+
+1. **Tier baseline gate** — central node, always must complete.
+2. **Forked Choice** (T2+) — split into 2–3 paths. Tech, Magic, Combat. Each path has 4–6 quests.
+3. **Pillar Choice** (T3+) — within a path, sub-choose specialization (e.g., the Magic path branches further into Botania-focus / Ars-focus / F&A-focus).
+4. **Mythic Choice** (T4) — endgame goal-set chosen by the player (e.g., "complete 3 Mythic Uniques" vs. "reach Rift Floor 20" vs. "kill every T4 boss at 10th+ difficulty").
+5. **Bonus quests** — completing additional paths beyond the player's primary grants extra skill points + loot boxes.
+
+Locked chapters prevent overwhelm. A T1 player sees only the Welcome and Tier 1 chapters; the rest unlock as tiers complete.
+
+> **Anti-overwhelm design.** The quest book is a guide, not a cage. Each quest's description text teaches the player about the system being engaged with — the quest book doubles as documentation.
+
+#### Prestige quest reset
+
+On ascension, all quest progress resets. Skill points already earned are tracked separately in Pufferfish's persistent data and are **not** affected by quest reset. The KubeJS prestige handler marks which quest-sourced skill points have been earned to prevent re-earning on subsequent ascensions.
 
 ### Patchouli Codex
 

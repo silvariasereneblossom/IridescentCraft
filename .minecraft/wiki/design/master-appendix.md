@@ -365,9 +365,80 @@ Cross-mod injection of Mahou reagents:
 - Ragnarok set → guard @ 5%
 - Dragon set / Death set → harder Abyss bosses @ 5%
 
-### C.12 Counts
+### C.12 Boss mod integration — additional mods (design notes)
 
-**88 entities** with explicit LootJS rules (was 17 pre-Phase-6F audit; +71 from Phase 6F-2/3 + audit Phase 4.1).
+These boss mods are in the modlist but not yet enumerated in the dedicated `*_drops.js` files. They integrate via dimension-multiplier scaling rather than per-entity LootJS rules.
+
+**Brutal Bosses.** 29+ structure-guarding mini-boss variants of vanilla mobs (Evoker Boss, Skeleton Boss, etc.). Spawn next to loot chests in any structure. Datapack-configurable. Scales naturally with the structure they appear in via ScalingMobs dimension multipliers — no separate Progressive Bosses scaling.
+
+| Variant family | Primary spawn | Effective tier |
+|----------------|---------------|:--------------:|
+| Zombie / Skeleton / Spider | Overworld dungeons + YUNG's structures | T1 |
+| Husk / Drowned / Cave Spider | Desert temples, ocean monuments, caves | T1–T2 |
+| Evoker / Vindicator / Pillager | Woodland mansions, pillager structures | T2 |
+| Blaze / Wither Skeleton / Piglin Brute | Nether fortresses, bastions | T3 |
+| Guardian / Phantom / Shulker | Ocean monuments, End cities | T3–T4 |
+
+**Ultris: Boss Expansion.** 8 unique bosses with custom AI, phases, music, and arena structures (Corrupted Enderman, Blaze King, Ultra Wither, Sanctum Keeper, Giant, Phantom Swarm, Shulker Stone, +1). Treated as progression-tier bosses on par with Cataclysm/Meet Your Fight; placed by dimension and difficulty.
+
+| Boss | Location | Tier | Simply Swords unique? |
+|------|----------|:---:|:---:|
+| Corrupted Enderman | Overworld structure | T2 | Yes — void/teleport katana |
+| Giant | Overworld surface structure | T2 | No |
+| Phantom Swarm | Overworld night event | T2 | No |
+| Blaze King | Nether tower | T3 | Yes — fire greatsword |
+| Sanctum Keeper | T3-T4 structure | T3-T4 | TBD |
+| Ultra Wither | Summoned (T3+) | T3-T4 | Yes — wither unique |
+| Shulker Stone | End | T4 | Yes — End-themed |
+
+> Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill — functions like Progressive Bosses 5th-kill difficulty.
+
+**LuMoreBossesAndMobs.** Macholote, Terezinossauro, Mini Golems (Gold/Diamond), End Dwellee. Treated as ambient mini-bosses; ScalingMobs handles their scaling.
+
+| Boss | Tier | Notes |
+|------|:---:|-------|
+| Macholote | T1 | Overworld surface |
+| Terezinossauro | T2 | Therizinosaurus Claw Spear unique drop |
+| Gold Mini Golem | T1 | Gold-themed loot |
+| Diamond Mini Golem | T2 | Diamond-themed loot |
+| End Dwellee | T4 | End-exclusive materials |
+
+**Majestic Menaces.** Per-boss thematic drops; treated as named encounters (Teikoku Senshi line). T2-T3 placement.
+
+**Mutant Monsters.** Variants of vanilla zombie/skeleton/creeper/enderman with enhanced AI and drops. Block-break suppression in `mutant_monsters_no_griefing.js` — mutant zombie pillar-up and mutant creeper charged explosion bypass mobGriefing=false defaults. Wired via `dimensional_boss_drops.js`.
+
+**NovaBosses.** Reserved for future allocation per the simplyswords audit's 14-weapon reserve list (Section 8 of `loot_overhaul.js`). Currently not allocated.
+
+**Ultimate Bosses.** Reserved similarly.
+
+#### Loot config priorities
+
+Boss-mod loot tables should be configured in this order during implementation:
+
+1. Brutal Bosses datapacks — override default loot tables; tier 1 → vanilla materials + small XP; tier 4 → netherite scraps + Rare-Epic Apotheosis affix item; never includes Simply Swords uniques.
+2. Ultris — assign Simply Swords uniques + tier-appropriate materials per the table above.
+3. LuMoreBossesAndMobs — verify no drops bypass tier gating.
+4. Ultimate Bosses — assign T4 loot + Rift materials when integrated.
+5. NovaBosses — identify in-game, place in tier system, assign loot when integrated.
+6. Cataclysm Apotheosis Addon — already installed; verify it integrates Cataclysm drops with Apotheosis affix system.
+
+### C.13 Simply Swords unique-count audit
+
+The pack's named-unique distribution targets healthy variety per tier without making any single drop feel non-special.
+
+| Tier | Unique weapons assigned | Target |
+|:----:|------------------------:|--------|
+| T2 | ~10–12 | Enough variety that players see several before T3 |
+| T3 | ~10–14 | Widest variety — most boss diversity here |
+| T4 | ~8–10 | Elite weapons, trophy status |
+| Endgame / Mythic | 7 (Mythic Uniques from Rift Blueprints) | Top-end horizontal variety |
+| **Total** | **~35–43** unique weapons | |
+
+Each class should have 3–4 viable unique options across the full progression — enough that build identity feels authored without forcing a single best-in-slot.
+
+### C.14 Counts
+
+**88 entities** with explicit LootJS rules (was 17 pre-Phase-6F; +71 from Phase 6F + audit Phase 4.1). Plus the additional boss mods covered in C.12 that integrate via ScalingMobs without dedicated LootJS files.
 
 ---
 
