@@ -332,7 +332,7 @@ ServerEvents.recipes(event => {
   // K.3: Individual ring removal belt-and-suspenders (in case regex misses any)
   ;[
     'theabyss:ring_of_fire', 'theabyss:ring_of_speed', 'theabyss:ring_of_flight',
-    'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghost',
+    'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghosts',
     'theabyss:ring_of_slide', 'theabyss:ring_of_thunder', 'theabyss:ring_of_freeze',
     'theabyss:ring_of_blackstrike', 'theabyss:ring_of_curse', 'theabyss:ring_of_eagle',
     'theabyss:ring_of_electro', 'theabyss:ring_of_enderchest', 'theabyss:ring_of_fangs',
