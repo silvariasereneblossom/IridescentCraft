@@ -189,7 +189,29 @@ try {
                     Write-Host "    [cleanup] Removed stale: $($_.Name)" -ForegroundColor Yellow
                 }
             }
-            Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object { Copy-Item $_.FullName "$dest\mods" -Force }
+            Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object {
+                $jarSrc = $_.FullName
+                $jarDst = Join-Path "$dest\mods" $_.Name
+                # Delete-then-copy with retry. AV (Defender) sometimes locks
+                # bytecode-patched jars (ars_nouveau, Patchouli) momentarily
+                # during scan. PermissionDenied here was crashing the whole
+                # sync mid-run.
+                $copied = $false
+                for ($attempt = 1; $attempt -le 3 -and -not $copied; $attempt++) {
+                    try {
+                        if (Test-Path $jarDst) { Remove-Item $jarDst -Force -ErrorAction SilentlyContinue }
+                        Copy-Item $jarSrc $jarDst -Force -ErrorAction Stop
+                        $copied = $true
+                    } catch {
+                        if ($attempt -lt 3) {
+                            Start-Sleep -Milliseconds 500
+                        } else {
+                            Write-Host "    [WARN] Could not write $($_.Name): $($_.Exception.Message)" -ForegroundColor Yellow
+                            Write-Host "    [HINT] Whitelist the server folder in Windows Defender if this persists." -ForegroundColor Yellow
+                        }
+                    }
+                }
+            }
         } elseif ($selfUpdateFiles -contains $item.Name) {
             $current = Join-Path $dest $item.Name
             $srcHash = (Get-FileHash $item.FullName -Algorithm SHA1).Hash
