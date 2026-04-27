@@ -68,6 +68,13 @@
     "alexsmobs:blossom_drop",
     "alexsmobs:pigshoes",
 
+    "forbidden_arcanus:entities/additions/bat_additions",
+    "forbidden_arcanus:entities/additions/drowned_additions",
+    "forbidden_arcanus:entities/additions/ender_dragon_additions",
+    "forbidden_arcanus:entities/additions/enderman_additions",
+    "forbidden_arcanus:entities/additions/squid_additions",
+    "forbidden_arcanus:entities/additions/zombie_additions",
+
     "tetra:bartering_additions"
   ],
   "replace": true
