@@ -2876,6 +2876,7 @@
 		"icraft:class/void_summoner/soul_tether" = true
 		"icraft:class/void_summoner/shadow_cloak" = true
 		"icraft:class/void_summoner/glass_cannon_tag" = true
+		"icraft:class/void_summoner/expanded_mana" = true
 
 	[origins."icraft:vanguard"]
 		enabled = true
