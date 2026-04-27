@@ -141,13 +141,16 @@ After every major change (new features, balance changes, new items/origins/class
 4. **Design doc** (`wiki/design/master.md`) — update affected sections when initial design is modified
 5. **Public GitHub wiki** — clone `https://github.com/silvariasereneblossom/IridescentCraft.wiki.git` to `/tmp/icraft-wiki`, update matching pages, commit and push. Uses `[[Page Name]]` link syntax (not file paths). Sidebar is `_Sidebar.md`.
 
-**Internal-only pages (do NOT mirror to the public wiki):**
-- `wiki/dev/lessons-learned.md` — postmortem log for stalled/failed implementations. Contains candid retro notes that belong in the engineering log, not on the user-facing wiki.
-- `wiki/dev/deployment-and-utility-guide.md` — internal deployment reference (phase0_sync internals, custom-jar allowlist, utility scripts). Names private paths/network shares.
-- `wiki/dev/code-review-2026-04-23.md` — full-codebase code review findings; names internal issues and followups.
-- `wiki/mechanics/game-mechanics.md` — implementation deep-dive (which scripts fire, in what order, with what math). Companion to the design doc — intent vs reality. Names file paths and SRG internals; not for public consumption.
+**Internal documentation lives in a separate private repo: [silvariasereneblossom/IridescentCraft-internal](https://github.com/silvariasereneblossom/IridescentCraft-internal)** (migrated 2026-04-27).
 
-When mirroring, skip any page whose top includes the HTML comment `<!-- INTERNAL ONLY -->` or is listed above.
+That private repo holds:
+- `audits/` — per-mod balance/gating audit pass, FINDINGS, FIX_PLAN
+- `dev/` — postmortem log (lessons-learned), deployment + utility reference, code review snapshots
+- `mechanics/` — implementation deep-dive (which scripts fire, in what order, with what math)
+- `protocols/` — internal-only protocols (e.g., new-mod-audit checklist)
+- `design/` — in-progress design docs whose state may not match shipped behavior
+
+This repo (the public IridescentCraft) should ONLY contain content suitable for public consumption. When mirroring `wiki/` to the public GitHub wiki, anything with `<!-- INTERNAL ONLY -->` at the top is a leftover that should be moved to `IridescentCraft-internal` instead — it shouldn't be in this repo at all.
 
 This is a blocking requirement — changelogs must be updated in the same session as the changes, not deferred to later.
 

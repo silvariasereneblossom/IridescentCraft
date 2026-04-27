@@ -137,7 +137,8 @@ ServerEvents.recipes(event => {
   // `deeps` tag (T3+ Afrit/Marid only). Dimensional_shard_ore is gated to
   // `master` (T4 Marid only). This closes the audit's P0 finding from
   // 2026-04-27 — without this datapack a Foliot Miner could produce diamond
-  // (weight 218) without any tier gating. See wiki/audits/occultism.md.
+  // (weight 218) without any tier gating. See audits/occultism.md in the
+  // IridescentCraft-internal repo (contributors only).
 
   // E.5: Botania Orechid — already handled via datapack (see tier_gated_recipes.js)
   // The Orechid transforms stone into ores based on weighted tables.

@@ -64,7 +64,7 @@ Same dev day, continued from earlier sessions below.
 
 - **Phase 7 design captured** (`wiki/design/iridescent-modular-spells-tetra-migration.md`) — 6 elemental subclasses (Pyromancer/Cryomancer/Necromancer/Priest/Druid/Stormcaller), each +50% to one school, -10% melee malus (vs Archmage's -25%), no starter armor, add-alongside not replace. Implementation deferred.
 
-- **Tetra forbidden-character lesson** captured in `wiki/dev/lessons-learned.md` — `SchematicRegistry.registerSchematic` constructs a ResourceLocation path from the identifier, so identifiers must obey `[a-z0-9/._-]` (no `:`).
+- **Tetra forbidden-character lesson** captured in the lessons-learned postmortem log (private) — `SchematicRegistry.registerSchematic` constructs a ResourceLocation path from the identifier, so identifiers must obey `[a-z0-9/._-]` (no `:`).
 
 ---
 
@@ -184,7 +184,7 @@ Two custom overworld biomes went live today: `iridescent_biomes:cherry_river_val
 
 The shipping state is: mod jar at `.minecraft/mods/iridescent_biomes-1.0.0.jar` (all three distros), biome JSONs inside the jar at `data/iridescent_biomes/worldgen/biome/`, biomes in `#minecraft:is_overworld` and `#minecraft:is_mountain`, features verbatim-vanilla-cherry_grove, TerraBlender region weight 8 at disjoint climate coords from vanilla cherry_grove so we don't compete for its spawn points.
 
-Background: the pack had been crashing at world load for ~20 iterations with `Feature order cycle found, involved sources: [minecraft:lush_caves, icraft:cherry_mountains, biomesoplenty:moor]`. The root cause was not any of the suspects chased during those iterations (feature ordering, tag membership, TerraBlender registration method, mod load order, Tectonic, LionfishAPI). It was a stale Paxi datapack at `config/paxi/datapacks/icraft_biomes.zip` that had been auto-loaded since before the Java mod existed and kept registering orphan biomes in a conflicting namespace. Once the Java mod either moved namespace or disabled itself, the datapack biomes remained — tagged `#is_overworld`, receiving injected features, but placed nowhere. Blueprint's FeatureSorter saw them and cycled. Commit `8c85d818` deleted the datapack + renamed the mod's own biomes to the matching `iridescent_biomes:` namespace. Full retro in `wiki/dev/lessons-learned.md`.
+Background: the pack had been crashing at world load for ~20 iterations with `Feature order cycle found, involved sources: [minecraft:lush_caves, icraft:cherry_mountains, biomesoplenty:moor]`. The root cause was not any of the suspects chased during those iterations (feature ordering, tag membership, TerraBlender registration method, mod load order, Tectonic, LionfishAPI). It was a stale Paxi datapack at `config/paxi/datapacks/icraft_biomes.zip` that had been auto-loaded since before the Java mod existed and kept registering orphan biomes in a conflicting namespace. Once the Java mod either moved namespace or disabled itself, the datapack biomes remained — tagged `#is_overworld`, receiving injected features, but placed nowhere. Blueprint's FeatureSorter saw them and cycled. Commit `8c85d818` deleted the datapack + renamed the mod's own biomes to the matching `iridescent_biomes:` namespace. Full retro in the lessons-learned postmortem log (private).
 
 Player-facing: Nature's Compass can now locate both biomes. `cherry_river_valley` spawns in warm temperate humid near-inland rolling terrain. `cherry_mountains` spawns on cool modestly-humid inland mountain tops. Both use vanilla cherry_grove's features (flower_cherry, trees_cherry, cherry-themed step 9) so they'll look like cherry forests, just at different climate zones from vanilla cherry_grove.
 
@@ -220,9 +220,9 @@ Fresh tester log revealed three stacked issues:
 ### Next test
 
 - Tester needs to actually complete the Origins selection UI on login (Origin → Race → Class). `!origindump` will now return without throwing and show the actual compound.
-- If Origins compound is populated but kit still doesn't fire, the probe is still wrong — full postmortem in `wiki/dev/lessons-learned.md`.
+- If Origins compound is populated but kit still doesn't fire, the probe is still wrong — full postmortem in the lessons-learned postmortem log (private).
 
-Full postmortem at `wiki/dev/lessons-learned.md` (2026-04-21 top entry).
+Full postmortem at the lessons-learned postmortem log (private) (2026-04-21 top entry).
 
 ---
 
@@ -285,7 +285,7 @@ New shape:
 - `kubejs/server_scripts/origins/artificial_construct_progression.js` — construct hooks
 - `kubejs/server_scripts/skills/skill_effects.js` — class/race skill effects
 
-All 3 distros synced. Lessons-learned entry at `wiki/dev/lessons-learned.md` (2026-04-21 top entry) documents the jar-audit approach.
+All 3 distros synced. Lessons-learned entry at the lessons-learned postmortem log (private) (2026-04-21 top entry) documents the jar-audit approach.
 
 ### Starter kit impact
 
@@ -373,12 +373,12 @@ Swept both `datapack_sources/iridescent_codex/assets/` and `.../data/` for `$(/b
 
 3. **Non-curated artifact strip switched to predicate.** Per-item string `removeLoot` on village tables wasn't catching artifacts injected by the Section 1C type-level `addLootTypeModifier(LootType.CHEST).anyDimension('minecraft:overworld')` T1 broadcast. Switched to a predicate-based `removeLoot(function(stack) { ... })` that whitelists `villageArtifactPool` and strips anything else from `artifacts:` / `relics:` / `celestial_artifacts:` namespaces. Predicate runs at roll time, so it's robust to registration-order quirks between type-level and table-level modifiers.
 
-Rationale for (3) lives in `wiki/dev/lessons-learned.md` (2026-04-21 entry).
+Rationale for (3) lives in the lessons-learned postmortem log (private) (2026-04-21 entry).
 
 ### Files changed
 
 - `kubejs/server_scripts/loot/lootjs_overhaul.js` — dedupe + air slot + predicate strip
-- `wiki/dev/lessons-learned.md` — postmortem entry
+- the lessons-learned postmortem log (private) — postmortem entry
 - `wiki/known-issues/tracker.md` — entry moved to resolved
 
 ---
