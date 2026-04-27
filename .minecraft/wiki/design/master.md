@@ -374,14 +374,91 @@ Several classes are explicitly **glass cannons** — high damage ceiling at the 
 
 → Full Origin / Race / Class roster + ability tables: [Appendix §A.6](master-appendix.md#a6-character-layer-reference).
 
-### Skill investment and leveling
+### HP and equipment scaling
 
-Layered on top of Origin / Race / Class:
+The Class layer is the only character layer that modifies HP and damage percentages. Race traits stay in the secondary-stats lane (movement, hunger, environmental resistances). Origins provide species fantasy without flat HP/damage skews.
 
-- **Pufferfish's Skills** — six skill trees with command-reward effects. Investment via XP. Active progression — the player chooses where to invest.
-- **JustLevelingFork** — passive HP / damage / speed scaling per character level. Flat XP curve (~1000–2000 XP per level), tuned so leveling never feels like an XP sink. Happens naturally as the player plays.
+> **Design rule.** Race + Class have meaningful tradeoffs. Skills are pure bonuses with no drawbacks.
 
-Both run alongside vanilla XP and the Apotheosis enchanting economy.
+| Archetype | Classes | HP modifier | Equipment HP | Damage modifier |
+|-----------|---------|------------:|:------------:|:---------------:|
+| Pure Tank | Vanguard | +20% | Normal | -15% all damage |
+| Tank/Support/Healer | Paladin | +10% | Normal | — |
+| Hybrid | Samurai, Battlemage, Wanderer | +5% | Normal | — |
+| Crafter | Artificer | 0% | Normal | — |
+| Melee DPS | Berserker | -5% | Normal | — |
+| Summoner | Void Summoner | -10% | Half | — |
+| Ranged DPS | Ranger | -20% | Half | — |
+| Offensive Caster | Archmage | -20% | Half | — |
+
+**Half-equipment-HP** (Ranger, Archmage, Void Summoner) means equipment-sourced HP bonuses count at 50% effectiveness — Vitality enchantment, Hearty/Vigorous/Vital affixes, curio HP bonuses, and armor attribute modifiers all halve. Vanilla armor base values are unaffected. This is the mechanical implementation of the glass-cannon pillar: their damage ceiling is high; their HP ceiling is half.
+
+Vanguard's -15% damage penalty is the corresponding tank tradeoff: maximum survivability, weakest damage output. The Vanguard's role is to absorb hits, not deal them.
+
+→ Per-class weapon affinities and active/passive ability rosters: [Appendix §K](master-appendix.md#k-character-build-reference).
+
+### Race traits — mild tradeoffs
+
+Races provide innate traits with **mild tradeoffs** — less impactful than class choice. Permanent at character creation.
+
+> **Race design principles.** Every race has 2–3 benefits and 1–2 drawbacks. Drawbacks are inconveniences, not crippling. Races do *not* duplicate class identities (no "warrior race" overlapping Berserker). Races do not modify HP%, damage%, or equipment effectiveness — those belong to the Class layer.
+
+What races *can* modify: movement speed (small, ±5–8%), hunger/saturation, vision (night/underwater), environmental resistances (fire/cold/fall), size (via Pehkui), resource interaction (mining/farming), social (villager prices, mob aggro).
+
+The 11 race roster spans utility flavor (Human, Halfling), mobility specialists (Elf, Kirin, Fallen Angel), durability specialists (Dwarf, Demi-God, Ryu), and theme-driven races (Orc, Faefolk, Revenant). Each race has a "natural class pairing" but every race-class combination is viable.
+
+→ Full race trait tables: [Appendix §K.3](master-appendix.md#k3-race-tradeoffs).
+
+### Skill trees — six paths, deeper specialization
+
+Pufferfish's Skills provides the third character layer. Six trees, each with its own XP track, each layered with a Trunk (shared first 8 nodes) → Branch A / Branch B (specialized paths) → Capstone (deep-investment payoff).
+
+| Tree | XP source | Trunk theme | Branch A | Branch B |
+|------|-----------|-------------|----------|----------|
+| **Warfare** | Melee kills | melee damage, attack speed, melee resistance, HP | Sustained DPS + life steal (Berserker's Path) | Crit + weapon mastery (Duelist's Path) |
+| **Marksman** | Ranged kills | ranged damage, draw speed, accuracy, movement | Single-target sniper (Sniper's Path) | AoE + fire rate (Volley Path) |
+| **Sorcery** | Spell casts + magic kills | magic damage, mana regen, cast speed, magic resistance | Raw spell power (Destruction Path) | Healing + summoning (Enchanter's Path) |
+| **Fortitude** | Damage taken | HP, all-resistance, healing received, knockback resistance | Tank HP + armor (Iron Wall) | Sustain + regen (Survivor's Path) |
+| **Gathering** | Mining, chopping, harvesting, fishing | mining speed, breaking speed, crop yield, fortune | Mining + ore yield (Prospector's Path) | Farming + fishing (Harvester's Path) |
+| **Engineering** | Crafting, machine operation, smelting | crafting speed, material save, machine speed, durability | Crafting quality (Artificer's Path) | Machines + automation (Engineer's Path) |
+
+Each tree caps at **40 nodes** (~180 total across all six trees). A heavy endgame player reaches ~120–150 — enough for 2–3 deep trees plus 1–2 trunks. Forced prioritization is intentional.
+
+> **Generalist vs specialist.** Spread points across multiple trees for broad moderate bonuses (good for Wanderer, Battlemage, Samurai). Go deep into one tree for powerful focused bonuses + capstone abilities (good for Berserker, Archmage, Ranger). Neither is strictly better. The math is tuned so going deep gives ~+15–20% more effectiveness in your specialty versus spreading, while generalists get meaningful bonuses across multiple contexts.
+
+#### Class → tree affinity
+
+Recommended primary tree per class. Players are not locked in — every class can invest in any tree — but class kits and weapon affinities make some pairings more efficient.
+
+| Class | Primary tree | Secondary | Reasoning |
+|-------|--------------|-----------|-----------|
+| Berserker | Warfare (Branch A) | Fortitude (Branch B) | Life-steal + sustain → unkillable in sustained fights |
+| Samurai | Warfare (Branch B) | Marksman (Branch A) | Crit scaling + ranged precision = Way of the Blade synergy |
+| Battlemage | Warfare (trunk) | Sorcery (Branch A) | Moderate melee + strong spells = Arcane Infusion fuel |
+| Wanderer | Any 3–4 trunks | — | Generalist wants broad moderate bonuses |
+| Paladin | Fortitude (Branch A) | Sorcery (Branch B) | Tank HP + healing = Holy Aura + Lay on Hands |
+| Vanguard | Fortitude (Branch A) | Warfare (trunk) | Maximum HP + some melee to offset -15% damage penalty |
+| Ranger | Marksman (Branch A) | Gathering (trunk) | Max ranged damage + fortune for resource runs |
+| Archmage | Sorcery (Branch A) | Marksman (trunk) | Spell power deep + ranged passive utility |
+| Artificer | Engineering (Branch A) | Gathering (Branch B) | Crafting quality + farming/fishing supply |
+| Void Summoner | Sorcery (Branch B) | Fortitude (Branch B) | Summoning depth + sustain to keep summons alive |
+
+#### Respec rules
+
+| Layer | Respec? | Cost |
+|-------|---------|------|
+| **Origin** | No — permanent | — |
+| **Race** | No — permanent | — |
+| **Class** | Yes, at the Class Altar | 1 tier-appropriate boss drop + 30 XP levels |
+| **Skill point** | Yes, per-point | 5 levels per point refunded |
+
+Skill points are **not lost on death** and **not lost on class respec** — they're permanent growth. A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). This creates interesting hybrid-build space without forcing a full skill reset every time the player tries a new class.
+
+### Layered XP economy
+
+JustLevelingFork runs alongside the skill trees as a passive HP / damage / speed scaling per character level. Flat XP curve (~1000–2000 XP per level), tuned so leveling never feels like an XP sink. Happens naturally as the player plays — no investment decisions, just steady reward for engagement.
+
+Both Pufferfish (active investment) and JustLevelingFork (passive scaling) run alongside vanilla XP and the Apotheosis enchanting economy. The skill trees use **per-tree XP pools** (melee kills feed Warfare, ranged kills feed Marksman, etc.), naturally guiding players toward trees matching their activity.
 
 ---
 

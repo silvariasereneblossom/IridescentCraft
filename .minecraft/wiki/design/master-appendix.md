@@ -22,6 +22,7 @@
 | H | [Datapack Override Index](#h-datapack-override-index) |
 | I | [KubeJS Script Index](#i-kubejs-script-index) |
 | J | [Bytecode Patches](#j-bytecode-patches) |
+| K | [Character Build Reference](#k-character-build-reference) |
 
 ---
 
@@ -1140,6 +1141,248 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 - **~12 disabled scripts** preserved for reference (`*.disabled`).
 - **1 migration script** (rift_shard_rename, audit Phase 2.2).
 - **2 validator scripts**: `validate_recipe_removals.js` (server-side) + `tools/validate_datapack_references.sh` (dev-time, outside server_scripts).
+
+---
+
+## K. Character Build Reference
+
+Full numerical content for the character system (Origin / Race / Class / Skills). Companion to [`master.md` Part VI](master.md#part-vi--player-character).
+
+### K.1 Class HP + equipment scaling
+
+| Class | Archetype | HP modifier | Equipment HP | Damage modifier | Notes |
+|-------|-----------|------------:|:------------:|:---------------:|-------|
+| Berserker | Melee DPS | -5% | Normal | — | Life-steal sustain |
+| Samurai | Melee/Ranged Hybrid | +5% | Normal | — | Way of the Blade synergy (crit + ranged precision) |
+| Battlemage | Melee/Magic Hybrid | +5% | Normal | — | Arcane Infusion (melee + spells) |
+| Wanderer | Hybrid Multiclass | +5% | Normal | — | Broad-bonus generalist |
+| Paladin | Tank/Support/Healer | +10% | Normal | — | Holy Aura + Lay on Hands |
+| **Vanguard** | Pure Tank | +20% | Normal | **-15% all damage** | Pure damage-soak role |
+| **Ranger** | Ranged DPS | -20% | Half | — | Glass cannon |
+| **Archmage** | Offensive Caster | -20% | Half | — | Glass cannon |
+| Artificer | Crafter / Non-combat | 0% | Normal | — | Crafting + machine specialist |
+| **Void Summoner** | Summoner / Necromancer | -10% | Half | — | Glass-cannon-ish; minions tank |
+
+#### Half-equipment-HP explanation
+
+Ranger, Archmage, and Void Summoner receive **50% effectiveness** from all equipment-sourced max HP bonuses:
+- Vitality enchantment (half HP per level)
+- Max HP affixes (Hearty, Vigorous, Vital — half value)
+- Curio HP bonuses (half value)
+- Armor attribute modifiers granting HP (half value)
+
+Vanilla armor base values + JustLevelingFork level-up HP + Spice of Life HP + race traits are *unaffected* by the halving — only equipment-sourced bonuses are halved.
+
+#### HP-modifier stacking order
+
+1. Class HP modifier applies first (multiplicative on base 20 HP).
+2. Race traits stack additively.
+3. JustLevelingFork level-up HP additive.
+4. Spice of Life food HP additive.
+5. Equipment HP halving applied AFTER enchantments/affixes calculate their HP bonus (so the halving is on the post-enchant total).
+
+### K.2 Class weapon affinities (excerpt)
+
+| Class | Buffs (with bonus) | Penalties (with malus) |
+|-------|--------------------|------------------------|
+| Berserker | Axes / Hammers (+15% damage), 2H weapons | Bows (-10% damage) |
+| Samurai | Swords (+15% damage), Bows (+10%) | Hammers (-15%) |
+| Battlemage | Swords (+10%), Magic staves/wands (+10%) | 2H Hammers (-15%) |
+| Wanderer | All weapons (+5% baseline) | None |
+| Paladin | Swords + Shields (+10%), Holy magic (+15%) | Dark/void magic (-15%) |
+| Vanguard | Shields + 1H weapons (+15% block, +10% melee) | All ranged (-15%) |
+| Ranger | Bows / Crossbows (+15% damage, +10% draw speed) | All melee (-15%) |
+| Archmage | All magic (+25% spell damage) | Melee (-25%) |
+| Artificer | None (non-combat focus) | All combat (-15%) |
+| Void Summoner | Magic staves/wands (+5% spell), Dark/void magic (+15%) | Swords (-15%), Axes/Hammers (-20%), Bows/Crossbows (-10%) |
+
+Each class also has 5 passive abilities + 1 active ability (cooldown-based keybind). See in-game codex for full per-class ability descriptions.
+
+### K.3 Race tradeoffs
+
+Permanent at character creation. Mild tradeoffs (vs. class's strong tradeoffs).
+
+| Race | Benefits | Drawbacks | Natural pairing |
+|------|----------|-----------|-----------------|
+| Human | +10% XP gain, neutral villager prices, no environmental weaknesses | None — the "default" race | Anything (versatile) |
+| Elf | Night vision, +8% movement, +15% bow accuracy | -10% hunger efficiency, -1 armor toughness | Ranger, Archmage |
+| Dwarf | +15% mining speed, +10% armor toughness, 50% fire resistance | -5% movement, -8% jump height | Vanguard, Artificer |
+| Orc | +10% melee knockback, +5% attack speed, intimidation aura | +15% hunger drain, -10% villager prices | Berserker |
+| Halfling | +20% food efficiency, +10% luck, smaller hitbox (Pehkui) | -10% melee reach, -5% attack damage flat | Wanderer, Ranger |
+| Revenant (Undead) | No hunger, night vision, +10% damage in darkness | Sunlight damage (1 HP/5s without helmet), -20% potion healing, +25% Smite damage taken | Void Summoner |
+| Faefolk | Slow fall (passive), +15% nature magic, plants grow faster nearby | Iron items deal +10% damage, -5% HP flat | Battlemage, Archmage |
+| Demi-God | +40% HP (8 hearts), 2× raw meat healing, strength + phase abilities, fire damage 1.5× | Mild Nether weakness | Berserker, Vanguard, Paladin |
+| Ryu | 25% damage reduction, slow fall, draconic food healing, debuff cleanse | Meat preference | Paladin, Vanguard, Wanderer |
+| Fallen Angel | +15% all damage, slow fall, velocity dash | -20% HP (4 hearts), meat preference | Ranger, Archmage, Samurai |
+| Kirin | +0.1 movement speed, wall climbing, sprint jump, cat vision, speed boost | -20% HP (4 hearts) | Ranger, Wanderer, Samurai |
+
+### K.4 Origin notes
+
+13 origins total. 9 vanilla rebalanced (Avian, Arachnid, Blazeborn, Elytrian, Enderian, Feline, Merling, Phantom, Shulk) + 4 custom. **No Human and no Mundane origins** — those collapse to no-tradeoff defaults that undermine the species-fantasy layer.
+
+#### Custom origins (4)
+
+| Origin | Theme | Progression hook |
+|--------|-------|------------------|
+| **Witch of Ink** | Ritual-magic specialist — paint magic, feeds from paintings, 50% food reduction | Boss-kill counter (max 200) scales damage/DR/armor toughness; Blessing of Penthesilea capstone unlock at high boss count |
+| **Artificial Construct** | Machine-themed tech bias — 25% food efficiency, eats iron ingots and iron blocks for sustenance | Iron upgrade ladder — 1000→16000 iron consumed unlocks 5 levels, +5% per level, max +25% |
+| **Witherborn** | Undead aesthetic + Wither immunity | Undead-aligned bonuses; pairs with Void Summoner |
+| **Slimebodied** | Slime physics + bouncing combat | Bouncy-mobility + slime-combo identity |
+
+> **Origin design rules.** No lethal effects. Food preferences not restrictions. Elytra flight reserved for Elytrian. Each heart = 5% HP.
+
+### K.5 Skill tree framework
+
+Pufferfish's Skills, six trees, each level-capped at 40, ~180 total nodes across the system.
+
+| Tree | XP source | Per-level points | Level cap |
+|------|-----------|:----------------:|:---------:|
+| **Warfare** | Melee kills | 1 | 40 |
+| **Marksman** | Ranged kills (bow / crossbow / thrown) | 1 | 40 |
+| **Sorcery** | Spell casts (ISS, Ars, Mahou) + magic kills | 1 | 40 |
+| **Fortitude** | Damage taken (XP scales with damage amount) | 1 | 40 |
+| **Gathering** | Mining ore, chopping logs, harvesting crops, fishing | 1 | 40 |
+| **Engineering** | Crafting, operating machines, smelting | 1 | 40 |
+
+XP curve per tree: 50 XP for level 1, ~500 XP by level 25, ~2000 XP by level 40.
+
+**Anti-farming.** Pufferfish's Unofficial Additions diminishes XP from repeated identical actions over time (killing the same mob type repeatedly gives progressively less XP per kill). Encourages variety.
+
+#### Tree layout
+
+Each tree uses a branching layout: 8-node Trunk (shared) → 2-way Split → Branch A / Branch B (specialized paths) → Capstone (deep-investment payoff requiring ~12–15 points in that branch).
+
+```
+        [Root]
+        /    \
+    [Stat]  [Stat]
+       |      |
+    [SPLIT] [SPLIT]
+    /    \
+[Branch A] [Branch B]
+    ...       ...
+[Capstone] [Capstone]
+```
+
+Players can invest in the Trunk without committing to a Branch. But Branches contain the best returns per point.
+
+### K.6 Per-tree breakdown
+
+#### K.6.1 Warfare (XP: melee kills)
+
+**Trunk (8 nodes, +1 each):** Brute Force I/II (+5% melee dmg each), Iron Grip I/II (+5% attack speed each), Thick Hide I/II (+4% melee resistance each), Vigor I/II (+2 max HP each).
+**Trunk total at 8 pts:** +10% melee damage, +10% attack speed, +8% melee resistance, +4 max HP.
+
+**Branch A — Berserker's Path (Sustained DPS).** Focus: raw damage output, attack speed, life-on-hit. Synergizes with Berserker, Samurai, Battlemage. Capstone: ~+15% melee + life steal.
+
+**Branch B — Duelist's Path (Precision).** Focus: critical hits, weapon mastery. Synergizes with Samurai (crit scaling). Capstone: crit chance + crit damage payoff.
+
+#### K.6.2 Marksman (XP: ranged kills)
+
+**Trunk (8 nodes):** ranged damage, draw speed, accuracy, movement speed.
+**Trunk total:** +10% ranged damage, +10% draw speed, +6% accuracy, +8% movement speed.
+
+**Branch A — Sniper's Path (Single Target).** Steady Shot stacking, Penetration (resistance shred), Kill Shot (low-HP execution). Capstone: Deadeye (+15% ranged dmg, +8% resistance shred). Branch A total: +47% ranged dmg, +20% shred, +20% bonus to low-HP targets.
+
+**Branch B — Volley Path (AoE / Speed).** Rapid Fire stacking, multi-target, arrow economy. Synergizes with Ranger Rain of Arrows + Void Summoner crossbow.
+
+#### K.6.3 Sorcery (XP: spell casts + magic kills)
+
+**Trunk (8 nodes):** magic damage, mana regen, cast speed, magic resistance.
+**Trunk total:** +10% magic damage, +10% mana regen, +6% cast speed, +8% magic resistance.
+
+**Branch A — Destruction Path (Raw Spell Power).** Direct-damage spell scaling. Pairs with Archmage, Battlemage.
+
+**Branch B — Enchanter's Path (Utility Magic / Summoning).** Healing, buffs, summon strength. Pairs with Paladin, Void Summoner.
+
+#### K.6.4 Fortitude (XP: damage taken)
+
+**Trunk (8 nodes):** HP, all-resistance, healing received, knockback resistance.
+**Trunk total:** +8 max HP, +8% all resistance, +10% healing received, +30% knockback resistance.
+
+**Branch A — Iron Wall (Tank HP + Armor).** Pure damage-soak progression. Pairs with Vanguard, Paladin.
+
+**Branch B — Survivor's Path (Sustain & Recovery).** Regen, lifesteal-from-defense, comeback mechanics.
+
+#### K.6.5 Gathering (XP: mining, chopping, harvesting, fishing)
+
+**Trunk (8 nodes):** mining speed, breaking speed, crop yield, fortune.
+**Trunk total:** +10% mining speed, +10% breaking speed, +10% crop yield, +0.6 fortune.
+
+**Branch A — Prospector's Path (Mining).** Ore yield, ore vein detection, deeper-strata bonuses.
+
+**Branch B — Harvester's Path (Farming & Fishing).** Crop multipliers, fishing rare chances.
+
+#### K.6.6 Engineering (XP: crafting + machines + smelting)
+
+**Trunk (8 nodes):** crafting speed, material save, machine speed, durability.
+**Trunk total:** +10% crafting speed, +6% material save, +10% machine speed, -10% durability loss.
+
+**Branch A — Artificer's Path (Crafting Quality).** Higher-rarity crafting, refined output, quality-of-craft bonuses.
+
+**Branch B — Engineer's Path (Machines & Automation).** Machine throughput, RF efficiency, smelting bonuses.
+
+### K.7 Class → tree affinity (recommended)
+
+| Class | Primary tree | Secondary | Tertiary | Reasoning |
+|-------|--------------|-----------|----------|-----------|
+| Berserker | Warfare (Branch A: Berserker's) | Fortitude (Branch B: Survivor's) | — | Life-steal + sustain = unkillable in sustained fights |
+| Samurai | Warfare (Branch B: Duelist's) | Marksman (Branch A: Sniper's) | — | Crit scaling + ranged precision = Way of the Blade synergy |
+| Battlemage | Warfare (trunk) | Sorcery (Branch A: Destruction) | — | Moderate melee + strong spells = Arcane Infusion fuel |
+| Wanderer | Any trunk × 3–4 | — | — | Generalist wants broad moderate bonuses |
+| Paladin | Fortitude (Branch A: Iron Wall) | Sorcery (Branch B: Enchanter's) | — | Tank HP + healing effectiveness = Holy Aura + Lay on Hands |
+| Vanguard | Fortitude (Branch A: Iron Wall) | Warfare (trunk) | — | Maximum HP + some melee to offset -15% damage penalty |
+| Ranger | Marksman (Branch A: Sniper's) | Gathering (trunk) | — | Max ranged damage + fortune for resource runs |
+| Archmage | Sorcery (Branch A: Destruction) | Marksman (trunk) | — | Spell power deep + ranged utility |
+| Artificer | Engineering (Branch A: Artificer's) | Gathering (Branch B: Harvester's) | — | Crafting quality + farming/fishing supply |
+| Void Summoner | Sorcery (Branch B: Enchanter's) | Fortitude (Branch B: Survivor's) | — | Summoning depth + sustain to keep summons alive |
+
+Wanderer is the only class without a clear primary tree — by design. The class is built for hybrid playstyles, so spreading across 3–4 trunks is the optimal strategy.
+
+### K.8 Respec rules
+
+| Layer | Respec? | Cost | Where |
+|-------|---------|------|-------|
+| Origin | Permanent | — | — |
+| Race | Permanent | — | — |
+| Class | Yes | 1 tier-appropriate boss drop + 30 XP levels | Class Altar (custom block) |
+| Skill point | Yes (per-point) | 5 XP levels per point refunded | `/puffish_skills skills reset <player> <category>` |
+
+#### Death + skill interactions
+
+- **Skill points are NOT lost on death.** Skills are permanent growth, never at-risk.
+- **Skill points are NOT lost on Class respec.** A Berserker with 30 Warfare points who switches to Paladin keeps those points (suboptimal for Paladin but still functional). Respeccing skills is a separate additional cost.
+
+This creates interesting hybrid-build space without forcing a full reset on every class switch.
+
+#### Class Altar mechanics
+
+Custom block via KubeJS. Recipe: tier-appropriate boss material + crafting station. On use: consumes 1 boss drop + 30 levels, opens class selection screen. Can be placed and shared (multiplayer convenience).
+
+### K.9 Reforging progression
+
+Apotheosis-style affix-rerolling, gated by reforging-tier tokens (boss drops).
+
+| Tier | Requirement | Behavior |
+|------|-------------|----------|
+| **Basic** | T2 progression token | Reroll affixes (random outcome) |
+| **Advanced** | T3 token + expensive materials | Reroll with weighted odds toward desired type |
+| **Ultimate** | T4 token + Gaia ingots / antimatter | Reroll with guaranteed minimum rarity |
+
+Reforging at all three tiers happens at the corresponding Apotheosis workstation (Reforging Table → Advanced → Augmenting Table). Tokens drop from tier-appropriate bosses.
+
+### K.10 Implementation notes
+
+- **Class definitions** — Origins datapacks (fully customizable).
+- **Class attribute modifiers** — via Apothic Attributes.
+- **Class active abilities** — Origins power system (cooldown-based keybind).
+- **Class weapon affinities** — Origins item-conditional attribute modifiers ("when holding item with tag X").
+- **Half-equipment-HP** — overrides max_health attribute contributions from equipment slots with a 0.5 multiplier for affected classes.
+- **Race system** — separate Origins layer (Iridescent Origins).
+- **Race environmental effects** — Origins conditions.
+- **Race size modification** — Pehkui integration where applicable.
+- **Class Altar** — KubeJS custom block + script.
+- **Skill trees** — Pufferfish's Skills datapack (`icraft_skills`).
 
 ---
 
