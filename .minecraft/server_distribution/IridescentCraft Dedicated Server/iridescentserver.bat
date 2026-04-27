@@ -131,6 +131,15 @@ if "%SWAP_ERROR%"=="1" (
     echo [UPDATE] Re-run with: iridescentserver.bat -Force  to retry the full sync.
     echo.
 )
+REM Cross-platform counterpart cleanup — apply iridescentserver.sh.new
+REM if phase0_sync staged it. The .sh isn't used on Windows but we keep it
+REM up-to-date so testers who push from a Windows server-host don't ship
+REM stale .sh content. No relaunch needed for .sh changes.
+if exist "%SDIR%\iridescentserver.sh.new" (
+    echo   [STAGE] Cleaning up cross-platform counterpart: iridescentserver.sh
+    move /y "%SDIR%\iridescentserver.sh.new" "%SDIR%\iridescentserver.sh" >nul
+)
+
 if "%NEED_RELAUNCH%"=="1" (
     echo.
     echo [UPDATE] Self-update applied. Relaunching from "%SDIR%\iridescentserver.bat" ...

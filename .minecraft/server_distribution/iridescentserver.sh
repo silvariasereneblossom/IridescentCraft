@@ -213,6 +213,14 @@ else
         rm -rf "$EXTRACT_DIR"
         echo -e "  ${GREEN}[OK] Updated to ${REMOTE_SHA:0:7}.${NC}"
 
+        # Cross-platform counterpart cleanup — apply iridescentserver.bat.new
+        # if Phase 0 staged it. The .bat isn't used on Linux but we keep it
+        # current so .new orphans don't accumulate. No relaunch needed.
+        if [ -f "$SCRIPT_DIR/iridescentserver.bat.new" ]; then
+            echo "    [update] Cleaning up cross-platform counterpart: iridescentserver.bat"
+            mv -f "$SCRIPT_DIR/iridescentserver.bat.new" "$SCRIPT_DIR/iridescentserver.bat"
+        fi
+
         # Self-update swap (Linux): if Phase 0 staged a new .sh, swap and relaunch
         if [ "$SELF_UPDATE_STAGED" = "1" ] && [ -f "$SCRIPT_DIR/iridescentserver.sh.new" ]; then
             echo ""
