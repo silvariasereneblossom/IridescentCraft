@@ -393,6 +393,54 @@ Cascading registry failures in Moonlight + Supplementaries downstream of our cra
 
 ---
 
+## 2026-04-27 — JEI item-dump saga: KubeJS class filter, em-dashes in PowerShell, cmd→PS quoting, and a server held open in the background
+
+**Symptom:** A simple "dump every registered item to a TSV for offline audit" task became a 3-hour cascade of unrelated failures. By the end, every layer of the bat / KubeJS / PowerShell stack had been touched.
+
+**The original goal:** runtime dump of `Item.REGISTRY` to `kubejs/exports/all_items.tsv` so the JEI item audit could be done offline against authoritative data (static jar excavation overcounted because Beautiful Enchanted Books ships speculative texture files for ~140 enchant variants from uninstalled mods).
+
+**The cascade — eight unrelated bugs hit in sequence:**
+
+1. **KubeJS class filter blocks `java.io.*` and `java.nio.file.*`.** The first three iterations of `dump_items.js` tried `Files.write`, then `Files.writeString`, then `FileWriter` directly. All blocked with `InternalError: Failed to load Java class 'java.io.FileWriter': Class is not allowed by class filter!` — KubeJS sandbox prevents scripts from opening arbitrary file handles. **Workaround:** dump to `console.log()` with a `[ITEM_DUMP]` prefix, extract from `kubejs-server.log` post-hoc. Server-log writing is unrestricted because Forge/Log4j owns that handle, not KubeJS.
+
+2. **`Select-String -SimpleMatch '\[ITEM_DUMP\] '`** — first version of `extract_item_dump.ps1`. With `-SimpleMatch`, the pattern is treated as literal characters; `\[` and `\]` were searching for literal backslash-bracket pairs. Log lines didn't have backslashes → 0 matches → empty output. Fix: drop the regex-escape backslashes when `-SimpleMatch` is in play.
+
+3. **Em-dash (`—`, U+2014) inside a double-quoted PowerShell string.** PowerShell on Windows reads scripts as Windows-1252 by default (no BOM = system codepage). UTF-8's 3-byte sequence for em-dash (`E2 80 94`) gets decoded as 3 separate Latin-1 chars. The third byte (`0x94`) is "right double quotation mark" in Win-1252 — PowerShell's parser sees it as an unmatched closing quote, throws `The string is missing the terminator: "` with a wildly misleading line number (cascaded into a fake `Missing closing '}' in statement block` 50 lines earlier). **Hours of dead-end debugging on the wrong line.** Fix: strip every em-dash from every `.ps1`. Em-dashes in `#` comments are harmless; em-dashes in strings are landmines. Going forward, **all `.ps1` files in this repo must be ASCII-only**, or have a UTF-8 BOM.
+
+4. **Cmd → PowerShell trailing-backslash quoting.** `start "" /B powershell -File "%~dp0X.ps1" -ServerDir "%~dp0"` passes `%~dp0` quoted. `%~dp0` always ends in `\`. So the arg becomes `"C:\path\"` — and PowerShell's argv parser treats `\"` as an escaped quote, breaking the string and merging it with the next arg. The Phase 5 extract was running with garbled `$ServerDir`, looking at the wrong location, finding nothing, exiting silently. **Fix pattern:** before passing `%~dp0` to PowerShell, strip the trailing backslash:
+   ```cmd
+   set "SDIR=%~dp0"
+   if "%SDIR:~-1%"=="\" set "SDIR=%SDIR:~0,-1%"
+   powershell -File "%SDIR%\X.ps1" -ServerDir "%SDIR%"
+   ```
+   Phase 0.5 already had this (introduced for an earlier bug); subsequent phases didn't, and copy-pasted the trailing-backslash form. Now uses `%SDIR%` everywhere.
+
+5. **Nested `setlocal enabledelayedexpansion` + `endlocal` inside a cmd `if (...)` block.** Cmd's parser has a known issue where the script can exit silently — no error, no output, just an empty cmd window. Symptom matched user's "fails silently after [DUMP] echo". **Avoid:** never put `setlocal/endlocal` inside an `if (...)` block. Use `goto :label` patterns or rely on a higher-scope `setlocal` instead.
+
+6. **Inline cmd PowerShell with `^`-line-continuation and `\""` escaped quotes** silently dropped 3 of 9 entries from a hardcoded array literal. The `customJars` allowlist in `iridescentserver.bat` was an inline `powershell -Command "..."` block. Six entries survived, three didn't (`ars_nouveau-1.20.1-4.12.7-all.jar`, `iridescent_biomes-1.0.0.jar`, `iridescent_modular_spells-0.2.0.jar`). Cause was almost certainly cmd's `\""`-escape interaction with the `[''""]` regex character class earlier in the script fragmenting the args, but full diagnosis was abandoned in favor of **moving the whole block to a standalone `.ps1` file** (`cleanup_stale_jars.ps1`). PowerShell parses its own files cleanly without cmd quote-escape interference. **Heuristic:** any inline cmd-PowerShell longer than ~10 lines should be a `.ps1` file.
+
+7. **Cleanup script deleting our own custom jars** (consequence of #6) caused a downstream **server crash** that masqueraded as an unrelated bug for hours. Forge's mod scan recorded the deleted jars from cached metadata; Connector tried to open them; `UncheckedIOException: Invalid paths argument`. Originally diagnosed as a Modrinth download flake on `BetterAdvancements-NeoForge-...jar` and "fixed" by setting `side = 'client'`. The actual cause was the cleanup deleting the file repeatedly. The `side='client'` fix was still correct (BetterAdvancements is a client UI mod), just not the root cause for that crash.
+
+8. **Phantom `java.exe` from a prior failed run** held the bytecode-patched `ars_nouveau-...jar` open with restricted sharing. `Copy-Item -Force` from `phase0_sync.ps1`'s full-zip restore got `Access denied`. Misdiagnosed as Windows Defender; user reported real-time protection was off; turned out a server console was running silently in the background from an earlier crash that didn't fully cleanup. **Fix:** `taskkill /F /IM java.exe` plus checking Resource Monitor → Associated Handles to find what holds a locked file. Both surfaced the phantom process instantly. **Also added retry-on-lock to `phase0_sync.ps1`'s Copy-Item** so transient AV scans don't kill a whole sync, with a `[HINT]` line nudging Defender exclusion as the long-term fix.
+
+**Final architecture (post-saga):**
+- `kubejs/server_scripts/dump_items.js` — runs on `ServerEvents.loaded`, iterates `BuiltInRegistries.ITEM`, prints each item to console with `[ITEM_DUMP]` prefix. Idempotent via `dumpRan` JS flag + `kubejs/exports/all_items.tsv` existence check.
+- `server_distribution/extract_item_dump.ps1` — searches `<server>/kubejs-server.log` and `<server>/logs/kubejs-server.log` for `[ITEM_DUMP]` lines, writes clean TSV to `kubejs/exports/all_items.tsv`. Two modes: `-Watch` (Get-Content -Wait, exits on completion marker) and one-shot.
+- `server_distribution/cleanup_stale_jars.ps1` — owns the customJars allowlist; deleted in favor of inline cmd-PowerShell (issue #6).
+- `iridescentserver.bat` Phase 5 — runs `extract_item_dump.ps1` post-server-stop. Phase 3.5 (background watcher during server runtime) was attempted, then backed out because `start /B powershell ...` was failing the bat at that line on this Windows host for reasons that couldn't be pinned down through 4 quoting fixes.
+
+**Takeaways — all encoded as memory or repo conventions:**
+- KubeJS scripts cannot write files via `java.io` / `java.nio.file`. Use `console.log` + post-hoc extraction. (Memory: should be added to feedback.)
+- Every `.ps1` shipped in this repo must be ASCII-only. Em-dash in a string = silent script death. (Memory: feedback_powershell_ascii.)
+- Cmd → PowerShell: never pass `%~dp0` quoted. Strip the trailing backslash via `set "X=%~dp0"` + `if "%X:~-1%"=="\" set "X=%X:~0,-1%"` first, then quote the cleaned variable.
+- No `setlocal enabledelayedexpansion` + `endlocal` inside cmd `if (...)` blocks. Use `goto :label` instead.
+- Inline cmd-PowerShell > 10 lines → extract to `.ps1` file. Cmd's quote-escape gymnastics are too fragile for long scripts.
+- When a Windows file lock appears with no obvious AV cause, check for phantom processes via `tasklist | findstr /i "java powershell"` and Resource Monitor's "Associated Handles" search.
+- Forge/Connector raises `UncheckedIOException: Invalid paths argument` when a jar referenced from cached metadata is missing on disk. Multiple causes: cleanup over-deletion, AV quarantine, manual deletion. Don't assume the most recent change is the cause — check whether the file is actually on disk first.
+- `kubejs-server.log` lives in either `<server>/` or `<server>/logs/` depending on Forge/KubeJS version. Search both.
+
+---
+
 ## Template (for future entries)
 
 ```markdown
