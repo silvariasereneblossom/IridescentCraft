@@ -101,30 +101,45 @@ REM -------------------------------------------------------------------
 REM Phase 0.5: Self-update swap (if Phase 0 staged a new bat)
 REM -------------------------------------------------------------------
 REM Phase 0 stages iridescentserver.bat.new when a new version is pulled.
-REM We use PowerShell Move-Item to atomically replace the bat, then
-REM exit this cmd.exe and let a fresh one pick up the new version.
+REM Move-overwrites the running .bat (Win10+ supports FILE_SHARE_DELETE),
+REM then exit /b lets cmd.exe release the handle so the relaunched cmd
+REM reads the NEW content.
 REM
-REM Safety: cmd.exe holds the current .bat open with FILE_SHARE_DELETE
-REM (Win10+), so Move-Item can rename-over the running file. After
-REM exit /b here, cmd.exe releases the handle; the freshly-launched
-REM cmd reads the NEW bat content from disk.
-REM Check for staged self-updates (.new files) from Phase 0
-REM Use SDIR without trailing backslash to avoid %~dp0 + quote breaking PS
+REM Diagnostic-friendly: errors from move and start are NOT silenced —
+REM if the swap fails, you'll see it in the console (helps catch perms
+REM issues, file-lock conflicts, or path quoting problems).
 set "SDIR=%~dp0"
 if "%SDIR:~-1%"=="\" set "SDIR=%SDIR:~0,-1%"
 set "NEED_RELAUNCH=0"
+set "SWAP_ERROR=0"
 for %%F in (iridescentserver.bat phase0_sync.ps1) do (
     if exist "%SDIR%\%%F.new" (
-        echo   Applying staged update: %%F
-        move /y "%SDIR%\%%F.new" "%SDIR%\%%F" >nul 2>&1
-        set "NEED_RELAUNCH=1"
+        echo   [STAGE] Applying staged update: %%F
+        move /y "%SDIR%\%%F.new" "%SDIR%\%%F"
+        if errorlevel 1 (
+            echo   [STAGE] ERROR: move failed for %%F. File may be locked or in use.
+            set "SWAP_ERROR=1"
+        ) else (
+            echo   [STAGE] Swap OK: %%F
+            set "NEED_RELAUNCH=1"
+        )
     )
+)
+if "%SWAP_ERROR%"=="1" (
+    echo.
+    echo [UPDATE] One or more staged updates FAILED to apply. Continuing with old version.
+    echo [UPDATE] Re-run with: iridescentserver.bat -Force  to retry the full sync.
+    echo.
 )
 if "%NEED_RELAUNCH%"=="1" (
     echo.
-    echo [UPDATE] Self-update applied. Relaunching...
+    echo [UPDATE] Self-update applied. Relaunching from "%SDIR%\iridescentserver.bat" ...
     echo.
     start "" "%SDIR%\iridescentserver.bat"
+    if errorlevel 1 (
+        echo [UPDATE] ERROR: start command failed. Run iridescentserver.bat manually.
+        pause
+    )
     exit /b 0
 )
 
