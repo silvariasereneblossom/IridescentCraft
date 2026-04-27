@@ -140,7 +140,14 @@ After every major change (new features, balance changes, new items/origins/class
 2. **Known issues** (`wiki/known-issues/tracker.md`) — add new issues, mark resolved ones
 3. **Internal wiki** (`wiki/` directory) — relevant overview pages (mods, systems, classes, etc.)
 4. **Design doc** (`wiki/design/master.md`) — update affected sections when initial design is modified
-5. **Public GitHub wiki** — clone `https://github.com/silvariasereneblossom/IridescentCraft.wiki.git` to `/tmp/icraft-wiki`, update matching pages, commit and push. Uses `[[Page Name]]` link syntax (not file paths). Sidebar is `_Sidebar.md`.
+5. **Public GitHub wiki — auto-syncs.** A GitHub Action (`.github/workflows/sync-wiki.yml`) mirrors `wiki/` source files to the public wiki on every push to `main`. Source → wiki page mapping lives in `.minecraft/tools/wiki-sync-manifest.json`; the conversion logic in `.minecraft/tools/sync-wiki.py`. The workflow:
+   - Triggers on push to main with changes in `.minecraft/wiki/**` (also manual via workflow_dispatch).
+   - Skips if the commit message contains `[skip wiki]`.
+   - Requires the `WIKI_PUSH_TOKEN` repo secret (fine-grained PAT with Contents: Read and write on the IridescentCraft repo). One-time setup; see workflow file header for instructions.
+
+   **Adding a new wiki page:** add an entry to `.minecraft/tools/wiki-sync-manifest.json` (`{ src, dst }` pair) and add a link conversion if the page is referenced from other pages. The `_Sidebar.md` and `Tester-Installation-Guide.md` are wiki-only (not sync-managed); those need direct wiki-side edits.
+
+   **Manual sync** (e.g., to test changes locally before they hit `main`): `python3 .minecraft/tools/sync-wiki.py --wiki-dir <wiki-checkout> [--dry-run]`.
 
 **Internal documentation lives in a separate private repo: [silvariasereneblossom/IridescentCraft-internal](https://github.com/silvariasereneblossom/IridescentCraft-internal)** (migrated 2026-04-27).
 

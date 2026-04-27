@@ -1,0 +1,46 @@
+{
+  "_comment": "Source wiki/ files -> public GitHub Wiki page names. Used by tools/sync-wiki.py + .github/workflows/sync-wiki.yml. Add new entries here when a wiki page is added or renamed.",
+  "_paths": {
+    "_comment": "Paths in 'src' are repo-root-relative (i.e. start with .minecraft/). Paths in 'dst' are bare wiki page filenames (no directory prefix; the wiki repo is flat).",
+    "repo_root": ".",
+    "wiki_repo": "https://github.com/silvariasereneblossom/IridescentCraft.wiki.git"
+  },
+  "link_conversions": {
+    "_comment": "Markdown-link substring -> replacement. Applied via simple substring replace. Handles the source-side .md filename references AND the inline-code variant. Order matters: longest matches first.",
+    "(master-appendix.md": "(Master-Design-Appendix",
+    "(master.md": "(Master-Design-Document",
+    "(changelog.md)": "(Design-Changelog)",
+    "(changelog.md#": "(Design-Changelog#",
+    "(iridescent-modular-spells-tetra-migration.md": "(Iridescent-Modular-Spells-Tetra-Migration",
+    "(../home.md)": "(Home)",
+    "(../home.md#": "(Home#",
+    "`master-appendix.md`": "`Master-Design-Appendix`",
+    "`master.md`": "`Master-Design-Document`",
+    "`changelog.md`": "`Design-Changelog`",
+    "`../home.md`": "`Home`",
+    "`iridescent-modular-spells-tetra-migration.md`": "`Iridescent-Modular-Spells-Tetra-Migration`"
+  },
+  "files": [
+    { "src": ".minecraft/wiki/home.md",                                            "dst": "Home.md" },
+    { "src": ".minecraft/wiki/LICENSE.md",                                         "dst": "License.md" },
+    { "src": ".minecraft/wiki/design/master.md",                                   "dst": "Master-Design-Document.md" },
+    { "src": ".minecraft/wiki/design/master-appendix.md",                          "dst": "Master-Design-Appendix.md" },
+    { "src": ".minecraft/wiki/design/changelog.md",                                "dst": "Design-Changelog.md" },
+    { "src": ".minecraft/wiki/design/iridescent-modular-spells-tetra-migration.md","dst": "Iridescent-Modular-Spells-Tetra-Migration.md" },
+    { "src": ".minecraft/wiki/classes/overview.md",                                "dst": "Classes-and-Races.md" },
+    { "src": ".minecraft/wiki/known-issues/tracker.md",                            "dst": "Known-Issues.md" },
+    { "src": ".minecraft/wiki/kubejs/overview.md",                                 "dst": "KubeJS-Overview.md" },
+    { "src": ".minecraft/wiki/meta/style-guide.md",                                "dst": "Style-Guide.md" },
+    { "src": ".minecraft/wiki/mods/overview.md",                                   "dst": "Mod-Overview.md" },
+    { "src": ".minecraft/wiki/mods/custom.md",                                     "dst": "Custom-Mods.md" },
+    { "src": ".minecraft/wiki/progression/overview.md",                            "dst": "Progression-Overview.md" },
+    { "src": ".minecraft/wiki/protocols/8-client-sync.md",                         "dst": "Client-Sync-Protocol.md" },
+    { "src": ".minecraft/wiki/systems/overview.md",                                "dst": "Systems-Overview.md" },
+    { "src": ".minecraft/wiki/systems/tetra-materials.md",                         "dst": "Tetra-Materials.md" }
+  ],
+  "wiki_only": [
+    "_comment: Pages that exist on the public wiki only and are not synced. The sync script will leave these untouched.",
+    "_Sidebar.md",
+    "Tester-Installation-Guide.md"
+  ]
+}

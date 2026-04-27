@@ -1,0 +1,109 @@
+name: Sync wiki
+
+# Mirrors .minecraft/wiki/ public source pages to the GitHub Wiki repo
+# (silvariasereneblossom/IridescentCraft.wiki). Triggered on push to main
+# when any wiki source file changes, and on manual dispatch.
+#
+# Setup (one-time):
+#   1. Create a fine-grained Personal Access Token at
+#      https://github.com/settings/personal-access-tokens with
+#      "Repository access: silvariasereneblossom/IridescentCraft" and
+#      "Repository permissions: Contents: Read and write".
+#      (Wiki access is granted via the parent repo's Contents permission.)
+#   2. Add the token as a repo secret named WIKI_PUSH_TOKEN at
+#      https://github.com/silvariasereneblossom/IridescentCraft/settings/secrets/actions
+#
+# Skip directives:
+#   - Add "[skip wiki]" to a commit message to skip syncing for that push.
+#   - Set workflow inputs.force=true on manual dispatch to commit even if
+#     the script reports no diffs (rarely useful).
+#
+# Implementation:
+#   - The actual file conversion + copy lives in
+#     .minecraft/tools/sync-wiki.py reading
+#     .minecraft/tools/wiki-sync-manifest.json.
+#   - This workflow handles only the orchestration: checkout both repos,
+#     invoke the script, commit and push diffs.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/wiki/**'
+      - '.minecraft/tools/sync-wiki.py'
+      - '.minecraft/tools/wiki-sync-manifest.json'
+      - '.github/workflows/sync-wiki.yml'
+  workflow_dispatch:
+    inputs:
+      force:
+        description: 'Commit even if no file diffs'
+        required: false
+        default: 'false'
+
+permissions:
+  contents: read
+
+jobs:
+  sync:
+    runs-on: ubuntu-latest
+    if: ${{ !contains(github.event.head_commit.message, '[skip wiki]') }}
+    steps:
+      - name: Checkout main repo
+        uses: actions/checkout@v4
+
+      - name: Checkout wiki repo
+        uses: actions/checkout@v4
+        with:
+          repository: silvariasereneblossom/IridescentCraft.wiki
+          token: ${{ secrets.WIKI_PUSH_TOKEN }}
+          path: wiki-checkout
+
+      - name: Set up Python
+        uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Run sync script
+        id: sync
+        run: |
+          python3 .minecraft/tools/sync-wiki.py \
+            --repo-root . \
+            --wiki-dir wiki-checkout
+
+      - name: Detect changes
+        id: changes
+        working-directory: wiki-checkout
+        run: |
+          if [ -n "$(git status --porcelain)" ]; then
+            echo "has_changes=true" >> "$GITHUB_OUTPUT"
+            echo "Changes detected:"
+            git status --short
+          else
+            echo "has_changes=false" >> "$GITHUB_OUTPUT"
+            echo "No changes."
+          fi
+
+      - name: Commit + push to wiki
+        if: steps.changes.outputs.has_changes == 'true' || inputs.force == 'true'
+        working-directory: wiki-checkout
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add -A
+          # Use the triggering main-repo commit's short SHA in the message
+          # so cross-referencing the source change is one click away.
+          MAIN_SHA="${GITHUB_SHA:0:7}"
+          if [ -z "$(git diff --cached --stat)" ]; then
+            echo "Nothing staged after git add — skipping commit."
+            exit 0
+          fi
+          git commit -m "auto-sync from main@${MAIN_SHA}
+
+          Synced via .github/workflows/sync-wiki.yml. Source pages live
+          in .minecraft/wiki/ in the IridescentCraft repo. Edits made
+          directly on the wiki are overwritten on the next sync — edit
+          the source files instead.
+
+          Triggered by: ${GITHUB_EVENT_NAME}
+          Triggering commit: ${GITHUB_SHA}"
+          git push
