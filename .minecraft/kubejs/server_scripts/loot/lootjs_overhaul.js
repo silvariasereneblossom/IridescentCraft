@@ -217,6 +217,18 @@ LootJS.modifiers(event => {
     .addLootTypeModifier(LootType.CHEST)
     .removeLoot('relics:horse_flute')
 
+  // Strip too_many_bows:rift_shard from chest pools globally.
+  // Audit Phase 2.2 (2026-04-27): the namespace collision with our
+  // kubejs:icraft_rift_shard (renamed in this same phase) caused UX
+  // confusion. Players see two "Rift Shard" items in JEI with different
+  // tooltips and uses. Strip the too_many_bows version from generic chest
+  // pools so our endgame reagent is the only "Rift Shard" players encounter
+  // via the loot economy. Bows that need too_many_bows:rift_shard for their
+  // crafting recipes can still be acquired directly from our T2/T3/T4 pools.
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .removeLoot('too_many_bows:rift_shard')
+
   // Re-add enchanted books at 7.5% — T1 (Overworld)
   // NOTE: LootEntry.of must be 'minecraft:book' (not enchanted_book).
   // EnchantmentHelper.enchantItem() checks `stack.is(Items.BOOK)` and only
@@ -493,7 +505,10 @@ LootJS.modifiers(event => {
     'ars_nouveau:novice_spell_book', 'ars_nouveau:source_gem',
     'irons_spellbooks:common_ink',
     // moreartifacts T1 — flavor curios (audit Phase 2.1, 2026-04-27)
-    'moreartifacts:melody_plushie', 'moreartifacts:lucky_emerald_ring'
+    'moreartifacts:melody_plushie', 'moreartifacts:lucky_emerald_ring',
+    // too_many_bows T1 — utility bows (audit Phase 2.2, 2026-04-27)
+    'too_many_bows:dark_bow', 'too_many_bows:hunter_bow',
+    'too_many_bows:flame_bow', 'too_many_bows:torchbearer'
   ]
   // 2026-04-22: was 15 independent addLoot calls at ~0.67% each. Math
   // said 0.1 artifacts/chest expected, but variance allowed 2-4 in
@@ -530,7 +545,13 @@ LootJS.modifiers(event => {
     // moreartifacts T2 — defensive curios + mid-tier accessories
     // (audit Phase 2.1, 2026-04-27 — Hero/Ankh → T2 per locked-in mapping)
     'moreartifacts:hero_shield', 'moreartifacts:ankh_shield', 'moreartifacts:ankh_charm',
-    'moreartifacts:vanir_mask', 'moreartifacts:tainted_mirror'
+    'moreartifacts:vanir_mask', 'moreartifacts:tainted_mirror',
+    // too_many_bows T2 — element-themed EPIC bows + RARE artifacts
+    // (audit Phase 2.2, 2026-04-27)
+    'too_many_bows:frostbite', 'too_many_bows:tidal_bow', 'too_many_bows:verdant_viper',
+    'too_many_bows:burnt_relic', 'too_many_bows:sentinels_wrath',
+    'too_many_bows:vitality_weaver', 'too_many_bows:verdant_vigor',
+    'too_many_bows:webstring'
   ]
   const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
@@ -558,7 +579,15 @@ LootJS.modifiers(event => {
     'moreartifacts:obsidian_shield', 'moreartifacts:recall_potion',
     'moreartifacts:withered_bezoar', 'moreartifacts:wither_shard',
     'moreartifacts:gilded_scarf', 'moreartifacts:ruby_ring',
-    'moreartifacts:mechanical_claw', 'moreartifacts:ice_stone'
+    'moreartifacts:mechanical_claw', 'moreartifacts:ice_stone',
+    // too_many_bows T3 — Nether/element-themed EPIC bows + reagents
+    // (audit Phase 2.2, 2026-04-27)
+    'too_many_bows:arcane_bow', 'too_many_bows:ancient_sage_bow',
+    'too_many_bows:auroras_grace', 'too_many_bows:crimson_nexus',
+    'too_many_bows:necro_flame_bow',
+    'too_many_bows:cursed_stone', 'too_many_bows:soul_fragment',
+    'too_many_bows:radiance', 'too_many_bows:wind_glove',
+    'too_many_bows:stormbound_signet'
   ]
   const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
@@ -584,7 +613,13 @@ LootJS.modifiers(event => {
     'moreartifacts:enderian_treads', 'moreartifacts:sculk_treads',
     'moreartifacts:enderian_eye', 'moreartifacts:shulked_clock',
     'moreartifacts:shulker_heart', 'moreartifacts:true_enderian_scarf',
-    'moreartifacts:echo_glove'
+    'moreartifacts:echo_glove',
+    // too_many_bows T4 — endgame EPIC bows + power_crystal reagent
+    // (audit Phase 2.2, 2026-04-27)
+    'too_many_bows:dragons_breath', 'too_many_bows:astral_bound',
+    'too_many_bows:spectral_whisper', 'too_many_bows:shulker_blast',
+    'too_many_bows:arc_heavens', 'too_many_bows:twin_shadows',
+    'too_many_bows:power_crystal', 'too_many_bows:dead_eyes_pendant'
   ]
   const artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event

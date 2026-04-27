@@ -221,7 +221,7 @@ ServerEvents.recipes(event => {
         'VNV',
         'RVR'
     ], {
-        R: 'kubejs:rift_shard',
+        R: 'kubejs:icraft_rift_shard',
         V: 'kubejs:void_fragment',
         N: 'minecraft:nether_star'
     }).id('kubejs:rift_keystone')

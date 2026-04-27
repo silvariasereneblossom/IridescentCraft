@@ -6,7 +6,9 @@
 // Design Doc: Part II — Oblivion's Rift (Loop 1), Mythic Gear Chase (Loop 2)
 //
 // NOTE: The following items are already registered in custom_items.js:
-//   kubejs:rift_shard, kubejs:void_fragment, kubejs:rift_keystone
+//   kubejs:icraft_rift_shard, kubejs:void_fragment, kubejs:rift_keystone
+//   (kubejs:rift_shard remains as a deprecated alias for migration; see
+//   kubejs/server_scripts/migrations/rift_shard_rename.js)
 // Do NOT duplicate them here.
 // =============================================================================
 
