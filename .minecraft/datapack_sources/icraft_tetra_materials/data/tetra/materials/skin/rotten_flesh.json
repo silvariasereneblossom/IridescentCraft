@@ -1,0 +1,31 @@
+{
+    "key": "rotten_flesh",
+    "category": "skin",
+    "primary": 3,
+    "secondary": 1,
+    "tertiary": 1,
+    "durability": 80,
+    "integrityCost": 0,
+    "integrityGain": 3,
+    "magicCapacity": 70,
+    "toolLevel": 0,
+    "toolEfficiency": 0,
+    "tints": {
+        "glyph": "5a6b3a",
+        "texture": "5a6b3a"
+    },
+    "textures": [
+        "crude",
+        "default"
+    ],
+    "material": {
+        "items": [ "minecraft:rotten_flesh" ]
+    },
+    "requiredTools": {
+        "cut": "minecraft:wood"
+    },
+    "attributes": {
+        "**irons_spellbooks:holy_spell_power": 0.05,
+        "**irons_spellbooks:mana_regen": 0.02
+    }
+}

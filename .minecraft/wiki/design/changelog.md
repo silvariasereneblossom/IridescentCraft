@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 11) — Phase 6G follow-up: rotten_flesh skin material + "X-lined" naming + modded-material lang
+
+Three iterations on the Phase 6G architecture from tester feedback:
+
+- **`skin/rotten_flesh` material** added to `icraft_tetra_materials` — `minecraft:rotten_flesh` now qualifies as a skin material on any Tetra slot accepting `tetra:skin/`. Stats are deliberately weaker than vanilla leather (primary 3 vs 5, durability 80 vs 200, integrityGain 3 vs 4) but carries a unique attribute payload: **+5% holy spell power** (anti-undead via ISS's holy damage type) and **+2% mana regen**. Flavor: a low-tier flesh path with thematic anti-undead synergy. T2 of the flesh progression is open — pending tester decision on which item should be the cured/cursed second-tier source.
+- **"X-lined" naming convention** for front_cover materials. Updated `tetra.module.<iss_book|ars_book>/front_cover.material_name` from `"%s spell book cover"` → `"%s-lined spell book cover"`, and `.prefix` from `"%s"` → `"%s-lined"`. So a Terrasteel front cover now displays as **"Terrasteel-lined"** in the book's prefix and module label — same convention Tetra uses for vanilla material substitution (iron pick → diamond pick → "Diamond Pickaxe"), applied to the cover slot. Identical change on the ars_book/front_cover side for consistency.
+- **Lang for 34 modded materials** (28 metals + 5 gems + rotten_flesh) added: `tetra.material.<key>` and `tetra.material.<key>.prefix`. These render the material's display name in tooltips, schematic UIs, and the new "X-lined" prefix. Without these, Tetra fell back to raw key strings (e.g. "manasteel-lined" instead of "Manasteel-lined"). 68 new entries.
+
+Verified: all 28 modded metals and 5 gems already qualified as front_cover materials (front_cover.json accepts `tetra:metal/` and `tetra:gem/` category-wide; each material's JSON declares its category). The lang additions just make the display correct.
+
+---
+
 ## 2026-04-28 (cont. 10) — Phase 6G: TSB-aligned single-item Tetra-pure spell book
 
 Collapsed the 15 per-tier modular spell book registrations (12 ISS + 3 Ars) into 2 single Tetra-pure items: `iridescent_modular_spells:modular_spell_book` and `:modular_ars_spell_book`. Tier identity now lives entirely on the new `core` slot's material — vanilla ISS / Ars books, when placed on a Tetra workbench, are auto-replaced into the matching modular item with the appropriate core material pre-installed. Architecture mirrors `Inolia-Zaicek/TetraSpellBook`'s pattern (5 majors: core, front_cover, back_cover, spine, pages/dye).
