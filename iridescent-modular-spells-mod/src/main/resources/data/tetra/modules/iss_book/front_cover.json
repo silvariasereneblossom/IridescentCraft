@@ -4,7 +4,8 @@
     "improvements": [
         "iss_book_lining_fabric/",
         "iss_book_lining_fibre/",
-        "iss_book_lining_skin/"
+        "iss_book_lining_skin/",
+        "iss_book_dye/"
     ],
     "variants": [
         {

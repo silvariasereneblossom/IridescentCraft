@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 7) — Re-add ISS dye as a front-cover improvement (option 2)
+
+After reverting the broken 5th-major slot in cont. 6, restored the dye-on-iss feature using the improvement system instead — same pattern the existing `iss_book_lining_fabric/fibre/skin` improvements use, so no Tetra UI hardcoding is violated. Three files added: `data/tetra/improvements/iridescent_modular_spells/iss_book_dye.json` (zero-attribute, level 1, purely cosmetic), `data/tetra/schematics/iss_book/front_cover_dye.json` (accepts the 16 vanilla dye items, applies to `iss_book/front_cover`), and the matching 4 lang entries (`tetra.improvement.iss_book_dye.*` and `tetra/schematic/iss_book/front_cover_dye.*` — note slash prefix for schematic per cont. 2). Wired into `front_cover.json`'s `improvements` array.
+
+Player UX: open Tetra workbench → ISS book in main slot → "Front Cover Dye" schematic appears alongside "Front Cover Lining" → drop a vanilla dye, apply, done. Dye is re-applicable (no requirement gating), so players can swap colors freely. Lining and dye coexist on the same slot — they're independent improvements.
+
+`MAJOR_KEYS` stays at 4. Tetra workbench no longer crashes.
+
+---
+
 ## 2026-04-28 (cont. 6) — Revert iss_book/dye slot — Tetra has a hard 4-major limit
 
 Tester reported a CTD when opening a spell book on the Tetra workbench. Root cause was my own change in cont. — adding the 5th major slot (`iss_book/dye`) violates a hardcoded assumption in `se.mickelus.tetra.gui.GuiModuleOffsets.getX()` (line 40), whose offset array is sized for exactly 4 major modules. The crash:
