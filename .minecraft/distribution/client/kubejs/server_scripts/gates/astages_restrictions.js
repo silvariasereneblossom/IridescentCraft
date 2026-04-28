@@ -131,10 +131,10 @@ ServerEvents.loaded(event => {
     // Ars Nouveau T2 — apprentice tier (novice + scribes_table are T1/ungated)
     'ars_nouveau:apprentice_spell_book',
     'ars_nouveau:enchanting_apparatus', 'ars_nouveau:arcane_core',
-    // 2026-04-26 Phase 5: modular spell book T2 tier (iron/gold ISS + apprentice Ars)
-    'iridescent_modular_spells:modular_iron_spell_book',
-    'iridescent_modular_spells:modular_gold_spell_book',
-    'iridescent_modular_spells:modular_apprentice_spell_book',
+    // 2026-04-28 Phase 6G: modular spell books are NOT tier-gated as items —
+    // the tier comes from the core material installed via Tetra workbench.
+    // (Previously T2-T4 entries here caused "Unfamiliar Item" for testers
+    // without the required tier; the wrapper itself should always be visible.)
     // Botania T2 — advanced materials + gear
     'botania:manasteel_ingot', 'botania:mana_diamond', 'botania:mana_pearl',
     'botania:manasteel_block',
@@ -163,6 +163,12 @@ ServerEvents.loaded(event => {
     'rpgseteffects:vaelkhor_artifact',
     'rpgseteffects:wolfheart_artifact',
     'rpgseteffects:artifact_piece_pouch',
+    // art_of_forging T2 — Ancient weapons (audit Phase 2.3, 2026-04-27)
+    // Ancient items drop from simple_dungeon + ancient_city chests (mod
+    // GLM). T2 stage gates use, since Ancient City is T3 but the items
+    // can also drop from T1-T2 dungeons. Demonic upgrades are T4-staged.
+    'art_of_forging:ancient_axe', 'art_of_forging:ancient_blade',
+    'art_of_forging:ancient_flail',
   ], 'modpack/item_t2')
 
   // -- Dimension restrictions --
@@ -218,9 +224,7 @@ ServerEvents.loaded(event => {
     // Ars Nouveau T3 — archmage tier + advanced crafting
     'ars_nouveau:archmage_spell_book',
     'ars_nouveau:imbuement_chamber',
-    // 2026-04-26 Phase 5: modular spell book T3 tier (diamond ISS + archmage Ars)
-    'iridescent_modular_spells:modular_diamond_spell_book',
-    'iridescent_modular_spells:modular_archmage_spell_book',
+    // 2026-04-28 Phase 6G: modular wrapper is tier-free (see T2 block comment).
     // Botania T3 — terrasteel + elementium + all derivatives
     'botania:terrasteel_ingot', 'botania:terrasteel_block',
     'botania:terrasteel_helmet', 'botania:terrasteel_chestplate',
@@ -249,6 +253,24 @@ ServerEvents.loaded(event => {
     'forbidden_arcanus:arcane_crystal_block',
     'forbidden_arcanus:arcane_crystal_ore',
     'forbidden_arcanus:deepslate_arcane_crystal_ore',
+    // art_of_forging T3 — Sigil + Dark Orb (audit Phase 2.3, 2026-04-27)
+    // Sigil of Eden drops from Wither @ 30% (T3-T4 boundary).
+    // Devils Soul Gem (Dark Orb) sourcing unclear (no recipe, no native
+    // loot table) — T3 stage as defensive precaution against creative leak.
+    'art_of_forging:sigil_of_eden',
+    'art_of_forging:devils_soul_gem',
+    // theabyss T3 — totems + exotic curios + reagents
+    // (audit Phase 4.2, 2026-04-27 — Abyss is T3 dimension; these
+    // items live within the Abyss progression and warrant T3 stage gate
+    // even when they don't have explicit AStages presence)
+    // 3 totems: highest priority (revive/utility semantics — locking out
+    // pre-T3 revive farming)
+    'theabyss:totem_of_thunder', 'theabyss:totem_of_abyss',
+    'theabyss:totem_of_time',
+    // 6 trophies/reagents/curios from mid-Abyss content
+    'theabyss:eye_of_abyss', 'theabyss:dream_shifter',
+    'theabyss:node_shard', 'theabyss:enchanted_bottle_of_somnium',
+    'theabyss:clock_of_time', 'theabyss:artifact_of_after_life',
   ], 'modpack/item_t3')
 
   // -- Ore replacement restrictions --
@@ -280,8 +302,7 @@ ServerEvents.loaded(event => {
 
   // -- Mekanism advanced items (mod is T3, these specific items need T4) --
   stageItems('tier_4', [
-    // 2026-04-26 Phase 5: modular spell book T4 tier (netherite ISS)
-    'iridescent_modular_spells:modular_netherite_spell_book',
+    // 2026-04-28 Phase 6G: modular wrapper is tier-free (see T2 block comment).
     'mekanism:digital_miner',
     'mekanism:fusion_reactor_controller',
     'mekanism:mekasuit_helmet', 'mekanism:mekasuit_bodyarmor',
@@ -365,6 +386,25 @@ ServerEvents.loaded(event => {
     'rpgseteffects:stormpiercer_awakening_artifact',
     'rpgseteffects:vaelkhor_awakening_artifact',
     'rpgseteffects:wolfheart_awakening_artifact',
+    // art_of_forging T4 — Demonic upgrades + enigmatic_construct
+    // (audit Phase 2.3, 2026-04-27)
+    // Demonic chain crafted from Ancient (T2-staged) + 4x shards_of_malice
+    // (Wither Skeleton T3 drop). Enigmatic Construct requires dragon_soul
+    // (Ender Dragon T4 drop) + endsteel + forged_steel. Items are mod-
+    // internally tier-gated through their material requirements; T4 stage
+    // is additional defense against creative leaks or chest_loot bypass.
+    'art_of_forging:demonic_axe', 'art_of_forging:demonic_blade',
+    'art_of_forging:demonic_flail', 'art_of_forging:enigmatic_construct',
+    // theabyss T4 — Nosaj boss trophies + immortality reagent
+    // (audit Phase 4.2, 2026-04-27 — Nosaj is the deepest Abyss boss;
+    // immortal_substance has revive semantics and warrants T4 gate)
+    'theabyss:crown_of_nosaj', 'theabyss:amuled_of_nosaj',
+    'theabyss:immortal_substance',
+    // cataclysm T4 — mechanical_fusion_anvil
+    // (audit Phase 8.4 / locked-in decision #2, 2026-04-27)
+    // Merged with void_forge/infernal_forge — mod-level duplication.
+    // Recipe removed in recipe_audit.js J.3; T4 stage as defense.
+    'cataclysm:mechanical_fusion_anvil',
   ], 'modpack/item_t4')
 
   // -- Ore replacement restrictions --

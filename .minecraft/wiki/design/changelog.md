@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 9) — Untier the modular spell book wrappers (AStages "Unfamiliar Item" fix)
+
+Tester reported their modular spell book was showing as "Unfamiliar Item" in tooltips/JEI. Root cause: 6 entries in `astages_restrictions.js` (T2/T3/T4 blocks) were locking `iridescent_modular_spells:modular_{iron,gold,apprentice,diamond,archmage,netherite}_spell_book` behind tier gates. AStages substitutes the display name with "Unfamiliar Item" for any item the player can't see at their current tier.
+
+The modular spell book *wrapper* should always be visible — the actual tier signal lives in the **core material** installed via the Tetra workbench, not the item ID. Deleted those 6 lines (kept the comment block as a paper trail). The plain ISS/Ars books (`irons_spellbooks:iron_spell_book`, etc.) remain tier-gated as before — only the modular wrappers are ungated. Mirrored to both distribution copies.
+
+This is Stage 0 of the in-flight Phase 6G refactor (collapse to a single Tetra-pure `modular_spell_book` item per side, material-driven core). The remaining stages are still to come.
+
+---
+
 ## 2026-04-28 (cont. 8) — Tetra workbench polish: slot labels, integrity, name shortening
 
 Tester opened a spell book on the workbench and reported three issues; addressed all in one rebuild.
