@@ -1,31 +1,31 @@
-[00:04:21] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[00:04:21] [INIT] Loaded plugins:
-[00:04:21] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[00:04:21] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[00:04:21] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
-[00:04:21] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[00:04:21] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[00:04:21] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[00:04:21] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[00:04:21] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[00:04:21] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[00:04:21] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[00:04:21] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[00:04:21] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[00:04:21] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[00:04:21] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[00:04:21] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[00:04:21] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[00:04:21] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[00:04:21] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[00:04:21] [INFO] attribute_tooltips.js#9: [IridescentCraft] Attribute tooltips loaded (v0.4 -- no-op, use !stats)
-[00:04:21] [INFO] Loaded script client_scripts:attribute_tooltips.js in 0.0 s
-[00:04:21] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.004 s
-[00:04:21] [INFO] Loaded script client_scripts:enchanted_book_tooltip_fix.js in 0.01 s
-[00:04:21] [INFO] example.js#5: Hello, World! (Loaded client scripts)
-[00:04:21] [INFO] Loaded script client_scripts:example.js in 0.001 s
-[00:04:21] [INFO] Loaded script client_scripts:jei_hiding.js in 0.0 s
-[00:04:21] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
-[00:04:21] [INFO] Loaded 6/6 KubeJS client scripts in 0.074 s with 0 errors and 0 warnings
-[00:04:31] [INFO] Client resource reload complete!
-[00:14:53] [INFO] enchanted_book_tooltip_fix.js#34: [book-tooltip-fix] first fire; nbt={StoredEnchantments:[{id:"minecraft:protection",lvl:10s}]}
+[23:48:16] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[23:48:16] [INIT] Loaded plugins:
+[23:48:16] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[23:48:16] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[23:48:16] [INIT] - com.seniors.justlevelingfork.kubejs.Plugin
+[23:48:16] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[23:48:16] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[23:48:16] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[23:48:16] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[23:48:16] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[23:48:16] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[23:48:16] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[23:48:16] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[23:48:16] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[23:48:16] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[23:48:16] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[23:48:16] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[23:48:16] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[23:48:16] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[23:48:16] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[23:48:16] [INFO] attribute_tooltips.js#9: [IridescentCraft] Attribute tooltips loaded (v0.4 -- no-op, use !stats)
+[23:48:16] [INFO] Loaded script client_scripts:attribute_tooltips.js in 0.001 s
+[23:48:16] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.007 s
+[23:48:16] [INFO] Loaded script client_scripts:enchanted_book_tooltip_fix.js in 0.017 s
+[23:48:16] [INFO] example.js#5: Hello, World! (Loaded client scripts)
+[23:48:16] [INFO] Loaded script client_scripts:example.js in 0.0 s
+[23:48:16] [INFO] Loaded script client_scripts:jei_hiding.js in 0.0 s
+[23:48:16] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
+[23:48:16] [INFO] Loaded 6/6 KubeJS client scripts in 0.09 s with 0 errors and 0 warnings
+[23:48:28] [INFO] Client resource reload complete!
+[23:49:44] [INFO] enchanted_book_tooltip_fix.js#34: [book-tooltip-fix] first fire; nbt={StoredEnchantments:[{id:"minecraft:protection",lvl:10s}]}
