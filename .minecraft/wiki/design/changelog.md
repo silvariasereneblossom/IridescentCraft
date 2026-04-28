@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 5) — Paxi load order semantics correction + pride patch revert
+
+Two errors compounded into a still-broken main-menu logo. Both corrected.
+
+**Wrong assumption #1 (cont. 3 changelog):** I claimed "first in `loadOrder` = TOP = wins". Decompiling Paxi 4.0's `PaxiRepositorySource.loadPacks` shows the opposite — packs are added in iteration order with `Pack.Position.TOP`, so each new pack pushes prior ones down. The **last** item in `loadOrder` ends up at the top of the stack and wins. Our cont. 3 order had Pride at index 2 above Transcendence at index 1, which actually made Pride win over Transcendence for `minecraft.png` — exactly the symptom the tester observed. Flipped the manifest (now lowest-to-highest priority): `Melodys Cute Villagers > pridepack > Transcendence > iridescent_codex_resources`. Added a `_comment` field to the JSON noting the semantic to prevent future re-confusion.
+
+**Wrong assumption #2 (cont. 4):** I patched Pridepack's `pack.mcmeta` overlay range from `[16, 9999]` to `[15, 9999]` thinking the overlay's title texture would resolve the 1.20.1 distortion. The overlay ships a 4096×1024 image which is the 1.20.2+ sprite-atlas format — applying it on 1.20.1 (which expects the 1024×256 single-image layout) was actually causing the distortion, not curing it. Reverted the mcmeta to its original `[16, 9999]` so 1.20.1 falls back to the base pack texture (and Transcendence at the new top of the stack overrides it anyway with a clean 1024×256 trans logo).
+
+Net effect: with the corrected load order, Transcendence's logo wins; the Pridepack mcmeta patch was unnecessary and is now reverted.
+
+---
+
 ## 2026-04-28 (cont. 4) — Pridepack 8.0.1 title-texture fix for MC 1.20.1
 
 Tester reported the main-menu Minecraft logo rendered as overlapping/distorted glyphs while Pridepack was active. Root cause: Pridepack 8.0.1 ships its 1.20+ title texture (the new 1.20 sliced format with the `blur: true` mcmeta) inside its `format16/` overlay, gated to `formats: [16, 9999]` — but MC 1.20.1 reports `pack_format = 15`, so the overlay was being skipped. The base pack's `minecraft.png` was then used, which targets the pre-1.20 single-image title format and renders incorrectly under 1.20's new title-rendering algorithm. Fix: edited `pack.mcmeta` inside the zip to widen the overlay range to `formats: [15, 9999]`, so 1.20.1 picks up the correct title texture. Mirrored to client distro.

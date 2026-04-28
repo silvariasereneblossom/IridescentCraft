@@ -1,8 +1,9 @@
 {
+  "_comment": "Paxi loadOrder: LAST item in array = TOP of pack stack = WINS conflicts. Verified via Paxi 4.0 source: packs are iterated with Pack.Position.TOP, each addition pushes prior ones down. Order below: passive cosmetic at bottom, brand-aligned theme rises, internal codex on top.",
   "loadOrder": [
-    "iridescent_codex_resources.zip",
-    "Transcendence_0.7.4.zip",
+    "Melodys Cute Villagers v1.10.0.zip",
     "pridepack8.0.1.zip",
-    "Melodys Cute Villagers v1.10.0.zip"
+    "Transcendence_0.7.4.zip",
+    "iridescent_codex_resources.zip"
   ]
 }
