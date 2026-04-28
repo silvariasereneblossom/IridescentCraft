@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 32) — Respawn hunger reset to 6 / saturation 0
+
+Vanilla Minecraft restores hunger to 20 (full) on respawn — clashes with the pack's hunger-tax tone (Sleep Hunger costs 6 per sleep from cont. 31, SoLCE food-variety incentive, Hungeroverhaul exhaustion penalties).
+
+New `kubejs/server_scripts/respawn_hunger.js` listens to `PlayerEvents.respawned` and sets `foodLevel = 6` (3 drumsticks) + `saturation = 0` on respawn for survival/adventure mode players. Creative/spectator skipped. Forces an early eat post-death without softlocking — players get a brief sprint-and-regen window before the hunger drain catches up, but they can't just suicide-respawn to top off.
+
+Threshold interactions:
+- Above SoLCE `minimumFoodValue: 2` ✓ (food-variety still progresses)
+- Above Sleep Hunger gate of 4 ✓ (can sleep immediately if needed, but tight)
+- Below Hungeroverhaul "Hungry threshold" of 10 (status effect kicks in fast)
+- Above Hungeroverhaul "Faint threshold" of 2 (no faint risk on spawn)
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-28 (cont. 31) — Sleep Hunger activated: heavy hunger / light saturation tax
 
 `Sleep Hunger` was installed but inert (`Hunger Cost: 0`, `Saturation Cost: 0`). Activated per user directive — sleeping should be a meaningful food expense to pair with the food-variety milestone progression and the hunger-mechanics tone of the pack.
