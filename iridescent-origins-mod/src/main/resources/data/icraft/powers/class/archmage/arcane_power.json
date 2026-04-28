@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
   "name": "Arcane Supremacy",
-  "description": "+25% magic damage.",
+  "description": "+50% magic damage.",
   "modifiers": [
     {
       "attribute": "puffish_attributes:magic_damage",
       "operation": "multiply_base",
-      "value": 0.25
+      "value": 0.5
     }
   ]
 }

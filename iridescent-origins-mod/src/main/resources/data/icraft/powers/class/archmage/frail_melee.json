@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
-  "name": "Pacifist's Burden",
-  "description": "-30% all damage dealt. The Vanguard is a wall, not a sword.",
+  "name": "Frail Melee",
+  "description": "-50% melee damage. Mages weren't built to swing axes.",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",
       "operation": "multiply_base",
-      "value": -0.3
+      "value": -0.5
     }
   ]
 }

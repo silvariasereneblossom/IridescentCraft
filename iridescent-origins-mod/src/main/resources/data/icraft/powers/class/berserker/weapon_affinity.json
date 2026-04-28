@@ -1,7 +1,7 @@
 {
   "type": "origins:conditioned_attribute",
-  "name": "Axe Mastery",
-  "description": "+15% damage with axes, -20% with bows/crossbows, -15% with magic.",
+  "name": "Brutal Strikes",
+  "description": "+15% damage with axes. Berserkers despise the bow (-40%) and the wand (-30%).",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

@@ -4,6 +4,32 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 14) — Class JSON powers reconciled toward wiki + maluses doubled
+
+Brought the Origins power JSONs in line with the wiki overview's intended class numbers (which had drifted out of sync), and doubled the implemented magic/melee tradeoff maluses per tester directive.
+
+**Buffs aligned to wiki:**
+- `archmage/arcane_power.json` — Arcane Supremacy: `+25%` magic damage → **`+50%`** (matches wiki line 50)
+
+**Maluses implemented + doubled:**
+- `archmage/frail_melee.json` — **NEW power**, `-50%` melee attack damage (was wiki-described `-25%` but never actually implemented as an attribute modifier; doubled per directive). Added to `archmage.json` powers list so Origins loads it on character creation.
+- `vanguard/damage_penalty.json` — Pacifist's Burden: `-15%` → **`-30%`** all damage dealt (was a real attribute, doubled directly).
+
+**Renamed for wiki consistency:**
+- `berserker/weapon_affinity.json` — "Axe Mastery" → **"Brutal Strikes"** to match wiki naming. Description updated to call out the doubled bow/magic maluses (`-40%` bow, `-30%` magic) — though these specific maluses remain description-only at the file level since adding real implementations would require new `origins:conditioned_attribute` files keyed to bow/magic-item tags. Open follow-up.
+
+**Built + deployed:** `iridescent_origins-1.0.0.jar` rebuilt and copied to all three mods/ directories. Manual mods/ copy because the build script's deploy path target (`/root/IridescentCraft/minecraft/`) is missing — also worth fixing in a follow-up since the path is `.minecraft/` not `minecraft/`.
+
+**Still-open implementation gaps** (description-only, no attribute modifier yet):
+- Berserker bow/magic maluses (described, not enforced)
+- Battle Trance (`origins:simple` — needs class_passives.js handler or attribute power)
+- Bushido / Focus full effect implementations
+- Other class tooltips that promise effects without enforcement
+
+Tracked as a Phase 6H follow-up.
+
+---
+
 ## 2026-04-28 (cont. 13) — Appendix K.2 rewritten to match canonical class data
 
 Tester noted the appendix's class section was undercounting Archmage (showed "+25% spell damage" only, missing the Mana Attunement mana buffs entirely) and the "K.2 Class weapon affinities" framing was misleading — most classes are stat-defined, not weapon-type-defined.
