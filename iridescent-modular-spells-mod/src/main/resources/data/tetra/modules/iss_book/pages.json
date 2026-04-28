@@ -1,22 +1,29 @@
 {
     "type": "tetra:basic_module",
-    "slots": [ "iss_book/pages" ],
+    "slots": [
+        "iss_book/pages"
+    ],
     "improvements": [],
     "variants": [
         {
-            "materials": [ "tetra:fibre/", "tetra:skin/" ],
+            "materials": [
+                "tetra:fibre/",
+                "tetra:skin/"
+            ],
             "key": "pages/",
             "extract": {
                 "tertiaryAttributes": {
-                    "**irons_spellbooks:cast_time_reduction": 0.010
+                    "**irons_spellbooks:cast_time_reduction": 0.01
                 },
                 "integrity": 1,
                 "glyph": {
-                    "textureLocation": "tetra:textures/gui/glyphs.png",
-                    "textureX": 0,
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+                    "textureX": 16,
                     "textureY": 0
                 },
-                "availableTextures": [ "" ],
+                "availableTextures": [
+                    ""
+                ],
                 "models": []
             }
         }

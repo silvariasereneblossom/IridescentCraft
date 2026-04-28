@@ -1,6 +1,8 @@
 {
     "type": "tetra:basic_major_module",
-    "slots": [ "iss_book/front_cover" ],
+    "slots": [
+        "iss_book/front_cover"
+    ],
     "improvements": [
         "iss_book_lining_fabric/",
         "iss_book_lining_fibre/",
@@ -9,7 +11,12 @@
     ],
     "variants": [
         {
-            "materials": [ "tetra:skin/", "tetra:metal/", "tetra:bone/", "tetra:gem/" ],
+            "materials": [
+                "tetra:skin/",
+                "tetra:metal/",
+                "tetra:bone/",
+                "tetra:gem/"
+            ],
             "key": "front_cover/",
             "extract": {
                 "primaryAttributes": {
@@ -17,11 +24,13 @@
                 },
                 "integrity": 0,
                 "glyph": {
-                    "textureLocation": "tetra:textures/gui/glyphs.png",
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
                     "textureX": 0,
                     "textureY": 0
                 },
-                "availableTextures": [ "" ],
+                "availableTextures": [
+                    ""
+                ],
                 "models": []
             }
         }

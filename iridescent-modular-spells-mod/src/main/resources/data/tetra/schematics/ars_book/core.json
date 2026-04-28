@@ -1,15 +1,19 @@
 {
-    "slots": [ "ars_book/core" ],
+    "slots": [
+        "ars_book/core"
+    ],
     "materialSlotCount": 1,
     "displayType": "major",
     "glyph": {
-        "textureLocation": "tetra:textures/gui/glyphs.png",
+        "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
         "textureX": 0,
         "textureY": 0
     },
     "outcomes": [
         {
-            "materials": [ "tetra:icraft_ars_books/" ],
+            "materials": [
+                "tetra:icraft_ars_books/"
+            ],
             "countFactor": 1,
             "moduleKey": "ars_book/core",
             "moduleVariant": "ars_core/"

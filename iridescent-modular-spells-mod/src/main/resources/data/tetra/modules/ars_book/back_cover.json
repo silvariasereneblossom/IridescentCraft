@@ -1,6 +1,8 @@
 {
     "type": "tetra:basic_module",
-    "slots": [ "ars_book/back_cover" ],
+    "slots": [
+        "ars_book/back_cover"
+    ],
     "improvements": [
         "ars_book_lining_fabric/",
         "ars_book_lining_fibre/",
@@ -8,7 +10,12 @@
     ],
     "variants": [
         {
-            "materials": [ "tetra:skin/", "tetra:metal/", "tetra:bone/", "tetra:gem/" ],
+            "materials": [
+                "tetra:skin/",
+                "tetra:metal/",
+                "tetra:bone/",
+                "tetra:gem/"
+            ],
             "key": "back_cover/",
             "extract": {
                 "primaryAttributes": {
@@ -16,11 +23,13 @@
                 },
                 "integrity": 1,
                 "glyph": {
-                    "textureLocation": "tetra:textures/gui/glyphs.png",
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
                     "textureX": 0,
                     "textureY": 0
                 },
-                "availableTextures": [ "" ],
+                "availableTextures": [
+                    ""
+                ],
                 "models": []
             }
         }

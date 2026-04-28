@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 29) — Custom book glyphs replace Tetra's sword-blade icon
+
+cont. 28 fixed the broken texture path but landed at `tetra:textures/gui/glyphs.png` offset (0, 0) — which is Tetra's **sword-blade glyph** (top-left of their atlas). Visually weird for a spell book.
+
+Drew a simple 32×16 monochrome book-themed glyph atlas at `assets/iridescent_modular_spells/textures/gui/glyphs.png` with two slots:
+
+- **(0, 0): Closed book** — used for core, front_cover, back_cover, spine, dye (a 12×12-ish outline with a central spine and page detail lines)
+- **(16, 0): Open book** — used specifically for the `pages` slot (V-shape with two open page faces and lined detail)
+
+Same monochrome 1px-outline style as Tetra's vanilla glyphs so the new icon doesn't visually clash with the rest of the workbench. Pillow-generated, pixel-precise.
+
+Bulk-updated all 10 module variant glyphs + 15 schematic glyphs to point at the new texture path with the correct (X, Y) per slot. The pages-specific open-book glyph differentiates that slot at a glance from the other "closed cover" slots.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed (texture + JSON refs all in the jar at `assets/iridescent_modular_spells/textures/gui/glyphs.png` + each module/schematic JSON updated).
+
+---
+
 ## 2026-04-28 (cont. 28) — Fix glyph texture path: wizard_glyphs.png → glyphs.png
 
 Tester noted the 2 right-side major slots rendered as **large empty squares** rather than the expected diamond backdrops with glyph content. Diagnosed via decompiled Tetra:

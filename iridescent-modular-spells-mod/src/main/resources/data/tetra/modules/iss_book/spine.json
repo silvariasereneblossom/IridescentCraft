@@ -1,22 +1,30 @@
 {
     "type": "tetra:basic_module",
-    "slots": [ "iss_book/spine" ],
+    "slots": [
+        "iss_book/spine"
+    ],
     "improvements": [],
     "variants": [
         {
-            "materials": [ "tetra:metal/", "tetra:skin/", "tetra:fibre/" ],
+            "materials": [
+                "tetra:metal/",
+                "tetra:skin/",
+                "tetra:fibre/"
+            ],
             "key": "spine/",
             "extract": {
                 "primaryAttributes": {
-                    "**irons_spellbooks:cooldown_reduction": 0.010
+                    "**irons_spellbooks:cooldown_reduction": 0.01
                 },
                 "integrity": 0,
                 "glyph": {
-                    "textureLocation": "tetra:textures/gui/glyphs.png",
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
                     "textureX": 0,
                     "textureY": 0
                 },
-                "availableTextures": [ "" ],
+                "availableTextures": [
+                    ""
+                ],
                 "models": []
             }
         }

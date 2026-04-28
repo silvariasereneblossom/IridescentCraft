@@ -1,20 +1,26 @@
 {
     "type": "tetra:basic_major_module",
-    "slots": [ "ars_book/core" ],
+    "slots": [
+        "ars_book/core"
+    ],
     "improvements": [],
     "renderLayer": "higher",
     "variants": [
         {
-            "materials": [ "tetra:icraft_ars_books/" ],
+            "materials": [
+                "tetra:icraft_ars_books/"
+            ],
             "key": "ars_core/",
             "extract": {
                 "integrity": -2,
                 "glyph": {
-                    "textureLocation": "tetra:textures/gui/glyphs.png",
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
                     "textureX": 0,
                     "textureY": 0
                 },
-                "availableTextures": [ "" ],
+                "availableTextures": [
+                    ""
+                ],
                 "models": []
             }
         }
