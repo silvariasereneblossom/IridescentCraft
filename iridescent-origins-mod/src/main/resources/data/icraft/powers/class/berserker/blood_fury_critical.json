@@ -1,0 +1,18 @@
+{
+  "type": "origins:conditioned_attribute",
+  "name": "Blood Fury (Critical)",
+  "description": "Below 20% HP: an additional +20% melee damage on top of the standard Blood Fury bonus, totaling +40%.",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": 0.2
+    }
+  ],
+  "condition": {
+    "type": "origins:relative_health",
+    "comparison": "<=",
+    "compare_to": 0.2
+  },
+  "hidden": true
+}

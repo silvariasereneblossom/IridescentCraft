@@ -3,7 +3,8 @@
     "icraft:class/battlemage/hp_modifier",
     "icraft:class/battlemage/arcane_strikes",
     "icraft:class/battlemage/spell_armor",
-    "icraft:class/battlemage/mana_shield"
+    "icraft:class/battlemage/mana_shield",
+    "icraft:class/battlemage/mana_pool"
   ],
   "icon": {
     "item": "minecraft:blaze_rod"

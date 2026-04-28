@@ -4,6 +4,33 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 15) — Phase 6H: implement description-only class passives
+
+Tester noted several class powers were `origins:simple` (description-only tooltips with no actual gameplay enforcement). Closed the gap by either converting to real `origins:attribute` powers or wiring KubeJS handlers in a new `class_passives_phase6h.js`.
+
+**New `origins:attribute` powers** (additive bonuses, applied immediately on character creation):
+- `archmage/mana_pool.json` — **2.5× max mana** (multiply_base 1.5 on ISS `irons_spellbooks:max_mana` and Ars `ars_nouveau.perk.max_mana`). Wiki promised this; was never enforced.
+- `battlemage/mana_pool.json` — 1.9× max mana (multiply_base 0.9). Same fix for Battlemage's wiki claim.
+- `void_summoner/mana_pool.json` — 1.9× max mana. Same fix for Void Summoner.
+- `berserker/blood_fury_critical.json` — `<20% HP +20%` melee (stacks atop the existing `<40%` +20% Blood Fury for `+40%` total at <20%, matching wiki).
+
+All four wired into their respective origin files (`berserker.json`, `battlemage.json`, `void_summoner.json`, `archmage.json`).
+
+**New KubeJS handlers** (`kubejs/server_scripts/origins/class_passives_phase6h.js` — mirrored to all 3 distros):
+- **Berserker Battle Trance** — `EntityEvents.hurt` stamps `lastHitTick`. Per-second `ServerEvents.tick` checks for 10s sustained combat → applies `+5% damage / +1 armor` via /attribute commands. Lost 5s after combat ends. Modifier ID `icraft:berserker_trance`.
+- **Samurai Bushido** — `EntityEvents.hurt` checks target HP at moment of hit; if full HP, multiplies `event.damage × 1.15` and stamps a 3s "first-strike window". `EntityEvents.death` within that window → grants Speed II for 3s.
+- **Wanderer Adaptable** — `EntityEvents.hurt` infers weapon type from mainhand item ID (sword / axe / bow / crossbow / trident / hammer / mace / magic). 3+ distinct types stamped within 60s → grants `+10%` damage for 30s via /attribute (`icraft:wanderer_adapt`). Idle tick clears the modifier when expired.
+- **Artificer Resourceful** — every 2s, scans an 8×4×8 cube around the player for `minecraft:crafting_table`. If found, refreshes Speed I for 4s (effectively continuous while near the table). Bonus ore drops are a separate LootJS responsibility (existing `lootjs_overhaul.js`).
+
+**Built + deployed:** `iridescent_origins-1.0.0.jar` rebuilt and pushed to all 3 mod folders (manual cp because of the build-script path bug from cont. 14).
+
+**Still simple-only** (low-impact / niche, deferred further):
+- Berserker Brutal Strikes bow (-40%) + magic (-30%) maluses — would need conditioned_attribute files keyed to bow/magic-item tags
+- Void Summoner Soul Tether's "+10% bonus XP from minion kills within 16b" partly handled by class_passives.js (lifesteal works, XP gain works)
+- Battlemage Mana Shield's "15% chance to negate damage" — `battlemage_mana_shield.js` instead applies a continuous Resistance scaling, which is a deliberately different (non-RNG) implementation. Updating wiki/JSON description to match would be a doc cleanup.
+
+---
+
 ## 2026-04-28 (cont. 14) — Class JSON powers reconciled toward wiki + maluses doubled
 
 Brought the Origins power JSONs in line with the wiki overview's intended class numbers (which had drifted out of sync), and doubled the implemented magic/melee tradeoff maluses per tester directive.
