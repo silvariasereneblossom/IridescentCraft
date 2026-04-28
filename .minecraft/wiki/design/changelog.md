@@ -4,6 +4,10 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 — Mutant Monsters block-break: removed dead `mutant_monsters_no_grief.js` (EntityMobGriefingEvent approach didn't catch `Level.destroyBlock()`); kept the surgical `mutant_monsters_no_griefing.js` (`BlockEvents.broken` namespace cancel). Also removed `diagnose_mob_drops.js` — spider diamond+ender_eye no longer reproducing under the defensive `removeLoot` ENTITY strip in `loot_overhaul.js`; will rediagnose if recurrence.
+
+---
+
 ## 2026-04-27 (cont.) — Phase 6F-3 follow-up: FA + Stalwart + Mahou synergy
 
 Three audit-driven follow-ups after the main 6F-3 push:
