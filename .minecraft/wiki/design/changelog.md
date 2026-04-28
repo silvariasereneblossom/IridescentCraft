@@ -4,6 +4,32 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 23) — Modular spell book: split majors/minors for compact base-Tetra layout
+
+Tester noted the workbench module slots looked larger than vanilla Tetra's sword slots. Decompiled `ModularBladedItem` and confirmed the dimension delta isn't a configurable — vanilla swords have **2 majors + 3 minors** (blade + hilt big, fuller/guard/pommel small), while ours had **5 majors** all rendered full-size. Reclassified 2 of our 5 slots:
+
+| Slot | Was | Now | Reasoning |
+|---|---|---|---|
+| `core` | Major | **Major** | Identity-defining |
+| `front_cover` | Major | **Major** | Visual focal point |
+| `back_cover` | Major | **Major** | Symmetric anchor |
+| `spine` | Major | **Minor** | Functional secondary |
+| `pages` (iss) / `dye` (ars) | Major | **Minor** | Functional secondary |
+
+**Changes:**
+- Java: `MAJOR_KEYS` cut to 3 entries; new `MINOR_KEYS = {spine, pages}` (or `{spine, dye}` on ars). Override `getMinorModuleKeys` to return `MINOR_KEYS`. Added `getMinorGuiOffsets` returning 2 coordinate pairs at `(-14, 20)` and `(14, 20)` — bottom-corner positions where vanilla Tetra renders minors compact.
+- `getMajorGuiOffsets` re-shaped to 3 pairs: core `(0, -32)`, front_cover `(18, 0)`, back_cover `(-18, 0)` — the "T" pattern.
+- Module JSONs: `iss_book/{spine,pages}.json` + `ars_book/{spine,dye}.json` — `"type": "tetra:basic_major_module"` → `"tetra:basic_module"` (vanilla-style minor module type, matching `sword/decorative_pommel.json`).
+- Schematic JSONs: same 4 files — `"displayType": "major"` → `"minor"`.
+
+**Effects in-game:**
+- Module panel: 3 large slots (Core + Front Cover + Back Cover) and 2 small slots (Spine + Pages or Dye), matching vanilla Tetra's compact layout
+- Stat contributions: unchanged. Integrity scheme (front=0, back=+1, spine=0, pages=+1, core=−2 → net 0) still applies, just rendered through the new major/minor classification
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 22) — Stat-bar tooltips actually translate now + module labels compact
 
 Tester reported tooltips on the magic-stat bars rendered as raw lang keys (`iridescent_modular_spells.stats.cooldownReduction`) and the module slot labels overflowed the panel ("Iron-lined spell book cover" etc., much wider than base Tetra's "Copper blade").

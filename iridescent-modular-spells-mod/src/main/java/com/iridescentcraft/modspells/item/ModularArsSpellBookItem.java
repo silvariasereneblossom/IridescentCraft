@@ -63,9 +63,12 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     public static final String TETRA_SLOT_DYE = "ars_book/dye";
     public static final String TETRA_SLOT_SPINE = "ars_book/spine";
 
+    /** Major slots — identity-defining trio. Tetra renders these full-size. */
     private static final String[] MAJOR_KEYS = {
-            TETRA_SLOT_CORE,
-            TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
+            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER
+    };
+    /** Minor slots — secondary functional modules. Tetra renders these compact. */
+    private static final String[] MINOR_KEYS = {
             TETRA_SLOT_SPINE, TETRA_SLOT_DYE
     };
 
@@ -142,7 +145,7 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
 
     @Override
     public String[] getMinorModuleKeys(ItemStack itemStack) {
-        return new String[0];
+        return MINOR_KEYS;
     }
 
     @Override
@@ -151,19 +154,21 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     }
 
     public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        // 5 slots: see ModularSpellBookItem.getMajorGuiOffsets — same layout
+        // 3 majors: see ModularSpellBookItem.getMajorGuiOffsets — same layout
         // for consistency between the iss + ars sides.
         return new GuiModuleOffsets(new int[]{
-                  0, -32,   // core (moved up to clear the Status panel)
-                -18,   0,   // front_cover
-                 18,   0,   // back_cover
-                -18,  18,   // spine
-                 18,  18    // dye
+                  0, -32,   // core
+                 18,   0,   // front_cover (right)
+                -18,   0    // back_cover (left)
         });
     }
 
     public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[0]);
+        // 2 minors: spine + dye tucked below, compact-rendered.
+        return new GuiModuleOffsets(new int[]{
+                -14,  20,   // spine
+                 14,  20    // dye
+        });
     }
 
     @Override

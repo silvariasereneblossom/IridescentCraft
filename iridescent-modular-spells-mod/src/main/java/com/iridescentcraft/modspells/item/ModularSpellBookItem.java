@@ -75,9 +75,12 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public static final String TETRA_SLOT_SPINE = "iss_book/spine";
     public static final String TETRA_SLOT_PAGES = "iss_book/pages";
 
+    /** Major slots — the identity-defining trio. Tetra renders these full-size. */
     private static final String[] MAJOR_KEYS = {
-            TETRA_SLOT_CORE,
-            TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
+            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER
+    };
+    /** Minor slots — secondary functional modules. Tetra renders these compact. */
+    private static final String[] MINOR_KEYS = {
             TETRA_SLOT_SPINE, TETRA_SLOT_PAGES
     };
 
@@ -146,27 +149,29 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public String[] getMajorModuleKeys(ItemStack itemStack) { return MAJOR_KEYS; }
 
     @Override
-    public String[] getMinorModuleKeys(ItemStack itemStack) { return new String[0]; }
+    public String[] getMinorModuleKeys(ItemStack itemStack) { return MINOR_KEYS; }
 
     @Override
     public String[] getRequiredModules(ItemStack itemStack) { return new String[0]; }
 
     public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        // 5 slots: core (top center), then a 2x2 grid of front/back/spine/pages
-        // surrounding the central item display. Coordinates are pixel offsets
-        // from the workbench glyph anchor; tuned to avoid overlapping the
-        // central item render (which sits roughly at 0,0).
+        // 3 majors: core (top center), front + back covers (sides). Mirrors
+        // the vanilla sword's 2-major layout (blade/hilt) but with a third
+        // anchor for the core.
         return new GuiModuleOffsets(new int[]{
-                  0, -32,   // core (moved up to clear the Status panel)
-                -18,   0,   // front_cover
-                 18,   0,   // back_cover
-                -18,  18,   // spine
-                 18,  18    // pages
+                  0, -32,   // core
+                 18,   0,   // front_cover (right)
+                -18,   0    // back_cover (left)
         });
     }
 
     public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[0]);
+        // 2 minors: spine + pages tucked below the central display, rendered
+        // compact (matching the vanilla sword's pommel/guard/fuller treatment).
+        return new GuiModuleOffsets(new int[]{
+                -14,  20,   // spine
+                 14,  20    // pages
+        });
     }
 
     @Override
