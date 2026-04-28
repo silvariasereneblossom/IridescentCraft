@@ -14,7 +14,7 @@
                 "primaryAttributes": {
                     "irons_spellbooks:max_mana": 5
                 },
-                "integrity": 0,
+                "integrity": 1,
                 "glyph": {
                     "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
                     "textureX": 0,

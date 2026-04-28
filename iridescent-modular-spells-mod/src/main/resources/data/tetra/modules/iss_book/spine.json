@@ -10,7 +10,7 @@
                 "primaryAttributes": {
                     "**irons_spellbooks:cooldown_reduction": 0.010
                 },
-                "integrity": 0,
+                "integrity": 1,
                 "glyph": {
                     "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
                     "textureX": 0,

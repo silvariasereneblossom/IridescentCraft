@@ -14,7 +14,7 @@
                 "primaryAttributes": {
                     "ars_nouveau:ars_nouveau.perk.max_mana": 3
                 },
-                "integrity": 0,
+                "integrity": 1,
                 "glyph": {
                     "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
                     "textureX": 0,

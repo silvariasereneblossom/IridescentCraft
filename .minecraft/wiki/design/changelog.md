@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 8) — Tetra workbench polish: slot labels, integrity, name shortening
+
+Tester opened a spell book on the workbench and reported three issues; addressed all in one rebuild.
+
+- **Slot labels showing raw lookup keys** (`tetra.slot.iss_book/front_cover` etc.). Tetra emits these via `tetra.slot.<slot_path>` (dotted prefix, slash inside slot — same convention as `tetra.module.<slot>`, distinct from the slash-prefix `tetra/schematic/...` for schematics). Verified against `assets/tetra/lang/en_us.json` in the Tetra 6.12.0 jar (`tetra.slot.sword/blade`, etc.). Added 8 entries: 4 for iss_book + 4 for ars_book, all named after the slot ("Front Cover", "Back Cover", "Spine", "Pages" / "Dye").
+- **Integrity 0/0**. All 8 module variants (4 iss + 4 ars) had `extract.integrity: 0`, so the workbench reported a flat 0/0 budget. Bumped each to `integrity: 1`, giving each book a 4-point budget — comparable to Tetra's vanilla sword (blade −1, hilt +1 net 0 with positive structural pieces). Improvements consume from this budget; lining/dye are 0-cost so don't draw it down. Honing-style improvements added later can spend from the 4-point pool.
+- **Name truncation in workbench column** (e.g. "Front Cover Lining" wraps badly). Shortened the three long schematic names: "Front Cover Lining" → "Front Lining", "Back Cover Lining" → "Back Lining", "Front Cover Dye" → "Front Dye". Applied symmetrically to both iss_book and ars_book sides where the schematic exists.
+
+Open follow-up: user asked for me to also reference TSB ("Tetra Spell Books") jar for design comparison. That jar isn't in `iridescent-modular-spells-mod/libs/` and isn't on Modrinth under that name. Asked the user where to grab it.
+
+---
+
 ## 2026-04-28 (cont. 7) — Re-add ISS dye as a front-cover improvement (option 2)
 
 After reverting the broken 5th-major slot in cont. 6, restored the dye-on-iss feature using the improvement system instead — same pattern the existing `iss_book_lining_fabric/fibre/skin` improvements use, so no Tetra UI hardcoding is violated. Three files added: `data/tetra/improvements/iridescent_modular_spells/iss_book_dye.json` (zero-attribute, level 1, purely cosmetic), `data/tetra/schematics/iss_book/front_cover_dye.json` (accepts the 16 vanilla dye items, applies to `iss_book/front_cover`), and the matching 4 lang entries (`tetra.improvement.iss_book_dye.*` and `tetra/schematic/iss_book/front_cover_dye.*` — note slash prefix for schematic per cont. 2). Wired into `front_cover.json`'s `improvements` array.
