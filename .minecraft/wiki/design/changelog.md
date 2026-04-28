@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 19) — Phase 6I: spell-list transfer + workbench Status panel for magic stats
+
+Two polish/transparency wins on modular spell books.
+
+**Spell list preserved through Tetra replacement** — `kubejs/server_scripts/origins/spell_book_transfer.js`. When Tetra's `tetra:replacements` swaps a vanilla ISS spell book for our modular item, the input book's `ISB_Spells` NBT (player's inscribed spell list) used to be lost — the input is consumed as material and the new modular item has no spells. Closed via a per-tick inventory snapshot: `ServerEvents.tick` (every 2 ticks) captures slot→{id, ISB_Spells} for any vanilla ISS book a player carries; `PlayerEvents.inventoryChanged` detects when a modular spell book appears in a slot whose previous-tick snapshot held a vanilla book with spells, and copies those spells to the modular item's NBT (marked `icraft_spells_transferred: true` to avoid re-copying). Mirrored to all 3 distros. Ars-side spell preservation isn't done yet — Ars books store inscribed spells under different NBT keys; that's a follow-up.
+
+**Workbench Status panel now shows magic attributes** — `iridescent-modular-spells-mod/src/main/java/com/iridescentcraft/modspells/client/MagicStatsBars.java`. Tetra's `WorkbenchStatsGui` was hardcoded to a weapon-oriented stat list (damage / sweeping / speed / durability / armor / etc.) which is why our spell books showed an empty Status tab. No Java mixin needed — Tetra exposes `WorkbenchStatsGui.addBar(GuiStatBase)` as a public static method specifically for extension. Registered 18 magic-attribute bars at `FMLClientSetupEvent`:
+
+- ISS: max mana, mana regen, spell power, cooldown reduction, cast time reduction, fire / ice / lightning / holy / ender / nature / blood / eldritch / evocation spell power, summon damage
+- Ars: max mana, mana regen, spell damage
+
+Each bar reads from `IModularItem.getAttributeModifiersCached(stack)` (same path as the equipped tooltip from cont. 18), so the panel reflects the actually-assembled item's stats live as the player swaps materials. Bars only show when their value is non-zero (`shouldShow` in IStatGetter), so the panel doesn't get cluttered with zero-bonus entries. Class is `Dist.CLIENT`-only so it doesn't load on dedicated servers. 18 lang entries added under `iridescent_modular_spells.stats.<key>`.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 18) — Tooltip stats now show real magic numbers
 
 The equipped-tooltip on modular spell books was rendering dead-code legacy fields ("Modular Slots: Cover (empty), Pages (empty)" + an empty "Total Bonuses" block) — leftover from the pre-Phase-6G NBT-slot system that the workbench replacement no longer populates. Replaced both `ModularSpellBookItem.appendHoverText` and `ModularArsSpellBookItem.appendHoverText` with a real magic-stats computation that reads from `IModularItem.getAttributeModifiersCached(stack)` (Tetra's resolved attribute multimap for the assembled item) and renders only non-zero magic-relevant attributes.
