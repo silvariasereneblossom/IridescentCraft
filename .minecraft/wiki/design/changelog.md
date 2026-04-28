@@ -4,6 +4,26 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 33) — Liteminer hunger gate: vein chains cancel below 6/20 hunger
+
+We do have a vein-miner — `liteminer-forge-1.20.1-1.0.0` — I missed it on the first grep. Built-in `food_exhaustion = 0.2` per block is a soft tax (~3 hunger over a full 64-block chain). User wanted a hard gate.
+
+`kubejs/server_scripts/liteminer_hunger_gate.js`:
+- `BlockEvents.broken` handler tracks per-player `lastBreakTick`
+- Breaks within 8 ticks (0.4s) of the previous one are treated as **chain continuations** (Liteminer fires breaks in quick succession; manual mining is far slower)
+- If `foodLevel < 6` during a chain, the next break is cancelled (`event.cancel()`) — chain stops
+- Player notified once per 5s with "Too hungry to veinmine. Eat first."
+- Skipped in creative/spectator
+- First break of any chain is never cancelled (lets manual mining and chain-start work normally), gate kicks in once chain is established
+
+Threshold rationale: 6/20 matches Sleep Hunger's `Hunger Needed For Sleep: 4` floor + a small buffer. "If you can't sleep, you can't vein." Maintains consistency across the pack's hunger-tax mechanics (cont. 31 sleep tax, cont. 32 respawn reset).
+
+Built-in Liteminer `food_exhaustion: 0.2` left at default — the gate is the main constraint, exhaustion is supplementary. If the gate proves too easy to dodge (eat → chain 64 → repeat), bump exhaustion to 0.5 or 1.0.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-28 (cont. 32) — Respawn hunger reset to 6 / saturation 0
 
 Vanilla Minecraft restores hunger to 20 (full) on respawn — clashes with the pack's hunger-tax tone (Sleep Hunger costs 6 per sleep from cont. 31, SoLCE food-variety incentive, Hungeroverhaul exhaustion penalties).
