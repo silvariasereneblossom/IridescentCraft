@@ -2,6 +2,7 @@ package com.iridescentcraft.modspells.client;
 
 import com.google.common.collect.Multimap;
 import com.iridescentcraft.modspells.IridescentModularSpells;
+import net.minecraft.client.resources.language.I18n;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
@@ -116,18 +117,24 @@ public final class MagicStatsBars {
             }
         };
 
-        // Tetra translates the returned string via Component.translatable, so
-        // returning the `.tooltip` lang key lets the lang file substitute in
-        // the actual stat value via `%s` (matching base Tetra's convention,
-        // e.g. tetra.stats.armor.tooltip = "Provides §e%s§r armor when held").
+        // Tetra's GuiStatBar wraps tooltip strings in Component.literal (NOT
+        // Component.translatable), so getTooltipBase must return already-
+        // translated text. Use I18n.get to resolve the .tooltip lang key with
+        // the stat value substituted into the %s placeholder — matching base
+        // Tetra's convention (tetra.stats.armor.tooltip = "Provides §e%s§r ...").
         String tooltipKey = labelKey + ".tooltip";
         ITooltipGetter tooltipGetter = new ITooltipGetter() {
             @Override public String getTooltipBase(Player p, ItemStack s) {
-                return tooltipKey;
+                double v = computeValue(s, attrId);
+                String formatted = isPercent
+                        ? String.format("%+.1f%%", v * 100.0)
+                        : String.format("%+.1f", v);
+                return I18n.get(tooltipKey, formatted);
             }
         };
 
-        GuiStatBar bar = new GuiStatBar(0, 0, 80, labelKey, min, max, false,
+        // Bar width 60 (was 80) — matches base Tetra's compact panel layout.
+        GuiStatBar bar = new GuiStatBar(0, 0, 60, labelKey, min, max, false,
                 statGetter, labelGetter, tooltipGetter);
         WorkbenchStatsGui.addBar(bar);
     }

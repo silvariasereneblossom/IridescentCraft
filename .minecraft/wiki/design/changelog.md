@@ -4,6 +4,30 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 22) — Stat-bar tooltips actually translate now + module labels compact
+
+Tester reported tooltips on the magic-stat bars rendered as raw lang keys (`iridescent_modular_spells.stats.cooldownReduction`) and the module slot labels overflowed the panel ("Iron-lined spell book cover" etc., much wider than base Tetra's "Copper blade").
+
+**Root cause on tooltips:** disassembled Tetra 6.12.0 `GuiStatBar.update()` and confirmed the bar **label** is wrapped in `I18n.get(labelKey, args)` (translates), but the **tooltip** is wrapped in `Component.literal(tooltipGetter.getTooltipBase(...))` (does NOT translate). So when our `getTooltipBase` returned the raw lang key, Tetra rendered it as literal text. Fixed by calling `I18n.get(tooltipKey, formattedValue)` inside `getTooltipBase` so the returned string is already-resolved with `%s` substituted before Tetra wraps it. Vanilla Tetra's own tooltip getters do the same trick — that's why their `tetra.stats.armor.tooltip` entries with `§e%s§r armor` placeholders work.
+
+**Module label compaction:** shortened all 10 `material_name` interpolations:
+- `"%s-lined spell book cover"` → `"%s-lined cover"` (iss + ars)
+- `"%s spell book backing"` → `"%s backing"`
+- `"%s spell book spine"` → `"%s spine"`
+- `"%s spell book pages"` → `"%s pages"`
+- `"%s tome dye"` → `"%s dye"`
+
+So an iron-cored modular spell book with a manasteel front cover now renders the front-cover label as **"Manasteel-lined cover"** instead of **"Manasteel-lined spell book cover"**. Same UX as vanilla Tetra modules ("Copper blade", "Flimsy hilt").
+
+**Bar width:** GuiStatBar constructor's barLength dropped from `80` to `60` — matches base Tetra's compact panel sizing in the user's reference screenshot.
+
+Built and deployed. Sync and re-launch, and:
+- Hovering a stat bar should show "Reduces the cooldown between spell casts by §e+5.0%§r." (translated, value substituted) instead of the raw key.
+- Module slot labels in the workbench should fit the panel without overflowing.
+- Bars themselves should be visibly narrower / closer to base Tetra's layout.
+
+---
+
 ## 2026-04-28 (cont. 21) — Phase 6J: lang audit pass on iridescent-origins-mod (300 entries added)
 
 The `iridescent-origins-mod` had **zero lang entries** before this — every Origins power and origin definition used literal strings in the JSON `name` and `description` fields. This means non-English clients see English literals (which Origins displays as-is when no translation is available), and any string-edit cycle goes through the JSONs rather than a lang file.
