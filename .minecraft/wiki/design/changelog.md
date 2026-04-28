@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 18) — Tooltip stats now show real magic numbers
+
+The equipped-tooltip on modular spell books was rendering dead-code legacy fields ("Modular Slots: Cover (empty), Pages (empty)" + an empty "Total Bonuses" block) — leftover from the pre-Phase-6G NBT-slot system that the workbench replacement no longer populates. Replaced both `ModularSpellBookItem.appendHoverText` and `ModularArsSpellBookItem.appendHoverText` with a real magic-stats computation that reads from `IModularItem.getAttributeModifiersCached(stack)` (Tetra's resolved attribute multimap for the assembled item) and renders only non-zero magic-relevant attributes.
+
+**ISS-side tooltip** shows (in order): Max Mana, Mana Regen, Spell Power, Cooldown Reduction, Cast Time Reduction, then per-school spell power (Fire, Ice, Lightning, Holy, Ender, Nature, Blood, Eldritch, Evocation), then Summon Damage. Format: flat number for max_mana, percentage for the rest. Values come from the actual core material + per-cover material attributes installed in the workbench, so they update live as you swap modules.
+
+**Ars-side tooltip** shows: Max Mana, Mana Regen, Spell Damage. Plus ISS Max Mana / ISS Mana Regen if the Ars book happens to inherit those (defensive — Ars cores currently don't add ISS attributes, but the path is there).
+
+Built and deployed. Workbench Status panel still doesn't render magic attributes (Tetra core renders a fixed weapon-oriented stat list — damage / sweeping / speed / durability — and adding magic types to that panel needs a Java mixin into `se.mickelus.tetra.gui.stats.GuiStats`). That's a Phase 6I follow-up.
+
+---
+
 ## 2026-04-28 (cont. 17) — Core slot renamed + Tetra schematic descriptions reworded
 
 Tester noted the Tetra schematic UI was confusing on two fronts: "Cover" appeared three times (core slot + front cover + back cover), and the core slot's description still read "Forge the cover from a vanilla ISS spellbook material" — phrasing that pre-dated the Phase 6G architecture and reads as deprecated. Closed both:

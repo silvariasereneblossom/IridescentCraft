@@ -244,25 +244,70 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     @Override
     public void appendHoverText(ItemStack stack, Level level, List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-
-        tooltip.add(Component.literal("Modular Slots:").withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
-        appendSlotLine(tooltip, stack, SLOT_COVER, "Cover");
-        appendSlotLine(tooltip, stack, SLOT_PAGES, "Pages");
-
-        Map<AttributeKey, Double> totals = new LinkedHashMap<>();
-        for (AttributeKey k : AttributeKey.values()) {
-            double v = getTotalBonus(stack, k);
-            if (v != 0.0) totals.put(k, v);
-        }
-        if (!totals.isEmpty()) {
-            tooltip.add(Component.literal("Total Bonuses:").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
-            totals.forEach((k, v) -> {
-                String pct = String.format("%+.1f%%", v * 100.0);
-                tooltip.add(Component.literal("  " + pct + " " + k.displayName).withStyle(ChatFormatting.AQUA));
-            });
-        }
-
+        // Tetra's standard tooltip — module list, integrity, etc.
         tooltip.addAll(this.getTooltip(stack, level, flag));
+        // Magic stats summary derived from the assembled item's actual attribute modifiers
+        appendMagicStatsTooltip(stack, tooltip);
+    }
+
+    /** Magic-stat lines we render in the tooltip, in display order. */
+    private static final Map<String, String> MAGIC_STAT_LABELS = new LinkedHashMap<>();
+    static {
+        MAGIC_STAT_LABELS.put("irons_spellbooks:max_mana",              "Max Mana");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:mana_regen",            "Mana Regen");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:spell_power",           "Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:cooldown_reduction",    "Cooldown Reduction");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:cast_time_reduction",   "Cast Time Reduction");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:fire_spell_power",      "Fire Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:ice_spell_power",       "Ice Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:lightning_spell_power", "Lightning Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:holy_spell_power",      "Holy Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:ender_spell_power",     "Ender Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:nature_spell_power",    "Nature Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:blood_spell_power",     "Blood Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:eldritch_spell_power",  "Eldritch Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:evocation_spell_power", "Evocation Spell Power");
+        MAGIC_STAT_LABELS.put("irons_spellbooks:summon_damage",         "Summon Damage");
+    }
+    /** Attributes rendered as flat numbers (rather than percentages). */
+    private static final java.util.Set<String> FLAT_STATS = java.util.Set.of(
+            "irons_spellbooks:max_mana"
+    );
+
+    /**
+     * Compute the assembled magic stats from Tetra modules + materials and append
+     * them as a tooltip section. Reads from {@link IModularItem#getAttributeModifiersCached}
+     * so we don't need a valid {@code SlotContext} or UUID.
+     */
+    private void appendMagicStatsTooltip(ItemStack stack, List<Component> tooltip) {
+        Multimap<Attribute, AttributeModifier> attrs;
+        try {
+            attrs = getAttributeModifiersCached(stack);
+        } catch (Throwable t) {
+            return;
+        }
+        if (attrs == null || attrs.isEmpty()) return;
+
+        Map<String, Double> totals = new LinkedHashMap<>();
+        attrs.forEach((attr, mod) -> {
+            if (attr == null || mod == null) return;
+            ResourceLocation rl = ForgeRegistries.ATTRIBUTES.getKey(attr);
+            if (rl == null) return;
+            String key = rl.toString();
+            if (!MAGIC_STAT_LABELS.containsKey(key)) return;
+            totals.merge(key, mod.getAmount(), Double::sum);
+        });
+        if (totals.isEmpty()) return;
+
+        tooltip.add(Component.literal("Magic Stats:").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
+        for (Map.Entry<String, String> entry : MAGIC_STAT_LABELS.entrySet()) {
+            Double v = totals.get(entry.getKey());
+            if (v == null || v == 0.0) continue;
+            String formatted = FLAT_STATS.contains(entry.getKey())
+                    ? String.format("%+.0f", v)
+                    : String.format("%+.1f%%", v * 100.0);
+            tooltip.add(Component.literal("  " + formatted + " " + entry.getValue()).withStyle(ChatFormatting.AQUA));
+        }
     }
 
     private static void appendSlotLine(List<Component> tooltip, ItemStack stack, String slotKey, String displayName) {

@@ -9,12 +9,14 @@ import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
+import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
+import net.minecraftforge.registries.ForgeRegistries;
 import se.mickelus.tetra.data.DataManager;
 import se.mickelus.tetra.gui.GuiModuleOffsets;
 import se.mickelus.tetra.items.modular.IModularItem;
@@ -239,29 +241,55 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     public void appendHoverText(ItemStack stack, Level level,
                                 List<Component> tooltip, TooltipFlag flag) {
         super.appendHoverText(stack, level, tooltip, flag);
-
-        tooltip.add(Component.literal("Modular Slots:")
-                .withStyle(ChatFormatting.LIGHT_PURPLE, ChatFormatting.BOLD));
-        appendSlotLine(tooltip, stack, SLOT_COVER, "Cover");
-        appendSlotLine(tooltip, stack, SLOT_PAGES, "Pages");
-
-        Map<ModularSpellBookItem.AttributeKey, Double> totals = new LinkedHashMap<>();
-        for (ModularSpellBookItem.AttributeKey k : ModularSpellBookItem.AttributeKey.values()) {
-            double v = getTotalBonus(stack, k);
-            if (v != 0.0) totals.put(k, v);
-        }
-        if (!totals.isEmpty()) {
-            tooltip.add(Component.literal("Total Bonuses:")
-                    .withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
-            totals.forEach((k, v) -> {
-                String pct = String.format("%+.1f%%", v * 100.0);
-                tooltip.add(Component.literal("  " + pct + " " + k.displayName)
-                        .withStyle(ChatFormatting.AQUA));
-            });
-        }
-
-        // Tetra module breakdown — empty in 6B, populated once schemas land in 6C.
+        // Tetra's standard tooltip (modules, integrity, etc.)
         tooltip.addAll(this.getTooltip(stack, level, flag));
+        // Magic stats summary — reuses the iss-side label table for the few shared
+        // attribute keys (max_mana, mana_regen) and adds Ars-specific ones below.
+        appendArsMagicStatsTooltip(stack, tooltip);
+    }
+
+    private static final Map<String, String> ARS_STAT_LABELS = new LinkedHashMap<>();
+    static {
+        ARS_STAT_LABELS.put("ars_nouveau:ars_nouveau.perk.max_mana",     "Max Mana");
+        ARS_STAT_LABELS.put("ars_nouveau:ars_nouveau.perk.mana_regen",   "Mana Regen");
+        ARS_STAT_LABELS.put("ars_nouveau:ars_nouveau.perk.spell_damage", "Spell Damage");
+        ARS_STAT_LABELS.put("irons_spellbooks:max_mana",                 "ISS Max Mana");
+        ARS_STAT_LABELS.put("irons_spellbooks:mana_regen",               "ISS Mana Regen");
+    }
+    private static final java.util.Set<String> ARS_FLAT_STATS = java.util.Set.of(
+            "ars_nouveau:ars_nouveau.perk.max_mana",
+            "irons_spellbooks:max_mana"
+    );
+
+    private void appendArsMagicStatsTooltip(ItemStack stack, List<Component> tooltip) {
+        Multimap<Attribute, AttributeModifier> attrs;
+        try {
+            attrs = getAttributeModifiersCached(stack);
+        } catch (Throwable t) {
+            return;
+        }
+        if (attrs == null || attrs.isEmpty()) return;
+
+        Map<String, Double> totals = new LinkedHashMap<>();
+        attrs.forEach((attr, mod) -> {
+            if (attr == null || mod == null) return;
+            ResourceLocation rl = ForgeRegistries.ATTRIBUTES.getKey(attr);
+            if (rl == null) return;
+            String key = rl.toString();
+            if (!ARS_STAT_LABELS.containsKey(key)) return;
+            totals.merge(key, mod.getAmount(), Double::sum);
+        });
+        if (totals.isEmpty()) return;
+
+        tooltip.add(Component.literal("Magic Stats:").withStyle(ChatFormatting.AQUA, ChatFormatting.BOLD));
+        for (Map.Entry<String, String> entry : ARS_STAT_LABELS.entrySet()) {
+            Double v = totals.get(entry.getKey());
+            if (v == null || v == 0.0) continue;
+            String formatted = ARS_FLAT_STATS.contains(entry.getKey())
+                    ? String.format("%+.0f", v)
+                    : String.format("%+.1f%%", v * 100.0);
+            tooltip.add(Component.literal("  " + formatted + " " + entry.getValue()).withStyle(ChatFormatting.AQUA));
+        }
     }
 
     private static void appendSlotLine(List<Component> tooltip, ItemStack stack,
