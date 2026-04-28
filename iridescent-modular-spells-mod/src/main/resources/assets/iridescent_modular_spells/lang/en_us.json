@@ -33,9 +33,6 @@
   "tetra.module.iss_book/pages.name":                "Spell Book Pages",
   "tetra.module.iss_book/pages.description":         "The pages where glyphs are inscribed; finer pages mean faster cast times.",
   "tetra.module.iss_book/pages.material_name":       "%s spell book pages",
-  "tetra.module.iss_book/dye.name":                  "Spell Book Dye",
-  "tetra.module.iss_book/dye.description":           "A dye applied to the spell book's cover for personalization.",
-  "tetra.module.iss_book/dye.material_name":         "%s spell book dye",
 
   "tetra.module.ars_book/front_cover.name":          "Tome Cover",
   "tetra.module.ars_book/front_cover.description":   "The front cover focuses Ars spell damage through material resonance.",
@@ -76,8 +73,6 @@
   "tetra/schematic/iss_book/spine.description":               "Bind the spine of the spell book from metal, skin, or fibre.",
   "tetra/schematic/iss_book/pages.name":                      "Pages",
   "tetra/schematic/iss_book/pages.description":               "Fashion pages from fibre or skin materials.",
-  "tetra/schematic/iss_book/dye.name":                        "Dye",
-  "tetra/schematic/iss_book/dye.description":                 "Apply a fabric or fibre dye to personalize the spell book cover.",
   "tetra/schematic/ars_book/front_cover_main.name":           "Front Cover",
   "tetra/schematic/ars_book/front_cover_main.description":    "Forge the tome's front cover from skin, metal, bone, or gem.",
   "tetra/schematic/ars_book/front_cover_lining.name":         "Front Cover Lining",

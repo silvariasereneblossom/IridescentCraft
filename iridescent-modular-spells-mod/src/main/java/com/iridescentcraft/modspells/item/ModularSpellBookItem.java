@@ -56,11 +56,12 @@ import java.util.concurrent.TimeUnit;
  * all stack additively. Mage power curve is uncapped per design (see
  * memory: feedback_mage_power_curve.md).
  *
- * <p>Tetra slot layout (5 majors): {@code front_cover}, {@code back_cover},
- * {@code spine}, {@code pages}, {@code dye}. No {@code core} slot — each ISS
- * modular variant is tier-locked to its book identity at registration. The
- * {@code dye} slot is purely cosmetic (zero integrity, zero attributes) and
- * mirrors the {@code ars_book/dye} slot for symmetry.
+ * <p>Tetra slot layout (4 majors): {@code front_cover}, {@code back_cover},
+ * {@code spine}, {@code pages}. No {@code core} slot — each ISS modular
+ * variant is tier-locked to its book identity at registration. Tetra's
+ * {@code GuiModuleOffsets} hardcodes positions for exactly 4 major modules,
+ * so adding a 5th here will CTD the workbench screen with
+ * ArrayIndexOutOfBoundsException — keep this at 4.
  */
 public class ModularSpellBookItem extends SpellBook implements IModularItem {
 
@@ -70,11 +71,10 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public static final String TETRA_SLOT_BACK_COVER = "iss_book/back_cover";
     public static final String TETRA_SLOT_SPINE = "iss_book/spine";
     public static final String TETRA_SLOT_PAGES = "iss_book/pages";
-    public static final String TETRA_SLOT_DYE = "iss_book/dye";
 
     private static final String[] MAJOR_KEYS = {
             TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
-            TETRA_SLOT_SPINE, TETRA_SLOT_PAGES, TETRA_SLOT_DYE
+            TETRA_SLOT_SPINE, TETRA_SLOT_PAGES
     };
 
     private final Cache<String, Multimap<Attribute, AttributeModifier>> attributeCache =

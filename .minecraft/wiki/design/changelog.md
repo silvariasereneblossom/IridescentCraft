@@ -4,6 +4,21 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 6) — Revert iss_book/dye slot — Tetra has a hard 4-major limit
+
+Tester reported a CTD when opening a spell book on the Tetra workbench. Root cause was my own change in cont. — adding the 5th major slot (`iss_book/dye`) violates a hardcoded assumption in `se.mickelus.tetra.gui.GuiModuleOffsets.getX()` (line 40), whose offset array is sized for exactly 4 major modules. The crash:
+
+```
+ArrayIndexOutOfBoundsException: Index 4 out of bounds for length 4
+  GuiModuleOffsets.getX → GuiModuleList.updateMajorModules → WorkbenchScreen
+```
+
+Reverted: `MAJOR_KEYS` back to 4 (front_cover, back_cover, spine, pages); deleted `data/tetra/modules/iss_book/dye.json` and `data/tetra/schematics/iss_book/dye.json`; pulled the 5 dye lang entries. Doc comment in `ModularSpellBookItem.java` now warns future-me about Tetra's 4-major hard limit.
+
+The "dye on both sides" symmetry the user asked for is still doable, but not as a 5th major. Open follow-up: re-implement dye on iss_book either as (a) an improvement on `front_cover` rather than its own slot — like the lining improvements already do, (b) merge `pages` and `spine` if we accept dropping one's mechanic, or (c) skip dye on the iss side and accept the asymmetry.
+
+---
+
 ## 2026-04-28 (cont. 5) — Paxi load order semantics correction + pride patch revert
 
 Two errors compounded into a still-broken main-menu logo. Both corrected.
