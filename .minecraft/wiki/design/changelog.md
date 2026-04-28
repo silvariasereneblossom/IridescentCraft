@@ -4,6 +4,26 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 24) — Use Tetra's default offset arrays instead of overriding
+
+While answering the user's "can't we just match Tetra's parameters?" question, decompiled `IModularItem.class` and found:
+```
+public static final GuiModuleOffsets[] defaultMajorOffsets;
+public static final GuiModuleOffsets[] defaultMinorOffsets;
+
+default GuiModuleOffsets getMajorGuiOffsets(stack) {
+    return defaultMajorOffsets[getNumMajorModules(stack)];
+}
+```
+
+Tetra ships **canonical layout arrays** indexed by slot count. The vanilla sword's compact look comes from the default impl pulling `defaultMajorOffsets[2]` + `defaultMinorOffsets[3]`. By **not overriding** these methods, our spell book gets the same canonical layout vanilla items use for `[3 majors + 2 minors]`.
+
+Removed both overrides on `ModularSpellBookItem` and `ModularArsSpellBookItem` — back to the IModularItem default impl, plus dropped the now-unused `import se.mickelus.tetra.gui.GuiModuleOffsets`. Net result: ~30 lines of bespoke offset coordinates deleted, and the module panel now matches base Tetra's positioning exactly for our 3+2 slot configuration. cont. 23's major/minor split is what made this possible — Tetra's defaults handle 3+2 cleanly, but they didn't have a 5-major default that worked for our previous shape.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 23) — Modular spell book: split majors/minors for compact base-Tetra layout
 
 Tester noted the workbench module slots looked larger than vanilla Tetra's sword slots. Decompiled `ModularBladedItem` and confirmed the dimension delta isn't a configurable — vanilla swords have **2 majors + 3 minors** (blade + hilt big, fuller/guard/pommel small), while ours had **5 majors** all rendered full-size. Reclassified 2 of our 5 slots:

@@ -19,7 +19,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.mickelus.tetra.data.DataManager;
-import se.mickelus.tetra.gui.GuiModuleOffsets;
 import se.mickelus.tetra.items.modular.IModularItem;
 import se.mickelus.tetra.module.SchematicRegistry;
 import se.mickelus.tetra.module.data.EffectData;
@@ -154,25 +153,12 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     @Override
     public String[] getRequiredModules(ItemStack itemStack) { return new String[0]; }
 
-    public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        // 3 majors: core (top center), front + back covers (sides). Mirrors
-        // the vanilla sword's 2-major layout (blade/hilt) but with a third
-        // anchor for the core.
-        return new GuiModuleOffsets(new int[]{
-                  0, -32,   // core
-                 18,   0,   // front_cover (right)
-                -18,   0    // back_cover (left)
-        });
-    }
-
-    public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
-        // 2 minors: spine + pages tucked below the central display, rendered
-        // compact (matching the vanilla sword's pommel/guard/fuller treatment).
-        return new GuiModuleOffsets(new int[]{
-                -14,  20,   // spine
-                 14,  20    // pages
-        });
-    }
+    // Delegate getMajorGuiOffsets / getMinorGuiOffsets to the IModularItem
+    // default impl, which returns IModularItem.defaultMajorOffsets[majorCount]
+    // and defaultMinorOffsets[minorCount] — the same canonical layout vanilla
+    // Tetra items use. Overriding these (Phase 6G–6I attempted) only ever
+    // pushed slots into the Status panel; the defaults already place 3 majors
+    // + 2 minors correctly.
 
     @Override
     public int getHoneBase(ItemStack itemStack) { return 450; }
