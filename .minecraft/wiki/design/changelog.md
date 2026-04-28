@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 12) — T2 flesh material: rotten_leather (Forbidden Arcanus)
+
+Wired the second tier of the flesh-material progression. T2 is `forbidden_arcanus:rotten_leather` — crafted in vanilla 5× rotten_flesh (plus pattern). Stats roughly double the T1 bonuses to give a real progression payoff:
+
+| | T1 rotten_flesh | T2 rotten_leather | T0 leather (vanilla) |
+|---|---|---|---|
+| primary | 3 | **5** | 5 |
+| durability | 80 | **180** | 200 |
+| integrityCost / Gain | 0 / 3 | **1 / 4** | 1 / 4 |
+| magicCapacity | 70 | **110** | 90 |
+| holy_spell_power | +5% | **+10%** | — |
+| mana_regen | +2% | **+5%** | — |
+
+Net effect: rotten_leather is competitive with vanilla leather on raw stats (slightly worse durability, slightly better magic capacity) but carries +10% anti-undead spell power and +5% mana regen as the unique trait. The progression rewards a player who chains 5× zombie drops + crafting bench → forbidden arcanus path → meaningfully better book for undead-heavy content.
+
+Material is gated by a `forge:mod_loaded` condition on `forbidden_arcanus` so the material silently no-ops if the mod is absent.
+
+---
+
 ## 2026-04-28 (cont. 11) — Phase 6G follow-up: rotten_flesh skin material + "X-lined" naming + modded-material lang
 
 Three iterations on the Phase 6G architecture from tester feedback:
