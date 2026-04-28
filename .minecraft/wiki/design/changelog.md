@@ -4,6 +4,26 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 31) — Sleep Hunger activated: heavy hunger / light saturation tax
+
+`Sleep Hunger` was installed but inert (`Hunger Cost: 0`, `Saturation Cost: 0`). Activated per user directive — sleeping should be a meaningful food expense to pair with the food-variety milestone progression and the hunger-mechanics tone of the pack.
+
+```json
+{
+  "Saturation Cost": 4,        // light — small saturation tax
+  "Hunger Cost": 6,            // heavy — 3 drumsticks gone per sleep
+  "Hunger Needed For Sleep": 4, // unchanged: must have 2+ drumsticks to lie down
+  "Mercy Food": 1,
+  "Mercy Food Threshold": 0
+}
+```
+
+Pre-sleep meal now strongly recommended. A player with full hunger (20) sleeps once → drops to 14 (just under 80%), which is fine. Two sleeps without eating → 8, getting tight. Three sleeps without eating → 2, you can no longer sleep (gate at 4). Forces players to plan food around long sleeps.
+
+Mirrored to all 3 distros: `config/`, `server_distribution/config/`, `distribution/client/config/`.
+
+---
+
 ## 2026-04-28 (cont. 30) — Curios:spellbook tag fix + Vanilla Cookbook added + lang audit clean
 
 Three changes bundled.

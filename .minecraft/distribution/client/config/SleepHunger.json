@@ -1,6 +1,6 @@
 {
-  "Saturation Cost": 0,
-  "Hunger Cost": 0,
+  "Saturation Cost": 4,
+  "Hunger Cost": 6,
   "Hunger Needed For Sleep": 4,
   "Mercy Food": 1,
   "Mercy Food Threshold": 0
