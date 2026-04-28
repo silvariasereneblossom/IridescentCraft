@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
-  "name": "Battle Fury",
-  "description": "+10% attack speed. Orcs swing fast and hard.",
+  "name": "icraft.power.race.orc.attack_speed.name",
+  "description": "icraft.power.race.orc.attack_speed.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_speed",
       "operation": "multiply_base",
-      "value": 0.10
+      "value": 0.1
     }
   ]
 }

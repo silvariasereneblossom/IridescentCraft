@@ -1,7 +1,7 @@
 {
   "type": "origins:conditioned_attribute",
-  "name": "Brutal Strikes (Spell Aversion)",
-  "description": "Berserkers despise the wand. -30% damage when wielding a spell book or magic catalyst.",
+  "name": "icraft.power.class.berserker.brutal_strikes_magic.name",
+  "description": "icraft.power.class.berserker.brutal_strikes_magic.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",
@@ -15,13 +15,27 @@
     "item_condition": {
       "type": "origins:ingredient",
       "ingredient": [
-        { "tag": "curios:spellbook" },
-        { "item": "ars_nouveau:novice_spell_book" },
-        { "item": "ars_nouveau:apprentice_spell_book" },
-        { "item": "ars_nouveau:archmage_spell_book" },
-        { "item": "ars_nouveau:caster_tome" },
-        { "item": "iridescent_modular_spells:modular_spell_book" },
-        { "item": "iridescent_modular_spells:modular_ars_spell_book" }
+        {
+          "tag": "curios:spellbook"
+        },
+        {
+          "item": "ars_nouveau:novice_spell_book"
+        },
+        {
+          "item": "ars_nouveau:apprentice_spell_book"
+        },
+        {
+          "item": "ars_nouveau:archmage_spell_book"
+        },
+        {
+          "item": "ars_nouveau:caster_tome"
+        },
+        {
+          "item": "iridescent_modular_spells:modular_spell_book"
+        },
+        {
+          "item": "iridescent_modular_spells:modular_ars_spell_book"
+        }
       ]
     }
   },

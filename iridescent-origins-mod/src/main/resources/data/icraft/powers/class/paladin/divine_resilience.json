@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Divine Resilience",
-  "description": "+10% knockback resistance.",
+  "name": "icraft.power.class.paladin.divine_resilience.name",
+  "description": "icraft.power.class.paladin.divine_resilience.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.knockback_resistance",

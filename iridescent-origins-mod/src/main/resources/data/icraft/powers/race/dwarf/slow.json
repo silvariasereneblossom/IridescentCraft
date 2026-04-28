@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Short Legs",
-  "description": "-5% movement speed.",
+  "name": "icraft.power.race.dwarf.slow.name",
+  "description": "icraft.power.race.dwarf.slow.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.movement_speed",

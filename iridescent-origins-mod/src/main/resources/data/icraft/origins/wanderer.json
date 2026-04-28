@@ -10,6 +10,6 @@
   },
   "order": 4,
   "impact": 1,
-  "name": "Wanderer",
-  "description": "A jack of all trades and master of none \u2014 but better than a master of one. Wanderers gain modest bonuses to everything and learn faster than anyone. Switching between weapon types in combat rewards their versatility with even greater damage."
+  "name": "icraft.origin.wanderer.name",
+  "description": "icraft.origin.wanderer.description"
 }

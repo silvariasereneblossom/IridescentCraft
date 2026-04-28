@@ -18,6 +18,6 @@
   },
   "order": 10,
   "impact": 3,
-  "name": "Witch of Ink",
-  "description": "A living canvas of ink and will. Half food, -20% HP, fire weakness. Boss kills scale damage, reduction, and toughness (max 200). At 200: Blessing of Penthesilea doubles defenses and grants Haste."
+  "name": "icraft.origin.witch_of_ink.name",
+  "description": "icraft.origin.witch_of_ink.description"
 }

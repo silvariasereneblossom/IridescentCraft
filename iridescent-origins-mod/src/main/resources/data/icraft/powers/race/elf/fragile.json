@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Fragile Frame",
-  "description": "-1 armor toughness.",
+  "name": "icraft.power.race.elf.fragile.name",
+  "description": "icraft.power.race.elf.fragile.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor_toughness",

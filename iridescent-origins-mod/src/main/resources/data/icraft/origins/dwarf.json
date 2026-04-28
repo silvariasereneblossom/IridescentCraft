@@ -11,6 +11,6 @@
   },
   "order": 3,
   "impact": 1,
-  "name": "Dwarf",
-  "description": "Stout and unyielding, Dwarves were born for the deep places of the world. They mine 15% faster, shrug off fire, and their dense frames absorb punishment. Slow and earthbound, they trade agility for endurance \u2014 and barely break a sweat at the forge."
+  "name": "icraft.origin.dwarf.name",
+  "description": "icraft.origin.dwarf.description"
 }

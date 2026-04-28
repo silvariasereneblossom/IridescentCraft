@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Dark Pact",
-  "description": "+15% damage dealt by tamed/summoned entities.",
+  "name": "icraft.power.class.void_summoner.dark_pact.name",
+  "description": "icraft.power.class.void_summoner.dark_pact.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:tamed_damage",

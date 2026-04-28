@@ -12,6 +12,6 @@
   },
   "order": 11,
   "impact": 3,
-  "name": "Artificial Construct",
-  "description": "An iron golem given life. Food gives 25% nourishment \u2014 eat iron for Regen III instead. Five upgrade tiers from iron consumption (5/5/5/10/10%, max +35%). Extended reach, natural armor, reduced fall damage."
+  "name": "icraft.origin.artificial_construct.name",
+  "description": "icraft.origin.artificial_construct.description"
 }

@@ -11,6 +11,6 @@
   },
   "order": 7,
   "impact": 2,
-  "name": "Faefolk",
-  "description": "Swift and magical, Faefolk drift on the wind and channel 30% more power through their spells. +10% speed, but -15% HP and -50% armor toughness. Raw arcane force is their armor."
+  "name": "icraft.origin.faefolk.name",
+  "description": "icraft.origin.faefolk.description"
 }

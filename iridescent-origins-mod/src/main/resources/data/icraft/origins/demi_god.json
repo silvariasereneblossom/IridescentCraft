@@ -13,6 +13,6 @@
   },
   "order": 8,
   "impact": 1,
-  "name": "Demi-God",
-  "description": "Scion of a forgotten god, the Demi-God towers over mortal limits with +40% health and the power to phase through matter. Divine Fury grants Strength on command. Raw meat sustains them doubly, cooked meat half again more. Fire burns them 50% hotter, and the Nether sickens their divine blood \u2014 but they endure."
+  "name": "icraft.origin.demi_god.name",
+  "description": "icraft.origin.demi_god.description"
 }

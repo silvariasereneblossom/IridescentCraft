@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Arcane Supremacy",
-  "description": "+50% magic damage.",
+  "name": "icraft.power.class.archmage.arcane_power.name",
+  "description": "icraft.power.class.archmage.arcane_power.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:magic_damage",

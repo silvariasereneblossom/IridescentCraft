@@ -10,6 +10,6 @@
     "comparison": ">=",
     "compare_to": 18
   },
-  "name": "Draconic Vitality",
-  "description": "When well-fed, you heal rapidly from hearty meals."
+  "name": "icraft.power.race.ryu.food_healing.name",
+  "description": "icraft.power.race.ryu.food_healing.description"
 }

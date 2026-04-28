@@ -1,7 +1,7 @@
 {
   "type": "origins:conditioned_attribute",
-  "name": "Brutal Strikes (Bow Aversion)",
-  "description": "Berserkers despise the bow. -40% damage with bow/crossbow.",
+  "name": "icraft.power.class.berserker.brutal_strikes_bow.name",
+  "description": "icraft.power.class.berserker.brutal_strikes_bow.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",
@@ -15,8 +15,12 @@
     "item_condition": {
       "type": "origins:ingredient",
       "ingredient": [
-        { "item": "minecraft:bow" },
-        { "item": "minecraft:crossbow" }
+        {
+          "item": "minecraft:bow"
+        },
+        {
+          "item": "minecraft:crossbow"
+        }
       ]
     }
   },

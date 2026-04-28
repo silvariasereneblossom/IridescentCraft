@@ -2,7 +2,9 @@
   "type": "origins:modify_food",
   "item_condition": {
     "type": "origins:ingredient",
-    "ingredient": { "tag": "icraft:raw_meat" }
+    "ingredient": {
+      "tag": "icraft:raw_meat"
+    }
   },
   "food_modifier": {
     "value": 1.0,
@@ -12,6 +14,6 @@
     "value": 1.0,
     "operation": "multiply_total"
   },
-  "name": "Divine Appetite",
-  "description": "Raw meat provides double nourishment. Cooked meat-based foods provide 50% more."
+  "name": "icraft.power.origin.demi_god.raw_meat_buff.name",
+  "description": "icraft.power.origin.demi_god.raw_meat_buff.description"
 }

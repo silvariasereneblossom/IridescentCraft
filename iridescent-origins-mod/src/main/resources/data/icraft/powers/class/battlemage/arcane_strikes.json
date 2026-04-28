@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Arcane Strikes",
-  "description": "+10% attack damage (melee-magic hybrid bonus).",
+  "name": "icraft.power.class.battlemage.arcane_strikes.name",
+  "description": "icraft.power.class.battlemage.arcane_strikes.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

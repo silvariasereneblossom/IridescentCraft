@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Spell Armor",
-  "description": "Innate +2 armor from arcane wards.",
+  "name": "icraft.power.class.battlemage.spell_armor.name",
+  "description": "icraft.power.class.battlemage.spell_armor.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor",

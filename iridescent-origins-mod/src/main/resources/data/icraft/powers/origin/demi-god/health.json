@@ -1,11 +1,11 @@
 {
-	"name":"Divine Constitution",
-	"description":"+40% max HP. Your divine blood grants extraordinary vitality.",
-	"type":"origins:attribute",
-	"modifier":{
-		"attribute":"minecraft:generic.max_health",
-		"operation":"addition",
-		"value":8
-	},
-	"update_health":true
+  "name": "icraft.power.origin.demi_god.health.name",
+  "description": "icraft.power.origin.demi_god.health.description",
+  "type": "origins:attribute",
+  "modifier": {
+    "attribute": "minecraft:generic.max_health",
+    "operation": "addition",
+    "value": 8
+  },
+  "update_health": true
 }

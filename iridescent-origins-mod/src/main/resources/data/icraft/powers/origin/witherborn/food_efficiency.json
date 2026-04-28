@@ -1,7 +1,13 @@
 {
   "type": "origins:modify_food",
-  "name": "Withered Appetite",
-  "description": "Food provides only 25% nourishment. Your decaying body barely processes sustenance.",
-  "food_modifier": { "operation": "multiply_total", "value": -0.75 },
-  "saturation_modifier": { "operation": "multiply_total", "value": -0.75 }
+  "name": "icraft.power.origin.witherborn.food_efficiency.name",
+  "description": "icraft.power.origin.witherborn.food_efficiency.description",
+  "food_modifier": {
+    "operation": "multiply_total",
+    "value": -0.75
+  },
+  "saturation_modifier": {
+    "operation": "multiply_total",
+    "value": -0.75
+  }
 }

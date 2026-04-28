@@ -1,7 +1,7 @@
 {
   "type": "origins:exhaust",
-  "name": "Ravenous",
-  "description": "+50% hunger drain. The fury burns through food.",
+  "name": "icraft.power.race.orc.hunger_drain.name",
+  "description": "icraft.power.race.orc.hunger_drain.description",
   "interval": 80,
   "exhaustion": 0.5
 }

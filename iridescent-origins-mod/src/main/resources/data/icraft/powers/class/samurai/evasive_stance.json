@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Evasive Stance",
-  "description": "+8% movement speed (agility over raw HP).",
+  "name": "icraft.power.class.samurai.evasive_stance.name",
+  "description": "icraft.power.class.samurai.evasive_stance.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.movement_speed",

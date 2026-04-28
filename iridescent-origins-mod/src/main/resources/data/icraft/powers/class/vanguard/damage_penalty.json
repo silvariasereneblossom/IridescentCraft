@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Pacifist's Burden",
-  "description": "-30% all damage dealt. The Vanguard is a wall, not a sword.",
+  "name": "icraft.power.class.vanguard.damage_penalty.name",
+  "description": "icraft.power.class.vanguard.damage_penalty.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

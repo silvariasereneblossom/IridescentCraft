@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
-  "name": "Orcish Endurance",
-  "description": "+20% max health. Built tough.",
+  "name": "icraft.power.race.orc.health_bonus.name",
+  "description": "icraft.power.race.orc.health_bonus.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",
       "operation": "multiply_base",
-      "value": 0.20
+      "value": 0.2
     }
   ]
 }

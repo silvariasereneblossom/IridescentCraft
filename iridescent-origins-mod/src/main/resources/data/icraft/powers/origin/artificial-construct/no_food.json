@@ -8,6 +8,6 @@
     "operation": "multiply_total",
     "value": -0.75
   },
-  "name": "Biofuel Conversion",
-  "description": "Normal food provides only 25% nourishment. Your construct body processes it inefficiently. Iron ingots and blocks are your true fuel."
+  "name": "icraft.power.origin.artificial_construct.no_food.name",
+  "description": "icraft.power.origin.artificial_construct.no_food.description"
 }

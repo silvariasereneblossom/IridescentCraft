@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Bushido",
-  "description": "+15% damage against full-HP enemies. Kills within 3 seconds of first strike grant a speed boost."
+  "name": "icraft.power.class.samurai.bushido.name",
+  "description": "icraft.power.class.samurai.bushido.description"
 }

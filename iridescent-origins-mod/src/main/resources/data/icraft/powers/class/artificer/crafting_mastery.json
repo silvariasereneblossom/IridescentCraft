@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Crafting Mastery",
-  "description": "+15% mining speed for all tools.",
+  "name": "icraft.power.class.artificer.crafting_mastery.name",
+  "description": "icraft.power.class.artificer.crafting_mastery.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:mining_speed",

@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Mana Reservoir",
-  "description": "Mana pool runs at 2.5x baseline (+150% max mana on both ISS and Ars Nouveau).",
+  "name": "icraft.power.class.archmage.mana_pool.name",
+  "description": "icraft.power.class.archmage.mana_pool.description",
   "modifiers": [
     {
       "attribute": "irons_spellbooks:max_mana",

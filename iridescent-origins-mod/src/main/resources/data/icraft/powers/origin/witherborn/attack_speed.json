@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Relentless Strikes",
-  "description": "+15% attack speed. The Witherborn attacks with frantic, decaying energy.",
+  "name": "icraft.power.origin.witherborn.attack_speed.name",
+  "description": "icraft.power.origin.witherborn.attack_speed.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_speed",

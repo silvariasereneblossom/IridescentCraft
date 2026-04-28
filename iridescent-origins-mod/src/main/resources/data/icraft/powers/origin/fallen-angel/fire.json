@@ -1,30 +1,30 @@
 {
-	"name":"Fire Vulnerability",
-	"description":"Fire burns deeper against your fallen form.",
-	"type":"origins:modify_damage_taken",
-	"damage_condition":{
-		"type":"origins:or",
-		"conditions":[
-			{
-				"type":"origins:name",
-				"name":"inFire"
-			},
-			{
-				"type":"origins:name",
-				"name":"onFire"
-			},
-			{
-				"type":"origins:name",
-				"name":"lava"
-			},
-			{
-				"type":"origins:name",
-				"name":"hotFloor"
-			}
-		]
-	},
-	"modifier":{
-		"operation":"addition",
-		"value":2
-	}
+  "name": "icraft.power.origin.fallen_angel.fire.name",
+  "description": "icraft.power.origin.fallen_angel.fire.description",
+  "type": "origins:modify_damage_taken",
+  "damage_condition": {
+    "type": "origins:or",
+    "conditions": [
+      {
+        "type": "origins:name",
+        "name": "inFire"
+      },
+      {
+        "type": "origins:name",
+        "name": "onFire"
+      },
+      {
+        "type": "origins:name",
+        "name": "lava"
+      },
+      {
+        "type": "origins:name",
+        "name": "hotFloor"
+      }
+    ]
+  },
+  "modifier": {
+    "operation": "addition",
+    "value": 2
+  }
 }

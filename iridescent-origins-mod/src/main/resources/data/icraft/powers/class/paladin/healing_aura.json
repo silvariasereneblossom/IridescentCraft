@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Healing Aura",
-  "description": "Nearby allies within 8 blocks slowly regenerate HP (0.5 HP/5s). Paladin regenerates 1 HP/5s when above 50% HP."
+  "name": "icraft.power.class.paladin.healing_aura.name",
+  "description": "icraft.power.class.paladin.healing_aura.description"
 }

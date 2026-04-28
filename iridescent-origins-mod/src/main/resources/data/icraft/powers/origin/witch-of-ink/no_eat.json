@@ -8,6 +8,6 @@
     "operation": "multiply_total",
     "value": -0.5
   },
-  "name": "Ink-Stained Appetite",
-  "description": "Food provides 50% less nourishment. Your body of ink prefers to feed on art."
+  "name": "icraft.power.origin.witch_of_ink.no_eat.name",
+  "description": "icraft.power.origin.witch_of_ink.no_eat.description"
 }

@@ -21,6 +21,6 @@
   },
   "order": 11,
   "impact": 2,
-  "name": "Fallen Angel",
-  "description": "A celestial being cast from grace, frail but devastatingly lethal. All attacks deal 15% bonus damage, though their broken body holds 20% less health. Tattered wings slow their descent, and they crave meat to fuel their war against creation. Fire sears them deeper than most."
+  "name": "icraft.origin.fallen_angel.name",
+  "description": "icraft.origin.fallen_angel.description"
 }

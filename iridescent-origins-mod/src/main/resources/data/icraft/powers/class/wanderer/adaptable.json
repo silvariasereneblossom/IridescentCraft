@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Adaptable",
-  "description": "Using 3+ different weapon types within 60 seconds grants +10% damage for 30 seconds. The versatility bonus."
+  "name": "icraft.power.class.wanderer.adaptable.name",
+  "description": "icraft.power.class.wanderer.adaptable.description"
 }

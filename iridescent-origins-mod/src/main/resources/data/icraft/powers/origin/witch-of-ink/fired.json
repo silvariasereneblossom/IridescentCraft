@@ -1,13 +1,13 @@
 {
-	"type":"origins:modify_damage_taken",
-	"damage_condition":{
-		"type":"origins:name",
-		"name":"onFire"
-	},
-	"modifier":{
-		"operation":"addition",
-		"value":3
-	},
-	"name":"Flammable Canvas",
-	"description":"Fire burns hotter against your ink-stained body."
+  "type": "origins:modify_damage_taken",
+  "damage_condition": {
+    "type": "origins:name",
+    "name": "onFire"
+  },
+  "modifier": {
+    "operation": "addition",
+    "value": 3
+  },
+  "name": "icraft.power.origin.witch_of_ink.fired.name",
+  "description": "icraft.power.origin.witch_of_ink.fired.description"
 }

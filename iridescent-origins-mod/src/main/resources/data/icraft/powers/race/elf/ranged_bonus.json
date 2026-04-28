@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Eagle Eye",
-  "description": "+15% ranged weapon damage, +5% magic damage.",
+  "name": "icraft.power.race.elf.ranged_bonus.name",
+  "description": "icraft.power.race.elf.ranged_bonus.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:ranged_damage",

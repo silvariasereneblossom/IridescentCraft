@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Small Frame",
-  "description": "-5% attack damage (before class modifiers).",
+  "name": "icraft.power.race.halfling.small_penalty.name",
+  "description": "icraft.power.race.halfling.small_penalty.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

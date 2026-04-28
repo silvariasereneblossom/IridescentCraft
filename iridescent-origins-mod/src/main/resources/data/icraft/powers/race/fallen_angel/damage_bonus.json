@@ -4,6 +4,6 @@
     "operation": "multiply_base",
     "value": 0.15
   },
-  "name": "Lethal Grace",
-  "description": "All attacks deal 15% bonus damage."
+  "name": "icraft.power.race.fallen_angel.damage_bonus.name",
+  "description": "icraft.power.race.fallen_angel.damage_bonus.description"
 }

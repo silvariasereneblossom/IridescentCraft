@@ -4,6 +4,29 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 21) — Phase 6J: lang audit pass on iridescent-origins-mod (300 entries added)
+
+The `iridescent-origins-mod` had **zero lang entries** before this — every Origins power and origin definition used literal strings in the JSON `name` and `description` fields. This means non-English clients see English literals (which Origins displays as-is when no translation is available), and any string-edit cycle goes through the JSONs rather than a lang file.
+
+Refactored 150 of 192 JSON files (the 42 skipped are `origins:action_on_callback` and a few power types with no `name` field) to use lang keys, and generated `assets/icraft/lang/en_us.json` with **300 entries** (origin names + origin descriptions + per-power names + per-power descriptions). Naming convention:
+
+- `icraft.origin.<name>.name` / `.description` — top-level origin definitions (Berserker, Archmage, Witch of Ink, etc.)
+- `icraft.power.class.<class>.<power>.name` / `.description` — class powers (e.g. `icraft.power.class.archmage.arcane_power.name`)
+- `icraft.power.race.<race>.<power>.name` / `.description` — race powers
+- `icraft.power.origin.<origin>.<power>.name` / `.description` — origin powers (with `-` → `_` so `witch-of-ink` becomes `witch_of_ink`)
+
+Origins resolves the `name`/`description` field via `Component.translatable(value)`, so the existing JSON values that started looking like keys (`icraft.origin.berserker.name`) get translated against the lang file, falling back to the literal string if the key doesn't resolve. Tested by inspecting the built jar: lang file at `assets/icraft/lang/en_us.json`, 32KB.
+
+Other lang state across the codebase, post-audit:
+- `iridescent-modular-spells-mod`: 277+ entries (cont. 8 / 11 / 18 / 20 work) — comprehensive coverage of items, slots, modules, schematics, materials, improvements, stat bars + tooltips.
+- `iridescent-biomes-mod`: 2 entries for the 2 custom biomes (`cherry_river_valley`, `cherry_mountains`) — both covered.
+- `iridescent_codex_data` jar: no user-visible strings (Patchouli book content is in `data/icraft/patchouli_books/`, which uses its own .lang infrastructure).
+- KubeJS scripts: literal strings in chat messages and tooltips (server-admin-side mostly). Could be lang-keyed for full coverage but lower priority than the mods above.
+
+`iridescent_origins-1.0.0.jar` rebuilt and deployed to all 3 mod folders.
+
+---
+
 ## 2026-04-28 (cont. 20) — Workbench: Core slot offset clear of Status panel + stat-bar tooltips
 
 Two iterations on the Phase 6I workbench polish.

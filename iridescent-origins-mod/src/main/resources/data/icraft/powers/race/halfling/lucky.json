@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Fortune's Favor",
-  "description": "+1 Luck (affects loot table bonus rolls).",
+  "name": "icraft.power.race.halfling.lucky.name",
+  "description": "icraft.power.race.halfling.lucky.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.luck",

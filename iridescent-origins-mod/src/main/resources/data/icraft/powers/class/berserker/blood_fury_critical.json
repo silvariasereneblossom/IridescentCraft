@@ -1,7 +1,7 @@
 {
   "type": "origins:conditioned_attribute",
-  "name": "Blood Fury (Critical)",
-  "description": "Below 20% HP: an additional +20% melee damage on top of the standard Blood Fury bonus, totaling +40%.",
+  "name": "icraft.power.class.berserker.blood_fury_critical.name",
+  "description": "icraft.power.class.berserker.blood_fury_critical.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

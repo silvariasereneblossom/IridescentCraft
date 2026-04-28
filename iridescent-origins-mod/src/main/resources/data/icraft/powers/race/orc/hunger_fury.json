@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Bloodlust",
-  "description": "Gain up to +20% bonus damage as hunger increases. The hungrier you are, the harder you hit."
+  "name": "icraft.power.race.orc.hunger_fury.name",
+  "description": "icraft.power.race.orc.hunger_fury.description"
 }

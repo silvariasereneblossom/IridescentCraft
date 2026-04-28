@@ -11,6 +11,6 @@
   },
   "order": 7,
   "impact": 3,
-  "name": "Ranger",
-  "description": "Fleet of foot and deadly at range. Rangers trade durability for speed and devastating projectile damage. Their light frames and fragile gear mean every hit they take counts \u2014 but landing a shot before the enemy closes the gap is what they do best."
+  "name": "icraft.origin.ranger.name",
+  "description": "icraft.origin.ranger.description"
 }

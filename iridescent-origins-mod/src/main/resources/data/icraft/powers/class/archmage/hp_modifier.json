@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Archmage Vitality",
-  "description": "Significantly reduced max HP (-20%). Equipment HP halved.",
+  "name": "icraft.power.class.archmage.hp_modifier.name",
+  "description": "icraft.power.class.archmage.hp_modifier.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",

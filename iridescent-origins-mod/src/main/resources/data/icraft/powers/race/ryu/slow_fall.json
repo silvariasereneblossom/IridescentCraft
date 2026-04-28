@@ -8,6 +8,6 @@
     "show_particles": false,
     "show_icon": false
   },
-  "name": "Broken Wings",
-  "description": "Broken wings grant slow fall rather than true flight."
+  "name": "icraft.power.race.ryu.slow_fall.name",
+  "description": "icraft.power.race.ryu.slow_fall.description"
 }

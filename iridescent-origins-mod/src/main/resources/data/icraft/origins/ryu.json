@@ -20,6 +20,6 @@
   },
   "order": 10,
   "impact": 2,
-  "name": "Ryu",
-  "description": "Dragon-blooded and ancient, the Ryu shrugs off 25% of all damage and heals rapidly from hearty meals. Broken wings grant slow fall rather than true flight. Their draconic stomach rejects anything that isn't meat, and healing potions are only half as potent on their scaled hide."
+  "name": "icraft.origin.ryu.name",
+  "description": "icraft.origin.ryu.description"
 }

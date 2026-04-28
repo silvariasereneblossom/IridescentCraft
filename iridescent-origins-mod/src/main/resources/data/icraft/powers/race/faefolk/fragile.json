@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Fae Fragility",
-  "description": "-15% max HP. Your ethereal form is delicate.",
+  "name": "icraft.power.race.faefolk.fragile.name",
+  "description": "icraft.power.race.faefolk.fragile.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",

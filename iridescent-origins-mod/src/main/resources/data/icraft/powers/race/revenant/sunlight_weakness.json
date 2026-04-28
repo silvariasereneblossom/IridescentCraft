@@ -1,7 +1,7 @@
 {
   "type": "origins:multiple",
-  "name": "Sunlight Sensitivity",
-  "description": "Sunlight causes Weakness and Slowness. Wear a helmet or stay in shade.",
+  "name": "icraft.power.race.revenant.sunlight_weakness.name",
+  "description": "icraft.power.race.revenant.sunlight_weakness.description",
   "weakness": {
     "type": "origins:stacking_status_effect",
     "min_stacks": 0,
@@ -17,8 +17,16 @@
     "condition": {
       "type": "origins:and",
       "conditions": [
-        { "type": "origins:exposed_to_sun" },
-        { "type": "origins:equipped_item", "equipment_slot": "head", "item_condition": { "type": "origins:empty" } }
+        {
+          "type": "origins:exposed_to_sun"
+        },
+        {
+          "type": "origins:equipped_item",
+          "equipment_slot": "head",
+          "item_condition": {
+            "type": "origins:empty"
+          }
+        }
       ]
     }
   },
@@ -37,8 +45,16 @@
     "condition": {
       "type": "origins:and",
       "conditions": [
-        { "type": "origins:exposed_to_sun" },
-        { "type": "origins:equipped_item", "equipment_slot": "head", "item_condition": { "type": "origins:empty" } }
+        {
+          "type": "origins:exposed_to_sun"
+        },
+        {
+          "type": "origins:equipped_item",
+          "equipment_slot": "head",
+          "item_condition": {
+            "type": "origins:empty"
+          }
+        }
       ]
     }
   }

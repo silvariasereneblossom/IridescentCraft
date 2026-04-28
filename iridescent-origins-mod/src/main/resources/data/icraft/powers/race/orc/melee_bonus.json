@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
-  "name": "Orcish Strength",
-  "description": "+10% melee damage. Raw brute force.",
+  "name": "icraft.power.race.orc.melee_bonus.name",
+  "description": "icraft.power.race.orc.melee_bonus.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",
       "operation": "multiply_base",
-      "value": 0.10
+      "value": 0.1
     }
   ]
 }

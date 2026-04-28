@@ -1,6 +1,6 @@
 {
   "type": "origins:night_vision",
-  "name": "Darkvision",
-  "description": "Natural night vision.",
+  "name": "icraft.power.race.elf.night_vision.name",
+  "description": "icraft.power.race.elf.night_vision.description",
   "strength": 0.5
 }

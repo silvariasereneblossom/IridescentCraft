@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Amorphous Form",
-  "description": "75% base health. Your gelatinous body has less structural integrity.",
+  "name": "icraft.power.origin.slimebodied.reduced_health.name",
+  "description": "icraft.power.origin.slimebodied.reduced_health.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",

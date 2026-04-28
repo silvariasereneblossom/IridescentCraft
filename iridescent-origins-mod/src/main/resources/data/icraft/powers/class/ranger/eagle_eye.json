@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Eagle Eye",
-  "description": "+20% projectile damage (via Apothic Attributes if available).",
+  "name": "icraft.power.class.ranger.eagle_eye.name",
+  "description": "icraft.power.class.ranger.eagle_eye.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:ranged_damage",

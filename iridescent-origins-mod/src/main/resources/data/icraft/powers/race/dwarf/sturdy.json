@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Sturdy Build",
-  "description": "+2 armor toughness.",
+  "name": "icraft.power.race.dwarf.sturdy.name",
+  "description": "icraft.power.race.dwarf.sturdy.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor_toughness",

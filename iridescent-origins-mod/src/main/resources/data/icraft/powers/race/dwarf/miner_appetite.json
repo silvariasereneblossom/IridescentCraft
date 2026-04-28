@@ -8,6 +8,6 @@
     "type": "origins:execute_command",
     "command": "tag @s remove icraft_dwarf"
   },
-  "name": "Miner's Appetite",
-  "description": "Hunger consumption while mining is halved. Your dwarven constitution is built for underground work."
+  "name": "icraft.power.race.dwarf.miner_appetite.name",
+  "description": "icraft.power.race.dwarf.miner_appetite.description"
 }

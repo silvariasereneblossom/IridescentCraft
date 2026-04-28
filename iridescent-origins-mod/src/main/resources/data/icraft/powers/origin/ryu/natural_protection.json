@@ -1,11 +1,11 @@
 {
-	"name":"Draconic Scales",
-	"description":"+4 max HP from thick dragon scales.",
-	"type":"origins:attribute",
-	"modifier":{
-		"operation":"addition",
-		"attribute":"minecraft:generic.max_health",
-		"value":4
-	},
-	"update_health":true
+  "name": "icraft.power.origin.ryu.natural_protection.name",
+  "description": "icraft.power.origin.ryu.natural_protection.description",
+  "type": "origins:attribute",
+  "modifier": {
+    "operation": "addition",
+    "attribute": "minecraft:generic.max_health",
+    "value": 4
+  },
+  "update_health": true
 }

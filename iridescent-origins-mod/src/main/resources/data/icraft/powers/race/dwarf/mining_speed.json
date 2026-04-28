@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Deep Delver",
-  "description": "+15% mining speed.",
+  "name": "icraft.power.race.dwarf.mining_speed.name",
+  "description": "icraft.power.race.dwarf.mining_speed.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:mining_speed",

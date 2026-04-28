@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Guardian's Presence",
-  "description": "Enemies within 5 blocks deal -10% damage to your allies. Shield blocking reduces incoming damage by an additional 20%."
+  "name": "icraft.power.class.vanguard.guardian.name",
+  "description": "icraft.power.class.vanguard.guardian.description"
 }

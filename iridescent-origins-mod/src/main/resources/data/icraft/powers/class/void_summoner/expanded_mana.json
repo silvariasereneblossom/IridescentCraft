@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Expanded Mana",
-  "description": "Mana pool runs at ~1.9x the baseline. Sustained spellcasting from the shadows is part of dominion."
+  "name": "icraft.power.class.void_summoner.expanded_mana.name",
+  "description": "icraft.power.class.void_summoner.expanded_mana.description"
 }

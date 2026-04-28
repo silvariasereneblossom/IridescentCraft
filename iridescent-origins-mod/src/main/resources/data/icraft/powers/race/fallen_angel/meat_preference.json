@@ -12,6 +12,6 @@
     "operation": "multiply_total",
     "value": -0.5
   },
-  "name": "Carnivorous Hunger",
-  "description": "Non-meat foods provide 50% less nourishment."
+  "name": "icraft.power.race.fallen_angel.meat_preference.name",
+  "description": "icraft.power.race.fallen_angel.meat_preference.description"
 }

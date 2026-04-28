@@ -16,6 +16,6 @@
     "type": "origins:dimension",
     "dimension": "minecraft:the_nether"
   },
-  "name": "Nether Unease",
-  "description": "The Nether's corruption weakens you slightly, but you can still fight through it."
+  "name": "icraft.power.origin.demi_god.cursed.name",
+  "description": "icraft.power.origin.demi_god.cursed.description"
 }

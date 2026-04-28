@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Fortress Vitality",
-  "description": "Massively increased max HP (+20%).",
+  "name": "icraft.power.class.vanguard.hp_modifier.name",
+  "description": "icraft.power.class.vanguard.hp_modifier.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",

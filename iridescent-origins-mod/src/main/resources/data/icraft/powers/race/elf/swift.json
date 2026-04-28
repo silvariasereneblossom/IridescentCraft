@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Elven Grace",
-  "description": "+8% movement speed.",
+  "name": "icraft.power.race.elf.swift.name",
+  "description": "icraft.power.race.elf.swift.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.movement_speed",

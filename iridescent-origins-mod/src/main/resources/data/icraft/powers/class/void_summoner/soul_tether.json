@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Soul Tether",
-  "description": "When your minions deal damage, you heal for 5% of that damage. Minion kills within 16 blocks grant you the XP."
+  "name": "icraft.power.class.void_summoner.soul_tether.name",
+  "description": "icraft.power.class.void_summoner.soul_tether.description"
 }

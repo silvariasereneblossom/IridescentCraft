@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Berserker Vitality",
-  "description": "Slightly reduced max HP (-5%).",
+  "name": "icraft.power.class.berserker.hp_modifier.name",
+  "description": "icraft.power.class.berserker.hp_modifier.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",

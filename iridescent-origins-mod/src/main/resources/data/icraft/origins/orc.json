@@ -11,6 +11,6 @@
   },
   "order": 4,
   "impact": 1,
-  "name": "Orc",
-  "description": "Brutal and relentless. Orcs hit harder, swing faster, and take more punishment \u2014 but burn through food at an alarming rate. The hungrier they get, the more dangerous they become."
+  "name": "icraft.origin.orc.name",
+  "description": "icraft.origin.orc.description"
 }

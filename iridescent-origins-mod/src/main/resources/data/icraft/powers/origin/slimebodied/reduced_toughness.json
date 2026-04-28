@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
-  "name": "Soft Body",
-  "description": "-50% armor toughness. Armor sits loosely on your shifting form.",
+  "name": "icraft.power.origin.slimebodied.reduced_toughness.name",
+  "description": "icraft.power.origin.slimebodied.reduced_toughness.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor_toughness",
       "operation": "multiply_base",
-      "value": -0.50
+      "value": -0.5
     }
   ]
 }

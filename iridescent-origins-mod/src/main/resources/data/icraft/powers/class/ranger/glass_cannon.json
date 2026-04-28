@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Glass Cannon",
-  "description": "-3 armor (fragile frame).",
+  "name": "icraft.power.class.ranger.glass_cannon.name",
+  "description": "icraft.power.class.ranger.glass_cannon.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor",

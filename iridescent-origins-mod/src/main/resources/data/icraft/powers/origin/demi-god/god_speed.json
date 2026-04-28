@@ -1,19 +1,19 @@
 {
-	"name":"Divine Swiftness",
-	"description":"Speed II outside the Nether.",
-	"type":"origins:stacking_status_effect",
-	"min_stacks":0,
-	"max_stacks":1,
-	"duration_per_stack":20,
-	"effect":{
-		"effect":"minecraft:speed",
-		"show_particles":false,
-		"show_icon":false,
-		"amplifier":1
-	},
-	"condition":{
-		"type":"origins:dimension",
-		"dimension":"minecraft:the_nether",
-		"inverted":true
-	}
+  "name": "icraft.power.origin.demi_god.god_speed.name",
+  "description": "icraft.power.origin.demi_god.god_speed.description",
+  "type": "origins:stacking_status_effect",
+  "min_stacks": 0,
+  "max_stacks": 1,
+  "duration_per_stack": 20,
+  "effect": {
+    "effect": "minecraft:speed",
+    "show_particles": false,
+    "show_icon": false,
+    "amplifier": 1
+  },
+  "condition": {
+    "type": "origins:dimension",
+    "dimension": "minecraft:the_nether",
+    "inverted": true
+  }
 }

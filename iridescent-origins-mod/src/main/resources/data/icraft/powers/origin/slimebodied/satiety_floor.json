@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Core Reserves",
-  "description": "Satiety cannot drop below 25%. Your core always retains some sustenance."
+  "name": "icraft.power.origin.slimebodied.satiety_floor.name",
+  "description": "icraft.power.origin.slimebodied.satiety_floor.description"
 }

@@ -1,7 +1,7 @@
 {
-    "name":"Restless Metabolism",
-    "description":"Your speed burns through food quickly.",
-    "type":"origins:exhaust",
-    "interval":200,
-    "exhaustion":2
+  "name": "icraft.power.origin.kirin.exhaustion.name",
+  "description": "icraft.power.origin.kirin.exhaustion.description",
+  "type": "origins:exhaust",
+  "interval": 200,
+  "exhaustion": 2
 }

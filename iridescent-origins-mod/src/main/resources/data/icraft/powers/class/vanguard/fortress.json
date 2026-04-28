@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Living Fortress",
-  "description": "+6 armor, +3 armor toughness.",
+  "name": "icraft.power.class.vanguard.fortress.name",
+  "description": "icraft.power.class.vanguard.fortress.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor",

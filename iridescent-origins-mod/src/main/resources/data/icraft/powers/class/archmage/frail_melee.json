@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Frail Melee",
-  "description": "-50% melee damage. Mages weren't built to swing axes.",
+  "name": "icraft.power.class.archmage.frail_melee.name",
+  "description": "icraft.power.class.archmage.frail_melee.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

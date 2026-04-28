@@ -1,13 +1,13 @@
 {
-	"name":"Bloodthirst",
-	"description":"Permanent Strength I. Your fallen nature demands violence.",
-	"type":"origins:stacking_status_effect",
-	"min_stacks":0,
-	"max_stacks":1,
-	"duration_per_stack":20,
-	"effect":{
-		"effect":"minecraft:strength",
-		"show_particles":false,
-		"show_icon":false
-	}
+  "name": "icraft.power.origin.fallen_angel.bloodthirsty.name",
+  "description": "icraft.power.origin.fallen_angel.bloodthirsty.description",
+  "type": "origins:stacking_status_effect",
+  "min_stacks": 0,
+  "max_stacks": 1,
+  "duration_per_stack": 20,
+  "effect": {
+    "effect": "minecraft:strength",
+    "show_particles": false,
+    "show_icon": false
+  }
 }

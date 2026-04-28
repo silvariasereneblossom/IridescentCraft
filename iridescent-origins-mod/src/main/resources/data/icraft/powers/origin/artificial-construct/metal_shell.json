@@ -1,19 +1,19 @@
 {
-	"name":"Iron Plating",
-	"description":"Natural armor and a metallic sheen.",
-	"type":"origins:multiple",
-	"gray":{
-		"type":"origins:model_color",
-		"blue":0.6,
-		"red":0.6,
-		"green":0.6
-	},
-	"armor":{
-		"type":"origins:attribute",
-		"modifier":{
-			"attribute":"minecraft:generic.armor",
-			"operation":"addition",
-			"value":4
-		}
-	}
+  "name": "icraft.power.origin.artificial_construct.metal_shell.name",
+  "description": "icraft.power.origin.artificial_construct.metal_shell.description",
+  "type": "origins:multiple",
+  "gray": {
+    "type": "origins:model_color",
+    "blue": 0.6,
+    "red": 0.6,
+    "green": 0.6
+  },
+  "armor": {
+    "type": "origins:attribute",
+    "modifier": {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 4
+    }
+  }
 }

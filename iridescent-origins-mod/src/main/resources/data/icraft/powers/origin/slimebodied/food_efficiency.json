@@ -1,7 +1,13 @@
 {
   "type": "origins:modify_food",
-  "name": "Gelatinous Digestion",
-  "description": "Food provides only 5% nourishment. Your amorphous body absorbs almost nothing. Eat high-quality meals.",
-  "food_modifier": { "operation": "multiply_total", "value": -0.95 },
-  "saturation_modifier": { "operation": "multiply_total", "value": -0.95 }
+  "name": "icraft.power.origin.slimebodied.food_efficiency.name",
+  "description": "icraft.power.origin.slimebodied.food_efficiency.description",
+  "food_modifier": {
+    "operation": "multiply_total",
+    "value": -0.95
+  },
+  "saturation_modifier": {
+    "operation": "multiply_total",
+    "value": -0.95
+  }
 }

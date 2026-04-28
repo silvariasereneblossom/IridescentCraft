@@ -12,6 +12,6 @@
     "operation": "multiply_total",
     "value": -0.5
   },
-  "name": "Draconic Diet",
-  "description": "Non-meat foods provide 50% less nourishment."
+  "name": "icraft.power.race.ryu.meat_preference.name",
+  "description": "icraft.power.race.ryu.meat_preference.description"
 }

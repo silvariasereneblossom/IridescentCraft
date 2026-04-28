@@ -13,6 +13,6 @@
   },
   "order": 8,
   "impact": 3,
-  "name": "Archmage",
-  "description": "The pinnacle of arcane power, fragile as glass and twice as sharp. Archmages channel devastating magical force at the cost of nearly all physical resilience. Standing still focuses their power further, and spell kills fuel an endless cycle of destruction. Their mana pool runs at 2.5x the baseline, sustaining prolonged barrages."
+  "name": "icraft.origin.archmage.name",
+  "description": "icraft.origin.archmage.description"
 }

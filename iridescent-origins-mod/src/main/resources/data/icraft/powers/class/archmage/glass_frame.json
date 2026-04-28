@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Frail Frame",
-  "description": "-4 armor, -2 armor toughness.",
+  "name": "icraft.power.class.archmage.glass_frame.name",
+  "description": "icraft.power.class.archmage.glass_frame.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor",

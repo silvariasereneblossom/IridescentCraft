@@ -8,6 +8,6 @@
     "show_particles": false,
     "show_icon": false
   },
-  "name": "Tattered Wings",
-  "description": "Tattered wings slow your descent."
+  "name": "icraft.power.race.fallen_angel.slow_fall.name",
+  "description": "icraft.power.race.fallen_angel.slow_fall.description"
 }

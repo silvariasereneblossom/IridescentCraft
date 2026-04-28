@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Immovable Object",
-  "description": "+40% knockback resistance.",
+  "name": "icraft.power.class.vanguard.immovable.name",
+  "description": "icraft.power.class.vanguard.immovable.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.knockback_resistance",

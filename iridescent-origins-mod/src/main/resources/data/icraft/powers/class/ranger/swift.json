@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Swift",
-  "description": "+15% movement speed, +10% attack speed.",
+  "name": "icraft.power.class.ranger.swift.name",
+  "description": "icraft.power.class.ranger.swift.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.movement_speed",

@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Jack of All Trades",
-  "description": "+5% attack damage, +5% movement speed, +5% attack speed.",
+  "name": "icraft.power.class.wanderer.jack_of_all_trades.name",
+  "description": "icraft.power.class.wanderer.jack_of_all_trades.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

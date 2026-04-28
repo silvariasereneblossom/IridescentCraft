@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Engineer's Efficiency",
-  "description": "+10% attack speed (nimble hands from crafting).",
+  "name": "icraft.power.class.artificer.engineer_speed.name",
+  "description": "icraft.power.class.artificer.engineer_speed.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_speed",

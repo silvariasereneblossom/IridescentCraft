@@ -10,6 +10,6 @@
   },
   "order": 5,
   "impact": 2,
-  "name": "Paladin",
-  "description": "A holy warrior who protects the faithful. Paladins are heavily armored and hard to move, with a healing aura that mends nearby allies. Their shield work is unmatched, reducing incoming damage beyond what armor alone provides."
+  "name": "icraft.origin.paladin.name",
+  "description": "icraft.origin.paladin.description"
 }

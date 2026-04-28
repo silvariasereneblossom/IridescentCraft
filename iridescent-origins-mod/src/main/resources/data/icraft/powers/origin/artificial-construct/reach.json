@@ -1,20 +1,20 @@
 {
-	"name":"Extended Arms",
-	"description":"Longer reach than normal beings.",
-	"type":"origins:multiple",
-	"scale":{
-		"type":"origins:action_over_time",
-		"entity_action":{
-			"type":"origins:execute_command",
-			"command":"function icraft:artificial-construct/reach"
-		},
-		"interval":20
-	},
-	"reset":{
-		"type":"origins:action_on_callback",
-		"entity_action_lost":{
-			"type":"origins:execute_command",
-			"command":"scale reset"
-		}
-	}
+  "name": "icraft.power.origin.artificial_construct.reach.name",
+  "description": "icraft.power.origin.artificial_construct.reach.description",
+  "type": "origins:multiple",
+  "scale": {
+    "type": "origins:action_over_time",
+    "entity_action": {
+      "type": "origins:execute_command",
+      "command": "function icraft:artificial-construct/reach"
+    },
+    "interval": 20
+  },
+  "reset": {
+    "type": "origins:action_on_callback",
+    "entity_action_lost": {
+      "type": "origins:execute_command",
+      "command": "scale reset"
+    }
+  }
 }

@@ -1,7 +1,7 @@
 {
   "type": "origins:conditioned_attribute",
-  "name": "Shadow Cloak",
-  "description": "+10% damage in darkness, -10% damage in bright light.",
+  "name": "icraft.power.class.void_summoner.shadow_cloak.name",
+  "description": "icraft.power.class.void_summoner.shadow_cloak.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

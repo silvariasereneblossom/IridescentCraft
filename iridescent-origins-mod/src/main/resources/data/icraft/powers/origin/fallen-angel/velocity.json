@@ -1,25 +1,25 @@
 {
-	"name":"Dark Expulsion",
-	"description":"Launch yourself forward, leaving a withering cloud.",
-	"type":"origins:active_self",
-	"key":"key.origins.primary_active",
-	"entity_action":{
-		"type":"origins:and",
-		"actions":[
-			{
-				"type":"origins:add_velocity",
-				"z":2.6,
-				"space":"local"
-			},
-			{
-				"type":"origins:execute_command",
-				"command":"function icraft:fallen-angel/velocity"
-			}
-		]
-	},
-	"cooldown":500,
-	"hud_render":{
-		"sprite_location":"origins:textures/gui/community/spiderkolo/resource_bar_02.png",
-		"bar_index":18
-	}
+  "name": "icraft.power.origin.fallen_angel.velocity.name",
+  "description": "icraft.power.origin.fallen_angel.velocity.description",
+  "type": "origins:active_self",
+  "key": "key.origins.primary_active",
+  "entity_action": {
+    "type": "origins:and",
+    "actions": [
+      {
+        "type": "origins:add_velocity",
+        "z": 2.6,
+        "space": "local"
+      },
+      {
+        "type": "origins:execute_command",
+        "command": "function icraft:fallen-angel/velocity"
+      }
+    ]
+  },
+  "cooldown": 500,
+  "hud_render": {
+    "sprite_location": "origins:textures/gui/community/spiderkolo/resource_bar_02.png",
+    "bar_index": 18
+  }
 }

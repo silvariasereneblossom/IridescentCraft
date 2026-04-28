@@ -7,6 +7,6 @@
     "operation": "multiply_base",
     "value": 0.5
   },
-  "name": "Fire Sensitivity",
-  "description": "Your divine flesh burns more easily. You take 50% more fire damage."
+  "name": "icraft.power.origin.demi_god.fire.name",
+  "description": "icraft.power.origin.demi_god.fire.description"
 }

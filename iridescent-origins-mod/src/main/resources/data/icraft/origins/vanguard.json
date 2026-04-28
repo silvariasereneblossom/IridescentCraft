@@ -11,6 +11,6 @@
   },
   "order": 6,
   "impact": 3,
-  "name": "Vanguard",
-  "description": "The immovable object. Vanguards absorb punishment that would fell any other class, with massive health, armor, and knockback resistance. Their presence alone weakens nearby enemies. The trade-off: they deal 15% less damage, letting their allies handle the killing."
+  "name": "icraft.origin.vanguard.name",
+  "description": "icraft.origin.vanguard.description"
 }

@@ -13,6 +13,6 @@
   },
   "order": 10,
   "impact": 3,
-  "name": "Void Summoner",
-  "description": "A puppet master who commands from the shadows. Void Summoners empower their minions to deal devastating damage, and every blow their servants land feeds life back to their master. They flourish in darkness and wither in the light — a price paid gladly for dominion over lesser souls. Their mana pool runs at ~1.9x the baseline."
+  "name": "icraft.origin.void_summoner.name",
+  "description": "icraft.origin.void_summoner.description"
 }

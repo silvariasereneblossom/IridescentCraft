@@ -1,7 +1,7 @@
 {
   "type": "origins:exhaust",
-  "name": "Wasting Away",
-  "description": "Hunger drains 50% faster. Your body consumes itself.",
+  "name": "icraft.power.origin.witherborn.hunger_drain.name",
+  "description": "icraft.power.origin.witherborn.hunger_drain.description",
   "interval": 80,
   "exhaustion": 0.5
 }

@@ -1,24 +1,24 @@
 {
-	"name":"Hydrophobic",
-	"description":"Water slows you and saps your strength.",
-	"type":"origins:stacking_status_effect",
-	"min_stacks":0,
-	"max_stacks":1,
-	"duration_per_stack":20,
-	"effects":[
-		{
-			"effect":"minecraft:slowness",
-			"show_particles":false,
-			"show_icon":false
-		},
-		{
-			"effect":"minecraft:weakness",
-			"show_particles":false,
-			"show_icon":false
-		}
-	],
-	"condition":{
-		"type":"origins:submerged_in",
-		"fluid":"minecraft:water"
-	}
+  "name": "icraft.power.origin.kirin.dislike_of_water.name",
+  "description": "icraft.power.origin.kirin.dislike_of_water.description",
+  "type": "origins:stacking_status_effect",
+  "min_stacks": 0,
+  "max_stacks": 1,
+  "duration_per_stack": 20,
+  "effects": [
+    {
+      "effect": "minecraft:slowness",
+      "show_particles": false,
+      "show_icon": false
+    },
+    {
+      "effect": "minecraft:weakness",
+      "show_particles": false,
+      "show_icon": false
+    }
+  ],
+  "condition": {
+    "type": "origins:submerged_in",
+    "fluid": "minecraft:water"
+  }
 }

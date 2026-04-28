@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Divine Vitality",
-  "description": "Increased max HP (+10%).",
+  "name": "icraft.power.class.paladin.hp_modifier.name",
+  "description": "icraft.power.class.paladin.hp_modifier.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",

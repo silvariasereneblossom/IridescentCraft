@@ -1,19 +1,19 @@
 {
-	"name":"Claustrophobia",
-	"description":"Slower under roofs. The memory of confinement haunts you.",
-	"condition":{
-		"type":"origins:block_collision",
-		"offset_x":0,
-		"offset_y":1,
-		"offset_z":0
-	},
-	"type":"origins:stacking_status_effect",
-	"min_stacks":0,
-	"max_stacks":1,
-	"duration_per_stack":20,
-	"effect":{
-		"effect":"minecraft:slowness",
-		"show_particles":false,
-		"show_icon":false
-	}
+  "name": "icraft.power.origin.fallen_angel.roof.name",
+  "description": "icraft.power.origin.fallen_angel.roof.description",
+  "condition": {
+    "type": "origins:block_collision",
+    "offset_x": 0,
+    "offset_y": 1,
+    "offset_z": 0
+  },
+  "type": "origins:stacking_status_effect",
+  "min_stacks": 0,
+  "max_stacks": 1,
+  "duration_per_stack": 20,
+  "effect": {
+    "effect": "minecraft:slowness",
+    "show_particles": false,
+    "show_icon": false
+  }
 }

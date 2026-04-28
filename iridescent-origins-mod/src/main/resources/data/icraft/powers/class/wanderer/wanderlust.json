@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Wanderlust",
-  "description": "+10% XP gain from all sources.",
+  "name": "icraft.power.class.wanderer.wanderlust.name",
+  "description": "icraft.power.class.wanderer.wanderlust.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:experience",

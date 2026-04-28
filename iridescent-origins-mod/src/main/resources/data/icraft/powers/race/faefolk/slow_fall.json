@@ -8,6 +8,6 @@
     "show_particles": false,
     "show_icon": false
   },
-  "name": "Fae Wings",
-  "description": "Drift gently on the wind. No fall damage."
+  "name": "icraft.power.race.faefolk.slow_fall.name",
+  "description": "icraft.power.race.faefolk.slow_fall.description"
 }

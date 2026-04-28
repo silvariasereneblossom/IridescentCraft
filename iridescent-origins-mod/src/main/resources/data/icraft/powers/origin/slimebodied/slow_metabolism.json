@@ -1,5 +1,5 @@
 {
   "type": "origins:simple",
-  "name": "Slow Metabolism",
-  "description": "Hunger drains at 25% normal rate and does not drain while idle. Your body conserves energy efficiently."
+  "name": "icraft.power.origin.slimebodied.slow_metabolism.name",
+  "description": "icraft.power.origin.slimebodied.slow_metabolism.description"
 }

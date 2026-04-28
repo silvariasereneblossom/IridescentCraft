@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Quick Learner",
-  "description": "+10% XP gain from all sources.",
+  "name": "icraft.power.race.human.xp_bonus.name",
+  "description": "icraft.power.race.human.xp_bonus.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:experience",

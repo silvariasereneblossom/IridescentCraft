@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Battlemage Vitality",
-  "description": "Slightly increased max HP (+5%).",
+  "name": "icraft.power.class.battlemage.hp_modifier.name",
+  "description": "icraft.power.class.battlemage.hp_modifier.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.max_health",

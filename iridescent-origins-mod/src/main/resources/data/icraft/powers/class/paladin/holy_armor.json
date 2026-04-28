@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
-  "name": "Holy Armor",
-  "description": "+3 armor, +1 armor toughness from divine blessing.",
+  "name": "icraft.power.class.paladin.holy_armor.name",
+  "description": "icraft.power.class.paladin.holy_armor.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor",

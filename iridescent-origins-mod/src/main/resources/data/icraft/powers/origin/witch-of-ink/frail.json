@@ -1,11 +1,11 @@
 {
-	"type":"origins:attribute",
-	"modifier":{
-		"attribute":"minecraft:generic.max_health",
-		"value":-4,
-		"operation":"addition"
-	},
-	"update_health":true,
-	"name":"Paper-Thin",
-	"description":"Your body is made of ink and parchment. -20% max HP."
+  "type": "origins:attribute",
+  "modifier": {
+    "attribute": "minecraft:generic.max_health",
+    "value": -4,
+    "operation": "addition"
+  },
+  "update_health": true,
+  "name": "icraft.power.origin.witch_of_ink.frail.name",
+  "description": "icraft.power.origin.witch_of_ink.frail.description"
 }

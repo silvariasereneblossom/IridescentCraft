@@ -1,7 +1,7 @@
 {
   "type": "origins:conditioned_attribute",
-  "name": "Brutal Strikes",
-  "description": "+15% damage with axes. Berserkers despise the bow (-40%) and the wand (-30%).",
+  "name": "icraft.power.class.berserker.weapon_affinity.name",
+  "description": "icraft.power.class.berserker.weapon_affinity.description",
   "modifiers": [
     {
       "attribute": "minecraft:generic.attack_damage",

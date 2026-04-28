@@ -1,6 +1,6 @@
 {
   "type": "origins:night_vision",
-  "name": "Deathless Eyes",
-  "description": "Enhanced night vision.",
+  "name": "icraft.power.race.revenant.night_vision.name",
+  "description": "icraft.power.race.revenant.night_vision.description",
   "strength": 1.1
 }

@@ -8,6 +8,6 @@
     "type": "origins:status_effect",
     "effect": "minecraft:regeneration"
   },
-  "name": "Potion Resistance",
-  "description": "Your dragon blood resists magical healing. Healing potions are 50% as effective."
+  "name": "icraft.power.origin.ryu.healing_potions.name",
+  "description": "icraft.power.origin.ryu.healing_potions.description"
 }
