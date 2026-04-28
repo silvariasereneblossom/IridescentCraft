@@ -267,18 +267,6 @@ if %errorlevel% neq 0 (
 )
 
 REM -------------------------------------------------------------------
-REM Phase 3.5 was background-watcher; backed out. Item-dump extraction
-REM happens post-server-stop in Phase 5. KubeJS dump_items.js still
-REM writes [ITEM_DUMP] lines to kubejs-server.log on world load; after
-REM the server is stopped (e.g. via /stop in console), Phase 5 runs
-REM extract_item_dump.ps1 in one-shot mode to produce all_items.tsv.
-REM
-REM Why backed out: `start "" /B powershell ...` was failing the bat at
-REM that line on user's host. Tried fixes for setlocal-in-if-block and
-REM trailing-backslash-quote issues; failure point was the start/B call
-REM itself. Post-stop extraction is more robust.
-
-REM -------------------------------------------------------------------
 REM Phase 4: Launch server
 REM -------------------------------------------------------------------
 echo.
@@ -326,24 +314,6 @@ REM -------------------------------------------------------------------
 REM Phase 5: Post-exit hooks
 REM -------------------------------------------------------------------
 set EXIT_CODE=%errorlevel%
-
-REM Item-dump extraction: extracts [ITEM_DUMP] lines from kubejs-server.log
-REM into kubejs/exports/all_items.tsv. Reuses SDIR (already trailing-slash-
-REM stripped from Phase 0.5). Errors NOT silenced so we can debug if it
-REM produces nothing.
-if exist "%SDIR%\extract_item_dump.ps1" if exist "%SDIR%\kubejs-server.log" (
-    echo [DUMP] Running extract_item_dump.ps1 ...
-    powershell -ExecutionPolicy Bypass -File "%SDIR%\extract_item_dump.ps1" -ServerDir "%SDIR%"
-    if exist "%SDIR%\kubejs\exports\all_items.tsv" (
-        echo [DUMP] Output: %SDIR%\kubejs\exports\all_items.tsv
-    ) else (
-        echo [DUMP] WARNING: all_items.tsv not produced. Check for [ITEM_DUMP] lines in kubejs-server.log.
-    )
-) else (
-    if not exist "%SDIR%\extract_item_dump.ps1" echo [DUMP] extract_item_dump.ps1 missing - skipping extraction.
-    if not exist "%SDIR%\kubejs-server.log"     echo [DUMP] kubejs-server.log missing - skipping extraction.
-)
-
 
 if %EXIT_CODE% neq 0 (
     echo.
