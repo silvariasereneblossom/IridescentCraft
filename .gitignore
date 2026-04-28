@@ -13,7 +13,9 @@ mods/*.jar
 resourcepacks/
 !**/config/paxi/resourcepacks/
 !**/config/paxi/resourcepacks/**
-shaderpacks/
+shaderpacks/*
+!shaderpacks/*.zip
+!**/shaderpacks/*.zip
 saves/
 
 # Runtime-generated world / map data (regenerates on play, never commit)

@@ -252,12 +252,21 @@ if ($useDiff) {
             $mirrorList += 'mods/.index'
         }
 
-    # Selective top-level files (options.txt only if user hasn't customized)
+    # Selective top-level files: pack.png/icon.png always overlay (these are
+    # pack identity, not user state). optionsshaders.txt seeds only when the
+    # player doesn't already have one — so first launch auto-enables our
+    # default shader, but the player's later choices are preserved.
     foreach ($topFile in @('pack.png', 'icon.png')) {
         $srcFile = Join-Path $src $topFile
         if (Test-Path $srcFile) {
             Copy-Item -Path $srcFile -Destination $instanceMC -Force
         }
+    }
+    $shaderOptsSrc = Join-Path $src 'optionsshaders.txt'
+    $shaderOptsDest = Join-Path $instanceMC 'optionsshaders.txt'
+    if ((Test-Path $shaderOptsSrc) -and (-not (Test-Path $shaderOptsDest))) {
+        Copy-Item -Path $shaderOptsSrc -Destination $shaderOptsDest -Force
+        $mirrorList += 'optionsshaders.txt (seed)'
     }
 
     Write-Host "[IridescentCraft Sync] Overlaid: $($mirrorList -join ', ')" -ForegroundColor DarkGray

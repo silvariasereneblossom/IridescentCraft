@@ -25,7 +25,9 @@ mods/*.jar
 /resourcepacks/
 /distribution/client/resourcepacks/
 /server_distribution/resourcepacks/
-shaderpacks/
+shaderpacks/*
+distribution/client/shaderpacks/*
+server_distribution/shaderpacks/*
 saves/
 *.zip
 !global_packs/required_data/*.zip
@@ -38,6 +40,8 @@ saves/
 !config/paxi/resourcepacks/*.zip
 !distribution/client/config/paxi/resourcepacks/*.zip
 !server_distribution/config/paxi/resourcepacks/*.zip
+!shaderpacks/*.zip
+!distribution/client/shaderpacks/*.zip
 *.rar
 
 # Runtime-generated configs (mods write on startup)
