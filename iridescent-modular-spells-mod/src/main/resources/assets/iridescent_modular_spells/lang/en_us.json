@@ -275,5 +275,7 @@
   "iridescent_modular_spells.stats.summonDamage.tooltip": "Increases the damage dealt by your summoned entities by \u00a7e%s\u00a7r.",
   "iridescent_modular_spells.stats.arsMaxMana.tooltip": "Maximum Ars Nouveau mana pool: \u00a7e%s\u00a7r additional mana.",
   "iridescent_modular_spells.stats.arsManaRegen.tooltip": "Ars Nouveau mana regeneration rate, applied passively: \u00a7e%s\u00a7r boost.",
-  "iridescent_modular_spells.stats.arsSpellDamage.tooltip": "Increases the damage of Ars Nouveau spells by \u00a7e%s\u00a7r."
+  "iridescent_modular_spells.stats.arsSpellDamage.tooltip": "Increases the damage of Ars Nouveau spells by \u00a7e%s\u00a7r.",
+  "tetra.variant_category.icraft_iss_books.label": "Spell Books",
+  "tetra.variant_category.icraft_ars_books.label": "Tomes"
 }

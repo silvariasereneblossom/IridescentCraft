@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 30) — Curios:spellbook tag fix + Vanilla Cookbook added + lang audit clean
+
+Three changes bundled.
+
+**Curios:spellbook tag fix.** The new single `iridescent_modular_spells:modular_spell_book` wasn't equippable in the Curios spellbook slot — vanilla ISS books are in the `curios:spellbook` tag (verified earlier in the iss jar's tag JSON), but our custom item wasn't tagged. Added `data/curios/tags/items/spellbook.json` to the mod's resources with `replace: false` and our item — this **extends** the existing tag rather than overriding it, so all vanilla ISS books stay in the slot too. Players should now be able to equip the modular spell book as a curio.
+
+**Vanilla Cookbook 2.2.4 added.** Forge 1.20.1, ~380KB. Optional dep on Farmer's Delight which we already have. `.pw.toml` shipped to all three distros (`mods/.index/`, `server_distribution/mods/.index/`, `distribution/client/mods/.index/`). Players will pick it up on the next sync via `download_mods.ps1`.
+
+**Lang audit (Phase 6J cont.).** Scanned all 50 of our material JSONs (28 metals + 5 gems + 2 skin + 12 ISS + 3 Ars books) against the lang file:
+- ✓ All 50 materials have `tetra.material.<key>` and `.prefix` lang entries
+- ✓ Custom material categories `icraft_iss_books` + `icraft_ars_books` now have `tetra.variant_category.<cat>.label` (added in cont. 29 hotfix as "Spell Books" / "Tomes")
+- Vanilla categories (`metal`, `gem`, `skin`) resolve from Tetra's own lang — no gap
+
+Audit script lives in the wiki entry; can re-run anytime to catch regressions when adding new materials.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 29) — Custom book glyphs replace Tetra's sword-blade icon
 
 cont. 28 fixed the broken texture path but landed at `tetra:textures/gui/glyphs.png` offset (0, 0) — which is Tetra's **sword-blade glyph** (top-left of their atlas). Visually weird for a spell book.
