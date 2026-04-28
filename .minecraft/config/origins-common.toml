@@ -2877,6 +2877,7 @@
 		"icraft:class/void_summoner/shadow_cloak" = true
 		"icraft:class/void_summoner/glass_cannon_tag" = true
 		"icraft:class/void_summoner/expanded_mana" = true
+		"icraft:class/void_summoner/mana_pool" = true
 
 	[origins."icraft:vanguard"]
 		enabled = true
@@ -2893,6 +2894,9 @@
 		"icraft:class/berserker/blood_fury" = true
 		"icraft:class/berserker/thick_skinned" = true
 		"icraft:class/berserker/battle_trance" = true
+		"icraft:class/berserker/brutal_strikes_bow" = true
+		"icraft:class/berserker/brutal_strikes_magic" = true
+		"icraft:class/berserker/blood_fury_critical" = true
 
 	[origins."icraft:orc"]
 		enabled = true
@@ -2924,6 +2928,8 @@
 		"icraft:class/archmage/glass_frame" = true
 		"icraft:class/archmage/mana_attunement" = true
 		"icraft:class/archmage/glass_cannon_tag" = true
+		"icraft:class/archmage/frail_melee" = true
+		"icraft:class/archmage/mana_pool" = true
 
 	[origins."icraft:dwarf"]
 		enabled = true
@@ -2939,6 +2945,7 @@
 		"icraft:class/battlemage/arcane_strikes" = true
 		"icraft:class/battlemage/spell_armor" = true
 		"icraft:class/battlemage/mana_shield" = true
+		"icraft:class/battlemage/mana_pool" = true
 
 	[origins."icraft:elf"]
 		enabled = true
