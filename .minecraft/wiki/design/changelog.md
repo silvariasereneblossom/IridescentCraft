@@ -4,6 +4,12 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont.) — Tetra schematic lang fix + iss_book/dye slot
+
+`iridescent_modular_spells` schematic UI was showing raw lookup strings (e.g. `tetra/schematic/iss_book/front_cover_lining.description`) because our 24 schematic lang keys used the dotted `tetra.schematic.` prefix; Tetra 6.12.0 expects the all-slash form `tetra/schematic/...` for schematics specifically (modules + improvements stay dotted). Re-keyed all 24 entries to the slash form. Also added an `iss_book/dye` major slot (mirrors `ars_book/dye`) so both books support cosmetic dyeing — matching ars symmetry per user request. Slot is zero-integrity, zero-attribute (purely cosmetic). Edits: `ModularSpellBookItem.java` (5-major MAJOR_KEYS), new `data/tetra/modules/iss_book/dye.json` + `data/tetra/schematics/iss_book/dye.json`, lang adds 5 keys (3 module, 2 schematic). Built `iridescent_modular_spells-0.2.0.jar` and deployed to all 3 distros.
+
+---
+
 ## 2026-04-28 — Mutant Monsters block-break: removed dead `mutant_monsters_no_grief.js` (EntityMobGriefingEvent approach didn't catch `Level.destroyBlock()`); kept the surgical `mutant_monsters_no_griefing.js` (`BlockEvents.broken` namespace cancel). Also removed `diagnose_mob_drops.js` — spider diamond+ender_eye no longer reproducing under the defensive `removeLoot` ENTITY strip in `loot_overhaul.js`; will rediagnose if recurrence.
 
 ---
