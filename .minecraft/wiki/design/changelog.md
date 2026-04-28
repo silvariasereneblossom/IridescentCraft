@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 20) — Workbench: Core slot offset clear of Status panel + stat-bar tooltips
+
+Two iterations on the Phase 6I workbench polish.
+
+**Core slot offset bumped** — `(0, -18) → (0, -32)` in both `ModularSpellBookItem.getMajorGuiOffsets` and `ModularArsSpellBookItem.getMajorGuiOffsets`. The label was overlapping with the second row of the magic-stats panel; 14px additional clearance puts it above the panel's top row. If we ever stack more than ~6 stat bars vertically, the Core may need to move further still.
+
+**Stat-bar tooltips wired** — `MagicStatsBars.ITooltipGetter.getTooltipBase` now returns `<labelKey>.tooltip` rather than the same label string, matching base Tetra's convention (`tetra.stats.armor.tooltip`, `tetra.stats.speed.tooltip`, etc.). Added 18 new lang entries (`iridescent_modular_spells.stats.<key>.tooltip`) — each a one-line description with `§e%s§r` for the actual value, color-coded per spell school where applicable (Fire orange, Ice cyan, Holy white, Eldritch purple, etc.). Hovering a bar in the Status panel now shows a meaningful explanation rather than the same label twice.
+
+The broader principle ("if there's no translation key for a feature, it needs to be added") is logged as a Phase 6J task — a full lang audit across origin powers, schematics, materials, improvements, and any kubejs-registered display strings, with a checklist tool to catch future regressions.
+
+---
+
 ## 2026-04-28 (cont. 19) — Phase 6I: spell-list transfer + workbench Status panel for magic stats
 
 Two polish/transparency wins on modular spell books.

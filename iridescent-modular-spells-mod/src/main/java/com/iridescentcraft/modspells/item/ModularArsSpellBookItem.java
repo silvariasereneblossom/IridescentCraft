@@ -154,7 +154,7 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         // 5 slots: see ModularSpellBookItem.getMajorGuiOffsets — same layout
         // for consistency between the iss + ars sides.
         return new GuiModuleOffsets(new int[]{
-                  0, -18,   // core
+                  0, -32,   // core (moved up to clear the Status panel)
                 -18,   0,   // front_cover
                  18,   0,   // back_cover
                 -18,  18,   // spine

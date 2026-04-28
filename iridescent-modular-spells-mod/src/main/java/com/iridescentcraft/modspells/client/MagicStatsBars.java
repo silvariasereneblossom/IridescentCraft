@@ -116,9 +116,14 @@ public final class MagicStatsBars {
             }
         };
 
+        // Tetra translates the returned string via Component.translatable, so
+        // returning the `.tooltip` lang key lets the lang file substitute in
+        // the actual stat value via `%s` (matching base Tetra's convention,
+        // e.g. tetra.stats.armor.tooltip = "Provides §e%s§r armor when held").
+        String tooltipKey = labelKey + ".tooltip";
         ITooltipGetter tooltipGetter = new ITooltipGetter() {
             @Override public String getTooltipBase(Player p, ItemStack s) {
-                return labelKey;
+                return tooltipKey;
             }
         };
 

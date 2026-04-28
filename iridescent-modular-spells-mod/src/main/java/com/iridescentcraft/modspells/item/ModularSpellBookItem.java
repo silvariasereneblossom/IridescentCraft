@@ -157,7 +157,7 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
         // from the workbench glyph anchor; tuned to avoid overlapping the
         // central item render (which sits roughly at 0,0).
         return new GuiModuleOffsets(new int[]{
-                  0, -18,   // core
+                  0, -32,   // core (moved up to clear the Status panel)
                 -18,   0,   // front_cover
                  18,   0,   // back_cover
                 -18,  18,   // spine
