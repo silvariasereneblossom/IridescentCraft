@@ -1,5 +1,5 @@
 {
-    "type": "tetra:basic_major_module",
+    "type": "tetra:basic_module",
     "slots": [ "iss_book/back_cover" ],
     "improvements": [
         "iss_book_lining_fabric/",

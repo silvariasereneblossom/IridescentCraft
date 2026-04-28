@@ -18,7 +18,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.mickelus.tetra.data.DataManager;
-import se.mickelus.tetra.gui.GuiModuleOffsets;
 import se.mickelus.tetra.items.modular.IModularItem;
 import se.mickelus.tetra.module.SchematicRegistry;
 import se.mickelus.tetra.module.data.EffectData;
@@ -63,13 +62,13 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     public static final String TETRA_SLOT_DYE = "ars_book/dye";
     public static final String TETRA_SLOT_SPINE = "ars_book/spine";
 
-    /** Major slots — identity-defining trio. Tetra renders these full-size. */
+    /** Major slots (2) — matches vanilla sword's 2-major + 3-minor split. */
     private static final String[] MAJOR_KEYS = {
-            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER
+            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER
     };
-    /** Minor slots — secondary functional modules. Tetra renders these compact. */
+    /** Minor slots (3) — back cover + spine + dye. */
     private static final String[] MINOR_KEYS = {
-            TETRA_SLOT_SPINE, TETRA_SLOT_DYE
+            TETRA_SLOT_BACK_COVER, TETRA_SLOT_SPINE, TETRA_SLOT_DYE
     };
 
     private final Cache<String, Multimap<Attribute, AttributeModifier>> attributeCache =
@@ -153,22 +152,8 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         return new String[0];
     }
 
-    // GUI offsets — same widened layout as ModularSpellBookItem. See that
-    // class for the reasoning + Tetra default reference values.
-    public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[]{
-                  0, -22,   // core
-                 24,   5,   // front_cover (right)
-                -24,   5    // back_cover  (left)
-        });
-    }
-
-    public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[]{
-                -16,  22,   // spine
-                 16,  22    // dye
-        });
-    }
+    // No GUI offset overrides — defaults to defaultMajorOffsets[2] +
+    // defaultMinorOffsets[3]. See ModularSpellBookItem for full rationale.
 
     @Override
     public int getHoneBase(ItemStack itemStack) {

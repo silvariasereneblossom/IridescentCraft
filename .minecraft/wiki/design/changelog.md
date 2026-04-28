@@ -4,6 +4,32 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 26) — Match vanilla sword's 2-major + 3-minor split exactly
+
+cont. 25's "spread X coords" approach worked but kept us at 3+2, which doesn't match any of Tetra's pre-tuned canonical layouts. Tester pointed out base Tetra renders **all** modules in compact boxes around the central glyph — that's because vanilla sword has 2 majors + 3 minors, and Tetra ships `defaultMajorOffsets[2]` + `defaultMinorOffsets[3]` specifically tuned for this split. We were fighting the framework.
+
+Reclassified `back_cover` from major → minor on both iss + ars sides:
+
+| Slot | Was (cont. 23) | Now (cont. 26) |
+|---|---|---|
+| `core` | Major | **Major** |
+| `front_cover` | Major | **Major** |
+| `back_cover` | Major | **Minor** |
+| `spine` | Minor | Minor |
+| `pages` (iss) / `dye` (ars) | Minor | Minor |
+
+Distribution now: **2 majors + 3 minors**, identical to vanilla sword's `[blade, hilt]` + `[fuller, guard, pommel]` distribution.
+
+Then **deleted the bespoke `getMajorGuiOffsets` / `getMinorGuiOffsets` overrides** — Tetra's default impl now serves the canonical `defaultMajorOffsets[2]` = `(4,0), (4,18)` and `defaultMinorOffsets[3]` = `(-12,-1), (-21,12), (-12,25)` arrays, the same exact coordinates vanilla sword uses for its blade/hilt/fuller/guard/pommel layout.
+
+Module + schematic JSON changes (8 files): `back_cover.json` → `tetra:basic_module`, `back_cover_main.json` + `back_cover_lining.json` → `displayType: minor`. Plus dropped `GuiModuleOffsets` import (now unused) from both Java classes.
+
+The result: workbench module panel should now look identical to vanilla sword's compact layout — major slot icons on right (core top, front_cover below), minor slot icons stacked on left (back_cover, spine, pages).
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 25) — Spread offsets to fit our long labels (Tetra defaults too tight)
 
 cont. 24's "delegate to defaults" approach pulled `defaultMajorOffsets[3]` = `(4,0), (4,18), (-4,0)` and `defaultMinorOffsets[2]` = `(-18,5), (-18,18)` — designed for vanilla sword's short labels ("Iron blade" / "Wooden hilt") where 8px between major slots is enough. Our labels are 2-3× longer ("Iron-lined cover", "Phantom membrane pages", "Rotten leather backing"), so on the tight defaults they collide horizontally across the central glyph.

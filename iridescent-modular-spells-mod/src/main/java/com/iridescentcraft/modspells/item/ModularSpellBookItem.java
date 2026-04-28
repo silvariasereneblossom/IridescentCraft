@@ -19,7 +19,6 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.mickelus.tetra.data.DataManager;
-import se.mickelus.tetra.gui.GuiModuleOffsets;
 import se.mickelus.tetra.items.modular.IModularItem;
 import se.mickelus.tetra.module.SchematicRegistry;
 import se.mickelus.tetra.module.data.EffectData;
@@ -75,13 +74,18 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public static final String TETRA_SLOT_SPINE = "iss_book/spine";
     public static final String TETRA_SLOT_PAGES = "iss_book/pages";
 
-    /** Major slots — the identity-defining trio. Tetra renders these full-size. */
+    /**
+     * Major slots — 2 entries to match vanilla sword's <b>2-major + 3-minor</b>
+     * distribution. Tetra ships canonical {@code defaultMajorOffsets[2]} +
+     * {@code defaultMinorOffsets[3]} pre-tuned for this exact split, which is
+     * what the workbench panel renders most compactly.
+     */
     private static final String[] MAJOR_KEYS = {
-            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER
+            TETRA_SLOT_CORE, TETRA_SLOT_FRONT_COVER
     };
-    /** Minor slots — secondary functional modules. Tetra renders these compact. */
+    /** Minor slots (3) — back cover + spine + pages. */
     private static final String[] MINOR_KEYS = {
-            TETRA_SLOT_SPINE, TETRA_SLOT_PAGES
+            TETRA_SLOT_BACK_COVER, TETRA_SLOT_SPINE, TETRA_SLOT_PAGES
     };
 
     private final Cache<String, Multimap<Attribute, AttributeModifier>> attributeCache =
@@ -154,28 +158,14 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     @Override
     public String[] getRequiredModules(ItemStack itemStack) { return new String[0]; }
 
-    // GUI offsets — wider X spacing than Tetra's defaults to accommodate our
-    // longer labels ("Iron-lined cover" vs vanilla sword's "Iron blade").
-    // Reference, from decompiled IModularItem.<clinit>:
-    //   defaultMajorOffsets[3] = (4,0), (4,18), (-4,0)
-    //   defaultMinorOffsets[2] = (-18,5), (-18,18)
-    // We keep the same structure (majors form a triangle, minors stack)
-    // but spread the X coords outward so 15–25 char labels don't collide
-    // across the central glyph.
-    public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[]{
-                  0, -22,   // core   (top center, above glyph)
-                 24,   5,   // front_cover (right)
-                -24,   5    // back_cover  (left)
-        });
-    }
-
-    public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[]{
-                -16,  22,   // spine
-                 16,  22    // pages
-        });
-    }
+    // No GUI offset overrides — IModularItem.getMajorGuiOffsets falls through
+    // to defaultMajorOffsets[majorCount] and same for minor. With our 2-major +
+    // 3-minor split (cont. 26), Tetra serves up the canonical sword layout —
+    // exactly what gives vanilla the compact module box arrangement.
+    //
+    // For reference (decompiled from IModularItem.<clinit>):
+    //   defaultMajorOffsets[2] = (4,0), (4,18)              — right-side vertical pair
+    //   defaultMinorOffsets[3] = (-12,-1), (-21,12), (-12,25) — left-side stack
 
     @Override
     public int getHoneBase(ItemStack itemStack) { return 450; }

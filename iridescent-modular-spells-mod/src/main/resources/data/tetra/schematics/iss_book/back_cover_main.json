@@ -1,7 +1,7 @@
 {
     "slots": [ "iss_book/back_cover" ],
     "materialSlotCount": 1,
-    "displayType": "major",
+    "displayType": "minor",
     "glyph": {
         "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
         "textureX": 0,
