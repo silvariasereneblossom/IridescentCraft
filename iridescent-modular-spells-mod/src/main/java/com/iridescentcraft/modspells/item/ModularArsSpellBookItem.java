@@ -42,24 +42,29 @@ import java.util.concurrent.TimeUnit;
  * {@code imodspells_slots} NBT system via
  * {@link com.iridescentcraft.modspells.event.AttributeApplier}.
  *
- * <p>Tetra slot layout (4 majors, no minors): {@code front_cover},
- * {@code back_cover}, {@code dye}, {@code spine}. No {@code core} slot
- * (each Ars tier is its own item — Novice / Apprentice / Archmage —
- * because Ars's SpellBook constructor takes a SpellTier param at item
- * registration time and SpellTier is fixed for the lifetime of the item).
+ * <p>Tetra slot layout (5 majors, no minors): {@code core}, {@code front_cover},
+ * {@code back_cover}, {@code spine}, {@code dye}. The {@code core} slot
+ * carries the tome's identity (novice / apprentice / archmage) via its
+ * installed material — see {@code data/tetra/materials/icraft_ars_books/}.
+ * Phase 6G collapsed three per-tier item registrations into this single
+ * tome; the SpellTier param is fixed at SpellTier.THREE so the item allows
+ * any spell level, and the apparent tier is derived from the core material.
  */
 public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
 
     /** Tetra item identifier — RL-path-safe (no ':'). See ModularSpellBookItem. */
     public static final String TETRA_IDENTIFIER = "iridescent_ars_book";
 
+    public static final String TETRA_SLOT_CORE = "ars_book/core";
     public static final String TETRA_SLOT_FRONT_COVER = "ars_book/front_cover";
     public static final String TETRA_SLOT_BACK_COVER = "ars_book/back_cover";
     public static final String TETRA_SLOT_DYE = "ars_book/dye";
     public static final String TETRA_SLOT_SPINE = "ars_book/spine";
 
     private static final String[] MAJOR_KEYS = {
-            TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER, TETRA_SLOT_DYE, TETRA_SLOT_SPINE
+            TETRA_SLOT_CORE,
+            TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
+            TETRA_SLOT_SPINE, TETRA_SLOT_DYE
     };
 
     private final Cache<String, Multimap<Attribute, AttributeModifier>> attributeCache =
@@ -144,7 +149,15 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     }
 
     public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[]{5, 18, -15, -1, 5, -1, -15, 18});
+        // 5 slots: see ModularSpellBookItem.getMajorGuiOffsets — same layout
+        // for consistency between the iss + ars sides.
+        return new GuiModuleOffsets(new int[]{
+                  0, -18,   // core
+                -18,   0,   // front_cover
+                 18,   0,   // back_cover
+                -18,  18,   // spine
+                 18,  18    // dye
+        });
     }
 
     public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {

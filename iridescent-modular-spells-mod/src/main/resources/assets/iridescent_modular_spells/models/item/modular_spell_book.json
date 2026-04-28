@@ -1,5 +1,5 @@
 {
-  "parent": "minecraft:item/generated",
+  "parent": "item/generated",
   "textures": {
     "layer0": "irons_spellbooks:item/iron_spell_book"
   }

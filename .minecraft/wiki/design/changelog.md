@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 10) — Phase 6G: TSB-aligned single-item Tetra-pure spell book
+
+Collapsed the 15 per-tier modular spell book registrations (12 ISS + 3 Ars) into 2 single Tetra-pure items: `iridescent_modular_spells:modular_spell_book` and `:modular_ars_spell_book`. Tier identity now lives entirely on the new `core` slot's material — vanilla ISS / Ars books, when placed on a Tetra workbench, are auto-replaced into the matching modular item with the appropriate core material pre-installed. Architecture mirrors `Inolia-Zaicek/TetraSpellBook`'s pattern (5 majors: core, front_cover, back_cover, spine, pages/dye).
+
+**Java**: `ModularItemRegistry` cut from 18 registrations to 2. Both `ModularSpellBookItem` and `ModularArsSpellBookItem` extended `MAJOR_KEYS` to 5 entries (core first), and overrode `getMajorGuiOffsets()` with explicit 5-slot coords (`core` at top center, 2x2 grid below for front/back/spine/pages-or-dye) — avoids the `ArrayIndexOutOfBoundsException` from cont. 6 by giving Tetra a matching offset table.
+
+**Tetra data**: 2 new `core` modules + 2 new `core` schematics; 12 ISS + 3 Ars material JSONs in `tetra/materials/icraft_iss_books/` and `icraft_ars_books/` categories (unique prefix to avoid collision with TSB's `iron_spell_books/` if both ever load); integrity rebalanced to `front=0, back=+1, spine=0, pages/dye=+1, core=-2` → net 0 baseline before material picks; material's `integrityCost`/`integrityGain` per tier (T1=0/2, T2=1/4, T3=2/6, T4=3/8) restores the budget pressure that was missing in cont. 8.
+
+**Replacements**: 15 vanilla→modular replacement files rewritten to point at the single new item with `core/<book>_spell_book` material installed. **Save compat is non-graceful (option a)** — pre-6G inventories holding the deleted per-tier `modular_*_spell_book` items lose them on world load. Tester confirmed acceptable for alpha.
+
+**Cleanup**: deleted 15 per-tier crafting recipes and 15 per-tier item models (the new modular item shows the iron book texture; future improvement: per-material texture overlay on the core slot).
+
+**Lang**: rewrote `en_us.json` from per-tier item names to slot/schematic/module/material entries. ~80 keys total. Material names render via Tetra's `material_name` interpolation: e.g. an iron-cored modular spell book displays as **"Iron Spell Book"** (the material's `name` lang), the dye improvement reads as **"Cover Dye"**, etc.
+
+Future Phase 6H: per-material core textures (TSB ships per-spellbook PNGs in the core slot's `availableTextures` array; we currently use the iron texture as a placeholder for all variants).
+
+---
+
 ## 2026-04-28 (cont. 9) — Untier the modular spell book wrappers (AStages "Unfamiliar Item" fix)
 
 Tester reported their modular spell book was showing as "Unfamiliar Item" in tooltips/JEI. Root cause: 6 entries in `astages_restrictions.js` (T2/T3/T4 blocks) were locking `iridescent_modular_spells:modular_{iron,gold,apprentice,diamond,archmage,netherite}_spell_book` behind tier gates. AStages substitutes the display name with "Unfamiliar Item" for any item the player can't see at their current tier.

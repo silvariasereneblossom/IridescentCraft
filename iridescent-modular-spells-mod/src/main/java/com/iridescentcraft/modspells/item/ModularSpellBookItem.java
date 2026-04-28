@@ -56,23 +56,27 @@ import java.util.concurrent.TimeUnit;
  * all stack additively. Mage power curve is uncapped per design (see
  * memory: feedback_mage_power_curve.md).
  *
- * <p>Tetra slot layout (4 majors): {@code front_cover}, {@code back_cover},
- * {@code spine}, {@code pages}. No {@code core} slot — each ISS modular
- * variant is tier-locked to its book identity at registration. Tetra's
- * {@code GuiModuleOffsets} hardcodes positions for exactly 4 major modules,
- * so adding a 5th here will CTD the workbench screen with
- * ArrayIndexOutOfBoundsException — keep this at 4.
+ * <p>Tetra slot layout (5 majors): {@code core}, {@code front_cover},
+ * {@code back_cover}, {@code spine}, {@code pages}. The {@code core} slot
+ * carries the spellbook's identity (iron / diamond / archmage / ...) via
+ * its installed material — see {@code data/tetra/materials/icraft_iss_books/}.
+ * The 4-major layout was changed to 5 in Phase 6G; {@link #getMajorGuiOffsets}
+ * is overridden with explicit 5-slot coordinates to avoid the
+ * ArrayIndexOutOfBoundsException that Tetra throws when a 5th slot is
+ * registered without matching offsets.
  */
 public class ModularSpellBookItem extends SpellBook implements IModularItem {
 
     public static final String TETRA_IDENTIFIER = "iridescent_iss_book";
 
+    public static final String TETRA_SLOT_CORE = "iss_book/core";
     public static final String TETRA_SLOT_FRONT_COVER = "iss_book/front_cover";
     public static final String TETRA_SLOT_BACK_COVER = "iss_book/back_cover";
     public static final String TETRA_SLOT_SPINE = "iss_book/spine";
     public static final String TETRA_SLOT_PAGES = "iss_book/pages";
 
     private static final String[] MAJOR_KEYS = {
+            TETRA_SLOT_CORE,
             TETRA_SLOT_FRONT_COVER, TETRA_SLOT_BACK_COVER,
             TETRA_SLOT_SPINE, TETRA_SLOT_PAGES
     };
@@ -148,7 +152,17 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public String[] getRequiredModules(ItemStack itemStack) { return new String[0]; }
 
     public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
-        return new GuiModuleOffsets(new int[]{5, 18, -15, -1, 5, -1, -15, 18});
+        // 5 slots: core (top center), then a 2x2 grid of front/back/spine/pages
+        // surrounding the central item display. Coordinates are pixel offsets
+        // from the workbench glyph anchor; tuned to avoid overlapping the
+        // central item render (which sits roughly at 0,0).
+        return new GuiModuleOffsets(new int[]{
+                  0, -18,   // core
+                -18,   0,   // front_cover
+                 18,   0,   // back_cover
+                -18,  18,   // spine
+                 18,  18    // pages
+        });
     }
 
     public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {

@@ -1,0 +1,34 @@
+{
+    "key": "apprentice_spell_book",
+    "category": "icraft_ars_books",
+    "primary": 0.0,
+    "secondary": 0.0,
+    "tertiary": 0.0,
+    "durability": 0,
+    "integrityCost": 1,
+    "integrityGain": 4,
+    "magicCapacity": 60,
+    "toolLevel": 0,
+    "toolEfficiency": 0,
+    "tints": {
+        "glyph": "d4a847",
+        "texture": "d4a847"
+    },
+    "textures": [
+        "apprentice_spell_book"
+    ],
+    "material": {
+        "items": [
+            "ars_nouveau:apprentice_spell_book"
+        ]
+    },
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "ars_nouveau"
+        }
+    ],
+    "attributes": {
+        "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.1
+    }
+}

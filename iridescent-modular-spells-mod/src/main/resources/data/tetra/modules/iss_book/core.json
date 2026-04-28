@@ -1,16 +1,14 @@
 {
     "type": "tetra:basic_major_module",
-    "slots": [ "iss_book/spine" ],
+    "slots": [ "iss_book/core" ],
     "improvements": [],
+    "renderLayer": "higher",
     "variants": [
         {
-            "materials": [ "tetra:metal/", "tetra:skin/", "tetra:fibre/" ],
-            "key": "spine/",
+            "materials": [ "tetra:icraft_iss_books/" ],
+            "key": "iss_core/",
             "extract": {
-                "primaryAttributes": {
-                    "**irons_spellbooks:cooldown_reduction": 0.010
-                },
-                "integrity": 0,
+                "integrity": -2,
                 "glyph": {
                     "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
                     "textureX": 0,

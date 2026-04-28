@@ -15,7 +15,7 @@
                 "primaryAttributes": {
                     "**irons_spellbooks:spell_power": 0.005
                 },
-                "integrity": 1,
+                "integrity": 0,
                 "glyph": {
                     "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
                     "textureX": 0,

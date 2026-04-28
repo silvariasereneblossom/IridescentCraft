@@ -1,17 +1,38 @@
 [
     {
         "conditions": [
-            { "type": "forge:mod_loaded", "modid": "irons_spellbooks" }
+            {
+                "type": "forge:mod_loaded",
+                "modid": "irons_spellbooks"
+            }
         ],
         "predicate": {
-            "items": [ "irons_spellbooks:iron_spell_book" ]
+            "items": [
+                "irons_spellbooks:iron_spell_book"
+            ]
         },
-        "item": "iridescent_modular_spells:modular_iron_spell_book",
+        "item": "iridescent_modular_spells:modular_spell_book",
         "modules": {
-            "iss_book/front_cover": [ "iss_book/front_cover", "front_cover/iron" ],
-            "iss_book/back_cover":  [ "iss_book/back_cover",  "back_cover/iron" ],
-            "iss_book/spine":       [ "iss_book/spine",       "spine/iron" ],
-            "iss_book/pages":       [ "iss_book/pages",       "pages/paper" ]
+            "iss_book/core": [
+                "iss_book/core",
+                "iss_core/iron_spell_book"
+            ],
+            "iss_book/front_cover": [
+                "iss_book/front_cover",
+                "front_cover/iron"
+            ],
+            "iss_book/back_cover": [
+                "iss_book/back_cover",
+                "back_cover/iron"
+            ],
+            "iss_book/spine": [
+                "iss_book/spine",
+                "spine/iron"
+            ],
+            "iss_book/pages": [
+                "iss_book/pages",
+                "pages/paper"
+            ]
         },
         "improvements": {}
     }
