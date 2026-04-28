@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 25) — Spread offsets to fit our long labels (Tetra defaults too tight)
+
+cont. 24's "delegate to defaults" approach pulled `defaultMajorOffsets[3]` = `(4,0), (4,18), (-4,0)` and `defaultMinorOffsets[2]` = `(-18,5), (-18,18)` — designed for vanilla sword's short labels ("Iron blade" / "Wooden hilt") where 8px between major slots is enough. Our labels are 2-3× longer ("Iron-lined cover", "Phantom membrane pages", "Rotten leather backing"), so on the tight defaults they collide horizontally across the central glyph.
+
+Re-overriding `getMajorGuiOffsets` / `getMinorGuiOffsets` with **widened X coordinates** that keep Tetra's structural pattern (majors triangle, minors stacked) but give our labels room:
+
+```
+Majors (3): (0,-22), (24,5), (-24,5)     — core top-center, covers ±24 horizontal
+Minors (2): (-16,22), (16,22)            — spine + pages bottom corners
+```
+
+Comments in the source now document the Tetra reference values from the decompiled IModularItem.&lt;clinit&gt; so the next person editing this file knows what's "stock" vs deliberately spread.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 24) — Use Tetra's default offset arrays instead of overriding
 
 While answering the user's "can't we just match Tetra's parameters?" question, decompiled `IModularItem.class` and found:

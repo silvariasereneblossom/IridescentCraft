@@ -19,6 +19,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.mickelus.tetra.data.DataManager;
+import se.mickelus.tetra.gui.GuiModuleOffsets;
 import se.mickelus.tetra.items.modular.IModularItem;
 import se.mickelus.tetra.module.SchematicRegistry;
 import se.mickelus.tetra.module.data.EffectData;
@@ -153,12 +154,28 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     @Override
     public String[] getRequiredModules(ItemStack itemStack) { return new String[0]; }
 
-    // Delegate getMajorGuiOffsets / getMinorGuiOffsets to the IModularItem
-    // default impl, which returns IModularItem.defaultMajorOffsets[majorCount]
-    // and defaultMinorOffsets[minorCount] — the same canonical layout vanilla
-    // Tetra items use. Overriding these (Phase 6G–6I attempted) only ever
-    // pushed slots into the Status panel; the defaults already place 3 majors
-    // + 2 minors correctly.
+    // GUI offsets — wider X spacing than Tetra's defaults to accommodate our
+    // longer labels ("Iron-lined cover" vs vanilla sword's "Iron blade").
+    // Reference, from decompiled IModularItem.<clinit>:
+    //   defaultMajorOffsets[3] = (4,0), (4,18), (-4,0)
+    //   defaultMinorOffsets[2] = (-18,5), (-18,18)
+    // We keep the same structure (majors form a triangle, minors stack)
+    // but spread the X coords outward so 15–25 char labels don't collide
+    // across the central glyph.
+    public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[]{
+                  0, -22,   // core   (top center, above glyph)
+                 24,   5,   // front_cover (right)
+                -24,   5    // back_cover  (left)
+        });
+    }
+
+    public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[]{
+                -16,  22,   // spine
+                 16,  22    // pages
+        });
+    }
 
     @Override
     public int getHoneBase(ItemStack itemStack) { return 450; }

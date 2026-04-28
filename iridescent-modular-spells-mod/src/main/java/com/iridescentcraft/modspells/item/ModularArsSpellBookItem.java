@@ -18,6 +18,7 @@ import net.minecraft.world.item.TooltipFlag;
 import net.minecraft.world.level.Level;
 import net.minecraftforge.registries.ForgeRegistries;
 import se.mickelus.tetra.data.DataManager;
+import se.mickelus.tetra.gui.GuiModuleOffsets;
 import se.mickelus.tetra.items.modular.IModularItem;
 import se.mickelus.tetra.module.SchematicRegistry;
 import se.mickelus.tetra.module.data.EffectData;
@@ -152,7 +153,22 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         return new String[0];
     }
 
-    // Delegate to the IModularItem default offsets — same as ModularSpellBookItem.
+    // GUI offsets — same widened layout as ModularSpellBookItem. See that
+    // class for the reasoning + Tetra default reference values.
+    public GuiModuleOffsets getMajorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[]{
+                  0, -22,   // core
+                 24,   5,   // front_cover (right)
+                -24,   5    // back_cover  (left)
+        });
+    }
+
+    public GuiModuleOffsets getMinorGuiOffsets(ItemStack itemStack) {
+        return new GuiModuleOffsets(new int[]{
+                -16,  22,   // spine
+                 16,  22    // dye
+        });
+    }
 
     @Override
     public int getHoneBase(ItemStack itemStack) {
