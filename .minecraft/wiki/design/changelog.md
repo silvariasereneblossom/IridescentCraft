@@ -4,6 +4,19 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 16) — Berserker Brutal Strikes maluses now real attribute powers
+
+The bow + magic maluses on Berserker's Brutal Strikes (formerly description-only on `weapon_affinity.json`) are now enforced via two new `origins:conditioned_attribute` powers:
+
+- **`brutal_strikes_bow.json`** — `-40% attack damage` when mainhand is `minecraft:bow` or `minecraft:crossbow`. Used vanilla item IDs directly because `forge:tools/ranged_weapon` only contains one ISS-specific entry in 1.20.1, not vanilla bow/crossbow.
+- **`brutal_strikes_magic.json`** — `-30% attack damage` when mainhand is any item in `curios:spellbook` (covers all 16 ISS spell book variants), an Ars Nouveau spell book / caster tome, or one of our two modular spell book items. Covers the major caster mainhand cases; doesn't cover ISS staves or Mahou catalysts yet (open follow-up: expand the ingredient list as needed).
+
+Both powers wired into `berserker.json`'s power list as `hidden: true` (they're tradeoff enforcement, not a tooltip line for the player to hunt for in the origin selection screen). The existing `weapon_affinity.json` (renamed Brutal Strikes, +15% with axes) keeps its description matching the now-actually-implemented full-picture.
+
+`iridescent_origins-1.0.0.jar` rebuilt and deployed to all 3 mod folders.
+
+---
+
 ## 2026-04-28 (cont. 15) — Phase 6H: implement description-only class passives
 
 Tester noted several class powers were `origins:simple` (description-only tooltips with no actual gameplay enforcement). Closed the gap by either converting to real `origins:attribute` powers or wiring KubeJS handlers in a new `class_passives_phase6h.js`.

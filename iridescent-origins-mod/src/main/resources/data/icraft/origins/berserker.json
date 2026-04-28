@@ -2,6 +2,8 @@
   "powers": [
     "icraft:class/berserker/hp_modifier",
     "icraft:class/berserker/weapon_affinity",
+    "icraft:class/berserker/brutal_strikes_bow",
+    "icraft:class/berserker/brutal_strikes_magic",
     "icraft:class/berserker/blood_fury",
     "icraft:class/berserker/blood_fury_critical",
     "icraft:class/berserker/thick_skinned",
