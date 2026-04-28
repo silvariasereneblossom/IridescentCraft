@@ -4,6 +4,14 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 4) — Pridepack 8.0.1 title-texture fix for MC 1.20.1
+
+Tester reported the main-menu Minecraft logo rendered as overlapping/distorted glyphs while Pridepack was active. Root cause: Pridepack 8.0.1 ships its 1.20+ title texture (the new 1.20 sliced format with the `blur: true` mcmeta) inside its `format16/` overlay, gated to `formats: [16, 9999]` — but MC 1.20.1 reports `pack_format = 15`, so the overlay was being skipped. The base pack's `minecraft.png` was then used, which targets the pre-1.20 single-image title format and renders incorrectly under 1.20's new title-rendering algorithm. Fix: edited `pack.mcmeta` inside the zip to widen the overlay range to `formats: [15, 9999]`, so 1.20.1 picks up the correct title texture. Mirrored to client distro.
+
+**Maintenance note:** if Pridepack is ever updated to a newer version, re-apply this one-line patch to its overlay `formats[0]` value (16 → 15) before shipping. The author may correct this upstream eventually, in which case the patch becomes a no-op and can be dropped.
+
+---
+
 ## 2026-04-28 (cont. 3) — Paxi resourcepack load order made explicit
 
 Three packs (Pridepack 8.0.1, Transcendence 0.7.4, Melody's Cute Villagers v1.10.0) were physically present in `config/paxi/resourcepacks/` but absent from `resourcepack_load_order.json`, so Paxi was loading them in undefined alphabetical fallback order after the codex. Made the layering explicit (top wins): codex > Transcendence > Pridepack > Cute Villagers. Codex on top so the in-game guidebook textures always win; Transcendence above Pridepack as the narrower, brand-aligned overlay; Pridepack above villagers as the broader colorway base; villagers at the bottom as a passive mob retexture. Mirrored to `distribution/client/`. Server distribution left as codex-only (server doesn't push resourcepacks to clients in the current setup).
