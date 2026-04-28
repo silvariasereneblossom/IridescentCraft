@@ -1252,22 +1252,39 @@ Vanilla armor base values + JustLevelingFork level-up HP + Spice of Life HP + ra
 4. Spice of Life food HP additive.
 5. Equipment HP halving applied AFTER enchantments/affixes calculate their HP bonus (so the halving is on the post-enchant total).
 
-### K.2 Class weapon affinities (excerpt)
+### K.2 Class passives reference
 
-| Class | Buffs (with bonus) | Penalties (with malus) |
-|-------|--------------------|------------------------|
-| Berserker | Axes / Hammers (+15% damage), 2H weapons | Bows (-10% damage) |
-| Samurai | Swords (+15% damage), Bows (+10%) | Hammers (-15%) |
-| Battlemage | Swords (+10%), Magic staves/wands (+10%) | 2H Hammers (-15%) |
-| Wanderer | All weapons (+5% baseline) | None |
-| Paladin | Swords + Shields (+10%), Holy magic (+15%) | Dark/void magic (-15%) |
-| Vanguard | Shields + 1H weapons (+15% block, +10% melee) | All ranged (-15%) |
-| Ranger | Bows / Crossbows (+15% damage, +10% draw speed) | All melee (-15%) |
-| Archmage | All magic (+25% spell damage) | Melee (-25%) |
-| Artificer | None (non-combat focus) | All combat (-15%) |
-| Void Summoner | Magic staves/wands (+5% spell), Dark/void magic (+15%) | Swords (-15%), Axes/Hammers (-20%), Bows/Crossbows (-10%) |
+Each class is defined by 3-5 Origins powers (in `iridescent-origins-mod/.../powers/class/<name>/`) plus tick-based logic in `kubejs/server_scripts/origins/class_passives.js`. The table below lists every active passive per class with its canonical numbers (matched to the wiki overview at `wiki/classes/overview.md`). The "weapon affinities" approximation that lived here previously was misleading — most classes have stat-based, not weapon-type-based, identities.
 
-Each class also has 5 passive abilities + 1 active ability (cooldown-based keybind). See in-game codex for full per-class ability descriptions.
+| Class | Key passives | Tradeoffs |
+|-------|-------------|-----------|
+| **Berserker** | +15% base melee (Brutal Strikes), Battle Trance (+5% ATK / +1 armor after 10s combat), Thick Skinned (+10% armor), Blood Fury (+20% melee below 40% HP, +40% below 20%) | −5% max HP |
+| **Samurai** | +8% speed, +10% atkspd (Bushido), Focus (3s no-attack → next hit +30% damage / +20% crit, Vorpal I-V scaling by tier via `class_passives.js`) | +5% HP only — the "agility tradeoff" |
+| **Battlemage** | +15% melee / +15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I-III scaling with magic bonus, ~1.9× mana pool, melee kills restore mana — handled by `battlemage_mana_shield.js`) | +5% HP |
+| **Wanderer** | +5% ATK / speed / atkspd (Jack of All Trades), +10% XP (Wanderlust), Seasoned Traveler (+5% XP and +2.5% speed per unique dimension visited, ticks via `class_passives.js`) | +5% HP |
+| **Paladin** | +3 armor / +1 toughness (Holy Armor), +10% KB resist, Healing Aura (allies in 8 blocks regen 0.5 HP/5s; self regens 1 HP/5s above 50% HP) | +10% HP — pure support tank |
+| **Vanguard** | +6 armor / +3 toughness (Fortress), +40% KB resist (Immovable), Guardian's Presence (Weakness I to mobs in 5 blocks), −15% damage dealt (Pacifist's Burden) | +20% HP — hardest tank in the pack |
+| **Ranger** | +15% speed, +10% atkspd (Swift), +20% projectile damage (Eagle Eye), Glass Cannon (−3 armor) | −20% HP, **equipment HP halved** |
+| **Archmage** | **+50% magic damage** (Arcane Supremacy), Mana Attunement: **mana pool runs at 2.5× baseline**, spell kills restore mana, standing still for 3s grants +10% spell damage, melee damage reduced 25%, plus tier-scaling magic amp ticked every 10s (**T1: +0%, T2: +5%, T3: +10%, T4: +15%**), Frail Frame (−4 armor / −2 toughness) | −20% HP, **equipment HP halved** — the back-loaded glass nuke |
+| **Artificer** | +15% mining speed all tools (Crafting Mastery), +10% atkspd (Engineer's Efficiency), Resourceful (+10% bonus drops on ore mining, Speed I near crafting tables, +10% machine processing speed planned for Phase 2) | None — non-combat focus |
+| **Void Summoner** | +15% tamed/summon damage (Dark Pact), Shadow Cloak (+10% damage in darkness, −10% in bright light), Soul Tether (5% lifesteal from nearby mob deaths within 16 blocks, +10% bonus XP from minion kills), Expanded Mana (~1.9× mana pool) | −10% HP, **equipment HP halved** |
+
+#### Magic-damage attribute sync
+
+`puffish_attributes:magic_damage` is set by Origins powers (Archmage's Arcane Supremacy, Battlemage's Arcane Strikes, Faefolk race, Elf race) but is **not directly read by Iron's Spellbooks or Ars Nouveau**. The bridge in `kubejs/server_scripts/skill_effects.js` detects these classes/races and pushes the bonus to both `ars_nouveau:spell_damage` and `irons_spellbooks:spell_power` so the magic boost actually applies in-game.
+
+#### Mana Attunement tier table (Archmage)
+
+Magic damage bonus from Mana Attunement, applied multiplicatively to all magic damage channels (`puffish_attributes:magic_damage`, `irons_spellbooks:spell_power`, `ars_nouveau:ars_nouveau.perk.spell_damage`):
+
+| Detected tier | Trigger dimension | Bonus |
+|:-:|---|:-:|
+| T1 | Overworld | +0% |
+| T2 | Twilight Forest / Aether / Blue Skies | +5% |
+| T3 | Nether | +10% |
+| T4 | End / Otherside / Abyss | +15% |
+
+Tier auto-detected by the highest-tier dimension the player has visited (monotonic — once T4 is reached, the bonus persists). Combined with the +25% Arcane Supremacy base + 10% standing-still bonus + race/origin bonuses, peak Archmage burst at T4 multi-stacks well past 50% magic damage.
 
 ### K.3 Race tradeoffs
 

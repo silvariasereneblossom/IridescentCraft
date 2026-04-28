@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 13) — Appendix K.2 rewritten to match canonical class data
+
+Tester noted the appendix's class section was undercounting Archmage (showed "+25% spell damage" only, missing the Mana Attunement mana buffs entirely) and the "K.2 Class weapon affinities" framing was misleading — most classes are stat-defined, not weapon-type-defined.
+
+Replaced the K.2 weapon-affinities table with a comprehensive **Class Passives Reference** mapping each of the 10 classes to their full passive set, with values matched to `wiki/classes/overview.md` lines 40-52. Archmage now correctly shows: **+50% magic damage** (Arcane Supremacy), **2.5× mana pool**, spell kills restore mana, +10% standing-still bonus, **tier-scaling magic amp T1:+0% → T4:+15%**, plus the Frail Frame and Glass Cannon HP penalties. Same depth-of-detail for all other classes including Battlemage's 1.9× mana pool, Void Summoner's lifesteal numbers, Vanguard's Pacifist's Burden, etc.
+
+Added two new subsections under K.2:
+- **Magic-damage attribute sync** — documents the `puffish_attributes:magic_damage` → `irons_spellbooks:spell_power` / `ars_nouveau:spell_damage` bridge in `kubejs/server_scripts/skill_effects.js` (was undocumented).
+- **Mana Attunement tier table** — explicit T1-T4 bonus mapping with the dimension trigger for each tier.
+
+**Wiki vs. JSON discrepancy noted.** The wiki overview has been the source for these numbers, but a few values diverge from the JSON in `iridescent-origins-mod/.../powers/class/`:
+- Archmage Arcane Supremacy: wiki says +50%, JSON says +25% (multiply_base 0.25)
+- Berserker has wiki-named "Brutal Strikes" (+15% melee) but the JSON file is `weapon_affinity: Axe Mastery` (+15% axes, −20% bow/crossbow, −15% magic)
+- Berserker Battle Trance: wiki says "+5% ATK / +1 armor", JSON says "+5% damage / −5% incoming"
+
+Appendix matched to wiki per tester directive. **Open follow-up**: reconcile the JSON powers to match the wiki (or update the wiki to reflect the JSON), then drop the wiki/JSON divergence note here.
+
+---
+
 ## 2026-04-28 (cont. 12) — T2 flesh material: rotten_leather (Forbidden Arcanus)
 
 Wired the second tier of the flesh-material progression. T2 is `forbidden_arcanus:rotten_leather` — crafted in vanilla 5× rotten_flesh (plus pattern). Stats roughly double the T1 bonuses to give a real progression payoff:
