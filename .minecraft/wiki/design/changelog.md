@@ -4,6 +4,14 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 3) — Paxi resourcepack load order made explicit
+
+Three packs (Pridepack 8.0.1, Transcendence 0.7.4, Melody's Cute Villagers v1.10.0) were physically present in `config/paxi/resourcepacks/` but absent from `resourcepack_load_order.json`, so Paxi was loading them in undefined alphabetical fallback order after the codex. Made the layering explicit (top wins): codex > Transcendence > Pridepack > Cute Villagers. Codex on top so the in-game guidebook textures always win; Transcendence above Pridepack as the narrower, brand-aligned overlay; Pridepack above villagers as the broader colorway base; villagers at the bottom as a passive mob retexture. Mirrored to `distribution/client/`. Server distribution left as codex-only (server doesn't push resourcepacks to clients in the current setup).
+
+Cleanup: deleted a stray `Prism Launcher version 9.4 (officia.txt` (38KB) that had been sitting in the resourcepacks dir as a Prism download artifact, and renamed `Transcendence_0.7.4§7.zip` → `Transcendence_0.7.4.zip` to drop the trailing Minecraft `§7` (gray-color) format code from the filename — the `§` character was fragile in cross-platform shell handling.
+
+---
+
 ## 2026-04-28 (cont. 2) — Default shader + customizable main menu (FancyMenu)
 
 Two visual-polish additions for the alpha-test pack:
