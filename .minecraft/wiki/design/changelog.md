@@ -4,6 +4,27 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 27) — Trim minor variant labels to bare material name
+
+cont. 26 reclassified to vanilla sword's 2-major + 3-minor split and Tetra's `defaultMinorOffsets[3]` placed icons correctly, but our minor labels (`"Rotten leather backing"`, `"Phantom membrane pages"`) still wrapped/overlapped on the 13px vertical spacing Tetra reserves between minors. Vanilla sword fits because its minor labels are flatter — `"Decorative copper pommel"` is one string, not slot + variant stacked.
+
+Trimmed all 6 secondary `material_name` interpolations to bare `"%s"`:
+
+| Slot | Before | After |
+|---|---|---|
+| `iss_book/back_cover` | `"%s backing"` | `"%s"` |
+| `iss_book/spine` | `"%s spine"` | `"%s"` |
+| `iss_book/pages` | `"%s pages"` | `"%s"` |
+| `ars_book/back_cover` | `"%s backing"` | `"%s"` |
+| `ars_book/spine` | `"%s spine"` | `"%s"` |
+| `ars_book/dye` | `"%s dye"` | `"%s"` |
+
+Front cover keeps `"%s-lined cover"` per the user's "X-lined" naming convention from cont. 11. Core stays at `"%s"`. Slot labels above each icon ("Back Cover", "Spine", "Pages") still render and supply the missing context — same approach vanilla Tetra uses for its minors.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 26) — Match vanilla sword's 2-major + 3-minor split exactly
 
 cont. 25's "spread X coords" approach worked but kept us at 3+2, which doesn't match any of Tetra's pre-tuned canonical layouts. Tester pointed out base Tetra renders **all** modules in compact boxes around the central glyph — that's because vanilla sword has 2 majors + 3 minors, and Tetra ships `defaultMajorOffsets[2]` + `defaultMinorOffsets[3]` specifically tuned for this split. We were fighting the framework.
