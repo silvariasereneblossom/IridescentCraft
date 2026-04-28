@@ -12,7 +12,7 @@
                 },
                 "integrity": 0,
                 "glyph": {
-                    "textureLocation": "tetra:textures/gui/wizard_glyphs.png",
+                    "textureLocation": "tetra:textures/gui/glyphs.png",
                     "textureX": 0,
                     "textureY": 0
                 },

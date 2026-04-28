@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 28) — Fix glyph texture path: wizard_glyphs.png → glyphs.png
+
+Tester noted the 2 right-side major slots rendered as **large empty squares** rather than the expected diamond backdrops with glyph content. Diagnosed via decompiled Tetra:
+
+- `WorkbenchStatsGui` correctly picks `GuiModuleMajor` for major slots (diamond backdrops) and `GuiModule` for minor slots (square backdrops). Our `MAJOR_KEYS` / `MINOR_KEYS` are split correctly. Backdrop classification working.
+- The "empty square" symptom was a **broken texture reference**: every module + schematic JSON pointed at `tetra:textures/gui/wizard_glyphs.png` — a path that **does not exist** in Tetra 6.12.0. The actual atlas is `tetra:textures/gui/glyphs.png`. I'd copied the broken path from TSB's JSONs back in cont. 10 (TSB references the same nonexistent file, so their renders are likely empty too — they just never noticed or fixed it).
+
+Tetra silently fails the texture load and the resulting empty render is more visually obvious on the bigger major-slot diamond backdrop than on the minor squares (where the contents are smaller anyway).
+
+Bulk-replaced `wizard_glyphs.png` → `glyphs.png` across 16 files (10 modules + 6 schematics, both iss_book and ars_book). All glyphs now point to Tetra's actual atlas. `textureX=0, textureY=0` continues to point at the top-left of the atlas (a generic glyph) — picking specific positions for spell-book-themed glyphs is a future polish task.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+The user also noted base Tetra labels are similarly long ("Makeshift copper guard", "Decorative copper pommel") and don't overlap, suggesting our cont. 27 label trim may have been overly conservative. We can revisit verbose labels later — current state is functional and the wider-than-vanilla offsets give us margin.
+
+---
+
 ## 2026-04-28 (cont. 27) — Trim minor variant labels to bare material name
 
 cont. 26 reclassified to vanilla sword's 2-major + 3-minor split and Tetra's `defaultMinorOffsets[3]` placed icons correctly, but our minor labels (`"Rotten leather backing"`, `"Phantom membrane pages"`) still wrapped/overlapped on the 13px vertical spacing Tetra reserves between minors. Vanilla sword fits because its minor labels are flatter — `"Decorative copper pommel"` is one string, not slot + variant stacked.
