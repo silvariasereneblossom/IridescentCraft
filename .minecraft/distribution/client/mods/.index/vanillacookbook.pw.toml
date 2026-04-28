@@ -1,0 +1,16 @@
+filename = 'VanillaCookbook-2.2.4.jar'
+name = 'Vanilla Cookbook'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '620b0a4319e39f8d71965d38eb6b2e62c0befabb489dfd8c435504ede259e42044d1b72eafca7c7f492ff67a68d7c76b102ae9380dec7ec27f32047454b6db12'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/YWn7nNrm/versions/Ynio38Kx/VanillaCookbook-2.2.4.jar'
+
+[update.modrinth]
+mod-id = 'YWn7nNrm'
+version = 'Ynio38Kx'
