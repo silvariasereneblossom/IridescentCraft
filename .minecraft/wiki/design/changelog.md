@@ -4,6 +4,20 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-28 (cont. 17) — Core slot renamed + Tetra schematic descriptions reworded
+
+Tester noted the Tetra schematic UI was confusing on two fronts: "Cover" appeared three times (core slot + front cover + back cover), and the core slot's description still read "Forge the cover from a vanilla ISS spellbook material" — phrasing that pre-dated the Phase 6G architecture and reads as deprecated. Closed both:
+
+**Renamed the core slot label**: `tetra.slot.<iss_book|ars_book>/core` from `"Cover"` → `"Core"`. Also updated the matching `tetra.module.<...>/core.name` and `tetra/schematic/<...>/core.name` entries. Front Cover and Back Cover keep their names — they're the cosmetic/structural slots, distinct from the identity-defining Core.
+
+**Reworded core descriptions** to drop the "vanilla ISS spellbook material" phrasing. Now reads as a clean enumeration of accepted tiers (Iron, Gold, Diamond, ..., Archmage on the Ars side, etc.) without the legacy framing.
+
+**Expanded front/back cover descriptions** to give concrete examples of materials in each of the 4 accepted categories (skin / metal / bone / gem) — iron, manasteel, terrasteel, ruby, sapphire, leather, rotten flesh, etc. Players opening the schematic now see what they can actually use without having to grep mod jars.
+
+`iridescent_modular_spells-0.2.0.jar` rebuilt and deployed.
+
+---
+
 ## 2026-04-28 (cont. 16) — Berserker Brutal Strikes maluses now real attribute powers
 
 The bow + magic maluses on Berserker's Brutal Strikes (formerly description-only on `weapon_affinity.json`) are now enforced via two new `origins:conditioned_attribute` powers:
