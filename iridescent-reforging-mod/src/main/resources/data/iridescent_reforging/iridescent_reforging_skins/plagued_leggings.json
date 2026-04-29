@@ -1,24 +1,24 @@
 {
-  "skin_id": "iridescent_reforging:cultist_helmet",
-  "slot": "helmet",
-  "source_item": "irons_spellbooks:cultist_helmet",
-  "display_name": "Reforged Cultist Hood",
+  "skin_id": "iridescent_reforging:plagued_leggings",
+  "slot": "leggings",
+  "source_item": "irons_spellbooks:plagued_leggings",
+  "display_name": "Reforged Plagued Leggings",
   "tier": 2,
   "base_attributes": [
     {
       "attribute": "irons_spellbooks:max_mana",
       "operation": "addition",
-      "value": 25.0
+      "value": 40.0
     },
     {
       "attribute": "irons_spellbooks:spell_power",
       "operation": "multiply_base",
-      "value": 0.05
+      "value": 0.08
     },
     {
       "attribute": "irons_spellbooks:blood_spell_power",
       "operation": "multiply_base",
-      "value": 0.05
+      "value": 0.08
     }
   ]
 }

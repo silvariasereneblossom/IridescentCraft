@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "irons_spellbooks:priest_helmet"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 2,
+  "skin_id": "iridescent_reforging:priest_helmet",
+  "result_slot": "helmet"
+}

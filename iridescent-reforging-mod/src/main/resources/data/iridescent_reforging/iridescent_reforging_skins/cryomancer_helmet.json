@@ -1,8 +1,8 @@
 {
-  "skin_id": "iridescent_reforging:cultist_helmet",
+  "skin_id": "iridescent_reforging:cryomancer_helmet",
   "slot": "helmet",
-  "source_item": "irons_spellbooks:cultist_helmet",
-  "display_name": "Reforged Cultist Hood",
+  "source_item": "irons_spellbooks:cryomancer_helmet",
+  "display_name": "Reforged Cryomancer Hood",
   "tier": 2,
   "base_attributes": [
     {
@@ -16,7 +16,7 @@
       "value": 0.05
     },
     {
-      "attribute": "irons_spellbooks:blood_spell_power",
+      "attribute": "irons_spellbooks:ice_spell_power",
       "operation": "multiply_base",
       "value": 0.05
     }

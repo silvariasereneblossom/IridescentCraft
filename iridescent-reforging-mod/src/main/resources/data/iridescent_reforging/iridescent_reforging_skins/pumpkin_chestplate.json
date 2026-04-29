@@ -1,0 +1,19 @@
+{
+  "skin_id": "iridescent_reforging:pumpkin_chestplate",
+  "slot": "chestplate",
+  "source_item": "irons_spellbooks:pumpkin_chestplate",
+  "display_name": "Reforged Scarecrow Robes",
+  "tier": 1,
+  "base_attributes": [
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 62.5
+    },
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.125
+    }
+  ]
+}

@@ -1,6 +1,7 @@
 package com.iridescentcraft.reforging;
 
 import com.iridescentcraft.reforging.registry.ModItems;
+import com.iridescentcraft.reforging.registry.ModRecipeTypes;
 import com.iridescentcraft.reforging.skin.IssRendererFactories;
 import com.iridescentcraft.reforging.skin.SkinDataLoader;
 import com.iridescentcraft.reforging.skin.SkinRegistry;
@@ -23,6 +24,8 @@ public class IridescentReforging {
     public IridescentReforging() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModItems.ITEMS.register(modBus);
+        ModRecipeTypes.SERIALIZERS.register(modBus);
+        ModRecipeTypes.TYPES.register(modBus);
 
         // Server-side: register data-pack reload listener for skins.
         // Forge bus, not mod bus — AddReloadListenerEvent fires on world

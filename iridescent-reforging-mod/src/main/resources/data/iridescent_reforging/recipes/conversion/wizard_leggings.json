@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "irons_spellbooks:wizard_leggings"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 3,
+  "skin_id": "iridescent_reforging:wizard_leggings",
+  "result_slot": "leggings"
+}

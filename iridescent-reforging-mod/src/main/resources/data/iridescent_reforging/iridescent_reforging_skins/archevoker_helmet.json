@@ -1,9 +1,9 @@
 {
-  "skin_id": "iridescent_reforging:cultist_helmet",
+  "skin_id": "iridescent_reforging:archevoker_helmet",
   "slot": "helmet",
-  "source_item": "irons_spellbooks:cultist_helmet",
-  "display_name": "Reforged Cultist Hood",
-  "tier": 2,
+  "source_item": "irons_spellbooks:archevoker_helmet",
+  "display_name": "Reforged Archevoker Hood",
+  "tier": 3,
   "base_attributes": [
     {
       "attribute": "irons_spellbooks:max_mana",
@@ -16,7 +16,7 @@
       "value": 0.05
     },
     {
-      "attribute": "irons_spellbooks:blood_spell_power",
+      "attribute": "irons_spellbooks:evocation_spell_power",
       "operation": "multiply_base",
       "value": 0.05
     }

@@ -1,8 +1,8 @@
 {
-  "skin_id": "iridescent_reforging:cultist_helmet",
-  "slot": "helmet",
-  "source_item": "irons_spellbooks:cultist_helmet",
-  "display_name": "Reforged Cultist Hood",
+  "skin_id": "iridescent_reforging:electromancer_boots",
+  "slot": "boots",
+  "source_item": "irons_spellbooks:electromancer_boots",
+  "display_name": "Reforged Electromancer Boots",
   "tier": 2,
   "base_attributes": [
     {
@@ -16,7 +16,7 @@
       "value": 0.05
     },
     {
-      "attribute": "irons_spellbooks:blood_spell_power",
+      "attribute": "irons_spellbooks:lightning_spell_power",
       "operation": "multiply_base",
       "value": 0.05
     }

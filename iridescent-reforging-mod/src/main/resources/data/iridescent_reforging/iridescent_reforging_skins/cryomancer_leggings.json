@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:cryomancer_leggings",
+  "slot": "leggings",
+  "source_item": "irons_spellbooks:cryomancer_leggings",
+  "display_name": "Reforged Cryomancer Leggings",
+  "tier": 2,
+  "base_attributes": [
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 40.0
+    },
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.08
+    },
+    {
+      "attribute": "irons_spellbooks:ice_spell_power",
+      "operation": "multiply_base",
+      "value": 0.08
+    }
+  ]
+}

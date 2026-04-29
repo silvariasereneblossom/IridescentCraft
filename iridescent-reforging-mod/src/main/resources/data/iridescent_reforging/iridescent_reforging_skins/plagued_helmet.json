@@ -1,8 +1,8 @@
 {
-  "skin_id": "iridescent_reforging:cultist_helmet",
+  "skin_id": "iridescent_reforging:plagued_helmet",
   "slot": "helmet",
-  "source_item": "irons_spellbooks:cultist_helmet",
-  "display_name": "Reforged Cultist Hood",
+  "source_item": "irons_spellbooks:plagued_helmet",
+  "display_name": "Reforged Plagued Hood",
   "tier": 2,
   "base_attributes": [
     {
