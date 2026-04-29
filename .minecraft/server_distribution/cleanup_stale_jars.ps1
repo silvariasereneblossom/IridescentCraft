@@ -45,7 +45,7 @@ $customJars = @(
     'iridescent_codex_data.jar',
     'iridescent_origins-1.0.0.jar',
     'iridescent_biomes-1.0.0.jar',
-    'iridescent_modular_spells-0.2.0.jar',
+    'iridescent_modular_spells-0.2.0.jar','iridescent_reforging-0.1.0.jar',
     'iridescent_durability_clamp-0.1.0.jar',
     'justlevelingfork-1.2.1-iridescent.1.jar',
     'mek_walkable_cables-1.0.1.jar',

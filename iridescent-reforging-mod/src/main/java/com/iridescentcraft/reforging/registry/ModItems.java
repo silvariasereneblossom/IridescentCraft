@@ -22,22 +22,24 @@ public final class ModItems {
     public static final DeferredRegister<Item> ITEMS =
             DeferredRegister.create(ForgeRegistries.ITEMS, IridescentReforging.MODID);
 
-    // Module slot keys — see ItemModularArmor for rationale.
-    private static final String[] HELMET_MAJOR = { "crown" };
-    private static final String[] HELMET_MINOR = { "visor" };
-    private static final String[] HELMET_REQUIRED = { "crown" };
+    // Module slot keys — namespaced as <slot_type>/<position> so schematics
+    // and modules in data/tetra/... can target them unambiguously without
+    // colliding with other modular item types' slot names.
+    private static final String[] HELMET_MAJOR    = { "helmet/crown" };
+    private static final String[] HELMET_MINOR    = { "helmet/visor" };
+    private static final String[] HELMET_REQUIRED = { "helmet/crown" };
 
-    private static final String[] CHESTPLATE_MAJOR = { "chest_plate" };
-    private static final String[] CHESTPLATE_MINOR = { "chest_lining" };
-    private static final String[] CHESTPLATE_REQUIRED = { "chest_plate" };
+    private static final String[] CHESTPLATE_MAJOR    = { "chestplate/chest_plate" };
+    private static final String[] CHESTPLATE_MINOR    = { "chestplate/chest_lining" };
+    private static final String[] CHESTPLATE_REQUIRED = { "chestplate/chest_plate" };
 
-    private static final String[] LEGGINGS_MAJOR = { "leg_plate" };
-    private static final String[] LEGGINGS_MINOR = { "belt" };
-    private static final String[] LEGGINGS_REQUIRED = { "leg_plate" };
+    private static final String[] LEGGINGS_MAJOR    = { "leggings/leg_plate" };
+    private static final String[] LEGGINGS_MINOR    = { "leggings/belt" };
+    private static final String[] LEGGINGS_REQUIRED = { "leggings/leg_plate" };
 
-    private static final String[] BOOTS_MAJOR = { "boot_sole" };
-    private static final String[] BOOTS_MINOR = { "boot_lining" };
-    private static final String[] BOOTS_REQUIRED = { "boot_sole" };
+    private static final String[] BOOTS_MAJOR    = { "boots/boot_sole" };
+    private static final String[] BOOTS_MINOR    = { "boots/boot_lining" };
+    private static final String[] BOOTS_REQUIRED = { "boots/boot_sole" };
 
     public static final RegistryObject<Item> REFORGED_HELMET = ITEMS.register(
             "reforged_helmet",

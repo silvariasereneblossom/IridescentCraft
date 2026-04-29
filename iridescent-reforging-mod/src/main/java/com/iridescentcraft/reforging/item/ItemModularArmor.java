@@ -2,7 +2,9 @@ package com.iridescentcraft.reforging.item;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
@@ -133,5 +135,51 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     public SynergyData[] getAllSynergyData(ItemStack stack) {
         // No synergies in phase 1. Synergy authoring is phase 8 (module catalog).
         return new SynergyData[0];
+    }
+
+    // ── Attribute aggregation (phase 4) ────────────────────────────────
+    //
+    // Forge's per-stack getAttributeModifiers(slot, stack) override. This is
+    // what HumanoidArmorLayer + LivingEntity damage calculation consult to
+    // determine equipped armor's contributions. We compose three sources:
+    //
+    //   1. Vanilla armor material defaults (from super.getDefaultAttribute-
+    //      Modifiers) — placeholder iron material baseline.
+    //   2. Module-driven modifiers from Tetra's IModularItem cache — picked
+    //      up automatically once a stack has module data.
+    //   3. Skin base attributes — phase 6 will read tag.Skin and look up the
+    //      contribution from SkinRegistry. Stub for now.
+    //
+    // Slot guard: only emit modifiers when the queried slot matches this
+    // item's slot type. ArmorItem default does this implicitly via its
+    // defaultModifiers being keyed on the item's slot, but our combined
+    // multimap needs the explicit check.
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        if (slot != getEquipmentSlot()) {
+            return HashMultimap.create();
+        }
+
+        Multimap<Attribute, AttributeModifier> combined = HashMultimap.create();
+
+        // (1) Vanilla material defaults. super.getAttributeModifiers passes
+        // through to ArmorItem.defaultModifiers when the slot matches.
+        combined.putAll(super.getAttributeModifiers(slot, stack));
+
+        // (2) Module-driven modifiers via Tetra's cache layer. Returns an
+        // empty multimap if the stack has no module NBT yet.
+        try {
+            combined.putAll(getAttributeModifiersCached(stack));
+        } catch (Exception e) {
+            // Fail open — modules contribute nothing this frame, vanilla
+            // baseline still applies. Log once per stack-id ideally; for
+            // now silent to avoid spam.
+        }
+
+        // (3) Skin base attributes — phase 6.
+        // TODO(phase 6): if (stack.getTag() has "Skin") look up SkinRegistry
+        //                and merge the entry's base_attributes here.
+
+        return combined;
     }
 }

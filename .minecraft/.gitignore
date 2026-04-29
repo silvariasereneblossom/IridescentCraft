@@ -3,6 +3,7 @@ mods/*.jar
 !mods/iridescent_origins-*.jar
 !mods/iridescent_biomes-*.jar
 !mods/iridescent_modular_spells-*.jar
+!mods/iridescent_reforging-*.jar
 !mods/iridescent_durability_clamp-*.jar
 !mods/justlevelingfork-*-iridescent.*.jar
 !mods/Patchouli-*.jar
@@ -14,6 +15,7 @@ mods/*.jar
 !server_distribution/mods/iridescent_origins-*.jar
 !server_distribution/mods/iridescent_biomes-*.jar
 !server_distribution/mods/iridescent_modular_spells-*.jar
+!server_distribution/mods/iridescent_reforging-*.jar
 !server_distribution/mods/iridescent_durability_clamp-*.jar
 !server_distribution/mods/justlevelingfork-*-iridescent.*.jar
 !server_distribution/mods/Patchouli-*.jar
@@ -23,6 +25,7 @@ mods/*.jar
 !distribution/client/mods/iridescent_origins-*.jar
 !distribution/client/mods/iridescent_biomes-*.jar
 !distribution/client/mods/iridescent_modular_spells-*.jar
+!distribution/client/mods/iridescent_reforging-*.jar
 !distribution/client/mods/iridescent_durability_clamp-*.jar
 !distribution/client/mods/justlevelingfork-*-iridescent.*.jar
 !distribution/client/mods/Patchouli-*.jar
