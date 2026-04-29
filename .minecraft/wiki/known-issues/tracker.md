@@ -14,6 +14,16 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Puffish Skills warfare category — wrong attribute namespace
+- **Status:** Open (surfaced 2026-04-29 during aptitude Batch 3 audit)
+- **File:** `kubejs/data/icraft/puffish_skills/categories/warfare/category.json`
+- **Description:** Several skill nodes reference attributes under `apothic_attributes:` namespace (`life_steal`, `crit_damage`). The actual mod ID is `attributeslib`, so these resolve to nothing and silently no-op. Confirmed by inspecting the Apothic Attributes jar's `ALObjects$Attributes` registry — full attribute list lives under `attributeslib:`.
+- **Affected nodes (in warfare/category.json):**
+  - Lines 254, 311, 387, 414 — `apothic_attributes:life_steal` → should be `attributeslib:life_steal`
+  - Lines 509, 585, 612 — `apothic_attributes:crit_damage` → should be `attributeslib:crit_damage`
+- **Fix:** Bulk replace `apothic_attributes:` with `attributeslib:` in that file. Out of scope for the aptitude Batch 3 ship; needs a separate puffish_skills polish pass.
+- **Player impact:** Warfare-tree skill points spent on those nodes have been giving zero effect.
+
 ### Apotheosis Tower Loot
 - **Status:** Active
 - **Description:** Some Apotheosis tower chests show gold only. Paxi override may have load order issue causing incomplete loot table replacement.

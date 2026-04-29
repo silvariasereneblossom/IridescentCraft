@@ -21,13 +21,15 @@
 // │ Steady Hand    │BLD 5│ +0.5 block reach                                    │
 // │ Lucky Charm    │LCK 5│ +1 luck attribute                                   │
 // │ Brutal Slash   │STR10│ +10% melee dmg + ~10% armor pen approximation [B2]  │
+// │ Conservation  │MAG10│ +15% mana regen (approximation of cost reduction) [B3]│
+// │ Arcane Effic. │INT10│ 25% XP refund near enchanting table [B3]            │
 // │ Quarryman      │BLD10│ +5% block break speed                               │
 // │ Fleet of Foot  │DEX10│ +15% movement speed                                 │
 // │ Hearty Meals   │CON10│ Regen I when food >= 18 (well-fed)                  │
 // │ Second Wind    │DEF10│ Regen III for 5s when HP < 30% (60s CD)             │
 // │ Cleave         │STR15│ +20% on first swing of combat (5s reset) [B2]       │
 // │ Steady Breath  │CON15│ Water Breathing + Saturation while underwater [B2]  │
-// │ Deadeye        │DEX15│ +10% projectile damage                              │
+// │ Deadeye        │DEX15│ +10% arrow damage                                   │
 // │ Bulwark        │DEF15│ +25% knockback resistance                           │
 // │ Mana Blaze     │MAG15│ +15% spell power                                    │
 // │ Insight        │INT15│ +20% XP gain                                        │
@@ -35,8 +37,10 @@
 // │ Hemorrhage     │STR20│ Wither I for 4s on melee hit                        │
 // │ Overflow       │CON20│ Absorption I when at full HP                        │
 // │ Mystic Ward    │MAG20│ Dynamic DR: 5%+1%/20% bonus spell power, cap 20% [B2]│
+// │ Mat. Science  │INT20│ 25% XP refund near anvil [B3]                       │
 // │ Turtle Shield  │DEF20│ +4 armor toughness when not blocking                │
-// │ Rapid Fire     │DEX20│ TODO: +15% bow draw speed                           │
+// │ Rapid Fire     │DEX20│ +15% bow draw speed [B3]                            │
+// │ Resourceful    │BLD20│ 8% chance to refund crafting material [B3]          │
 // │ Treasure Sense │LCK20│ 5% chance to double-roll entity loot on kill [B2]   │
 // │ True Strength  │STR30│ Execute non-boss mobs at <= 5% HP on melee hit      │
 // │ Iron Stomach   │CON30│ Saturation effect every 5s                          │
@@ -44,15 +48,9 @@
 // │ Excitement     │DEX30│ Speed III + Haste II for 10s on kill                │
 // │ Mana Inferno   │MAG30│ +30% spell power (capstone)                         │
 // │ Enlightenment  │INT30│ +30% XP gain                                        │
-// │ Master Craft   │BLD30│ TODO: Craft bonus                                   │
+// │ Master Craft   │BLD30│ +12% craft refund (stacks to 20% with Resourceful)[B3]│
 // │ Motherlode     │LCK30│ 0.5% chance for 5x mining drops [B2]                │
-// ├────────────────┴─────┴──────────────────────────────────────────────────────┤
-// │ Reserved for Batch 3:                                                     │
-// │ - MAG 10 Conservation of Magic (mana-cost reduction)                      │
-// │ - INT 10 Arcane Efficiency, INT 20 Materials Science (XP refund hooks)    │
-// │ - BLD 20 Resourceful, BLD 30 Master Craftsman (craft refund hooks)        │
-// │ - DEX 20 Rapid Fire (Apothic Attributes draw_speed)                       │
-// └─────────────────────────────────────────────────────────────────────────────┘
+// └────────────────┴─────┴──────────────────────────────────────────────────────┘
 // =============================================================================
 
 const APTITUDE_LIST = [
@@ -126,6 +124,8 @@ PlayerEvents.loggedIn(event => {
   delete secondWindCooldowns[uuid]
   delete excitementTimers[uuid]
   delete lastCombatTick[uuid]
+  // Batch 3
+  if (typeof craftRefundCooldown !== 'undefined') delete craftRefundCooldown[uuid]
 })
 
 
@@ -252,9 +252,12 @@ global.tick_justlevelingSkills = (event) => {
     } catch (e) {}
 
     // ── Deadeye (DEX >= 15): +10% projectile damage ──
+    // Apothic Attributes' ID namespace is `attributeslib:` (modId =
+    // attributeslib; display name "Apothic Attributes"). Confirmed jar
+    // registry: arrow_damage exists, projectile_damage does not.
     try {
       let ddDmg = (apt.dex >= 15) ? 0.10 : 0
-      player.modifyAttribute('apothic_attributes:projectile_damage',
+      player.modifyAttribute('attributeslib:arrow_damage',
         'icraft_deadeye', ddDmg, 'multiply_base')
     } catch (e) {}
 
@@ -263,6 +266,28 @@ global.tick_justlevelingSkills = (event) => {
       let bwKb = (apt.def >= 15) ? 0.25 : 0
       player.modifyAttribute('minecraft:generic.knockback_resistance',
         'icraft_bulwark', bwKb, 'addition')
+    } catch (e) {}
+
+    // ── Conservation of Magic (MAG >= 10): +15% mana regeneration ──
+    // Approximation of "15% reduced mana cost". Standard Forge attributes
+    // don't expose a "spell cost" axis; ISS/Ars compute cost internally.
+    // Boosting regen is the cleanest hands-off approximation that matches
+    // the design intent (more usable mana over a session).
+    try {
+      let cmRegen = (apt.mag >= 10) ? 0.15 : 0
+      player.modifyAttribute('irons_spellbooks:mana_regen',
+        'icraft_conservation_iss', cmRegen, 'multiply_base')
+      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.mana_regen',
+        'icraft_conservation_ars', cmRegen, 'multiply_base')
+    } catch (e) {}
+
+    // ── Rapid Fire (DEX >= 20): +15% bow draw speed ──
+    // Apothic Attributes provides the draw_speed attribute (mod ID is
+    // `attributeslib`, not `apothic_attributes`).
+    try {
+      let rfDraw = (apt.dex >= 20) ? 0.15 : 0
+      player.modifyAttribute('attributeslib:draw_speed',
+        'icraft_rapid_fire', rfDraw, 'multiply_base')
     } catch (e) {}
 
     // ── Mana Blaze (MAG >= 15): +15% spell power ──
@@ -387,6 +412,209 @@ global.tick_justlevelingSkills = (event) => {
   })
 }
 global.registerServerTick('tick_justlevelingSkills', 100, 37)
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// XP REFUND TRACKER — Arcane Efficiency (INT 10), Materials Science (INT 20)
+// ═══════════════════════════════════════════════════════════════════════════════
+// Polls player.xp every 5 ticks and detects negative diffs (XP spent).
+// If the player is within 4 blocks of an enchanting table, refund 25%
+// (Arcane Efficiency, INT >= 10). If within 4 blocks of an anvil, also
+// refund 25% (Materials Science, INT >= 20). Both can stack on a single
+// spend if both blocks happen to be in range (rare in practice).
+//
+// Pattern mirrors the existing `tick_xpMultiplier` in attribute_sync.js
+// — KubeJS 6.x doesn't expose PlayerEvents.xpChange, so polling is the
+// only path. Uses a separate persistentData key (`icraft_apt_xp_last`)
+// to avoid coupling with the existing xp-mult tracker.
+//
+// Caveat: any XP spend within proximity is refunded — if the player
+// stands by an enchant table while another script consumes XP, that's
+// also refunded. Acceptable false-positive rate; the player rarely sits
+// next to enchant tables outside the act of enchanting.
+
+let isNearBlock = function(player, ids, radius) {
+  try {
+    let pos = player.blockPosition()
+    let level = player.level
+    for (let dx = -radius; dx <= radius; dx++) {
+      for (let dy = -2; dy <= 2; dy++) {
+        for (let dz = -radius; dz <= radius; dz++) {
+          let block = level.getBlock(pos.x + dx, pos.y + dy, pos.z + dz)
+          let bid = block ? String(block.id || '') : ''
+          if (bid && ids.indexOf(bid) >= 0) return true
+        }
+      }
+    }
+  } catch (e) {}
+  return false
+}
+
+global.tick_aptitudeXpRefund = function(event) {
+  let server = event.server
+  server.players.forEach(function(player) {
+    try {
+      if (player.creative || player.spectator) return
+      let apt = getCachedAptitudes(server, player)
+      let curr = player.xp
+      let hasLast = player.persistentData.contains('icraft_apt_xp_last')
+      if (!hasLast) {
+        player.persistentData.putInt('icraft_apt_xp_last', curr)
+        return
+      }
+      let last = player.persistentData.getInt('icraft_apt_xp_last')
+      let diff = curr - last
+      if (diff < 0) {
+        let spent = -diff
+        let refundMult = 0
+        // Arcane Efficiency (INT >= 10): refund 25% near enchant table
+        if (apt.int >= 10) {
+          if (isNearBlock(player, ['minecraft:enchanting_table'], 4)) {
+            refundMult += 0.25
+          }
+        }
+        // Materials Science (INT >= 20): refund 25% near anvil
+        if (apt.int >= 20) {
+          let anvils = [
+            'minecraft:anvil',
+            'minecraft:chipped_anvil',
+            'minecraft:damaged_anvil'
+          ]
+          if (isNearBlock(player, anvils, 4)) {
+            refundMult += 0.25
+          }
+        }
+        if (refundMult > 0) {
+          let refund = Math.floor(spent * refundMult)
+          if (refund > 0) {
+            try { player.addXP(refund) } catch (e) {}
+            try {
+              let labelTag = (refundMult >= 0.50)
+                ? '§b[Arcane Efficiency + Materials Science]'
+                : (apt.int >= 20 && isNearBlock(player, ['minecraft:anvil', 'minecraft:chipped_anvil', 'minecraft:damaged_anvil'], 4))
+                  ? '§b[Materials Science]'
+                  : '§b[Arcane Efficiency]'
+              player.tell(labelTag + ' §fXP refunded: ' + refund)
+            } catch (e) {}
+          }
+        }
+      }
+      // Update cache after any work (refund or no)
+      player.persistentData.putInt('icraft_apt_xp_last', player.xp)
+    } catch (e) {}
+  })
+}
+global.registerServerTick('tick_aptitudeXpRefund', 5, 21)
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// CRAFT REFUND — Resourceful (BLD 20), Master Craftsman (BLD 30)
+// ═══════════════════════════════════════════════════════════════════════════════
+// Hooks PlayerEvents.inventoryChanged on any "crafted-looking" item pickup.
+// Per-player 40-tick (2s) cooldown to avoid spamming on inventory churn
+// during a multi-craft session. Two independent rolls when BLD >= 30 so
+// Master Craftsman's bonus is additive on top of Resourceful (max 20%).
+//
+// Uses the same crafted-pattern whitelist as skill_effects.js's
+// material_save handler (different system — that one keys off Pufferfish
+// scores; this one keys off JLFork aptitudes). Rolls a contextually
+// matching ingredient based on the crafted item's id.
+//
+// Caveat: detection is heuristic, not a real crafting event. Items that
+// look like crafted goods but came from loot/trade also trigger rolls
+// (acceptable noise — the refund quantities are small).
+
+let craftRefundCooldown = {}  // uuid -> tick
+
+let craftedPatterns = [
+  '_sword', '_pickaxe', '_axe', '_shovel', '_hoe',
+  '_helmet', '_chestplate', '_leggings', '_boots',
+  '_ingot', '_nugget', 'planks', 'stick', 'torch',
+  'rail', 'piston', 'hopper', 'dropper', 'dispenser',
+  'comparator', 'repeater', 'observer', 'ladder', 'fence',
+  'door', 'trapdoor', 'button', 'pressure_plate', 'lever',
+  'bucket', 'shears', 'compass', 'clock', 'spyglass',
+  'shield', 'bow', 'crossbow', 'fishing_rod',
+  'minecart', 'boat', 'lead', 'name_tag'
+]
+
+let pickRefundMaterial = function(itemId) {
+  let id = String(itemId || '')
+  if (id.indexOf('iron') >= 0 || id.indexOf('chain') >= 0)
+    return ['minecraft:iron_ingot', 'minecraft:iron_nugget']
+  if (id.indexOf('gold') >= 0)
+    return ['minecraft:gold_ingot', 'minecraft:gold_nugget']
+  if (id.indexOf('diamond') >= 0) return ['minecraft:diamond']
+  if (id.indexOf('netherite') >= 0) return ['minecraft:netherite_scrap']
+  if (id.indexOf('copper') >= 0) return ['minecraft:copper_ingot']
+  if (id.indexOf('wood') >= 0 || id.indexOf('planks') >= 0 ||
+      id.indexOf('oak') >= 0 || id.indexOf('birch') >= 0 ||
+      id.indexOf('spruce') >= 0 || id.indexOf('jungle') >= 0 ||
+      id.indexOf('acacia') >= 0 || id.indexOf('mangrove') >= 0 ||
+      id.indexOf('cherry') >= 0 || id.indexOf('bamboo') >= 0)
+    return ['minecraft:stick', 'minecraft:oak_planks']
+  if (id.indexOf('stone') >= 0 || id.indexOf('cobble') >= 0)
+    return ['minecraft:cobblestone']
+  if (id.indexOf('redstone') >= 0 || id.indexOf('comparator') >= 0 ||
+      id.indexOf('repeater') >= 0 || id.indexOf('piston') >= 0)
+    return ['minecraft:redstone']
+  return [
+    'minecraft:iron_nugget', 'minecraft:string', 'minecraft:flint',
+    'minecraft:gold_nugget', 'minecraft:redstone', 'minecraft:stick'
+  ]
+}
+
+PlayerEvents.inventoryChanged(event => {
+  try {
+    let player = event.player
+    if (!player || player.creative || player.spectator) return
+    let item = event.item
+    if (!item || item.isEmpty()) return
+    let itemId = String(item.id || '')
+    if (!itemId) return
+    let isCrafted = false
+    for (let i = 0; i < craftedPatterns.length; i++) {
+      if (itemId.indexOf(craftedPatterns[i]) >= 0) { isCrafted = true; break }
+    }
+    if (!isCrafted) return
+
+    let server = player.server
+    let apt = getCachedAptitudes(server, player)
+    if (apt.bld < 20) return
+
+    let uuid = player.uuid.toString()
+    let now = server.tickCount
+    let last = craftRefundCooldown[uuid] || 0
+    if ((now - last) < 40) return  // 2s cooldown
+    craftRefundCooldown[uuid] = now
+
+    let triggered = false
+    // Resourceful (BLD >= 20): 8% roll
+    if (Math.random() < 0.08) {
+      let pool = pickRefundMaterial(itemId)
+      let pick = pool[Math.floor(Math.random() * pool.length)]
+      try { player.give(Item.of(pick)) } catch (e) {}
+      triggered = true
+    }
+    // Master Craftsman (BLD >= 30): additional 12% roll on top of Resourceful
+    // (independent rolls — combined trigger probability ≈ 19.04%, max
+    // refund 2 items per craft event)
+    if (apt.bld >= 30 && Math.random() < 0.12) {
+      let pool = pickRefundMaterial(itemId)
+      let pick = pool[Math.floor(Math.random() * pool.length)]
+      try { player.give(Item.of(pick)) } catch (e) {}
+      triggered = true
+    }
+    if (triggered) {
+      let pos = player.blockPosition()
+      try {
+        server.runCommandSilent(
+          `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.5 0.3 0 6 force ${player.username}`
+        )
+      } catch (e) {}
+    }
+  } catch (e) {}
+})
 
 
 // ═══════════════════════════════════════════════════════════════════════════════
@@ -659,7 +887,7 @@ BlockEvents.broken(event => {
 // STARTUP LOG
 // ═══════════════════════════════════════════════════════════════════════════════
 ServerEvents.loaded(event => {
-  console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded (Batch 1+2)')
+  console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded (Batch 1+2+3 — all 28 slots filled)')
   console.log('  Tier 5 (Batch 1):')
   console.log('    STR 5: Might (+1.5 dmg, +5% HP)')
   console.log('    CON 5: Tough Hide (+2 max HP)')
@@ -674,6 +902,8 @@ ServerEvents.loaded(event => {
   console.log('    DEX 10: Fleet of Foot (+15% speed)')
   console.log('    CON 10: Hearty Meals (Regen I when well-fed)')
   console.log('    DEF 10: Second Wind (Regen III at low HP, 60s CD)')
+  console.log('    MAG 10: Conservation of Magic (+15% mana regen) [Batch 3]')
+  console.log('    INT 10: Arcane Efficiency (25% XP refund near enchant table) [Batch 3]')
   console.log('    BLD 10: Quarryman (+5% block break speed)')
   console.log('  Tier 15:')
   console.log('    STR 15: Cleave (+20% first swing, 5s reset) [Batch 2]')
@@ -687,7 +917,10 @@ ServerEvents.loaded(event => {
   console.log('    STR 20: Hemorrhage (Wither I on melee hit)')
   console.log('    CON 20: Overflow (Absorption at full HP)')
   console.log('    MAG 20: Mystic Ward (dynamic DR scaled by spell power) [Batch 2]')
+  console.log('    INT 20: Materials Science (25% XP refund near anvil) [Batch 3]')
+  console.log('    DEX 20: Rapid Fire (+15% bow draw speed) [Batch 3]')
   console.log('    DEF 20: Turtle Shield (+4 toughness when not blocking)')
+  console.log('    BLD 20: Resourceful (8% craft material refund) [Batch 3]')
   console.log('    LCK 20: Treasure Sense (5% double-roll on entity kill) [Batch 2]')
   console.log('  Tier 30:')
   console.log('    STR 30: True Strength (execute at <= 5% HP)')
@@ -696,6 +929,6 @@ ServerEvents.loaded(event => {
   console.log('    DEF 30: Lion Heart (DR scales with missing HP, up to 30%)')
   console.log('    MAG 30: Mana Inferno (+30% spell power)')
   console.log('    INT 30: Enlightenment (+30% XP) [rebalanced from +50%]')
+  console.log('    BLD 30: Master Craftsman (+12% craft refund, stacks to 20%) [Batch 3]')
   console.log('    LCK 30: Motherlode (0.5% chance for 5x mining drops) [Batch 2]')
-  console.log('  Reserved for Batch 3: MAG 10 Conservation, INT 10/20 XP refunds, BLD 20/30 craft refund, DEX 20 draw speed')
 })

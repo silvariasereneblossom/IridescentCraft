@@ -4,6 +4,61 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 3) — Aptitude Batch 3: 6 cross-mod skills + Deadeye attribute fix
+
+Final implementation pass on `IridescentCraft-internal/design/aptitude_skill_plan.md`. Closes out the 28-slot expansion — every Tier 5/10/15/20/30 node across all 8 aptitudes now has a working effect.
+
+### New skills (`kubejs/server_scripts/skills/justleveling_skills.js`)
+
+| Aptitude | Lvl | Skill | Effect | Hook |
+|---|:-:|---|---|---|
+| MAG | 10 | **Conservation of Magic** | +15% mana regen on both magic systems (approximation of "15% reduced cost") | Tick attribute on `irons_spellbooks:mana_regen` and `ars_nouveau:ars_nouveau.perk.mana_regen` mul_base 0.15 |
+| INT | 10 | **Arcane Efficiency** | 25% XP refund when spending near enchanting table | Tick poll of `player.xp` (5-tick cadence); on negative diff, scan 9×5×9 around player for `minecraft:enchanting_table` and refund 25% via `addXP` |
+| INT | 20 | **Materials Science** | 25% XP refund when spending near anvil | Same poll handler; scans for `minecraft:anvil` / `chipped_anvil` / `damaged_anvil` |
+| DEX | 20 | **Rapid Fire** | +15% bow draw speed | Tick attribute on `attributeslib:draw_speed` mul_base 0.15 |
+| BLD | 20 | **Resourceful** | 8% chance to refund a crafting material on craft | `PlayerEvents.inventoryChanged` heuristic — matches against a crafted-pattern whitelist + 2s per-player cooldown; refunds a contextual material based on the result item's id (iron→iron_ingot, diamond→diamond, etc.) |
+| BLD | 30 | **Master Craftsman** | +12% craft refund (independent roll on top of Resourceful → ~19% trigger, max 2 items) | Same `inventoryChanged` hook; second RNG roll when BLD ≥ 30 |
+
+### Bug fix (Batch 1 regression)
+
+- **Deadeye (DEX 15)** was using attribute id `apothic_attributes:projectile_damage` which doesn't exist. Apothic Attributes' actual mod ID is `attributeslib`, and the closest matching attribute is `arrow_damage` (not `projectile_damage`). Fixed to `attributeslib:arrow_damage`. Confirmed by inspecting the jar's `ALObjects$Attributes` registry — full attribute list under `attributeslib:` is `creative_flight, elytra_flight, prot_shred, prot_pierce, overheal, mining_speed, life_steal, healing_received, ghost_health, fire_damage, experience_gained, draw_speed, dodge_chance, current_hp_damage, crit_damage, crit_chance, cold_damage, arrow_velocity, arrow_damage, armor_shred, armor_pierce`.
+
+### Implementation notes & known caveats
+
+- **Conservation of Magic** is an *approximation*. Plan recommended option (b) (boost mana regen instead of reducing cost) because no standard "spell cost" attribute exists in either ISS or Ars Nouveau; cost is computed inside each mod's spell-cast pipeline. Boosting regen by 15% gives a similar economic effect over a session — player can sustain more casts before running dry — without needing a Java mixin into either mod's casting code. Document and revisit if the economy feels noticeably different from the design intent.
+- **Arcane Efficiency / Materials Science** rely on the existing `tick_xpMultiplier` polling pattern (KubeJS 6.x doesn't expose `PlayerEvents.xpChange`). New 5-tick poll handler `tick_aptitudeXpRefund` watches negative diffs in `player.xp`. Uses a separate persistentData key (`icraft_apt_xp_last`) to stay decoupled from the existing xp-mult tracker. Scans a 9×5×9 box around the player for the relevant block on each detected spend (only when a spend actually fires, not every tick — keeps scan cost down). Both Arcane Efficiency and Materials Science can fire simultaneously if the player happens to be near both an enchant table and an anvil during a spend (rare; combined would refund 50%).
+- **Resourceful / Master Craftsman**: detection is heuristic (item id pattern match on `inventoryChanged`), not a real crafting event — KubeJS 6.x doesn't expose a clean recipe-completion event. Same caveat as the existing `skill_effects.js` Material Save handler. Items that look like crafted goods but came from loot/trade also trigger rolls; cooldown of 2s per player limits the noise. Refund quantities are intentionally small (1 ingredient at a time).
+- **Rapid Fire** uses the correct `attributeslib:` namespace (matching the Deadeye fix above).
+
+### Lang updates (`kubejs/assets/justlevelingfork/lang/en_us.json`)
+
+- `stealth_mastery` (Rapid Fire), `convergence` (Master Craftsman), `treasure_hunter` (Resourceful), `safe_port` (Arcane Efficiency) — all four had `[WIP]` suffix dropped, and descriptions updated to reflect actual implementation.
+
+### Status — 28 / 28 aptitude slots filled
+
+All 5 nodes per aptitude × 8 aptitudes now have a working effect. The 5-tier expansion design from `aptitude_skill_plan.md` is complete.
+
+| Aptitude | 5 | 10 | 15 | 20 | 30 |
+|---|---|---|---|---|---|
+| STR | Might | Brutal Slash | Cleave | Hemorrhage | True Strength |
+| CON | Tough Hide | Hearty Meals | Steady Breath | Overflow | Iron Stomach |
+| DEX | Light Step | Fleet of Foot | Deadeye | Rapid Fire | Excitement |
+| DEF | Padded Frame | Second Wind | Bulwark | Turtle Shield | Lion Heart |
+| MAG | Mana Spark | Conservation of Magic | Mana Blaze | Mystic Ward | Mana Inferno |
+| INT | Curious | Arcane Efficiency | Insight | Materials Science | Enlightenment |
+| BLD | Steady Hand | Quarryman | Thrifty Hands | Resourceful | Master Craftsman |
+| LCK | Lucky Charm | Lucky Strike* | Fortune's Favor* | Treasure Sense | Motherlode |
+
+*JLFork-native — verified to auto-fire in playtest pending.
+
+### Pre-existing bug surfaced during Batch 3 audit
+
+The `kubejs/data/icraft/puffish_skills/categories/warfare/category.json` config references attributes under `apothic_attributes:` namespace (`life_steal`, `crit_damage`) which is also wrong — should be `attributeslib:`. **Not fixed in this commit** — out of scope for the aptitude work, but flagged here for the next puffish skills polish pass. Players may have been getting silent no-ops on those Warfare nodes.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 2) — Aptitude Batch 2: 7 event-driven skills shipped
 
 Second implementation pass on `IridescentCraft-internal/design/aptitude_skill_plan.md`. Fills out STR 10/15, CON 15, MAG 20 (rebalanced), BLD 15, LCK 20/30 — all the medium-complexity event-driven skills.
