@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Iridescent fork — what changed",
-      "text": "We forked $(italic)JustLeveling Fork$() (Apache 2.0) instead of patching it from outside, to control:$(br2)$(bold)Passive remapping$() — Magic Resist moved from MAG to DEF (defensive layer fits with armor); Beneficial Effect moved from MAG to INT (potion mastery is intellect-flavor). MAG is now skill-only.$(br2)$(bold)Effects via KubeJS$() — All Tier-5/15/20/30 skill effects ship as $(thing)kubejs/server_scripts/skills/justleveling_skills.js$() handlers, not native JLFork code. This keeps the gameplay logic editable without rebuilds."
+      "text": "We forked $(italic)JustLeveling Fork$() (Apache 2.0) instead of patching it from outside, to control:$(br2)$(bold)Passive trim$() — Magic Resist and Beneficial Effect passives removed entirely. They weren't in the design's aptitude themes, and shuffling them between aptitudes felt arbitrary. Cleaner to just remove them; the underlying attributes stay registered for any other mod to use.$(br2)$(bold)Effects via KubeJS$() — All Tier-5/15/20/30 skill effects ship as $(thing)kubejs/server_scripts/skills/justleveling_skills.js$() handlers, not native JLFork code. This keeps the gameplay logic editable without rebuilds."
     },
     {
       "type": "patchouli:text",

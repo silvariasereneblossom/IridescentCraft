@@ -4,6 +4,44 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 13) — Aptitude fork: align with design (remove magic_resist + beneficial_effect)
+
+User correction on cont. 12: the aptitude design plan (`IridescentCraft-internal/design/aptitude_skill_plan.md`) is **skill-tier focused** — it specifies the 5/10/15/20/30 nodes per aptitude but doesn't mention any passives. Magic Resist and Beneficial Effect aren't in the design at all, so reassigning them to DEF and INT (cont. 12) was arbitrary. Cleaner alignment: **remove them entirely**.
+
+### Changes vs cont. 12
+
+- `RegistryPassives.java`: dropped the `MAGIC_RESIST` and `BENEFICIAL_EFFECT` `RegistryObject` declarations. The underlying `RegistryAttributes.MAGIC_RESIST` and `.BENEFICIAL_EFFECT` attributes are still registered (any other mod that wants to read them can), but no Passive scales them per aptitude level.
+- Reverted my brief-lived addition of `SPELL_POWER` + `MAX_MANA` MAG passives wired to ISS attributes — those weren't in the design either.
+- Removed the matching `HandlerCommonConfig.java` fields (`spellPowerValue`, `maxManaValue`, etc.).
+- Reverted the shipped `config/JLFork/justleveling-fork.common.json5` additions.
+- Removed the corresponding lang entries.
+- Removed the ISS hard-dep in `mods.toml` (no longer needed; passive lookup is gone).
+
+### Net effect on the in-game UI
+
+| Aptitude | Native passives (after fork) |
+|---|---|
+| STR | attack_damage, attack_knockback |
+| CON | max_health, knockback_resistance |
+| DEX | movement_speed, projectile_damage |
+| DEF | armor, armor_toughness |
+| **MAG** | **(none — skill-only)** |
+| INT | attack_speed, entity_reach |
+| BLD | block_reach, break_speed |
+| LCK | luck, critical_damage |
+
+MAG aptitude shows skills only in the UI now; the per-level scaling for spell power and mana comes from KubeJS skill effects (Mana Spark / Conservation / Mana Blaze / Mystic Ward / Mana Inferno) at the threshold tiers.
+
+### Why this is the right call
+
+- Following the design rather than improvising. The plan lists what each aptitude does at each tier; passives that aren't in the design shouldn't appear.
+- Less maintenance — fewer config knobs, fewer lang entries, smaller jar.
+- Reversible — if playtest reveals MAG feels too thin without per-level scaling, we can add custom MAG passives in a follow-up that updates the design plan first.
+
+Codex `Aptitudes` entry updated to reflect the trim. Mirrored to all 3 distros. Same `justlevelingfork-1.2.1-iridescent.1.jar` filename so allowlists don't need updating.
+
+---
+
 ## 2026-04-29 (cont. 12) — Iridescent Aptitudes fork v1 shipped (passive remap + drop-in)
 
 Continuation of cont. 11 (fork foundation). This commit closes the loop — the fork is now built, deployed, and replacing the upstream JustLeveling Fork in all 3 distros.
