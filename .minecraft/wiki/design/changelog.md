@@ -4,6 +4,93 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 15) — Module honing v1: 8 slots end-to-end + 2x Tetra hone speed
+
+Per design plan `IridescentCraft-internal/design/modular_spells_honing_plan.md`. Tetra-style 5-level honing on modular spell book slots, with L3 settled bonuses, gated by hammer tier per level (gold→iron→steel→diamond→netherite). Earned through module-XP from spell-cast use.
+
+### Slots shipped (8 total)
+
+**ISS books (5 slots):**
+
+| Slot | Stat | L1 → L5 | L3 settled bonus |
+|---|---|---|---|
+| front_cover | max_mana | +5 / +10 / +20 / +35 / +60 | +5 max_mana |
+| back_cover | spell_power | +0.02 / +0.04 / +0.07 / +0.09 / +0.10 | +1% magic_crit_chance via `attributeslib:crit_chance` (also boosts magic crits) |
+| spine | mana_regen | +0.05 / +0.10 / +0.16 / +0.23 / +0.32 | +0.05 mana_regen |
+| pages | cast_time_reduction | +0.01 / +0.02 / +0.04 / +0.06 / +0.10 | +0.02 cast_time |
+| core | cooldown_reduction | +0.01 / +0.02 / +0.04 / +0.06 / +0.10 | +0.02 cooldown |
+
+**Ars tomes (3 slots — Ars `core` skipped):**
+
+| Slot | Stat | L1 → L5 | L3 settled bonus |
+|---|---|---|---|
+| front_cover | `ars_nouveau:ars_nouveau.perk.max_mana` | +5 / +10 / +20 / +35 / +60 | +5 max_mana |
+| back_cover | `ars_nouveau:ars_nouveau.perk.spell_damage` | +0.02 / +0.04 / +0.07 / +0.09 / +0.10 | +1% magic_crit_chance |
+| spine | `ars_nouveau:ars_nouveau.perk.mana_regen` | +0.05 / +0.10 / +0.16 / +0.23 / +0.32 | +0.05 mana_regen |
+
+**Why no Ars `core` honing:** Ars Nouveau doesn't have native cast_time / cooldown reduction attributes (it uses different gameplay mechanics — spell casts go through glyph-builder + crystal scrying, not the per-spell attribute pipeline). Substituting other stats (warding, flat_mana_bonus) felt arbitrary; cleaner to leave Ars `core` unhoned in v1 and revisit if there's player demand.
+
+**L5 spell_power capped at +0.10** (instead of the original draft's +0.16) to avoid double-counting with the MAG aptitude passive's +0.16 at MAG 32. Combined max scaling stays at +26% spell power across both systems instead of +32%.
+
+### Tool gates per hone level
+
+- L1: gold hammer (T1 — anyone)
+- L2: iron hammer (T1)
+- L3: steel hammer (T2 — also the gate for the L3 settled bonus)
+- L4: diamond hammer (T3)
+- L5: netherite hammer (T4)
+
+Naturally locks max-honed books behind T4 access, matching the pack's general "endgame stat ceiling at T4" pattern.
+
+### Tetra honing speed: 2x
+
+`.minecraft/config/tetra.toml` — halved all `_base` and `_integrity_multiplier` values + `settle_base`. Tester directive: vanilla Tetra honing pace is too slow for the pack's content density.
+
+| Tool type | Upstream base | New base |
+|---|:-:|:-:|
+| sword | 90 | **45** |
+| double-headed (axe etc.) | 140 | **70** |
+| bow / shield / crossbow | 40 | **20** |
+| single-headed | 100 | **50** |
+| settle_base | 270 | **135** |
+
+Integrity multipliers also halved correspondingly. Books inherit the closest applicable scaling (probably the `single_headed` schema, but Tetra picks at runtime).
+
+### File breakdown
+
+| Asset | Count |
+|---|:-:|
+| Multi-level improvement JSONs (5 entries each) | 8 |
+| L3 settled improvement JSONs | 8 |
+| Hone schematic JSONs (5 levels × 8 slots) | 40 |
+| Settled schematic JSONs | 8 |
+| Lang entries (improvement names + descriptions) | 32 |
+| **Total new JSONs** | **64** |
+| **Total lang lines** | **32** |
+
+Built into `iridescent_modular_spells-0.2.0.jar` (same filename — allowlists unchanged). All 64 files verified in the built jar.
+
+### Verification path (when you next launch)
+
+1. Open Tetra workbench with a fresh ISS spell book → confirm all 5 honable slots (front_cover, back_cover, spine, pages, core) show their hone schematic options after you've cast enough spells to unlock the module XP threshold (now at 2x speed).
+2. Apply L1 hone with a gold hammer → confirm stat shows in book tooltip.
+3. Cast more spells → unlock L2 → apply with iron hammer → confirm stat replaces L1 (doesn't stack).
+4. Continue to L3 → confirm L3 settled schematic appears alongside the L4 hone option.
+5. Apply settled with steel hammer → confirm settled bonus shows alongside the L3 hone bonus.
+6. Repeat for an Ars tome (3 slots: front_cover, back_cover, spine). Verify Ars `core` shows no hone schematic (intentional skip).
+
+If issues, the most likely failure modes are: (a) attribute lookup fails (wrong attribute ID — fix in the improvement JSON), (b) Tetra doesn't recognize `"hone": true` for our slot type (would need to compare with vanilla Tetra weapon hone schematics for shape differences), (c) workbench UI doesn't show the icon (would need a custom glyph at the textureY coordinate).
+
+### Pending (v2 backlog)
+
+- Ars `core` honing — needs an Ars-appropriate attribute or custom registration
+- L5 settled bonuses — held back per the design plan; revisit if L5 feels flat
+- Custom glyphs — currently using Tetra's default hone glyph (`textureY: 240`); could draw book-themed icons for each hone
+
+Mirrored to all 3 distros via `iridescent-modular-spells-mod/build_mod.sh`.
+
+---
+
 ## 2026-04-29 (cont. 14) — Aptitude fork: design plan extended with MAG + INT native passives
 
 User reasoning on cont. 13: skill-tier delivery (Mana Spark / Blaze / Inferno) IS effectively passive scaling for spell power, just chunked at thresholds rather than smooth per-level. So MAG should also have *true* per-level passive scaling on top of the threshold skills, matching the JLFork pattern other aptitudes use. Same logic for INT — the upstream `entity_reach` passive doesn't fit the design, but a `crit_chance` passive does (and pairs naturally with LCK's `critical_damage`).

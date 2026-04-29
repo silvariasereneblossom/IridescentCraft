@@ -1,0 +1,9 @@
+[
+  {
+    "key": "iss_book_pages_settled_cast_time_reduction",
+    "level": 1,
+    "attributes": {
+      "irons_spellbooks:cast_time_reduction": 0.02
+    }
+  }
+]

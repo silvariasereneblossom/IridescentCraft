@@ -1,0 +1,9 @@
+[
+  {
+    "key": "iss_book_back_cover_settled_spell_power",
+    "level": 1,
+    "attributes": {
+      "attributeslib:crit_chance": 0.01
+    }
+  }
+]
