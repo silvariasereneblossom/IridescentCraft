@@ -50,9 +50,16 @@ public class RegistryPassives {
 
     public static final RegistryObject<Passive> BREAK_SPEED = PASSIVES.register("break_speed", () -> register("break_speed", RegistryAptitudes.BUILDING.get(), HandlerResources.create("textures/skill/building/passive_break_speed.png"), RegistryAttributes.BREAK_SPEED.get(), "96a891fe-5919-418d-8205-f50464391511", HandlerCommonConfig.HANDLER.instance().breakSpeedValue, HandlerCommonConfig.HANDLER.instance().breakSpeedPassiveLevels));
 
-    public static final RegistryObject<Passive> BENEFICIAL_EFFECT = PASSIVES.register("beneficial_effect", () -> register("beneficial_effect", RegistryAptitudes.MAGIC.get(), HandlerResources.create("textures/skill/magic/passive_beneficial_effect.png"), RegistryAttributes.BENEFICIAL_EFFECT.get(), "96a891fe-5919-418d-8205-f50464391512", HandlerCommonConfig.HANDLER.instance().beneficialEffectValue, HandlerCommonConfig.HANDLER.instance().beneficialEffectPassiveLevels));
+    // Iridescent fork: BENEFICIAL_EFFECT moved from MAGIC -> INTELLIGENCE
+    // (potion mastery is intellect-flavor, not magic). Texture path kept
+    // under magic/ — functional reassignment only.
+    public static final RegistryObject<Passive> BENEFICIAL_EFFECT = PASSIVES.register("beneficial_effect", () -> register("beneficial_effect", RegistryAptitudes.INTELLIGENCE.get(), HandlerResources.create("textures/skill/magic/passive_beneficial_effect.png"), RegistryAttributes.BENEFICIAL_EFFECT.get(), "96a891fe-5919-418d-8205-f50464391512", HandlerCommonConfig.HANDLER.instance().beneficialEffectValue, HandlerCommonConfig.HANDLER.instance().beneficialEffectPassiveLevels));
 
-    public static final RegistryObject<Passive> MAGIC_RESIST = PASSIVES.register("magic_resist", () -> register("magic_resist", RegistryAptitudes.MAGIC.get(), HandlerResources.create("textures/skill/magic/passive_magic_resist.png"), RegistryAttributes.MAGIC_RESIST.get(), "96a891fe-5919-418d-8205-f50464391513", HandlerCommonConfig.HANDLER.instance().magicResistValue, HandlerCommonConfig.HANDLER.instance().magicResistPassiveLevels));
+    // Iridescent fork: MAGIC_RESIST moved from MAGIC -> DEFENSE
+    // (defensive passive, fits with armor + armor_toughness). MAG is now
+    // skill-only; KubeJS Mana Spark/Blaze/Inferno + Mystic Ward + Conservation
+    // handle all magic scaling at skill thresholds.
+    public static final RegistryObject<Passive> MAGIC_RESIST = PASSIVES.register("magic_resist", () -> register("magic_resist", RegistryAptitudes.DEFENSE.get(), HandlerResources.create("textures/skill/magic/passive_magic_resist.png"), RegistryAttributes.MAGIC_RESIST.get(), "96a891fe-5919-418d-8205-f50464391513", HandlerCommonConfig.HANDLER.instance().magicResistValue, HandlerCommonConfig.HANDLER.instance().magicResistPassiveLevels));
 
     public static final RegistryObject<Passive> CRITICAL_DAMAGE = PASSIVES.register("critical_damage", () -> register("critical_damage", RegistryAptitudes.LUCK.get(), HandlerResources.create("textures/skill/luck/passive_critical_damage.png"), RegistryAttributes.CRITICAL_DAMAGE.get(), "96a891fe-5919-418d-8205-f50464391515", HandlerCommonConfig.HANDLER.instance().criticalDamageValue, HandlerCommonConfig.HANDLER.instance().criticalDamagePassiveLevels));
 

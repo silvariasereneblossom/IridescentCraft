@@ -152,7 +152,7 @@ foreach ($expected in $expectedMods.Keys) {
 }
 
 # Also find orphaned JARs -- in mods/ but NOT in any .pw.toml and not a custom JAR
-$customJars = @('iridescent_codex_data.jar', 'iridescent_origins-1.0.0.jar','iridescent_biomes-1.0.0.jar', 'iridescent_modular_spells-0.2.0.jar', 'iridescent_durability_clamp-0.1.0.jar', 'mek_walkable_cables-1.0.1.jar', 'offlineskins-1.20.1-v1.jar', 'zeta_racefix-1.0.0.jar', 'Patchouli-1.20.1-85-FORGE.jar', 'ars_nouveau-1.20.1-4.12.7-all.jar')
+$customJars = @('iridescent_codex_data.jar', 'iridescent_origins-1.0.0.jar','iridescent_biomes-1.0.0.jar', 'iridescent_modular_spells-0.2.0.jar', 'iridescent_durability_clamp-0.1.0.jar', 'justlevelingfork-1.2.1-iridescent.1.jar', 'mek_walkable_cables-1.0.1.jar', 'offlineskins-1.20.1-v1.jar', 'zeta_racefix-1.0.0.jar', 'Patchouli-1.20.1-85-FORGE.jar', 'ars_nouveau-1.20.1-4.12.7-all.jar')
 $orphaned = @()
 foreach ($jar in $existingJars) {
     if (-not $expectedMods.ContainsKey($jar.Name) -and $customJars -notcontains $jar.Name) {

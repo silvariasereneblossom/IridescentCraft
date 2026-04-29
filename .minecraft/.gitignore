@@ -4,6 +4,7 @@ mods/*.jar
 !mods/iridescent_biomes-*.jar
 !mods/iridescent_modular_spells-*.jar
 !mods/iridescent_durability_clamp-*.jar
+!mods/justlevelingfork-*-iridescent.*.jar
 !mods/Patchouli-*.jar
 !mods/ars_nouveau-*.jar
 !mods/class-artifacts-forge-*.jar
@@ -14,6 +15,7 @@ mods/*.jar
 !server_distribution/mods/iridescent_biomes-*.jar
 !server_distribution/mods/iridescent_modular_spells-*.jar
 !server_distribution/mods/iridescent_durability_clamp-*.jar
+!server_distribution/mods/justlevelingfork-*-iridescent.*.jar
 !server_distribution/mods/Patchouli-*.jar
 !server_distribution/mods/ars_nouveau-*.jar
 !server_distribution/mods/class-artifacts-forge-*.jar
@@ -22,6 +24,7 @@ mods/*.jar
 !distribution/client/mods/iridescent_biomes-*.jar
 !distribution/client/mods/iridescent_modular_spells-*.jar
 !distribution/client/mods/iridescent_durability_clamp-*.jar
+!distribution/client/mods/justlevelingfork-*-iridescent.*.jar
 !distribution/client/mods/Patchouli-*.jar
 !distribution/client/mods/ars_nouveau-*.jar
 !distribution/client/mods/class-artifacts-forge-*.jar

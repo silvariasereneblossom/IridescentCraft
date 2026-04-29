@@ -4,6 +4,62 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 12) — Iridescent Aptitudes fork v1 shipped (passive remap + drop-in)
+
+Continuation of cont. 11 (fork foundation). This commit closes the loop — the fork is now built, deployed, and replacing the upstream JustLeveling Fork in all 3 distros.
+
+### Customizations applied
+
+| Phase | What changed |
+|---|---|
+| **Passive remap** | `MAGIC_RESIST` reassigned from MAG → DEF in `RegistryPassives.java`. `BENEFICIAL_EFFECT` reassigned from MAG → INT. MAG is now skill-only — KubeJS Mana Spark / Conservation / Mana Blaze / Mystic Ward / Mana Inferno handle all magic scaling at level thresholds. |
+| **Threshold change** | Already aligned at the config level (`config/JLFork/justleveling-fork.common.json5` ships with 10/20/30 thresholds, plus our KubeJS handlers add the 5/15 tier-skill effects). No fork-side code change needed. |
+| **Native skill stripping** | Deferred. The three layered cases (Life Eater life-steal at MAG 20, Wormhole Storage ender chest at MAG 30, Safe Port pearl-no-damage at INT 10) are domain-disjoint with our KubeJS overrides — they're bonus content rather than conflicts. Will revisit if playtest surfaces actual problems. |
+| **Update-check stripped** | Removed JustLevelingFork.java's CompletableFuture that pinged `raw.githubusercontent.com/.../VERSION` on every load (would always say "newer version available" since upstream's master HEAD diverges from our fork). |
+
+### Deployment
+
+- Built via `iridescent-aptitudes-mod/build_mod.sh` → `justlevelingfork-1.2.1-iridescent.1.jar` (~474 KB, 285 files)
+- Deployed to all 3 distros' `mods/` folders
+- Removed upstream `mods/.index/justleveling-fork.pw.toml` in all 3 distros (packwiz no longer manages this slot — pack relies on custom-JAR allowlists)
+
+### Allowlist updates
+
+`justlevelingfork-1.2.1-iridescent.1.jar` added to:
+- `server_distribution/update_mods.ps1`
+- `server_distribution/update_mods.sh`
+- `server_distribution/sync_from_repo.bat`
+- `server_distribution/diagnose.ps1`
+- `server_distribution/cleanup_stale_jars.ps1`
+- `server_distribution/IridescentCraft Dedicated Server/update_mods.ps1`
+- `server_distribution/IridescentCraft Dedicated Server/cleanup_stale_jars.ps1`
+- `.minecraft/.gitignore` (track `justlevelingfork-*-iridescent.*.jar` in all 3 distros)
+- `wiki/CLAUDE.md` (Current custom JARs section)
+
+### Codex entry
+
+New page under Pack Systems → "Aptitudes" (iridescent_codex sortnum 9). 5 pages: overview, eight aptitudes, five-tier skills, fork rationale, NBT compatibility note. Built into `iridescent_codex_data.jar` via `build_codex.sh` and deployed to all 3 distros.
+
+### Net effect for players
+
+- Existing worlds' aptitude levels (NBT at `ForgeData.justlevelingfork.aptitude.*`) survive the swap, no migration needed (modid kept identical)
+- MAG aptitude UI no longer shows Magic Resist or Beneficial Effect as native passives — both moved to thematic homes (DEF, INT respectively)
+- DEF gets a third passive (Magic Resist), INT gets a third passive (Beneficial Effect)
+- Update-check spam in logs gone
+- Stripped integrations (gun mods, L2Tabs, BetterCombat) had no effect anyway since the pack didn't ship those mods
+- Native JLFork skill UI / Threshold logic unchanged — same names appear in the same slots
+
+### Pending (deferred to follow-up sessions)
+
+Not blocking ship; can iterate:
+- Strip native skill effects on Life Eater / Wormhole Storage / Safe Port (only if playtest surfaces actual conflicts with our KubeJS layer)
+- Texture file relocation — magic_resist + beneficial_effect icons live in `textures/skill/magic/` even though their aptitudes are now DEF + INT. Cosmetic only; icons load fine.
+- Add custom MAG-themed passives (e.g. spell_power scaling per level) if MAG-only-skill-aptitudes feels too thin in playtest
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 11) — Iridescent Aptitudes fork foundation (multi-session project)
 
 User reported the in-game JLFork aptitude UI doesn't fully reflect our redesign — Magic Resist still shows as a MAG passive even though our redesigned MAG line is offensive (Mana Spark / Conservation / Mana Blaze / Mystic Ward dynamic / Mana Inferno). Investigation showed JLFork hardcodes:

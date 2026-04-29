@@ -118,7 +118,7 @@ powershell -ExecutionPolicy Bypass -Command ^
     "    if ($line -match '^\s*filename\s*=\s*[''\""](.+)[''\""]') { $expected[$matches[1]] = $true }" ^
     "  }" ^
     "};" ^
-    "$customJars = @('iridescent_codex_data.jar','iridescent_origins-1.0.0.jar','iridescent_biomes-1.0.0.jar','iridescent_modular_spells-0.2.0.jar','iridescent_durability_clamp-0.1.0.jar','mek_walkable_cables-1.0.1.jar','offlineskins-1.20.1-v1.jar','zeta_racefix-1.0.0.jar','Patchouli-1.20.1-85-FORGE.jar','ars_nouveau-1.20.1-4.12.7-all.jar');" ^
+    "$customJars = @('iridescent_codex_data.jar','iridescent_origins-1.0.0.jar','iridescent_biomes-1.0.0.jar','iridescent_modular_spells-0.2.0.jar','iridescent_durability_clamp-0.1.0.jar','justlevelingfork-1.2.1-iridescent.1.jar','mek_walkable_cables-1.0.1.jar','offlineskins-1.20.1-v1.jar','zeta_racefix-1.0.0.jar','Patchouli-1.20.1-85-FORGE.jar','ars_nouveau-1.20.1-4.12.7-all.jar');" ^
     "foreach ($c in $customJars) { $expected[$c] = $true };" ^
     "$removed = 0;" ^
     "Get-ChildItem $modsDir\*.jar -ErrorAction SilentlyContinue | ForEach-Object {" ^
