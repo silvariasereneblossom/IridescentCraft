@@ -1,0 +1,37 @@
+[
+  {
+    "key": "iss_book_front_cover_hone_max_mana",
+    "level": 1,
+    "attributes": {
+      "irons_spellbooks:max_mana": 5
+    }
+  },
+  {
+    "key": "iss_book_front_cover_hone_max_mana",
+    "level": 2,
+    "attributes": {
+      "irons_spellbooks:max_mana": 10
+    }
+  },
+  {
+    "key": "iss_book_front_cover_hone_max_mana",
+    "level": 3,
+    "attributes": {
+      "irons_spellbooks:max_mana": 20
+    }
+  },
+  {
+    "key": "iss_book_front_cover_hone_max_mana",
+    "level": 4,
+    "attributes": {
+      "irons_spellbooks:max_mana": 35
+    }
+  },
+  {
+    "key": "iss_book_front_cover_hone_max_mana",
+    "level": 5,
+    "attributes": {
+      "irons_spellbooks:max_mana": 60
+    }
+  }
+]
