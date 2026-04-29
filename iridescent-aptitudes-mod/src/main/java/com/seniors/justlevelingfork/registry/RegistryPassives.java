@@ -13,6 +13,7 @@ import net.minecraft.world.entity.ai.attributes.Attributes;
 import net.minecraftforge.common.ForgeMod;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.registries.DeferredRegister;
+import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.IForgeRegistry;
 import net.minecraftforge.registries.RegistryBuilder;
 import net.minecraftforge.registries.RegistryObject;
@@ -44,7 +45,12 @@ public class RegistryPassives {
 
     public static final RegistryObject<Passive> ATTACK_SPEED = PASSIVES.register("attack_speed", () -> register("attack_speed", RegistryAptitudes.INTELLIGENCE.get(), HandlerResources.create("textures/skill/intelligence/passive_attack_speed.png"), Attributes.ATTACK_SPEED, "96a891fe-5919-418d-8205-f50464391508", HandlerCommonConfig.HANDLER.instance().attackSpeedValue, HandlerCommonConfig.HANDLER.instance().attackSpeedPassiveLevels));
 
-    public static final RegistryObject<Passive> ENTITY_REACH = PASSIVES.register("entity_reach", () -> register("entity_reach", RegistryAptitudes.INTELLIGENCE.get(), HandlerResources.create("textures/skill/intelligence/passive_entity_reach.png"), ForgeMod.ENTITY_REACH.get(), "96a891fe-5919-418d-8205-f50464391509", HandlerCommonConfig.HANDLER.instance().entityReachValue, HandlerCommonConfig.HANDLER.instance().entityReachPassiveLevels));
+    // Iridescent fork: ENTITY_REACH passive REMOVED from INT (not in design).
+    // Replaced by CRIT_CHANCE (attributeslib:crit_chance) — pairs with LCK's
+    // critical_damage so crit chance + crit damage have natural homes on
+    // separate aptitudes. See CRIT_CHANCE registration further down.
+    // ForgeMod.ENTITY_REACH attribute itself is still vanilla-registered;
+    // we just don't scale it per INT level.
 
     public static final RegistryObject<Passive> BLOCK_REACH = PASSIVES.register("block_reach", () -> register("block_reach", RegistryAptitudes.BUILDING.get(), HandlerResources.create("textures/skill/building/passive_block_reach.png"), ForgeMod.BLOCK_REACH.get(), "96a891fe-5919-418d-8205-f50464391510", HandlerCommonConfig.HANDLER.instance().blockReachValue, HandlerCommonConfig.HANDLER.instance().blockReachPassiveLevels));
 
@@ -63,14 +69,59 @@ public class RegistryPassives {
 
     public static final RegistryObject<Passive> LUCK = PASSIVES.register("luck", () -> register("luck", RegistryAptitudes.LUCK.get(), HandlerResources.create("textures/skill/luck/passive_luck.png"), Attributes.LUCK, "96a891fe-5919-418d-8205-f50464391514", HandlerCommonConfig.HANDLER.instance().luckValue, HandlerCommonConfig.HANDLER.instance().luckPassiveLevels));
 
-    // ─── Iridescent fork: no extra MAG passives ────────────────────────
-    // The pack's aptitude design (aptitude_skill_plan.md) is skill-tier
-    // focused — passives aren't part of the design scope for MAG. Mana
-    // Spark / Conservation / Mana Blaze / Mystic Ward / Mana Inferno
-    // (KubeJS-driven skills at MAG 5/10/15/20/30) handle all spell power
-    // and mana economy at threshold unlocks. Adding native per-level
-    // scaling here would diverge from the design. MAG aptitude UI is
-    // skills-only.
+    // ─── Iridescent fork: MAG + INT passives ───────────────────────────
+    // MAG gets two passives matching the magic identity:
+    //   SPELL_POWER  → irons_spellbooks:spell_power, value 0.16 (+16%
+    //                  spell damage at MAG 32, ~+0.5% per level).
+    //                  Stacks with Mana Spark/Blaze/Inferno's +50% from
+    //                  skills → +66% total spell damage at full MAG.
+    //   MANA_REGEN   → irons_spellbooks:mana_regen, value 0.32 (+32%
+    //                  regen at MAG 32, ~+1% per level). Stacks with
+    //                  Conservation of Magic's +15% from MAG 10.
+    //
+    // INT gets a new CRIT_CHANCE passive (replaces upstream ENTITY_REACH
+    // which is removed):
+    //   CRIT_CHANCE  → attributeslib:crit_chance, value 0.25 (+25% crit
+    //                  chance at INT 32, ~+0.78% per level — matches
+    //                  LCK's critical_damage scale, so chance+damage have
+    //                  natural homes on separate aptitudes).
+    //                  attributeslib:crit_chance also feeds magic-crit
+    //                  rolls via kubejs/server_scripts/magic_crit_hook.js
+    //                  → "global including magic" crit chance for free.
+    //
+    // ISS attributes resolve at registry-fill time (DeferredRegister
+    // Suppliers fire after Forge's ATTRIBUTES registry is populated,
+    // and ISS is hard-required in mods.toml so the lookup always
+    // succeeds in our pack).
+    public static final RegistryObject<Passive> SPELL_POWER = PASSIVES.register("spell_power", () -> register(
+        "spell_power",
+        RegistryAptitudes.MAGIC.get(),
+        HandlerResources.create("textures/skill/magic/passive_magic_resist.png"),
+        ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("irons_spellbooks", "spell_power")),
+        "96a891fe-5919-418d-8205-f50464391520",
+        HandlerCommonConfig.HANDLER.instance().spellPowerValue,
+        HandlerCommonConfig.HANDLER.instance().spellPowerPassiveLevels
+    ));
+
+    public static final RegistryObject<Passive> MANA_REGEN = PASSIVES.register("mana_regen", () -> register(
+        "mana_regen",
+        RegistryAptitudes.MAGIC.get(),
+        HandlerResources.create("textures/skill/magic/passive_beneficial_effect.png"),
+        ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("irons_spellbooks", "mana_regen")),
+        "96a891fe-5919-418d-8205-f50464391521",
+        HandlerCommonConfig.HANDLER.instance().manaRegenValue,
+        HandlerCommonConfig.HANDLER.instance().manaRegenPassiveLevels
+    ));
+
+    public static final RegistryObject<Passive> CRIT_CHANCE = PASSIVES.register("crit_chance", () -> register(
+        "crit_chance",
+        RegistryAptitudes.INTELLIGENCE.get(),
+        HandlerResources.create("textures/skill/intelligence/passive_entity_reach.png"),
+        ForgeRegistries.ATTRIBUTES.getValue(new ResourceLocation("attributeslib", "crit_chance")),
+        "96a891fe-5919-418d-8205-f50464391522",
+        HandlerCommonConfig.HANDLER.instance().critChanceValue,
+        HandlerCommonConfig.HANDLER.instance().critChancePassiveLevels
+    ));
 
     private static Passive register(String name, Aptitude aptitude, ResourceLocation texture, Attribute attribute, String attributeUuid, Object attributeValue, int... levelsRequired) {
         ResourceLocation key = new ResourceLocation(JustLevelingFork.MOD_ID, name);

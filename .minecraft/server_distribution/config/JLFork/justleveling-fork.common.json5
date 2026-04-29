@@ -204,6 +204,16 @@
 		29,
 		32
 	],
+	// Iridescent fork: MAG + INT passives (per design plan)
+	// Spell Power passive value at max level (added to ISS spell_power, 0.16 = +16% spell damage at MAG 32)
+	spellPowerValue: 0.16,
+	spellPowerPassiveLevels: [5, 8, 11, 14, 17, 20, 23, 26, 29, 32],
+	// Mana Regen passive value at max level (added to ISS mana_regen, 0.32 = +32% regen at MAG 32)
+	manaRegenValue: 0.32,
+	manaRegenPassiveLevels: [5, 8, 11, 14, 17, 20, 23, 26, 29, 32],
+	// Crit Chance passive value at max level (added to attributeslib:crit_chance, 0.25 = +25% crit chance at INT 32)
+	critChanceValue: 0.25,
+	critChancePassiveLevels: [5, 8, 11, 14, 17, 20, 23, 26, 29, 32],
 	// One Handed skill damage amplifier increase
 	oneHandedAmplifier: 0.5,
 	// Fighting Spirit skill strength potion effect boost

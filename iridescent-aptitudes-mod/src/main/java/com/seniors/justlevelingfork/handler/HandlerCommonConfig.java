@@ -201,6 +201,31 @@ public class HandlerCommonConfig {
     @SerialEntry(comment = "Luck passive levels. Don't modify the length of the array!")
     public int[] luckPassiveLevels = new int[]{5, 8, 11, 14, 17, 20, 23, 26, 29, 32};
 
+    // ─── Iridescent fork: MAG + INT passives (per design plan) ─────────
+    @SerialEntry(comment = "Spell Power passive value at max level (added to ISS spell_power, 0.16 = +16% spell damage at MAG 32, ~+0.5%/level)")
+    @AutoGen(category = "common", group = "passives")
+    @FloatField(min = 0.0f, max = 10000.0f)
+    public float spellPowerValue = 0.16f;
+
+    @SerialEntry(comment = "Spell Power passive levels. Don't modify the length of the array!")
+    public int[] spellPowerPassiveLevels = new int[]{5, 8, 11, 14, 17, 20, 23, 26, 29, 32};
+
+    @SerialEntry(comment = "Mana Regen passive value at max level (added to ISS mana_regen, 0.32 = +32% regen at MAG 32, ~+1%/level)")
+    @AutoGen(category = "common", group = "passives")
+    @FloatField(min = 0.0f, max = 10000.0f)
+    public float manaRegenValue = 0.32f;
+
+    @SerialEntry(comment = "Mana Regen passive levels. Don't modify the length of the array!")
+    public int[] manaRegenPassiveLevels = new int[]{5, 8, 11, 14, 17, 20, 23, 26, 29, 32};
+
+    @SerialEntry(comment = "Crit Chance passive value at max level (added to attributeslib:crit_chance, 0.25 = +25% crit chance at INT 32). Also boosts magic crit chance via magic_crit_hook.js.")
+    @AutoGen(category = "common", group = "passives")
+    @FloatField(min = 0.0f, max = 10000.0f)
+    public float critChanceValue = 0.25f;
+
+    @SerialEntry(comment = "Crit Chance passive levels. Don't modify the length of the array!")
+    public int[] critChancePassiveLevels = new int[]{5, 8, 11, 14, 17, 20, 23, 26, 29, 32};
+
 
     // Skills options
     @SerialEntry(comment = "One Handed skill damage amplifier increase")

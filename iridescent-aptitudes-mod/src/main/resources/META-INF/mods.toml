@@ -79,3 +79,22 @@ description='''${mod_description}'''
     versionRange = "[2001,)"
     ordering = "AFTER"
     side = "BOTH"
+# Iridescent fork: ISS required for MAG passive attributes
+# (irons_spellbooks:spell_power, irons_spellbooks:mana_regen). IridescentCraft
+# hard-depends on ISS anyway so this is a no-op for the pack but documents
+# the requirement.
+[[dependencies."${mod_id}"]]
+    modId = "irons_spellbooks"
+    mandatory = true
+    versionRange = "[0,)"
+    ordering = "AFTER"
+    side = "BOTH"
+# Iridescent fork: Apothic Attributes required for INT crit_chance passive
+# (attributeslib:crit_chance). Same situation — pack hard-depends on
+# Apothic Attributes already.
+[[dependencies."${mod_id}"]]
+    modId = "attributeslib"
+    mandatory = true
+    versionRange = "[0,)"
+    ordering = "AFTER"
+    side = "BOTH"

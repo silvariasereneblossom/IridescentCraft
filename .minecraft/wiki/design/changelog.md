@@ -4,6 +4,59 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 14) — Aptitude fork: design plan extended with MAG + INT native passives
+
+User reasoning on cont. 13: skill-tier delivery (Mana Spark / Blaze / Inferno) IS effectively passive scaling for spell power, just chunked at thresholds rather than smooth per-level. So MAG should also have *true* per-level passive scaling on top of the threshold skills, matching the JLFork pattern other aptitudes use. Same logic for INT — the upstream `entity_reach` passive doesn't fit the design, but a `crit_chance` passive does (and pairs naturally with LCK's `critical_damage`).
+
+Updated the design plan (`IridescentCraft-internal/design/aptitude_skill_plan.md`) with explicit native-passive sections for MAG and INT, then implemented in the fork.
+
+### MAG native passives (added)
+
+| Passive | Attribute | Value at MAG 32 | Per-level avg |
+|---|---|---|---|
+| **Spell Power** | `irons_spellbooks:spell_power` (ADDITION) | +0.16 | ~+0.5% |
+| **Mana Regen** | `irons_spellbooks:mana_regen` (ADDITION) | +0.32 | ~+1% |
+
+Stacks with skill effects: full-MAG player gets +66% spell damage (+16% passive + +50% from Mana Spark/Blaze/Inferno) and +47% mana regen (+32% passive + +15% from Conservation of Magic at MAG 10).
+
+### INT swap (entity_reach → crit_chance)
+
+| Change | Why |
+|---|---|
+| Remove `ENTITY_REACH` passive (was on INT) | Not in design; entity_reach attribute itself stays vanilla-registered, just not aptitude-scaled |
+| Add `CRIT_CHANCE` passive on INT (`attributeslib:crit_chance` +0.25 ADDITION at INT 32, ~+0.78% per level) | Pairs with LCK's existing `critical_damage` (+25% at LCK 32) for natural separation. Magnitude matches LCK's crit_damage so neither aptitude over/under-shoots the other |
+
+**"Global including magic"** — `attributeslib:crit_chance` is what `kubejs/server_scripts/magic_crit_hook.js` reads to apply crit rolls to magic damage. Adding it as an INT passive automatically gives global crit chance (melee + ranged + magic) without any extra wiring.
+
+### Files touched
+
+- `iridescent-aptitudes-mod/src/main/java/com/seniors/justlevelingfork/registry/RegistryPassives.java` — 3 new RegistryObjects (SPELL_POWER, MANA_REGEN, CRIT_CHANCE); ENTITY_REACH commented out
+- `iridescent-aptitudes-mod/src/main/java/com/seniors/justlevelingfork/handler/HandlerCommonConfig.java` — 6 new fields (3 values + 3 levels arrays)
+- `iridescent-aptitudes-mod/src/main/resources/assets/justlevelingfork/lang/en_us.json` — passive name + description for each
+- `iridescent-aptitudes-mod/src/main/resources/META-INF/mods.toml` — re-added ISS hard-dep + added Apothic Attributes hard-dep (so attribute lookups always resolve)
+- `config/JLFork/justleveling-fork.common.json5` — 3 new config blocks (mirrored to all 3 distros)
+- `iridescent_codex_data.jar` Aptitudes entry — split into separate "passives" + "Effects via KubeJS" pages
+- `IridescentCraft-internal/design/aptitude_skill_plan.md` — explicit Native passives sections for MAG and INT
+
+### Comparison with existing JLFork passive scaling
+
+| Aptitude max-level totals | Stat |
+|---|---|
+| STR | +1.5 attack damage, +0.4 attack knockback |
+| CON | +20 max HP (10 hearts), +50% knockback resist |
+| DEX | +50% movement speed, +5 projectile damage |
+| DEF | +4 armor, +1 armor toughness |
+| **MAG** | **+16% spell power, +32% mana regen** ← new |
+| **INT** | **+0.4 attack speed, +25% crit chance** ← entity_reach swapped |
+| BLD | +1.5 block reach, +50% break speed |
+| LCK | +2 luck, +25% crit damage |
+
+MAG's 16% spell power is intentionally on the conservative side (less than DEX's 50% speed or CON's 10 hearts) because skill-tier scaling adds +50% on top, totaling +66% — which sits in the middle of the pack's damage-stat distribution.
+
+Mirrored to all 3 distros. Same `justlevelingfork-1.2.1-iridescent.1.jar` filename.
+
+---
+
 ## 2026-04-29 (cont. 13) — Aptitude fork: align with design (remove magic_resist + beneficial_effect)
 
 User correction on cont. 12: the aptitude design plan (`IridescentCraft-internal/design/aptitude_skill_plan.md`) is **skill-tier focused** — it specifies the 5/10/15/20/30 nodes per aptitude but doesn't mention any passives. Magic Resist and Beneficial Effect aren't in the design at all, so reassigning them to DEF and INT (cont. 12) was arbitrary. Cleaner alignment: **remove them entirely**.

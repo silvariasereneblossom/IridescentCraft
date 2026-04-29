@@ -190,6 +190,9 @@
  "passive.justlevelingfork.magic_resist" : "Magic Resist",
  "passive.justlevelingfork.luck" : "Luck",
  "passive.justlevelingfork.critical_damage" : "Critical Damage",
+ "passive.justlevelingfork.spell_power" : "Spell Power",
+ "passive.justlevelingfork.mana_regen" : "Mana Regeneration",
+ "passive.justlevelingfork.crit_chance" : "Critical Chance",
 
  "passive.justlevelingfork.attack_damage.description" : "Physical damage you can deal when you attack.",
  "passive.justlevelingfork.attack_knockback.description" : "Knockback applied when you deals damage with physical attacks.",
@@ -207,6 +210,9 @@
  "passive.justlevelingfork.magic_resist.description" : "Nullifies a lesser portion of magic damage caused by: Harming potions, Evoker fangs, Wither skulls, Thorns enchantments, Guardian beams, etc.",
  "passive.justlevelingfork.luck.description" : "Increases the probability of finding high-quality loot from fishing or naturally-generated chests.",
  "passive.justlevelingfork.critical_damage.description" : "An attack that deals extra damage compared to a regular attack. (applies when the player run or fall in a jump)",
+ "passive.justlevelingfork.spell_power.description" : "Damage multiplier for Iron's Spellbooks spells. Stacks with Mana Spark, Mana Blaze, and Mana Inferno skill bonuses for total spell damage scaling.",
+ "passive.justlevelingfork.mana_regen.description" : "Speed at which mana regenerates. Stacks with Conservation of Magic skill at MAG 10.",
+ "passive.justlevelingfork.crit_chance.description" : "Probability that any attack deals a critical hit. Applies to melee, ranged, AND magic damage (the latter via the modular spellbook crit hook).",
 
  "skill.justlevelingfork.one_handed" : "One Handed",
  "skill.justlevelingfork.fighting_spirit" : "Fighting Spirit",
