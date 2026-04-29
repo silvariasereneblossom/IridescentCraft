@@ -26,7 +26,7 @@ Recurring terms used throughout this document.
 |------|---------|
 | **Tier (T1–T4)** | Player progression band. T1 = Overworld only; T2 = first dimensional; T3 = late-game mod content + Nether; T4 = endgame, End, Ad Astra. |
 | **AStages** | The progression mod that holds per-player tier flags. Items, dimensions, recipes, and ores all gate-check against the player's current stage. |
-| **Tetra** | Modular-item workbench framework. Used for the pack's Truly Modular weapons, modular tools, and Iridescent Modular Spells. |
+| **Tetra** | Modular-item workbench framework. Used for the pack's Truly Modular weapons, modular tools, Iridescent Modular Spells, and **Iridescent Reforging** (modular armor — armor extension that bridges Tetra's gap). |
 | **Apotheosis** | Affix + reforging + gem socketing system. Adds Common→Mythic affix tiers, sigil-tier workstations, and elite "Apotheosis bosses." |
 | **Champions** | Elite mob spawn tier with combat affixes (separate from Apotheosis gear affixes). Spawn rate scales with dimension. |
 | **ISS** | Iron's Spellbooks. The pack's primary spell-system mod; provides ink/rune/upgrade-orb reagents that are distributed across every dimension's bosses. |
@@ -610,7 +610,7 @@ Other weapon sub-systems:
 
 ### Armor — vanilla, mod-tier, and boss-drop layers
 
-Armor follows the same crafted-vs-dropped split. Crafted armor uses Truly Modular's Armory companion. Boss-drop armor is mod-specific:
+Armor follows the same crafted-vs-dropped split. Modular armor is governed by **Iridescent Reforging** (`iridescent-reforging-mod`), a custom Tetra-armor extension that adds Tetra's modular framework to the armor slot. Players craft a blank reforged piece from leather (or convert a specialized armor like an Iron's Spellbooks robe via the conversion recipe, preserving Apotheosis affixes and the source's Geckolib visual identity) and then populate slots + apply honing at any Tetra workbench. Boss-drop armor is mod-specific:
 
 - **Cataclysm** Ignitium / Cursium / Witherite armor sets — recipe-stripped, boss-drop only.
 - **Theabyss** Knight / Unorithe / Ragnarok / Dragon / Death armor sets — recipe-stripped, boss-drop only.

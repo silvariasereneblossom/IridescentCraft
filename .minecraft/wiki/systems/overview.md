@@ -174,7 +174,8 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 
 | System | Role | Acquisition |
 |--------|------|-------------|
-| Truly Modular | Primary crafted weapons | Crafting with tier materials |
+| Truly Modular (Arsenal/Archery) | Primary crafted weapons + bows | Crafting with tier materials |
+| Iridescent Reforging | Modular armor (Tetra-extension) | Leather base recipe + Tetra workbench, OR convert specialized armor |
 | Simply Swords | Unique trophy weapons | Boss drops ONLY (via LootJS) |
 | Iron's Spells | Magic combat | Crafting + loot |
 | Cataclysm | Signature boss weapons | Cataclysm boss drops |

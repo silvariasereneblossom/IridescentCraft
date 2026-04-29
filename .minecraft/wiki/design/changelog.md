@@ -4,6 +4,28 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 23) — Iridescent Reforging: Tetra-armor extension shipped (phases 1-10)
+
+A custom Forge mod (`iridescent-reforging-mod`, `iridescent_reforging-0.1.0.jar`) that brings Tetra's modular framework to armor — a niche Tetra has never natively supported. Bridges the gap with a single-class `ItemModularArmor extends ArmorItem implements IModularItem`, vanilla material defaults composed with Tetra-cached module attributes and skin-driven base attributes.
+
+**Coverage:** 4 base reforged armor items (helmet/chestplate/leggings/boots), 8 module slots (4 major + 4 minor), 5-level honing track per slot with settled cap at L3, ~125 schematic JSONs total. Eleven ISS robe sets convert end-to-end through a custom `ConversionRecipe` that preserves the source's Geckolib visual identity (via `IClientItemExtensions.getHumanoidArmorModel` skin dispatch), Apotheosis affix NBT, and enchantments.
+
+**Architecture choices:** Curated factory pattern for renderer dispatch (no reflection — class references fail at build time if ISS renames). NBT-driven skin field on stacks dispatches both attribute aggregation (server) and Geckolib model (client). Tetra's existing `WorkbenchTile` accepts our items via the `IModularItem` interface alone — phase 2 audit confirmed zero integration code needed.
+
+**TM:A removal:** `truly-modular-armory` removed from packwiz indexes in all 3 distros. `truly-modular-arsenal` (weapons), `truly-modular-archery` (bows), and `modular-item-api` (the underlying API, depended on by arsenal+archery) retained — Reforging directly replaces only the armor piece. Removal of the rest is a separate decision.
+
+**Original lift estimate vs actual:** 6-9 weeks scoped → shipped in a single working day. Tetra's existing data API + interface defaults handled most of what the design doc estimated as engineering work; the bulk of remaining time was content authoring (44 skin JSONs, 44 conversion recipes, 24 honing schematics, 8 module declarations, 8 init schematics — most generated via Python scripts in /tmp).
+
+**Known gaps for v0.2:**
+- Wizard skin renders without dye color (uses a `GenericArmorModel("wizard")` fallback; full `DyeableArmorRenderer` support requires a different factory shape)
+- ISS specials deferred (Boots of Speed, Iron's Crown, Tarnished Crown, Infernal Sorcerer, Lightbringer/Paladin chestplates, Netherite Battlemage)
+- Aether, Twilight Forest, Cataclysm skin coverage not yet authored
+- `IssRendererFactories` class-loads ISS armor model classes directly — fine for the pack (ISS is a hard dep) but a class-load failure for a future standalone-release scenario without ISS
+
+Codex entry: `systems/iridescent_reforging` page with 5 sub-pages explaining craft path, convert path, module slots, honing, and skin coverage. Internal design doc: `IridescentCraft-internal/design/iridescent_reforging_plan.md` (full plan + phase 2 audit findings + migration plan).
+
+---
+
 ## 2026-04-29 (cont. 22) — Light armor universal toughness penalty: -7.5%/piece (-30% at 4/4)
 
 Layered onto the armor weight system: any player wearing light armor pieces now eats a `-7.5%` `generic.armor_toughness` penalty per piece (caps at -30% at 4/4 light). Asymmetric — heavy does not add toughness back; the system relies on diamond/netherite's native toughness baseline rather than re-dosing it on top.

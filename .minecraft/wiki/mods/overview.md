@@ -36,7 +36,7 @@
 
 ## Combat & Scaling
 
-Apotheosis, ScalingMobs, Majrusz's Progressive Difficulty, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (+Archery/Armory/Arsenal), Iron's Spells, Improved Mobs, JustLevelingFork, Tetra (+Tetracelium compat, mutil library), Soul Fire'd
+Apotheosis, ScalingMobs, Majrusz's Progressive Difficulty, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (Archery + Arsenal — Armory replaced by Iridescent Reforging), Iron's Spells, Improved Mobs, JustLevelingFork, Tetra (+Tetracelium compat, mutil library, Iridescent Reforging armor extension), Soul Fire'd
 
 ## Player Systems
 

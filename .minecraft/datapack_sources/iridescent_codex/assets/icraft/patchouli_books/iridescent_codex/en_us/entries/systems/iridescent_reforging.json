@@ -1,0 +1,32 @@
+{
+  "name": "Iridescent Reforging",
+  "icon": "minecraft:iron_chestplate",
+  "category": "icraft:systems",
+  "sortnum": 11,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(italic)Modular armor in the Tetra style.$()$(br2)Iridescent Reforging brings Tetra's module-and-honing framework to the armor slot. A reforged piece has slots for major and minor modules, a stat-bearing primary attribute pool, and a 5-level honing track per slot.$(br2)Two paths to obtain: $(thing)craft$() a blank reforged piece from leather, or $(thing)convert$() a specialized armor (Cultist, Pyromancer, etc.) and carry its identity through."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The two paths",
+      "text": "$(bold)Craft path:$()$(br)5 leather $(br) recipe = $(item)Reforged Helmet$().$(br)Then visit any Tetra workbench to apply modules and hone.$(br2)$(bold)Convert path:$()$(br)1 Cultist Hood + 2 magic_cloth = $(item)Reforged Cultist Hood$() with Cultist visuals, +5%% spell power, +5%% blood spell power, +25 max mana, plus any Apotheosis affixes and enchantments preserved through the conversion."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Module slots",
+      "text": "Each reforged piece has 2 slots:$(br2)$(thing)Helmet$() — crown (major) + visor (minor)$(br)$(thing)Chestplate$() — chest_plate (major) + chest_lining (minor)$(br)$(thing)Leggings$() — leg_plate (major) + belt (minor)$(br)$(thing)Boots$() — boot_sole (major) + boot_lining (minor)$(br2)Major slots take metal materials and provide armor bonuses. Minor slots take fabric/leather/fibre and provide utility (mana regen, KB resist, speed, etc.)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Honing",
+      "text": "Each slot has a 5-level honing track scaling its signature stat:$(br2)$(thing)Helmet$() — armor toughness (+0.5 to +3.0)$(br)$(thing)Chestplate$() — armor (+0.5 to +3.0)$(br)$(thing)Leggings$() — knockback resistance (+0.02 to +0.10)$(br)$(thing)Boots$() — movement speed (+0.001 to +0.005)$(br2)Hone with the same hammer tiers as spellbooks: gold (L1), iron (L2), steel (L3), diamond (L4), netherite (L5).$(br2)At L3 you can apply the $(bold)settled$() schematic to lock the slot's identity and gain a small cross-stat bonus."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Specialized skin coverage",
+      "text": "$(bold)v0.1 covers 11 ISS robe sets$():$(br)Wizard, Cultist, Pyromancer, Cryomancer, Electromancer, Plagued, Priest, Pumpkin, Shadow-Walker, Wandering Magician, Archevoker.$(br2)Each set's signature attributes — magic damage, school-specific spell power, max mana — carry through to the reforged version. The Geckolib visual model is preserved (Wizard's dye color may vary).$(br2)Aether, Twilight Forest, and Cataclysm sets land in v0.2."
+    }
+  ]
+}
