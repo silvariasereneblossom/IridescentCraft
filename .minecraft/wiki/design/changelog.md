@@ -4,6 +4,41 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 18) — Faefolk Ethereal Form conditional + origins build script cleanup
+
+Two cleanups paired.
+
+### Faefolk Ethereal Form is now conditional on armor weight
+
+User insight: now that the armor weight system exists (cont. 16), Faefolk's `armor_weakness` (-50% armor toughness) is double-dipping when the player is already wearing light armor — light armor itself reduces base armor by 5%/piece, so the toughness penalty on top is excessive for the natural caster kit. Conversely, a Faefolk who *tries* to plate up should keep the penalty (their fae body still rejects heavy armor).
+
+Implementation: convert `armor_weakness.json` from `origins:attribute` (always-on -50% toughness) to `origins:simple` (description-only stub). The actual mechanic moves to `kubejs/server_scripts/armor_weight.js`:
+
+- If player is Faefolk AND has fewer than 4 light armor pieces equipped → apply −50% `generic.armor_toughness` (multiply_base)
+- If player has 4/4 light pieces → no toughness penalty (caster identity payoff)
+- If player isn't Faefolk → no modifier ever
+
+Refresh fires on the same 100-tick cadence as armor weight + immediate refresh on `inventoryChanged` for snappy UI feedback.
+
+**Net effect:** full-robe Faefolk casters lose nothing. Faefolk who mix in any non-light piece (medium chest plus light helm, etc.) get the full penalty. Heavy-armor Faefolk get the penalty AND the heavy armor's mana regen / speed costs. Reinforces the "Faefolk casters should wear robes" identity without forcing it.
+
+Files touched:
+- `iridescent-origins-mod/.../faefolk/armor_weakness.json` — `origins:attribute` → `origins:simple`
+- `iridescent-origins-mod/.../assets/icraft/lang/en_us.json` — updated description to reflect the conditional
+- `kubejs/server_scripts/armor_weight.js` — added Faefolk detection + conditional toughness modifier
+- `.minecraft/datapack_sources/iridescent_races/` — mirrored
+- `wiki/classes/overview.md` Faefolk row + `wiki/design/master-appendix.md` race table
+
+### Origins build script cleanup
+
+`iridescent-origins-mod/build_mod.sh` had two bugs:
+1. **Stale deploy paths** — used `$PROJECT_ROOT/minecraft/mods/` instead of `$PROJECT_ROOT/.minecraft/mods/` (missing dot prefix). Caused cont. 17's deploy step to fail with "No such file or directory"; I worked around with manual `cp`.
+2. **Dangerous Step 1** — `rm -rf "$RESOURCES/data" "$RESOURCES/pack.mcmeta"` then re-extracted from the *previously deployed* jar back into `src/main/resources/`. Round-trip means any pending edits in src/ get silently clobbered on every build. This bit me on cont. 17 — when I rebuilt after editing the Faefolk powers, the script would have wiped them if I'd run it before deploying. Got lucky; fixed now.
+
+Rewrote to match the modular-spells / aptitudes / durability-clamp pattern: source-of-truth is `src/main/resources/`, gradle builds straight from there, deploy to all 3 distros via `find -delete` + `cp`. Same `iridescent_origins-1.0.0.jar` filename — allowlists unchanged.
+
+---
+
 ## 2026-04-29 (cont. 17) — Faefolk rebalance: melee malus + mana regen, Armor Weight codex entry
 
 ### Faefolk rebalance

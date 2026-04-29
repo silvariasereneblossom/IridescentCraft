@@ -1,12 +1,5 @@
 {
-  "type": "origins:attribute",
-  "name": "Ethereal Form",
-  "description": "-50% armor toughness. Your fae body resists physical protection.",
-  "modifiers": [
-    {
-      "attribute": "minecraft:generic.armor_toughness",
-      "operation": "multiply_base",
-      "value": -0.50
-    }
-  ]
+  "type": "origins:simple",
+  "name": "icraft.power.race.faefolk.armor_weakness.name",
+  "description": "icraft.power.race.faefolk.armor_weakness.description"
 }

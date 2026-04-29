@@ -1,12 +1,5 @@
 {
-  "type": "origins:attribute",
+  "type": "origins:simple",
   "name": "icraft.power.race.faefolk.armor_weakness.name",
-  "description": "icraft.power.race.faefolk.armor_weakness.description",
-  "modifiers": [
-    {
-      "attribute": "minecraft:generic.armor_toughness",
-      "operation": "multiply_base",
-      "value": -0.5
-    }
-  ]
+  "description": "icraft.power.race.faefolk.armor_weakness.description"
 }

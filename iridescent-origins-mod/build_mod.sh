@@ -1,68 +1,51 @@
 #!/usr/bin/env bash
-# Build script for Iridescent Origins Forge mod
-# Extracts current data from the datapack JAR, rebuilds as a proper Forge mod,
-# and copies the output to the mods directory.
+# =============================================================================
+# Iridescent Origins -- Build + deploy to all three distros
+# =============================================================================
+# Output: build/libs/iridescent_origins-<version>.jar -> copied to:
+#   - .minecraft/mods/
+#   - .minecraft/server_distribution/mods/
+#   - .minecraft/distribution/client/mods/
+#
+# Source of truth: src/main/resources/. Edit JSONs there directly; the build
+# packs them straight into the jar. (An older version of this script
+# round-tripped data from the previously-deployed jar back into src/, which
+# would silently clobber pending edits — removed.)
+# =============================================================================
 
 set -euo pipefail
 
 SCRIPT_DIR="$(cd "$(dirname "${BASH_SOURCE[0]}")" && pwd)"
-PROJECT_ROOT="$(dirname "$SCRIPT_DIR")"
-RESOURCES="$SCRIPT_DIR/src/main/resources"
-SOURCE_JAR="$PROJECT_ROOT/minecraft/mods/iridescent_origins-1.0.0.jar"
-OUTPUT_JAR="$SCRIPT_DIR/build/libs/iridescent_origins-1.0.0.jar"
+PROJECT_ROOT="$(cd "$SCRIPT_DIR/.." && pwd)"
+MC="$PROJECT_ROOT/.minecraft"
 
-# Mods directories (client + server)
-CLIENT_MODS="$PROJECT_ROOT/minecraft/mods"
-SERVER_MODS="$PROJECT_ROOT/minecraft/server/mods"
+VERSION=$(grep '^mod_version=' "$SCRIPT_DIR/gradle.properties" | cut -d= -f2 | tr -d '[:space:]')
+JAR_NAME="iridescent_origins-${VERSION}.jar"
+OUT="$SCRIPT_DIR/build/libs/$JAR_NAME"
 
-echo "=== Iridescent Origins Mod Builder ==="
-echo ""
+cd "$SCRIPT_DIR"
 
-# Step 1: Extract current data from the datapack JAR
-echo "[1/4] Extracting data from existing JAR..."
-if [ -f "$SOURCE_JAR" ]; then
-    # Clean old data
-    rm -rf "$RESOURCES/data" "$RESOURCES/pack.mcmeta"
-    # Extract fresh data
-    (cd "$RESOURCES" && unzip -qo "$SOURCE_JAR" 'data/*' 'pack.mcmeta')
-    echo "  Extracted data files from $SOURCE_JAR"
-else
-    echo "  WARNING: Source JAR not found at $SOURCE_JAR"
-    echo "  Using existing data in src/main/resources/"
+echo "[Origins Build] Running ./gradlew build (version=$VERSION) ..."
+./gradlew build --no-daemon
+
+if [ ! -f "$OUT" ]; then
+  echo "ERROR: Expected output jar not found at $OUT"
+  ls -la build/libs/ 2>/dev/null || true
+  exit 1
 fi
 
-# Step 2: Build the mod
-echo "[2/4] Building Forge mod..."
-(cd "$SCRIPT_DIR" && ./gradlew build)
-echo "  Build complete."
+echo "[Origins Build] Deploying $JAR_NAME to all 3 distros ..."
+for d in "$MC/mods" "$MC/server_distribution/mods" "$MC/distribution/client/mods"; do
+  mkdir -p "$d"
+  # Strip any older version of this jar so the load order doesn't pick up
+  # both alongside each other.
+  find "$d" -maxdepth 1 -type f -name "iridescent_origins-*.jar" \
+    -not -name "$JAR_NAME" -delete 2>/dev/null || true
+  cp "$OUT" "$d/"
+  echo "  -> $d/$JAR_NAME"
+done
 
-# Step 3: Verify output
-if [ ! -f "$OUTPUT_JAR" ]; then
-    echo "ERROR: Build output not found at $OUTPUT_JAR"
-    exit 1
-fi
-echo "[3/4] Output JAR: $OUTPUT_JAR"
-
-# Step 4: Copy to mods directories
-echo "[4/4] Deploying to mods directories..."
-
-# Remove old datapack JAR (replaced by the Forge mod)
-if [ -f "$CLIENT_MODS/iridescent_origins-1.0.0.jar" ]; then
-    rm "$CLIENT_MODS/iridescent_origins-1.0.0.jar"
-    echo "  Removed old datapack JAR from client mods"
-fi
-
-cp "$OUTPUT_JAR" "$CLIENT_MODS/"
-echo "  Copied to $CLIENT_MODS/"
-
-if [ -d "$SERVER_MODS" ]; then
-    if [ -f "$SERVER_MODS/iridescent_origins-1.0.0.jar" ]; then
-        rm "$SERVER_MODS/iridescent_origins-1.0.0.jar"
-    fi
-    cp "$OUTPUT_JAR" "$SERVER_MODS/"
-    echo "  Copied to $SERVER_MODS/"
-fi
-
-echo ""
-echo "=== Build complete! ==="
-echo "Output: $OUTPUT_JAR"
+echo "[Origins Build] Done."
+echo
+echo "Reminder: confirm the JAR is in the custom-JAR allowlists if the"
+echo "filename changed (CLAUDE.md / wiki/CLAUDE.md lists the files to update)."

@@ -1298,7 +1298,7 @@ Permanent at character creation. Mild tradeoffs (vs. class's strong tradeoffs).
 | Orc | +10% melee knockback, +5% attack speed, intimidation aura | +15% hunger drain, -10% villager prices | Berserker |
 | Halfling | +20% food efficiency, +10% luck, smaller hitbox (Pehkui) | -10% melee reach, -5% attack damage flat | Wanderer, Ranger |
 | Revenant (Undead) | No hunger, night vision, +10% damage in darkness | Sunlight damage (1 HP/5s without helmet), -20% potion healing, +25% Smite damage taken | Void Summoner |
-| Faefolk | Slow fall (passive), Nature's Blessing (+30% magic damage, +10% mana regen), Fae Swiftness (+10% speed) | Frail Strikes (-20% melee damage), Ethereal Form (-50% armor toughness), Fae Fragility (-15% max HP) | Archmage (best fit — pure caster), Battlemage (viable but not optimal — melee malus fights against Battlemage's hybrid kit) |
+| Faefolk | Slow fall (passive), Nature's Blessing (+30% magic damage, +10% mana regen), Fae Swiftness (+10% speed) | Frail Strikes (-20% melee damage), Ethereal Form (-50% armor toughness — **bypassed when wearing 4/4 light armor**, the caster's natural kit), Fae Fragility (-15% max HP) | Archmage (best fit — pure caster, full robes), Battlemage (viable but not optimal) |
 | Demi-God | +40% HP (8 hearts), 2× raw meat healing, strength + phase abilities, fire damage 1.5× | Mild Nether weakness | Berserker, Vanguard, Paladin |
 | Ryu | 25% damage reduction, slow fall, draconic food healing, debuff cleanse | Meat preference | Paladin, Vanguard, Wanderer |
 | Fallen Angel | +15% all damage, slow fall, velocity dash | -20% HP (4 hearts), meat preference | Ranger, Archmage, Samurai |

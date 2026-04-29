@@ -249,7 +249,7 @@
   "icraft.power.race.elf.ranged_bonus.name": "Eagle Eye",
   "icraft.power.race.elf.swift.description": "+8% movement speed.",
   "icraft.power.race.elf.swift.name": "Elven Grace",
-  "icraft.power.race.faefolk.armor_weakness.description": "-50% armor toughness. Your fae body resists physical protection.",
+  "icraft.power.race.faefolk.armor_weakness.description": "-50% armor toughness while wearing any non-light armor. Your fae body rejects heavy plating; full robes (4 light pieces) bypass this penalty entirely. Mechanic handled by kubejs/server_scripts/armor_weight.js.",
   "icraft.power.race.faefolk.armor_weakness.name": "Ethereal Form",
   "icraft.power.race.faefolk.fragile.description": "-15% max HP. Your ethereal form is delicate.",
   "icraft.power.race.faefolk.fragile.name": "Fae Fragility",
