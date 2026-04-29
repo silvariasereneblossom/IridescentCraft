@@ -4,6 +4,27 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 5) — Idle hunger pause: no drain after 2 min of inaction
+
+The pack stacks four hunger-tax mechanics — Hungeroverhaul ambient drain, Sleep Hunger (cont. 31, costs 6 per sleep), respawn reset to 6 (cont. 32), and the Liteminer hunger gate (cont. 33). All four are intentional design tax for active play, but they shouldn't apply when the player is genuinely AFK (walked away from keyboard). Hunger draining to zero while the player isn't even playing is anti-fun.
+
+New `kubejs/server_scripts/idle_hunger_pause.js`:
+- Polls each player's position and look angles every 20 ticks (1s)
+- If both are unchanged for 2400 ticks (2 minutes), the player is considered idle
+- On entering idle: snapshot `foodLevel` + `saturationLevel`
+- While idle: restore the snapshot each poll cycle if either dropped — any drain that ticks gets reverted before the player notices
+- On any movement or camera turn: clear idle state and reset the timestamp
+- Skipped in creative / spectator (no drain to begin with)
+- Per-player state cleared on `loggedOut`
+
+Heuristic chosen: position OR look angle change counts as "active". Inventory / clicks aren't tracked separately — those almost always coincide with movement or camera changes anyway. Position epsilon = 0.01 blocks; rotation epsilon = 0.5° to filter out floating-point noise without triggering on real input.
+
+The fix is layered on top of the existing hunger systems — it doesn't replace them, just stops the drain when the player is verifiably idle. Active sprinting / mining / fighting still costs hunger normally.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 4) — Puffish Skills warfare category: namespace fix (life_steal + crit_damage)
 
 Follow-up to the Batch 3 audit that surfaced the Apothic Attributes namespace issue. The Deadeye fix in Batch 3 corrected one occurrence in the aptitude script; this commit fixes the same root cause across the rest of the codebase.
