@@ -93,6 +93,7 @@ Current custom JARs:
 - `mek_walkable_cables-1.0.1.jar` — Mekanism cable coremod
 - `offlineskins-1.20.1-v1.jar` — Offline skin support
 - `zeta_racefix-1.0.0.jar` — Race selection fix
+- `iridescent_durability_clamp-0.1.0.jar` — Mixin coremod that clamps `ItemStack.hurtAndBreak` so items go inert at `maxDamage - 1` instead of being destroyed. Mirrors Tetra's `damageItemImpl` clamp pattern (`Math.min(amount, maxDamage - currentDamage - 1)`) but generalises it to every item that goes through the vanilla durability path (vanilla armor, tools, weapons; modded gear that doesn't override). Built from `iridescent-durability-clamp/` via Gradle + Mixin annotation processor; only the @Mod entrypoint + a single `@ModifyVariable` mixin live in the jar. Companion to `kubejs/server_scripts/death_penalty.js` which handles the inert-state effects (zero attack damage, mining cancellation, right-click block) once an item reaches the threshold.
 - `Patchouli-1.20.1-85-FORGE.jar` — Bytecode patched: athrow→pop in Book.class (disables use_resource_pack enforcement)
 - `ars_nouveau-1.20.1-4.12.7-all.jar` — Bytecode patched: doApply→immediate return in DungeonLootEnhancerModifier.class (disables chest loot injection)
 

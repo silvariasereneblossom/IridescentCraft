@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.iridescentcraft.durabilityclamp.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "iridescent_durability_clamp.refmap.json",
+  "mixins": [
+    "ItemStackHurtAndBreakMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

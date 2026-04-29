@@ -4,6 +4,83 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 9) — iridescent_durability_clamp coremod: bulletproof inert protection
+
+Follow-up to cont. 8. The buffer + proactive hurt-clamp made armor much safer, but for tools/weapons (and any non-armor durability path) we still relied on the 2-tick poll which has an inherent race window.
+
+After auditing how Tetra prevents destruction on its modular tools/weapons, the answer was a clean one-line clamp inside `IModularItem.damageItemImpl`:
+
+```java
+return Math.min(maxDamage - currentDamage - 1, amount);
+```
+
+That clamp is synchronous and race-free — no matter how big the incoming durability damage, the resulting damage value is bounded to `maxDamage - 1`. Tetra calls `stack.hurtAndBreak(clampedAmount, ...)` with the pre-clamped value, so vanilla never destroys the item. Tetra only uses this for its own modular items though; vanilla / non-Tetra items go through `ItemStack.hurtAndBreak` directly with no equivalent protection.
+
+### Solution: small Forge mixin coremod
+
+New `iridescent-durability-clamp/` module at the repo root, builds to `iridescent_durability_clamp-0.1.0.jar`. Single mixin into `ItemStack.hurtAndBreak`:
+
+```java
+@ModifyVariable(method = "hurtAndBreak(...)", at = @At("HEAD"), argsOnly = true, ordinal = 0)
+private int iridescent$clampDurabilityDamage(int amount) {
+    ItemStack self = (ItemStack)(Object)this;
+    if (!self.isDamageableItem() || amount <= 0) return amount;
+    int headroom = self.getMaxDamage() - self.getDamageValue() - 1;
+    if (headroom <= 0) return 0;
+    return Math.min(amount, headroom);
+}
+```
+
+This is Tetra's exact pattern, applied to every item via the generic vanilla durability path. Items now stop at exactly `maxDamage - 1` ("1 durability remaining") instead of ever being destroyed, **regardless of incoming damage size or item type**. The race window from cont. 8 is closed because the clamp runs inside the same synchronous call vanilla uses to apply durability damage.
+
+### Coexistence with existing systems
+
+- **Tetra modular tools/weapons:** Tetra's own `damageItemImpl` clamps `amount` first, then calls `stack.hurtAndBreak(clampedAmount, ...)`. Our mixin then re-clamps. `Math.min` of two clamps is idempotent, so Tetra's behavior is unchanged. The `NATIVE_BREAK_PROTECTION_NS = ['tetra:']` skip in `death_penalty.js` is now redundant for break prevention (the mixin handles both); kept anyway to avoid double-tagging Tetra items with our `icraft_broken` NBT (Tetra has its own broken-state UI which we shouldn't fight with).
+- **Inert state effects** (zero attack damage, mining cancellation, right-click block): still driven by the existing `icraft_broken` NBT tag, which the 2-tick poll + 10-tick sweep apply at the inert threshold. Items reach `maxDamage - 100` (the threshold), get tagged broken, then at `maxDamage - 1` the mixin caps them. Effects work identically to before.
+- **Death penalty durability loss:** unchanged. The death-event clamp at `maxDamage - 100` still runs first; the mixin only kicks in if something tries to push past `maxDamage - 1` later.
+- **Proactive armor hurt-clamp from cont. 8:** still active. Belt-and-suspenders — the mixin makes it redundant for vanilla-path items but it costs almost nothing and protects against any code path we might have missed.
+
+### Build infrastructure
+
+- New module: `iridescent-durability-clamp/`
+- Standard ForgeGradle 6 + Mixin annotation processor 0.8.5
+- Build script: `build_mod.sh` (mirrors the modular-spells / biomes build pattern)
+- Jar manifest declares `MixinConfigs: iridescent_durability_clamp.mixins.json` so Forge auto-loads the mixin config at startup
+- 12-file output jar, ~3.9 KB total
+
+### Allowlist updates
+
+`iridescent_durability_clamp-0.1.0.jar` added to:
+
+- `server_distribution/update_mods.ps1`
+- `server_distribution/update_mods.sh`
+- `server_distribution/sync_from_repo.bat`
+- `server_distribution/diagnose.ps1`
+- `server_distribution/cleanup_stale_jars.ps1`
+- `server_distribution/IridescentCraft Dedicated Server/update_mods.ps1`
+- `server_distribution/IridescentCraft Dedicated Server/cleanup_stale_jars.ps1`
+- `wiki/CLAUDE.md` (Current custom JARs section)
+
+### JVM flags
+
+Unlike the bytecode-patched Patchouli / Ars Nouveau jars, this mixin doesn't create dead code paths — `-noverify` is **not** required for it. (It's already set in the pack for the other two patched jars, so this is informational only.)
+
+### Verification
+
+- `unzip -l` confirms 12 files, including the mixin .class, the .mixins.json, and the refmap.json (with correct SRG name `m_41622_` for `hurtAndBreak`)
+- Built cleanly first try; ForgeGradle deobfuscation + Mixin AP both fired without errors
+- Deployed to all 3 distros (matching md5 confirmed by build script)
+
+### What this closes out
+
+- The "armor breaking instead of going inert" tester report. With the mixin, no item that goes through the vanilla durability path can ever be destroyed by durability damage — they all stop at 1 durability remaining and stay in inventory.
+- Tetra modular tools/weapons remain protected by their own pattern, now mirrored.
+- Future modded gear that uses the standard `ItemStack.hurtAndBreak` path inherits the protection automatically.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 8) — Armor breaking instead of going inert: buffer + proactive clamp
 
 Tester reported armor pieces still shattering despite the death-penalty.js "items never break" system. Root cause: the inert clamp was a poll-based safety net at `maxDamage - 20` durability, but vanilla's `ItemStack.hurtAndBreak()` runs **synchronously inside `LivingEntity.hurt()`**. A single boss hit dealing 25+ durability damage to a piece (Apotheosis affixes, Cataclysm bursts, Mahou Tsukai effects) jumped from "safe" past `maxDamage` in one frame — our 2-tick poll arrived after the item was already destroyed.
