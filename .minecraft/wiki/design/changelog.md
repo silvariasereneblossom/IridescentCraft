@@ -14,6 +14,7 @@ Two LootJS injections in `kubejs/server_scripts/loot/lootjs_overhaul.js` (additi
 |---|---|---|
 | Any `irons_spellbooks:chests/*` chest | +2-4 arcane_essence | 45% |
 | Vanilla witch / evoker / vex / illusioner | +1-2 arcane_essence | 35% per kill |
+| Vanilla undead (zombie, zombie_villager, husk, drowned, skeleton, wither_skeleton, stray, phantom) | +1 arcane_essence | 10% per kill |
 
 **Target curve:** a player who's killed ~30-50 magic mobs during normal overworld exploration has enough essence for a Wizard helmet or boots; full chestplate is within reach by the time they unlock T2. ISS-structure raiding still gives the fastest path (45% per chest at 2-4 each) but isn't required.
 

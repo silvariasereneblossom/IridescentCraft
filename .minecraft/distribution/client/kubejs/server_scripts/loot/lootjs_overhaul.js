@@ -147,6 +147,17 @@ LootJS.modifiers(event => {
         .when(c => c.randomChance(0.35)))
   })
 
+  // Vanilla undead — low per-kill rate × very high encounter frequency
+  // adds a steady trickle. Excludes wither (boss) and zoglin (rare/Nether).
+  ;['minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:husk',
+    'minecraft:drowned', 'minecraft:skeleton', 'minecraft:wither_skeleton',
+    'minecraft:stray', 'minecraft:phantom'].forEach(function(mobId) {
+    event
+      .addEntityLootModifier(mobId)
+      .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
+        .when(c => c.randomChance(0.10)))
+  })
+
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
   event
     .addEntityLootModifier('minecraft:pig')
