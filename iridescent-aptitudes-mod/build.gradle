@@ -1,0 +1,218 @@
+buildscript {
+    repositories {
+        // These repositories are only for Gradle plugins, put any other repositories in the repository block further below
+        maven { url = 'https://repo.spongepowered.org/repository/maven-public/' }
+        mavenCentral()
+    }
+    dependencies {
+        classpath 'org.spongepowered:mixingradle:0.7-SNAPSHOT'
+    }
+}
+
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    // Parchment + publishing plugins removed for fork builds; we ship the
+    // jar locally to all 3 distros via build_mod.sh. Switching off Parchment
+    // also drops the cascade of `mapped_parchment_*` deobf paths that
+    // weren't pre-published on Modrinth/CurseMaven for some integrations.
+}
+
+apply plugin: 'org.spongepowered.mixin'
+
+group = mod_group_id
+version = mod_version
+
+base {
+    archivesName = mod_id
+}
+
+java {
+    toolchain.languageVersion = JavaLanguageVersion.of(17)
+}
+
+minecraft {
+    mappings channel: 'official', version: '1.20.1'
+
+    // This property allows configuring Gradle's ProcessResources task(s) to run on IDE output locations before launching the game.
+    // It is REQUIRED to be set to true for this template to function.
+    // See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
+    copyIdeResources = true
+
+    // When true, this property will add the folder name of all declared run configurations to generated IDE run configurations.
+    // The folder name can be set on a run configuration using the "folderName" property.
+    // By default, the folder name of a run configuration is the name of the Gradle project containing it.
+    // generateRunFolders = true
+
+    // This property enables access transformers for use in development.
+    // They will be applied to the Minecraft artifact.
+    // The access transformer file can be anywhere in the project.
+    // However, it must be at "META-INF/accesstransformer.cfg" in the final mod jar to be loaded by Forge.
+    // This default location is a best practice to automatically put the file in the right place in the final jar.
+    // See https://docs.minecraftforge.net/en/latest/advanced/accesstransformers/ for more information.
+    // accessTransformer = file('src/main/resources/META-INF/accesstransformer.cfg')
+
+    // Default run configurations.
+    // These can be tweaked, removed, or duplicated as needed.
+    runs {
+        // applies to all the run configs below
+        configureEach {
+            workingDirectory project.file('run')
+
+            // Recommended logging data for a userdev environment
+            // The markers can be added/remove as needed separated by commas.
+            // "SCAN": For mods scan.
+            // "REGISTRIES": For firing of registry events.
+            // "REGISTRYDUMP": For getting the contents of all registries.
+            property 'forge.logging.markers', 'REGISTRIES'
+
+
+            // Recommended logging level for the console
+            // You can set various levels here.
+            // Please read: https://stackoverflow.com/questions/2031163/when-to-use-the-different-log-levels
+            property 'forge.logging.console.level', 'debug'
+
+            mods {
+                "${mod_id}" {
+                    source sourceSets.main
+                }
+            }
+        }
+
+        client {
+            // Comma-separated list of namespaces to load gametests from. Empty = all namespaces.
+            property 'forge.enabledGameTestNamespaces', mod_id
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+        }
+
+        server {
+            property 'forge.enabledGameTestNamespaces', mod_id
+            args '--nogui'
+            property 'mixin.env.remapRefMap', 'true'
+            property 'mixin.env.refMapRemappingFile', "${projectDir}/build/createSrgToMcp/output.srg"
+        }
+
+        // This run config launches GameTestServer and runs all registered gametests, then exits.
+        // By default, the server will crash when no gametests are provided.
+        // The gametest system is also enabled by default for other run configs under the /test command.
+        gameTestServer {
+            property 'forge.enabledGameTestNamespaces', mod_id
+        }
+
+        data {
+            // example of overriding the workingDirectory set in configureEach above
+            workingDirectory project.file('run-data')
+
+            // Specify the modid for data generation, where to output the resulting resource, and where to look for existing resources.
+            args '--mod', mod_id, '--all', '--output', file('src/generated/resources/'), '--existing', file('src/main/resources/')
+        }
+    }
+}
+
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+
+    config "${mod_id}.mixins.json"
+}
+
+// Include resources generated by data generators.
+sourceSets.main.resources { srcDir 'src/generated/resources' }
+
+repositories {
+    mavenCentral()
+
+    // Local jars for compile-time integration deps. Same approach as
+    // iridescent-modular-spells-mod — avoids the deobf cascade through
+    // CurseMaven which doesn't reliably ship official-mapped variants.
+    // Jars copied from iridescent-modular-spells-mod/libs/.
+    flatDir{
+        dirs "$projectDir/libs"
+    }
+}
+
+dependencies {
+    minecraft 'net.minecraftforge:forge:' + minecraft_version + '-' + forge_version
+
+    // Mixin Extras
+    implementation(annotationProcessor("io.github.llamalad7:mixinextras-common:0.4.0"))
+    implementation(jarJar("io.github.llamalad7:mixinextras-forge:0.4.0")) {
+        jarJar.ranged(it, "[0.4.0,)")
+    }
+
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // KubeJS / Rhino / Architectury removed — the kubejs/ subpackage was
+    // stripped from this fork; KubeJSIntegration.java uses reflection so
+    // it doesn't need compile-time KubeJS classes. Our pack's KubeJS
+    // scripts read JLFork aptitude NBT directly, no plugin needed.
+
+    // L2Library / L2Tabs / YACL stripped — they were optional integrations
+    // for the config GUI and tab-style aptitude UI. Removed for fork build
+    // simplicity; if we need them back, source jars to libs/ and uncomment.
+    // compileOnly fg.deobf("dev.xkmc.l2library:l2library:2.4.28")
+    // compileOnly fg.deobf("dev.xkmc.l2tabs:l2tabs:0.3.1")
+
+    // Compile-time integration deps via local libs/ (flatDir below).
+    // Runtime jars are loaded by Forge from the pack's mods/ folder.
+    compileOnly fg.deobf("blank:curios-forge:5.14.1-1.20.1")
+    compileOnly fg.deobf("blank:tetra:1.20.1-6.12.0")
+    compileOnly fg.deobf("blank:mutil:1.20.1-6.3.0")
+    compileOnly fg.deobf("blank:irons_spellbooks:1.20.1-3.15.5.1")
+
+    // QuiltMC Parsers
+    implementation("org.quiltmc.parsers:json:0.2.1")
+    implementation("org.quiltmc.parsers:gson:0.2.1")
+
+    // -----------------------------------------------------------------------
+    // Stripped integrations we don't ship in IridescentCraft (so we don't
+    // need their build deps): better-combat, MrCrayfish's gun mod, Scorched
+    // Guns 2, Timeless and Classics: Zero, Vic's Point Blank, Cloth Config,
+    // Player Animator. Their integration .java sources are also removed.
+    // -----------------------------------------------------------------------
+}
+
+// This block of code expands all declared replace properties in the specified resource targets.
+// A missing property will result in an error. Properties are expanded using ${} Groovy notation.
+// When "copyIdeResources" is enabled, this will also run before the game launches in IDE environments.
+// See https://docs.gradle.org/current/dsl/org.gradle.language.jvm.tasks.ProcessResources.html
+tasks.named('processResources', ProcessResources).configure {
+    var replaceProperties = [
+            minecraft_version: minecraft_version, minecraft_version_range: minecraft_version_range,
+            forge_version: forge_version, forge_version_range: forge_version_range,
+            loader_version_range: loader_version_range,
+            mod_id: mod_id, mod_name: mod_name, mod_license: mod_license, mod_version: mod_version,
+            mod_authors: mod_authors, mod_description: mod_description,
+    ]
+
+    inputs.properties replaceProperties
+
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand replaceProperties + [project: project]
+    }}
+
+// Example for how to get properties into the manifest for reading at runtime.
+tasks.named('jar', Jar).configure {
+    manifest {
+        attributes([
+                "Specification-Title": mod_id,
+                "Specification-Vendor": mod_authors,
+                "Specification-Version": "1", // We are version 1 of ourselves
+                "Implementation-Title": project.name,
+                "Implementation-Version": project.jar.archiveVersion,
+                "Implementation-Vendor": mod_authors,
+                "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+        ])
+    }
+
+    // This is the preferred method to reobfuscate your jar file
+    finalizedBy 'reobfJar'
+}
+
+tasks.withType(JavaCompile).configureEach {
+    options.encoding = 'UTF-8' // Use the UTF-8 charset for Java compilation
+}
+
+// CurseForge publishing block removed for fork builds — we deploy locally
+// via build_mod.sh instead of publishing to CurseForge.

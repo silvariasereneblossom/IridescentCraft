@@ -4,6 +4,52 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 11) — Iridescent Aptitudes fork foundation (multi-session project)
+
+User reported the in-game JLFork aptitude UI doesn't fully reflect our redesign — Magic Resist still shows as a MAG passive even though our redesigned MAG line is offensive (Mana Spark / Conservation / Mana Blaze / Mystic Ward dynamic / Mana Inferno). Investigation showed JLFork hardcodes:
+
+- The 16 passives' aptitude assignments (`RegistryPassives.class` static fields) — not overridable via config or kubejs.
+- The native skill effects (Life Eater, Wormhole Storage, Safe Port still fire alongside our re-labeled overrides; players got both Life Eater's life-steal AND our Mystic Ward DR, both labeled "Mystic Ward").
+
+### Decision: full fork
+
+Mixin coremod patches would scale poorly across upstream updates. Forked the source — Apache 2.0 licensed, clean to fork — to take ownership of:
+- Passive → aptitude mapping
+- Native skill effect bodies
+- Level thresholds (5/10/15/20/30 vs upstream 8/16/24)
+- Future skill slot expansion
+
+### What landed this session (fork foundation)
+
+- New module `iridescent-aptitudes-mod/` cloned from `Senior-S/JustLeveling-Fork` (master HEAD at fork point)
+- NOTICE file added per Apache 2.0 §4(d) attribution requirement (credits SeniorS upstream + Silvaria fork)
+- gradle.properties: branding updated — modid kept as `justlevelingfork` (NBT compat per user directive), display name → "Iridescent Aptitudes", version → `1.2.1-iridescent.1`, authors → "SeniorS, Silvaria"
+- build.gradle: stripped Modrinth/CurseForge publishing tasks, removed parchment plugin, switched mappings to `official` channel, dropped CurseMaven/external repos in favor of local `libs/` flatDir (matches existing modular-spells-mod pattern)
+- Stripped integrations: TacZ, Crayfish Gun Mod, Scorched Guns 2, BetterCombat, PointBlank — pack doesn't ship those mods. Source files removed; JustLevelingFork.java event-bus registrations stripped; build.gradle deps removed.
+- Stripped KubeJS plugin subpackage — IridescentCraft's KubeJS scripts read aptitude NBT directly (`ForgeData.justlevelingfork.aptitude.<name>`) without needing JLFork's plugin event bus. KubeJSIntegration.java retained (reflective wrapper, compiles without KubeJS classpath).
+- libs/ populated with curios + irons_spellbooks + tetra + mutil from modular-spells-mod's libs/
+- `.gitignore` ignores `libs/*.jar` to keep repo lean (jars sourced locally per build_mod.sh pattern)
+- `FORK_STATUS.md` documents what's done, what's pending, and the next-session checklist
+
+### What's NOT done yet (queued for follow-up sessions)
+
+| Phase | Why pending |
+|---|---|
+| Build environment fully wired | Need l2library + l2tabs + yacl jars in libs/ — not in pack mods/ folder; need to download from CurseForge / Modrinth |
+| Passive remap (Magic Resist off MAG, etc.) | Requires a clean local build first |
+| Strip native skill effects | Same |
+| 5/10/15/20/30 thresholds | Same |
+| Replace upstream JLFork in mods/ | Final step; gated on the above |
+| Allowlist updates + codex entry + changelog details | Final step |
+
+### Why "foundation only" is still meaningful progress
+
+Cloning, branding, NOTICE, integration stripping, and dependency simplification are all done — the next session can focus purely on customization once libs/ has the missing jars. Without this foundation, future sessions would have to redo all the dep-stripping and gradle simplification first. We've also locked in the design decision to KEEP modid `justlevelingfork` (preserves player NBT) and committed Apache 2.0 attribution.
+
+Total source committed: full JLFork tree (sans gun integrations + kubejs subpackage), build.gradle, gradle.properties, NOTICE, FORK_STATUS.md, .gitignore. Roughly ~150 source files.
+
+---
+
 ## 2026-04-29 (cont. 10) — Recipe re-tier sweep: enchanting/disenchanter/ISS tools + obsidian audit
 
 User noted several creation tools and core recipes were locked behind T3 materials (mainly diamond and obsidian) when they should have been T1/T2-accessible. Key insight that drove the obsidian sweep: **obsidian requires a diamond pickaxe (T3) to mine**, so any T1/T2 recipe that lists obsidian as an ingredient is unintentionally T3-gated.

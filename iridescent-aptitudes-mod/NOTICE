@@ -1,0 +1,31 @@
+Iridescent Aptitudes
+====================
+
+This product includes software derived from JustLevelingFork
+(https://github.com/Senior-S/JustLeveling-Fork), Copyright (c) SeniorS,
+licensed under the Apache License, Version 2.0.
+
+The original mod (Just Leveling) was authored by Tobinio. JustLevelingFork
+forked it after the original creator lost their source code; Senior-S
+re-released a cleaned-up decompilation under Apache 2.0 to allow community
+contribution.
+
+Modifications by Silvaria for IridescentCraft (2026):
+
+  - Stripped gun-mod integrations (TacZ, Crayfish, Scorched Guns 2,
+    PointBlank, BetterCombat) — IridescentCraft does not ship those mods.
+  - Stripped KubeJS plugin subpackage — IridescentCraft's KubeJS scripts
+    read aptitude NBT directly, no plugin needed.
+  - (Planned) Reassigned native passives across aptitudes (Magic Resist
+    moves off MAG; Beneficial Effect moves off MAG).
+  - (Planned) Stripped native skill effects on the 24 baseline skills —
+    KubeJS layer in IridescentCraft handles all gameplay effects.
+  - (Planned) Adjusted skill unlock thresholds from 8/16/24 to 5/10/15/20/30.
+
+The internal modid 'justlevelingfork' is preserved so existing worlds'
+aptitude data at ForgeData.justlevelingfork.aptitude.* survives the
+upgrade without NBT migration.
+
+This NOTICE file is required by the Apache License, Version 2.0, Section
+4(d). The full license text is in the LICENSE file at the root of this
+project (also retained from upstream).
