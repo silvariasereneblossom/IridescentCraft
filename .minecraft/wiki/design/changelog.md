@@ -4,6 +4,28 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 6) — Ars apprentice spell book recipe re-tiered to T2
+
+The vanilla Ars Nouveau `apprentice_spell_book_upgrade` recipe required 3× diamond + 2× blaze rod + 2× quartz block + 1× obsidian + novice book — all T3 materials. But master-appendix §A.2 lists the Apprentice spell book itself as a T2 workstation entry-point. The recipe gating contradicted the item's tier: a T2 player who'd reached the Twilight/Aether/Blue-Skies dimensional access stage couldn't actually craft their unlocked T2 spellbook because the recipe required Nether materials (T3).
+
+### Fix
+
+Override added to `kubejs/server_scripts/recipes/tier_gated_recipes.js` (Section I.7). Removes the vanilla recipe, registers a re-tiered `ars_nouveau:book_upgrade` recipe:
+
+| Original | Replaced with | Tier |
+|---|---|:-:|
+| 3× minecraft:diamond | 3× botania:mana_diamond | T2 (Botania transmutation product, A.2) |
+| 2× minecraft:blaze_rod | 2× ars_nouveau:source_gem_block | T2 (Ars-themed; 1 block = 9 source gems) |
+| 2× minecraft:quartz_block | 2× ars_nouveau:source_gem | T2 |
+| 1× minecraft:obsidian | unchanged | T1/T2 |
+| 1× ars_nouveau:novice_spell_book | unchanged | T1 prereq |
+
+Total cost remains substantive (1 obsidian + 3 mana diamonds + 18 source gems via 2 blocks + 2 source gems = themed Ars + Botania T2 investment). No longer requires a Nether trip.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 5) — Idle hunger pause: no drain after 2 min of inaction
 
 The pack stacks four hunger-tax mechanics — Hungeroverhaul ambient drain, Sleep Hunger (cont. 31, costs 6 per sleep), respawn reset to 6 (cont. 32), and the Liteminer hunger gate (cont. 33). All four are intentional design tax for active play, but they shouldn't apply when the player is genuinely AFK (walked away from keyboard). Hunger draining to zero while the player isn't even playing is anti-fun.

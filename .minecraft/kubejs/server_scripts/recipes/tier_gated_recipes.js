@@ -370,6 +370,36 @@ ServerEvents.recipes(event => {
   // flandres_wings, discords_wings, zanzas_wings already removed by mod: 'icarus' above
 
 
+  // ═══ SECTION I.7: ARS APPRENTICE SPELL BOOK → T2 ═══
+  // Vanilla Ars Nouveau apprentice_spell_book_upgrade required diamonds (×3),
+  // blaze rods (×2), quartz blocks (×2) — all T3 materials. The apprentice
+  // book itself is a T2 workstation entry per master-appendix A.2, so the
+  // recipe gating contradicted its tier.
+  // Re-tiered to T2-appropriate ingredients:
+  //   diamond   → mana_diamond       (Botania T2 transmutation, A.2)
+  //   blaze_rod → source_gem_block   (Ars-themed T2 storage block = 9 source)
+  //   quartz    → source_gem         (Ars-themed T2)
+  // Keeps obsidian + novice_spell_book — both T1/T2-accessible.
+  event.remove({ id: 'ars_nouveau:apprentice_spell_book_upgrade' })
+  event.custom({
+    type: 'ars_nouveau:book_upgrade',
+    pattern: ['   ', ' y ', '   '],
+    key: { y: { item: 'ars_nouveau:spell_book' } },
+    ingredients: [
+      { item: 'ars_nouveau:novice_spell_book' },
+      { item: 'minecraft:obsidian' },
+      { item: 'botania:mana_diamond' },
+      { item: 'botania:mana_diamond' },
+      { item: 'botania:mana_diamond' },
+      { item: 'ars_nouveau:source_gem_block' },
+      { item: 'ars_nouveau:source_gem_block' },
+      { item: 'ars_nouveau:source_gem' },
+      { item: 'ars_nouveau:source_gem' }
+    ],
+    result: { item: 'ars_nouveau:apprentice_spell_book' }
+  }).id('icraft:apprentice_spell_book_upgrade_t2')
+
+
   // ═══ SECTION J: COMPASS OF RETURN (T2 craftable) ═══
   // Found as 5% loot in surface dimension chests (T1 rare find).
   // Craftable at T2: compass + ender pearls + gold (spatial magic theme).

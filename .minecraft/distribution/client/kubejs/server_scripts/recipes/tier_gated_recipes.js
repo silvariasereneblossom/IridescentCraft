@@ -203,17 +203,64 @@ ServerEvents.recipes(event => {
   // ═══ SECTION E: SIMPLY SWORDS UNIQUE REMOVAL ═══
   // Standard weapon types keep recipes. Named uniques = boss-drop only.
 
-  ;['simplyswords:emberblade','simplyswords:frostfall','simplyswords:stormbringer',
-    'simplyswords:mjolnir','simplyswords:hearthflame','simplyswords:thunderbrand',
-    'simplyswords:twisted_blade','simplyswords:bramblethorn','simplyswords:storms_edge',
-    'simplyswords:arcanethyst','simplyswords:icewhisper','simplyswords:watching_warglaive',
-    'simplyswords:soulrender','simplyswords:soulpyre','simplyswords:soulkeeper',
-    'simplyswords:soulstealer','simplyswords:molten_edge','simplyswords:livyatan',
-    'simplyswords:brimstone','simplyswords:longsword_of_the_plague',
-    'simplyswords:sword_on_a_stick','simplyswords:watcher_claymore',
-    'simplyswords:dormant_relic','simplyswords:tidebreaker','simplyswords:runic_edge',
-    'simplyswords:contained_remnants','simplyswords:void_saber',
-    'simplyswords:searing_light','simplyswords:stars_edge'
+  // 2026-04-27 audit Phase 3.1: refreshed against current JEI registry.
+  // Removed 4 stale IDs (no longer exist in mod): tidebreaker, runic_edge,
+  // void_saber, searing_light. Renamed 3: brimstone -> brimstone_claymore,
+  // longsword_of_the_plague -> toxic_longsword, contained_remnants ->
+  // contained_remnant. Added 13 missing boss-allocated weapons (per
+  // loot_overhaul.js Section 8 allocation map). Added 6 "unassigned"
+  // weapons per locked-in decision 4 — creative-only until allocated to
+  // a future boss. Final list: 44 entries.
+  ;[
+    // === T2 boss-allocated (loot_overhaul.js Section 8) ===
+    'simplyswords:emberblade',         // Hydra
+    'simplyswords:frostfall',          // Snow Queen
+    'simplyswords:icewhisper',         // Alpha Yeti
+    'simplyswords:tempest',            // Naga (was missing pre-3.1)
+    'simplyswords:soulrender',         // Lich
+    'simplyswords:whisperwind',        // Ur-Ghast (was missing)
+    'simplyswords:enigma',             // Knight Phantom (was missing)
+    'simplyswords:hiveheart',          // BS Summoner (was missing)
+    'simplyswords:toxic_longsword',    // BS Alchemist (renamed from longsword_of_the_plague)
+    'simplyswords:stars_edge',         // BS Starlit Crusher
+    'simplyswords:waxweaver',          // BS Arachnarch (was missing)
+    'simplyswords:thunderbrand',       // Aether Slider
+    'simplyswords:caelestis',          // Aether Valkyrie Queen (was missing)
+    'simplyswords:sunfire',            // Aether Sun Spirit (was missing)
+    'simplyswords:flamewind',          // Deep Aether EotsController (was missing)
+    // === T3 boss-allocated ===
+    'simplyswords:brimstone_claymore', // Netherite Monstrosity (renamed from brimstone)
+    'simplyswords:molten_edge',        // Ignis
+    'simplyswords:shadowsting',        // The Harbinger (was missing)
+    'simplyswords:livyatan',           // Leviathan
+    'simplyswords:twisted_blade',      // Maledictus
+    'simplyswords:emberlash',          // Ignited Revenant (was missing)
+    'simplyswords:bramblethorn',       // Forgotten Guardian
+    'simplyswords:soulstealer',        // Stalker
+    'simplyswords:soulpyre',           // Shattered
+    'simplyswords:soulkeeper',         // Wither
+    // === T4 boss-allocated ===
+    'simplyswords:waking_lichblade',   // Ender Dragon (was missing)
+    'simplyswords:magiblade',          // Gaia Guardian (was missing)
+    'simplyswords:arcanethyst',        // Ender Guardian
+    'simplyswords:awakened_lichblade', // Ancient Remnant (was missing)
+    'simplyswords:stormbringer',       // Warden
+    'simplyswords:watching_warglaive', // Void Blossom
+    // === Unassigned reserves (locked-in decision 4 — creative-only until ===
+    // === assigned to a future boss; see loot_overhaul.js Section 8) ===
+    'simplyswords:harbinger',          // unassigned (+3.0 dmg, T2-T3 baseline)
+    'simplyswords:hearthflame',        // unassigned (+8.0 dmg, T4 endgame)
+    'simplyswords:magiscythe',         // unassigned (+4.0 dmg, T3)
+    'simplyswords:magispear',          // unassigned (+4.0 dmg, T3)
+    'simplyswords:ribboncleaver',      // unassigned (+7.0 dmg, T3-T4)
+    'simplyswords:slumbering_lichblade', // unassigned — entry to lichblade chain
+    'simplyswords:wickpiercer',        // unassigned (+4.0 dmg, T3)
+    'simplyswords:mjolnir',            // unassigned (in list pre-3.1; preserved)
+    'simplyswords:storms_edge',        // unassigned
+    'simplyswords:sword_on_a_stick',   // unassigned
+    'simplyswords:watcher_claymore',   // unassigned
+    // === Relic entry (boss-gated; recipe removal is belt-and-suspenders) ===
+    'simplyswords:dormant_relic'
   ].forEach(id => event.remove({ output: id }))
 
 
@@ -321,6 +368,36 @@ ServerEvents.recipes(event => {
 
   // I.6: Unique wings — remove entirely (boss drop or quest reward only)
   // flandres_wings, discords_wings, zanzas_wings already removed by mod: 'icarus' above
+
+
+  // ═══ SECTION I.7: ARS APPRENTICE SPELL BOOK → T2 ═══
+  // Vanilla Ars Nouveau apprentice_spell_book_upgrade required diamonds (×3),
+  // blaze rods (×2), quartz blocks (×2) — all T3 materials. The apprentice
+  // book itself is a T2 workstation entry per master-appendix A.2, so the
+  // recipe gating contradicted its tier.
+  // Re-tiered to T2-appropriate ingredients:
+  //   diamond   → mana_diamond       (Botania T2 transmutation, A.2)
+  //   blaze_rod → source_gem_block   (Ars-themed T2 storage block = 9 source)
+  //   quartz    → source_gem         (Ars-themed T2)
+  // Keeps obsidian + novice_spell_book — both T1/T2-accessible.
+  event.remove({ id: 'ars_nouveau:apprentice_spell_book_upgrade' })
+  event.custom({
+    type: 'ars_nouveau:book_upgrade',
+    pattern: ['   ', ' y ', '   '],
+    key: { y: { item: 'ars_nouveau:spell_book' } },
+    ingredients: [
+      { item: 'ars_nouveau:novice_spell_book' },
+      { item: 'minecraft:obsidian' },
+      { item: 'botania:mana_diamond' },
+      { item: 'botania:mana_diamond' },
+      { item: 'botania:mana_diamond' },
+      { item: 'ars_nouveau:source_gem_block' },
+      { item: 'ars_nouveau:source_gem_block' },
+      { item: 'ars_nouveau:source_gem' },
+      { item: 'ars_nouveau:source_gem' }
+    ],
+    result: { item: 'ars_nouveau:apprentice_spell_book' }
+  }).id('icraft:apprentice_spell_book_upgrade_t2')
 
 
   // ═══ SECTION J: COMPASS OF RETURN (T2 craftable) ═══
