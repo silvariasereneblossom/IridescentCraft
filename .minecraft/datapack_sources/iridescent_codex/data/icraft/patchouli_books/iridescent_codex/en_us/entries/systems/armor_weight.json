@@ -6,27 +6,27 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every piece of armor in IridescentCraft falls into one of three weight classes: $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(). Effects scale with the count of equipped pieces — so a hybrid kit (two heavy + two light) lands proportionally between the extremes.$(br2)Untagged armor defaults to medium (no effect)."
+      "text": "Every piece of armor in IridescentCraft falls into one of three weight classes: $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(). Effects scale with the count of equipped pieces - so a hybrid kit (two heavy + two light) lands proportionally between the extremes.$(br2)Untagged armor defaults to medium (no effect)."
     },
     {
       "type": "patchouli:text",
       "title": "Per-piece effects",
-      "text": "$(t1)Light$() — robes, cloth, leather:$(br)$(br)$(li2)+5%$() mana regen$(br)$(li2)+1.25%$() movement speed$(br)$(li2)−5%$() base armor$(br2)$(t3)Heavy$() — diamond, netherite, plate:$(br)$(br)$(li2)−5%$() mana regen$(br)$(li2)−1.25%$() movement speed$(br)$(li2)+5%$() base armor$(br2)$(bold)Medium$() — everything else: no bonus or penalty."
+      "text": "$(t1)Light$() - robes, cloth, leather:$(br)$(br)$(li2)+5%$() mana regen$(br)$(li2)+1.25%$() movement speed$(br)$(li2)-5%$() base armor$(br)$(li2)-7.5%$() armor toughness$(br2)$(t3)Heavy$() - diamond, netherite, plate:$(br)$(br)$(li2)-5%$() mana regen$(br)$(li2)-1.25%$() movement speed$(br)$(li2)+5%$() base armor$(br2)$(bold)Medium$() - everything else: no bonus or penalty."
     },
     {
       "type": "patchouli:text",
       "title": "Full-kit extremes",
-      "text": "Wearing $(bold)4 light pieces$():$(br)$(li2)+20%$() mana regen$(br)$(li2)+5%$() movement speed$(br)$(li2)−20%$() base armor$(br2)Wearing $(bold)4 heavy pieces$():$(br)$(li2)−20%$() mana regen$(br)$(li2)−5%$() movement speed$(br)$(li2)+20%$() base armor$(br2)Pure casters favor full-light. Tanks favor full-heavy. $(thing)Battlemage$() and $(thing)Sorceror$() archetypes go hybrid."
+      "text": "Wearing $(bold)4 light pieces$():$(br)$(li2)+20%$() mana regen$(br)$(li2)+5%$() movement speed$(br)$(li2)-20%$() base armor$(br)$(li2)-30%$() armor toughness$(br2)Wearing $(bold)4 heavy pieces$():$(br)$(li2)-20%$() mana regen$(br)$(li2)-5%$() movement speed$(br)$(li2)+20%$() base armor$(br2)$(warn)Light is doubly fragile.$() The toughness malus on light is one-sided - heavy doesn't add toughness back. Diamond/netherite already carry high native toughness; the system amplifies the gap rather than re-dosing it."
     },
     {
       "type": "patchouli:text",
       "title": "What's tagged what",
-      "text": "$(t1)Light$() — Iron's Spellbooks robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Shadow-Walker, Wandering Magician, Archevoker, Netherite Battlemage), Ars Nouveau Arcanist + Sorceror, Terramity Void Mage, Botania manaweave + cloaks, vanilla leather.$(br2)$(t3)Heavy$() — vanilla diamond + netherite, Aether obsidian + aethersteel, Cataclysm ignitium, Twilight Forest fiery + knightmetal.$(br2)Everything else (vanilla iron + gold, modded mid-tier metals, hybrid sets) is medium."
+      "text": "$(t1)Light$() - Iron's Spellbooks robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Shadow-Walker, Wandering Magician, Archevoker, Netherite Battlemage), Ars Nouveau Arcanist + Sorceror, Terramity Void Mage, Botania manaweave + cloaks, vanilla leather.$(br2)$(t3)Heavy$() - vanilla diamond + netherite, Aether obsidian + aethersteel, Cataclysm ignitium, Twilight Forest fiery + knightmetal.$(br2)Everything else (vanilla iron + gold, modded mid-tier metals, hybrid sets) is medium."
     },
     {
       "type": "patchouli:text",
       "title": "How it works",
-      "text": "The system reads three Forge tags every 5 seconds (and immediately when you swap a piece):$(br)$(thing)icraft:armor_light$()$(br)$(thing)icraft:armor_medium$()$(br)$(thing)icraft:armor_heavy$()$(br2)Modifiers stack additively per slot. Compatible with all attribute mods (Apothic Attributes, Iron's Spellbooks, etc.) — bonuses apply on top of base armor stats and Apothic affixes.$(br2)Logic lives in $(thing)kubejs/server_scripts/armor_weight.js$()."
+      "text": "The system reads three Forge tags every 5 seconds (and immediately when you swap a piece):$(br)$(thing)icraft:armor_light$()$(br)$(thing)icraft:armor_medium$()$(br)$(thing)icraft:armor_heavy$()$(br2)Modifiers stack additively per slot. Compatible with all attribute mods (Apothic Attributes, Iron's Spellbooks, etc.) - bonuses apply on top of base armor stats and Apothic affixes.$(br2)Logic lives in $(thing)kubejs/server_scripts/armor_weight.js$()."
     }
   ]
 }

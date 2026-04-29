@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 22) — Light armor universal toughness penalty: -7.5%/piece (-30% at 4/4)
+
+Layered onto the armor weight system: any player wearing light armor pieces now eats a `-7.5%` `generic.armor_toughness` penalty per piece (caps at -30% at 4/4 light). Asymmetric — heavy does not add toughness back; the system relies on diamond/netherite's native toughness baseline rather than re-dosing it on top.
+
+**Why:** "Should be really hard to get tanky in light armor, at least early game." Editing toughness on every individual robe item would touch ~80 ISS/Ars/Botania pieces and require revisiting on every mod update. A blanket per-piece tag-driven malus achieves the same effect without per-item tuning.
+
+**Faefolk interaction:** Faefolk-in-robes used to be the "smallest toughness penalty" path (Ethereal Form bypassed at 4/4 light). Now it's still strictly better than mixed/plate (-30% via this new universal penalty vs -50% from Ethereal Form, plus the new penalty stacks for light pieces), but the gap narrowed. The robes-vs-plate "two paths, two costs" framing in the codex still holds.
+
+Files:
+- `kubejs/server_scripts/armor_weight.js` — added `PER_PIECE_TOUGHNESS = 0.075`, new UUID `icraft_armor_weight_toughness`, applied as `-lightCount * PER_PIECE_TOUGHNESS` MULTIPLY_BASE in both the tick path and the inventoryChanged refresh
+- `datapack_sources/iridescent_codex/.../systems/armor_weight.json` — added the toughness line to "Per-piece effects" and "Full-kit extremes", new "Light is doubly fragile" callout
+
+Codex jar rebuilt + deployed. KubeJS synced to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 21) — Faefolk: offmeta caster identity (-30% melee, Ethereal Form keeps Med/Heavy clause)
 
 User direction: Faefolk should be an offmeta option, not the BIS choice. The melee malus tightens; Ethereal Form keeps its conditional toughness clause.
