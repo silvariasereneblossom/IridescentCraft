@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 19) — Magic cloth accessibility: arcane_essence loot injection
+
+T1 caster crafting was bottlenecked on `irons_spellbooks:arcane_essence` volume — Wizard chestplate needs 64 (8 magic_cloth × 8 essence), full Wizard set needs 192. ISS does drop arcane_essence in its structure chests + caster-mob drops natively, but the rate didn't make the Wizard set feel reasonably craftable on a casual T1 timeline.
+
+Two LootJS injections in `kubejs/server_scripts/loot/lootjs_overhaul.js` (additive — they compound on top of ISS's native drops, don't replace):
+
+| Source | Drop | Rate |
+|---|---|---|
+| Any `irons_spellbooks:chests/*` chest | +2-4 arcane_essence | 45% |
+| Vanilla witch / evoker / vex / illusioner | +1-2 arcane_essence | 35% per kill |
+
+**Target curve:** a player who's killed ~30-50 magic mobs during normal overworld exploration has enough essence for a Wizard helmet or boots; full chestplate is within reach by the time they unlock T2. ISS-structure raiding still gives the fastest path (45% per chest at 2-4 each) but isn't required.
+
+The 35% on vanilla magic mobs was picked to be noticeable but not dominant — not every kill drops, but the pile builds passively. Witches in swamp huts, evokers in raids, illusioners from explorer chests = a steady trickle.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 18) — Faefolk Ethereal Form conditional + origins build script cleanup
 
 Two cleanups paired.

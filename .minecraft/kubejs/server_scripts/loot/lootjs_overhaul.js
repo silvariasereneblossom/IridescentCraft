@@ -114,6 +114,39 @@ LootJS.modifiers(event => {
   }
   event.addLootTypeModifier(LootType.CHEST).removeLoot(ItemFilter.custom(blankEnchantedBookFilter))
 
+  // ─── ARCANE ESSENCE INJECTION ─────────────────────────────────────────
+  // Magic cloth requires 8 arcane_essence per cloth, 64 per Wizard chestplate
+  // (8 cloth), 192 for full Wizard robes. ISS does drop arcane_essence in
+  // its structure chests + caster-mob drops, but volume is on the slow side
+  // for casual T1 caster builds. Two augmentations:
+  //
+  //   (a) Bump rate in ISS structure chests (any LootType.CHEST in the
+  //       irons_spellbooks namespace) — extra entry on top of native
+  //       drops, so loot density compounds rather than replaces.
+  //
+  //   (b) Add small chance to vanilla magic-mob drop tables: witch, evoker,
+  //       vex, illusioner. Gives a passive accumulation path during normal
+  //       overworld exploration without requiring ISS structure raids.
+  //
+  // Net target: a player who's killed ~30-50 magic mobs over their first
+  // overworld session has enough essence for at least a Wizard helmet or
+  // boots, with full chestplate within reach by the time they unlock T2.
+  event
+    .addLootTableModifier(/^irons_spellbooks:chests\/.*/)
+    .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
+      .withCount(2, 4)
+      .when(c => c.randomChance(0.45)))
+
+  // Vanilla magic mobs — small flat chance per kill
+  ;['minecraft:witch', 'minecraft:evoker', 'minecraft:vex',
+    'minecraft:illusioner'].forEach(function(mobId) {
+    event
+      .addEntityLootModifier(mobId)
+      .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
+        .withCount(1, 2)
+        .when(c => c.randomChance(0.35)))
+  })
+
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
   event
     .addEntityLootModifier('minecraft:pig')
