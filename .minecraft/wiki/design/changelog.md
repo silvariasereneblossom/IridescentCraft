@@ -4,6 +4,44 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 17) — Faefolk rebalance: melee malus + mana regen, Armor Weight codex entry
+
+### Faefolk rebalance
+
+User directive: "Faefolk should be the fragile caster origin — spellpower keeps it viable, but it shouldn't be the *best* Battlemage."
+
+Two changes to `iridescent-origins-mod`:
+
+| Power | Before | After |
+|---|---|---|
+| `nature_magic` | +30% magic damage | +30% magic damage **AND +10% mana regen** (`irons_spellbooks:mana_regen` ADDITION 0.1) |
+| `frail_strikes` (new) | — | **−20% melee damage** (`generic.attack_damage` MULTIPLY_BASE −0.2) |
+
+**Net effect:** Faefolk is now strictly stronger as a pure caster (Archmage / pure-spell Battlemage build) and strictly weaker as a melee-leaning Battlemage — exactly the design intent. The +10% mana regen feeds Battlemage's Arcane Cleave loop (which needs mana to convert spell power → AD), but the −20% melee malus partially eats the bonus AD that Cleave provides. Other races without the melee malus (Elf, Demi-God, Human) become more attractive Battlemage choices.
+
+**Battlemage with Faefolk math** (full investment, ~+150% bonus spell power):
+- Old: Cleave gives +3 AD, no penalty → +3 AD net per hit
+- New: Cleave gives +3 AD, Frail Strikes −20% on attack_damage base = roughly net +1.4 AD per hit (still positive but materially worse)
+
+Pure Archmage Faefolk is buffed — the +10% mana regen feeds spell-spam more effectively, and there's no melee penalty to eat into anything (Archmage already has its own Frail Frame).
+
+**Files touched:**
+- `iridescent-origins-mod/src/main/resources/data/icraft/powers/race/faefolk/nature_magic.json` — added second modifier for mana_regen
+- `iridescent-origins-mod/src/main/resources/data/icraft/powers/race/faefolk/frail_strikes.json` — new power
+- `iridescent-origins-mod/src/main/resources/data/icraft/origins/faefolk.json` — added frail_strikes to powers list
+- `iridescent-origins-mod/src/main/resources/assets/icraft/lang/en_us.json` — updated nature_magic description, added Frail Strikes name + description
+- Mirrored to `.minecraft/datapack_sources/iridescent_races/`
+- Rebuilt `iridescent_origins-1.0.0.jar`, deployed to all 3 distros (manual copy — build script's deploy paths use stale `minecraft/mods/` path missing the dot prefix; not blocking, just a cleanup task)
+- Updated `wiki/classes/overview.md` Faefolk row + `wiki/design/master-appendix.md` race table
+
+### Armor Weight codex entry
+
+5-page entry under Pack Systems → "Armor Weight" (sortnum 10). Covers per-piece effects, full-kit extremes, the actual tag inventory, and the Forge-tag mechanism. Built into `iridescent_codex_data.jar` via `build_codex.sh`.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 16) — Armor weight system + Battlemage rework
 
 Per design doc `IridescentCraft-internal/design/armor_weight_battlemage_plan.md`. Two paired changes:

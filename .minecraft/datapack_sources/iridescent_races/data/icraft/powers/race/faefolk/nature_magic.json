@@ -1,12 +1,17 @@
 {
   "type": "origins:attribute",
-  "name": "Nature's Blessing",
-  "description": "+30% magic damage (nature attunement).",
+  "name": "icraft.power.race.faefolk.nature_magic.name",
+  "description": "icraft.power.race.faefolk.nature_magic.description",
   "modifiers": [
     {
       "attribute": "puffish_attributes:magic_damage",
       "operation": "multiply_base",
-      "value": 0.30
+      "value": 0.3
+    },
+    {
+      "attribute": "irons_spellbooks:mana_regen",
+      "operation": "addition",
+      "value": 0.1
     }
   ]
 }

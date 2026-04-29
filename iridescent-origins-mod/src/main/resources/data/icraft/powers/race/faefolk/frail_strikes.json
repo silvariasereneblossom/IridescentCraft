@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "icraft.power.race.faefolk.frail_strikes.name",
+  "description": "icraft.power.race.faefolk.frail_strikes.description",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.attack_damage",
+      "operation": "multiply_base",
+      "value": -0.2
+    }
+  ]
+}
