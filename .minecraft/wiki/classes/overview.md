@@ -42,7 +42,7 @@ Origins layer provides flavor powers, Race layer provides stat bonuses/penalties
 |-------|-------------|-----------------|
 | Berserker | +15% base melee (Brutal Strikes), +5% ATK/+1 armor (Battle Trance), +10% armor (Thick Skinned), +20% melee below 40% HP (Blood Fury) | — |
 | Samurai | +8% speed, +10% attack speed (Bushido), Focus (movement shield up to 10% HP, Vorpal I-V by tier) | `class_passives.js` |
-| Battlemage | +15% melee/+15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I-III scaling with magic bonuses) | `battlemage_mana_shield.js` |
+| Battlemage | +15% melee/+15% magic (Arcane Strikes), +2 armor (Spell Armor), Mana Shield (Resistance I-III scaling with magic bonuses), **Arcane Cleave** (+1 melee AD per 50% bonus spell power, costs 10 mana/hit), **Mana Reaver** (+15 mana per melee kill) | `battlemage_mana_shield.js`, `battlemage_arcane_cleave.js` |
 | Wanderer | +5% ATK/speed/atkspd (Jack of All Trades), +10% XP (Wanderlust), Seasoned Traveler (+5% XP/+2.5% speed per dimension visited) | `class_passives.js` |
 | Paladin | +3 armor/+1 toughness (Holy Armor), +10% KB resist, Healing Aura (0.5 HP/5s to allies in 8 blocks, 1 HP/5s self above 50%) | `class_passives.js` |
 | Vanguard | +6 armor/+3 toughness (Fortress), +40% KB resist (Immovable), -15% damage (Damage Penalty), Guardian's Presence (Weakness I to mobs in 5 blocks) | `class_passives.js` |

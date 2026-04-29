@@ -1,0 +1,5 @@
+{
+  "replace": false,
+  "_comment": "Medium armor tag — intentionally empty in the auto-generated form because the armor weight handler (kubejs/server_scripts/armor_weight.js) treats UNTAGGED armor as medium by default. Add explicit entries here only for items you want to lock to medium even if their name pattern matches the light or heavy auto-classifier (e.g., chain mail, mid-tier metals).",
+  "values": []
+}
