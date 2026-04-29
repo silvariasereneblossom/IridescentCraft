@@ -6,7 +6,17 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Creatures of ancient magic and wild nature. Faefolk channel devastating arcane power at the cost of physical resilience.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Nature Magic$() — $(item)+30% magic damage$(). The highest racial magic bonus. Synergizes with Battlemage and Archmage classes.$(br2)$(bold)Slow Fall$() — Gentle drift on the wind. Reduced fall speed and damage.$(br2)$(bold)Fragile$() — $(warn)-50% armor toughness, -10% max HP$(). Raw magical force compensates."
+      "text": "$(italic)Creatures of ancient magic and wild nature. Faefolk channel devastating arcane power at the cost of physical resilience.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Nature's Blessing$() - $(item)+30% magic damage$() and $(item)+10% mana regen$(). The highest racial magic bonus.$(br2)$(bold)Fae Swiftness$() - $(item)+10% movement speed$().$(br2)$(bold)Slow Fall$() - Gentle drift on the wind. Reduced fall speed and damage."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tradeoffs",
+      "text": "$(bold)Frail Strikes$() - $(warn)-30% melee damage$(). The fae body is unsuited to brute force.$(br2)$(bold)Fae Fragility$() - $(warn)-15% max HP$().$(br2)$(bold)Robes are your armor.$() Faefolk has no built-in armor toughness penalty, but the light-armor identity means low generic armor (-20% at 4/4 light pieces). Raw magical force is your defense."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Build Notes",
+      "text": "$(bold)Archmage$() - best fit. Pure caster, full robes, +30% magic stacks with Arcane Supremacy.$(br2)$(bold)Battlemage$() - $(thing)offmeta but viable$(). The -30% melee malus hurts, but Arcane Cleave converts your spell power to bonus AD. You'll never out-DPS an Orc Battlemage in raw melee, but spell-fueled hits + Mana Shield make you tankier than a pure mage.$(br2)$(bold)Avoid:$() Berserker, Vanguard, Paladin - the melee malus and HP loss make these strictly worse choices."
     }
   ]
 }

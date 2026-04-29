@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Glass Nuke",
-      "text": "$(thing)Faefolk Archmage$() at T4:$(br)  +50% + 30% + 15% = $(item)+95% magic$()$(br)  But: -30% HP, -50% toughness, halved gear.$(br2)One hit kills you. One spell kills everything else.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() — Glass nuke. +95% magic at T4.$(br)$(thing)Elf$() — +5% magic + speed. Safer.$(br)$(thing)Demi-God$() — +40% HP offsets fragility."
+      "text": "$(thing)Faefolk Archmage$() at T4 in full robes:$(br)  +50% (Supremacy) + 30% (Faefolk) + 15% (Mana Attunement T4) + ~16% (MAG L100) = $(item)~+111% magic$()$(br)  But: -35% HP, halved gear, -20% generic armor.$(br2)One hit kills you. One spell kills everything else.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() - Glass nuke supreme. +111% magic at T4.$(br)$(thing)Elf$() - +5% magic + speed. Safer kit.$(br)$(thing)Demi-God$() - +40% HP offsets fragility."
     }
   ]
 }

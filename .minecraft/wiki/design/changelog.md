@@ -4,6 +4,31 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 21) — Faefolk: offmeta caster identity (-30% melee, drop Ethereal Form)
+
+User direction: Faefolk should be an offmeta option, not the BIS choice. Two changes pull it from "best for any caster" toward "skill-expression pick".
+
+**Frail Strikes: -20% → -30% melee damage.** The melee malus is now sharp enough that Battlemage Faefolk is a real tradeoff, not a free spell-power upgrade. Arcane Cleave (1 AD per 50% spell power, 10 mana/hit) still gives Faefolk Battlemage a competitive damage path, but raw blade strikes hit notably weaker than an Orc / Demi-God / Berserker-style frame.
+
+**Ethereal Form (-50% conditional toughness): removed.** Reasoning: ISS robes are tagged `icraft:armor_light`, and the armor weight system (cont. 16) already gives 4/4 light pieces a -20% generic.armor malus. Stacking a -50% toughness penalty on top was double-dipping for the natural caster kit, and the conditional logic (full robes bypass) was complex for a payoff already provided by being a robe wearer. Light armor's built-in malus *is* the trade-off. Cleaner.
+
+Files changed:
+- `iridescent-origins-mod/.../faefolk/frail_strikes.json` — value -0.2 → -0.3
+- `iridescent-origins-mod/.../faefolk/armor_weakness.json` — **deleted**
+- `iridescent-origins-mod/.../origins/faefolk.json` — removed `armor_weakness` from powers list
+- `iridescent-origins-mod/.../assets/icraft/lang/en_us.json` — origin description rewritten (drop "-50% armor toughness", add "-30% melee"), `armor_weakness.*` lang keys deleted, `frail_strikes` description updated
+- `kubejs/server_scripts/armor_weight.js` — `isFaefolk()`, `FAEFOLK_TOUGHNESS_PENALTY`, conditional toughness logic stripped. One-cycle migration cleanup left in place: the line still writes 0 to the `icraft_faefolk_armor_weakness` UUID every tick / inventoryChanged so existing characters with the stale -50% modifier get cleaned up the next time they log in. Safe to remove after a release cycle.
+
+Codex + wiki refresh:
+- `race_faefolk.json` (codex) — full rewrite. Three pages: traits / tradeoffs / build notes. Build Notes flags Battlemage as "offmeta but viable" and explicitly steers Berserker/Vanguard/Paladin away.
+- `class_archmage.json` (codex) — Glass Nuke math corrected: +50% Supremacy + 30% Faefolk + 15% Mana Attunement T4 + ~16% MAG L100 = ~111% magic (was the stale "+95%" figure that ignored the MAG passive added in cont. 14). Toughness phrasing dropped.
+- `class_battlemage.json` (codex) — Best race pairings reordered: Demi-God / Orc / Elf are now BIS, with Faefolk relegated to a flagged Offmeta section. The previous "Faefolk → Resistance II" framing was promoting it as the obvious top choice.
+- `wiki/classes/overview.md` and `wiki/design/master-appendix.md` — Faefolk row updated.
+
+Origins jar + codex jar rebuilt and deployed to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 20) — Full ISS robe piece drops (Apotheosis-affixed)
 
 Parallel rail to magic_cloth crafting — rare full-piece drops of T1 ISS robe sets, with Apotheosis affixes pre-rolled by the existing `apotheosis:affix_loot` global modifier.

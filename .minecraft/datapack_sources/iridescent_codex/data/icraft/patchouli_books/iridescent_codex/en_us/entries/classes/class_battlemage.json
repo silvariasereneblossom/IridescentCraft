@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "The Hybrid",
-      "text": "The only class where stacking magic gear makes your sword hit harder AND makes you tankier. Mana Shield scales with total magic bonus — the more arcane power, the more you can take.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() — +30% magic → Resistance II.$(br)$(thing)Elf$() — +5% magic + speed for kiting.$(br)$(thing)Dwarf$() — Armor stacking with Spell Armor."
+      "text": "The only class where stacking magic gear makes your sword hit harder AND makes you tankier. Mana Shield scales with total magic bonus - the more arcane power, the more you can take.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Demi-God$() - +40% HP cushion, no melee malus. The new BIS.$(br)$(thing)Orc$() - +10% melee + attack speed = highest raw blade DPS.$(br)$(thing)Elf$() - +5% magic + speed for kiting.$(br2)$(bold)Offmeta:$() $(thing)Faefolk$() - +30% magic and +10% mana regen fuel Arcane Cleave brilliantly, but $(warn)-30% melee$() means raw blade strikes hit weakly. A skill-expression pick - high ceiling, painful floor."
     }
   ]
 }
