@@ -18,16 +18,18 @@
 // ── Class Altar Recipe: T2+ accessible ──
 ServerEvents.recipes(event => {
   // Anvil + boss material + gold = Class Altar
-  // Uses generic boss material tag — any tier boss drop works
+  // Uses generic boss material tag — any tier boss drop works.
+  // T2 path uses deepslate instead of obsidian (obsidian needs T3 diamond
+  // pickaxe; T2 players can't mine it). T3+ paths below keep obsidian.
   event.shaped('icraft:class_altar', [
     'GBG',
     'GAG',
-    'OOO'
+    'DDD'
   ], {
     G: 'minecraft:gold_ingot',
     B: 'icraft:lich_soul',  // T2 boss material (cheapest boss drop)
     A: 'minecraft:anvil',
-    O: 'minecraft:obsidian'
+    D: 'minecraft:deepslate'
   }).id('icraft:class_altar_recipe')
 
   // Alternative recipes using other tier boss materials

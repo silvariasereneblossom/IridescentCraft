@@ -4,6 +4,43 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 10) — Recipe re-tier sweep: enchanting/disenchanter/ISS tools + obsidian audit
+
+User noted several creation tools and core recipes were locked behind T3 materials (mainly diamond and obsidian) when they should have been T1/T2-accessible. Key insight that drove the obsidian sweep: **obsidian requires a diamond pickaxe (T3) to mine**, so any T1/T2 recipe that lists obsidian as an ingredient is unintentionally T3-gated.
+
+### Recipe re-tiers
+
+| Recipe | Old | New | Tier |
+|---|---|---|---|
+| `minecraft:enchanting_table` | 1× ender_forged_diamond + 4× obsidian (T3) | 1× gold_block + 4× deepslate | **T1** |
+| `disenchanting:disenchanter` | 2× gold_ingot + anvil + enchanting_table + 3× obsidian | unchanged + obsidian → deepslate | **T1** |
+| `irons_spellbooks:arcane_anvil` | diamond + amethyst + polished_deepslate + anvil | mana_diamond + others unchanged | **T2** |
+| `irons_spellbooks:mana_ring` | diamond + 5× arcane_ingot | mana_diamond + arcane_ingot | **T2** |
+| `ars_nouveau:apprentice_spell_book_upgrade` (cont. 6 follow-up) | obsidian still in ingredients | obsidian → deepslate | **T2** |
+| `icraft:class_altar` (T2 lich_soul path) | 3× obsidian bottom row | 3× deepslate | **T2** |
+
+Enchanting table choice: **gold_block** as the diamond substitute is messy thematically (gold isn't classically arcane) but it puts basic enchanting on the right side of the diamond gate, which matters more than aesthetic purity.
+
+### Loot table addition
+
+`irons_spellbooks:mana_ring` now has a 2% drop chance in overworld structure chests (dungeons, mineshafts, temples, mod structures — not village houses). Same chest pool as the compass of return. Caster players who haven't unlocked Botania transmutation can find one as a lucky drop while exploring.
+
+### Other obsidian uses (verified, no change needed)
+
+- `forbidden_arcanus:hephaestus_forge` (T3) — keeps obsidian, players have access
+- `apotheosis:reforging_table` (T3), `apotheosis:augmenting_table` (T4) — same
+- `icraft:class_altar` T3 (harbinger_eye) and T4 (dragon_heart) paths — keep obsidian
+- `mythic_forge.js` endgame recipes — keep obsidian / crying_obsidian
+- Loot tables that *drop* obsidian — fine, those don't need to be mined
+
+### Disenchanter design note
+
+User explicitly chose T1 for the disenchanter so it pairs with the now-T1 enchanting table — basic enchant manipulation should be available alongside basic enchanting. Mana Ring took the chest-loot slot instead, since it's actually the more "rare arcane find" item conceptually.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 9) — iridescent_durability_clamp coremod: bulletproof inert protection
 
 Follow-up to cont. 8. The buffer + proactive hurt-clamp made armor much safer, but for tools/weapons (and any non-armor durability path) we still relied on the 2-tick poll which has an inherent race window.

@@ -344,6 +344,34 @@ LootJS.modifiers(event => {
       LootEntry.of('kubejs:compass_of_return').when(c => c.randomChance(0.025))
     )
 
+  // --- ISS Mana Ring — 2% in overworld structure chests (T2 lucky find) ---
+  // Mana Ring is craftable at T2 (recipe re-tiered in tier_gated_recipes.js
+  // I.9 — diamond -> mana_diamond), but it's also a reasonable lucky find
+  // for casters exploring before they unlock Botania transmutation. Same
+  // chest pool as the compass of return — dungeons, mineshafts, temples,
+  // mod structures — skips village houses so it's not free power in a
+  // starter village.
+  event
+    .addLootTableModifier(
+      'minecraft:chests/simple_dungeon',
+      'minecraft:chests/abandoned_mineshaft',
+      'minecraft:chests/desert_pyramid',
+      'minecraft:chests/jungle_temple',
+      'minecraft:chests/stronghold_corridor',
+      'minecraft:chests/stronghold_crossing',
+      'minecraft:chests/stronghold_library',
+      /dungeoncrawl:.*chests.*/,
+      /explorify:.*chests.*/,
+      /^structory:.+/,
+      /dungeons_plus:.*/,
+      /dungeons_arise:.*/,
+      /valhelsia_structures:.*chests.*/,
+      /repurposed_structures:.*chests.*/
+    )
+    .addLoot(
+      LootEntry.of('irons_spellbooks:mana_ring').when(c => c.randomChance(0.02))
+    )
+
   // =========================================================================
   // SECTION 1B: GLOBAL ARTIFACT/CURIO STRIP
   // =========================================================================

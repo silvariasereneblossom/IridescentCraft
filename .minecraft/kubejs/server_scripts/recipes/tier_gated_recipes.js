@@ -27,11 +27,17 @@ ServerEvents.recipes(event => {
     'minecraft:diamond_chestplate','minecraft:diamond_leggings','minecraft:diamond_boots'
   ].forEach(id => event.remove({ id: id }))
 
-  // A.2: Enchanting table → T3 (ender_forged_diamond)
+  // A.2: Enchanting table → T1 (gold block + deepslate)
+  // Vanilla recipe needs diamond + obsidian; both T3-gated in this pack
+  // (diamond removed from T1 worldgen; obsidian needs a diamond pickaxe to
+  // mine). Players reaching basic enchanting access shouldn't need T3 mats.
+  // Replacement: 1× gold_block (T1 — accessible from gold ore) + 4× deepslate
+  // (T1 — minable with iron pickaxe). A bit messy thematically (gold isn't
+  // arcane) but it puts enchanting on the right side of the diamond gate.
   event.remove({ id: 'minecraft:enchanting_table' })
-  event.shaped('minecraft:enchanting_table', [' B ','DOD','OOO'], {
-    B:'minecraft:book', D:'icraft:ender_forged_diamond', O:'minecraft:obsidian'
-  }).id('icraft:enchanting_table_t3')
+  event.shaped('minecraft:enchanting_table', [' B ','DGD','DDD'], {
+    B:'minecraft:book', G:'minecraft:gold_block', D:'minecraft:deepslate'
+  }).id('icraft:enchanting_table_t1')
 
   // A.3: Jukebox → amethyst (cosmetic, no gate)
   event.remove({ id: 'minecraft:jukebox' })
@@ -379,7 +385,7 @@ ServerEvents.recipes(event => {
   //   diamond   → mana_diamond       (Botania T2 transmutation, A.2)
   //   blaze_rod → source_gem_block   (Ars-themed T2 storage block = 9 source)
   //   quartz    → source_gem         (Ars-themed T2)
-  // Keeps obsidian + novice_spell_book — both T1/T2-accessible.
+  //   obsidian  → deepslate          (T1 minable; obsidian needs T3 pickaxe)
   event.remove({ id: 'ars_nouveau:apprentice_spell_book_upgrade' })
   event.custom({
     type: 'ars_nouveau:book_upgrade',
@@ -387,7 +393,7 @@ ServerEvents.recipes(event => {
     key: { y: { item: 'ars_nouveau:spell_book' } },
     ingredients: [
       { item: 'ars_nouveau:novice_spell_book' },
-      { item: 'minecraft:obsidian' },
+      { item: 'minecraft:deepslate' },
       { item: 'botania:mana_diamond' },
       { item: 'botania:mana_diamond' },
       { item: 'botania:mana_diamond' },
@@ -398,6 +404,47 @@ ServerEvents.recipes(event => {
     ],
     result: { item: 'ars_nouveau:apprentice_spell_book' }
   }).id('icraft:apprentice_spell_book_upgrade_t2')
+
+
+  // ═══ SECTION I.8: ISS ARCANE ANVIL → T2 ═══
+  // Vanilla irons_spellbooks:arcane_anvil requires 1× diamond + 4× amethyst
+  // block + 2× polished_deepslate + 1× anvil. Diamond is T3-gated in this
+  // pack so the spell-upgrade station was unintentionally locked behind T3.
+  // Re-tier: replace forge:gems/diamond with botania:mana_diamond (Botania
+  // T2 transmutation product, same approach as the apprentice spell book
+  // fix). Other ingredients unchanged.
+  event.remove({ id: 'irons_spellbooks:arcane_anvil' })
+  event.shaped('irons_spellbooks:arcane_anvil', ['AAA',' D ','SVS'], {
+    A: 'minecraft:amethyst_block',
+    D: 'botania:mana_diamond',
+    V: 'minecraft:anvil',
+    S: 'minecraft:polished_deepslate'
+  }).id('icraft:arcane_anvil_t2')
+
+  // ═══ SECTION I.9: ISS MANA RING → T2 ═══
+  // Vanilla irons_spellbooks:mana_ring requires 1× diamond + 5× arcane_ingot.
+  // Same fix: forge:gems/diamond → botania:mana_diamond.
+  event.remove({ id: 'irons_spellbooks:mana_ring' })
+  event.shaped('irons_spellbooks:mana_ring', ['DA ','A A',' A '], {
+    A: 'irons_spellbooks:arcane_ingot',
+    D: 'botania:mana_diamond'
+  }).id('icraft:mana_ring_t2')
+
+  // ═══ SECTION I.10: DISENCHANTING DISENCHANTER → T1 ═══
+  // Disenchanting mod's disenchanter requires 1× anvil + 2× gold_ingot +
+  // 1× enchanting_table + 3× obsidian. Obsidian needs a diamond pickaxe
+  // (T3) so the recipe is unintentionally T3-gated. Replace obsidian with
+  // deepslate (T1 minable). All ingredients now T1: anvil, gold_ingot,
+  // enchanting_table (also T1 per A.2), deepslate. Pairs with the T1
+  // enchanting table — basic enchant manipulation should be available
+  // alongside basic enchanting.
+  event.remove({ id: 'disenchanting:disenchanter' })
+  event.shaped('disenchanting:disenchanter', [' A ','GCG','DDD'], {
+    A: 'minecraft:anvil',
+    G: 'minecraft:gold_ingot',
+    C: 'minecraft:enchanting_table',
+    D: 'minecraft:deepslate'
+  }).id('icraft:disenchanter_t1')
 
 
   // ═══ SECTION J: COMPASS OF RETURN (T2 craftable) ═══
