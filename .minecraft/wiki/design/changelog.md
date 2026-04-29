@@ -4,6 +4,53 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 7) — Apotheosis errored gem fix + EnchDesc tooltips for icraft enchants
+
+### Errored gem fix (root cause)
+
+Tester reported `item.apotheosis.gem` showing as the literal lang key in chests in apotheosis tower (gem tower). Root cause: 9 of our override loot tables in `icraft_loot_overrides` and `icraft_progdiff_overrides` spawned raw `apotheosis:gem` items with malformed NBT — Apotheosis 7.x's `GemItem` class has a literal "Errored gem with no bonus!" branch when NBT can't resolve to a registered gem variant.
+
+Two broken patterns in our overrides:
+- `{gem_variant:"random"}` — invalid NBT key (the field doesn't exist in 7.x)
+- `{gem:"apotheosis:random"}` — valid key but `apotheosis:random` isn't a real gem registry entry
+
+Apotheosis ships a global loot modifier (`apotheosis:gems`) that auto-injects properly-formatted gems into any chest loot table. Our hand-rolled entries were both unnecessary AND broken — removing them returns gem injection to the GLM where it belongs.
+
+**Affected files** (broken entries removed):
+
+| File | Pattern |
+|---|---|
+| `icraft_loot_overrides/data/apotheosis/loot_tables/chests/chest_valuable.json` | gem_variant |
+| `icraft_loot_overrides/data/apotheosis/loot_tables/chests/spawner_brutal.json` | gem_variant |
+| `icraft_loot_overrides/data/apotheosis/loot_tables/chests/spawner_brutal_rotate.json` | gem_variant |
+| `icraft_loot_overrides/data/apotheosis/loot_tables/chests/spawner_swarm.json` | gem_variant |
+| `icraft_loot_overrides/data/apotheosis/loot_tables/chests/tome_tower.json` | gem_variant |
+| `icraft_loot_overrides/data/apotheosis/loot_tables/book.json` | gem_variant |
+| `icraft_loot_overrides/data/apotheosis/loot_tables/entity/treasure_goblin.json` | gem_variant |
+| `icraft_progdiff_overrides/data/majruszsdifficulty/loot_tables/gameplay/treasure_bag_warden.json` | apotheosis:random |
+| `icraft_progdiff_overrides/data/majruszsdifficulty/loot_tables/gameplay/treasure_bag_undead_army.json` | apotheosis:random |
+
+Players will still get gems from those chests / treasure bags (chest tables via the GLM; treasure bags lose the gem entry since the GLM doesn't apply to majruszs treasure bags — but those bags have many other rolls, so the loss is minimal). Either way, no more errored gems with literal `item.apotheosis.gem` display.
+
+Rebuilt `config/paxi/datapacks/icraft_loot_overrides.zip` and `icraft_progdiff_overrides.zip` from the corrected sources. Mirrored to all 3 distros.
+
+### EnchDesc tooltips for all 29 icraft custom enchantments
+
+EnchantmentDescriptions mod was installed and reading `enchantment.<modid>.<name>.desc` lang keys, but none of our 29 custom icraft enchants had a description — they showed with title only on shift-hold. Added one-line descriptions sourced from each enchant's actual implementation in `enchant_effects.js` and `dimension_mechanics.js`:
+
+| Category | Enchants |
+|---|---|
+| Damage resist (armor) | Heatward, Voidward, Depth Strider (custom), Aether Acclimation, Warp Shield, Boss Ward, Adaptive, Phalanx, Last Stand, RF Capacitance |
+| Passive armor | Vitality, Magnetism, Steadfast |
+| Damage dealt (weapon) | Titan Slayer, Adrenaline, Crowd Control, Nemesis, Momentum, Primal Force, Mana Temper |
+| Tools | Prospector, Lumberjack, Quick Draw |
+| Magic | Convergence |
+| Planetary (Ad Astra) | Lunar Stride, Thermal Regulation, Pressure Shell, Void Adaptation, Stellar Shield |
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 6) — Ars apprentice spell book recipe re-tiered to T2
 
 The vanilla Ars Nouveau `apprentice_spell_book_upgrade` recipe required 3× diamond + 2× blaze rod + 2× quartz block + 1× obsidian + novice book — all T3 materials. But master-appendix §A.2 lists the Apprentice spell book itself as a T2 workstation entry-point. The recipe gating contradicted the item's tier: a T2 player who'd reached the Twilight/Aether/Blue-Skies dimensional access stage couldn't actually craft their unlocked T2 spellbook because the recipe required Nether materials (T3).

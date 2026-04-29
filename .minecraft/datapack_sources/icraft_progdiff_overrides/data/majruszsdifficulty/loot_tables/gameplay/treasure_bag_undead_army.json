@@ -3,37 +3,122 @@
   "pools": [
     {
       "rolls": 1,
+      "entries": []
+    },
+    {
+      "rolls": 1,
       "entries": [
-        {"type": "minecraft:item", "name": "apotheosis:gem", "functions": [{"function": "minecraft:set_nbt", "tag": "{gem:\"apotheosis:random\"}"}]}
+        {
+          "type": "minecraft:item",
+          "name": "irons_spellbooks:scroll",
+          "functions": [
+            {
+              "function": "irons_spellbooks:randomize_spell",
+              "quality": {
+                "min": 0.2,
+                "max": 0.5
+              }
+            }
+          ]
+        }
       ]
     },
     {
       "rolls": 1,
       "entries": [
-        {"type": "minecraft:item", "name": "irons_spellbooks:scroll", "functions": [{"function": "irons_spellbooks:randomize_spell", "quality": {"min": 0.2, "max": 0.5}}]}
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:book",
+          "functions": [
+            {
+              "function": "minecraft:enchant_randomly"
+            }
+          ]
+        }
       ]
     },
     {
       "rolls": 1,
       "entries": [
-        {"type": "minecraft:item", "name": "minecraft:book", "functions": [{"function": "minecraft:enchant_randomly"}]}
+        {
+          "type": "minecraft:item",
+          "name": "irons_spellbooks:iron_spell_book",
+          "weight": 15
+        },
+        {
+          "type": "minecraft:item",
+          "name": "irons_spellbooks:uncommon_ink",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "kubejs:tier2_token",
+          "weight": 10
+        },
+        {
+          "type": "minecraft:empty",
+          "weight": 55
+        }
       ]
     },
     {
-      "rolls": 1,
+      "rolls": {
+        "min": 4,
+        "max": 7,
+        "type": "minecraft:uniform"
+      },
       "entries": [
-        {"type": "minecraft:item", "name": "irons_spellbooks:iron_spell_book", "weight": 15},
-        {"type": "minecraft:item", "name": "irons_spellbooks:uncommon_ink", "weight": 20, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 2}}]},
-        {"type": "minecraft:item", "name": "kubejs:tier2_token", "weight": 10},
-        {"type": "minecraft:empty", "weight": 55}
-      ]
-    },
-    {
-      "rolls": {"min": 4, "max": 7, "type": "minecraft:uniform"},
-      "entries": [
-        {"type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 50, "functions": [{"function": "minecraft:set_count", "count": {"min": 2, "max": 4}}]},
-        {"type": "minecraft:item", "name": "minecraft:iron_ingot", "weight": 30, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 3}}]},
-        {"type": "minecraft:item", "name": "minecraft:gold_ingot", "weight": 20, "functions": [{"function": "minecraft:set_count", "count": {"min": 1, "max": 2}}]}
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:experience_bottle",
+          "weight": 50,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 2,
+                "max": 4
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:iron_ingot",
+          "weight": 30,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 3
+              }
+            }
+          ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_ingot",
+          "weight": 20,
+          "functions": [
+            {
+              "function": "minecraft:set_count",
+              "count": {
+                "min": 1,
+                "max": 2
+              }
+            }
+          ]
+        }
       ]
     }
   ]

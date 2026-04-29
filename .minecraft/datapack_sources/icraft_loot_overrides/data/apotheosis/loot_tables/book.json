@@ -70,17 +70,6 @@
       "rolls": 1,
       "entries": [
         {
-          "type": "minecraft:item",
-          "weight": 20,
-          "name": "apotheosis:gem",
-          "functions": [
-            {
-              "function": "minecraft:set_nbt",
-              "tag": "{gem_variant:\"random\"}"
-            }
-          ]
-        },
-        {
           "type": "minecraft:empty",
           "weight": 5
         }
