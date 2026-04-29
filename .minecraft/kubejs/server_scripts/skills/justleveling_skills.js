@@ -20,18 +20,24 @@
 // │ Curious        │INT 5│ +10% XP gain                                        │
 // │ Steady Hand    │BLD 5│ +0.5 block reach                                    │
 // │ Lucky Charm    │LCK 5│ +1 luck attribute                                   │
+// │ Brutal Slash   │STR10│ +10% melee dmg + ~10% armor pen approximation [B2]  │
 // │ Quarryman      │BLD10│ +5% block break speed                               │
 // │ Fleet of Foot  │DEX10│ +15% movement speed                                 │
 // │ Hearty Meals   │CON10│ Regen I when food >= 18 (well-fed)                  │
 // │ Second Wind    │DEF10│ Regen III for 5s when HP < 30% (60s CD)             │
+// │ Cleave         │STR15│ +20% on first swing of combat (5s reset) [B2]       │
+// │ Steady Breath  │CON15│ Water Breathing + Saturation while underwater [B2]  │
 // │ Deadeye        │DEX15│ +10% projectile damage                              │
 // │ Bulwark        │DEF15│ +25% knockback resistance                           │
 // │ Mana Blaze     │MAG15│ +15% spell power                                    │
 // │ Insight        │INT15│ +20% XP gain                                        │
+// │ Thrifty Hands  │BLD15│ 5% chance to refund placed blocks [B2]              │
 // │ Hemorrhage     │STR20│ Wither I for 4s on melee hit                        │
 // │ Overflow       │CON20│ Absorption I when at full HP                        │
+// │ Mystic Ward    │MAG20│ Dynamic DR: 5%+1%/20% bonus spell power, cap 20% [B2]│
 // │ Turtle Shield  │DEF20│ +4 armor toughness when not blocking                │
 // │ Rapid Fire     │DEX20│ TODO: +15% bow draw speed                           │
+// │ Treasure Sense │LCK20│ 5% chance to double-roll entity loot on kill [B2]   │
 // │ True Strength  │STR30│ Execute non-boss mobs at <= 5% HP on melee hit      │
 // │ Iron Stomach   │CON30│ Saturation effect every 5s                          │
 // │ Lion Heart     │DEF30│ DR scales with missing HP (up to 30%)               │
@@ -39,13 +45,13 @@
 // │ Mana Inferno   │MAG30│ +30% spell power (capstone)                         │
 // │ Enlightenment  │INT30│ +30% XP gain                                        │
 // │ Master Craft   │BLD30│ TODO: Craft bonus                                   │
-// │ Motherlode     │LCK30│ TODO: mining 5x roll                                │
+// │ Motherlode     │LCK30│ 0.5% chance for 5x mining drops [B2]                │
 // ├────────────────┴─────┴──────────────────────────────────────────────────────┤
-// │ Reserved for Batch 2/3:                                                   │
-// │ - MAG 20 Mystic Ward (dynamic DR formula tied to spell power)             │
+// │ Reserved for Batch 3:                                                     │
 // │ - MAG 10 Conservation of Magic (mana-cost reduction)                      │
 // │ - INT 10 Arcane Efficiency, INT 20 Materials Science (XP refund hooks)    │
-// │ - STR 10/15, CON 15, BLD 15/20: event-driven, see plan                    │
+// │ - BLD 20 Resourceful, BLD 30 Master Craftsman (craft refund hooks)        │
+// │ - DEX 20 Rapid Fire (Apothic Attributes draw_speed)                       │
 // └─────────────────────────────────────────────────────────────────────────────┘
 // =============================================================================
 
@@ -105,6 +111,11 @@ let secondWindCooldowns = {}
 // Key: UUID -> tick when buff was last applied
 let excitementTimers = {}
 
+// Per-player combat tracker for Cleave (STR 15)
+// Key: UUID -> tick of last hit dealt or taken; if (now - lastCombatTick) > 100,
+// the next melee swing is a "first swing" and gets +20%
+let lastCombatTick = {}
+
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // CACHE CLEANUP — remove stale entries on login/logout
@@ -114,6 +125,7 @@ PlayerEvents.loggedIn(event => {
   delete aptitudeCache[uuid]
   delete secondWindCooldowns[uuid]
   delete excitementTimers[uuid]
+  delete lastCombatTick[uuid]
 })
 
 
@@ -139,6 +151,33 @@ global.tick_justlevelingSkills = (event) => {
         'icraft_might_dmg', mightDmg, 'addition')
       player.modifyAttribute('minecraft:generic.max_health',
         'icraft_might_hp', mightHp, 'multiply_base')
+    } catch (e) {}
+
+    // ── Brutal Slash (STR >= 10): +10% attack damage ──
+    // Armor-ignore half of the design ships in EntityEvents.hurt below.
+    try {
+      let bsDmg = (apt.str >= 10) ? 0.10 : 0
+      player.modifyAttribute('minecraft:generic.attack_damage',
+        'icraft_brutal_slash', bsDmg, 'multiply_base')
+    } catch (e) {}
+
+    // ── Steady Breath (CON >= 15): +30% breath underwater + ~15% slower hunger drain ──
+    // Implementation: when underwater, apply Water Breathing for 30 ticks (1.5s)
+    // out of every 100-tick window → 30% of the window has no air drain →
+    // approximates +30% breath duration. Also apply Saturation 0 for 30 ticks
+    // to slow hunger accumulation by ~25% (matches design "15% slower" loosely).
+    try {
+      if (apt.con >= 15) {
+        // isUnderWater() returns true when the player's eyes are submerged
+        let underwater = false
+        try { underwater = player.isUnderWater() } catch (e) {}
+        if (underwater) {
+          // No icon, no particles — passive effect
+          player.potionEffects.add('minecraft:water_breathing', 30, 0, false, false)
+        }
+        // Hunger-drain mitigation runs always while CON >= 15 (passive)
+        player.potionEffects.add('minecraft:saturation', 30, 0, false, false)
+      }
     } catch (e) {}
 
     // ── Tough Hide (CON >= 5): +2 max HP flat ──
@@ -374,6 +413,43 @@ EntityEvents.hurt(event => {
                      srcType.includes('fireball') || srcType.includes('thrown')
 
   if (isMelee && !isProjectile) {
+    let uuid = player.uuid.toString()
+    let now = server.tickCount
+
+    // ── Cleave (STR >= 15): first swing of combat does +20% ──
+    // "First swing" = no hit dealt or taken in the last 100 ticks (5s)
+    if (apt.str >= 15) {
+      try {
+        let last = lastCombatTick[uuid] || 0
+        if ((now - last) > 100) {
+          event.damage *= 1.20
+          try {
+            let pos = target.blockPosition()
+            server.runCommandSilent(
+              `particle minecraft:crit ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.3 0.3 0.3 6 force`
+            )
+          } catch (e2) {}
+        }
+      } catch (e) {}
+    }
+    // Update combat tracker on every melee hit dealt (regardless of STR level —
+    // the tracker is shared with take-damage in the other hurt handler)
+    lastCombatTick[uuid] = now
+
+    // ── Brutal Slash (STR >= 10): ignore ~10% of target armor ──
+    // Approximation: armor reduces damage ~4% per point in vanilla.
+    // To "ignore 10% of armor" we boost outgoing damage by 0.4% × armor points,
+    // capped at +5% so heavily-armored targets (>12 armor) don't get over-buffed.
+    if (apt.str >= 10) {
+      try {
+        let targetArmor = target.getAttributeValue('minecraft:generic.armor')
+        if (targetArmor > 0) {
+          let bonus = Math.min(0.05, targetArmor * 0.004)
+          event.damage *= (1 + bonus)
+        }
+      } catch (e) {}
+    }
+
     // ── Hemorrhage (STR >= 20): Wither I for 4 seconds on melee hit ──
     if (apt.str >= 20) {
       try {
@@ -428,13 +504,18 @@ EntityEvents.hurt(event => {
 
 // ═══════════════════════════════════════════════════════════════════════════════
 // COMBAT: TAKING DAMAGE
-// Lion Heart (DEF 30), Mystic Ward (MAG 30)
+// Lion Heart (DEF 30), Mystic Ward (MAG 20 dynamic), Cleave combat-tracker stamp
 // ═══════════════════════════════════════════════════════════════════════════════
 EntityEvents.hurt(event => {
   if (!event.entity || !event.entity.player) return
   let player = event.entity
   let server = player.server
   let apt = getCachedAptitudes(server, player)
+  let uuid = player.uuid.toString()
+
+  // Stamp combat-tracker so Cleave's "first-swing" window resets when the
+  // player takes a hit too (matches design "reset 5s after combat ends").
+  lastCombatTick[uuid] = server.tickCount
 
   // ── Lion Heart (DEF >= 30): DR scales with missing HP (up to 30%) ──
   if (apt.def >= 30) {
@@ -448,9 +529,23 @@ EntityEvents.hurt(event => {
     } catch (e) {}
   }
 
-  // ── Mystic Ward (MAG 20): dynamic DR formula — ships in Batch 2 ──
-  // Was: flat 15% DR at MAG 30. New design moves DR to MAG 20 with
-  // formula min(0.20, 0.05 + 0.01 * (spellPower / 0.20)).
+  // ── Mystic Ward (MAG >= 20): dynamic DR scaled by bonus spell power ──
+  // Formula: min(0.20, 0.05 + 0.01 * floor(bonusSpellPower / 0.20))
+  //   * 5% flat at zero bonus
+  //   * +1% per 20% bonus spell power
+  //   * cap 20% (requires +300% bonus spell power)
+  // bonusSpellPower is read from puffish_attributes:magic_damage (base 1.0).
+  if (apt.mag >= 20) {
+    try {
+      let total = player.getAttributeValue('puffish_attributes:magic_damage')
+      // puffish base for magic_damage is 1.0; bonus is anything above
+      let bonus = Math.max(0, total - 1.0)
+      let dr = Math.min(0.20, 0.05 + 0.01 * Math.floor(bonus / 0.20))
+      if (dr > 0) {
+        event.damage *= (1 - dr)
+      }
+    } catch (e) {}
+  }
 })
 
 
@@ -479,6 +574,84 @@ EntityEvents.death(event => {
       )
     } catch (e) {}
   }
+
+  // ── Treasure Sense (LCK >= 20): 5% chance to double-roll mob loot ──
+  // Re-rolls the entity's standard loot table once at the death position.
+  // For most modded entities the table id is `<modid>:entities/<entity_path>`.
+  // If the table doesn't exist the loot command silently no-ops — acceptable.
+  if (apt.lck >= 20 && Math.random() < 0.05) {
+    try {
+      let target = event.entity
+      let typeId = String(target.type || '')   // e.g. 'minecraft:zombie'
+      if (typeId && typeId.indexOf(':') > 0) {
+        let parts = typeId.split(':')
+        let lootTable = parts[0] + ':entities/' + parts[1]
+        let pos = target.blockPosition()
+        server.runCommandSilent(
+          `loot spawn ${pos.x} ${pos.y + 0.5} ${pos.z} loot ${lootTable}`
+        )
+        // Visual feedback
+        server.runCommandSilent(
+          `particle minecraft:totem_of_undying ${pos.x} ${pos.y + 1} ${pos.z} 0.4 0.4 0.4 0.1 12 force`
+        )
+        try { player.tell('§6[Treasure Sense] §fDouble drops!') } catch (e2) {}
+      }
+    } catch (e) {}
+  }
+})
+
+
+// ═══════════════════════════════════════════════════════════════════════════════
+// BLOCK EVENTS
+// Thrifty Hands (BLD 15): refund placed blocks; Motherlode (LCK 30): jackpot
+// ═══════════════════════════════════════════════════════════════════════════════
+
+// ── Thrifty Hands (BLD >= 15): 5% chance to refund placed blocks ──
+// The block stays placed; only the consumed item is refunded to inventory.
+BlockEvents.placed(event => {
+  try {
+    let player = event.player
+    if (!player || player.creative || player.spectator) return
+    let server = player.server
+    let apt = getCachedAptitudes(server, player)
+    if (apt.bld < 15) return
+    if (Math.random() >= 0.05) return
+    let blockId = String(event.block.id || '')
+    if (!blockId) return
+    server.runCommandSilent(`give ${player.username} ${blockId} 1`)
+  } catch (e) {}
+})
+
+// ── Motherlode (LCK >= 30): 0.5% chance for 5x mining drops ──
+// Vanilla rolls drops once normally; we re-roll the block's loot table 4 more
+// times at the broken-block position. Loot table id pattern: <modid>:blocks/<path>.
+// If the table doesn't exist or the block has no loot (e.g. instant-break grass
+// drops via vanilla logic) the command silently no-ops — acceptable.
+BlockEvents.broken(event => {
+  try {
+    let player = event.player
+    if (!player || player.creative || player.spectator) return
+    let server = player.server
+    let apt = getCachedAptitudes(server, player)
+    if (apt.lck < 30) return
+    if (Math.random() >= 0.005) return
+    let blockId = String(event.block.id || '')
+    if (!blockId || blockId.indexOf(':') < 0) return
+    let parts = blockId.split(':')
+    let lootTable = parts[0] + ':blocks/' + parts[1]
+    let pos = event.block.pos
+    let mainhand = ''
+    try { mainhand = String(player.mainHandItem.id || '') } catch (e2) {}
+    for (let i = 0; i < 4; i++) {
+      server.runCommandSilent(
+        `loot spawn ${pos.x} ${pos.y + 0.5} ${pos.z} loot ${lootTable}`
+      )
+    }
+    server.runCommandSilent(
+      `particle minecraft:totem_of_undying ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0.2 24 force`
+    )
+    try { player.tell('§6[Motherlode] §lJACKPOT! §r§6×5 drops!') } catch (e3) {}
+  } catch (e) {}
 })
 
 
@@ -486,7 +659,7 @@ EntityEvents.death(event => {
 // STARTUP LOG
 // ═══════════════════════════════════════════════════════════════════════════════
 ServerEvents.loaded(event => {
-  console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded (Batch 1: 5-tier expansion)')
+  console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded (Batch 1+2)')
   console.log('  Tier 5 (Batch 1):')
   console.log('    STR 5: Might (+1.5 dmg, +5% HP)')
   console.log('    CON 5: Tough Hide (+2 max HP)')
@@ -497,26 +670,32 @@ ServerEvents.loaded(event => {
   console.log('    BLD 5: Steady Hand (+0.5 reach)')
   console.log('    LCK 5: Lucky Charm (+1 luck)')
   console.log('  Tier 10:')
+  console.log('    STR 10: Brutal Slash (+10% dmg, ~armor pen) [Batch 2]')
   console.log('    DEX 10: Fleet of Foot (+15% speed)')
   console.log('    CON 10: Hearty Meals (Regen I when well-fed)')
   console.log('    DEF 10: Second Wind (Regen III at low HP, 60s CD)')
-  console.log('    BLD 10: Quarryman (+5% block break speed) [Batch 1]')
-  console.log('  Tier 15 (Batch 1):')
+  console.log('    BLD 10: Quarryman (+5% block break speed)')
+  console.log('  Tier 15:')
+  console.log('    STR 15: Cleave (+20% first swing, 5s reset) [Batch 2]')
+  console.log('    CON 15: Steady Breath (water breathing + sat while underwater) [Batch 2]')
   console.log('    DEX 15: Deadeye (+10% projectile damage)')
   console.log('    DEF 15: Bulwark (+25% knockback resistance)')
   console.log('    MAG 15: Mana Blaze (+15% spell power)')
   console.log('    INT 15: Insight (+20% XP)')
+  console.log('    BLD 15: Thrifty Hands (5% refund placed blocks) [Batch 2]')
   console.log('  Tier 20:')
   console.log('    STR 20: Hemorrhage (Wither I on melee hit)')
   console.log('    CON 20: Overflow (Absorption at full HP)')
+  console.log('    MAG 20: Mystic Ward (dynamic DR scaled by spell power) [Batch 2]')
   console.log('    DEF 20: Turtle Shield (+4 toughness when not blocking)')
+  console.log('    LCK 20: Treasure Sense (5% double-roll on entity kill) [Batch 2]')
   console.log('  Tier 30:')
   console.log('    STR 30: True Strength (execute at <= 5% HP)')
   console.log('    DEX 30: Excitement (Speed III + Haste II on kill)')
   console.log('    CON 30: Iron Stomach (Saturation, slows hunger)')
   console.log('    DEF 30: Lion Heart (DR scales with missing HP, up to 30%)')
-  console.log('    MAG 30: Mana Inferno (+30% spell power) [Batch 1]')
+  console.log('    MAG 30: Mana Inferno (+30% spell power)')
   console.log('    INT 30: Enlightenment (+30% XP) [rebalanced from +50%]')
-  console.log('  Reserved for Batch 2: STR 10/15, CON 15, MAG 20 dynamic Mystic Ward, BLD 15, LCK 20/30')
+  console.log('    LCK 30: Motherlode (0.5% chance for 5x mining drops) [Batch 2]')
   console.log('  Reserved for Batch 3: MAG 10 Conservation, INT 10/20 XP refunds, BLD 20/30 craft refund, DEX 20 draw speed')
 })

@@ -4,6 +4,45 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 2) — Aptitude Batch 2: 7 event-driven skills shipped
+
+Second implementation pass on `IridescentCraft-internal/design/aptitude_skill_plan.md`. Fills out STR 10/15, CON 15, MAG 20 (rebalanced), BLD 15, LCK 20/30 — all the medium-complexity event-driven skills.
+
+### New skills (`kubejs/server_scripts/skills/justleveling_skills.js`)
+
+| Aptitude | Lvl | Skill | Effect | Hook |
+|---|:-:|---|---|---|
+| STR | 10 | **Brutal Slash** | +10% melee damage; ~10% armor pen approximation (capped at +5% damage at high target armor) | Tick attribute on `generic.attack_damage` mul_base 0.10 + EntityHurt-deal damage scaler reading target armor |
+| STR | 15 | **Cleave** | First swing of combat does +20%; 5s window resets after no in/out hits | EntityHurt-deal `event.damage *= 1.20` when `now - lastCombatTick > 100`; tracker stamped on hits both dealt and taken |
+| CON | 15 | **Steady Breath** | Water Breathing while submerged + Saturation drip (passive hunger drain mitigation) | Tick handler: `potionEffects.add('water_breathing', 30, 0)` while `isUnderWater()` + `potionEffects.add('saturation', 30, 0)` always on |
+| MAG | 20 | **Mystic Ward** (rebuilt) | DR formula `min(0.20, 0.05 + 0.01 * floor(bonusSpellPower / 0.20))` — 5% baseline scaling toward 20% cap at +300% spell power | EntityHurt-take reads `puffish_attributes:magic_damage` total, subtracts base 1.0, applies `event.damage *= (1 - dr)` |
+| BLD | 15 | **Thrifty Hands** | 5% chance to refund placed block (block stays placed; item returned to inventory) | `BlockEvents.placed` → `give <user> <blockId> 1` on RNG hit |
+| LCK | 20 | **Treasure Sense** | 5% chance for double-roll mob loot on kill | `EntityEvents.death` → `loot spawn <pos> loot <modid>:entities/<path>` |
+| LCK | 30 | **Motherlode** (rebalanced) | 0.5% chance for 5x mining drops (bumped from 0.01% per plan) | `BlockEvents.broken` → 4× `loot spawn <pos> loot <modid>:blocks/<path>` |
+
+### Implementation notes & known caveats
+
+- **Cleave's combat tracker** is shared across STR 15 (deal-damage) and the take-damage handler — any hit in or out resets the 5s "first-swing" window. Cleared on `PlayerEvents.loggedIn` along with the rest of the per-player state.
+- **Brutal Slash armor pen** is an approximation, not true armor-ignore. Vanilla MC computes armor reduction inside `LivingEntity.actuallyHurt()` which we can't easily intercept from KubeJS without a Java mixin. The current formula multiplies outgoing damage by `1 + min(0.05, target_armor × 0.004)` — at 20 armor the bonus is +5% damage, which roughly matches what "ignoring 10% of 20 armor" (= 2 effective armor → ~8% less DR) would produce. Document and revisit if it feels too weak in playtest.
+- **Steady Breath** uses cyclic 30-tick effect refreshes on a 100-tick handler (effect lasts 1.5s out of every 5s window). Underwater drain is reduced ~30% on average (30/100 ticks of full Water Breathing). Hunger drain reduction is approximate via passive Saturation 0 — the effect only kicks in for the 1.5s/5s the buff is active, slowing exhaustion accumulation by ~30% during that window.
+- **Mystic Ward** reads spell power via `player.getAttributeValue('puffish_attributes:magic_damage')`. Puffish's base for magic_damage is 1.0; bonus is total minus base. At +50% spell power (Mana Spark + Blaze) the player has bonus = 0.50, dr = `0.05 + 0.01 × floor(0.50 / 0.20)` = `0.05 + 0.02` = 7%. At +110% (full MAG line at MAG 30) dr = 10%. At +300% (multiple stacking sources from gear/perks) dr hits the 20% cap.
+- **Treasure Sense / Motherlode** rely on the convention that block/entity loot tables live at `<modid>:blocks/<path>` and `<modid>:entities/<path>`. Vanilla and most major mods follow this; mods that don't (or blocks with no loot table at all) silently no-op — the player just doesn't get the bonus. Revisit if observed misses pile up.
+- All Batch 2 skills inherit the existing creative/spectator skip and per-player aptitude cache (re-read every 100 ticks).
+
+### Lang updates (`kubejs/assets/justlevelingfork/lang/en_us.json`)
+
+- `life_eater` → "Mystic Ward" (dropped `[WIP]`); description updated to dynamic formula
+- `limit_breaker` → "Motherlode" (dropped `[WIP]`); description updated from 0.01% to 0.5% rate
+
+### Status after Batch 2
+
+- 22 / 28 new skill slots shipped (15 from Batch 1 + 7 from Batch 2)
+- 6 remaining in Batch 3 (Conservation of Magic, Arcane Efficiency, Materials Science, Resourceful, Master Craftsman, Rapid Fire)
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 — Aptitude Batch 1: 15 attribute-only skills shipped (5-tier expansion)
 
 First implementation batch from `IridescentCraft-internal/design/aptitude_skill_plan.md`. Fills the previously-empty Tier 5 and Tier 15 slots across all 8 aptitudes, plus reshuffles the MAG capstone line and rebalances Enlightenment.

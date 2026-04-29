@@ -56,8 +56,8 @@
   "skill.justlevelingfork.safe_port": "Arcane Efficiency [WIP]",
   "skill.justlevelingfork.safe_port.description": "Enchanting costs 25%% less XP by any means. (Work in progress — not yet functional)",
 
-  "skill.justlevelingfork.life_eater": "Mystic Ward [WIP]",
-  "skill.justlevelingfork.life_eater.description": "Damage reduction scales with bonus spell power: 5%% base + 1%% per 20%% spellpower (cap 20%%). (Work in progress — not yet functional)",
+  "skill.justlevelingfork.life_eater": "Mystic Ward",
+  "skill.justlevelingfork.life_eater.description": "Damage reduction scales with bonus spell power: 5%% base + 1%% per 20%% spellpower bonus, capped at 20%%.",
 
   "skill.justlevelingfork.wormhole_storage": "Mana Inferno",
   "skill.justlevelingfork.wormhole_storage.description": "Capstone of the Magic line. Spells deal +30%% damage.",
@@ -71,8 +71,8 @@
   "skill.justlevelingfork.lucky_drop.description": "Passive Luck attribute and Fortune I on all mining.",
   "overlay.skill.justlevelingfork.lucky_drop": "§a[Fortune's Favor] §rBonus drop x%s",
 
-  "skill.justlevelingfork.limit_breaker": "Motherlode [WIP]",
-  "skill.justlevelingfork.limit_breaker.description": "0.01%% chance to multiply mining output by 5x. (Work in progress — not yet functional)",
+  "skill.justlevelingfork.limit_breaker": "Motherlode",
+  "skill.justlevelingfork.limit_breaker.description": "0.5%% chance to multiply mining output by 5x — jackpot drops on a lucky strike.",
 
   "tooltip.skill.scholar.lock_item": ""
 }
