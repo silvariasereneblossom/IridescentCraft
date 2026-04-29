@@ -7,8 +7,7 @@
   "client": [
     "MixForgeGui",
     "MixPlayerRenderer",
-    "MixInventoryScreen",
-    "MixGunItem"
+    "MixInventoryScreen"
   ],
   "mixins": [
     "MixItemStack",
@@ -16,7 +15,6 @@
     "MixPlayer",
     "MixPowderSnowBlock",
     "MixShulkerBullet",
-    "MixTargetFinder",
     "MixVillager",
     "MixCraftingMenu"
   ],

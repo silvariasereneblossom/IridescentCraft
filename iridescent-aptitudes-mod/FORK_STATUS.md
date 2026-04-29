@@ -25,30 +25,35 @@ JLFork updates; forking gives us full control of:
 | Source clone + gradle simplification | done |
 | NOTICE / attribution per Apache 2.0 | done |
 | Branding (display name, version, authors) | done |
-| Strip unneeded integrations (gun mods, KubeJS plugin, BetterCombat) | done |
-| **Build environment fully wired** | **in progress** — need l2library + l2tabs + yacl jars in libs/ |
+| Strip unneeded integrations (gun mods, KubeJS plugin, BetterCombat, L2Tabs) | done |
+| **Build environment fully wired** | **done** — l2library + yacl in libs/; quilt repo added; clean build |
 | Passive remap (Magic Resist off MAG, etc.) | not started |
 | Native skill effect stripping | not started |
 | 5/10/15/20/30 threshold change | not started |
 | Replace upstream JLFork in mods/ | not started |
 | Codex entry + changelog + allowlist updates | not started |
 
-## Remaining build dependencies
+**Build verified 2026-04-29:** `./gradlew build` produces
+`build/libs/justlevelingfork-1.2.1-iridescent.1.jar` (~463 KB, 285 files)
+without errors. Foundation is now compile-ready for customization.
 
-The following compile-time deps need jars in `libs/` to complete the local
-build (cursemaven and other remote repos failed to resolve mapped variants):
+## Build dependencies (in libs/)
 
-- `l2library-1.20.1-2.4.28.jar` — used by config GUI tabs
-- `l2tabs-1.20.1-0.3.1.jar` — used by aptitude tab UI
-- `yet-another-config-lib-3.5.0+1.20.1-forge.jar` — config GUI
+All required jars are in `libs/`:
+- `curios-forge-5.14.1-1.20.1.jar`
+- `irons_spellbooks-1.20.1-3.15.5.1.jar`
+- `tetra-1.20.1-6.12.0.jar`
+- `mutil-1.20.1-6.3.0.jar`
+- `l2library-2.4.28.jar` (from modrinth.com/mod/l2library)
+- `yet_another_config_lib_v3-3.6.6+1.20.1-forge.jar` (from biomes-mod cache)
 
-Sources to grab from:
-- l2library: https://www.curseforge.com/minecraft/mc-mods/l2library
-- l2tabs: https://www.curseforge.com/minecraft/mc-mods/l2tabs
-- yacl: https://modrinth.com/mod/yacl
+L2Tabs was stripped entirely from the source (no Modrinth/CurseForge
+release for 1.20.1 Forge that we could find). The aptitude tab UI in the
+inventory is now driven directly by JLFork's own `DrawTabs` rendering;
+players access aptitudes via the Y keybind.
 
-Once libs/ is fully populated, `./build_mod.sh` (TODO — write this) should
-produce a clean `iridescent_aptitudes-1.2.1-iridescent.1.jar`.
+`build/libs/justlevelingfork-1.2.1-iridescent.1.jar` is the deployable
+artifact (built via `./gradlew build`).
 
 ## What's NOT in the fork (stripped from upstream)
 

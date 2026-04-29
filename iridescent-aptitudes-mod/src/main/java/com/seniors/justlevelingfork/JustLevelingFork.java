@@ -80,30 +80,9 @@ public class JustLevelingFork {
 
         ServerNetworking.init();
 
-        // Check for new updates
-    if (HandlerCommonConfig.HANDLER.instance().checkForUpdates) {
-        CompletableFuture.runAsync(() -> {
-            try {
-                String version = getLatestVersion();
-    
-                Optional<IModInfo> optionalModInfo = ModList.get().getMods()
-                        .stream()
-                        .filter(c -> Objects.equals(c.getModId(), MOD_ID))
-                        .findFirst();
-                
-                // Is this somehow isn't present then some really strange shit happen
-                if (optionalModInfo.isPresent()) {
-                    ModInfo modInfo = (ModInfo) optionalModInfo.get();
-                    if (!Objects.equals(modInfo.getVersion().toString(), version)) {
-                        UpdatesAvailable.left = true;
-                        UpdatesAvailable.right = version;
-                        LOGGER.info(">> NEW VERSION AVAILABLE: {}", version);
-                    }
-                }
-            } catch (Exception e) {
-                LOGGER.warn(">> Error checking for updates!", e);
-            }
-        });
+        // Update-check disabled in the Iridescent fork — we don't want the
+        // game phoning home to upstream's VERSION file. The constructor closes
+        // here; getLatestVersion() lives at class scope below.
     }
 
     @NotNull
