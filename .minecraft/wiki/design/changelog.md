@@ -4,6 +4,30 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 8) — Armor breaking instead of going inert: buffer + proactive clamp
+
+Tester reported armor pieces still shattering despite the death-penalty.js "items never break" system. Root cause: the inert clamp was a poll-based safety net at `maxDamage - 20` durability, but vanilla's `ItemStack.hurtAndBreak()` runs **synchronously inside `LivingEntity.hurt()`**. A single boss hit dealing 25+ durability damage to a piece (Apotheosis affixes, Cataclysm bursts, Mahou Tsukai effects) jumped from "safe" past `maxDamage` in one frame — our 2-tick poll arrived after the item was already destroyed.
+
+### Fix 1: bigger buffer
+
+`INERT_THRESHOLD: 20 → 100`. Items now go inert at `maxDamage - 100` (or half maxDur for short-life items). The death-penalty's per-death durability clamp uses the same value (consolidated). Players can still use most of an item's durability before it goes inert; the larger buffer absorbs reasonable single-hit bursts.
+
+### Fix 2: proactive synchronous clamp in EntityEvents.hurt
+
+Added a hurt-event hook that pre-clamps player armor BEFORE vanilla's `hurtArmor` runs. KubeJS `EntityEvents.hurt` fires at the `ForgeEventFactory.onLivingHurt` event point, which is BEFORE vanilla calls `entity.hurtArmor(amount)` (where the per-piece `hurtAndBreak` runs). So if we predict the about-to-happen durability loss using vanilla's formula `max(1, floor(damage / 4))` per piece, and clamp any piece that would cross the inert zone, the upcoming vanilla durability subtraction lands in safe territory rather than triggering a synchronous break.
+
+Combined effect: even a single 200-damage boss hit (~50 durability per piece) is caught by the proactive clamp regardless of where the piece's current durability sits, before vanilla can destroy it.
+
+### Caveats
+
+- Tetra modular armor still bypassed (their own durability protection kicks in first via `NATIVE_BREAK_PROTECTION_NS`)
+- Tools and weapons rely on the existing 2-tick poll + 10-tick full-inventory sweep — they don't take per-hit durability bursts the way armor does, so the larger buffer should be sufficient. If tester sees tools/weapons still breaking, escalate similarly.
+- The proactive clamp uses vanilla's per-piece formula; modded mobs that bypass `hurtArmor` and damage armor directly (rare) may slip through. Catch-all is the existing 2-tick poll.
+
+Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 7) — Apotheosis errored gem fix + EnchDesc tooltips for icraft enchants
 
 ### Errored gem fix (root cause)

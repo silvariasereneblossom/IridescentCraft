@@ -119,8 +119,11 @@ EntityEvents.death(event => {
     let durLoss = Math.ceil(maxDur * effectiveLoss)
 
     // Apply damage (stack.damageValue is current damage, higher = more broken)
-    // Clamp to maxDur - threshold so vanilla never sees >= maxDamage
-    var threshold = Math.min(20, Math.floor(maxDur * 0.5))
+    // Clamp to maxDur - threshold so vanilla never sees >= maxDamage.
+    // Uses the same INERT_THRESHOLD as the live durability sweep below
+    // (defined further down in the file as a top-level const) so the
+    // death-penalty clamp lines up with the live-clamp position.
+    var threshold = Math.min(100, Math.floor(maxDur * 0.5))
     var targetDamage = stack.damageValue + durLoss
 
     if (targetDamage >= maxDur - threshold) {
@@ -186,7 +189,16 @@ ItemEvents.canPickUp(event => {
 // below at a 10-tick cadence (every 0.5s), which covers everything the
 // 2-tick fast path misses. Items in Curios slots reach here via CuriosApi
 // unified handler iteration.
-const INERT_THRESHOLD = 20
+//
+// 2026-04-29: tester reported armor STILL shattering. Root cause: a 20-dur
+// buffer is too small. Vanilla's ItemStack.hurtAndBreak() runs synchronously
+// inside LivingEntity.hurt(), so a single boss hit dealing 25+ durability
+// damage to a piece (Apotheosis affixes, Cataclysm bursts, Mahou Tsukai
+// effects can do this) crosses from "safe" past maxDamage in one frame —
+// our 2-tick poll arrives after the item is already destroyed.
+// Bumped to 100 — covers any reasonable single-hit durability burst, while
+// still letting players use most of an item's durability before going inert.
+const INERT_THRESHOLD = 100
 
 // Mods that already have native "broken but in inventory" handling. Our
 // clamp + icraft_broken tag would collide with their own damaged-beyond-
@@ -257,6 +269,57 @@ global.tick_deathPenaltyBrokenCheck = (event) => {
   if (checkAndMarkBroken(oh)) player.setItemSlot('offhand', oh)
 }
 global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
+
+// Proactive synchronous clamp on the hurt event itself.
+// 2026-04-29: even with a 100-durability buffer, a single boss hit dealing
+// 200+ raw damage drops each armor piece's durability by 50+ (vanilla
+// `hurtArmor` formula = max(1, floor(damage / 4)) per piece). With
+// buffer=100, a 401+ raw damage hit could still skip the buffer in one
+// frame. Vanilla calls `LivingEntity.hurtArmor` AFTER the LivingHurt event
+// fires (which is what KubeJS EntityEvents.hurt hooks). So if we predict
+// the upcoming durability loss here and pre-clamp any armor that would
+// cross maxDamage, the about-to-run vanilla durability subtraction lands
+// in safe territory rather than synchronously breaking the item.
+EntityEvents.hurt(event => {
+  try {
+    if (!event.entity || !event.entity.player) return
+    var player = event.entity
+    var dmg = event.damage
+    if (!dmg || dmg <= 0) return
+    // Vanilla per-piece durability damage formula
+    var perPiece = Math.max(1, Math.floor(dmg / 4))
+
+    ARMOR_SLOTS.forEach(function(slot) {
+      try {
+        var stack = player.getEquipment(slot)
+        if (!stack || stack.isEmpty || !stack.isDamageableItem) return
+        if (hasNativeBreakProtection(stack)) return
+        var maxDur = stack.maxDamage
+        if (maxDur <= 0) return
+        var threshold = Math.min(INERT_THRESHOLD, Math.floor(maxDur * 0.5))
+        var clampPos = maxDur - threshold
+        // If the upcoming vanilla hit would push the piece into or past the
+        // inert zone, clamp+tag now. Vanilla will then apply +perPiece on
+        // top, leaving the piece at clampPos+perPiece — still under maxDur
+        // as long as perPiece < threshold (true unless dmg > 4*threshold).
+        if (stack.damageValue + perPiece >= clampPos) {
+          // Clamp far enough below clampPos that the upcoming vanilla
+          // durability subtraction won't push past. clampPos-perPiece keeps
+          // the post-hit value at clampPos exactly.
+          var safe = Math.max(0, clampPos - perPiece)
+          if (stack.damageValue !== safe) {
+            stack.damageValue = safe
+          }
+          if (!stack.nbt) stack.nbt = {}
+          stack.nbt.putBoolean(BROKEN_TAG, true)
+          player.setEquipment(slot, stack)
+        }
+      } catch (e) {}
+    })
+  } catch (e) {
+    console.warn('[durability] proactive armor clamp threw: ' + e)
+  }
+})
 
 // Slower full-inventory + Curios sweep. Catches damageable items that aren't
 // in the player's actively-equipped slots (hotbar slots other than the held
