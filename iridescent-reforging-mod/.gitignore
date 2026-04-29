@@ -1,0 +1,13 @@
+# Gradle output
+build/
+.gradle/
+*.iml
+.idea/
+.classpath
+.project
+.settings/
+
+# Forge runtime
+run/
+runs/
+libs/
