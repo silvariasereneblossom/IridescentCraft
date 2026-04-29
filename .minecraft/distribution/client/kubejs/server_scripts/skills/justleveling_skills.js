@@ -2,33 +2,51 @@
 // IridescentCraft — JustLeveling Aptitude Skills
 // File: kubejs/server_scripts/skills/justleveling_skills.js
 //
-// Passive and triggered skills that unlock at aptitude milestones (10, 20, 30).
+// Passive and triggered skills that unlock at aptitude milestones (5/10/15/20/30).
 // JustLeveling Fork stores aptitude levels in player NBT at:
 //   ForgeData.justlevelingfork.aptitude.<name>
 // Default aptitude level is 1 (not 0).
 //
-// ┌──────────────┬─────┬──────────────────────────────────────────────────────┐
-// │ Skill        │ Req │ Effect                                              │
-// ├──────────────┼─────┼──────────────────────────────────────────────────────┤
-// │ Fleet of Foot│DEX10│ +15% movement speed (attribute modifier)            │
-// │ Hearty Meals │CON10│ Regen I when food >= 18 (well-fed bonus)            │
-// │ Second Wind  │DEF10│ Regen III for 5s when HP < 30% (60s cooldown)       │
-// │ Hemorrhage   │STR20│ Wither I for 4s on melee hit (bleed DoT)            │
-// │ Overflow     │CON20│ Absorption I when at full HP (overshield)           │
-// │ Turtle Shield│DEF20│ +4 armor toughness when not blocking                │
-// │ Spell Attune │MAG20│ +25% spell power (attribute modifier)               │
-// │ Rapid Fire   │DEX20│ TODO: +15% bow draw speed (no standard attribute)   │
-// │ True Strength│STR30│ Execute targets at <= 5% HP on melee hit            │
-// │ Excitement   │DEX30│ Speed III + Haste II for 10s on kill                │
-// │ Iron Stomach │CON30│ Saturation effect every 5s (slows hunger drain)     │
-// │ Lion Heart   │DEF30│ DR scales with missing HP (up to 30%)               │
-// │ Mystic Ward  │MAG30│ 15% flat damage reduction (magic ward)              │
-// │ Enlightenment│INT30│ +50% XP gain (attribute modifier)                   │
-// │ Motherlode   │LCK30│ TODO: 0.01% chance to 5x mining (needs LootJS)     │
-// │ Arcane Effic.│MAG10│ TODO: -25% enchant XP cost (no clean hook)          │
-// │ Resourceful  │BLD20│ TODO: Craft refund (no crafting event)              │
-// │ Master Craft │BLD30│ TODO: Craft bonus (no crafting event)               │
-// └──────────────┴─────┴──────────────────────────────────────────────────────┘
+// Design plan: design/aptitude_skill_plan.md (IridescentCraft-internal repo)
+//
+// ┌────────────────┬─────┬──────────────────────────────────────────────────────┐
+// │ Skill          │ Req │ Effect                                              │
+// ├────────────────┼─────┼──────────────────────────────────────────────────────┤
+// │ Might          │STR 5│ +1.5 attack damage, +5% max HP                      │
+// │ Tough Hide     │CON 5│ +2 max HP flat                                      │
+// │ Light Step     │DEX 5│ +5% movement speed                                  │
+// │ Padded Frame   │DEF 5│ +1 armor, +1 armor toughness                        │
+// │ Mana Spark     │MAG 5│ +20 max mana, +5% spell power                       │
+// │ Curious        │INT 5│ +10% XP gain                                        │
+// │ Steady Hand    │BLD 5│ +0.5 block reach                                    │
+// │ Lucky Charm    │LCK 5│ +1 luck attribute                                   │
+// │ Quarryman      │BLD10│ +5% block break speed                               │
+// │ Fleet of Foot  │DEX10│ +15% movement speed                                 │
+// │ Hearty Meals   │CON10│ Regen I when food >= 18 (well-fed)                  │
+// │ Second Wind    │DEF10│ Regen III for 5s when HP < 30% (60s CD)             │
+// │ Deadeye        │DEX15│ +10% projectile damage                              │
+// │ Bulwark        │DEF15│ +25% knockback resistance                           │
+// │ Mana Blaze     │MAG15│ +15% spell power                                    │
+// │ Insight        │INT15│ +20% XP gain                                        │
+// │ Hemorrhage     │STR20│ Wither I for 4s on melee hit                        │
+// │ Overflow       │CON20│ Absorption I when at full HP                        │
+// │ Turtle Shield  │DEF20│ +4 armor toughness when not blocking                │
+// │ Rapid Fire     │DEX20│ TODO: +15% bow draw speed                           │
+// │ True Strength  │STR30│ Execute non-boss mobs at <= 5% HP on melee hit      │
+// │ Iron Stomach   │CON30│ Saturation effect every 5s                          │
+// │ Lion Heart     │DEF30│ DR scales with missing HP (up to 30%)               │
+// │ Excitement     │DEX30│ Speed III + Haste II for 10s on kill                │
+// │ Mana Inferno   │MAG30│ +30% spell power (capstone)                         │
+// │ Enlightenment  │INT30│ +30% XP gain                                        │
+// │ Master Craft   │BLD30│ TODO: Craft bonus                                   │
+// │ Motherlode     │LCK30│ TODO: mining 5x roll                                │
+// ├────────────────┴─────┴──────────────────────────────────────────────────────┤
+// │ Reserved for Batch 2/3:                                                   │
+// │ - MAG 20 Mystic Ward (dynamic DR formula tied to spell power)             │
+// │ - MAG 10 Conservation of Magic (mana-cost reduction)                      │
+// │ - INT 10 Arcane Efficiency, INT 20 Materials Science (XP refund hooks)    │
+// │ - STR 10/15, CON 15, BLD 15/20: event-driven, see plan                    │
+// └─────────────────────────────────────────────────────────────────────────────┘
 // =============================================================================
 
 const APTITUDE_LIST = [
@@ -113,6 +131,130 @@ global.tick_justlevelingSkills = (event) => {
     let uuid = player.uuid.toString()
     let name = player.username
 
+    // ── Might (STR >= 5): +1.5 attack damage, +5% max HP ──
+    try {
+      let mightDmg = (apt.str >= 5) ? 1.5 : 0
+      let mightHp  = (apt.str >= 5) ? 0.05 : 0
+      player.modifyAttribute('minecraft:generic.attack_damage',
+        'icraft_might_dmg', mightDmg, 'addition')
+      player.modifyAttribute('minecraft:generic.max_health',
+        'icraft_might_hp', mightHp, 'multiply_base')
+    } catch (e) {}
+
+    // ── Tough Hide (CON >= 5): +2 max HP flat ──
+    try {
+      let toughHp = (apt.con >= 5) ? 2 : 0
+      player.modifyAttribute('minecraft:generic.max_health',
+        'icraft_tough_hide', toughHp, 'addition')
+    } catch (e) {}
+
+    // ── Light Step (DEX >= 5): +5% movement speed ──
+    // Note: jump-fall damage immunity will be handled in EntityEvents.hurt (Batch 2)
+    try {
+      let lsSpeed = (apt.dex >= 5) ? 0.05 : 0
+      player.modifyAttribute('minecraft:generic.movement_speed',
+        'icraft_light_step', lsSpeed, 'multiply_base')
+    } catch (e) {}
+
+    // ── Padded Frame (DEF >= 5): +1 armor, +1 armor toughness ──
+    try {
+      let padArmor = (apt.def >= 5) ? 1 : 0
+      let padTough = (apt.def >= 5) ? 1 : 0
+      player.modifyAttribute('minecraft:generic.armor',
+        'icraft_padded_frame_a', padArmor, 'addition')
+      player.modifyAttribute('minecraft:generic.armor_toughness',
+        'icraft_padded_frame_t', padTough, 'addition')
+    } catch (e) {}
+
+    // ── Mana Spark (MAG >= 5): +20 max mana, +5% spell power ──
+    // Apply to both ISS and Ars max-mana attributes; spell power across all 3
+    // damage channels (puffish/ISS/Ars) per existing convention.
+    try {
+      let mpFlat = (apt.mag >= 5) ? 20 : 0
+      let mpDmg  = (apt.mag >= 5) ? 0.05 : 0
+      player.modifyAttribute('irons_spellbooks:max_mana',
+        'icraft_mana_spark_iss_mp', mpFlat, 'addition')
+      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.max_mana',
+        'icraft_mana_spark_ars_mp', mpFlat, 'addition')
+      player.modifyAttribute('puffish_attributes:magic_damage',
+        'icraft_mana_spark_dmg', mpDmg, 'multiply_base')
+      player.modifyAttribute('irons_spellbooks:spell_power',
+        'icraft_mana_spark_iss_dmg', mpDmg, 'multiply_base')
+      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+        'icraft_mana_spark_ars_dmg', mpDmg, 'multiply_base')
+    } catch (e) {}
+
+    // ── Curious (INT >= 5): +10% XP gain ──
+    try {
+      let curiousXp = (apt.int >= 5) ? 0.10 : 0
+      player.modifyAttribute('puffish_attributes:experience',
+        'icraft_curious', curiousXp, 'multiply_base')
+    } catch (e) {}
+
+    // ── Steady Hand (BLD >= 5): +0.5 block reach ──
+    try {
+      let reach = (apt.bld >= 5) ? 0.5 : 0
+      player.modifyAttribute('forge:block_reach',
+        'icraft_steady_hand', reach, 'addition')
+    } catch (e) {}
+
+    // ── Lucky Charm (LCK >= 5): +1 luck ──
+    try {
+      let luck = (apt.lck >= 5) ? 1 : 0
+      player.modifyAttribute('minecraft:generic.luck',
+        'icraft_lucky_charm', luck, 'addition')
+    } catch (e) {}
+
+    // ── Quarryman (BLD >= 10): +5% block break speed ──
+    try {
+      let qmSpeed = (apt.bld >= 10) ? 0.05 : 0
+      player.modifyAttribute('minecraft:player.block_break_speed',
+        'icraft_quarryman', qmSpeed, 'multiply_base')
+    } catch (e) {}
+
+    // ── Deadeye (DEX >= 15): +10% projectile damage ──
+    try {
+      let ddDmg = (apt.dex >= 15) ? 0.10 : 0
+      player.modifyAttribute('apothic_attributes:projectile_damage',
+        'icraft_deadeye', ddDmg, 'multiply_base')
+    } catch (e) {}
+
+    // ── Bulwark (DEF >= 15): +25% knockback resistance ──
+    try {
+      let bwKb = (apt.def >= 15) ? 0.25 : 0
+      player.modifyAttribute('minecraft:generic.knockback_resistance',
+        'icraft_bulwark', bwKb, 'addition')
+    } catch (e) {}
+
+    // ── Mana Blaze (MAG >= 15): +15% spell power ──
+    try {
+      let mbDmg = (apt.mag >= 15) ? 0.15 : 0
+      player.modifyAttribute('puffish_attributes:magic_damage',
+        'icraft_mana_blaze', mbDmg, 'multiply_base')
+      player.modifyAttribute('irons_spellbooks:spell_power',
+        'icraft_mana_blaze_iss', mbDmg, 'multiply_base')
+      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+        'icraft_mana_blaze_ars', mbDmg, 'multiply_base')
+    } catch (e) {}
+
+    // ── Insight (INT >= 15): +20% XP gain (stacks additively with Curious/Enlightenment) ──
+    try {
+      let insightXp = (apt.int >= 15) ? 0.20 : 0
+      player.modifyAttribute('puffish_attributes:experience',
+        'icraft_insight', insightXp, 'multiply_base')
+    } catch (e) {}
+
+    // ── Mana Inferno (MAG >= 30): +30% spell power capstone ──
+    try {
+      let miDmg = (apt.mag >= 30) ? 0.30 : 0
+      player.modifyAttribute('puffish_attributes:magic_damage',
+        'icraft_mana_inferno', miDmg, 'multiply_base')
+      player.modifyAttribute('irons_spellbooks:spell_power',
+        'icraft_mana_inferno_iss', miDmg, 'multiply_base')
+      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+        'icraft_mana_inferno_ars', miDmg, 'multiply_base')
+    } catch (e) {}
+
     // ── Fleet of Foot (DEX >= 10): +15% movement speed ──
     try {
       if (apt.dex >= 10) {
@@ -164,19 +306,15 @@ global.tick_justlevelingSkills = (event) => {
       }
     } catch (e) {}
 
-    // ── Spell Attunement (MAG >= 20): +25% spell power ──
+    // ── MAG 20 (reserved): replaced by dynamic Mystic Ward in Batch 2 ──
+    // Old Spell Attune (+25% spell power) is superseded by the
+    // Mana Spark/Blaze/Inferno line (5+15+30 = 50% at full investment).
+    // Strip any leftover modifier from previous installs.
     try {
-      if (apt.mag >= 20) {
-        player.modifyAttribute('irons_spellbooks:spell_power',
-          'icraft_spell_attunement', 0.25, 'multiply_base')
-        player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
-          'icraft_spell_attunement', 0.25, 'multiply_base')
-      } else {
-        player.modifyAttribute('irons_spellbooks:spell_power',
-          'icraft_spell_attunement', 0, 'multiply_base')
-        player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
-          'icraft_spell_attunement', 0, 'multiply_base')
-      }
+      player.modifyAttribute('irons_spellbooks:spell_power',
+        'icraft_spell_attunement', 0, 'multiply_base')
+      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+        'icraft_spell_attunement', 0, 'multiply_base')
     } catch (e) {}
 
     // ── Overflow (CON >= 20): Absorption I when at full HP ──
@@ -196,20 +334,17 @@ global.tick_justlevelingSkills = (event) => {
       }
     } catch (e) {}
 
-    // ── Enlightenment (INT >= 30): +50% XP gain ──
+    // ── Enlightenment (INT >= 30): +30% XP gain ──
+    // Stacks additively with Curious (+10%) and Insight (+20%) → +60% at full INT
     try {
-      if (apt.int >= 30) {
-        player.modifyAttribute('puffish_attributes:experience',
-          'icraft_enlightenment', 0.50, 'multiply_base')
-      } else {
-        player.modifyAttribute('puffish_attributes:experience',
-          'icraft_enlightenment', 0, 'multiply_base')
-      }
+      let entXp = (apt.int >= 30) ? 0.30 : 0
+      player.modifyAttribute('puffish_attributes:experience',
+        'icraft_enlightenment', entXp, 'multiply_base')
     } catch (e) {}
 
-    // ── Mystic Ward (MAG >= 30): Resistance I (applied as effect, DR in hurt event) ──
-    // Handled in EntityEvents.hurt below. No tick action needed here.
-    // The hurt event reads aptitude cache directly.
+    // ── MAG 30 capstone is now Mana Inferno (handled above) ──
+    // Old flat 15% Mystic Ward DR is removed; the dynamic Mystic Ward
+    // formula moves down to MAG 20 and ships in Batch 2.
   })
 }
 global.registerServerTick('tick_justlevelingSkills', 100, 37)
@@ -313,12 +448,9 @@ EntityEvents.hurt(event => {
     } catch (e) {}
   }
 
-  // ── Mystic Ward (MAG >= 30): 15% flat damage reduction ──
-  if (apt.mag >= 30) {
-    try {
-      event.damage *= 0.85
-    } catch (e) {}
-  }
+  // ── Mystic Ward (MAG 20): dynamic DR formula — ships in Batch 2 ──
+  // Was: flat 15% DR at MAG 30. New design moves DR to MAG 20 with
+  // formula min(0.20, 0.05 + 0.01 * (spellPower / 0.20)).
 })
 
 
@@ -354,21 +486,37 @@ EntityEvents.death(event => {
 // STARTUP LOG
 // ═══════════════════════════════════════════════════════════════════════════════
 ServerEvents.loaded(event => {
-  console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded')
-  console.log('  Implemented skills:')
+  console.log('[IridescentCraft] JustLeveling Aptitude Skills loaded (Batch 1: 5-tier expansion)')
+  console.log('  Tier 5 (Batch 1):')
+  console.log('    STR 5: Might (+1.5 dmg, +5% HP)')
+  console.log('    CON 5: Tough Hide (+2 max HP)')
+  console.log('    DEX 5: Light Step (+5% speed; jump-fall in Batch 2)')
+  console.log('    DEF 5: Padded Frame (+1 armor, +1 toughness)')
+  console.log('    MAG 5: Mana Spark (+20 mana, +5% spell power)')
+  console.log('    INT 5: Curious (+10% XP)')
+  console.log('    BLD 5: Steady Hand (+0.5 reach)')
+  console.log('    LCK 5: Lucky Charm (+1 luck)')
+  console.log('  Tier 10:')
   console.log('    DEX 10: Fleet of Foot (+15% speed)')
   console.log('    CON 10: Hearty Meals (Regen I when well-fed)')
   console.log('    DEF 10: Second Wind (Regen III at low HP, 60s CD)')
+  console.log('    BLD 10: Quarryman (+5% block break speed) [Batch 1]')
+  console.log('  Tier 15 (Batch 1):')
+  console.log('    DEX 15: Deadeye (+10% projectile damage)')
+  console.log('    DEF 15: Bulwark (+25% knockback resistance)')
+  console.log('    MAG 15: Mana Blaze (+15% spell power)')
+  console.log('    INT 15: Insight (+20% XP)')
+  console.log('  Tier 20:')
   console.log('    STR 20: Hemorrhage (Wither I on melee hit)')
   console.log('    CON 20: Overflow (Absorption at full HP)')
-  console.log('    DEF 20: Turtle Shield (+4 armor toughness when not blocking)')
-  console.log('    MAG 20: Spell Attunement (+25% spell power)')
+  console.log('    DEF 20: Turtle Shield (+4 toughness when not blocking)')
+  console.log('  Tier 30:')
   console.log('    STR 30: True Strength (execute at <= 5% HP)')
   console.log('    DEX 30: Excitement (Speed III + Haste II on kill)')
   console.log('    CON 30: Iron Stomach (Saturation, slows hunger)')
   console.log('    DEF 30: Lion Heart (DR scales with missing HP, up to 30%)')
-  console.log('    MAG 30: Mystic Ward (15% flat DR)')
-  console.log('    INT 30: Enlightenment (+50% XP gain)')
-  console.log('  TODO: Rapid Fire (DEX 20), Arcane Efficiency (MAG 10),')
-  console.log('    Resourceful (BLD 20), Master Craftsman (BLD 30), Motherlode (LCK 30)')
+  console.log('    MAG 30: Mana Inferno (+30% spell power) [Batch 1]')
+  console.log('    INT 30: Enlightenment (+30% XP) [rebalanced from +50%]')
+  console.log('  Reserved for Batch 2: STR 10/15, CON 15, MAG 20 dynamic Mystic Ward, BLD 15, LCK 20/30')
+  console.log('  Reserved for Batch 3: MAG 10 Conservation, INT 10/20 XP refunds, BLD 20/30 craft refund, DEX 20 draw speed')
 })

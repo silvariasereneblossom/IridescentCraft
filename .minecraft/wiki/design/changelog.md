@@ -4,6 +4,58 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 — Aptitude Batch 1: 15 attribute-only skills shipped (5-tier expansion)
+
+First implementation batch from `IridescentCraft-internal/design/aptitude_skill_plan.md`. Fills the previously-empty Tier 5 and Tier 15 slots across all 8 aptitudes, plus reshuffles the MAG capstone line and rebalances Enlightenment.
+
+### New skills (15 — all attribute-modifier-based, applied via `kubejs/server_scripts/skills/justleveling_skills.js`)
+
+| Aptitude | Lvl | Skill | Effect | Attribute |
+|---|:-:|---|---|---|
+| STR | 5 | **Might** | +1.5 attack damage, +5% max HP | `generic.attack_damage` add 1.5 + `generic.max_health` mul_base 0.05 |
+| CON | 5 | **Tough Hide** | +2 max HP flat | `generic.max_health` add 2 |
+| DEX | 5 | **Light Step** | +5% movement speed | `generic.movement_speed` mul_base 0.05 |
+| DEF | 5 | **Padded Frame** | +1 armor, +1 toughness | `generic.armor` add 1 + `generic.armor_toughness` add 1 |
+| MAG | 5 | **Mana Spark** | +20 max mana, +5% spell power | ISS+Ars max_mana add 20 + spell_power mul_base 0.05 (puffish/ISS/Ars) |
+| INT | 5 | **Curious** | +10% XP gain | `puffish_attributes:experience` mul_base 0.10 |
+| BLD | 5 | **Steady Hand** | +0.5 block reach | `forge:block_reach` add 0.5 |
+| LCK | 5 | **Lucky Charm** | +1 luck | `generic.luck` add 1 |
+| BLD | 10 | **Quarryman** | +5% block break speed | `minecraft:player.block_break_speed` mul_base 0.05 |
+| DEX | 15 | **Deadeye** | +10% projectile damage | `apothic_attributes:projectile_damage` mul_base 0.10 |
+| DEF | 15 | **Bulwark** | +25% knockback resistance | `generic.knockback_resistance` add 0.25 |
+| MAG | 15 | **Mana Blaze** | +15% spell power | spell_power mul_base 0.15 (puffish/ISS/Ars) |
+| INT | 15 | **Insight** | +20% XP gain | `puffish_attributes:experience` mul_base 0.20 |
+| MAG | 30 | **Mana Inferno** (capstone) | +30% spell power | spell_power mul_base 0.30 (puffish/ISS/Ars) |
+| INT | 30 | **Enlightenment** (rebalanced) | +30% XP gain (was +50%) | `puffish_attributes:experience` mul_base 0.30 |
+
+INT XP line stacks additively to **+60% at full investment** (Curious 10 + Insight 20 + Enlightenment 30) — cleaner than the +110% the original draft would have produced.
+
+### Removals / repurposing
+
+- **Spell Attune (MAG 20, +25% spell power)** → removed. Slot reserved for the dynamic Mystic Ward formula in Batch 2 (DR scales with spell power, capped at 20%). The new Mana Spark/Blaze/Inferno line at MAG 5/15/30 gives **+50% total spell power** (vs old +25%) — a net buff, just spread across more tiers.
+- **Mystic Ward (MAG 30, flat 15% DR)** → removed. The dynamic Mystic Ward formula moves down to MAG 20 (Batch 2). MAG 30 capstone is now Mana Inferno.
+- **Enlightenment** dropped from +50% to +30% — matches the additive INT XP line philosophy.
+
+### Lang updates (`kubejs/assets/justlevelingfork/lang/en_us.json`)
+
+- `wormhole_storage` (was "Mystic Ward") → "Mana Inferno", new description
+- `life_eater` (was "Spell Attunement") → "Mystic Ward [WIP]" placeholder for Batch 2
+
+### Code structure
+
+All Batch 1 skills follow the existing `class_passives`-style pattern: read aptitude level via `getCachedAptitudes()` (re-read every 100 ticks), apply `player.modifyAttribute(...)` with stable modifier IDs (`icraft_<skill_key>`), set value to 0 when threshold not met (handles respec). Spell-power skills apply to **all three** spell-damage attributes (`puffish_attributes:magic_damage`, `irons_spellbooks:spell_power`, `ars_nouveau:ars_nouveau.perk.spell_damage`) per the existing class_passives convention — different mods only read their own attribute.
+
+Mirrored to all 3 distros.
+
+### Reserved for future batches
+
+- **Batch 2 (event-driven, ~6h):** STR 10 Brutal Slash, STR 15 Cleave, CON 15 Steady Breath, MAG 20 dynamic Mystic Ward, BLD 15 Thrifty Hands, LCK 20 Treasure Sense, LCK 30 Motherlode (LootJS bump from 0.01% to 0.5%)
+- **Batch 3 (cross-mod / fragile hooks, ~6h):** MAG 10 Conservation of Magic, INT 10 Arcane Efficiency, INT 20 Materials Science, BLD 20 Resourceful, BLD 30 Master Craftsman, DEX 20 Rapid Fire (Apothic Attributes draw_speed)
+
+Design plan: `IridescentCraft-internal/design/aptitude_skill_plan.md`.
+
+---
+
 ## 2026-04-28 (cont. 33) — Liteminer hunger gate: vein chains cancel below 6/20 hunger
 
 We do have a vein-miner — `liteminer-forge-1.20.1-1.0.0` — I missed it on the first grep. Built-in `food_exhaustion = 0.2` per block is a soft tax (~3 hunger over a full 64-block chain). User wanted a hard gate.

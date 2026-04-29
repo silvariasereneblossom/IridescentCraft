@@ -56,11 +56,11 @@
   "skill.justlevelingfork.safe_port": "Arcane Efficiency [WIP]",
   "skill.justlevelingfork.safe_port.description": "Enchanting costs 25%% less XP by any means. (Work in progress — not yet functional)",
 
-  "skill.justlevelingfork.life_eater": "Spell Attunement",
-  "skill.justlevelingfork.life_eater.description": "Flat +25%% magic damage modifier, additive with class bonuses.",
+  "skill.justlevelingfork.life_eater": "Mystic Ward [WIP]",
+  "skill.justlevelingfork.life_eater.description": "Damage reduction scales with bonus spell power: 5%% base + 1%% per 20%% spellpower (cap 20%%). (Work in progress — not yet functional)",
 
-  "skill.justlevelingfork.wormhole_storage": "Mystic Ward",
-  "skill.justlevelingfork.wormhole_storage.description": "Gain damage reduction equal to half your total magic modifier.",
+  "skill.justlevelingfork.wormhole_storage": "Mana Inferno",
+  "skill.justlevelingfork.wormhole_storage.description": "Capstone of the Magic line. Spells deal +30%% damage.",
 
   "skill.justlevelingfork.critical_roll": "Lucky Strike",
   "skill.justlevelingfork.critical_roll.description": "20%% chance to deal 120%% damage on any attack.",
