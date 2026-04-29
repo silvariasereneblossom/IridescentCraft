@@ -1,0 +1,37 @@
+{
+  "name": "Curated Keybinds",
+  "icon": "minecraft:lever",
+  "category": "icraft:systems",
+  "sortnum": 8,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Out of the box, 420+ mods registered $(bold)339 keybinds$() across the pack with $(bold)161$() of them sharing keys with at least one other ability. The pack ships a curated $(thing)options.txt$() that resolves the worst in-world conflicts so you can play casters and martial classes without your spell-cast triggering voice chat or your boots ability triggering a backpack."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What stays default",
+      "text": "$(bold)Iron's Spellbooks$() casters use the canonical magic keys:$(br)$(bold)V$() — Cast spell$(br)$(bold)R$() — Spell wheel$(br)$(bold)Left Alt$() — Spell bar modifier$(br2)$(bold)Ars Nouveau$() casters:$(br)$(bold)C$() — Open spell book$(br)$(bold)Z$() / $(bold)X$() — Previous / next spell slot$(br2)$(bold)Backpacks$() — $(bold)B$() opens your $(thing)Sophisticated Backpack$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Armor abilities → Numpad",
+      "text": "Armor sets all defaulted to $(bold)V$()/$(bold)C$()/$(bold)X$()/$(bold)B$() — collisions with caster keys. Now consolidated to the Numpad:$(br2)$(bold)Cataclysm$() armor (set bonus weapons):$(br)Numpad 1 = boots, 2 = helmet, 3 = generic ability, * = chestplate$(br2)$(bold)Mekanism$() MekaSuit:$(br)Numpad 6 = head, 9 = feet, + = chest, = = legs$(br2)$(bold)Ad Astra$() spacesuit: Numpad 5 (toggle flight)$(br)$(bold)Terramity$() armor: Numpad 4 (set bonus), 7 (dash), 8 (slam)"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Unbound (you can re-bind if you want)",
+      "text": "Some niche or rarely-used keybinds were unbound to clear conflicts. They still work — they just have no default key. To set one, open the controls menu and assign a key:$(br2)$(bold)Voice Chat$() — opt-in$(br)$(bold)AdHooks$() (grappling) — was hijacking $(bold)mouse$()/$(bold)Space$()/$(bold)Shift$()/$(bold)Ctrl$()$(br)$(bold)Occultism Backpack$() — use Sophisticated Backpacks instead$(br)$(bold)Deeperdarker Transmit$() — niche teleport$(br)$(bold)More Artifacts$() Dragon Eye / Eye Teleport — niche$(br)$(bold)Botania Corporea Request$() — niche$(br)$(bold)Hide Icons$() / $(bold)Selective Displacement$() — debug-ish"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Context-scoped overlaps (left alone)",
+      "text": "Some keys still appear on more than one ability $(italic)but only ever fire one at a time$() because the games is in different states:$(br2)$(bold)JEI keybinds$() — only fire when the JEI overlay is up$(br)$(bold)Journeymap fullscreen keys$() — only inside the map UI$(br)$(bold)Jade$() (numpad 0–5) — only when looking at a block with the Jade tooltip$(br)$(bold)Crafting Tweaks$() ($(bold)Tab$()) — only inside crafting screens$(br)$(bold)Trash Slot$() ($(bold)T$()) — only inside inventory$(br2)These look like collisions in the controls menu but won't fight each other in actual play."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Customizing further",
+      "text": "The bundled defaults are a starting point. Open Options → Controls in-game to customize. Look for the $(thing)search bar$() at the top of the controls menu — typing a mod name or action filters the list to just that mod's keybinds.$(br2)If you've already customized your keybinds before installing the pack, your customizations are preserved — the pack only sets defaults for $(italic)unset$() keys when $(thing)options.txt$() is freshly populated. Existing values aren't overwritten on update."
+    }
+  ]
+}
