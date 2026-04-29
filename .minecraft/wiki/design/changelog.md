@@ -4,6 +4,28 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 20) — Full ISS robe piece drops (Apotheosis-affixed)
+
+Parallel rail to magic_cloth crafting — rare full-piece drops of T1 ISS robe sets, with Apotheosis affixes pre-rolled by the existing `apotheosis:affix_loot` global modifier.
+
+**Apotheosis compatibility check:** ISS armor (`ExtendedArmorItem`) extends vanilla `net.minecraft.world.item.ArmorItem`. Apotheosis's `LootCategory.HELMET/CHESTPLATE/LEGGINGS/BOOTS` use `armorSlot(EquipmentSlot)` predicates that match any ArmorItem by slot — confirmed against `dev/shadowsoffire/apotheosis/adventure/loot/LootCategory.class`. No tag wiring needed; affixes are automatic on every drop from any loot table.
+
+**Drop pool (40 pieces — 10 craftable T1 robe sets):** Wizard, Cultist, Cryomancer, Electromancer, Plagued, Priest, Pyromancer, Shadow-Walker, Pumpkin (Scarecrow), Wandering Magician. Excludes Archevoker (smithing-only T2), Netherite Battlemage (T4), Infernal Sorcerer / Paladin (boss-tier), Iron's Crown / Tarnished Crown / Boots of Speed (relics).
+
+| Source | Total chance | Rationale |
+|---|---|---|
+| `irons_spellbooks:chests/*` | 10% | Intentional source — caster strongholds |
+| Magic mobs (witch/evoker/vex/illusioner) | 5% per kill | Themed mob — moderate rarity |
+| Vanilla undead (zombie/skeleton/etc.) | 2.5% per kill | Passive trickle |
+
+Per-piece chance = total / 40, rolled independently per entry. Slight statistical noise from independent rolls but expected drop frequency matches the headline rate within ~0.5%.
+
+The cascade matches the arcane_essence rates from cont. 19 (chests > magic mobs > undead, halving each step). A player farming undead trash mobs has a slow path to a robe; ISS structure raiding is the fastest path; magic mob hunting is between.
+
+Implemented in `kubejs/server_scripts/loot/lootjs_overhaul.js` via `injectRobeDrops(modifier, totalChance)` helper. Mirrored to all 3 distros.
+
+---
+
 ## 2026-04-29 (cont. 19) — Magic cloth accessibility: arcane_essence loot injection
 
 T1 caster crafting was bottlenecked on `irons_spellbooks:arcane_essence` volume — Wizard chestplate needs 64 (8 magic_cloth × 8 essence), full Wizard set needs 192. ISS does drop arcane_essence in its structure chests + caster-mob drops natively, but the rate didn't make the Wizard set feel reasonably craftable on a casual T1 timeline.

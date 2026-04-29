@@ -158,6 +158,76 @@ LootJS.modifiers(event => {
         .when(c => c.randomChance(0.10)))
   })
 
+  // ─── FULL ROBE PIECE DROPS ────────────────────────────────────────────
+  // Rare full-piece drops as a parallel rail to magic_cloth crafting.
+  // Pieces are vanilla ArmorItem subclasses, so Apotheosis's `affix_loot`
+  // global modifier (data/apotheosis/loot_modifiers/affix_loot.json)
+  // catches every drop and rolls affixes via the HELMET/CHESTPLATE/
+  // LEGGINGS/BOOTS LootCategory predicates — confirmed against
+  // dev/shadowsoffire/apotheosis/adventure/loot/LootCategory.class.
+  //
+  // Pool is the 10 T1-craftable robe sets (40 pieces total). Excludes
+  // archevoker (smithing-only T2 upgrade), netherite_mage (T4),
+  // infernal_sorcerer/paladin (boss-tier), gold_crown/tarnished/
+  // boots_of_speed (relics).
+  //
+  // Total per-source rate splits evenly across all 40 pieces:
+  //   ISS chests       10%  (intentional source — caster strongholds)
+  //   magic mobs        5%  (witch/evoker/vex/illusioner)
+  //   vanilla undead  2.5%  (passive trickle)
+  // Per-piece chance = total / 40, rolled independently per entry.
+  // Independent rolls allow rare double-drops, but expected value
+  // matches the headline rate within ~0.5%.
+  var T1_ROBE_PIECES = [
+    'irons_spellbooks:wizard_helmet',          'irons_spellbooks:wizard_chestplate',
+    'irons_spellbooks:wizard_leggings',        'irons_spellbooks:wizard_boots',
+    'irons_spellbooks:cultist_helmet',         'irons_spellbooks:cultist_chestplate',
+    'irons_spellbooks:cultist_leggings',       'irons_spellbooks:cultist_boots',
+    'irons_spellbooks:cryomancer_helmet',      'irons_spellbooks:cryomancer_chestplate',
+    'irons_spellbooks:cryomancer_leggings',    'irons_spellbooks:cryomancer_boots',
+    'irons_spellbooks:electromancer_helmet',   'irons_spellbooks:electromancer_chestplate',
+    'irons_spellbooks:electromancer_leggings', 'irons_spellbooks:electromancer_boots',
+    'irons_spellbooks:plagued_helmet',         'irons_spellbooks:plagued_chestplate',
+    'irons_spellbooks:plagued_leggings',       'irons_spellbooks:plagued_boots',
+    'irons_spellbooks:priest_helmet',          'irons_spellbooks:priest_chestplate',
+    'irons_spellbooks:priest_leggings',        'irons_spellbooks:priest_boots',
+    'irons_spellbooks:pyromancer_helmet',      'irons_spellbooks:pyromancer_chestplate',
+    'irons_spellbooks:pyromancer_leggings',    'irons_spellbooks:pyromancer_boots',
+    'irons_spellbooks:shadowwalker_helmet',    'irons_spellbooks:shadowwalker_chestplate',
+    'irons_spellbooks:shadowwalker_leggings',  'irons_spellbooks:shadowwalker_boots',
+    'irons_spellbooks:pumpkin_helmet',         'irons_spellbooks:pumpkin_chestplate',
+    'irons_spellbooks:pumpkin_leggings',       'irons_spellbooks:pumpkin_boots',
+    'irons_spellbooks:wandering_magician_helmet',    'irons_spellbooks:wandering_magician_chestplate',
+    'irons_spellbooks:wandering_magician_leggings',  'irons_spellbooks:wandering_magician_boots'
+  ]
+
+  function injectRobeDrops(modifier, totalChance) {
+    var perPiece = totalChance / T1_ROBE_PIECES.length
+    T1_ROBE_PIECES.forEach(function(itemId) {
+      modifier.addLoot(LootEntry.of(itemId)
+        .when(c => c.randomChance(perPiece)))
+    })
+  }
+
+  // ISS chests — 10% combined per chest
+  injectRobeDrops(
+    event.addLootTableModifier(/^irons_spellbooks:chests\/.*/),
+    0.10
+  )
+
+  // Magic mobs — 5% per kill
+  ;['minecraft:witch', 'minecraft:evoker', 'minecraft:vex',
+    'minecraft:illusioner'].forEach(function(mobId) {
+    injectRobeDrops(event.addEntityLootModifier(mobId), 0.05)
+  })
+
+  // Vanilla undead — 2.5% per kill
+  ;['minecraft:zombie', 'minecraft:zombie_villager', 'minecraft:husk',
+    'minecraft:drowned', 'minecraft:skeleton', 'minecraft:wither_skeleton',
+    'minecraft:stray', 'minecraft:phantom'].forEach(function(mobId) {
+    injectRobeDrops(event.addEntityLootModifier(mobId), 0.025)
+  })
+
   // Remove ALL endgame KubeJS items from passive mob loot (safety net)
   event
     .addEntityLootModifier('minecraft:pig')
