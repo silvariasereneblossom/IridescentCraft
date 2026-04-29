@@ -1,0 +1,25 @@
+{
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "materialSlotCount": 1,
+  "displayType": "major",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": {
+    "integrity": 1
+  },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:metal/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_plate",
+      "moduleVariant": "chestplate/chest_plate/"
+    }
+  ]
+}

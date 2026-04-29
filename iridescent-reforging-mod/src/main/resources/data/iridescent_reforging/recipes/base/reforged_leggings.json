@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "LLL",
+    "L L",
+    "L L"
+  ],
+  "key": {
+    "L": {"item": "minecraft:leather"}
+  },
+  "result": {
+    "item": "iridescent_reforging:reforged_leggings"
+  }
+}

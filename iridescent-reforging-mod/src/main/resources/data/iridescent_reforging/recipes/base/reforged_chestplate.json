@@ -1,0 +1,14 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "L L",
+    "LLL",
+    "LLL"
+  ],
+  "key": {
+    "L": {"item": "minecraft:leather"}
+  },
+  "result": {
+    "item": "iridescent_reforging:reforged_chestplate"
+  }
+}

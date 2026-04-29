@@ -1,0 +1,30 @@
+{
+  "type": "tetra:basic_major_module",
+  "slots": [
+    "boots/boot_sole"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:metal/"
+      ],
+      "key": "boots/boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.0
+        },
+        "integrity": 2,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    }
+  ]
+}

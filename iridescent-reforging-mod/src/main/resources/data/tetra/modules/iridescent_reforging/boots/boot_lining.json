@@ -1,0 +1,32 @@
+{
+  "type": "tetra:basic_module",
+  "slots": [
+    "boots/boot_lining"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:fabric/",
+        "tetra:fibre/",
+        "tetra:skin/"
+      ],
+      "key": "boots/boot_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.movement_speed": 0.002
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    }
+  ]
+}

@@ -1,0 +1,32 @@
+{
+  "type": "tetra:basic_module",
+  "slots": [
+    "chestplate/chest_lining"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:fabric/",
+        "tetra:fibre/",
+        "tetra:skin/"
+      ],
+      "key": "chestplate/chest_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    }
+  ]
+}

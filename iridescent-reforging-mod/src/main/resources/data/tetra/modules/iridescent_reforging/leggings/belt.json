@@ -1,0 +1,32 @@
+{
+  "type": "tetra:basic_module",
+  "slots": [
+    "leggings/belt"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:fabric/",
+        "tetra:fibre/",
+        "tetra:skin/"
+      ],
+      "key": "leggings/belt/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    }
+  ]
+}
