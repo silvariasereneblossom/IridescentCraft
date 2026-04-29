@@ -1,0 +1,14 @@
+{
+  "skin_id": "iridescent_reforging:cultist_helmet",
+  "slot": "helmet",
+  "source_item": "irons_spellbooks:cultist_helmet",
+  "display_name": "Reforged Cultist Hood",
+  "tier": 2,
+  "base_attributes": [
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.05
+    }
+  ]
+}

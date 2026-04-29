@@ -1,8 +1,16 @@
 package com.iridescentcraft.reforging;
 
 import com.iridescentcraft.reforging.registry.ModItems;
+import com.iridescentcraft.reforging.skin.IssRendererFactories;
+import com.iridescentcraft.reforging.skin.SkinDataLoader;
+import com.iridescentcraft.reforging.skin.SkinRegistry;
+import net.minecraftforge.api.distmarker.Dist;
+import net.minecraftforge.common.MinecraftForge;
+import net.minecraftforge.event.AddReloadListenerEvent;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -15,6 +23,33 @@ public class IridescentReforging {
     public IridescentReforging() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
         ModItems.ITEMS.register(modBus);
+
+        // Server-side: register data-pack reload listener for skins.
+        // Forge bus, not mod bus — AddReloadListenerEvent fires on world
+        // load and /reload, both of which we need to honor for hot-edits.
+        MinecraftForge.EVENT_BUS.register(this);
+
+        // Client-side: register Geckolib renderer factories at FMLClientSetup.
+        // Mod bus event, gated to client dist via DistExecutor at the
+        // event-method side.
+        modBus.addListener(IridescentReforging::onClientSetup);
+
         LOGGER.info("[{}] mod entrypoint initialized", MODID);
+    }
+
+    @SubscribeEvent
+    public void onAddReloadListener(AddReloadListenerEvent event) {
+        event.addListener(new SkinDataLoader());
+        LOGGER.info("[{}] registered SkinDataLoader as data-pack reload listener", MODID);
+    }
+
+    private static void onClientSetup(FMLClientSetupEvent event) {
+        // Per-source-mod factory classes register their renderers here.
+        // Each is internally gated on ModList.isLoaded so absent source
+        // mods don't crash the client.
+        event.enqueueWork(() -> {
+            IssRendererFactories.register(SkinRegistry.get());
+            // TODO(phase 7): Aether/TF/Cataclysm factory classes here.
+        });
     }
 }

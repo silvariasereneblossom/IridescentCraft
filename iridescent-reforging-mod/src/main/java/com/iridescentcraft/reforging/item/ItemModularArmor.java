@@ -4,16 +4,22 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.HashMultimap;
 import com.google.common.collect.Multimap;
+import com.iridescentcraft.reforging.skin.SkinDefinition;
+import com.iridescentcraft.reforging.skin.SkinRegistry;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import se.mickelus.tetra.items.modular.IModularItem;
 import se.mickelus.tetra.module.data.EffectData;
 import se.mickelus.tetra.module.data.ItemProperties;
 import se.mickelus.tetra.module.data.SynergyData;
+
+import java.util.Optional;
+import java.util.function.Consumer;
 
 import java.util.concurrent.TimeUnit;
 
@@ -176,10 +182,28 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
             // now silent to avoid spam.
         }
 
-        // (3) Skin base attributes — phase 6.
-        // TODO(phase 6): if (stack.getTag() has "Skin") look up SkinRegistry
-        //                and merge the entry's base_attributes here.
+        // (3) Skin base attributes (phase 6) — read tag.Skin, look up the
+        // SkinDefinition, and merge in its baseAttributes. Skin lookup is
+        // null-safe; absent skin means we just return material+module
+        // attributes.
+        String skinId = ItemModularArmorClient.readSkinId(stack);
+        if (skinId != null) {
+            Optional<SkinDefinition> skin = SkinRegistry.get().getDefinition(skinId);
+            skin.ifPresent(def -> combined.putAll(def.baseAttributes()));
+        }
 
         return combined;
+    }
+
+    // ── Client-side renderer dispatch (phase 6) ────────────────────────
+    //
+    // Registers ItemModularArmorClient as the IClientItemExtensions for
+    // every ItemModularArmor instance. The client extension reads tag.Skin
+    // from the rendered stack and dispatches to the appropriate Geckolib
+    // renderer via SkinRegistry. Mirrors how ExtendedArmorItem in ISS
+    // wires up its inner-class extension at item-init time.
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        consumer.accept(ItemModularArmorClient.INSTANCE);
     }
 }
