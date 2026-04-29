@@ -20,9 +20,8 @@ Combined effect: even a single 200-damage boss hit (~50 durability per piece) is
 
 ### Caveats
 
-- Tetra modular armor still bypassed (their own durability protection kicks in first via `NATIVE_BREAK_PROTECTION_NS`)
-- Tools and weapons rely on the existing 2-tick poll + 10-tick full-inventory sweep — they don't take per-hit durability bursts the way armor does, so the larger buffer should be sufficient. If tester sees tools/weapons still breaking, escalate similarly.
-- The proactive clamp uses vanilla's per-piece formula; modded mobs that bypass `hurtArmor` and damage armor directly (rare) may slip through. Catch-all is the existing 2-tick poll.
+- The proactive hurt clamp only iterates `ARMOR_SLOTS` since vanilla's `hurtArmor` only damages armor on player hit. Tools and weapons rely on the existing 2-tick poll + 10-tick full-inventory sweep — durability per swing/use is small (1 per use typically), so the 100-buffer should be plenty. **Needs playtest verification** that Tetra modular tools/weapons stay protected (Tetra has no armor; the `NATIVE_BREAK_PROTECTION_NS` skip applies only to modular tools and weapons, where Tetra's own durability-protection state takes over).
+- Modded mobs that bypass `hurtArmor` and damage armor through some other path (rare) may slip through the proactive clamp. Catch-all is the existing 2-tick poll with the new 100-buffer.
 
 Mirrored to all 3 distros.
 
