@@ -1,0 +1,9 @@
+[
+  {
+    "key": "reforging_boots_boot_sole_settled_speed",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.attack_speed": 0.05
+    }
+  }
+]

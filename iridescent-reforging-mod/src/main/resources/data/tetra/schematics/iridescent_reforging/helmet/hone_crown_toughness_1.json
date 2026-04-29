@@ -1,0 +1,29 @@
+{
+  "slots": [
+    "helmet/crown"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:not",
+    "requirement": {
+      "type": "tetra:improvement",
+      "improvement": "reforging_helmet_crown_hone_toughness"
+    }
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:gold"
+      },
+      "improvements": {
+        "reforging_helmet_crown_hone_toughness": 1
+      }
+    }
+  ]
+}

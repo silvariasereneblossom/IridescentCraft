@@ -1,0 +1,9 @@
+[
+  {
+    "key": "reforging_helmet_crown_settled_toughness",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.max_health": 1.0
+    }
+  }
+]

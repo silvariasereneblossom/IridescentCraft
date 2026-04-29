@@ -1,0 +1,27 @@
+{
+  "slots": [
+    "boots/boot_sole"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:improvement",
+    "improvement": "reforging_boots_boot_sole_hone_speed",
+    "level": 1
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+      },
+      "improvements": {
+        "reforging_boots_boot_sole_hone_speed": 2
+      }
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:improvement",
+    "improvement": "reforging_chestplate_chest_plate_hone_armor",
+    "level": 1
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+      },
+      "improvements": {
+        "reforging_chestplate_chest_plate_hone_armor": 2
+      }
+    }
+  ]
+}
