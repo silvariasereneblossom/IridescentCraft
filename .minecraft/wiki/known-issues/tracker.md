@@ -14,15 +14,12 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
-### Puffish Skills warfare category — wrong attribute namespace
-- **Status:** Open (surfaced 2026-04-29 during aptitude Batch 3 audit)
+### Puffish Skills warfare category — wrong attribute namespace [RESOLVED 2026-04-29 cont. 4]
+- **Status:** Resolved
 - **File:** `kubejs/data/icraft/puffish_skills/categories/warfare/category.json`
-- **Description:** Several skill nodes reference attributes under `apothic_attributes:` namespace (`life_steal`, `crit_damage`). The actual mod ID is `attributeslib`, so these resolve to nothing and silently no-op. Confirmed by inspecting the Apothic Attributes jar's `ALObjects$Attributes` registry — full attribute list lives under `attributeslib:`.
-- **Affected nodes (in warfare/category.json):**
-  - Lines 254, 311, 387, 414 — `apothic_attributes:life_steal` → should be `attributeslib:life_steal`
-  - Lines 509, 585, 612 — `apothic_attributes:crit_damage` → should be `attributeslib:crit_damage`
-- **Fix:** Bulk replace `apothic_attributes:` with `attributeslib:` in that file. Out of scope for the aptitude Batch 3 ship; needs a separate puffish_skills polish pass.
-- **Player impact:** Warfare-tree skill points spent on those nodes have been giving zero effect.
+- **Description:** Several skill nodes referenced attributes under `apothic_attributes:` namespace (`life_steal`, `crit_damage`). The actual mod ID is `attributeslib`, so they silently no-op'd. Same root cause as the Deadeye Batch 1 regression that was fixed in Batch 3.
+- **Fix:** Bulk replaced `apothic_attributes:` → `attributeslib:` across the live warfare/category.json (3 distros), the icraft_skills datapack source, and the iridescent_codex book entries (Marksman / Gathering / Fortitude trees mentioned the namespace in display text). Codex jar rebuilt via `build_codex.sh`. 7 functional fixes + 6 doc consistency fixes.
+- **Player impact (pre-fix):** Warfare-tree skill points spent on Life Steal and Crit Damage nodes were giving zero effect. Players who invested in those nodes will start seeing the buffs immediately on next world load.
 
 ### Apotheosis Tower Loot
 - **Status:** Active

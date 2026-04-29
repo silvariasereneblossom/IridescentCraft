@@ -12,7 +12,7 @@
     {
       "type": "patchouli:text",
       "title": "Nodes",
-      "text": "$(bold)Arrow Damage$() \u2014 Core trunk via apothic_attributes:arrow_damage. Scales cleanly with Ranger's Eagle Eye passive.$(br2)$(bold)Draw Speed$() \u2014 Reduces bow charge time. At max investment: bows are nearly instant draw.$(br2)$(bold)Precision Branch$() \u2014 Reduces arrow spread, increases effective range. Ideal for long-range Ranger play."
+      "text": "$(bold)Arrow Damage$() \u2014 Core trunk via attributeslib:arrow_damage. Scales cleanly with Ranger's Eagle Eye passive.$(br2)$(bold)Draw Speed$() \u2014 Reduces bow charge time. At max investment: bows are nearly instant draw.$(br2)$(bold)Precision Branch$() \u2014 Reduces arrow spread, increases effective range. Ideal for long-range Ranger play."
     },
     {
       "type": "patchouli:text",

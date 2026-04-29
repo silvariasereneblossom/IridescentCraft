@@ -4,6 +4,31 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-29 (cont. 4) — Puffish Skills warfare category: namespace fix (life_steal + crit_damage)
+
+Follow-up to the Batch 3 audit that surfaced the Apothic Attributes namespace issue. The Deadeye fix in Batch 3 corrected one occurrence in the aptitude script; this commit fixes the same root cause across the rest of the codebase.
+
+### Fixed (functional — 7 attribute references)
+
+`kubejs/data/icraft/puffish_skills/categories/warfare/category.json` had 7 nodes referencing `apothic_attributes:life_steal` (4×) and `apothic_attributes:crit_damage` (3×). Apothic Attributes' actual mod ID is `attributeslib`, so those nodes silently no-op'd — players who spent skill points on them got zero effect. Bulk-replaced to `attributeslib:`. Mirrored to `server_distribution/`, `distribution/client/`, and the build source at `datapack_sources/icraft_skills/`.
+
+### Fixed (doc consistency — 6 codex entries)
+
+The Iridescent Codex Patchouli book also referenced `apothic_attributes:` in its skill-tree display text (Marksman, Gathering, Fortitude trees). Updated all 6 source files (assets/ + data/ mirror dirs in `datapack_sources/iridescent_codex/`) and rebuilt the codex jar via `build_codex.sh`. Players reading the in-game guidebook will now see the correct attribute name.
+
+### Net effect for players
+
+- Warfare tree life_steal / crit_damage nodes now actually grant their stats on level-up. Existing skill point investments in those nodes will start applying immediately on next world load.
+- Codex book skill-tree pages display the correct mod-internal attribute name.
+
+### Side note
+
+The pattern (`apothic_attributes:` instead of `attributeslib:`) probably crept in because the mod's display name on CurseForge / Modrinth is "Apothic Attributes" — natural to assume that's the modId. Future config work should reference `attributeslib:` explicitly.
+
+Mirrored to all 3 distros. Known-issues tracker entry from cont. 3 marked resolved.
+
+---
+
 ## 2026-04-29 (cont. 3) — Aptitude Batch 3: 6 cross-mod skills + Deadeye attribute fix
 
 Final implementation pass on `IridescentCraft-internal/design/aptitude_skill_plan.md`. Closes out the 28-slot expansion — every Tier 5/10/15/20/30 node across all 8 aptitudes now has a working effect.
