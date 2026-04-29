@@ -100,7 +100,7 @@ All 22 scoreboard objectives are now functional (updated 2026-03-15):
 | Dwarf | Mining hunger halved | — |
 | Orc | +10% attack speed, +20% HP, +10% melee damage, Bloodlust (+20% damage scaling with hunger) | +50% hunger drain |
 | Halfling | +20% food efficiency | — |
-| Faefolk | +30% magic damage, +10% mana regen, +10% speed, slow fall | -30% melee damage, -15% HP |
+| Faefolk | +30% magic damage, +10% mana regen, +10% speed, slow fall | -30% melee damage, -50% armor toughness when wearing any non-light armor (full robes bypass), -15% HP |
 | Revenant | +20% damage + Resistance I in darkness/Abyss, Night Vision 1.1 | Weakness+slowness in sunlight, -20% healing |
 | Demi-God | +40% HP (8 hearts), 2x raw meat healing, strength ability, phase ability, fire damage 1.5x | Mild Nether weakness |
 | Ryu | 25% damage reduction, slow fall, draconic food healing, sparkles, clears debuffs | Meat preference |

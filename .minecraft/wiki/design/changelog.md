@@ -4,20 +4,21 @@ All changes to the master design document are logged here with date, description
 
 ---
 
-## 2026-04-29 (cont. 21) — Faefolk: offmeta caster identity (-30% melee, drop Ethereal Form)
+## 2026-04-29 (cont. 21) — Faefolk: offmeta caster identity (-30% melee, Ethereal Form keeps Med/Heavy clause)
 
-User direction: Faefolk should be an offmeta option, not the BIS choice. Two changes pull it from "best for any caster" toward "skill-expression pick".
+User direction: Faefolk should be an offmeta option, not the BIS choice. The melee malus tightens; Ethereal Form keeps its conditional toughness clause.
 
 **Frail Strikes: -20% → -30% melee damage.** The melee malus is now sharp enough that Battlemage Faefolk is a real tradeoff, not a free spell-power upgrade. Arcane Cleave (1 AD per 50% spell power, 10 mana/hit) still gives Faefolk Battlemage a competitive damage path, but raw blade strikes hit notably weaker than an Orc / Demi-God / Berserker-style frame.
 
-**Ethereal Form (-50% conditional toughness): removed.** Reasoning: ISS robes are tagged `icraft:armor_light`, and the armor weight system (cont. 16) already gives 4/4 light pieces a -20% generic.armor malus. Stacking a -50% toughness penalty on top was double-dipping for the natural caster kit, and the conditional logic (full robes bypass) was complex for a payoff already provided by being a robe wearer. Light armor's built-in malus *is* the trade-off. Cleaner.
+**Ethereal Form: unchanged.** I initially read the user's "robes have their own built in toughness malus" as "remove Ethereal Form because robes already have a malus". That was wrong — they meant the two systems are complementary axes:
+- **Light armor wearers** (4/4 robes): -20% generic.armor (from `icraft:armor_light` tags). No toughness halving — the bypass is the design payoff.
+- **Med/Heavy armor wearers**: -50% armor toughness (from Ethereal Form). No generic-armor malus — the toughness penalty is the cost of plating up a fae body.
+
+Both penalties stay. Ethereal Form's conditional code in `kubejs/server_scripts/armor_weight.js` is intact.
 
 Files changed:
 - `iridescent-origins-mod/.../faefolk/frail_strikes.json` — value -0.2 → -0.3
-- `iridescent-origins-mod/.../faefolk/armor_weakness.json` — **deleted**
-- `iridescent-origins-mod/.../origins/faefolk.json` — removed `armor_weakness` from powers list
-- `iridescent-origins-mod/.../assets/icraft/lang/en_us.json` — origin description rewritten (drop "-50% armor toughness", add "-30% melee"), `armor_weakness.*` lang keys deleted, `frail_strikes` description updated
-- `kubejs/server_scripts/armor_weight.js` — `isFaefolk()`, `FAEFOLK_TOUGHNESS_PENALTY`, conditional toughness logic stripped. One-cycle migration cleanup left in place: the line still writes 0 to the `icraft_faefolk_armor_weakness` UUID every tick / inventoryChanged so existing characters with the stale -50% modifier get cleaned up the next time they log in. Safe to remove after a release cycle.
+- `iridescent-origins-mod/.../assets/icraft/lang/en_us.json` — origin description and `frail_strikes.description` updated to -30% melee; origin description clarifies the Med/Heavy toughness clause and the robe bypass
 
 Codex + wiki refresh:
 - `race_faefolk.json` (codex) — full rewrite. Three pages: traits / tradeoffs / build notes. Build Notes flags Battlemage as "offmeta but viable" and explicitly steers Berserker/Vanguard/Paladin away.

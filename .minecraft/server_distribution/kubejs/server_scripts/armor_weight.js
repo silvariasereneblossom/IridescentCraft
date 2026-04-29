@@ -25,23 +25,21 @@ const TAG_LIGHT  = 'icraft:armor_light'
 const TAG_HEAVY  = 'icraft:armor_heavy'
 
 // Stable UUIDs per axis. Layout: -2030<axis>NN
-//   axis 1 = mana_regen, 2 = movement_speed, 3 = armor
+//   axis 1 = mana_regen, 2 = movement_speed, 3 = armor, 4 = faefolk toughness
 const UUID_MANA_REGEN       = 'icraft_armor_weight_mana_regen'
 const UUID_MOVE_SPEED       = 'icraft_armor_weight_speed'
 const UUID_ARMOR            = 'icraft_armor_weight_armor'
-
-// Migration cleanup: prior cycle applied a -50% toughness modifier under
-// this UUID for Faefolk players in non-light armor (Ethereal Form). The
-// power was removed when robes' built-in -20% generic.armor (4 light
-// pieces) became the sole frail-caster malus. We still re-zero this UUID
-// every tick so existing characters with the stale modifier get cleaned
-// up the moment they log in. Safe to drop after a release cycle.
-const UUID_FAEFOLK_TOUGHNESS_LEGACY = 'icraft_faefolk_armor_weakness'
+const UUID_FAEFOLK_TOUGHNESS = 'icraft_faefolk_armor_weakness'
 
 // Per-piece magnitudes
 const PER_PIECE_MANA_REGEN = 0.05    // ADD on irons_spellbooks:mana_regen
 const PER_PIECE_SPEED      = 0.0125  // MULTIPLY_BASE on generic.movement_speed
 const PER_PIECE_ARMOR      = 0.05    // MULTIPLY_BASE on generic.armor
+
+// Faefolk armor toughness penalty (Ethereal Form): -50% multiply_base.
+// Applied only when player is Faefolk AND not wearing 4/4 light armor.
+// Wearing full robes bypasses the penalty entirely (caster identity payoff).
+const FAEFOLK_TOUGHNESS_PENALTY = -0.5
 
 const ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 
@@ -58,6 +56,17 @@ function classifyArmor(stack) {
   return 0
 }
 
+// Check whether a player has the Faefolk race assigned via Origins NBT.
+// Mirrors the same NBT-probe pattern used in battlemage_arcane_cleave.js.
+function isFaefolk(player) {
+  try {
+    var result = player.server.runCommandSilent(
+      `execute if entity ${player.username}[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:race":"icraft:faefolk"}}}}]`
+    )
+    return result > 0
+  } catch (e) { return false }
+}
+
 global.tick_armorWeight = function(event) {
   let server = event.server
   server.players.forEach(function(player) {
@@ -68,7 +77,6 @@ global.tick_armorWeight = function(event) {
           player.modifyAttribute('irons_spellbooks:mana_regen', UUID_MANA_REGEN, 0, 'addition')
           player.modifyAttribute('minecraft:generic.movement_speed', UUID_MOVE_SPEED, 0, 'multiply_base')
           player.modifyAttribute('minecraft:generic.armor', UUID_ARMOR, 0, 'multiply_base')
-          player.modifyAttribute('minecraft:generic.armor_toughness', UUID_FAEFOLK_TOUGHNESS_LEGACY, 0, 'multiply_base')
         } catch (e) {}
         return
       }
@@ -97,9 +105,17 @@ global.tick_armorWeight = function(event) {
       player.modifyAttribute('minecraft:generic.armor',
         UUID_ARMOR, -netLight * PER_PIECE_ARMOR, 'multiply_base')
 
-      // One-cycle migration cleanup — see UUID_FAEFOLK_TOUGHNESS_LEGACY.
+      // Faefolk Ethereal Form (conditional). The Origins-side power is now
+      // a stub (origins:simple, no native modifier — see
+      // iridescent-origins-mod/.../faefolk/armor_weakness.json). Apply the
+      // -50% toughness here ONLY if the player is wearing any non-light
+      // armor; full robes (4/4 light) bypass the penalty.
+      let faefolkPenalty = 0
+      if (isFaefolk(player) && lightCount < 4) {
+        faefolkPenalty = FAEFOLK_TOUGHNESS_PENALTY
+      }
       player.modifyAttribute('minecraft:generic.armor_toughness',
-        UUID_FAEFOLK_TOUGHNESS_LEGACY, 0, 'multiply_base')
+        UUID_FAEFOLK_TOUGHNESS, faefolkPenalty, 'multiply_base')
     } catch (e) {
       console.warn('[armor_weight] tick failed for ' + player.username + ': ' + e)
     }
@@ -129,8 +145,14 @@ PlayerEvents.inventoryChanged(function(event) {
       UUID_MOVE_SPEED, netLight * PER_PIECE_SPEED, 'multiply_base')
     player.modifyAttribute('minecraft:generic.armor',
       UUID_ARMOR, -netLight * PER_PIECE_ARMOR, 'multiply_base')
+
+    // Faefolk Ethereal Form refresh
+    let faefolkPenalty = 0
+    if (isFaefolk(player) && lightCount < 4) {
+      faefolkPenalty = FAEFOLK_TOUGHNESS_PENALTY
+    }
     player.modifyAttribute('minecraft:generic.armor_toughness',
-      UUID_FAEFOLK_TOUGHNESS_LEGACY, 0, 'multiply_base')
+      UUID_FAEFOLK_TOUGHNESS, faefolkPenalty, 'multiply_base')
   } catch (e) {}
 })
 
