@@ -1,0 +1,39 @@
+{
+  "slots": [
+    "helmet/visor"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_helmet_visor_hone_mana_regen",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_helmet_visor_settled_mana_regen"
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "thermal:steel"
+      },
+      "improvements": {
+        "reforging_helmet_visor_settled_mana_regen": 1
+      }
+    }
+  ]
+}

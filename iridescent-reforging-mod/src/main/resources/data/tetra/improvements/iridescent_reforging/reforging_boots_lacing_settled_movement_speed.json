@@ -1,0 +1,9 @@
+[
+  {
+    "key": "reforging_boots_lacing_settled_movement_speed",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.02
+    }
+  }
+]

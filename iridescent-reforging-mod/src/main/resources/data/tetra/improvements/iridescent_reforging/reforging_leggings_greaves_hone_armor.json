@@ -1,0 +1,37 @@
+[
+  {
+    "key": "reforging_leggings_greaves_hone_armor",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.armor": 0.25
+    }
+  },
+  {
+    "key": "reforging_leggings_greaves_hone_armor",
+    "level": 2,
+    "attributes": {
+      "minecraft:generic.armor": 0.5
+    }
+  },
+  {
+    "key": "reforging_leggings_greaves_hone_armor",
+    "level": 3,
+    "attributes": {
+      "minecraft:generic.armor": 0.75
+    }
+  },
+  {
+    "key": "reforging_leggings_greaves_hone_armor",
+    "level": 4,
+    "attributes": {
+      "minecraft:generic.armor": 1.0
+    }
+  },
+  {
+    "key": "reforging_leggings_greaves_hone_armor",
+    "level": 5,
+    "attributes": {
+      "minecraft:generic.armor": 1.5
+    }
+  }
+]

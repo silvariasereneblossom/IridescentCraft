@@ -1,0 +1,39 @@
+{
+  "slots": [
+    "chestplate/chest_lining"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_chestplate_chest_lining_hone_spell_power",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_chestplate_chest_lining_settled_spell_power"
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "thermal:steel"
+      },
+      "improvements": {
+        "reforging_chestplate_chest_lining_settled_spell_power": 1
+      }
+    }
+  ]
+}

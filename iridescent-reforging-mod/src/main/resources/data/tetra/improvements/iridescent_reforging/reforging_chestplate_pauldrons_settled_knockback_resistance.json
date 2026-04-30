@@ -1,0 +1,9 @@
+[
+  {
+    "key": "reforging_chestplate_pauldrons_settled_knockback_resistance",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.armor": 0.5
+    }
+  }
+]

@@ -1,0 +1,39 @@
+{
+  "slots": [
+    "chestplate/pauldrons"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_chestplate_pauldrons_hone_armor",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_chestplate_pauldrons_settled_armor"
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "thermal:steel"
+      },
+      "improvements": {
+        "reforging_chestplate_pauldrons_settled_armor": 1
+      }
+    }
+  ]
+}

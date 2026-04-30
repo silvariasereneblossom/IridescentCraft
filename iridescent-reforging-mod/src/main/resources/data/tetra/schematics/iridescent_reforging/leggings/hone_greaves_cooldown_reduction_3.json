@@ -1,0 +1,40 @@
+{
+  "slots": [
+    "leggings/greaves"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_leggings_greaves_hone_cooldown_reduction",
+        "level": 2
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_leggings_greaves_hone_cooldown_reduction",
+          "level": 3
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+      },
+      "improvements": {
+        "reforging_leggings_greaves_hone_cooldown_reduction": 3
+      }
+    }
+  ]
+}

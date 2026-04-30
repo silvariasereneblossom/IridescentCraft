@@ -1,0 +1,37 @@
+[
+  {
+    "key": "reforging_leggings_cuisses_hone_knockback_resistance",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.01
+    }
+  },
+  {
+    "key": "reforging_leggings_cuisses_hone_knockback_resistance",
+    "level": 2,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.02
+    }
+  },
+  {
+    "key": "reforging_leggings_cuisses_hone_knockback_resistance",
+    "level": 3,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.03
+    }
+  },
+  {
+    "key": "reforging_leggings_cuisses_hone_knockback_resistance",
+    "level": 4,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.04
+    }
+  },
+  {
+    "key": "reforging_leggings_cuisses_hone_knockback_resistance",
+    "level": 5,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.06
+    }
+  }
+]
