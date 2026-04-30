@@ -14,6 +14,31 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Iridescent Reforging v0.2 server-startup crash [RESOLVED 2026-04-30]
+- **Status:** Resolved
+- **Description:** Server failed to load with `Mod truly_modular_create_compat requires armory any. Currently, armory is not installed`. Root cause: phase 9 of v0.1 removed `truly-modular-armory.pw.toml` (replaced by Reforging) but left `create-truly-modular.pw.toml` in place. The Create integration addon hard-depends on armory.
+- **Fix:** Removed `create-truly-modular.pw.toml` from all 3 packwiz indexes. Cache audit confirmed no other mods depend on `armory`.
+
+### Iridescent Reforging — Tetra rejected init schematics [RESOLVED 2026-04-30]
+- **Status:** Resolved
+- **Description:** Server log showed `InvalidSchematicException: faulty module keys: helmet/crown` etc. for all 8 init schematics (`crown_main`, `chest_plate_main`, etc.). Tetra's `ItemUpgradeRegistry` derives module keys from the file path under `data/tetra/modules/`. Our modules at `data/tetra/modules/iridescent_reforging/<slot>/<position>.json` registered as `iridescent_reforging/<slot>/<position>` but schematics referenced just `<slot>/<position>`.
+- **Fix:** Moved 8 module files up one directory level to drop the `iridescent_reforging/` prefix. Module keys now register as `helmet/crown` etc. Same convention modular-spells uses.
+- **Player impact (pre-fix):** Workbench would not offer init schematics for any reforged armor — populating module slots was impossible.
+
+### Iridescent Reforging — wrong source item IDs in 5 conversion recipes [RESOLVED 2026-04-30]
+- **Status:** Resolved
+- **Description:** Audit of all 149 conversion recipes' `source.item` fields against actual mod jars surfaced two bugs:
+  - `irons_spellbooks:boots_of_speed` — actual ISS item is `irons_spellbooks:speed_boots` (the "Boots of Speed" name is just lang display text)
+  - `undergarden:forgotten_*` (4 items) — Undergarden's T4 set is `ancient_*`, 3 pieces only (no boots; "forgotten" is an entity)
+- **Fix:** Patched skin definitions + recipe JSONs. Renamed `forgotten_*` skin filenames to `ancient_*`. Removed the spurious `forgotten_boots` / `ancient_boots` entries.
+- **Player impact (pre-fix):** Conversion recipes for those 5 items would silently fail to load — players holding Boots of Speed or Undergarden Ancient armor would see no JEI conversion recipe. No crash.
+
+### Iridescent Reforging — Botania + Cataclysm armor visual approximation
+- **Status:** Intentional limitation (v0.3 onward)
+- **Description:** Botania (Manaweave / Manasteel / Terrasteel / Elementium) and Cataclysm (Ignitium) ship custom HumanoidModel subclasses with non-standard armor texture schemes (single combined file or split-by-slot). Reforged variants of these armors render the source mod's texture mapped onto the vanilla armor model geometry rather than the source mod's custom model proportions.
+- **Visual fidelity:** Color/material identity is preserved (Manaweave still looks Manaweave-y); proportions differ slightly from native Botania/Cataclysm rendering.
+- **Resolution path:** Pixel-accurate rendering requires per-mod GeoArmorRenderer factory classes (similar to `IssRendererFactories`) plus refactoring `SkinRegistry` from `GeoArmorRenderer<?>` to broader `HumanoidModel<?>` return type. Estimated 2-3 hours engineering for ~20 skins; deferred indefinitely until tester feedback indicates the approximate fidelity is unacceptable.
+
 ### Puffish Skills warfare category — wrong attribute namespace [RESOLVED 2026-04-29 cont. 4]
 - **Status:** Resolved
 - **File:** `kubejs/data/icraft/puffish_skills/categories/warfare/category.json`

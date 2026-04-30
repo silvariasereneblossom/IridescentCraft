@@ -4,6 +4,45 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-30 — Iridescent Reforging v0.3: bug fix sweep + full Tier 1 visual coverage
+
+Five follow-up commits after v0.2 closing real issues that surfaced when the user ran the dedicated server. Server now boots clean and all 149 Tier 1 skins have explicit texture coverage.
+
+**Server-startup crash fix.** `truly_modular_create_compat` (the Create integration addon for Truly Modular) had a hard dependency on `armory` (which we removed in phase 9). Crash report: `Mod truly_modular_create_compat requires armory any. Currently, armory is not installed`. Removed `create-truly-modular.pw.toml` from all 3 packwiz indexes — no other mods in the cache depend on armory.
+
+**Module path mismatch.** First server-load surfaced `InvalidSchematicException: faulty module keys` for all 8 init schematics. Tetra's `ItemUpgradeRegistry` uses the path under `data/tetra/modules/` as the module key. Our modules at `data/tetra/modules/iridescent_reforging/<slot>/<position>.json` were registering as `iridescent_reforging/<slot>/<position>` but our schematics referenced just `<slot>/<position>`. Moved all 8 module files up one directory level to drop the `iridescent_reforging/` prefix — module keys now match what schematics' `outcome.moduleKey` already references. Same convention modular-spells uses (their files are at `data/tetra/modules/iss_book/front_cover.json` directly, no extra namespace dir).
+
+**Source item ID audit.** Cross-referenced all 149 conversion recipes' `source.item` fields against the actual mod jars. Two bugs:
+- `irons_spellbooks:boots_of_speed` → should be `irons_spellbooks:speed_boots` (the actual ISS item registry name; "Boots of Speed" is just lang display text)
+- `undergarden:forgotten_*` → should be `undergarden:ancient_*` (3-piece set: helmet/chestplate/leggings, no boots; "forgotten" is an entity name in Undergarden, not an armor set)
+
+Other 9 namespaces verified clean against their actual jars.
+
+**Texture path schema (v0.3 engine extension).** Added optional `texture_layer_1` / `texture_layer_2` fields to `SkinDefinition`, `SkinDataLoader`, and `ItemModularArmor.getArmorTexture`. When set, the override is used directly; when empty, falls back to vanilla convention (`<ns>:textures/models/armor/<name>_layer_N.png`). This handles mods that ship armor textures at non-standard paths.
+
+**Texture coverage patches (87 skins total):**
+- Aquaculture Neptunium (4): `aquaculture:textures/armor/<name>_layer_N.png` — no `models/` subdir
+- Undergarden Cloggrum/Froststeel/Utherium/Ancient/Masticated (15): same path layout as Aquaculture
+- Blue Skies (20): `blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/<name>_layer_N.png` — extra `legacy_pack/` prefix
+- Twilight Forest (28): `twilightforest:textures/armor/<name>_N.png` — no `_layer_` infix; some sets remapped because texture base names differ from material names: arctic→arcticarmor, knightmetal→knightly, yeti→yetiarmor
+- Botania Manaweave/Manasteel/Terrasteel/Elementium (16): single combined texture file `botania:textures/model/armor_<name>.png` used for both layers — vanilla armor renderer paints the same texture onto helmet/chest/boots and onto leggings model parts. Approximate fidelity (Botania's native custom HumanoidModel has different proportions) but preserves color identity.
+- Cataclysm Ignitium (4): split scheme `cataclysm:textures/armor/ignitium_armor.png` (layer 1) + `ignitium_armor_legs.png` (layer 2). Same approximate-fidelity tradeoff as Botania.
+
+**Final visual coverage:**
+
+| Render path | Mods | Skins | Fidelity |
+|---|---|---|---|
+| Geckolib factories | ISS (15 sets including specials) | 53 | Native pixel-accurate |
+| Vanilla, default texture path | Aether, Deeperdarker, Deep Aether, Forbidden Arcanus | 38 | Native |
+| Vanilla, explicit texture override | Aquaculture, Undergarden, Blue Skies, Twilight Forest | 67 | Native (correct texture, vanilla armor model shape) |
+| Vanilla, mod texture mapped onto vanilla model | Botania, Cataclysm Ignitium | 20 | Approximate (color identity preserved) |
+
+No iron-fallback skins remaining. Custom-renderer factories for Botania + Cataclysm (would give pixel-accurate fidelity for those 20 skins) tabled — would require refactoring `SkinRegistry` from `GeoArmorRenderer<?>` to `HumanoidModel<?>` and replicating per-mod model construction; estimated 2-3 hours engineering for 20 skins, deferred indefinitely.
+
+**Memory updated:** `feedback_eta_calibration.md` records the user's note that I pattern-match ETAs to human-developer pace; agent execution is ~20x faster on mechanical work, ~5-10x on novel engineering. Future estimates should be in minutes-or-this-session, not hours-or-days.
+
+---
+
 ## 2026-04-30 — Iridescent Reforging v0.2: Tier 1 skin coverage + set bonus engine
 
 Big v0.2 push covering ~42 specialized armor sets across 11 source mods, plus the set_id mechanism that preserves full-set bonuses through reforging.
