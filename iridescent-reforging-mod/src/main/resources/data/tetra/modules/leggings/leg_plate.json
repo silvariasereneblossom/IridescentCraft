@@ -23,11 +23,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "minecraft:item/iron_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -48,11 +44,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "minecraft:item/golden_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -73,11 +65,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "minecraft:item/diamond_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.238
         }
@@ -101,11 +89,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "minecraft:item/netherite_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.357
         }
@@ -129,11 +113,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "minecraft:item/iron_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -154,11 +134,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "botania:item/manasteel_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -179,11 +155,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "botania:item/terrasteel_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -207,11 +179,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "botania:item/elementium_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -232,11 +200,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "twilightforest:item/knightmetal_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.312
         }
@@ -260,11 +224,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "twilightforest:item/steeleaf_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -285,11 +245,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "twilightforest:item/ironwood_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -310,11 +266,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "twilightforest:item/fiery_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.441
         }
@@ -338,11 +290,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "blue_skies:item/armor/charoite_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.417
         }
@@ -366,11 +314,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "blue_skies:item/armor/diopside_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -394,11 +338,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "blue_skies:item/armor/horizonite_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -419,11 +359,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "undergarden:item/cloggrum_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.333
         }
@@ -448,11 +384,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "undergarden:item/froststeel_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -476,11 +408,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "undergarden:item/utherium_leggings"
-          }
-        ],
+        "models": [],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -505,11 +433,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "aethersteel:item/aethersteel_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -530,11 +454,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "minecraft:item/iron_leggings"
-          }
-        ]
+        "models": []
       }
     },
     {
@@ -555,11 +475,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [
-          {
-            "location": "minecraft:item/iron_leggings"
-          }
-        ]
+        "models": []
       }
     }
   ]

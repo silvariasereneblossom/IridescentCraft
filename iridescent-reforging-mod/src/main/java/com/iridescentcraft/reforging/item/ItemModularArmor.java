@@ -207,32 +207,34 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         consumer.accept(ItemModularArmorClient.INSTANCE);
     }
 
-    // ── Display name ────────────────────────────────────────────────────
+    // ── Display name (material-driven) ──────────────────────────────────
     //
-    // Composes "<MaterialPrefix> <PieceName>" from the equipped major slot's
-    // variant — e.g. an iron crown produces "Iron Helmet", manasteel
-    // chest_plate produces "Manasteel Chestplate". Mirrors Tetra's weapon
-    // naming pattern (iron sword shows as "Iron Sword").
+    // Iron crown -> "Iron Helmet", manasteel chest_plate -> "Manasteel
+    // Chestplate", etc. Mirrors Tetra's weapon naming. Skin-tagged armor
+    // (Wizard, Cultist, etc.) keeps its own display name unchanged.
     //
-    // Override priority: skin-tag display name > major-material composition >
-    // vanilla base name fallback. Skin path stays untouched so specialized
-    // armor (Wizard, Cultist, etc.) keeps its unique identity.
+    // Defensive: any throw or null path falls back to the vanilla item
+    // name. We never want this method to crash item rendering.
     @Override
     public net.minecraft.network.chat.Component getName(ItemStack stack) {
-        String skinId = ItemModularArmorClient.readSkinId(stack);
-        if (skinId != null) {
-            SkinDefinition def = SkinRegistry.get().getDefinition(skinId).orElse(null);
-            if (def != null && def.displayName() != null && !def.displayName().isEmpty()) {
-                return net.minecraft.network.chat.Component.literal(def.displayName());
+        try {
+            String skinId = ItemModularArmorClient.readSkinId(stack);
+            if (skinId != null) {
+                SkinDefinition def = SkinRegistry.get().getDefinition(skinId).orElse(null);
+                if (def != null && def.displayName() != null && !def.displayName().isEmpty()) {
+                    return net.minecraft.network.chat.Component.literal(def.displayName());
+                }
             }
+            String mat = readMajorMaterial(stack);
+            if (mat == null || mat.isEmpty()) return super.getName(stack);
+            return net.minecraft.network.chat.Component.translatable(
+                    "item.iridescent_reforging.material_armor",
+                    net.minecraft.network.chat.Component.translatable("tetra.material." + mat),
+                    net.minecraft.network.chat.Component.translatable(
+                            "item.iridescent_reforging.armor_piece." + pieceKey()));
+        } catch (Throwable t) {
+            return super.getName(stack);
         }
-        String mat = readMajorMaterial(stack);
-        if (mat == null || mat.isEmpty()) return super.getName(stack);
-        return net.minecraft.network.chat.Component.translatable(
-                "item.iridescent_reforging.material_armor",
-                net.minecraft.network.chat.Component.translatable("tetra.material." + mat),
-                net.minecraft.network.chat.Component.translatable(
-                        "item.iridescent_reforging.armor_piece." + pieceKey()));
     }
 
     private String pieceKey() {
