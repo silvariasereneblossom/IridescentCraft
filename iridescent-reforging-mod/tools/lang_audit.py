@@ -68,8 +68,13 @@ def audit_modules(lang):
             if not vk or vk in seen_variants:
                 continue
             seen_variants.add(vk)
+            # Tetra strips a trailing '/' from the variant key before composing
+            # the lang lookup. So "chestplate/chest_plate/" (empty default) is
+            # localized via "tetra.variant.chestplate/chest_plate.name", not
+            # ".../.name".
+            lookup_key = vk.rstrip("/")
             for suf in ["name", "prefix"]:
-                k = f"tetra.variant.{vk}.{suf}"
+                k = f"tetra.variant.{lookup_key}.{suf}"
                 if k not in lang:
                     gaps.append((str(jf.relative_to(MOD_ROOT)), k, "variant"))
     return gaps
