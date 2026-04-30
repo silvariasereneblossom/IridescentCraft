@@ -2,5 +2,109 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "minecraft:item/iron_boots"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 17
+      },
+      "model": "iridescent_reforging:item/reforged_boots_aethersteel"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 16
+      },
+      "model": "iridescent_reforging:item/reforged_boots_undergarden_utherium"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 15
+      },
+      "model": "iridescent_reforging:item/reforged_boots_undergarden_froststeel"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 14
+      },
+      "model": "iridescent_reforging:item/reforged_boots_undergarden_cloggrum"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 13
+      },
+      "model": "iridescent_reforging:item/reforged_boots_horizonite"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 12
+      },
+      "model": "iridescent_reforging:item/reforged_boots_diopside"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 11
+      },
+      "model": "iridescent_reforging:item/reforged_boots_charoite"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 10
+      },
+      "model": "iridescent_reforging:item/reforged_boots_fiery"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 9
+      },
+      "model": "iridescent_reforging:item/reforged_boots_ironwood"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 8
+      },
+      "model": "iridescent_reforging:item/reforged_boots_steeleaf"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 7
+      },
+      "model": "iridescent_reforging:item/reforged_boots_knightmetal"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 6
+      },
+      "model": "iridescent_reforging:item/reforged_boots_elementium"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 5
+      },
+      "model": "iridescent_reforging:item/reforged_boots_terrasteel"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 4
+      },
+      "model": "iridescent_reforging:item/reforged_boots_manasteel"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 3
+      },
+      "model": "iridescent_reforging:item/reforged_boots_netherite"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 2
+      },
+      "model": "iridescent_reforging:item/reforged_boots_diamond"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:material_index": 1
+      },
+      "model": "iridescent_reforging:item/reforged_boots_gold"
+    }
+  ]
 }
