@@ -68,15 +68,13 @@ def audit_modules(lang):
             if not vk or vk in seen_variants:
                 continue
             seen_variants.add(vk)
-            # Tetra strips a trailing '/' from the variant key before composing
-            # the lang lookup. So "chestplate/chest_plate/" (empty default) is
-            # localized via "tetra.variant.chestplate/chest_plate.name", not
-            # ".../.name".
+            # Tetra strips trailing '/' from the variant key before lang
+            # lookup. The canonical key shape is BARE — no .name/.prefix
+            # suffix (per Tetra's own lang: 102 bare keys vs 3 outliers).
             lookup_key = vk.rstrip("/")
-            for suf in ["name", "prefix"]:
-                k = f"tetra.variant.{lookup_key}.{suf}"
-                if k not in lang:
-                    gaps.append((str(jf.relative_to(MOD_ROOT)), k, "variant"))
+            k = f"tetra.variant.{lookup_key}"
+            if k not in lang:
+                gaps.append((str(jf.relative_to(MOD_ROOT)), k, "variant"))
     return gaps
 
 def audit_schematics(lang):
