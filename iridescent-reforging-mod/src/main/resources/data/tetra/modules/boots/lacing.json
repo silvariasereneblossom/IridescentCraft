@@ -219,6 +219,405 @@
           "minecraft:generic.movement_speed": 0.001
         }
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "boots/lacing/iron",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "boots/lacing/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "boots/lacing/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "boots/lacing/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "boots/lacing/copper",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "key": "boots/lacing/manasteel",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "key": "boots/lacing/terrasteel",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "key": "boots/lacing/elementium",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "key": "boots/lacing/knightmetal",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "key": "boots/lacing/steeleaf",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "key": "boots/lacing/ironwood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "key": "boots/lacing/fiery",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "key": "boots/lacing/charoite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/diopside"
+      ],
+      "key": "boots/lacing/diopside",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "key": "boots/lacing/horizonite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "key": "boots/lacing/undergarden_cloggrum",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "key": "boots/lacing/undergarden_froststeel",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_utherium"
+      ],
+      "key": "boots/lacing/undergarden_utherium",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "boots/lacing/aethersteel",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
     }
   ]
 }

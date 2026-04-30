@@ -1,0 +1,243 @@
+{
+  "slots": [
+    "chestplate/pauldrons"
+  ],
+  "materialSlotCount": 1,
+  "displayType": "minor",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": {
+    "integrity": 1
+  },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:fabric/",
+        "tetra:fibre/",
+        "tetra:skin/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/"
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/iron"
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/gold"
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/diamond"
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/netherite"
+    },
+    {
+      "materials": [
+        "tetra:metal/copper"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/copper"
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/manasteel"
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/terrasteel"
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/elementium"
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/knightmetal"
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/steeleaf"
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/ironwood"
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/fiery"
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/charoite"
+    },
+    {
+      "materials": [
+        "tetra:metal/diopside"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/diopside"
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/horizonite"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/undergarden_cloggrum"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/undergarden_froststeel"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_utherium"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/undergarden_utherium"
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/aethersteel"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/fire"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/ice"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/shadow"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/holy"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/lightning"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/nature"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/ender"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/pauldrons",
+      "moduleVariant": "chestplate/pauldrons/blood"
+    }
+  ]
+}

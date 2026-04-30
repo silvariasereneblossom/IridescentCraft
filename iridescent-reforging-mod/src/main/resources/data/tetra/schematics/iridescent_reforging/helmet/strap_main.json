@@ -1,0 +1,243 @@
+{
+  "slots": [
+    "helmet/strap"
+  ],
+  "materialSlotCount": 1,
+  "displayType": "minor",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": {
+    "integrity": 1
+  },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:fabric/",
+        "tetra:fibre/",
+        "tetra:skin/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/"
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/iron"
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/gold"
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/diamond"
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/netherite"
+    },
+    {
+      "materials": [
+        "tetra:metal/copper"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/copper"
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/manasteel"
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/terrasteel"
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/elementium"
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/knightmetal"
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/steeleaf"
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/ironwood"
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/fiery"
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/charoite"
+    },
+    {
+      "materials": [
+        "tetra:metal/diopside"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/diopside"
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/horizonite"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/undergarden_cloggrum"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/undergarden_froststeel"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_utherium"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/undergarden_utherium"
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/aethersteel"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/fire"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/ice"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/shadow"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/holy"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/lightning"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/nature"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/ender"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/strap",
+      "moduleVariant": "helmet/strap/blood"
+    }
+  ]
+}
