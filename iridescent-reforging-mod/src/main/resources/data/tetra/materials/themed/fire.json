@@ -1,9 +1,9 @@
 {
   "key": "themed_fire",
   "category": "iridescent_reforging:themed",
-  "primary": 0.0,
-  "secondary": 0.0,
-  "tertiary": 0.0,
+  "primary": 1.0,
+  "secondary": 1.0,
+  "tertiary": 1.0,
   "durability": 0,
   "integrityCost": 1,
   "integrityGain": 0,
