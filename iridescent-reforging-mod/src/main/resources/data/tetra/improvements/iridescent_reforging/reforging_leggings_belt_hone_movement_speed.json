@@ -1,0 +1,37 @@
+[
+  {
+    "key": "reforging_leggings_belt_hone_movement_speed",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.movement_speed": 0.001
+    }
+  },
+  {
+    "key": "reforging_leggings_belt_hone_movement_speed",
+    "level": 2,
+    "attributes": {
+      "minecraft:generic.movement_speed": 0.002
+    }
+  },
+  {
+    "key": "reforging_leggings_belt_hone_movement_speed",
+    "level": 3,
+    "attributes": {
+      "minecraft:generic.movement_speed": 0.003
+    }
+  },
+  {
+    "key": "reforging_leggings_belt_hone_movement_speed",
+    "level": 4,
+    "attributes": {
+      "minecraft:generic.movement_speed": 0.004
+    }
+  },
+  {
+    "key": "reforging_leggings_belt_hone_movement_speed",
+    "level": 5,
+    "attributes": {
+      "minecraft:generic.movement_speed": 0.006
+    }
+  }
+]

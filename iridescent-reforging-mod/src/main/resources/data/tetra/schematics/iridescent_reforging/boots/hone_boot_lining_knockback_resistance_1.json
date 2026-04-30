@@ -1,0 +1,29 @@
+{
+  "slots": [
+    "boots/boot_lining"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:not",
+    "requirement": {
+      "type": "tetra:improvement",
+      "improvement": "reforging_boots_boot_lining_hone_knockback_resistance"
+    }
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:wood"
+      },
+      "improvements": {
+        "reforging_boots_boot_lining_hone_knockback_resistance": 1
+      }
+    }
+  ]
+}

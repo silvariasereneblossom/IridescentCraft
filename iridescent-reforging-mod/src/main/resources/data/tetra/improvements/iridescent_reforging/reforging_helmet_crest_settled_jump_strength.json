@@ -1,0 +1,10 @@
+[
+  {
+    "key": "reforging_helmet_crest_settled_jump_strength",
+    "level": 1,
+    "attributes": {
+      "forge:step_height_addition": 0.2,
+      "minecraft:generic.movement_speed": 0.002
+    }
+  }
+]

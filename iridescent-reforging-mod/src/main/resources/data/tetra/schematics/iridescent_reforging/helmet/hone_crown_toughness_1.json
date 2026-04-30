@@ -19,7 +19,7 @@
   "outcomes": [
     {
       "requiredTools": {
-        "hammer_dig": "minecraft:gold"
+        "hammer_dig": "minecraft:wood"
       },
       "improvements": {
         "reforging_helmet_crown_hone_toughness": 1

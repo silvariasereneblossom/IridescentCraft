@@ -3,7 +3,8 @@
     "key": "reforging_helmet_strap_settled_max_health",
     "level": 1,
     "attributes": {
-      "minecraft:generic.armor": 0.5
+      "minecraft:generic.max_health": 2.0,
+      "minecraft:generic.armor": 1.0
     }
   }
 ]

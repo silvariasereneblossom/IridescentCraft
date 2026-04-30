@@ -1,0 +1,10 @@
+[
+  {
+    "key": "reforging_boots_boot_sole_settled_knockback_resistance",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.05,
+      "minecraft:generic.armor": 1.0
+    }
+  }
+]

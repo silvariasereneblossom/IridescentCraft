@@ -1,0 +1,10 @@
+[
+  {
+    "key": "reforging_helmet_crown_settled_max_health",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.max_health": 2.0,
+      "minecraft:generic.armor": 1.0
+    }
+  }
+]

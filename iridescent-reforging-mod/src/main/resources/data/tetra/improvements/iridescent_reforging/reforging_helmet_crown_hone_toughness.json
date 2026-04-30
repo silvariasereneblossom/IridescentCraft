@@ -3,35 +3,35 @@
     "key": "reforging_helmet_crown_hone_toughness",
     "level": 1,
     "attributes": {
-      "minecraft:generic.armor_toughness": 0.5
+      "minecraft:generic.armor_toughness": 0.25
     }
   },
   {
     "key": "reforging_helmet_crown_hone_toughness",
     "level": 2,
     "attributes": {
-      "minecraft:generic.armor_toughness": 1.0
+      "minecraft:generic.armor_toughness": 0.5
     }
   },
   {
     "key": "reforging_helmet_crown_hone_toughness",
     "level": 3,
     "attributes": {
-      "minecraft:generic.armor_toughness": 1.5
+      "minecraft:generic.armor_toughness": 0.75
     }
   },
   {
     "key": "reforging_helmet_crown_hone_toughness",
     "level": 4,
     "attributes": {
-      "minecraft:generic.armor_toughness": 2.0
+      "minecraft:generic.armor_toughness": 1.0
     }
   },
   {
     "key": "reforging_helmet_crown_hone_toughness",
     "level": 5,
     "attributes": {
-      "minecraft:generic.armor_toughness": 3.0
+      "minecraft:generic.armor_toughness": 1.5
     }
   }
 ]

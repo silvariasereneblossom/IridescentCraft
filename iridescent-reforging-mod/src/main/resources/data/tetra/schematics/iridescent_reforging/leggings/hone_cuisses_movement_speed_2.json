@@ -1,0 +1,40 @@
+{
+  "slots": [
+    "leggings/cuisses"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_leggings_cuisses_hone_movement_speed",
+        "level": 1
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_leggings_cuisses_hone_movement_speed",
+          "level": 2
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:stone"
+      },
+      "improvements": {
+        "reforging_leggings_cuisses_hone_movement_speed": 2
+      }
+    }
+  ]
+}

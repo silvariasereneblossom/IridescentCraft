@@ -3,7 +3,8 @@
     "key": "reforging_boots_boot_sole_settled_armor",
     "level": 1,
     "attributes": {
-      "minecraft:generic.movement_speed": 0.001
+      "minecraft:generic.armor": 2.0,
+      "minecraft:generic.knockback_resistance": 0.05
     }
   }
 ]

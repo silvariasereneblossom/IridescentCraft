@@ -1,0 +1,29 @@
+{
+  "slots": [
+    "helmet/strap"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:not",
+    "requirement": {
+      "type": "tetra:improvement",
+      "improvement": "reforging_helmet_strap_hone_mana_regen"
+    }
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:wood"
+      },
+      "improvements": {
+        "reforging_helmet_strap_hone_mana_regen": 1
+      }
+    }
+  ]
+}

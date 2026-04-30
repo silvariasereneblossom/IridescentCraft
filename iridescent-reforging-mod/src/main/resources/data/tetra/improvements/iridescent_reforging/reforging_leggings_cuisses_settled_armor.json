@@ -3,7 +3,8 @@
     "key": "reforging_leggings_cuisses_settled_armor",
     "level": 1,
     "attributes": {
-      "minecraft:generic.knockback_resistance": 0.02
+      "minecraft:generic.armor": 2.0,
+      "minecraft:generic.knockback_resistance": 0.05
     }
   }
 ]

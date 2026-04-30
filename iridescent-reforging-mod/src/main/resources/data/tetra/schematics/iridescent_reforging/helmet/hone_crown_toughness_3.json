@@ -10,14 +10,27 @@
     "textureY": 240
   },
   "requirement": {
-    "type": "tetra:improvement",
-    "improvement": "reforging_helmet_crown_hone_toughness",
-    "level": 2
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_helmet_crown_hone_toughness",
+        "level": 2
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_helmet_crown_hone_toughness",
+          "level": 3
+        }
+      }
+    ]
   },
   "outcomes": [
     {
       "requiredTools": {
-        "hammer_dig": "thermal:steel"
+        "hammer_dig": "minecraft:iron"
       },
       "improvements": {
         "reforging_helmet_crown_hone_toughness": 3

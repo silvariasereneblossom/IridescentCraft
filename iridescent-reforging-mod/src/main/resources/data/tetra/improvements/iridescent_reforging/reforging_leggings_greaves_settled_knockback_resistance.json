@@ -3,7 +3,8 @@
     "key": "reforging_leggings_greaves_settled_knockback_resistance",
     "level": 1,
     "attributes": {
-      "minecraft:generic.armor": 0.5
+      "minecraft:generic.knockback_resistance": 0.05,
+      "minecraft:generic.armor": 1.0
     }
   }
 ]

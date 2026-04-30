@@ -1,0 +1,29 @@
+{
+  "slots": [
+    "leggings/greaves"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:not",
+    "requirement": {
+      "type": "tetra:improvement",
+      "improvement": "reforging_leggings_greaves_hone_toughness"
+    }
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:wood"
+      },
+      "improvements": {
+        "reforging_leggings_greaves_hone_toughness": 1
+      }
+    }
+  ]
+}

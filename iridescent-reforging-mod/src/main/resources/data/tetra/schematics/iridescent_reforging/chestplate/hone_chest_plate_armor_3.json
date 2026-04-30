@@ -10,14 +10,27 @@
     "textureY": 240
   },
   "requirement": {
-    "type": "tetra:improvement",
-    "improvement": "reforging_chestplate_chest_plate_hone_armor",
-    "level": 2
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_chestplate_chest_plate_hone_armor",
+        "level": 2
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_chestplate_chest_plate_hone_armor",
+          "level": 3
+        }
+      }
+    ]
   },
   "outcomes": [
     {
       "requiredTools": {
-        "hammer_dig": "thermal:steel"
+        "hammer_dig": "minecraft:iron"
       },
       "improvements": {
         "reforging_chestplate_chest_plate_hone_armor": 3

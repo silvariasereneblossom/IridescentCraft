@@ -1,0 +1,10 @@
+[
+  {
+    "key": "reforging_leggings_belt_settled_movement_speed",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.movement_speed": 0.004,
+      "minecraft:generic.knockback_resistance": 0.05
+    }
+  }
+]

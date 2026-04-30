@@ -19,7 +19,7 @@
   "outcomes": [
     {
       "requiredTools": {
-        "hammer_dig": "minecraft:gold"
+        "hammer_dig": "minecraft:wood"
       },
       "improvements": {
         "reforging_chestplate_chest_plate_hone_armor": 1

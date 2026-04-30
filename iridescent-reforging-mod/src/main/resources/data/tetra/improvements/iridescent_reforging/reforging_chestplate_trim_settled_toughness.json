@@ -1,0 +1,10 @@
+[
+  {
+    "key": "reforging_chestplate_trim_settled_toughness",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.armor_toughness": 1.0,
+      "minecraft:generic.armor": 1.0
+    }
+  }
+]

@@ -3,7 +3,8 @@
     "key": "reforging_boots_boot_lining_settled_spell_power",
     "level": 1,
     "attributes": {
-      "irons_spellbooks:cooldown_reduction": 0.02
+      "irons_spellbooks:spell_power": 0.04,
+      "irons_spellbooks:cooldown_reduction": 0.04
     }
   }
 ]
