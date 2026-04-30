@@ -13,9 +13,7 @@
       ],
       "key": "chestplate/trim/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:cooldown_reduction": 0.02
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",

@@ -13,9 +13,7 @@
       ],
       "key": "chestplate/chest_lining/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.05
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",

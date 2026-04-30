@@ -13,9 +13,7 @@
       ],
       "key": "helmet/crest/",
       "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.0
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
