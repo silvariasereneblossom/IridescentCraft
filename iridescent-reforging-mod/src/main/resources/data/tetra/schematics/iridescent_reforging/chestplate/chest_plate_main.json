@@ -20,6 +20,14 @@
       "countFactor": 1,
       "moduleKey": "chestplate/chest_plate",
       "moduleVariant": "chestplate/chest_plate/"
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_plate",
+      "moduleVariant": "chestplate/chest_plate/diamond"
     }
   ]
 }

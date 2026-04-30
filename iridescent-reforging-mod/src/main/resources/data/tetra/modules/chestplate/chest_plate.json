@@ -7,14 +7,104 @@
   "variants": [
     {
       "materials": [
-        "tetra:metal/"
+        "tetra:metal/iron"
       ],
-      "key": "chestplate/chest_plate/",
+      "key": "chestplate/chest_plate/iron",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.2
         },
-        "integrity": 3,
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "chestplate/chest_plate/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.667
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "chestplate/chest_plate/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.333
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.armor_toughness": 0.69
+        }
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "chestplate/chest_plate/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.105
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.armor_toughness": 1.034
+        }
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "chestplate/chest_plate/copper",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.5
+        },
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

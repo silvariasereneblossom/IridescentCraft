@@ -20,6 +20,14 @@
       "countFactor": 1,
       "moduleKey": "boots/boot_sole",
       "moduleVariant": "boots/boot_sole/"
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_sole",
+      "moduleVariant": "boots/boot_sole/diamond"
     }
   ]
 }
