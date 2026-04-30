@@ -10,6 +10,18 @@
       "leggings/leg_plate": [
         "leggings/leg_plate",
         "leggings/leg_plate/iron"
+      ],
+      "leggings/belt": [
+        "leggings/belt",
+        "leggings/belt/"
+      ],
+      "leggings/greaves": [
+        "leggings/greaves",
+        "leggings/greaves/"
+      ],
+      "leggings/cuisses": [
+        "leggings/cuisses",
+        "leggings/cuisses/"
       ]
     }
   }

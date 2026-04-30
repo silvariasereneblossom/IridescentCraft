@@ -10,6 +10,18 @@
       "chestplate/chest_plate": [
         "chestplate/chest_plate",
         "chestplate/chest_plate/iron"
+      ],
+      "chestplate/chest_lining": [
+        "chestplate/chest_lining",
+        "chestplate/chest_lining/"
+      ],
+      "chestplate/trim": [
+        "chestplate/trim",
+        "chestplate/trim/"
+      ],
+      "chestplate/pauldrons": [
+        "chestplate/pauldrons",
+        "chestplate/pauldrons/"
       ]
     }
   }

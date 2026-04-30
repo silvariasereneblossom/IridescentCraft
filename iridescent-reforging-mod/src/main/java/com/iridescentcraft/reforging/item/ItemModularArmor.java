@@ -261,38 +261,63 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
      * Derive vanilla armor texture from the equipped major-slot module's
      * material when no skin tag is present.
      *
-     * Used by getArmorTexture to handle the vanilla-armor-replacement path:
-     * when a player drops minecraft:iron_helmet in the workbench, Tetra's
-     * replacement creates a reforged_helmet with crown=iron module but no
-     * skin tag. We need the result to render as vanilla iron, then change
-     * to gold when the player swaps the crown to gold, etc.
-     *
-     * The major module's variant key looks like "helmet/crown/iron" — we
-     * extract the trailing "iron" segment and return the matching vanilla
-     * texture path. Falls through to null (vanilla material default) if
-     * we can't resolve.
+     * The variant key looks like "helmet/crown/iron" — we extract the trailing
+     * "iron" segment and return the matching texture path. Vanilla materials
+     * (iron/gold/diamond/netherite) use minecraft: convention; modded materials
+     * with a verified standard `_layer_N.png` format use the entry from
+     * MATERIAL_TEXTURE_TEMPLATES; everything else falls back to the iron
+     * texture so the player never sees the missing-texture checkerboard.
      */
     public static String deriveTextureFromMajorMaterial(ItemStack stack,
                                                         net.minecraft.world.entity.EquipmentSlot slot) {
         if (!(stack.getItem() instanceof ItemModularArmor armor)) return null;
+        int layer = (slot == net.minecraft.world.entity.EquipmentSlot.LEGS) ? 2 : 1;
         try {
             se.mickelus.tetra.module.ItemModuleMajor[] majors = armor.getMajorModules(stack);
-            if (majors == null || majors.length == 0) return null;
+            if (majors == null || majors.length == 0) return ironFallback(layer);
             for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
                 if (m == null) continue;
                 se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
                 if (v == null || v.key == null) continue;
-                // v.key like "helmet/crown/iron" — take the last segment.
                 int slash = v.key.lastIndexOf('/');
                 if (slash < 0 || slash == v.key.length() - 1) continue;
                 String mat = v.key.substring(slash + 1);
                 if (mat.isEmpty()) continue;
-                int layer = (slot == net.minecraft.world.entity.EquipmentSlot.LEGS) ? 2 : 1;
-                return "minecraft:textures/models/armor/" + mat + "_layer_" + layer + ".png";
+                String tmpl = MATERIAL_TEXTURE_TEMPLATES.get(mat);
+                if (tmpl != null) {
+                    return tmpl.replace("{layer}", String.valueOf(layer));
+                }
+                if (VANILLA_MATERIALS.contains(mat)) {
+                    return "minecraft:textures/models/armor/" + mat + "_layer_" + layer + ".png";
+                }
+                return ironFallback(layer);
             }
         } catch (Throwable t) {
-            // Fail gracefully; no texture means vanilla default kicks in.
+            // Fail safe to iron rather than the missing-texture checkerboard.
         }
-        return null;
+        return ironFallback(layer);
     }
+
+    private static String ironFallback(int layer) {
+        return "minecraft:textures/models/armor/iron_layer_" + layer + ".png";
+    }
+
+    // Material → vanilla-layer-compatible texture template. Each mapped value
+    // is a ResourceLocation string with a "{layer}" placeholder (1 or 2). Only
+    // mods whose layer_1 + layer_2 textures both exist in their assets land
+    // here; mods using Geckolib-only renderers (Botania, Twilight Forest) or
+    // single-texture armor are intentionally absent and fall back to iron.
+    private static final java.util.Map<String, String> MATERIAL_TEXTURE_TEMPLATES = java.util.Map.of(
+            "aethersteel",            "aethersteel:textures/models/armor/aethersteel__layer_{layer}.png",
+            "undergarden_cloggrum",   "undergarden:textures/armor/cloggrum_layer_{layer}.png",
+            "undergarden_froststeel", "undergarden:textures/armor/froststeel_layer_{layer}.png",
+            "undergarden_utherium",   "undergarden:textures/armor/utherium_layer_{layer}.png",
+            "charoite",               "blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/charoite_layer_{layer}.png",
+            "diopside",               "blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/diopside_layer_{layer}.png",
+            "horizonite",             "blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/horizonite_layer_{layer}.png"
+    );
+
+    private static final java.util.Set<String> VANILLA_MATERIALS = java.util.Set.of(
+            "iron", "gold", "diamond", "netherite", "leather", "chainmail", "turtle"
+    );
 }

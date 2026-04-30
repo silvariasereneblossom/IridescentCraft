@@ -10,6 +10,18 @@
       "helmet/crown": [
         "helmet/crown",
         "helmet/crown/iron"
+      ],
+      "helmet/visor": [
+        "helmet/visor",
+        "helmet/visor/"
+      ],
+      "helmet/crest": [
+        "helmet/crest",
+        "helmet/crest/"
+      ],
+      "helmet/strap": [
+        "helmet/strap",
+        "helmet/strap/"
       ]
     }
   }

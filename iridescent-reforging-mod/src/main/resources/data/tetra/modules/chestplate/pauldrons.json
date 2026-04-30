@@ -1,0 +1,225 @@
+{
+  "type": "tetra:basic_module",
+  "slots": [
+    "chestplate/pauldrons"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:fabric/",
+        "tetra:fibre/",
+        "tetra:skin/"
+      ],
+      "key": "chestplate/pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.5,
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "key": "chestplate/pauldrons/fire",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:fire_spell_power": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "chestplate/pauldrons/ice",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:ice_spell_power": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "chestplate/pauldrons/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:blood_spell_power": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "chestplate/pauldrons/holy",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:holy_spell_power": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "chestplate/pauldrons/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:lightning_spell_power": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "chestplate/pauldrons/nature",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:mana_regen": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "chestplate/pauldrons/ender",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:ender_spell_power": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "chestplate/pauldrons/blood",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:blood_spell_power": 0.02
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "secondaryAttributes": {
+          "minecraft:generic.knockback_resistance": 0.02
+        }
+      }
+    }
+  ]
+}

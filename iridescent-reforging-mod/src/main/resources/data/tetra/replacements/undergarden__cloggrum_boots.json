@@ -10,6 +10,18 @@
       "boots/boot_sole": [
         "boots/boot_sole",
         "boots/boot_sole/iron"
+      ],
+      "boots/boot_lining": [
+        "boots/boot_lining",
+        "boots/boot_lining/"
+      ],
+      "boots/heel": [
+        "boots/heel",
+        "boots/heel/"
+      ],
+      "boots/lacing": [
+        "boots/lacing",
+        "boots/lacing/"
       ]
     }
   }
