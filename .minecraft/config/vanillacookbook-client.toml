@@ -1,0 +1,8 @@
+
+#Client settings
+[client]
+	#Should items display tooltips describing their (potion) effects? (Default: true)
+	foodEffectTooltips = true
+	#Should items display tooltips describing other effects (i.e. cheese curing all potion effects)? (Default: true)
+	foodSpecialTooltips = true
+
