@@ -1,7 +1,7 @@
 {
   "type": "iridescent_reforging:conversion",
   "source": {
-    "item": "irons_spellbooks:boots_of_speed"
+    "item": "irons_spellbooks:speed_boots"
   },
   "material": {
     "item": "irons_spellbooks:magic_cloth"

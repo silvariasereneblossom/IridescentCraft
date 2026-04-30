@@ -1,7 +1,7 @@
 {
   "skin_id": "iridescent_reforging:boots_of_speed_boots",
   "slot": "boots",
-  "source_item": "irons_spellbooks:boots_of_speed",
+  "source_item": "irons_spellbooks:speed_boots",
   "display_name": "Reforged Speed Boots",
   "tier": 2,
   "set_id": "",

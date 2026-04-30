@@ -1,17 +1,17 @@
 {
-  "skin_id": "iridescent_reforging:forgotten_chestplate",
-  "slot": "chestplate",
-  "source_item": "undergarden:forgotten_chestplate",
-  "display_name": "Reforged Forgotten Chestplate",
+  "skin_id": "iridescent_reforging:ancient_leggings",
+  "slot": "leggings",
+  "source_item": "undergarden:ancient_leggings",
+  "display_name": "Reforged Ancient Leggings",
   "tier": 4,
-  "set_id": "iridescent_reforging:forgotten",
+  "set_id": "iridescent_reforging:ancient",
   "armor_material_namespace": "undergarden",
-  "armor_material_name": "forgotten",
+  "armor_material_name": "ancient",
   "base_attributes": [
     {
       "attribute": "minecraft:generic.armor",
       "operation": "addition",
-      "value": 8.0
+      "value": 6.0
     },
     {
       "attribute": "minecraft:generic.armor_toughness",

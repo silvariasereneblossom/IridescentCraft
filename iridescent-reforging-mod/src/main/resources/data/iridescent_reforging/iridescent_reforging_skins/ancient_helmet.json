@@ -1,12 +1,12 @@
 {
-  "skin_id": "iridescent_reforging:forgotten_boots",
-  "slot": "boots",
-  "source_item": "undergarden:forgotten_boots",
-  "display_name": "Reforged Forgotten Boots",
+  "skin_id": "iridescent_reforging:ancient_helmet",
+  "slot": "helmet",
+  "source_item": "undergarden:ancient_helmet",
+  "display_name": "Reforged Ancient Helmet",
   "tier": 4,
-  "set_id": "iridescent_reforging:forgotten",
+  "set_id": "iridescent_reforging:ancient",
   "armor_material_namespace": "undergarden",
-  "armor_material_name": "forgotten",
+  "armor_material_name": "ancient",
   "base_attributes": [
     {
       "attribute": "minecraft:generic.armor",

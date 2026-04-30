@@ -1,12 +1,12 @@
 {
   "type": "iridescent_reforging:conversion",
   "source": {
-    "item": "undergarden:forgotten_leggings"
+    "item": "undergarden:ancient_leggings"
   },
   "material": {
     "item": "irons_spellbooks:magic_cloth"
   },
   "material_count": 3,
-  "skin_id": "iridescent_reforging:forgotten_leggings",
+  "skin_id": "iridescent_reforging:ancient_leggings",
   "result_slot": "leggings"
 }
