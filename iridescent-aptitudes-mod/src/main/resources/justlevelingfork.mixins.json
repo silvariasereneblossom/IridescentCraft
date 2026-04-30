@@ -6,8 +6,7 @@
   "refmap": "justlevelingfork.refmap.json",
   "client": [
     "MixForgeGui",
-    "MixPlayerRenderer",
-    "MixInventoryScreen"
+    "MixPlayerRenderer"
   ],
   "mixins": [
     "MixItemStack",
