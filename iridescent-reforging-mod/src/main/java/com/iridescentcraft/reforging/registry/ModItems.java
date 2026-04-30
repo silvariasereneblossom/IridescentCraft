@@ -44,7 +44,7 @@ public final class ModItems {
     public static final RegistryObject<Item> REFORGED_HELMET = ITEMS.register(
             "reforged_helmet",
             () -> new ItemModularArmor(
-                    ArmorMaterials.IRON,
+                    com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.HELMET,
                     new Item.Properties(),
                     HELMET_MAJOR, HELMET_MINOR, HELMET_REQUIRED));
@@ -52,7 +52,7 @@ public final class ModItems {
     public static final RegistryObject<Item> REFORGED_CHESTPLATE = ITEMS.register(
             "reforged_chestplate",
             () -> new ItemModularArmor(
-                    ArmorMaterials.IRON,
+                    com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.CHESTPLATE,
                     new Item.Properties(),
                     CHESTPLATE_MAJOR, CHESTPLATE_MINOR, CHESTPLATE_REQUIRED));
@@ -60,7 +60,7 @@ public final class ModItems {
     public static final RegistryObject<Item> REFORGED_LEGGINGS = ITEMS.register(
             "reforged_leggings",
             () -> new ItemModularArmor(
-                    ArmorMaterials.IRON,
+                    com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.LEGGINGS,
                     new Item.Properties(),
                     LEGGINGS_MAJOR, LEGGINGS_MINOR, LEGGINGS_REQUIRED));
@@ -68,7 +68,7 @@ public final class ModItems {
     public static final RegistryObject<Item> REFORGED_BOOTS = ITEMS.register(
             "reforged_boots",
             () -> new ItemModularArmor(
-                    ArmorMaterials.IRON,
+                    com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.BOOTS,
                     new Item.Properties(),
                     BOOTS_MAJOR, BOOTS_MINOR, BOOTS_REQUIRED));

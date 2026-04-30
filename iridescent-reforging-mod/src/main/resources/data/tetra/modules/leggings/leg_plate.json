@@ -12,7 +12,7 @@
       "key": "leggings/leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 3.0
+          "minecraft:generic.armor": 1.0
         },
         "integrity": 2,
         "glyph": {

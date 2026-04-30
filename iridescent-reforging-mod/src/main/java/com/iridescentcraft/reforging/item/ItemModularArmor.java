@@ -224,10 +224,16 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
                                   net.minecraft.world.entity.EquipmentSlot slot,
                                   String type) {
         String skinId = ItemModularArmorClient.readSkinId(stack);
-        if (skinId == null) return null;
+        if (skinId == null) {
+            // No skin (vanilla-armor-replacement path) — derive from the
+            // equipped major-slot module's material.
+            return deriveTextureFromMajorMaterial(stack, slot);
+        }
 
         SkinDefinition def = SkinRegistry.get().getDefinition(skinId).orElse(null);
-        if (def == null) return null;
+        if (def == null) {
+            return deriveTextureFromMajorMaterial(stack, slot);
+        }
 
         boolean isLegs = slot == net.minecraft.world.entity.EquipmentSlot.LEGS;
 
@@ -243,10 +249,50 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         String ns = def.armorMaterialNamespace();
         String name = def.armorMaterialName();
         if (ns == null || ns.isEmpty() || name == null || name.isEmpty()) {
-            return null;
+            // Fall through to module-material derivation below.
+            return deriveTextureFromMajorMaterial(stack, slot);
         }
         int layer = isLegs ? 2 : 1;
         String overlay = type == null ? "" : "_" + type;
         return ns + ":textures/models/armor/" + name + "_layer_" + layer + overlay + ".png";
+    }
+
+    /**
+     * Derive vanilla armor texture from the equipped major-slot module's
+     * material when no skin tag is present.
+     *
+     * Used by getArmorTexture to handle the vanilla-armor-replacement path:
+     * when a player drops minecraft:iron_helmet in the workbench, Tetra's
+     * replacement creates a reforged_helmet with crown=iron module but no
+     * skin tag. We need the result to render as vanilla iron, then change
+     * to gold when the player swaps the crown to gold, etc.
+     *
+     * The major module's variant key looks like "helmet/crown/iron" — we
+     * extract the trailing "iron" segment and return the matching vanilla
+     * texture path. Falls through to null (vanilla material default) if
+     * we can't resolve.
+     */
+    public static String deriveTextureFromMajorMaterial(ItemStack stack,
+                                                        net.minecraft.world.entity.EquipmentSlot slot) {
+        if (!(stack.getItem() instanceof ItemModularArmor armor)) return null;
+        try {
+            se.mickelus.tetra.module.ItemModuleMajor[] majors = armor.getMajorModules(stack);
+            if (majors == null || majors.length == 0) return null;
+            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
+                if (m == null) continue;
+                se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
+                if (v == null || v.key == null) continue;
+                // v.key like "helmet/crown/iron" — take the last segment.
+                int slash = v.key.lastIndexOf('/');
+                if (slash < 0 || slash == v.key.length() - 1) continue;
+                String mat = v.key.substring(slash + 1);
+                if (mat.isEmpty()) continue;
+                int layer = (slot == net.minecraft.world.entity.EquipmentSlot.LEGS) ? 2 : 1;
+                return "minecraft:textures/models/armor/" + mat + "_layer_" + layer + ".png";
+            }
+        } catch (Throwable t) {
+            // Fail gracefully; no texture means vanilla default kicks in.
+        }
+        return null;
     }
 }

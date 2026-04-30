@@ -12,7 +12,7 @@
       "key": "boots/boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.0
+          "minecraft:generic.armor": 0.4
         },
         "integrity": 2,
         "glyph": {
