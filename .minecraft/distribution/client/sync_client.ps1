@@ -240,12 +240,13 @@ if ($useDiff) {
     Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
 
     Write-Host "[IridescentCraft Sync] Overlay complete." -ForegroundColor Green
-} catch {
-    Write-Host "[IridescentCraft Sync] Overlay failed: $($_.Exception.Message)" -ForegroundColor Yellow
-    Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
-    Remove-Item $zipFile -Force -ErrorAction SilentlyContinue
-    Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
-    exit 0
+    } catch {
+        Write-Host "[IridescentCraft Sync] Overlay failed: $($_.Exception.Message)" -ForegroundColor Yellow
+        Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
+        Remove-Item $zipFile -Force -ErrorAction SilentlyContinue
+        Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
+        exit 0
+    }
 }
 
 # -- Step 4a: Stale-JAR cleanup --
