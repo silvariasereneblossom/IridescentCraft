@@ -1,0 +1,9 @@
+[
+  {
+    "predicate": {"items": ["minecraft:iron_boots"]},
+    "item": "iridescent_reforging:reforged_boots",
+    "modules": {
+      "boots/boot_sole": ["boots/boot_sole", "boots/boot_sole/iron"]
+    }
+  }
+]

@@ -1,0 +1,9 @@
+[
+  {
+    "predicate": {"items": ["minecraft:iron_chestplate"]},
+    "item": "iridescent_reforging:reforged_chestplate",
+    "modules": {
+      "chestplate/chest_plate": ["chestplate/chest_plate", "chestplate/chest_plate/iron"]
+    }
+  }
+]
