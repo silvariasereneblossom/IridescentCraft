@@ -1,0 +1,84 @@
+name: Script Syntax Check
+
+# Defensive parse-validation for PowerShell + bash scripts shipped to testers.
+# Catches things like the latent brace-mismatch in sync_client.ps1 (af51af5f)
+# that slipped through because we don't have a Windows / pwsh dev box on the
+# Linux side, and testers grab files directly from GitHub raw.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '**/*.ps1'
+      - '**/*.sh'
+      - '.github/workflows/script-syntax.yml'
+  pull_request:
+    paths:
+      - '**/*.ps1'
+      - '**/*.sh'
+  workflow_dispatch:
+
+jobs:
+  powershell:
+    name: PowerShell parser validation
+    runs-on: windows-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse all .ps1 files via System.Management.Automation.Language.Parser
+        shell: pwsh
+        run: |
+          $failed = @()
+          $checked = 0
+          Get-ChildItem -Path . -Recurse -Filter '*.ps1' -ErrorAction SilentlyContinue |
+              Where-Object { $_.FullName -notmatch '\\\.cache\\' -and $_.FullName -notmatch '\\\.gradle\\' } |
+              ForEach-Object {
+                  $checked++
+                  $parseErrors = $null
+                  $tokens = $null
+                  $ast = [System.Management.Automation.Language.Parser]::ParseFile(
+                      $_.FullName, [ref]$tokens, [ref]$parseErrors)
+                  if ($parseErrors -and $parseErrors.Count -gt 0) {
+                      $relPath = $_.FullName.Substring((Resolve-Path '.').Path.Length + 1)
+                      foreach ($err in $parseErrors) {
+                          Write-Host "::error file=$relPath,line=$($err.Extent.StartLineNumber),col=$($err.Extent.StartColumnNumber)::$($err.Message)"
+                      }
+                      $failed += $relPath
+                  }
+              }
+          Write-Host ""
+          Write-Host "Checked $checked PowerShell file(s)."
+          if ($failed.Count -gt 0) {
+              Write-Host "::error::PowerShell parse errors in $($failed.Count) file(s): $($failed -join ', ')"
+              exit 1
+          } else {
+              Write-Host "All clean."
+          }
+
+  bash:
+    name: Bash syntax check
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Parse all .sh files via bash -n
+        run: |
+          set -e
+          failed=()
+          checked=0
+          while IFS= read -r script; do
+            checked=$((checked + 1))
+            if ! bash -n "$script" 2>/tmp/bash_err; then
+              line=$(grep -oE 'line [0-9]+' /tmp/bash_err | head -1 | grep -oE '[0-9]+' || echo 1)
+              msg=$(cat /tmp/bash_err | head -1)
+              echo "::error file=${script#./},line=$line::$msg"
+              failed+=("${script#./}")
+            fi
+          done < <(find . -name "*.sh" -not -path "*/.cache/*" -not -path "*/.gradle/*" -not -path "*/build/*")
+          echo
+          echo "Checked $checked bash file(s)."
+          if [ ${#failed[@]} -gt 0 ]; then
+            echo "::error::bash syntax errors in ${#failed[@]} file(s): ${failed[*]}"
+            exit 1
+          fi
+          echo "All clean."
