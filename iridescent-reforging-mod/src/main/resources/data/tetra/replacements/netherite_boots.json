@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "minecraft:netherite_boots"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_boots",
+    "modules": {
+      "boots/boot_sole": [
+        "boots/boot_sole",
+        "boots/boot_sole/netherite"
+      ],
+      "boots/boot_lining": [
+        "boots/boot_lining",
+        "boots/boot_lining/"
+      ],
+      "boots/heel": [
+        "boots/heel",
+        "boots/heel/"
+      ],
+      "boots/lacing": [
+        "boots/lacing",
+        "boots/lacing/"
+      ]
+    }
+  }
+]

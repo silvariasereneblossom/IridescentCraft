@@ -1,0 +1,9 @@
+[
+  {
+    "key": "reforging_chestplate_chest_plate_settled_toughness",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.knockback_resistance": 0.05
+    }
+  }
+]

@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "minecraft:leather_leggings"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_leggings",
+    "modules": {
+      "leggings/leg_plate": [
+        "leggings/leg_plate",
+        "leggings/leg_plate/iron"
+      ],
+      "leggings/belt": [
+        "leggings/belt",
+        "leggings/belt/"
+      ],
+      "leggings/greaves": [
+        "leggings/greaves",
+        "leggings/greaves/"
+      ],
+      "leggings/cuisses": [
+        "leggings/cuisses",
+        "leggings/cuisses/"
+      ]
+    }
+  }
+]

@@ -1,0 +1,40 @@
+{
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_chestplate_chest_plate_hone_toughness",
+        "level": 1
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_chestplate_chest_plate_hone_toughness",
+          "level": 2
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:stone"
+      },
+      "improvements": {
+        "reforging_chestplate_chest_plate_hone_toughness": 2
+      }
+    }
+  ]
+}

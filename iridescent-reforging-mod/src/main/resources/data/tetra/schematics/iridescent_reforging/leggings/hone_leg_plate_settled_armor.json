@@ -1,0 +1,39 @@
+{
+  "slots": [
+    "leggings/leg_plate"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "reforging_leggings_leg_plate_hone_armor",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "reforging_leggings_leg_plate_settled_armor"
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "thermal:steel"
+      },
+      "improvements": {
+        "reforging_leggings_leg_plate_settled_armor": 1
+      }
+    }
+  ]
+}

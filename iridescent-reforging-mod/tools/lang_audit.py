@@ -95,7 +95,10 @@ def audit_schematics(lang):
             f"tetra/schematic/{path_key}.name",
             f"tetra/schematic/{path_key}.description",
         ]
-        slot_count = len(d.get("slots", []))
+        # Tetra only renders the material slot label when the schematic
+        # actually accepts a material input. Honing schematics have
+        # materialSlotCount: 0 — no slotN keys needed there.
+        slot_count = int(d.get("materialSlotCount", 0))
         for i in range(1, slot_count + 1):
             keys_required.append(f"tetra/schematic/{path_key}.slot{i}")
         for k in keys_required:

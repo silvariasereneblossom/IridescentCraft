@@ -1,0 +1,9 @@
+[
+  {
+    "key": "reforging_helmet_crown_settled_magic_capacity",
+    "level": 1,
+    "attributes": {
+      "irons_spellbooks:cooldown_reduction": 0.02
+    }
+  }
+]

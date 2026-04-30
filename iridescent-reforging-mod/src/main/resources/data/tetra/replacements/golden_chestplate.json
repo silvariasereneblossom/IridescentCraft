@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "minecraft:golden_chestplate"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_chestplate",
+    "modules": {
+      "chestplate/chest_plate": [
+        "chestplate/chest_plate",
+        "chestplate/chest_plate/gold"
+      ],
+      "chestplate/chest_lining": [
+        "chestplate/chest_lining",
+        "chestplate/chest_lining/"
+      ],
+      "chestplate/trim": [
+        "chestplate/trim",
+        "chestplate/trim/"
+      ],
+      "chestplate/pauldrons": [
+        "chestplate/pauldrons",
+        "chestplate/pauldrons/"
+      ]
+    }
+  }
+]
