@@ -6,6 +6,8 @@ mods/*.jar
 !mods/iridescent_reforging-*.jar
 !mods/iridescent_durability_clamp-*.jar
 !mods/justlevelingfork-*-iridescent.*.jar
+!mods/mek_walkable_cables-*.jar
+!mods/zeta_racefix-*.jar
 !mods/Patchouli-*.jar
 !mods/ars_nouveau-*.jar
 !mods/class-artifacts-forge-*.jar
@@ -18,6 +20,8 @@ mods/*.jar
 !server_distribution/mods/iridescent_reforging-*.jar
 !server_distribution/mods/iridescent_durability_clamp-*.jar
 !server_distribution/mods/justlevelingfork-*-iridescent.*.jar
+!server_distribution/mods/mek_walkable_cables-*.jar
+!server_distribution/mods/zeta_racefix-*.jar
 !server_distribution/mods/Patchouli-*.jar
 !server_distribution/mods/ars_nouveau-*.jar
 !server_distribution/mods/class-artifacts-forge-*.jar
@@ -28,6 +32,8 @@ mods/*.jar
 !distribution/client/mods/iridescent_reforging-*.jar
 !distribution/client/mods/iridescent_durability_clamp-*.jar
 !distribution/client/mods/justlevelingfork-*-iridescent.*.jar
+!distribution/client/mods/mek_walkable_cables-*.jar
+!distribution/client/mods/zeta_racefix-*.jar
 !distribution/client/mods/Patchouli-*.jar
 !distribution/client/mods/ars_nouveau-*.jar
 !distribution/client/mods/class-artifacts-forge-*.jar
