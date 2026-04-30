@@ -8,7 +8,9 @@ import com.seniors.justlevelingfork.network.packet.common.OpenEnderChestSP;
 import com.seniors.justlevelingfork.registry.RegistrySkills;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
+import net.minecraft.client.player.LocalPlayer;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.client.event.ScreenEvent;
@@ -17,16 +19,19 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * Renders the inventory ↔ aptitudes tab strip and the optional Wormhole Storage
- * ender-chest button on the vanilla {@link InventoryScreen} via Forge ScreenEvents
- * instead of a mixin.
+ * Renders the aptitudes tab + optional Wormhole Storage ender-chest button on
+ * top of the inventory screen via Forge ScreenEvents.
  *
- * Why: when this lived in a mixin (MixInventoryScreen), it competed with other
- * mods' mixins on the same screen — most visibly Apothic Attributes' "View
- * Stats" button, which would overdraw our aptitudes tab and steal clicks.
- * Moving to ScreenEvent.Render.Post guarantees we paint after every other mod's
- * render hook, and ScreenEvent.MouseButtonPressed.Pre lets us cancel clicks
- * inside our hit-box before vanilla dispatches them to other mods' buttons.
+ * Visibility: tabs only render when the player is in creative mode, never on
+ * the survival InventoryScreen. This dodges the Apothic Attributes "View
+ * Stats" button that overlaps our tab area on survival. Survival players
+ * still reach aptitudes via the Y keybind (key.justlevelingfork.title).
+ *
+ * Why ScreenEvent over the old mixin: a mixin on InventoryScreen competed
+ * with other mods' mixins on the same target. Render.Post fires after every
+ * other mod's render hook so we paint last; MouseButtonPressed.Pre lets us
+ * cancel clicks inside our hit-box before vanilla dispatches them to other
+ * mods' buttons.
  */
 @Mod.EventBusSubscriber(modid = JustLevelingFork.MOD_ID, value = Dist.CLIENT)
 public final class InventoryTabHandler {
@@ -40,15 +45,41 @@ public final class InventoryTabHandler {
 
     private InventoryTabHandler() {}
 
+    /** True only when the player is in creative gameMode AND the open screen
+     * is one we want tabs on (survival InventoryScreen or the survival-inv
+     * subview of the creative menu). */
+    private static boolean shouldRender(net.minecraft.client.gui.screens.Screen s) {
+        LocalPlayer p = Minecraft.getInstance().player;
+        if (p == null || !p.isCreative()) return false;
+        // Both screens use the same 176x166 inventory layout, so existing
+        // tab math works on either. Creative menu's other tabs (Building
+        // Blocks, Combat, etc.) display a different layout — render still
+        // technically fires there, but the inventory rect math will sit off
+        // to the side. Acceptable; the player only sees us when they switch
+        // to the survival-inv tab.
+        return s instanceof InventoryScreen || s instanceof CreativeModeInventoryScreen;
+    }
+
+    /** Horizontal offset (in tab widths) to clear the curios tab when it's
+     * present — Curios renders an extra tab to the left of where ours would
+     * sit. Detection: presence of the curios mod. */
+    private static int curiosOffset() {
+        return net.minecraftforge.fml.ModList.get().isLoaded("curios") ? 27 : 0;
+    }
+
     @SubscribeEvent(priority = EventPriority.LOW)
     public static void onRender(ScreenEvent.Render.Post event) {
-        if (!(event.getScreen() instanceof InventoryScreen inv)) return;
+        if (!shouldRender(event.getScreen())) return;
         GuiGraphics matrixStack = event.getGuiGraphics();
         int mouseX = event.getMouseX();
         int mouseY = event.getMouseY();
-        int recipeOffset = inv.getRecipeBookComponent().isVisible() ? 77 : 0;
 
-        DrawTabs.render(matrixStack, mouseX, mouseY, INV_W, INV_H, recipeOffset);
+        // Recipe-book offset only exists on InventoryScreen. CreativeModeInventoryScreen
+        // doesn't have one — just zero it out there.
+        int recipeOffset = (event.getScreen() instanceof InventoryScreen inv && inv.getRecipeBookComponent().isVisible()) ? 77 : 0;
+        int xShift = recipeOffset + curiosOffset();
+
+        DrawTabs.render(matrixStack, mouseX, mouseY, INV_W, INV_H, xShift);
 
         if (RegistrySkills.WORMHOLE_STORAGE != null && RegistrySkills.WORMHOLE_STORAGE.get().isEnabled()) {
             enderHover = false;
@@ -77,7 +108,7 @@ public final class InventoryTabHandler {
 
     @SubscribeEvent(priority = EventPriority.HIGH)
     public static void onClick(ScreenEvent.MouseButtonPressed.Pre event) {
-        if (!(event.getScreen() instanceof InventoryScreen)) return;
+        if (!shouldRender(event.getScreen())) return;
         if (event.getButton() != 0) return;
 
         if (enderHover) enderArmed = true;
@@ -93,11 +124,10 @@ public final class InventoryTabHandler {
     }
 
     private static boolean isOverTabStrip(ScreenEvent.MouseButtonPressed.Pre event) {
-        if (!(event.getScreen() instanceof InventoryScreen inv)) return false;
-        int recipe = inv.getRecipeBookComponent().isVisible() ? 77 : 0;
+        int recipe = (event.getScreen() instanceof InventoryScreen inv && inv.getRecipeBookComponent().isVisible()) ? 77 : 0;
         int width = Minecraft.getInstance().getWindow().getGuiScaledWidth();
         int height = Minecraft.getInstance().getWindow().getGuiScaledHeight();
-        int leftX = (width - INV_W) / 2 + recipe;
+        int leftX = (width - INV_W) / 2 + recipe + curiosOffset();
         int topY = (height - INV_H) / 2 - 28;
         int tabCount = DrawTabs.tabList != null ? DrawTabs.tabList.size() : 2;
         int rightX = leftX + tabCount * 27;
