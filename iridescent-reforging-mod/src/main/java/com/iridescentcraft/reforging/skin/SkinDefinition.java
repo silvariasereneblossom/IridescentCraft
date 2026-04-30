@@ -23,9 +23,11 @@ public record SkinDefinition(
         int tier,
         String setId,                 // optional set identifier for set bonuses (e.g. "iridescent_reforging:phoenix")
         String armorMaterialNamespace, // optional source mod namespace for vanilla armor texture lookup
-        String armorMaterialName       // optional source material name (e.g. "phoenix")
+        String armorMaterialName,      // optional source material name (e.g. "phoenix")
+        String textureLayer1,          // optional explicit ResourceLocation override for layer-1 texture
+        String textureLayer2           // optional explicit ResourceLocation override for layer-2 texture (leggings)
 ) {
     public static SkinDefinition empty(String skinId, String slot) {
-        return new SkinDefinition(skinId, slot, "", skinId, HashMultimap.create(), 1, "", "", "");
+        return new SkinDefinition(skinId, slot, "", skinId, HashMultimap.create(), 1, "", "", "", "", "");
     }
 }

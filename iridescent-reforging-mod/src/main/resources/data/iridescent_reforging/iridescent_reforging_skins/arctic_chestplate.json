@@ -18,5 +18,7 @@
       "operation": "addition",
       "value": 1.0
     }
-  ]
+  ],
+  "texture_layer_1": "twilightforest:textures/armor/arcticarmor_1.png",
+  "texture_layer_2": "twilightforest:textures/armor/arcticarmor_2.png"
 }

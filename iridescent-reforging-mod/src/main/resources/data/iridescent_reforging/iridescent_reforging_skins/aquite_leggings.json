@@ -18,5 +18,7 @@
       "operation": "addition",
       "value": 1.0
     }
-  ]
+  ],
+  "texture_layer_1": "blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/aquite_layer_1.png",
+  "texture_layer_2": "blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/aquite_layer_2.png"
 }

@@ -18,5 +18,7 @@
       "operation": "addition",
       "value": 0.5
     }
-  ]
+  ],
+  "texture_layer_1": "twilightforest:textures/armor/phantom_1.png",
+  "texture_layer_2": "twilightforest:textures/armor/phantom_2.png"
 }

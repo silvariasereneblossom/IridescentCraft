@@ -126,8 +126,10 @@ public class SkinDataLoader extends SimpleJsonResourceReloadListener {
         String setId = obj.has("set_id") ? obj.get("set_id").getAsString() : "";
         String armNs   = obj.has("armor_material_namespace") ? obj.get("armor_material_namespace").getAsString() : "";
         String armName = obj.has("armor_material_name") ? obj.get("armor_material_name").getAsString() : "";
+        String tex1    = obj.has("texture_layer_1") ? obj.get("texture_layer_1").getAsString() : "";
+        String tex2    = obj.has("texture_layer_2") ? obj.get("texture_layer_2").getAsString() : "";
 
-        return new SkinDefinition(skinId, slot, sourceItem, displayName, attrs, tier, setId, armNs, armName);
+        return new SkinDefinition(skinId, slot, sourceItem, displayName, attrs, tier, setId, armNs, armName, tex1, tex2);
     }
 
     private static AttributeModifier.Operation parseOperation(String s) {

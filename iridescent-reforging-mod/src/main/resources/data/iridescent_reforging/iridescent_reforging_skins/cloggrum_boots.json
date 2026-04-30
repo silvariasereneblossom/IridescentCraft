@@ -18,5 +18,7 @@
       "operation": "addition",
       "value": 0.5
     }
-  ]
+  ],
+  "texture_layer_1": "undergarden:textures/armor/cloggrum_layer_1.png",
+  "texture_layer_2": "undergarden:textures/armor/cloggrum_layer_2.png"
 }
