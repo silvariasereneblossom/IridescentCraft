@@ -248,7 +248,26 @@ if ($useDiff) {
     exit 0
 }
 
-# -- Step 4: Download any new mod JARs --
+# -- Step 4a: Stale-JAR cleanup --
+# Removes mods/*.jar files that are neither in mods/.index/*.pw.toml nor in
+# the cleanup script's hardcoded custom-JAR allowlist. Catches orphans from
+# previously-managed packwiz entries (e.g., upstream justlevelingfork-1.2.1.jar
+# after the iridescent fork replaced it; legacy mod versions after a bump).
+$cleanupScript = Join-Path $instanceMC 'cleanup_stale_jars.ps1'
+if (Test-Path $cleanupScript) {
+    Write-Host "[IridescentCraft Sync] Cleaning stale JARs..." -ForegroundColor Cyan
+    try {
+        $modsDir = Join-Path $instanceMC 'mods'
+        $indexDir = Join-Path $modsDir '.index'
+        & $cleanupScript -ModsDir $modsDir -IndexDir $indexDir 2>&1 | Where-Object {
+            $_ -match 'cleanup'
+        }
+    } catch {
+        Write-Host "[IridescentCraft Sync] Cleanup step failed (non-fatal): $($_.Exception.Message)" -ForegroundColor Yellow
+    }
+}
+
+# -- Step 4b: Download any new mod JARs --
 # download_mods.ps1 is diff-aware - it skips JARs that already exist by filename,
 # so this only hits the network for actually-new mods.
 $downloadScript = Join-Path $instanceMC 'download_mods.ps1'

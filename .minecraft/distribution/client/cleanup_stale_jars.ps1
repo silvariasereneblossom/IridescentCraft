@@ -1,18 +1,19 @@
 # =============================================================================
-# cleanup_stale_jars.ps1 - remove mods/*.jar files not declared in
+# cleanup_stale_jars.ps1 (client) — remove mods/*.jar files not declared in
 # mods/.index/*.pw.toml or in the custom-JAR allowlist.
 # =============================================================================
-# Replaces the inline PowerShell that lived in iridescentserver.bat. The
-# inline version was deleting our custom jars (ars_nouveau, iridescent_biomes,
-# iridescent_modular_spells) - likely due to cmd-side quote-escape edge
-# cases breaking the array literal. A proper .ps1 file avoids that entirely
-# and lets us print diagnostics if the issue recurs.
+# Mirrors the server-distribution version. Invoked from sync_client.ps1 after
+# overlay so testers don't accumulate orphan JARs from previously-managed
+# packwiz entries (e.g., upstream justlevelingfork-1.2.1.jar after the fork
+# replaced it).
 #
 # Custom jars list MUST stay in sync with:
 #   - .gitignore allowlist patterns
+#   - server_distribution/cleanup_stale_jars.ps1 (parallel file)
 #   - server_distribution/update_mods.ps1 / .sh
-#   - distribution/client/sync_*  (where applicable)
 #   - main .minecraft/verify_distros.sh / .ps1
+#   - distribution/client/sync_client.ps1 (this file's caller)
+#   - wiki/CLAUDE.md "Current custom JARs" section
 # =============================================================================
 
 param(
@@ -23,7 +24,7 @@ param(
 $ErrorActionPreference = 'Continue'
 
 if (-not (Test-Path $IndexDir)) {
-    Write-Host "  [cleanup] $IndexDir not found - skipping." -ForegroundColor Yellow
+    Write-Host "  [cleanup] $IndexDir not found — skipping." -ForegroundColor Yellow
     exit 0
 }
 
@@ -69,7 +70,7 @@ Get-ChildItem "$ModsDir\*.jar" -ErrorAction SilentlyContinue | ForEach-Object {
     if ($expected.ContainsKey($_.Name)) {
         $kept++
     } else {
-        Write-Host "  [cleanup] Removing: $($_.Name)" -ForegroundColor DarkYellow
+        Write-Host "  [cleanup] Removing stale: $($_.Name)" -ForegroundColor DarkYellow
         Remove-Item $_.FullName -Force -ErrorAction SilentlyContinue
         $removed++
     }
