@@ -23,7 +23,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "minecraft:item/iron_boots"
+          }
+        ]
       }
     },
     {
@@ -44,7 +48,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "minecraft:item/golden_boots"
+          }
+        ]
       }
     },
     {
@@ -65,7 +73,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "minecraft:item/diamond_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.238
         }
@@ -89,7 +101,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "minecraft:item/netherite_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.357
         }
@@ -113,7 +129,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "minecraft:item/iron_boots"
+          }
+        ]
       }
     },
     {
@@ -134,7 +154,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "botania:item/manasteel_boots"
+          }
+        ]
       }
     },
     {
@@ -155,7 +179,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "botania:item/terrasteel_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -179,7 +207,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "botania:item/elementium_boots"
+          }
+        ]
       }
     },
     {
@@ -200,7 +232,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "twilightforest:item/knightmetal_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.312
         }
@@ -224,7 +260,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "twilightforest:item/steeleaf_boots"
+          }
+        ]
       }
     },
     {
@@ -245,7 +285,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "twilightforest:item/ironwood_boots"
+          }
+        ]
       }
     },
     {
@@ -266,7 +310,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "twilightforest:item/fiery_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.441
         }
@@ -290,7 +338,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "blue_skies:item/armor/charoite_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.417
         }
@@ -314,7 +366,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "blue_skies:item/armor/diopside_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -338,7 +394,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "blue_skies:item/armor/horizonite_boots"
+          }
+        ]
       }
     },
     {
@@ -359,7 +419,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "undergarden:item/cloggrum_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 0.333
         }
@@ -384,7 +448,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "undergarden:item/froststeel_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -408,7 +476,11 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
+        "models": [
+          {
+            "location": "undergarden:item/utherium_boots"
+          }
+        ],
         "secondaryAttributes": {
           "minecraft:generic.armor_toughness": 1.0
         }
@@ -433,7 +505,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "aethersteel:item/aethersteel_boots"
+          }
+        ]
       }
     },
     {
@@ -454,7 +530,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "minecraft:item/iron_boots"
+          }
+        ]
       }
     },
     {
@@ -475,7 +555,11 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [
+          {
+            "location": "minecraft:item/iron_boots"
+          }
+        ]
       }
     }
   ]

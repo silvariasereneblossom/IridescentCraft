@@ -67,7 +67,8 @@ public class IridescentReforging {
         // mods don't crash the client.
         event.enqueueWork(() -> {
             IssRendererFactories.register(SkinRegistry.get());
-            com.iridescentcraft.reforging.client.MaterialIndexProperty.register();
+            // Inventory icon dispatch happens via Tetra's modular_loader on each
+            // major variant's models[].location — no Java property needed.
             // TODO(phase 7): Aether/TF/Cataclysm factory classes here.
         });
     }

@@ -207,6 +207,60 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         consumer.accept(ItemModularArmorClient.INSTANCE);
     }
 
+    // ── Display name ────────────────────────────────────────────────────
+    //
+    // Composes "<MaterialPrefix> <PieceName>" from the equipped major slot's
+    // variant — e.g. an iron crown produces "Iron Helmet", manasteel
+    // chest_plate produces "Manasteel Chestplate". Mirrors Tetra's weapon
+    // naming pattern (iron sword shows as "Iron Sword").
+    //
+    // Override priority: skin-tag display name > major-material composition >
+    // vanilla base name fallback. Skin path stays untouched so specialized
+    // armor (Wizard, Cultist, etc.) keeps its unique identity.
+    @Override
+    public net.minecraft.network.chat.Component getName(ItemStack stack) {
+        String skinId = ItemModularArmorClient.readSkinId(stack);
+        if (skinId != null) {
+            SkinDefinition def = SkinRegistry.get().getDefinition(skinId).orElse(null);
+            if (def != null && def.displayName() != null && !def.displayName().isEmpty()) {
+                return net.minecraft.network.chat.Component.literal(def.displayName());
+            }
+        }
+        String mat = readMajorMaterial(stack);
+        if (mat == null || mat.isEmpty()) return super.getName(stack);
+        return net.minecraft.network.chat.Component.translatable(
+                "item.iridescent_reforging.material_armor",
+                net.minecraft.network.chat.Component.translatable("tetra.material." + mat),
+                net.minecraft.network.chat.Component.translatable(
+                        "item.iridescent_reforging.armor_piece." + pieceKey()));
+    }
+
+    private String pieceKey() {
+        return switch (getType()) {
+            case HELMET     -> "helmet";
+            case CHESTPLATE -> "chestplate";
+            case LEGGINGS   -> "leggings";
+            case BOOTS      -> "boots";
+        };
+    }
+
+    private static String readMajorMaterial(ItemStack stack) {
+        if (!(stack.getItem() instanceof ItemModularArmor armor)) return null;
+        try {
+            se.mickelus.tetra.module.ItemModuleMajor[] majors = armor.getMajorModules(stack);
+            if (majors == null) return null;
+            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
+                if (m == null) continue;
+                se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
+                if (v == null || v.key == null) continue;
+                int slash = v.key.lastIndexOf('/');
+                if (slash < 0 || slash == v.key.length() - 1) continue;
+                return v.key.substring(slash + 1);
+            }
+        } catch (Throwable t) { /* fall through */ }
+        return null;
+    }
+
     // ── Vanilla armor texture dispatch (v0.2 phase B) ──────────────────
     //
     // For non-Geckolib skins, vanilla armor rendering reads the texture
