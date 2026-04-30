@@ -169,6 +169,14 @@ $modsDir = "$mcDir\mods"
 New-Item -ItemType Directory -Path $modsDir -Force | Out-Null
 
 # instance.cfg
+# OverrideCommands + PreLaunchCommand wires sync_client.ps1 as a per-launch
+# hook so pack updates land automatically when the user starts the instance.
+# Without this, manual setup (per wiki/protocols/8-client-sync.md) is required
+# and easy to miss — leading to testers running stale packs.
+#
+# OverrideJavaArgs + JvmArgs=-noverify is required from minute one because
+# our bytecode-patched JARs (Patchouli, ars_nouveau) fail JVM verification.
+# Otherwise the first launch crashes before sync_client.ps1 can auto-add it.
 @"
 [General]
 ConfigVersion=1.3
@@ -179,6 +187,10 @@ MaxMemAlloc=12288
 MinMemAlloc=4096
 iconKey=default
 name=IridescentCraft
+OverrideCommands=true
+PreLaunchCommand=powershell -ExecutionPolicy Bypass -File "`$INST_MC_DIR/sync_client.ps1"
+OverrideJavaArgs=true
+JvmArgs=-noverify
 "@ | Set-Content "$instanceDir\instance.cfg" -Encoding UTF8
 
 # mmc-pack.json
