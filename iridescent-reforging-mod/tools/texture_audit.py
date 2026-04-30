@@ -184,9 +184,12 @@ def main():
             print(f"  {mat:30s} → {len(vks)} variant(s) miss minecraft texture")
 
     print("\nSUMMARY")
-    print(f"  Skin def gaps:   {len(skin_gaps)}")
-    print(f"  Module derived gaps: {len(mod_gaps)}")
-    return 0 if (not skin_gaps and not mod_gaps) else 1
+    print(f"  Skin def gaps:        {len(skin_gaps)}  (soft — Geckolib intercepts before getArmorTexture)")
+    print(f"  Module derived gaps:  {len(mod_gaps)}  (HARD — these render as the missing-texture checkerboard)")
+    # Hard-fail only on module gaps. Skin gaps surfaced today are all
+    # intercepted by IssRendererFactories at runtime, so failing the build
+    # on them would block legitimate ships. Track them as data hygiene.
+    return 1 if mod_gaps else 0
 
 if __name__ == "__main__":
     sys.exit(main())

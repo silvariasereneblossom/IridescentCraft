@@ -31,6 +31,12 @@ copy_if_missing mutil.jar 'mutil-1.20.1-*.jar'
 copy_if_missing geckolib-forge.jar 'geckolib-forge-1.20.1-*.jar'
 copy_if_missing irons_spellbooks.jar 'irons_spellbooks-1.20.1-*.jar'
 
+if command -v python3 >/dev/null 2>&1 && [ -f tools/lang_audit.py ] && [ -f tools/texture_audit.py ]; then
+    echo "[Reforging Build] Preflight: lang + texture audits..."
+    python3 tools/lang_audit.py    || { echo "[Reforging Build] FAIL: lang_audit reported gaps"; exit 1; }
+    python3 tools/texture_audit.py || { echo "[Reforging Build] FAIL: texture_audit reported gaps"; exit 1; }
+fi
+
 echo "[Reforging Build] Running gradle build..."
 ./gradlew build --warning-mode=none
 
