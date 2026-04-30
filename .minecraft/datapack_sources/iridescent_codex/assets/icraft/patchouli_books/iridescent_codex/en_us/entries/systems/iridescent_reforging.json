@@ -6,22 +6,37 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Modular armor in the Tetra style.$()$(br2)Iridescent Reforging brings Tetra's module-and-honing framework to the armor slot. A reforged piece has slots for major and minor modules, a stat-bearing primary attribute pool, and a 5-level honing track per slot.$(br2)Two paths to obtain: $(thing)craft$() a blank reforged piece from leather, or $(thing)convert$() a specialized armor (Cultist, Pyromancer, etc.) and carry its identity through."
+      "text": "$(italic)Modular armor in the Tetra style.$()$(br2)Iridescent Reforging brings Tetra's module-and-honing framework to the armor slot. Drop any armor (vanilla iron, ISS Cultist Hood, Aether Phoenix, Aquaculture diving helmet, etc.) into a Tetra workbench's input slot and it becomes a Reforged variant — modular, hone-able, and ready for upgrades.$(br2)Specialized armor keeps its identity. Vanilla armor gets the modular shape with a default-tier module pre-installed."
     },
     {
       "type": "patchouli:text",
       "title": "How to reforge",
-      "text": "$(bold)Drop in the Tetra workbench.$()$(br2)Whether you're starting with vanilla iron armor or a specialized piece (Cultist Hood, Phoenix Robes, Aquaculture Diving Helmet, etc.), placing it in the Tetra workbench's input slot replaces it with a Reforged variant ready for module work.$(br2)$(bold)Specialized armor keeps its identity:$() the source's school spell power, set bonus, Apotheosis affixes, and enchantments all carry through. Visual model preserved (ISS via Geckolib; others via the source mod's vanilla armor texture).$(br2)$(bold)Generic vanilla armor$() gets the modular shape with a default-tier module installed (iron variant) — upgrade at the workbench."
+      "text": "$(bold)Drop in the Tetra workbench.$()$(br2)Place the source armor in the workbench input slot. The replacement happens automatically.$(br2)$(bold)Specialized armor keeps its identity:$() the source's school spell power, set bonus, Apotheosis affixes, and enchantments all carry through. Visual model preserved (ISS via Geckolib; others via the source mod's vanilla armor texture).$(br2)$(bold)Vanilla iron/gold/diamond/netherite$() get the modular shape with a default-tier module pre-installed (iron variant) — upgrade at the workbench."
     },
     {
       "type": "patchouli:text",
       "title": "Module slots",
-      "text": "Each reforged piece has 2 slots:$(br2)$(thing)Helmet$() — crown (major) + visor (minor)$(br)$(thing)Chestplate$() — chest_plate (major) + chest_lining (minor)$(br)$(thing)Leggings$() — leg_plate (major) + belt (minor)$(br)$(thing)Boots$() — boot_sole (major) + boot_lining (minor)$(br2)Major slots take metal materials and provide armor bonuses. Minor slots take fabric/leather/fibre OR themed materials and provide utility (mana regen, KB resist, speed, school spell power, etc.)."
+      "text": "Each reforged piece has 2 slots:$(br2)$(thing)Helmet$() — crown (major) + visor (minor)$(br)$(thing)Chestplate$() — chest_plate (major) + chest_lining (minor)$(br)$(thing)Leggings$() — leg_plate (major) + belt (minor)$(br)$(thing)Boots$() — boot_sole (major) + boot_lining (minor)$(br2)Major slots take metal materials and provide armor scaling with metal tier. Minor slots take fabric/leather/fibre (generic utility) OR themed materials (identity-flavored bonuses)."
     },
     {
       "type": "patchouli:text",
-      "title": "Themed module materials",
-      "text": "Minor slots accept themed materials that give axis-flavored bonuses:$(br2)$(thing)Fire$() — blaze rod ($(item)+fire spell power$())$(br)$(thing)Ice$() — blue ice ($(item)+ice spell power$())$(br)$(thing)Shadow$() — ghast tear ($(item)+blood spell power$())$(br)$(thing)Holy$() — glowstone dust ($(item)+holy spell power$())$(br)$(thing)Lightning$() — redstone ($(item)+lightning spell power$())$(br)$(thing)Nature$() — sapling ($(item)+mana regen$())$(br)$(thing)Ender$() — ender pearl ($(item)+ender spell power$())$(br)$(thing)Blood$() — rotten flesh ($(item)+blood spell power$())$(br2)Mix-and-match: a Cultist Hood with a $(thing)Shadow visor$() doubles up on blood magic; a Phoenix Robe with a $(thing)Fire lining$() pushes fire bonus higher."
+      "title": "Major slot bonuses (armor scaling)",
+      "text": "$(bold)Crown / chest_plate / leg_plate / boot_sole$() — apply a metal, armor scales with the metal's tier.$(br2)$(thing)iron$() — modest baseline$(br)$(thing)gold$() — low armor, more enchantability$(br)$(thing)diamond$() — solid mid-tier$(br)$(thing)netherite$() — top vanilla tier$(br2)Modded metals (manasteel, knightmetal, ignitium, etc.) plug into Tetra's $(thing)tetra:metal/$() category automatically when their mod registers them. Higher-tier modded metals give correspondingly higher armor."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Minor slot bonuses — generic",
+      "text": "Apply $(thing)wool / string / leather$() (anything in $(thing)tetra:fabric/$(), $(thing)tetra:fibre/$(), or $(thing)tetra:skin/$()) for the baseline utility:$(br2)$(thing)visor$() — +0.5 armor$(br)$(thing)chest_lining$() — +5%% mana regen$(br)$(thing)belt$() — +2%% knockback resistance$(br)$(thing)boot_lining$() — +0.2%% movement speed$(br2)Cheap entry-level option. Players upgrade to themed materials later for identity bonuses."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Minor slot bonuses — themed",
+      "text": "Apply axis-themed materials for identity-flavored bonuses. The 8 axes:$(br2)$(thing)Fire$() — blaze rod$(br)$(thing)Ice$() — blue ice$(br)$(thing)Shadow$() — ghast tear$(br)$(thing)Holy$() — glowstone dust$(br)$(thing)Lightning$() — redstone$(br)$(thing)Nature$() — sapling (gives mana regen instead of school)$(br)$(thing)Ender$() — ender pearl$(br)$(thing)Blood$() — rotten flesh$(br2)Each theme grants $(item)+5%% school spell power$() on the visor, $(item)+4%%$() + mana regen on chest lining, $(item)+3%%$() + KB resist on belt, $(item)+3%%$() + speed on boot lining."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stack identity bonuses",
+      "text": "Themed minors stack with specialized skin attributes — that's the design.$(br2)$(thing)Cultist Hood$() (skin gives +5%% blood spell power) + $(thing)Shadow visor$() (+5%% blood) → $(item)+10%% blood spell power$() on the helmet.$(br2)$(thing)Phoenix Robe$() (no school natively but fire-themed) + $(thing)Fire lining$() → $(item)+4%% fire spell power$() + $(item)+4%% mana regen$() added to the chestplate.$(br2)Mixing axes is allowed but suboptimal — a Cultist Hood with an $(thing)Ice visor$() gets ice spell power on a hood whose skin gives blood. The codex doesn't enforce, players self-police."
     },
     {
       "type": "patchouli:text",
@@ -31,7 +46,7 @@
     {
       "type": "patchouli:text",
       "title": "Specialized skin coverage",
-      "text": "$(bold)v0.2 covers 42+ sets$() across ISS, Aether, Twilight Forest, Cataclysm, Aquaculture, Forbidden Arcanus, Undergarden, Deeperdarker, Botania, Blue Skies, Deep Aether.$(br2)Each set's signature attributes — armor, toughness, magic damage, school-specific spell power — carry through to the reforged version. The Geckolib visual model is preserved for ISS armors; vanilla armor textures route through the source mod's existing texture path for non-Geckolib sets.$(br2)Theabyss elemental sets, Aethersteel, and Alex's Mobs single-slot specialty pieces land in v0.2.x."
+      "text": "$(bold)v0.4 covers 42+ sets$() across ISS, Aether, Twilight Forest, Cataclysm, Aquaculture, Forbidden Arcanus, Undergarden, Deeperdarker, Botania, Blue Skies, Deep Aether.$(br2)Each set's signature attributes — armor, toughness, magic damage, school-specific spell power — carry through to the reforged version. The Geckolib visual model is preserved for ISS armors; vanilla armor textures route through the source mod's existing texture path for non-Geckolib sets.$(br2)Theabyss elemental sets, Aethersteel, and Alex's Mobs single-slot specialty pieces land in v0.4.x."
     },
     {
       "type": "patchouli:text",

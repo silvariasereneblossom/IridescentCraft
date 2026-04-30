@@ -610,7 +610,7 @@ Other weapon sub-systems:
 
 ### Armor — vanilla, mod-tier, and boss-drop layers
 
-Armor follows the same crafted-vs-dropped split. Modular armor is governed by **Iridescent Reforging** (`iridescent-reforging-mod`), a custom Tetra-armor extension that adds Tetra's modular framework to the armor slot. Players craft a blank reforged piece from leather (or convert a specialized armor like an Iron's Spellbooks robe via the conversion recipe, preserving Apotheosis affixes and the source's Geckolib visual identity) and then populate slots + apply honing at any Tetra workbench. Boss-drop armor is mod-specific:
+Armor follows the same crafted-vs-dropped split. Modular armor is governed by **Iridescent Reforging** (`iridescent-reforging-mod`), a custom Tetra-armor extension that adds Tetra's modular framework to the armor slot. Players drop ANY armor (vanilla iron, ISS Cultist Hood, Aether Phoenix, Aquaculture Neptunium, etc.) into a Tetra workbench's input slot — it's replaced by a Reforged variant with default modules pre-installed. Specialized armor preserves identity (school spell power, set bonus, Apotheosis affixes, enchantments, Geckolib visual model) via an `ItemUpgradeRegistry` replacement hook that patches NBT after Tetra's swap. Vanilla armor gets the modular shape with an iron-tier default module. Honing + module upgrades happen at the same workbench. Boss-drop armor is mod-specific:
 
 - **Cataclysm** Ignitium / Cursium / Witherite armor sets — recipe-stripped, boss-drop only.
 - **Theabyss** Knight / Unorithe / Ragnarok / Dragon / Death armor sets — recipe-stripped, boss-drop only.

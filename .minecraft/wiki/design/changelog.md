@@ -4,6 +4,62 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-30 — Iridescent Reforging v0.4: workbench-driven replacement + themed module axes
+
+User direction: "specialized armor keeps its unique properties AND is replaceable through the Tetra workbench AND has a full list of module upgrades that fit its existing identity." Three-part shipping in one push.
+
+**Engine — NBT-preserving replacement hook (Tetra public API).**
+
+Tetra exposes `ItemUpgradeRegistry.registerReplacementHook(BiFunction<ItemStack, ItemStack, ItemStack>)` which fires AFTER each replacement with `(original, result) -> finalStack`. The hook reads the original's item ID, looks up an enrichment record, and patches the result with `tag.Skin` + `tag.affix_data` + `tag.affixes` + `Enchantments` + `tag.rarity`.
+
+New classes (`replacement/`): `SpecializedReplacementDefinition` (record), `SpecializedReplacementRegistry` (singleton ConcurrentHashMap keyed by source ResourceLocation), `SpecializedReplacementLoader` (`SimpleJsonResourceReloadListener`), `SpecializedReplacementHook` (registered at `FMLCommonSetupEvent` after Tetra's setup).
+
+**Architecture pivot — drop-in workbench workflow replaces crafting-grid conversion.**
+
+Before v0.4, specialized armor required a 2-step path: crafting grid (source + magic_cloth → reforged with skin). After v0.4, a single drop in the Tetra workbench input slot triggers Tetra's vanilla replacement (item-class swap + default modules) followed by our hook (NBT identity restoration). Same UX as vanilla iron sword → modular sword in Tetra.
+
+**Content — replacement JSONs (192 + 192 = 384 files):**
+
+Tetra-side (`data/tetra/replacements/<source>.json`): standard schema, predicate=source_item, item=reforged_<slot>, default modules with iron variant pre-installed.
+
+Iridescent-side (`data/iridescent_reforging/specialized_replacements/<source>.json`): `{source_item, skin_id}` pairs read by the hook.
+
+Generated for all 42 Tier 1 sets (~192 source items) via Python script that reads existing skin_definitions JSONs to keep naming consistent.
+
+**Content — themed module identity axes (8 axes × 4 minor slots = 32 module variants):**
+
+Vanilla items as material proxies: blaze_rod (fire), blue_ice (ice), ghast_tear (shadow), glowstone_dust (holy), redstone (lightning), oak_sapling (nature — mana regen instead of school), ender_pearl (ender), rotten_flesh (blood).
+
+Per-slot attribute focus (final after `material.primary` fix):
+
+| Slot | Themed bonus pattern |
+|---|---|
+| `helmet/visor` | +5% axis school spell power |
+| `chestplate/chest_lining` | +4% axis + +4% mana regen (or +8% mana regen for nature) |
+| `leggings/belt` | +3% axis + +0.02 KB resist |
+| `boots/boot_lining` | +3% axis + +0.1% movement speed |
+
+Themed bonuses STACK with specialized skin attributes. Cultist Hood (+5% blood spell power from skin) + Shadow visor (+5% blood from theme) = +10% blood spell power on the helmet.
+
+**Cleanup — deleted 192 conversion recipes.** The `data/iridescent_reforging/recipes/conversion/` directory removed entirely. Workbench replacement covers everything. The 4 base leather recipes for crafting blank `reforged_<slot>` from leather stay as an alternate entry point.
+
+**Generic vs themed minor materials**, since this came up:
+
+| | Generic (`fabric/fibre/skin`) | Themed (`iridescent_reforging:themed/<axis>`) |
+|---|---|---|
+| `helmet/visor` | +0.5 armor | +5% axis school spell power |
+| `chest_lining` | +5% mana regen | +4% axis + +4% mana regen |
+| `belt` | +2% KB resist | +3% axis + +0.02 KB resist |
+| `boot_lining` | +0.2% speed | +3% axis + +0.1% speed |
+
+Generic = baseline utility. Themed = identity-flavored. Both legal at the same time on different slots (e.g., generic visor + themed lining).
+
+**Bug fix in same v0.4 push:** themed material `primary/secondary/tertiary` were initially shipped as 0.0 — Tetra multiplies variant attributes by `material.primary`, so themed bonuses would have rendered as zero. Fixed to 1.0.
+
+**Codex** Reforging entry expanded to 11 pages: How to reforge, Module slots, Major slot bonuses, Generic minor bonuses, Themed minor bonuses, Stacking identity, Honing, Specialized skin coverage (42+ sets), Set bonuses (mechanic). Stale "two paths" intro replaced with the unified workbench drop workflow.
+
+---
+
 ## 2026-04-30 — Iridescent Reforging v0.3: bug fix sweep + full Tier 1 visual coverage
 
 Five follow-up commits after v0.2 closing real issues that surfaced when the user ran the dedicated server. Server now boots clean and all 149 Tier 1 skins have explicit texture coverage.
