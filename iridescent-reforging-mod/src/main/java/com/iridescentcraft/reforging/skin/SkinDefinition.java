@@ -20,9 +20,12 @@ public record SkinDefinition(
         String sourceItem,            // e.g. "irons_spellbooks:cultist_helmet" — for tooltip + conversion
         String displayName,           // localized display name
         Multimap<Attribute, AttributeModifier> baseAttributes,
-        int tier
+        int tier,
+        String setId,                 // optional set identifier for set bonuses (e.g. "iridescent_reforging:phoenix")
+        String armorMaterialNamespace, // optional source mod namespace for vanilla armor texture lookup
+        String armorMaterialName       // optional source material name (e.g. "phoenix")
 ) {
     public static SkinDefinition empty(String skinId, String slot) {
-        return new SkinDefinition(skinId, slot, "", skinId, HashMultimap.create(), 1);
+        return new SkinDefinition(skinId, slot, "", skinId, HashMultimap.create(), 1, "", "", "");
     }
 }

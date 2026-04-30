@@ -26,7 +26,12 @@
     {
       "type": "patchouli:text",
       "title": "Specialized skin coverage",
-      "text": "$(bold)v0.1 covers 11 ISS robe sets$():$(br)Wizard, Cultist, Pyromancer, Cryomancer, Electromancer, Plagued, Priest, Pumpkin, Shadow-Walker, Wandering Magician, Archevoker.$(br2)Each set's signature attributes — magic damage, school-specific spell power, max mana — carry through to the reforged version. The Geckolib visual model is preserved (Wizard's dye color may vary).$(br2)Aether, Twilight Forest, and Cataclysm sets land in v0.2."
+      "text": "$(bold)v0.2 covers 42+ sets$() across ISS, Aether, Twilight Forest, Cataclysm, Aquaculture, Forbidden Arcanus, Undergarden, Deeperdarker, Botania, Blue Skies, Deep Aether.$(br2)Each set's signature attributes — armor, toughness, magic damage, school-specific spell power — carry through to the reforged version. The Geckolib visual model is preserved for ISS armors; vanilla armor textures route through the source mod's existing texture path for non-Geckolib sets.$(br2)Theabyss elemental sets, Aethersteel, and Alex's Mobs single-slot specialty pieces land in v0.2.x."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Set bonuses",
+      "text": "$(bold)Set bonuses persist through reforging.$()$(br2)When you wear 4 reforged pieces all sharing the same set identity (e.g. 4 reforged Phoenix pieces), the original full-set bonus fires automatically.$(br2)Examples:$(br)$(thing)Phoenix$() — fire immunity$(br)$(thing)Neptune$() — water breathing + dolphin's grace$(br)$(thing)Aquaculture Neptunium$() — water breathing$(br)$(thing)Yeti$() — strength$(br)$(thing)Gravitite$() — jump boost II$(br)$(thing)Ignitium / Fiery$() — fire immunity$(br2)Mixed sets (Phoenix helmet + Cultist chestplate + ...) lose set bonuses — the per-piece base attributes still apply."
     }
   ]
 }

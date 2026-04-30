@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:manasteel_chestplate",
+  "slot": "chestplate",
+  "source_item": "botania:manasteel_chestplate",
+  "display_name": "Reforged Manasteel Chestplate",
+  "tier": 2,
+  "set_id": "iridescent_reforging:manasteel",
+  "armor_material_namespace": "botania",
+  "armor_material_name": "manasteel",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

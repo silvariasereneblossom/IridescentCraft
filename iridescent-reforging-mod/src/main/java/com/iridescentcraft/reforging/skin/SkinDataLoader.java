@@ -123,7 +123,11 @@ public class SkinDataLoader extends SimpleJsonResourceReloadListener {
             }
         }
 
-        return new SkinDefinition(skinId, slot, sourceItem, displayName, attrs, tier);
+        String setId = obj.has("set_id") ? obj.get("set_id").getAsString() : "";
+        String armNs   = obj.has("armor_material_namespace") ? obj.get("armor_material_namespace").getAsString() : "";
+        String armName = obj.has("armor_material_name") ? obj.get("armor_material_name").getAsString() : "";
+
+        return new SkinDefinition(skinId, slot, sourceItem, displayName, attrs, tier, setId, armNs, armName);
     }
 
     private static AttributeModifier.Operation parseOperation(String s) {

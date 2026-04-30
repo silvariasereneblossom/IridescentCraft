@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "twilightforest:naga_leggings"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 3,
+  "skin_id": "iridescent_reforging:naga_scale_leggings",
+  "result_slot": "leggings"
+}

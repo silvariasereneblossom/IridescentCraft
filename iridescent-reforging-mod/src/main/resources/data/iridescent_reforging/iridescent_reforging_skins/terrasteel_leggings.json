@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:terrasteel_leggings",
+  "slot": "leggings",
+  "source_item": "botania:terrasteel_leggings",
+  "display_name": "Reforged Terrasteel Leggings",
+  "tier": 3,
+  "set_id": "iridescent_reforging:terrasteel",
+  "armor_material_namespace": "botania",
+  "armor_material_name": "terrasteel",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 6.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

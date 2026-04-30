@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:ignitium_chestplate",
+  "slot": "chestplate",
+  "source_item": "cataclysm:ignitium_chestplate",
+  "display_name": "Reforged Ignitium Chestplate",
+  "tier": 4,
+  "set_id": "iridescent_reforging:ignitium",
+  "armor_material_namespace": "cataclysm",
+  "armor_material_name": "ignitium",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "twilightforest:knightmetal_boots"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 2,
+  "skin_id": "iridescent_reforging:knightmetal_boots",
+  "result_slot": "boots"
+}

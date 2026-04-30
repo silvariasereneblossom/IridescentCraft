@@ -1,0 +1,11 @@
+{
+  "set_id": "iridescent_reforging:gravitite",
+  "required_pieces": 4,
+  "effect_bonuses": [
+    {
+      "effect": "minecraft:jump_boost",
+      "amplifier": 1,
+      "duration_ticks": 200
+    }
+  ]
+}

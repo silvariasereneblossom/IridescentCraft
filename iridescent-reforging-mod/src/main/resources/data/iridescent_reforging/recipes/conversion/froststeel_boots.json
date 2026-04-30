@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "undergarden:froststeel_boots"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 2,
+  "skin_id": "iridescent_reforging:froststeel_boots",
+  "result_slot": "boots"
+}

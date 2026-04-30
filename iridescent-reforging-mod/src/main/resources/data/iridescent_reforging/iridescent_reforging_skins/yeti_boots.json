@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:yeti_boots",
+  "slot": "boots",
+  "source_item": "twilightforest:yeti_boots",
+  "display_name": "Reforged Yeti Boots",
+  "tier": 3,
+  "set_id": "iridescent_reforging:yeti",
+  "armor_material_namespace": "twilightforest",
+  "armor_material_name": "yeti",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}

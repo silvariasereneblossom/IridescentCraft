@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:charoite_leggings",
+  "slot": "leggings",
+  "source_item": "blue_skies:charoite_leggings",
+  "display_name": "Reforged Charoite Leggings",
+  "tier": 3,
+  "set_id": "iridescent_reforging:charoite",
+  "armor_material_namespace": "blue_skies",
+  "armor_material_name": "charoite",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 6.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

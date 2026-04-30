@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:steeleaf_chestplate",
+  "slot": "chestplate",
+  "source_item": "twilightforest:steeleaf_chestplate",
+  "display_name": "Reforged Steeleaf Chestplate",
+  "tier": 2,
+  "set_id": "iridescent_reforging:steeleaf",
+  "armor_material_namespace": "twilightforest",
+  "armor_material_name": "steeleaf",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

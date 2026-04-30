@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "botania:terrasteel_leggings"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 3,
+  "skin_id": "iridescent_reforging:terrasteel_leggings",
+  "result_slot": "leggings"
+}

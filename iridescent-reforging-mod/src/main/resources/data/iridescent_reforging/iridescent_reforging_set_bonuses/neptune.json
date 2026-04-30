@@ -1,0 +1,16 @@
+{
+  "set_id": "iridescent_reforging:neptune",
+  "required_pieces": 4,
+  "effect_bonuses": [
+    {
+      "effect": "minecraft:water_breathing",
+      "amplifier": 0,
+      "duration_ticks": 200
+    },
+    {
+      "effect": "minecraft:dolphins_grace",
+      "amplifier": 0,
+      "duration_ticks": 200
+    }
+  ]
+}

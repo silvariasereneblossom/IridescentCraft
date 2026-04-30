@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:manaweave_boots",
+  "slot": "boots",
+  "source_item": "botania:manaweave_boots",
+  "display_name": "Reforged Manaweave Boots",
+  "tier": 1,
+  "set_id": "iridescent_reforging:manaweave",
+  "armor_material_namespace": "botania",
+  "armor_material_name": "manaweave",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}

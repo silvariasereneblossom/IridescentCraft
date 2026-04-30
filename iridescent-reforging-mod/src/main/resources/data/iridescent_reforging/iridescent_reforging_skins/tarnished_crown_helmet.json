@@ -1,0 +1,27 @@
+{
+  "skin_id": "iridescent_reforging:tarnished_crown_helmet",
+  "slot": "helmet",
+  "source_item": "irons_spellbooks:tarnished_helmet",
+  "display_name": "Reforged Tarnished Crown Helmet",
+  "tier": 3,
+  "set_id": "",
+  "armor_material_namespace": "irons_spellbooks",
+  "armor_material_name": "tarnished_crown",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    },
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 50
+    }
+  ]
+}

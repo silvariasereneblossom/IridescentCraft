@@ -1,0 +1,11 @@
+{
+  "set_id": "iridescent_reforging:fiery",
+  "required_pieces": 4,
+  "effect_bonuses": [
+    {
+      "effect": "minecraft:fire_resistance",
+      "amplifier": 0,
+      "duration_ticks": 200
+    }
+  ]
+}

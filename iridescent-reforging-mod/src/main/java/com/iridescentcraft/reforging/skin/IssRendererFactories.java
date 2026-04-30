@@ -2,15 +2,21 @@ package com.iridescentcraft.reforging.skin;
 
 import com.iridescentcraft.reforging.IridescentReforging;
 import io.redspace.ironsspellbooks.entity.armor.ArchevokerArmorModel;
+import io.redspace.ironsspellbooks.entity.armor.BootsOfSpeedArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.CryomancerArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.CultistArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.ElectromancerArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.GenericArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.GenericCustomArmorRenderer;
+import io.redspace.ironsspellbooks.entity.armor.GoldCrownModel;
+import io.redspace.ironsspellbooks.entity.armor.InfernalSorcererArmorModel;
+import io.redspace.ironsspellbooks.entity.armor.PaladinArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.PlaguedArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.PyromancerArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.ShadowwalkerArmorModel;
+import io.redspace.ironsspellbooks.entity.armor.TarnishedCrownModel;
 import io.redspace.ironsspellbooks.entity.armor.WanderingMagicianModel;
+import io.redspace.ironsspellbooks.entity.armor.netherite.NetheriteMageArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.priest.PriestArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.pumpkin.PumpkinArmorModel;
 import net.minecraftforge.fml.ModList;
@@ -69,8 +75,17 @@ public final class IssRendererFactories {
         // through but the silhouette renders correctly.
         registerSet(reg, "wizard", () -> new GenericArmorModel("wizard"));
 
+        // v0.2 ISS specials — single-slot or partial sets with unique geometry.
+        registerSet(reg, "netherite_battlemage", NetheriteMageArmorModel::new);
+        registerSingleSlot(reg, "infernal_sorcerer_chestplate",
+                InfernalSorcererArmorModel::new);
+        registerSingleSlot(reg, "paladin_chestplate", PaladinArmorModel::new);
+        registerSingleSlot(reg, "boots_of_speed_boots", BootsOfSpeedArmorModel::new);
+        registerSingleSlot(reg, "gold_crown_helmet", GoldCrownModel::new);
+        registerSingleSlot(reg, "tarnished_crown_helmet", TarnishedCrownModel::new);
+
         IridescentReforging.LOGGER.info(
-                "[IssRendererFactories] registered ISS skin renderers (11 sets * 4 slots = 44 skins)");
+                "[IssRendererFactories] registered ISS skin renderers (v0.2: 12 sets + 5 specials)");
     }
 
     private static void registerSet(SkinRegistry reg,
@@ -84,6 +99,22 @@ public final class IssRendererFactories {
                 return renderer;
             });
         }
+    }
+
+    /**
+     * Register a renderer for a single skin (used by ISS specials whose
+     * data lives in only one slot — Boots of Speed, Iron's Crown, etc.).
+     * The skinId is passed as-is rather than built per-slot.
+     */
+    private static void registerSingleSlot(SkinRegistry reg,
+                                           String skinSuffix,
+                                           Supplier<? extends GeoModel<?>> modelFactory) {
+        String skinId = "iridescent_reforging:" + skinSuffix;
+        reg.registerFactory(skinId, () -> {
+            @SuppressWarnings({"unchecked","rawtypes"})
+            GenericCustomArmorRenderer renderer = new GenericCustomArmorRenderer(modelFactory.get());
+            return renderer;
+        });
     }
 
     private IssRendererFactories() {}

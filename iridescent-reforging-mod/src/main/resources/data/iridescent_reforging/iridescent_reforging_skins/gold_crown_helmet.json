@@ -1,0 +1,32 @@
+{
+  "skin_id": "iridescent_reforging:gold_crown_helmet",
+  "slot": "helmet",
+  "source_item": "irons_spellbooks:gold_crown",
+  "display_name": "Reforged Iron's Crown Helmet",
+  "tier": 4,
+  "set_id": "",
+  "armor_material_namespace": "irons_spellbooks",
+  "armor_material_name": "gold_crown",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    },
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 80
+    },
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.1
+    }
+  ]
+}

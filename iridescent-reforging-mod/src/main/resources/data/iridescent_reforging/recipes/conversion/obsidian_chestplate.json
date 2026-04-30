@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "aether:obsidian_chestplate"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 4,
+  "skin_id": "iridescent_reforging:obsidian_chestplate",
+  "result_slot": "chestplate"
+}

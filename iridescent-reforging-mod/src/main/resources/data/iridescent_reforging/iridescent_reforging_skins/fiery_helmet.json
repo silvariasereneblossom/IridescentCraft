@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:fiery_helmet",
+  "slot": "helmet",
+  "source_item": "twilightforest:fiery_helmet",
+  "display_name": "Reforged Fiery Helmet",
+  "tier": 3,
+  "set_id": "iridescent_reforging:fiery",
+  "armor_material_namespace": "twilightforest",
+  "armor_material_name": "fiery",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}

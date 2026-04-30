@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:forgotten_chestplate",
+  "slot": "chestplate",
+  "source_item": "undergarden:forgotten_chestplate",
+  "display_name": "Reforged Forgotten Chestplate",
+  "tier": 4,
+  "set_id": "iridescent_reforging:forgotten",
+  "armor_material_namespace": "undergarden",
+  "armor_material_name": "forgotten",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:utherium_chestplate",
+  "slot": "chestplate",
+  "source_item": "undergarden:utherium_chestplate",
+  "display_name": "Reforged Utherium Chestplate",
+  "tier": 3,
+  "set_id": "iridescent_reforging:utherium",
+  "armor_material_namespace": "undergarden",
+  "armor_material_name": "utherium",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

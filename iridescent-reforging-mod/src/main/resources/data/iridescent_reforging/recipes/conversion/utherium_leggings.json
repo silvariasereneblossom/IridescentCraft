@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "undergarden:utherium_leggings"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 3,
+  "skin_id": "iridescent_reforging:utherium_leggings",
+  "result_slot": "leggings"
+}

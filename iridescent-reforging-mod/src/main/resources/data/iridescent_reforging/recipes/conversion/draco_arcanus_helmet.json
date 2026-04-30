@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "forbidden_arcanus:draco_arcanus_helmet"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 2,
+  "skin_id": "iridescent_reforging:draco_arcanus_helmet",
+  "result_slot": "helmet"
+}

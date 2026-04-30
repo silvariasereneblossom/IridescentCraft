@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:warden_boots",
+  "slot": "boots",
+  "source_item": "deeperdarker:warden_boots",
+  "display_name": "Reforged Warden Boots",
+  "tier": 4,
+  "set_id": "iridescent_reforging:warden",
+  "armor_material_namespace": "deeperdarker",
+  "armor_material_name": "warden",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}

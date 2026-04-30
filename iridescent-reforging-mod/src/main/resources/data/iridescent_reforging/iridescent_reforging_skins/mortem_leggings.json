@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:mortem_leggings",
+  "slot": "leggings",
+  "source_item": "forbidden_arcanus:mortem_leggings",
+  "display_name": "Reforged Mortem Leggings",
+  "tier": 3,
+  "set_id": "iridescent_reforging:mortem",
+  "armor_material_namespace": "forbidden_arcanus",
+  "armor_material_name": "mortem",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 6.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

@@ -2,6 +2,7 @@ package com.iridescentcraft.reforging;
 
 import com.iridescentcraft.reforging.registry.ModItems;
 import com.iridescentcraft.reforging.registry.ModRecipeTypes;
+import com.iridescentcraft.reforging.setbonus.SetBonusDataLoader;
 import com.iridescentcraft.reforging.skin.IssRendererFactories;
 import com.iridescentcraft.reforging.skin.SkinDataLoader;
 import com.iridescentcraft.reforging.skin.SkinRegistry;
@@ -43,7 +44,8 @@ public class IridescentReforging {
     @SubscribeEvent
     public void onAddReloadListener(AddReloadListenerEvent event) {
         event.addListener(new SkinDataLoader());
-        LOGGER.info("[{}] registered SkinDataLoader as data-pack reload listener", MODID);
+        event.addListener(new SetBonusDataLoader());
+        LOGGER.info("[{}] registered Skin + SetBonus data-pack reload listeners", MODID);
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {

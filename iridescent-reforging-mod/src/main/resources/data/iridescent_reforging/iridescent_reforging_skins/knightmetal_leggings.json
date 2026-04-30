@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:knightmetal_leggings",
+  "slot": "leggings",
+  "source_item": "twilightforest:knightmetal_leggings",
+  "display_name": "Reforged Knightmetal Leggings",
+  "tier": 2,
+  "set_id": "iridescent_reforging:knightmetal",
+  "armor_material_namespace": "twilightforest",
+  "armor_material_name": "knightmetal",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 6.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

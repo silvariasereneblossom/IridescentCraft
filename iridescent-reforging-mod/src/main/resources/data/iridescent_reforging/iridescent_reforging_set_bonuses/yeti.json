@@ -1,0 +1,11 @@
+{
+  "set_id": "iridescent_reforging:yeti",
+  "required_pieces": 4,
+  "effect_bonuses": [
+    {
+      "effect": "minecraft:strength",
+      "amplifier": 0,
+      "duration_ticks": 200
+    }
+  ]
+}

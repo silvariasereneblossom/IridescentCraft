@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:neptunium_helmet",
+  "slot": "helmet",
+  "source_item": "aquaculture:neptunium_helmet",
+  "display_name": "Reforged Neptunium Helmet",
+  "tier": 2,
+  "set_id": "iridescent_reforging:neptunium",
+  "armor_material_namespace": "aquaculture",
+  "armor_material_name": "neptunium",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}

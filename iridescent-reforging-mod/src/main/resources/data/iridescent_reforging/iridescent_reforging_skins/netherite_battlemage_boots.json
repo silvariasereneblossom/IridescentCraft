@@ -1,0 +1,32 @@
+{
+  "skin_id": "iridescent_reforging:netherite_battlemage_boots",
+  "slot": "boots",
+  "source_item": "irons_spellbooks:netherite_mage_boots",
+  "display_name": "Reforged Netherite Battlemage Boots",
+  "tier": 4,
+  "set_id": "iridescent_reforging:netherite_battlemage",
+  "armor_material_namespace": "irons_spellbooks",
+  "armor_material_name": "netherite_mage",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    },
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 40
+    },
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.08
+    }
+  ]
+}

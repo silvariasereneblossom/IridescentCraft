@@ -4,6 +4,51 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-04-30 — Iridescent Reforging v0.2: Tier 1 skin coverage + set bonus engine
+
+Big v0.2 push covering ~42 specialized armor sets across 11 source mods, plus the set_id mechanism that preserves full-set bonuses through reforging.
+
+**New engine code (set bonus layer):**
+- `SetBonusDefinition` (record): server-side data for a set bonus (set_id, required_pieces, attribute_bonuses, effect_bonuses).
+- `SetBonusRegistry`: parallel to `SkinRegistry`. Populated by `SetBonusDataLoader` from `data/<ns>/iridescent_reforging_set_bonuses/*.json`.
+- `SetBonusManager`: subscribes to `LivingEquipmentChangeEvent`, scans armor slots, counts pieces per set_id, applies/strips attribute modifiers when set thresholds cross. `PlayerTickEvent` refreshes potion effects every 80 ticks (~4s) so they don't expire while the set is worn. Cached active-sets-per-entity prevents redundant work.
+
+**New engine code (vanilla texture dispatch):**
+- `ItemModularArmor.getArmorTexture(stack, entity, slot, type)` overridden — reads `tag.Skin`, looks up the skin's `armor_material_namespace` + `armor_material_name`, returns a vanilla armor texture path routing to the source mod's existing assets. Avoids needing per-mod Geckolib renderer factories for non-Geckolib sets.
+- `SkinDefinition` extended with `setId`, `armorMaterialNamespace`, `armorMaterialName` fields.
+
+**Tier 1 content (42 sets, 149 skins, 7 set bonuses):**
+
+ISS specials (deferred from v0.1): Netherite Battlemage, Infernal Sorcerer, Lightbringer/Paladin, Boots of Speed, Iron's Crown, Tarnished Crown.
+
+Aether: Valkyrie, Phoenix (fire immunity bonus), Neptune (water breathing + dolphin's grace bonus), Gravitite (jump boost II bonus), Obsidian, Zanite.
+
+Twilight Forest: Knightmetal, Fiery (fire immunity bonus), Naga Scale, Yeti (strength bonus), Arctic, Steeleaf, Ironwood, Phantom.
+
+Cataclysm: Ignitium (fire immunity bonus).
+
+Aquaculture: Neptunium (water breathing bonus).
+
+Forbidden Arcanus: Draco Arcanus, Mortem, Tyr.
+
+Undergarden: Cloggrum, Froststeel, Utherium, Forgotten.
+
+Deeperdarker: Warden, Resonarium.
+
+Botania: Manaweave, Manasteel, Terrasteel, Elementium.
+
+Blue Skies: Aquite, Charoite, Diopside, Horizonite, Pyrope.
+
+Deep Aether: Stormforged, Skyjade.
+
+**Excluded:** MekaSuit + Ad Astra space suits (already-modular ecosystems that conflict with Tetra). Theabyss elemental sets, Aethersteel, Alex's Mobs single-slot pieces, Bone Reptile, Cataclysm Cursium / Gauntlet variants tabled to v0.2.x sub-audit.
+
+**Set bonus design:** wearing 4 reforged pieces of the same set fires the original bonus automatically (Phoenix fire immunity, Neptune water kit, Yeti strength, Gravitite jump boost, Ignitium/Fiery fire immunity, Aquaculture Neptunium underwater breathing). Mixed sets lose set bonuses — only the per-piece base attributes apply. Documented in the codex's Reforging entry.
+
+**Generation:** Python script at `/tmp/gen_tier1_content.py` defines all 42 sets in one place. Re-run to retune slot armor distributions, material costs, or set bonuses.
+
+---
+
 ## 2026-04-29 (cont. 23) — Iridescent Reforging: Tetra-armor extension shipped (phases 1-10)
 
 A custom Forge mod (`iridescent-reforging-mod`, `iridescent_reforging-0.1.0.jar`) that brings Tetra's modular framework to armor — a niche Tetra has never natively supported. Bridges the gap with a single-class `ItemModularArmor extends ArmorItem implements IModularItem`, vanilla material defaults composed with Tetra-cached module attributes and skin-driven base attributes.

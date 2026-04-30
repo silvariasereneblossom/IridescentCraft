@@ -1,0 +1,12 @@
+{
+  "type": "iridescent_reforging:conversion",
+  "source": {
+    "item": "forbidden_arcanus:mortem_boots"
+  },
+  "material": {
+    "item": "irons_spellbooks:magic_cloth"
+  },
+  "material_count": 2,
+  "skin_id": "iridescent_reforging:mortem_boots",
+  "result_slot": "boots"
+}

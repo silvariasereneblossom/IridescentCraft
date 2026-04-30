@@ -206,4 +206,44 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     public void initializeClient(Consumer<IClientItemExtensions> consumer) {
         consumer.accept(ItemModularArmorClient.INSTANCE);
     }
+
+    // ── Vanilla armor texture dispatch (v0.2 phase B) ──────────────────
+    //
+    // For non-Geckolib skins, vanilla armor rendering reads the texture
+    // path from this method via Forge's IForgeItem extension. We compute
+    // the path from the skin's armor_material_namespace + name fields,
+    // routing the texture lookup to the source mod's existing armor
+    // textures (e.g. assets/aether/textures/models/armor/zanite_layer_1.png).
+    //
+    // Returning null falls back to the placeholder iron material's texture
+    // — used when no skin is set or when the skin uses a Geckolib renderer
+    // (which intercepts before this method is consulted).
+    @Override
+    public String getArmorTexture(net.minecraft.world.item.ItemStack stack,
+                                  net.minecraft.world.entity.Entity entity,
+                                  net.minecraft.world.entity.EquipmentSlot slot,
+                                  String type) {
+        String skinId = ItemModularArmorClient.readSkinId(stack);
+        if (skinId == null) return null;
+
+        SkinDefinition def = SkinRegistry.get().getDefinition(skinId).orElse(null);
+        if (def == null) return null;
+
+        String ns = def.armorMaterialNamespace();
+        String name = def.armorMaterialName();
+        if (ns == null || ns.isEmpty() || name == null || name.isEmpty()) {
+            return null;
+        }
+
+        // Vanilla armor texture path layout:
+        //   <ns>:textures/models/armor/<name>_layer_1.png   (helmet/chest/boots)
+        //   <ns>:textures/models/armor/<name>_layer_2.png   (leggings)
+        // The "type" parameter, if non-null, is appended as an overlay
+        // suffix (vanilla uses this for leather dye overlays). We
+        // ignore it here for simplicity — modded skins don't typically
+        // need overlay variants.
+        int layer = (slot == net.minecraft.world.entity.EquipmentSlot.LEGS) ? 2 : 1;
+        String overlay = type == null ? "" : "_" + type;
+        return ns + ":textures/models/armor/" + name + "_layer_" + layer + overlay + ".png";
+    }
 }

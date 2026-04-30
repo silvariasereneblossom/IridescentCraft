@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:skyjade_boots",
+  "slot": "boots",
+  "source_item": "deep_aether:skyjade_boots",
+  "display_name": "Reforged Skyjade Boots",
+  "tier": 3,
+  "set_id": "iridescent_reforging:skyjade",
+  "armor_material_namespace": "deep_aether",
+  "armor_material_name": "skyjade",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}
