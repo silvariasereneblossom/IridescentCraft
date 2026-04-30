@@ -22,6 +22,70 @@
       "countFactor": 1,
       "moduleKey": "chestplate/chest_lining",
       "moduleVariant": "chestplate/chest_lining/"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/fire"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/ice"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/shadow"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/holy"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/lightning"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/nature"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/ender"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/chest_lining",
+      "moduleVariant": "chestplate/chest_lining/blood"
     }
   ]
 }

@@ -10,13 +10,18 @@
     },
     {
       "type": "patchouli:text",
-      "title": "The two paths",
-      "text": "$(bold)Craft path:$()$(br)5 leather $(br) recipe = $(item)Reforged Helmet$().$(br)Then visit any Tetra workbench to apply modules and hone.$(br2)$(bold)Convert path:$()$(br)1 Cultist Hood + 2 magic_cloth = $(item)Reforged Cultist Hood$() with Cultist visuals, +5%% spell power, +5%% blood spell power, +25 max mana, plus any Apotheosis affixes and enchantments preserved through the conversion."
+      "title": "How to reforge",
+      "text": "$(bold)Drop in the Tetra workbench.$()$(br2)Whether you're starting with vanilla iron armor or a specialized piece (Cultist Hood, Phoenix Robes, Aquaculture Diving Helmet, etc.), placing it in the Tetra workbench's input slot replaces it with a Reforged variant ready for module work.$(br2)$(bold)Specialized armor keeps its identity:$() the source's school spell power, set bonus, Apotheosis affixes, and enchantments all carry through. Visual model preserved (ISS via Geckolib; others via the source mod's vanilla armor texture).$(br2)$(bold)Generic vanilla armor$() gets the modular shape with a default-tier module installed (iron variant) — upgrade at the workbench."
     },
     {
       "type": "patchouli:text",
       "title": "Module slots",
-      "text": "Each reforged piece has 2 slots:$(br2)$(thing)Helmet$() — crown (major) + visor (minor)$(br)$(thing)Chestplate$() — chest_plate (major) + chest_lining (minor)$(br)$(thing)Leggings$() — leg_plate (major) + belt (minor)$(br)$(thing)Boots$() — boot_sole (major) + boot_lining (minor)$(br2)Major slots take metal materials and provide armor bonuses. Minor slots take fabric/leather/fibre and provide utility (mana regen, KB resist, speed, etc.)."
+      "text": "Each reforged piece has 2 slots:$(br2)$(thing)Helmet$() — crown (major) + visor (minor)$(br)$(thing)Chestplate$() — chest_plate (major) + chest_lining (minor)$(br)$(thing)Leggings$() — leg_plate (major) + belt (minor)$(br)$(thing)Boots$() — boot_sole (major) + boot_lining (minor)$(br2)Major slots take metal materials and provide armor bonuses. Minor slots take fabric/leather/fibre OR themed materials and provide utility (mana regen, KB resist, speed, school spell power, etc.)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Themed module materials",
+      "text": "Minor slots accept themed materials that give axis-flavored bonuses:$(br2)$(thing)Fire$() — blaze rod ($(item)+fire spell power$())$(br)$(thing)Ice$() — blue ice ($(item)+ice spell power$())$(br)$(thing)Shadow$() — ghast tear ($(item)+blood spell power$())$(br)$(thing)Holy$() — glowstone dust ($(item)+holy spell power$())$(br)$(thing)Lightning$() — redstone ($(item)+lightning spell power$())$(br)$(thing)Nature$() — sapling ($(item)+mana regen$())$(br)$(thing)Ender$() — ender pearl ($(item)+ender spell power$())$(br)$(thing)Blood$() — rotten flesh ($(item)+blood spell power$())$(br2)Mix-and-match: a Cultist Hood with a $(thing)Shadow visor$() doubles up on blood magic; a Phoenix Robe with a $(thing)Fire lining$() pushes fire bonus higher."
     },
     {
       "type": "patchouli:text",

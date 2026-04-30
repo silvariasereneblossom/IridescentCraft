@@ -1,0 +1,16 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "irons_spellbooks:archevoker_leggings"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_leggings",
+    "modules": {
+      "leggings/leg_plate": [
+        "leggings/leg_plate",
+        "leggings/leg_plate/iron"
+      ]
+    }
+  }
+]

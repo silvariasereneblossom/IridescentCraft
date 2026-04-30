@@ -1,0 +1,16 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "blue_skies:diopside_helmet"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_helmet",
+    "modules": {
+      "helmet/crown": [
+        "helmet/crown",
+        "helmet/crown/iron"
+      ]
+    }
+  }
+]

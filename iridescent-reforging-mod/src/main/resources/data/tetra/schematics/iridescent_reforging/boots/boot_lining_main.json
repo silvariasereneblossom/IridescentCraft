@@ -22,6 +22,70 @@
       "countFactor": 1,
       "moduleKey": "boots/boot_lining",
       "moduleVariant": "boots/boot_lining/"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/fire"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/ice"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/shadow"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/holy"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/lightning"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/nature"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/ender"
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/boot_lining",
+      "moduleVariant": "boots/boot_lining/blood"
     }
   ]
 }

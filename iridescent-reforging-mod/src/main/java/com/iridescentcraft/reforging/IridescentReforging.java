@@ -2,6 +2,8 @@ package com.iridescentcraft.reforging;
 
 import com.iridescentcraft.reforging.registry.ModItems;
 import com.iridescentcraft.reforging.registry.ModRecipeTypes;
+import com.iridescentcraft.reforging.replacement.SpecializedReplacementHook;
+import com.iridescentcraft.reforging.replacement.SpecializedReplacementLoader;
 import com.iridescentcraft.reforging.setbonus.SetBonusDataLoader;
 import com.iridescentcraft.reforging.skin.IssRendererFactories;
 import com.iridescentcraft.reforging.skin.SkinDataLoader;
@@ -38,6 +40,12 @@ public class IridescentReforging {
         // event-method side.
         modBus.addListener(IridescentReforging::onClientSetup);
 
+        // Common-setup: register Tetra replacement hook for specialized armor.
+        // Must run after Tetra's ItemUpgradeRegistry.instance is initialized,
+        // which happens during common setup. Mod load ordering (we declare
+        // tetra as 'AFTER' in mods.toml) ensures Tetra's setup runs first.
+        modBus.addListener(IridescentReforging::onCommonSetup);
+
         LOGGER.info("[{}] mod entrypoint initialized", MODID);
     }
 
@@ -45,7 +53,12 @@ public class IridescentReforging {
     public void onAddReloadListener(AddReloadListenerEvent event) {
         event.addListener(new SkinDataLoader());
         event.addListener(new SetBonusDataLoader());
-        LOGGER.info("[{}] registered Skin + SetBonus data-pack reload listeners", MODID);
+        event.addListener(new SpecializedReplacementLoader());
+        LOGGER.info("[{}] registered Skin + SetBonus + SpecializedReplacement data-pack reload listeners", MODID);
+    }
+
+    private static void onCommonSetup(net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) {
+        event.enqueueWork(SpecializedReplacementHook::register);
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {

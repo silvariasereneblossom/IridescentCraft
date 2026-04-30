@@ -1,0 +1,22 @@
+{
+  "key": "themed_nature",
+  "category": "iridescent_reforging:themed",
+  "primary": 0.0,
+  "secondary": 0.0,
+  "tertiary": 0.0,
+  "durability": 0,
+  "integrityCost": 1,
+  "integrityGain": 0,
+  "magicCapacity": 0,
+  "tints": {
+    "glyph": "ffffff",
+    "texture": "ffffff"
+  },
+  "textures": [],
+  "material": {
+    "items": [
+      "minecraft:oak_sapling"
+    ]
+  },
+  "attributes": {}
+}
