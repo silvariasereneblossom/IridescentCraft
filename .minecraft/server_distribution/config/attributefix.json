@@ -888,7 +888,7 @@
       },
       "max": {
         "default": 5,
-        "value": 1000000
+        "value": 10
       }
     },
     "forge:swim_speed": {
