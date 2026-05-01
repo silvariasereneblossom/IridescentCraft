@@ -3,7 +3,10 @@
   "slots": [
     "helmet/crown"
   ],
-  "improvements": [],
+  "improvements": [
+    "tetra:armor/balanced/",
+    "tetra:armor/shared/"
+  ],
   "variants": [
     {
       "materials": [

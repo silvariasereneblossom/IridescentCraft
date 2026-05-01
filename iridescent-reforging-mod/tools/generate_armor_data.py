@@ -342,12 +342,144 @@ def gen_module_json(module_key: str) -> dict:
         }
         variants.append(variant)
 
+    # Improvements: only majors get archetype-specific upgrade paths.
+    # The improvements[] field is a list of path prefixes; at module-load
+    # time Tetra walks data/tetra/improvements/<prefix>/ and registers
+    # every improvement def found there as an accepted improvement on
+    # this module. A heavy module gets armor/heavy/* + armor/shared/*;
+    # a mage module gets armor/mage/* + armor/shared/*; etc.
+    if kind == "major" and archetype in ("balanced", "warrior", "rogue", "mage"):
+        improvements_field = [
+            f"tetra:armor/{archetype}/",
+            "tetra:armor/shared/",
+        ]
+    else:
+        improvements_field = []
+
     out = {
         "type": type_str,
         "slots": [slot],
-        "improvements": [],  # Phase B — improvement-schematic discovery refs go here
+        "improvements": improvements_field,
         "variants": variants,
     }
+    return out
+
+# ---------------------------------------------------------------------------
+# Phase B — improvement schematics
+# ---------------------------------------------------------------------------
+# 5 improvements total: 4 archetype-specific + 1 universal. Each is a
+# discrete (one-shot) upgrade: a player applies it once, the module gains
+# the listed attributes, no progressive level ladder.
+#
+# Schematic shape: targets all 4 major slots via slots[] + keySuffixes[]
+# array pairs (Tetra's standard pattern for cross-slot schematics).
+# Tetra builds 4 ConfigSchematic instances out of each definition, one per
+# slot; each is independently applicable based on the installed module's
+# accepts_improvement() check.
+#
+# Improvement key convention: armor/<name> (matches Tetra's
+# blade/serrated convention — namespace + descriptor).
+
+# (improvement_key_short, archetype, attributes_per_level_1)
+# Each entry produces one improvement def + one schematic.
+IMPROVEMENTS = [
+    # Archetype-specific (heavy)
+    ("reinforced", "warrior", {"minecraft:generic.armor": 1.0,
+                                "minecraft:generic.knockback_resistance": 0.05}),
+    # Archetype-specific (light)
+    ("streamlined", "rogue", {"minecraft:generic.movement_speed": 0.05,
+                              "minecraft:generic.attack_speed": 0.03}),
+    # Archetype-specific (mage)
+    ("runic",       "mage", {"irons_spellbooks:max_mana": 30.0,
+                              "irons_spellbooks:spell_power": 0.05}),
+    # Archetype-specific (balanced)
+    ("tempered",    "balanced", {"minecraft:generic.armor": 0.5,
+                                  "minecraft:generic.max_health": 1.0}),
+    # Universal (any archetype)
+    ("polished",    "shared", {"minecraft:generic.armor_toughness": 0.5}),
+]
+
+# Improvement display names for lang. Match Tetra's sentence-case style.
+IMPROVEMENT_DISPLAY = {
+    "reinforced":  ("Reinforced",   "Reinforces the armor with thicker plating. +1 armor, +5% knockback resist."),
+    "streamlined": ("Streamlined",  "Smooths the armor's profile for faster motion. +5% movement speed, +3% attack speed."),
+    "runic":       ("Runic",        "Inscribes runes that channel magical energy. +30 max mana, +5% spell power."),
+    "tempered":    ("Tempered",     "Tempers the armor for balanced resilience. +0.5 armor, +1 max health."),
+    "polished":    ("Polished",     "Polishes the surface to a high sheen. +0.5 toughness."),
+}
+
+MAJOR_SLOTS = [
+    "helmet/crown",
+    "chestplate/chest_plate",
+    "leggings/leg_plate",
+    "boots/boot_sole",
+]
+MAJOR_SLOT_SUFFIXES = ["_helmet", "_chestplate", "_leggings", "_boots"]
+
+def gen_improvement_def(name: str, archetype: str, attrs: dict) -> list:
+    """One improvement definition file (a JSON array of level entries)."""
+    return [{
+        "key": f"armor/{name}",
+        "level": 1,
+        "attributes": attrs,
+    }]
+
+def gen_improvement_schematic(name: str, archetype: str) -> dict:
+    """One schematic file that applies the named improvement.
+
+    Discoverable in any of the 4 major slot context menus; gated by the
+    installed module's accepts_improvement check (which only succeeds if
+    the module's improvements[] field includes the right archetype path
+    prefix that loaded this improvement def).
+    """
+    return {
+        "replace": True,
+        "slots": MAJOR_SLOTS,
+        "keySuffixes": MAJOR_SLOT_SUFFIXES,
+        "materialSlotCount": 0,
+        "displayType": "improvement",
+        "glyph": GLYPH,
+        "requirement": {
+            "type": "tetra:and",
+            "requirements": [
+                {
+                    "type": "tetra:not",
+                    "requirement": {
+                        "type": "tetra:improvement",
+                        "improvement": f"armor/{name}",
+                    },
+                },
+                {
+                    "type": "tetra:accepts_improvement",
+                    "improvement": f"armor/{name}",
+                },
+            ],
+        },
+        "outcomes": [{
+            "improvements": {f"armor/{name}": 1},
+        }],
+    }
+
+def gen_improvement_lang() -> dict:
+    """Lang keys for improvement defs + schematic display."""
+    out = {}
+    for name, archetype, attrs in IMPROVEMENTS:
+        display, desc = IMPROVEMENT_DISPLAY[name]
+        # Improvement def lang (referenced by ImprovementData on module
+        # tooltip lists).
+        out[f"tetra.improvement.armor/{name}.name"] = display
+        out[f"tetra.improvement.armor/{name}.description"] = desc
+        # Schematic lang. Author both the BASE schematic key (file path
+        # without suffix — what lang_audit checks) AND each suffixed form
+        # (what Tetra resolves at runtime, since keySuffixes generates
+        # one ConfigSchematic per slot with the suffix appended).
+        base_path = f"tetra/schematic/armor/{archetype}/{name}"
+        out[f"{base_path}.name"] = display
+        out[f"{base_path}.description"] = desc
+        for suffix in MAJOR_SLOT_SUFFIXES:
+            sp = f"{base_path}{suffix}"
+            out[f"{sp}.name"] = display
+            out[f"{sp}.description"] = desc
     return out
 
 def gen_install_schematic_json(module_key: str) -> dict:
@@ -491,6 +623,12 @@ def main():
         schemes_dir = DATA / "schematics/iridescent_reforging" / piece
         if schemes_dir.exists():
             shutil.rmtree(schemes_dir)
+    # Wipe the Phase B armor improvement + schematic trees so re-running
+    # the generator stays idempotent.
+    for sub in ("armor",):
+        for tree in (DATA / "schematics" / sub, DATA / "improvements" / sub):
+            if tree.exists():
+                shutil.rmtree(tree)
 
     # 2) Wipe vanilla + chainmail/turtle replacement files (we'll rewrite them).
     rep_dir = DATA / "replacements"
@@ -517,6 +655,15 @@ def main():
         path = rep_dir / f"{src_item.split(':',1)[1]}.json"
         write(path, json.dumps(repl, indent=2))
 
+    # 5b) Phase B — improvement definitions + schematics
+    for name, archetype, attrs in IMPROVEMENTS:
+        # Improvement def at data/tetra/improvements/armor/<archetype>/<name>.json
+        imp_path = DATA / "improvements" / "armor" / archetype / f"{name}.json"
+        write(imp_path, json.dumps(gen_improvement_def(name, archetype, attrs), indent=2))
+        # Schematic at data/tetra/schematics/armor/<archetype>/<name>.json
+        sch_path = DATA / "schematics" / "armor" / archetype / f"{name}.json"
+        write(sch_path, json.dumps(gen_improvement_schematic(name, archetype), indent=2))
+
     # 6) Lang — replace tetra.* / tetra/schematic.* keys we own; keep everything else.
     if LANG.exists():
         with open(LANG) as f:
@@ -529,8 +676,13 @@ def main():
         "tetra.module.",
         "tetra/schematic/iridescent_reforging/",
     )
+    drop_prefixes = drop_prefixes + (
+        "tetra.improvement.armor/",
+        "tetra/schematic/armor/",
+    )
     lang = {k: v for k, v in lang.items() if not any(k.startswith(p) for p in drop_prefixes)}
     lang.update(gen_lang_entries())
+    lang.update(gen_improvement_lang())
     # Re-add slot lang (we keep these as before — slot keys didn't change)
     SLOT_LABELS = {
         "helmet/crown": "Crown", "helmet/visor": "Visor", "helmet/crest": "Crest", "helmet/strap": "Strap",

@@ -3,7 +3,10 @@
   "slots": [
     "chestplate/chest_plate"
   ],
-  "improvements": [],
+  "improvements": [
+    "tetra:armor/balanced/",
+    "tetra:armor/shared/"
+  ],
   "variants": [
     {
       "materials": [

@@ -1,0 +1,45 @@
+{
+  "replace": true,
+  "slots": [
+    "helmet/crown",
+    "chestplate/chest_plate",
+    "leggings/leg_plate",
+    "boots/boot_sole"
+  ],
+  "keySuffixes": [
+    "_helmet",
+    "_chestplate",
+    "_leggings",
+    "_boots"
+  ],
+  "materialSlotCount": 0,
+  "displayType": "improvement",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "armor/polished"
+        }
+      },
+      {
+        "type": "tetra:accepts_improvement",
+        "improvement": "armor/polished"
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "improvements": {
+        "armor/polished": 1
+      }
+    }
+  ]
+}
