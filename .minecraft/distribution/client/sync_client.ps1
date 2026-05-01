@@ -398,12 +398,40 @@ if (Test-Path $downloadScript) {
     }
 }
 
-# Ensure -noverify is set in instance.cfg (required for bytecode-patched JARs)
+# Ensure instance.cfg has the right pre-launch + JVM settings.
+# Two corrections we apply if missing:
+#   (1) PreLaunchCommand pointing at sync_client.bat (NOT .ps1 directly).
+#       The .bat finalizes any <name>.new self-update files BEFORE invoking
+#       this script. PrismLauncher hooks installed before 2026-05-01 wired
+#       the .ps1 directly, which blocks self-update. We auto-rewrite.
+#   (2) -noverify in JvmArgs. Required for our bytecode-patched JARs
+#       (Patchouli, ars_nouveau) which fail JVM verification otherwise.
 $instDir = if ($env:INST_DIR) { $env:INST_DIR } elseif ($instanceMC) { Split-Path $instanceMC -Parent } else { $null }
 if ($instDir) {
     $cfgPath = Join-Path $instDir 'instance.cfg'
     if (Test-Path $cfgPath) {
         $cfg = Get-Content $cfgPath -Raw
+        $cfgChanged = $false
+
+        # (1) PreLaunchCommand: fix legacy ".ps1 directly" form to the .bat
+        # form. -replace would interpret literal $INST_MC_DIR as a regex
+        # backreference, so we rewrite line-by-line instead.
+        $desiredPLC = 'PreLaunchCommand=cmd.exe /c "$INST_MC_DIR/sync_client.bat"'
+        if ($cfg -match 'PreLaunchCommand=.*sync_client\.ps1' -and $cfg -notmatch 'PreLaunchCommand=.*sync_client\.bat') {
+            $cfg = ($cfg -split "`r?`n" | ForEach-Object {
+                if ($_ -match '^PreLaunchCommand=') { $desiredPLC } else { $_ }
+            }) -join "`n"
+            if ($cfg -notmatch '(?m)^OverrideCommands=true') {
+                $cfg = $cfg -replace '(?m)^OverrideCommands=false', 'OverrideCommands=true'
+                if ($cfg -notmatch '(?m)^OverrideCommands=') {
+                    $cfg = $cfg -replace '(\[General\])', "`$1`nOverrideCommands=true"
+                }
+            }
+            $cfgChanged = $true
+            Write-Host "[IridescentCraft Sync] Rewrote PreLaunchCommand to use sync_client.bat (was .ps1 direct)." -ForegroundColor Yellow
+        }
+
+        # (2) -noverify in JvmArgs.
         if ($cfg -notmatch 'JvmArgs=.*-noverify') {
             $cfg = $cfg -replace 'OverrideJavaArgs=false', 'OverrideJavaArgs=true'
             if ($cfg -match 'JvmArgs=(.*)') {
@@ -416,8 +444,12 @@ if ($instDir) {
             } elseif ($cfg -notmatch 'JvmArgs=') {
                 $cfg = $cfg -replace '(\[General\])', "`$1`nOverrideJavaArgs=true`nJvmArgs=-noverify"
             }
-            Set-Content $cfgPath $cfg -NoNewline
+            $cfgChanged = $true
             Write-Host "[IridescentCraft Sync] Added -noverify to JVM args (required for patched mods)" -ForegroundColor Yellow
+        }
+
+        if ($cfgChanged) {
+            Set-Content $cfgPath $cfg -NoNewline
         }
     }
 }

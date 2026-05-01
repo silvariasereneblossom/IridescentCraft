@@ -169,10 +169,17 @@ $modsDir = "$mcDir\mods"
 New-Item -ItemType Directory -Path $modsDir -Force | Out-Null
 
 # instance.cfg
-# OverrideCommands + PreLaunchCommand wires sync_client.ps1 as a per-launch
+# OverrideCommands + PreLaunchCommand wires sync_client.bat as a per-launch
 # hook so pack updates land automatically when the user starts the instance.
 # Without this, manual setup (per wiki/protocols/8-client-sync.md) is required
 # and easy to miss — leading to testers running stale packs.
+#
+# Why .bat (not .ps1 directly): the .bat finalizes any <name>.new files
+# staged from the previous sync (sync_client.ps1.new, download_mods.ps1.new,
+# etc.) BEFORE invoking the .ps1. PowerShell holds an exclusive read-handle
+# on .ps1 files while they execute, so self-updating the script that's
+# currently running fails — the .bat wrapper is how we sidestep that lock.
+# Mirrors the server pattern (iridescentserver.bat → phase0_sync.ps1).
 #
 # OverrideJavaArgs + JvmArgs=-noverify is required from minute one because
 # our bytecode-patched JARs (Patchouli, ars_nouveau) fail JVM verification.
@@ -188,7 +195,7 @@ MinMemAlloc=4096
 iconKey=default
 name=IridescentCraft
 OverrideCommands=true
-PreLaunchCommand=powershell -ExecutionPolicy Bypass -File "`$INST_MC_DIR/sync_client.ps1"
+PreLaunchCommand=cmd.exe /c "`$INST_MC_DIR/sync_client.bat"
 OverrideJavaArgs=true
 JvmArgs=-noverify
 "@ | Set-Content "$instanceDir\instance.cfg" -Encoding UTF8
