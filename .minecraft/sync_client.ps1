@@ -96,13 +96,41 @@ $mirrorList = @()
 $useDiff = $false
 if ($localSha -and $localSha.Length -eq 40) {
     try {
+        # GitHub's compare API caps `files` at 300 even when total_files is
+        # higher. For commits that touch >300 files we paginate via
+        # ?page=N&per_page=100 to gather them all, so the diff path stays
+        # usable for our larger data-pack regenerations (e.g. honing layer
+        # rewrites that touch ~500 files).
         $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
         $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
-        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -le 300) {
+        $totalFiles = if ($compare.total_commits -and $compare.files) { $compare.files.Count } else { 0 }
+        if ($compare.total_files) { $totalFiles = $compare.total_files }
+
+        if ($totalFiles -gt 300) {
+            $allFiles = New-Object System.Collections.ArrayList
+            $page = 1
+            while ($true) {
+                $pageUrl = "${compareUrl}?per_page=100&page=$page"
+                try {
+                    $pageResp = Invoke-RestMethod -Uri $pageUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
+                } catch {
+                    Write-Host "[IridescentCraft Sync] Pagination page $page failed - falling back to full download." -ForegroundColor Yellow
+                    $allFiles = $null; break
+                }
+                if (-not $pageResp.files -or $pageResp.files.Count -eq 0) { break }
+                foreach ($f in $pageResp.files) { [void]$allFiles.Add($f) }
+                if ($pageResp.files.Count -lt 100) { break }
+                $page++
+                if ($page -gt 20) { break }   # safety: max 2000 files
+            }
+            if ($allFiles -and $allFiles.Count -gt 0) {
+                $compare = [PSCustomObject]@{ files = $allFiles }
+                $useDiff = $true
+                Write-Host "[IridescentCraft Sync] $($allFiles.Count) files changed across $page page(s) ($($localSha.Substring(0,7)) -> $($remoteSha.Substring(0,7)))" -ForegroundColor Cyan
+            }
+        } elseif ($compare.files -and $compare.files.Count -gt 0) {
             $useDiff = $true
             Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed ($($localSha.Substring(0,7)) -> $($remoteSha.Substring(0,7)))" -ForegroundColor Cyan
-        } elseif ($compare.files -and $compare.files.Count -gt 300) {
-            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed (>300) - full download." -ForegroundColor Yellow
         }
     } catch {
         Write-Host "[IridescentCraft Sync] Compare API failed - full download." -ForegroundColor Yellow
@@ -187,17 +215,35 @@ if ($useDiff) {
             }
         }
 
-        # Custom mod JARs
+        # Custom mod JARs — SHA-1 compare, not size, so a same-size-but-
+        # different-content jar (rare but possible after a small data tweak)
+        # still gets the update. Diagnostics print which jars copied vs
+        # skipped so a stale-jar regression is visible at next launch.
         $srcMods = Join-Path $src 'mods'
         $destMods = Join-Path $instanceMC 'mods'
         if (Test-Path $srcMods) {
+            $jarCopied = 0; $jarSkipped = 0
             Get-ChildItem $srcMods -Filter '*.jar' -ErrorAction SilentlyContinue | ForEach-Object {
                 $target = Join-Path $destMods $_.Name
-                if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {
+                $needsCopy = $true
+                if (Test-Path $target) {
+                    try {
+                        $srcHash = (Get-FileHash $_.FullName -Algorithm SHA1).Hash
+                        $tgtHash = (Get-FileHash $target -Algorithm SHA1).Hash
+                        if ($srcHash -eq $tgtHash) { $needsCopy = $false }
+                    } catch {
+                        # Hash failed — be safe, copy anyway.
+                    }
+                }
+                if ($needsCopy) {
                     Copy-Item $_.FullName $target -Force
-                    Write-Host "[IridescentCraft Sync]   Custom JAR: $($_.Name)" -ForegroundColor Yellow
+                    Write-Host "[IridescentCraft Sync]   Custom JAR: $($_.Name) (updated)" -ForegroundColor Yellow
+                    $jarCopied++
+                } else {
+                    $jarSkipped++
                 }
             }
+            Write-Host "[IridescentCraft Sync]   Custom JARs: $jarCopied updated, $jarSkipped already current" -ForegroundColor DarkGray
         }
 
         # mods/.index
