@@ -14,7 +14,7 @@
       "key": "helmet/visor/",
       "extract": {
         "primaryAttributes": {},
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -36,7 +36,7 @@
           "irons_spellbooks:fire_spell_power": 0.04,
           "irons_spellbooks:mana_regen": 0.04
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -58,7 +58,7 @@
           "irons_spellbooks:ice_spell_power": 0.04,
           "irons_spellbooks:mana_regen": 0.04
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -80,7 +80,7 @@
           "irons_spellbooks:blood_spell_power": 0.04,
           "irons_spellbooks:mana_regen": 0.04
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -102,7 +102,7 @@
           "irons_spellbooks:holy_spell_power": 0.04,
           "irons_spellbooks:mana_regen": 0.04
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -124,7 +124,7 @@
           "irons_spellbooks:lightning_spell_power": 0.04,
           "irons_spellbooks:mana_regen": 0.04
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -145,7 +145,7 @@
         "primaryAttributes": {
           "irons_spellbooks:mana_regen": 0.08
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -167,7 +167,7 @@
           "irons_spellbooks:ender_spell_power": 0.04,
           "irons_spellbooks:mana_regen": 0.04
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -189,7 +189,7 @@
           "irons_spellbooks:blood_spell_power": 0.04,
           "irons_spellbooks:mana_regen": 0.04
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
