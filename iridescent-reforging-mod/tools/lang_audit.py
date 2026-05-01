@@ -68,13 +68,20 @@ def audit_modules(lang):
             if not vk or vk in seen_variants:
                 continue
             seen_variants.add(vk)
-            # Tetra strips trailing '/' from the variant key before lang
-            # lookup. The canonical key shape is BARE — no .name/.prefix
-            # suffix (per Tetra's own lang: 102 bare keys vs 3 outliers).
-            lookup_key = vk.rstrip("/")
-            k = f"tetra.variant.{lookup_key}"
-            if k not in lang:
-                gaps.append((str(jf.relative_to(MOD_ROOT)), k, "variant"))
+            # Tetra's getName lookup uses the variant key VERBATIM (no
+            # trailing-slash stripping). For variants whose key ends in '/'
+            # (empty-default catchalls), we need the trailing-slash form
+            # authored explicitly — otherwise the workbench renders the raw
+            # key when a player has the empty-default variant installed.
+            # We require both forms for trailing-slash variants so a player
+            # never sees raw text regardless of which form Tetra requests.
+            forms = [vk]
+            if vk.endswith("/"):
+                forms.append(vk.rstrip("/"))
+            for form in forms:
+                k = f"tetra.variant.{form}"
+                if k not in lang:
+                    gaps.append((str(jf.relative_to(MOD_ROOT)), k, "variant"))
     return gaps
 
 def audit_schematics(lang):
