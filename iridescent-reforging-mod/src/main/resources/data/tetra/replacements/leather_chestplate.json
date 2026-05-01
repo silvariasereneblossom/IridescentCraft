@@ -9,19 +9,19 @@
     "modules": {
       "chestplate/chest_plate": [
         "chestplate/chest_plate",
-        "chestplate/chest_plate/iron"
+        "chestplate/chest_plate/leather"
       ],
       "chestplate/chest_lining": [
         "chestplate/chest_lining",
-        "chestplate/chest_lining/"
+        "chestplate/chest_lining/leather"
       ],
       "chestplate/trim": [
         "chestplate/trim",
-        "chestplate/trim/"
+        "chestplate/trim/leather"
       ],
       "chestplate/pauldrons": [
         "chestplate/pauldrons",
-        "chestplate/pauldrons/"
+        "chestplate/pauldrons/leather"
       ]
     }
   }

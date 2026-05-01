@@ -9,19 +9,19 @@
     "modules": {
       "boots/boot_sole": [
         "boots/boot_sole",
-        "boots/boot_sole/iron"
+        "boots/boot_sole/leather"
       ],
       "boots/boot_lining": [
         "boots/boot_lining",
-        "boots/boot_lining/"
+        "boots/boot_lining/leather"
       ],
       "boots/heel": [
         "boots/heel",
-        "boots/heel/"
+        "boots/heel/leather"
       ],
       "boots/lacing": [
         "boots/lacing",
-        "boots/lacing/"
+        "boots/lacing/leather"
       ]
     }
   }

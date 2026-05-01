@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/crown",
-        "helmet/crown/iron"
+        "helmet/crown/leather"
       ],
       "helmet/visor": [
         "helmet/visor",
-        "helmet/visor/"
+        "helmet/visor/leather"
       ],
       "helmet/crest": [
         "helmet/crest",
-        "helmet/crest/"
+        "helmet/crest/leather"
       ],
       "helmet/strap": [
         "helmet/strap",
-        "helmet/strap/"
+        "helmet/strap/leather"
       ]
     }
   }

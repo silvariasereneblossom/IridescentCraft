@@ -1,4 +1,5 @@
 {
+  "replace": true,
   "slots": [
     "boots/boot_lining"
   ],

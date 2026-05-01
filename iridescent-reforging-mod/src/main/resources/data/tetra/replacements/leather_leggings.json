@@ -9,19 +9,19 @@
     "modules": {
       "leggings/leg_plate": [
         "leggings/leg_plate",
-        "leggings/leg_plate/iron"
+        "leggings/leg_plate/leather"
       ],
       "leggings/belt": [
         "leggings/belt",
-        "leggings/belt/"
+        "leggings/belt/leather"
       ],
       "leggings/greaves": [
         "leggings/greaves",
-        "leggings/greaves/"
+        "leggings/greaves/leather"
       ],
       "leggings/cuisses": [
         "leggings/cuisses",
-        "leggings/cuisses/"
+        "leggings/cuisses/leather"
       ]
     }
   }
