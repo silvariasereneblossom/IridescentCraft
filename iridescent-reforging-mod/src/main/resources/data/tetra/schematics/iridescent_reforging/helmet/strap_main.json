@@ -17,9 +17,7 @@
       "materials": [
         "tetra:fabric/",
         "tetra:fibre/",
-        "tetra:skin/",
-        "tetra:metal/",
-        "tetra:gem/"
+        "tetra:skin/"
       ],
       "countFactor": 1,
       "moduleKey": "helmet/strap",

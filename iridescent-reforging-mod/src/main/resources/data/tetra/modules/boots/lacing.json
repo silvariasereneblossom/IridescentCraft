@@ -13,9 +13,7 @@
       ],
       "key": "boots/lacing/",
       "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.movement_speed": 0.002
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -35,7 +33,7 @@
       "key": "boots/lacing/fire",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:fire_spell_power": 0.02
+          "irons_spellbooks:fire_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -46,10 +44,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
+        "models": []
       }
     },
     {
@@ -59,7 +54,7 @@
       "key": "boots/lacing/ice",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ice_spell_power": 0.02
+          "irons_spellbooks:ice_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -70,10 +65,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
+        "models": []
       }
     },
     {
@@ -83,7 +75,7 @@
       "key": "boots/lacing/shadow",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.02
+          "irons_spellbooks:blood_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -94,10 +86,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
+        "models": []
       }
     },
     {
@@ -107,7 +96,7 @@
       "key": "boots/lacing/holy",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:holy_spell_power": 0.02
+          "irons_spellbooks:holy_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -118,10 +107,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
+        "models": []
       }
     },
     {
@@ -131,7 +117,7 @@
       "key": "boots/lacing/lightning",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:lightning_spell_power": 0.02
+          "irons_spellbooks:lightning_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -142,10 +128,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
+        "models": []
       }
     },
     {
@@ -155,7 +138,7 @@
       "key": "boots/lacing/nature",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.02
+          "irons_spellbooks:mana_regen": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -166,10 +149,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
+        "models": []
       }
     },
     {
@@ -179,7 +159,7 @@
       "key": "boots/lacing/ender",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ender_spell_power": 0.02
+          "irons_spellbooks:ender_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -190,10 +170,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
+        "models": []
       }
     },
     {
@@ -203,409 +180,7 @@
       "key": "boots/lacing/blood",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.movement_speed": 0.001
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "boots/lacing/iron",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/gold"
-      ],
-      "key": "boots/lacing/gold",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diamond"
-      ],
-      "key": "boots/lacing/diamond",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/netherite"
-      ],
-      "key": "boots/lacing/netherite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/copper"
-      ],
-      "key": "boots/lacing/copper",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/manasteel"
-      ],
-      "key": "boots/lacing/manasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/terrasteel"
-      ],
-      "key": "boots/lacing/terrasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/elementium"
-      ],
-      "key": "boots/lacing/elementium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/knightmetal"
-      ],
-      "key": "boots/lacing/knightmetal",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/steeleaf"
-      ],
-      "key": "boots/lacing/steeleaf",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/ironwood"
-      ],
-      "key": "boots/lacing/ironwood",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/fiery"
-      ],
-      "key": "boots/lacing/fiery",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/charoite"
-      ],
-      "key": "boots/lacing/charoite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/diopside"
-      ],
-      "key": "boots/lacing/diopside",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/horizonite"
-      ],
-      "key": "boots/lacing/horizonite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_cloggrum"
-      ],
-      "key": "boots/lacing/undergarden_cloggrum",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_froststeel"
-      ],
-      "key": "boots/lacing/undergarden_froststeel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_utherium"
-      ],
-      "key": "boots/lacing/undergarden_utherium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aethersteel"
-      ],
-      "key": "boots/lacing/aethersteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:blood_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {

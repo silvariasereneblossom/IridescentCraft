@@ -1,441 +1,10 @@
 {
-  "type": "tetra:basic_major_module",
+  "type": "tetra:basic_module",
   "slots": [
     "leggings/leg_plate"
   ],
   "improvements": [],
   "variants": [
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "leggings/leg_plate/iron",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/gold"
-      ],
-      "key": "leggings/leg_plate/gold",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diamond"
-      ],
-      "key": "leggings/leg_plate/diamond",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.238
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/netherite"
-      ],
-      "key": "leggings/leg_plate/netherite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.829
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.357
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/copper"
-      ],
-      "key": "leggings/leg_plate/copper",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.75
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/manasteel"
-      ],
-      "key": "leggings/leg_plate/manasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.83
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/terrasteel"
-      ],
-      "key": "leggings/leg_plate/terrasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.86
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/elementium"
-      ],
-      "key": "leggings/leg_plate/elementium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/knightmetal"
-      ],
-      "key": "leggings/leg_plate/knightmetal",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.312
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/steeleaf"
-      ],
-      "key": "leggings/leg_plate/steeleaf",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/ironwood"
-      ],
-      "key": "leggings/leg_plate/ironwood",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/fiery"
-      ],
-      "key": "leggings/leg_plate/fiery",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.441
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/charoite"
-      ],
-      "key": "leggings/leg_plate/charoite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.417
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diopside"
-      ],
-      "key": "leggings/leg_plate/diopside",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.63
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/horizonite"
-      ],
-      "key": "leggings/leg_plate/horizonite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.8
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_cloggrum"
-      ],
-      "key": "leggings/leg_plate/undergarden_cloggrum",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.83
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.333
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_froststeel"
-      ],
-      "key": "leggings/leg_plate/undergarden_froststeel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.2,
-          "minecraft:generic.knockback_resistance": 0.05
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/undergarden_utherium"
-      ],
-      "key": "leggings/leg_plate/undergarden_utherium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.92
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aethersteel"
-      ],
-      "key": "leggings/leg_plate/aethersteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.3,
-          "minecraft:generic.knockback_resistance": 0.05
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
     {
       "materials": [
         "tetra:metal/"
@@ -445,7 +14,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 1.0
         },
-        "integrity": 0,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -459,14 +28,161 @@
     },
     {
       "materials": [
-        "tetra:gem/"
+        "iridescent_reforging:themed/fire"
       ],
-      "key": "leggings/leg_plate/",
+      "key": "leggings/leg_plate/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.0
+          "minecraft:generic.armor": 0.4
         },
-        "integrity": 0,
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "leggings/leg_plate/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "leggings/leg_plate/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "leggings/leg_plate/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "leggings/leg_plate/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "leggings/leg_plate/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "leggings/leg_plate/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "leggings/leg_plate/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

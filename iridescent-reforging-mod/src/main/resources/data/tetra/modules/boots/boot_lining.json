@@ -13,9 +13,7 @@
       ],
       "key": "boots/boot_lining/",
       "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.movement_speed": 0.002
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -35,8 +33,8 @@
       "key": "boots/boot_lining/fire",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:fire_spell_power": 0.03,
-          "minecraft:generic.movement_speed": 0.001
+          "irons_spellbooks:fire_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -57,8 +55,8 @@
       "key": "boots/boot_lining/ice",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ice_spell_power": 0.03,
-          "minecraft:generic.movement_speed": 0.001
+          "irons_spellbooks:ice_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -79,8 +77,8 @@
       "key": "boots/boot_lining/shadow",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.03,
-          "minecraft:generic.movement_speed": 0.001
+          "irons_spellbooks:blood_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -101,8 +99,8 @@
       "key": "boots/boot_lining/holy",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:holy_spell_power": 0.03,
-          "minecraft:generic.movement_speed": 0.001
+          "irons_spellbooks:holy_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -123,8 +121,8 @@
       "key": "boots/boot_lining/lightning",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:lightning_spell_power": 0.03,
-          "minecraft:generic.movement_speed": 0.001
+          "irons_spellbooks:lightning_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -145,8 +143,7 @@
       "key": "boots/boot_lining/nature",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.04,
-          "minecraft:generic.movement_speed": 0.001
+          "irons_spellbooks:mana_regen": 0.08
         },
         "integrity": 1,
         "glyph": {
@@ -167,8 +164,8 @@
       "key": "boots/boot_lining/ender",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ender_spell_power": 0.03,
-          "minecraft:generic.movement_speed": 0.001
+          "irons_spellbooks:ender_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -189,407 +186,8 @@
       "key": "boots/boot_lining/blood",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.03,
-          "minecraft:generic.movement_speed": 0.001
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "boots/boot_lining/iron",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/gold"
-      ],
-      "key": "boots/boot_lining/gold",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diamond"
-      ],
-      "key": "boots/boot_lining/diamond",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/netherite"
-      ],
-      "key": "boots/boot_lining/netherite",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/copper"
-      ],
-      "key": "boots/boot_lining/copper",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/manasteel"
-      ],
-      "key": "boots/boot_lining/manasteel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/terrasteel"
-      ],
-      "key": "boots/boot_lining/terrasteel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/elementium"
-      ],
-      "key": "boots/boot_lining/elementium",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/knightmetal"
-      ],
-      "key": "boots/boot_lining/knightmetal",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/steeleaf"
-      ],
-      "key": "boots/boot_lining/steeleaf",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/ironwood"
-      ],
-      "key": "boots/boot_lining/ironwood",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/fiery"
-      ],
-      "key": "boots/boot_lining/fiery",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/charoite"
-      ],
-      "key": "boots/boot_lining/charoite",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/diopside"
-      ],
-      "key": "boots/boot_lining/diopside",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/horizonite"
-      ],
-      "key": "boots/boot_lining/horizonite",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_cloggrum"
-      ],
-      "key": "boots/boot_lining/undergarden_cloggrum",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_froststeel"
-      ],
-      "key": "boots/boot_lining/undergarden_froststeel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_utherium"
-      ],
-      "key": "boots/boot_lining/undergarden_utherium",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aethersteel"
-      ],
-      "key": "boots/boot_lining/aethersteel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
+          "irons_spellbooks:blood_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {

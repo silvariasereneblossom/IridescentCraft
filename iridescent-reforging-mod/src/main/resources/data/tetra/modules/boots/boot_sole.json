@@ -1,441 +1,10 @@
 {
-  "type": "tetra:basic_major_module",
+  "type": "tetra:basic_module",
   "slots": [
     "boots/boot_sole"
   ],
   "improvements": [],
   "variants": [
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "boots/boot_sole/iron",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.4
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/gold"
-      ],
-      "key": "boots/boot_sole/gold",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.333
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diamond"
-      ],
-      "key": "boots/boot_sole/diamond",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.238
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/netherite"
-      ],
-      "key": "boots/boot_sole/netherite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.414
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.357
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/copper"
-      ],
-      "key": "boots/boot_sole/copper",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.25
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/manasteel"
-      ],
-      "key": "boots/boot_sole/manasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.33
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/terrasteel"
-      ],
-      "key": "boots/boot_sole/terrasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.43
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/elementium"
-      ],
-      "key": "boots/boot_sole/elementium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.4
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/knightmetal"
-      ],
-      "key": "boots/boot_sole/knightmetal",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.312
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/steeleaf"
-      ],
-      "key": "boots/boot_sole/steeleaf",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/ironwood"
-      ],
-      "key": "boots/boot_sole/ironwood",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.4
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/fiery"
-      ],
-      "key": "boots/boot_sole/fiery",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.57
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.441
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/charoite"
-      ],
-      "key": "boots/boot_sole/charoite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.417
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diopside"
-      ],
-      "key": "boots/boot_sole/diopside",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.25
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/horizonite"
-      ],
-      "key": "boots/boot_sole/horizonite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.2
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_cloggrum"
-      ],
-      "key": "boots/boot_sole/undergarden_cloggrum",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.17
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 0.333
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_froststeel"
-      ],
-      "key": "boots/boot_sole/undergarden_froststeel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.4,
-          "minecraft:generic.knockback_resistance": 0.05
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/undergarden_utherium"
-      ],
-      "key": "boots/boot_sole/undergarden_utherium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.46
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.armor_toughness": 1.0
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aethersteel"
-      ],
-      "key": "boots/boot_sole/aethersteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.3,
-          "minecraft:generic.knockback_resistance": 0.05
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
     {
       "materials": [
         "tetra:metal/"
@@ -445,7 +14,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.4
         },
-        "integrity": 0,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -459,14 +28,161 @@
     },
     {
       "materials": [
-        "tetra:gem/"
+        "iridescent_reforging:themed/fire"
       ],
-      "key": "boots/boot_sole/",
+      "key": "boots/boot_sole/fire",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.4
         },
-        "integrity": 0,
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "boots/boot_sole/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "boots/boot_sole/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "boots/boot_sole/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "boots/boot_sole/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "boots/boot_sole/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "boots/boot_sole/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "boots/boot_sole/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4
+        },
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

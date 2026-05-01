@@ -15,8 +15,7 @@
   "outcomes": [
     {
       "materials": [
-        "tetra:metal/",
-        "tetra:gem/"
+        "tetra:metal/"
       ],
       "countFactor": 1,
       "moduleKey": "helmet/crown",

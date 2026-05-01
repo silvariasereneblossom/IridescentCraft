@@ -1,22 +1,22 @@
 {
-  "key": "themed_ender",
-  "category": "iridescent_reforging:themed",
-  "primary": 1.0,
-  "secondary": 1.0,
-  "tertiary": 1.0,
-  "durability": 0,
-  "integrityCost": 1,
-  "integrityGain": 0,
-  "magicCapacity": 0,
-  "tints": {
-    "glyph": "ffffff",
-    "texture": "ffffff"
-  },
-  "textures": [],
-  "material": {
-    "items": [
-      "minecraft:ender_pearl"
-    ]
-  },
-  "attributes": {}
+    "key": "ender",
+    "category": "iridescent_reforging:themed",
+    "primary": 1.0,
+    "secondary": 1.0,
+    "tertiary": 1.0,
+    "durability": 0,
+    "integrityCost": 1,
+    "integrityGain": 0,
+    "magicCapacity": 0,
+    "tints": {
+        "glyph": "ffffff",
+        "texture": "ffffff"
+    },
+    "textures": [],
+    "material": {
+        "items": [
+            "minecraft:ender_pearl"
+        ]
+    },
+    "attributes": {}
 }

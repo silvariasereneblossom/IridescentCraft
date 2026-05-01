@@ -13,9 +13,7 @@
       ],
       "key": "leggings/belt/",
       "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -35,8 +33,8 @@
       "key": "leggings/belt/fire",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:fire_spell_power": 0.03,
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:fire_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -57,8 +55,8 @@
       "key": "leggings/belt/ice",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ice_spell_power": 0.03,
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:ice_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -79,8 +77,8 @@
       "key": "leggings/belt/shadow",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.03,
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:blood_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -101,8 +99,8 @@
       "key": "leggings/belt/holy",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:holy_spell_power": 0.03,
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:holy_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -123,8 +121,8 @@
       "key": "leggings/belt/lightning",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:lightning_spell_power": 0.03,
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:lightning_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -145,8 +143,7 @@
       "key": "leggings/belt/nature",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.04,
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:mana_regen": 0.08
         },
         "integrity": 1,
         "glyph": {
@@ -167,8 +164,8 @@
       "key": "leggings/belt/ender",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ender_spell_power": 0.03,
-          "minecraft:generic.knockback_resistance": 0.02
+          "irons_spellbooks:ender_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {
@@ -189,407 +186,8 @@
       "key": "leggings/belt/blood",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.03,
-          "minecraft:generic.knockback_resistance": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "leggings/belt/iron",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/gold"
-      ],
-      "key": "leggings/belt/gold",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diamond"
-      ],
-      "key": "leggings/belt/diamond",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/netherite"
-      ],
-      "key": "leggings/belt/netherite",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/copper"
-      ],
-      "key": "leggings/belt/copper",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/manasteel"
-      ],
-      "key": "leggings/belt/manasteel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/terrasteel"
-      ],
-      "key": "leggings/belt/terrasteel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/elementium"
-      ],
-      "key": "leggings/belt/elementium",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/knightmetal"
-      ],
-      "key": "leggings/belt/knightmetal",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/steeleaf"
-      ],
-      "key": "leggings/belt/steeleaf",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/ironwood"
-      ],
-      "key": "leggings/belt/ironwood",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/fiery"
-      ],
-      "key": "leggings/belt/fiery",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/charoite"
-      ],
-      "key": "leggings/belt/charoite",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/diopside"
-      ],
-      "key": "leggings/belt/diopside",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/horizonite"
-      ],
-      "key": "leggings/belt/horizonite",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_cloggrum"
-      ],
-      "key": "leggings/belt/undergarden_cloggrum",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_froststeel"
-      ],
-      "key": "leggings/belt/undergarden_froststeel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_utherium"
-      ],
-      "key": "leggings/belt/undergarden_utherium",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aethersteel"
-      ],
-      "key": "leggings/belt/aethersteel",
-      "extract": {
-        "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.01
+          "irons_spellbooks:blood_spell_power": 0.04,
+          "irons_spellbooks:mana_regen": 0.04
         },
         "integrity": 1,
         "glyph": {

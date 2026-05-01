@@ -13,10 +13,7 @@
       ],
       "key": "chestplate/pauldrons/",
       "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5,
-          "minecraft:generic.knockback_resistance": 0.02
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -36,7 +33,7 @@
       "key": "chestplate/pauldrons/fire",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:fire_spell_power": 0.02
+          "irons_spellbooks:fire_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -47,10 +44,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
+        "models": []
       }
     },
     {
@@ -60,7 +54,7 @@
       "key": "chestplate/pauldrons/ice",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ice_spell_power": 0.02
+          "irons_spellbooks:ice_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -71,10 +65,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
+        "models": []
       }
     },
     {
@@ -84,7 +75,7 @@
       "key": "chestplate/pauldrons/shadow",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.02
+          "irons_spellbooks:blood_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -95,10 +86,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
+        "models": []
       }
     },
     {
@@ -108,7 +96,7 @@
       "key": "chestplate/pauldrons/holy",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:holy_spell_power": 0.02
+          "irons_spellbooks:holy_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -119,10 +107,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
+        "models": []
       }
     },
     {
@@ -132,7 +117,7 @@
       "key": "chestplate/pauldrons/lightning",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:lightning_spell_power": 0.02
+          "irons_spellbooks:lightning_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -143,10 +128,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
+        "models": []
       }
     },
     {
@@ -156,7 +138,7 @@
       "key": "chestplate/pauldrons/nature",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:mana_regen": 0.02
+          "irons_spellbooks:mana_regen": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -167,10 +149,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
+        "models": []
       }
     },
     {
@@ -180,7 +159,7 @@
       "key": "chestplate/pauldrons/ender",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:ender_spell_power": 0.02
+          "irons_spellbooks:ender_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
@@ -191,10 +170,7 @@
         "availableTextures": [
           ""
         ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
+        "models": []
       }
     },
     {
@@ -204,409 +180,7 @@
       "key": "chestplate/pauldrons/blood",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:blood_spell_power": 0.02
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": [],
-        "secondaryAttributes": {
-          "minecraft:generic.knockback_resistance": 0.02
-        }
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "chestplate/pauldrons/iron",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/gold"
-      ],
-      "key": "chestplate/pauldrons/gold",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diamond"
-      ],
-      "key": "chestplate/pauldrons/diamond",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/netherite"
-      ],
-      "key": "chestplate/pauldrons/netherite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/copper"
-      ],
-      "key": "chestplate/pauldrons/copper",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/manasteel"
-      ],
-      "key": "chestplate/pauldrons/manasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/terrasteel"
-      ],
-      "key": "chestplate/pauldrons/terrasteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/elementium"
-      ],
-      "key": "chestplate/pauldrons/elementium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/knightmetal"
-      ],
-      "key": "chestplate/pauldrons/knightmetal",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/steeleaf"
-      ],
-      "key": "chestplate/pauldrons/steeleaf",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/ironwood"
-      ],
-      "key": "chestplate/pauldrons/ironwood",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/fiery"
-      ],
-      "key": "chestplate/pauldrons/fiery",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/charoite"
-      ],
-      "key": "chestplate/pauldrons/charoite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/diopside"
-      ],
-      "key": "chestplate/pauldrons/diopside",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/horizonite"
-      ],
-      "key": "chestplate/pauldrons/horizonite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_cloggrum"
-      ],
-      "key": "chestplate/pauldrons/undergarden_cloggrum",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_froststeel"
-      ],
-      "key": "chestplate/pauldrons/undergarden_froststeel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/undergarden_utherium"
-      ],
-      "key": "chestplate/pauldrons/undergarden_utherium",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
-        },
-        "integrity": 1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          ""
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/aethersteel"
-      ],
-      "key": "chestplate/pauldrons/aethersteel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.5
+          "irons_spellbooks:blood_spell_power": 0.03
         },
         "integrity": 1,
         "glyph": {
