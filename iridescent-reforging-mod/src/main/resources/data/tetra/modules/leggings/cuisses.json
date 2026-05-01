@@ -21,7 +21,7 @@
           "textureY": 0
         },
         "availableTextures": [
-          ""
+          "default"
         ],
         "models": []
       }

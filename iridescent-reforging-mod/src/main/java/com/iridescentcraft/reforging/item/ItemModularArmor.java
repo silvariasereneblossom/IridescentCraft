@@ -207,6 +207,27 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         consumer.accept(ItemModularArmorClient.INSTANCE);
     }
 
+    // ── Shift-hover module tooltip ──────────────────────────────────────
+    //
+    // Tetra's ModularItem.appendHoverText calls `getTooltip(stack, level,
+    // flag)` (default method on IModularItem) which produces the module
+    // breakdown shown when shift is held over a modular item. ArmorItem's
+    // own appendHoverText doesn't call that path, so we wire it manually
+    // through the inherited interface default.
+    @Override
+    public void appendHoverText(ItemStack stack,
+                                @org.jetbrains.annotations.Nullable net.minecraft.world.level.Level level,
+                                java.util.List<net.minecraft.network.chat.Component> tooltip,
+                                net.minecraft.world.item.TooltipFlag flag) {
+        try {
+            tooltip.addAll(IModularItem.super.getTooltip(stack, level, flag));
+        } catch (Throwable t) {
+            // Tooltip composition mustn't crash the inventory render; if
+            // Tetra's getTooltip throws, fall through to vanilla behavior.
+            super.appendHoverText(stack, level, tooltip, flag);
+        }
+    }
+
     // ── Display name (material-driven) ──────────────────────────────────
     //
     // Iron crown -> "Iron Helmet", manasteel chest_plate -> "Manasteel
