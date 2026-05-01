@@ -4,6 +4,7 @@ mods/*.jar
 !mods/iridescent_biomes-*.jar
 !mods/iridescent_modular_spells-*.jar
 !mods/iridescent_reforging-*.jar
+!mods/iridescent_tetra_expansion-*.jar
 !mods/iridescent_durability_clamp-*.jar
 !mods/justlevelingfork-*-iridescent.*.jar
 !mods/mek_walkable_cables-*.jar
@@ -18,6 +19,7 @@ mods/*.jar
 !server_distribution/mods/iridescent_biomes-*.jar
 !server_distribution/mods/iridescent_modular_spells-*.jar
 !server_distribution/mods/iridescent_reforging-*.jar
+!server_distribution/mods/iridescent_tetra_expansion-*.jar
 !server_distribution/mods/iridescent_durability_clamp-*.jar
 !server_distribution/mods/justlevelingfork-*-iridescent.*.jar
 !server_distribution/mods/mek_walkable_cables-*.jar
@@ -30,6 +32,7 @@ mods/*.jar
 !distribution/client/mods/iridescent_biomes-*.jar
 !distribution/client/mods/iridescent_modular_spells-*.jar
 !distribution/client/mods/iridescent_reforging-*.jar
+!distribution/client/mods/iridescent_tetra_expansion-*.jar
 !distribution/client/mods/iridescent_durability_clamp-*.jar
 !distribution/client/mods/justlevelingfork-*-iridescent.*.jar
 !distribution/client/mods/mek_walkable_cables-*.jar
