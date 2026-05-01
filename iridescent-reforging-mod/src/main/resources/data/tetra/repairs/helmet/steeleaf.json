@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:steeleaf_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "helmet/crown/steeleaf"
+}

@@ -207,6 +207,79 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         consumer.accept(ItemModularArmorClient.INSTANCE);
     }
 
+    // ── Stack NBT migration (one-time) ─────────────────────────────────
+    //
+    // Fixup for stacks whose NBT was written before the schematic
+    // doubling fix (commit 9db85e12). Runs once per stack via
+    // inventoryTick; subsequent ticks short-circuit on the migration tag.
+    // Server-side only — NBT changes need to sync to the client via
+    // existing slot-update packets, which they do automatically when
+    // ItemStack#setTag is called from inventoryTick.
+    @Override
+    public void inventoryTick(ItemStack stack, net.minecraft.world.level.Level level,
+                              net.minecraft.world.entity.Entity entity, int slotId, boolean isSelected) {
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+        if (level == null || level.isClientSide) return;
+        StackNbtMigrator.migrate(stack);
+    }
+
+    // ── Anvil repair ────────────────────────────────────────────────────
+    //
+    // Lets players repair reforged armor at a vanilla anvil using the
+    // matching ingot/material. Tetra's workbench repair (RepairAction)
+    // is wired separately via per-variant repair JSONs in
+    // data/tetra/repairs/<slot>/<variant>.json — that path enables the
+    // workbench's Repair button. This override gives the anvil path as a
+    // universal fallback that works for any installed major variant.
+    @Override
+    public boolean isValidRepairItem(ItemStack toRepair, ItemStack repairItem) {
+        if (!(toRepair.getItem() instanceof ItemModularArmor)) return false;
+        String mat = readMajorMaterial(toRepair);
+        if (mat == null) return false;
+        net.minecraft.resources.ResourceLocation rl =
+                net.minecraftforge.registries.ForgeRegistries.ITEMS.getKey(repairItem.getItem());
+        if (rl == null) return false;
+        // Accept the exact ingot for the major material. e.g. iron major
+        // accepts iron_ingot (vanilla), gold accepts gold_ingot, manasteel
+        // accepts botania:manasteel_ingot, etc.
+        String path = rl.getPath();
+        if (path.equals(mat + "_ingot") || path.equals(mat + "_nugget")) return true;
+        // Vanilla "golden_ingot" doesn't exist; vanilla uses "gold_ingot"
+        // for major key "gold". Map our key -> vanilla path.
+        if (mat.equals("gold")    && path.equals("gold_ingot")) return true;
+        if (mat.equals("diamond") && path.equals("diamond"))    return true;
+        if (mat.equals("netherite") && path.equals("netherite_ingot")) return true;
+        return false;
+    }
+
+    // ── Tier indicator in tooltip ──────────────────────────────────────
+    //
+    // Tetra weapons display a T1/T2/T3 tier next to the durability bar
+    // based on hone level reached. Our armor reads the highest hone level
+    // across the four module slots and prints a Component like "Tier II"
+    // at the top of the tooltip below the display name.
+    private int computeTier(ItemStack stack) {
+        try {
+            int max = 0;
+            se.mickelus.tetra.module.ItemModuleMajor[] majors = getMajorModules(stack);
+            if (majors != null) {
+                for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
+                    if (m == null) continue;
+                    max = Math.max(max, m.getImprovementLevel(stack, "settled"));
+                }
+            }
+            // Approximate: tier 1 = no settled, tier 2 = at least one
+            // settled, tier 3 = all majors settled. Honing levels can
+            // refine this later.
+            int honedCount = getHonedCount(stack);
+            if (honedCount >= 9) return 3;
+            if (honedCount >= 4) return 2;
+            return 1;
+        } catch (Throwable t) {
+            return 1;
+        }
+    }
+
     // ── Shift-hover module tooltip ──────────────────────────────────────
     //
     // Tetra's ModularItem.appendHoverText calls `getTooltip(stack, level,
@@ -220,6 +293,13 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
                                 java.util.List<net.minecraft.network.chat.Component> tooltip,
                                 net.minecraft.world.item.TooltipFlag flag) {
         try {
+            // Tier line (T1/T2/T3) at top, styled like Tetra's tier display
+            int tier = computeTier(stack);
+            String roman = tier == 3 ? "III" : (tier == 2 ? "II" : "I");
+            tooltip.add(net.minecraft.network.chat.Component.translatable(
+                    "tooltip.iridescent_reforging.tier", roman)
+                    .withStyle(net.minecraft.ChatFormatting.GRAY));
+            // Tetra's installed-modules breakdown
             tooltip.addAll(IModularItem.super.getTooltip(stack, level, flag));
         } catch (Throwable t) {
             // Tooltip composition mustn't crash the inventory render; if

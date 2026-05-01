@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:diamond"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "boots/boot_sole/diamond"
+}

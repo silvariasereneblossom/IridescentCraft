@@ -6688,5 +6688,6 @@
   "tetra/schematic/iridescent_reforging/leggings/hone_leg_plate_toughness_5.slot1": "Material",
   "tetra/schematic/iridescent_reforging/leggings/leg_plate_main.description": "Apply a material to populate this slot's module.",
   "tetra/schematic/iridescent_reforging/leggings/leg_plate_main.name": "Leg Plate",
-  "tetra/schematic/iridescent_reforging/leggings/leg_plate_main.slot1": "Material"
+  "tetra/schematic/iridescent_reforging/leggings/leg_plate_main.slot1": "Material",
+  "tooltip.iridescent_reforging.tier": "Tier %s"
 }
