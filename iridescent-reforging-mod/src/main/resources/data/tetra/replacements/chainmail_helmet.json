@@ -13,15 +13,15 @@
       ],
       "helmet/visor": [
         "helmet/visor",
-        "helmet/visor/"
+        "helmet/visor/iron"
       ],
       "helmet/crest": [
         "helmet/crest",
-        "helmet/crest/"
+        "helmet/crest/iron"
       ],
       "helmet/strap": [
         "helmet/strap",
-        "helmet/strap/"
+        "helmet/strap/iron"
       ]
     }
   }

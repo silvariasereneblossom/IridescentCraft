@@ -13,15 +13,15 @@
       ],
       "chestplate/chest_lining": [
         "chestplate/chest_lining",
-        "chestplate/chest_lining/"
+        "chestplate/chest_lining/diamond"
       ],
       "chestplate/trim": [
         "chestplate/trim",
-        "chestplate/trim/"
+        "chestplate/trim/diamond"
       ],
       "chestplate/pauldrons": [
         "chestplate/pauldrons",
-        "chestplate/pauldrons/"
+        "chestplate/pauldrons/diamond"
       ]
     }
   }

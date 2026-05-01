@@ -13,15 +13,15 @@
       ],
       "boots/boot_lining": [
         "boots/boot_lining",
-        "boots/boot_lining/"
+        "boots/boot_lining/iron"
       ],
       "boots/heel": [
         "boots/heel",
-        "boots/heel/"
+        "boots/heel/iron"
       ],
       "boots/lacing": [
         "boots/lacing",
-        "boots/lacing/"
+        "boots/lacing/iron"
       ]
     }
   }

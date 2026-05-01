@@ -13,15 +13,15 @@
       ],
       "helmet/visor": [
         "helmet/visor",
-        "helmet/visor/"
+        "helmet/visor/netherite"
       ],
       "helmet/crest": [
         "helmet/crest",
-        "helmet/crest/"
+        "helmet/crest/netherite"
       ],
       "helmet/strap": [
         "helmet/strap",
-        "helmet/strap/"
+        "helmet/strap/netherite"
       ]
     }
   }

@@ -13,15 +13,15 @@
       ],
       "leggings/belt": [
         "leggings/belt",
-        "leggings/belt/"
+        "leggings/belt/netherite"
       ],
       "leggings/greaves": [
         "leggings/greaves",
-        "leggings/greaves/"
+        "leggings/greaves/netherite"
       ],
       "leggings/cuisses": [
         "leggings/cuisses",
-        "leggings/cuisses/"
+        "leggings/cuisses/netherite"
       ]
     }
   }

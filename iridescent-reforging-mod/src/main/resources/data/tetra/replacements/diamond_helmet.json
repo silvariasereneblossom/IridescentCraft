@@ -13,15 +13,15 @@
       ],
       "helmet/visor": [
         "helmet/visor",
-        "helmet/visor/"
+        "helmet/visor/diamond"
       ],
       "helmet/crest": [
         "helmet/crest",
-        "helmet/crest/"
+        "helmet/crest/diamond"
       ],
       "helmet/strap": [
         "helmet/strap",
-        "helmet/strap/"
+        "helmet/strap/diamond"
       ]
     }
   }
