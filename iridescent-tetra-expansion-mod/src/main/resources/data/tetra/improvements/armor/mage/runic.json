@@ -1,0 +1,10 @@
+[
+  {
+    "key": "armor/runic",
+    "level": 1,
+    "attributes": {
+      "irons_spellbooks:max_mana": 30.0,
+      "irons_spellbooks:spell_power": 0.05
+    }
+  }
+]

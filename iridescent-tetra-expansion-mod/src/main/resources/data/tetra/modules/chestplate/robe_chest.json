@@ -1,0 +1,346 @@
+{
+  "type": "tetra:basic_major_module",
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "improvements": [
+    "tetra:armor/mage/",
+    "tetra:armor/shared/"
+  ],
+  "variants": [
+    {
+      "materials": [
+        "tetra:metal/",
+        "tetra:gem/",
+        "iridescent_reforging:themed/"
+      ],
+      "key": "robe_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.5,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "robe_chest/leather",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.825,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "robe_chest/iron",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.5,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "robe_chest/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.275,
+          "irons_spellbooks:max_mana": 105.0,
+          "irons_spellbooks:spell_power": 0.1
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "robe_chest/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.1,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "minecraft:generic.armor_toughness": 0.2
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "robe_chest/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.4,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "minecraft:generic.knockback_resistance": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "key": "robe_chest/fire",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:fire_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "robe_chest/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:ice_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "robe_chest/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "robe_chest/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:holy_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "robe_chest/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:lightning_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "robe_chest/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:nature_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "robe_chest/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "robe_chest/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.575,
+          "irons_spellbooks:max_mana": 100.0,
+          "irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:blood_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    }
+  ]
+}

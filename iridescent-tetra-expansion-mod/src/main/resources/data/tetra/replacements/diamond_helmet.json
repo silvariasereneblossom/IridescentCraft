@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "minecraft:diamond_helmet"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_helmet",
+    "modules": {
+      "helmet/crown": [
+        "helmet/basic_crown",
+        "basic_crown/diamond"
+      ],
+      "helmet/visor": [
+        "helmet/slit_visor",
+        "slit_visor/diamond"
+      ],
+      "helmet/crest": [
+        "helmet/plain_crest",
+        "plain_crest/diamond"
+      ],
+      "helmet/strap": [
+        "helmet/leather_strap",
+        "leather_strap/diamond"
+      ]
+    }
+  }
+]

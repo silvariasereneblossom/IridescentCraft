@@ -1,0 +1,32 @@
+{
+    "key": "copper_spell_book",
+    "category": "icraft_iss_books",
+    "primary": 0.0,
+    "secondary": 0.0,
+    "tertiary": 0.0,
+    "durability": 0,
+    "integrityCost": 0,
+    "integrityGain": 2,
+    "magicCapacity": 30,
+    "toolLevel": 0,
+    "toolEfficiency": 0,
+    "tints": {
+        "glyph": "b87333",
+        "texture": "b87333"
+    },
+    "textures": [
+        "copper_spell_book"
+    ],
+    "material": {
+        "items": [
+            "irons_spellbooks:copper_spell_book"
+        ]
+    },
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "irons_spellbooks"
+        }
+    ],
+    "attributes": {}
+}

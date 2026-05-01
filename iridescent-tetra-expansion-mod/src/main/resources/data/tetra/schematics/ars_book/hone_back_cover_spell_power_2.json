@@ -1,0 +1,27 @@
+{
+  "slots": [
+    "ars_book/back_cover"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:improvement",
+    "improvement": "ars_book_back_cover_hone_spell_power",
+    "level": 1
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+      },
+      "improvements": {
+        "ars_book_back_cover_hone_spell_power": 2
+      }
+    }
+  ]
+}

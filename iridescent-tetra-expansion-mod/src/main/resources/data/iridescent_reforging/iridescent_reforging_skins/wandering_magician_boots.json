@@ -1,0 +1,19 @@
+{
+  "skin_id": "iridescent_reforging:wandering_magician_boots",
+  "slot": "boots",
+  "source_item": "irons_spellbooks:wandering_magician_boots",
+  "display_name": "Reforged Wandering Magician Boots",
+  "tier": 1,
+  "base_attributes": [
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 25.0
+    },
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.05
+    }
+  ]
+}

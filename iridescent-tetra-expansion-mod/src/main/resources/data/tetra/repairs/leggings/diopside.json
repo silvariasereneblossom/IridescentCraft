@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:diopside_gem"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "leggings/full_leg_plate",
+  "moduleVariant": "full_leg_plate/diopside"
+}

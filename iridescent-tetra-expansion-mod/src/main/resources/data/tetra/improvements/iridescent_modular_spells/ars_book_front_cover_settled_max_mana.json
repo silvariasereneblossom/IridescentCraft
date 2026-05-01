@@ -1,0 +1,9 @@
+[
+  {
+    "key": "ars_book_front_cover_settled_max_mana",
+    "level": 1,
+    "attributes": {
+      "ars_nouveau:ars_nouveau.perk.max_mana": 5
+    }
+  }
+]

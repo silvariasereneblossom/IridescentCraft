@@ -1,0 +1,37 @@
+{
+    "type": "tetra:basic_major_module",
+    "slots": [
+        "ars_book/front_cover"
+    ],
+    "improvements": [
+        "ars_book_lining_fabric/",
+        "ars_book_lining_fibre/",
+        "ars_book_lining_skin/"
+    ],
+    "variants": [
+        {
+            "materials": [
+                "tetra:skin/",
+                "tetra:metal/",
+                "tetra:bone/",
+                "tetra:gem/"
+            ],
+            "key": "front_cover/",
+            "extract": {
+                "primaryAttributes": {
+                    "ars_nouveau:ars_nouveau.perk.spell_damage": 0.3
+                },
+                "integrity": 0,
+                "glyph": {
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+                    "textureX": 0,
+                    "textureY": 0
+                },
+                "availableTextures": [
+                    ""
+                ],
+                "models": []
+            }
+        }
+    ]
+}

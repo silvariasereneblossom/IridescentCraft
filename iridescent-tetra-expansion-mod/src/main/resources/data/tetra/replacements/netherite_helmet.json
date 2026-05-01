@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "minecraft:netherite_helmet"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_helmet",
+    "modules": {
+      "helmet/crown": [
+        "helmet/basic_crown",
+        "basic_crown/netherite"
+      ],
+      "helmet/visor": [
+        "helmet/slit_visor",
+        "slit_visor/netherite"
+      ],
+      "helmet/crest": [
+        "helmet/plain_crest",
+        "plain_crest/netherite"
+      ],
+      "helmet/strap": [
+        "helmet/leather_strap",
+        "leather_strap/netherite"
+      ]
+    }
+  }
+]

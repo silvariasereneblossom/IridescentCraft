@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "deeperdarker:warden_helmet"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_helmet",
+    "modules": {
+      "helmet/crown": [
+        "helmet/basic_crown",
+        "basic_crown/iron"
+      ],
+      "helmet/visor": [
+        "helmet/slit_visor",
+        "slit_visor/iron"
+      ],
+      "helmet/crest": [
+        "helmet/plain_crest",
+        "plain_crest/iron"
+      ],
+      "helmet/strap": [
+        "helmet/leather_strap",
+        "leather_strap/iron"
+      ]
+    }
+  }
+]

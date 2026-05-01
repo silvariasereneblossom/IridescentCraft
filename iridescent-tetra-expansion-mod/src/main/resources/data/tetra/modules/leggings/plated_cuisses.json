@@ -1,0 +1,331 @@
+{
+  "type": "tetra:basic_module",
+  "slots": [
+    "leggings/cuisses"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:skin/",
+        "tetra:fabric/",
+        "tetra:metal/",
+        "iridescent_reforging:themed/"
+      ],
+      "key": "plated_cuisses/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.5,
+          "minecraft:generic.movement_speed": -0.02
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "plated_cuisses/leather",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.275,
+          "minecraft:generic.movement_speed": -0.02
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "plated_cuisses/iron",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.5,
+          "minecraft:generic.movement_speed": -0.02
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "plated_cuisses/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.425,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:max_mana": 5.0
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "plated_cuisses/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.7,
+          "minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor_toughness": 0.2
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "plated_cuisses/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.8,
+          "minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.knockback_resistance": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "key": "plated_cuisses/fire",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:fire_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "plated_cuisses/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:ice_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "plated_cuisses/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "plated_cuisses/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:holy_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "plated_cuisses/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:lightning_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "plated_cuisses/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:nature_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "plated_cuisses/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "plated_cuisses/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "minecraft:generic.movement_speed": -0.02,
+          "irons_spellbooks:blood_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    }
+  ]
+}

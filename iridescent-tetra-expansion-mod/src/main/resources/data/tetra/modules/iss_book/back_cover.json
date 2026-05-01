@@ -1,0 +1,37 @@
+{
+    "type": "tetra:basic_module",
+    "slots": [
+        "iss_book/back_cover"
+    ],
+    "improvements": [
+        "iss_book_lining_fabric/",
+        "iss_book_lining_fibre/",
+        "iss_book_lining_skin/"
+    ],
+    "variants": [
+        {
+            "materials": [
+                "tetra:skin/",
+                "tetra:metal/",
+                "tetra:bone/",
+                "tetra:gem/"
+            ],
+            "key": "back_cover/",
+            "extract": {
+                "primaryAttributes": {
+                    "irons_spellbooks:max_mana": 5
+                },
+                "integrity": 1,
+                "glyph": {
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+                    "textureX": 0,
+                    "textureY": 0
+                },
+                "availableTextures": [
+                    ""
+                ],
+                "models": []
+            }
+        }
+    ]
+}

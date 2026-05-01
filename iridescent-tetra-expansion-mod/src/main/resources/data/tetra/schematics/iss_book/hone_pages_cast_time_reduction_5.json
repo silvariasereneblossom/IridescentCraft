@@ -1,0 +1,27 @@
+{
+  "slots": [
+    "iss_book/pages"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:improvement",
+    "improvement": "iss_book_pages_hone_cast_time_reduction",
+    "level": 4
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:netherite"
+      },
+      "improvements": {
+        "iss_book_pages_hone_cast_time_reduction": 5
+      }
+    }
+  ]
+}

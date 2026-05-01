@@ -1,0 +1,28 @@
+{
+    "slots": [
+        "iss_book/front_cover"
+    ],
+    "materialSlotCount": 1,
+    "displayType": "major",
+    "glyph": {
+        "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+        "textureX": 0,
+        "textureY": 0
+    },
+    "translation": {
+        "integrity": 1
+    },
+    "outcomes": [
+        {
+            "materials": [
+                "tetra:skin/",
+                "tetra:metal/",
+                "tetra:bone/",
+                "tetra:gem/"
+            ],
+            "countFactor": 1,
+            "moduleKey": "iss_book/front_cover",
+            "moduleVariant": "front_cover/"
+        }
+    ]
+}

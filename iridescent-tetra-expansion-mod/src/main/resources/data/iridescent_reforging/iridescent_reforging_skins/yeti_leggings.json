@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:yeti_leggings",
+  "slot": "leggings",
+  "source_item": "twilightforest:yeti_leggings",
+  "display_name": "Reforged Yeti Leggings",
+  "tier": 3,
+  "set_id": "iridescent_reforging:yeti",
+  "armor_material_namespace": "twilightforest",
+  "armor_material_name": "yeti",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 6.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ],
+  "texture_layer_1": "twilightforest:textures/armor/yetiarmor_1.png",
+  "texture_layer_2": "twilightforest:textures/armor/yetiarmor_2.png"
+}

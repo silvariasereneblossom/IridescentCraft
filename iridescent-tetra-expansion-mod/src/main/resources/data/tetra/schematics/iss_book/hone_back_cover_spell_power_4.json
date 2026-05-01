@@ -1,0 +1,27 @@
+{
+  "slots": [
+    "iss_book/back_cover"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:improvement",
+    "improvement": "iss_book_back_cover_hone_spell_power",
+    "level": 3
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:diamond"
+      },
+      "improvements": {
+        "iss_book_back_cover_hone_spell_power": 4
+      }
+    }
+  ]
+}

@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "minecraft:leather_helmet"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_helmet",
+    "modules": {
+      "helmet/crown": [
+        "helmet/basic_crown",
+        "basic_crown/leather"
+      ],
+      "helmet/visor": [
+        "helmet/slit_visor",
+        "slit_visor/leather"
+      ],
+      "helmet/crest": [
+        "helmet/plain_crest",
+        "plain_crest/leather"
+      ],
+      "helmet/strap": [
+        "helmet/leather_strap",
+        "leather_strap/leather"
+      ]
+    }
+  }
+]

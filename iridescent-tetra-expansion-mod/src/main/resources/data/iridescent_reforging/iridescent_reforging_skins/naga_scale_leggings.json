@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:naga_scale_leggings",
+  "slot": "leggings",
+  "source_item": "twilightforest:naga_leggings",
+  "display_name": "Reforged Naga Scale Leggings",
+  "tier": 2,
+  "set_id": "iridescent_reforging:naga_scale",
+  "armor_material_namespace": "twilightforest",
+  "armor_material_name": "naga_scale",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 6.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ],
+  "texture_layer_1": "twilightforest:textures/armor/naga_scale_1.png",
+  "texture_layer_2": "twilightforest:textures/armor/naga_scale_2.png"
+}

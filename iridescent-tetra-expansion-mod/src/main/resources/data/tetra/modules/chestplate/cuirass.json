@@ -1,0 +1,346 @@
+{
+  "type": "tetra:basic_major_module",
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "improvements": [
+    "tetra:armor/warrior/",
+    "tetra:armor/shared/"
+  ],
+  "variants": [
+    {
+      "materials": [
+        "tetra:metal/",
+        "tetra:gem/",
+        "iridescent_reforging:themed/"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.0,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "cuirass/leather",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "cuirass/iron",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.0,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "cuirass/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 3.4,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:max_mana": 5.0
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "cuirass/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 5.6,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor_toughness": 0.2
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "cuirass/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 6.4,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.15
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "key": "cuirass/fire",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:fire_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "cuirass/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:ice_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "cuirass/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "cuirass/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:holy_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "cuirass/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:lightning_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "cuirass/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:nature_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "cuirass/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "cuirass/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 4.2,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.1,
+          "irons_spellbooks:blood_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    }
+  ]
+}

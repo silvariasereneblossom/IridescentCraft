@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "twilightforest:knightmetal_leggings"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_leggings",
+    "modules": {
+      "leggings/leg_plate": [
+        "leggings/full_leg_plate",
+        "full_leg_plate/iron"
+      ],
+      "leggings/belt": [
+        "leggings/leather_belt",
+        "leather_belt/iron"
+      ],
+      "leggings/greaves": [
+        "leggings/standard_greaves",
+        "standard_greaves/iron"
+      ],
+      "leggings/cuisses": [
+        "leggings/padded_cuisses",
+        "padded_cuisses/iron"
+      ]
+    }
+  }
+]

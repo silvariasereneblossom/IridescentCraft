@@ -1,0 +1,9 @@
+[
+  {
+    "key": "iss_book_spine_settled_mana_regen",
+    "level": 1,
+    "attributes": {
+      "irons_spellbooks:mana_regen": 0.05
+    }
+  }
+]

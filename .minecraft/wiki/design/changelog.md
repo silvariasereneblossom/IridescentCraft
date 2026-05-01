@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-01 — Phase C: bundle into IridescentCraft Tetra Expansion (single jar, two mod IDs)
+
+`iridescent-reforging-mod` and `iridescent-modular-spells-mod` merged into a single `iridescent-tetra-expansion-mod/` source tree producing `iridescent_tetra_expansion-1.0.0.jar`. The bundled jar declares **two `[[mods]]` entries** in its `mods.toml` — `iridescent_reforging` and `iridescent_modular_spells` — preserving both original mod IDs verbatim so every existing in-world stack, recipe reference, and `ResourceLocation`-keyed lookup survives the swap.
+
+**Why bundle:** single artifact for users and the distros to track; shared dependency graph (Tetra + ISS + Curios + Ars + Geckolib all listed once); shared mixin scaffolding (Phase A's `GuiModuleSlotSubheadingMixin` now reusable for any future spell-book UI mixin).
+
+**Why not rename:** changing mod IDs would break every `iridescent_reforging:reforged_helmet` and `iridescent_modular_spells:modular_spell_book` ResourceLocation in player worlds. The bundle is a JAR-level merge, not an identity-level rename.
+
+**Failback path:** `git tag v-pre-bundle` points at the commit immediately before the bundle (`afdf8ec5`, "reforging Phase B: improvement schematics"). To roll back, revert the bundling commit, copy the standalone `iridescent_reforging-0.1.0.jar` and `iridescent_modular_spells-0.2.0.jar` from that commit's tree into `mods/`, world stacks unchanged. The two standalone source trees (`iridescent-reforging-mod/` and `iridescent-modular-spells-mod/`) are kept on `main` for the moment as the reference for any rollback diffing — they'll be deleted in a follow-up commit once the bundle has playtest-stable runtime for ~1 week.
+
+**Distro impact:**
+- Bundled jar deployed to all 3 distros (main / server_distribution / distribution/client).
+- Standalone jars removed from all 3 distros to avoid duplicate item registration (Forge would refuse to load both).
+- Custom-JAR allowlists updated in 10 launcher scripts: `verify_distros.{sh,ps1}`, `server_distribution/{update_mods.{sh,ps1}, sync_from_repo.bat, cleanup_stale_jars.ps1, iridescentserver.bat, diagnose.ps1}`, `IridescentCraft Dedicated Server/{update_mods.ps1, cleanup_stale_jars.ps1}`, `distribution/client/cleanup_stale_jars.ps1`.
+
+---
+
 ## 2026-05-01 — Iridescent Reforging Phase A: multi-module-per-slot architecture
 
 Restructured the Tetra-armor extension from "1 module per slot, material variants only" to Tetra's canonical "N modules per slot, each with material variants". Players now choose between archetype-coded module alternatives (warrior / rogue / mage / balanced) at each of the 16 armor slots, mirroring how vanilla Tetra swords pick between basic_blade / heavy_blade / short_blade / machete.

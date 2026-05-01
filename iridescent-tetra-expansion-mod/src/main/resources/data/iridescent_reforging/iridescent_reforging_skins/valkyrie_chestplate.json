@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:valkyrie_chestplate",
+  "slot": "chestplate",
+  "source_item": "aether:valkyrie_chestplate",
+  "display_name": "Reforged Valkyrie Chestplate",
+  "tier": 3,
+  "set_id": "iridescent_reforging:valkyrie",
+  "armor_material_namespace": "aether",
+  "armor_material_name": "valkyrie",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ]
+}

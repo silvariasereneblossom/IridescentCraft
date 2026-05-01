@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "minecraft:golden_helmet"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_helmet",
+    "modules": {
+      "helmet/crown": [
+        "helmet/basic_crown",
+        "basic_crown/gold"
+      ],
+      "helmet/visor": [
+        "helmet/slit_visor",
+        "slit_visor/gold"
+      ],
+      "helmet/crest": [
+        "helmet/plain_crest",
+        "plain_crest/gold"
+      ],
+      "helmet/strap": [
+        "helmet/leather_strap",
+        "leather_strap/gold"
+      ]
+    }
+  }
+]

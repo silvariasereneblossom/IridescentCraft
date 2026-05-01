@@ -1,0 +1,97 @@
+modLoader="javafml"
+loaderVersion="[47,)"
+license="All Rights Reserved"
+issueTrackerURL="https://github.com/silvariasereneblossom/IridescentCraft/issues"
+
+# Single mixin config — currently only the reforging side has mixins
+# (GuiModuleSlotSubheadingMixin). modspells has no mixins. The config
+# file lives at iridescent_tetra_expansion.mixins.json with package
+# com.iridescentcraft.reforging.mixin (kept verbatim from the standalone
+# jar so the @Mixin class doesn't need to move).
+mixinConfigs=["iridescent_tetra_expansion.mixins.json"]
+
+# ─── Mod 1: iridescent_reforging  (Tetra-style modular armor) ────────────────
+# IDs and item registrations preserved from the standalone iridescent-
+# reforging-mod-0.1.0.jar so existing world stacks survive the bundle.
+[[mods]]
+modId="iridescent_reforging"
+version="1.0.0"
+displayName="Iridescent Reforging"
+authors="Silvaria"
+description='''Tetra-style modular armor system. Extends Tetra's IModularItem to ArmorItem with archetype-coded module alternatives (basic/heavy/light/mage) at 16 slots. Preserves Geckolib renderers and base attributes for specialized armors via NBT-driven skin dispatch.'''
+
+[[dependencies.iridescent_reforging]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47.4.6,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.iridescent_reforging]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1]"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.iridescent_reforging]]
+    modId="tetra"
+    mandatory=true
+    versionRange="[6.12.0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+# ─── Mod 2: iridescent_modular_spells  (Tetra-style modular spell books) ─────
+# IDs and item registrations preserved from the standalone iridescent-
+# modular-spells-mod jar.
+[[mods]]
+modId="iridescent_modular_spells"
+version="1.0.0"
+displayName="Iridescent Modular Spells"
+authors="Silvaria"
+description='''Tetra-style modular spell books for Iron's Spellbooks + Ars Nouveau. Books implement IModularItem and route attribute aggregation through the Tetra workbench.'''
+
+[[dependencies.iridescent_modular_spells]]
+    modId="forge"
+    mandatory=true
+    versionRange="[47.4.6,)"
+    ordering="NONE"
+    side="BOTH"
+
+[[dependencies.iridescent_modular_spells]]
+    modId="minecraft"
+    mandatory=true
+    versionRange="[1.20.1,1.21)"
+    ordering="NONE"
+    side="BOTH"
+
+# Permissive [0,) on third-party deps because their Forge-side version
+# strings include the MC version prefix ("1.20.1-3.15.5.1") which Forge's
+# Maven-comparator parser misreads as major-version 1.
+[[dependencies.iridescent_modular_spells]]
+    modId="irons_spellbooks"
+    mandatory=true
+    versionRange="[0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.iridescent_modular_spells]]
+    modId="curios"
+    mandatory=true
+    versionRange="[0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.iridescent_modular_spells]]
+    modId="ars_nouveau"
+    mandatory=true
+    versionRange="[0,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.iridescent_modular_spells]]
+    modId="tetra"
+    mandatory=true
+    versionRange="[0,)"
+    ordering="AFTER"
+    side="BOTH"

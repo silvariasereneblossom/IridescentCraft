@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "blue_skies:aquite_boots"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_boots",
+    "modules": {
+      "boots/boot_sole": [
+        "boots/basic_boot_sole",
+        "basic_boot_sole/iron"
+      ],
+      "boots/boot_lining": [
+        "boots/padded_boot_lining",
+        "padded_boot_lining/iron"
+      ],
+      "boots/heel": [
+        "boots/standard_heel",
+        "standard_heel/iron"
+      ],
+      "boots/lacing": [
+        "boots/leather_lacing",
+        "leather_lacing/iron"
+      ]
+    }
+  }
+]

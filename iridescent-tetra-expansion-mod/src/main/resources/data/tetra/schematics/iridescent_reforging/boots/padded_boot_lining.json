@@ -1,0 +1,28 @@
+{
+  "replace": true,
+  "slots": [
+    "boots/boot_lining"
+  ],
+  "materialSlotCount": 1,
+  "displayType": "minor",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": {
+    "integrity": 0
+  },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:skin/",
+        "tetra:fabric/",
+        "iridescent_reforging:themed/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/padded_boot_lining",
+      "moduleVariant": "padded_boot_lining/"
+    }
+  ]
+}

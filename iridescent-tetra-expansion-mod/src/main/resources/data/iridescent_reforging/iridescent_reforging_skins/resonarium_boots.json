@@ -1,0 +1,22 @@
+{
+  "skin_id": "iridescent_reforging:resonarium_boots",
+  "slot": "boots",
+  "source_item": "deeperdarker:resonarium_boots",
+  "display_name": "Reforged Resonarium Boots",
+  "tier": 4,
+  "set_id": "iridescent_reforging:resonarium",
+  "armor_material_namespace": "deeperdarker",
+  "armor_material_name": "resonarium",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ]
+}

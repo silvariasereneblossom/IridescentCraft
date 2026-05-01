@@ -1,0 +1,28 @@
+{
+    "type": "tetra:basic_major_module",
+    "slots": [
+        "iss_book/core"
+    ],
+    "improvements": [],
+    "renderLayer": "higher",
+    "variants": [
+        {
+            "materials": [
+                "tetra:icraft_iss_books/"
+            ],
+            "key": "iss_core/",
+            "extract": {
+                "integrity": -2,
+                "glyph": {
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+                    "textureX": 0,
+                    "textureY": 0
+                },
+                "availableTextures": [
+                    ""
+                ],
+                "models": []
+            }
+        }
+    ]
+}

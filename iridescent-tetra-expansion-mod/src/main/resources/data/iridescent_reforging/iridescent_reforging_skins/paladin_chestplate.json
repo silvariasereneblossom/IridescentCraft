@@ -1,0 +1,27 @@
+{
+  "skin_id": "iridescent_reforging:paladin_chestplate",
+  "slot": "chestplate",
+  "source_item": "irons_spellbooks:paladin_chestplate",
+  "display_name": "Reforged Lightbringer Chestplate",
+  "tier": 3,
+  "set_id": "",
+  "armor_material_namespace": "irons_spellbooks",
+  "armor_material_name": "paladin",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    },
+    {
+      "attribute": "irons_spellbooks:holy_spell_power",
+      "operation": "multiply_base",
+      "value": 0.2
+    }
+  ]
+}

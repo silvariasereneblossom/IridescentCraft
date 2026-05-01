@@ -1,0 +1,10 @@
+[
+  {
+    "key": "armor/streamlined",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.movement_speed": 0.05,
+      "minecraft:generic.attack_speed": 0.03
+    }
+  }
+]

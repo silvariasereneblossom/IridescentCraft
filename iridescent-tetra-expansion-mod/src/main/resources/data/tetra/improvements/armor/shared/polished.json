@@ -1,0 +1,9 @@
+[
+  {
+    "key": "armor/polished",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.armor_toughness": 0.5
+    }
+  }
+]

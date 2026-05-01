@@ -1,0 +1,29 @@
+{
+  "slots": [
+    "iss_book/pages"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:not",
+    "requirement": {
+      "type": "tetra:improvement",
+      "improvement": "iss_book_pages_hone_cast_time_reduction"
+    }
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:gold"
+      },
+      "improvements": {
+        "iss_book_pages_hone_cast_time_reduction": 1
+      }
+    }
+  ]
+}

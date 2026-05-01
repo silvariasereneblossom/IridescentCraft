@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:copper_ingot"
+    ],
+    "count": 3
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/basic_boot_sole",
+  "moduleVariant": "basic_boot_sole/copper"
+}

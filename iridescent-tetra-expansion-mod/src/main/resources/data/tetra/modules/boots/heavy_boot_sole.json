@@ -1,0 +1,333 @@
+{
+  "type": "tetra:basic_major_module",
+  "slots": [
+    "boots/boot_sole"
+  ],
+  "improvements": [
+    "tetra:armor/warrior/",
+    "tetra:armor/shared/"
+  ],
+  "variants": [
+    {
+      "materials": [
+        "tetra:metal/",
+        "tetra:skin/",
+        "iridescent_reforging:themed/"
+      ],
+      "key": "heavy_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.4,
+          "minecraft:generic.movement_speed": -0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "heavy_boot_sole/leather",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.77,
+          "minecraft:generic.movement_speed": -0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "heavy_boot_sole/iron",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.4,
+          "minecraft:generic.movement_speed": -0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "heavy_boot_sole/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.19,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:max_mana": 5.0
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "heavy_boot_sole/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.96,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.armor_toughness": 0.2
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "heavy_boot_sole/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.24,
+          "minecraft:generic.movement_speed": -0.05,
+          "minecraft:generic.knockback_resistance": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "key": "heavy_boot_sole/fire",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:fire_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "heavy_boot_sole/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:ice_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "heavy_boot_sole/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "heavy_boot_sole/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:holy_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "heavy_boot_sole/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:lightning_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "heavy_boot_sole/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:nature_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "heavy_boot_sole/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "heavy_boot_sole/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.47,
+          "minecraft:generic.movement_speed": -0.05,
+          "irons_spellbooks:blood_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    }
+  ]
+}

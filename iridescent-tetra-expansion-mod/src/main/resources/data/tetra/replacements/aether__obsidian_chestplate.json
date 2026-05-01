@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "aether:obsidian_chestplate"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_chestplate",
+    "modules": {
+      "chestplate/chest_plate": [
+        "chestplate/breastplate",
+        "breastplate/iron"
+      ],
+      "chestplate/chest_lining": [
+        "chestplate/padded_lining",
+        "padded_lining/iron"
+      ],
+      "chestplate/trim": [
+        "chestplate/simple_trim",
+        "simple_trim/iron"
+      ],
+      "chestplate/pauldrons": [
+        "chestplate/light_pauldrons",
+        "light_pauldrons/iron"
+      ]
+    }
+  }
+]

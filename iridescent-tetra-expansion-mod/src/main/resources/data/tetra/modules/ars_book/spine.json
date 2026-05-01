@@ -1,0 +1,32 @@
+{
+    "type": "tetra:basic_module",
+    "slots": [
+        "ars_book/spine"
+    ],
+    "improvements": [],
+    "variants": [
+        {
+            "materials": [
+                "tetra:metal/",
+                "tetra:skin/",
+                "tetra:fibre/"
+            ],
+            "key": "spine/",
+            "extract": {
+                "primaryAttributes": {
+                    "ars_nouveau:ars_nouveau.perk.mana_regen": 0.5
+                },
+                "integrity": 0,
+                "glyph": {
+                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+                    "textureX": 0,
+                    "textureY": 0
+                },
+                "availableTextures": [
+                    ""
+                ],
+                "models": []
+            }
+        }
+    ]
+}

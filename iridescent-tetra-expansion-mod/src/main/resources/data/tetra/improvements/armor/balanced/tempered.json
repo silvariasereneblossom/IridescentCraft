@@ -1,0 +1,10 @@
+[
+  {
+    "key": "armor/tempered",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.armor": 0.5,
+      "minecraft:generic.max_health": 1.0
+    }
+  }
+]

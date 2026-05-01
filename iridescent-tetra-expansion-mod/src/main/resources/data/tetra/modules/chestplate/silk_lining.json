@@ -1,0 +1,343 @@
+{
+  "type": "tetra:basic_module",
+  "slots": [
+    "chestplate/chest_lining"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:skin/",
+        "tetra:fabric/",
+        "iridescent_reforging:themed/"
+      ],
+      "key": "silk_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "silk_lining/leather",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.055,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "silk_lining/iron",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "silk_lining/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.085,
+          "irons_spellbooks:max_mana": 35.0,
+          "irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "silk_lining/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.14,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "minecraft:generic.armor_toughness": 0.2
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "silk_lining/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.16,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "minecraft:generic.knockback_resistance": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "key": "silk_lining/fire",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:fire_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "silk_lining/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:ice_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "silk_lining/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "silk_lining/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:holy_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "silk_lining/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:lightning_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "silk_lining/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:nature_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "silk_lining/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "silk_lining/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.105,
+          "irons_spellbooks:max_mana": 30.0,
+          "irons_spellbooks:mana_regen": 0.05,
+          "irons_spellbooks:blood_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    }
+  ]
+}

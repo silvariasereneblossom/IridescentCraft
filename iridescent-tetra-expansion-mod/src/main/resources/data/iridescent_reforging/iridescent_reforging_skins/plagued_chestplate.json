@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:plagued_chestplate",
+  "slot": "chestplate",
+  "source_item": "irons_spellbooks:plagued_chestplate",
+  "display_name": "Reforged Plagued Robes",
+  "tier": 2,
+  "base_attributes": [
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 62.5
+    },
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.125
+    },
+    {
+      "attribute": "irons_spellbooks:blood_spell_power",
+      "operation": "multiply_base",
+      "value": 0.125
+    }
+  ]
+}

@@ -1,0 +1,27 @@
+{
+  "skin_id": "iridescent_reforging:gravitite_boots",
+  "slot": "boots",
+  "source_item": "aether:gravitite_boots",
+  "display_name": "Reforged Gravitite Boots",
+  "tier": 3,
+  "set_id": "iridescent_reforging:gravitite",
+  "armor_material_namespace": "aether",
+  "armor_material_name": "gravitite",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    },
+    {
+      "attribute": "minecraft:generic.movement_speed",
+      "operation": "multiply_base",
+      "value": 0.02
+    }
+  ]
+}

@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "botania:manasteel_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "helmet/basic_crown",
+  "moduleVariant": "basic_crown/manasteel"
+}

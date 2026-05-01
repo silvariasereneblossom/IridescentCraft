@@ -1,0 +1,27 @@
+{
+  "slots": [
+    "ars_book/front_cover"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:improvement",
+    "improvement": "ars_book_front_cover_hone_max_mana",
+    "level": 3
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:diamond"
+      },
+      "improvements": {
+        "ars_book_front_cover_hone_max_mana": 4
+      }
+    }
+  ]
+}

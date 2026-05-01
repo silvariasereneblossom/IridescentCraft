@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:pyromancer_helmet",
+  "slot": "helmet",
+  "source_item": "irons_spellbooks:pyromancer_helmet",
+  "display_name": "Reforged Pyromancer Hood",
+  "tier": 2,
+  "base_attributes": [
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "addition",
+      "value": 25.0
+    },
+    {
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "multiply_base",
+      "value": 0.05
+    },
+    {
+      "attribute": "irons_spellbooks:fire_spell_power",
+      "operation": "multiply_base",
+      "value": 0.05
+    }
+  ]
+}

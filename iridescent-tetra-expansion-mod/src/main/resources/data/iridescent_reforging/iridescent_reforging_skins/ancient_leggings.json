@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:ancient_leggings",
+  "slot": "leggings",
+  "source_item": "undergarden:ancient_leggings",
+  "display_name": "Reforged Ancient Leggings",
+  "tier": 4,
+  "set_id": "iridescent_reforging:ancient",
+  "armor_material_namespace": "undergarden",
+  "armor_material_name": "ancient",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 6.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ],
+  "texture_layer_1": "undergarden:textures/armor/ancient_layer_1.png",
+  "texture_layer_2": "undergarden:textures/armor/ancient_layer_2.png"
+}

@@ -1,0 +1,27 @@
+{
+    "slots": [
+        "ars_book/spine"
+    ],
+    "materialSlotCount": 1,
+    "displayType": "minor",
+    "glyph": {
+        "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+        "textureX": 0,
+        "textureY": 0
+    },
+    "translation": {
+        "integrity": 1
+    },
+    "outcomes": [
+        {
+            "materials": [
+                "tetra:metal/",
+                "tetra:skin/",
+                "tetra:fibre/"
+            ],
+            "countFactor": 1,
+            "moduleKey": "ars_book/spine",
+            "moduleVariant": "spine/"
+        }
+    ]
+}

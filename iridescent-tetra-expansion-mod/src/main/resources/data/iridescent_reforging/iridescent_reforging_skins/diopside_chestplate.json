@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:diopside_chestplate",
+  "slot": "chestplate",
+  "source_item": "blue_skies:diopside_chestplate",
+  "display_name": "Reforged Diopside Chestplate",
+  "tier": 3,
+  "set_id": "iridescent_reforging:diopside",
+  "armor_material_namespace": "blue_skies",
+  "armor_material_name": "diopside",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 8.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 1.0
+    }
+  ],
+  "texture_layer_1": "blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/diopside_layer_1.png",
+  "texture_layer_2": "blue_skies:legacy_pack/assets/blue_skies/textures/models/armor/diopside_layer_2.png"
+}

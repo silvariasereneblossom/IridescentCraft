@@ -1,0 +1,24 @@
+{
+  "skin_id": "iridescent_reforging:terrasteel_boots",
+  "slot": "boots",
+  "source_item": "botania:terrasteel_boots",
+  "display_name": "Reforged Terrasteel Boots",
+  "tier": 3,
+  "set_id": "iridescent_reforging:terrasteel",
+  "armor_material_namespace": "botania",
+  "armor_material_name": "terrasteel",
+  "base_attributes": [
+    {
+      "attribute": "minecraft:generic.armor",
+      "operation": "addition",
+      "value": 3.0
+    },
+    {
+      "attribute": "minecraft:generic.armor_toughness",
+      "operation": "addition",
+      "value": 0.5
+    }
+  ],
+  "texture_layer_1": "botania:textures/model/armor_terrasteel.png",
+  "texture_layer_2": "botania:textures/model/armor_terrasteel.png"
+}
