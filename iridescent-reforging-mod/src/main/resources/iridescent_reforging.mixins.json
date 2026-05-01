@@ -1,0 +1,15 @@
+{
+  "required": true,
+  "minVersion": "0.8",
+  "package": "com.iridescentcraft.reforging.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "iridescent_reforging.refmap.json",
+  "mixins": [],
+  "client": [
+    "GuiModuleSlotSubheadingMixin"
+  ],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 1
+  }
+}

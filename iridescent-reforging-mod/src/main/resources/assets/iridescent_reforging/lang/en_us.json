@@ -6689,5 +6689,13 @@
   "tetra/schematic/iridescent_reforging/leggings/leg_plate_main.description": "Apply a material to populate this slot's module.",
   "tetra/schematic/iridescent_reforging/leggings/leg_plate_main.name": "Leg Plate",
   "tetra/schematic/iridescent_reforging/leggings/leg_plate_main.slot1": "Material",
-  "tooltip.iridescent_reforging.tier": "Tier %s"
+  "tooltip.iridescent_reforging.tier": "Tier %s",
+  "iridescent_reforging.stats.knockbackResistance": "KB Resist",
+  "iridescent_reforging.stats.knockbackResistance.tooltip": "Reduces knockback taken by §e%s§r.",
+  "iridescent_reforging.stats.maxHealth": "Max Health",
+  "iridescent_reforging.stats.maxHealth.tooltip": "Adjusts max health by §e%s§r hearts.",
+  "iridescent_reforging.stats.movementSpeed": "Move Speed",
+  "iridescent_reforging.stats.movementSpeed.tooltip": "Adjusts movement speed by §e%s§r.",
+  "iridescent_reforging.stats.stepHeight": "Step / Jump",
+  "iridescent_reforging.stats.stepHeight.tooltip": "Adjusts step-up height by §e%s§r blocks."
 }

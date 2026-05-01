@@ -2,6 +2,7 @@ plugins {
     id 'eclipse'
     id 'idea'
     id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
 }
 
 version = mod_version
@@ -17,6 +18,11 @@ minecraft {
     mappings channel: mapping_channel, version: mapping_version
 }
 
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+}
+
 repositories {
     mavenCentral()
     flatDir {
@@ -26,6 +32,11 @@ repositories {
 
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // Mixin annotation processor — Forge ships MixinExtras at runtime; only
+    // the annotations + processor are needed at compile time. Required for
+    // GuiModule slot-subheading injection.
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
 
     // Tetra: we implement se.mickelus.tetra.items.modular.IModularItem on
     // an ArmorItem subclass so Tetra's WorkbenchTile picks our items up.
@@ -54,9 +65,11 @@ jar {
             "Implementation-Title": mod_id,
             "Implementation-Version": mod_version,
             "Implementation-Vendor": mod_authors,
-            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ")
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "${mod_id}.mixins.json"
         ])
     }
+    finalizedBy 'reobfJar'
 }
 
 processResources {

@@ -2,6 +2,10 @@ modLoader="javafml"
 loaderVersion="[47,)"
 license="All Rights Reserved"
 
+# Mixin config — registers GuiModuleSlotSubheadingMixin so minor module
+# slots in Tetra's workbench show a slot label header (matching majors).
+mixinConfigs=["${mod_id}.mixins.json"]
+
 [[mods]]
 modId="${mod_id}"
 version="${version}"

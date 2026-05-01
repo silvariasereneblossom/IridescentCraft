@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-01 — Tetra workbench polish: minor-slot subheadings + extra Status bars
+
+Two paired UI improvements landed in `iridescent-reforging-mod` 0.1.0 (no jar-name bump; the same file ships the new behavior):
+
+**Minor-slot subheadings (Mixin into Tetra).** Tetra's `GuiModuleMajor` renders a small slot label above the variant name (`slotString: GuiStringSmall`); the base `GuiModule` used for minor slots has no such field, so minors read as a flat variant name with no hierarchy. Added `GuiModuleSlotSubheadingMixin` which `@Inject(at = TAIL)` into `GuiModule.setupChildren` and adds a `GuiStringSmall` slot label at y=-5 (mirroring Major's 5px offset). Polymorphic dispatch ensures the injection only fires for true `GuiModule` instances — `GuiModuleMajor` overrides `setupChildren` without calling super, so its slot label is unaffected. `remap = false` on both `@Mixin` and `@Inject` because Tetra's method names are not in vanilla SRG. Required adding the SpongePowered Mixin Gradle plugin + AP + `MixinConfigs` manifest entry to the build.
+
+**Extra Status bars (4 vanilla armor attributes).** Tetra's `WorkbenchStatsGui` ships ~80 weapon-oriented `GuiStatBar` instances and `MagicStatsBars` (modular-spells) adds 16 spellbooks attributes — together they cover armor, toughness, durability, and the magic stats. Four armor-natural attributes had no bar registered: `knockback_resistance`, `max_health`, `movement_speed`, and `forge:step_height_addition`. Added `ArmorStatsBars` mirroring the `MagicStatsBars` pattern (FMLClientSetupEvent + enqueueWork + WorkbenchStatsGui.addBar). Each bar's shouldShow returns false unless current OR preview stack has a non-zero modifier so empty-slot armor doesn't pollute the panel. Tooltip text routed through `I18n.get(tooltipKey, formattedValue)` per the modular-spells lesson — `GuiStatBar` wraps tooltips in `Component.literal` not translatable, so the lookup must happen in the getter. With these four added, the `WorkbenchStatsGui` horizontal slider becomes meaningfully populated for armor stacks (was effectively hidden before, since most weapon-side bars filtered out via shouldShow).
+
+Why both: the user spec'd them as paired polish for the workbench UX after the NBT-doubling bug fix made armor slots actually populate. Subheadings give visual parity with majors; bars activate the slider that was always there but never had enough relevant content.
+
+---
+
 ## 2026-04-30 — Iridescent Reforging v0.4: workbench-driven replacement + themed module axes
 
 User direction: "specialized armor keeps its unique properties AND is replaceable through the Tetra workbench AND has a full list of module upgrades that fit its existing identity." Three-part shipping in one push.
