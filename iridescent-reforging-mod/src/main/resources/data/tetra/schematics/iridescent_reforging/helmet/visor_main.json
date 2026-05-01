@@ -25,6 +25,158 @@
     },
     {
       "materials": [
+        "tetra:metal/iron"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/iron"
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/gold"
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/diamond"
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/netherite"
+    },
+    {
+      "materials": [
+        "tetra:metal/copper"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/copper"
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/manasteel"
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/terrasteel"
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/elementium"
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/knightmetal"
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/steeleaf"
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/ironwood"
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/fiery"
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/charoite"
+    },
+    {
+      "materials": [
+        "tetra:metal/diopside"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/diopside"
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/horizonite"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/undergarden_cloggrum"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/undergarden_froststeel"
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_utherium"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/undergarden_utherium"
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/aethersteel"
+    },
+    {
+      "materials": [
         "iridescent_reforging:themed/fire"
       ],
       "countFactor": 1,
@@ -86,6 +238,14 @@
       "countFactor": 1,
       "moduleKey": "helmet/visor",
       "moduleVariant": "helmet/visor/blood"
+    },
+    {
+      "materials": [
+        "tetra:metal/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/visor",
+      "moduleVariant": "helmet/visor/"
     }
   ]
 }
