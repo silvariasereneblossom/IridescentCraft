@@ -30,21 +30,26 @@ public final class ModItems {
     //   utility — structural (KB resist, mobility, durability)
     // Major is the only slot the renderer reads for body texture; the other
     // three are pure stat carriers with empty texture overlays.
+    // All 4 slots per piece are marked REQUIRED so Tetra's RemoveSchematic
+    // suppresses the "Remove module" context-menu entry on every slot.
+    // Players can SWAP modules via install schematics (replace=true) but
+    // never end up with an empty slot — armor visual + stat identity stays
+    // coherent at all times. Mirrors the user-spec "no Remove module" call.
     private static final String[] HELMET_MAJOR    = { "helmet/crown" };
     private static final String[] HELMET_MINOR    = { "helmet/visor", "helmet/crest", "helmet/strap" };
-    private static final String[] HELMET_REQUIRED = { "helmet/crown" };
+    private static final String[] HELMET_REQUIRED = { "helmet/crown", "helmet/visor", "helmet/crest", "helmet/strap" };
 
     private static final String[] CHESTPLATE_MAJOR    = { "chestplate/chest_plate" };
     private static final String[] CHESTPLATE_MINOR    = { "chestplate/chest_lining", "chestplate/trim", "chestplate/pauldrons" };
-    private static final String[] CHESTPLATE_REQUIRED = { "chestplate/chest_plate" };
+    private static final String[] CHESTPLATE_REQUIRED = { "chestplate/chest_plate", "chestplate/chest_lining", "chestplate/trim", "chestplate/pauldrons" };
 
     private static final String[] LEGGINGS_MAJOR    = { "leggings/leg_plate" };
     private static final String[] LEGGINGS_MINOR    = { "leggings/belt", "leggings/greaves", "leggings/cuisses" };
-    private static final String[] LEGGINGS_REQUIRED = { "leggings/leg_plate" };
+    private static final String[] LEGGINGS_REQUIRED = { "leggings/leg_plate", "leggings/belt", "leggings/greaves", "leggings/cuisses" };
 
     private static final String[] BOOTS_MAJOR    = { "boots/boot_sole" };
     private static final String[] BOOTS_MINOR    = { "boots/boot_lining", "boots/heel", "boots/lacing" };
-    private static final String[] BOOTS_REQUIRED = { "boots/boot_sole" };
+    private static final String[] BOOTS_REQUIRED = { "boots/boot_sole", "boots/boot_lining", "boots/heel", "boots/lacing" };
 
     public static final RegistryObject<Item> REFORGED_HELMET = ITEMS.register(
             "reforged_helmet",

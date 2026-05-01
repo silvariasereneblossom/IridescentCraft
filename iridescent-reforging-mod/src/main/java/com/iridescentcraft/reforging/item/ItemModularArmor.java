@@ -102,6 +102,47 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         return requiredModules;
     }
 
+    // ── Workbench module-icon layout ───────────────────────────────────
+    //
+    // Override Tetra's defaultMajorOffsets / defaultMinorOffsets to spread
+    // our 1 major + 3 minors across the four cardinal sides of the
+    // workbench diamond, matching the player ask "one module per side".
+    //
+    // Coordinate system (relative to workbench diamond center):
+    //   x>0 → right side, attachment=topLeft, text extends RIGHT
+    //   x<0 → left side,  attachment=topRight, text extends LEFT
+    //   y    grows downward; diamond is roughly y=0..24 with center at y=12
+    //
+    // Layout for our 1 major + 3 minors:
+    //
+    //                    [top minor]
+    //                        ▲
+    //          [left minor] ◀ ◇ ▶ [major]
+    //                        ▼
+    //                    [bottom minor]
+    //
+    // Minor index assignment per piece (order matches *_MINOR arrays in
+    // ModItems): 0=top (inner lining), 1=left (mid-tier), 2=bottom (outer).
+    //  - helmet:     0=visor, 1=crest, 2=strap
+    //  - chestplate: 0=chest_lining, 1=trim, 2=pauldrons
+    //  - leggings:   0=belt, 1=greaves, 2=cuisses
+    //  - boots:      0=boot_lining, 1=heel, 2=lacing
+    //
+    // Top/bottom minors use x=-3 so their text extends LEFT (away from the
+    // major's right-side text). Left minor uses Tetra's default (-21, 12).
+    @Override
+    public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(4, 12);
+    }
+
+    @Override
+    public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(
+                -3, -7,    // index 0: TOP   (above diamond)
+                -21, 12,   // index 1: LEFT  (mid-height, default position)
+                -3, 30);   // index 2: BOTTOM (below diamond)
+    }
+
     @Override
     public Cache<String, Multimap<Attribute, AttributeModifier>> getAttributeModifierCache() {
         return attributeCache;

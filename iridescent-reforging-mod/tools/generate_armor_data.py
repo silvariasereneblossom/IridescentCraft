@@ -73,77 +73,83 @@ MATERIAL_FLAVOR = {
 # (the bare module name, before material prefix).
 
 MODULES = {
+    # Display names are intentionally short — the slot subheading already
+    # says "Boot Lining"/"Crown"/etc., so the variant name doesn't repeat
+    # the slot. Convention: <archetype-or-distinctive-word>. Examples:
+    # crown options "Basic" / "Heavy" / "Light" / "Circlet" — slot context
+    # makes this unambiguous in the workbench.
+    #
     # --- HELMET MAJORS ---
-    "helmet/basic_crown":     ("Crown",          "major", "balanced", 1.0, {}),
-    "helmet/heavy_crown":     ("Heavy Crown",    "major", "warrior",  1.4, {"minecraft:generic.movement_speed": -0.05, "minecraft:generic.knockback_resistance": 0.05}),
-    "helmet/light_crown":     ("Light Crown",    "major", "rogue",    0.6, {"minecraft:generic.movement_speed": 0.05}),
-    "helmet/circlet":         ("Circlet",        "major", "mage",     0.5, {"irons_spellbooks:max_mana": 50.0, "irons_spellbooks:spell_power": 0.05}),
+    "helmet/basic_crown":     ("Basic",      "major", "balanced", 1.0, {}),
+    "helmet/heavy_crown":     ("Heavy",      "major", "warrior",  1.4, {"minecraft:generic.movement_speed": -0.05, "minecraft:generic.knockback_resistance": 0.05}),
+    "helmet/light_crown":     ("Light",      "major", "rogue",    0.6, {"minecraft:generic.movement_speed": 0.05}),
+    "helmet/circlet":         ("Circlet",    "major", "mage",     0.5, {"irons_spellbooks:max_mana": 50.0, "irons_spellbooks:spell_power": 0.05}),
     # --- HELMET MINORS: visor ---
-    "helmet/slit_visor":      ("Slit Visor",     "minor", "balanced", 0.2, {}),
-    "helmet/full_visor":      ("Full Visor",     "minor", "warrior",  0.4, {"minecraft:generic.attack_speed": -0.05}),
-    "helmet/goggles":         ("Goggles",        "minor", "mage",     0.0, {"irons_spellbooks:spell_power": 0.05, "irons_spellbooks:max_mana": 20.0}),
+    "helmet/slit_visor":      ("Slit",       "minor", "balanced", 0.2, {}),
+    "helmet/full_visor":      ("Full",       "minor", "warrior",  0.4, {"minecraft:generic.attack_speed": -0.05}),
+    "helmet/goggles":         ("Goggles",    "minor", "mage",     0.0, {"irons_spellbooks:spell_power": 0.05, "irons_spellbooks:max_mana": 20.0}),
     # --- HELMET MINORS: crest ---
-    "helmet/plain_crest":     ("Plain Crest",    "minor", "minimal",  0.1, {}),
-    "helmet/spiked_crest":    ("Spiked Crest",   "minor", "thorns",   0.1, {}),
-    "helmet/feathered_crest": ("Feathered Crest","minor", "rogue",    0.0, {"minecraft:generic.movement_speed": 0.05}),
+    "helmet/plain_crest":     ("Plain",      "minor", "minimal",  0.1, {}),
+    "helmet/spiked_crest":    ("Spiked",     "minor", "thorns",   0.1, {}),
+    "helmet/feathered_crest": ("Feathered",  "minor", "rogue",    0.0, {"minecraft:generic.movement_speed": 0.05}),
     # --- HELMET MINORS: strap ---
-    "helmet/leather_strap":   ("Leather Strap",  "minor", "balanced", 0.1, {}),
-    "helmet/cloth_strap":     ("Cloth Strap",    "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 5.0}),
-    "helmet/chain_strap":     ("Chain Strap",    "minor", "warrior",  0.2, {"minecraft:generic.knockback_resistance": 0.05}),
+    "helmet/leather_strap":   ("Leather",    "minor", "balanced", 0.1, {}),
+    "helmet/cloth_strap":     ("Cloth",      "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 5.0}),
+    "helmet/chain_strap":     ("Chain",      "minor", "warrior",  0.2, {"minecraft:generic.knockback_resistance": 0.05}),
 
     # --- CHESTPLATE MAJORS ---
-    "chestplate/breastplate":  ("Breastplate",   "major", "balanced", 3.0, {}),
-    "chestplate/cuirass":      ("Cuirass",       "major", "warrior",  4.0, {"minecraft:generic.movement_speed": -0.05, "minecraft:generic.knockback_resistance": 0.10}),
-    "chestplate/robe_chest":   ("Robed Chest",   "major", "mage",     1.5, {"irons_spellbooks:max_mana": 100.0, "irons_spellbooks:spell_power": 0.10}),
-    "chestplate/scaled_chest": ("Scaled Chest",  "major", "rogue",    2.5, {"minecraft:generic.movement_speed": 0.05, "minecraft:generic.knockback_resistance": 0.05}),
+    "chestplate/breastplate":  ("Breastplate","major", "balanced", 3.0, {}),
+    "chestplate/cuirass":      ("Cuirass",    "major", "warrior",  4.0, {"minecraft:generic.movement_speed": -0.05, "minecraft:generic.knockback_resistance": 0.10}),
+    "chestplate/robe_chest":   ("Robe",       "major", "mage",     1.5, {"irons_spellbooks:max_mana": 100.0, "irons_spellbooks:spell_power": 0.10}),
+    "chestplate/scaled_chest": ("Scaled",     "major", "rogue",    2.5, {"minecraft:generic.movement_speed": 0.05, "minecraft:generic.knockback_resistance": 0.05}),
     # --- CHESTPLATE MINORS: chest_lining ---
-    "chestplate/padded_lining":   ("Padded Lining",   "minor", "balanced", 0.4, {}),
-    "chestplate/silk_lining":     ("Silk Lining",     "minor", "mage",     0.1, {"irons_spellbooks:max_mana": 30.0, "irons_spellbooks:mana_regen": 0.05}),
-    "chestplate/chainmail_lining":("Chainmail Lining","minor", "warrior",  0.5, {"minecraft:generic.knockback_resistance": 0.10, "minecraft:generic.movement_speed": -0.02}),
+    "chestplate/padded_lining":   ("Padded",     "minor", "balanced", 0.4, {}),
+    "chestplate/silk_lining":     ("Silk",       "minor", "mage",     0.1, {"irons_spellbooks:max_mana": 30.0, "irons_spellbooks:mana_regen": 0.05}),
+    "chestplate/chainmail_lining":("Chainmail",  "minor", "warrior",  0.5, {"minecraft:generic.knockback_resistance": 0.10, "minecraft:generic.movement_speed": -0.02}),
     # --- CHESTPLATE MINORS: trim ---
-    "chestplate/simple_trim":     ("Simple Trim",     "minor", "minimal",  0.0, {}),
-    "chestplate/decorative_trim": ("Decorative Trim", "minor", "minimal",  0.1, {}),
-    "chestplate/gilded_trim":     ("Gilded Trim",     "minor", "luck",     0.1, {"minecraft:generic.luck": 0.5}),
+    "chestplate/simple_trim":     ("Simple",     "minor", "minimal",  0.0, {}),
+    "chestplate/decorative_trim": ("Decorative", "minor", "minimal",  0.1, {}),
+    "chestplate/gilded_trim":     ("Gilded",     "minor", "luck",     0.1, {"minecraft:generic.luck": 0.5}),
     # --- CHESTPLATE MINORS: pauldrons ---
-    "chestplate/light_pauldrons": ("Light Pauldrons", "minor", "rogue",    0.3, {"minecraft:generic.movement_speed": 0.02}),
-    "chestplate/heavy_pauldrons": ("Heavy Pauldrons", "minor", "warrior",  0.7, {"minecraft:generic.movement_speed": -0.03}),
-    "chestplate/spiked_pauldrons":("Spiked Pauldrons","minor", "thorns",   0.4, {}),
+    "chestplate/light_pauldrons": ("Light",      "minor", "rogue",    0.3, {"minecraft:generic.movement_speed": 0.02}),
+    "chestplate/heavy_pauldrons": ("Heavy",      "minor", "warrior",  0.7, {"minecraft:generic.movement_speed": -0.03}),
+    "chestplate/spiked_pauldrons":("Spiked",     "minor", "thorns",   0.4, {}),
 
     # --- LEGGINGS MAJORS ---
-    "leggings/full_leg_plate":  ("Full Leg Plate", "major", "balanced", 2.0, {}),
-    "leggings/heavy_leg_plate": ("Heavy Leg Plate","major", "warrior",  2.7, {"minecraft:generic.movement_speed": -0.05}),
-    "leggings/light_leg_plate": ("Light Leg Plate","major", "rogue",    1.2, {"minecraft:generic.movement_speed": 0.07}),
-    "leggings/robed_leg_plate": ("Robed Leg Plate","major", "mage",     1.0, {"irons_spellbooks:max_mana": 60.0, "irons_spellbooks:spell_power": 0.05}),
+    "leggings/full_leg_plate":  ("Full",       "major", "balanced", 2.0, {}),
+    "leggings/heavy_leg_plate": ("Heavy",      "major", "warrior",  2.7, {"minecraft:generic.movement_speed": -0.05}),
+    "leggings/light_leg_plate": ("Light",      "major", "rogue",    1.2, {"minecraft:generic.movement_speed": 0.07}),
+    "leggings/robed_leg_plate": ("Robed",      "major", "mage",     1.0, {"irons_spellbooks:max_mana": 60.0, "irons_spellbooks:spell_power": 0.05}),
     # --- LEGGINGS MINORS: belt ---
-    "leggings/leather_belt": ("Leather Belt", "minor", "balanced", 0.1, {}),
-    "leggings/sash":         ("Sash",         "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 20.0}),
-    "leggings/chain_belt":   ("Chain Belt",   "minor", "warrior",  0.2, {"minecraft:generic.knockback_resistance": 0.05}),
+    "leggings/leather_belt": ("Leather", "minor", "balanced", 0.1, {}),
+    "leggings/sash":         ("Sash",    "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 20.0}),
+    "leggings/chain_belt":   ("Chain",   "minor", "warrior",  0.2, {"minecraft:generic.knockback_resistance": 0.05}),
     # --- LEGGINGS MINORS: greaves ---
-    "leggings/standard_greaves":   ("Standard Greaves",   "minor", "balanced", 0.3, {}),
-    "leggings/reinforced_greaves": ("Reinforced Greaves", "minor", "warrior",  0.5, {"minecraft:generic.movement_speed": -0.02}),
-    "leggings/agile_greaves":      ("Agile Greaves",      "minor", "rogue",    0.1, {"minecraft:generic.movement_speed": 0.04}),
+    "leggings/standard_greaves":   ("Standard",   "minor", "balanced", 0.3, {}),
+    "leggings/reinforced_greaves": ("Reinforced", "minor", "warrior",  0.5, {"minecraft:generic.movement_speed": -0.02}),
+    "leggings/agile_greaves":      ("Agile",      "minor", "rogue",    0.1, {"minecraft:generic.movement_speed": 0.04}),
     # --- LEGGINGS MINORS: cuisses ---
-    "leggings/cloth_cuisses":  ("Cloth Cuisses",  "minor", "mage",     0.1, {"irons_spellbooks:max_mana": 20.0}),
-    "leggings/padded_cuisses": ("Padded Cuisses", "minor", "balanced", 0.3, {}),
-    "leggings/plated_cuisses": ("Plated Cuisses", "minor", "warrior",  0.5, {"minecraft:generic.movement_speed": -0.02}),
+    "leggings/cloth_cuisses":  ("Cloth",   "minor", "mage",     0.1, {"irons_spellbooks:max_mana": 20.0}),
+    "leggings/padded_cuisses": ("Padded",  "minor", "balanced", 0.3, {}),
+    "leggings/plated_cuisses": ("Plated",  "minor", "warrior",  0.5, {"minecraft:generic.movement_speed": -0.02}),
 
     # --- BOOTS MAJORS ---
-    "boots/basic_boot_sole": ("Boot Sole",        "major", "balanced", 1.0, {}),
-    "boots/heavy_boot_sole": ("Heavy Boot Sole",  "major", "warrior",  1.4, {"minecraft:generic.movement_speed": -0.05}),
-    "boots/light_boot_sole": ("Light Boot Sole",  "major", "rogue",    0.6, {"minecraft:generic.movement_speed": 0.07, "forge:step_height_addition": 0.5}),
-    "boots/robed_boot_sole": ("Robed Boot Sole",  "major", "mage",     0.5, {"irons_spellbooks:max_mana": 30.0}),
+    "boots/basic_boot_sole": ("Basic",      "major", "balanced", 1.0, {}),
+    "boots/heavy_boot_sole": ("Heavy",      "major", "warrior",  1.4, {"minecraft:generic.movement_speed": -0.05}),
+    "boots/light_boot_sole": ("Light",      "major", "rogue",    0.6, {"minecraft:generic.movement_speed": 0.07, "forge:step_height_addition": 0.5}),
+    "boots/robed_boot_sole": ("Robed",      "major", "mage",     0.5, {"irons_spellbooks:max_mana": 30.0}),
     # --- BOOTS MINORS: boot_lining ---
-    "boots/padded_boot_lining": ("Padded Boot Lining", "minor", "balanced", 0.2, {}),
-    "boots/silk_boot_lining":   ("Silk Boot Lining",   "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 15.0}),
-    "boots/fur_boot_lining":    ("Fur Boot Lining",    "minor", "warrior",  0.3, {}),
+    "boots/padded_boot_lining": ("Padded",     "minor", "balanced", 0.2, {}),
+    "boots/silk_boot_lining":   ("Silk",       "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 15.0}),
+    "boots/fur_boot_lining":    ("Fur",        "minor", "warrior",  0.3, {}),
     # --- BOOTS MINORS: heel ---
-    "boots/standard_heel":  ("Standard Heel",  "minor", "balanced", 0.1, {}),
-    "boots/spiked_heel":    ("Spiked Heel",    "minor", "thorns",   0.1, {}),
-    "boots/cushioned_heel": ("Cushioned Heel", "minor", "rogue",    0.0, {"minecraft:generic.movement_speed": 0.02}),
+    "boots/standard_heel":  ("Standard",   "minor", "balanced", 0.1, {}),
+    "boots/spiked_heel":    ("Spiked",     "minor", "thorns",   0.1, {}),
+    "boots/cushioned_heel": ("Cushioned",  "minor", "rogue",    0.0, {"minecraft:generic.movement_speed": 0.02}),
     # --- BOOTS MINORS: lacing ---
-    "boots/leather_lacing": ("Leather Lacing", "minor", "balanced", 0.1, {}),
-    "boots/silk_lacing":    ("Silk Lacing",    "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 10.0}),
-    "boots/iron_lacing":    ("Iron Lacing",    "minor", "warrior",  0.2, {"minecraft:generic.knockback_resistance": 0.02}),
+    "boots/leather_lacing": ("Leather",    "minor", "balanced", 0.1, {}),
+    "boots/silk_lacing":    ("Silk",       "minor", "mage",     0.0, {"irons_spellbooks:max_mana": 10.0}),
+    "boots/iron_lacing":    ("Iron",       "minor", "warrior",  0.2, {"minecraft:generic.knockback_resistance": 0.02}),
 }
 
 # Slot -> [module-keys-fitting-it]; computed below. Also slot -> first module
@@ -392,9 +398,11 @@ def gen_lang_entries() -> dict:
         out[f"tetra.module.{module_key}.description"] = f"A {kind} module for the {MODULE_SLOT[module_key].split('/', 1)[1].replace('_', ' ')} slot."
         out[f"tetra.module.{module_key}.material_name"] = f"%s {base_name}"
         out[f"tetra.module.{module_key}.prefix"] = base_name
-        # Schematic keys (install schematic per module)
-        out[f"tetra/schematic/iridescent_reforging/{module_key}.name"] = f"Install {base_name}"
-        out[f"tetra/schematic/iridescent_reforging/{module_key}.description"] = f"Install a {base_name} into this slot."
+        # Schematic keys (install schematic per module). Names match Tetra's
+        # convention — just the module label, no "Install " prefix. The
+        # workbench groups schematics under the slot context already.
+        out[f"tetra/schematic/iridescent_reforging/{module_key}.name"] = base_name
+        out[f"tetra/schematic/iridescent_reforging/{module_key}.description"] = f"Install a {base_name} {SLOT_LABELS[MODULE_SLOT[module_key]].lower()} into this slot."
         out[f"tetra/schematic/iridescent_reforging/{module_key}.slot1"] = "Material"
         # Variant keys: catch-all + each material. Tetra's getName uses the
         # variant key VERBATIM, so trailing-slash variants need both forms
