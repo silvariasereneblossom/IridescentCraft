@@ -7,25 +7,33 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * Forward-only fixup for ItemModularArmor stacks whose NBT was written
- * before the schematic-doubling bug was fixed (commit 9db85e12). Tetra's
- * MaterialOutcomeDefinition.combine() always appends the matched material
- * key to outcome.moduleVariant; the prior schematic shape had explicit
- * per-material outcomes like `moduleVariant: "<slot>/iron"` which then
- * got combine()'d with `iron` again, producing `<slot>/ironiron` in NBT.
+ * Idempotent unmangler for ItemModularArmor stacks with doubled-suffix
+ * variant keys. Tetra's MaterialOutcomeDefinition.combine() always
+ * appends the matched material key to outcome.moduleVariant. Earlier
+ * schematic shapes had explicit per-material outcomes
+ * (`moduleVariant: "<slot>/iron"`) which then got combine()'d with `iron`
+ * again → `<slot>/ironiron` in NBT. Newer schematics use trailing-slash
+ * moduleVariant so the combine produces single-suffix, but stacks
+ * written during a mid-session schematic version mix can still carry
+ * doubled NBT.
  *
- * Variant lookup against current module files fails for those mangled
- * keys → workbench renders "Empty" for those slots. This migrator
- * detects the doubled-suffix pattern and rewrites NBT in place to a
- * single-suffix form.
+ * Variant lookup against current module files fails for mangled keys →
+ * workbench renders "Empty" or raw lang text for those slots. This
+ * migrator detects the doubled-suffix pattern and rewrites NBT in place
+ * to single-suffix form.
  *
  * NBT layout (Tetra):
  *   tag.<slotPath>            = moduleKey (e.g. "chestplate/chest_plate")
  *   tag.<slotPath>_material   = variantKey (e.g. "chestplate/chest_plate/ironiron")
  *
- * One-time per stack: writes `tag.iridescent_nbt_migration_v1 = 1` so
- * future inventoryTicks short-circuit. Cost is one tag scan per stack
- * once, then nothing.
+ * Idempotent. Always scans every armor stack on inventoryTick. The work
+ * is a HashMap iteration over the stack's tag keys plus a string-split
+ * check on values ending in `_material` — sub-microsecond per call. Cost
+ * is dominated by the no-op short-circuit on stacks whose tags are
+ * already clean (most ticks, post first cleanup).
+ *
+ * The `iridescent_nbt_migration_v1` sentinel still gets written for
+ * telemetry / future migration ordering, but does NOT gate re-runs.
  */
 public final class StackNbtMigrator {
 
@@ -39,7 +47,6 @@ public final class StackNbtMigrator {
         if (stack.isEmpty()) return false;
         CompoundTag tag = stack.getTag();
         if (tag == null) return false;
-        if (tag.getInt(MIGRATION_TAG) >= 1) return false;
 
         boolean changed = false;
         // Snapshot keys to avoid CME during iteration.
@@ -54,7 +61,13 @@ public final class StackNbtMigrator {
                 changed = true;
             }
         }
-        tag.putInt(MIGRATION_TAG, 1);
+        // Sentinel bumped to v2 so older stacks already marked v1 still
+        // get scanned once at next tick (in case they slipped through
+        // when the gate was enforced). Subsequent ticks are no-ops on
+        // already-clean stacks.
+        if (tag.getInt(MIGRATION_TAG) < 2) {
+            tag.putInt(MIGRATION_TAG, 2);
+        }
         return changed;
     }
 
