@@ -283,11 +283,22 @@ GLYPH = {
 }
 
 def variant_name_for(module_key: str, mat_key: str, mat_disp: str) -> str:
-    """Pretty display name for a variant lang entry: 'Iron Heavy Crown', etc."""
-    base = MODULES[module_key][0]  # e.g. 'Heavy Crown'
+    """Pretty display name for a variant lang entry.
+
+    Convention matches Tetra's StringUtils.capitalize+toLowerCase fallback
+    pipeline so authored variants and fallback-resolved variants render
+    identically:
+      - catch-all (empty material): Title Case noun     'Padded'
+      - material variants: sentence case                'Iron padded'
+
+    The first word is the material prefix (Title Case from material_display)
+    and the module noun is lowercased so it reads naturally — same as
+    Tetra's "Iron blade" / "Wool blade" convention.
+    """
+    base = MODULES[module_key][0]  # e.g. 'Padded'
     if not mat_key:
         return base
-    return f"{mat_disp} {base}"
+    return f"{mat_disp} {base.lower()}"
 
 def material_display(mat_key: str) -> str:
     if mat_key == "":
