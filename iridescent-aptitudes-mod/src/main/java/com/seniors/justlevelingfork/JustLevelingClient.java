@@ -56,6 +56,19 @@ public class JustLevelingClient {
 
             // L2Tabs integration stripped — players access aptitudes via the
             // Y keybind (justlevelingfork.open_aptitudes) instead of the inventory tab.
+
+            // Register custom Patchouli page type for the Iridescent Codex
+            // shortcut entries. Gated on Patchouli being loaded so the mod
+            // boots cleanly even if the codex jar isn't present.
+            if (net.minecraftforge.fml.ModList.get().isLoaded("patchouli")) {
+                try {
+                    vazkii.patchouli.client.book.ClientBookRegistry.INSTANCE.pageTypes.put(
+                            new net.minecraft.resources.ResourceLocation("icraft", "screen_link"),
+                            com.seniors.justlevelingfork.codex.PageScreenLink.class);
+                } catch (Throwable t) {
+                    // Don't crash client startup if Patchouli's internal API drifts.
+                }
+            }
         }
 
         @SubscribeEvent

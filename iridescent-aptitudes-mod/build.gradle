@@ -167,6 +167,7 @@ dependencies {
     compileOnly fg.deobf("blank:irons_spellbooks:1.20.1-3.15.5.1")
     compileOnly fg.deobf("blank:l2library:2.4.28")
     compileOnly fg.deobf("blank:yet_another_config_lib_v3:3.6.6+1.20.1-forge")
+    compileOnly fg.deobf("blank:Patchouli:1.20.1-85-FORGE")
 
     // QuiltMC Parsers
     implementation("org.quiltmc.parsers:json:0.2.1")

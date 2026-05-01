@@ -1,0 +1,27 @@
+{
+  "name": "Quick Shortcuts",
+  "icon": "minecraft:enchanted_book",
+  "category": "icraft:welcome",
+  "sortnum": 1,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "title": "Your Toolkit",
+      "text": "$(thing)IridescentCraft$() exposes its progression UIs through this Codex rather than cluttering the inventory. Tap the buttons on the next pages to open them directly — no inventory tabs, no keybind hunting.$(br2)$(item)Stats$() — view every attribute affecting you right now (Apothic).$(br2)$(item)Aptitudes$() — level individual aptitudes by spending earned points."
+    },
+    {
+      "type": "icraft:screen_link",
+      "title": "Stats",
+      "icon": "minecraft:experience_bottle",
+      "target": "stats",
+      "text": "Opens the full attribute breakdown: armor, toughness, KB resist, spell power, mana, cooldowns, and every other modifier currently applied to your character."
+    },
+    {
+      "type": "icraft:screen_link",
+      "title": "Aptitudes",
+      "icon": "justlevelingfork:leveling_book",
+      "target": "aptitudes",
+      "text": "Opens the aptitude tree. Spend earned points on Strength / Constitution / Agility / Intelligence skill paths, or browse passive perks unlocked at each level."
+    }
+  ]
+}
