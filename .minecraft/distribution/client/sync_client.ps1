@@ -3,7 +3,9 @@
 # =============================================================================
 # Keeps the local instance's configs/kubejs/datapacks/mods in sync with the
 # GitHub main branch via a SHA-based check. Designed to run as PrismLauncher's
-# per-instance pre-launch command.
+# per-instance pre-launch command. Mirrors server_distribution/phase0_sync.ps1
+# behavior — same diff-vs-full-zip strategy, same error-gated SHA marker,
+# same self-update staging.
 #
 # Behavior:
 #   1. Find the instance .minecraft directory (prefers $env:INST_MC_DIR which
@@ -12,19 +14,34 @@
 #   2. Query GitHub API for the latest main commit SHA
 #   3. Compare against .icraft_last_sha in the instance root
 #   4. If match: print "Up to date" and exit 0 (no download)
-#   5. If mismatch or first run: download the repo zip, overlay non-runtime
-#      files onto the instance, write the new SHA, invoke download_mods.ps1
-#      to grab any new JARs (skips existing via filename check)
+#   5. If mismatch or first run: diff-sync changed files (when feasible) OR
+#      full-zip overlay; write the new SHA only if every download succeeded;
+#      reconcile orphan .pw.toml files from mods/.index/; invoke
+#      cleanup_stale_jars + download_mods to fix up the mods directory
 #
 # Network failure handling: short timeouts on both the API call and zip
 # download. On any failure, prints a warning and exits 0 so PrismLauncher
-# still launches Minecraft - "continuing with existing files" is always
+# still launches Minecraft — "continuing with existing files" is always
 # safer than blocking play.
+#
+# Self-update: sync_client.ps1, sync_client.bat, download_mods.ps1, and
+# cleanup_stale_jars.ps1 are staged as <name>.new during sync. The .bat
+# wrapper finalizes them on the NEXT launch before calling this script
+# (PS1 + BAT files are locked while running, so we can't overwrite the
+# script that's currently executing).
+#
+# Force flag: pass -Force to delete .icraft_last_sha and force a full
+# re-sync. Useful when the SHA marker is out of sync with disk state.
 #
 # Install as pre-launch command in PrismLauncher:
 #   Instance → Settings → Custom Commands → Pre-launch command:
+#   "%INST_MC_DIR%\sync_client.bat"            (preferred; finalizes .new files)
 #   powershell -ExecutionPolicy Bypass -File "$INST_MC_DIR/sync_client.ps1"
 # =============================================================================
+
+param(
+    [switch]$Force
+)
 
 $ErrorActionPreference = "Continue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
@@ -69,6 +86,16 @@ $shaFile = Join-Path $instanceMC '.icraft_last_sha'
 $localSha = ''
 if (Test-Path $shaFile) { $localSha = (Get-Content $shaFile -Raw).Trim() }
 
+if ($Force) {
+    if ($localSha) {
+        Write-Host "[IridescentCraft Sync] -Force: clearing .icraft_last_sha to trigger full re-sync." -ForegroundColor Yellow
+        Remove-Item $shaFile -Force -ErrorAction SilentlyContinue
+        $localSha = ''
+    } else {
+        Write-Host "[IridescentCraft Sync] -Force: no SHA marker present (already a full-sync run)." -ForegroundColor Yellow
+    }
+}
+
 $remoteSha = $null
 try {
     $headers = @{ 'User-Agent' = 'IridescentCraft-Client-Sync' }
@@ -98,11 +125,14 @@ if ($localSha -and $localSha.Length -eq 40) {
     try {
         $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
         $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
-        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -le 300) {
+        # GitHub's compare API caps the .files array at 300. If we're AT the
+        # cap, the response is silently truncated — we MUST fall back to full
+        # zip or we'll silently miss files (mirrors the server's same guard).
+        if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -lt 300) {
             $useDiff = $true
             Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed ($($localSha.Substring(0,7)) -> $($remoteSha.Substring(0,7)))" -ForegroundColor Cyan
-        } elseif ($compare.files -and $compare.files.Count -gt 300) {
-            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed (>300) - full download." -ForegroundColor Yellow
+        } elseif ($compare.files -and $compare.files.Count -ge 300) {
+            Write-Host "[IridescentCraft Sync] $($compare.files.Count) files changed (API caps at 300 = truncated) - full download." -ForegroundColor Yellow
         }
     } catch {
         Write-Host "[IridescentCraft Sync] Compare API failed - full download." -ForegroundColor Yellow
@@ -111,8 +141,17 @@ if ($localSha -and $localSha.Length -eq 40) {
 
 if ($useDiff) {
     # -- Fast path: download only changed files --
+    # Self-update staging: these scripts can't safely overwrite themselves
+    # while running. The .bat wrapper finalizes <name>.new -> <name> on the
+    # NEXT pre-launch invocation, before this script is called.
+    $selfUpdateFiles = @(
+        'distribution/client/sync_client.ps1',
+        'distribution/client/sync_client.bat',
+        'distribution/client/download_mods.ps1',
+        'distribution/client/cleanup_stale_jars.ps1'
+    )
     $rawBase = "https://raw.githubusercontent.com/$owner/$repo/$remoteSha"
-    $synced = 0; $removed = 0
+    $synced = 0; $removed = 0; $staged = 0; $errors = 0
 
     foreach ($file in $compare.files) {
         if (-not $file.filename.StartsWith($prefix)) { continue }
@@ -140,19 +179,48 @@ if ($useDiff) {
             continue
         }
 
+        # Self-update files: stage as .new in their target location so the
+        # .bat wrapper can finalize on next launch.
+        $relForSelfUpdate = $file.filename.Substring('.minecraft/'.Length)
+        if ($selfUpdateFiles -contains $relForSelfUpdate) {
+            $stageTarget = "$target.new"
+            try {
+                $targetDir = Split-Path $stageTarget -Parent
+                if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
+                Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $stageTarget -UseBasicParsing -TimeoutSec 30
+                $staged++
+                Write-Host "[IridescentCraft Sync]   [staged] $relPath" -ForegroundColor Cyan
+            } catch {
+                Write-Host "[IridescentCraft Sync]   [FAIL] $relPath : $($_.Exception.Message)" -ForegroundColor Red
+                $errors++
+            }
+            continue
+        }
+
         try {
             $targetDir = Split-Path $target -Parent
             if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
             Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $target -UseBasicParsing -TimeoutSec 30
             $synced++
         } catch {
-            Write-Host "[IridescentCraft Sync]   [FAIL] $relPath" -ForegroundColor Red
+            Write-Host "[IridescentCraft Sync]   [FAIL] $relPath : $($_.Exception.Message)" -ForegroundColor Red
+            $errors++
         }
     }
 
-    Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
+    # Only persist the SHA marker if EVERY file downloaded successfully.
+    # Leaving it unchanged on partial failure forces the next run to retry
+    # the same diff (or fall back to full-zip if >= 300 files). Server
+    # parity — see phase0_sync.ps1 for the same guard.
+    if ($errors -eq 0) {
+        Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
+    } else {
+        Write-Host "[IridescentCraft Sync] $errors file(s) failed to download — NOT writing SHA marker. Next launch will retry." -ForegroundColor Yellow
+    }
     $mirrorList += "$synced file(s) synced"
     if ($removed -gt 0) { $mirrorList += "$removed removed" }
+    if ($staged -gt 0)  { $mirrorList += "$staged staged for next launch" }
+    if ($errors -gt 0)  { $mirrorList += "$errors error(s)" }
     Write-Host "[IridescentCraft Sync] Diff sync complete: $($mirrorList -join ', ')" -ForegroundColor Green
 } else {
     # -- Slow fallback: full zip download --
@@ -187,15 +255,33 @@ if ($useDiff) {
             }
         }
 
-        # Custom mod JARs
+        # Custom mod JARs — 3-attempt retry because Windows Defender often
+        # locks bytecode-patched JARs (Patchouli, Ars Nouveau) momentarily
+        # during scan, which causes a single Copy-Item to fail unpredictably.
+        # Server parity (phase0_sync.ps1 has the same retry block).
         $srcMods = Join-Path $src 'mods'
         $destMods = Join-Path $instanceMC 'mods'
         if (Test-Path $srcMods) {
             Get-ChildItem $srcMods -Filter '*.jar' -ErrorAction SilentlyContinue | ForEach-Object {
-                $target = Join-Path $destMods $_.Name
+                $jarName = $_.Name
+                $target = Join-Path $destMods $jarName
                 if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {
-                    Copy-Item $_.FullName $target -Force
-                    Write-Host "[IridescentCraft Sync]   Custom JAR: $($_.Name)" -ForegroundColor Yellow
+                    $copied = $false
+                    for ($attempt = 1; $attempt -le 3 -and -not $copied; $attempt++) {
+                        try {
+                            if (Test-Path $target) { Remove-Item $target -Force -ErrorAction SilentlyContinue }
+                            Copy-Item $_.FullName $target -Force -ErrorAction Stop
+                            $copied = $true
+                            Write-Host "[IridescentCraft Sync]   Custom JAR: $jarName" -ForegroundColor Yellow
+                        } catch {
+                            if ($attempt -lt 3) {
+                                Start-Sleep -Milliseconds 500
+                            } else {
+                                Write-Host "[IridescentCraft Sync]   [WARN] Could not write $jarName : $($_.Exception.Message)" -ForegroundColor Yellow
+                                Write-Host "[IridescentCraft Sync]   [HINT] Whitelist the instance .minecraft folder in Windows Defender." -ForegroundColor Yellow
+                            }
+                        }
+                    }
                 }
             }
         }
@@ -212,6 +298,26 @@ if ($useDiff) {
             Copy-Item -Path "$srcIndex\*" -Destination $destIndex -Recurse -Force
             $mirrorList += 'mods/.index'
         }
+
+    # Self-update files staged from distribution/client/ as <name>.new at
+    # the instance root. The .bat wrapper finalizes them on the NEXT
+    # launch before invoking this script — same pattern as the server's
+    # phase0_sync.ps1 + iridescentserver.bat.
+    $srcClientDir = Join-Path $srcRoot '.minecraft\distribution\client'
+    if (Test-Path $srcClientDir) {
+        foreach ($scriptName in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1')) {
+            $srcScript = Join-Path $srcClientDir $scriptName
+            $destScript = Join-Path $instanceMC $scriptName
+            if (Test-Path $srcScript) {
+                $srcHash = (Get-FileHash $srcScript -Algorithm SHA1).Hash
+                $destHash = if (Test-Path $destScript) { (Get-FileHash $destScript -Algorithm SHA1).Hash } else { '' }
+                if ($srcHash -ne $destHash) {
+                    Copy-Item $srcScript "$destScript.new" -Force
+                    Write-Host "[IridescentCraft Sync]   [staged] $scriptName" -ForegroundColor Cyan
+                }
+            }
+        }
+    }
 
     # Selective top-level files: pack.png/icon.png always overlay (these are
     # pack identity, not user state). optionsshaders.txt seeds only when the
