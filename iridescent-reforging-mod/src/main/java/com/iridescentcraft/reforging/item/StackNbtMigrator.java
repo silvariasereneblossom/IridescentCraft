@@ -4,7 +4,9 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.world.item.ItemStack;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * Idempotent unmangler for ItemModularArmor stacks with doubled-suffix
@@ -40,6 +42,46 @@ public final class StackNbtMigrator {
     private static final String MIGRATION_TAG = "iridescent_nbt_migration_v1";
     private static final String MATERIAL_SUFFIX = "_material";
 
+    /**
+     * Map from old slot-keyed module identity to the new (moduleKey,
+     * moduleShortName) pair after the multi-module-per-slot rewrite.
+     *
+     * Old NBT pattern (Phase A predecessor):
+     *   tag["leggings/leg_plate"]            = "leggings/leg_plate"
+     *   tag["leggings/leg_plate_material"]   = "leggings/leg_plate/iron"
+     *
+     * New NBT pattern (Phase A):
+     *   tag["leggings/leg_plate"]            = "leggings/full_leg_plate"
+     *   tag["leggings/leg_plate_material"]   = "full_leg_plate/iron"
+     *
+     * For each pre-Phase-A stack, we map the slot to the new default
+     * module so the variant lookup hits a real entry. Players can
+     * upgrade to a different module via the workbench.
+     */
+    private static final Map<String, String[]> SLOT_TO_DEFAULT = new HashMap<>();
+    static {
+        // helmet
+        SLOT_TO_DEFAULT.put("helmet/crown",          new String[] {"helmet/basic_crown",     "basic_crown"});
+        SLOT_TO_DEFAULT.put("helmet/visor",          new String[] {"helmet/slit_visor",      "slit_visor"});
+        SLOT_TO_DEFAULT.put("helmet/crest",          new String[] {"helmet/plain_crest",     "plain_crest"});
+        SLOT_TO_DEFAULT.put("helmet/strap",          new String[] {"helmet/leather_strap",   "leather_strap"});
+        // chestplate
+        SLOT_TO_DEFAULT.put("chestplate/chest_plate",   new String[] {"chestplate/breastplate",     "breastplate"});
+        SLOT_TO_DEFAULT.put("chestplate/chest_lining",  new String[] {"chestplate/padded_lining",   "padded_lining"});
+        SLOT_TO_DEFAULT.put("chestplate/trim",          new String[] {"chestplate/simple_trim",     "simple_trim"});
+        SLOT_TO_DEFAULT.put("chestplate/pauldrons",     new String[] {"chestplate/light_pauldrons", "light_pauldrons"});
+        // leggings
+        SLOT_TO_DEFAULT.put("leggings/leg_plate",  new String[] {"leggings/full_leg_plate",    "full_leg_plate"});
+        SLOT_TO_DEFAULT.put("leggings/belt",       new String[] {"leggings/leather_belt",      "leather_belt"});
+        SLOT_TO_DEFAULT.put("leggings/greaves",    new String[] {"leggings/standard_greaves",  "standard_greaves"});
+        SLOT_TO_DEFAULT.put("leggings/cuisses",    new String[] {"leggings/padded_cuisses",    "padded_cuisses"});
+        // boots
+        SLOT_TO_DEFAULT.put("boots/boot_sole",     new String[] {"boots/basic_boot_sole",      "basic_boot_sole"});
+        SLOT_TO_DEFAULT.put("boots/boot_lining",   new String[] {"boots/padded_boot_lining",   "padded_boot_lining"});
+        SLOT_TO_DEFAULT.put("boots/heel",          new String[] {"boots/standard_heel",        "standard_heel"});
+        SLOT_TO_DEFAULT.put("boots/lacing",        new String[] {"boots/leather_lacing",       "leather_lacing"});
+    }
+
     private StackNbtMigrator() {}
 
     /** @return true if the stack's NBT was modified. */
@@ -54,21 +96,57 @@ public final class StackNbtMigrator {
         for (String key : keys) {
             if (!key.endsWith(MATERIAL_SUFFIX)) continue;
             if (tag.getTagType(key) != net.minecraft.nbt.Tag.TAG_STRING) continue;
+            String slotKey = key.substring(0, key.length() - MATERIAL_SUFFIX.length());
+
             String value = tag.getString(key);
+            // Step 1: unmangle doubled suffixes inherited from the
+            // schematic-doubling era.
             String fixed = unmangleDoubledSuffix(value);
+            // Step 2: if the variant key is 3-segment using the slot path
+            // as the prefix (Phase A predecessor), rewrite it to use the
+            // new default module's 2-segment shape.
+            String[] defaults = SLOT_TO_DEFAULT.get(slotKey);
+            if (defaults != null) {
+                fixed = mapToNewModule(fixed, slotKey, defaults[1]);
+                // Also update the slot tag itself if it still names the
+                // old module (which was identical to the slot key).
+                String slotValue = tag.getString(slotKey);
+                if (slotKey.equals(slotValue)) {
+                    tag.putString(slotKey, defaults[0]);
+                    changed = true;
+                }
+            }
             if (!value.equals(fixed)) {
                 tag.putString(key, fixed);
                 changed = true;
             }
         }
-        // Sentinel bumped to v2 so older stacks already marked v1 still
-        // get scanned once at next tick (in case they slipped through
-        // when the gate was enforced). Subsequent ticks are no-ops on
-        // already-clean stacks.
-        if (tag.getInt(MIGRATION_TAG) < 2) {
-            tag.putInt(MIGRATION_TAG, 2);
+        // Sentinel bumped to v3 with the multi-module-per-slot rewrite.
+        // Existing stacks marked v1/v2 still get scanned at next tick.
+        if (tag.getInt(MIGRATION_TAG) < 3) {
+            tag.putInt(MIGRATION_TAG, 3);
         }
         return changed;
+    }
+
+    /**
+     * If {@code variantKey} starts with {@code slotKey + "/"} and contains a
+     * trailing material segment, rewrite the prefix to the new module's
+     * short name. Returns the input unchanged if the pattern doesn't match
+     * (already-new keys, empty material, malformed values).
+     *
+     * Examples (slotKey = "leggings/leg_plate", newModuleShort = "full_leg_plate"):
+     *   "leggings/leg_plate/iron"  -> "full_leg_plate/iron"
+     *   "leggings/leg_plate/"      -> "full_leg_plate/"
+     *   "full_leg_plate/iron"      -> unchanged (already new shape)
+     *   ""                         -> unchanged
+     */
+    static String mapToNewModule(String variantKey, String slotKey, String newModuleShort) {
+        if (variantKey == null || variantKey.isEmpty()) return variantKey;
+        String prefix = slotKey + "/";
+        if (!variantKey.startsWith(prefix)) return variantKey;
+        String tail = variantKey.substring(prefix.length()); // "iron" or ""
+        return newModuleShort + "/" + tail;
     }
 
     /**

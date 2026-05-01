@@ -8,20 +8,20 @@
     "item": "iridescent_reforging:reforged_helmet",
     "modules": {
       "helmet/crown": [
-        "helmet/crown",
-        "helmet/crown/leather"
+        "helmet/basic_crown",
+        "basic_crown/leather"
       ],
       "helmet/visor": [
-        "helmet/visor",
-        "helmet/visor/leather"
+        "helmet/slit_visor",
+        "slit_visor/leather"
       ],
       "helmet/crest": [
-        "helmet/crest",
-        "helmet/crest/leather"
+        "helmet/plain_crest",
+        "plain_crest/leather"
       ],
       "helmet/strap": [
-        "helmet/strap",
-        "helmet/strap/leather"
+        "helmet/leather_strap",
+        "leather_strap/leather"
       ]
     }
   }

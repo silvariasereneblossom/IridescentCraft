@@ -8,6 +8,6 @@
   "requiredTools": {
     "hammer_dig": "minecraft:iron"
   },
-  "moduleKey": "chestplate/chest_plate",
-  "moduleVariant": "chestplate/chest_plate/undergarden_cloggrum"
+  "moduleKey": "chestplate/breastplate",
+  "moduleVariant": "breastplate/undergarden_cloggrum"
 }

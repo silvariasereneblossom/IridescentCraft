@@ -1,0 +1,28 @@
+{
+  "replace": true,
+  "slots": [
+    "helmet/crown"
+  ],
+  "materialSlotCount": 1,
+  "displayType": "major",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": {
+    "integrity": 0
+  },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:metal/",
+        "tetra:gem/",
+        "iridescent_reforging:themed/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "helmet/heavy_crown",
+      "moduleVariant": "heavy_crown/"
+    }
+  ]
+}

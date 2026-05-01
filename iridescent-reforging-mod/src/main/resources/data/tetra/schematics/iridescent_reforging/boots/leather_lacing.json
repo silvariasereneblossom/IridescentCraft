@@ -1,0 +1,29 @@
+{
+  "replace": true,
+  "slots": [
+    "boots/lacing"
+  ],
+  "materialSlotCount": 1,
+  "displayType": "minor",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": {
+    "integrity": 0
+  },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:skin/",
+        "tetra:fabric/",
+        "tetra:metal/",
+        "iridescent_reforging:themed/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "boots/leather_lacing",
+      "moduleVariant": "leather_lacing/"
+    }
+  ]
+}

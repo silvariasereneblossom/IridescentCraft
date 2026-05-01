@@ -8,20 +8,20 @@
     "item": "iridescent_reforging:reforged_chestplate",
     "modules": {
       "chestplate/chest_plate": [
-        "chestplate/chest_plate",
-        "chestplate/chest_plate/iron"
+        "chestplate/breastplate",
+        "breastplate/iron"
       ],
       "chestplate/chest_lining": [
-        "chestplate/chest_lining",
-        "chestplate/chest_lining/iron"
+        "chestplate/padded_lining",
+        "padded_lining/iron"
       ],
       "chestplate/trim": [
-        "chestplate/trim",
-        "chestplate/trim/iron"
+        "chestplate/simple_trim",
+        "simple_trim/iron"
       ],
       "chestplate/pauldrons": [
-        "chestplate/pauldrons",
-        "chestplate/pauldrons/iron"
+        "chestplate/light_pauldrons",
+        "light_pauldrons/iron"
       ]
     }
   }

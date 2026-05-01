@@ -8,6 +8,6 @@
   "requiredTools": {
     "hammer_dig": "minecraft:iron"
   },
-  "moduleKey": "helmet/crown",
-  "moduleVariant": "helmet/crown/netherite"
+  "moduleKey": "helmet/basic_crown",
+  "moduleVariant": "basic_crown/netherite"
 }

@@ -8,20 +8,20 @@
     "item": "iridescent_reforging:reforged_helmet",
     "modules": {
       "helmet/crown": [
-        "helmet/crown",
-        "helmet/crown/diamond"
+        "helmet/basic_crown",
+        "basic_crown/diamond"
       ],
       "helmet/visor": [
-        "helmet/visor",
-        "helmet/visor/diamond"
+        "helmet/slit_visor",
+        "slit_visor/diamond"
       ],
       "helmet/crest": [
-        "helmet/crest",
-        "helmet/crest/diamond"
+        "helmet/plain_crest",
+        "plain_crest/diamond"
       ],
       "helmet/strap": [
-        "helmet/strap",
-        "helmet/strap/diamond"
+        "helmet/leather_strap",
+        "leather_strap/diamond"
       ]
     }
   }

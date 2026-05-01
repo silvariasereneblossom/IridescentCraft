@@ -1,0 +1,330 @@
+{
+  "type": "tetra:basic_module",
+  "slots": [
+    "boots/lacing"
+  ],
+  "improvements": [],
+  "variants": [
+    {
+      "materials": [
+        "tetra:skin/",
+        "tetra:fabric/",
+        "tetra:metal/",
+        "iridescent_reforging:themed/"
+      ],
+      "key": "iron_lacing/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "iron_lacing/leather",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.11,
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "iron_lacing/iron",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "minecraft:generic.knockback_resistance": 0.02
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "iron_lacing/gold",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.17,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:max_mana": 5.0
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "iron_lacing/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.28,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "minecraft:generic.armor_toughness": 0.2
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "iron_lacing/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.32,
+          "minecraft:generic.knockback_resistance": 0.07
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/fire"
+      ],
+      "key": "iron_lacing/fire",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:fire_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ice"
+      ],
+      "key": "iron_lacing/ice",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:ice_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/shadow"
+      ],
+      "key": "iron_lacing/shadow",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/holy"
+      ],
+      "key": "iron_lacing/holy",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:holy_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/lightning"
+      ],
+      "key": "iron_lacing/lightning",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:lightning_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/nature"
+      ],
+      "key": "iron_lacing/nature",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:nature_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/ender"
+      ],
+      "key": "iron_lacing/ender",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:ender_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "iridescent_reforging:themed/blood"
+      ],
+      "key": "iron_lacing/blood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.knockback_resistance": 0.02,
+          "irons_spellbooks:blood_spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    }
+  ]
+}

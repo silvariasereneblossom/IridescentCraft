@@ -8,6 +8,6 @@
   "requiredTools": {
     "hammer_dig": "minecraft:iron"
   },
-  "moduleKey": "chestplate/chest_plate",
-  "moduleVariant": "chestplate/chest_plate/elementium"
+  "moduleKey": "chestplate/breastplate",
+  "moduleVariant": "breastplate/elementium"
 }

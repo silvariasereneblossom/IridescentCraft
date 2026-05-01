@@ -4,6 +4,35 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-01 — Iridescent Reforging Phase A: multi-module-per-slot architecture
+
+Restructured the Tetra-armor extension from "1 module per slot, material variants only" to Tetra's canonical "N modules per slot, each with material variants". Players now choose between archetype-coded module alternatives (warrior / rogue / mage / balanced) at each of the 16 armor slots, mirroring how vanilla Tetra swords pick between basic_blade / heavy_blade / short_blade / machete.
+
+**Audit findings vs Tetra (sword reference):**
+- Tetra's variant keys are 2-segment (`heavy_blade/iron`); ours were 3-segment (`leggings/leg_plate/iron`). Tetra's substring-after-first-slash material extraction expects 2-segment; the 3-segment shape was the root cause of multiple display fallback bugs called out in the lessons-learned log.
+- Tetra ships 21 sword modules across 5 sword slots; we shipped 16 modules across 16 slots — no choice at any slot. Schematic context menus offered exactly one option per slot.
+- Tetra majors use `basic_major_module` type so improvements/durability render natively; ours used `basic_module` everywhere, even on slots that should support honing.
+- Tetra ships `~10` material-grouped replacement files; we shipped `217` source-item-keyed replacement files (one per modded armor item). Same coverage, more data churn per iteration.
+
+**What shipped this commit:**
+- **52 modules** (4 majors + 9 minors per piece × 4 pieces). 4-archetype design for majors (balanced / warrior / rogue / mage) coded into the stat extracts. Minors trim around the major with smaller deltas.
+- **52 install schematics** (one per module) — these populate the per-slot context menu in the Tetra workbench so players see all 4 (major) or 3 (minor) module choices when clicking a slot.
+- **728 variant entries** (each module × 14 materials: catch-all + leather + iron + gold + diamond + netherite + 8 themed). Material flavor adds: gold gives mana, diamond gives toughness, netherite gives KB resist, themed materials give per-element spell power.
+- **All 217 replacements rewritten** to map to the new default modules. Vanilla armor (iron / gold / diamond / netherite / leather / chainmail / turtle) uniformly populates all 4 slots with the matching material. 192 mod-armor replacements (Aether phoenix, ISS netherite_mage, Twilight Forest steeleaf, etc.) use the same default-module pattern with their original material preserved.
+- **76 repair JSONs** rewritten to target the new default major module per piece.
+- **128 orphan improvement JSONs deleted** — they referenced a hone-schematic ladder that no longer exists. Phase B will repopulate improvements with module-specific schematic groups.
+- **1224 lang entries regenerated** (slot meta × 16 + module meta × 52 × 4 + variant displays × 728 × 2 forms). Tetra's getName chain reads several lang shapes; we author all of them so workbench never renders raw lang keys.
+
+**NBT migration (one-shot, automatic):**
+- `StackNbtMigrator.migrate` now also detects pre-Phase-A 3-segment variant keys (e.g. `leggings/leg_plate/iron`) and rewrites them to the new default module's 2-segment shape (`full_leg_plate/iron`) at next inventory tick. The slot tag (which used to point at `leggings/leg_plate` as both moduleKey AND slot key) gets retargeted to `leggings/full_leg_plate`. Sentinel bumped v2 → v3 so any stack still marked v2 gets re-scanned once.
+- Existing world stacks survive: their material identity is preserved; their module identity becomes the default for that slot. Players can swap to any of the new alternatives via the workbench.
+
+**Phase B (next session):** improvement schematics. ~5 universal (Enchant / Repair / Socket), ~5 per-archetype shared (heavy / light / mage), ~3 per-module-specific. ~30 improvement schematics + corresponding lang. Each major module's `improvements[]` field gets populated to drive context-menu discovery.
+
+**Phase E (deferred):** evaluate folding `iridescent-reforging-mod` into `iridescent-modular-spells-mod` as a unified "Iridescent Tetra Expansion" jar. Hold until Phase B lands and the system is stable.
+
+---
+
 ## 2026-05-01 — Tetra workbench polish: minor-slot subheadings + extra Status bars
 
 Two paired UI improvements landed in `iridescent-reforging-mod` 0.1.0 (no jar-name bump; the same file ships the new behavior):

@@ -8,20 +8,20 @@
     "item": "iridescent_reforging:reforged_boots",
     "modules": {
       "boots/boot_sole": [
-        "boots/boot_sole",
-        "boots/boot_sole/diamond"
+        "boots/basic_boot_sole",
+        "basic_boot_sole/diamond"
       ],
       "boots/boot_lining": [
-        "boots/boot_lining",
-        "boots/boot_lining/diamond"
+        "boots/padded_boot_lining",
+        "padded_boot_lining/diamond"
       ],
       "boots/heel": [
-        "boots/heel",
-        "boots/heel/diamond"
+        "boots/standard_heel",
+        "standard_heel/diamond"
       ],
       "boots/lacing": [
-        "boots/lacing",
-        "boots/lacing/diamond"
+        "boots/leather_lacing",
+        "leather_lacing/diamond"
       ]
     }
   }

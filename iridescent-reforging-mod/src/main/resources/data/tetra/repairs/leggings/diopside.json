@@ -8,6 +8,6 @@
   "requiredTools": {
     "hammer_dig": "minecraft:iron"
   },
-  "moduleKey": "leggings/leg_plate",
-  "moduleVariant": "leggings/leg_plate/diopside"
+  "moduleKey": "leggings/full_leg_plate",
+  "moduleVariant": "full_leg_plate/diopside"
 }

@@ -8,6 +8,6 @@
   "requiredTools": {
     "hammer_dig": "minecraft:iron"
   },
-  "moduleKey": "boots/boot_sole",
-  "moduleVariant": "boots/boot_sole/undergarden_utherium"
+  "moduleKey": "boots/basic_boot_sole",
+  "moduleVariant": "basic_boot_sole/undergarden_utherium"
 }

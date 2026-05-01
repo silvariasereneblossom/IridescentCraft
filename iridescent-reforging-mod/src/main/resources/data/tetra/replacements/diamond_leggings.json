@@ -8,20 +8,20 @@
     "item": "iridescent_reforging:reforged_leggings",
     "modules": {
       "leggings/leg_plate": [
-        "leggings/leg_plate",
-        "leggings/leg_plate/diamond"
+        "leggings/full_leg_plate",
+        "full_leg_plate/diamond"
       ],
       "leggings/belt": [
-        "leggings/belt",
-        "leggings/belt/diamond"
+        "leggings/leather_belt",
+        "leather_belt/diamond"
       ],
       "leggings/greaves": [
-        "leggings/greaves",
-        "leggings/greaves/diamond"
+        "leggings/standard_greaves",
+        "standard_greaves/diamond"
       ],
       "leggings/cuisses": [
-        "leggings/cuisses",
-        "leggings/cuisses/diamond"
+        "leggings/padded_cuisses",
+        "padded_cuisses/diamond"
       ]
     }
   }
