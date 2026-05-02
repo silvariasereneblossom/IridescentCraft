@@ -315,33 +315,30 @@ def gen_module_json(module_key: str) -> dict:
     type_str = "tetra:basic_major_module" if kind == "major" else "tetra:basic_module"
     module_short = module_key.split("/", 1)[1]  # 'heavy_crown'
 
-    # Integrity allocation (2026-05-02 v2): the CATCH-ALL variant carries
-    # the integrity cost, NOT the per-material variants. Reason:
-    # MaterialVariantData.combine() at load time auto-suffixes the material
-    # key onto the variant key. The catch-all expands cleanly (e.g.
-    # "full_leg_plate/" + "iron" → "full_leg_plate/iron"), but per-material
-    # variants double their key ("full_leg_plate/iron" + "iron" →
-    # "full_leg_plate/ironiron"). NBT lookups for "full_leg_plate/iron"
-    # match the CATCH-ALL EXPANSION, not the per-material variant — so
-    # per-material variants are effectively dead and their integrity values
-    # are never read.
+    # Integrity allocation (2026-05-02 v3): MAJOR PROVIDES capacity,
+    # MINORS CONSUME it — mirroring Tetra's hilt-vs-blade pattern.
+    # The major is the structural piece (foundation that other modules
+    # attach to); minors are accessory pieces that nibble the budget.
     #
-    # The catch-all's extract.integrity gets multiplied by the material's
-    # integrityCost (Tetra iron cost=2, themed cost=2) at combine-time.
-    # Setting catch-all integrity = -2 for major + iron material →
-    # variant integrity = -4 → adds 4 to integrityUsage. Per piece (1
-    # major + 3 minors all iron):
-    #   Major catch-all (-2) × iron cost 2 = -4 → usage += 4
-    #   Minor catch-all (-1) × iron cost 2 = -2 each, 3 minors → usage += 6
-    #   Total usage per piece = 10
+    # Tetra's combine logic in MaterialVariantData:
+    #   if extract.integrity > 0: result.integrity += extract.integrity * material.integrityGain
+    #   if extract.integrity < 0: result.integrity += extract.integrity * material.integrityCost
+    # Then in ItemProperties.merge:
+    #   positive result.integrity → added to .integrity (CAPACITY)
+    #   negative result.integrity → added to .integrityUsage (USED)
     #
-    # Per piece capacity from material gain (iron gain=5):
-    #   4 modules × (5 - 2) net = 12 capacity
+    # Per piece w/ iron material (gain=5, cost=2):
+    #   Major catch-all (+2) × iron gain 5 = +10 capacity
+    #   3 minor catch-alls (-1) × iron cost 2 = -2 each → usage += 6
+    #   Improvements (each -1, applied at any major archetype): -1*N
     #
-    # Net per piece: 10/12 — about 2 spare integrity for improvements
-    # before overflow.
-    INTEGRITY_MAJOR_CATCHALL = -2
-    INTEGRITY_MINOR_CATCHALL = -1
+    # Net per piece (no improvements applied): 10 capacity / 6 usage,
+    # 4 spare for ~4 improvements before overflow. Honing system can
+    # accrue ~5 hone improvements over time, putting longterm steady
+    # state at maybe 10/11 — overflow by 1, which Tetra handles
+    # gracefully (durability multiplier penalty).
+    INTEGRITY_MAJOR_CATCHALL = 2     # POSITIVE: major provides capacity
+    INTEGRITY_MINOR_CATCHALL = -1    # NEGATIVE: minors consume capacity
 
     variants = []
     for mat_key, mat_ref, mult, _ignored_integ, dur in MATERIALS:

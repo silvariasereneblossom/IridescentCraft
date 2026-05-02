@@ -20,7 +20,7 @@
           "minecraft:generic.armor": 0.5,
           "irons_spellbooks:max_mana": 30.0
         },
-        "integrity": -2,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

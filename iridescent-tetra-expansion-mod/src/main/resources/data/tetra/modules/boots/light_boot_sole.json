@@ -21,7 +21,7 @@
           "minecraft:generic.movement_speed": 0.07,
           "forge:step_height_addition": 0.5
         },
-        "integrity": -2,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
