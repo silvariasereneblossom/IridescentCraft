@@ -105,42 +105,46 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     // ── Workbench module-icon layout ───────────────────────────────────
     //
     // Override Tetra's defaultMajorOffsets / defaultMinorOffsets to spread
-    // our 1 major + 3 minors across the four cardinal sides of the
-    // workbench diamond, matching the player ask "one module per side".
+    // our 1 major + 3 minors across the four CORNERS of the workbench
+    // diamond, mirroring Tetra's own pickaxe layout (defaultMajorOffsets[4]:
+    // 4,0 / 4,18 / -4,0 / -4,18 — four corners of an 8x18 rect around the
+    // diamond center).
+    //
+    // The earlier "cardinal points" layout (top / left / bottom / right with
+    // major at right-mid and three minors at the other points) put modules
+    // at the POINTS of the diamond. Player feedback was that the boxes
+    // should be on the SIDES of the diamond — i.e., at the four corners
+    // of the diamond's bounding rectangle.
     //
     // Coordinate system (relative to workbench diamond center):
     //   x>0 → right side, attachment=topLeft, text extends RIGHT
     //   x<0 → left side,  attachment=topRight, text extends LEFT
-    //   y    grows downward; diamond is roughly y=0..24 with center at y=12
+    //   y=0  is the upper edge of the diamond; y=18 is the lower edge.
     //
     // Layout for our 1 major + 3 minors:
     //
-    //                    [top minor]
-    //                        ▲
-    //          [left minor] ◀ ◇ ▶ [major]
-    //                        ▼
-    //                    [bottom minor]
+    //   [minor 0: upper-left] ◇ [major: upper-right]
+    //   [minor 1: lower-left]   [minor 2: lower-right]
     //
     // Minor index assignment per piece (order matches *_MINOR arrays in
-    // ModItems): 0=top (inner lining), 1=left (mid-tier), 2=bottom (outer).
+    // ModItems): 0=upper-left (inner lining), 1=lower-left (mid-tier),
+    //            2=lower-right (outer).
     //  - helmet:     0=visor, 1=crest, 2=strap
     //  - chestplate: 0=chest_lining, 1=trim, 2=pauldrons
     //  - leggings:   0=belt, 1=greaves, 2=cuisses
     //  - boots:      0=boot_lining, 1=heel, 2=lacing
-    //
-    // Top/bottom minors use x=-3 so their text extends LEFT (away from the
-    // major's right-side text). Left minor uses Tetra's default (-21, 12).
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
-        return new se.mickelus.tetra.gui.GuiModuleOffsets(4, 12);
+        // Major: upper-right (matches Tetra's pickaxe head_right + sword blade)
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(4, 0);
     }
 
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
         return new se.mickelus.tetra.gui.GuiModuleOffsets(
-                -3, -7,    // index 0: TOP   (above diamond)
-                -21, 12,   // index 1: LEFT  (mid-height, default position)
-                -3, 30);   // index 2: BOTTOM (below diamond)
+                -4, 0,     // index 0: UPPER-LEFT  (lining/visor/belt/boot_lining)
+                -4, 18,    // index 1: LOWER-LEFT  (crest/trim/greaves/heel)
+                4, 18);    // index 2: LOWER-RIGHT (strap/pauldrons/cuisses/lacing)
     }
 
     @Override

@@ -19,5 +19,5 @@
 	#Allowed Values: TOP_LEFT, TOP_RIGHT, BOTTOM_LEFT, BOTTOM_RIGHT
 	buttonCorner = "TOP_LEFT"
 	#Set to true to enable the Curios GUI button
-	enableButton = false
+	enableButton = true
 
