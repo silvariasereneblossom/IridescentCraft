@@ -13,8 +13,7 @@
       "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.5,
-          "*minecraft:generic.movement_speed": -0.02
+          "minecraft:generic.armor": 0.2
         },
         "integrity": -1,
         "glyph": {
@@ -35,8 +34,7 @@
       "key": "reinforced_greaves/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.275,
-          "*minecraft:generic.movement_speed": -0.02
+          "minecraft:generic.armor": 0.11
         },
         "integrity": 0,
         "glyph": {
@@ -57,8 +55,7 @@
       "key": "reinforced_greaves/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.5,
-          "*minecraft:generic.movement_speed": -0.02
+          "minecraft:generic.armor": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -79,8 +76,7 @@
       "key": "reinforced_greaves/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.425,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.17,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -102,8 +98,7 @@
       "key": "reinforced_greaves/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.7,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.28,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -125,8 +120,7 @@
       "key": "reinforced_greaves/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.8,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.32,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -148,8 +142,7 @@
       "key": "reinforced_greaves/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -171,8 +164,7 @@
       "key": "reinforced_greaves/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -194,8 +186,7 @@
       "key": "reinforced_greaves/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -217,8 +208,7 @@
       "key": "reinforced_greaves/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -240,8 +230,7 @@
       "key": "reinforced_greaves/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -263,8 +252,7 @@
       "key": "reinforced_greaves/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -286,8 +274,7 @@
       "key": "reinforced_greaves/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -309,8 +296,7 @@
       "key": "reinforced_greaves/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "*minecraft:generic.movement_speed": -0.02,
+          "minecraft:generic.armor": 0.21,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

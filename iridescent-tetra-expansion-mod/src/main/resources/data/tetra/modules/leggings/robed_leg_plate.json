@@ -17,9 +17,9 @@
       "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.0,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.4,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02
         },
         "integrity": 2,
         "glyph": {
@@ -40,9 +40,9 @@
       "key": "robed_leg_plate/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.55,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.22,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02
         },
         "integrity": 0,
         "glyph": {
@@ -63,9 +63,9 @@
       "key": "robed_leg_plate/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.0,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.4,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02
         },
         "integrity": 0,
         "glyph": {
@@ -86,9 +86,9 @@
       "key": "robed_leg_plate/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.85,
-          "irons_spellbooks:max_mana": 65.0,
-          "irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.34,
+          "irons_spellbooks:max_mana": 29.0,
+          "irons_spellbooks:spell_power": 0.02
         },
         "integrity": 0,
         "glyph": {
@@ -109,9 +109,9 @@
       "key": "robed_leg_plate/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.4,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.56,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -133,9 +133,9 @@
       "key": "robed_leg_plate/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.6,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.64,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -157,9 +157,9 @@
       "key": "robed_leg_plate/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -181,9 +181,9 @@
       "key": "robed_leg_plate/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -205,9 +205,9 @@
       "key": "robed_leg_plate/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -229,9 +229,9 @@
       "key": "robed_leg_plate/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -253,9 +253,9 @@
       "key": "robed_leg_plate/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -277,9 +277,9 @@
       "key": "robed_leg_plate/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -301,9 +301,9 @@
       "key": "robed_leg_plate/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -325,9 +325,9 @@
       "key": "robed_leg_plate/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.05,
-          "irons_spellbooks:max_mana": 60.0,
-          "irons_spellbooks:spell_power": 0.05,
+          "minecraft:generic.armor": 0.42,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

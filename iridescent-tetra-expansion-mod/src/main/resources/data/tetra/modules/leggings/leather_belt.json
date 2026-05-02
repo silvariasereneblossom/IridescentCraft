@@ -15,7 +15,7 @@
       "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1
+          "minecraft:generic.armor": 0.04
         },
         "integrity": -1,
         "glyph": {
@@ -36,7 +36,7 @@
       "key": "leather_belt/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.055
+          "minecraft:generic.armor": 0.022
         },
         "integrity": 0,
         "glyph": {
@@ -57,7 +57,7 @@
       "key": "leather_belt/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1
+          "minecraft:generic.armor": 0.04
         },
         "integrity": 0,
         "glyph": {
@@ -78,7 +78,7 @@
       "key": "leather_belt/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.085,
+          "minecraft:generic.armor": 0.034,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -100,7 +100,7 @@
       "key": "leather_belt/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.14,
+          "minecraft:generic.armor": 0.056,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -122,7 +122,7 @@
       "key": "leather_belt/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.16,
+          "minecraft:generic.armor": 0.064,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -144,7 +144,7 @@
       "key": "leather_belt/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -166,7 +166,7 @@
       "key": "leather_belt/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -188,7 +188,7 @@
       "key": "leather_belt/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -210,7 +210,7 @@
       "key": "leather_belt/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -232,7 +232,7 @@
       "key": "leather_belt/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -254,7 +254,7 @@
       "key": "leather_belt/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -276,7 +276,7 @@
       "key": "leather_belt/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -298,7 +298,7 @@
       "key": "leather_belt/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
+          "minecraft:generic.armor": 0.042,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

@@ -14,8 +14,7 @@
       "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.7,
-          "*minecraft:generic.movement_speed": -0.03
+          "minecraft:generic.armor": 0.28
         },
         "integrity": -1,
         "glyph": {
@@ -36,8 +35,7 @@
       "key": "heavy_pauldrons/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.385,
-          "*minecraft:generic.movement_speed": -0.03
+          "minecraft:generic.armor": 0.154
         },
         "integrity": 0,
         "glyph": {
@@ -58,8 +56,7 @@
       "key": "heavy_pauldrons/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.7,
-          "*minecraft:generic.movement_speed": -0.03
+          "minecraft:generic.armor": 0.28
         },
         "integrity": 0,
         "glyph": {
@@ -80,8 +77,7 @@
       "key": "heavy_pauldrons/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.595,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.238,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -103,8 +99,7 @@
       "key": "heavy_pauldrons/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.98,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.392,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -126,8 +121,7 @@
       "key": "heavy_pauldrons/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.12,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.448,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -149,8 +143,7 @@
       "key": "heavy_pauldrons/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -172,8 +165,7 @@
       "key": "heavy_pauldrons/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -195,8 +187,7 @@
       "key": "heavy_pauldrons/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -218,8 +209,7 @@
       "key": "heavy_pauldrons/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -241,8 +231,7 @@
       "key": "heavy_pauldrons/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -264,8 +253,7 @@
       "key": "heavy_pauldrons/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -287,8 +275,7 @@
       "key": "heavy_pauldrons/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -310,8 +297,7 @@
       "key": "heavy_pauldrons/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.735,
-          "*minecraft:generic.movement_speed": -0.03,
+          "minecraft:generic.armor": 0.294,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

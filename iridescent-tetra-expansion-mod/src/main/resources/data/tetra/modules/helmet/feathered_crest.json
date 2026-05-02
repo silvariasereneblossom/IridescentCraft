@@ -14,8 +14,7 @@
       "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05
+          "minecraft:generic.armor": 0.0
         },
         "integrity": -1,
         "glyph": {
@@ -36,8 +35,7 @@
       "key": "feathered_crest/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05
+          "minecraft:generic.armor": 0.0
         },
         "integrity": 0,
         "glyph": {
@@ -58,8 +56,7 @@
       "key": "feathered_crest/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05
+          "minecraft:generic.armor": 0.0
         },
         "integrity": 0,
         "glyph": {
@@ -81,7 +78,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -104,7 +100,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -127,7 +122,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -150,7 +144,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -173,7 +166,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -196,7 +188,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -219,7 +210,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -242,7 +232,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -265,7 +254,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -288,7 +276,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -311,7 +298,6 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "*minecraft:generic.movement_speed": 0.05,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

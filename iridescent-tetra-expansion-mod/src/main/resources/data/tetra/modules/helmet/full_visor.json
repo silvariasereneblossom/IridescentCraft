@@ -13,8 +13,8 @@
       "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4,
-          "minecraft:generic.attack_speed": -0.05
+          "minecraft:generic.armor": 0.16,
+          "minecraft:generic.attack_speed": -0.02
         },
         "integrity": -1,
         "glyph": {
@@ -35,8 +35,8 @@
       "key": "full_visor/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.22,
-          "minecraft:generic.attack_speed": -0.05
+          "minecraft:generic.armor": 0.088,
+          "minecraft:generic.attack_speed": -0.02
         },
         "integrity": 0,
         "glyph": {
@@ -57,8 +57,8 @@
       "key": "full_visor/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4,
-          "minecraft:generic.attack_speed": -0.05
+          "minecraft:generic.armor": 0.16,
+          "minecraft:generic.attack_speed": -0.02
         },
         "integrity": 0,
         "glyph": {
@@ -79,8 +79,8 @@
       "key": "full_visor/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.34,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.136,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -102,8 +102,8 @@
       "key": "full_visor/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.56,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.224,
+          "minecraft:generic.attack_speed": -0.02,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -125,8 +125,8 @@
       "key": "full_visor/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.64,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.256,
+          "minecraft:generic.attack_speed": -0.02,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -148,8 +148,8 @@
       "key": "full_visor/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -171,8 +171,8 @@
       "key": "full_visor/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -194,8 +194,8 @@
       "key": "full_visor/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -217,8 +217,8 @@
       "key": "full_visor/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -240,8 +240,8 @@
       "key": "full_visor/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -263,8 +263,8 @@
       "key": "full_visor/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -286,8 +286,8 @@
       "key": "full_visor/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -309,8 +309,8 @@
       "key": "full_visor/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "minecraft:generic.attack_speed": -0.05,
+          "minecraft:generic.armor": 0.168,
+          "minecraft:generic.attack_speed": -0.02,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

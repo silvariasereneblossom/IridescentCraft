@@ -14,7 +14,7 @@
       "key": "padded_boot_lining/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2
+          "minecraft:generic.armor": 0.08
         },
         "integrity": -1,
         "glyph": {
@@ -35,7 +35,7 @@
       "key": "padded_boot_lining/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.11
+          "minecraft:generic.armor": 0.044
         },
         "integrity": 0,
         "glyph": {
@@ -56,7 +56,7 @@
       "key": "padded_boot_lining/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2
+          "minecraft:generic.armor": 0.08
         },
         "integrity": 0,
         "glyph": {
@@ -77,7 +77,7 @@
       "key": "padded_boot_lining/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.17,
+          "minecraft:generic.armor": 0.068,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -99,7 +99,7 @@
       "key": "padded_boot_lining/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.28,
+          "minecraft:generic.armor": 0.112,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -121,7 +121,7 @@
       "key": "padded_boot_lining/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.32,
+          "minecraft:generic.armor": 0.128,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -143,7 +143,7 @@
       "key": "padded_boot_lining/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -165,7 +165,7 @@
       "key": "padded_boot_lining/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -187,7 +187,7 @@
       "key": "padded_boot_lining/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -209,7 +209,7 @@
       "key": "padded_boot_lining/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -231,7 +231,7 @@
       "key": "padded_boot_lining/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -253,7 +253,7 @@
       "key": "padded_boot_lining/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -275,7 +275,7 @@
       "key": "padded_boot_lining/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -297,7 +297,7 @@
       "key": "padded_boot_lining/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
+          "minecraft:generic.armor": 0.084,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

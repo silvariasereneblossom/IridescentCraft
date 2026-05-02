@@ -17,8 +17,8 @@
       "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.5,
-          "irons_spellbooks:max_mana": 30.0
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 12.0
         },
         "integrity": 2,
         "glyph": {
@@ -39,8 +39,8 @@
       "key": "robed_boot_sole/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.275,
-          "irons_spellbooks:max_mana": 30.0
+          "minecraft:generic.armor": 0.11,
+          "irons_spellbooks:max_mana": 12.0
         },
         "integrity": 0,
         "glyph": {
@@ -61,8 +61,8 @@
       "key": "robed_boot_sole/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.5,
-          "irons_spellbooks:max_mana": 30.0
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 12.0
         },
         "integrity": 0,
         "glyph": {
@@ -83,8 +83,8 @@
       "key": "robed_boot_sole/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.425,
-          "irons_spellbooks:max_mana": 35.0
+          "minecraft:generic.armor": 0.17,
+          "irons_spellbooks:max_mana": 17.0
         },
         "integrity": 0,
         "glyph": {
@@ -105,8 +105,8 @@
       "key": "robed_boot_sole/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.7,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.28,
+          "irons_spellbooks:max_mana": 12.0,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -128,8 +128,8 @@
       "key": "robed_boot_sole/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.8,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.32,
+          "irons_spellbooks:max_mana": 12.0,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -151,8 +151,8 @@
       "key": "robed_boot_sole/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -174,8 +174,8 @@
       "key": "robed_boot_sole/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -197,8 +197,8 @@
       "key": "robed_boot_sole/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -220,8 +220,8 @@
       "key": "robed_boot_sole/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -243,8 +243,8 @@
       "key": "robed_boot_sole/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -266,8 +266,8 @@
       "key": "robed_boot_sole/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -289,8 +289,8 @@
       "key": "robed_boot_sole/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -312,8 +312,8 @@
       "key": "robed_boot_sole/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.525,
-          "irons_spellbooks:max_mana": 30.0,
+          "minecraft:generic.armor": 0.21,
+          "irons_spellbooks:max_mana": 12.0,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

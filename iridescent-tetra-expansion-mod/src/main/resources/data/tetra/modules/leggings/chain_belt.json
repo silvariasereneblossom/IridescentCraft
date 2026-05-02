@@ -15,8 +15,8 @@
       "key": "chain_belt/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.08,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": -1,
         "glyph": {
@@ -37,8 +37,8 @@
       "key": "chain_belt/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.11,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.044,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 0,
         "glyph": {
@@ -59,8 +59,8 @@
       "key": "chain_belt/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.08,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 0,
         "glyph": {
@@ -81,8 +81,8 @@
       "key": "chain_belt/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.17,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.068,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -104,8 +104,8 @@
       "key": "chain_belt/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.28,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.112,
+          "minecraft:generic.knockback_resistance": 0.02,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -127,8 +127,8 @@
       "key": "chain_belt/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.32,
-          "minecraft:generic.knockback_resistance": 0.1
+          "minecraft:generic.armor": 0.128,
+          "minecraft:generic.knockback_resistance": 0.07
         },
         "integrity": 0,
         "glyph": {
@@ -149,8 +149,8 @@
       "key": "chain_belt/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -172,8 +172,8 @@
       "key": "chain_belt/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -195,8 +195,8 @@
       "key": "chain_belt/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -218,8 +218,8 @@
       "key": "chain_belt/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -241,8 +241,8 @@
       "key": "chain_belt/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -264,8 +264,8 @@
       "key": "chain_belt/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -287,8 +287,8 @@
       "key": "chain_belt/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -310,8 +310,8 @@
       "key": "chain_belt/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.084,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

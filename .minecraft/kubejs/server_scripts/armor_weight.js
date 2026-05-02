@@ -42,8 +42,12 @@ const UUID_LIGHT_TOUGHNESS  = 'icraft_armor_weight_toughness'
 const UUID_FAEFOLK_TOUGHNESS = 'icraft_faefolk_armor_weakness'
 
 // Per-piece magnitudes
+// Speed bumped to 0.05 (5% per piece, ±20% at 4 pieces) — per-module
+// speed in iridescent-tetra-expansion was removed because Tetra's per-
+// (attr, op) UUID system collapses to a binary "any heavy = -X" instead
+// of scaling per piece. armor_weight.js owns all speed scaling now.
 const PER_PIECE_MANA_REGEN = 0.05    // ADD on irons_spellbooks:mana_regen
-const PER_PIECE_SPEED      = 0.0125  // MULTIPLY_BASE on generic.movement_speed
+const PER_PIECE_SPEED      = 0.05    // MULTIPLY_BASE on generic.movement_speed (4 pieces = ±20%)
 const PER_PIECE_ARMOR      = 0.05    // MULTIPLY_BASE on generic.armor
 const PER_PIECE_TOUGHNESS  = 0.075   // MULTIPLY_BASE on generic.armor_toughness (light only)
 

@@ -14,8 +14,8 @@
       "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1,
-          "minecraft:generic.luck": 0.5
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.luck": 0.2
         },
         "integrity": -1,
         "glyph": {
@@ -36,8 +36,8 @@
       "key": "gilded_trim/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.055,
-          "minecraft:generic.luck": 0.5
+          "minecraft:generic.armor": 0.022,
+          "minecraft:generic.luck": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -58,8 +58,8 @@
       "key": "gilded_trim/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.1,
-          "minecraft:generic.luck": 0.5
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.luck": 0.2
         },
         "integrity": 0,
         "glyph": {
@@ -80,8 +80,8 @@
       "key": "gilded_trim/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.085,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.034,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -103,8 +103,8 @@
       "key": "gilded_trim/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.14,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.056,
+          "minecraft:generic.luck": 0.2,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -126,8 +126,8 @@
       "key": "gilded_trim/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.16,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.064,
+          "minecraft:generic.luck": 0.2,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -149,8 +149,8 @@
       "key": "gilded_trim/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -172,8 +172,8 @@
       "key": "gilded_trim/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -195,8 +195,8 @@
       "key": "gilded_trim/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -218,8 +218,8 @@
       "key": "gilded_trim/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -241,8 +241,8 @@
       "key": "gilded_trim/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -264,8 +264,8 @@
       "key": "gilded_trim/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -287,8 +287,8 @@
       "key": "gilded_trim/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -310,8 +310,8 @@
       "key": "gilded_trim/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.105,
-          "minecraft:generic.luck": 0.5,
+          "minecraft:generic.armor": 0.042,
+          "minecraft:generic.luck": 0.2,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

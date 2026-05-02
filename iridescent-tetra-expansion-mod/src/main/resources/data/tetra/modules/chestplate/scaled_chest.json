@@ -17,9 +17,8 @@
       "key": "scaled_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.5,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 1.0,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 2,
         "glyph": {
@@ -40,9 +39,8 @@
       "key": "scaled_chest/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.375,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.55,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 0,
         "glyph": {
@@ -63,9 +61,8 @@
       "key": "scaled_chest/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.5,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 1.0,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 0,
         "glyph": {
@@ -86,9 +83,8 @@
       "key": "scaled_chest/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.125,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 0.85,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -110,9 +106,8 @@
       "key": "scaled_chest/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 3.5,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.4,
+          "minecraft:generic.knockback_resistance": 0.02,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -134,9 +129,8 @@
       "key": "scaled_chest/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.0,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.1
+          "minecraft:generic.armor": 1.6,
+          "minecraft:generic.knockback_resistance": 0.07
         },
         "integrity": 0,
         "glyph": {
@@ -157,9 +151,8 @@
       "key": "scaled_chest/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -181,9 +174,8 @@
       "key": "scaled_chest/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -205,9 +197,8 @@
       "key": "scaled_chest/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -229,9 +220,8 @@
       "key": "scaled_chest/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -253,9 +243,8 @@
       "key": "scaled_chest/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -277,9 +266,8 @@
       "key": "scaled_chest/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -301,9 +289,8 @@
       "key": "scaled_chest/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -325,9 +312,8 @@
       "key": "scaled_chest/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.625,
-          "*minecraft:generic.movement_speed": 0.05,
-          "minecraft:generic.knockback_resistance": 0.05,
+          "minecraft:generic.armor": 1.05,
+          "minecraft:generic.knockback_resistance": 0.02,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

@@ -15,7 +15,7 @@
       "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3
+          "minecraft:generic.armor": 0.12
         },
         "integrity": -1,
         "glyph": {
@@ -36,7 +36,7 @@
       "key": "padded_cuisses/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.165
+          "minecraft:generic.armor": 0.066
         },
         "integrity": 0,
         "glyph": {
@@ -57,7 +57,7 @@
       "key": "padded_cuisses/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3
+          "minecraft:generic.armor": 0.12
         },
         "integrity": 0,
         "glyph": {
@@ -78,7 +78,7 @@
       "key": "padded_cuisses/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.255,
+          "minecraft:generic.armor": 0.102,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -100,7 +100,7 @@
       "key": "padded_cuisses/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
+          "minecraft:generic.armor": 0.168,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -122,7 +122,7 @@
       "key": "padded_cuisses/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.48,
+          "minecraft:generic.armor": 0.192,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -144,7 +144,7 @@
       "key": "padded_cuisses/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -166,7 +166,7 @@
       "key": "padded_cuisses/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -188,7 +188,7 @@
       "key": "padded_cuisses/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -210,7 +210,7 @@
       "key": "padded_cuisses/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -232,7 +232,7 @@
       "key": "padded_cuisses/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -254,7 +254,7 @@
       "key": "padded_cuisses/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -276,7 +276,7 @@
       "key": "padded_cuisses/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -298,7 +298,7 @@
       "key": "padded_cuisses/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

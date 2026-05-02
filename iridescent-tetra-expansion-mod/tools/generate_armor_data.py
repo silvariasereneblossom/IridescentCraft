@@ -344,15 +344,39 @@ def gen_module_json(module_key: str) -> dict:
     INTEGRITY_MINOR_CATCHALL = -1    # NEGATIVE: minors consume capacity
 
     variants = []
+    # Calibration constant: Tetra multiplies extract.primaryAttributes by
+    # the material's `primary` field at variant-combine time. Iron's
+    # primary is 5 (verified: tetra-1.20.1-6.12.0.jar / data/tetra/
+    # materials/metal/iron.json), so a base_armor of 4.0 in MODULES would
+    # yield 20 armor on the iron variant — vs vanilla iron chestplate's
+    # 6 armor. Dividing by 5 here gives `extract.primary.armor` × iron's
+    # primary (5) ≈ vanilla iron value. Other materials scale relatively:
+    # diamond primary 6 → ~1.2× iron, netherite 7.24 → ~1.45× iron.
+    # 2.5 chosen so the existing MODULES base_armor values land on
+    # vanilla-equivalent absolute armor with iron material:
+    #   breastplate 3.0 / 2.5 × 5 = 6 armor (matches vanilla iron chest)
+    #   cuirass     4.0 / 2.5 × 5 = 8 armor (matches vanilla diamond chest)
+    #   basic_crown 1.0 / 2.5 × 5 = 2 armor (matches vanilla iron helmet)
+    #   etc. Other materials scale relatively (diamond primary 6 → +20%
+    #   over iron, netherite 7.24 → +45%).
+    PRIMARY_DIVISOR = 2.5
     for mat_key, mat_ref, mult, _ignored_integ, dur in MATERIALS:
         vkey = f"{module_short}/{mat_key}" if mat_key else f"{module_short}/"
         materials = [mat_ref] if mat_ref else SLOT_MATERIAL_CATEGORIES[slot]
-        # Compose primary attributes.
-        attrs = {"minecraft:generic.armor": round(base_armor * mult, 3)}
+        # Compose primary attributes (scaled down — see PRIMARY_DIVISOR).
+        attrs = {"minecraft:generic.armor": round(base_armor * mult / PRIMARY_DIVISOR, 4)}
         for k, v in extra.items():
             # Only apply non-armor-related extras to the catch-all + every
             # material — they're a property of the module, not the material.
-            attrs[k] = round(v, 4)
+            # Skip movement_speed: handled by kubejs/server_scripts/armor_weight.js
+            # at the player level (per-piece scaling with unique UUIDs). Per-
+            # module speed via Tetra's per-(attr, op) UUID system collapses
+            # to a single binary "any heavy = -X" instead of scaling per piece.
+            if k.lstrip('*') == "minecraft:generic.movement_speed":
+                continue
+            # Other extras (knockback, attack_speed, max_mana, spell_power):
+            # divide by primary divisor too, since they're in primaryAttributes.
+            attrs[k] = round(v / PRIMARY_DIVISOR, 4)
         # Apply material flavor on top (mage materials boost mana, etc.).
         for k, v in MATERIAL_FLAVOR.get(mat_key, {}).items():
             attrs[k] = round(attrs.get(k, 0.0) + v, 4)

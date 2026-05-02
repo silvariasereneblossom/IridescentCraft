@@ -13,7 +13,7 @@
       "key": "standard_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3
+          "minecraft:generic.armor": 0.12
         },
         "integrity": -1,
         "glyph": {
@@ -34,7 +34,7 @@
       "key": "standard_greaves/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.165
+          "minecraft:generic.armor": 0.066
         },
         "integrity": 0,
         "glyph": {
@@ -55,7 +55,7 @@
       "key": "standard_greaves/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.3
+          "minecraft:generic.armor": 0.12
         },
         "integrity": 0,
         "glyph": {
@@ -76,7 +76,7 @@
       "key": "standard_greaves/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.255,
+          "minecraft:generic.armor": 0.102,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -98,7 +98,7 @@
       "key": "standard_greaves/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
+          "minecraft:generic.armor": 0.168,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -120,7 +120,7 @@
       "key": "standard_greaves/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.48,
+          "minecraft:generic.armor": 0.192,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -142,7 +142,7 @@
       "key": "standard_greaves/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -164,7 +164,7 @@
       "key": "standard_greaves/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -186,7 +186,7 @@
       "key": "standard_greaves/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -208,7 +208,7 @@
       "key": "standard_greaves/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -230,7 +230,7 @@
       "key": "standard_greaves/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -252,7 +252,7 @@
       "key": "standard_greaves/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -274,7 +274,7 @@
       "key": "standard_greaves/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -296,7 +296,7 @@
       "key": "standard_greaves/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.315,
+          "minecraft:generic.armor": 0.126,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

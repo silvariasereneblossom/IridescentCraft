@@ -17,9 +17,8 @@
       "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.0,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1
+          "minecraft:generic.armor": 1.6,
+          "minecraft:generic.knockback_resistance": 0.04
         },
         "integrity": 2,
         "glyph": {
@@ -40,9 +39,8 @@
       "key": "cuirass/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1
+          "minecraft:generic.armor": 0.88,
+          "minecraft:generic.knockback_resistance": 0.04
         },
         "integrity": 0,
         "glyph": {
@@ -63,9 +61,8 @@
       "key": "cuirass/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.0,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1
+          "minecraft:generic.armor": 1.6,
+          "minecraft:generic.knockback_resistance": 0.04
         },
         "integrity": 0,
         "glyph": {
@@ -86,9 +83,8 @@
       "key": "cuirass/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 3.4,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.36,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -110,9 +106,8 @@
       "key": "cuirass/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 5.6,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 2.24,
+          "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -134,9 +129,8 @@
       "key": "cuirass/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 6.4,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.15
+          "minecraft:generic.armor": 2.56,
+          "minecraft:generic.knockback_resistance": 0.09
         },
         "integrity": 0,
         "glyph": {
@@ -157,9 +151,8 @@
       "key": "cuirass/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -181,9 +174,8 @@
       "key": "cuirass/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -205,9 +197,8 @@
       "key": "cuirass/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -229,9 +220,8 @@
       "key": "cuirass/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -253,9 +243,8 @@
       "key": "cuirass/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -277,9 +266,8 @@
       "key": "cuirass/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -301,9 +289,8 @@
       "key": "cuirass/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -325,9 +312,8 @@
       "key": "cuirass/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.2,
-          "*minecraft:generic.movement_speed": -0.05,
-          "minecraft:generic.knockback_resistance": 0.1,
+          "minecraft:generic.armor": 1.68,
+          "minecraft:generic.knockback_resistance": 0.04,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,

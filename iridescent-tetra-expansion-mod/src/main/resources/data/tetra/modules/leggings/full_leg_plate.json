@@ -17,7 +17,7 @@
       "key": "full_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.0
+          "minecraft:generic.armor": 0.8
         },
         "integrity": 2,
         "glyph": {
@@ -38,7 +38,7 @@
       "key": "full_leg_plate/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.1
+          "minecraft:generic.armor": 0.44
         },
         "integrity": 0,
         "glyph": {
@@ -59,7 +59,7 @@
       "key": "full_leg_plate/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.0
+          "minecraft:generic.armor": 0.8
         },
         "integrity": 0,
         "glyph": {
@@ -80,7 +80,7 @@
       "key": "full_leg_plate/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.7,
+          "minecraft:generic.armor": 0.68,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -102,7 +102,7 @@
       "key": "full_leg_plate/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.8,
+          "minecraft:generic.armor": 1.12,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -124,7 +124,7 @@
       "key": "full_leg_plate/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 3.2,
+          "minecraft:generic.armor": 1.28,
           "minecraft:generic.knockback_resistance": 0.05
         },
         "integrity": 0,
@@ -146,7 +146,7 @@
       "key": "full_leg_plate/fire",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -168,7 +168,7 @@
       "key": "full_leg_plate/ice",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -190,7 +190,7 @@
       "key": "full_leg_plate/shadow",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -212,7 +212,7 @@
       "key": "full_leg_plate/holy",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -234,7 +234,7 @@
       "key": "full_leg_plate/lightning",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -256,7 +256,7 @@
       "key": "full_leg_plate/nature",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -278,7 +278,7 @@
       "key": "full_leg_plate/ender",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -300,7 +300,7 @@
       "key": "full_leg_plate/blood",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.1,
+          "minecraft:generic.armor": 0.84,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,
