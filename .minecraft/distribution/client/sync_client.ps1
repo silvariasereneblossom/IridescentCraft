@@ -13,11 +13,15 @@
 #      location, then searching the PrismLauncher instances folder)
 #   2. Query GitHub API for the latest main commit SHA
 #   3. Compare against .icraft_last_sha in the instance root
-#   4. If match: print "Up to date" and exit 0 (no download)
+#   4. If match: skip the network sync but STILL run local cleanup
 #   5. If mismatch or first run: diff-sync changed files (when feasible) OR
 #      full-zip overlay; write the new SHA only if every download succeeded;
-#      reconcile orphan .pw.toml files from mods/.index/; invoke
-#      cleanup_stale_jars + download_mods to fix up the mods directory
+#      reconcile orphan .pw.toml files from mods/.index/
+#   6. ALWAYS (regardless of SHA match): run cleanup_stale_jars to prune
+#      orphan jars from mods/, run download_mods to fetch any missing pw.toml
+#      jars, ensure instance.cfg has -noverify and the .bat-form
+#      PreLaunchCommand. This catches manually-dropped stale mods + legacy
+#      jars that would otherwise sit in mods/ until the next repo bump.
 #
 # Network failure handling: short timeouts on both the API call and zip
 # download. On any failure, prints a warning and exits 0 so PrismLauncher
@@ -107,11 +111,18 @@ try {
     exit 0
 }
 
+# SHA match = no network sync needed, but we STILL want to run the local
+# cleanup/download/instance.cfg passes below — testers can manually drop
+# stale jars into mods/, or have legacy jars from older pack versions
+# that need pruning. Skipping cleanup on the fast path lets stale jars
+# accumulate indefinitely while the repo is steady.
+$skipNetworkSync = $false
 if ($remoteSha -eq $localSha) {
-    Write-Host "[IridescentCraft Sync] Up to date (commit $($remoteSha.Substring(0,7)))." -ForegroundColor Green
-    exit 0
+    Write-Host "[IridescentCraft Sync] Up to date (commit $($remoteSha.Substring(0,7))) — running local cleanup pass." -ForegroundColor Green
+    $skipNetworkSync = $true
 }
 
+if (-not $skipNetworkSync) {
 # -- Step 3: Diff-based sync or full zip fallback --
 $owner = 'silvariasereneblossom'
 $repo = 'IridescentCraft'
@@ -348,12 +359,14 @@ if ($useDiff) {
     Write-Host "[IridescentCraft Sync] Overlay complete." -ForegroundColor Green
     } catch {
         Write-Host "[IridescentCraft Sync] Overlay failed: $($_.Exception.Message)" -ForegroundColor Yellow
-        Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
+        Write-Host "[IridescentCraft Sync] Continuing with existing files (cleanup will still run)." -ForegroundColor Yellow
         Remove-Item $zipFile -Force -ErrorAction SilentlyContinue
         Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
-        exit 0
+        # Don't exit — fall through so cleanup_stale_jars + download_mods
+        # still run on partial state.
     }
 }
+} # end if (-not $skipNetworkSync)
 
 # -- Step 4a: Stale-JAR cleanup --
 # Removes mods/*.jar files that are neither in mods/.index/*.pw.toml nor in
