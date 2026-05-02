@@ -23,9 +23,19 @@ public class DrawTabs {
     public static ArrayList<Tabs> tabList = new ArrayList<>();
     public static boolean isMouseCheck = false;
     public static boolean checkMouse = false;
+    private static String lastLoggedScreen = null;
 
     public static void render(GuiGraphics matrixStack, int mouseX, int mouseY, int textureWidth, int textureHeight, int recipe) {
         Screen screen = client.screen;
+        // Diagnostic: log the screen class once per screen change so we can
+        // see what JLF is rendering tabs on. Remove after diagnosis.
+        String screenName = screen == null ? "null" : screen.getClass().getName();
+        if (!screenName.equals(lastLoggedScreen)) {
+            org.apache.logging.log4j.LogManager.getLogger("JLF-DrawTabs")
+                .info("[JLF] DrawTabs.render fired on screen={} | tabs={} | curiosOffset={}",
+                      screenName, 1, recipe);
+            lastLoggedScreen = screenName;
+        }
         if (client.player != null) {
             isMouseCheck = false;
             tabList = new ArrayList<>();
