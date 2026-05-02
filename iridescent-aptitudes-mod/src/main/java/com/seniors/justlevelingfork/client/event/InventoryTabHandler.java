@@ -22,10 +22,16 @@ import net.minecraftforge.fml.common.Mod;
  * Renders the aptitudes tab + optional Wormhole Storage ender-chest button on
  * top of the inventory screen via Forge ScreenEvents.
  *
- * Visibility: tabs only render when the player is in creative mode, never on
- * the survival InventoryScreen. This dodges the Apothic Attributes "View
- * Stats" button that overlaps our tab area on survival. Survival players
- * still reach aptitudes via the Y keybind (key.justlevelingfork.title).
+ * Visibility (2026-05-02 update): tabs render on BOTH survival and creative
+ * inventory screens. The previous gate (`!p.isCreative() return false`) was
+ * added to "dodge the Apothic Attributes View Stats button" — but the actual
+ * geometry doesn't conflict:
+ *   JLF tab strip: y = guiTop-28 to guiTop+4   (ABOVE inventory)
+ *   Apothic btn:   y = guiTop+10 to guiTop+20  (INSIDE inventory)
+ *   6-pixel vertical gap, no overlap.
+ * Click handling is also safe: isOverTabStrip's y range bottoms at guiTop+4,
+ * Apothic's button lives at guiTop+10, so onClick's setCanceled() never
+ * eats a click intended for the Apothic button.
  *
  * Why ScreenEvent over the old mixin: a mixin on InventoryScreen competed
  * with other mods' mixins on the same target. Render.Post fires after every
@@ -45,18 +51,21 @@ public final class InventoryTabHandler {
 
     private InventoryTabHandler() {}
 
-    /** True only when the player is in creative gameMode AND the open screen
-     * is one we want tabs on (survival InventoryScreen or the survival-inv
-     * subview of the creative menu). */
+    /** True when the open screen is the survival InventoryScreen OR the
+     * survival-inv subview of the creative menu (both use the 176x166
+     * inventory layout). The previous creative-only gate was lifted —
+     * see class javadoc for the geometry verification.
+     *
+     * Caveat: Creative menu's OTHER tabs (Building Blocks, Combat, etc.)
+     * display a different layout. Our render still fires when those tabs
+     * are open, but the inventory-rect math sits off to the side. Mostly
+     * harmless; tabs appear floating in space when the player browses
+     * Building Blocks. Acceptable cost for not having to special-case the
+     * creative-menu tab id, which Forge doesn't expose cleanly.
+     */
     private static boolean shouldRender(net.minecraft.client.gui.screens.Screen s) {
         LocalPlayer p = Minecraft.getInstance().player;
-        if (p == null || !p.isCreative()) return false;
-        // Both screens use the same 176x166 inventory layout, so existing
-        // tab math works on either. Creative menu's other tabs (Building
-        // Blocks, Combat, etc.) display a different layout — render still
-        // technically fires there, but the inventory rect math will sit off
-        // to the side. Acceptable; the player only sees us when they switch
-        // to the survival-inv tab.
+        if (p == null) return false;
         return s instanceof InventoryScreen || s instanceof CreativeModeInventoryScreen;
     }
 
