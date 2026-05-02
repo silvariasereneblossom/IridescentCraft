@@ -4,6 +4,7 @@
     "level": 1,
     "attributes": {
       "minecraft:generic.armor_toughness": 0.5
-    }
+    },
+    "integrity": -1
   }
 ]

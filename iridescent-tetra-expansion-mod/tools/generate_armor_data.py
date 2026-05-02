@@ -315,8 +315,20 @@ def gen_module_json(module_key: str) -> dict:
     type_str = "tetra:basic_major_module" if kind == "major" else "tetra:basic_module"
     module_short = module_key.split("/", 1)[1]  # 'heavy_crown'
 
+    # Integrity allocation (2026-05-02): catch-all variants are FREE
+    # (player hasn't committed to a material yet, no cost). Material
+    # variants cost their archetype's tier:
+    #   major: -2 per variant (significant slot, big stat impact)
+    #   minor: -1 per variant (3 per piece, totals -3)
+    # Materials provide net positive integrity via Tetra's metals
+    # (iron net +3) and our themed (net +2). Net for fully-iron armor:
+    # 4 modules × ~-1.25 avg cost vs 4 × +3 material gain = +7 spare for
+    # Phase B improvements.
+    INTEGRITY_MAJOR_VARIANT = -2
+    INTEGRITY_MINOR_VARIANT = -1
+
     variants = []
-    for mat_key, mat_ref, mult, integ, dur in MATERIALS:
+    for mat_key, mat_ref, mult, _ignored_integ, dur in MATERIALS:
         vkey = f"{module_short}/{mat_key}" if mat_key else f"{module_short}/"
         materials = [mat_ref] if mat_ref else SLOT_MATERIAL_CATEGORIES[slot]
         # Compose primary attributes.
@@ -328,6 +340,15 @@ def gen_module_json(module_key: str) -> dict:
         # Apply material flavor on top (mage materials boost mana, etc.).
         for k, v in MATERIAL_FLAVOR.get(mat_key, {}).items():
             attrs[k] = round(attrs.get(k, 0.0) + v, 4)
+
+        # Catch-all variant: empty material key, no cost.
+        # Material variant: archetype-tier cost.
+        if not mat_key:
+            integ = 0
+        elif kind == "major":
+            integ = INTEGRITY_MAJOR_VARIANT
+        else:
+            integ = INTEGRITY_MINOR_VARIANT
 
         variant = {
             "materials": materials,
@@ -417,11 +438,18 @@ MAJOR_SLOTS = [
 MAJOR_SLOT_SUFFIXES = ["_helmet", "_chestplate", "_leggings", "_boots"]
 
 def gen_improvement_def(name: str, archetype: str, attrs: dict) -> list:
-    """One improvement definition file (a JSON array of level entries)."""
+    """One improvement definition file (a JSON array of level entries).
+
+    Each improvement consumes 1 integrity from the module's pool when
+    applied. Combined with the variant integrity costs (major -2, minor
+    -1), a fully-iron armor piece's +12 capacity supports about 7
+    improvements before integrity-overflow shows in the workbench.
+    """
     return [{
         "key": f"armor/{name}",
         "level": 1,
         "attributes": attrs,
+        "integrity": -1,
     }]
 
 def gen_improvement_schematic(name: str, archetype: str) -> dict:

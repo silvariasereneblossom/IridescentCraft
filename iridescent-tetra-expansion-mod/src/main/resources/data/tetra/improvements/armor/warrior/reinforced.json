@@ -5,6 +5,7 @@
     "attributes": {
       "minecraft:generic.armor": 1.0,
       "minecraft:generic.knockback_resistance": 0.05
-    }
+    },
+    "integrity": -1
   }
 ]

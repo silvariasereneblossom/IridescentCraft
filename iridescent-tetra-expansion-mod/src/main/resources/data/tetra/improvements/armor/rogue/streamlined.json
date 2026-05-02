@@ -5,6 +5,7 @@
     "attributes": {
       "minecraft:generic.movement_speed": 0.05,
       "minecraft:generic.attack_speed": 0.03
-    }
+    },
+    "integrity": -1
   }
 ]

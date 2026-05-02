@@ -37,7 +37,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.22
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -58,7 +58,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.4
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -80,7 +80,7 @@
           "minecraft:generic.armor": 0.34,
           "irons_spellbooks:max_mana": 5.0
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -102,7 +102,7 @@
           "minecraft:generic.armor": 0.56,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -124,7 +124,7 @@
           "minecraft:generic.armor": 0.64,
           "minecraft:generic.knockback_resistance": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -146,7 +146,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:fire_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -168,7 +168,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:ice_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -190,7 +190,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:ender_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -212,7 +212,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:holy_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -234,7 +234,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -256,7 +256,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:nature_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -278,7 +278,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:ender_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -300,7 +300,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:blood_spell_power": 0.05
         },
-        "integrity": 0,
+        "integrity": -1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

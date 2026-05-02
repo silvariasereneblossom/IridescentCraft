@@ -133,18 +133,25 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     //  - chestplate: 0=chest_lining, 1=trim, 2=pauldrons
     //  - leggings:   0=belt, 1=greaves, 2=cuisses
     //  - boots:      0=boot_lining, 1=heel, 2=lacing
+    // x values bumped from ±4 to ±15 so the 11x11 module backdrops sit
+    // CLEARLY outside the 24x24 diamond bounding box. Tetra's defaults
+    // ±4 work for their 4-major weapons but visibly clip our 1-major +
+    // 3-minor mix where minor backdrops at x=-4 extend into the diamond
+    // center. ±15 puts the upper-left minor's backdrop at x≈-14..-3
+    // (left of center) and the upper-right major's backdrop at x≈16..31
+    // (well right of center) — clean separation matching the visual
+    // spacing in Tetra's pickaxe screenshot.
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
-        // Major: upper-right (matches Tetra's pickaxe head_right + sword blade)
-        return new se.mickelus.tetra.gui.GuiModuleOffsets(4, 0);
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(15, 0);
     }
 
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
         return new se.mickelus.tetra.gui.GuiModuleOffsets(
-                -4, 0,     // index 0: UPPER-LEFT  (lining/visor/belt/boot_lining)
-                -4, 18,    // index 1: LOWER-LEFT  (crest/trim/greaves/heel)
-                4, 18);    // index 2: LOWER-RIGHT (strap/pauldrons/cuisses/lacing)
+                -15, 0,    // index 0: UPPER-LEFT  (lining/visor/belt/boot_lining)
+                -15, 18,   // index 1: LOWER-LEFT  (crest/trim/greaves/heel)
+                15, 18);   // index 2: LOWER-RIGHT (strap/pauldrons/cuisses/lacing)
     }
 
     @Override
