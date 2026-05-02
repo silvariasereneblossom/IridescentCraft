@@ -315,17 +315,33 @@ def gen_module_json(module_key: str) -> dict:
     type_str = "tetra:basic_major_module" if kind == "major" else "tetra:basic_module"
     module_short = module_key.split("/", 1)[1]  # 'heavy_crown'
 
-    # Integrity allocation (2026-05-02): catch-all variants are FREE
-    # (player hasn't committed to a material yet, no cost). Material
-    # variants cost their archetype's tier:
-    #   major: -2 per variant (significant slot, big stat impact)
-    #   minor: -1 per variant (3 per piece, totals -3)
-    # Materials provide net positive integrity via Tetra's metals
-    # (iron net +3) and our themed (net +2). Net for fully-iron armor:
-    # 4 modules × ~-1.25 avg cost vs 4 × +3 material gain = +7 spare for
-    # Phase B improvements.
-    INTEGRITY_MAJOR_VARIANT = -2
-    INTEGRITY_MINOR_VARIANT = -1
+    # Integrity allocation (2026-05-02 v2): the CATCH-ALL variant carries
+    # the integrity cost, NOT the per-material variants. Reason:
+    # MaterialVariantData.combine() at load time auto-suffixes the material
+    # key onto the variant key. The catch-all expands cleanly (e.g.
+    # "full_leg_plate/" + "iron" → "full_leg_plate/iron"), but per-material
+    # variants double their key ("full_leg_plate/iron" + "iron" →
+    # "full_leg_plate/ironiron"). NBT lookups for "full_leg_plate/iron"
+    # match the CATCH-ALL EXPANSION, not the per-material variant — so
+    # per-material variants are effectively dead and their integrity values
+    # are never read.
+    #
+    # The catch-all's extract.integrity gets multiplied by the material's
+    # integrityCost (Tetra iron cost=2, themed cost=2) at combine-time.
+    # Setting catch-all integrity = -2 for major + iron material →
+    # variant integrity = -4 → adds 4 to integrityUsage. Per piece (1
+    # major + 3 minors all iron):
+    #   Major catch-all (-2) × iron cost 2 = -4 → usage += 4
+    #   Minor catch-all (-1) × iron cost 2 = -2 each, 3 minors → usage += 6
+    #   Total usage per piece = 10
+    #
+    # Per piece capacity from material gain (iron gain=5):
+    #   4 modules × (5 - 2) net = 12 capacity
+    #
+    # Net per piece: 10/12 — about 2 spare integrity for improvements
+    # before overflow.
+    INTEGRITY_MAJOR_CATCHALL = -2
+    INTEGRITY_MINOR_CATCHALL = -1
 
     variants = []
     for mat_key, mat_ref, mult, _ignored_integ, dur in MATERIALS:
@@ -341,14 +357,12 @@ def gen_module_json(module_key: str) -> dict:
         for k, v in MATERIAL_FLAVOR.get(mat_key, {}).items():
             attrs[k] = round(attrs.get(k, 0.0) + v, 4)
 
-        # Catch-all variant: empty material key, no cost.
-        # Material variant: archetype-tier cost.
+        # Catch-all (empty mat_key): carries the archetype's integrity cost.
+        # Per-material variants: 0 (dead, doubled keys never resolve).
         if not mat_key:
-            integ = 0
-        elif kind == "major":
-            integ = INTEGRITY_MAJOR_VARIANT
+            integ = INTEGRITY_MAJOR_CATCHALL if kind == "major" else INTEGRITY_MINOR_CATCHALL
         else:
-            integ = INTEGRITY_MINOR_VARIANT
+            integ = 0
 
         variant = {
             "materials": materials,

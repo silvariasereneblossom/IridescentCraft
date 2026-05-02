@@ -133,25 +133,34 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     //  - chestplate: 0=chest_lining, 1=trim, 2=pauldrons
     //  - leggings:   0=belt, 1=greaves, 2=cuisses
     //  - boots:      0=boot_lining, 1=heel, 2=lacing
-    // x values bumped from ±4 to ±15 so the 11x11 module backdrops sit
-    // CLEARLY outside the 24x24 diamond bounding box. Tetra's defaults
-    // ±4 work for their 4-major weapons but visibly clip our 1-major +
-    // 3-minor mix where minor backdrops at x=-4 extend into the diamond
-    // center. ±15 puts the upper-left minor's backdrop at x≈-14..-3
-    // (left of center) and the upper-right major's backdrop at x≈16..31
-    // (well right of center) — clean separation matching the visual
-    // spacing in Tetra's pickaxe screenshot.
+    // Mirroring Tetra's ModularDoubleHeadedItem (pickaxe) values verbatim:
+    //   majorOffsets = (-13, -1, 3, 19, -13, 19)  — 3 majors at NW/SE/SW
+    //   minorOffsets = (6, 1)                       — 1 minor at NE
+    // Asymmetric x: text-extending-LEFT modules (x<0) get more horizontal
+    // room since text flows leftward from the icon's left edge; text-
+    // extending-RIGHT modules (x>0) sit closer to the diamond.
+    //
+    // For our 1 major + 3 minors layout, swap the roles: major to NE
+    // (Tetra's binding-minor position), minors fill the other 3 corners.
+    // Net visual: matches the spacing the player called out in the
+    // pickaxe screenshot reference.
+    //
+    //                  [minor 0: NW]   [major: NE]
+    //                                ◇
+    //                  [minor 1: SW]   [minor 2: SE]
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
-        return new se.mickelus.tetra.gui.GuiModuleOffsets(15, 0);
+        // (6, 1) — Tetra's pickaxe minor position. Tighter to diamond
+        // since major's text extends RIGHT (away from center).
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(6, 1);
     }
 
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
         return new se.mickelus.tetra.gui.GuiModuleOffsets(
-                -15, 0,    // index 0: UPPER-LEFT  (lining/visor/belt/boot_lining)
-                -15, 18,   // index 1: LOWER-LEFT  (crest/trim/greaves/heel)
-                15, 18);   // index 2: LOWER-RIGHT (strap/pauldrons/cuisses/lacing)
+                -13, -1,   // index 0: NW  (Tetra's pickaxe head_left position)
+                -13, 19,   // index 1: SW  (Tetra's pickaxe head_right position)
+                3, 19);    // index 2: SE  (Tetra's pickaxe handle position)
     }
 
     @Override
