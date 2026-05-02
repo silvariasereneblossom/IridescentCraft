@@ -16,7 +16,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.5,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02
+          "*minecraft:generic.movement_speed": -0.02
         },
         "integrity": -1,
         "glyph": {
@@ -39,7 +39,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.275,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02
+          "*minecraft:generic.movement_speed": -0.02
         },
         "integrity": 0,
         "glyph": {
@@ -62,7 +62,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.5,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02
+          "*minecraft:generic.movement_speed": -0.02
         },
         "integrity": 0,
         "glyph": {
@@ -85,7 +85,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.425,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -109,7 +109,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.7,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "minecraft:generic.armor_toughness": 0.2
         },
         "integrity": 0,
@@ -133,7 +133,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.8,
           "minecraft:generic.knockback_resistance": 0.15,
-          "minecraft:generic.movement_speed": -0.02
+          "*minecraft:generic.movement_speed": -0.02
         },
         "integrity": 0,
         "glyph": {
@@ -156,7 +156,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:fire_spell_power": 0.05
         },
         "integrity": 0,
@@ -180,7 +180,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:ice_spell_power": 0.05
         },
         "integrity": 0,
@@ -204,7 +204,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -228,7 +228,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:holy_spell_power": 0.05
         },
         "integrity": 0,
@@ -252,7 +252,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
         "integrity": 0,
@@ -276,7 +276,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:nature_spell_power": 0.05
         },
         "integrity": 0,
@@ -300,7 +300,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:ender_spell_power": 0.05
         },
         "integrity": 0,
@@ -324,7 +324,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.525,
           "minecraft:generic.knockback_resistance": 0.1,
-          "minecraft:generic.movement_speed": -0.02,
+          "*minecraft:generic.movement_speed": -0.02,
           "irons_spellbooks:blood_spell_power": 0.05
         },
         "integrity": 0,
