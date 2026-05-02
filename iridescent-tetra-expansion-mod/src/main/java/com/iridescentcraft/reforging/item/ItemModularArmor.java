@@ -133,34 +133,37 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     //  - chestplate: 0=chest_lining, 1=trim, 2=pauldrons
     //  - leggings:   0=belt, 1=greaves, 2=cuisses
     //  - boots:      0=boot_lining, 1=heel, 2=lacing
-    // Mirroring Tetra's ModularDoubleHeadedItem (pickaxe) values verbatim:
-    //   majorOffsets = (-13, -1, 3, 19, -13, 19)  — 3 majors at NW/SE/SW
-    //   minorOffsets = (6, 1)                       — 1 minor at NE
-    // Asymmetric x: text-extending-LEFT modules (x<0) get more horizontal
-    // room since text flows leftward from the icon's left edge; text-
-    // extending-RIGHT modules (x>0) sit closer to the diamond.
+    // Tetra's ModularDoubleHeadedItem (pickaxe) values verbatim are:
+    //   majorOffsets = (-13, -1, 3, 19, -13, 19)
+    //   minorOffsets = (6, 1)
     //
-    // For our 1 major + 3 minors layout, swap the roles: major to NE
-    // (Tetra's binding-minor position), minors fill the other 3 corners.
-    // Net visual: matches the spacing the player called out in the
-    // pickaxe screenshot reference.
+    // ARMOR ICON CAVEAT — why we deviate on y values: Tetra's pickaxe
+    // icon fits within the diamond's bounding box, so y=19 (geometric
+    // bottom edge of diamond) reads visually as "below the icon." Our
+    // armor item icons (boots, helmet, leggings, chestplate) extend
+    // VERTICALLY PAST the diamond's geometric bounds — boots especially
+    // are tall enough that y=19 modules visually overlap with the icon's
+    // bottom half. Tetra's offsets are not "wrong" for armor — they're
+    // calibrated to a smaller icon. To get pickaxe-style visual
+    // separation we push y further down (24-28) to clear the armor icon.
+    //
+    // X values stay matched to Tetra's pickaxe (asymmetric -13/+3/+6 to
+    // account for text-flow direction).
     //
     //                  [minor 0: NW]   [major: NE]
-    //                                ◇
+    //                                ◇  (armor icon, taller than pickaxe)
     //                  [minor 1: SW]   [minor 2: SE]
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
-        // (6, 1) — Tetra's pickaxe minor position. Tighter to diamond
-        // since major's text extends RIGHT (away from center).
         return new se.mickelus.tetra.gui.GuiModuleOffsets(6, 1);
     }
 
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
         return new se.mickelus.tetra.gui.GuiModuleOffsets(
-                -13, -1,   // index 0: NW  (Tetra's pickaxe head_left position)
-                -13, 19,   // index 1: SW  (Tetra's pickaxe head_right position)
-                3, 19);    // index 2: SE  (Tetra's pickaxe handle position)
+                -13, -1,   // index 0: NW  (matches Tetra pickaxe head_left)
+                -13, 26,   // index 1: SW  (Tetra's 19 + 7 to clear armor icon)
+                3, 26);    // index 2: SE
     }
 
     @Override
