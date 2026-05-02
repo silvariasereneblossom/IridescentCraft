@@ -12,6 +12,7 @@ import java.util.ArrayList;
 import net.minecraft.client.Minecraft;
 import net.minecraft.client.gui.GuiGraphics;
 import net.minecraft.client.gui.screens.Screen;
+import net.minecraft.client.gui.screens.inventory.CreativeModeInventoryScreen;
 import net.minecraft.client.gui.screens.inventory.InventoryScreen;
 import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
@@ -29,12 +30,16 @@ public class DrawTabs {
             isMouseCheck = false;
             tabList = new ArrayList<>();
             // The "inventory" tab (player head) is only useful when the
-            // player is AWAY from the InventoryScreen — clicking it
-            // navigates back. On the inventory itself it's redundant AND
-            // visually overlaps with whichever tab another mod (Apothic
-            // Attributes, Curios, etc.) wanted in slot 2. Skip it on the
-            // inventory screen so other mods' tabs sit there cleanly.
-            if (!(screen instanceof InventoryScreen)) {
+            // player is AWAY from the inventory — clicking it navigates
+            // back. On any inventory screen (vanilla survival or creative
+            // menu's survival-inventory tab) it's redundant AND clips
+            // visually with Apothic Attributes' toggleBtn (guiLeft+63,
+            // guiTop+10) and Curios's TOP_LEFT button (guiLeft+26,
+            // guiTop+8). Skip it on both InventoryScreen AND
+            // CreativeModeInventoryScreen so other mods' widgets sit
+            // there cleanly.
+            boolean onAnyInventoryScreen = (screen instanceof InventoryScreen) || (screen instanceof CreativeModeInventoryScreen);
+            if (!onAnyInventoryScreen) {
                 tabList.add(new Tabs("inventory", Utils.playerHead(), new InventoryScreen(client.player), screen instanceof InventoryScreen, Component.translatable("container.inventory")));
             }
             tabList.add(new Tabs("leveling", RegistryItems.LEVELING_BOOK.get().getDefaultInstance(), new JustLevelingScreen(), screen instanceof JustLevelingScreen, Component.translatable("screen.aptitude.title")));
