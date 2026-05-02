@@ -153,23 +153,26 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         return new SynergyData[0];
     }
 
-    // ── Attribute aggregation (phase 4) ────────────────────────────────
+    // ── Attribute aggregation ──────────────────────────────────────────
     //
-    // Forge's per-stack getAttributeModifiers(slot, stack) override. This is
-    // what HumanoidArmorLayer + LivingEntity damage calculation consult to
-    // determine equipped armor's contributions. We compose three sources:
+    // CRITICAL: do NOT delegate to super.getAttributeModifiers. Vanilla
+    // ArmorItem bakes its baseMaterial defenses (armor / toughness /
+    // knockback resistance) into a static `defaultModifiers` multimap at
+    // construction time and returns it here. Tetra's module pipeline
+    // independently produces those same attributes from variant data, with
+    // a different deterministic UUID — so calling super double-counts:
+    // iron chestplate = 6 (Tetra modules) + 6 (vanilla material default)
+    // = 12 armor on the equipped player. Same mechanism inflated
+    // movement_speed past −100% with heavy armor.
     //
-    //   1. Vanilla armor material defaults (from super.getDefaultAttribute-
-    //      Modifiers) — placeholder iron material baseline.
-    //   2. Module-driven modifiers from Tetra's IModularItem cache — picked
-    //      up automatically once a stack has module data.
-    //   3. Skin base attributes — phase 6 will read tag.Skin and look up the
-    //      contribution from SkinRegistry. Stub for now.
+    // Pattern modeled on Tetra's own ItemModularHandheld.getAttribute-
+    // Modifiers (tetra jar `se/mickelus/tetra/items/modular/
+    // ItemModularHandheld.class`): module data is the sole source of
+    // truth for the equipped slot, empty for non-matching slots.
     //
-    // Slot guard: only emit modifiers when the queried slot matches this
-    // item's slot type. ArmorItem default does this implicitly via its
-    // defaultModifiers being keyed on the item's slot, but our combined
-    // multimap needs the explicit check.
+    // Sources composed:
+    //   1. Tetra IModularItem cache (variant attribute data)
+    //   2. Skin base attributes (read from tag.Skin if present)
     @Override
     public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
         if (slot != getEquipmentSlot()) {
@@ -178,24 +181,16 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
 
         Multimap<Attribute, AttributeModifier> combined = HashMultimap.create();
 
-        // (1) Vanilla material defaults. super.getAttributeModifiers passes
-        // through to ArmorItem.defaultModifiers when the slot matches.
-        combined.putAll(super.getAttributeModifiers(slot, stack));
-
-        // (2) Module-driven modifiers via Tetra's cache layer. Returns an
+        // (1) Module-driven modifiers via Tetra's cache layer. Returns an
         // empty multimap if the stack has no module NBT yet.
         try {
             combined.putAll(getAttributeModifiersCached(stack));
         } catch (Exception e) {
-            // Fail open — modules contribute nothing this frame, vanilla
-            // baseline still applies. Log once per stack-id ideally; for
-            // now silent to avoid spam.
+            // Fail open — modules contribute nothing this frame.
         }
 
-        // (3) Skin base attributes (phase 6) — read tag.Skin, look up the
-        // SkinDefinition, and merge in its baseAttributes. Skin lookup is
-        // null-safe; absent skin means we just return material+module
-        // attributes.
+        // (2) Skin base attributes — read tag.Skin, look up the
+        // SkinDefinition, and merge in its baseAttributes.
         String skinId = ItemModularArmorClient.readSkinId(stack);
         if (skinId != null) {
             Optional<SkinDefinition> skin = SkinRegistry.get().getDefinition(skinId);
