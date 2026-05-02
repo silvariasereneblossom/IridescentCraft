@@ -6,7 +6,8 @@
   "refmap": "iridescent_tetra_expansion.refmap.json",
   "mixins": [],
   "client": [
-    "GuiModuleSlotSubheadingMixin"
+    "GuiModuleSlotSubheadingMixin",
+    "AttributesGuiToggleBtnMixin"
   ],
   "server": [],
   "injectors": {
