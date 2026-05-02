@@ -104,61 +104,14 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
 
     // ── Workbench module-icon layout ───────────────────────────────────
     //
-    // Override Tetra's defaultMajorOffsets / defaultMinorOffsets to spread
-    // our 1 major + 3 minors across the four CORNERS of the workbench
-    // diamond, mirroring Tetra's own pickaxe layout (defaultMajorOffsets[4]:
-    // 4,0 / 4,18 / -4,0 / -4,18 — four corners of an 8x18 rect around the
-    // diamond center).
-    //
-    // The earlier "cardinal points" layout (top / left / bottom / right with
-    // major at right-mid and three minors at the other points) put modules
-    // at the POINTS of the diamond. Player feedback was that the boxes
-    // should be on the SIDES of the diamond — i.e., at the four corners
-    // of the diamond's bounding rectangle.
-    //
-    // Coordinate system (relative to workbench diamond center):
-    //   x>0 → right side, attachment=topLeft, text extends RIGHT
-    //   x<0 → left side,  attachment=topRight, text extends LEFT
-    //   y=0  is the upper edge of the diamond; y=18 is the lower edge.
-    //
-    // Layout for our 1 major + 3 minors:
-    //
-    //   [minor 0: upper-left] ◇ [major: upper-right]
-    //   [minor 1: lower-left]   [minor 2: lower-right]
-    //
-    // Minor index assignment per piece (order matches *_MINOR arrays in
-    // ModItems): 0=upper-left (inner lining), 1=lower-left (mid-tier),
-    //            2=lower-right (outer).
-    //  - helmet:     0=visor, 1=crest, 2=strap
-    //  - chestplate: 0=chest_lining, 1=trim, 2=pauldrons
-    //  - leggings:   0=belt, 1=greaves, 2=cuisses
-    //  - boots:      0=boot_lining, 1=heel, 2=lacing
-    // Tetra's ModularDoubleHeadedItem (pickaxe) values verbatim:
-    //   majorOffsets = (-13, -1, 3, 19, -13, 19)  — 3 corners
-    //   minorOffsets = (6, 1)                       — 1 minor at NE
-    //
-    // For our 1 major + 3 minors layout, swap roles: major to NE
-    // (Tetra's binding-minor position), minors fill the other 3 corners.
-    // GuiModuleList is positioned at (164, 49) for ALL items (verified
-    // in WorkbenchScreen.class), so the visual layout produced by these
-    // offsets should be identical to Tetra's pickaxe.
-    //
-    //                  [minor 0: NW]   [major: NE]
-    //                                ◇
-    //                  [minor 1: SW]   [minor 2: SE]
-    @Override
-    public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
-        return new se.mickelus.tetra.gui.GuiModuleOffsets(6, 1);
-    }
-
-    @Override
-    public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
-        return new se.mickelus.tetra.gui.GuiModuleOffsets(
-                -13, -1,   // index 0: NW  (matches Tetra pickaxe head_left)
-                -13, 19,   // index 1: SW  (matches Tetra pickaxe head_right)
-                3, 19);    // index 2: SE  (matches Tetra pickaxe handle)
-    }
-
+    // Tetra's IModularItem already provides default offsets keyed by module
+    // count. For our 1-major + 3-minors shape these are:
+    //   defaultMajorOffsets[1] = (4, 0)                          single major NE
+    //   defaultMinorOffsets[3] = (-12, -1, -21, 12, -12, 25)     three minors stacked left
+    // Earlier custom overrides copied the pickaxe's offsets verbatim, but
+    // pickaxe is 3-major + 1-minor — the inverse shape — so the borrowed
+    // coords clipped against the diamond. The defaults are the canonical
+    // layout for our shape, so we simply do not override.
     @Override
     public Cache<String, Multimap<Attribute, AttributeModifier>> getAttributeModifierCache() {
         return attributeCache;
