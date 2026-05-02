@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-02 — ROBE armor tier + tagging audit + Magebloom material
+
+**ROBE class added — true mage gear, 4th tier below LIGHT.** Splits mage-coded armor (circlet, robe_chest, robed_leg_plate, robed_boot_sole reforged majors; ISS class robes; Botania manaweave; Terramity void_mage / exodium_warlock) out of LIGHT into its own tier. Per-piece: +0.10 mana_regen ADD, +1.5% speed, −7.5% armor, −10% toughness. **Full 4/4 robe set unlocks +0.5 mana_regen ADDITION on top** — the "True Mage" payoff for committing to a real caster build instead of mixing in plate. LIGHT keeps its rogue/agile identity (high speed bonus, no mana). Implementation: `ItemModularArmor.ArmorWeight.ROBE`, `ArmorWeightAggregator.WeightCount.robe`, coefficient tables in `kubejs/server_scripts/armor_weight.js`, tooltip color LIGHT_PURPLE.
+
+**Armor tagging audit pass.** Used `IridescentCraft-internal/design/modded_metal_armor_stats.md` (Tetra primaries + per-piece armor + toughness for ~30 modded materials) to fill gaps. Migrations:
+- New `data/icraft/tags/items/armor_robe.json` — 50+ entries (ISS class robes, Botania manaweave, Terramity mage sets, ramcompat / relics named robes)
+- `armor_light.json` — trimmed to cloaks, hats, accessories, agile rogue gear (Shadow-Walker, pumpkin)
+- `armor_heavy.json` — expanded from 33 to 80+ entries: aether phoenix/valkyrie/gravitite, aquaculture neptunium, blue_skies charoite/diopside, botania terrasteel, deep_aether stratus, deeperdarker warden, forbidden_arcanus draco_arcanus/tyr, undergarden froststeel/utherium, more.
+
+**Magebloom Tetra material.** New `data/tetra/materials/skin/magebloom.json` registers `ars_nouveau:magebloom_fiber` as a Tetra material in the `skin` category — slots into modules accepting `tetra:skin/`. primary=0.6 (low armor), secondary=4.5 (mage flavor), magicCapacity=80. Conditional on ars_nouveau loaded. No conflict with existing Tetra materials (verified all-mods cache).
+
+**Tetra workbench module offsets recalibrated.** Earlier "use Tetra defaults for 1-major-3-minor" approach was untested — no vanilla Tetra item exercises `defaultMajorOffsets[1] / defaultMinorOffsets[3]`. Switched to sword-style: major at NE inner `(1, -3)`, minors at sword's W outer + SW outer + a new SE outer mirror.
+
+**Multi-distro deploy gap fix.** Fixes 0848eecf through 78efe6ed (movement_speed `*` prefix, drop super.getAttributeModifiers, "Iron Iron" rename, armor calibration to vanilla scale) only landed in `.minecraft/mods/` — not in `distribution/client/mods/` or `server_distribution/mods/` which is what `sync_client.bat` and the server pull from. Result: testers ran the pre-fix jar for an entire session while the source repo SHA matched. All 3 distros now sync per commit.
+
+---
+
 ## 2026-05-02 — Workbench layout + inventory polish
 
 Two related polish passes against tester feedback.

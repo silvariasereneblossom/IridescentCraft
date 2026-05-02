@@ -6,27 +6,32 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every piece of armor in IridescentCraft falls into one of three weight classes: $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(). Effects scale with the count of equipped pieces - so a hybrid kit (two heavy + two light) lands proportionally between the extremes.$(br2)Untagged armor defaults to medium (no effect)."
+      "text": "Every piece of armor in IridescentCraft falls into one of four weight classes: $(bold)robe$(), $(bold)light$(), $(bold)medium$(), or $(bold)heavy$(). Effects scale with the count of equipped pieces - so a hybrid kit (two heavy + two light) lands proportionally between the extremes.$(br2)Untagged armor defaults to medium (no effect)."
     },
     {
       "type": "patchouli:text",
       "title": "Per-piece effects",
-      "text": "$(t1)Light$() - robes, cloth, leather:$(br)$(br)$(li2)+5%$() mana regen$(br)$(li2)+1.25%$() movement speed$(br)$(li2)-5%$() base armor$(br)$(li2)-7.5%$() armor toughness$(br2)$(t3)Heavy$() - diamond, netherite, plate:$(br)$(br)$(li2)-5%$() mana regen$(br)$(li2)-1.25%$() movement speed$(br)$(li2)+5%$() base armor$(br2)$(bold)Medium$() - everything else: no bonus or penalty."
+      "text": "$(5)Robe$() - true mage gear:$(br)$(li2)+0.10$() mana regen$(br)$(li2)+1.5%$() movement speed$(br)$(li2)-7.5%$() base armor$(br)$(li2)-10%$() armor toughness$(br2)$(t1)Light$() - rogue/agile cloth + leather:$(br)$(li2)+0.05$() mana regen$(br)$(li2)+5%$() movement speed$(br)$(li2)-5%$() base armor$(br)$(li2)-7.5%$() armor toughness$(br2)$(t3)Heavy$() - diamond, netherite, plate:$(br)$(li2)-0.05$() mana regen$(br)$(li2)-5%$() movement speed$(br)$(li2)+5%$() base armor"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Robe set bonus",
+      "text": "Wearing $(bold)4 robe pieces$() unlocks the $(5)True Mage$() set bonus: an additional $(li2)+0.5$() mana regen on top of the per-piece total.$(br2)Final 4/4 robe: $(li2)+0.9$() mana regen, $(li2)+6%$() speed, $(li2)-30%$() armor, $(li2)-40%$() toughness.$(br2)This is the payoff for committing to a real caster build instead of mixing in plate. Robes are deliberately the most fragile tier - the bonus has to be worth it."
     },
     {
       "type": "patchouli:text",
       "title": "Full-kit extremes",
-      "text": "Wearing $(bold)4 light pieces$():$(br)$(li2)+20%$() mana regen$(br)$(li2)+5%$() movement speed$(br)$(li2)-20%$() base armor$(br)$(li2)-30%$() armor toughness$(br2)Wearing $(bold)4 heavy pieces$():$(br)$(li2)-20%$() mana regen$(br)$(li2)-5%$() movement speed$(br)$(li2)+20%$() base armor$(br2)$(warn)Light is doubly fragile.$() The toughness malus on light is one-sided - heavy doesn't add toughness back. Diamond/netherite already carry high native toughness; the system amplifies the gap rather than re-dosing it."
+      "text": "$(bold)4 robe$(): +0.9 mana, +6% speed, -30% armor, -40% toughness$(br2)$(bold)4 light$(): +0.20 mana, +20% speed, -20% armor, -30% toughness$(br2)$(bold)4 heavy$(): -0.20 mana, -20% speed, +20% armor, no toughness change$(br2)$(warn)Robes are doubly fragile.$() Toughness penalty stacks asymmetrically - heavy doesn't add toughness back. Diamond/netherite already carry high native toughness; the system amplifies the gap rather than re-dosing it."
     },
     {
       "type": "patchouli:text",
       "title": "What's tagged what",
-      "text": "$(t1)Light$() - Iron's Spellbooks robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Shadow-Walker, Wandering Magician, Archevoker, Netherite Battlemage), Ars Nouveau Arcanist + Sorceror, Terramity Void Mage, Botania manaweave + cloaks, vanilla leather.$(br2)$(t3)Heavy$() - vanilla diamond + netherite, Aether obsidian + aethersteel, Cataclysm ignitium, Twilight Forest fiery + knightmetal.$(br2)Everything else (vanilla iron + gold, modded mid-tier metals, hybrid sets) is medium."
+      "text": "$(5)Robe$() - Iron's Spellbooks class robes (Wizard, Pyromancer, Cryomancer, Electromancer, Cultist, Plagued, Priest, Wandering Magician, Archevoker, Netherite Battlemage), Botania manaweave, Terramity void_mage + exodium_warlock, our reforged mage majors (circlet/robe_chest/robed_*).$(br2)$(t1)Light$() - cloaks, hats, accessories, agile rogue gear (Shadow-Walker, pumpkin), our reforged light/scaled majors.$(br2)$(t3)Heavy$() - vanilla diamond + netherite, Aether obsidian/phoenix/valkyrie/gravitite, Aquaculture neptunium, Botania terrasteel, Cataclysm ignitium, Forbidden Arcanus draco_arcanus + tyr, Twilight Forest fiery + knightmetal, Undergarden froststeel + utherium, more.$(br2)Everything else (vanilla iron + gold, mid-tier modded metals) is medium."
     },
     {
       "type": "patchouli:text",
       "title": "How it works",
-      "text": "The system reads three Forge tags every 5 seconds (and immediately when you swap a piece):$(br)$(thing)icraft:armor_light$()$(br)$(thing)icraft:armor_medium$()$(br)$(thing)icraft:armor_heavy$()$(br2)Modifiers stack additively per slot. Compatible with all attribute mods (Apothic Attributes, Iron's Spellbooks, etc.) - bonuses apply on top of base armor stats and Apothic affixes.$(br2)Logic lives in $(thing)kubejs/server_scripts/armor_weight.js$()."
+      "text": "The system reads four Forge tags every 5 seconds (and immediately when you swap a piece):$(br)$(thing)icraft:armor_robe$()$(br)$(thing)icraft:armor_light$()$(br)$(thing)icraft:armor_medium$()$(br)$(thing)icraft:armor_heavy$()$(br2)Reforged armor uses the dynamic class lookup - the installed major module decides the tier (e.g., circlet major = robe regardless of material).$(br2)Modifiers stack additively per slot. Compatible with all attribute mods (Apothic Attributes, Iron's Spellbooks, etc.) - bonuses apply on top of base armor stats and Apothic affixes.$(br2)Logic lives in $(thing)kubejs/server_scripts/armor_weight.js$()."
     }
   ]
 }
