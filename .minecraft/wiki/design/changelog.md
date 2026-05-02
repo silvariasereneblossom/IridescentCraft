@@ -4,6 +4,66 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-02 — Workbench layout + inventory polish
+
+Two related polish passes against tester feedback.
+
+**Tetra workbench module layout: 4-corner instead of cardinal points.** Earlier the major sat at right-mid, three minors at the cardinal points (top, left, bottom) of the diamond. Player feedback comparing to base Tetra's pickaxe: the boxes should sit at the *corners* of the diamond, not at its points. New layout matches Tetra's `defaultMajorOffsets[4]` (4,0 / 4,18 / -4,0 / -4,18) — modules at upper-left, upper-right, lower-left, lower-right. Major at upper-right; the three minors fill the remaining corners ordered as inner-lining (upper-left), mid-tier (lower-left), outer-accent (lower-right).
+
+**Themed-materials lang:** the workbench's "Materials applicable" line on themed schematics rendered `tetra:variant_category.themed.label` as raw text. Tetra strips the namespace from the ResourceLocation when building this lookup key (`iridescent_reforging:themed/` → path-only `themed`), so the existing namespaced lang entry was never matched. Added the path-only key with display name "Themed".
+
+**Curios survival button restored.** Re-enabled `enableButton = true` in `curios-client.toml` across all 3 distros. The Curios slot toggle reappears next to the character model in the inventory. Was disabled during the Codex shortcuts work; the side-effect (Curios was reachable only via E-press toggle) wasn't ideal.
+
+**Aptitudes tab renders in survival.** The aptitudes tab strip on top of the inventory was previously gated to creative mode only — a defensive measure against a feared overlap with Apothic Attributes' "View Stats" button. Geometry audit confirmed no actual overlap (tab strip at y=guiTop−28 to guiTop+4; Apothic toggle at y=guiTop+10 to guiTop+20, 6px gap). Lifted the gate. Players see Inventory + Aptitudes tabs above the survival inventory now.
+
+**Codex Quick Access category.** New top-level category in the Iridescent Codex book: "Quick Access" sorts before "Getting Started", contains two single-page entries (Stats / Aptitudes) whose first page is the screen-link button itself — no preceding text page. Click count to reach the Apothic Attributes screen via the book reduced from 5+ to 3.
+
+---
+
+## 2026-05-02 — Client sync robustness pass (server parity)
+
+The PrismLauncher pre-launch hook (`sync_client.ps1` + `.bat`) drifted from the server's hardened `phase0_sync.ps1`. Five distinct fixes brought it to parity:
+
+- **`-Force` parameter actually works.** The .bat passed it through, but the .ps1 had no `param()` block, so PowerShell silently dropped it.
+- **Error-gated SHA write.** Sync no longer marks itself "complete" if any individual file download failed. Partial-failure runs leave the SHA marker unchanged so the next launch retries.
+- **`>= 300` cap detection.** GitHub's `/compare` API caps the `.files` array at 300 entries — the `>` vs `>=` distinction is the difference between "fall back to full zip on truncation" and "silently use a 300-entry truncated diff as if it were complete."
+- **Self-update staging for sync scripts.** `sync_client.ps1`, `sync_client.bat`, `download_mods.ps1`, and `cleanup_stale_jars.ps1` now stage as `<name>.new` during sync and the `.bat` finalizes them on the next launch (PowerShell holds an exclusive read-handle on the .ps1 it's running, so in-place overwrite isn't reliable).
+- **AV-retry on jar copies.** 3-attempt retry with 500ms backoff for the bytecode-patched JARs that Defender locks during scan.
+
+**Cleanup runs every launch, not just on SHA mismatch.** Previously the "up-to-date" early-exit skipped `cleanup_stale_jars` and `download_mods`. Stale jars manually dropped into `mods/` would never get pruned while the repo SHA was steady. Now both run unconditionally at the end of every sync — ~100ms cost on the up-to-date path, catches a slow-bleed that was invisible until someone went looking.
+
+**PreLaunchCommand now points at `.bat`.** `install.ps1` previously wired `instance.cfg`'s PreLaunchCommand straight at `sync_client.ps1`, bypassing the `.bat` finalizer. Updated the install template AND added a self-correcting check inside `sync_client.ps1` that detects legacy `.ps1`-direct wiring on existing testers' instances and rewrites it on next launch. No manual action required from existing testers.
+
+---
+
+## 2026-05-02 — Iridescent Tetra Expansion bundle: cosmetic rebrand + bundle-jar fix
+
+**Bundle visibility:** the two `[[mods]]` entries in the bundled jar now display as **"Iridescent Tetra Expansion: Reforging"** and **"Iridescent Tetra Expansion: Modular Spells"** in the Forge mod list, branding them as members of the bundle. Mod IDs unchanged (zero risk to existing world stacks).
+
+**Critical bug fix:** Phase C's bundling commit silently dropped the bundled jar from the repo. `.minecraft/.gitignore` has an allowlist pattern for tracked custom JARs, and the new `iridescent_tetra_expansion-*.jar` filename wasn't in it — so `git add` of the binary no-op'd without warning. The Phase C commit shipped the source tree but not the actual jar; testers who pulled saw nothing in `mods/`. Added the allowlist entry, force-added the jar, the bundle binary now actually ships with the repo.
+
+**Future plan documented:** the longer-term Option C (true single-mod-ID merge) is filed in the internal repo as the alpha→beta cutover plan. Will ship when we cut a fresh world for beta playtest.
+
+---
+
+## 2026-05-01 — Iridescent Reforging Phase B: archetype improvement schematics
+
+Each major armor module now has one upgrade-path schematic visible in its workbench context menu (alongside the install schematics that swap between archetypes), plus one universal improvement that applies to any major. Mirrors Tetra's Carve hook / Serrate / Temper pattern for swords.
+
+**Five improvements ship:**
+
+| Improvement | Archetype | Effect |
+|---|---|---|
+| Reinforced | warrior | +1 armor, +5% knockback resist |
+| Streamlined | rogue | +5% movement speed, +3% attack speed |
+| Runic | mage | +30 max mana, +5% spell power |
+| Tempered | balanced | +0.5 armor, +1 max health |
+| Polished | shared (any major) | +0.5 toughness |
+
+Each major module's `improvements[]` field references the archetype-appropriate path prefix plus `armor/shared/`. The right-column context menu shows the install schematics for the slot's 4 module choices, plus the one or two improvements the currently-installed module accepts. Schematic requirements gate visibility: `NOT(already-applied) AND module-accepts(key)`. Once you apply Reinforced to a heavy crown, "Reinforced" disappears from that slot's menu (one-shot).
+
+---
+
 ## 2026-05-01 — Phase C: bundle into IridescentCraft Tetra Expansion (single jar, two mod IDs)
 
 `iridescent-reforging-mod` and `iridescent-modular-spells-mod` merged into a single `iridescent-tetra-expansion-mod/` source tree producing `iridescent_tetra_expansion-1.0.0.jar`. The bundled jar declares **two `[[mods]]` entries** in its `mods.toml` — `iridescent_reforging` and `iridescent_modular_spells` — preserving both original mod IDs verbatim so every existing in-world stack, recipe reference, and `ResourceLocation`-keyed lookup survives the swap.
