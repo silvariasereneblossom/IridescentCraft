@@ -29,19 +29,16 @@ public class DrawTabs {
         if (client.player != null) {
             isMouseCheck = false;
             tabList = new ArrayList<>();
-            // The "inventory" tab (player head) is only useful when the
-            // player is AWAY from the inventory — clicking it navigates
-            // back. On any inventory screen (vanilla survival or creative
-            // menu's survival-inventory tab) it's redundant AND clips
-            // visually with Apothic Attributes' toggleBtn (guiLeft+63,
-            // guiTop+10) and Curios's TOP_LEFT button (guiLeft+26,
-            // guiTop+8). Skip it on both InventoryScreen AND
-            // CreativeModeInventoryScreen so other mods' widgets sit
-            // there cleanly.
-            boolean onAnyInventoryScreen = (screen instanceof InventoryScreen) || (screen instanceof CreativeModeInventoryScreen);
-            if (!onAnyInventoryScreen) {
-                tabList.add(new Tabs("inventory", Utils.playerHead(), new InventoryScreen(client.player), screen instanceof InventoryScreen, Component.translatable("container.inventory")));
-            }
+            // The JLF "inventory" tab (player_head icon) is removed entirely.
+            // Earlier attempts to skip it conditionally on InventoryScreen
+            // and CreativeModeInventoryScreen didn't fully resolve user-
+            // reported overlap with Apothic Attributes' toggleBtn — likely
+            // because in this pack's Curios + Aether stack, the actual
+            // open screen at JLF render time is sometimes EffectRendering-
+            // InventoryScreen subclasses we don't enumerate. Esc and E
+            // already close the leveling screen back to the inventory,
+            // so the navigation tab serves no purpose. Only the leveling
+            // tab remains.
             tabList.add(new Tabs("leveling", RegistryItems.LEVELING_BOOK.get().getDefaultInstance(), new JustLevelingScreen(), screen instanceof JustLevelingScreen, Component.translatable("screen.aptitude.title")));
         }
         for (int i = 0; i < tabList.size(); i++) {
