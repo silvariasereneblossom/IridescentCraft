@@ -1602,5 +1602,8 @@
   "tetra/schematic/iridescent_reforging/leggings/standard_greaves.description": "Install a Standard greaves into this slot.",
   "tetra/schematic/iridescent_reforging/leggings/standard_greaves.name": "Standard",
   "tetra/schematic/iridescent_reforging/leggings/standard_greaves.slot1": "Material",
-  "tooltip.iridescent_reforging.tier": "Tier %s"
+  "tooltip.iridescent_reforging.tier": "Tier %s",
+  "tooltip.iridescent_reforging.weight.light":  "Light Armor",
+  "tooltip.iridescent_reforging.weight.medium": "Medium Armor",
+  "tooltip.iridescent_reforging.weight.heavy":  "Heavy Armor"
 }

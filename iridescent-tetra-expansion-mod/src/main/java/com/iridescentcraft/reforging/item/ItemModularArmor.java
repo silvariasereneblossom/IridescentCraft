@@ -360,6 +360,23 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
             tooltip.add(net.minecraft.network.chat.Component.translatable(
                     "tooltip.iridescent_reforging.tier", roman)
                     .withStyle(net.minecraft.ChatFormatting.GRAY));
+            // Armor weight class (Light / Medium / Heavy) — gates how
+            // much armor a player can stack while still wearing magic-
+            // friendly gear. Determined by the major module's archetype:
+            //   Heavy: heavy_* major  → max armor
+            //   Medium: basic / breastplate / full_leg_plate / basic_boot_sole
+            //   Light: light_* + mage majors (circlet, robe, robed_*, scaled_chest)
+            ArmorWeight weight = computeArmorWeight(stack);
+            if (weight != null) {
+                String langKey = "tooltip.iridescent_reforging.weight." + weight.langSuffix;
+                net.minecraft.ChatFormatting color = weight == ArmorWeight.HEAVY
+                        ? net.minecraft.ChatFormatting.GOLD
+                        : weight == ArmorWeight.MEDIUM
+                                ? net.minecraft.ChatFormatting.YELLOW
+                                : net.minecraft.ChatFormatting.AQUA;
+                tooltip.add(net.minecraft.network.chat.Component.translatable(langKey)
+                        .withStyle(color));
+            }
             // Tetra's installed-modules breakdown
             tooltip.addAll(IModularItem.super.getTooltip(stack, level, flag));
         } catch (Throwable t) {
@@ -367,6 +384,74 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
             // Tetra's getTooltip throws, fall through to vanilla behavior.
             super.appendHoverText(stack, level, tooltip, flag);
         }
+    }
+
+    // ── Armor weight class (visible to players) ────────────────────────
+    //
+    // Light/Medium/Heavy classification by armor VALUE (not mobility), so
+    // mage majors (circlet/robe/robed_*) bucket as Light alongside rogue
+    // light_*. The point is to limit how tanky a mage build can get —
+    // robed armor is light-class regardless of its magical properties.
+    //
+    // Mapping derived from each major module's armor multiplier vs the
+    // basic/medium baseline (1.0×):
+    //   Heavy:   1.4× armor      (heavy_crown, cuirass, heavy_leg_plate,
+    //                             heavy_boot_sole)
+    //   Medium:  1.0× armor      (basic_crown, breastplate, full_leg_plate,
+    //                             basic_boot_sole)
+    //   Light:   0.5-0.83× armor (light_crown, scaled_chest, light_leg_plate,
+    //                             light_boot_sole, circlet, robe_chest,
+    //                             robed_leg_plate, robed_boot_sole)
+    //
+    // To find the player's weight class, read the major module's
+    // moduleKey (e.g. "leggings/heavy_leg_plate" → HEAVY).
+    public enum ArmorWeight {
+        LIGHT("light"),
+        MEDIUM("medium"),
+        HEAVY("heavy");
+        public final String langSuffix;
+        ArmorWeight(String suffix) { this.langSuffix = suffix; }
+    }
+
+    private static final java.util.Map<String, ArmorWeight> MAJOR_WEIGHT;
+    static {
+        java.util.Map<String, ArmorWeight> m = new java.util.HashMap<>();
+        // helmet
+        m.put("helmet/heavy_crown",        ArmorWeight.HEAVY);
+        m.put("helmet/basic_crown",        ArmorWeight.MEDIUM);
+        m.put("helmet/light_crown",        ArmorWeight.LIGHT);
+        m.put("helmet/circlet",            ArmorWeight.LIGHT);
+        // chestplate
+        m.put("chestplate/cuirass",        ArmorWeight.HEAVY);
+        m.put("chestplate/breastplate",    ArmorWeight.MEDIUM);
+        m.put("chestplate/scaled_chest",   ArmorWeight.LIGHT);
+        m.put("chestplate/robe_chest",     ArmorWeight.LIGHT);
+        // leggings
+        m.put("leggings/heavy_leg_plate",  ArmorWeight.HEAVY);
+        m.put("leggings/full_leg_plate",   ArmorWeight.MEDIUM);
+        m.put("leggings/light_leg_plate",  ArmorWeight.LIGHT);
+        m.put("leggings/robed_leg_plate",  ArmorWeight.LIGHT);
+        // boots
+        m.put("boots/heavy_boot_sole",     ArmorWeight.HEAVY);
+        m.put("boots/basic_boot_sole",     ArmorWeight.MEDIUM);
+        m.put("boots/light_boot_sole",     ArmorWeight.LIGHT);
+        m.put("boots/robed_boot_sole",     ArmorWeight.LIGHT);
+        MAJOR_WEIGHT = java.util.Collections.unmodifiableMap(m);
+    }
+
+    /** @return weight class of the installed major, or null if no major
+     * is installed yet (catch-all variant only). */
+    private ArmorWeight computeArmorWeight(ItemStack stack) {
+        try {
+            se.mickelus.tetra.module.ItemModuleMajor[] majors = getMajorModules(stack);
+            if (majors == null || majors.length == 0) return null;
+            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
+                if (m == null) continue;
+                ArmorWeight w = MAJOR_WEIGHT.get(m.getKey());
+                if (w != null) return w;
+            }
+        } catch (Throwable t) { /* fall through */ }
+        return null;
     }
 
     // ── Display name (material-driven) ──────────────────────────────────
