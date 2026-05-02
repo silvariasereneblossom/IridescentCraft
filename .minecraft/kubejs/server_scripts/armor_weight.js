@@ -28,28 +28,31 @@
 // blocks; closures fail with function declarations).
 // =============================================================================
 
+const TAG_ROBE   = 'icraft:armor_robe'
 const TAG_LIGHT  = 'icraft:armor_light'
 const TAG_HEAVY  = 'icraft:armor_heavy'
 
-// Stable UUIDs per axis. Layout: -2030<axis>NN
-//   axis 1 = mana_regen, 2 = movement_speed, 3 = armor,
-//   axis 5 = light-armor toughness penalty (universal, any race)
-//   axis 4 = faefolk-conditional toughness (Ethereal Form)
+// Stable UUIDs per axis.
 const UUID_MANA_REGEN       = 'icraft_armor_weight_mana_regen'
 const UUID_MOVE_SPEED       = 'icraft_armor_weight_speed'
 const UUID_ARMOR            = 'icraft_armor_weight_armor'
 const UUID_LIGHT_TOUGHNESS  = 'icraft_armor_weight_toughness'
 const UUID_FAEFOLK_TOUGHNESS = 'icraft_faefolk_armor_weakness'
+const UUID_ROBE_SET_BONUS   = 'icraft_armor_weight_robe_set'
 
-// Per-piece magnitudes
-// Speed bumped to 0.05 (5% per piece, ±20% at 4 pieces) — per-module
-// speed in iridescent-tetra-expansion was removed because Tetra's per-
-// (attr, op) UUID system collapses to a binary "any heavy = -X" instead
-// of scaling per piece. armor_weight.js owns all speed scaling now.
-const PER_PIECE_MANA_REGEN = 0.05    // ADD on irons_spellbooks:mana_regen
-const PER_PIECE_SPEED      = 0.05    // MULTIPLY_BASE on generic.movement_speed (4 pieces = ±20%)
-const PER_PIECE_ARMOR      = 0.05    // MULTIPLY_BASE on generic.armor
-const PER_PIECE_TOUGHNESS  = 0.075   // MULTIPLY_BASE on generic.armor_toughness (light only)
+// Per-piece coefficients indexed by tier.
+// armor/toughness use MULTIPLY_BASE; mana_regen uses ADDITION; speed uses MULTIPLY_BASE.
+//
+// Design: ROBE is a 4th tier below LIGHT — mage gear that makes you fragile
+// in exchange for mana regen. Full 4-piece robe set adds an extra +0.5
+// mana_regen ADDITION on top of per-piece bonuses (the "true mage build"
+// payoff). Light keeps its rogue identity (speed + light penalty), heavy
+// keeps tank identity, medium stays neutral.
+const COEF_ARMOR     = { robe: -0.075, light: -0.05,  medium: 0, heavy:  0.05  }
+const COEF_TOUGHNESS = { robe: -0.10,  light: -0.075, medium: 0, heavy:  0     }
+const COEF_MANA      = { robe:  0.10,  light:  0.05,  medium: 0, heavy: -0.05  }
+const COEF_SPEED     = { robe:  0.015, light:  0.05,  medium: 0, heavy: -0.05  }
+const ROBE_SET_BONUS_MANA = 0.5  // ADDITION on irons_spellbooks:mana_regen at 4/4 robe
 
 // Faefolk armor toughness penalty (Ethereal Form): -50% multiply_base.
 // Applied only when player is Faefolk AND not wearing 4/4 light armor.
@@ -79,12 +82,14 @@ function _getItemModularArmorClass() {
   return _itemModularArmorClass || null
 }
 
-// Classify a single equipped slot.
-//   1  = light
-//   0  = medium (default — untagged or explicitly tagged medium)
-//  -1  = heavy
+// Classify a single equipped slot. Returns the tier-name string used
+// to index the COEF_* tables (or null if empty).
+//   'robe'   = mage robe (circlet, robe_chest, robed_*, ISS class robes)
+//   'light'  = leather/scaled (rogue gear)
+//   'medium' = default — untagged
+//   'heavy'  = plate (diamond, netherite, fiery, etc.)
 function classifyArmor(stack) {
-  if (!stack || stack.isEmpty()) return 0
+  if (!stack || stack.isEmpty()) return null
   try {
     // Tetra reforged armor: dynamic weight from the installed major.
     var armorClass = _getItemModularArmorClass()
@@ -93,20 +98,40 @@ function classifyArmor(stack) {
       if (armorClass.isInstance(item)) {
         var weight = item.getArmorWeight(stack.getInternal())
         if (weight !== null) {
-          var name = weight.name()  // "LIGHT" / "MEDIUM" / "HEAVY"
-          if (name === 'LIGHT') return 1
-          if (name === 'HEAVY') return -1
-          return 0  // MEDIUM
+          var name = weight.name()
+          if (name === 'ROBE')   return 'robe'
+          if (name === 'LIGHT')  return 'light'
+          if (name === 'HEAVY')  return 'heavy'
+          return 'medium'
         }
-        // Major not installed yet → treat as medium (fresh stack pre-replacement)
-        return 0
+        return 'medium'
       }
     }
-    // Static-tagged vanilla / modded armor.
-    if (stack.hasTag(TAG_LIGHT)) return 1
-    if (stack.hasTag(TAG_HEAVY)) return -1
+    // Static-tagged vanilla / modded armor (robe checked first — most specific).
+    if (stack.hasTag(TAG_ROBE))  return 'robe'
+    if (stack.hasTag(TAG_LIGHT)) return 'light'
+    if (stack.hasTag(TAG_HEAVY)) return 'heavy'
   } catch (e) {}
-  return 0
+  return 'medium'
+}
+
+// Sum per-piece coefficients across the 4 armor slots, return the
+// per-attribute totals + the per-tier counts.
+function aggregateArmor(player) {
+  var counts = { robe: 0, light: 0, medium: 0, heavy: 0 }
+  ARMOR_SLOTS.forEach(function(slot) {
+    var item = player.getEquipment(slot)
+    var tier = classifyArmor(item)
+    if (tier && counts.hasOwnProperty(tier)) counts[tier]++
+  })
+  return {
+    counts: counts,
+    armor:     counts.robe * COEF_ARMOR.robe     + counts.light * COEF_ARMOR.light     + counts.heavy * COEF_ARMOR.heavy,
+    toughness: counts.robe * COEF_TOUGHNESS.robe + counts.light * COEF_TOUGHNESS.light + counts.heavy * COEF_TOUGHNESS.heavy,
+    mana:      counts.robe * COEF_MANA.robe      + counts.light * COEF_MANA.light      + counts.heavy * COEF_MANA.heavy,
+    speed:     counts.robe * COEF_SPEED.robe     + counts.light * COEF_SPEED.light     + counts.heavy * COEF_SPEED.heavy,
+    robeSetBonus: counts.robe === 4 ? ROBE_SET_BONUS_MANA : 0
+  }
 }
 
 // Check whether a player has the Faefolk race assigned via Origins NBT.
@@ -120,6 +145,20 @@ function isFaefolk(player) {
   } catch (e) { return false }
 }
 
+function applyArmorMods(player, agg) {
+  player.modifyAttribute('irons_spellbooks:mana_regen',
+    UUID_MANA_REGEN, agg.mana, 'addition')
+  player.modifyAttribute('minecraft:generic.movement_speed',
+    UUID_MOVE_SPEED, agg.speed, 'multiply_base')
+  player.modifyAttribute('minecraft:generic.armor',
+    UUID_ARMOR, agg.armor, 'multiply_base')
+  player.modifyAttribute('minecraft:generic.armor_toughness',
+    UUID_LIGHT_TOUGHNESS, agg.toughness, 'multiply_base')
+  // 4-piece robe set bonus: extra mana regen on top of the per-piece total.
+  player.modifyAttribute('irons_spellbooks:mana_regen',
+    UUID_ROBE_SET_BONUS, agg.robeSetBonus, 'addition')
+}
+
 global.tick_armorWeight = function(event) {
   let server = event.server
   server.players.forEach(function(player) {
@@ -128,6 +167,7 @@ global.tick_armorWeight = function(event) {
         // Strip any stale modifier in case the player toggled mode
         try {
           player.modifyAttribute('irons_spellbooks:mana_regen', UUID_MANA_REGEN, 0, 'addition')
+          player.modifyAttribute('irons_spellbooks:mana_regen', UUID_ROBE_SET_BONUS, 0, 'addition')
           player.modifyAttribute('minecraft:generic.movement_speed', UUID_MOVE_SPEED, 0, 'multiply_base')
           player.modifyAttribute('minecraft:generic.armor', UUID_ARMOR, 0, 'multiply_base')
           player.modifyAttribute('minecraft:generic.armor_toughness', UUID_LIGHT_TOUGHNESS, 0, 'multiply_base')
@@ -135,42 +175,13 @@ global.tick_armorWeight = function(event) {
         return
       }
 
-      let lightCount = 0
-      let heavyCount = 0
-      ARMOR_SLOTS.forEach(function(slot) {
-        let item = player.getEquipment(slot)
-        let c = classifyArmor(item)
-        if (c > 0) lightCount++
-        else if (c < 0) heavyCount++
-      })
+      var agg = aggregateArmor(player)
+      applyArmorMods(player, agg)
 
-      // net = light - heavy. Positive = lighter overall, negative = heavier.
-      let netLight = lightCount - heavyCount
-
-      // Apply attribute modifiers (modifyAttribute is upsert — calling with 0
-      // value functionally clears, so this is safe to call every tick).
-      player.modifyAttribute('irons_spellbooks:mana_regen',
-        UUID_MANA_REGEN, netLight * PER_PIECE_MANA_REGEN, 'addition')
-
-      player.modifyAttribute('minecraft:generic.movement_speed',
-        UUID_MOVE_SPEED, netLight * PER_PIECE_SPEED, 'multiply_base')
-
-      // Armor is INVERSE of netLight (heavy adds armor, light removes).
-      player.modifyAttribute('minecraft:generic.armor',
-        UUID_ARMOR, -netLight * PER_PIECE_ARMOR, 'multiply_base')
-
-      // Universal light-armor toughness penalty (-7.5% per light piece).
-      // Heavy does not contribute — asymmetric on purpose.
-      player.modifyAttribute('minecraft:generic.armor_toughness',
-        UUID_LIGHT_TOUGHNESS, -lightCount * PER_PIECE_TOUGHNESS, 'multiply_base')
-
-      // Faefolk Ethereal Form (conditional). The Origins-side power is now
-      // a stub (origins:simple, no native modifier — see
-      // iridescent-origins-mod/.../faefolk/armor_weakness.json). Apply the
-      // -50% toughness here ONLY if the player is wearing any non-light
-      // armor; full robes (4/4 light) bypass the penalty.
+      // Faefolk Ethereal Form (conditional). Bypass when wearing 4/4 robe
+      // OR 4/4 light (full caster/rogue commitment).
       let faefolkPenalty = 0
-      if (isFaefolk(player) && lightCount < 4) {
+      if (isFaefolk(player) && agg.counts.robe < 4 && agg.counts.light < 4) {
         faefolkPenalty = FAEFOLK_TOUGHNESS_PENALTY
       }
       player.modifyAttribute('minecraft:generic.armor_toughness',
@@ -184,34 +195,14 @@ global.registerServerTick('tick_armorWeight', 100, 17)
 
 // Snappy refresh on equip swap.
 PlayerEvents.inventoryChanged(function(event) {
-  // Just fire the same compute for this player. Cheap because it's only one
-  // player at a time and runs only on a real inventory change.
   try {
     let player = event.player
     if (!player || player.spectator || player.creative) return
-    let lightCount = 0
-    let heavyCount = 0
-    ARMOR_SLOTS.forEach(function(slot) {
-      let item = player.getEquipment(slot)
-      let c = classifyArmor(item)
-      if (c > 0) lightCount++
-      else if (c < 0) heavyCount++
-    })
-    let netLight = lightCount - heavyCount
-    player.modifyAttribute('irons_spellbooks:mana_regen',
-      UUID_MANA_REGEN, netLight * PER_PIECE_MANA_REGEN, 'addition')
-    player.modifyAttribute('minecraft:generic.movement_speed',
-      UUID_MOVE_SPEED, netLight * PER_PIECE_SPEED, 'multiply_base')
-    player.modifyAttribute('minecraft:generic.armor',
-      UUID_ARMOR, -netLight * PER_PIECE_ARMOR, 'multiply_base')
+    var agg = aggregateArmor(player)
+    applyArmorMods(player, agg)
 
-    // Universal light-armor toughness penalty refresh
-    player.modifyAttribute('minecraft:generic.armor_toughness',
-      UUID_LIGHT_TOUGHNESS, -lightCount * PER_PIECE_TOUGHNESS, 'multiply_base')
-
-    // Faefolk Ethereal Form refresh
     let faefolkPenalty = 0
-    if (isFaefolk(player) && lightCount < 4) {
+    if (isFaefolk(player) && agg.counts.robe < 4 && agg.counts.light < 4) {
       faefolkPenalty = FAEFOLK_TOUGHNESS_PENALTY
     }
     player.modifyAttribute('minecraft:generic.armor_toughness',
@@ -219,7 +210,8 @@ PlayerEvents.inventoryChanged(function(event) {
   } catch (e) {}
 })
 
-console.log('[IridescentCraft] armor_weight loaded — light/medium/heavy per-piece scaling')
-console.log('  light  +5% mana regen, +1.25% speed, -5% armor, -7.5% toughness (per piece)')
-console.log('  medium  no effect (default for untagged armor)')
-console.log('  heavy  -5% mana regen, -1.25% speed, +5% armor (per piece)')
+console.log('[IridescentCraft] armor_weight loaded — robe / light / medium / heavy per-piece scaling')
+console.log('  robe   +0.10 mana regen, +1.5% speed, -7.5% armor, -10% toughness (per piece, +0.5 mana set bonus at 4/4)')
+console.log('  light  +0.05 mana regen, +5% speed, -5% armor, -7.5% toughness (per piece)')
+console.log('  medium no effect (default for untagged armor)')
+console.log('  heavy  -0.05 mana regen, -5% speed, +5% armor (per piece)')

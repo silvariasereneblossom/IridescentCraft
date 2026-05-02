@@ -330,11 +330,12 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
             ArmorWeight weight = getArmorWeight(stack);
             if (weight != null) {
                 String langKey = "tooltip.iridescent_reforging.weight." + weight.langSuffix;
-                net.minecraft.ChatFormatting color = weight == ArmorWeight.HEAVY
-                        ? net.minecraft.ChatFormatting.GOLD
-                        : weight == ArmorWeight.MEDIUM
-                                ? net.minecraft.ChatFormatting.YELLOW
-                                : net.minecraft.ChatFormatting.AQUA;
+                net.minecraft.ChatFormatting color = switch (weight) {
+                    case HEAVY  -> net.minecraft.ChatFormatting.GOLD;
+                    case MEDIUM -> net.minecraft.ChatFormatting.YELLOW;
+                    case LIGHT  -> net.minecraft.ChatFormatting.AQUA;
+                    case ROBE   -> net.minecraft.ChatFormatting.LIGHT_PURPLE;
+                };
                 tooltip.add(net.minecraft.network.chat.Component.translatable(langKey)
                         .withStyle(color));
             }
@@ -367,6 +368,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     // To find the player's weight class, read the major module's
     // moduleKey (e.g. "leggings/heavy_leg_plate" → HEAVY).
     public enum ArmorWeight {
+        ROBE("robe"),     // mage gear: less armor than light, +mana regen, full-set bonus
         LIGHT("light"),
         MEDIUM("medium"),
         HEAVY("heavy");
@@ -381,22 +383,22 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
         m.put("helmet/heavy_crown",        ArmorWeight.HEAVY);
         m.put("helmet/basic_crown",        ArmorWeight.MEDIUM);
         m.put("helmet/light_crown",        ArmorWeight.LIGHT);
-        m.put("helmet/circlet",            ArmorWeight.LIGHT);
+        m.put("helmet/circlet",            ArmorWeight.ROBE);
         // chestplate
         m.put("chestplate/cuirass",        ArmorWeight.HEAVY);
         m.put("chestplate/breastplate",    ArmorWeight.MEDIUM);
         m.put("chestplate/scaled_chest",   ArmorWeight.LIGHT);
-        m.put("chestplate/robe_chest",     ArmorWeight.LIGHT);
+        m.put("chestplate/robe_chest",     ArmorWeight.ROBE);
         // leggings
         m.put("leggings/heavy_leg_plate",  ArmorWeight.HEAVY);
         m.put("leggings/full_leg_plate",   ArmorWeight.MEDIUM);
         m.put("leggings/light_leg_plate",  ArmorWeight.LIGHT);
-        m.put("leggings/robed_leg_plate",  ArmorWeight.LIGHT);
+        m.put("leggings/robed_leg_plate",  ArmorWeight.ROBE);
         // boots
         m.put("boots/heavy_boot_sole",     ArmorWeight.HEAVY);
         m.put("boots/basic_boot_sole",     ArmorWeight.MEDIUM);
         m.put("boots/light_boot_sole",     ArmorWeight.LIGHT);
-        m.put("boots/robed_boot_sole",     ArmorWeight.LIGHT);
+        m.put("boots/robed_boot_sole",     ArmorWeight.ROBE);
         MAJOR_WEIGHT = java.util.Collections.unmodifiableMap(m);
     }
 

@@ -1605,5 +1605,8 @@
   "tooltip.iridescent_reforging.tier": "Tier %s",
   "tooltip.iridescent_reforging.weight.heavy": "Heavy Armor",
   "tooltip.iridescent_reforging.weight.light": "Light Armor",
-  "tooltip.iridescent_reforging.weight.medium": "Medium Armor"
+  "tooltip.iridescent_reforging.weight.medium": "Medium Armor",
+  "tooltip.iridescent_reforging.weight.robe": "Robe Armor",
+  "tetra.material.magebloom": "Magebloom",
+  "tetra.material.magebloom.prefix": "Magebloom"
 }

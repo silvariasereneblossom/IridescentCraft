@@ -43,21 +43,23 @@ public final class ArmorWeightAggregator {
      * it counts as unknown.
      */
     public static final class WeightCount {
+        public int robe;
         public int light;
         public int medium;
         public int heavy;
         public int unknown;
 
         /** Pieces that ARE reforged armor (excludes empty/non-reforged slots). */
-        public int reforgedTotal() { return light + medium + heavy; }
+        public int reforgedTotal() { return robe + light + medium + heavy; }
 
         /** All slots including empty ones. Always 4 for a player. */
-        public int total() { return light + medium + heavy + unknown; }
+        public int total() { return robe + light + medium + heavy + unknown; }
 
         @Override
         public String toString() {
-            return "WeightCount{light=" + light + ", medium=" + medium
-                    + ", heavy=" + heavy + ", unknown=" + unknown + "}";
+            return "WeightCount{robe=" + robe + ", light=" + light
+                    + ", medium=" + medium + ", heavy=" + heavy
+                    + ", unknown=" + unknown + "}";
         }
     }
 
@@ -82,6 +84,7 @@ public final class ArmorWeightAggregator {
                 continue;
             }
             switch (w) {
+                case ROBE   -> c.robe++;
                 case LIGHT  -> c.light++;
                 case MEDIUM -> c.medium++;
                 case HEAVY  -> c.heavy++;
@@ -97,9 +100,13 @@ public final class ArmorWeightAggregator {
      */
     public static ItemModularArmor.ArmorWeight dominant(WeightCount c) {
         if (c.reforgedTotal() == 0) return null;
-        if (c.heavy >= c.medium && c.heavy >= c.light)  return ItemModularArmor.ArmorWeight.HEAVY;
-        if (c.medium >= c.light)                         return ItemModularArmor.ArmorWeight.MEDIUM;
-        return ItemModularArmor.ArmorWeight.LIGHT;
+        if (c.heavy >= c.medium && c.heavy >= c.light && c.heavy >= c.robe)
+            return ItemModularArmor.ArmorWeight.HEAVY;
+        if (c.medium >= c.light && c.medium >= c.robe)
+            return ItemModularArmor.ArmorWeight.MEDIUM;
+        if (c.light >= c.robe)
+            return ItemModularArmor.ArmorWeight.LIGHT;
+        return ItemModularArmor.ArmorWeight.ROBE;
     }
 
     /**
@@ -109,11 +116,12 @@ public final class ArmorWeightAggregator {
      * stat scaling — e.g., spell power = base * (1.0 - score/12).
      */
     public static int heavinessScore(WeightCount c) {
-        return c.light * 1 + c.medium * 2 + c.heavy * 3;
+        return c.robe * 0 + c.light * 1 + c.medium * 2 + c.heavy * 3;
     }
 
     /** Convenience: counts.heavy from a one-shot call. */
     public static int heavyCount(LivingEntity entity)  { return countEquipped(entity).heavy; }
     public static int mediumCount(LivingEntity entity) { return countEquipped(entity).medium; }
     public static int lightCount(LivingEntity entity)  { return countEquipped(entity).light; }
+    public static int robeCount(LivingEntity entity)   { return countEquipped(entity).robe; }
 }
