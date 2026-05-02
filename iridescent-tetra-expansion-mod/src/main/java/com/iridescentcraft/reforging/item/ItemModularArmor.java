@@ -133,25 +133,18 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     //  - chestplate: 0=chest_lining, 1=trim, 2=pauldrons
     //  - leggings:   0=belt, 1=greaves, 2=cuisses
     //  - boots:      0=boot_lining, 1=heel, 2=lacing
-    // Tetra's ModularDoubleHeadedItem (pickaxe) values verbatim are:
-    //   majorOffsets = (-13, -1, 3, 19, -13, 19)
-    //   minorOffsets = (6, 1)
+    // Tetra's ModularDoubleHeadedItem (pickaxe) values verbatim:
+    //   majorOffsets = (-13, -1, 3, 19, -13, 19)  — 3 corners
+    //   minorOffsets = (6, 1)                       — 1 minor at NE
     //
-    // ARMOR ICON CAVEAT — why we deviate on y values: Tetra's pickaxe
-    // icon fits within the diamond's bounding box, so y=19 (geometric
-    // bottom edge of diamond) reads visually as "below the icon." Our
-    // armor item icons (boots, helmet, leggings, chestplate) extend
-    // VERTICALLY PAST the diamond's geometric bounds — boots especially
-    // are tall enough that y=19 modules visually overlap with the icon's
-    // bottom half. Tetra's offsets are not "wrong" for armor — they're
-    // calibrated to a smaller icon. To get pickaxe-style visual
-    // separation we push y further down (24-28) to clear the armor icon.
-    //
-    // X values stay matched to Tetra's pickaxe (asymmetric -13/+3/+6 to
-    // account for text-flow direction).
+    // For our 1 major + 3 minors layout, swap roles: major to NE
+    // (Tetra's binding-minor position), minors fill the other 3 corners.
+    // GuiModuleList is positioned at (164, 49) for ALL items (verified
+    // in WorkbenchScreen.class), so the visual layout produced by these
+    // offsets should be identical to Tetra's pickaxe.
     //
     //                  [minor 0: NW]   [major: NE]
-    //                                ◇  (armor icon, taller than pickaxe)
+    //                                ◇
     //                  [minor 1: SW]   [minor 2: SE]
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
@@ -162,8 +155,8 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
         return new se.mickelus.tetra.gui.GuiModuleOffsets(
                 -13, -1,   // index 0: NW  (matches Tetra pickaxe head_left)
-                -13, 26,   // index 1: SW  (Tetra's 19 + 7 to clear armor icon)
-                3, 26);    // index 2: SE
+                -13, 19,   // index 1: SW  (matches Tetra pickaxe head_right)
+                3, 19);    // index 2: SE  (matches Tetra pickaxe handle)
     }
 
     @Override
