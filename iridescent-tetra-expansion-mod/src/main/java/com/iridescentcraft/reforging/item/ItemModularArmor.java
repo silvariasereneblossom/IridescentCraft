@@ -366,7 +366,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
             //   Heavy: heavy_* major  → max armor
             //   Medium: basic / breastplate / full_leg_plate / basic_boot_sole
             //   Light: light_* + mage majors (circlet, robe, robed_*, scaled_chest)
-            ArmorWeight weight = computeArmorWeight(stack);
+            ArmorWeight weight = getArmorWeight(stack);
             if (weight != null) {
                 String langKey = "tooltip.iridescent_reforging.weight." + weight.langSuffix;
                 net.minecraft.ChatFormatting color = weight == ArmorWeight.HEAVY
@@ -440,8 +440,13 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
     }
 
     /** @return weight class of the installed major, or null if no major
-     * is installed yet (catch-all variant only). */
-    private ArmorWeight computeArmorWeight(ItemStack stack) {
+     * is installed yet (catch-all variant only).
+     *
+     * <p>Public so KubeJS scripts and the {@link ArmorWeightAggregator}
+     * can read the per-piece tier without re-implementing the major-key
+     * lookup table.
+     */
+    public ArmorWeight getArmorWeight(ItemStack stack) {
         try {
             se.mickelus.tetra.module.ItemModuleMajor[] majors = getMajorModules(stack);
             if (majors == null || majors.length == 0) return null;

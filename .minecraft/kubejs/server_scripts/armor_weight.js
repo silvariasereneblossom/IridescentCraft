@@ -54,6 +54,27 @@ const FAEFOLK_TOUGHNESS_PENALTY = -0.5
 
 const ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 
+// Reforged armor (iridescent_reforging:reforged_*) doesn't have a static
+// item tag — its weight class is dynamic, decided by the installed major
+// module. Detect via class identity and call getArmorWeight() directly.
+// The result is a Java enum: ArmorWeight.LIGHT / MEDIUM / HEAVY (or null
+// if no major installed yet, in which case fall through to medium).
+//
+// Class loaded lazily on first use because Rhino evaluates const at
+// parse time and the iridescent_reforging mod may not be on the
+// classpath yet during the early script-load phase.
+var _itemModularArmorClass = null
+function _getItemModularArmorClass() {
+  if (_itemModularArmorClass === null) {
+    try {
+      _itemModularArmorClass = Java.loadClass('com.iridescentcraft.reforging.item.ItemModularArmor')
+    } catch (e) {
+      _itemModularArmorClass = false  // sentinel: class load failed, don't retry
+    }
+  }
+  return _itemModularArmorClass || null
+}
+
 // Classify a single equipped slot.
 //   1  = light
 //   0  = medium (default — untagged or explicitly tagged medium)
@@ -61,6 +82,23 @@ const ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 function classifyArmor(stack) {
   if (!stack || stack.isEmpty()) return 0
   try {
+    // Tetra reforged armor: dynamic weight from the installed major.
+    var armorClass = _getItemModularArmorClass()
+    if (armorClass !== null) {
+      var item = stack.getItem()
+      if (armorClass.isInstance(item)) {
+        var weight = item.getArmorWeight(stack.getInternal())
+        if (weight !== null) {
+          var name = weight.name()  // "LIGHT" / "MEDIUM" / "HEAVY"
+          if (name === 'LIGHT') return 1
+          if (name === 'HEAVY') return -1
+          return 0  // MEDIUM
+        }
+        // Major not installed yet → treat as medium (fresh stack pre-replacement)
+        return 0
+      }
+    }
+    // Static-tagged vanilla / modded armor.
     if (stack.hasTag(TAG_LIGHT)) return 1
     if (stack.hasTag(TAG_HEAVY)) return -1
   } catch (e) {}
