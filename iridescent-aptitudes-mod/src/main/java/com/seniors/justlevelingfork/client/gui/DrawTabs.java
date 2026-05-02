@@ -28,7 +28,15 @@ public class DrawTabs {
         if (client.player != null) {
             isMouseCheck = false;
             tabList = new ArrayList<>();
-            tabList.add(new Tabs("inventory", Utils.playerHead(), new InventoryScreen(client.player), screen instanceof InventoryScreen, Component.translatable("container.inventory")));
+            // The "inventory" tab (player head) is only useful when the
+            // player is AWAY from the InventoryScreen — clicking it
+            // navigates back. On the inventory itself it's redundant AND
+            // visually overlaps with whichever tab another mod (Apothic
+            // Attributes, Curios, etc.) wanted in slot 2. Skip it on the
+            // inventory screen so other mods' tabs sit there cleanly.
+            if (!(screen instanceof InventoryScreen)) {
+                tabList.add(new Tabs("inventory", Utils.playerHead(), new InventoryScreen(client.player), screen instanceof InventoryScreen, Component.translatable("container.inventory")));
+            }
             tabList.add(new Tabs("leveling", RegistryItems.LEVELING_BOOK.get().getDefaultInstance(), new JustLevelingScreen(), screen instanceof JustLevelingScreen, Component.translatable("screen.aptitude.title")));
         }
         for (int i = 0; i < tabList.size(); i++) {
