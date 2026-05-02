@@ -104,14 +104,31 @@ public class ItemModularArmor extends ArmorItem implements IModularItem {
 
     // ── Workbench module-icon layout ───────────────────────────────────
     //
-    // Tetra's IModularItem already provides default offsets keyed by module
-    // count. For our 1-major + 3-minors shape these are:
-    //   defaultMajorOffsets[1] = (4, 0)                          single major NE
-    //   defaultMinorOffsets[3] = (-12, -1, -21, 12, -12, 25)     three minors stacked left
-    // Earlier custom overrides copied the pickaxe's offsets verbatim, but
-    // pickaxe is 3-major + 1-minor — the inverse shape — so the borrowed
-    // coords clipped against the diamond. The defaults are the canonical
-    // layout for our shape, so we simply do not override.
+    // Modeled on Tetra's ModularSingleHeadedItem (sword/axe):
+    //   sword majorOffsets = (1, -3, -11, 21)   2 majors: NE inner + SW outer
+    //   sword minorOffsets = (-14, 0)            1 minor:  W outer
+    //
+    // Our armor is 1-major + 3-minors. We use sword's 3 positions plus an
+    // SE-mirror of the SW position for a fourth slot. Diamond is the same
+    // size across all Tetra items, so coordinates transfer verbatim.
+    //
+    //   Major:    (1, -3)     NE inner   text right
+    //   Minor 0:  (-14, 0)    W outer    text left   (sword's minor)
+    //   Minor 1:  (-11, 21)   SW outer   text left   (sword's 2nd major)
+    //   Minor 2:  (3, 21)     SE outer   text right  (new — mirror of SW)
+    @Override
+    public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(1, -3);
+    }
+
+    @Override
+    public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(
+                -14, 0,
+                -11, 21,
+                3, 21);
+    }
+
     @Override
     public Cache<String, Multimap<Attribute, AttributeModifier>> getAttributeModifierCache() {
         return attributeCache;
