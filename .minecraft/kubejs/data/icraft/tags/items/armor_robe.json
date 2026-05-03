@@ -69,7 +69,11 @@
     "mowziesmobs:geomancer_robe",
     "mowziesmobs:geomancer_leggings",
     "mowziesmobs:geomancer_boots",
-    "irons_spellbooks:wizard_base_chestplate"
+    "irons_spellbooks:wizard_base_chestplate",
+    "forbidden_arcanus:mortem_helmet",
+    "forbidden_arcanus:mortem_chestplate",
+    "forbidden_arcanus:mortem_leggings",
+    "forbidden_arcanus:mortem_boots"
   ],
   "_note": "Ars Nouveau battlemage_robes deliberately NOT tagged ROBE — its design intent is hybrid (mage + melee), so it's MEDIUM by default. See IridescentCraft-internal/design/modded_metal_armor_stats.md notes on Battlemage."
 }
