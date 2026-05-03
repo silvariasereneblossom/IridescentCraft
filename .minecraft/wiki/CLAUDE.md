@@ -6,6 +6,32 @@ This file provides guidance to Claude Code when working in this repository.
 
 IridescentCraft is a 420-mod Minecraft 1.20.1 Forge modpack with RPG progression systems. This wiki is the living documentation for all design systems, implementation status, and known issues. It is maintained as markdown files in the repo and synced via git.
 
+## ⚡ Wiki-First Rule (read this before anything else)
+
+**Before proposing any magnitudes, tier mappings, dimension behavior, recipe gates, class stats, boss HP, scaling defaults, or other numerical/design decisions, GREP THE WIKI FIRST.** The wiki is canonical truth. Drafting from scratch when the wiki already has the answer wastes user time and risks contradicting locked-in design.
+
+Quick discovery commands at the start of any design/config task:
+
+```bash
+grep -rn "<keyword>" /root/IridescentCraft/.minecraft/wiki/
+find /root/IridescentCraft-internal -name "*.md" | xargs grep -l "<keyword>"
+```
+
+The internal repo (`/root/IridescentCraft-internal/`) holds in-progress design + audits not yet in the public wiki — check both.
+
+**If the wiki has the answer:** use it verbatim. If the user's verbal request differs from the wiki, surface the contradiction politely — design may be evolving or the user may have forgotten what's documented.
+
+**If the wiki is silent:** draft a proposal AND simultaneously open a wiki-update task per the Design Document Protocol below. Don't ship a numerical decision that's not reflected in the wiki.
+
+Examples of design data that lives in the wiki:
+- Dimension tier mapping (`progression/overview.md`)
+- Per-dimension HP/Dmg/Champion-spawn multipliers (`progression/overview.md`)
+- Tier material lists (`design/master-appendix.md`)
+- Boss HP targets (`design/master-appendix.md`)
+- Race / class stat blocks (`classes/overview.md`)
+- AStages thresholds, recipe gates (`design/master-appendix.md`)
+- Active bugs (`known-issues/tracker.md`) — check before "fixing" something already triaged
+
 ## Repository Structure
 
 - `wiki/home.md` — Wiki homepage with section index and implementation status
