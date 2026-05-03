@@ -48,6 +48,7 @@ $customJars = @(
     'iridescent_biomes-1.0.0.jar',
     'iridescent_tetra_expansion-1.0.0.jar',
     'iridescent_durability_clamp-0.1.0.jar',
+    'iridescent_difficulty-0.1.0.jar',
     'justlevelingfork-1.2.1-iridescent.1.jar',
     'mek_walkable_cables-1.0.1.jar',
     'offlineskins-1.20.1-v1.jar',

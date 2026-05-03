@@ -63,13 +63,12 @@ public class IridescentDifficulty {
                 MODID + "-common.toml");
 
         // Forge event bus — entity spawn handler, world tick (timers),
-        // ender dragon death (End uncap), command registration. Wired
-        // up in phase 2-5 commits.
-        // MinecraftForge.EVENT_BUS.register(MobScalingHandler.class);
-        // MinecraftForge.EVENT_BUS.register(DimensionTimerTracker.class);
-        // MinecraftForge.EVENT_BUS.register(EnderDragonUncapHandler.class);
-        // MinecraftForge.EVENT_BUS.register(DifficultyCommands.class);
+        // ender dragon death (End uncap), command registration.
+        MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.event.DimensionTimerTracker.class);
+        MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.event.MobScalingHandler.class);
+        MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.event.EnderDragonUncapHandler.class);
+        MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.command.DifficultyCommands.class);
 
-        LOGGER.info("[{}] mod entrypoint loaded — config + handlers will register next phase", MODID);
+        LOGGER.info("[{}] loaded — per-dimension time-based mob scaling active", MODID);
     }
 }

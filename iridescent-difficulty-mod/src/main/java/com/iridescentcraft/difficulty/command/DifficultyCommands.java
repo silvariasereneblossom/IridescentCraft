@@ -1,0 +1,120 @@
+package com.iridescentcraft.difficulty.command;
+
+import com.iridescentcraft.difficulty.config.DifficultyConfig;
+import com.iridescentcraft.difficulty.scaling.DifficultyScaling;
+import com.iridescentcraft.difficulty.scaling.DimensionDifficultyData;
+import com.mojang.brigadier.arguments.DoubleArgumentType;
+import com.mojang.brigadier.context.CommandContext;
+import net.minecraft.commands.CommandSourceStack;
+import net.minecraft.commands.Commands;
+import net.minecraft.network.chat.Component;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.server.level.ServerLevel;
+import net.minecraft.server.MinecraftServer;
+import net.minecraftforge.event.RegisterCommandsEvent;
+import net.minecraftforge.eventbus.api.SubscribeEvent;
+
+/**
+ * Operator-only commands for inspecting and seeking the difficulty timer.
+ * All registered under {@code /icraftdiff}, requires permission level 2.
+ *
+ * <ul>
+ *   <li>{@code /icraftdiff status} — print current dim's tier, multiplier, and timer hours</li>
+ *   <li>{@code /icraftdiff status all} — print every loaded dim's status</li>
+ *   <li>{@code /icraftdiff timer set <hours>} — seek the current dim's timer (QA)</li>
+ *   <li>{@code /icraftdiff timer reset} — set the current dim's timer to zero</li>
+ *   <li>{@code /icraftdiff uncap end} — manually mark End dragon-killed (testing the uncap)</li>
+ * </ul>
+ */
+public class DifficultyCommands {
+
+    @SubscribeEvent
+    public static void register(RegisterCommandsEvent event) {
+        event.getDispatcher().register(
+            Commands.literal("icraftdiff")
+                .requires(s -> s.hasPermission(2))
+                .then(Commands.literal("status")
+                    .executes(DifficultyCommands::statusCurrent)
+                    .then(Commands.literal("all").executes(DifficultyCommands::statusAll))
+                )
+                .then(Commands.literal("timer")
+                    .then(Commands.literal("set")
+                        .then(Commands.argument("hours", DoubleArgumentType.doubleArg(0.0, 100000.0))
+                            .executes(DifficultyCommands::timerSet)))
+                    .then(Commands.literal("reset")
+                        .executes(DifficultyCommands::timerReset))
+                )
+                .then(Commands.literal("uncap")
+                    .then(Commands.literal("end").executes(DifficultyCommands::uncapEnd)))
+        );
+    }
+
+    private static int statusCurrent(CommandContext<CommandSourceStack> ctx) {
+        ServerLevel level = ctx.getSource().getLevel();
+        sendDimStatus(ctx, level);
+        return 1;
+    }
+
+    private static int statusAll(CommandContext<CommandSourceStack> ctx) {
+        MinecraftServer srv = ctx.getSource().getServer();
+        for (ServerLevel level : srv.getAllLevels()) {
+            sendDimStatus(ctx, level);
+        }
+        return 1;
+    }
+
+    private static void sendDimStatus(CommandContext<CommandSourceStack> ctx, ServerLevel level) {
+        ResourceLocation dimId = level.dimension().location();
+        DifficultyScaling.Tier tier = DifficultyScaling.getTier(dimId);
+        DifficultyConfig.TierCurve curve = DifficultyScaling.getCurve(tier);
+        DimensionDifficultyData data = DimensionDifficultyData.get(level);
+        double mult = DifficultyScaling.getCurrentMultiplier(level);
+        boolean uncapped = data.isEnderDragonKilled()
+            && DifficultyConfig.COMMON.uncapAfterEnderDragonDimensions.get().contains(dimId.toString());
+
+        ctx.getSource().sendSuccess(() -> Component.literal(String.format(
+            "§e%s§r tier=§b%s§r %.1fh / %.0fh start=%.0f%% cap=%.0f%% mult=§a%.0f%%§r ed=%s%s",
+            dimId, tier.name(),
+            data.getHours(), curve.capHours.get(),
+            curve.start.get(), curve.cap.get(),
+            mult * 100,
+            data.isEnderDragonKilled() ? "§a✓§r" : "§7✗§r",
+            uncapped ? " §c[UNCAPPED]§r" : ""
+        )), false);
+    }
+
+    private static int timerSet(CommandContext<CommandSourceStack> ctx) {
+        double hours = DoubleArgumentType.getDouble(ctx, "hours");
+        ServerLevel level = ctx.getSource().getLevel();
+        long ticks = (long) (hours * DimensionDifficultyData.TICKS_PER_HOUR);
+        DimensionDifficultyData data = DimensionDifficultyData.get(level);
+        data.setTickCount(ticks);
+        ctx.getSource().sendSuccess(() -> Component.literal(String.format(
+            "§e%s§r timer set to §a%.1fh§r", level.dimension().location(), hours
+        )), true);
+        return 1;
+    }
+
+    private static int timerReset(CommandContext<CommandSourceStack> ctx) {
+        ServerLevel level = ctx.getSource().getLevel();
+        DimensionDifficultyData.get(level).setTickCount(0L);
+        ctx.getSource().sendSuccess(() -> Component.literal(String.format(
+            "§e%s§r timer reset to 0", level.dimension().location()
+        )), true);
+        return 1;
+    }
+
+    private static int uncapEnd(CommandContext<CommandSourceStack> ctx) {
+        MinecraftServer srv = ctx.getSource().getServer();
+        ServerLevel end = srv.getLevel(net.minecraft.world.level.Level.END);
+        if (end == null) {
+            ctx.getSource().sendFailure(Component.literal("End dimension not loaded."));
+            return 0;
+        }
+        DimensionDifficultyData.get(end).markEnderDragonKilled();
+        ctx.getSource().sendSuccess(() -> Component.literal(
+            "§a✓§r §eminecraft:the_end§r marked dragon-killed (uncap active)"
+        ), true);
+        return 1;
+    }
+}
