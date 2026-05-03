@@ -134,6 +134,18 @@ public class PlayerActivityTracker {
         return sp.serverLevel().getServer().getTickCount() - s.lastActiveTick;
     }
 
+    /** Active player count in a dimension — for status display. */
+    public static int getActiveCount(ServerLevel level) {
+        if (!DifficultyConfig.COMMON.idleDetectionEnabled.get()) {
+            return level.players().size();
+        }
+        int active = 0;
+        for (ServerPlayer p : level.players()) {
+            if (isActive(p)) active++;
+        }
+        return active;
+    }
+
     private static long thresholdTicks() {
         return (long) (DifficultyConfig.COMMON.idleThresholdMinutes.get() * 60.0 * 20.0);
     }

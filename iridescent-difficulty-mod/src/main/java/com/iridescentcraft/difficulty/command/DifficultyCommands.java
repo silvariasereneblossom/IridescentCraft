@@ -106,17 +106,23 @@ public class DifficultyCommands {
         DimensionDifficultyData data = DimensionDifficultyData.get(level);
         double mult = DifficultyScaling.getCurrentMultiplier(level);
         double rate = com.iridescentcraft.difficulty.event.PlayerActivityTracker.getActiveRatio(level);
-        int playerCount = level.players().size();
+        int active = com.iridescentcraft.difficulty.event.PlayerActivityTracker.getActiveCount(level);
+        int total = level.players().size();
         boolean uncapped = data.isEnderDragonKilled()
             && DifficultyConfig.COMMON.uncapAfterEnderDragonDimensions.get().contains(dimId.toString());
 
+        // 1 decimal place on rate for non-trivial ratios (3/7 = 42.9%, not 43%).
+        // Otherwise reads as 100% / 50% / 0% etc.
+        String activeFrac = total == 0 ? "empty" : String.format("%d/%d active", active, total);
+        String rateColor = rate >= 0.5 ? "a" : (rate > 0 ? "e" : "c");
+
         ctx.getSource().sendSuccess(() -> Component.literal(String.format(
-            "§e%s§r tier=§b%s§r %.1fh/%.0fh mult=§a%.0f%%§r rate=§%s%.0f%%§r (%d ply) ed=%s%s",
+            "§e%s§r tier=§b%s§r %.1fh/%.0fh mult=§a%.0f%%§r rate=§%s%.1f%%§r (%s) ed=%s%s",
             dimId, tier.name(),
             data.getHours(), curve.capHours.get(),
             mult * 100,
-            rate >= 0.5 ? "a" : (rate > 0 ? "e" : "c"),
-            rate * 100, playerCount,
+            rateColor, rate * 100,
+            activeFrac,
             data.isEnderDragonKilled() ? "§a✓§r" : "§7✗§r",
             uncapped ? " §c[UNCAPPED]§r" : ""
         )), false);
