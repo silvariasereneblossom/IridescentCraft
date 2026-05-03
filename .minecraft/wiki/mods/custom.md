@@ -107,6 +107,40 @@ Race selection fix for the Origins layer ordering bug.
 
 Offline skin support — required for LAN play without Mojang auth.
 
+### iridescent_difficulty-0.1.0.jar
+
+**Added 2026-05-03.** Bespoke time-based per-dimension mob scaling. Replaces ScalingMobs / ImprovedMobs / AzukaarsFairDifficultyOverhaul (removed) and the dimension-scaling block of `mob_scaling_unified.js` (the tier-HP block stays as a static composable rule). Majrusz's Difficulty stays loaded for treasure bags + content additions but its scaling is config-disabled.
+
+**Tier curves** (all configurable in `config/iridescent_difficulty-common.toml`):
+
+| Tier | Dimensions | Start % | Cap % | Cap Hours |
+|------|------------|---------|-------|-----------|
+| T1 | Overworld | 150% | 300% | 100 |
+| T2 | Twilight Forest, Blue Skies, Aether | 200% | 350% | 100 |
+| T3 | Undergarden, Deeper Darker, Nether, Abyss | 300% | 450% | 100 |
+| T4 | Deep Aether, The End | 600% | 1000% | 200 |
+
+**Multiplier scope:** linear on `max_health` / `attack_damage` / `armor`; `sqrt` on `movement_speed` (so a 6× HP mob isn't also 6× speed). Bosses + tamed mobs + non-MONSTER category mobs skipped. Configurable excluded-entities list.
+
+**End uncap:** killing the Ender Dragon in-world removes the cap for any dimension in the `uncapAfterEnderDragon` list (default: just `minecraft:the_end`). Deep Aether stays capped at T4. Multiplier extrapolates past the cap proportionally past `capHours`.
+
+**Idle gating:** the per-dim timer ticks at `active / total` ratio of players in that dim. A player counts as idle if any of:
+- No movement (>0.1 blocks delta) or damage taken/dealt for `idleThresholdMinutes` (default 5)
+- Within `spawnIdleRadius` blocks (chebyshev cube, default 10) of their respawn point — bed if set, world spawn otherwise
+
+So 4 players, 2 active, 2 idle → 50% tick rate. 7 players, 3 active → ~42.86%. Empty dim → 0%. Implemented via fractional `tickAccumulator` on `DimensionDifficultyData`.
+
+**Op-only debug commands** (permission level 2):
+- `/icraftdiff status [all]` — current/all dim status: tier, hours/capHours, multiplier, rate, active/total split, ED-killed flag
+- `/icraftdiff timer set <hours>` — seek the current dim's timer (QA)
+- `/icraftdiff timer reset` — zero the current dim's timer
+- `/icraftdiff uncap end` — manually trigger ED-killed flag for the End (test the uncap)
+- `/icraftdiff players` — three-state per-player status (`✓ active` / `◍ at-spawn` / `✗ idle`) with idle-minutes
+
+**Source:** `iridescent-difficulty-mod/`
+**Build:** `./gradlew build` (ForgeGradle, no mixin)
+**Stacks on top of (not replaced):** ProgressiveBosses (vanilla bosses self-scale), `boss_progressive.js` (modded bosses), `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / champion 1.25×), Majrusz content features (treasure bags + spawn variants).
+
 ---
 
 ## Bytecode-patched mods (not in-house source)

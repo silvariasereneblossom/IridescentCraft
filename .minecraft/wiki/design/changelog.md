@@ -27,6 +27,19 @@ The End uniquely uncaps after Ender Dragon kill (Deep Aether stays capped). All 
 
 **Edited `mob_scaling_unified.js`:** dimension scaling block + DIMENSION_SCALES table removed; tier-HP block kept as static per-mob rule that composes with the new dimension scaling.
 
+**Idle detection** (added later in the same session): per-player movement / damage tracking + spawn-proximity carve-out. Players within `spawnIdleRadius` (default 10 blocks, chebyshev cube) of their respawn point count as idle regardless of movement — base camping shouldn't tick the difficulty. Bed if set, world spawn otherwise; different-dim respawn = not at spawn for the current dim.
+
+**Proportional tick rate.** Per-dimension timer ticks at `active / total` ratio of players in that dim. Examples: 4 players with 2 active = 50% rate, 7 players with 3 active = 42.86% rate, 200 players with 64 active = 32% rate. Implemented via fractional `tickAccumulator` (transient double) on `DimensionDifficultyData` — each `LevelTickEvent.END` adds the ratio, whole-tick rolls advance `tickCount`. Worst-case crash loss <1 tick (~0.05s).
+
+**Debug command surface (final):**
+- `/icraftdiff status [all]` — `dim tier=X Yh/Zh mult=N% rate=A.A% (a/b active) ed=✓/✗`
+- `/icraftdiff timer set <hours>` — seek the current dim's timer for QA
+- `/icraftdiff timer reset` — zero the current dim's timer
+- `/icraftdiff uncap end` — manually trigger the End uncap flag for testing
+- `/icraftdiff players` — three-state per-player status: `✓ active` / `◍ at-spawn` / `✗ idle`, with idle-minutes shown
+
+Final phase commits this session: `932f3a07` (Phase 1 skeleton) → `0df0af97` (Phases 2-5 timer/scaling/uncap/cmds) → `a2a97e74` (Phase 6 deploy migration) → `d8cb4dd4` (Phase 7 idle detection) → `1ad52c6a` (Phase 8 proportional + spawn) → `994cabb7` (Phase 9 status display polish).
+
 ---
 
 ## 2026-05-02 — ROBE armor tier + tagging audit + Magebloom material
