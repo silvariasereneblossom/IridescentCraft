@@ -13947,31 +13947,6 @@
 		#Should the entity spawn via mob conversion? i.e. villager -> zombie
 		allowConversions = true
 
-#Options for the azukaarsfairdifficultyoverhaul mod.
-[azukaarsfairdifficultyoverhaul]
-
-	#Spawning options for azukaarsfairdifficultyoverhaul:raised_zombie
-	[azukaarsfairdifficultyoverhaul.raised_zombie]
-		#Should the entity be allowed to spawn normally?
-		allowNormalSpawning = true
-		#Should spawners be able to spawn the entity?
-		allowSpawners = true
-		#Should spawn eggs be able to spawn the entity?
-		allowSpawnEggs = true
-		#Should the entity spawn via mob conversion? i.e. villager -> zombie
-		allowConversions = true
-
-	#Spawning options for azukaarsfairdifficultyoverhaul:ancient_creeper
-	[azukaarsfairdifficultyoverhaul.ancient_creeper]
-		#Should the entity be allowed to spawn normally?
-		allowNormalSpawning = true
-		#Should spawners be able to spawn the entity?
-		allowSpawners = true
-		#Should spawn eggs be able to spawn the entity?
-		allowSpawnEggs = true
-		#Should the entity spawn via mob conversion? i.e. villager -> zombie
-		allowConversions = true
-
 #Options for the creategenderless mod.
 [creategenderless]
 
