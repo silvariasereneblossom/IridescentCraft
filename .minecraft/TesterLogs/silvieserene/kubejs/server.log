@@ -1,0 +1,512 @@
+[01:12:45] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[01:12:45] [INIT] Loaded plugins:
+[01:12:45] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[01:12:45] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[01:12:45] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[01:12:45] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[01:12:45] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[01:12:45] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[01:12:45] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[01:12:45] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[01:12:45] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[01:12:45] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[01:12:45] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[01:12:45] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[01:12:45] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[01:12:45] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[01:12:45] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[01:12:45] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[01:12:45] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[01:12:46] [INFO] Loaded script server_scripts:0_tick_master.js in 0.001 s
+[01:12:46] [INFO] abyss/abyss_armor_effects.js#230: [IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active
+[01:12:46] [INFO] Loaded script server_scripts:abyss/abyss_armor_effects.js in 0.001 s
+[01:12:46] [INFO] abyss/abyss_ring_effects.js#186: [IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active
+[01:12:46] [INFO] Loaded script server_scripts:abyss/abyss_ring_effects.js in 0.0 s
+[01:12:46] [INFO] affixes/affix_effects.js#1041: [IridescentCraft] affix_effects.js loaded — 65+ boss/dimensional/complex affix effects
+[01:12:46] [INFO] Loaded script server_scripts:affixes/affix_effects.js in 0.002 s
+[01:12:46] [INFO] armor_weight.js#213: [IridescentCraft] armor_weight loaded — robe / light / medium / heavy per-piece scaling
+[01:12:46] [INFO] armor_weight.js#214:   robe   +0.10 mana regen, +1.5% speed, -7.5% armor, -10% toughness (per piece, +0.5 mana set bonus at 4/4)
+[01:12:46] [INFO] armor_weight.js#215:   light  +0.05 mana regen, +5% speed, -5% armor, -7.5% toughness (per piece)
+[01:12:46] [INFO] armor_weight.js#216:   medium no effect (default for untagged armor)
+[01:12:46] [INFO] armor_weight.js#217:   heavy  -0.05 mana regen, -5% speed, +5% armor (per piece)
+[01:12:46] [INFO] Loaded script server_scripts:armor_weight.js in 0.001 s
+[01:12:46] [INFO] attributes/attribute_commands.js#180: [IridescentCraft] Attribute chat commands loaded (v0.4)
+[01:12:46] [INFO] attributes/attribute_commands.js#181:   !stats / !attributes -- Show attribute values
+[01:12:46] [INFO] attributes/attribute_commands.js#182:   !class -- Show class info and bonuses
+[01:12:46] [INFO] Loaded script server_scripts:attributes/attribute_commands.js in 0.0 s
+[01:12:46] [INFO] attributes/attribute_sync.js#294: [IridescentCraft] Attribute sync handlers loaded (v0.4 persistent NBT)
+[01:12:46] [INFO] attributes/attribute_sync.js#295:   Combat: crit/dodge/lifesteal/armor_pen/magic_res via EntityEvents.hurt
+[01:12:46] [INFO] attributes/attribute_sync.js#296:   Combat: XP Attribute Core stacking (crit_chance, critical_damage, life_steal, dodge_chance)
+[01:12:46] [INFO] attributes/attribute_sync.js#297:   Magic: mana_regen + CDR sync to ISB every 5s
+[01:12:46] [INFO] attributes/attribute_sync.js#298:   Utility: xp_multiplier via tick_xpMultiplier (1s totalExperience diff)
+[01:12:46] [INFO] attributes/attribute_sync.js#299:   Utility: healing_received via tick health tracking
+[01:12:46] [INFO] Loaded script server_scripts:attributes/attribute_sync.js in 0.0 s
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#116: [IridescentCraft] Class attribute bonuses loaded (v0.4 persistent NBT)
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#117:   Archmage: spell_power +25%, mana_regen +20%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#118:   Battlemage: spell_power +15%, magic_resistance +15%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#119:   Berserker: crit_damage +30%, lifesteal +5%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#120:   Samurai: crit_chance +10%, armor_penetration +10%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#121:   Ranger: crit_chance +8%, dodge_chance +5%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#122:   Paladin: healing_received +25%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#123:   Vanguard: dodge_chance +8%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#124:   Wanderer: xp_multiplier +15%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#125:   Artificer: cooldown_reduction +10%
+[01:12:46] [INFO] attributes/class_attribute_bonuses.js#126:   Void Summoner: lifesteal +8%, spell_power +10%
+[01:12:46] [INFO] Loaded script server_scripts:attributes/class_attribute_bonuses.js in 0.0 s
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#37: Loaded Java class 'net.minecraft.resources.ResourceLocation'
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#38: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#39: Loaded Java class 'net.minecraft.world.entity.ai.attributes.AttributeModifier'
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#40: Loaded Java class 'net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation'
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#41: Loaded Java class 'java.util.UUID'
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#176: [IridescentCraft] mana_pool_bonuses loaded
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#177:   Global: max_mana +25% (MULTIPLY_BASE)
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#178:   Archmage: x2 on top of new base (MULTIPLY_TOTAL +1.00)
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#179:   Battlemage: x1.5 on top of new base (MULTIPLY_TOTAL +0.50)
+[01:12:46] [INFO] attributes/mana_pool_bonuses.js#180:   Void Summoner: x1.5 on top of new base (MULTIPLY_TOTAL +0.50)
+[01:12:46] [INFO] Loaded script server_scripts:attributes/mana_pool_bonuses.js in 0.001 s
+[01:12:46] [INFO] cap_player_knockback.js#33: Loaded Java class 'net.minecraftforge.common.MinecraftForge'
+[01:12:46] [INFO] cap_player_knockback.js#34: Loaded Java class 'net.minecraftforge.event.entity.living.LivingKnockBackEvent'
+[01:12:46] [INFO] cap_player_knockback.js#35: Loaded Java class 'net.minecraftforge.eventbus.api.EventPriority'
+[01:12:46] [INFO] cap_player_knockback.js#36: Loaded Java class 'java.util.function.Consumer'
+[01:12:46] [INFO] cap_player_knockback.js#37: Loaded Java class 'net.minecraft.world.entity.player.Player'
+[01:12:46] [INFO] cap_player_knockback.js#136: [IridescentCraft] cap_player_knockback loaded (cap=1.5)
+[01:12:46] [INFO] Loaded script server_scripts:cap_player_knockback.js in 0.003 s
+[01:12:46] [INFO] cherry_spawn_biome.js#34: Loaded Java class 'net.minecraft.core.BlockPos'
+[01:12:46] [INFO] cherry_spawn_biome.js#35: Loaded Java class 'java.util.function.Predicate'
+[01:12:46] [INFO] cherry_spawn_biome.js#36: Loaded Java class 'net.minecraft.tags.TagKey'
+[01:12:46] [INFO] cherry_spawn_biome.js#37: Loaded Java class 'net.minecraft.core.registries.Registries'
+[01:12:46] [INFO] cherry_spawn_biome.js#275: [IridescentCraft] cherry_spawn_biome v2 loaded -- search for iridescent_biomes:cherry_river_valley + village; max 15 attempts; first-join teleport armed
+[01:12:46] [INFO] Loaded script server_scripts:cherry_spawn_biome.js in 0.001 s
+[01:12:46] [INFO] class/equipment_hp_halving.js#113: [IridescentCraft] equipment_hp_halving.js loaded — glass cannon class HP reduction
+[01:12:46] [INFO] Loaded script server_scripts:class/equipment_hp_halving.js in 0.0 s
+[01:12:46] [INFO] codex_delivery.js#17: Loaded Java class 'io.redspace.ironsspellbooks.api.registry.SpellRegistry'
+[01:12:46] [INFO] codex_delivery.js#18: Loaded Java class 'io.redspace.ironsspellbooks.api.spells.ISpellContainer'
+[01:12:46] [INFO] Loaded script server_scripts:codex_delivery.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:compat/class_artifacts_recipes.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:compat/disable_creeperlings.js in 0.0 s
+[01:12:46] [ERROR] ! TypeError: TypeError: redeclaration of const ARMOR_SLOTS.
+[01:12:46] [INFO] diag_empty_display_name.js#87: [IridescentCraft] diag_empty_display_name loaded -- alerts on entities with empty display name
+[01:12:46] [INFO] Loaded script server_scripts:diag_empty_display_name.js in 0.001 s
+[01:12:46] [INFO] diag_player_velocity.js#24: Loaded Java class 'net.minecraftforge.event.entity.living.LivingHurtEvent'
+[01:12:46] [INFO] diag_player_velocity.js#122: [IridescentCraft] diag_player_velocity loaded (Y-vel spike detector via Vec3.y() method form)
+[01:12:46] [INFO] Loaded script server_scripts:diag_player_velocity.js in 0.0 s
+[01:12:46] [INFO] disable_zombie_door_break.js#26: Loaded Java class 'net.minecraft.world.entity.ai.goal.BreakDoorGoal'
+[01:12:46] [INFO] disable_zombie_door_break.js#27: Loaded Java class 'net.minecraft.world.entity.Mob'
+[01:12:46] [INFO] disable_zombie_door_break.js#110: [IridescentCraft] disable_zombie_door_break loaded (strips BreakDoorGoal on ANY Mob spawn -- vanilla + modded)
+[01:12:46] [INFO] Loaded script server_scripts:disable_zombie_door_break.js in 0.002 s
+[01:12:46] [INFO] enchantments/enchant_effects.js#571: [IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects
+[01:12:46] [INFO] Loaded script server_scripts:enchantments/enchant_effects.js in 0.001 s
+[01:12:46] [INFO] end/dragon_exploration_gate.js#358: [IridescentCraft] Dragon exploration gate loaded
+[01:12:46] [INFO] end/dragon_exploration_gate.js#359:   - Dragon blocked until End exploration complete
+[01:12:46] [INFO] end/dragon_exploration_gate.js#360:   - 4 milestones: outer islands, End City, 5 Shulkers, 50 Endermen
+[01:12:46] [INFO] end/dragon_exploration_gate.js#361:   - Dragon Summoning Crystal required to start fight
+[01:12:46] [INFO] Loaded script server_scripts:end/dragon_exploration_gate.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:endgame/ascension.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:endgame/mythic_forge.js in 0.001 s
+[01:12:46] [INFO] endgame/rift_mechanics.js#281: [IridescentCraft] Rift mechanics loaded
+[01:12:46] [INFO] endgame/rift_mechanics.js#282:   - Rift tracking data initialization
+[01:12:46] [INFO] endgame/rift_mechanics.js#283:   - Rift Shard/Catalyst Compendium milestones
+[01:12:46] [INFO] endgame/rift_mechanics.js#284:   - Mythic unique item server announcements
+[01:12:46] [INFO] Loaded script server_scripts:endgame/rift_mechanics.js in 0.0 s
+[01:12:46] [INFO] enemyexpansion_explosive_launch_blocker.js#56: [IridescentCraft] enemyexpansion_explosive_launch_blocker loaded (4Hz scan)
+[01:12:46] [INFO] Loaded script server_scripts:enemyexpansion_explosive_launch_blocker.js in 0.001 s
+[01:12:46] [INFO] fix_empty_display_name.js#73: [IridescentCraft] fix_empty_display_name loaded -- empty customName overrides cleared at spawn
+[01:12:46] [INFO] Loaded script server_scripts:fix_empty_display_name.js in 0.0 s
+[01:12:46] [INFO] food/hunger_management.js#95: [IridescentCraft] AFK hunger management loaded
+[01:12:46] [INFO] food/hunger_management.js#96:   - AFK threshold: 20 minutes (24000 ticks)
+[01:12:46] [INFO] food/hunger_management.js#97:   - Sleep protection: Saturation I while sleeping
+[01:12:46] [INFO] Loaded script server_scripts:food/hunger_management.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:gates/astages_restrictions.js in 0.001 s
+[01:12:46] [INFO] gates/milestone_detection.js#501: [IridescentCraft] Milestone detection loaded
+[01:12:46] [INFO] gates/milestone_detection.js#502:   Tier 2: Boss kill / 10 T2 boss kills / 1000 T2 fragments / Thermal Frame / All T2 dims
+[01:12:46] [INFO] gates/milestone_detection.js#503:   Tier 3: Boss kill / 10 T3 boss kills / 1000 T3 fragments / Mekanism Casing / All T3 dims
+[01:12:46] [INFO] gates/milestone_detection.js#504:   Tier 4: Dragon/Gaia kill / 10 T4 boss kills / 1000 T4 fragments / Ultimate Circuit
+[01:12:46] [INFO] Loaded script server_scripts:gates/milestone_detection.js in 0.001 s
+[01:12:46] [INFO] icraftsets_command.js#22: Loaded Java class 'com.everydayxp.rpgseteffects.system.slot.SetEquipmentHelper'
+[01:12:46] [INFO] icraftsets_command.js#45: [IridescentCraft] /icraftsets command registered
+[01:12:46] [INFO] Loaded script server_scripts:icraftsets_command.js in 0.0 s
+[01:12:46] [INFO] icraft_despawn_command.js#27: Loaded Java class 'net.minecraft.world.entity.MobCategory'
+[01:12:46] [INFO] icraft_despawn_command.js#28: Loaded Java class 'net.minecraft.world.entity.monster.Monster'
+[01:12:46] [INFO] icraft_despawn_command.js#32: Loaded Java class 'com.mojang.brigadier.arguments.IntegerArgumentType'
+[01:12:46] [INFO] icraft_despawn_command.js#33: Loaded Java class 'net.minecraft.world.entity.OwnableEntity'
+[01:12:46] [INFO] icraft_despawn_command.js#164: [IridescentCraft] /icraft despawn <radius> command registered
+[01:12:46] [INFO] Loaded script server_scripts:icraft_despawn_command.js in 0.002 s
+[01:12:46] [INFO] idle_hunger_pause.js#111: [IridescentCraft] idle_hunger_pause loaded — hunger drain pauses after 120s of inaction
+[01:12:46] [INFO] Loaded script server_scripts:idle_hunger_pause.js in 0.001 s
+[01:12:46] [INFO] items/compass_of_return.js#107: [IridescentCraft] Compass of Return loaded
+[01:12:46] [INFO] items/compass_of_return.js#108:   - Right-click to teleport to last bed
+[01:12:46] [INFO] items/compass_of_return.js#109:   - 10 minute cooldown
+[01:12:46] [INFO] items/compass_of_return.js#110:   - Bed position tracked on right-click interaction
+[01:12:46] [INFO] Loaded script server_scripts:items/compass_of_return.js in 0.0 s
+[01:12:46] [INFO] liteminer_hunger_gate.js#77: [IridescentCraft] liteminer_hunger_gate loaded — chain breaks cancel below 6/20 hunger
+[01:12:46] [INFO] Loaded script server_scripts:liteminer_hunger_gate.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/abyss_boss_loot.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/alexsmobs_drops.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/blue_skies_drops.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/cataclysm_boss_drops.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/crop_seed_reduction.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/dimensional_boss_drops.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/iss_boss_drops.js in 0.0 s
+[01:12:46] [INFO] loot/iss_boss_first_kill.js#57: [IridescentCraft] iss_boss_first_kill loaded -- 4 first-kill book guarantees armed
+[01:12:46] [INFO] Loaded script server_scripts:loot/iss_boss_first_kill.js in 0.0 s
+[01:12:46] [INFO] loot/lootjs_overhaul.js#39: Loaded Java class 'net.minecraft.world.level.storage.loot.providers.number.UniformGenerator'
+[01:12:46] [INFO] loot/lootjs_overhaul.js#40: Loaded Java class 'net.minecraft.world.level.storage.loot.providers.number.ConstantValue'
+[01:12:46] [INFO] loot/lootjs_overhaul.js#47: Loaded Java class 'com.almostreliable.lootjs.filters.ItemFilter'
+[01:12:46] [INFO] Loaded script server_scripts:loot/lootjs_overhaul.js in 0.003 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/loot_overhaul.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/mahou_synergy_drops.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/planetary_loot.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/stalwart_dungeons_drops.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/terramity_boss_drops.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:loot/twilight_boss_drops.js in 0.0 s
+[01:12:46] [INFO] magic_crit_hook.js#27: Loaded Java class 'net.minecraft.world.item.enchantment.EnchantmentHelper'
+[01:12:46] [INFO] magic_crit_hook.js#118: [IridescentCraft] magic_crit_hook loaded -- magic damage can crit via book enchants
+[01:12:46] [INFO] Loaded script server_scripts:magic_crit_hook.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:migrations/rift_shard_rename.js in 0.0 s
+[01:12:46] [INFO] mobgriefing_default.js#27: Loaded Java class 'net.minecraft.world.level.GameRules'
+[01:12:46] [INFO] mobgriefing_default.js#61: [IridescentCraft] mobgriefing_default loaded -- one-shot mobGriefing=false on world init
+[01:12:46] [INFO] Loaded script server_scripts:mobgriefing_default.js in 0.0 s
+[01:12:46] [INFO] more_curios_slots_cap.js#67: [IridescentCraft] More Curios Slots cap handler loaded (9 slot types; back=+1, others=+3)
+[01:12:46] [INFO] Loaded script server_scripts:more_curios_slots_cap.js in 0.0 s
+[01:12:46] [INFO] mutant_monsters_no_griefing.js#41: [IridescentCraft] mutant_monsters_no_griefing loaded -- mutantmonsters:* block breaks suppressed
+[01:12:46] [INFO] Loaded script server_scripts:mutant_monsters_no_griefing.js in 0.0 s
+[01:12:46] [INFO] origins/artificial_construct_progression.js#168: [IridescentCraft] Artificial Construct progression loaded
+[01:12:46] [INFO] origins/artificial_construct_progression.js#169:   - 25% food efficiency from normal food
+[01:12:46] [INFO] origins/artificial_construct_progression.js#170:   - Iron Ingot eating (0.5 food), Iron Block eating (4.5 food)
+[01:12:46] [INFO] origins/artificial_construct_progression.js#171:   - Iron eating grants Regen III for 10s (400% healing acceleration)
+[01:12:46] [INFO] origins/artificial_construct_progression.js#172:   - Iron upgrade ladder: 1000/2000/4000/8000/16000
+[01:12:46] [INFO] origins/artificial_construct_progression.js#173:   - +5/5/5/10/10% HP/melee/reduction/toughness per level (max +35%)
+[01:12:46] [INFO] Loaded script server_scripts:origins/artificial_construct_progression.js in 0.001 s
+[01:12:46] [INFO] origins/battlemage_arcane_cleave.js#36: Loaded Java class 'io.redspace.ironsspellbooks.api.magic.MagicData'
+[01:12:46] [INFO] origins/battlemage_arcane_cleave.js#154: [IridescentCraft] battlemage_arcane_cleave loaded — Arcane Cleave (2 AD per 100% bonus SP, costs 10 mana/hit) + Mana Reaver (+15 mana/melee kill)
+[01:12:46] [INFO] Loaded script server_scripts:origins/battlemage_arcane_cleave.js in 0.0 s
+[01:12:46] [INFO] origins/battlemage_mana_shield.js#70: [IridescentCraft] Battlemage Mana Shield loaded
+[01:12:46] [INFO] origins/battlemage_mana_shield.js#71:   - Resistance I base (20% damage reduction)
+[01:12:46] [INFO] origins/battlemage_mana_shield.js#72:   - Resistance II with high magic bonus (36% reduction)
+[01:12:46] [INFO] origins/battlemage_mana_shield.js#73:   - Resistance III cap with very high magic bonus (48% reduction)
+[01:12:46] [INFO] Loaded script server_scripts:origins/battlemage_mana_shield.js in 0.0 s
+[01:12:46] [INFO] origins/class_passives.js#320: [IridescentCraft] Class passives loaded
+[01:12:46] [INFO] origins/class_passives.js#321:   - Samurai: Focus (movement shield + Vorpal by tier)
+[01:12:46] [INFO] origins/class_passives.js#322:   - Wanderer: Seasoned Traveler (dimension stacking)
+[01:12:46] [INFO] origins/class_passives.js#323:   - Paladin: Healing Aura (AoE regen)
+[01:12:46] [INFO] origins/class_passives.js#324:   - Vanguard: Guardian's Presence (Weakness to nearby entities)
+[01:12:46] [INFO] origins/class_passives.js#325:   - Void Summoner: Soul Tether (5% lifesteal, 10% bonus XP)
+[01:12:46] [INFO] Loaded script server_scripts:origins/class_passives.js in 0.001 s
+[01:12:46] [INFO] origins/class_passives_phase6h.js#208: [IridescentCraft] class_passives_phase6h loaded (Berserker Battle Trance, Samurai Bushido, Wanderer Adaptable, Artificer Resourceful)
+[01:12:46] [INFO] Loaded script server_scripts:origins/class_passives_phase6h.js in 0.0 s
+[01:12:46] [INFO] origins/magic_class_starter.js#145: [IridescentCraft] Magic class starter kit loaded
+[01:12:46] [INFO] origins/magic_class_starter.js#146:   - Archmage: copper + novice spell books, 5 source gems, 2 ink
+[01:12:46] [INFO] origins/magic_class_starter.js#147:   - Battlemage: copper spell book, 3 source gems, 1 ink
+[01:12:46] [INFO] origins/magic_class_starter.js#148:   - Void Summoner: copper spell book, 1 ink, 1 ender pearl
+[01:12:46] [INFO] origins/magic_class_starter.js#149:   - Chat `!magicstart` resets the per-class flag and retries
+[01:12:46] [INFO] Loaded script server_scripts:origins/magic_class_starter.js in 0.001 s
+[01:12:46] [INFO] origins/origin_effects.js#228: [IridescentCraft] Origins custom effects loaded
+[01:12:46] [INFO] origins/origin_effects.js#229:   - Avian: Sky Affinity altitude buffs (Y>=80 / Y>=150)
+[01:12:46] [INFO] origins/origin_effects.js#230:   - Merling: Land discomfort after 5 min dry
+[01:12:46] [INFO] origins/origin_effects.js#231:   - Blazeborn: Nether Affinity (+10% dmg/-10% taken, doubles after first Nether visit)
+[01:12:46] [INFO] origins/origin_effects.js#232:   - Enderian: Ender Shift (+15% damage for 10s after teleport)
+[01:12:46] [INFO] origins/origin_effects.js#233:   - Shulk: Hardened Shell (reduced death durability loss)
+[01:12:46] [INFO] origins/origin_effects.js#234:   - Dwarf: Miner's Appetite (Saturation on block break)
+[01:12:46] [INFO] origins/origin_effects.js#235:   - Revenant: Shadow Strike (Resistance I in darkness/Abyss)
+[01:12:46] [INFO] Loaded script server_scripts:origins/origin_effects.js in 0.0 s
+[01:12:46] [INFO] origins/phantom_undeath.js#95: [IridescentCraft] Phantom Undeath loaded
+[01:12:46] [INFO] origins/phantom_undeath.js#96:   - Phantoms cannot die — health locks to 0.5 hearts
+[01:12:46] [INFO] origins/phantom_undeath.js#97:   - Spectral Collapse: Weakness II, Slowness II, Mining Fatigue I for 5 min
+[01:12:46] [INFO] origins/phantom_undeath.js#98:   - Resistance II during collapse to prevent instant re-collapse
+[01:12:46] [INFO] Loaded script server_scripts:origins/phantom_undeath.js in 0.0 s
+[01:12:46] [INFO] origins/spell_book_transfer.js#113: [IridescentCraft] spell_book_transfer loaded — ISB_Spells NBT preserved through Tetra replacement
+[01:12:46] [INFO] Loaded script server_scripts:origins/spell_book_transfer.js in 0.001 s
+[01:12:46] [INFO] origins/witch_of_ink_progression.js#184: [IridescentCraft] Witch of Ink progression loaded
+[01:12:46] [INFO] origins/witch_of_ink_progression.js#185:   - Boss kill counter (Apotheosis +1, dimensional +10)
+[01:12:46] [INFO] origins/witch_of_ink_progression.js#186:   - Scaling boons: damage, reduction, toughness (max 20% each)
+[01:12:46] [INFO] origins/witch_of_ink_progression.js#187:   - Blessing of Penthesilea at 200 counters
+[01:12:46] [INFO] Loaded script server_scripts:origins/witch_of_ink_progression.js in 0.0 s
+[01:12:46] [INFO] origins/witherborn_slimebodied.js#153: [IridescentCraft] Witherborn & Slimebodied origins loaded
+[01:12:46] [INFO] origins/witherborn_slimebodied.js#154:   Witherborn: Wither on hit, hunger damage penalty
+[01:12:46] [INFO] origins/witherborn_slimebodied.js#155:   Slimebodied: satiety DR, food cooldown, satiety floor
+[01:12:46] [INFO] Loaded script server_scripts:origins/witherborn_slimebodied.js in 0.0 s
+[01:12:46] [INFO] player_t1_damage_softener.js#61: [IridescentCraft] player_t1_damage_softener loaded (-30% incoming damage at tier_1 only)
+[01:12:46] [INFO] Loaded script server_scripts:player_t1_damage_softener.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:pregen/auto_chunky.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/ad_astra_gating.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/cooking_conversion.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/if_latex_rework.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/planetary_extraction.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/recipe_audit.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/refined_storage_dualpath.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/tier_gated_recipes.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/tier_skip.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:recipes/waystone_recipes.js in 0.0 s
+[01:12:46] [INFO] respawn_hunger.js#40: [IridescentCraft] respawn_hunger loaded — respawn sets food=6, saturation=0
+[01:12:46] [INFO] Loaded script server_scripts:respawn_hunger.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:respec/class_respec.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:scaling/boss_hp.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:scaling/boss_progressive.js in 0.0 s
+[01:12:46] [INFO] Loaded script server_scripts:scaling/dimension_mechanics.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:scaling/mob_equipment.js in 0.0 s
+[01:12:46] [INFO] scaling/mob_scaling_unified.js#271: [IridescentCraft] Unified mob scaling loaded (tier HP + dimension scaling)
+[01:12:46] [INFO] Loaded script server_scripts:scaling/mob_scaling_unified.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:skills/justleveling_skills.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:skills/mastery_tax.js in 0.0 s
+[01:12:46] [INFO] skills/skill_effects.js#750: [IridescentCraft] skill_effects.js Phase 3 loaded — 22 active effects (0 placeholders)
+[01:12:46] [INFO] Loaded script server_scripts:skills/skill_effects.js in 0.001 s
+[01:12:46] [INFO] spawn_protection.js#77: [IridescentCraft] Spawn protection loaded (radius: 32)
+[01:12:46] [INFO] Loaded script server_scripts:spawn_protection.js in 0.0 s
+[01:12:46] [INFO] sunlight_smite.js#43: Loaded Java class 'net.minecraft.tags.EntityTypeTags'
+[01:12:46] [INFO] sunlight_smite.js#46: Loaded Java class 'net.minecraft.world.damagesource.DamageTypes'
+[01:12:46] [INFO] sunlight_smite.js#108: [IridescentCraft] sunlight_smite loaded: +100 HP/tick(10) to #minecraft:undead + #forge:undead in direct sky
+[01:12:46] [INFO] Loaded script server_scripts:sunlight_smite.js in 0.001 s
+[01:12:46] [INFO] tags/transmuted_tags.js#35: [IridescentCraft] Transmuted material tags registered
+[01:12:46] [INFO] Loaded script server_scripts:tags/transmuted_tags.js in 0.0 s
+[01:12:46] [INFO] tatos_dimension_lock.js#97: [IridescentCraft] tatos_dimension_lock loaded (theabyss:* mobs confined to 4 TATOS dims)
+[01:12:46] [INFO] Loaded script server_scripts:tatos_dimension_lock.js in 0.0 s
+[01:12:46] [INFO] tetra_terramity_perks.js#157: [IridescentCraft] tetra_terramity_perks loaded
+[01:12:46] [INFO] tetra_terramity_perks.js#158:   sapphire->fire_res passive | topaz->fire on hit
+[01:12:46] [INFO] tetra_terramity_perks.js#159:   ruby->+50% fire damage | onyx->+15% minion damage
+[01:12:46] [INFO] tetra_terramity_perks.js#160:   dimlite->night vision passive | iridium->+50% melee knockback
+[01:12:46] [INFO] Loaded script server_scripts:tetra_terramity_perks.js in 0.001 s
+[01:12:46] [INFO] Loaded script server_scripts:validate_recipe_removals.js in 0.0 s
+[01:12:46] [INFO] Loaded 91/92 KubeJS server scripts in 0.055 s with 1 errors and 0 warnings
+[01:12:46] [INFO] Scripts loaded
+[01:12:46] [INFO] Initializing recipe event...
+[01:12:46] [WARN] Due to the way Minecraft resource loading works, KubeJS' server.log may not contain everything that happened in your server scripts on initial world creation.
+[01:12:46] [WARN] You can still see the full log (including past reloads) in your latest.log file.
+[01:13:56] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:iron_golem
+[01:13:56] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:cat
+[01:13:56] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: naturalist:robin
+[01:13:58] [INFO] Server resource reload complete!
+[01:13:58] [INFO] 0_tick_master.js#87: [TickMaster] Registered 41 server tick functions
+[01:13:58] [INFO] 0_tick_master.js#88: [TickMaster] Registered 11 player tick functions
+[01:13:58] [INFO] cherry_spawn_biome.js#111: [icraft_spawn] starting search; origin=0,65,-160
+[01:13:58] [INFO] cherry_spawn_biome.js#135: [icraft_spawn] attempt 1: cherry biome at 0,65,-160
+[01:13:58] [INFO] cherry_spawn_biome.js#160: [icraft_spawn]   nearest village at 0,0,-160 biome=iridescent_biomes:cherry_river_valley
+[01:13:58] [INFO] cherry_spawn_biome.js#168: Loaded Java class 'net.minecraft.world.level.levelgen.Heightmap$Types'
+[01:13:58] [INFO] cherry_spawn_biome.js#190: [icraft_spawn] SUCCESS: world spawn -> cherry village at 0,65,-160 (player first-join teleport armed)
+[01:13:58] [INFO] gates/astages_restrictions.js#441: [IridescentCraft] AStages native restrictions registered
+[01:13:58] [INFO] gates/astages_restrictions.js#442:   Tier 2: 6 mods + 16 items + 4 dimensions
+[01:13:58] [INFO] gates/astages_restrictions.js#443:   Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions
+[01:13:58] [INFO] gates/astages_restrictions.js#444:   Tier 4: 5 mods + 93 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts)
+[01:13:58] [INFO] mobgriefing_default.js#48: [mobgriefing_default] set mobGriefing=false (was true) on first world load
+[01:13:58] [INFO] pregen/auto_chunky.js#26: [IridescentCraft] First world load - auto-starting Chunky pre-gen
+[01:13:58] [INFO] pregen/auto_chunky.js#27: [IridescentCraft]   dimension: minecraft:overworld, radius: 2500
+[01:13:58] [INFO] pregen/auto_chunky.js#35: [IridescentCraft] Chunky pre-gen kicked off. chunky-player-pause will pause it when players join.
+[01:13:58] [INFO] skills/justleveling_skills.js#890: [IridescentCraft] JustLeveling Aptitude Skills loaded (Batch 1+2+3 — all 28 slots filled)
+[01:13:58] [INFO] skills/justleveling_skills.js#891:   Tier 5 (Batch 1):
+[01:13:58] [INFO] skills/justleveling_skills.js#892:     STR 5: Might (+1.5 dmg, +5% HP)
+[01:13:58] [INFO] skills/justleveling_skills.js#893:     CON 5: Tough Hide (+2 max HP)
+[01:13:58] [INFO] skills/justleveling_skills.js#894:     DEX 5: Light Step (+5% speed; jump-fall in Batch 2)
+[01:13:58] [INFO] skills/justleveling_skills.js#895:     DEF 5: Padded Frame (+1 armor, +1 toughness)
+[01:13:58] [INFO] skills/justleveling_skills.js#896:     MAG 5: Mana Spark (+20 mana, +5% spell power)
+[01:13:58] [INFO] skills/justleveling_skills.js#897:     INT 5: Curious (+10% XP)
+[01:13:58] [INFO] skills/justleveling_skills.js#898:     BLD 5: Steady Hand (+0.5 reach)
+[01:13:58] [INFO] skills/justleveling_skills.js#899:     LCK 5: Lucky Charm (+1 luck)
+[01:13:58] [INFO] skills/justleveling_skills.js#900:   Tier 10:
+[01:13:58] [INFO] skills/justleveling_skills.js#901:     STR 10: Brutal Slash (+10% dmg, ~armor pen) [Batch 2]
+[01:13:58] [INFO] skills/justleveling_skills.js#902:     DEX 10: Fleet of Foot (+15% speed)
+[01:13:58] [INFO] skills/justleveling_skills.js#903:     CON 10: Hearty Meals (Regen I when well-fed)
+[01:13:58] [INFO] skills/justleveling_skills.js#904:     DEF 10: Second Wind (Regen III at low HP, 60s CD)
+[01:13:58] [INFO] skills/justleveling_skills.js#905:     MAG 10: Conservation of Magic (+15% mana regen) [Batch 3]
+[01:13:58] [INFO] skills/justleveling_skills.js#906:     INT 10: Arcane Efficiency (25% XP refund near enchant table) [Batch 3]
+[01:13:58] [INFO] skills/justleveling_skills.js#907:     BLD 10: Quarryman (+5% block break speed)
+[01:13:58] [INFO] skills/justleveling_skills.js#908:   Tier 15:
+[01:13:58] [INFO] skills/justleveling_skills.js#909:     STR 15: Cleave (+20% first swing, 5s reset) [Batch 2]
+[01:13:58] [INFO] skills/justleveling_skills.js#910:     CON 15: Steady Breath (water breathing + sat while underwater) [Batch 2]
+[01:13:58] [INFO] skills/justleveling_skills.js#911:     DEX 15: Deadeye (+10% projectile damage)
+[01:13:58] [INFO] skills/justleveling_skills.js#912:     DEF 15: Bulwark (+25% knockback resistance)
+[01:13:58] [INFO] skills/justleveling_skills.js#913:     MAG 15: Mana Blaze (+15% spell power)
+[01:13:58] [INFO] skills/justleveling_skills.js#914:     INT 15: Insight (+20% XP)
+[01:13:58] [INFO] skills/justleveling_skills.js#915:     BLD 15: Thrifty Hands (5% refund placed blocks) [Batch 2]
+[01:13:58] [INFO] skills/justleveling_skills.js#916:   Tier 20:
+[01:13:58] [INFO] skills/justleveling_skills.js#917:     STR 20: Hemorrhage (Wither I on melee hit)
+[01:13:58] [INFO] skills/justleveling_skills.js#918:     CON 20: Overflow (Absorption at full HP)
+[01:13:58] [INFO] skills/justleveling_skills.js#919:     MAG 20: Mystic Ward (dynamic DR scaled by spell power) [Batch 2]
+[01:13:58] [INFO] skills/justleveling_skills.js#920:     INT 20: Materials Science (25% XP refund near anvil) [Batch 3]
+[01:13:58] [INFO] skills/justleveling_skills.js#921:     DEX 20: Rapid Fire (+15% bow draw speed) [Batch 3]
+[01:13:58] [INFO] skills/justleveling_skills.js#922:     DEF 20: Turtle Shield (+4 toughness when not blocking)
+[01:13:58] [INFO] skills/justleveling_skills.js#923:     BLD 20: Resourceful (8% craft material refund) [Batch 3]
+[01:13:58] [INFO] skills/justleveling_skills.js#924:     LCK 20: Treasure Sense (5% double-roll on entity kill) [Batch 2]
+[01:13:58] [INFO] skills/justleveling_skills.js#925:   Tier 30:
+[01:13:58] [INFO] skills/justleveling_skills.js#926:     STR 30: True Strength (execute at <= 5% HP)
+[01:13:58] [INFO] skills/justleveling_skills.js#927:     DEX 30: Excitement (Speed III + Haste II on kill)
+[01:13:58] [INFO] skills/justleveling_skills.js#928:     CON 30: Iron Stomach (Saturation, slows hunger)
+[01:13:58] [INFO] skills/justleveling_skills.js#929:     DEF 30: Lion Heart (DR scales with missing HP, up to 30%)
+[01:13:58] [INFO] skills/justleveling_skills.js#930:     MAG 30: Mana Inferno (+30% spell power)
+[01:13:58] [INFO] skills/justleveling_skills.js#931:     INT 30: Enlightenment (+30% XP) [rebalanced from +50%]
+[01:13:58] [INFO] skills/justleveling_skills.js#932:     BLD 30: Master Craftsman (+12% craft refund, stacks to 20%) [Batch 3]
+[01:13:58] [INFO] skills/justleveling_skills.js#933:     LCK 30: Motherlode (0.5% chance for 5x mining drops) [Batch 2]
+[01:13:58] [INFO] skills/mastery_tax.js#113: [IridescentCraft] Mastery Tax loaded
+[01:13:58] [INFO] skills/mastery_tax.js#114:   Tax curve (XP per level-up):
+[01:13:58] [INFO] skills/mastery_tax.js#115:     Levels 1-32 (1st aptitude): 0 tax
+[01:13:58] [INFO] skills/mastery_tax.js#116:     Level 33: 50 XP
+[01:13:58] [INFO] skills/mastery_tax.js#117:     Level 48: 800 XP
+[01:13:58] [INFO] skills/mastery_tax.js#118:     Level 64: 1600 XP
+[01:13:58] [INFO] skills/mastery_tax.js#119:     Level 65: 1800 XP
+[01:13:58] [INFO] skills/mastery_tax.js#120:     Level 80: 4800 XP
+[01:13:58] [INFO] skills/mastery_tax.js#121:     Level 96: 8000 XP
+[01:13:58] [INFO] skills/mastery_tax.js#122:     Level 97: 8800 XP
+[01:13:58] [INFO] skills/mastery_tax.js#123:     Level 112: 20800 XP
+[01:13:58] [INFO] skills/mastery_tax.js#124:     Level 128: 33600 XP
+[01:13:58] [INFO] skills/mastery_tax.js#125:     Level 200: 91200 XP
+[01:13:58] [INFO] skills/mastery_tax.js#126:     Level 248: 129600 XP
+[01:13:58] [INFO] skills/skill_effects.js#24: [IridescentCraft] Scoreboard objectives created (22)
+[01:13:59] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: mca:male_villager
+[01:13:59] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: mca:female_villager
+[01:14:09] [INFO] attributes/attribute_sync.js#67: [IridescentCraft] Initialized default attributes for silvieserene
+[01:14:09] [INFO] codex_delivery.js#220: [codex] First-join delivery to silvieserene
+[01:14:09] [INFO] codex_delivery.js#245: [codex] loggedIn fired for silvieserene, sweep + starter-poll armed (3min), auto-origindump armed (~20s)
+[01:14:09] [INFO] gates/milestone_detection.js#370: [IridescentCraft] Granted tier_1 to new player: silvieserene
+[01:14:09] [ERROR] ! migrations/rift_shard_rename.js#29: Error in 'PlayerEvents.loggedIn': TypeError: redeclaration of var stack.
+[01:14:09] [ERROR] ! …rhino.EvaluatorException: TypeError: redeclaration of var stack. (server_scripts:migrations/rift_shard_rename.js#29)
+[01:14:09] [ERROR] !   at …rhino.DefaultErrorReporter.runtimeError(DefaultErrorReporter.java:67)
+[01:14:09] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:133)
+[01:14:09] [ERROR] !   at …rhino.Context.reportRuntimeError(Context.java:173)
+[01:14:09] [ERROR] !   at …rhino.Context.reportRuntimeError1(Context.java:145)
+[01:14:09] [ERROR] !   at …rhino.ScriptableObject.putConstImpl(ScriptableObject.java:2539)
+[01:14:09] [ERROR] !   at …rhino.ScriptableObject.putConst(ScriptableObject.java:1571)
+[01:14:09] [ERROR] !   at …rhino.ScriptableObject.putConstProperty(ScriptableObject.java:1124)
+[01:14:09] [ERROR] !   at …rhino.ScriptRuntime.setConst(ScriptRuntime.java:1623)
+[01:14:09] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:754)
+[01:14:09] [ERROR] !   at script(server_scripts:migrations/rift_shard_rename.js:29)
+[01:14:09] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[01:14:09] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[01:14:09] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:14:09] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[01:14:09] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[01:14:09] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:14:09] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[01:14:09] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:14:09] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[01:14:09] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[01:14:09] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy206.onEvent(Unknown Source)
+[01:14:09] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[01:14:09] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[01:14:09] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[01:14:09] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[01:14:09] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:189)
+[01:14:09] [ERROR] !   at …kubejs.player.KubeJSPlayerEventHandler.loggedIn(KubeJSPlayerEventHandler.java:32)
+[01:14:09] [ERROR] !   at java.lang.invoke.MethodHandle.invokeWithArguments(MethodHandle.java:732)
+[01:14:09] [ERROR] !   at dev.architectury.event.EventFactory.invokeMethod(EventFactory.java:53)
+[01:14:09] [ERROR] !   at dev.architectury.event.EventFactory$1.handleInvocation(EventFactory.java:62)
+[01:14:09] [ERROR] !   at MC-BOOTSTRAP/com.google.common@31.1-jre/com.google.common.reflect.AbstractInvocationHandler.invoke(AbstractInvocationHandler.java:87)
+[01:14:09] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy308.join(Unknown Source)
+[01:14:09] [ERROR] !   at dev.architectury.event.forge.EventHandlerImplCommon.event(EventHandlerImplCommon.java:115)
+[01:14:09] [ERROR] !   at dev.architectury.event.forge.__EventHandlerImplCommon_event_PlayerLoggedInEvent.invoke(.dynamic)
+[01:14:09] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.ASMEventHandler.invoke(ASMEventHandler.java:73)
+[01:14:09] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:315)
+[01:14:09] [ERROR] !   at MC-BOOTSTRAP/net.minecraftforge.eventbus/net.minecraftforge.eventbus.EventBus.post(EventBus.java:296)
+[01:14:09] [ERROR] !   at net.minecraftforge.event.ForgeEventFactory.firePlayerLoggedIn(ForgeEventFactory.java:900)
+[01:14:09] [ERROR] !   at net.minecraft.server.players.PlayerList.m_11261_(PlayerList.java:261)
+[01:14:09] [ERROR] !   at net.minecraft.server.network.ServerLoginPacketListenerImpl.m_143699_(ServerLoginPacketListenerImpl.java:139)
+[01:14:09] [ERROR] !   at net.minecraft.server.network.ServerLoginPacketListenerImpl.m_10055_(ServerLoginPacketListenerImpl.java:126)
+[01:14:09] [ERROR] !   at net.minecraft.server.network.ServerLoginPacketListenerImpl.redirect$jej000$fabric_networking_api_v1$handlePlayerJoin(ServerLoginPacketListenerImpl.java:1063)
+[01:14:09] [ERROR] !   at net.minecraft.server.network.ServerLoginPacketListenerImpl.m_9933_(ServerLoginPacketListenerImpl.java:70)
+[01:14:09] [ERROR] !   at net.minecraft.network.Connection.m_129483_(Connection.java:263)
+[01:14:09] [ERROR] !   at net.minecraft.server.network.ServerConnectionListener.m_9721_(ServerConnectionListener.java:142)
+[01:14:09] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5703_(MinecraftServer.java:907)
+[01:14:09] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:814)
+[01:14:09] [ERROR] !   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[01:14:09] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[01:14:09] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[01:14:09] [ERROR] !   at java.lang.Thread.run(Thread.java:833)
+[01:14:11] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:sheep
+[01:14:11] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:cow
+[01:14:11] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:pig
+[01:14:20] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:chicken
+[01:14:22] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: forbidden_arcanus:lost_soul
+[01:14:22] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: artifacts:mimic
+[01:14:23] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: quark:shiba
+[01:14:26] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: irons_spellbooks:priest
+[01:15:04] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: naturalist:snail
+[01:15:06] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: ars_nouveau:whirlisprig
+[01:15:18] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:pillager
+[01:15:19] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:slime
+[01:15:21] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:rabbit
+[01:15:30] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: terramity:pink_fairy
+[01:15:30] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: naturalist:canary
+[01:15:44] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: terramity:echo_bug
+[01:15:44] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: terramity:simple_turret
+[01:15:44] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: terramity:megabite
+[01:15:45] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:skeleton
+[01:15:46] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: ars_nouveau:starbuncle
+[01:15:46] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:magma_cube
+[01:15:47] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:phantom
+[01:15:57] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:wither_skeleton
+[01:15:59] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: minecraft:bee
+[01:16:00] [INFO] disable_zombie_door_break.js#80: [no_door_break] handler fired on first spawn of: terramity:cave_gnome
+[01:16:00] [INFO] codex_delivery.js#665: [IridescentCraft] Cleared patchouli book: terramity:terramity_guidebook (1 items)
+[01:16:00] [INFO] codex_delivery.js#665: [IridescentCraft] Cleared patchouli book: simplyswords:runic_grimoire (1 items)
+[01:16:00] [INFO] codex_delivery.js#665: [IridescentCraft] Cleared patchouli book: footwork:combat_manual (1 items)
+[01:16:00] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=archmage for silvieserene
+[01:16:00] [INFO] codex_delivery.js#171: [codex/starter] tryGrantStarter: flag icraft_magic_starter_archmage is false, calling giveStarterKit
+[01:16:00] [INFO] codex_delivery.js#107: [codex/starter] giveStarterKit ENTER: player=silvieserene class=archmage
+[01:16:00] [INFO] codex_delivery.js#113: [codex/starter] giveStarterKit: kit has 6 entries
+[01:16:00] [INFO] codex_delivery.js#140: [codex/starter] give: attempting iridescent_modular_spells:modular_copper_spell_book x1 (stack resolved: EMPTY/null)
+[01:16:00] [INFO] codex_delivery.js#144: [codex/starter] give: iridescent_modular_spells:modular_copper_spell_book x1 — player.give returned without throw
+[01:16:00] [WARN] codex_delivery.js#22: [codex/starter] makeScroll failed for irons_spellbooks:magic_missile: InternalError: The choice of Java method io.redspace.ironsspellbooks.api.registry.SpellRegistry.getSpell matching JavaScript argument types (string) is ambiguous; candidate methods are: 
+    class io.redspace.ironsspellbooks.api.spells.AbstractSpell getSpell(java.lang.String)
+    class io.redspace.ironsspellbooks.api.spells.AbstractSpell getSpell(net.minecraft.resources.ResourceLocation)
+[01:16:00] [WARN] codex_delivery.js#146: [codex/starter] give FAILED for irons_spellbooks:magic_missile: TypeError: Cannot find function getInternal in object 1 scroll.
+[01:16:00] [WARN] codex_delivery.js#22: [codex/starter] makeScroll failed for irons_spellbooks:firebolt: InternalError: The choice of Java method io.redspace.ironsspellbooks.api.registry.SpellRegistry.getSpell matching JavaScript argument types (string) is ambiguous; candidate methods are: 
+    class io.redspace.ironsspellbooks.api.spells.AbstractSpell getSpell(java.lang.String)
+    class io.redspace.ironsspellbooks.api.spells.AbstractSpell getSpell(net.minecraft.resources.ResourceLocation)
+[01:16:00] [WARN] codex_delivery.js#146: [codex/starter] give FAILED for irons_spellbooks:firebolt: TypeError: Cannot find function getInternal in object 1 scroll.
+[01:16:00] [INFO] codex_delivery.js#140: [codex/starter] give: attempting iridescent_modular_spells:modular_novice_spell_book x1 (stack resolved: EMPTY/null)
+[01:16:00] [INFO] codex_delivery.js#144: [codex/starter] give: iridescent_modular_spells:modular_novice_spell_book x1 — player.give returned without throw
+[01:16:00] [INFO] codex_delivery.js#140: [codex/starter] give: attempting ars_nouveau:source_gem x5 (stack resolved: ok)
+[01:16:00] [INFO] codex_delivery.js#144: [codex/starter] give: ars_nouveau:source_gem x5 — player.give returned without throw
+[01:16:00] [INFO] codex_delivery.js#140: [codex/starter] give: attempting irons_spellbooks:common_ink x2 (stack resolved: ok)
+[01:16:00] [INFO] codex_delivery.js#144: [codex/starter] give: irons_spellbooks:common_ink x2 — player.give returned without throw
+[01:16:00] [INFO] codex_delivery.js#149: [codex/starter] giveStarterKit: 4/6 items delivered without throw
+[01:16:00] [INFO] codex_delivery.js#154: [codex/starter] giveStarterKit: tell messages sent
+[01:16:00] [INFO] codex_delivery.js#174: [codex/starter] tryGrantStarter: flag set true, grant complete for silvieserene
+[01:16:01] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for silvieserene — no books found
+[01:16:02] [ERROR] ! skills/justleveling_skills.js#250: Error while wrapping registry element type!: No such element with id minecraft:player.block_break_speed in registry minecraft:attribute!
+[01:16:02] [ERROR] ! java.lang.NullPointerException: No such element with id minecraft:player.block_break_speed in registry minecraft:attribute!
+[01:16:02] [ERROR] !   at …kubejs.registry.RegistryInfo.wrap(RegistryInfo.java:416)
+[01:16:02] [ERROR] !   at …rhino.NativeJavaObject.coerceTypeImpl(NativeJavaObject.java:268)
+[01:16:02] [ERROR] !   at …rhino.Context.jsToJava(Context.java:237)
+[01:16:02] [ERROR] !   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:430)
+[01:16:02] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[01:16:02] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[01:16:02] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[01:16:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:16:02] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[01:16:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:16:02] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[01:16:02] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[01:16:02] [ERROR] !   at jdk.proxy1/jdk.proxy1.$Proxy281.accept(Unknown Source)
+[01:16:02] [ERROR] !   at java.util.ArrayList.forEach(ArrayList.java:1511)
+[01:16:02] [ERROR] !   at java.lang.reflect.Method.invoke(Method.java:568)
+[01:16:02] [ERROR] !   at …rhino.MemberBox.invoke(MemberBox.java:160)
+[01:16:02] [ERROR] !   at …rhino.NativeJavaMethod.call(NativeJavaMethod.java:463)
+[01:16:02] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[01:16:02] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[01:16:02] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[01:16:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:16:02] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[01:16:02] [ERROR] !   at …rhino.Interpreter.interpretLoop(Interpreter.java:986)
+[01:16:02] [ERROR] !   at …rhino.Interpreter.interpret(Interpreter.java:370)
+[01:16:02] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:72)
+[01:16:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:16:02] [ERROR] !   at …rhino.Context.doTopCall(Context.java:1374)
+[01:16:02] [ERROR] !   at …rhino.InterpretedFunction.call(InterpretedFunction.java:70)
+[01:16:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:16:02] [ERROR] !   at …rhino.ArrowFunction.call(ArrowFunction.java:42)
+[01:16:02] [ERROR] !   at …rhino.Context.callSync(Context.java:1357)
+[01:16:02] [ERROR] !   at …rhino.InterfaceAdapter.invoke(InterfaceAdapter.java:125)
+[01:16:02] [ERROR] !   at …rhino.VMBridge.lambda$newInterfaceProxy$0(VMBridge.java:74)
+[01:16:02] [ERROR] !   at TRANSFORMER/jdk.proxy3/jdk.proxy3.$Proxy206.onEvent(Unknown Source)
+[01:16:02] [ERROR] !   at …kubejs.event.EventHandlerContainer.handle(EventHandlerContainer.java:39)
+[01:16:02] [ERROR] !   at …kubejs.event.EventHandler.postToHandlers(EventHandler.java:304)
+[01:16:02] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:272)
+[01:16:02] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:226)
+[01:16:02] [ERROR] !   at …kubejs.event.EventHandler.post(EventHandler.java:189)
+[01:16:02] [ERROR] !   at net.minecraft.server.MinecraftServer.handler$jgh000$kubejs$kjs$postTickServer(MinecraftServer.java:10438)
+[01:16:02] [ERROR] !   at net.minecraft.server.MinecraftServer.m_5705_(MinecraftServer.java:836)
+[01:16:02] [ERROR] !   at net.minecraft.client.server.IntegratedServer.m_5705_(IntegratedServer.java:89)
+[01:16:02] [ERROR] !   at net.minecraft.server.MinecraftServer.m_130011_(MinecraftServer.java:661)
+[01:16:02] [ERROR] !   at net.minecraft.server.MinecraftServer.m_206580_(MinecraftServer.java:251)
+[01:16:02] [ERROR] !   at java.lang.Thread.run(Thread.java:833)
+[01:16:02] [ERROR] ! 0_tick_master.js#65: [TickMaster] Error in server tick function "tick_justlevelingSkills": JavaException: java.lang.NullPointerException: No such element with id minecraft:player.block_break_speed in registry minecraft:attribute!
+[01:16:02] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for silvieserene — no books found
+[01:16:03] [INFO] codex_delivery.js#680: [IridescentCraft] Sweep ran for silvieserene — no books found
