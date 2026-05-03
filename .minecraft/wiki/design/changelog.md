@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-03 — Knockback forensics: third-layer player-launch diagnostic
+
+Tester report: skyward launches still happening after the 2026-04-25/26 fixes (cap_player_knockback's strength + ratio cap on `LivingKnockBackEvent`, and diag_player_velocity's post-hurt Y-velocity clamp on `LivingHurtEvent`). Both layers are deployed, both bootstrap-log on every launch, neither has fired diagnostic events in the captured server.log windows — meaning the launch vector is bypassing both event paths entirely.
+
+Three remaining vector classes:
+1. **Status effects** — Levitation (or a mod-custom equivalent) pushes upward over multiple ticks via vanilla `LivingEntity.travel()`, never goes through `LivingKnockBackEvent`. Per-tick velocity delta is small (~0.05 per amplifier) so it never trips our 0.8 spike threshold either.
+2. **Deferred velocity** — mods that schedule a `setDeltaMovement` for a later tick after `LivingHurtEvent` has fired.
+3. **Custom events** — a mod-defined velocity event distinct from `LivingKnockBackEvent` / `LivingHurtEvent`.
+
+New `kubejs/server_scripts/diag_player_launch.js` (MONITOR-priority, observation only — no mitigation) catches all three:
+- **MobEffectEvent.Added handler** — logs every effect applied to a player with attacker attribution (correlated via `persistentData._dpl_atk` written by a paired `LivingHurtEvent` handler within 10 ticks of the hurt). Per-attacker-per-effect dedup so long fights don't spam.
+- **4Hz player Y-velocity scan** — every 5 ticks, walks every loaded player and logs when `deltaMovement.y >= 1.0` (well above natural jumps which peak ~0.42). Snapshots the full active-effect list at the moment of the spike. Per-player one-shot until the player touches ground again.
+
+Once we capture a launch with the new diag, we'll know whether it's an effect (most likely Levitation), a deferred-velocity push, or something else, and follow up with a targeted strip/clamp.
+
+---
+
 ## 2026-05-03 — Auto session-log push on client + server exit
 
 **Client.** New `.minecraft/prism_postexit.bat` runs as PrismLauncher's `PostExitCommand`:
