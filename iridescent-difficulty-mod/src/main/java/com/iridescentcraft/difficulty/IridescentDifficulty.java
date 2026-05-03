@@ -67,6 +67,7 @@ public class IridescentDifficulty {
         MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.event.DimensionTimerTracker.class);
         MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.event.MobScalingHandler.class);
         MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.event.EnderDragonUncapHandler.class);
+        MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.event.PlayerActivityTracker.class);
         MinecraftForge.EVENT_BUS.register(com.iridescentcraft.difficulty.command.DifficultyCommands.class);
 
         LOGGER.info("[{}] loaded — per-dimension time-based mob scaling active", MODID);

@@ -22,6 +22,12 @@ public class DimensionTimerTracker {
         if (!(e.level instanceof ServerLevel sl)) return;
         if (!DifficultyConfig.COMMON.enabled.get()) return;
 
+        // Idle gate: pause timer when no active player is in this dim.
+        // PlayerTickEvent.END fires before LevelTickEvent.END (per Forge tick
+        // order), so the activity state is up-to-date for this tick before
+        // we check it here.
+        if (!PlayerActivityTracker.hasActivePlayerInLevel(sl)) return;
+
         DimensionDifficultyData.get(sl).incrementTick();
     }
 }

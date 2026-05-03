@@ -46,7 +46,34 @@ public class DifficultyCommands {
                 )
                 .then(Commands.literal("uncap")
                     .then(Commands.literal("end").executes(DifficultyCommands::uncapEnd)))
+                .then(Commands.literal("players").executes(DifficultyCommands::playersStatus))
         );
+    }
+
+    private static int playersStatus(CommandContext<CommandSourceStack> ctx) {
+        MinecraftServer srv = ctx.getSource().getServer();
+        boolean idleEnabled = DifficultyConfig.COMMON.idleDetectionEnabled.get();
+        double thresholdMin = DifficultyConfig.COMMON.idleThresholdMinutes.get();
+
+        ctx.getSource().sendSuccess(() -> Component.literal(String.format(
+            "§eidle detection: %s§r, threshold: §a%.1fmin§r",
+            idleEnabled ? "§aenabled" : "§7disabled", thresholdMin
+        )), false);
+
+        for (net.minecraft.server.level.ServerPlayer p : srv.getPlayerList().getPlayers()) {
+            long idleTicks = com.iridescentcraft.difficulty.event.PlayerActivityTracker.getIdleTicks(p);
+            double idleMin = idleTicks / 1200.0;
+            boolean active = com.iridescentcraft.difficulty.event.PlayerActivityTracker.isActive(p);
+            ctx.getSource().sendSuccess(() -> Component.literal(String.format(
+                "  §e%s§r dim=§b%s§r idle=§%s%.1fmin§r %s",
+                p.getName().getString(),
+                p.serverLevel().dimension().location(),
+                active ? "a" : "c",
+                idleMin,
+                active ? "§a✓ active§r" : "§c✗ idle§r"
+            )), false);
+        }
+        return 1;
     }
 
     private static int statusCurrent(CommandContext<CommandSourceStack> ctx) {

@@ -77,6 +77,10 @@ public final class DifficultyConfig {
         // Skip lists
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> excludedEntities;
 
+        // Idle detection (pause timer when no active players in dim)
+        public final ForgeConfigSpec.BooleanValue idleDetectionEnabled;
+        public final ForgeConfigSpec.DoubleValue idleThresholdMinutes;
+
         Common(ForgeConfigSpec.Builder b) {
             b.comment(
                 "Iridescent Difficulty — bespoke time-based mob scaling per dimension.",
@@ -205,6 +209,25 @@ public final class DifficultyConfig {
                         "irons_spellbooks:dead_king_boss"
                     ),
                     o -> o instanceof String);
+
+            b.pop();
+
+            // ── Idle detection ────────────────────────────────────────────
+            b.comment(
+                "Pause the per-dimension scaling timer when no active players",
+                "are in the dimension. An 'active' player is one who has moved",
+                "(>0.1 blocks), dealt damage, or taken damage within the last",
+                "idleThresholdMinutes. AFK pool farms and idle servers will",
+                "not advance the difficulty timer. Set enabled=false to revert",
+                "to plain time-based scaling regardless of player presence."
+            ).push("idle_detection");
+
+            idleDetectionEnabled = b.comment("Master toggle.")
+                .define("enabled", true);
+
+            idleThresholdMinutes = b.comment(
+                    "Minutes a player must be motionless + non-combat to be considered idle.")
+                .defineInRange("idleThresholdMinutes", 5.0, 0.5, 60.0);
 
             b.pop();
         }
