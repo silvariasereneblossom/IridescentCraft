@@ -4,6 +4,31 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-03 — Bespoke difficulty mod + scaling-mod consolidation
+
+**New custom mod `iridescent_difficulty`** replaces ScalingMobs, ImprovedMobs, AzukaarsFairDifficultyOverhaul, and the dimension-scaling block of `mob_scaling_unified.js` with a single time-based per-dimension scaling system. Tier mapping aligned with `wiki/progression/overview.md`:
+
+| Tier | Dimensions | Start % | Cap % | Cap Hours |
+|---|---|:-:|:-:|:-:|
+| T1 | Overworld | 150% | 300% | 100h |
+| T2 | Twilight Forest, Blue Skies, Aether | 200% | 350% | 100h |
+| T3 | Undergarden, Deeper Darker, Nether, Abyss | 300% | 450% | 100h |
+| T4 | Deep Aether, The End | 600% | 1000% | 200h |
+
+The End uniquely uncaps after Ender Dragon kill (Deep Aether stays capped). All thresholds + dimension→tier mappings configurable in `config/iridescent_difficulty-common.toml`.
+
+**Multiplier application:** `max_health` / `attack_damage` / `armor` linear; `movement_speed` uses `sqrt(mult)` so a 6× HP mob isn't also a 6× speed mob. Boss scaling stacks on top via the existing ProgressiveBosses + `boss_progressive.js` layers; mob-tier static HP (basic 3×, mid 1.5×, etc.) also composes with the new system.
+
+**Op-only debug commands:** `/icraftdiff status [all]`, `/icraftdiff timer set <hours>`, `/icraftdiff timer reset`, `/icraftdiff uncap end`.
+
+**Removed mods (3):** `ScalingMobs-2.4.3`, `improvedmobs-1.20.1-1.13.6`, `azukaarsfairdifficultyoverhaul-1.2.0`. All `.pw.toml` entries pruned across all 3 distros.
+
+**Majrusz patched, not removed:** `majruszsdifficulty.json` updated with `is_per_player_difficulty_enabled = false`, `crd_penalty` zeroed, `mobs_spawn_stronger` + `spawn_rate_increaser` disabled, `is_scaled_by_crd` flipped to false on 12 features. Net result: treasure bags + jockey spawns + charged creepers + evoker totem drops + raid XP + double_loot + all other content additions stay; mob HP/DMG no longer scales with stage; no Expert/Master tier exists.
+
+**Edited `mob_scaling_unified.js`:** dimension scaling block + DIMENSION_SCALES table removed; tier-HP block kept as static per-mob rule that composes with the new dimension scaling.
+
+---
+
 ## 2026-05-02 — ROBE armor tier + tagging audit + Magebloom material
 
 **ROBE class added — true mage gear, 4th tier below LIGHT.** Splits mage-coded armor (circlet, robe_chest, robed_leg_plate, robed_boot_sole reforged majors; ISS class robes; Botania manaweave; Terramity void_mage / exodium_warlock) out of LIGHT into its own tier. Per-piece: +0.10 mana_regen ADD, +1.5% speed, −7.5% armor, −10% toughness. **Full 4/4 robe set unlocks +0.5 mana_regen ADDITION on top** — the "True Mage" payoff for committing to a real caster build instead of mixing in plate. LIGHT keeps its rogue/agile identity (high speed bonus, no mana). Implementation: `ItemModularArmor.ArmorWeight.ROBE`, `ArmorWeightAggregator.WeightCount.robe`, coefficient tables in `kubejs/server_scripts/armor_weight.js`, tooltip color LIGHT_PURPLE.

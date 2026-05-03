@@ -1,13 +1,18 @@
 // =============================================================================
-// IridescentCraft — Unified Mob Scaling
+// IridescentCraft — Mob Tier HP (post-2026-05-03)
 // File: kubejs/server_scripts/scaling/mob_scaling_unified.js
 //
-// Single EntityEvents.spawned handler that applies BOTH:
-//   1. Mob Tier HP (basic 3x, mid 1.5x, champion 1.25x, boss 1x)
-//   2. Dimension Scaling (HP, damage, speed, armor per dimension)
+// Applies static per-mob-type tier HP:
+//   basic 3x, mid 1.5x, champion 1.25x, boss 1x
 //
-// Merged to reduce per-spawn overhead from 2 separate event handlers to 1.
-// Boss entities are excluded — they scale via boss_hp.js + boss_progressive.js
+// Dimension scaling MOVED to iridescent_difficulty mod (Java). The mod
+// provides time-based per-dimension scaling that COMPOSES with this
+// tier-HP rule rather than duplicating it: base mob -> mob_tier_hp
+// multiplier (this script) -> dimension multiplier (mod) -> final stat.
+//
+// Boss entities are excluded here — they scale via boss_hp.js +
+// boss_progressive.js (modded bosses) or the ProgressiveBosses mod
+// (vanilla bosses).
 // =============================================================================
 
 EntityEvents.spawned(event => {
@@ -64,40 +69,18 @@ EntityEvents.spawned(event => {
       )
     }
 
-    // ── Dimension Scaling ──
-    let dim = entity.level.dimension
-    let scale = DIMENSION_SCALES[dim]
-    if (scale) {
-      if (scale.hp > 1.0) {
-        entity.modifyAttribute('minecraft:generic.max_health', 'icraft_dim_hp', scale.hp - 1.0, 'multiply_base')
-      }
-      if (scale.dmg > 1.0) {
-        entity.modifyAttribute('minecraft:generic.attack_damage', 'icraft_dim_dmg', scale.dmg - 1.0, 'multiply_base')
-      }
-      if (scale.spd > 1.0) {
-        entity.modifyAttribute('minecraft:generic.movement_speed', 'icraft_dim_spd', scale.spd - 1.0, 'multiply_base')
-      }
-      if (scale.armor > 0) {
-        entity.modifyAttribute('minecraft:generic.armor', 'icraft_dim_armor', scale.armor, 'addition')
-      }
-
-      // End multi-zone scaling
-      if (dim === 'minecraft:the_end') {
-        let pos = entity.blockPosition()
-        let distSq = pos.x * pos.x + pos.z * pos.z
-        if (distSq < 200 * 200) {
-          // Dragon's Domain — upgrade from 6.0x to 10.0x
-          entity.modifyAttribute('minecraft:generic.max_health', 'icraft_end_zone', (10.0 - 6.0) / 6.0, 'multiply_base')
-          entity.modifyAttribute('minecraft:generic.attack_damage', 'icraft_end_zone_dmg', (12.0 - 8.0) / 8.0, 'multiply_base')
-          entity.modifyAttribute('minecraft:generic.armor', 'icraft_end_zone_armor', 4, 'addition')
-        } else if (distSq > 800 * 800) {
-          // Deep End — upgrade from 6.0x to 7.5x
-          entity.modifyAttribute('minecraft:generic.max_health', 'icraft_end_zone', (7.5 - 6.0) / 6.0, 'multiply_base')
-          entity.modifyAttribute('minecraft:generic.attack_damage', 'icraft_end_zone_dmg', (9.0 - 8.0) / 8.0, 'multiply_base')
-          entity.modifyAttribute('minecraft:generic.armor', 'icraft_end_zone_armor', 2, 'addition')
-        }
-      }
-    }
+    // ── Dimension Scaling: REMOVED 2026-05-03 ──
+    // The per-dimension HP/DMG/SPD/armor multipliers and the End multi-zone
+    // logic moved to iridescent_difficulty mod (java) which provides a
+    // time-based scaling curve per dimension instead of a flat multiplier.
+    // The mod's MobScalingHandler handles spawn scaling. See
+    // iridescent-difficulty-mod/src/main/java/.../MobScalingHandler.java
+    // and config/iridescent_difficulty-common.toml for the new defaults.
+    //
+    // What remains in this script:
+    //  - Mob Tier HP (basic/mid/champion/boss) — static per-mob-type rule
+    //    that's intended to compose with the new dimension scaling, not
+    //    duplicate it.
 
     // Heal to new max after all modifiers applied
     entity.heal(entity.maxHealth)
@@ -109,30 +92,12 @@ EntityEvents.spawned(event => {
   }
 })
 
-// ── Dimension Scale Tables ──
-const DIMENSION_SCALES = {
-  // Tier 1
-  'minecraft:overworld':              { hp: 1.0,  dmg: 1.0,  spd: 1.0,  armor: 0  },
-  // Tier 2
-  'twilightforest:twilight_forest':   { hp: 1.8,  dmg: 2.0,  spd: 1.05, armor: 2  },
-  'blue_skies:everbright':            { hp: 2.0,  dmg: 2.3,  spd: 1.05, armor: 3  },
-  'blue_skies:everdawn':              { hp: 2.0,  dmg: 2.3,  spd: 1.05, armor: 3  },
-  'aether:the_aether':                { hp: 2.2,  dmg: 2.5,  spd: 1.08, armor: 4  },
-  // Tier 3
-  'undergarden:undergarden':          { hp: 3.0,  dmg: 3.5,  spd: 1.10, armor: 6  },
-  'deeperdarker:otherside':           { hp: 3.5,  dmg: 4.0,  spd: 1.10, armor: 7  },
-  'minecraft:the_nether':             { hp: 4.0,  dmg: 5.0,  spd: 1.12, armor: 8  },
-  'theabyss:the_abyss':               { hp: 3.5,  dmg: 4.0,  spd: 1.10, armor: 7  },
-  // Tier 4
-  'deep_aether:the_aether':           { hp: 5.0,  dmg: 6.5,  spd: 1.15, armor: 10 },
-  'minecraft:the_end':                { hp: 6.0,  dmg: 8.0,  spd: 1.15, armor: 12 },
-  // Ad Astra Planets (Post-T4)
-  'ad_astra:moon':                    { hp: 7.0,  dmg: 7.0,  spd: 1.10, armor: 14 },
-  'ad_astra:mars':                    { hp: 8.0,  dmg: 8.0,  spd: 1.12, armor: 16 },
-  'ad_astra:mercury':                 { hp: 9.0,  dmg: 9.0,  spd: 1.15, armor: 18 },
-  'ad_astra:venus':                   { hp: 10.0, dmg: 10.0, spd: 1.18, armor: 20 },
-  'ad_astra:glacio':                  { hp: 12.0, dmg: 12.0, spd: 1.20, armor: 24 },
-}
+// ── Dimension Scale Tables: REMOVED 2026-05-03 ──
+// Replaced by iridescent_difficulty mod (Java) which provides time-based
+// per-dimension scaling. See iridescent-difficulty-mod for the new
+// implementation. The static multiplier table that lived here is now in
+// config/iridescent_difficulty-common.toml as start%/cap%/capHours per
+// tier. Dimension -> tier mapping is also config-driven there.
 
 // ── Mob Tier Classification ──
 function getMobTierMultiplier(entity, type) {

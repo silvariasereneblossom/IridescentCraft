@@ -25,18 +25,22 @@ Each tier gate has 5 parallel paths. Players choose their style:
 
 Major change from vanilla: Nether is Tier 3, End is Tier 4.
 
-| Tier | Dimension | Difficulty | Health Multi | Damage Multi | Champion Spawn % |
-|------|-----------|------------|-------------|-------------|-----------------|
-| 1 | Overworld | 1.0x | 1.0x | 1.0x | 5% |
-| 2 | Twilight Forest | 1.5x | 1.8x | 2.0x | 7% |
-| 2 | Blue Skies | 2.0x | 2.0x | 2.3x | 8% |
-| 2 | The Aether | 2.5x | 2.2x | 2.5x | 8% |
-| 3 | The Undergarden | 3.0x | 3.0x | 3.5x | 10% |
-| 3 | Deeper and Darker | 3.5x | 3.5x | 4.0x | 10% |
-| 3 | The Nether | 4.0x | 4.0x | 5.0x | 12% |
-| 4 | Deep Aether | 5.0x | 5.0x | 6.5x | 13% |
-| 3 | The Abyss | 3.5x | 3.5x | 4.0x | 10% |
-| 4 | The End | 6.0x-10.0x | 6.0x-10.0x | 8.0x-12.0x | 14-15% |
+**Difficulty scaling is now time-based** (added 2026-05-03 via the bespoke `iridescent_difficulty` mod). Each dimension has a starting multiplier, a cap, and a "cap hours" curve — multipliers ramp up linearly while the dimension is loaded, then freeze at cap. The End uniquely uncaps after the Ender Dragon is killed.
+
+| Tier | Dimensions | Start % | Cap % | Cap Hours | Champion Spawn % |
+|------|------------|---------|-------|-----------|------------------|
+| 1 | Overworld | 150% | 300% | 100h | 5% |
+| 2 | Twilight Forest, Blue Skies (Everbright/Everdawn), The Aether | 200% | 350% | 100h | 7-8% |
+| 3 | The Undergarden, Deeper and Darker, The Nether, The Abyss | 300% | 450% | 100h | 10-12% |
+| 4 | Deep Aether, The End | 600% | 1000% | 200h | 13-15% |
+
+After Ender Dragon is killed in-world: **The End uncaps** — multiplier extrapolates past 1000% indefinitely. Deep Aether stays capped at 1000%.
+
+All values configurable via `config/iridescent_difficulty-common.toml` (per-tier `startPct`/`capPct`/`capHours`, per-dimension tier mapping, per-dimension `uncapAfterEnderDragon` flag).
+
+**Boss scaling stacks on top** via ProgressiveBosses (vanilla bosses) + `boss_progressive.js` (modded bosses). **Mob-tier static HP** (basic 3×, mid 1.5×, champion 1.25×) from `mob_scaling_unified.js` also composes with the dimension multiplier.
+
+**Replaces** the previous flat-multiplier scaling (which compounded with ScalingMobs's per-player tracker, ImprovedMobs's per-tick accumulator, MajruszsDifficulty's game stages, and Azukaars' fair-difficulty curve in unpredictable ways). All four are removed/disabled.
 
 ## Staging Implementation
 
