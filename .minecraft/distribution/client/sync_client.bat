@@ -52,4 +52,27 @@ if /i "%1"=="--force" set "FORCE_ARG=-Force"
 if /i "%1"=="/force"  set "FORCE_ARG=-Force"
 
 powershell -ExecutionPolicy Bypass -File "%SCRIPT_DIR%\sync_client.ps1" %FORCE_ARG%
+
+REM Stale-JAR cleanup (safety net — mirrors server's iridescentserver.bat).
+REM sync_client.ps1 ALSO invokes cleanup_stale_jars.ps1 internally at step 4a,
+REM but if that script bails early (network error during overlay, stale local
+REM copy missing the inner call, etc.) the cleanup never runs and removed
+REM packwiz mods (ScalingMobs, ImprovedMobs, AzukaarsFairDifficulty) linger as
+REM orphan jars in the user's mods folder. This explicit invocation is the
+REM same safety net the server has had since 2026-04-something.
+REM cleanup_stale_jars.ps1 is idempotent (only removes jars not in .pw.toml or
+REM custom-allowlist), so being called twice in one launch is harmless.
+if not exist "%SCRIPT_DIR%\cleanup_stale_jars.ps1" (
+    echo   [SETUP] Downloading cleanup script...
+    powershell -ExecutionPolicy Bypass -Command ^
+        "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+        "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/cleanup_stale_jars.ps1' -OutFile '%SCRIPT_DIR%\cleanup_stale_jars.ps1' -UseBasicParsing -TimeoutSec 30 } catch {}"
+)
+if exist "%SCRIPT_DIR%\cleanup_stale_jars.ps1" (
+    echo [CLEANUP] Removing stale mod JARs...
+    powershell -ExecutionPolicy Bypass -File "%SCRIPT_DIR%\cleanup_stale_jars.ps1" -ModsDir "%SCRIPT_DIR%\mods" -IndexDir "%SCRIPT_DIR%\mods\.index"
+) else (
+    echo   [WARN] cleanup_stale_jars.ps1 not found, skipping cleanup.
+)
+
 exit /b 0
