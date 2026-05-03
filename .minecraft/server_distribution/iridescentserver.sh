@@ -556,3 +556,17 @@ else
     echo "Server stopped normally."
 fi
 
+# -------------------------------------------------------------------
+# Auto-mirror session logs to TesterLogs/Server Logs/ on every exit
+# (clean or crash). Calls push_crash_logs.sh --silent which copies
+# logs + does a best-effort git push from instance root if the parent
+# is a git working tree. Topology B (dedicated host with manual mirror)
+# falls through to dev-PC pickup via prism_postexit.bat.
+#
+# Manual interactive variant (push_crash_logs.sh without flag) is kept
+# as a failsafe for one-off pushes.
+# -------------------------------------------------------------------
+if [ -x "$(dirname "$0")/push_crash_logs.sh" ] || [ -f "$(dirname "$0")/push_crash_logs.sh" ]; then
+    bash "$(dirname "$0")/push_crash_logs.sh" --silent || true
+fi
+

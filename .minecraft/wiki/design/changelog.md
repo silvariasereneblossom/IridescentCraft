@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-03 — Auto session-log push on client + server exit
+
+**Client.** New `.minecraft/prism_postexit.bat` runs as PrismLauncher's `PostExitCommand`:
+1. Extracts the launching account from `latest.log` line 1 (`--username, <name>` arg ModLauncher logs at startup), via a temp-file write/read so we sidestep bat for-loop quoting traps with embedded PowerShell single-quotes.
+2. Mirrors `latest.log`, `debug.log`, `kubejs/{client,server,startup}.log` to `.minecraft/TesterLogs/<username>/`. Also copies any crash reports created during this session (latest.log creation time as the session-start anchor — Forge rotates the prior latest.log on launch).
+3. `git add` + `commit` + `push` the **whole** TesterLogs/ tree, so server-side logs deposited via Z: by `push_crash_logs.bat` ride along on the same push.
+
+**`auto_fix_prism_prelaunch.js` extended** to also wire `PostExitCommand` in `instance.cfg`. New rules: only sets the field if missing or present-but-empty (never overwrites a tester's custom value); skips silently when both PreLaunchCommand and PostExitCommand are already wired. Renamed log prefix from `[auto_fix_prism_prelaunch]` to `[auto_fix_prism]` since it now handles two fields.
+
+**Server.** `iridescentserver.bat` Phase 5 now `call`s `push_crash_logs.bat --silent` on every server exit (clean or crash). New `--silent` flag on `push_crash_logs.{bat,sh}`:
+- Suppresses pause + most echo lines.
+- Adds a best-effort `git push` from instance root **if** the parent is a git working tree (`git rev-parse --git-dir` check). Topology A (dev PC IS the server): pushes directly. Topology B (dedicated Windows Server with Z: mirror to dev PC's repo): falls through and lets dev PC's `prism_postexit.bat` pick up the mirrored files on its next session.
+
+`push_crash_logs.{bat,sh}` without the flag still works exactly as before (interactive failsafe for one-off pushes).
+
+`bash -n` clean on both `.sh` files; em-dash scan clean on all new/modified `.bat` files (per `feedback_powershell_traps.md`).
+
+---
+
 ## 2026-05-03 — auto_fix_prism_prelaunch event-scope fix (PlayerEvents -> ClientEvents)
 
 `auto_fix_prism_prelaunch.js` was logging `Tried to register event handler 'PlayerEvents.loggedIn' for invalid script type CLIENT! Valid script types: [SERVER]` every launch in `kubejs/client.log` — and silently never running. Shipped 2026-05-03 in commit `2aa89426` and unnoticed for two launch cycles because the failure was confined to the client-side KubeJS log (no chat error, no crash).

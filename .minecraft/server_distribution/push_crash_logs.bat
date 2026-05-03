@@ -1,16 +1,30 @@
 @echo off
 setlocal enabledelayedexpansion
 REM =============================================================================
-REM IridescentCraft — Push server logs directly to the repo via network drive
+REM IridescentCraft - Push server logs directly to the repo via network drive
 REM Primary destination: Z:\...\PrismLauncher\instances\IridescentCraft\.minecraft\
 REM                      server_distribution\TesterLogs\Server Logs\
 REM (network drive on the Windows Server mapped to the dev machine's repo copy)
 REM
 REM Fallback: local server_distribution\TesterLogs\Server Logs\ if Z: isn't
 REM mounted, so the script still works offline. Historically everything went
-REM to the local path and the user had to manually transfer — which is why
+REM to the local path and the user had to manually transfer - which is why
 REM logs kept appearing stale in the repo.
+REM
+REM Modes:
+REM   push_crash_logs.bat              interactive (manual failsafe; pauses
+REM                                    at end so the operator can read the
+REM                                    summary before the cmd window closes)
+REM   push_crash_logs.bat --silent     non-interactive (called by Phase 5 of
+REM                                    iridescentserver.bat on every server
+REM                                    exit; suppresses pause + most echos
+REM                                    and additionally tries a git push if
+REM                                    the parent dir is a git working tree)
 REM =============================================================================
+
+set "SILENT=0"
+if /i "%1"=="--silent" set "SILENT=1"
+if /i "%1"=="-s"       set "SILENT=1"
 
 cd /d "%~dp0"
 
@@ -19,25 +33,29 @@ set "LOCAL_DEST=TesterLogs\Server Logs"
 
 REM Detect whether Z: is mounted and the repo TesterLogs folder exists.
 REM We check for the server_distribution directory root under the mapped
-REM PrismLauncher instance — if that's there, the repo is accessible.
+REM PrismLauncher instance - if that's there, the repo is accessible.
 set "REPO_ROOT=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution"
 if exist "%REPO_ROOT%" (
     set "DEST=%REMOTE_DEST%"
     set "MODE=repo"
     if not exist "%REMOTE_DEST%" mkdir "%REMOTE_DEST%"
-    echo.
-    echo [Logs] Pushing directly to repo via Z: ^(mapped network drive^)
-    echo [Logs]   -^> %REMOTE_DEST%
+    if "%SILENT%"=="0" (
+        echo.
+        echo [Logs] Pushing directly to repo via Z: ^(mapped network drive^)
+        echo [Logs]   -^> %REMOTE_DEST%
+    )
 ) else (
     set "DEST=%LOCAL_DEST%"
     set "MODE=local"
     if not exist "%LOCAL_DEST%" mkdir "%LOCAL_DEST%"
-    echo.
-    echo [Logs] Z: not mounted or repo path not found — falling back to local:
-    echo [Logs]   -^> %~dp0%LOCAL_DEST%
-    echo [Logs] ^(You'll need to transfer this folder back to the repo manually.^)
+    if "%SILENT%"=="0" (
+        echo.
+        echo [Logs] Z: not mounted or repo path not found - falling back to local:
+        echo [Logs]   -^> %~dp0%LOCAL_DEST%
+        echo [Logs] ^(You'll need to transfer this folder back to the repo manually.^)
+    )
 )
-echo.
+if "%SILENT%"=="0" echo.
 
 REM --- Last 3 crash reports (sorted newest first) ---
 set crashCount=0
@@ -45,7 +63,7 @@ if exist "crash-reports" (
     for /f "delims=" %%F in ('dir /b /o-d "crash-reports\*.txt" 2^>nul') do (
         if !crashCount! LSS 3 (
             copy /Y "crash-reports\%%F" "%DEST%\%%F" >nul
-            echo   Crash: %%F
+            if "%SILENT%"=="0" echo   Crash: %%F
             set /a crashCount=!crashCount!+1
         )
     )
@@ -58,7 +76,7 @@ if exist "logs\kubejs" (
     for %%F in ("logs\kubejs\*.log" "logs\kubejs\*.log.gz") do (
         if exist "%%F" (
             copy /Y "%%F" "%DEST%\kubejs-%%~nxF" >nul
-            echo   KubeJS: %%~nxF
+            if "%SILENT%"=="0" echo   KubeJS: %%~nxF
         )
     )
 )
@@ -66,18 +84,45 @@ if exist "logs\kubejs" (
 REM --- logs\latest.log (vanilla server log) ---
 if exist "logs\latest.log" (
     copy /Y "logs\latest.log" "%DEST%\latest.log" >nul
-    echo   Server: latest.log
+    if "%SILENT%"=="0" echo   Server: latest.log
 )
 
 REM --- logs\debug.log if present (Forge debug output) ---
 if exist "logs\debug.log" (
     copy /Y "logs\debug.log" "%DEST%\debug.log" >nul
-    echo   Server: debug.log
+    if "%SILENT%"=="0" echo   Server: debug.log
+)
+
+REM --- Silent-mode tail: best-effort git push from instance root. ---
+REM Only fires when invoked as `push_crash_logs.bat --silent`. If the
+REM server's working tree is git-managed (Topology A: dev PC IS the
+REM server), this completes the round-trip without manual commit. If
+REM not (Topology B: dedicated Windows Server using Z: mirror), the
+REM dev PC's prism_postexit.bat picks up the mirrored files on its
+REM next session and pushes them.
+if "%SILENT%"=="1" (
+    pushd "%~dp0..\.."
+    git rev-parse --git-dir >nul 2>&1
+    if not errorlevel 1 (
+        git add ".minecraft/server_distribution/TesterLogs/Server Logs/" >nul 2>&1
+        git diff --cached --quiet
+        if errorlevel 1 (
+            git commit -m "Server Logs: session logs" >nul 2>&1
+            git push >nul 2>&1
+            echo [postexit] Server logs pushed
+        ) else (
+            echo [postexit] No log changes to push
+        )
+    ) else (
+        echo [postexit] Logs mirrored ^(no git tree at parent; Z: round-trip in effect^)
+    )
+    popd
+    exit /b 0
 )
 
 echo.
 if "%MODE%"=="repo" (
-    echo [Logs] Done. Files are now on the repo drive — commit + push from
+    echo [Logs] Done. Files are now on the repo drive - commit + push from
     echo [Logs] the dev machine.
 ) else (
     echo [Logs] Done. Files are in the local server_distribution folder.

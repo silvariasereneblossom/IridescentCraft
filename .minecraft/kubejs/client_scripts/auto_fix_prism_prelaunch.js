@@ -1,22 +1,28 @@
 // =============================================================================
-// Auto-fix PrismLauncher pre-launch command (one-shot)
+// Auto-fix PrismLauncher pre-launch + post-exit commands (one-shot)
 // =============================================================================
-// Detects the legacy `git pull --ff-only` Prism pre-launch and rewrites it to
-// use prism_prelaunch.bat (which does the pull AND runs cleanup_stale_jars.ps1
-// after, removing orphan jars from mods that were deprecated upstream). Without
-// this rewrite, removed packwiz-managed mods linger in mods/ — bypassing the
-// cleanup pipeline entirely.
+// Rewrites instance.cfg to wire two scripts into PrismLauncher:
 //
-// Only triggers when the existing PreLaunchCommand EXACTLY matches the legacy
-// pattern. Testers who customized their pre-launch are unaffected.
+//   PreLaunchCommand  -> .minecraft/prism_prelaunch.bat
+//                        (git pull + cleanup_stale_jars.ps1, removes orphan
+//                         jars from mods deprecated upstream)
 //
-// Why client-side: instance.cfg is at <instance>/instance.cfg (parent of
+//   PostExitCommand   -> .minecraft/prism_postexit.bat
+//                        (mirrors session logs to TesterLogs/<username>/ and
+//                         git push, so dev container picks up logs without
+//                         tester intervention)
+//
+// Runs at most once per instance (no-op if both scripts already wired).
+// Only modifies the legacy bare `git pull --ff-only` PreLaunch; testers with a
+// custom command are unaffected. PostExit only set if missing or empty -- never
+// overwrites a tester's custom value.
+//
+// Why client-side: instance.cfg lives at <instance>/instance.cfg (parent of
 // .minecraft/), which only the client process can reach. Server-side scripts
 // run in a different filesystem context.
 //
-// Reason for the chat notification: this script silently rewrites a config file
-// outside .minecraft/. A visible heads-up means the user can revert if the
-// rewrite was unwanted.
+// Chat notification fires only when something actually changed, so testers
+// know which config bits were touched and can revert if unwanted.
 // =============================================================================
 
 // ClientEvents.loggedIn (NOT PlayerEvents.loggedIn) - the latter is server-only
@@ -41,64 +47,109 @@ ClientEvents.loggedIn(event => {
     }
 
     var content = new java.lang.String(Files.readAllBytes(instanceCfg.toPath()), 'UTF-8')
+    var hasPrelaunch = content.indexOf('prism_prelaunch.bat') >= 0
+    var hasPostexit  = content.indexOf('prism_postexit.bat')  >= 0
 
-    // Already migrated? Skip silently — every login otherwise spams.
-    if (content.indexOf('prism_prelaunch.bat') >= 0) return
+    // Both already wired? Skip silently -- every login otherwise spams.
+    if (hasPrelaunch && hasPostexit) return
 
+    var newContent = content
+    var preChanged = false
+    var postChanged = false
+
+    // ── PreLaunchCommand ──────────────────────────────────────────────────
     // Match the legacy bare pattern: PreLaunchCommand=git -C "..." pull --ff-only
     // Anchor at line start, accept any quote style or path the user has.
-    var pattern = /^PreLaunchCommand=.*\bgit\b.*\bpull\b.*--ff-only.*$/m
-    if (!pattern.test(content)) {
-      // Different pre-launch (already migrated, custom, or missing) — leave it
-      return
+    if (!hasPrelaunch) {
+      var prePattern = /^PreLaunchCommand=.*\bgit\b.*\bpull\b.*--ff-only.*$/m
+      if (prePattern.test(newContent)) {
+        newContent = newContent.replace(prePattern,
+          'PreLaunchCommand="$INST_MC_DIR/prism_prelaunch.bat"')
+        preChanged = true
+        console.log('[auto_fix_prism] Rewrote PreLaunchCommand: legacy git-pull-only -> prism_prelaunch.bat')
+      }
+      // If it's some other custom command, leave it alone.
     }
 
-    var newContent = content.replace(pattern,
-      'PreLaunchCommand="$INST_MC_DIR/prism_prelaunch.bat"')
+    // ── PostExitCommand ───────────────────────────────────────────────────
+    // Only set if the line is missing OR present-but-empty. Never overwrite
+    // a tester's custom value.
+    if (!hasPostexit) {
+      var postLineMatch = newContent.match(/^PostExitCommand=(.*)$/m)
+      if (postLineMatch) {
+        if (!postLineMatch[1].trim()) {
+          newContent = newContent.replace(/^PostExitCommand=.*$/m,
+            'PostExitCommand="$INST_MC_DIR/prism_postexit.bat"')
+          postChanged = true
+          console.log('[auto_fix_prism] Set empty PostExitCommand -> prism_postexit.bat')
+        } else {
+          console.log('[auto_fix_prism] PostExitCommand has custom value; leaving alone')
+        }
+      } else {
+        // Line missing entirely — append. Note: PostExitCommand requires
+        // OverrideCommands=true to be active. The user's existing
+        // PreLaunchCommand was already firing, so OverrideCommands is
+        // already set. (If a tester somehow has it disabled, the field
+        // is set-but-inactive — harmless.)
+        if (newContent.length > 0 && newContent.charAt(newContent.length - 1) !== '\n') {
+          newContent += '\n'
+        }
+        newContent += 'PostExitCommand="$INST_MC_DIR/prism_postexit.bat"\n'
+        postChanged = true
+        console.log('[auto_fix_prism] Added PostExitCommand -> prism_postexit.bat')
+      }
+    }
+
+    if (!preChanged && !postChanged) return
 
     Files.writeString(instanceCfg.toPath(), newContent)
-    console.log('[auto_fix_prism_prelaunch] Rewrote PreLaunchCommand: legacy git-pull-only -> prism_prelaunch.bat')
 
-    // Spawn cleanup_stale_jars.ps1 NOW so disk-level orphan jars get
-    // unlinked this session. Java opens JAR files with FILE_SHARE_DELETE
-    // on Windows, so even though Forge has them loaded, PowerShell can
-    // remove them — the dirent is removed but the mod stays active for
-    // this session. Next launch the user gets a clean modlist.
-    var modsDir = new File(gameDir, 'mods')
-    var indexDir = new File(modsDir, '.index')
-    var cleanupScript = new File(gameDir, 'distribution/client/cleanup_stale_jars.ps1')
+    // ── Spawn cleanup_stale_jars.ps1 NOW so disk-level orphan jars get ────
+    // unlinked this session, but only if we just rewrote the pre-launch.
+    // Java opens JAR files with FILE_SHARE_DELETE on Windows, so even
+    // though Forge has them loaded, PowerShell can remove them -- the
+    // dirent is removed but the mod stays active for this session. Next
+    // launch the user gets a clean modlist.
+    if (preChanged) {
+      var modsDir = new File(gameDir, 'mods')
+      var indexDir = new File(modsDir, '.index')
+      var cleanupScript = new File(gameDir, 'distribution/client/cleanup_stale_jars.ps1')
 
-    var cleanupSpawned = false
-    if (cleanupScript.exists() && modsDir.exists() && indexDir.exists()) {
-      try {
-        var ProcessBuilder = Java.loadClass('java.lang.ProcessBuilder')
-        var Arrays = Java.loadClass('java.util.Arrays')
-        var cmd = Arrays.asList(
-          'powershell',
-          '-ExecutionPolicy', 'Bypass',
-          '-File', cleanupScript.absolutePath,
-          '-ModsDir', modsDir.absolutePath,
-          '-IndexDir', indexDir.absolutePath
-        )
-        var pb = new ProcessBuilder(cmd)
-        pb.redirectErrorStream(true)
-        var proc = pb.start()
-        // Don't block the player tick; just fire and let it run
-        cleanupSpawned = true
-        console.log('[auto_fix_prism_prelaunch] Spawned cleanup_stale_jars.ps1 (PID ' + proc.pid() + ')')
-      } catch (e) {
-        console.warn('[auto_fix_prism_prelaunch] Failed to spawn cleanup: ' + e)
+      if (cleanupScript.exists() && modsDir.exists() && indexDir.exists()) {
+        try {
+          var ProcessBuilder = Java.loadClass('java.lang.ProcessBuilder')
+          var Arrays = Java.loadClass('java.util.Arrays')
+          var cmd = Arrays.asList(
+            'powershell',
+            '-ExecutionPolicy', 'Bypass',
+            '-File', cleanupScript.absolutePath,
+            '-ModsDir', modsDir.absolutePath,
+            '-IndexDir', indexDir.absolutePath
+          )
+          var pb = new ProcessBuilder(cmd)
+          pb.redirectErrorStream(true)
+          var proc = pb.start()
+          console.log('[auto_fix_prism] Spawned cleanup_stale_jars.ps1 (PID ' + proc.pid() + ')')
+        } catch (e) {
+          console.warn('[auto_fix_prism] Failed to spawn cleanup: ' + e)
+        }
       }
-    } else {
-      console.log('[auto_fix_prism_prelaunch] Cleanup script not found at ' + cleanupScript.absolutePath + '; skipping immediate cleanup')
     }
 
-    event.player.tell([
-      Text.gold('[IridescentCraft] '),
-      Text.white('Pre-launch updated and orphan jars cleaned from disk. '),
-      Text.gray('Modlist shows them this session (Forge has them loaded), but they\'re gone next launch.')
-    ])
+    var msg = []
+    msg.push(Text.gold('[IridescentCraft] '))
+    if (preChanged && postChanged) {
+      msg.push(Text.white('Pre-launch + post-exit hooks installed. '))
+      msg.push(Text.gray('Orphan jars cleaned; logs auto-upload to TesterLogs on close.'))
+    } else if (preChanged) {
+      msg.push(Text.white('Pre-launch hook installed. '))
+      msg.push(Text.gray('Orphan jars cleaned from disk; modlist updates next launch.'))
+    } else {
+      msg.push(Text.white('Post-exit hook installed. '))
+      msg.push(Text.gray('Session logs will auto-upload to TesterLogs on close.'))
+    }
+    event.player.tell(msg)
   } catch (e) {
-    console.warn('[auto_fix_prism_prelaunch] Failed: ' + e)
+    console.warn('[auto_fix_prism] Failed: ' + e)
   }
 })

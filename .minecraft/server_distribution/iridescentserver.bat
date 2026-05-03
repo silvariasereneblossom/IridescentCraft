@@ -353,4 +353,19 @@ if %EXIT_CODE% neq 0 (
     echo.
     echo Server stopped normally.
 )
+
+REM ─────────────────────────────────────────────────────────────────────
+REM Auto-mirror session logs to TesterLogs\Server Logs\ on every exit
+REM (clean or crash). Calls push_crash_logs.bat --silent which copies
+REM logs + does a best-effort git push from instance root if the parent
+REM is a git working tree. Topology B (dedicated Windows Server with
+REM Z: mirror) falls through to dev PC pickup via prism_postexit.bat.
+REM
+REM Manual interactive variant (push_crash_logs.bat without flag) is
+REM kept as a failsafe for one-off pushes.
+REM ─────────────────────────────────────────────────────────────────────
+if exist "%~dp0push_crash_logs.bat" (
+    call "%~dp0push_crash_logs.bat" --silent
+)
+
 pause
