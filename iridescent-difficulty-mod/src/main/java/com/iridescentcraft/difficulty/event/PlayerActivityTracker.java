@@ -1,9 +1,12 @@
 package com.iridescentcraft.difficulty.event;
 
 import com.iridescentcraft.difficulty.config.DifficultyConfig;
+import net.minecraft.core.BlockPos;
+import net.minecraft.resources.ResourceKey;
 import net.minecraft.server.level.ServerLevel;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.player.Player;
+import net.minecraft.world.level.Level;
 import net.minecraft.world.phys.Vec3;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.event.entity.living.LivingHurtEvent;
@@ -55,6 +58,10 @@ public class PlayerActivityTracker {
         if (!(player instanceof ServerPlayer sp)) return false;
         if (!DifficultyConfig.COMMON.idleDetectionEnabled.get()) return true;
 
+        // Spawn proximity overrides movement check — base camping shouldn't
+        // tick the timer, even if you're walking around your storage room.
+        if (isAtSpawn(sp)) return false;
+
         ActivityState s = STATES.get(sp.getUUID());
         if (s == null) return true; // newly-joined / pre-tick: default active
 
@@ -64,23 +71,60 @@ public class PlayerActivityTracker {
     }
 
     /**
-     * @return true if at least one player in {@code level} is currently
-     *         considered active. Returns true on empty config-disabled
-     *         path so callers don't need to check the toggle separately.
+     * Active-player ratio for a dimension: {@code active / total}, range [0.0, 1.0].
+     * Used by {@link DimensionTimerTracker} to scale the per-dim tick rate.
+     *
+     * <p>Examples:
+     * <ul>
+     *   <li>0 players in dim → 0.0 (no ticks)</li>
+     *   <li>4 players, 4 active → 1.0 (full speed)</li>
+     *   <li>4 players, 2 active → 0.5 (half speed)</li>
+     *   <li>4 players, 0 active → 0.0 (paused)</li>
+     * </ul>
+     *
+     * <p>If idle detection is disabled, returns 1.0 if any player is in
+     * the dim, 0.0 otherwise — same gate as before but as a ratio.
      */
-    public static boolean hasActivePlayerInLevel(ServerLevel level) {
+    public static double getActiveRatio(ServerLevel level) {
+        java.util.List<ServerPlayer> players = level.players();
+        if (players.isEmpty()) return 0.0;
+
         if (!DifficultyConfig.COMMON.idleDetectionEnabled.get()) {
-            return !level.players().isEmpty(); // any player in dim = active
+            return 1.0;
         }
 
-        long threshold = thresholdTicks();
-        long now = level.getServer().getTickCount();
-        for (ServerPlayer p : level.players()) {
-            ActivityState s = STATES.get(p.getUUID());
-            if (s == null) return true; // new joiner, default active
-            if ((now - s.lastActiveTick) < threshold) return true;
+        int active = 0;
+        for (ServerPlayer p : players) {
+            if (isActive(p)) active++;
         }
-        return false;
+        return (double) active / (double) players.size();
+    }
+
+    /**
+     * Whether the player is within {@code spawnIdleRadius} (chebyshev /
+     * cube distance) of their respawn point. Bed if set, world spawn
+     * otherwise. Different-dimension respawn = not at spawn.
+     */
+    public static boolean isAtSpawn(ServerPlayer sp) {
+        if (!DifficultyConfig.COMMON.idleAtSpawnEnabled.get()) return false;
+        if (sp.getServer() == null) return false;
+
+        BlockPos spawnPos = sp.getRespawnPosition();
+        ResourceKey<Level> spawnDim = sp.getRespawnDimension();
+        if (spawnPos == null) {
+            spawnPos = sp.getServer().overworld().getSharedSpawnPos();
+            spawnDim = Level.OVERWORLD;
+        }
+
+        // Different-dim respawn point: player is by definition not "at spawn"
+        if (!sp.serverLevel().dimension().equals(spawnDim)) return false;
+
+        int radius = DifficultyConfig.COMMON.spawnIdleRadius.get();
+        BlockPos pp = sp.blockPosition();
+        int dx = Math.abs(pp.getX() - spawnPos.getX());
+        int dy = Math.abs(pp.getY() - spawnPos.getY());
+        int dz = Math.abs(pp.getZ() - spawnPos.getZ());
+        return dx <= radius && dy <= radius && dz <= radius;
     }
 
     /** Convenience for status command. */

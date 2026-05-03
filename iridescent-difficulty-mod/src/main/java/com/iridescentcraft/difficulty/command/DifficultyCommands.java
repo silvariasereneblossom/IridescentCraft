@@ -54,23 +54,32 @@ public class DifficultyCommands {
         MinecraftServer srv = ctx.getSource().getServer();
         boolean idleEnabled = DifficultyConfig.COMMON.idleDetectionEnabled.get();
         double thresholdMin = DifficultyConfig.COMMON.idleThresholdMinutes.get();
+        boolean atSpawnEnabled = DifficultyConfig.COMMON.idleAtSpawnEnabled.get();
+        int spawnRadius = DifficultyConfig.COMMON.spawnIdleRadius.get();
 
         ctx.getSource().sendSuccess(() -> Component.literal(String.format(
-            "§eidle detection: %s§r, threshold: §a%.1fmin§r",
-            idleEnabled ? "§aenabled" : "§7disabled", thresholdMin
+            "§eidle detection: %s§r, threshold: §a%.1fmin§r, spawn-idle: %s§r (r=%d)",
+            idleEnabled ? "§aenabled" : "§7disabled", thresholdMin,
+            atSpawnEnabled ? "§aon" : "§7off", spawnRadius
         )), false);
 
         for (net.minecraft.server.level.ServerPlayer p : srv.getPlayerList().getPlayers()) {
             long idleTicks = com.iridescentcraft.difficulty.event.PlayerActivityTracker.getIdleTicks(p);
             double idleMin = idleTicks / 1200.0;
+            boolean atSpawn = com.iridescentcraft.difficulty.event.PlayerActivityTracker.isAtSpawn(p);
             boolean active = com.iridescentcraft.difficulty.event.PlayerActivityTracker.isActive(p);
+            String reason;
+            if (active) reason = "§a✓ active§r";
+            else if (atSpawn) reason = "§e◍ at-spawn§r";
+            else reason = "§c✗ idle§r";
+
             ctx.getSource().sendSuccess(() -> Component.literal(String.format(
                 "  §e%s§r dim=§b%s§r idle=§%s%.1fmin§r %s",
                 p.getName().getString(),
                 p.serverLevel().dimension().location(),
                 active ? "a" : "c",
                 idleMin,
-                active ? "§a✓ active§r" : "§c✗ idle§r"
+                reason
             )), false);
         }
         return 1;
@@ -96,15 +105,18 @@ public class DifficultyCommands {
         DifficultyConfig.TierCurve curve = DifficultyScaling.getCurve(tier);
         DimensionDifficultyData data = DimensionDifficultyData.get(level);
         double mult = DifficultyScaling.getCurrentMultiplier(level);
+        double rate = com.iridescentcraft.difficulty.event.PlayerActivityTracker.getActiveRatio(level);
+        int playerCount = level.players().size();
         boolean uncapped = data.isEnderDragonKilled()
             && DifficultyConfig.COMMON.uncapAfterEnderDragonDimensions.get().contains(dimId.toString());
 
         ctx.getSource().sendSuccess(() -> Component.literal(String.format(
-            "§e%s§r tier=§b%s§r %.1fh / %.0fh start=%.0f%% cap=%.0f%% mult=§a%.0f%%§r ed=%s%s",
+            "§e%s§r tier=§b%s§r %.1fh/%.0fh mult=§a%.0f%%§r rate=§%s%.0f%%§r (%d ply) ed=%s%s",
             dimId, tier.name(),
             data.getHours(), curve.capHours.get(),
-            curve.start.get(), curve.cap.get(),
             mult * 100,
+            rate >= 0.5 ? "a" : (rate > 0 ? "e" : "c"),
+            rate * 100, playerCount,
             data.isEnderDragonKilled() ? "§a✓§r" : "§7✗§r",
             uncapped ? " §c[UNCAPPED]§r" : ""
         )), false);

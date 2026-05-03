@@ -21,6 +21,15 @@ public class DimensionDifficultyData extends SavedData {
     private long tickCount = 0L;
     private boolean enderDragonKilled = false;
 
+    /**
+     * Sub-tick remainder for fractional rate ticking. When the active-player
+     * ratio is &lt; 1.0 (e.g., 2 of 4 players active = 0.5), the timer ticks
+     * at that fractional rate. Each call adds {@code rate} to this accumulator,
+     * and we floor whole ticks out into {@link #tickCount}. Non-persistent —
+     * worst-case loss on restart is &lt;1 tick (~0.05s of timer progress).
+     */
+    private transient double tickAccumulator = 0.0;
+
     public static DimensionDifficultyData get(ServerLevel level) {
         return level.getDataStorage().computeIfAbsent(
             DimensionDifficultyData::load,
@@ -48,10 +57,27 @@ public class DimensionDifficultyData extends SavedData {
     public boolean isEnderDragonKilled() { return enderDragonKilled; }
 
     public void incrementTick() {
-        tickCount++;
-        // Mark dirty every 100 ticks (5s) — saving every tick would be wasteful;
-        // worst-case loss on crash is 5s of timer progress.
-        if (tickCount % 100L == 0L) setDirty();
+        incrementTick(1.0);
+    }
+
+    /**
+     * Increment the timer by a fractional amount per game tick. With
+     * {@code rate=1.0} this is equivalent to a full tick (the no-arg
+     * version). With {@code rate=0.5}, two calls accumulate one tick.
+     * With {@code rate=0.0}, no progress.
+     */
+    public void incrementTick(double rate) {
+        if (rate <= 0.0) return;
+        tickAccumulator += rate;
+        boolean changed = false;
+        while (tickAccumulator >= 1.0) {
+            tickCount++;
+            tickAccumulator -= 1.0;
+            changed = true;
+        }
+        // Mark dirty every 100 whole ticks (5s) — saving every tick would
+        // be wasteful; worst-case loss on crash is 5s of timer progress.
+        if (changed && tickCount % 100L == 0L) setDirty();
     }
 
     public void setTickCount(long ticks) {

@@ -80,6 +80,8 @@ public final class DifficultyConfig {
         // Idle detection (pause timer when no active players in dim)
         public final ForgeConfigSpec.BooleanValue idleDetectionEnabled;
         public final ForgeConfigSpec.DoubleValue idleThresholdMinutes;
+        public final ForgeConfigSpec.BooleanValue idleAtSpawnEnabled;
+        public final ForgeConfigSpec.IntValue spawnIdleRadius;
 
         Common(ForgeConfigSpec.Builder b) {
             b.comment(
@@ -228,6 +230,18 @@ public final class DifficultyConfig {
             idleThresholdMinutes = b.comment(
                     "Minutes a player must be motionless + non-combat to be considered idle.")
                 .defineInRange("idleThresholdMinutes", 5.0, 0.5, 60.0);
+
+            idleAtSpawnEnabled = b.comment(
+                    "Treat players within spawnIdleRadius blocks of their respawn",
+                    "point (bed if set, world spawn otherwise) as idle regardless",
+                    "of activity. Hanging out at base / sleeping / sorting chests",
+                    "shouldn't tick the difficulty timer.")
+                .define("idleAtSpawnEnabled", true);
+
+            spawnIdleRadius = b.comment(
+                    "Cube radius (blocks) around respawn point that counts as 'at spawn'.",
+                    "Chebyshev distance — max of |dx|,|dy|,|dz|. 10 = 21x21x21 cube.")
+                .defineInRange("spawnIdleRadius", 10, 1, 256);
 
             b.pop();
         }

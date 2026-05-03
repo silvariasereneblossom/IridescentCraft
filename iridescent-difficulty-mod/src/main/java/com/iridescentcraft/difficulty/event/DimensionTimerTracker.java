@@ -22,12 +22,16 @@ public class DimensionTimerTracker {
         if (!(e.level instanceof ServerLevel sl)) return;
         if (!DifficultyConfig.COMMON.enabled.get()) return;
 
-        // Idle gate: pause timer when no active player is in this dim.
-        // PlayerTickEvent.END fires before LevelTickEvent.END (per Forge tick
-        // order), so the activity state is up-to-date for this tick before
-        // we check it here.
-        if (!PlayerActivityTracker.hasActivePlayerInLevel(sl)) return;
+        // Proportional ticking: rate = active / total players in this dim.
+        //  - 4 players, 2 active → 0.5 (half rate)
+        //  - 4 players, 0 active → 0.0 (paused)
+        //  - 1 player, 1 active → 1.0 (full rate)
+        // PlayerTickEvent.END fires before LevelTickEvent.END (per Forge
+        // tick order), so the activity state is up-to-date for this tick
+        // before we check it here.
+        double rate = PlayerActivityTracker.getActiveRatio(sl);
+        if (rate <= 0.0) return;
 
-        DimensionDifficultyData.get(sl).incrementTick();
+        DimensionDifficultyData.get(sl).incrementTick(rate);
     }
 }
