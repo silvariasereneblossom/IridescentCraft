@@ -1,5 +1,5 @@
 # =============================================================================
-# cleanup_stale_jars.ps1 (client) — remove mods/*.jar files not declared in
+# cleanup_stale_jars.ps1 (client) - remove mods/*.jar files not declared in
 # mods/.index/*.pw.toml or in the custom-JAR allowlist.
 # =============================================================================
 # Mirrors the server-distribution version. Invoked from sync_client.ps1 after
@@ -24,7 +24,7 @@ param(
 $ErrorActionPreference = 'Continue'
 
 if (-not (Test-Path $IndexDir)) {
-    Write-Host "  [cleanup] $IndexDir not found — skipping." -ForegroundColor Yellow
+    Write-Host "  [cleanup] $IndexDir not found - skipping." -ForegroundColor Yellow
     exit 0
 }
 

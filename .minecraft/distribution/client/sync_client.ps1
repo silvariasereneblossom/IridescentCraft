@@ -118,7 +118,7 @@ try {
 # accumulate indefinitely while the repo is steady.
 $skipNetworkSync = $false
 if ($remoteSha -eq $localSha) {
-    Write-Host "[IridescentCraft Sync] Up to date (commit $($remoteSha.Substring(0,7))) — running local cleanup pass." -ForegroundColor Green
+    Write-Host "[IridescentCraft Sync] Up to date (commit $($remoteSha.Substring(0,7))) - running local cleanup pass." -ForegroundColor Green
     $skipNetworkSync = $true
 }
 
@@ -226,7 +226,7 @@ if ($useDiff) {
     if ($errors -eq 0) {
         Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
     } else {
-        Write-Host "[IridescentCraft Sync] $errors file(s) failed to download — NOT writing SHA marker. Next launch will retry." -ForegroundColor Yellow
+        Write-Host "[IridescentCraft Sync] $errors file(s) failed to download - NOT writing SHA marker. Next launch will retry." -ForegroundColor Yellow
     }
     $mirrorList += "$synced file(s) synced"
     if ($removed -gt 0) { $mirrorList += "$removed removed" }

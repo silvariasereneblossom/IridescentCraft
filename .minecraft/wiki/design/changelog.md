@@ -4,6 +4,20 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-03 — PowerShell em-dash parser-bomb fix in distribution scripts
+
+`cleanup_stale_jars.ps1` (client) failed to parse on Windows with `The string is missing the terminator: "` at line 82 char 55, plus `Missing closing '}' in statement block` at line 26. Root cause: line 27 had an em-dash inside a `Write-Host "..."` string literal. PowerShell on Windows reads .ps1 files as Win-1252 by default; the em-dash's UTF-8 byte sequence (`E2 80 94`) decodes to `â € "`, where the trailing `"` prematurely terminates the string and the parser cascades into the rest of the file looking for matched delimiters.
+
+This blocks `prism_prelaunch.bat` from cleaning orphan JARs (ScalingMobs / ImprovedMobs / Azukaars after the 2026-05-03 deprecation), so testers' modlists never trim down.
+
+Fixes: stripped em-dashes from string literals in
+- `distribution/client/cleanup_stale_jars.ps1` (line 27 string + line 2 comment)
+- `distribution/client/sync_client.ps1` (lines 121, 229 — both `Write-Host "..."` strings on the up-to-date and partial-failure branches)
+
+Comment-em-dashes in PS1 files are left as-is (PowerShell's tokenizer enters comment mode on `#` and discards bytes until newline regardless of encoding interpretation; only string literals are vulnerable). Memory `feedback_powershell_traps.md` already documented this trap; this entry is a re-occurrence in a recently added file.
+
+---
+
 ## 2026-05-03 — Bespoke difficulty mod + scaling-mod consolidation
 
 **New custom mod `iridescent_difficulty`** replaces ScalingMobs, ImprovedMobs, AzukaarsFairDifficultyOverhaul, and the dimension-scaling block of `mob_scaling_unified.js` with a single time-based per-dimension scaling system. Tier mapping aligned with `wiki/progression/overview.md`:
