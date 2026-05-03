@@ -1,6 +1,6 @@
 {
   "replace": false,
-  "_comment": "Light armor — rogue/agile gear. Grants speed + light penalty per piece. ISS class robes moved to armor_robe.json (robe-class mage gear with mana regen bonus). Cloaks/hats/accessories stay here. See kubejs/server_scripts/armor_weight.js.",
+  "_comment": "Light armor — rogue/stealth/agile gear with innate speed advantage. ISS class robes moved to armor_robe.json. Pumpkin set moved to armor_medium.json (no speed bonus, non-metal). Pure-mage robes get the ROBE tier set bonus; LIGHT keeps its rogue identity (Shadow-Walker stealth set, magic cloaks with speed effects, accessory hats). See wiki/mods/custom.md iridescent_difficulty + kubejs/server_scripts/armor_weight.js.",
   "values": [
     "aether:invisibility_cloak",
     "alexsmobs:novelty_hat",
@@ -15,10 +15,6 @@
     "botania:invisibility_cloak",
     "botania:unholy_cloak",
     "celestial_artifacts:forest_cloak",
-    "irons_spellbooks:pumpkin_boots",
-    "irons_spellbooks:pumpkin_chestplate",
-    "irons_spellbooks:pumpkin_helmet",
-    "irons_spellbooks:pumpkin_leggings",
     "irons_spellbooks:shadowwalker_boots",
     "irons_spellbooks:shadowwalker_chestplate",
     "irons_spellbooks:shadowwalker_helmet",

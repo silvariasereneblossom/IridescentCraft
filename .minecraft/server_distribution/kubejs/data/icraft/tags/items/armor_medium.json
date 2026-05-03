@@ -1,5 +1,34 @@
 {
   "replace": false,
-  "_comment": "Medium armor tag — intentionally empty in the auto-generated form because the armor weight handler (kubejs/server_scripts/armor_weight.js) treats UNTAGGED armor as medium by default. Add explicit entries here only for items you want to lock to medium even if their name pattern matches the light or heavy auto-classifier (e.g., chain mail, mid-tier metals).",
-  "values": []
+  "_comment": "Medium armor tag — non-metal armor (leather, scale, fur, wool, bone) + soft-metal vanilla (gold, chainmail). Untagged armor still defaults to MEDIUM at runtime, but these entries are explicit so future audits don't accidentally re-classify them. Per design 2026-05-03: vanilla iron = HEAVY (metal); gold/leather/chainmail = MEDIUM; modded non-metal (TF naga/yeti/arctic/phantom) = MEDIUM. See wiki/mods/custom.md iridescent_difficulty + kubejs/server_scripts/armor_weight.js.",
+  "values": [
+    "minecraft:leather_helmet",
+    "minecraft:leather_chestplate",
+    "minecraft:leather_leggings",
+    "minecraft:leather_boots",
+    "minecraft:golden_helmet",
+    "minecraft:golden_chestplate",
+    "minecraft:golden_leggings",
+    "minecraft:golden_boots",
+    "minecraft:chainmail_helmet",
+    "minecraft:chainmail_chestplate",
+    "minecraft:chainmail_leggings",
+    "minecraft:chainmail_boots",
+    "twilightforest:naga_chestplate",
+    "twilightforest:naga_leggings",
+    "twilightforest:phantom_helmet",
+    "twilightforest:phantom_chestplate",
+    "twilightforest:yeti_helmet",
+    "twilightforest:yeti_chestplate",
+    "twilightforest:yeti_leggings",
+    "twilightforest:yeti_boots",
+    "twilightforest:arctic_helmet",
+    "twilightforest:arctic_chestplate",
+    "twilightforest:arctic_leggings",
+    "twilightforest:arctic_boots",
+    "irons_spellbooks:pumpkin_helmet",
+    "irons_spellbooks:pumpkin_chestplate",
+    "irons_spellbooks:pumpkin_leggings",
+    "irons_spellbooks:pumpkin_boots"
+  ]
 }
