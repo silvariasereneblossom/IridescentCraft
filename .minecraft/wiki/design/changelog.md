@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-03 — auto_fix_prism_prelaunch event-scope fix (PlayerEvents -> ClientEvents)
+
+`auto_fix_prism_prelaunch.js` was logging `Tried to register event handler 'PlayerEvents.loggedIn' for invalid script type CLIENT! Valid script types: [SERVER]` every launch in `kubejs/client.log` — and silently never running. Shipped 2026-05-03 in commit `2aa89426` and unnoticed for two launch cycles because the failure was confined to the client-side KubeJS log (no chat error, no crash).
+
+`PlayerEvents.*` is server-script-only in KubeJS 6.x; for client-side "local player just joined a world" hooks the correct event is `ClientEvents.loggedIn`, which is documented in `.minecraft/local/kubejs/event_groups/ClientEvents/loggedIn.md`. Replaced the registration call and dropped the now-redundant UUID-equals-localPlayer guard (`ClientEvents.loggedIn` fires only for the local player, by definition).
+
+`wiki/CLAUDE.md` "KubeJS Event Compatibility" section updated to call out the server/client scope split, plus the discovery shortcut (`local/kubejs/event_groups/<group>/<event>.md` lists "Valid script types"). Memory `feedback_kubejs_event_scope.md` saved.
+
+---
+
 ## 2026-05-03 — PowerShell em-dash parser-bomb fix in distribution scripts
 
 `cleanup_stale_jars.ps1` (client) failed to parse on Windows with `The string is missing the terminator: "` at line 82 char 55, plus `Missing closing '}' in statement block` at line 26. Root cause: line 27 had an em-dash inside a `Write-Host "..."` string literal. PowerShell on Windows reads .ps1 files as Win-1252 by default; the em-dash's UTF-8 byte sequence (`E2 80 94`) decodes to `â € "`, where the trailing `"` prematurely terminates the string and the parser cascades into the rest of the file looking for matched delimiters.

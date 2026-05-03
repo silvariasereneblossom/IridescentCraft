@@ -19,14 +19,16 @@
 // rewrite was unwanted.
 // =============================================================================
 
-PlayerEvents.loggedIn(event => {
+// ClientEvents.loggedIn (NOT PlayerEvents.loggedIn) - the latter is server-only
+// and was throwing "Tried to register event handler 'PlayerEvents.loggedIn' for
+// invalid script type CLIENT" every launch, so this script never ran. The
+// client-side variant fires once per client login on the local player only,
+// so the UUID-equals-local-player guard from the previous version is gone.
+ClientEvents.loggedIn(event => {
   try {
-    // Only fires on the local client player — multiplayer servers iterate
-    // remote players too, but those don't have instance.cfg accessible.
     var Minecraft = Java.loadClass('net.minecraft.client.Minecraft')
     var mc = Minecraft.getInstance()
     if (mc == null || mc.player == null) return
-    if (!event.player.uuid.equals(mc.player.uuid)) return
 
     var File = Java.loadClass('java.io.File')
     var Files = Java.loadClass('java.nio.file.Files')

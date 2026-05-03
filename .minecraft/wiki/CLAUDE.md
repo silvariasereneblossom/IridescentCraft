@@ -70,11 +70,15 @@ Examples of design data that lives in the wiki:
 
 ## KubeJS Event Compatibility (1.20.1 Forge)
 
-Working events:
-- `PlayerEvents.loggedIn`, `PlayerEvents.inventoryChanged`
+Working events (SERVER scripts only, unless noted):
+- `PlayerEvents.loggedIn`, `PlayerEvents.inventoryChanged` - **server_scripts/ ONLY**. Registering from `client_scripts/` throws "Tried to register event handler 'PlayerEvents.loggedIn' for invalid script type CLIENT". For client-side login hooks use `ClientEvents.loggedIn`.
+- `ClientEvents.loggedIn`, `ClientEvents.tick` - **client_scripts/ ONLY**. Fires for the local player only; no UUID guard needed.
 - `ServerEvents.recipes`, `ServerEvents.tick`
 - `EntityEvents.spawned`, `EntityEvents.death`
+- `ItemEvents.tooltip` (client_scripts/)
 - `LootJS.modifiers`
+
+Discovery: every available event is documented under `local/kubejs/event_groups/<EventGroup>/<eventName>.md` after KubeJS first runs. Each .md file lists "Valid script types" - check this before registering an event in a different scope.
 
 NOT available (will crash):
 - `PlayerEvents.pickedUpItem`, `PlayerEvents.death`, `PlayerEvents.changeDimension`
