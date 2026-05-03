@@ -56,6 +56,20 @@
     "terramity:void_mage_helmet",
     "terramity:void_mage_chestplate",
     "terramity:void_mage_leggings",
-    "terramity:void_mage_boots"
-  ]
+    "terramity:void_mage_boots",
+    "ars_nouveau:arcanist_hood",
+    "ars_nouveau:arcanist_robes",
+    "ars_nouveau:arcanist_leggings",
+    "ars_nouveau:arcanist_boots",
+    "ars_nouveau:sorcerer_hood",
+    "ars_nouveau:sorcerer_robes",
+    "ars_nouveau:sorcerer_leggings",
+    "ars_nouveau:sorcerer_boots",
+    "mowziesmobs:geomancer_helmet",
+    "mowziesmobs:geomancer_robe",
+    "mowziesmobs:geomancer_leggings",
+    "mowziesmobs:geomancer_boots",
+    "irons_spellbooks:wizard_base_chestplate"
+  ],
+  "_note": "Ars Nouveau battlemage_robes deliberately NOT tagged ROBE — its design intent is hybrid (mage + melee), so it's MEDIUM by default. See IridescentCraft-internal/design/modded_metal_armor_stats.md notes on Battlemage."
 }
