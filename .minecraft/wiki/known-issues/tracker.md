@@ -14,6 +14,21 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Mekasuit has no innate armor stats (2026-05-03)
+- **Status:** Active — parked, fix later (no need to ship immediately)
+- **Description:** Mekanism's Mekasuit set (top-tier endgame armor — `mekanism:mekasuit_helmet`, `mekasuit_bodyarmor`, `mekasuit_pants`, `mekasuit_boots`) has no innate `max_health` / `armor` / `armor_toughness` modifiers on the bare items. Stats come entirely from installed Mekanism modules (Auto-Feeder, Frost-Walker, etc.) via the mod's own attribute system, not vanilla `getDefaultAttributeModifiers`. As a result it doesn't auto-classify into our weight tags (currently NOT in `armor_heavy.json` despite being a metal-themed power suit) AND doesn't compose normally with the difficulty multiplier system because there's no base armor value for the multiplier to scale.
+- **Naming caveat:** The chestplate is `mekasuit_bodyarmor` (not `_chestplate`) and the leggings are `mekasuit_pants` (not `_leggings`). The armor-tag audit's regex (`_(helmet|chestplate|leggings|boots)`) misses the chest+legs pieces — they wouldn't have been auto-discovered for tagging.
+- **What "MK2" refers to:** colloquial — there's only one Mekasuit tier in Mekanism 1.20.1 (no MK1/MK2 distinction in code), but the user's framing is "the pinnacle suit needs to feel pinnacle." Currently doesn't.
+- **Investigation paths:**
+  1. Add Mekasuit to `armor_heavy.json` so the dim multiplier applies (cosmetic — stat is still 0)
+  2. Add base armor values via a KubeJS `ItemEvents.modification` or a small mixin that bumps `getDefaultAttributeModifiers` (touches `MekaSuitArmor.class`)
+  3. Write a Tetra-style integration that lets installed modules contribute armor (matches the original mod design intent — biggest scope)
+  4. Set base stats via an `ItemAttributeModifierEvent` listener in a small custom mod
+- **Suggested values for option 2/4:** match netherite tier as floor (3/8/6/3 armor, 3 toughness, 0.1 KB resist) — Mekasuit shouldn't feel weaker than netherite. Modules then stack additively on top.
+- **Where:** `mekanism-1.20.1-10.4.16.80.jar` → `mekanism/common/item/gear/MekaSuitArmor.class` for the implementation. Mod is open-source on GitHub if needed.
+
+---
+
 ### Iridescent Reforging v0.2 server-startup crash [RESOLVED 2026-04-30]
 - **Status:** Resolved
 - **Description:** Server failed to load with `Mod truly_modular_create_compat requires armory any. Currently, armory is not installed`. Root cause: phase 9 of v0.1 removed `truly-modular-armory.pw.toml` (replaced by Reforging) but left `create-truly-modular.pw.toml` in place. The Create integration addon hard-depends on armory.
