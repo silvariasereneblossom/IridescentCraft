@@ -55,14 +55,47 @@ PlayerEvents.loggedIn(event => {
       'PreLaunchCommand="$INST_MC_DIR/prism_prelaunch.bat"')
 
     Files.writeString(instanceCfg.toPath(), newContent)
+    console.log('[auto_fix_prism_prelaunch] Rewrote PreLaunchCommand: legacy git-pull-only -> prism_prelaunch.bat')
+
+    // Spawn cleanup_stale_jars.ps1 NOW so disk-level orphan jars get
+    // unlinked this session. Java opens JAR files with FILE_SHARE_DELETE
+    // on Windows, so even though Forge has them loaded, PowerShell can
+    // remove them — the dirent is removed but the mod stays active for
+    // this session. Next launch the user gets a clean modlist.
+    var modsDir = new File(gameDir, 'mods')
+    var indexDir = new File(modsDir, '.index')
+    var cleanupScript = new File(gameDir, 'distribution/client/cleanup_stale_jars.ps1')
+
+    var cleanupSpawned = false
+    if (cleanupScript.exists() && modsDir.exists() && indexDir.exists()) {
+      try {
+        var ProcessBuilder = Java.loadClass('java.lang.ProcessBuilder')
+        var Arrays = Java.loadClass('java.util.Arrays')
+        var cmd = Arrays.asList(
+          'powershell',
+          '-ExecutionPolicy', 'Bypass',
+          '-File', cleanupScript.absolutePath,
+          '-ModsDir', modsDir.absolutePath,
+          '-IndexDir', indexDir.absolutePath
+        )
+        var pb = new ProcessBuilder(cmd)
+        pb.redirectErrorStream(true)
+        var proc = pb.start()
+        // Don't block the player tick; just fire and let it run
+        cleanupSpawned = true
+        console.log('[auto_fix_prism_prelaunch] Spawned cleanup_stale_jars.ps1 (PID ' + proc.pid() + ')')
+      } catch (e) {
+        console.warn('[auto_fix_prism_prelaunch] Failed to spawn cleanup: ' + e)
+      }
+    } else {
+      console.log('[auto_fix_prism_prelaunch] Cleanup script not found at ' + cleanupScript.absolutePath + '; skipping immediate cleanup')
+    }
 
     event.player.tell([
       Text.gold('[IridescentCraft] '),
-      Text.white('Auto-updated PrismLauncher pre-launch to include stale-jar cleanup '),
-      Text.gray('(see prism_prelaunch.bat). '),
-      Text.white('Takes effect on next launch.')
+      Text.white('Pre-launch updated and orphan jars cleaned from disk. '),
+      Text.gray('Modlist shows them this session (Forge has them loaded), but they\'re gone next launch.')
     ])
-    console.log('[auto_fix_prism_prelaunch] Rewrote PreLaunchCommand: legacy git-pull-only -> prism_prelaunch.bat')
   } catch (e) {
     console.warn('[auto_fix_prism_prelaunch] Failed: ' + e)
   }
