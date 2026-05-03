@@ -42,6 +42,27 @@ Final phase commits this session: `932f3a07` (Phase 1 skeleton) → `0df0af97` (
 
 ---
 
+## 2026-05-03 — Armor weight explicit tagging (vanilla + modded metal sweep)
+
+**Rule established:** `metal = HEAVY`, `non-metal = MEDIUM`, `pure-mage robes = ROBE`, `rogue/stealth with innate +speed = LIGHT`.
+
+**Vanilla explicit tagging** (replaces "untagged-default-MEDIUM"):
+- `minecraft:iron_*` → HEAVY (metal)
+- `minecraft:golden_*`, `chainmail_*` → MEDIUM (soft metal, vanilla-weak)
+- `minecraft:leather_*` → MEDIUM (non-metal)
+
+**Modded metal sweep** — 8 modded full-sets that had been defaulting to MEDIUM moved to HEAVY: `aether:zanite`, `twilightforest:steeleaf`, `twilightforest:ironwood`, `botania:manasteel`, `botania:elementium`, `blue_skies:aquite`, `blue_skies:horizonite`, `blue_skies:pyrope`, `undergarden:cloggrum`.
+
+**MEDIUM populated** (was empty / defaulted): vanilla gold + leather + chainmail; modded non-metal sets (TF `naga`, `phantom`, `yeti`, `arctic` — scale/bone/fur/wool); ISS `pumpkin` (moved from LIGHT — no innate speed mod).
+
+**LIGHT trimmed** — pumpkin removed (moved to MEDIUM). LIGHT now strictly = rogue/stealth gear with innate speed advantage (ISS `shadowwalker`) + magic cloaks + accessory hats. No vanilla armor.
+
+Speed-modifier accessories (Botania travel sashes, Aether capes/gloves) are Curios-slot items outside the 4 armor slots the weight system reads, so they compose on top of tier scaling without affecting tier classification — no tag needed.
+
+Commit `fc1adc5c`.
+
+---
+
 ## 2026-05-02 — ROBE armor tier + tagging audit + Magebloom material
 
 **ROBE class added — true mage gear, 4th tier below LIGHT.** Splits mage-coded armor (circlet, robe_chest, robed_leg_plate, robed_boot_sole reforged majors; ISS class robes; Botania manaweave; Terramity void_mage / exodium_warlock) out of LIGHT into its own tier. Per-piece: +0.10 mana_regen ADD, +1.5% speed, −7.5% armor, −10% toughness. **Full 4/4 robe set unlocks +0.5 mana_regen ADDITION on top** — the "True Mage" payoff for committing to a real caster build instead of mixing in plate. LIGHT keeps its rogue/agile identity (high speed bonus, no mana). Implementation: `ItemModularArmor.ArmorWeight.ROBE`, `ArmorWeightAggregator.WeightCount.robe`, coefficient tables in `kubejs/server_scripts/armor_weight.js`, tooltip color LIGHT_PURPLE.
