@@ -93,30 +93,46 @@ if exist "logs\debug.log" (
     if "%SILENT%"=="0" echo   Server: debug.log
 )
 
-REM --- Silent-mode tail: best-effort git push from instance root. ---
-REM Only fires when invoked as `push_crash_logs.bat --silent`. If the
-REM server's working tree is git-managed (Topology A: dev PC IS the
-REM server), this completes the round-trip without manual commit. If
-REM not (Topology B: dedicated Windows Server using Z: mirror), the
-REM dev PC's prism_postexit.bat picks up the mirrored files on its
-REM next session and pushes them.
+REM --- Silent-mode tail: best-effort git push from a discoverable git root. ---
+REM Only fires when invoked as `push_crash_logs.bat --silent`. Two topologies:
+REM
+REM   A. dev PC IS the server. Local instance root is the git working tree.
+REM      Push directly.
+REM
+REM   B. Dedicated Windows Server with Z: mapped to the dev PC's repo. Server
+REM      has NO local .git, but Z:\...\IridescentCraft\.git IS the dev PC's
+REM      working tree. Push from there - server-side `git push` reads creds
+REM      from the dev PC's .git/config (HTTPS+PAT remote URL pattern).
+REM
+REM Try local first, then Z:-mapped. If neither is a git tree (or git itself
+REM isn't on PATH), the logs are still mirrored - the dev PC's next session
+REM will pick them up via prism_postexit, but with delay.
 if "%SILENT%"=="1" (
-    pushd "%~dp0..\.."
-    git rev-parse --git-dir >nul 2>&1
-    if not errorlevel 1 (
+    where git >nul 2>&1
+    if errorlevel 1 (
+        echo [postexit] git not on PATH; logs mirrored only
+        exit /b 0
+    )
+
+    set "GIT_ROOT="
+    if exist "%~dp0..\..\.git" set "GIT_ROOT=%~dp0..\.."
+    if not defined GIT_ROOT if exist "!REPO_ROOT!\..\..\.git" set "GIT_ROOT=!REPO_ROOT!\..\.."
+
+    if defined GIT_ROOT (
+        pushd "!GIT_ROOT!"
         git add ".minecraft/server_distribution/TesterLogs/Server Logs/" >nul 2>&1
         git diff --cached --quiet
         if errorlevel 1 (
             git commit -m "Server Logs: session logs" >nul 2>&1
             git push >nul 2>&1
-            echo [postexit] Server logs pushed
+            echo [postexit] Server logs pushed ^(via !GIT_ROOT!^)
         ) else (
             echo [postexit] No log changes to push
         )
+        popd
     ) else (
-        echo [postexit] Logs mirrored ^(no git tree at parent; Z: round-trip in effect^)
+        echo [postexit] No git tree at local or Z: instance root; logs mirrored only
     )
-    popd
     exit /b 0
 )
 

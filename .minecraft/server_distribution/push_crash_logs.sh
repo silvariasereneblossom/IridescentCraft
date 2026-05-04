@@ -83,20 +83,37 @@ if [ -f "logs/debug.log" ]; then
     say "  Server: debug.log"
 fi
 
-# --- Silent-mode tail: best-effort git push from instance root. ---
+# --- Silent-mode tail: best-effort git push from a discoverable git root. ---
+# Two topologies (mirrors the .bat):
+#   A. dev host IS the test server; local instance root has .git.
+#   B. dedicated test server with REMOTE_ROOT mounted to the dev host's repo.
+#      Server has no local .git; the dev host's .git is reachable via the
+#      mount path. Server-side git push uses dev host's stored credentials.
 if [ "$SILENT" -eq 1 ]; then
-    INSTANCE_ROOT="$(cd "$(dirname "$0")/../.." && pwd)"
-    if git -C "$INSTANCE_ROOT" rev-parse --git-dir >/dev/null 2>&1; then
-        git -C "$INSTANCE_ROOT" add ".minecraft/server_distribution/TesterLogs/Server Logs/" >/dev/null 2>&1 || true
-        if ! git -C "$INSTANCE_ROOT" diff --cached --quiet 2>/dev/null; then
-            git -C "$INSTANCE_ROOT" commit -m "Server Logs: session logs" >/dev/null 2>&1 || true
-            git -C "$INSTANCE_ROOT" push >/dev/null 2>&1 || true
-            echo "[postexit] Server logs pushed"
+    if ! command -v git >/dev/null 2>&1; then
+        echo "[postexit] git not installed; logs mirrored only"
+        exit 0
+    fi
+
+    GIT_ROOT=""
+    LOCAL_INSTANCE="$(cd "$(dirname "$0")/../.." && pwd)"
+    if [ -d "$LOCAL_INSTANCE/.git" ]; then
+        GIT_ROOT="$LOCAL_INSTANCE"
+    elif [ -d "$REMOTE_ROOT/../../.git" ]; then
+        GIT_ROOT="$(cd "$REMOTE_ROOT/../.." && pwd)"
+    fi
+
+    if [ -n "$GIT_ROOT" ]; then
+        git -C "$GIT_ROOT" add ".minecraft/server_distribution/TesterLogs/Server Logs/" >/dev/null 2>&1 || true
+        if ! git -C "$GIT_ROOT" diff --cached --quiet 2>/dev/null; then
+            git -C "$GIT_ROOT" commit -m "Server Logs: session logs" >/dev/null 2>&1 || true
+            git -C "$GIT_ROOT" push >/dev/null 2>&1 || true
+            echo "[postexit] Server logs pushed (via $GIT_ROOT)"
         else
             echo "[postexit] No log changes to push"
         fi
     else
-        echo "[postexit] Logs mirrored (no git tree at parent; manual sync in effect)"
+        echo "[postexit] No git tree at local or remote instance root; logs mirrored only"
     fi
     exit 0
 fi
