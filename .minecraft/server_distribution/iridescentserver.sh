@@ -76,6 +76,25 @@ echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo ""
 
 # -------------------------------------------------------------------
+# Phase -1: Mounted dev-host mirror via sync_from_repo.sh (when reachable)
+# -------------------------------------------------------------------
+# Faster + more reliable than the GitHub fallback when REPO_ROOT (dev
+# host's repo, e.g. NFS/SMB mount or local symlink) is available.
+# Avoids API rate limits and full-zip edge cases. Falls back internally
+# to a GitHub zip download if the mount isn't reachable.
+#
+# Phase 0 still runs as a finer diff-based safety net.
+SCRIPT_DIR="$(cd "$(dirname "$0")" && pwd)"
+if [ -x "$SCRIPT_DIR/sync_from_repo.sh" ] || [ -f "$SCRIPT_DIR/sync_from_repo.sh" ]; then
+    echo "[SYNC] Phase -1: mounted-mirror / GitHub zip..."
+    bash "$SCRIPT_DIR/sync_from_repo.sh" || true
+    echo ""
+else
+    echo "[SYNC] Phase -1 skipped: sync_from_repo.sh not found."
+    echo ""
+fi
+
+# -------------------------------------------------------------------
 # Phase 0: Self-Update from GitHub (SHA-based)
 # -------------------------------------------------------------------
 # Checks latest commit SHA via GitHub API. If it matches the stored

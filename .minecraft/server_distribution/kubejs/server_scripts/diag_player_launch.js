@@ -71,7 +71,12 @@ try {
         if (atk) {
           var pd = v.getPersistentData()
           pd.putString('_dpl_atk', String(atk.getType().toString()))
-          pd.putLong('_dpl_atk_tick', v.level().getGameTime())
+          // Entity.tickCount is a public int field that ticks at 20Hz like
+          // world time. Using it instead of level.getGameTime() because
+          // Rhino can't find getGameTime via the Level field accessor in
+          // this version (mappings conflict). For per-entity relative
+          // comparison inside a 10-tick window, tickCount is equivalent.
+          pd.putLong('_dpl_atk_tick', v.tickCount)
         }
       } catch (_) {}
     }
@@ -96,7 +101,7 @@ try {
 
         var pd = v.getPersistentData()
         var atkType = 'no-recent-combat'
-        var nowTick = v.level().getGameTime()
+        var nowTick = v.tickCount  // entity.tickCount, see hurtCorrelator note
         if (pd.contains('_dpl_atk') && pd.contains('_dpl_atk_tick')) {
           var atkTick = pd.getLong('_dpl_atk_tick')
           if (nowTick - atkTick <= ATTACKER_CORRELATION_TICKS) {
@@ -190,7 +195,7 @@ try {
               // Recent-attacker correlation (same window as effect monitor)
               var atkType = 'no-recent-combat'
               try {
-                var nowTick = level.getGameTime()
+                var nowTick = p.tickCount  // entity.tickCount, see hurtCorrelator note
                 if (pd.contains('_dpl_atk') && pd.contains('_dpl_atk_tick')) {
                   var atkTick = pd.getLong('_dpl_atk_tick')
                   if (nowTick - atkTick <= 60) {  // 3s window for tick scan
