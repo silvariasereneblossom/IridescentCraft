@@ -51,6 +51,30 @@ powershell -Command ^
 echo.
 
 REM -------------------------------------------------------------------
+REM Phase -1: Z:-mounted dev-PC mirror (preferred when reachable)
+REM -------------------------------------------------------------------
+REM sync_from_repo.bat copies the whole server_distribution/ tree from
+REM Z: (dev PC's repo working tree). When Z: is mounted this is
+REM faster + more reliable than phase0_sync's GitHub diff-API:
+REM   - no GitHub API rate limits
+REM   - no truncated-diff edge cases (>=300 changed files -> full zip)
+REM   - sees uncommitted local edits the dev PC has on the working tree
+REM Falls back internally to a GitHub zip download if Z: isn't mounted.
+REM
+REM Phase 0 (phase0_sync.ps1) still runs after as a finer diff-based
+REM check; if this phase brought everything current, Phase 0 is a
+REM no-op. If this phase silently failed, Phase 0 acts as the safety
+REM net. Belt and suspenders.
+if exist "%~dp0sync_from_repo.bat" (
+    echo [SYNC] Phase -1: Z: / GitHub zip mirror...
+    call "%~dp0sync_from_repo.bat"
+    echo.
+) else (
+    echo [SYNC] Phase -1 skipped: sync_from_repo.bat not found.
+    echo.
+)
+
+REM -------------------------------------------------------------------
 REM Phase 0: Self-Update from GitHub (diff-based)
 REM -------------------------------------------------------------------
 REM Uses phase0_sync.ps1 for diff-based updates: compares commit SHAs,
