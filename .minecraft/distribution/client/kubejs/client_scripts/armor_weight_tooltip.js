@@ -31,11 +31,12 @@ function isArmorItem(stack) {
   catch (e) { return false }
 }
 
-// One-shot diagnostic: log the FIRST armor item hovered after script
-// load. Fires on any ArmorItem subclass (broader than iron-only) so we
-// guarantee data on the first armor tooltip the user opens. Logs the
-// raw id format + isArmor + all 4 tag lookups + sample of stack.tags.
-var ARMOR_TOOLTIP_DIAG_LOGGED = false
+// Two-stage diagnostic to disambiguate addAdvancedToAll firing at all
+// vs. firing-but-skipping-armor. Stage 1 fires on the first ANY-item
+// hover (proves the callback runs). Stage 2 fires on the first armor
+// hover (proves the tag/isArmor check works).
+var TOOLTIP_ANY_DIAG_LOGGED = false
+var TOOLTIP_ARMOR_DIAG_LOGGED = false
 
 ItemEvents.tooltip(event => {
   // addAdvancedToAll, NOT addAdvanced('*', ...). The '*' filter is parsed
@@ -48,13 +49,21 @@ ItemEvents.tooltip(event => {
 
     // Reforged armor has its own tooltip — Java side handles tier line.
     let id = String(stack.id)
+
+    // Stage 1: PROVE the addAdvancedToAll callback fires at all.
+    if (!TOOLTIP_ANY_DIAG_LOGGED) {
+      TOOLTIP_ANY_DIAG_LOGGED = true
+      console.log('[armor_weight_tooltip DIAG-S1] addAdvancedToAll fired; first item id=' + id)
+    }
+
     if (id.startsWith('iridescent_reforging:reforged_')) return
 
-    if (!ARMOR_TOOLTIP_DIAG_LOGGED && isArmorItem(stack)) {
-      ARMOR_TOOLTIP_DIAG_LOGGED = true
+    // Stage 2: PROVE armor detection works on a real armor hover.
+    if (!TOOLTIP_ARMOR_DIAG_LOGGED && isArmorItem(stack)) {
+      TOOLTIP_ARMOR_DIAG_LOGGED = true
       var tagList = 'unknown'
       try { tagList = String(stack.tags) } catch (_) {}
-      console.log('[armor_weight_tooltip DIAG] first armor hover:' +
+      console.log('[armor_weight_tooltip DIAG-S2] first armor hover:' +
                   ' id=' + id +
                   ' isArmor=' + isArmorItem(stack) +
                   ' hasTag(armor_heavy)=' + stack.hasTag('icraft:armor_heavy') +
