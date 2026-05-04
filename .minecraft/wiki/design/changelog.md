@@ -4,6 +4,28 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Skyward-launch root cause + permanent fix
+
+Multi-day forensic chain landed: third-layer diag (`diag_player_launch.js`, MobEffect monitor + 4Hz Y-vel scan) finally captured the launch vector after iterating past `MONITOR`-doesn't-exist-in-Forge, `v.level` field-vs-method, and `getGameTime` mapping issues. At 2026-05-04 01:18:36 the captured event was:
+
+```
+[player_effect] effect=minecraft.levitation amp=50 dur=10t attacker=no-recent-combat
+```
+
+Vanilla `LivingEntity.travel()` levitation math: per-tick target dy = 0.05 * (amp+1). At amp=50 → 2.55 blocks/tick → ~51 blocks/sec UP. Lerped over the 10-tick duration, player flung skyward in half a second. Knockback ratio cap was already saving the horizontal portion of these hits (mag 6.00 → 1.0), but the levitation effect bypassed `LivingKnockBackEvent` entirely — different event path.
+
+**Source identified**: Apotheosis vanilla affix `data/apotheosis/affixes/ranged/mob_effect/shulkers.json`. Type `apotheosis:mob_effect`, target `ARROW_TARGET`, applies `minecraft:levitation`, rolls on `bow / crossbow / trident`. Pillagers (crossbow) and skeletons (bow) both eligible to spawn with this affix via Apotheosis Adventure's mob-equipment system. Vanilla amp math caps at 3 (ancient tier); the runtime-observed 50 likely from `stackOnReapply`-like compounding under multi-hit barrage or from a downstream amplifier multiplier. Exact path remains open forensic work; fix below works regardless.
+
+**Two-layer fix shipped:**
+1. **`cap_player_levitation.js`** (commit `6a2c3090`) — generic `MobEffectEvent.Applicable` listener that cancels Levitation amp > 5 on Players. Defense-in-depth in case a different mod ever produces another high-amp Levitation source.
+2. **`shulkers.json` overlay** (this commit) — Paxi datapack `icraft_apotheosis_affixes` now ships an empty-`values`-empty-`types` overlay at `data/apotheosis/affixes/ranged/mob_effect/shulkers.json`, making the shulker's affix unrollable. Source-level disable.
+
+3-distro propagation: zip rebuilt + deployed to `.minecraft/config/paxi/datapacks/`, `distribution/client/config/paxi/datapacks/`, `server_distribution/config/paxi/datapacks/`. Verified identical md5 across all three.
+
+Forensic infrastructure (`cap_player_knockback.js`, `diag_player_velocity.js`, `diag_player_launch.js`) stays in place — the per-tick + effect monitors will catch any future bypass attempts immediately rather than after another tester report.
+
+---
+
 ## 2026-05-03 — Knockback forensics: third-layer player-launch diagnostic
 
 Tester report: skyward launches still happening after the 2026-04-25/26 fixes (cap_player_knockback's strength + ratio cap on `LivingKnockBackEvent`, and diag_player_velocity's post-hurt Y-velocity clamp on `LivingHurtEvent`). Both layers are deployed, both bootstrap-log on every launch, neither has fired diagnostic events in the captured server.log windows — meaning the launch vector is bypassing both event paths entirely.
