@@ -31,6 +31,11 @@ function isArmorItem(stack) {
   catch (e) { return false }
 }
 
+// One-shot diagnostic: log iron_chestplate's tag detection on first hover
+// after script load. If hasTag returns false here, the tag file isn't
+// loaded into the item registry (datapack layering / sync issue).
+var ARMOR_TOOLTIP_DIAG_LOGGED = false
+
 ItemEvents.tooltip(event => {
   event.addAdvanced('*', (stack, advanced, text) => {
     if (stack.isEmpty) return
@@ -38,6 +43,15 @@ ItemEvents.tooltip(event => {
     // Reforged armor has its own tooltip — Java side handles tier line.
     let id = String(stack.id)
     if (id.startsWith('iridescent_reforging:reforged_')) return
+
+    if (!ARMOR_TOOLTIP_DIAG_LOGGED && id === 'minecraft:iron_chestplate') {
+      ARMOR_TOOLTIP_DIAG_LOGGED = true
+      console.log('[armor_weight_tooltip DIAG] iron_chestplate hover: ' +
+                  'hasTag(icraft:armor_heavy)=' + stack.hasTag('icraft:armor_heavy') +
+                  ' hasTag(icraft:armor_light)=' + stack.hasTag('icraft:armor_light') +
+                  ' hasTag(icraft:armor_robe)=' + stack.hasTag('icraft:armor_robe') +
+                  ' isArmorItem=' + isArmorItem(stack))
+    }
 
     let label = null
     let color = null
