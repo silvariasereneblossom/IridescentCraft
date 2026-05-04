@@ -1,40 +1,36 @@
-[21:33:20] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[21:33:20] [INIT] Loaded plugins:
-[21:33:20] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[21:33:20] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
-[21:33:20] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
-[21:33:20] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[21:33:20] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
-[21:33:20] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[21:33:20] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[21:33:20] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
-[21:33:20] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[21:33:20] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[21:33:20] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[21:33:20] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[21:33:20] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[21:33:20] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[21:33:20] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[21:33:20] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[21:33:20] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[21:33:20] [INFO] armor_weight_tooltip.js#24: Loaded Java class 'net.minecraft.world.item.ArmorItem'
-[21:33:20] [INFO] Loaded script client_scripts:armor_weight_tooltip.js in 0.028 s
-[21:33:20] [INFO] attribute_tooltips.js#9: [IridescentCraft] Attribute tooltips loaded (v0.4 -- no-op, use !stats)
-[21:33:20] [INFO] Loaded script client_scripts:attribute_tooltips.js in 0.001 s
-[21:33:20] [INFO] Loaded script client_scripts:auto_fix_prism_prelaunch.js in 0.014 s
-[21:33:20] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.0 s
-[21:33:20] [INFO] Loaded script client_scripts:enchanted_book_tooltip_fix.js in 0.005 s
-[21:33:20] [INFO] example.js#5: Hello, World! (Loaded client scripts)
-[21:33:20] [INFO] Loaded script client_scripts:example.js in 0.001 s
-[21:33:20] [INFO] Loaded script client_scripts:jei_hiding.js in 0.0 s
-[21:33:20] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
-[21:33:20] [INFO] Loaded 8/8 KubeJS client scripts in 0.078 s with 0 errors and 0 warnings
-[21:33:31] [INFO] Client resource reload complete!
-[21:34:47] [INFO] auto_fix_prism_prelaunch.js#35: Loaded Java class 'net.minecraft.client.Minecraft'
-[21:34:47] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
-[21:35:05] [INFO] enchanted_book_tooltip_fix.js#34: [book-tooltip-fix] first fire; nbt={StoredEnchantments:[{id:"minecraft:protection",lvl:10s}]}
-[21:55:51] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
-[00:33:13] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
-[01:10:19] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
-[01:17:50] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
-[01:21:21] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
+[01:58:27] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[01:58:27] [INIT] Loaded plugins:
+[01:58:27] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[01:58:27] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgeClientPlugin
+[01:58:27] [INIT] - pie.ilikepiefoo.kubejsoffline.OfflinePlugin
+[01:58:27] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[01:58:27] [INIT] - smartin.miapi.compat.kubejs.KubeJSMiapiPlugin
+[01:58:27] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[01:58:27] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[01:58:27] [INIT] - moe.wolfgirl.probejs.plugin.BuiltinProbeJSPlugin
+[01:58:27] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[01:58:27] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[01:58:27] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[01:58:27] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[01:58:27] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[01:58:27] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[01:58:27] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[01:58:27] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[01:58:27] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[01:58:27] [INFO] armor_weight_tooltip.js#24: Loaded Java class 'net.minecraft.world.item.ArmorItem'
+[01:58:27] [INFO] Loaded script client_scripts:armor_weight_tooltip.js in 0.064 s
+[01:58:27] [INFO] attribute_tooltips.js#9: [IridescentCraft] Attribute tooltips loaded (v0.4 -- no-op, use !stats)
+[01:58:27] [INFO] Loaded script client_scripts:attribute_tooltips.js in 0.001 s
+[01:58:27] [INFO] Loaded script client_scripts:auto_fix_prism_prelaunch.js in 0.005 s
+[01:58:27] [INFO] Loaded script client_scripts:broken_tooltip.js in 0.0 s
+[01:58:27] [INFO] Loaded script client_scripts:enchanted_book_tooltip_fix.js in 0.007 s
+[01:58:27] [INFO] example.js#5: Hello, World! (Loaded client scripts)
+[01:58:27] [INFO] Loaded script client_scripts:example.js in 0.0 s
+[01:58:27] [INFO] Loaded script client_scripts:jei_hiding.js in 0.001 s
+[01:58:27] [INFO] Loaded script client_scripts:predicates.js in 0.0 s
+[01:58:27] [INFO] Loaded 8/8 KubeJS client scripts in 0.113 s with 0 errors and 0 warnings
+[01:58:37] [INFO] Client resource reload complete!
+[02:02:27] [INFO] auto_fix_prism_prelaunch.js#26: Loaded Java class 'net.minecraft.client.Minecraft'
+[02:02:28] [WARN] auto_fix_prism_prelaunch.js#36: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.lang.ProcessBuilder': Class is not allowed by class filter!
+[02:02:47] [INFO] enchanted_book_tooltip_fix.js#34: [book-tooltip-fix] first fire; nbt={StoredEnchantments:[{id:"minecraft:protection",lvl:10s}]}
+[03:28:29] [WARN] auto_fix_prism_prelaunch.js#36: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.lang.ProcessBuilder': Class is not allowed by class filter!
