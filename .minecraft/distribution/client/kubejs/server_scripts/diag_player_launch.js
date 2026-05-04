@@ -127,11 +127,13 @@ try {
     }
   })
 
-  // MONITOR priority -- run after every other handler, observe only.
+  // LOWEST priority - run after every other handler, observation only.
+  // (Forge EventPriority has no MONITOR; that's Bukkit/Fabric. LOWEST is
+  // the equivalent for pure-observation listeners.)
   // false = don't receive cancelled events.
-  MinecraftForge_dpl.EVENT_BUS.addListener(EventPriority_dpl.MONITOR, false,
+  MinecraftForge_dpl.EVENT_BUS.addListener(EventPriority_dpl.LOWEST, false,
                                            LivingHurtEvent_dpl, hurtCorrelator)
-  MinecraftForge_dpl.EVENT_BUS.addListener(EventPriority_dpl.MONITOR, false,
+  MinecraftForge_dpl.EVENT_BUS.addListener(EventPriority_dpl.LOWEST, false,
                                            MobEffectEventAdded, effectAddedHandler)
 
   // ── B: Per-tick player Y-velocity spike detector ──────────────────────────
