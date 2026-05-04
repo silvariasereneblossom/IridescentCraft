@@ -33,3 +33,4 @@
 [21:34:47] [INFO] auto_fix_prism_prelaunch.js#35: Loaded Java class 'net.minecraft.client.Minecraft'
 [21:34:47] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
 [21:35:05] [INFO] enchanted_book_tooltip_fix.js#34: [book-tooltip-fix] first fire; nbt={StoredEnchantments:[{id:"minecraft:protection",lvl:10s}]}
+[21:55:51] [WARN] auto_fix_prism_prelaunch.js#39: [auto_fix_prism] Failed: InternalError: Failed to load Java class 'java.io.File': Class is not allowed by class filter!
