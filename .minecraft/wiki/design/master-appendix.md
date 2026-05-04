@@ -1067,11 +1067,12 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | Script | Role |
 |--------|------|
 | `0_tick_master.js` | Server-tick master; named `0_` to load first; provides global tick handlers other scripts subscribe to |
-| `cap_player_knockback.js` | Caps knockback received by players |
+| `cap_player_knockback.js` | Caps knockback received by players (LivingKnockBackEvent strength + ratio normalization) |
+| `cap_player_levitation.js` | Cancels Levitation effect amp > 5 on Players (defense-in-depth against skyward-launch sources beyond the disabled Apotheosis Shulkers affix) |
 | `cherry_spawn_biome.js` | Cherry biome spawn override |
 | `codex_delivery.js` | First-join codex book + spell scrolls + starter spell-book delivery (NBT-baked) |
 | `death_penalty.js` | Inventory-kept death model + scaled durability damage + items-go-inert-not-broken |
-| `diag_empty_display_name.js` / `diag_player_velocity.js` | Diagnostic logging for tester reports |
+| `diag_empty_display_name.js` / `diag_player_velocity.js` / `diag_player_launch.js` | Diagnostic logging for tester reports. `diag_player_launch.js` is the third-layer launch monitor (MobEffectEvent.Added handler + 4Hz per-tick player Y-velocity scan with effect-list snapshot) — caught the Apotheosis Shulkers Levitation-amp-50 launch (see known-issues tracker 2026-05-04). |
 | `disable_zombie_door_break.js` | Suppresses zombie door breaking |
 | `dump_items.js` | One-shot JEI item dump for audit purposes (logs to kubejs-server.log with `[ITEM_DUMP]` prefix) |
 | `enemyexpansion_explosive_launch_blocker.js` | Suppresses Enemy Expansion explosive launch behavior |
