@@ -31,9 +31,10 @@ function isArmorItem(stack) {
   catch (e) { return false }
 }
 
-// One-shot diagnostic: log iron_chestplate's tag detection on first hover
-// after script load. If hasTag returns false here, the tag file isn't
-// loaded into the item registry (datapack layering / sync issue).
+// One-shot diagnostic: log the FIRST armor item hovered after script
+// load. Fires on any ArmorItem subclass (broader than iron-only) so we
+// guarantee data on the first armor tooltip the user opens. Logs the
+// raw id format + isArmor + all 4 tag lookups + sample of stack.tags.
 var ARMOR_TOOLTIP_DIAG_LOGGED = false
 
 ItemEvents.tooltip(event => {
@@ -44,13 +45,18 @@ ItemEvents.tooltip(event => {
     let id = String(stack.id)
     if (id.startsWith('iridescent_reforging:reforged_')) return
 
-    if (!ARMOR_TOOLTIP_DIAG_LOGGED && id === 'minecraft:iron_chestplate') {
+    if (!ARMOR_TOOLTIP_DIAG_LOGGED && isArmorItem(stack)) {
       ARMOR_TOOLTIP_DIAG_LOGGED = true
-      console.log('[armor_weight_tooltip DIAG] iron_chestplate hover: ' +
-                  'hasTag(icraft:armor_heavy)=' + stack.hasTag('icraft:armor_heavy') +
-                  ' hasTag(icraft:armor_light)=' + stack.hasTag('icraft:armor_light') +
-                  ' hasTag(icraft:armor_robe)=' + stack.hasTag('icraft:armor_robe') +
-                  ' isArmorItem=' + isArmorItem(stack))
+      var tagList = 'unknown'
+      try { tagList = String(stack.tags) } catch (_) {}
+      console.log('[armor_weight_tooltip DIAG] first armor hover:' +
+                  ' id=' + id +
+                  ' isArmor=' + isArmorItem(stack) +
+                  ' hasTag(armor_heavy)=' + stack.hasTag('icraft:armor_heavy') +
+                  ' hasTag(armor_medium)=' + stack.hasTag('icraft:armor_medium') +
+                  ' hasTag(armor_light)=' + stack.hasTag('icraft:armor_light') +
+                  ' hasTag(armor_robe)=' + stack.hasTag('icraft:armor_robe') +
+                  ' tags=' + tagList)
     }
 
     let label = null
