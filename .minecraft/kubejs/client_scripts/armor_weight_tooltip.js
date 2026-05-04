@@ -38,7 +38,12 @@ function isArmorItem(stack) {
 var ARMOR_TOOLTIP_DIAG_LOGGED = false
 
 ItemEvents.tooltip(event => {
-  event.addAdvanced('*', (stack, advanced, text) => {
+  // addAdvancedToAll, NOT addAdvanced('*', ...). The '*' filter is parsed
+  // as an Ingredient by addAdvanced and matches the literal item id "*",
+  // not all items - the script silently registered a handler that matched
+  // nothing. addAdvancedToAll is the documented "every item" entrypoint
+  // (per local/kubejs/event_groups/ItemEvents/tooltip.md).
+  event.addAdvancedToAll((stack, advanced, text) => {
     if (stack.isEmpty) return
 
     // Reforged armor has its own tooltip — Java side handles tier line.
