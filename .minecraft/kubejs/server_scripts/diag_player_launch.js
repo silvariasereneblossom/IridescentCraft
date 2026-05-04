@@ -71,7 +71,7 @@ try {
         if (atk) {
           var pd = v.getPersistentData()
           pd.putString('_dpl_atk', String(atk.getType().toString()))
-          pd.putLong('_dpl_atk_tick', v.level().getGameTime())
+          pd.putLong('_dpl_atk_tick', v.level.getGameTime())
         }
       } catch (_) {}
     }
@@ -96,7 +96,7 @@ try {
 
         var pd = v.getPersistentData()
         var atkType = 'no-recent-combat'
-        var nowTick = v.level().getGameTime()
+        var nowTick = v.level.getGameTime()
         if (pd.contains('_dpl_atk') && pd.contains('_dpl_atk_tick')) {
           var atkTick = pd.getLong('_dpl_atk_tick')
           if (nowTick - atkTick <= ATTACKER_CORRELATION_TICKS) {
