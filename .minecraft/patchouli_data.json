@@ -237,7 +237,8 @@
         "icraft:classes/race_elf",
         "icraft:mods_t1/irons_spells",
         "icraft:systems/keybinds",
-        "icraft:classes/class_battlemage"
+        "icraft:classes/class_battlemage",
+        "icraft:quick_access/aptitudes"
       ],
       "bookmarks": [],
       "completedManualQuests": []
