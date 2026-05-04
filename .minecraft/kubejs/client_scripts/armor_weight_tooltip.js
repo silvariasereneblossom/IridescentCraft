@@ -1,45 +1,37 @@
 // =============================================================================
 // Armor Weight Tooltip — Client Script
 // =============================================================================
-// Shows the weight tier (Robe / Light / Medium / Heavy) on every armor item's
-// tooltip, color-coded to match the in-world effect from armor_weight.js:
+// DIAG-MODE 2026-05-04 v3: tag-ingredient registrations didn't fire either.
+// Probing whether the issue is (a) tag resolution in addAdvanced or (b)
+// something else (multi-handler registration, etc).
 //
-//   Robe   light_purple    +mana_regen + small speed, low armor + toughness,
-//                          full 4-piece set bonus (+0.5 mana_regen extra)
-//   Light  aqua            +speed, light penalty
-//   Medium yellow          neutral (no bonus or penalty)
-//   Heavy  gold            +armor, -speed/-mana
-//
-// Tier comes from the four icraft:armor_robe / armor_light / armor_medium /
-// armor_heavy tags. Each registers as its own tag-ingredient handler — the
-// `addAdvancedToAll` API does not invoke the callback in this KubeJS build
-// (2001.6.5-build.16), confirmed by 2-stage diag 2026-05-04. Tag ingredients
-// (`#icraft:armor_*`) work via the same path as `addAdvanced('minecraft:enchanted_book', ...)`
-// in enchanted_book_tooltip_fix.js.
-//
-// Reforged armor (iridescent_reforging:reforged_*) is excluded from these
-// tags — those items already display the tier via Java appendHoverText in
-// ItemModularArmor (with a tier-specific T1/T2/T3 line above it).
+//   T1: explicit single-id `addAdvanced('minecraft:iron_chestplate', ...)`
+//       — same shape as the working enchanted_book_tooltip_fix.js. If this
+//       fires, the tag-ingredient path is broken; if it doesn't, something
+//       else is wrong.
+//   T2: tag `addAdvanced('#icraft:armor_heavy', ...)`. Both fire a one-shot
+//       log so we can see which paths run.
 // =============================================================================
 
+var T1_LOGGED = false
+var T2_LOGGED = false
+
 ItemEvents.tooltip(event => {
-  event.addAdvanced('#icraft:armor_robe', (stack, advanced, text) => {
-    if (stack.isEmpty) return
-    text.add(Text.of('Robe Armor').color('light_purple'))
+  // T1: literal item id (control — we know this shape works for the book)
+  event.addAdvanced('minecraft:iron_chestplate', (stack, advanced, text) => {
+    if (!T1_LOGGED) {
+      T1_LOGGED = true
+      console.log('[armor_tt T1] iron_chestplate addAdvanced fired; id=' + stack.id)
+    }
+    text.add(Text.of('Heavy Armor (T1)').color('gold'))
   })
 
-  event.addAdvanced('#icraft:armor_light', (stack, advanced, text) => {
-    if (stack.isEmpty) return
-    text.add(Text.of('Light Armor').color('aqua'))
-  })
-
-  event.addAdvanced('#icraft:armor_medium', (stack, advanced, text) => {
-    if (stack.isEmpty) return
-    text.add(Text.of('Medium Armor').color('yellow'))
-  })
-
+  // T2: tag ingredient
   event.addAdvanced('#icraft:armor_heavy', (stack, advanced, text) => {
-    if (stack.isEmpty) return
-    text.add(Text.of('Heavy Armor').color('gold'))
+    if (!T2_LOGGED) {
+      T2_LOGGED = true
+      console.log('[armor_tt T2] #icraft:armor_heavy addAdvanced fired; id=' + stack.id)
+    }
+    text.add(Text.of('Heavy Armor (T2)').color('gold'))
   })
 })
