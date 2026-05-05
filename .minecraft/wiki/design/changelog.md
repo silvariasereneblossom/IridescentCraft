@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Modular spellbook honing (Tetra IModularItem progression)
+
+Modular Tetra spellbooks (`iridescent_modular_spells:modular_iron_spell_book`, `_gold_`, `_diamond_`, `_apprentice_`, `_archmage_`) implement `IModularItem` but had no progression trigger — Tetra's `tickProgression` ships for weapons + tools, NOT for spell-cast items. Books couldn't be honed for module improvements (the "earn an upgrade slot through use" flow that vanilla Tetra weapons use).
+
+**Fix:** new `SpellbookHoneHandler.java` in `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/modspells/event/`. Mirrors the existing `ArmorHoneHandler` pattern. Three trigger sources:
+
+1. **`SpellOnCastEvent`** (Iron's Spellbooks API event) → +1 tick per held `ModularSpellBookItem`
+2. **`SpellCastEvent`** (Ars Nouveau API event) → +1 tick per held `ModularArsSpellBookItem`
+3. **`PlayerTickEvent`** every 1200 ticks (60s) → +1 tick per held modular spellbook of either kind. Floor for non-cast play.
+
+Slot scope: mainhand + offhand only (matches `ArmorHoneHandler` simplicity, avoids hard-dep on Curios API at this layer). Curios-slot books still progress passively when also briefly held.
+
+`IModularItem.tickProgression` handles gating internally (config flag, `canGainHoneProgress` check, NBT counter). The handler just calls it — same approach as the armor side.
+
+Built into `iridescent_tetra_expansion-1.0.0.jar`, deployed to all 3 distros via `build_mod.sh`. Verified `SpellbookHoneHandler.class` present alongside `ArmorHoneHandler.class` in the jar.
+
+---
+
 ## 2026-05-04 — Pre-T3 diamond hard strip (blanket chest loot)
 
 Tester found diamonds generating in an Overworld structure not yet covered by per-structure strips. Section 4 of `lootjs_overhaul.js` already has ~66 individual `removeLoot('minecraft:diamond')` calls for known structure mods (Explorify, Villages & Pillages, Unwrecked Ships, Dungeons Plus, Structory Towers, etc.) — but new/uncovered structures keep slipping through.
