@@ -1579,7 +1579,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:overworld')
     .addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.01)))
-    .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.05)))
+    .addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.075)))
 
   // T2 (TF, Aether, Blue Skies): Scrolls, iron/gold spell books, uncommon ink
   event
@@ -1589,7 +1589,7 @@ LootJS.modifiers(event => {
       'blue_skies:everbright', 'blue_skies:everdawn')
     .addLoot(LootEntry.of('irons_spellbooks:iron_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.01)))
-    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.05)))
+    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.075)))
 
   // T3 (Nether, Undergarden): Scrolls, gold/diamond spell books, rare ink
   event
@@ -1597,7 +1597,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
     .addLoot(LootEntry.of('irons_spellbooks:gold_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.01)))
-    .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.04)))
+    .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.06)))
 
   // T4 (End, Deeper Darker, Abyss): Scrolls, diamond/netherite spell books, epic ink
   event
@@ -1605,7 +1605,7 @@ LootJS.modifiers(event => {
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
     .addLoot(LootEntry.of('irons_spellbooks:diamond_spell_book').when(c => c.randomChance(0.03)))
     .addLoot(LootEntry.of('irons_spellbooks:netherite_spell_book').when(c => c.randomChance(0.01)))
-    .addLoot(LootEntry.of('irons_spellbooks:epic_ink').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('irons_spellbooks:epic_ink').when(c => c.randomChance(0.045)))
 
   // =========================================================================
   // SECTION 5B: OVERWORLD STRUCTURE FOOD REDUCTION

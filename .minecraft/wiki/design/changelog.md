@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Scroll + ink rate bump (~2x scroll, +50% tier ink)
+
+T1 mage starter loop felt thin: 2.5% scroll per village house = ~25% chance of ANY scroll after clearing 10 villages, and 5% common_ink in Overworld chests was bottlenecking spell scribing once a player had a scroll. With T1/T2/T3 spell damage now buffed, the scarcity of scrolls/ink became the binding constraint on early mage feel.
+
+**Scrolls** — village house weight 1 -> 2 in all 5 biome variants (plains, desert, savanna, snowy, taiga). Effective rate: 1/40 -> 2/41 = **2.5% -> 4.88%** per chest. Roughly 2x.
+
+**Ink** (per-tier dimension chest pools in `lootjs_overhaul.js`, +50% across the board):
+- T1 Overworld common_ink: 5% -> 7.5%
+- T2 (TF/Aether/BlueSkies) uncommon_ink: 5% -> 7.5%
+- T3 (Nether/Undergarden) rare_ink: 4% -> 6%
+- T4 (End/DeeperDarker/Abyss) epic_ink: 3% -> 4.5%
+
+Other ink sources (universal Overworld 15%, Apotheosis 40%, TOTW 100%, sentry/Stalwart 10-12%) unchanged — they're already generous and not the binding constraint.
+
+3-distro fan-out, md5-verified.
+
+---
+
 ## 2026-05-04 — Magic T2/T3 calibration against new T1 baseline
 
 T1 buff pass earlier today set firebolt floor at 9.0 HP/cast (1.5x of basePower 12). Found the curve had inverted: T2 spells like `ball_lightning` (5.5 HP L1 vanilla) were *weaker* than buffed T1 firebolt, and T2 high-mana spells (`eldritch_blast` 7.5 HP at 90 mana vs firebolt 9.0 HP at 10 mana) had become a strict downgrade on damage/mana. Source-dive of the ISS jar via `javap -v` extracted 30+ T2-T4 spell constants; calibration follows.

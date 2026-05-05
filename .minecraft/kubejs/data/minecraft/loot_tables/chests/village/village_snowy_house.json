@@ -199,7 +199,7 @@
         {
           "type": "minecraft:item",
           "name": "irons_spellbooks:scroll",
-          "weight": 1,
+          "weight": 2,
           "functions": [
             {
               "function": "irons_spellbooks:randomize_spell",
