@@ -2135,12 +2135,33 @@ LootJS.modifiers(event => {
     ['artifacts:obsidian_skull', 0.05]
   ]
 
+  // Helper: T1-quality scroll loot entry (matches village house chest entry).
+  // Uses LootJS customFunction() to apply irons_spellbooks:randomize_spell —
+  // without it, the scroll drops blank (no spell inscribed).
+  function t1Scroll(chance) {
+    return LootEntry.of('irons_spellbooks:scroll')
+      .customFunction({
+        function: 'irons_spellbooks:randomize_spell',
+        quality: { min: 0.0, max: 0.2 }
+      })
+      .when(c => c.randomChance(chance))
+  }
+  function t2Scroll(chance) {
+    return LootEntry.of('irons_spellbooks:scroll')
+      .customFunction({
+        function: 'irons_spellbooks:randomize_spell',
+        quality: { min: 0.2, max: 0.5 }
+      })
+      .when(c => c.randomChance(chance))
+  }
+
   // --- Structory Towers — strip + rebuild ---
   // Strip diamonds (already done in Section 4B), add magic + curios
   var stMod = event.addLootTableModifier(/structory_towers:.*chests.*/)
   stMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.10)))
-  stMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.10)))
+  stMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
   stMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
+  stMod.addLoot(t1Scroll(0.06))
   towerCurioPool.forEach(function(entry) {
     stMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
   })
@@ -2165,6 +2186,8 @@ LootJS.modifiers(event => {
   // 10% novice spell book, 8% copper spell book (discovery magic items)
   apothMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   apothMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
+  // 15% scroll (T1 quality) — these towers ARE the magic-discovery landmark
+  apothMod.addLoot(t1Scroll(0.15))
   // 10% enchanted book (matches TOTW tier)
   apothMod.addLoot(
     LootEntry.of('minecraft:book')
@@ -2190,6 +2213,8 @@ LootJS.modifiers(event => {
     totwMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
     // 10% copper spell book
     totwMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.10)))
+    // 10% scroll (T1 quality)
+    totwMod.addLoot(t1Scroll(0.10))
     // 10% enchanted book (levels 5-15)
     totwMod.addLoot(
       LootEntry.of('minecraft:book')
@@ -2218,6 +2243,8 @@ LootJS.modifiers(event => {
   waystoneMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.15)))
   // 12% source gem [2-4]
   waystoneMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([2, 4]).when(c => c.randomChance(0.12)))
+  // 8% scroll (T1 quality)
+  waystoneMod.addLoot(t1Scroll(0.08))
   // 10% enchanted book (levels 5-15)
   waystoneMod.addLoot(
     LootEntry.of('minecraft:book')
@@ -2442,9 +2469,10 @@ LootJS.modifiers(event => {
     LootEntry.of('minecraft:experience_bottle').limitCount([1, 3])
       .when(c => c.randomChance(0.15))
   )
-  keebszLow.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.10)))
+  keebszLow.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
   keebszLow.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   keebszLow.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.05)))
+  keebszLow.addLoot(t1Scroll(0.06))
   // 8% random T1 artifact (pick one from pool)
   var keebszLowArtifactChance = 0.08 / artifactT1Pool.length
   artifactT1Pool.forEach(function(item) {
@@ -2463,6 +2491,8 @@ LootJS.modifiers(event => {
   keebszMid.addLoot(LootEntry.of('minecraft:gold_block').when(c => c.randomChance(0.06)))
   // 10% apprentice spell book
   keebszMid.addLoot(LootEntry.of('ars_nouveau:apprentice_spell_book').when(c => c.randomChance(0.10)))
+  // 5% scroll (T2 quality)
+  keebszMid.addLoot(t2Scroll(0.05))
   // 10% potions (healing, strength)
   keebszMid.addLoot(
     LootEntry.of(Item.of('minecraft:potion', '{Potion:"minecraft:strong_healing"}'))
@@ -2487,8 +2517,8 @@ LootJS.modifiers(event => {
   )
   // 15% rare materials (diamonds allowed at high floors)
   keebszHigh.addLoot(LootEntry.of('minecraft:diamond').limitCount([1, 3]).when(c => c.randomChance(0.15)))
-  // 12% rare inks
-  keebszHigh.addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.12)))
+  // 18% rare inks (bumped from 12% as part of magic-loot pass)
+  keebszHigh.addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.18)))
   // 10% enchanted book (levels 20-30)
   keebszHigh.addLoot(
     LootEntry.of('minecraft:book')

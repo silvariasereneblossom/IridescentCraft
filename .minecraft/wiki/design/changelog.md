@@ -4,6 +4,33 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Tower scroll/ink coverage pass
+
+Magic-themed tower structures had ink + spell books but ZERO scrolls — scrolls only existed in 5 village house chests. Towers are the natural mage exploration landmark, so they should also drop scrolls.
+
+**Verified naming:** Apotheosis ships `apotheosis:chests/tome_tower` (4 biome variants share one loot table). The "gem tower" intuition is from the `apotheosis:gem` (affix gems) that drop *from* tome_tower — but the structure id is `tome_tower`, not gem_tower.
+
+**Scrolls added** (LootJS `customFunction()` to apply `irons_spellbooks:randomize_spell` at the right tier):
+- Apotheosis tome_tower: **15%** T1-quality scroll (these towers ARE the magic-discovery landmark)
+- TOTW `tower_chest` + `ocean_tower_chest`: 10% T1-quality
+- Structory Towers: 6% T1-quality
+- Waystone (`stronghold_corridor`): 8% T1-quality
+- Keebsz F1-3: 6% T1-quality
+- Keebsz F4-6: 5% T2-quality (0.2-0.5 quality range)
+
+**Tower ink rates +50%** (matching the dimension-pool bump):
+- Structory Towers common_ink: 10% -> 15%
+- Keebsz F1-3 common_ink: 10% -> 15%
+- Keebsz F7-10 rare_ink: 12% -> 18%
+
+**Untouched** (already saturated): Apotheosis tome_tower 40% common_ink, TOTW 100% guaranteed common_ink, Waystone general 5% (already in earlier dimension-pool +50% bump).
+
+Helper functions `t1Scroll(chance)` / `t2Scroll(chance)` added at top of Section 7 so future tower additions can reuse the same shape.
+
+3-distro fan-out, md5-verified.
+
+---
+
 ## 2026-05-04 — Scroll + ink rate bump (~2x scroll, +50% tier ink)
 
 T1 mage starter loop felt thin: 2.5% scroll per village house = ~25% chance of ANY scroll after clearing 10 villages, and 5% common_ink in Overworld chests was bottlenecking spell scribing once a player had a scroll. With T1/T2/T3 spell damage now buffed, the scarcity of scrolls/ink became the binding constraint on early mage feel.
