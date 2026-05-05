@@ -1,14 +1,15 @@
 // =============================================================================
 // Broken Item Tooltip — Client Script
-// Shows "(Broken)" on items that have been reduced to 0 durability by death
+// Shows "(Broken)" on items reduced to 0 durability by death penalty
 // =============================================================================
-// addAdvancedToAll's callback does not fire in this KubeJS build
-// (2001.6.5-build.16) — confirmed by 2-stage diag 2026-05-04. Register
-// per-tag-ingredient instead, mirroring armor_weight_tooltip.js.
+// Per-tag registration since addAdvancedToAll is a silent no-op in KubeJS
+// 2001.6.5-build.16. Coverage: 4 armor tags. Held weapons/tools don't share
+// a common pack-wide tag — follow up if testers report broken weapons not
+// rendering the line.
 //
-// Coverage: 4 armor tags. Held weapons/tools are not covered yet — most
-// tetra-modular weapons + vanilla tools don't share a common item tag in
-// this pack. Follow-up if testers confirm broken-weapon tooltip is missed.
+// IMPORTANT: do NOT use `stack.isEmpty` as a guard — bare property access
+// returns the function reference (always truthy) in this Rhino. Use
+// `stack.nbt` null-check + `getBoolean('icraft_broken')` instead.
 // =============================================================================
 
 const BROKEN_TAGS = [
@@ -19,7 +20,7 @@ const BROKEN_TAGS = [
 ]
 
 function brokenTooltipHandler(stack, advanced, text) {
-  if (stack.isEmpty || !stack.nbt) return
+  if (!stack.nbt) return
   if (!stack.nbt.getBoolean('icraft_broken')) return
   text.add(1, Text.red(Text.of('✘ BROKEN').bold()))
   text.add(2, Text.gray('Repair at an anvil to restore functionality'))
