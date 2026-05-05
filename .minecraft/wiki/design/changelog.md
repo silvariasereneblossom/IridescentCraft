@@ -14,7 +14,7 @@ Tester found diamonds generating in an Overworld structure not yet covered by pe
 
 T3+ (Nether, Undergarden, End, Deeper Darker, The Abyss) keep diamonds — they're tier-appropriate there.
 
-**Scope:** raw `minecraft:diamond` only. Diamond tools/armor in chest loot are not stripped (rare vanilla strongholds drop + already covered by per-structure rules). If testers report diamond tools/armor leaking pre-T3, extend the rule.
+**Scope:** raw `minecraft:diamond` + diamond tools (sword/pickaxe/axe/shovel/hoe) + diamond armor (helm/chest/legs/boots) + diamond horse armor. Anything that could hand a T1-T2 player diamond-tier kit pre-progression. Vanilla stronghold + desert temple chests are the most common source pre-T3; modded structures vary.
 
 3-distro fan-out, md5-verified.
 

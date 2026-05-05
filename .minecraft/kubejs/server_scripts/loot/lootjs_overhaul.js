@@ -1567,18 +1567,29 @@ LootJS.modifiers(event => {
   // progression curve): diamonds gate at T3, players should farm iron in
   // T1-T2, diamond access opens via Nether mining or T3 boss drops.
   //
-  // Diamond tools/armor in chest loot are NOT stripped — those are rare
-  // vanilla strongholds drops + already covered by per-structure rules.
-  // If we see diamond TOOLS leaking in pre-T3 dims, extend this rule.
+  // Strip extends to diamond tools, armor, and horse armor — anything that
+  // could give a T1-T2 player diamond-tier kit pre-progression. Vanilla
+  // stronghold/desert temple chest loot is the most common source; modded
+  // structures vary.
   // =========================================================================
 
-  event
+  var preT3DiamondStrip = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld',
       'twilightforest:twilight_forest',
       'aether:the_aether', 'deep_aether:the_aether',
       'blue_skies:everbright', 'blue_skies:everdawn')
-    .removeLoot('minecraft:diamond')
+  preT3DiamondStrip.removeLoot('minecraft:diamond')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_sword')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_pickaxe')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_axe')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_shovel')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_hoe')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_helmet')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_chestplate')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_leggings')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_boots')
+  preT3DiamondStrip.removeLoot('minecraft:diamond_horse_armor')
 
   // =========================================================================
   // SECTION 5A2: OVERWORLD CURIO DROPS
