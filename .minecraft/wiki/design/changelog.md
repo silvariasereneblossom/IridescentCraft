@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Avian Sky Affinity: lift the prevent_sleep override out of kubejs/data into a Paxi datapack
+
+Tester reported the Avian origin tooltip on the selection screen still showed the vanilla "When sleeping, your bed needs to be at an altitude of at least 86 blocks, so you can breathe fresh air." — the Sky Affinity replacement (shipped 2026-04 per cont.3327) wasn't landing.
+
+Tracing: `kubejs/data/origins/powers/fresh_air.json` has the correct `origins:multiple` definition with inline `name = "Sky Affinity"` + new `description`, and is identical across all 3 distros. No errors in latest.log. But Origins was still rendering the old text — meaning the kubejs/data override wasn't winning over origins-forge.jar's bundled `data/origins/powers/fresh_air.json` (`apoli:prevent_sleep`, height < 86, no inline description so it falls back to lang).
+
+**Fix:** Lifted the override into a Paxi datapack `icraft_origins_overrides.zip` at `config/paxi/datapacks/`. Same pattern that beat the Apotheosis Shulkers ranged-affix on 2026-05-04. Paxi datapacks load at the highest priority tier in the datapack chain, so the prevent_sleep mechanic + the vanilla lang-driven description are both displaced.
+
+Open follow-up: figure out why `kubejs/data/` is unreliable for power-overrides specifically. Other origins powers (vegetarian, burn_in_daylight, fragile, etc.) appear to work from kubejs/data, but those define new powers rather than overriding mod-bundled ones with the same ID. Possible that origins-forge does a one-shot load from its own jar before kubejs/data is processed.
+
+---
+
 ## 2026-05-04 — Skyward-launch root cause + permanent fix
 
 Multi-day forensic chain landed: third-layer diag (`diag_player_launch.js`, MobEffect monitor + 4Hz Y-vel scan) finally captured the launch vector after iterating past `MONITOR`-doesn't-exist-in-Forge, `v.level` field-vs-method, and `getGameTime` mapping issues. At 2026-05-04 01:18:36 the captured event was:
