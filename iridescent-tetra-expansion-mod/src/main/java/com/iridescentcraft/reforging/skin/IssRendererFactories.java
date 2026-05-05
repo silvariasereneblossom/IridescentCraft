@@ -1,24 +1,8 @@
 package com.iridescentcraft.reforging.skin;
 
 import com.iridescentcraft.reforging.IridescentReforging;
-import io.redspace.ironsspellbooks.entity.armor.ArchevokerArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.BootsOfSpeedArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.CryomancerArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.CultistArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.ElectromancerArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.GenericArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.GenericCustomArmorRenderer;
-import io.redspace.ironsspellbooks.entity.armor.GoldCrownModel;
-import io.redspace.ironsspellbooks.entity.armor.InfernalSorcererArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.PaladinArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.PlaguedArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.PyromancerArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.ShadowwalkerArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.TarnishedCrownModel;
-import io.redspace.ironsspellbooks.entity.armor.WanderingMagicianModel;
-import io.redspace.ironsspellbooks.entity.armor.netherite.NetheriteMageArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.priest.PriestArmorModel;
-import io.redspace.ironsspellbooks.entity.armor.pumpkin.PumpkinArmorModel;
 import net.minecraftforge.fml.ModList;
 import software.bernie.geckolib.model.GeoModel;
 
@@ -58,34 +42,37 @@ public final class IssRendererFactories {
             return;
         }
 
-        // 10 sets (excludes Wizard — see class doc).
-        registerSet(reg, "cultist",            CultistArmorModel::new);
-        registerSet(reg, "pyromancer",         PyromancerArmorModel::new);
-        registerSet(reg, "cryomancer",         CryomancerArmorModel::new);
-        registerSet(reg, "electromancer",      ElectromancerArmorModel::new);
-        registerSet(reg, "plagued",            PlaguedArmorModel::new);
-        registerSet(reg, "priest",             PriestArmorModel::new);
-        registerSet(reg, "pumpkin",            PumpkinArmorModel::new);
-        registerSet(reg, "shadowwalker",       ShadowwalkerArmorModel::new);
-        registerSet(reg, "wandering_magician", WanderingMagicianModel::new);
-        registerSet(reg, "archevoker",         ArchevokerArmorModel::new);
-
-        // Wizard fallback — uses GenericArmorModel("wizard") wrapped in
-        // GenericCustomArmorRenderer (non-dyeable). Dye color won't carry
-        // through but the silhouette renders correctly.
-        registerSet(reg, "wizard", () -> new GenericArmorModel("wizard"));
-
-        // v0.2 ISS specials — single-slot or partial sets with unique geometry.
-        registerSet(reg, "netherite_battlemage", NetheriteMageArmorModel::new);
-        registerSingleSlot(reg, "infernal_sorcerer_chestplate",
-                InfernalSorcererArmorModel::new);
-        registerSingleSlot(reg, "paladin_chestplate", PaladinArmorModel::new);
-        registerSingleSlot(reg, "boots_of_speed_boots", BootsOfSpeedArmorModel::new);
-        registerSingleSlot(reg, "gold_crown_helmet", GoldCrownModel::new);
-        registerSingleSlot(reg, "tarnished_crown_helmet", TarnishedCrownModel::new);
+        // 2026-05-05 CRASH FIX: ISS unique-armor Geckolib models hardcode
+        // a cast to their own ISS item class in getTextureResource (e.g.
+        // WanderingMagicianModel.java:8 casts to WanderingMagicianArmorItem).
+        // When dispatched against our ItemModularArmor, these crash with
+        // ClassCastException at first armor render. Fall back to
+        // GenericArmorModel(setName) for ALL sets — texture lookup happens
+        // by string-based path resolution, not by item-class cast. We lose
+        // the unique 3D geometry but the silhouette + textures render
+        // correctly without crashing.
+        //
+        // Companion change: Tetra replacement JSONs for unique ISS armor
+        // were deleted in the same commit, so unique armors NO LONGER
+        // auto-convert to modular variants. Native ISS items keep their
+        // unique geometry, name, sprite, and effects. These factories
+        // remain registered so any ALREADY-CONVERTED items in existing
+        // player inventories don't crash on render.
+        registerSet(reg, "cultist",            () -> new GenericArmorModel("cultist"));
+        registerSet(reg, "pyromancer",         () -> new GenericArmorModel("pyromancer"));
+        registerSet(reg, "cryomancer",         () -> new GenericArmorModel("cryomancer"));
+        registerSet(reg, "electromancer",      () -> new GenericArmorModel("electromancer"));
+        registerSet(reg, "plagued",            () -> new GenericArmorModel("plagued"));
+        registerSet(reg, "priest",             () -> new GenericArmorModel("priest"));
+        registerSet(reg, "pumpkin",            () -> new GenericArmorModel("pumpkin"));
+        registerSet(reg, "shadowwalker",       () -> new GenericArmorModel("shadowwalker"));
+        registerSet(reg, "wandering_magician", () -> new GenericArmorModel("wandering_magician"));
+        registerSet(reg, "archevoker",         () -> new GenericArmorModel("archevoker"));
+        registerSet(reg, "wizard",             () -> new GenericArmorModel("wizard"));
+        registerSet(reg, "netherite_battlemage", () -> new GenericArmorModel("netherite_battlemage"));
 
         IridescentReforging.LOGGER.info(
-                "[IssRendererFactories] registered ISS skin renderers (v0.2: 12 sets + 5 specials)");
+                "[IssRendererFactories] registered ISS skin renderers (12 sets, all GenericArmorModel — crash-safe)");
     }
 
     private static void registerSet(SkinRegistry reg,

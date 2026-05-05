@@ -4,6 +4,30 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-05 — Unique ISS armor crash + identity loss: revert auto-conversion
+
+Tester wore a converted Wandering Magician chestplate -> client crashed:
+```
+ClassCastException: ItemModularArmor cannot be cast to WanderingMagicianArmorItem
+  at WanderingMagicianModel.getTextureResource(WanderingMagicianModel.java:8)
+```
+
+ISS unique-armor Geckolib models hardcode a cast to their own ISS armor item class in `getTextureResource`. Our `IssRendererFactories` wrapped these models for our `ItemModularArmor` skins -- which crashes on first armor render. Plus separate symptoms: display name was "Gold Chestplate" not "Reforged Wandering Magician Robes" (skin display_name fallback failing) and inventory icon was generic iron (no skin-aware item-property override exists in `reforged_chestplate.json`).
+
+Per design decision: unique armors should keep original name, sprite, effects. Reverting auto-conversion entirely for ISS uniques is cleaner than papering over the rendering pipeline.
+
+**Two-part fix in `iridescent_tetra_expansion-1.0.0.jar`:**
+
+1. **Crash fix** (`IssRendererFactories.java`): replaced all 10 set-specific Geckolib model factories (CultistArmorModel, PyromancerArmorModel, ..., WanderingMagicianModel, etc.) with `GenericArmorModel(setName)`. Generic model uses string-based texture resolution, no item-class cast -> no crash. Also dropped the 6 single-slot factories (infernal_sorcerer, paladin, boots_of_speed, gold_crown, tarnished_crown, netherite_battlemage singleSlot variant) since those would also crash. Existing already-converted items in player inventories now render with generic silhouette + ISS texture lookup; no crash.
+
+2. **Prevent future conversions**: deleted all 53 `data/tetra/replacements/irons_spellbooks__*.json` files. ISS unique armors (cultist, pyromancer, cryomancer, electromancer, plagued, priest, pumpkin, shadowwalker, wandering_magician, archevoker, wizard, netherite_mage sets, plus single-slot uniques) no longer auto-convert on inventory tick. Native ISS items keep their unique geometry + name + sprite + effects exactly as ISS shipped them. They lose Tetra-modular benefits (no honing on these specific uniques) -- acceptable tradeoff per user design intent.
+
+Other 181 stock-armor replacements (vanilla iron/diamond/netherite, Twilight, Aether, Blue Skies, Botania, etc.) intact.
+
+**Open follow-up:** existing converted items in player inventories are still `iridescent_reforging:reforged_chestplate` with skin tag. They render generic but don't crash. A KubeJS migration script could revert these back to native ISS items on player login if testers care about the cosmetic loss.
+
+---
+
 ## 2026-05-04 — Modular spellbook honing (Tetra IModularItem progression)
 
 Modular Tetra spellbooks (`iridescent_modular_spells:modular_iron_spell_book`, `_gold_`, `_diamond_`, `_apprentice_`, `_archmage_`) implement `IModularItem` but had no progression trigger — Tetra's `tickProgression` ships for weapons + tools, NOT for spell-cast items. Books couldn't be honed for module improvements (the "earn an upgrade slot through use" flow that vanilla Tetra weapons use).
