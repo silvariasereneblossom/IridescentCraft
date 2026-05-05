@@ -4,6 +4,39 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Magic T2/T3 calibration against new T1 baseline
+
+T1 buff pass earlier today set firebolt floor at 9.0 HP/cast (1.5x of basePower 12). Found the curve had inverted: T2 spells like `ball_lightning` (5.5 HP L1 vanilla) were *weaker* than buffed T1 firebolt, and T2 high-mana spells (`eldritch_blast` 7.5 HP at 90 mana vs firebolt 9.0 HP at 10 mana) had become a strict downgrade on damage/mana. Source-dive of the ISS jar via `javap -v` extracted 30+ T2-T4 spell constants; calibration follows.
+
+**T2 spell power_multiplier overrides** (23 new files in `config/irons_spellbooks_spell_config/irons_spellbooks/`):
+
+Standard T2 (same rule as T1):
+- 1.5x for basePower >= 10: ball_lightning, ice_spikes, lightning_lance, stomp, sunbeam, wither_skull, frostwave, heat_surge, thunderstorm
+- 2.0x for basePower < 10: blood_needles, fang_strike, magma_bomb, scorch, shockwave, starfall
+
+T2 high-mana (basePower 15, 90-100 mana — lighter buff since mana cost dominates):
+- 1.4x: eldritch_blast (7.5 -> 10.5 L1), fire_breath, electrocute
+
+T2 high per-level scaling (modest base buff, preserve scaling curve):
+- 1.4x: ice_tomb (basePower 15)
+- 1.25x: frostbite (10p +30/lvl), echoing_strikes (10p +20/lvl)
+
+T3 EPIC scaling (per-level is the real damage knob):
+- 1.25x: lightning_bolt (15p +10/lvl)
+
+T3 multi-projectile low base:
+- 2.0x: flaming_barrage (basePower 3, +2/lvl, 80 mana)
+
+**Untouched (already balanced around extreme scaling, custom formulas, or hybrid mechanics):** heartstop (+200/lvl execute, 120s CD), sonic_boom (50 base), gluttony (30 base hybrid heal/damage), fireball (custom `10 + 5*spellPower` formula), volt_strike (1 base — likely utility), blaze_storm (5 mana channeled).
+
+**Ars Nouveau glyph_explosion** (T2 AoE damage glyph): damage 6.0 -> 9.0, cost 200 -> 150 (-25%). Brings T2 Ars in line with T1 `glyph_harm` buffed earlier today.
+
+**Skipped due to unknown basePower in jar bytecode** (need source-level inspection): burning_dash, cone_of_cold, dragon_breath, ray_of_siphoning, wall_of_fire. Audit doc `IridescentCraft-internal/audits/spell_balance_t1.md` flags as follow-up.
+
+3-distro fan-out, md5-verified.
+
+---
+
 ## 2026-05-04 — Magic T1 buff pass + Scroll Forge T1 access
 
 Audit at `IridescentCraft-internal/audits/spell_balance_t1.md` extracted canonical numbers from the ISS + Ars jars and found T1 magic was anaemic relative to T1 melee — firebolt at 6.0 HP/cast vs iron sword at 6.0/swing, but mages also pay mana, can't carry shields, must lead targets, and lack tank-up early. Pack design says mages are back-loaded glass cannons (per `feedback_mage_power_curve.md`) but the early game floor was below "playable."
