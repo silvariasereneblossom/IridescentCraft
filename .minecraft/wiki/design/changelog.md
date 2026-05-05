@@ -4,7 +4,7 @@ All changes to the master design document are logged here with date, description
 
 ---
 
-## 2026-05-05 — Unique ISS armor crash + identity loss: revert auto-conversion
+## 2026-05-05 — Unique ISS armor: crash fix + identity-pipeline diag
 
 Tester wore a converted Wandering Magician chestplate -> client crashed:
 ```
@@ -14,17 +14,25 @@ ClassCastException: ItemModularArmor cannot be cast to WanderingMagicianArmorIte
 
 ISS unique-armor Geckolib models hardcode a cast to their own ISS armor item class in `getTextureResource`. Our `IssRendererFactories` wrapped these models for our `ItemModularArmor` skins -- which crashes on first armor render. Plus separate symptoms: display name was "Gold Chestplate" not "Reforged Wandering Magician Robes" (skin display_name fallback failing) and inventory icon was generic iron (no skin-aware item-property override exists in `reforged_chestplate.json`).
 
-Per design decision: unique armors should keep original name, sprite, effects. Reverting auto-conversion entirely for ISS uniques is cleaner than papering over the rendering pipeline.
+**Initial misread of design intent.** First fix attempt deleted all 53 ISS replacement files, but user clarified: the design is **conversion + identity preservation + Tetra modular bonuses stacked**. So conversion stays; identity-preservation pipeline needs to be fixed.
 
-**Two-part fix in `iridescent_tetra_expansion-1.0.0.jar`:**
+**Crash fix shipped** (`IssRendererFactories.java`): replaced all 10 set-specific Geckolib model factories (CultistArmorModel, PyromancerArmorModel, ..., WanderingMagicianModel, etc.) with `GenericArmorModel(setName)`. Generic model uses string-based texture resolution, no item-class cast -> no crash. Also dropped 6 single-slot factories (infernal_sorcerer, paladin, boots_of_speed, gold_crown, tarnished_crown, netherite_battlemage singleSlot variant) for the same crash reason. Trade-off: items render with generic-silhouette + ISS texture (the unique 3D geometry of e.g. WanderingMagicianModel is lost). Restoring unique geometry would require either subclassing each ISS model with a cast-tolerant `getTextureResource(GeoAnimatable)` override, or a Mixin neutering ISS's hardcoded cast.
 
-1. **Crash fix** (`IssRendererFactories.java`): replaced all 10 set-specific Geckolib model factories (CultistArmorModel, PyromancerArmorModel, ..., WanderingMagicianModel, etc.) with `GenericArmorModel(setName)`. Generic model uses string-based texture resolution, no item-class cast -> no crash. Also dropped the 6 single-slot factories (infernal_sorcerer, paladin, boots_of_speed, gold_crown, tarnished_crown, netherite_battlemage singleSlot variant) since those would also crash. Existing already-converted items in player inventories now render with generic silhouette + ISS texture lookup; no crash.
+**Replacements restored**: all 53 `data/tetra/replacements/irons_spellbooks__*.json` files put back. Auto-conversion re-enabled.
 
-2. **Prevent future conversions**: deleted all 53 `data/tetra/replacements/irons_spellbooks__*.json` files. ISS unique armors (cultist, pyromancer, cryomancer, electromancer, plagued, priest, pumpkin, shadowwalker, wandering_magician, archevoker, wizard, netherite_mage sets, plus single-slot uniques) no longer auto-convert on inventory tick. Native ISS items keep their unique geometry + name + sprite + effects exactly as ISS shipped them. They lose Tetra-modular benefits (no honing on these specific uniques) -- acceptable tradeoff per user design intent.
+**Diagnostic logging added** to `SpecializedReplacementHook` to disambiguate why display name falls through to "Gold Chestplate" instead of "Reforged Wandering Magician Robes". The hook will now log:
+- `DIAG fired but original item has no registry key` (very rare path)
+- `DIAG fired for <id> -> no specialized_replacements entry; returning unenriched` (registry not loaded, OR source mod not registered)
+- `DIAG enriching <id> -> skin <skin_id>` (success path — skin tag SHOULD be set)
 
-Other 181 stock-armor replacements (vanilla iron/diamond/netherite, Twilight, Aether, Blue Skies, Botania, etc.) intact.
+Next launch will surface which path the user's conversion takes. Three likely causes:
+1. **Workbench-driven conversion bypasses `getReplacement` hook** — Tetra's player-clickable convert button might use a different code path that doesn't fire registered hooks. Diagnostic will show whether the hook fires at all.
+2. **Specialized replacement registry not populated at conversion time** — datapack reload timing issue, hook fires but lookup returns empty.
+3. **Skin tag IS being set but client read path is broken** — `ItemModularArmor.getName` reads `tag.Skin`, looks up `SkinDefinition.displayName()`. If tag is set but the skin definition's `displayName` field returns empty for some reason, falls through.
 
-**Open follow-up:** existing converted items in player inventories are still `iridescent_reforging:reforged_chestplate` with skin tag. They render generic but don't crash. A KubeJS migration script could revert these back to native ISS items on player login if testers care about the cosmetic loss.
+**Inventory icon issue separate**: `reforged_chestplate.json` only has `material_index` predicates, no skin-aware override. Need to register a custom `ItemProperties.register` returning a numeric per-skin id + add per-skin model overrides. Deferred until display-name root cause is identified.
+
+**Existing converted items in player inventories**: render generic silhouette + ISS texture (no crash). KubeJS migration script to either revert them to native ISS or set the skin tag retroactively is deferrable.
 
 ---
 

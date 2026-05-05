@@ -51,10 +51,21 @@ public final class SpecializedReplacementHook {
 
         // Look up specialized replacement enrichment for the original's item.
         var sourceId = ForgeRegistries.ITEMS.getKey(original.getItem());
-        if (sourceId == null) return replaced;
+        if (sourceId == null) {
+            IridescentReforging.LOGGER.info(
+                    "[SpecializedReplacementHook] DIAG fired but original item has no registry key");
+            return replaced;
+        }
         var defOpt = SpecializedReplacementRegistry.get().getForSourceItem(sourceId);
-        if (defOpt.isEmpty()) return replaced;
+        if (defOpt.isEmpty()) {
+            IridescentReforging.LOGGER.info(
+                    "[SpecializedReplacementHook] DIAG fired for {} -> no specialized_replacements entry; returning unenriched",
+                    sourceId);
+            return replaced;
+        }
         var def = defOpt.get();
+        IridescentReforging.LOGGER.info(
+                "[SpecializedReplacementHook] DIAG enriching {} -> skin {}", sourceId, def.skinId());
 
         // Set skin tag — drives attribute aggregation, renderer dispatch,
         // set bonuses, display name.
