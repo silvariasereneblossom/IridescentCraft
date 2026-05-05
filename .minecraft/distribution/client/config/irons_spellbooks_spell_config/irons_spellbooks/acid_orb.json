@@ -1,0 +1,10 @@
+{
+  "irons_spellbooks:school": "irons_spellbooks:nature",
+  "irons_spellbooks:max_level": 8,
+  "irons_spellbooks:mana_cost_multiplier": 1.0,
+  "irons_spellbooks:allow_crafting": true,
+  "irons_spellbooks:cooldown_in_seconds": 15.0,
+  "irons_spellbooks:min_rarity": "common",
+  "irons_spellbooks:enabled": true,
+  "irons_spellbooks:power_multiplier": 1.5
+}

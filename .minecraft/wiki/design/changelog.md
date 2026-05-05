@@ -4,6 +4,31 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Magic T1 buff pass + Scroll Forge T1 access
+
+Audit at `IridescentCraft-internal/audits/spell_balance_t1.md` extracted canonical numbers from the ISS + Ars jars and found T1 magic was anaemic relative to T1 melee — firebolt at 6.0 HP/cast vs iron sword at 6.0/swing, but mages also pay mana, can't carry shields, must lead targets, and lack tank-up early. Pack design says mages are back-loaded glass cannons (per `feedback_mage_power_curve.md`) but the early game floor was below "playable."
+
+**Iron's Spellbooks** — per-spell config overrides at `config/irons_spellbooks_spell_config/irons_spellbooks/<spell>.json` for 13 T1 spells. `power_multiplier`:
+- 1.5x for spells with baseSpellPower >= 10 (firebolt, magic_missile, icicle, magic_arrow, fire_arrow, blood_slash, acid_orb)
+- 2.0x for spells with baseSpellPower < 10 (wisp, guiding_bolt, acupuncture, ray_of_frost, chain_lightning, poison_arrow)
+- High-mana spells (eldritch_blast, fire_breath, electrocute, fireball) untouched — already mid-game
+
+Net effect: firebolt 6.0 -> 9.0 HP at L1 (vs iron sword 6.0). Wisp 3.5 -> 7.0. Guiding_bolt 3.0 -> 6.0. Mage's L1 burst now slightly above iron-sword parity, with T1 mob HP scaling (~25 HP) absorbing the buff appropriately.
+
+**Ars Nouveau** — direct TOML edits at `config/ars_nouveau/glyph_*.toml`:
+- `glyph_harm`: damage 5.0 -> 10.0, cost 15 -> 11 (-25%)
+- `glyph_lightning`: damage 5.0 -> 8.0, cost 100 -> 75 (-25%)
+
+Ars was strictly worse than ISS at T1 on every axis (more mana, less damage, slower cast). Bringing harm to 10 HP at 11 mana makes Ars `Projectile -> Harm` competitive with ISS firebolt for the early-game spell-crafter playstyle.
+
+**Scroll Forge accessibility** — new `kubejs/server_scripts/recipes/magic_recipes.js` swaps the hardcoded `crying_obsidian` (Nether-tier) ingredient for `gold_block` (T1-attainable Day 1-2). Recipe pattern unchanged: 4x gold_block + 3x polished_deepslate.
+
+**Scroll quality gating** unchanged (already correct) — village chests roll at quality 0.0-0.2 (T1 spells only).
+
+3-distro fan-out for all changes (.minecraft, server_distribution, distribution/client). md5-verified.
+
+---
+
 ## 2026-05-04 — Avian Sky Affinity: lift the prevent_sleep override out of kubejs/data into a Paxi datapack
 
 Tester reported the Avian origin tooltip on the selection screen still showed the vanilla "When sleeping, your bed needs to be at an altitude of at least 86 blocks, so you can breathe fresh air." — the Sky Affinity replacement (shipped 2026-04 per cont.3327) wasn't landing.
