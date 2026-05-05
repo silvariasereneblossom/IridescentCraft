@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Pre-T3 diamond hard strip (blanket chest loot)
+
+Tester found diamonds generating in an Overworld structure not yet covered by per-structure strips. Section 4 of `lootjs_overhaul.js` already has ~66 individual `removeLoot('minecraft:diamond')` calls for known structure mods (Explorify, Villages & Pillages, Unwrecked Ships, Dungeons Plus, Structory Towers, etc.) — but new/uncovered structures keep slipping through.
+
+**Fix:** new Section 5A1.5 — blanket `removeLoot('minecraft:diamond')` across ALL chest tables in pre-T3 dimensions:
+- Overworld (`minecraft:overworld`)
+- T2 modded dims: `twilightforest:twilight_forest`, `aether:the_aether`, `deep_aether:the_aether`, `blue_skies:everbright`, `blue_skies:everdawn`
+
+T3+ (Nether, Undergarden, End, Deeper Darker, The Abyss) keep diamonds — they're tier-appropriate there.
+
+**Scope:** raw `minecraft:diamond` only. Diamond tools/armor in chest loot are not stripped (rare vanilla strongholds drop + already covered by per-structure rules). If testers report diamond tools/armor leaking pre-T3, extend the rule.
+
+3-distro fan-out, md5-verified.
+
+---
+
 ## 2026-05-04 — Strip Apotheosis affixes from non-boss overworld mobs
 
 Even after the skyward-launch fix (Levitation cap + Shulkers affix override) earlier today, mob knockback at T1 was still dominant — affix-wielding overworld mobs apply per-hit knockback that breaks T1 melee combat. User decision: nuclear option, no affixes on ANY overworld monsters except Apotheosis bosses.

@@ -1553,6 +1553,34 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('minecraft:name_tag').when(c => c.randomChance(0.40)))
 
   // =========================================================================
+  // SECTION 5A1.5: PRE-T3 DIAMOND HARD STRIP
+  // =========================================================================
+  // Tester reported diamonds generating in an Overworld structure not yet
+  // covered by the per-structure strips (Section 4 has ~66 individual
+  // removeLoot('minecraft:diamond') calls — but new structures keep slipping
+  // through). This is a blanket strip across ALL chest tables in pre-T3
+  // dimensions (Overworld + 5 modded T2 dims). T3+ (Nether, Undergarden,
+  // End, Deeper Darker, The Abyss) keep diamonds.
+  //
+  // Why so aggressive: a T1 player finding 8 diamonds in a structure chest
+  // skips iron->diamond progression entirely. Per design (master.md
+  // progression curve): diamonds gate at T3, players should farm iron in
+  // T1-T2, diamond access opens via Nether mining or T3 boss drops.
+  //
+  // Diamond tools/armor in chest loot are NOT stripped — those are rare
+  // vanilla strongholds drops + already covered by per-structure rules.
+  // If we see diamond TOOLS leaking in pre-T3 dims, extend this rule.
+  // =========================================================================
+
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:overworld',
+      'twilightforest:twilight_forest',
+      'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+    .removeLoot('minecraft:diamond')
+
+  // =========================================================================
   // SECTION 5A2: OVERWORLD CURIO DROPS
   // =========================================================================
   // Since tier-gated mod items were removed from Overworld chests, add more
