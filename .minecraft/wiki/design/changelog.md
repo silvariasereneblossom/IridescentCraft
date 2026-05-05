@@ -4,6 +4,36 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Strip Apotheosis affixes from non-boss overworld mobs
+
+Even after the skyward-launch fix (Levitation cap + Shulkers affix override) earlier today, mob knockback at T1 was still dominant — affix-wielding overworld mobs apply per-hit knockback that breaks T1 melee combat. User decision: nuclear option, no affixes on ANY overworld monsters except Apotheosis bosses.
+
+**Investigation:** `S:"Random Affix Chance"=0.11` in `config/apotheosis/adventure.cfg` is a global knob — no built-in per-dimension exclusion. Apotheosis applies affixes to mob equipment via `MobSpawnEvent.FinalizeSpawn`; `EntityEvents.spawned` (KubeJS Forge wrapper for `EntityJoinLevelEvent`) fires after that, so post-spawn NBT strip works.
+
+**Fix:** new `kubejs/server_scripts/affix_overworld_strip.js` hooks `EntityEvents.spawned`. Filters:
+- `entity.monster && entity.living` and not player
+- dimension == `minecraft:overworld` only
+- skip if entity has NBT `apoth.boss` or `apoth.miniboss` (Apotheosis canonical boss markers)
+- skip ISS mob namespace (their abstract `getItemBySlot()` throws `AbstractMethodError` which Rhino try/catch can't catch — same skip pattern as `mob_equipment.js`)
+
+For each remaining mob, iterates the 6 equipment slots (mainhand/offhand/head/chest/legs/feet); if the item NBT contains `affix_data`, removes the compound and re-sets the slot. The mob keeps the base item (still swings a sword) but loses all affix-driven damage/knockback/AoE.
+
+Modded dimensions (Twilight, Aether, Nether, End, etc.) keep affixes — design intent is that exploration outside the overworld is rewarded.
+
+Idempotency: marks entities with `icraft_affix_stripped` boolean so chunk reload doesn't reprocess.
+
+**Verified clean:**
+- Shulkers ranged-mob_effect affix override (`config/paxi/datapacks/icraft_apotheosis_affixes.zip` -> `data/apotheosis/affixes/ranged/mob_effect/shulkers.json`) is in place with empty `values: {}` and `types: []`. The skyward Levitation vector from earlier today remains disabled.
+
+**Enemy Expansion audit** (parallel to this fix):
+- 27 mobs from `enemyexpansion-2.3.1`: scorpion, wasp, huntsman, direwolf, vampire, crawler, goblin variants, etc.
+- All spawn against `#forge:is_general` (overworld-general biomes)
+- The notably-bad `enemyexpansion:explosive_launch` mob effect (40-tick countdown, summons invisicreeper explosion + Cardiac DoT + arrow-launch) is already mitigated by `enemyexpansion_explosive_launch_blocker.js` (4Hz strip from all living entities). No additional action needed.
+
+3-distro fan-out, md5-verified.
+
+---
+
 ## 2026-05-04 — Tower scroll/ink coverage pass
 
 Magic-themed tower structures had ink + spell books but ZERO scrolls — scrolls only existed in 5 village house chests. Towers are the natural mage exploration landmark, so they should also drop scrolls.
