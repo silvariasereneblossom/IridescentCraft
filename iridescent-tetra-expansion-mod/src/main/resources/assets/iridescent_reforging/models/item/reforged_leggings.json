@@ -105,6 +105,288 @@
         "iridescent_reforging:material_index": 1
       },
       "model": "iridescent_reforging:item/reforged_leggings_gold"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 3
+      },
+      "model": "iridescent_reforging:item/skin/ancient_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 7
+      },
+      "model": "iridescent_reforging:item/skin/aquite_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 11
+      },
+      "model": "iridescent_reforging:item/skin/archevoker_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 15
+      },
+      "model": "iridescent_reforging:item/skin/arctic_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 20
+      },
+      "model": "iridescent_reforging:item/skin/charoite_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 24
+      },
+      "model": "iridescent_reforging:item/skin/cloggrum_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 28
+      },
+      "model": "iridescent_reforging:item/skin/cryomancer_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 32
+      },
+      "model": "iridescent_reforging:item/skin/cultist_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 36
+      },
+      "model": "iridescent_reforging:item/skin/diopside_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 40
+      },
+      "model": "iridescent_reforging:item/skin/draco_arcanus_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 44
+      },
+      "model": "iridescent_reforging:item/skin/electromancer_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 48
+      },
+      "model": "iridescent_reforging:item/skin/elementium_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 52
+      },
+      "model": "iridescent_reforging:item/skin/fiery_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 56
+      },
+      "model": "iridescent_reforging:item/skin/froststeel_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 61
+      },
+      "model": "iridescent_reforging:item/skin/gravitite_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 65
+      },
+      "model": "iridescent_reforging:item/skin/horizonite_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 69
+      },
+      "model": "iridescent_reforging:item/skin/ignitium_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 74
+      },
+      "model": "iridescent_reforging:item/skin/ironwood_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 78
+      },
+      "model": "iridescent_reforging:item/skin/knightmetal_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 82
+      },
+      "model": "iridescent_reforging:item/skin/manasteel_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 86
+      },
+      "model": "iridescent_reforging:item/skin/manaweave_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 90
+      },
+      "model": "iridescent_reforging:item/skin/mortem_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 92
+      },
+      "model": "iridescent_reforging:item/skin/naga_scale_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 96
+      },
+      "model": "iridescent_reforging:item/skin/neptune_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 100
+      },
+      "model": "iridescent_reforging:item/skin/neptunium_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 104
+      },
+      "model": "iridescent_reforging:item/skin/netherite_battlemage_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 108
+      },
+      "model": "iridescent_reforging:item/skin/obsidian_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 115
+      },
+      "model": "iridescent_reforging:item/skin/phoenix_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 119
+      },
+      "model": "iridescent_reforging:item/skin/plagued_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 123
+      },
+      "model": "iridescent_reforging:item/skin/priest_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 127
+      },
+      "model": "iridescent_reforging:item/skin/pumpkin_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 131
+      },
+      "model": "iridescent_reforging:item/skin/pyromancer_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 135
+      },
+      "model": "iridescent_reforging:item/skin/pyrope_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 139
+      },
+      "model": "iridescent_reforging:item/skin/resonarium_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 143
+      },
+      "model": "iridescent_reforging:item/skin/shadowwalker_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 147
+      },
+      "model": "iridescent_reforging:item/skin/skyjade_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 151
+      },
+      "model": "iridescent_reforging:item/skin/steeleaf_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 155
+      },
+      "model": "iridescent_reforging:item/skin/stormforged_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 160
+      },
+      "model": "iridescent_reforging:item/skin/terrasteel_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 164
+      },
+      "model": "iridescent_reforging:item/skin/tyr_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 168
+      },
+      "model": "iridescent_reforging:item/skin/utherium_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 172
+      },
+      "model": "iridescent_reforging:item/skin/valkyrie_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 176
+      },
+      "model": "iridescent_reforging:item/skin/wandering_magician_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 180
+      },
+      "model": "iridescent_reforging:item/skin/warden_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 184
+      },
+      "model": "iridescent_reforging:item/skin/wizard_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 188
+      },
+      "model": "iridescent_reforging:item/skin/yeti_leggings"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 192
+      },
+      "model": "iridescent_reforging:item/skin/zanite_leggings"
     }
   ]
 }

@@ -105,6 +105,300 @@
         "iridescent_reforging:material_index": 1
       },
       "model": "iridescent_reforging:item/reforged_helmet_gold"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 2
+      },
+      "model": "iridescent_reforging:item/skin/ancient_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 6
+      },
+      "model": "iridescent_reforging:item/skin/aquite_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 10
+      },
+      "model": "iridescent_reforging:item/skin/archevoker_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 14
+      },
+      "model": "iridescent_reforging:item/skin/arctic_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 19
+      },
+      "model": "iridescent_reforging:item/skin/charoite_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 23
+      },
+      "model": "iridescent_reforging:item/skin/cloggrum_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 27
+      },
+      "model": "iridescent_reforging:item/skin/cryomancer_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 31
+      },
+      "model": "iridescent_reforging:item/skin/cultist_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 35
+      },
+      "model": "iridescent_reforging:item/skin/diopside_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 39
+      },
+      "model": "iridescent_reforging:item/skin/draco_arcanus_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 43
+      },
+      "model": "iridescent_reforging:item/skin/electromancer_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 47
+      },
+      "model": "iridescent_reforging:item/skin/elementium_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 51
+      },
+      "model": "iridescent_reforging:item/skin/fiery_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 55
+      },
+      "model": "iridescent_reforging:item/skin/froststeel_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 57
+      },
+      "model": "iridescent_reforging:item/skin/gold_crown_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 60
+      },
+      "model": "iridescent_reforging:item/skin/gravitite_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 64
+      },
+      "model": "iridescent_reforging:item/skin/horizonite_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 68
+      },
+      "model": "iridescent_reforging:item/skin/ignitium_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 73
+      },
+      "model": "iridescent_reforging:item/skin/ironwood_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 77
+      },
+      "model": "iridescent_reforging:item/skin/knightmetal_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 81
+      },
+      "model": "iridescent_reforging:item/skin/manasteel_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 85
+      },
+      "model": "iridescent_reforging:item/skin/manaweave_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 89
+      },
+      "model": "iridescent_reforging:item/skin/mortem_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 95
+      },
+      "model": "iridescent_reforging:item/skin/neptune_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 99
+      },
+      "model": "iridescent_reforging:item/skin/neptunium_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 103
+      },
+      "model": "iridescent_reforging:item/skin/netherite_battlemage_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 107
+      },
+      "model": "iridescent_reforging:item/skin/obsidian_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 111
+      },
+      "model": "iridescent_reforging:item/skin/phantom_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 114
+      },
+      "model": "iridescent_reforging:item/skin/phoenix_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 118
+      },
+      "model": "iridescent_reforging:item/skin/plagued_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 122
+      },
+      "model": "iridescent_reforging:item/skin/priest_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 126
+      },
+      "model": "iridescent_reforging:item/skin/pumpkin_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 130
+      },
+      "model": "iridescent_reforging:item/skin/pyromancer_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 134
+      },
+      "model": "iridescent_reforging:item/skin/pyrope_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 138
+      },
+      "model": "iridescent_reforging:item/skin/resonarium_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 142
+      },
+      "model": "iridescent_reforging:item/skin/shadowwalker_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 146
+      },
+      "model": "iridescent_reforging:item/skin/skyjade_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 150
+      },
+      "model": "iridescent_reforging:item/skin/steeleaf_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 154
+      },
+      "model": "iridescent_reforging:item/skin/stormforged_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 156
+      },
+      "model": "iridescent_reforging:item/skin/tarnished_crown_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 159
+      },
+      "model": "iridescent_reforging:item/skin/terrasteel_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 163
+      },
+      "model": "iridescent_reforging:item/skin/tyr_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 167
+      },
+      "model": "iridescent_reforging:item/skin/utherium_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 171
+      },
+      "model": "iridescent_reforging:item/skin/valkyrie_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 175
+      },
+      "model": "iridescent_reforging:item/skin/wandering_magician_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 179
+      },
+      "model": "iridescent_reforging:item/skin/warden_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 183
+      },
+      "model": "iridescent_reforging:item/skin/wizard_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 187
+      },
+      "model": "iridescent_reforging:item/skin/yeti_helmet"
+    },
+    {
+      "predicate": {
+        "iridescent_reforging:skin_index": 191
+      },
+      "model": "iridescent_reforging:item/skin/zanite_helmet"
     }
   ]
 }

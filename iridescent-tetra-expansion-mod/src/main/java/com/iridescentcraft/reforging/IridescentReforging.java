@@ -68,6 +68,7 @@ public class IridescentReforging {
         event.enqueueWork(() -> {
             IssRendererFactories.register(SkinRegistry.get());
             com.iridescentcraft.reforging.client.MaterialIndexProperty.register();
+            com.iridescentcraft.reforging.skin.ClientSkinIcon.register();
             // TODO(phase 7): Aether/TF/Cataclysm factory classes here.
         });
     }
