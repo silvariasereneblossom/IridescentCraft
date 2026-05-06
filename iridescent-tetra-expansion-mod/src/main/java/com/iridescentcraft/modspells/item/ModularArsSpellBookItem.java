@@ -292,12 +292,40 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     @Override
     public void appendHoverText(ItemStack stack, Level level,
                                 List<Component> tooltip, TooltipFlag flag) {
-        super.appendHoverText(stack, level, tooltip, flag);
+        // Mirror the renderer trick: SpellBook.appendHoverText reads
+        // this.tier directly to print "Can cast tier N glyphs or lower",
+        // and our Item is hardcoded to THREE so it accepts any spell
+        // level. Resolve per-stack tier and swap for the duration of
+        // super.appendHoverText so the tooltip matches the source book.
+        // Tooltip-build runs on the render thread; single-threaded.
+        SpellTier original = this.tier;
+        SpellTier resolved = resolveTierFromStack(stack);
+        if (resolved != null && resolved != original) this.tier = resolved;
+        try {
+            super.appendHoverText(stack, level, tooltip, flag);
+        } finally {
+            this.tier = original;
+        }
         // Tetra's standard tooltip (modules, integrity, etc.)
         tooltip.addAll(this.getTooltip(stack, level, flag));
         // Magic stats summary — reuses the iss-side label table for the few shared
         // attribute keys (max_mana, mana_regen) and adds Ars-specific ones below.
         appendArsMagicStatsTooltip(stack, tooltip);
+    }
+
+    /** Per-stack SpellTier resolved from the ars_book/core variant key
+     *  suffix. Shared between {@code appendHoverText} (tooltip) and the
+     *  client-side {@code IcraftArsSpellBookRenderer} (3D bone toggle).
+     *  Returns null if the suffix doesn't map (treat as no override). */
+    public static SpellTier resolveTierFromStack(ItemStack stack) {
+        String suffix = readArsCoreMaterialSuffix(stack);
+        if (suffix == null) return null;
+        switch (suffix) {
+            case "novice_spell_book":     return SpellTier.ONE;
+            case "apprentice_spell_book": return SpellTier.TWO;
+            case "archmage_spell_book":   return SpellTier.THREE;
+            default: return null;
+        }
     }
 
     /**
