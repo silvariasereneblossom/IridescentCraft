@@ -10,9 +10,9 @@
   "variants": [
     {
       "materials": [
-        "tetra:metal/",
+        "tetra:fabric/",
         "tetra:skin/",
-        "iridescent_reforging:themed/"
+        "tetra:fibre/"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -54,100 +54,6 @@
         ],
         "models": [],
         "magicCapacity": 3
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "robed_boot_sole/iron",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.2,
-          "irons_spellbooks:max_mana": 12.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 5
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/gold"
-      ],
-      "key": "robed_boot_sole/gold",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.17,
-          "irons_spellbooks:max_mana": 17.0
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 8
-      }
-    },
-    {
-      "materials": [
-        "tetra:gem/diamond"
-      ],
-      "key": "robed_boot_sole/diamond",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.28,
-          "irons_spellbooks:max_mana": 12.0,
-          "minecraft:generic.armor_toughness": 0.2
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 8
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/netherite"
-      ],
-      "key": "robed_boot_sole/netherite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.32,
-          "irons_spellbooks:max_mana": 12.0,
-          "minecraft:generic.knockback_resistance": 0.05
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 10
       }
     },
     {
