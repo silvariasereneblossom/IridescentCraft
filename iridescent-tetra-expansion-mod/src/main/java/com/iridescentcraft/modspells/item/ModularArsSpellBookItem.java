@@ -2,6 +2,7 @@ package com.iridescentcraft.modspells.item;
 
 import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
+import com.google.common.collect.ArrayListMultimap;
 import com.google.common.collect.Multimap;
 import com.hollingsworth.arsnouveau.api.spell.SpellTier;
 import com.hollingsworth.arsnouveau.common.items.SpellBook;
@@ -15,6 +16,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -125,6 +127,32 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         super(properties, tier);
         DataManager.instance.moduleData.onReload(this::clearCaches);
         SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, TETRA_IDENTIFIER));
+    }
+
+    /**
+     * Apply Tetra's material/module/improvement attributes when the book is
+     * held in mainhand or offhand (the "shield slot"). Without this, vanilla
+     * never queries the modular pipeline for spell book stacks (the parent
+     * SpellBook isn't a Tetra item; only our modular subclass is) and the
+     * material/lining/hone attributes silently never reach the player.
+     *
+     * <p>Curios slots are handled separately via the Curios-specific
+     * {@code getAttributeModifiers(SlotContext, UUID, ItemStack)} signature
+     * (mirrors what {@link ModularSpellBookItem} does for ISS books). Ars
+     * books don't typically inhabit Curios slots, but we cover both paths
+     * for parity.
+     */
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        ArrayListMultimap<Attribute, AttributeModifier> result = ArrayListMultimap.create();
+        result.putAll(super.getAttributeModifiers(slot, stack));
+        if (slot == EquipmentSlot.MAINHAND || slot == EquipmentSlot.OFFHAND) {
+            try {
+                Multimap<Attribute, AttributeModifier> tetra = getAttributeModifiersCached(stack);
+                if (tetra != null && !tetra.isEmpty()) result.putAll(tetra);
+            } catch (Throwable t) { /* Tetra cache miss / data not loaded -- skip */ }
+        }
+        return result;
     }
 
     /**
