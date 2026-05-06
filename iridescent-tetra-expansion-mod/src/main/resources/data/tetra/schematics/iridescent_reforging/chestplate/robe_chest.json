@@ -16,9 +16,9 @@
   "outcomes": [
     {
       "materials": [
-        "tetra:metal/",
-        "tetra:gem/",
-        "iridescent_reforging:themed/"
+        "tetra:fabric/",
+        "tetra:skin/",
+        "tetra:fibre/"
       ],
       "countFactor": 1,
       "moduleKey": "chestplate/robe_chest",

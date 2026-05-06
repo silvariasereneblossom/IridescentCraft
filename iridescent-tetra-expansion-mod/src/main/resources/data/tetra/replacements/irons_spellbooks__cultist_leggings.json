@@ -8,8 +8,8 @@
     "item": "iridescent_reforging:reforged_leggings",
     "modules": {
       "leggings/leg_plate": [
-        "leggings/full_leg_plate",
-        "full_leg_plate/iron"
+        "leggings/robed_leg_plate",
+        "robed_leg_plate/leather"
       ],
       "leggings/belt": [
         "leggings/leather_belt",

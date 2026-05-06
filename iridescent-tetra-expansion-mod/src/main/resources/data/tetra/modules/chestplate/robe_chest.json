@@ -341,6 +341,52 @@
         ],
         "models": []
       }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool"
+      ],
+      "key": "robe_chest/wool",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "irons_spellbooks:spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/string"
+      ],
+      "key": "robe_chest/string",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.15,
+          "irons_spellbooks:max_mana": 55.0,
+          "irons_spellbooks:spell_power": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
     }
   ]
 }

@@ -327,6 +327,52 @@
         ],
         "models": []
       }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool"
+      ],
+      "key": "robed_boot_sole/wool",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1,
+          "irons_spellbooks:max_mana": 20.0,
+          "irons_spellbooks:spell_power": 0.03
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/string"
+      ],
+      "key": "robed_boot_sole/string",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.08,
+          "irons_spellbooks:max_mana": 22.0,
+          "irons_spellbooks:spell_power": 0.03
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
     }
   ]
 }
