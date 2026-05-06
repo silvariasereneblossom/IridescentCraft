@@ -4,6 +4,26 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Modular Ars spell book: primaryAttributes coefficients fixed (the real 150%/250% source)
+
+User intuition was right: the inflated `+150% Spell Damage / +250% Mana Regen / +15 Max Mana` on a freshly converted Ars book was a "default fall-through" pattern, exactly the same shape as the emerald-robe-malus issue (`feedback_robe_malus_layering.md`). Tooltip cross-checked against `/data get entity @s SelectedItem` — the book had `back_cover_material: back_cover/iron`, `spine_material: spine/iron` (iron primary stat = 5 in `tetra:metal/iron.json`).
+
+Three Ars-side `primaryAttributes` coefficients were 30-60x larger than their ISS twins AND missing the `**` MULTIPLY_BASE prefix (so each became ADDITION). Iron's primary=5 multiplied through:
+- `front_cover.spell_damage = 0.3` (was) -> 5 * 0.3 = 1.5 ADDITION = `+150%` on tooltip
+- `spine.mana_regen = 0.5` (was) -> 5 * 0.5 = 2.5 ADDITION = `+250%` on tooltip
+- `back_cover.max_mana = 3` (was) -> 5 * 3 = 15 ADDITION = `+15` (the only one in a sane range)
+
+Aligned to the ISS book scale (which is correct):
+- `front_cover.spell_damage = 0.005` with `**` prefix (matches ISS `**spell_power = 0.005`)
+- `spine.mana_regen = 0.01` with `**` prefix (matches ISS `**cooldown_reduction = 0.01` structure)
+- `back_cover.max_mana = 5` flat ADDITION (matches ISS `max_mana = 5`)
+
+Iron front_cover now contributes `+2.5%` spell_damage; iron spine `+5%` mana_regen; iron back_cover `+25` max_mana. Netherite (primary=9) maxes at `+4.5% / +9% / +45`. ISS book parity restored.
+
+Companion: per-stack tier swap on `appendHoverText` so the "Can cast tier N glyphs" line matches the source book (novice -> ONE, apprentice -> TWO, archmage -> THREE) instead of always reading the hardcoded `tier=THREE`. Mirrors the renderer trick — swap `book.tier`, call super, restore in finally. Renderer + tooltip share `ModularArsSpellBookItem.resolveTierFromStack()` now.
+
+---
+
 ## 2026-05-04 — Modular spell books: Option A unification + ISS held-in-hand override
 
 User reports the modular books' material/improvement attrs target ecosystem-specific Forge attributes, so a Diamond Spell Book held in mainhand buffs `irons_spellbooks:spell_power` only, never the unified `icraft_spell_power` NBT that drives the kubejs damage hook. Picked Option A from the audit: keep ecosystem-specific writes, add an icraft mirror layer.

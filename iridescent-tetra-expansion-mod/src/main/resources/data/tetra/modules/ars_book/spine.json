@@ -14,7 +14,7 @@
             "key": "spine/",
             "extract": {
                 "primaryAttributes": {
-                    "ars_nouveau:ars_nouveau.perk.mana_regen": 0.5
+                    "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.01
                 },
                 "integrity": 0,
                 "glyph": {
