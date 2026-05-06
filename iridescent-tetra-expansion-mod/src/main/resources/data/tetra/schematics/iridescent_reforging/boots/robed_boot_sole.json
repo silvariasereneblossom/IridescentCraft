@@ -11,7 +11,8 @@
     "textureY": 0
   },
   "translation": {
-    "integrity": 5
+    "integrity": -5,
+    "magicCapacity": 5
   },
   "outcomes": [
     {

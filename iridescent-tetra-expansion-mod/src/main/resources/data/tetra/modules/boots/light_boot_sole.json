@@ -29,7 +29,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
@@ -51,7 +52,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 3
       }
     },
     {
@@ -73,7 +75,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
@@ -96,7 +99,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 8
       }
     },
     {
@@ -119,7 +123,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 8
       }
     },
     {
@@ -142,7 +147,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 10
       }
     },
     {
@@ -165,7 +171,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     },
     {
@@ -188,7 +195,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     },
     {
@@ -211,7 +219,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     },
     {
@@ -234,7 +243,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     },
     {
@@ -257,7 +267,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     },
     {
@@ -280,7 +291,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     },
     {
@@ -303,7 +315,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     },
     {
@@ -326,7 +339,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 7
       }
     }
   ]
