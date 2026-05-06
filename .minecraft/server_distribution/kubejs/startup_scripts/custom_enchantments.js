@@ -174,34 +174,43 @@ StartupEvents.registry('enchantment', event => {
 
 
   // ═══ CATEGORY 7: Planetary Hazard Protection ═══
+  // All 5 are dim-specific (Moon/Venus/Jupiter/Glacio/space) - treasureOnly()
+  // so vanilla enchant tables and villager trades can't roll them on random
+  // gear. Planetary loot scripts (server_scripts/loot/planetary_loot.js) still
+  // inject them as treasure drops in their respective dim chests.
 
   event.create('icraft:lunar_stride')
     .maxLevel(3)
     .rarity('RARE')
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
+    .treasureOnly()
 
   event.create('icraft:thermal_regulation')
     .maxLevel(3)
     .rarity('RARE')
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
+    .treasureOnly()
 
   event.create('icraft:pressure_shell')
     .maxLevel(2)
     .rarity('VERY_RARE')
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
+    .treasureOnly()
 
   event.create('icraft:void_adaptation')
     .maxLevel(2)
     .rarity('VERY_RARE')
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
+    .treasureOnly()
 
   event.create('icraft:stellar_shield')
     .maxLevel(3)
     .rarity('RARE')
     .slots(['HEAD', 'CHEST', 'LEGS', 'FEET'])
     .category('ARMOR')
+    .treasureOnly()
 })

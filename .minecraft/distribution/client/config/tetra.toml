@@ -16,16 +16,13 @@
 	#Range: 0.0 ~ 1.7976931348623157E308
 	magic_cap_multiplier = 3.0
 	#Features that are considered experimental can be listed here to enable them
-	experimental_features = []
+	experimental_features = ["bookEnchantmentSchematic"]
 	#Features can be listed here to disable them
 	disabled_features = []
 
 #Allows tetra items to "level up" after being used a certain amount of times, allowing the player to choose from different ways to "hone" 1 module on the item. Major modules also settle after some time, increasing its integrity
 [module_progression]
 	enabled = true
-	# IridescentCraft: 2x honing speed. All `_base` and `_integrity_multiplier`
-	# values halved from upstream defaults (originals shown in comments).
-	# Tester directive: vanilla Tetra honing rate is too slow for the pack's pace.
 	#The base value for number of uses required for a module to settle
 	#Range: > -2147483648
 	settle_base = 135
@@ -35,40 +32,40 @@
 	#Durability multiplier for settling limit, a value of 1 would cause a module with 75 durability to require an additional 75 uses before it settles
 	#Range: 4.9E-324 ~ 1.7976931348623157E308
 	settle_durability_multiplier = 0.25
-	#The base value for number of uses required before a sword can be honed (upstream default 90)
+	#The base value for number of uses required before a sword can be honed
 	#Range: > -2147483648
 	hone_sword_base = 45
-	#Integrity multiplier for sword honing (upstream default 50)
+	#Integrity multiplier for sword honing, a value of 2 would cause a sword which uses 3 integrity to require 2*3 times as many uses before it can be honed
 	#Range: > -2147483648
 	hone_sword_integrity_multiplier = 25
-	#The base value for number of uses required before a tool can be honed (upstream default 140)
+	#The base value for number of uses required before a tool can be honed
 	#Range: > -2147483648
 	hone_double_base = 70
-	#Integrity multiplier for tool honing (upstream default 50)
+	#Integrity multiplier for tool honing, a value of 2 would cause a sword which uses 3 integrity to require 2*3 times as many uses before it can be honed
 	#Range: > -2147483648
 	hone_double_integrity_multiplier = 25
-	#The base value for number of uses required before a bow can be honed (upstream default 40)
+	#The base value for number of uses required before a bow can be honed
 	#Range: > -2147483648
 	hone_bow_base = 20
-	#Integrity multiplier for bow honing (upstream default 24)
+	#Integrity multiplier for bow honing, a value of 2 would cause a bow which uses 3 integrity to require 2*3 times as many uses before it can be honed
 	#Range: > -2147483648
 	hone_bow_integrity_multiplier = 12
-	#The base value for number of uses required before a shield can be honed (upstream default 40)
+	#The base value for number of uses required before a shield can be honed
 	#Range: > -2147483648
 	hone_shield_base = 20
-	#Integrity multiplier for shield honing (upstream default 24)
+	#Integrity multiplier for shield honing, a value of 2 would cause a shield which uses 3 integrity to require 2*3 times as many uses before it can be honed
 	#Range: > -2147483648
 	hone_shield_integrity_multiplier = 12
-	#The base value for number of uses required before a crossbow can be honed (upstream default 40)
+	#The base value for number of uses required before a crossbow can be honed
 	#Range: > -2147483648
 	hone_crossbow_base = 20
-	#Integrity multiplier for crossbow honing (upstream default 32)
+	#Integrity multiplier for crossbow honing, a value of 2 would cause a crossbow which uses 3 integrity to require 2*3 times as many uses before it can be honed
 	#Range: > -2147483648
 	hone_crossbow_integrity_multiplier = 16
-	#The base value for number of uses required before a single headed implement can be honed (upstream default 100)
+	#The base value for number of uses required before a single headed implement can be honed
 	#Range: > -2147483648
 	hone_single_headed_base = 50
-	#Integrity multiplier for single headed implement honing (upstream default 50)
+	#Integrity multiplier for single headed implement honing, a value of 2 would cause an implement which uses 3 integrity to require 2*3 times as many uses before it can be honed
 	#Range: > -2147483648
 	hone_single_headed_integrity_multiplier = 25
 

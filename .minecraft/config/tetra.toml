@@ -16,7 +16,7 @@
 	#Range: 0.0 ~ 1.7976931348623157E308
 	magic_cap_multiplier = 3.0
 	#Features that are considered experimental can be listed here to enable them
-	experimental_features = []
+	experimental_features = ["bookEnchantmentSchematic"]
 	#Features can be listed here to disable them
 	disabled_features = []
 
