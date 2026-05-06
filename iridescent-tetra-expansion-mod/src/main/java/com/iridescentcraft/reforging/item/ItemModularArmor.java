@@ -17,6 +17,10 @@ import se.mickelus.tetra.items.modular.IModularItem;
 import se.mickelus.tetra.module.data.EffectData;
 import se.mickelus.tetra.module.data.ItemProperties;
 import se.mickelus.tetra.module.data.SynergyData;
+import software.bernie.geckolib.animatable.GeoItem;
+import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
+import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
+import software.bernie.geckolib.core.animation.AnimatableManager;
 
 import java.util.Optional;
 import java.util.function.Consumer;
@@ -36,7 +40,33 @@ import java.util.concurrent.TimeUnit;
  * boots) at the registry layer. Module logic, attribute aggregation, skin
  * dispatch, and honing are deferred to phases 3-6.
  */
-public class ItemModularArmor extends ArmorItem implements IModularItem {
+public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem {
+
+    // ── GeoItem (Geckolib) implementation ──────────────────────────────
+    // Required so ISS's GenericCustomArmorRenderer + GeoArmorRenderer can
+    // render skinned armor without ClassCastException at line 320 of
+    // GeoArmorRenderer.actuallyRender (geckolib-forge 4.8.3). The renderer
+    // does (GeoItem) item.getAnimatableInstanceCache(); without this
+    // interface implementation we crash at the cast.
+    //
+    // We don't ship custom Geckolib animations on these armor pieces -- the
+    // animation file referenced by IcraftIssArmorModel is ISS's universal
+    // wizard_armor_animation.json, which is sufficient. registerControllers
+    // can be empty; the renderer will use the default keyframe path.
+    private final AnimatableInstanceCache geoCache =
+            new SingletonAnimatableInstanceCache(this);
+
+    @Override
+    public void registerControllers(AnimatableManager.ControllerRegistrar controllers) {
+        // No custom animation controllers; ISS's animation file drives bone
+        // resets via the default Geckolib path.
+    }
+
+    @Override
+    public AnimatableInstanceCache getAnimatableInstanceCache() {
+        return geoCache;
+    }
+
 
     // ── Cache fields required by IModularItem ──────────────────────────
     // Tetra uses Guava caches keyed by stack identifier so repeated reads
