@@ -107,17 +107,15 @@ def main():
     with open(iss_main, 'w') as f:
         json.dump(iss_model, f, indent=2); f.write('\n')
 
-    # Update modular_ars_spell_book.json (Ars) - same shape.
-    ars_main = os.path.join(assets, 'modular_ars_spell_book.json')
-    with open(ars_main) as f:
-        ars_model = json.load(f)
-    ars_model.setdefault('parent', 'item/generated')
-    ars_model.setdefault('textures', {'layer0': 'ars_nouveau:item/spellbook_blue'})
-    keep = [o for o in ars_model.get('overrides', [])
-            if 'iridescent_modular_spells:source_index' not in o.get('predicate', {})]
-    ars_model['overrides'] = keep + ars_overrides
-    with open(ars_main, 'w') as f:
-        json.dump(ars_model, f, indent=2); f.write('\n')
+    # Ars `modular_ars_spell_book.json` is intentionally NOT rewritten here.
+    # It uses `parent: "builtin/entity"` + Ars's display transforms so the
+    # inherited SpellBookRenderer (via ModularArsSpellBookItem extends
+    # SpellBook) draws the 3D book geometry. The per-source 2D Ars model
+    # files generated above stay on disk as a fallback option -- if the
+    # 3D path proves problematic, swap the Ars main JSON back to
+    # `parent: "item/generated"` and re-add the overrides array (or run
+    # an earlier `git show` of this file).
+    _ = ars_overrides  # noqa - retained list for parity with iss path
 
     print(f'gen_spellbook_icons: wrote {len(ISS_SOURCES)} ISS + {len(ARS_SOURCES)} Ars per-source models')
     print(f'gen_spellbook_icons: ISS index 1..{len(ISS_SOURCES)} / Ars index 1..{len(ARS_SOURCES)}')

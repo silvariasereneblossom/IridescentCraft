@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Modular Ars spell book: 3D BlockEntity renderer hook
+
+Follow-up to the source-aware icon dispatch commit. `ModularArsSpellBookItem extends SpellBook` already inherits `SpellBook.initializeClient` which constructs a `SpellBookRenderer` (a `FixedGeoItemRenderer<SpellBook>`) and registers it as the `IClientItemExtensions.getCustomRenderer()`. Confirmed via decompiling `SpellBook.class` + `SpellBook$1.class` -- the inner class hardcodes `new SpellBookRenderer()` with no item-class cast on construction; the cast in `actuallyRender` targets `SpellBook` parent which our subclass satisfies.
+
+The blocker was the model JSON: `parent: "item/generated"` skips the BlockEntity-renderer path, so the 3D geometry never drew. Fix: rewrote `modular_ars_spell_book.json` with `parent: "builtin/entity"` and Ars's exact display transforms (mirrored from `novice_spell_book.json`). The 3D book now renders in inventory + first/third person + ground.
+
+**Trade-off taken:** dropped the source_index overrides from the Ars main model. If they fired (source_index > 0) they'd dominate the 3D path; the user explicitly framed the 3D renderer as "cleaner". Per-source 2D Ars model files stay on disk under `models/item/source/ars_*.json` as a documented fallback. ISS books are unaffected -- they keep the 2D-icon path because ISS doesn't ship a usable BlockEntity renderer for our subclass.
+
+`tools/gen_spellbook_icons.py` no longer rewrites the Ars main JSON (would clobber the `builtin/entity` parent). The generator still produces ISS overrides + per-source Ars 2D models for the fallback option.
+
+---
+
 ## 2026-05-04 — Modular spell books: source-aware inventory icons (12 ISS + 3 Ars)
 
 Applies the Tetra-wiring lessons-learned to spell-book identity preservation. Mirror of the armor `skin_index` ItemProperty pattern, but on the modular spell books.
