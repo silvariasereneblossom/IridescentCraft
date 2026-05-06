@@ -33,6 +33,10 @@ public class SpecializedReplacementLoader extends SimpleJsonResourceReloadListen
                          ProfilerFiller profiler) {
         Map<ResourceLocation, SpecializedReplacementDefinition> built = new HashMap<>();
 
+        IridescentReforging.LOGGER.info(
+                "[SpecializedReplacementLoader] DIAG apply() called with {} input json files",
+                jsons.size());
+
         for (Map.Entry<ResourceLocation, JsonElement> entry : jsons.entrySet()) {
             try {
                 JsonObject obj = entry.getValue().getAsJsonObject();
@@ -49,5 +53,8 @@ public class SpecializedReplacementLoader extends SimpleJsonResourceReloadListen
         }
 
         SpecializedReplacementRegistry.get().replaceDefinitions(built);
+        IridescentReforging.LOGGER.info(
+                "[SpecializedReplacementLoader] DIAG built {} entries from {} input files",
+                built.size(), jsons.size());
     }
 }
