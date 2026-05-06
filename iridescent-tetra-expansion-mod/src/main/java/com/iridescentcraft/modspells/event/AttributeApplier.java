@@ -1,10 +1,12 @@
 package com.iridescentcraft.modspells.event;
 
+import com.google.common.collect.Multimap;
 import com.iridescentcraft.modspells.IridescentModularSpells;
 import com.iridescentcraft.modspells.enchant.ModEnchantmentRegistry;
 import com.iridescentcraft.modspells.item.ModularArsSpellBookItem;
 import com.iridescentcraft.modspells.item.ModularSpellBookItem;
 import net.minecraft.core.registries.Registries;
+import net.minecraft.nbt.CompoundTag;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.server.level.ServerPlayer;
 import net.minecraft.world.entity.ai.attributes.Attribute;
@@ -15,6 +17,7 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.event.TickEvent;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.mickelus.tetra.items.modular.IModularItem;
 import top.theillusivec4.curios.api.CuriosApi;
 import top.theillusivec4.curios.api.type.capability.ICuriosItemHandler;
 
@@ -73,6 +76,92 @@ public class AttributeApplier {
                     "[modspells/attr] applyBonuses threw for {}: {}",
                     player.getGameProfile().getName(), t.toString());
         }
+        try {
+            mirrorBookContributionsToIcraftNbt(player);
+        } catch (Throwable t) {
+            IridescentModularSpells.LOGGER.warn(
+                    "[modspells/attr] icraft mirror threw for {}: {}",
+                    player.getGameProfile().getName(), t.toString());
+        }
+    }
+
+    // ===== Option A: pack-wide mirror layer =====
+    //
+    // Sums the Tetra material/module/improvement attribute deltas across
+    // every equipped modular book and writes them under
+    // `icraft_book_<stat>` NBT keys on the player. The kubejs `getAttr`
+    // helper in attribute_sync.js reads `icraft_<stat> + icraft_book_<stat>`
+    // so the unified damage hook + ISS sync layer pick up book bonuses
+    // without us having to disturb the existing class-bonus pipeline.
+    //
+    // We intentionally cover only the three pack-wide stats: spell_power,
+    // mana_regen, cooldown_reduction. max_mana stays ecosystem-specific
+    // because mana_pool_bonuses.js already cross-applies a global +25%
+    // against both ISS and Ars max_mana attributes.
+
+    /** Source attribute id -> destination unified stat name. */
+    private static final Map<String, String> ICRAFT_MIRROR_MAP = new HashMap<>();
+    static {
+        // ISS-side feeds spell_power.
+        ICRAFT_MIRROR_MAP.put("irons_spellbooks:spell_power",       "spell_power");
+        // Ars perk.spell_damage is the Ars equivalent of spell_power.
+        ICRAFT_MIRROR_MAP.put("ars_nouveau:ars_nouveau.perk.spell_damage", "spell_power");
+        // Mana regen has parallel registrations on both sides.
+        ICRAFT_MIRROR_MAP.put("irons_spellbooks:mana_regen",        "mana_regen");
+        ICRAFT_MIRROR_MAP.put("ars_nouveau:ars_nouveau.perk.mana_regen",   "mana_regen");
+        // Cooldown reduction only exists on the ISS side.
+        ICRAFT_MIRROR_MAP.put("irons_spellbooks:cooldown_reduction", "cooldown_reduction");
+    }
+
+    private static final String[] ICRAFT_BOOK_NBT_KEYS = {
+            "icraft_book_spell_power",
+            "icraft_book_mana_regen",
+            "icraft_book_cooldown_reduction"
+    };
+
+    private static void mirrorBookContributionsToIcraftNbt(ServerPlayer player) {
+        Map<String, Double> totals = new HashMap<>();
+
+        accumulateBookAttrs(player.getMainHandItem(), totals);
+        accumulateBookAttrs(player.getOffhandItem(), totals);
+        try {
+            CuriosApi.getCuriosInventory(player).ifPresent(handler -> {
+                var equipped = handler.getEquippedCurios();
+                if (equipped == null) return;
+                for (int i = 0; i < equipped.getSlots(); i++) {
+                    accumulateBookAttrs(equipped.getStackInSlot(i), totals);
+                }
+            });
+        } catch (Throwable t) { /* curios absent -- skip */ }
+
+        CompoundTag pdata = player.getPersistentData();
+        // Always write/clear the three keys so removing the book actually
+        // drops the bonus on the next tick.
+        for (String nbtKey : ICRAFT_BOOK_NBT_KEYS) {
+            String stat = nbtKey.substring("icraft_book_".length());
+            double v = totals.getOrDefault(stat, 0.0);
+            if (v != 0.0) pdata.putDouble(nbtKey, v);
+            else pdata.remove(nbtKey);
+        }
+    }
+
+    private static void accumulateBookAttrs(ItemStack stack, Map<String, Double> totals) {
+        if (stack == null || stack.isEmpty()) return;
+        if (!(stack.getItem() instanceof ModularSpellBookItem)
+                && !(stack.getItem() instanceof ModularArsSpellBookItem)) return;
+        if (!(stack.getItem() instanceof IModularItem modular)) return;
+        try {
+            Multimap<Attribute, AttributeModifier> attrs = modular.getAttributeModifiersCached(stack);
+            if (attrs == null || attrs.isEmpty()) return;
+            attrs.forEach((attr, mod) -> {
+                if (attr == null || mod == null) return;
+                ResourceLocation rl = ForgeRegistries.ATTRIBUTES.getKey(attr);
+                if (rl == null) return;
+                String dest = ICRAFT_MIRROR_MAP.get(rl.toString());
+                if (dest == null) return;
+                totals.merge(dest, mod.getAmount(), Double::sum);
+            });
+        } catch (Throwable t) { /* Tetra cache miss -- skip */ }
     }
 
     private static void applyBonuses(ServerPlayer player) {

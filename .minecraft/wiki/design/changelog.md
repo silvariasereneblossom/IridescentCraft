@@ -4,6 +4,20 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Modular spell books: Option A unification + ISS held-in-hand override
+
+User reports the modular books' material/improvement attrs target ecosystem-specific Forge attributes, so a Diamond Spell Book held in mainhand buffs `irons_spellbooks:spell_power` only, never the unified `icraft_spell_power` NBT that drives the kubejs damage hook. Picked Option A from the audit: keep ecosystem-specific writes, add an icraft mirror layer.
+
+**Java side (`AttributeApplier.mirrorBookContributionsToIcraftNbt`):** every 1Hz tick scans equipped modular books across mainhand / offhand / Curios, pulls `getAttributeModifiersCached(stack)` (Tetra's full material+module+improvement multimap), maps known attr ids to unified slots via ICRAFT_MIRROR_MAP (`irons_spellbooks:spell_power` AND `ars_nouveau:perk.spell_damage` -> `spell_power`; `irons_spellbooks:mana_regen` AND `ars_nouveau:perk.mana_regen` -> `mana_regen`; `irons_spellbooks:cooldown_reduction` -> `cooldown_reduction`), sums the modifier amounts, writes to player NBT under `icraft_book_<stat>`. Removed when the book is unequipped (NBT key dropped if total is 0).
+
+**Kubejs side (`attribute_sync.js#getAttr`):** wrapped to pull `icraft_book_<name>` and add it to `icraft_<name>` on every read. Class bonuses still own the baseline; book contribution is purely additive. Damage hook + ISS sync layer pick up the combined value automatically.
+
+**Held-in-hand path mirrored to ISS book:** ModularSpellBookItem now overrides `Item.getAttributeModifiers(EquipmentSlot, ItemStack)` for MAINHAND/OFFHAND, mirroring the change shipped on the Ars side. ISS books held in hand now apply Tetra material attrs through vanilla's normal pipeline (the existing Curios override keeps spellbook-slot behavior unchanged).
+
+**max_mana stays ecosystem-specific** -- already cross-applied via `mana_pool_bonuses.js` global +25%; doubling that with an icraft mirror would compound.
+
+---
+
 ## 2026-05-04 — Modular Ars spell book: 3D BlockEntity renderer hook
 
 Follow-up to the source-aware icon dispatch commit. `ModularArsSpellBookItem extends SpellBook` already inherits `SpellBook.initializeClient` which constructs a `SpellBookRenderer` (a `FixedGeoItemRenderer<SpellBook>`) and registers it as the `IClientItemExtensions.getCustomRenderer()`. Confirmed via decompiling `SpellBook.class` + `SpellBook$1.class` -- the inner class hardcodes `new SpellBookRenderer()` with no item-class cast on construction; the cast in `actuallyRender` targets `SpellBook` parent which our subclass satisfies.

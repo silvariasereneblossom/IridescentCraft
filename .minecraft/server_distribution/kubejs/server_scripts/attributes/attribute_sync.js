@@ -19,9 +19,22 @@
 // =============================================================================
 
 // --- Helper: read an icraft attribute from persistentData ---
+// For unified stats (spell_power / mana_regen / cooldown_reduction) we
+// also fold in book contributions written by the Java AttributeApplier
+// under icraft_book_<name>. This is the Option-A unification pathway:
+// modular spell books push their Tetra material/improvement attrs into
+// the unified icraft layer in addition to the ecosystem-specific Forge
+// attribute they already buff. Class bonuses still own icraft_<name> as
+// the baseline; book contribution is purely additive on top.
 function getAttr(player, name, fallback) {
-  if (!player.persistentData.contains('icraft_' + name)) return fallback
-  return player.persistentData.getDouble('icraft_' + name)
+  var base = player.persistentData.contains('icraft_' + name)
+    ? player.persistentData.getDouble('icraft_' + name)
+    : fallback
+  var bookKey = 'icraft_book_' + name
+  if (player.persistentData.contains(bookKey)) {
+    base += player.persistentData.getDouble(bookKey)
+  }
+  return base
 }
 
 // --- Helper: write an icraft attribute to persistentData ---

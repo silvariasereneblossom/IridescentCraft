@@ -11,6 +11,7 @@ import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
 import net.minecraft.network.chat.MutableComponent;
 import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
 import net.minecraft.world.item.Item;
@@ -187,6 +188,27 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
 
     @Override
     public Cache<String, ItemProperties> getPropertyCache() { return propertyCache; }
+
+    // ===== Held/offhand attribute pipeline (vanilla slot path) =====
+
+    /**
+     * Apply Tetra's material/module/improvement attrs when the book is held
+     * in mainhand or offhand. Mirrors the Ars-side override so behavior is
+     * symmetric across ecosystems. The Curios entry point below already
+     * covers the spellbook Curios slot; this fills the held-in-hand gap.
+     */
+    @Override
+    public Multimap<Attribute, AttributeModifier> getAttributeModifiers(EquipmentSlot slot, ItemStack stack) {
+        ArrayListMultimap<Attribute, AttributeModifier> result = ArrayListMultimap.create();
+        result.putAll(super.getAttributeModifiers(slot, stack));
+        if (slot == EquipmentSlot.MAINHAND || slot == EquipmentSlot.OFFHAND) {
+            try {
+                Multimap<Attribute, AttributeModifier> tetra = getAttributeModifiersCached(stack);
+                if (tetra != null && !tetra.isEmpty()) result.putAll(tetra);
+            } catch (Throwable t) { /* Tetra cache miss / data not loaded -- skip */ }
+        }
+        return result;
+    }
 
     // ===== Curios attribute pipeline — the stacking entry point =====
 
