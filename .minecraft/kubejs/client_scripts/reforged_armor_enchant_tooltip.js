@@ -67,9 +67,13 @@ ItemEvents.tooltip(event => {
 
           // Insert at position 1 (just after the item name) - mirrors vanilla
           // tooltip ordering. Use Text.gray for the standard enchant color.
+          // Use Text.of(' ') NOT Text.of('') -- per enchanted_book_tooltip_fix
+          // empirical note, empty-string root component "sometimes collapsed
+          // weirdly" and produced invisible tooltip lines (the dark-space
+          // tester saw on reforged armor was this exact bug).
           var nameComp = Text.translate(nameKey)
           var lvlComp = Text.translate(lvlKey)
-          var line = Text.of('').append(nameComp).append(' ').append(lvlComp).gray()
+          var line = Text.of(' ').append(nameComp).append(' ').append(lvlComp).gray()
           text.add(1 + shown, line)
           shown++
         }
