@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-04 — Modular spell books: source-aware inventory icons (12 ISS + 3 Ars)
+
+Applies the Tetra-wiring lessons-learned to spell-book identity preservation. Mirror of the armor `skin_index` ItemProperty pattern, but on the modular spell books.
+
+**New `ClientSpellbookIcon` (`iridescent-tetra-expansion-mod`):** registers `iridescent_modular_spells:source_index` ItemProperty on both `MODULAR_SPELL_BOOK` (ISS) and `MODULAR_ARS_SPELL_BOOK` (Ars). Reads the core module's variant key suffix (e.g. `iss_core/diamond_spell_book` -> `diamond_spell_book` -> 3) and returns a deterministic numeric index. Wired through `FMLClientSetupEvent.enqueueWork` + `DistExecutor.unsafeRunWhenOn(Dist.CLIENT)` so server load doesn't touch the client-only registration call.
+
+**New `tools/gen_spellbook_icons.py`:** generates per-source item-model JSONs at `assets/iridescent_modular_spells/models/item/source/<src>.json` and stamps the matching `overrides` array into `modular_spell_book.json` + `modular_ars_spell_book.json`. Sources alphabetically sorted to match the runtime index map. Hooked into `build_mod.sh` after the armor `gen_skin_models.py` step.
+
+**Texture mapping:** ISS sources point at `irons_spellbooks:item/<source>` (verified flat 2D PNGs in the ISS jar). `villager_spell_book` is the only ISS source with no flat 2D PNG; falls back to `irons_spellbooks:item/spell_book_models/villager_spell_book` (the 3D model atlas, which renders acceptably as a 2D icon). Ars sources map to colored Ars textures by tier feel: novice -> blue, apprentice -> purple, archmage -> yellow (no `spellbook_gold` ships in the Ars jar).
+
+**Result:** transferring an ISS Diamond Spell Book through the modular workbench now yields a stack whose inventory icon, name (kept by `getName` override from the prior commit), and effect aggregation all reflect the source book's identity. Same path covers Ars books. Shipped in `iridescent_tetra_expansion-1.0.0.jar` to all 3 distros.
+
+The companion 3D-renderer hook for Ars (switching to `parent: "builtin/entity"` so `ModularArsSpellBookItem extends SpellBook` inherits the Ars `BlockEntityRenderer`) is staged for a follow-up commit so failure modes stay isolated.
+
+---
+
 ## 2026-05-05 — Unique ISS armor: full crash fix + restored unique geometry
 
 User reported relaunch with my GenericArmorModel fix still crashed at the same `ClassCastException` line. Decompilation revealed `GenericArmorModel<T extends ExtendedArmorItem>` — same generic-bound bridge-cast bug as the per-set models. Our `ItemModularArmor extends ArmorItem` (NOT `ExtendedArmorItem`), so even the "fallback" generic model crashes.

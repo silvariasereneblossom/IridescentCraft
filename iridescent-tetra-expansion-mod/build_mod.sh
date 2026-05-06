@@ -32,6 +32,9 @@ copy_if_missing geckolib-forge.jar  'geckolib-forge-1.20.1-*.jar'
 echo "[Tetra-Expansion Build] Generating skin-aware inventory icon overrides..."
 python3 tools/gen_skin_models.py
 
+echo "[Tetra-Expansion Build] Generating source-aware spellbook icon overrides..."
+python3 tools/gen_spellbook_icons.py
+
 echo "[Tetra-Expansion Build] Running gradle build..."
 ./gradlew build
 

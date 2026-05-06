@@ -2,8 +2,11 @@ package com.iridescentcraft.modspells;
 
 import com.iridescentcraft.modspells.enchant.ModEnchantmentRegistry;
 import com.iridescentcraft.modspells.item.ModularItemRegistry;
+import net.minecraftforge.api.distmarker.Dist;
 import net.minecraftforge.eventbus.api.IEventBus;
+import net.minecraftforge.fml.DistExecutor;
 import net.minecraftforge.fml.common.Mod;
+import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
 import org.slf4j.Logger;
 import com.mojang.logging.LogUtils;
@@ -34,6 +37,18 @@ public class IridescentModularSpells {
         // Enchantment registration (Phase 4 -- book-exclusive enchants)
         ModEnchantmentRegistry.ENCHANTMENTS.register(modBus);
 
+        // Client-side: register source_index ItemProperty for icon dispatch.
+        // Mirrors armor's ClientSkinIcon. Gated to client dist so server
+        // load doesn't try to call client-only ItemProperties.register.
+        modBus.addListener(IridescentModularSpells::onClientSetup);
+
         LOGGER.info("[IridescentModularSpells] Phase 6B loaded -- IModularItem skeleton on ISS+Ars books (Tetra workbench-aware)");
+    }
+
+    private static void onClientSetup(FMLClientSetupEvent event) {
+        event.enqueueWork(() ->
+            DistExecutor.unsafeRunWhenOn(Dist.CLIENT, () -> () ->
+                com.iridescentcraft.modspells.client.ClientSpellbookIcon.register())
+        );
     }
 }

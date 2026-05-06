@@ -2,5 +2,25 @@
   "parent": "item/generated",
   "textures": {
     "layer0": "ars_nouveau:item/spellbook_blue"
-  }
+  },
+  "overrides": [
+    {
+      "predicate": {
+        "iridescent_modular_spells:source_index": 1
+      },
+      "model": "iridescent_modular_spells:item/source/ars_apprentice_spell_book"
+    },
+    {
+      "predicate": {
+        "iridescent_modular_spells:source_index": 2
+      },
+      "model": "iridescent_modular_spells:item/source/ars_archmage_spell_book"
+    },
+    {
+      "predicate": {
+        "iridescent_modular_spells:source_index": 3
+      },
+      "model": "iridescent_modular_spells:item/source/ars_novice_spell_book"
+    }
+  ]
 }
