@@ -90,7 +90,7 @@ public class SkinDataLoader extends SimpleJsonResourceReloadListener {
         SkinRegistry.get().replaceDefinitions(built);
     }
 
-    private static SkinDefinition parseSkin(ResourceLocation file, JsonObject obj) {
+    public static SkinDefinition parseSkin(ResourceLocation file, JsonObject obj) {
         String skinId       = obj.get("skin_id").getAsString();
         String slot         = obj.get("slot").getAsString();
         String sourceItem   = obj.has("source_item")  ? obj.get("source_item").getAsString()  : "";

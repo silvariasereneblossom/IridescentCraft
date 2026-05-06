@@ -59,6 +59,12 @@ public class IridescentReforging {
 
     private static void onCommonSetup(net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent event) {
         event.enqueueWork(SpecializedReplacementHook::register);
+        // Eager-load bundled data files from the mod jar. Runs on BOTH client
+        // and server. Required because AddReloadListenerEvent only fires for
+        // the server's resource manager -- multiplayer clients never run it
+        // and would otherwise have empty registries, breaking client-side
+        // Tetra getReplacement enrichment.
+        event.enqueueWork(com.iridescentcraft.reforging.replacement.BundledDataLoader::loadAll);
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {
