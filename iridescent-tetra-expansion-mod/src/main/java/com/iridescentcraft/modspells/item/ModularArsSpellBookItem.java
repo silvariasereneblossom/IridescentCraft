@@ -4,9 +4,9 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Multimap;
 import com.hollingsworth.arsnouveau.api.spell.SpellTier;
-import com.hollingsworth.arsnouveau.client.renderer.item.SpellBookRenderer;
 import com.hollingsworth.arsnouveau.common.items.SpellBook;
 import com.iridescentcraft.modspells.IridescentModularSpells;
+import com.iridescentcraft.modspells.client.IcraftArsSpellBookRenderer;
 import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
 import java.util.function.Consumer;
@@ -148,9 +148,9 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
             @Override
             public BlockEntityWithoutLevelRenderer getCustomRenderer() {
                 if (renderer == null) {
-                    renderer = new SpellBookRenderer();
+                    renderer = new IcraftArsSpellBookRenderer();
                     IridescentModularSpells.LOGGER.info(
-                            "[ModularArsSpellBookItem] lazily instantiated SpellBookRenderer");
+                            "[ModularArsSpellBookItem] lazily instantiated IcraftArsSpellBookRenderer (per-stack tier)");
                 }
                 return renderer;
             }
