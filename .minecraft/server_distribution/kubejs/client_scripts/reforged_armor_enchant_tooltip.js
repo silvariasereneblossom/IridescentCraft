@@ -22,6 +22,11 @@ var REFORGED_ARMOR_IDS = [
   'iridescent_reforging:reforged_boots',
 ]
 
+// One-shot diag — first hover of any reforged armor logs whether we found
+// Enchantments NBT and how many entries parsed. Helps disambiguate
+// "script never fires" from "script fires but regex fails".
+var REFORGED_TT_DIAG = false
+
 ItemEvents.tooltip(event => {
   REFORGED_ARMOR_IDS.forEach(itemId => {
     event.addAdvanced(itemId, (stack, advanced, text) => {
@@ -34,6 +39,12 @@ ItemEvents.tooltip(event => {
         // Locate the Enchantments list body. Bare-armor case: no `Enchantments`
         // key at all -> nothing to render, fall through silently.
         var listMatch = nbtStr.match(/Enchantments:\[(.*?)\]/)
+        if (!REFORGED_TT_DIAG) {
+          REFORGED_TT_DIAG = true
+          console.info('[reforged-armor-tooltip] DIAG first fire; itemId=' + itemId +
+            ' hasEnchantments=' + (!!listMatch) +
+            ' nbtPreview=' + nbtStr.substring(0, 200))
+        }
         if (!listMatch) return
         var listBody = listMatch[1]
         if (!listBody || listBody.length < 5) return
