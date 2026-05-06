@@ -1,105 +1,126 @@
 package com.iridescentcraft.reforging.skin;
 
 import com.iridescentcraft.reforging.IridescentReforging;
-import io.redspace.ironsspellbooks.entity.armor.GenericArmorModel;
 import io.redspace.ironsspellbooks.entity.armor.GenericCustomArmorRenderer;
 import net.minecraftforge.fml.ModList;
-import software.bernie.geckolib.model.GeoModel;
-
-import java.util.function.Supplier;
 
 /**
  * Registers GeoArmorRenderer factories for Iron's Spellbooks armor sets.
  *
- * Each ISS armor set has one ArmorModel class shared across all four
- * slots — the slot-specific bones get toggled by GeoArmorRenderer.
- * prepForRender at render time, so we pass the same model to all four
- * skins of a set.
+ * 2026-05-05 design: every ISS unique-armor renderer historically used a
+ * per-set Geckolib model class (CultistArmorModel, WanderingMagicianModel,
+ * etc.) whose synthetic bridge method casts the rendered item to a specific
+ * ISS armor item type. That cast crashes when our {@code ItemModularArmor}
+ * (with skin tag set) is rendered through this dispatch path.
  *
- * Phase 7 v0.1: covers 10 ISS robe sets via GenericCustomArmorRenderer.
- * Wizard is deferred — it uses DyeableArmorRenderer with a different
- * constructor signature (color tint, slot-string parameter), which
- * doesn't fit the simple set-level factory shape. A non-dyed Wizard
- * skin via GenericArmorModel("wizard") would render but lose dye color
- * fidelity; full Wizard support comes in a follow-up.
+ * Fix: replace ALL per-set models with {@link IcraftIssArmorModel}, a generic
+ * {@code GeoModel<GeoAnimatable>} that takes path strings via constructor.
+ * Same texture + .geo.json + animation files ISS ships (extracted from the
+ * ISS jar bytecode below) but with no item-class cast in the bridge method.
  *
- * Specials (Boots of Speed, Iron's Crown, Tarnished Crown, Infernal
- * Sorcerer, Paladin, Netherite Battlemage) are also deferred — they
- * have unique slot-restricted geometry and require per-skin handling.
+ * Result: unique 3D geometry, unique texture, unique animations -- no crash.
  *
- * Gated behind ModList.isLoaded("irons_spellbooks") at the entry to
- * register(); class loading of THIS class still requires ISS to be on
- * the runtime classpath. Acceptable for IridescentCraft (ISS is a hard
- * dep). For standalone-release goal, future cleanup defers class
- * loading via reflection or DistExecutor.
+ * Wizard set previously used GenericArmorModel("wizard"); also moves to
+ * IcraftIssArmorModel since GenericArmorModel had the same cast bug
+ * (T extends ExtendedArmorItem, our class doesn't extend that).
  */
 public final class IssRendererFactories {
+
+    /** Universal animation file used by all ISS armor sets. */
+    private static final String UNIVERSAL_ANIM = "animations/wizard_armor_animation.json";
 
     public static void register(SkinRegistry reg) {
         if (!ModList.get().isLoaded("irons_spellbooks")) {
             IridescentReforging.LOGGER.info(
-                    "[IssRendererFactories] ISS not loaded — skipping registration");
+                    "[IssRendererFactories] ISS not loaded -- skipping registration");
             return;
         }
 
-        // 2026-05-05 CRASH FIX: ISS unique-armor Geckolib models hardcode
-        // a cast to their own ISS item class in getTextureResource (e.g.
-        // WanderingMagicianModel.java:8 casts to WanderingMagicianArmorItem).
-        // When dispatched against our ItemModularArmor, these crash with
-        // ClassCastException at first armor render. Fall back to
-        // GenericArmorModel(setName) for ALL sets — texture lookup happens
-        // by string-based path resolution, not by item-class cast. We lose
-        // the unique 3D geometry but the silhouette + textures render
-        // correctly without crashing.
-        //
-        // Companion change: Tetra replacement JSONs for unique ISS armor
-        // were deleted in the same commit, so unique armors NO LONGER
-        // auto-convert to modular variants. Native ISS items keep their
-        // unique geometry, name, sprite, and effects. These factories
-        // remain registered so any ALREADY-CONVERTED items in existing
-        // player inventories don't crash on render.
-        registerSet(reg, "cultist",            () -> new GenericArmorModel("cultist"));
-        registerSet(reg, "pyromancer",         () -> new GenericArmorModel("pyromancer"));
-        registerSet(reg, "cryomancer",         () -> new GenericArmorModel("cryomancer"));
-        registerSet(reg, "electromancer",      () -> new GenericArmorModel("electromancer"));
-        registerSet(reg, "plagued",            () -> new GenericArmorModel("plagued"));
-        registerSet(reg, "priest",             () -> new GenericArmorModel("priest"));
-        registerSet(reg, "pumpkin",            () -> new GenericArmorModel("pumpkin"));
-        registerSet(reg, "shadowwalker",       () -> new GenericArmorModel("shadowwalker"));
-        registerSet(reg, "wandering_magician", () -> new GenericArmorModel("wandering_magician"));
-        registerSet(reg, "archevoker",         () -> new GenericArmorModel("archevoker"));
-        registerSet(reg, "wizard",             () -> new GenericArmorModel("wizard"));
-        registerSet(reg, "netherite_battlemage", () -> new GenericArmorModel("netherite_battlemage"));
+        // 12 main sets (4 slots each) -- texture + geo paths follow setName.
+        // Convention: textures/models/armor/<setName>.png
+        //             geo/<setName>_armor.geo.json
+        // Confirmed by decompiling each ISS *Model class.
+        registerSet(reg, "cultist",            "cultist_armor",            "cultist");
+        registerSet(reg, "pyromancer",         "pyromancer_armor",         "pyromancer");
+        registerSet(reg, "cryomancer",         "cryomancer_armor",         "cryomancer");
+        registerSet(reg, "electromancer",      "electromancer_armor",      "electromancer");
+        registerSet(reg, "plagued",            "plagued_armor",            "plagued");
+        registerSet(reg, "priest",             "priest_armor",             "priest");
+        registerSet(reg, "pumpkin",            "pumpkin_armor",            "pumpkin");
+        registerSet(reg, "shadowwalker",       "shadowwalker_armor",       "shadowwalker");
+        registerSet(reg, "wandering_magician", "wandering_magician_armor", "wandering_magician");
+        registerSet(reg, "archevoker",         "archevoker_armor",         "archevoker");
+        registerSet(reg, "wizard",             "wizard_armor",             "wizard");
+
+        // netherite_battlemage uses geo/netherite_armor.geo.json + textures/.../netherite.png
+        // (decompiled from NetheriteMageArmorModel.class)
+        registerSet(reg, "netherite_battlemage", "netherite_armor", "netherite");
+
+        // 5 single-slot specials. Non-uniform paths -- enumerated from
+        // PaladinArmorModel/InfernalSorcererArmorModel/BootsOfSpeedArmorModel/
+        // GoldCrownModel/TarnishedCrownModel decompilation.
+        registerSingleSlot(reg, "infernal_sorcerer_chestplate",
+                "infernal_sorcerer", "infernal_sorcerer");
+        registerSingleSlot(reg, "paladin_chestplate",
+                "paladin_chestplate", "paladin_chestplate");
+        registerSingleSlot(reg, "boots_of_speed_boots",
+                "boots_of_speed", "boots_of_speed");
+        registerSingleSlot(reg, "gold_crown_helmet",
+                "tarnished_armor", "gold_crown");
+        registerSingleSlot(reg, "tarnished_crown_helmet",
+                "tarnished_armor", "tarnished");
 
         IridescentReforging.LOGGER.info(
-                "[IssRendererFactories] registered ISS skin renderers (12 sets, all GenericArmorModel — crash-safe)");
+                "[IssRendererFactories] registered ISS skin renderers (12 sets + 5 specials, IcraftIssArmorModel -- crash-safe + unique geometry)");
     }
 
+    /**
+     * Register a 4-slot set (helmet/chestplate/leggings/boots all use the
+     * same model + texture file). 11 of the 12 main sets fit this pattern.
+     *
+     * @param setName       skin set name (e.g. "wandering_magician")
+     * @param geoBasename   filename stem under irons_spellbooks/geo/ (with no extension)
+     *                      e.g. "wandering_magician_armor" -> resolves to
+     *                      geo/wandering_magician_armor.geo.json
+     * @param texBasename   filename stem under irons_spellbooks/textures/models/armor/
+     *                      e.g. "wandering_magician" -> resolves to
+     *                      textures/models/armor/wandering_magician.png
+     */
     private static void registerSet(SkinRegistry reg,
                                     String setName,
-                                    Supplier<? extends GeoModel<?>> modelFactory) {
+                                    String geoBasename,
+                                    String texBasename) {
+        String geoPath     = "geo/" + geoBasename + ".geo.json";
+        String texturePath = "textures/models/armor/" + texBasename + ".png";
         for (String slot : new String[]{"helmet", "chestplate", "leggings", "boots"}) {
             String skinId = "iridescent_reforging:" + setName + "_" + slot;
             reg.registerFactory(skinId, () -> {
                 @SuppressWarnings({"unchecked","rawtypes"})
-                GenericCustomArmorRenderer renderer = new GenericCustomArmorRenderer(modelFactory.get());
+                GenericCustomArmorRenderer renderer = new GenericCustomArmorRenderer(
+                        new IcraftIssArmorModel(geoPath, texturePath, UNIVERSAL_ANIM));
                 return renderer;
             });
         }
     }
 
     /**
-     * Register a renderer for a single skin (used by ISS specials whose
-     * data lives in only one slot — Boots of Speed, Iron's Crown, etc.).
-     * The skinId is passed as-is rather than built per-slot.
+     * Register a single-slot special. Used for partial sets (paladin chestplate
+     * only, gold_crown helmet only, etc.) where the geometry doesn't extend to
+     * the whole 4-piece set.
+     *
+     * @param skinSuffix    full slot-suffixed skin id, e.g. "paladin_chestplate"
      */
     private static void registerSingleSlot(SkinRegistry reg,
                                            String skinSuffix,
-                                           Supplier<? extends GeoModel<?>> modelFactory) {
-        String skinId = "iridescent_reforging:" + skinSuffix;
+                                           String geoBasename,
+                                           String texBasename) {
+        String skinId      = "iridescent_reforging:" + skinSuffix;
+        String geoPath     = "geo/" + geoBasename + ".geo.json";
+        String texturePath = "textures/models/armor/" + texBasename + ".png";
         reg.registerFactory(skinId, () -> {
             @SuppressWarnings({"unchecked","rawtypes"})
-            GenericCustomArmorRenderer renderer = new GenericCustomArmorRenderer(modelFactory.get());
+            GenericCustomArmorRenderer renderer = new GenericCustomArmorRenderer(
+                    new IcraftIssArmorModel(geoPath, texturePath, UNIVERSAL_ANIM));
             return renderer;
         });
     }

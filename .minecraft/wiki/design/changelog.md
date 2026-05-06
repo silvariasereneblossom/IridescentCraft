@@ -4,6 +4,36 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-05 — Unique ISS armor: full crash fix + restored unique geometry
+
+User reported relaunch with my GenericArmorModel fix still crashed at the same `ClassCastException` line. Decompilation revealed `GenericArmorModel<T extends ExtendedArmorItem>` — same generic-bound bridge-cast bug as the per-set models. Our `ItemModularArmor extends ArmorItem` (NOT `ExtendedArmorItem`), so even the "fallback" generic model crashes.
+
+**Root cause traced**: ISS unique-armor models are all `GeoModel<T extends SomeISSArmorItem>` with hardcoded texture path strings inside their typed `getTextureResource(T)` override. Java's compiler-generated bridge `getTextureResource(GeoAnimatable)` casts to the bound type before delegating — that cast is what crashes. The method body doesn't use the item parameter at all; the texture path is just a hardcoded string return.
+
+**Fix**: new `IcraftIssArmorModel.java` extends `GeoModel<GeoAnimatable>` directly (no narrower bound), takes the 3 path strings (geo + texture + animation) via constructor. No item-class cast. Reuses ISS's existing `.geo.json`, `.png`, `.animation.json` resource files — full unique 3D geometry + texture + animations preserved.
+
+**Path data extracted** from decompiling the 17 ISS armor model classes:
+- 11 main sets follow `geo/<setName>_armor.geo.json` + `textures/models/armor/<setName>.png`
+- `netherite_battlemage` -> `geo/netherite_armor.geo.json` + `textures/.../netherite.png` (special naming)
+- 5 single-slot specials: paladin_chestplate, infernal_sorcerer, boots_of_speed, gold_crown (uses `tarnished_armor.geo.json`!), tarnished_crown
+- All 17 share `animations/wizard_armor_animation.json`
+
+**`IssRendererFactories.register`** rewritten to instantiate `IcraftIssArmorModel(geoPath, texPath, animPath)` per skin via two helpers:
+- `registerSet(setName, geoBasename, texBasename)` — 4 slots × 12 main sets
+- `registerSingleSlot(skinId, geoBasename, texBasename)` — 5 specials
+
+Replaces the previous swap-to-GenericArmorModel attempt (which had the same bridge-cast bug a layer up). Built into `iridescent_tetra_expansion-1.0.0.jar`, deployed to 3 distros.
+
+**Resulting state across the 4 identity-preservation layers:**
+- Inventory icon: WIRED (192 per-skin model JSONs, `skin_index` ItemProperty)
+- 3D worn model: **NOW WIRED** (IcraftIssArmorModel + ISS's resource files)
+- 3D textures: **NOW WIRED** (ISS's PNGs)
+- 3D animations: **NOW WIRED** (ISS's animation file)
+- Display name: STILL BROKEN — DIAG-instrumented, next launch will surface root cause
+- Effects: wired via `SkinDefinition.baseAttributes` (should already work)
+
+---
+
 ## 2026-05-05 — Unique ISS armor: crash fix + identity-pipeline diag
 
 Tester wore a converted Wandering Magician chestplate -> client crashed:
