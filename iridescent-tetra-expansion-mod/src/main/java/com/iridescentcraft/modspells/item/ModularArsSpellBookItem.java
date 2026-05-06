@@ -237,6 +237,48 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         appendArsMagicStatsTooltip(stack, tooltip);
     }
 
+    /**
+     * Display name preservation - return the source Ars spell book's name when
+     * the core module's variant key encodes the original item path. Replacement
+     * JSON stamps `ars_core/<source_item_path>` (e.g. `ars_core/novice_spell_book`,
+     * `ars_core/apprentice_spell_book`, `ars_core/archmage_spell_book`). Extract
+     * suffix, look up source item by ResourceLocation `ars_nouveau:<suffix>`,
+     * return its display name. Falls back to "Modular Tome" if unresolved.
+     */
+    @Override
+    public Component getName(ItemStack stack) {
+        try {
+            String sourcePath = readArsCoreMaterialSuffix(stack);
+            if (sourcePath != null && !sourcePath.isEmpty()) {
+                ResourceLocation sourceId = new ResourceLocation("ars_nouveau", sourcePath);
+                Item sourceItem = ForgeRegistries.ITEMS.getValue(sourceId);
+                if (sourceItem != null && sourceItem != net.minecraft.world.item.Items.AIR) {
+                    return Component.translatable(sourceItem.getDescriptionId());
+                }
+            }
+        } catch (Throwable t) { /* fall through */ }
+        return super.getName(stack);
+    }
+
+    /** Read the variant-key suffix of the ars_book/core slot's installed module. */
+    private static String readArsCoreMaterialSuffix(ItemStack stack) {
+        if (!(stack.getItem() instanceof IModularItem item)) return null;
+        try {
+            se.mickelus.tetra.module.ItemModuleMajor[] majors = item.getMajorModules(stack);
+            if (majors == null) return null;
+            for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
+                if (m == null) continue;
+                if (!"ars_book/core".equals(m.getSlot())) continue;
+                se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
+                if (v == null || v.key == null) continue;
+                int slash = v.key.lastIndexOf('/');
+                if (slash < 0 || slash == v.key.length() - 1) continue;
+                return v.key.substring(slash + 1);
+            }
+        } catch (Throwable t) { /* fall through */ }
+        return null;
+    }
+
     private static final Map<String, String> ARS_STAT_LABELS = new LinkedHashMap<>();
     static {
         ARS_STAT_LABELS.put("ars_nouveau:ars_nouveau.perk.max_mana",     "Max Mana");
