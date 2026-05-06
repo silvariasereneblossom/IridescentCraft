@@ -4,7 +4,12 @@ import com.google.common.cache.Cache;
 import com.google.common.cache.CacheBuilder;
 import com.google.common.collect.Multimap;
 import com.hollingsworth.arsnouveau.api.spell.SpellTier;
+import com.hollingsworth.arsnouveau.client.renderer.item.SpellBookRenderer;
 import com.hollingsworth.arsnouveau.common.items.SpellBook;
+import com.iridescentcraft.modspells.IridescentModularSpells;
+import net.minecraft.client.renderer.BlockEntityWithoutLevelRenderer;
+import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import java.util.function.Consumer;
 import net.minecraft.ChatFormatting;
 import net.minecraft.nbt.CompoundTag;
 import net.minecraft.network.chat.Component;
@@ -120,6 +125,36 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         super(properties, tier);
         DataManager.instance.moduleData.onReload(this::clearCaches);
         SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, TETRA_IDENTIFIER));
+    }
+
+    /**
+     * Explicitly hook the Ars SpellBookRenderer for this item so that the
+     * `parent: "builtin/entity"` model JSON resolves to a 3D book.
+     * SpellBook's superclass implementation does the same thing via an
+     * inner class, but inherited registrations have shown signal of not
+     * binding for Tetra-DeferredRegister-routed subclasses (pink-and-black
+     * mesh = missing-model fallback). Doing it ourselves removes any
+     * inheritance-chain ambiguity and gives us a one-shot log line on
+     * client init we can grep for.
+     */
+    @Override
+    public void initializeClient(Consumer<IClientItemExtensions> consumer) {
+        IridescentModularSpells.LOGGER.info(
+                "[ModularArsSpellBookItem] initializeClient firing -- registering SpellBookRenderer for {}",
+                this);
+        consumer.accept(new IClientItemExtensions() {
+            private BlockEntityWithoutLevelRenderer renderer;
+
+            @Override
+            public BlockEntityWithoutLevelRenderer getCustomRenderer() {
+                if (renderer == null) {
+                    renderer = new SpellBookRenderer();
+                    IridescentModularSpells.LOGGER.info(
+                            "[ModularArsSpellBookItem] lazily instantiated SpellBookRenderer");
+                }
+                return renderer;
+            }
+        });
     }
 
     // ===== IModularItem contract =====

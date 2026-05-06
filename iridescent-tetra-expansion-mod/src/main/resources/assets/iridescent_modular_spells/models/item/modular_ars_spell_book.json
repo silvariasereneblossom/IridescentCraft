@@ -1,46 +1,141 @@
 {
-  "credit": "Mirrors Ars Nouveau novice_spell_book.json transforms so SpellBookRenderer (inherited via ModularArsSpellBookItem extends SpellBook) draws the 3D book geometry. Source-aware 2D icon overrides intentionally omitted -- the 3D renderer is the cleaner path for Ars books and keeps NBT-driven color from the stock pipeline.",
+  "credit": "Made with Blockbench",
   "parent": "builtin/entity",
-  "texture_size": [128, 128],
+  "texture_size": [
+    128,
+    128
+  ],
   "display": {
     "thirdperson_righthand": {
-      "rotation": [0, 160, 0],
-      "translation": [0, -0.5, 5],
-      "scale": [0.55, 0.55, 0.55]
+      "rotation": [
+        0,
+        160,
+        0
+      ],
+      "translation": [
+        0,
+        -0.5,
+        5
+      ],
+      "scale": [
+        0.55,
+        0.55,
+        0.55
+      ]
     },
     "thirdperson_lefthand": {
-      "rotation": [0, 160, 0],
-      "translation": [0, -0.5, 5],
-      "scale": [0.55, 0.55, 0.55]
+      "rotation": [
+        0,
+        160,
+        0
+      ],
+      "translation": [
+        0,
+        -0.5,
+        5
+      ],
+      "scale": [
+        0.55,
+        0.55,
+        0.55
+      ]
     },
     "firstperson_righthand": {
-      "rotation": [-25, 140, 8],
-      "translation": [1.15, -2.5, 1.15],
-      "scale": [0.68, 0.68, 0.68]
+      "rotation": [
+        -25,
+        140,
+        8
+      ],
+      "translation": [
+        1.15,
+        -2.5,
+        1.15
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ]
     },
     "firstperson_lefthand": {
-      "rotation": [-25, 140, 8],
-      "translation": [1.15, -2.5, 1.15],
-      "scale": [0.68, 0.68, 0.68]
+      "rotation": [
+        -25,
+        140,
+        8
+      ],
+      "translation": [
+        1.15,
+        -2.5,
+        1.15
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ]
     },
     "ground": {
-      "translation": [0, 2, 0],
-      "scale": [0.66, 0.66, 0.66]
+      "translation": [
+        0,
+        2,
+        0
+      ],
+      "scale": [
+        0.66,
+        0.66,
+        0.66
+      ]
     },
     "gui": {
-      "rotation": [-159, -62, -135],
-      "translation": [-1.25, -4.75, 0],
-      "scale": [0.68, 0.68, 0.68]
+      "rotation": [
+        -159,
+        -62,
+        -135
+      ],
+      "translation": [
+        -1.25,
+        -4.75,
+        0
+      ],
+      "scale": [
+        0.68,
+        0.68,
+        0.68
+      ]
     },
     "head": {
-      "rotation": [0, 180, 0],
-      "translation": [0, 6.5, 0],
-      "scale": [0.66, 0.66, 0.66]
+      "rotation": [
+        0,
+        180,
+        0
+      ],
+      "translation": [
+        0,
+        6.5,
+        0
+      ],
+      "scale": [
+        0.66,
+        0.66,
+        0.66
+      ]
     },
     "fixed": {
-      "rotation": [0, 90, 0],
-      "translation": [-0.5, -5, 0],
-      "scale": [0.67, 0.67, 0.67]
+      "rotation": [
+        0,
+        90,
+        0
+      ],
+      "translation": [
+        -0.5,
+        -5,
+        0
+      ],
+      "scale": [
+        0.67,
+        0.67,
+        0.67
+      ]
     }
   }
 }
