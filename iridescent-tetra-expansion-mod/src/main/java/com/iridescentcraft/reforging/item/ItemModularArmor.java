@@ -491,13 +491,33 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
         };
     }
 
+    /** The slot name of the MAIN structural module for each armor piece. */
+    private static String mainSlotKey(ItemModularArmor armor) {
+        return switch (armor.getType()) {
+            case HELMET     -> "helmet/crown";
+            case CHESTPLATE -> "chestplate/chest_plate";
+            case LEGGINGS   -> "leggings/leg_plate";
+            case BOOTS      -> "boots/boot_sole";
+        };
+    }
+
     private static String readMajorMaterial(ItemStack stack) {
         if (!(stack.getItem() instanceof ItemModularArmor armor)) return null;
+        // Target the MAIN slot specifically so the displayed material always
+        // reflects the chest_plate / crown / leg_plate / boot_sole's material,
+        // not whichever lining/trim/pauldron iteration happens to return first.
+        // Bug fix 2026-05-06: pre-fix converted breastplates with emerald
+        // pauldrons would display as "Emerald Plate" even after the chest_plate
+        // was changed to leather, because the loop returned the pauldron variant.
+        String mainSlotName = mainSlotKey(armor);
+        if (mainSlotName == null) return null;
         try {
             se.mickelus.tetra.module.ItemModuleMajor[] majors = armor.getMajorModules(stack);
             if (majors == null) return null;
             for (se.mickelus.tetra.module.ItemModuleMajor m : majors) {
                 if (m == null) continue;
+                String slot = m.getSlot();
+                if (slot == null || !slot.equals(mainSlotName)) continue;
                 se.mickelus.tetra.module.data.VariantData v = m.getVariantData(stack);
                 if (v == null || v.key == null) continue;
                 int slash = v.key.lastIndexOf('/');
