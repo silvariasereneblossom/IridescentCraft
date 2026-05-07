@@ -3,6 +3,14 @@ loaderVersion="[47,)"
 license="MIT"
 issueTrackerURL="https://github.com/silvariasereneblossom/IridescentCraft/issues"
 
+# Mixin config registration. The manifest's `MixinConfigs:` attribute
+# alone is unreliable in this pack -- Sinytra Connector intercepts
+# mixin loading for fabric compat and silently drops manifest-only
+# Forge configs (verified failure mode: durability clamp never
+# applied, items destroyed instead of clamped to maxDamage-1).
+# Declaring the config here is what Forge 1.20.1 actually honors.
+mixinConfigs=["iridescent_durability_clamp.mixins.json"]
+
 [[mods]]
 modId="${mod_id}"
 version="${version}"
