@@ -64,10 +64,34 @@ try {
     'minecraft:netherite_ingot': 1, 'minecraft:elytra': 1
   }
 
+  // KubeJS `entity.type` returns the translation-key form
+  // ("entity.modid.path"), NOT the resource-location form. The
+  // kjs$getId() shim isn't always present on EntityType in this Rhino
+  // build either. Normalize with the same pattern used in
+  // affix_overworld_strip.js / scaling/mob_scaling_unified.js.
+  var entityResId = function(entity) {
+    try {
+      return String(entity.getType().builtInRegistryHolder().key().location())
+    } catch (e) {}
+    try {
+      var raw = String(entity.getType().toString())
+      var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
+      if (m) return m[1] + ':' + m[2]
+      return raw
+    } catch (e) { return '' }
+  }
+
+  // Item / passenger helpers same shape -- the kjs$getId() pattern
+  // doesn't exist on Item or EntityType for our Rhino build.
+  var itemId = function(item) {
+    try { return String(item.builtInRegistryHolder().key().location()) } catch (e) {}
+    try { return String(item.toString()) } catch (e) { return '?' }
+  }
+
   // Helpers ------------------------------------------------------------------
   var getStackInfo = function(stack) {
     if (!stack || stack.isEmpty()) return null
-    var info = { id: String(stack.getItem().kjs$getId()), count: stack.getCount() }
+    var info = { id: itemId(stack.getItem()), count: stack.getCount() }
     var tag = stack.getTag()
     if (tag) {
       info.tagKeys = []
@@ -92,6 +116,11 @@ try {
     return out
   }
 
+  var effectId = function(effect) {
+    try { return String(effect.builtInRegistryHolder().key().location()) } catch (e) {}
+    try { return String(effect.toString()) } catch (e) { return '?' }
+  }
+
   var collectEffects = function(mob) {
     var out = []
     try {
@@ -99,7 +128,7 @@ try {
       while (iter.hasNext()) {
         var e = iter.next()
         out.push({
-          id: String(e.getEffect().kjs$getId()),
+          id: effectId(e.getEffect()),
           amp: e.getAmplifier(),
           duration: e.getDuration()
         })
@@ -116,7 +145,7 @@ try {
       var iter = ps.iterator()
       while (iter.hasNext()) {
         var p = iter.next()
-        out.push({ id: String(p.getType().kjs$getId()), uuid: String(p.getStringUUID()) })
+        out.push({ id: entityResId(p), uuid: String(p.getStringUUID()) })
       }
       return out
     } catch (e) { return null }
@@ -126,7 +155,7 @@ try {
     try {
       var v = mob.getVehicle()
       if (!v) return null
-      return { id: String(v.getType().kjs$getId()), uuid: String(v.getStringUUID()) }
+      return { id: entityResId(v), uuid: String(v.getStringUUID()) }
     } catch (e) { return null }
   }
 
@@ -152,7 +181,7 @@ try {
   }
   var hasJockey = function(mob, passengers) {
     if (!passengers || passengers.length === 0) return false
-    var selfId = String(mob.getType().kjs$getId())
+    var selfId = entityResId(mob)
     for (var i = 0; i < passengers.length; i++) if (passengers[i].id !== selfId) return true
     return false
   }
@@ -170,7 +199,7 @@ try {
         // Hard skip on entities with abstract getItemBySlot. Their
         // AbstractMethodError escapes Rhino's try/catch and crashes
         // the server tick.
-        var dmsResId = String(entity.getType().kjs$getId())
+        var dmsResId = entityResId(entity)
         if (DMS_BROKEN_ENTITIES[dmsResId]) return
 
         var equip = collectEquipment(entity)
@@ -188,7 +217,7 @@ try {
         var pos = entity.position()
         var record = {
           ts:        Date.now(),
-          entity:    String(entity.getType().kjs$getId()),
+          entity:    dmsResId,
           uuid:      String(entity.getStringUUID()),
           dimension: String(entity.level().dimension().location()),
           pos:       [Math.round(pos.x() * 10) / 10, Math.round(pos.y() * 10) / 10, Math.round(pos.z() * 10) / 10],

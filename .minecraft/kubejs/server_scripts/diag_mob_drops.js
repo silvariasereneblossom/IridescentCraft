@@ -67,12 +67,29 @@ try {
     'minecraft:enchanted_book':      1, 'minecraft:enchanted_golden_apple': 1
   }
 
+  // KubeJS `entity.type` returns translation-key form, NOT
+  // resource-location form. kjs$getId() shim isn't always present on
+  // EntityType / Item / MobEffect for our Rhino build. Normalize.
+  var entityResId = function(entity) {
+    try { return String(entity.getType().builtInRegistryHolder().key().location()) } catch (e) {}
+    try {
+      var raw = String(entity.getType().toString())
+      var m = raw.match(/^entity\.([^.]+)\.(.+)$/)
+      if (m) return m[1] + ':' + m[2]
+      return raw
+    } catch (e) { return '' }
+  }
+  var itemId = function(item) {
+    try { return String(item.builtInRegistryHolder().key().location()) } catch (e) {}
+    try { return String(item.toString()) } catch (e) { return '?' }
+  }
+
   // Helpers (parallel to diag_mob_spawn.js; copy rather than share so the
   // two files can be reasoned about independently and removed without
   // breaking each other) -----------------------------------------------------
   var stackInfo = function(stack) {
     if (!stack || stack.isEmpty()) return null
-    var info = { id: String(stack.getItem().kjs$getId()), count: stack.getCount() }
+    var info = { id: itemId(stack.getItem()), count: stack.getCount() }
     var tag = stack.getTag()
     if (tag) {
       info.hasAffix = tag.contains('affix_data') ? 1 : 0
@@ -102,7 +119,7 @@ try {
       var iter = ps.iterator()
       while (iter.hasNext()) {
         var p = iter.next()
-        out.push({ id: String(p.getType().kjs$getId()), uuid: String(p.getStringUUID()) })
+        out.push({ id: entityResId(p), uuid: String(p.getStringUUID()) })
       }
       return out
     } catch (e) { return null }
@@ -112,7 +129,7 @@ try {
     try {
       var v = mob.getVehicle()
       if (!v) return null
-      return { id: String(v.getType().kjs$getId()), uuid: String(v.getStringUUID()) }
+      return { id: entityResId(v), uuid: String(v.getStringUUID()) }
     } catch (e) { return null }
   }
 
@@ -133,7 +150,7 @@ try {
       try {
         var entity = event.getEntity()
         if (!(entity instanceof Mob_dmd)) return
-        var dmdResId = String(entity.getType().kjs$getId())
+        var dmdResId = entityResId(entity)
         if (DMD_BROKEN_ENTITIES[dmdResId]) return
 
         // Snapshot pre-death state -- mob is removed from world before
@@ -141,7 +158,7 @@ try {
         var pos = entity.position()
         var preState = {
           ts:        Date.now(),
-          entity:    String(entity.getType().kjs$getId()),
+          entity:    dmdResId,
           uuid:      String(entity.getStringUUID()),
           dimension: String(entity.level().dimension().location()),
           pos:       [Math.round(pos.x() * 10) / 10, Math.round(pos.y() * 10) / 10, Math.round(pos.z() * 10) / 10],
@@ -154,7 +171,7 @@ try {
             try {
               var src = event.getSource()
               var atk = src ? src.getEntity() : null
-              return atk ? String(atk.getType().kjs$getId()) : null
+              return atk ? entityResId(atk) : null
             } catch (e) { return null }
           })()
         }
