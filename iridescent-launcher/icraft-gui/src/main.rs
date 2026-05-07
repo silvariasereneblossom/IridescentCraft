@@ -141,6 +141,9 @@ struct IcraftApp {
     running_task: Option<JoinHandle<()>>,
     /// Snapshot of install state, refreshed manually + after each task.
     status: InstallStatus,
+    /// Free-form server console input -- also reused as the username/arg
+    /// for the per-command quick buttons (op, ban, kick, ...).
+    console_input: String,
 }
 
 #[derive(Default, Clone)]
@@ -177,6 +180,7 @@ impl IcraftApp {
             log_rx: LOG_RX.lock().unwrap().take(),
             running_task: None,
             status: InstallStatus::default(),
+            console_input: String::new(),
         };
         app.refresh_status();
         app
@@ -354,6 +358,12 @@ impl IcraftApp {
                     icraft_core::run::launch_server(&c, false).map(|_| ())
                 });
             }
+            // Stop is intentionally NOT gated on `busy` -- it has to be
+            // clickable while a "serve" task is running, which is
+            // exactly when `busy` is true.
+            if ui.add(egui::Button::new("Stop").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                send_console("stop");
+            }
             if action_btn(ui, "Accept EULA", busy).clicked() {
                 self.spawn("accept-eula", move |c| icraft_core::eula::accept(&c));
             }
@@ -496,6 +506,56 @@ impl IcraftApp {
             }
         });
 
+        ui.add_space(8.0);
+        ui.heading("Server console");
+        ui.label(egui::RichText::new(
+            "Send commands to the running Forge server. The text field doubles as the username/arg for the per-command buttons -- type 'alice', click [op] -> sends 'op alice'."
+        ).small().weak());
+        ui.add_space(2.0);
+
+        ui.horizontal(|ui| {
+            ui.label("Command:");
+            let resp = ui.add(
+                egui::TextEdit::singleline(&mut self.console_input)
+                    .desired_width(f32::INFINITY)
+                    .hint_text("free-form command, OR username for op/ban/kick/...")
+            );
+            let enter = resp.lost_focus() && ui.input(|i| i.key_pressed(egui::Key::Enter));
+            if ui.button("Send").clicked() || enter {
+                if !self.console_input.trim().is_empty() {
+                    send_console(&self.console_input);
+                    self.console_input.clear();
+                }
+            }
+        });
+
+        ui.add_space(2.0);
+        ui.label(egui::RichText::new("With argument (uses input field):").small());
+        ui.horizontal_wrapped(|ui| {
+            for cmd in ["op", "deop", "kick", "ban", "pardon", "say", "tp", "gamemode"] {
+                if ui.button(cmd).clicked() {
+                    let arg = self.console_input.trim();
+                    if arg.is_empty() {
+                        log::warn!("[console] {cmd}: type the username/arg in the field first");
+                    } else {
+                        send_console(&format!("{cmd} {arg}"));
+                    }
+                }
+            }
+        });
+
+        ui.add_space(2.0);
+        ui.label(egui::RichText::new("No argument:").small());
+        ui.horizontal_wrapped(|ui| {
+            for cmd in ["save-all", "save-on", "save-off", "list", "seed",
+                        "weather clear", "weather rain", "weather thunder",
+                        "time set day", "time set night"] {
+                if ui.button(cmd).clicked() {
+                    send_console(cmd);
+                }
+            }
+        });
+
         if busy {
             ui.add_space(8.0);
             ui.horizontal(|ui| {
@@ -583,6 +643,19 @@ fn draw_colored_title(ui: &mut egui::Ui) {
             ui.label(rich);
         }
     });
+}
+
+/// Send `line` to the running server's stdin, logging both the
+/// outgoing command and any send error to the GUI log pane. Handles
+/// the "no server running" case gracefully -- operator just sees a
+/// warn line, no crash.
+fn send_console(line: &str) {
+    let line = line.trim();
+    if line.is_empty() { return; }
+    log::info!("[console] >> {line}");
+    if let Err(e) = icraft_core::run::send_console_line(line) {
+        log::warn!("[console] {e}");
+    }
 }
 
 fn list_jars(p: &Path) -> usize {

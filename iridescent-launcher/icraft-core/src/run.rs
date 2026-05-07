@@ -93,12 +93,16 @@ pub fn launch_server_watched(cfg: &ServerConfig, opts: WatchdogOptions) -> Resul
     log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
     let mut child = cmd.spawn().context("spawning java")?;
 
-    // Shared handle to the child's stdin -- both the operator-stdin
-    // forwarder thread and the watchdog soft-kick path write through
-    // this. Wrapped in Arc<Mutex<Option<...>>> so either side can
-    // release it on EOF without invalidating the other.
+    // Shared handle to the child's stdin -- the operator-stdin
+    // forwarder thread, the watchdog soft-kick path, and the
+    // GUI console-input panel all write through this. Wrapped in
+    // Arc<Mutex<Option<...>>> so any side can release it on EOF
+    // without invalidating the others. A clone is also published in
+    // the global ACTIVE_HANDLE for the duration of this run so the
+    // GUI's "Stop" / "op" / etc. buttons can find it.
     let child_stdin: Arc<Mutex<Option<ChildStdin>>> =
         Arc::new(Mutex::new(child.stdin.take()));
+    *ACTIVE_HANDLE.lock().unwrap() = Some(Arc::clone(&child_stdin));
     spawn_stdin_forwarder(Arc::clone(&child_stdin));
 
     let watchdog_active = opts.boot_timeout > Duration::ZERO || opts.idle_timeout > Duration::ZERO;
@@ -125,6 +129,9 @@ pub fn launch_server_watched(cfg: &ServerConfig, opts: WatchdogOptions) -> Resul
         kill_signal.store(true, Ordering::Relaxed);
         let _ = h.join();
     }
+    // Drop the global handle -- subsequent send_console_line calls
+    // will see "no server running" until the next launch.
+    *ACTIVE_HANDLE.lock().unwrap() = None;
 
     if killed_by_watchdog {
         log::warn!("[run] server killed by watchdog (hang detected)");
@@ -216,6 +223,36 @@ fn spawn_watchdog(
 const NEWLINE: &[u8] = b"\r\n";
 #[cfg(not(windows))]
 const NEWLINE: &[u8] = b"\n";
+
+/// Outer Mutex protects the slot itself; inner Arc<Mutex<...>> is
+/// shared with the forwarder + watchdog. Set on each launch_server_watched
+/// call, cleared on exit. `send_console_line` clones the inner Arc and
+/// drops the outer guard before locking the inner mutex, so console
+/// writes don't block the launch/exit machinery.
+static ACTIVE_HANDLE: Mutex<Option<Arc<Mutex<Option<ChildStdin>>>>> =
+    Mutex::new(None);
+
+/// Write a single command line into the running server's stdin, with
+/// a platform-appropriate line ending appended. Used by the GUI
+/// "Stop" / "op" / "ban" / etc. buttons and the free-form command
+/// input. Returns Err if no server is running or the stdin handle
+/// has been closed.
+pub fn send_console_line(line: &str) -> Result<()> {
+    let arc = {
+        let outer = ACTIVE_HANDLE.lock().unwrap();
+        outer.as_ref()
+            .ok_or_else(|| anyhow::anyhow!("no server running"))?
+            .clone()
+    };
+    let mut guard = arc.lock().unwrap();
+    let stdin = guard.as_mut()
+        .ok_or_else(|| anyhow::anyhow!("server stdin already closed"))?;
+    let trimmed = line.trim_end_matches(['\r', '\n']);
+    stdin.write_all(trimmed.as_bytes())?;
+    stdin.write_all(NEWLINE)?;
+    stdin.flush()?;
+    Ok(())
+}
 
 /// Forward bytes from the parent's stdin to the child's stdin so
 /// operator commands (`stop`, `op user`, ...) reach the Forge server.
