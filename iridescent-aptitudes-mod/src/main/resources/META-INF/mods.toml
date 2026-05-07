@@ -12,6 +12,15 @@ loaderVersion="${loader_version_range}" #mandatory This is typically bumped ever
 license="${mod_license}"
 # A URL to refer people to when problems occur with this mod
 #issueTrackerURL="https://change.me.to.your.issue.tracker.example.invalid/" #optional
+
+# Mixin config registration. The manifest's `MixinConfigs:` attribute
+# alone is unreliable in this pack -- Sinytra Connector intercepts the
+# mixin transformer chain for fabric compat and silently drops
+# manifest-only Forge mixin configs. Declaring the config here in
+# mods.toml is what Forge 1.20.1 actually honors when Connector is
+# present. Same fix as iridescent_durability_clamp's mods.toml.
+mixinConfigs=["justlevelingfork.mixins.json"]
+
 # A list of mods - how many allowed here is determined by the individual mod loader
 [[mods]] #mandatory
 # The modid of the mod
