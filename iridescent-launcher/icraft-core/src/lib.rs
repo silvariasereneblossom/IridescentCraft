@@ -25,6 +25,7 @@ pub mod diagnose;
 pub mod eula;
 pub mod firewall;
 pub mod git;
+pub mod github;
 pub mod install;
 pub mod mods;
 pub mod run;

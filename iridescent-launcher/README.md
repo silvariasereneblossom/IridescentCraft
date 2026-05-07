@@ -50,11 +50,13 @@ cargo build --release --target x86_64-pc-windows-gnu
 
 ## Phasing
 
-- **v0.1 (current):** native Rust orchestration, eula/run/crash/diagnose
-  ported natively, sync/install/mods shell out to the existing PS1/bat
-  scripts so the binary works end-to-end without a from-scratch port of
-  every phase.
-- **v0.2:** native GitHub diff sync (replaces `phase0_sync.ps1`).
+- **v0.1:** native Rust orchestration; eula/run/crash/diagnose/firewall
+  ported natively; sync/install/mods shell out to the existing PS1/bat
+  scripts.
+- **v0.2 (current):** native GitHub diff sync — replaces
+  `phase0_sync.ps1` end-to-end. `ureq` HTTP client, `zip` extractor for
+  the full-zip fallback, deterministic write-then-write-SHA with retry
+  semantics matching the PS1.
 - **v0.3:** native mod download via packwiz parsing (replaces
   `server_install.ps1` + `update_mods.ps1` + `cleanup_stale_jars.ps1`).
 - **v0.4:** `icraft-gui` egui shell with one button per subcommand and a
