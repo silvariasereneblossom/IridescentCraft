@@ -282,6 +282,129 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     apply_and_relaunch_gui(cfg)
 }
 
+/// Pull the latest binary out of the git working tree containing the
+/// running exe, stage it as `<exe>.new` (without touching the running
+/// binary -- Windows file lock), then apply + relaunch.
+///
+/// Setup (one-time per box, requires git installed):
+///
+///   FLAT LAYOUT (binary at working-tree root, e.g. dedicated binaries repo):
+///     mkdir icraft && cd icraft
+///     git init && git remote add origin <repo-url>
+///     git fetch origin --depth=1 && git checkout main
+///     # Run icraft-gui.exe from this dir.
+///
+///   NESTED LAYOUT (sparse-checkout of IridescentCraft):
+///     git clone --filter=blob:none --no-checkout <repo-url> icraft && cd icraft
+///     git sparse-checkout init --cone
+///     git sparse-checkout set .minecraft/server_distribution
+///     git checkout main
+///     # Run .minecraft\server_distribution\icraft-gui.exe from this dir.
+///
+/// Apply Self-Update from a binary inside either layout works
+/// identically -- the path-within-repo is computed dynamically.
+///
+/// Requires git on PATH (or ICRAFT_GIT). Does NOT require cargo.
+pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
+    use std::fs::File;
+    use std::process::{Command, Stdio};
+
+    let git = find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
+        "git not found. Install Git for Windows (https://git-scm.com/download/win) \
+         or set ICRAFT_GIT to your git.exe path."
+    ))?;
+    log::info!("[self-update] git: {}", git.display());
+
+    let exe = std::env::current_exe()?;
+    let repo_root = find_git_root(exe.parent().unwrap_or(&exe)).ok_or_else(|| anyhow::anyhow!(
+        "no git working tree found containing {}. Initialize one in the dir \
+         the exe runs from (see pull_repo_binary_apply_gui docs for the \
+         flat / sparse-checkout setup).",
+        exe.display()
+    ))?;
+    log::info!("[self-update] git working tree: {}", repo_root.display());
+
+    // Path of the running exe relative to the working tree, with
+    // forward slashes so git's pathspec accepts it on both platforms.
+    let rel = exe.strip_prefix(&repo_root)
+        .map_err(|_| anyhow::anyhow!(
+            "exe {} is not inside repo at {}",
+            exe.display(), repo_root.display()
+        ))?
+        .to_string_lossy()
+        .replace('\\', "/");
+
+    log::info!("[self-update] git fetch origin --depth=1");
+    let fetch = Command::new(&git)
+        .current_dir(&repo_root)
+        .args(["fetch", "origin", "--depth=1"])
+        .status()
+        .map_err(|e| anyhow::anyhow!("running git fetch: {e}"))?;
+    if !fetch.success() {
+        anyhow::bail!("git fetch failed (resolve auth/network and retry)");
+    }
+
+    // Resolve the remote ref to read the binary from. Track HEAD's
+    // upstream branch so weird branches (release/*, etc.) just work.
+    let upstream = Command::new(&git)
+        .current_dir(&repo_root)
+        .args(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"])
+        .output()?;
+    let remote_ref = if upstream.status.success() {
+        std::str::from_utf8(&upstream.stdout)?.trim().to_string()
+    } else {
+        // No upstream configured -- fall back to origin/HEAD.
+        "origin/HEAD".to_string()
+    };
+    log::info!("[self-update] target ref: {remote_ref}");
+
+    // Extract `rel` from `remote_ref` straight to <exe>.new. This
+    // bypasses git's working-tree merge entirely, so the running exe
+    // doesn't get touched (no Windows file-lock collision).
+    let exe_name = exe.file_name().and_then(|n| n.to_str())
+        .unwrap_or(if cfg!(windows) { "icraft-gui.exe" } else { "icraft-gui" });
+    let staged = exe.with_file_name(format!("{exe_name}.new"));
+    log::info!("[self-update] git show {remote_ref}:{rel} > {}", staged.display());
+    let staged_file = File::create(&staged)
+        .map_err(|e| anyhow::anyhow!("create {}: {e}", staged.display()))?;
+    let show = Command::new(&git)
+        .current_dir(&repo_root)
+        .args(["show", &format!("{remote_ref}:{rel}")])
+        .stdout(Stdio::from(staged_file))
+        .status()?;
+    if !show.success() {
+        let _ = fs::remove_file(&staged);
+        anyhow::bail!(
+            "git show failed -- is {rel} tracked in {remote_ref}? \
+             (make sure the dev box has pushed the binary)"
+        );
+    }
+    let bytes = fs::metadata(&staged).map(|m| m.len()).unwrap_or(0);
+    if bytes == 0 {
+        let _ = fs::remove_file(&staged);
+        anyhow::bail!(
+            "staged file is empty -- {rel} likely isn't tracked in {remote_ref}"
+        );
+    }
+    log::info!("[self-update] staged {} bytes", bytes);
+
+    apply_and_relaunch_gui(cfg)
+}
+
+/// Walk up from `start` for a directory containing a `.git` entry
+/// (file or dir -- worktrees use a file pointer). Returns the first
+/// such ancestor or None.
+fn find_git_root(start: &Path) -> Option<PathBuf> {
+    let mut cur = Some(start);
+    while let Some(c) = cur {
+        if c.join(".git").exists() {
+            return Some(c.to_path_buf());
+        }
+        cur = c.parent();
+    }
+    None
+}
+
 /// Stage + commit + push the freshly built binary to the repo so consumer
 /// boxes can pull it via Update Launcher. No-op silently if there's
 /// nothing to commit (binary byte-identical to the existing repo copy).

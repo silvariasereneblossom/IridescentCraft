@@ -388,14 +388,15 @@ impl IcraftApp {
                 self.spawn("install-mods", move |c| icraft_core::install::ensure_mods(&c));
             }
             if action_btn(ui, "Apply Self-Update", busy).clicked() {
-                // New flow: pull source from the repo, cargo build the GUI,
-                // stage the freshly built exe as .new, apply + relaunch.
-                // Falls back to the legacy staged-files apply (bat/ps1/sh
-                // for the old orchestrator) when no launcher source dir
-                // can be located.
+                // Pull-binary-from-git flow: fetch origin in the working
+                // tree containing the running exe, extract the new binary
+                // content as <exe>.new without overwriting the running
+                // file, apply + relaunch. Works on any box with git
+                // installed, no cargo / source needed. apply_staged runs
+                // first to handle any other staged files (bat/ps1/sh).
                 self.spawn("self-update", move |c| {
                     let _ = icraft_core::self_update::apply_staged(&c)?;
-                    if icraft_core::self_update::pull_build_apply_gui(&c)? {
+                    if icraft_core::self_update::pull_repo_binary_apply_gui(&c)? {
                         log::info!("[self-update] new GUI spawned -- exiting current process");
                         std::thread::sleep(std::time::Duration::from_millis(500));
                         std::process::exit(0);
