@@ -29,8 +29,10 @@ pub fn disable_quickedit_mode() {
         ENABLE_QUICK_EDIT_MODE, STD_INPUT_HANDLE,
     };
     unsafe {
+        // windows-sys models HANDLE as `isize` (not a pointer), so compare
+        // numerically: 0 is the null handle, -1 is INVALID_HANDLE_VALUE.
         let h = GetStdHandle(STD_INPUT_HANDLE);
-        if h.is_null() || h == INVALID_HANDLE_VALUE {
+        if h == 0 || h == INVALID_HANDLE_VALUE {
             return;
         }
         let mut mode: u32 = 0;
