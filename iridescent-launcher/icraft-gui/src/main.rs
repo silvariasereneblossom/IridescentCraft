@@ -153,6 +153,17 @@ struct InstallStatus {
 
 impl IcraftApp {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
+        // Force a dark, near-black background so the trans-flag heading
+        // and per-letter rainbow on "Server Launcher" stay legible. The
+        // eframe default leans toward a medium grey on some Windows
+        // setups which washed out the lighter stripes.
+        let mut visuals = egui::Visuals::dark();
+        let bg = egui::Color32::from_gray(18);   // ~#121212
+        visuals.window_fill = bg;
+        visuals.panel_fill = bg;
+        visuals.extreme_bg_color = egui::Color32::from_gray(8);
+        cc.egui_ctx.set_visuals(visuals);
+
         let persisted: PersistedState = cc.storage
             .and_then(|s| eframe::get_value(s, KEY_SERVER_DIR))
             .unwrap_or_default();
