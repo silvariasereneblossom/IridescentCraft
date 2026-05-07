@@ -14,4 +14,13 @@ icraft-core.workspace = true
 anyhow.workspace = true
 log.workspace = true
 env_logger.workspace = true
-# egui added in Phase 2; placeholder console UI for now.
+eframe.workspace = true
+egui.workspace = true
+serde.workspace = true
+
+# Native folder picker. Win-only -- a clean sync Win32 dialog ships
+# without extra system deps. On Linux the picker would need GTK3 or
+# the xdg-portal async runtime; both are heavier than the alternative
+# (a plain text input field that the user pastes/edits the path into).
+[target.'cfg(windows)'.dependencies]
+rfd = { version = "0.14", default-features = false }

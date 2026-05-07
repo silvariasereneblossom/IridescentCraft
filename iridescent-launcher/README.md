@@ -55,13 +55,14 @@ cargo build --release --target x86_64-pc-windows-gnu
   scripts.
 - **v0.2:** native GitHub diff sync — replaces `phase0_sync.ps1`
   end-to-end.
-- **v0.3 (current):** native mod download via packwiz parsing —
-  replaces `server_install.ps1` + `update_mods.ps1` +
-  `cleanup_stale_jars.ps1`. Handles strict TOML + line-regex fallback
-  for the apostrophe-in-name edge cases. `--dry-run` flag on
-  `update-mods` and `cleanup-jars` so testing never touches disk.
-- **v0.4:** `icraft-gui` egui shell with one button per subcommand and a
-  scrolling log pane.
+- **v0.3:** native mod download via packwiz parsing — replaces
+  `server_install.ps1` + `update_mods.ps1` + `cleanup_stale_jars.ps1`.
+- **v0.4 (current):** `icraft-gui` egui shell with native folder
+  picker (Windows), one button per subcommand, status badges (forge /
+  EULA / mod count / last sync SHA), scrolling log pane fed from
+  icraft-core via a `log` appender. Persists the install dir between
+  launches via eframe storage. Linux build excludes the GUI from
+  default workspace members (heavy eframe deps); see BUILD.md.
 
 ## Headless / service mode
 
