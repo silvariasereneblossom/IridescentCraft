@@ -99,6 +99,37 @@ EntityEvents.hurt(event => {
   if (!target || !target.living) return
   let weapon = player.mainHandItem
 
+  // ── Skyshatter: T4 thematic affix. Vertical launch on hit. ──
+  // 20% per qualifying hit, 2s cooldown per attacker, 0.65 upward
+  // velocity + 12-tick Levitation amp 0 (~0.6s) + lightning visual.
+  // Cooldown stops AoE/sweep edge from spamming the proc on crowds.
+  if (hasAffix(weapon, "Skyshatter")) {
+    let now = target.level.gameTime
+    let lastSkyshatter = player.persistentData.contains('icraft_skyshatter_cd')
+        ? player.persistentData.getLong('icraft_skyshatter_cd') : 0
+    if (now - lastSkyshatter >= 40 && Math.random() < 0.20) {
+      target.setDeltaMovement(0.0, 0.65, 0.0)
+      try { target.potionEffects.add('minecraft:levitation', 12, 0, false, false) } catch (e) {}
+      // Lightning visual + thunder cue, no real lightning entity (would
+      // damage + ignite). Particle column at the target's center plus a
+      // subdued thunder so it reads as "shattered skyward" rather than
+      // a lightning-strike kill.
+      try {
+        let lvl = target.level
+        lvl.spawnParticles('minecraft:flash', true,
+          target.x, target.y + 1.0, target.z, 1, 0, 0, 0, 0)
+        lvl.spawnParticles('minecraft:cloud', true,
+          target.x, target.y + 0.5, target.z, 20, 0.5, 0.5, 0.5, 0.05)
+        lvl.runCommandSilent(
+          'playsound minecraft:entity.lightning_bolt.thunder hostile @a ' +
+          target.x.toFixed(2) + ' ' + target.y.toFixed(2) + ' ' + target.z.toFixed(2) +
+          ' 0.4 1.5'
+        )
+      } catch (e) {}
+      player.persistentData.putLong('icraft_skyshatter_cd', now)
+    }
+  }
+
   // ── Harbinger's Mark: target takes +25% from ALL sources for 5s ──
   if (hasAffix(weapon, "Harbinger")) {
     target.potionEffects.add('minecraft:weakness', 100, 0, false, false)
