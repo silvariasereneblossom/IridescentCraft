@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:string"
+    ],
+    "count": 4
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "robed_leg_plate/string"
+}

@@ -189,6 +189,21 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     @Override
     public Cache<String, ItemProperties> getPropertyCache() { return propertyCache; }
 
+    /**
+     * Tetra-native durability clamp -- routes vanilla Item.damageItem
+     * into IModularItem.damageItemImpl which does
+     * `Math.min(maxDamage - currentDamage - 1, amount)`. Required because
+     * we extend ISS's SpellBook (not Tetra's ModularItem), so the
+     * ModularItem.damageItem override that normally delegates here is
+     * absent on our class. Without this, vanilla destroys the book at
+     * maxDamage instead of stopping at the inert threshold.
+     */
+    @Override
+    public <T extends net.minecraft.world.entity.LivingEntity> int damageItem(
+            ItemStack stack, int amount, T entity, java.util.function.Consumer<T> onBroken) {
+        return damageItemImpl(stack, amount, entity, onBroken);
+    }
+
     // ===== Held/offhand attribute pipeline (vanilla slot path) =====
 
     /**

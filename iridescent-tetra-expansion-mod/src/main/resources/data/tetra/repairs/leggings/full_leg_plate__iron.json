@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:iron_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/iron"
+}

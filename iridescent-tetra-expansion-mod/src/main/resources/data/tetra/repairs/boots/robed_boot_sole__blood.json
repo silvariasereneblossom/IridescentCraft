@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:rotten_flesh"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "robed_boot_sole/blood"
+}

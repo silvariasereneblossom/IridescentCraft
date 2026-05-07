@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:leather"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/leather"
+}

@@ -130,6 +130,19 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     }
 
     /**
+     * Tetra-native durability clamp -- mirrors the ISS-side override.
+     * Routes vanilla Item.damageItem into IModularItem.damageItemImpl
+     * (Math.min(maxDamage - currentDamage - 1, amount)). Required because
+     * we extend Ars's SpellBook (not Tetra's ModularItem), so the
+     * delegating override that ModularItem normally provides is missing.
+     */
+    @Override
+    public <T extends net.minecraft.world.entity.LivingEntity> int damageItem(
+            ItemStack stack, int amount, T entity, java.util.function.Consumer<T> onBroken) {
+        return damageItemImpl(stack, amount, entity, onBroken);
+    }
+
+    /**
      * Apply Tetra's material/module/improvement attributes when the book is
      * held in mainhand or offhand (the "shield slot"). Without this, vanilla
      * never queries the modular pipeline for spell book stacks (the parent

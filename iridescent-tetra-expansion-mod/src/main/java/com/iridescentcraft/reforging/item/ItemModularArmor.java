@@ -9,6 +9,7 @@ import com.iridescentcraft.reforging.skin.SkinRegistry;
 import net.minecraft.world.entity.EquipmentSlot;
 import net.minecraft.world.entity.ai.attributes.Attribute;
 import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
@@ -128,6 +129,28 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
         //      relog.
         SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, tetraIdentifier));
         DataManager.instance.moduleData.onReload(this::clearCaches);
+    }
+
+    /**
+     * Tetra-native durability clamp. Vanilla ItemStack.hurtAndBreak calls
+     * Item.damageItem(stack, amount, entity, onBroken) BEFORE running the
+     * destruction check. Tetra's `ModularItem` (the concrete base most
+     * Tetra items extend) overrides damageItem to delegate to
+     * IModularItem.damageItemImpl, which clamps via
+     *   Math.min(maxDamage - currentDamage - 1, amount)
+     * and posts ModularItemDamageEvent + applies BloodboundEffect.
+     *
+     * Our ItemModularArmor extends ArmorItem directly (not ModularItem)
+     * so without this override we inherit vanilla's no-op default and
+     * the clamp never fires. Result: items destroyed at maxDamage.
+     *
+     * IModularItem.damageItemImpl is a default method on the interface
+     * we already implement -- this override just routes vanilla's
+     * damageItem call into it. One line.
+     */
+    @Override
+    public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
+        return damageItemImpl(stack, amount, entity, onBroken);
     }
 
     // ── IModularItem abstract surface ──────────────────────────────────

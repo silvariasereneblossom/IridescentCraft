@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:blaze_rod"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/fire"
+}
