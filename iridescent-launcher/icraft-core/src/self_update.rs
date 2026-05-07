@@ -11,6 +11,7 @@
 
 use anyhow::Result;
 use std::fs;
+use std::path::{Path, PathBuf};
 
 use crate::config::ServerConfig;
 
@@ -143,4 +144,174 @@ pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
         .current_dir(&cfg.server_dir)
         .spawn()?;
     Ok(true)
+}
+
+/// Pull source from the repo, build the GUI in release mode, stage the
+/// resulting binary as `<live>.new`, then apply + relaunch.
+///
+/// Source location: `ICRAFT_LAUNCHER_SRC` env var if set, otherwise
+/// walks up from the running exe's dir for an `iridescent-launcher\`
+/// folder containing `Cargo.toml` + `icraft-gui\`.
+///
+/// Returns Ok(true) if a fresh build was applied + the new instance was
+/// spawned (caller must `std::process::exit(0)` to release the file
+/// lock). Ok(false) if no source dir was located -- caller can fall
+/// back to other update paths.
+///
+/// Requires `git` and `cargo` on PATH. Build output streams into the
+/// log pane (lines tagged `[cargo]`) so the operator gets real-time
+/// progress instead of a silent multi-minute hang on first build.
+pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
+    use std::io::{BufRead, BufReader};
+    use std::process::{Command, Stdio};
+
+    let Some(src_dir) = find_launcher_src() else {
+        log::info!(
+            "[self-update] no iridescent-launcher source located -- skipping pull+build. \
+             Set ICRAFT_LAUNCHER_SRC to the launcher source path to enable."
+        );
+        return Ok(false);
+    };
+    log::info!("[self-update] launcher source: {}", src_dir.display());
+
+    // Repo root for git pull -- the launcher dir's parent. (For a
+    // standalone iridescent-launcher checkout, the launcher dir IS
+    // the repo root, so use it directly when there's no parent .git.)
+    let repo_root: PathBuf = match src_dir.parent() {
+        Some(p) if p.join(".git").exists() => p.to_path_buf(),
+        _ => src_dir.clone(),
+    };
+
+    log::info!("[self-update] git pull --ff-only in {}", repo_root.display());
+    let pull = Command::new("git")
+        .current_dir(&repo_root)
+        .args(["pull", "--ff-only"])
+        .status()
+        .map_err(|e| anyhow::anyhow!("running `git pull` failed (is git on PATH?): {e}"))?;
+    if !pull.success() {
+        anyhow::bail!("git pull failed (resolve conflicts and retry)");
+    }
+
+    log::info!("[self-update] cargo build -p icraft-gui --release ...");
+    let mut child = Command::new("cargo")
+        .current_dir(&src_dir)
+        .args(["build", "-p", "icraft-gui", "--release"])
+        .stdout(Stdio::piped())
+        .stderr(Stdio::piped())
+        .spawn()
+        .map_err(|e| anyhow::anyhow!("running `cargo build` failed (is cargo on PATH?): {e}"))?;
+    // Stream both stdout (rare for cargo) and stderr (where status
+    // diagnostics go) into the log pane line-by-line.
+    let stdout = child.stdout.take().expect("piped");
+    let stderr = child.stderr.take().expect("piped");
+    let t1 = std::thread::spawn(move || {
+        for line in BufReader::new(stdout).lines().map_while(Result::ok) {
+            log::info!("[cargo] {line}");
+        }
+    });
+    let t2 = std::thread::spawn(move || {
+        for line in BufReader::new(stderr).lines().map_while(Result::ok) {
+            log::info!("[cargo] {line}");
+        }
+    });
+    let status = child.wait()?;
+    let _ = t1.join();
+    let _ = t2.join();
+    if !status.success() {
+        anyhow::bail!("cargo build failed (see [cargo] lines above)");
+    }
+
+    // Find the produced exe. Fast path = target/release; slow path
+    // walks the target tree (handles a custom default-target triple
+    // adding a target/<triple>/release/ subdir).
+    let target_dir = cargo_target_dir(&src_dir).unwrap_or_else(|_| src_dir.join("target"));
+    let exe_name = current_exe_name();
+    let built = find_built_exe(&target_dir, &exe_name)
+        .ok_or_else(|| anyhow::anyhow!(
+            "build succeeded but {exe_name} not found under {}",
+            target_dir.display()
+        ))?;
+    log::info!("[self-update] built: {}", built.display());
+
+    // Stage as <running>.new next to the running binary.
+    let live = std::env::current_exe()?;
+    let staged = live.with_file_name(format!("{exe_name}.new"));
+    fs::copy(&built, &staged)
+        .map_err(|e| anyhow::anyhow!("staging copy {} -> {}: {e}", built.display(), staged.display()))?;
+    log::info!("[self-update] staged: {}", staged.display());
+
+    // apply_and_relaunch_gui handles the rename + spawn dance.
+    apply_and_relaunch_gui(cfg)
+}
+
+fn current_exe_name() -> String {
+    std::env::current_exe()
+        .ok()
+        .and_then(|p| p.file_name().and_then(|n| n.to_str()).map(str::to_owned))
+        .unwrap_or_else(|| if cfg!(windows) { "icraft-gui.exe".into() } else { "icraft-gui".into() })
+}
+
+fn find_launcher_src() -> Option<PathBuf> {
+    if let Ok(p) = std::env::var("ICRAFT_LAUNCHER_SRC") {
+        let pb = PathBuf::from(p);
+        if is_launcher_src(&pb) { return Some(pb); }
+    }
+    // Walk up from the running exe's directory.
+    let exe = std::env::current_exe().ok()?;
+    let mut cur = exe.parent();
+    while let Some(c) = cur {
+        let candidate = c.join("iridescent-launcher");
+        if is_launcher_src(&candidate) { return Some(candidate); }
+        // Also check `c` itself, in case the exe is sitting inside the
+        // launcher source tree (e.g. running directly from target/release/).
+        if is_launcher_src(c) { return Some(c.to_path_buf()); }
+        cur = c.parent();
+    }
+    None
+}
+
+fn is_launcher_src(p: &Path) -> bool {
+    p.join("Cargo.toml").exists() && p.join("icraft-gui").join("Cargo.toml").exists()
+}
+
+fn cargo_target_dir(launcher_dir: &Path) -> Result<PathBuf> {
+    let out = std::process::Command::new("cargo")
+        .current_dir(launcher_dir)
+        .args(["metadata", "--format-version=1", "--no-deps"])
+        .output()?;
+    if !out.status.success() {
+        anyhow::bail!("cargo metadata exited with {:?}", out.status.code());
+    }
+    let v: serde_json::Value = serde_json::from_slice(&out.stdout)?;
+    let dir = v.get("target_directory").and_then(|d| d.as_str())
+        .ok_or_else(|| anyhow::anyhow!("no target_directory in cargo metadata"))?;
+    Ok(PathBuf::from(dir))
+}
+
+fn find_built_exe(target_dir: &Path, name: &str) -> Option<PathBuf> {
+    // Fast path: <target>/release/<name>
+    let direct = target_dir.join("release").join(name);
+    if direct.exists() { return Some(direct); }
+    // Slow path: recursively walk for the freshest match.
+    let mut newest: Option<(std::time::SystemTime, PathBuf)> = None;
+    let mut stack = vec![target_dir.to_path_buf()];
+    while let Some(d) = stack.pop() {
+        let Ok(rd) = fs::read_dir(&d) else { continue };
+        for entry in rd.flatten() {
+            let p = entry.path();
+            let Ok(ft) = entry.file_type() else { continue };
+            if ft.is_dir() {
+                stack.push(p);
+            } else if p.file_name().and_then(|n| n.to_str()) == Some(name) {
+                if let Ok(m) = entry.metadata() {
+                    if let Ok(t) = m.modified() {
+                        if newest.as_ref().map_or(true, |(prev, _)| t > *prev) {
+                            newest = Some((t, p));
+                        }
+                    }
+                }
+            }
+        }
+    }
+    newest.map(|(_, p)| p)
 }
