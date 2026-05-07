@@ -71,18 +71,49 @@ if not defined BUILT_EXE (
     exit /b 1
 )
 
-set "DEST=..\.minecraft\server_distribution\icraft-gui.exe"
+REM Destination assumes iridescent-launcher\ is a sibling of .minecraft\
+REM inside the full IridescentCraft repo. If you've cloned just the
+REM launcher folder standalone (no .minecraft\ at the parent), this bat
+REM won't know where to deploy. Set ICRAFT_REPO_ROOT to the IridescentCraft
+REM checkout root to override.
+if defined ICRAFT_REPO_ROOT (
+    set "DEST_DIR=%ICRAFT_REPO_ROOT%\.minecraft\server_distribution"
+) else (
+    set "DEST_DIR=%~dp0..\.minecraft\server_distribution"
+)
+set "DEST=!DEST_DIR!\icraft-gui.exe"
+
+if not exist "!DEST_DIR!" (
+    echo.
+    echo [rebuild_gui] ERROR: deploy directory does not exist:
+    echo [rebuild_gui]   !DEST_DIR!
+    echo.
+    echo [rebuild_gui] This bat assumes iridescent-launcher\ sits inside the
+    echo [rebuild_gui] full IridescentCraft repo (sibling of .minecraft\). If
+    echo [rebuild_gui] you cloned only the launcher folder standalone, set
+    echo [rebuild_gui] ICRAFT_REPO_ROOT to your IridescentCraft repo root, e.g.:
+    echo [rebuild_gui]   set ICRAFT_REPO_ROOT=C:\path\to\IridescentCraft
+    echo [rebuild_gui]   rebuild_gui.bat
+    pause
+    exit /b 1
+)
+
 echo [rebuild_gui] Found:    !BUILT_EXE!
-echo [rebuild_gui] Deploying to %DEST%
-copy /Y "!BUILT_EXE!" "%DEST%" >nul
+echo [rebuild_gui] Deploying to !DEST!
+copy /Y "!BUILT_EXE!" "!DEST!" >nul
 if errorlevel 1 (
-    echo [rebuild_gui] ERROR: copy failed.
+    echo [rebuild_gui] ERROR: copy failed (target may be locked by a running
+    echo [rebuild_gui]        icraft-gui.exe; close it and re-run).
     pause
     exit /b 1
 )
 
 REM Stage + commit + push from the repo root.
-cd /d "%~dp0.."
+if defined ICRAFT_REPO_ROOT (
+    cd /d "%ICRAFT_REPO_ROOT%"
+) else (
+    cd /d "%~dp0.."
+)
 
 where git >nul 2>&1
 if errorlevel 1 (
@@ -125,14 +156,14 @@ if errorlevel 1 (
 if "%RELAUNCH%"=="1" (
     echo.
     echo [rebuild_gui] Relaunching icraft-gui.exe...
-    set "GUI_EXE=%~dp0..\.minecraft\server_distribution\icraft-gui.exe"
-    if exist "!GUI_EXE!" (
+    REM Reuse !DEST! resolved earlier (honors ICRAFT_REPO_ROOT override).
+    if exist "!DEST!" (
         REM `start "" "<exe>"` -- empty title arg, then the exe path,
         REM detaches the new process from this cmd window.
-        start "" "!GUI_EXE!"
+        start "" "!DEST!"
         exit /b 0
     ) else (
-        echo [rebuild_gui] WARN: could not find !GUI_EXE!; not relaunching.
+        echo [rebuild_gui] WARN: could not find !DEST!; not relaunching.
     )
 )
 

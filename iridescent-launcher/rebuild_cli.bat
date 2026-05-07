@@ -67,10 +67,34 @@ if not defined BUILT_EXE (
     exit /b 1
 )
 
-set "DEST=..\.minecraft\server_distribution\icraft.exe"
+REM Destination assumes iridescent-launcher\ is a sibling of .minecraft\
+REM inside the full IridescentCraft repo. Set ICRAFT_REPO_ROOT to override
+REM (e.g. when running from a standalone iridescent-launcher checkout).
+if defined ICRAFT_REPO_ROOT (
+    set "DEST_DIR=%ICRAFT_REPO_ROOT%\.minecraft\server_distribution"
+) else (
+    set "DEST_DIR=%~dp0..\.minecraft\server_distribution"
+)
+set "DEST=!DEST_DIR!\icraft.exe"
+
+if not exist "!DEST_DIR!" (
+    echo.
+    echo [rebuild_cli] ERROR: deploy directory does not exist:
+    echo [rebuild_cli]   !DEST_DIR!
+    echo.
+    echo [rebuild_cli] This bat assumes iridescent-launcher\ sits inside the
+    echo [rebuild_cli] full IridescentCraft repo (sibling of .minecraft\). If
+    echo [rebuild_cli] you cloned only the launcher folder standalone, set
+    echo [rebuild_cli] ICRAFT_REPO_ROOT to your IridescentCraft repo root, e.g.:
+    echo [rebuild_cli]   set ICRAFT_REPO_ROOT=C:\path\to\IridescentCraft
+    echo [rebuild_cli]   rebuild_cli.bat
+    pause
+    exit /b 1
+)
+
 echo [rebuild_cli] Found:    !BUILT_EXE!
-echo [rebuild_cli] Deploying to %DEST%
-copy /Y "!BUILT_EXE!" "%DEST%" >nul
+echo [rebuild_cli] Deploying to !DEST!
+copy /Y "!BUILT_EXE!" "!DEST!" >nul
 if errorlevel 1 (
     echo [rebuild_cli] ERROR: copy failed. Is icraft.exe running ^(server up^)?
     echo [rebuild_cli]        Stop the server and re-run this bat.
@@ -79,7 +103,11 @@ if errorlevel 1 (
 )
 
 REM Stage + commit + push from the repo root.
-cd /d "%~dp0.."
+if defined ICRAFT_REPO_ROOT (
+    cd /d "%ICRAFT_REPO_ROOT%"
+) else (
+    cd /d "%~dp0.."
+)
 
 where git >nul 2>&1
 if errorlevel 1 (
