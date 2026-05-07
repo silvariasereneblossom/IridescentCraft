@@ -1,0 +1,17 @@
+[package]
+name = "icraft-gui"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "IridescentCraft server launcher - GUI shell"
+
+[[bin]]
+name = "icraft-gui"
+path = "src/main.rs"
+
+[dependencies]
+icraft-core.workspace = true
+anyhow.workspace = true
+log.workspace = true
+env_logger.workspace = true
+# egui added in Phase 2; placeholder console UI for now.

@@ -1,0 +1,133 @@
+//! Phase 5 — capture crash log and best-effort git push to TesterLogs.
+//!
+//! Replaces the trailing block of `iridescentserver.bat` plus
+//! `push_crash_logs.bat`. The bat does:
+//!   - timestamp a `crash-YYYY-MM-DD_HH-MM.log` file
+//!   - dump latest crash-reports/crash-*.txt + tail of latest.log
+//!   - mirror logs to TesterLogs/Server Logs/
+//!   - if the install is in a git working tree, commit + push
+//!
+//! Native Rust port handles the same logic with chrono + std::fs +
+//! [`crate::git`].
+
+use anyhow::Result;
+use chrono::Local;
+use std::fs;
+use std::io::Read;
+use std::path::PathBuf;
+
+use crate::config::ServerConfig;
+
+pub fn capture_crash_log(cfg: &ServerConfig, exit_code: i32) -> Result<PathBuf> {
+    let now = Local::now();
+    let stamp = now.format("%Y-%m-%d_%H-%M").to_string();
+    let path = cfg.server_dir.join(format!("crash-{stamp}.log"));
+
+    let mut body = String::new();
+    body.push_str("IridescentCraft Server Crash Log\n");
+    body.push_str("================================\n");
+    body.push_str(&format!("Date: {}\n", now.format("%Y-%m-%d %H:%M:%S")));
+    body.push_str(&format!("Exit Code: {exit_code}\n\n"));
+
+    // Latest crash report (newest by mtime under crash-reports/)
+    if let Some(latest) = newest_crash_report(cfg) {
+        body.push_str(&format!("--- Forge Crash Report: {} ---\n", latest.display()));
+        if let Ok(s) = fs::read_to_string(&latest) {
+            body.push_str(&s);
+        }
+        body.push('\n');
+    }
+
+    body.push_str("\n--- Last 200 lines of server log ---\n");
+    if let Ok(tail) = read_tail(&cfg.logs_dir().join("latest.log"), 200) {
+        body.push_str(&tail);
+    }
+
+    fs::write(&path, body)?;
+    log::info!("[crash] wrote {}", path.display());
+    Ok(path)
+}
+
+/// Best-effort: copy logs/ -> TesterLogs/Server Logs/ and run a
+/// commit + push from the parent working tree if any. Failures are
+/// logged but never fatal — the server should not refuse to exit
+/// because we couldn't push logs.
+pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
+    let src = cfg.logs_dir();
+    if !src.exists() { return Ok(()); }
+
+    // Mirror to TesterLogs/Server Logs/ inside the install tree if it
+    // exists. push_crash_logs.bat originally did this with xcopy.
+    let mirror = cfg.server_dir.join("TesterLogs").join("Server Logs");
+    if let Err(e) = mirror_dir(&src, &mirror) {
+        log::warn!("[crash] mirror to TesterLogs failed: {e}");
+    }
+
+    // Find a git working tree from cwd upwards. If none, we're done.
+    let Some(root) = crate::git::find_git_root(&cfg.server_dir) else {
+        log::debug!("[crash] no git working tree -- skip push");
+        return Ok(());
+    };
+    log::info!("[crash] git root: {}", root.display());
+
+    if let Err(e) = crate::git::add(&root, &["TesterLogs"]) {
+        log::warn!("[crash] git add failed: {e}");
+        return Ok(());
+    }
+    let msg = format!(
+        "server logs auto-mirror {}",
+        Local::now().format("%Y-%m-%d %H:%M")
+    );
+    if let Err(e) = crate::git::commit(&root, &msg) {
+        // Common case: nothing to commit. Don't escalate.
+        log::debug!("[crash] git commit no-op or failed: {e}");
+        return Ok(());
+    }
+    if let Err(e) = crate::git::push(&root) {
+        log::warn!("[crash] git push failed: {e}");
+    } else {
+        log::info!("[crash] logs pushed to remote");
+    }
+    Ok(())
+}
+
+fn newest_crash_report(cfg: &ServerConfig) -> Option<PathBuf> {
+    let dir = cfg.crash_reports();
+    if !dir.is_dir() { return None; }
+    let mut best: Option<(std::time::SystemTime, PathBuf)> = None;
+    for entry in fs::read_dir(&dir).ok()?.flatten() {
+        let p = entry.path();
+        if p.extension().and_then(|e| e.to_str()) != Some("txt") { continue; }
+        let m = entry.metadata().ok()?.modified().ok()?;
+        match &best {
+            None => best = Some((m, p)),
+            Some((bt, _)) if m > *bt => best = Some((m, p)),
+            _ => {}
+        }
+    }
+    best.map(|(_, p)| p)
+}
+
+fn read_tail(path: &std::path::Path, lines: usize) -> std::io::Result<String> {
+    let mut f = fs::File::open(path)?;
+    let mut all = String::new();
+    f.read_to_string(&mut all)?;
+    let collected: Vec<&str> = all.lines().collect();
+    let start = collected.len().saturating_sub(lines);
+    Ok(collected[start..].join("\n"))
+}
+
+fn mirror_dir(src: &std::path::Path, dst: &std::path::Path) -> std::io::Result<()> {
+    fs::create_dir_all(dst)?;
+    for entry in fs::read_dir(src)? {
+        let entry = entry?;
+        let from = entry.path();
+        let to = dst.join(entry.file_name());
+        if entry.file_type()?.is_dir() {
+            mirror_dir(&from, &to)?;
+        } else {
+            fs::copy(&from, &to)?;
+        }
+    }
+    Ok(())
+}

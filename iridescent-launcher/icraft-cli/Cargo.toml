@@ -1,0 +1,17 @@
+[package]
+name = "icraft-cli"
+version.workspace = true
+edition.workspace = true
+license.workspace = true
+description = "IridescentCraft server launcher - CLI / headless"
+
+[[bin]]
+name = "icraft"
+path = "src/main.rs"
+
+[dependencies]
+icraft-core.workspace = true
+anyhow.workspace = true
+clap.workspace = true
+log.workspace = true
+env_logger.workspace = true
