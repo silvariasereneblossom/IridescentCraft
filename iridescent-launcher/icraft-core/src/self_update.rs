@@ -246,6 +246,31 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
         ))?;
     log::info!("[self-update] built: {}", built.display());
 
+    // Deploy + commit + push the binary to the repo so consumer boxes
+    // (no git/cargo) can pull via Update Launcher's HTTP-based github_diff.
+    // Repo root: prefer ICRAFT_REPO_ROOT, else assume launcher source is
+    // a sibling of .minecraft\ inside the same repo (the nested layout).
+    let deploy_root = std::env::var("ICRAFT_REPO_ROOT").ok().map(PathBuf::from)
+        .or_else(|| src_dir.parent().map(Path::to_path_buf));
+    if let Some(root) = deploy_root {
+        let canonical = root.join(".minecraft").join("server_distribution").join(&exe_name);
+        if canonical.parent().map_or(false, |p| p.exists()) {
+            log::info!("[self-update] deploying canonical -> {}", canonical.display());
+            fs::copy(&built, &canonical)
+                .map_err(|e| anyhow::anyhow!("canonical copy: {e}"))?;
+            if let Err(e) = git_commit_push_binary(&git_exe, &root, &canonical, &exe_name) {
+                // Non-fatal: local apply still proceeds even if push fails.
+                log::warn!("[self-update] repo push skipped: {e:#}");
+            }
+        } else {
+            log::info!(
+                "[self-update] {} doesn't have .minecraft/server_distribution/; \
+                 skipping repo deploy (set ICRAFT_REPO_ROOT to enable)",
+                root.display()
+            );
+        }
+    }
+
     // Stage as <running>.new next to the running binary.
     let live = std::env::current_exe()?;
     let staged = live.with_file_name(format!("{exe_name}.new"));
@@ -255,6 +280,53 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
 
     // apply_and_relaunch_gui handles the rename + spawn dance.
     apply_and_relaunch_gui(cfg)
+}
+
+/// Stage + commit + push the freshly built binary to the repo so consumer
+/// boxes can pull it via Update Launcher. No-op silently if there's
+/// nothing to commit (binary byte-identical to the existing repo copy).
+/// Errors bubble up but the caller treats them as non-fatal.
+fn git_commit_push_binary(
+    git_exe: &Path,
+    repo_root: &Path,
+    canonical: &Path,
+    exe_name: &str,
+) -> Result<()> {
+    use std::process::Command;
+    // Stage. Use forward-slash path -- git accepts both on Windows.
+    let rel = format!(".minecraft/server_distribution/{exe_name}");
+    let add = Command::new(git_exe)
+        .current_dir(repo_root).args(["add", &rel])
+        .status()?;
+    if !add.success() {
+        anyhow::bail!("git add failed");
+    }
+    // No staged changes? Nothing to commit.
+    let unchanged = Command::new(git_exe)
+        .current_dir(repo_root).args(["diff", "--cached", "--quiet"])
+        .status()?.success();
+    if unchanged {
+        log::info!("[self-update] binary unchanged; nothing to push");
+        let _ = canonical; // suppress unused if we skip the rest
+        return Ok(());
+    }
+    let commit = Command::new(git_exe)
+        .current_dir(repo_root).args(["commit", "-m", &format!("{exe_name}: rebuild")])
+        .status()?;
+    if !commit.success() {
+        anyhow::bail!("git commit failed");
+    }
+    let push = Command::new(git_exe)
+        .current_dir(repo_root).arg("push")
+        .status()?;
+    if !push.success() {
+        anyhow::bail!(
+            "git push failed (resolve auth -- e.g. via GitHub Desktop credential \
+             helper -- and retry; the commit is local)"
+        );
+    }
+    log::info!("[self-update] pushed new {exe_name} to repo");
+    Ok(())
 }
 
 fn current_exe_name() -> String {
