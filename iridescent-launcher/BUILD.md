@@ -55,6 +55,44 @@ on Windows. Cross-compiling eframe from Linux to Windows is doable
 but requires shipping additional dlls and is fragile across egui
 releases.
 
+## Path A self-update flow
+
+The GUI's "Update Launcher" button pulls a fresh `icraft-gui.exe`
+from the repo and re-execs in place. Workflow on the dev side after
+making a GUI change:
+
+1. On the Windows build host, rebuild:
+   ```pwsh
+   cd iridescent-launcher
+   cargo build -p icraft-gui --release
+   ```
+2. Copy the binary into the modpack tree:
+   ```pwsh
+   copy target\release\icraft-gui.exe ..\.minecraft\server_distribution\icraft-gui.exe
+   ```
+3. Commit + push:
+   ```pwsh
+   cd ..
+   git add .minecraft/server_distribution/icraft-gui.exe
+   git commit -m "icraft-gui: rebuild"
+   git push
+   ```
+
+On the server box, the operator clicks "Update Launcher" in the GUI:
+the existing GitHub diff sync drops `icraft-gui.exe.new` next to the
+running binary, then `apply_and_relaunch_gui` renames the live exe to
+`.old`, swaps the new one in, and spawns the new instance. The old
+process exits so its file lock on `icraft-gui.exe` releases.
+
+> **Why a `.exe.old` backup?** Windows can't overwrite a running
+> binary. The rename-old / rename-new dance is the standard
+> workaround — `icraft-gui.exe.old` lingers on disk after each update
+> and is safe to delete on next launch.
+
+The same flow handles `icraft.exe` (the headless CLI), since both are
+listed in `SELF_UPDATE_FILES` and treated as staged updates by the
+sync code.
+
 ## Code-signing (optional)
 
 Unsigned `icraft.exe` triggers Windows SmartScreen on first launch.
