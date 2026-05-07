@@ -77,3 +77,7 @@ yungs_*/
 !.minecraft/server_distribution/mods/class-artifacts-forge-*.jar
 !.minecraft/distribution/client/mods/class-artifacts-forge-*.jar
 .claude/worktrees/
+
+# Per-host PAT for the auto log-push flow. Never commit.
+.icraft_token
+**/.icraft_token

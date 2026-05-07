@@ -65,6 +65,15 @@ pub fn push(cwd: &Path) -> Result<()> {
     run_git(cwd, &["push"]).map(|_| ())
 }
 
+/// Push using a PAT via `http.extraHeader=AUTHORIZATION: bearer <PAT>`.
+/// GitHub-recommended pattern; doesn't leak the PAT into the process
+/// command line, doesn't persist into .git/config. The header lives
+/// only for the duration of this invocation.
+pub fn push_with_pat(cwd: &Path, pat: &str) -> Result<()> {
+    let header = format!("http.extraHeader=AUTHORIZATION: bearer {pat}");
+    run_git(cwd, &["-c", &header, "push"]).map(|_| ())
+}
+
 /// Walk parents until a `.git` directory is found. Used by the crash
 /// log push flow to discover whether the install is nested in a working
 /// tree (Topology B: Z: mirror with the dev PC clone).

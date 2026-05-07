@@ -118,14 +118,36 @@ if "%SILENT%"=="1" (
     if exist "%~dp0..\..\.git" set "GIT_ROOT=%~dp0..\.."
     if not defined GIT_ROOT if exist "!REPO_ROOT!\..\..\.git" set "GIT_ROOT=!REPO_ROOT!\..\.."
 
+    REM PAT auth: prefer ICRAFT_GH_TOKEN env var; fall back to a
+    REM .icraft_token file next to this script (one line, the PAT only).
+    REM Both should be a fine-grained PAT scoped to Contents:write on
+    REM the IridescentCraft repo. Without one, plain `git push` runs
+    REM and likely fails silently if no credential helper is set up.
+    set "GIT_PAT="
+    if defined ICRAFT_GH_TOKEN set "GIT_PAT=!ICRAFT_GH_TOKEN!"
+    if not defined GIT_PAT if exist "%~dp0.icraft_token" (
+        set /p GIT_PAT=<"%~dp0.icraft_token"
+    )
+
     if defined GIT_ROOT (
         pushd "!GIT_ROOT!"
-        git add ".minecraft/server_distribution/TesterLogs/Server Logs/" >nul 2>&1
+        git add ".minecraft/server_distribution/TesterLogs/Server Logs/" 2>&1
         git diff --cached --quiet
         if errorlevel 1 (
-            git commit -m "Server Logs: session logs" >nul 2>&1
-            git push >nul 2>&1
-            echo [postexit] Server logs pushed ^(via !GIT_ROOT!^)
+            git commit -m "Server Logs: session logs" 2>&1
+            REM Push errors deliberately NOT silenced -- previous version
+            REM redirected stderr to nul which hid PAT/network failures.
+            if defined GIT_PAT (
+                git -c http.extraHeader="AUTHORIZATION: bearer !GIT_PAT!" push 2>&1
+            ) else (
+                echo [postexit] WARN: no PAT configured ^(set ICRAFT_GH_TOKEN or drop a .icraft_token next to this script^); attempting unauthenticated push
+                git push 2>&1
+            )
+            if errorlevel 1 (
+                echo [postexit] ERROR: git push failed ^(see message above^). Logs mirrored only.
+            ) else (
+                echo [postexit] Server logs pushed ^(via !GIT_ROOT!^)
+            )
         ) else (
             echo [postexit] No log changes to push
         )

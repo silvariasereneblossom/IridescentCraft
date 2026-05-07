@@ -83,12 +83,48 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
         log::debug!("[crash] git commit no-op or failed: {e}");
         return Ok(());
     }
-    if let Err(e) = crate::git::push(&root) {
-        log::warn!("[crash] git push failed: {e}");
-    } else {
-        log::info!("[crash] logs pushed to remote");
+
+    let pat = read_pat(cfg);
+    let push_result = match &pat {
+        Some(p) => crate::git::push_with_pat(&root, p),
+        None    => {
+            log::warn!("[crash] no PAT configured (set ICRAFT_GH_TOKEN or drop .icraft_token next to the launcher); attempting unauthenticated push");
+            crate::git::push(&root)
+        }
+    };
+    match push_result {
+        Ok(_)  => log::info!("[crash] logs pushed to remote"),
+        Err(e) => log::warn!("[crash] git push failed: {e}"),
     }
     Ok(())
+}
+
+/// Read the GitHub PAT used for log-push auth. Order of precedence:
+///   1. `ICRAFT_GH_TOKEN` environment variable (set system-wide on
+///      the server box, survives reboots, no on-disk file)
+///   2. `.icraft_token` file next to the running binary (one line,
+///      the PAT only)
+///   3. `.icraft_token` file in `cfg.server_dir` (modpack root)
+/// Returns None if none of the above yields a non-empty token.
+fn read_pat(cfg: &ServerConfig) -> Option<String> {
+    if let Ok(t) = std::env::var("ICRAFT_GH_TOKEN") {
+        let t = t.trim().to_string();
+        if !t.is_empty() { return Some(t); }
+    }
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(parent) = exe.parent() {
+            if let Some(t) = read_token_file(&parent.join(".icraft_token")) {
+                return Some(t);
+            }
+        }
+    }
+    read_token_file(&cfg.server_dir.join(".icraft_token"))
+}
+
+fn read_token_file(p: &std::path::Path) -> Option<String> {
+    let text = std::fs::read_to_string(p).ok()?;
+    let first = text.lines().next()?.trim().to_string();
+    if first.is_empty() { None } else { Some(first) }
 }
 
 fn newest_crash_report(cfg: &ServerConfig) -> Option<PathBuf> {

@@ -104,11 +104,32 @@ if [ "$SILENT" -eq 1 ]; then
     fi
 
     if [ -n "$GIT_ROOT" ]; then
-        git -C "$GIT_ROOT" add ".minecraft/server_distribution/TesterLogs/Server Logs/" >/dev/null 2>&1 || true
+        # PAT auth: prefer ICRAFT_GH_TOKEN env, fall back to .icraft_token
+        # next to this script. Same pattern as the .bat counterpart.
+        GIT_PAT="${ICRAFT_GH_TOKEN:-}"
+        TOKEN_FILE="$(dirname "$0")/.icraft_token"
+        if [ -z "$GIT_PAT" ] && [ -f "$TOKEN_FILE" ]; then
+            GIT_PAT="$(head -n1 "$TOKEN_FILE" | tr -d '[:space:]')"
+        fi
+
+        git -C "$GIT_ROOT" add ".minecraft/server_distribution/TesterLogs/Server Logs/" 2>&1 || true
         if ! git -C "$GIT_ROOT" diff --cached --quiet 2>/dev/null; then
-            git -C "$GIT_ROOT" commit -m "Server Logs: session logs" >/dev/null 2>&1 || true
-            git -C "$GIT_ROOT" push >/dev/null 2>&1 || true
-            echo "[postexit] Server logs pushed (via $GIT_ROOT)"
+            git -C "$GIT_ROOT" commit -m "Server Logs: session logs" 2>&1 || true
+            # Push errors NOT silenced -- previous version hid them.
+            if [ -n "$GIT_PAT" ]; then
+                if git -C "$GIT_ROOT" -c "http.extraHeader=AUTHORIZATION: bearer $GIT_PAT" push 2>&1; then
+                    echo "[postexit] Server logs pushed (via $GIT_ROOT)"
+                else
+                    echo "[postexit] ERROR: git push failed (see above). Logs mirrored only."
+                fi
+            else
+                echo "[postexit] WARN: no PAT (set ICRAFT_GH_TOKEN or drop a .icraft_token next to this script); attempting unauthenticated push"
+                if git -C "$GIT_ROOT" push 2>&1; then
+                    echo "[postexit] Server logs pushed (via $GIT_ROOT)"
+                else
+                    echo "[postexit] ERROR: git push failed (see above). Logs mirrored only."
+                fi
+            fi
         else
             echo "[postexit] No log changes to push"
         fi
