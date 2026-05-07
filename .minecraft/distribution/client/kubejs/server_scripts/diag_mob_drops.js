@@ -32,6 +32,17 @@ try {
   var ItemEntity_dmd = Java.loadClass('net.minecraft.world.entity.item.ItemEntity')
   var AABB_dmd = Java.loadClass('net.minecraft.world.phys.AABB')
 
+  // ISS wizards' getItemBySlot is abstract -- calling it throws
+  // AbstractMethodError which Rhino's try/catch CANNOT swallow.
+  // Hard-skip these before collectEquip(). See mob_scaling_unified.js.
+  var DMD_BROKEN_ENTITIES = {
+    'irons_spellbooks:necromancer': 1,
+    'irons_spellbooks:archevoker':  1,
+    'irons_spellbooks:cryomancer':  1,
+    'irons_spellbooks:pyromancer':  1,
+    'irons_spellbooks:priest':      1
+  }
+
   // Items we never expect to see drop from a normal mob. Anything matching
   // here triggers a forensic dump. Tuned narrow so legit drops (ender_pearl
   // from endermen, totem_of_undying from evokers, nether_star from wither,
@@ -122,6 +133,8 @@ try {
       try {
         var entity = event.getEntity()
         if (!(entity instanceof Mob_dmd)) return
+        var dmdResId = String(entity.getType().kjs$getId())
+        if (DMD_BROKEN_ENTITIES[dmdResId]) return
 
         // Snapshot pre-death state -- mob is removed from world before
         // the 1-tick callback fires.

@@ -36,6 +36,20 @@ try {
   var Mob_dms = Java.loadClass('net.minecraft.world.entity.Mob')
   var EquipmentSlot_dms = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
 
+  // Entities with abstract getItemBySlot / setItemSlot. Calling these
+  // throws AbstractMethodError, which Rhino's try/catch CANNOT catch
+  // (extends java.lang.Error, not Exception). Must early-exit BEFORE
+  // any item-slot access. Keep in sync with the BROKEN_ENTITIES Set
+  // in scaling/mob_scaling_unified.js -- those crashed the server on
+  // 2026-05-06 22:41 + 22:49 because this guard wasn't in place.
+  var DMS_BROKEN_ENTITIES = {
+    'irons_spellbooks:necromancer': 1,
+    'irons_spellbooks:archevoker':  1,
+    'irons_spellbooks:cryomancer':  1,
+    'irons_spellbooks:pyromancer':  1,
+    'irons_spellbooks:priest':      1
+  }
+
   // Items we never expect to see in equipment on a freshly spawned mob.
   // diamond / netherite gear lands here from Apotheosis-style spawn-equip
   // injectors and is the smoking gun for mob-farm gear flooding.
@@ -152,6 +166,12 @@ try {
         // Skip our own custom passive entities -- only hostile/neutral mobs
         // are interesting here. Mob class includes both, accept and let
         // filter conditions decide.
+
+        // Hard skip on entities with abstract getItemBySlot. Their
+        // AbstractMethodError escapes Rhino's try/catch and crashes
+        // the server tick.
+        var dmsResId = String(entity.getType().kjs$getId())
+        if (DMS_BROKEN_ENTITIES[dmsResId]) return
 
         var equip = collectEquipment(entity)
         var effects = collectEffects(entity)
