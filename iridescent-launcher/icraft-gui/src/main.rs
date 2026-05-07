@@ -25,6 +25,10 @@ const KEY_SERVER_DIR: &str = "icraft.server_dir";
 
 fn main() -> Result<(), eframe::Error> {
     install_log_router();
+    // No-op when launched as a GUI subsystem app (no console attached),
+    // but takes effect when icraft-gui.exe is launched from a cmd window
+    // or pinned to a console-bearing parent.
+    icraft_core::console::disable_quickedit_mode();
     // Best-effort cleanup of the .old backup left behind by the
     // previous Path A self-update. Windows can't overwrite the
     // running exe, so apply_and_relaunch_gui renames live -> .old

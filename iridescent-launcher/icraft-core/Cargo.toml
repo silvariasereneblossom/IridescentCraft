@@ -14,3 +14,9 @@ log.workspace = true
 ureq.workspace = true
 zip.workspace = true
 toml.workspace = true
+
+# Win32 console mode (disable QuickEdit at startup) + watchdog soft-kick
+# (write \r\n to child stdin before the hard kill). Pulled in only on
+# Windows targets; Linux/macOS builds don't compile or download this.
+[target.'cfg(windows)'.dependencies]
+windows-sys = { version = "0.52", features = ["Win32_System_Console", "Win32_Foundation"] }

@@ -20,6 +20,7 @@
 
 pub mod banner;
 pub mod config;
+pub mod console;
 pub mod crash;
 pub mod diagnose;
 pub mod eula;

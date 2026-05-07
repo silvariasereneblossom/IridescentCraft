@@ -10,16 +10,24 @@
 //!   - `idle_timeout`: max time without log activity once we've seen
 //!     any output (catches mid-runtime freezes / GC death spirals)
 //!
-//! Stdio passes through to the parent so the operator console still
-//! works (typing `stop`, `op username`, etc.). The watchdog watches
-//! the log file rather than piping stdout/stderr through us, which
-//! would break stdin forwarding.
+//! Stdio handling: stdout/stderr passes through to the parent. Stdin
+//! is `piped()` and a forwarder thread copies bytes from the parent's
+//! own stdin to the child. This preserves operator interactivity
+//! (typing `stop`, `op username`, etc.) while also letting the
+//! watchdog inject a newline into the child's stdin as a soft escalation
+//! before the hard kill -- many "stuck during boot" hangs are actually
+//! the JVM blocked on a stdout write because of QuickEdit / a pause
+//! prompt deeper in the boot chain, and a single newline unblocks
+//! them. (QuickEdit itself is also disabled at launcher startup via
+//! `console::disable_quickedit_mode`, but the soft kick remains as a
+//! belt-and-braces fallback for non-QuickEdit causes.)
 
 use anyhow::{Context, Result};
+use std::io::{Read, Write};
 use std::path::PathBuf;
-use std::process::{Command, Stdio};
+use std::process::{ChildStdin, Command, Stdio};
 use std::sync::atomic::{AtomicBool, Ordering};
-use std::sync::Arc;
+use std::sync::{Arc, Mutex};
 use std::thread;
 use std::time::{Duration, Instant};
 
@@ -75,19 +83,34 @@ pub fn launch_server_watched(cfg: &ServerConfig, opts: WatchdogOptions) -> Resul
     cmd.arg(format!("@{}", argfile.display()));
     cmd.arg("nogui");
 
-    // Inherit stdio so the operator can still type `stop` etc. The
-    // watchdog watches latest.log instead of piping output through us.
-    cmd.stdin(Stdio::inherit())
+    // Pipe stdin so the watchdog can write a newline as a soft kick
+    // before the hard kill. Stdout/stderr inherit so server logs
+    // appear directly in the operator console.
+    cmd.stdin(Stdio::piped())
        .stdout(Stdio::inherit())
        .stderr(Stdio::inherit());
 
     log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
     let mut child = cmd.spawn().context("spawning java")?;
 
+    // Shared handle to the child's stdin -- both the operator-stdin
+    // forwarder thread and the watchdog soft-kick path write through
+    // this. Wrapped in Arc<Mutex<Option<...>>> so either side can
+    // release it on EOF without invalidating the other.
+    let child_stdin: Arc<Mutex<Option<ChildStdin>>> =
+        Arc::new(Mutex::new(child.stdin.take()));
+    spawn_stdin_forwarder(Arc::clone(&child_stdin));
+
     let watchdog_active = opts.boot_timeout > Duration::ZERO || opts.idle_timeout > Duration::ZERO;
     let kill_signal = Arc::new(AtomicBool::new(false));
     let watchdog_handle = if watchdog_active {
-        Some(spawn_watchdog(cfg.logs_dir().join("latest.log"), opts, child.id(), kill_signal.clone()))
+        Some(spawn_watchdog(
+            cfg.logs_dir().join("latest.log"),
+            opts,
+            child.id(),
+            kill_signal.clone(),
+            Arc::clone(&child_stdin),
+        ))
     } else {
         log::info!("[run] watchdog disabled");
         None
@@ -116,6 +139,7 @@ fn spawn_watchdog(
     opts: WatchdogOptions,
     child_pid: u32,
     kill_signal: Arc<AtomicBool>,
+    child_stdin: Arc<Mutex<Option<ChildStdin>>>,
 ) -> thread::JoinHandle<()> {
     thread::spawn(move || {
         let started = Instant::now();
@@ -124,6 +148,10 @@ fn spawn_watchdog(
         // "Booted" once we've seen ANY non-zero log content. Before
         // that we apply boot_timeout; after, idle_timeout.
         let mut booted = last_seen_size > 0;
+        // True after we've written a newline to child stdin in
+        // response to the current stall. Reset when log activity
+        // resumes. Forces one poll_interval grace before the kill.
+        let mut soft_kicked = false;
 
         loop {
             thread::sleep(opts.poll_interval);
@@ -137,6 +165,10 @@ fn spawn_watchdog(
                     booted = true;
                     log::info!("[watchdog] boot detected ({} bytes in latest.log)", cur_size);
                 }
+                if soft_kicked {
+                    log::info!("[watchdog] soft kick worked -- log activity resumed");
+                    soft_kicked = false;
+                }
                 continue;
             }
 
@@ -146,8 +178,29 @@ fn spawn_watchdog(
             if silence < limit { continue; }
 
             let phase = if booted { "idle" } else { "boot" };
+
+            if !soft_kicked {
+                // First time hitting the timeout: try a newline before
+                // the kill. Resets the silence clock so we wait one
+                // more poll_interval (typically 10s) for activity to
+                // resume; if nothing happens, the next iteration takes
+                // the kill branch.
+                log::warn!(
+                    "[watchdog] {phase} timeout reached after {}s -- writing newline to stdin (soft kick)",
+                    silence.as_secs()
+                );
+                if let Some(stdin) = child_stdin.lock().unwrap().as_mut() {
+                    let _ = stdin.write_all(NEWLINE);
+                    let _ = stdin.flush();
+                }
+                soft_kicked = true;
+                last_seen_at = Instant::now();
+                continue;
+            }
+
+            // Already kicked -- still stalled. Hard kill.
             log::error!(
-                "[watchdog] {phase} timeout exceeded ({}s without log activity, since launch={}s) — killing pid {}",
+                "[watchdog] {phase} timeout exceeded after soft kick ({}s silent, since launch={}s) -- killing pid {}",
                 silence.as_secs(), started.elapsed().as_secs(), child_pid
             );
             if let Err(e) = kill_pid(child_pid) {
@@ -157,6 +210,37 @@ fn spawn_watchdog(
             return;
         }
     })
+}
+
+#[cfg(windows)]
+const NEWLINE: &[u8] = b"\r\n";
+#[cfg(not(windows))]
+const NEWLINE: &[u8] = b"\n";
+
+/// Forward bytes from the parent's stdin to the child's stdin so
+/// operator commands (`stop`, `op user`, ...) reach the Forge server.
+/// Detached daemon thread -- we don't join it. On EOF (parent stdin
+/// closed) or any write error (child stdin closed), the thread exits
+/// silently; the child stdin handle is dropped so the watchdog's
+/// future writes also no-op gracefully.
+fn spawn_stdin_forwarder(child_stdin: Arc<Mutex<Option<ChildStdin>>>) {
+    thread::spawn(move || {
+        let mut buf = [0u8; 1024];
+        let stdin = std::io::stdin();
+        let mut handle = stdin.lock();
+        loop {
+            match handle.read(&mut buf) {
+                Ok(0) => break,
+                Ok(n) => {
+                    let mut guard = child_stdin.lock().unwrap();
+                    let Some(stdin_w) = guard.as_mut() else { break; };
+                    if stdin_w.write_all(&buf[..n]).is_err() { *guard = None; break; }
+                    let _ = stdin_w.flush();
+                }
+                Err(_) => break,
+            }
+        }
+    });
 }
 
 fn file_size(p: &std::path::Path) -> u64 {

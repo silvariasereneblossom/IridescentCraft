@@ -109,6 +109,9 @@ enum Cmd {
 fn main() -> ExitCode {
     let cli = Cli::parse();
     init_logging(cli.verbose);
+    // Kill Windows QuickEdit so accidental clicks in the console can't
+    // freeze stdout and stall the spawned Java process. No-op elsewhere.
+    icraft_core::console::disable_quickedit_mode();
 
     let cfg = match cli.server_dir {
         Some(p) => ServerConfig::from_path(p),
