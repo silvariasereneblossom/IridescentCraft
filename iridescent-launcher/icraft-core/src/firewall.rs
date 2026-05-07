@@ -13,9 +13,10 @@ pub fn audit() -> Result<String> {
 
     #[cfg(target_os = "windows")]
     {
-        use std::process::Command;
+        use std::process::{Command, Stdio};
         let out = Command::new("netsh")
             .args(["advfirewall", "firewall", "show", "rule", "name=IridescentCraft Server"])
+            .stdin(Stdio::null())
             .output()?;
         let body = String::from_utf8_lossy(&out.stdout).into_owned();
         if body.contains("LocalPort:") || body.contains("Local Port:") {

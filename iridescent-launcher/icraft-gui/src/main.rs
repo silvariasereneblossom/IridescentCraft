@@ -25,6 +25,14 @@ const KEY_SERVER_DIR: &str = "icraft.server_dir";
 
 fn main() -> Result<(), eframe::Error> {
     install_log_router();
+    // Best-effort cleanup of the .old backup left behind by the
+    // previous Path A self-update. Windows can't overwrite the
+    // running exe, so apply_and_relaunch_gui renames live -> .old
+    // before swapping. We delete it on the next launch when no one
+    // holds a handle on it.
+    if let Ok(exe) = std::env::current_exe() {
+        let _ = std::fs::remove_file(exe.with_extension("exe.old"));
+    }
     let opts = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size([720.0, 600.0])
@@ -323,7 +331,7 @@ impl IcraftApp {
         ui.horizontal_wrapped(|ui| {
             if action_btn(ui, "Serve (full)", busy).clicked() {
                 self.spawn("serve", move |c| {
-                    icraft_core::serve(&c, icraft_core::ServeOptions { force_sync: false, headless: false }).map(|_| ())
+                    icraft_core::serve(&c, icraft_core::ServeOptions::default()).map(|_| ())
                 });
             }
             if action_btn(ui, "Run only", busy).clicked() {
@@ -357,6 +365,23 @@ impl IcraftApp {
             if action_btn(ui, "Apply Self-Update", busy).clicked() {
                 self.spawn("self-update", move |c| {
                     icraft_core::self_update::apply_staged(&c).map(|_| ())
+                });
+            }
+            if action_btn(ui, "Update Launcher", busy).clicked() {
+                // Path A: pull the latest icraft-gui.exe from the repo
+                // and re-exec. Sync first (drops .new), then apply +
+                // spawn the new binary. The current process exits so
+                // its file handle on icraft-gui.exe releases.
+                self.spawn("update-launcher", move |c| {
+                    icraft_core::sync::github_diff(&c, false)?;
+                    if icraft_core::self_update::apply_and_relaunch_gui(&c)? {
+                        log::info!("[update] new instance spawned -- exiting current GUI");
+                        // Brief pause so the log line flushes via the
+                        // GUI before we kill the process.
+                        std::thread::sleep(std::time::Duration::from_millis(500));
+                        std::process::exit(0);
+                    }
+                    Ok(())
                 });
             }
         });

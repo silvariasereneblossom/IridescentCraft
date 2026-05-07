@@ -74,3 +74,73 @@ pub fn relaunch(cfg: &ServerConfig) -> Result<i32> {
         return Ok(0);
     }
 }
+
+/// Path A self-update for the GUI: apply staged .new files and spawn
+/// the new binary. Caller should `std::process::exit(0)` immediately
+/// after this returns Ok(true) to release the old binary's file lock
+/// and let the new instance take over.
+///
+/// The binary self-update target is `current_exe()`, not
+/// `cfg.server_dir`, so the GUI can live in a different dir from the
+/// modpack tree if the user prefers. We check both locations for the
+/// `.new` files and apply whichever is present.
+pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
+    use std::fs;
+    let exe = std::env::current_exe()?;
+    let exe_name = exe.file_name()
+        .and_then(|n| n.to_str())
+        .ok_or_else(|| anyhow::anyhow!("current_exe has no filename: {}", exe.display()))?
+        .to_string();
+
+    // Two candidate `.new` locations: (1) next to the running binary,
+    // (2) inside the modpack server_dir. The sync flow drops .new
+    // files into server_dir; if the GUI binary itself sits there too,
+    // both paths point at the same file.
+    let here = exe.with_file_name(format!("{exe_name}.new"));
+    let there = cfg.server_dir.join(format!("{exe_name}.new"));
+
+    let staged = if here.exists() {
+        Some(here)
+    } else if there.exists() && there != exe.with_file_name(&exe_name) {
+        Some(there)
+    } else {
+        None
+    };
+
+    let Some(staged) = staged else {
+        log::info!("[self-update] no {exe_name}.new staged; nothing to apply");
+        return Ok(false);
+    };
+
+    log::info!("[self-update] applying {} -> {}", staged.display(), exe.display());
+
+    // Windows can't overwrite the running binary. Workaround: rename
+    // the running exe to .old, then rename .new to the live name. The
+    // OS allows this because we're moving a held-open file to a new
+    // path, then placing a new file at the now-vacated path.
+    #[cfg(windows)]
+    {
+        let backup = exe.with_extension("exe.old");
+        let _ = fs::remove_file(&backup);
+        fs::rename(&exe, &backup)
+            .map_err(|e| anyhow::anyhow!("rename running exe -> .old: {e}"))?;
+        if let Err(e) = fs::rename(&staged, &exe) {
+            // Try to restore the backup before bubbling
+            let _ = fs::rename(&backup, &exe);
+            return Err(anyhow::anyhow!("rename .new -> live: {e}"));
+        }
+    }
+
+    #[cfg(not(windows))]
+    {
+        fs::rename(&staged, &exe)
+            .map_err(|e| anyhow::anyhow!("rename .new -> live: {e}"))?;
+    }
+
+    // Spawn the new binary as a detached child. Caller exits.
+    log::info!("[self-update] spawning new instance: {}", exe.display());
+    std::process::Command::new(&exe)
+        .current_dir(&cfg.server_dir)
+        .spawn()?;
+    Ok(true)
+}
