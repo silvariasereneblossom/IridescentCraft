@@ -15,19 +15,21 @@ pub const REPO_SERVER_PATH: &str = ".minecraft/server_distribution";
 
 /// JAR filenames that are NOT managed by packwiz and must be
 /// preserved by `cleanup_stale_jars`. Mirror of the `customJars`
-/// arrays in `iridescentserver.bat` and `update_mods.sh`.
+/// arrays in `cleanup_stale_jars.ps1` and `update_mods.ps1`.
 pub const CUSTOM_JARS: &[&str] = &[
     "iridescent_codex_data.jar",
     "iridescent_origins-1.0.0.jar",
     "iridescent_biomes-1.0.0.jar",
+    "iridescent_tetra_expansion-1.0.0.jar",
+    "iridescent_durability_clamp-0.1.0.jar",
+    "iridescent_difficulty-0.1.0.jar",
+    "justlevelingfork-1.2.1-iridescent.1.jar",
     "mek_walkable_cables-1.0.1.jar",
     "offlineskins-1.20.1-v1.jar",
     "zeta_racefix-1.0.0.jar",
-    "iridescent_durability_clamp-0.1.0.jar",
-    "iridescent_tetra_expansion-1.0.0.jar",
-    "justlevelingfork-1.2.1-iridescent.1.jar",
     "Patchouli-1.20.1-85-FORGE.jar",
     "ars_nouveau-1.20.1-4.12.7-all.jar",
+    "class-artifacts-forge-2.0.5.jar",
 ];
 
 /// Aikar JVM flags — server-tuned G1GC config copied from

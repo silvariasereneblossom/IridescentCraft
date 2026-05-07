@@ -13,3 +13,4 @@ chrono.workspace = true
 log.workspace = true
 ureq.workspace = true
 zip.workspace = true
+toml.workspace = true

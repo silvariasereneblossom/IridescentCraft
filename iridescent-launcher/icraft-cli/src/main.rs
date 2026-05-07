@@ -64,10 +64,18 @@ enum Cmd {
     StripClientMods,
 
     /// Sync mod jars against the .index allowlist (Phase 2.7).
-    UpdateMods,
+    UpdateMods {
+        /// Log what would be downloaded/removed without touching disk.
+        #[arg(long)]
+        dry_run: bool,
+    },
 
     /// Remove jars not in the allowlist + customJars (Phase 2.8).
-    CleanupJars,
+    CleanupJars {
+        /// Log what would be removed without touching disk.
+        #[arg(long)]
+        dry_run: bool,
+    },
 
     /// Write `eula=true` to eula.txt (Phase 3).
     AcceptEula,
@@ -142,8 +150,16 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
         Cmd::InstallForge => { install::ensure_forge(cfg)?; Ok(0) }
         Cmd::InstallMods => { install::ensure_mods(cfg)?; Ok(0) }
         Cmd::StripClientMods => { mods::strip_client_mods(cfg)?; Ok(0) }
-        Cmd::UpdateMods => { mods::update_mods(cfg)?; Ok(0) }
-        Cmd::CleanupJars => { mods::cleanup_stale_jars(cfg)?; Ok(0) }
+        Cmd::UpdateMods { dry_run } => {
+            let opts = if *dry_run { mods::ModSyncOpts::dry() } else { mods::ModSyncOpts::live() };
+            mods::update_mods_with(cfg, opts)?;
+            Ok(0)
+        }
+        Cmd::CleanupJars { dry_run } => {
+            let opts = if *dry_run { mods::ModSyncOpts::dry() } else { mods::ModSyncOpts::live() };
+            mods::cleanup_stale_jars_with(cfg, opts)?;
+            Ok(0)
+        }
         Cmd::AcceptEula => { eula::accept(cfg)?; Ok(0) }
         Cmd::Run => {
             let code = run::launch_server(cfg, false)?;
