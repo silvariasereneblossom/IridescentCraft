@@ -4,6 +4,49 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-07 — Reforged armor: workbench Repair tab now appears
+
+Bug report: holding a reforged armor piece at the Tetra workbench showed no Repair tab at all. Tetra cycles through installed modules and uses each module's material as the repair input — but only if the item registered a `RepairSchematic` at construction time.
+
+Root cause: `ItemModularArmor`'s constructor never called `SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, identifier))`. The pattern lives in both `ModularSpellBookItem` and `ModularArsSpellBookItem` (line 133 of each) but was missed when the armor item was originally written. Same audit also revealed the missing `DataManager.instance.moduleData.onReload(this::clearCaches)` call -- workbench/datapack changes to module data needed a relog to propagate.
+
+Fix: constructor now takes a per-piece `tetraIdentifier` parameter and runs both registrations. Each of the four pieces gets a distinct identifier (`iridescent_reforged_helmet`/`chestplate`/`leggings`/`boots`). Repair tab now shows up; cache flushes on `/reload`.
+
+---
+
+## 2026-05-07 — Connector mixin-registration fix (durability clamp + 9 aptitude mixins)
+
+User report: items disappearing on break (vanilla AND modular). Investigation found the `iridescent-durability-clamp` mixin had never injected -- the synchronous clamp at `ItemStack.hurtAndBreak` was a no-op. Death penalty's poll-based clamp was the only line of defense but couldn't catch single-frame bursts ahead of vanilla's destruction logic.
+
+Audit revealed `iridescent-aptitudes-mod` had the same regression -- 9 mixins (`MixPlayer`, `MixLivingEntity`, `MixCraftingMenu`, `MixForgeGui`, etc.) silently never injecting for weeks.
+
+Root cause: both mods registered their mixin configs ONLY via `META-INF/MANIFEST.MF` `MixinConfigs:`. Sinytra Connector intercepts the mixin transformer chain to relay fabric-mod mixins, and silently drops Forge configs registered via the manifest alone. The `mods.toml mixinConfigs=["..."]` field IS preserved -- one line, fixes both mods.
+
+Wider audit: every iridescent-* mod with mixin code now has `mixinConfigs=` declared in its mods.toml. Lessons-learned entry shipped to internal repo for future mod authors.
+
+---
+
+## 2026-05-07 — Skyshatter affix: T4 gate + sky-launch on-hit effect
+
+Custom Skyshatter affix (created March 15 in a 54-affix batch) was overtuned: ancient-tier `+4.0 attack_knockback` vs stock `knockback` affix's `+2.5`. Compounding with Punch enchants and ImprovedMobs weapon rolls produced extreme launch on melee hits. User remembered creating the values as placeholders early in pack planning.
+
+Redesigned to be a **T4 thematic affix** rather than a raw kb amplifier:
+
+- **Rarity gated to mythic + ancient only** (deleted common/uncommon/rare/epic from the values block). Apoth treats absent rarities as "this affix can't roll there" -- naturally gates to T4 player loot. Mob-equipped affixes via the 11% Random Affix Chance roll almost exclusively common/uncommon, so this also blocks ~99% of mob spawns.
+- **Values tightened** -- mythic max 2.25, ancient max 3.00 (was 3.25 / 4.00). Still distinct from stock `knockback` so the affix has its own identity.
+- **New on-hit effect** -- 20% chance per hit, 2s cooldown per attacker: target gets a pure vertical 0.65 launch + 12-tick (0.6s) Levitation amp 0 + flash particle column + cloud burst + subdued thunder cue. Effect is the real payoff at high tier; the +knockback number is just the baseline.
+- **Mob-strip script** -- `affix_skyshatter_mob_strip.js` runs in any dimension on any spawned mob (boss or not), surgically removes `apotheosis:skyshatter` from `affix_data` if present. Belt-and-suspenders if a mythic+ boss ever rolls it.
+
+---
+
+## 2026-05-06 — Iridescent Launcher (server-side) — EXPERIMENTAL
+
+Single-binary Rust replacement for the `.bat` / `.ps1` / `.sh` stack under `.minecraft/server_distribution/`. CLI for headless service operation (NSSM, systemd) plus an egui GUI with one button per subcommand. v0.1 → v0.5 shipped this week.
+
+See [systems/icraft-launcher.md](systems/icraft-launcher.md) for full reference. **Marked experimental** -- not the canonical launch path yet; existing `iridescentserver.bat` continues to work and remains supported until the launcher has had a couple of weeks of real-world testing on the dedicated server box.
+
+---
+
 ## 2026-05-04 — Modular Ars spell book: primaryAttributes coefficients fixed (the real 150%/250% source)
 
 User intuition was right: the inflated `+150% Spell Damage / +250% Mana Regen / +15 Max Mana` on a freshly converted Ars book was a "default fall-through" pattern, exactly the same shape as the emerald-robe-malus issue (`feedback_robe_malus_layering.md`). Tooltip cross-checked against `/data get entity @s SelectedItem` — the book had `back_cover_material: back_cover/iron`, `spine_material: spine/iron` (iron primary stat = 5 in `tetra:metal/iron.json`).

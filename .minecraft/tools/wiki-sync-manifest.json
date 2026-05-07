@@ -18,6 +18,7 @@
     "(classes/overview.md": "(Classes-and-Races",
     "(systems/overview.md": "(Systems-Overview",
     "(systems/tetra-materials.md": "(Tetra-Materials",
+    "(systems/icraft-launcher.md": "(Iridescent-Launcher",
     "(kubejs/overview.md": "(KubeJS-Overview",
     "(mods/overview.md": "(Mod-Overview",
     "(mods/custom.md": "(Custom-Mods",
@@ -60,7 +61,8 @@
     { "src": ".minecraft/wiki/progression/overview.md",                            "dst": "Progression-Overview.md" },
     { "src": ".minecraft/wiki/protocols/8-client-sync.md",                         "dst": "Client-Sync-Protocol.md" },
     { "src": ".minecraft/wiki/systems/overview.md",                                "dst": "Systems-Overview.md" },
-    { "src": ".minecraft/wiki/systems/tetra-materials.md",                         "dst": "Tetra-Materials.md" }
+    { "src": ".minecraft/wiki/systems/tetra-materials.md",                         "dst": "Tetra-Materials.md" },
+    { "src": ".minecraft/wiki/systems/icraft-launcher.md",                         "dst": "Iridescent-Launcher.md" }
   ],
   "wiki_only": [
     "_comment: Pages that exist on the public wiki only and are not synced. The sync script will leave these untouched.",

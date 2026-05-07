@@ -122,10 +122,40 @@ Forge requires network channel lists to match between client and server. Mods th
 - **Forensic infrastructure** (`cap_player_knockback`, `diag_player_velocity`, `diag_player_launch`) stays in place. The MobEffect monitor + 4Hz Y-vel scan will catch any future bypass attempts on the first hit rather than waiting for tester reports.
 - **Lessons / postmortem:** see `IridescentCraft-internal/dev/lessons-learned.md` for the iteration chain (5+ KubeJS-Rhino + Forge-mapping issues fixed during the diag-script bring-up: PlayerEvents-vs-ClientEvents scope, EventPriority.MONITOR doesn't exist in Forge, `entity.level` field-not-method, `getGameTime` mapping, `java.io.File` blocked by class filter).
 
-### Spider drop mystery (diamond + ender_eye + iron_pick) (2026-04-26)
-- **Status:** Symptom resolved, root cause not positively identified
-- **Description:** Tester reported vanilla spiders dropping diamond + ender_eye + iron_pick. Static analysis exhausted: Apotheosis (3 priority bands), Multiplayerbosses, Mahoutsukai, ConfigurableExtraMobDrops, ImprovedMobs, Sophisticated Backpacks all ruled out. No mod overrides `data/minecraft/loot_tables/entities/spider.json` and our GLM allowlist uses `"replace": true`.
-- **Mitigation:** `loot_overhaul.js` LootJS strips `minecraft:diamond` + `minecraft:ender_eye` from any ENTITY loot type. Empirically resolves the symptom; tester confirms recent spider kills clean. `dropdiag` would catch the actual injector if it fires again — leave armed for forensics.
+### Spider drop mystery (diamond + ender_eye + iron_pick) (2026-04-26, refresh 2026-05-07)
+- **Status:** Symptom resolved, root cause still not identified — runtime forensics now armed
+- **Description:** Tester reported vanilla spiders dropping diamond + ender_eye + iron_pick. Static analysis exhausted: Apotheosis (3 priority bands), Multiplayerbosses, Mahoutsukai, ConfigurableExtraMobDrops, ImprovedMobs, Sophisticated Backpacks all ruled out. No mod overrides `data/minecraft/loot_tables/entities/spider.json` and our GLM allowlist uses `"replace": true`. **2026-05-07 refresh:** Botania Loonium considered (its stronghold loot table drops `chests/stronghold_corridor` which contains diamond + ender_eye) — ruled out, requires player-crafted Loonium flower + structure proximity, neither of which match the user's overworld-near-spawn observation.
+- **Mitigation:** `loot_overhaul.js` LootJS strips `minecraft:diamond` + `minecraft:ender_eye` from any ENTITY loot type. Empirically resolves the symptom; tester confirms recent spider kills clean.
+- **New diagnostic infrastructure (2026-05-07):** `diag_mob_spawn.js` + `diag_mob_drops.js` shipped. On every mob spawn / death matching anomaly filters (affix data, non-vanilla effects, jockey link, tier-restricted equipment), JSON record logs to `kubejs/server.log` under `[MOBDIAG-SPAWN]` / `[MOBDIAG-DROP]`. `tools/extract_mobdiag.{sh,bat}` collects matching lines into `logs/mobdiag.log`. Next time the spider+drop pattern is observed, the JSON `tagKeys` field will reveal which mod's NBT compound is on the entity (settles the Java-mixin-injection hypothesis).
+
+### Spider+skeleton jockey rate inflated 12× (2026-05-07)
+- **Status:** Active — design call pending
+- **Description:** Tester reported encountering spider-skeleton jockeys frequently. Vanilla rate is ~1% per spider spawn. `config/majruszsdifficulty.json:191` sets `jockey_spawn.chance: 0.125` (12.5%) gated to `expert+` game stage. Combined with ImprovedMobs equipment rolls (30% weapon chance + 0.15·difficulty) and Apotheosis Random Affix Chance (11%), late-game encounters with affixed-bow skeleton jockeys are routine rather than rare.
+- **Investigation:** dial down to `0.02` (2%) for "rare encounter" feel, or `is_enabled: false` for vanilla baseline. No fix shipped yet — waiting on design decision.
+
+### Spider buff package (regen + water_breathing/dolphins_grace) (2026-05-07)
+- **Status:** Active — runtime forensics armed
+- **Description:** Same encounter as the spider drop mystery: spider had two visible buffs at spawn time (regeneration + water-breathing-or-dolphins-grace per user observation). Static analysis across all 433 mod jars: zero JSON files grant `minecraft:dolphins_grace` to a spawnable mob. Apoth's stock mob_effect armor affixes (`revitalizing` / `nimble` / `bolstering`) trigger on-hit instant_health/speed/resistance, which don't match the steady-state buff observation. ImprovedMobs has no effect-injection system. Champions mod isn't installed.
+- **Working hypothesis:** the second buff is `water_breathing` (similar particle visual to dolphins_grace) and the package comes from a mod's Java-side spawn handler, not a JSON config. Same shape as the diamond drop bug.
+- **Mitigation:** `diag_mob_spawn.js` will capture the next encounter's full NBT + effect registry IDs + tag set; `tagKeys` will name the injector. Symptom is aesthetic-only until then.
+
+### Server-side log auto-push needs a PAT (2026-05-07)
+- **Status:** Operator config — see [PAT_SETUP.md](https://github.com/silvariasereneblossom/IridescentCraft/blob/main/.minecraft/server_distribution/PAT_SETUP.md)
+- **Description:** Auto-push of crash logs / latest.log to the repo at server exit (via `push_crash_logs.bat --silent` from `iridescentserver.bat` Phase 5) was failing silently for weeks because the original git push redirected stderr to nul, hiding the underlying authentication failure. Server boxes don't have an interactive credential helper, so plain `git push` rejects without creds.
+- **Fix:** PAT auth wired into `push_crash_logs.{bat,sh}` and the native Rust `crash::push_logs`. Three sources, in precedence order: `ICRAFT_GH_TOKEN` env var → `.icraft_token` file next to the running binary → `.icraft_token` in `cfg.server_dir`. Push uses `git -c http.extraHeader="AUTHORIZATION: bearer <PAT>"` (GitHub-recommended; doesn't leak PAT into process listings or `.git/config`). Errors no longer redirected to nul — real `git push` failure surfaces in console.
+- **Operator action required:** generate a fine-grained PAT scoped to Contents:write on `silvariasereneblossom/IridescentCraft`, install on server box per `PAT_SETUP.md`. Until then auto-push runs but warns and falls back to plain `git push` (which fails as before).
+
+### Items disappearing on break — Connector dropped manifest-registered mixins [RESOLVED 2026-05-07]
+- **Status:** Resolved
+- **Description:** Tester reported items vanishing on break (vanilla AND modular). Investigation found the `iridescent-durability-clamp` mixin had never injected — the synchronous clamp at `ItemStack.hurtAndBreak` was a no-op. Death penalty's poll-based clamp was the only line of defense but couldn't catch single-frame bursts ahead of vanilla's destruction logic. Audit revealed `iridescent-aptitudes-mod` had the same regression — 9 mixins (`MixPlayer`, `MixLivingEntity`, `MixCraftingMenu`, `MixForgeGui`, etc.) silently never injecting for weeks.
+- **Root cause:** both mods registered their mixin configs ONLY via `META-INF/MANIFEST.MF` `MixinConfigs:`. Sinytra Connector intercepts the mixin transformer chain to relay fabric-mod mixins, and silently drops Forge configs registered via the manifest alone. The `mods.toml mixinConfigs=["..."]` field IS preserved.
+- **Fix:** add `mixinConfigs=["<config>.mixins.json"]` to mods.toml. One line, fixes both mods. Wider audit confirmed every iridescent-* mod with mixin code now has the field. Lessons-learned entry shipped to internal repo (commit `793731b`) so future mod authors don't re-hit it.
+
+### Reforged armor: workbench Repair tab missing [RESOLVED 2026-05-07]
+- **Status:** Resolved
+- **Description:** Holding a reforged armor piece at the Tetra workbench showed no Repair tab at all. Tetra cycles through installed modules and uses each module's material as the repair input — but only if the item registered a `RepairSchematic` at construction time.
+- **Root cause:** `ItemModularArmor`'s constructor never called `SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, identifier))`. The pattern lives in both `ModularSpellBookItem` and `ModularArsSpellBookItem` (line 133 of each) but was missed when the armor item was originally written. Same audit also revealed the missing `DataManager.instance.moduleData.onReload(this::clearCaches)` call — workbench/datapack changes to module data needed a relog to propagate.
+- **Fix:** constructor now takes a per-piece `tetraIdentifier` parameter and runs both registrations. Each of the four pieces gets a distinct identifier (`iridescent_reforged_helmet/chestplate/leggings/boots`).
 
 ### Blank entity death messages (2026-04-26)
 - **Status:** Resolved
