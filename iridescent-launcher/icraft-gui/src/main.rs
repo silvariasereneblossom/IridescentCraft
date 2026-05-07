@@ -251,7 +251,7 @@ impl eframe::App for IcraftApp {
 
         egui::TopBottomPanel::top("hdr").show(ctx, |ui| {
             ui.add_space(6.0);
-            ui.heading(APP_TITLE);
+            draw_colored_title(ui);
             ui.add_space(2.0);
             self.draw_dir_picker(ui);
             ui.add_space(4.0);
@@ -384,6 +384,43 @@ impl IcraftApp {
                     Ok(())
                 });
             }
+            #[cfg(windows)]
+            if action_btn(ui, "Rebuild + Push GUI", busy).clicked() {
+                // Dev-side counterpart of "Update Launcher": cargo build
+                // the GUI on this box, copy to the repo, commit + push,
+                // then bring the GUI back up. Spawns rebuild_gui.bat
+                // --relaunch in a detached cmd window and exits the GUI
+                // so the bat's copy step doesn't trip on Windows' lock
+                // on the running .exe. Bat re-spawns icraft-gui.exe at
+                // the end on success.
+                self.spawn("rebuild-gui", move |_c| {
+                    let exe = std::env::current_exe()?;
+                    // exe lives at <repo>/.minecraft/server_distribution/icraft-gui.exe;
+                    // bat lives at <repo>/iridescent-launcher/rebuild_gui.bat.
+                    let repo_root = exe.parent()
+                        .and_then(|p| p.parent())
+                        .and_then(|p| p.parent())
+                        .ok_or_else(|| anyhow::anyhow!("could not derive repo root from {}", exe.display()))?;
+                    let bat = repo_root.join("iridescent-launcher").join("rebuild_gui.bat");
+                    if !bat.exists() {
+                        anyhow::bail!("rebuild_gui.bat not found at {}", bat.display());
+                    }
+                    let bat_str = bat.to_str()
+                        .ok_or_else(|| anyhow::anyhow!("bat path not utf-8: {}", bat.display()))?;
+                    log::info!("[rebuild] launching {bat_str}");
+                    log::info!("[rebuild] GUI will exit; bat will rebuild + push, then relaunch.");
+                    // Flush so the log lines hit the buffer before exit.
+                    std::thread::sleep(std::time::Duration::from_millis(600));
+                    // `start` needs an empty title arg first; otherwise
+                    // it treats the bat path as the window title and
+                    // silently runs nothing.
+                    std::process::Command::new("cmd")
+                        .args(["/c", "start", "", "cmd", "/c", bat_str, "--relaunch"])
+                        .spawn()?;
+                    std::thread::sleep(std::time::Duration::from_millis(200));
+                    std::process::exit(0);
+                });
+            }
         });
 
         ui.add_space(8.0);
@@ -472,6 +509,54 @@ fn badge(ui: &mut egui::Ui, label: &str, ok: bool, value: &str) {
 
 fn action_btn(ui: &mut egui::Ui, label: &str, busy: bool) -> egui::Response {
     ui.add_enabled(!busy, egui::Button::new(label).min_size(egui::vec2(140.0, 28.0)))
+}
+
+/// Renders the heading "IridescentCraft Server Launcher" with
+/// "IridescentCraft" striped in trans-flag colors and "Server Launcher"
+/// in a per-letter rainbow gradient. Spaces remain default-color.
+fn draw_colored_title(ui: &mut egui::Ui) {
+    use egui::Color32;
+    // Trans flag stripes (top-to-bottom): blue, pink, white, pink, blue.
+    // 15 chars / 5 stripes = 3 chars per stripe, mapped left-to-right.
+    let trans = [
+        Color32::from_rgb(0x5B, 0xCE, 0xFA), // light blue
+        Color32::from_rgb(0xF5, 0xA9, 0xB8), // pink
+        Color32::WHITE,
+        Color32::from_rgb(0xF5, 0xA9, 0xB8),
+        Color32::from_rgb(0x5B, 0xCE, 0xFA),
+    ];
+    let title    = "IridescentCraft";
+    let subtitle = " Server Launcher"; // leading space separates from title
+    let title_chars: Vec<char> = title.chars().collect();
+    let stripe_size = (title_chars.len() as f32 / trans.len() as f32).ceil() as usize;
+
+    // Single horizontal row, no inter-letter gap so the heading reads
+    // as one word per stretch instead of widely spaced letters.
+    ui.horizontal(|ui| {
+        ui.spacing_mut().item_spacing.x = 0.0;
+        for (i, c) in title_chars.iter().enumerate() {
+            let stripe = (i / stripe_size).min(trans.len() - 1);
+            ui.label(egui::RichText::new(c.to_string())
+                .heading()
+                .strong()
+                .color(trans[stripe]));
+        }
+        // Rainbow over the letters of "Server Launcher" (skip space).
+        let letters: Vec<char> = subtitle.chars().collect();
+        let letter_count = letters.iter().filter(|c| !c.is_whitespace()).count() as f32;
+        let mut idx = 0.0_f32;
+        for c in letters {
+            let rich = if c.is_whitespace() {
+                egui::RichText::new(c.to_string()).heading()
+            } else {
+                let hue = idx / letter_count; // 0..1
+                idx += 1.0;
+                let color: Color32 = egui::ecolor::Hsva::new(hue, 0.85, 1.0, 1.0).into();
+                egui::RichText::new(c.to_string()).heading().strong().color(color)
+            };
+            ui.label(rich);
+        }
+    });
 }
 
 fn list_jars(p: &Path) -> usize {

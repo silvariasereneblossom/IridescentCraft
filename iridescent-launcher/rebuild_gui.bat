@@ -20,7 +20,16 @@ REM in. So once-per-build-host manual run, then self-propagating.
 REM
 REM Run interactively (pauses at end on success and on any error so the
 REM operator can read messages before the cmd window closes).
+REM
+REM Flags:
+REM   --relaunch   After a successful push, re-spawn the deployed
+REM                icraft-gui.exe. Used by the in-app "Rebuild + Push
+REM                GUI" button: GUI exits to release its file lock,
+REM                bat does the work, bat brings GUI back up.
 REM ============================================================================
+
+set "RELAUNCH=0"
+if /i "%1"=="--relaunch" set "RELAUNCH=1"
 
 cd /d "%~dp0"
 
@@ -111,6 +120,20 @@ if errorlevel 1 (
     echo.
     echo [rebuild_gui] No changes to commit -- exe is byte-identical to the
     echo [rebuild_gui] copy already in the repo. Nothing to push.
+)
+
+if "%RELAUNCH%"=="1" (
+    echo.
+    echo [rebuild_gui] Relaunching icraft-gui.exe...
+    set "GUI_EXE=%~dp0..\.minecraft\server_distribution\icraft-gui.exe"
+    if exist "!GUI_EXE!" (
+        REM `start "" "<exe>"` -- empty title arg, then the exe path,
+        REM detaches the new process from this cmd window.
+        start "" "!GUI_EXE!"
+        exit /b 0
+    ) else (
+        echo [rebuild_gui] WARN: could not find !GUI_EXE!; not relaunching.
+    )
 )
 
 echo.
