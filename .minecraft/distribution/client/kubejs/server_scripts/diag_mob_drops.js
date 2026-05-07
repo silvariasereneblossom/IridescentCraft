@@ -35,12 +35,18 @@ try {
   // ISS wizards' getItemBySlot is abstract -- calling it throws
   // AbstractMethodError which Rhino's try/catch CANNOT swallow.
   // Hard-skip these before collectEquip(). See mob_scaling_unified.js.
+  // Documentation list; the namespace catch-all below is the gate.
   var DMD_BROKEN_ENTITIES = {
-    'irons_spellbooks:necromancer': 1,
-    'irons_spellbooks:archevoker':  1,
-    'irons_spellbooks:cryomancer':  1,
-    'irons_spellbooks:pyromancer':  1,
-    'irons_spellbooks:priest':      1
+    'irons_spellbooks:necromancer':         1,
+    'irons_spellbooks:archevoker':          1,
+    'irons_spellbooks:cryomancer':          1,
+    'irons_spellbooks:pyromancer':          1,
+    'irons_spellbooks:priest':              1,
+    'irons_spellbooks:apothecarist':        1,
+    'irons_spellbooks:cultist':             1,
+    'irons_spellbooks:cursed_armor_stand':  1,
+    'irons_spellbooks:dead_king':           1,
+    'irons_spellbooks:dead_king_corpse':    1
   }
 
   // Items we never expect to see drop from a normal mob. Anything matching
@@ -152,6 +158,11 @@ try {
         if (!(entity instanceof Mob_dmd)) return
         var dmdResId = entityResId(entity)
         if (DMD_BROKEN_ENTITIES[dmdResId]) return
+        // Belt-and-suspenders: skip the whole irons_spellbooks:
+        // namespace. ISS ships 8+ wizard subclasses (apothecarist,
+        // cultist, cursed_armor_stand, fire_boss, etc.) all of which
+        // can throw AbstractMethodError on getItemBySlot.
+        if (dmdResId.indexOf('irons_spellbooks:') === 0) return
 
         // Snapshot pre-death state -- mob is removed from world before
         // the 1-tick callback fires.

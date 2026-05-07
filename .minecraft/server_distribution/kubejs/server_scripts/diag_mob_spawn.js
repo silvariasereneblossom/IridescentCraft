@@ -42,12 +42,22 @@ try {
   // any item-slot access. Keep in sync with the BROKEN_ENTITIES Set
   // in scaling/mob_scaling_unified.js -- those crashed the server on
   // 2026-05-06 22:41 + 22:49 because this guard wasn't in place.
+  // Known list -- documentation only. The catch-all namespace skip
+  // below is the actual gate; ISS ships wizard subclasses we don't
+  // enumerate here (apothecarist, cultist, cursed_armor_stand,
+  // dead_king/fire_boss, plus any future additions) and all of them
+  // can throw AbstractMethodError on getItemBySlot.
   var DMS_BROKEN_ENTITIES = {
-    'irons_spellbooks:necromancer': 1,
-    'irons_spellbooks:archevoker':  1,
-    'irons_spellbooks:cryomancer':  1,
-    'irons_spellbooks:pyromancer':  1,
-    'irons_spellbooks:priest':      1
+    'irons_spellbooks:necromancer':         1,
+    'irons_spellbooks:archevoker':          1,
+    'irons_spellbooks:cryomancer':          1,
+    'irons_spellbooks:pyromancer':          1,
+    'irons_spellbooks:priest':              1,
+    'irons_spellbooks:apothecarist':        1,
+    'irons_spellbooks:cultist':             1,
+    'irons_spellbooks:cursed_armor_stand':  1,
+    'irons_spellbooks:dead_king':           1,
+    'irons_spellbooks:dead_king_corpse':    1
   }
 
   // Items we never expect to see in equipment on a freshly spawned mob.
@@ -198,9 +208,15 @@ try {
 
         // Hard skip on entities with abstract getItemBySlot. Their
         // AbstractMethodError escapes Rhino's try/catch and crashes
-        // the server tick.
+        // the server tick. The DMS_BROKEN_ENTITIES list is the known-
+        // five but ISS ships 8+ wizard subclasses (apothecarist,
+        // cultist, cursed_armor_stand, fire_boss/dead_king, etc.) any
+        // of which can hit the same trap. Belt-and-suspenders: skip
+        // the entire irons_spellbooks: namespace -- none of those
+        // mobs should be touched by player-facing diag/strip flows.
         var dmsResId = entityResId(entity)
         if (DMS_BROKEN_ENTITIES[dmsResId]) return
+        if (dmsResId.indexOf('irons_spellbooks:') === 0) return
 
         var equip = collectEquipment(entity)
         var effects = collectEffects(entity)

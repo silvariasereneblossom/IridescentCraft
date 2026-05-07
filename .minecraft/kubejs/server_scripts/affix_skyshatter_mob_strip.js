@@ -84,6 +84,10 @@ EntityEvents.spawned(event => {
 
   let resId = _skyshatterEntityResId(entity)
   if (SKYSHATTER_STRIP_BROKEN_ENTITIES.has(resId)) return
+  // Skip the whole irons_spellbooks: namespace -- 8+ wizard subclasses
+  // can throw AbstractMethodError on getItemBySlot, and none of them
+  // legitimately wear skyshatter-affixed gear anyway.
+  if (resId.indexOf('irons_spellbooks:') === 0) return
 
   let scrubbed = false
   for (let slot of SKYSHATTER_SLOTS) {
