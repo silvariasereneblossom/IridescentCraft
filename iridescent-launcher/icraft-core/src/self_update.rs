@@ -182,24 +182,37 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
         _ => src_dir.clone(),
     };
 
+    let git_exe = find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
+        "git not found. GUI processes don't always inherit your shell PATH. \
+         Install Git for Windows (https://git-scm.com/download/win), or set \
+         ICRAFT_GIT to your git.exe path. GitHub Desktop's bundled git is \
+         auto-detected if Desktop is installed."
+    ))?;
+    log::info!("[self-update] git: {}", git_exe.display());
     log::info!("[self-update] git pull --ff-only in {}", repo_root.display());
-    let pull = Command::new("git")
+    let pull = Command::new(&git_exe)
         .current_dir(&repo_root)
         .args(["pull", "--ff-only"])
         .status()
-        .map_err(|e| anyhow::anyhow!("running `git pull` failed (is git on PATH?): {e}"))?;
+        .map_err(|e| anyhow::anyhow!("running git pull failed: {e}"))?;
     if !pull.success() {
         anyhow::bail!("git pull failed (resolve conflicts and retry)");
     }
 
+    let cargo_exe = find_tool("cargo", &[]).ok_or_else(|| anyhow::anyhow!(
+        "cargo not found. Install rustup (https://rustup.rs), or set \
+         ICRAFT_CARGO to your cargo.exe path. Standard install is at \
+         %USERPROFILE%\\.cargo\\bin\\cargo.exe."
+    ))?;
+    log::info!("[self-update] cargo: {}", cargo_exe.display());
     log::info!("[self-update] cargo build -p icraft-gui --release ...");
-    let mut child = Command::new("cargo")
+    let mut child = Command::new(&cargo_exe)
         .current_dir(&src_dir)
         .args(["build", "-p", "icraft-gui", "--release"])
         .stdout(Stdio::piped())
         .stderr(Stdio::piped())
         .spawn()
-        .map_err(|e| anyhow::anyhow!("running `cargo build` failed (is cargo on PATH?): {e}"))?;
+        .map_err(|e| anyhow::anyhow!("running cargo build failed: {e}"))?;
     // Stream both stdout (rare for cargo) and stderr (where status
     // diagnostics go) into the log pane line-by-line.
     let stdout = child.stdout.take().expect("piped");
@@ -275,7 +288,9 @@ fn is_launcher_src(p: &Path) -> bool {
 }
 
 fn cargo_target_dir(launcher_dir: &Path) -> Result<PathBuf> {
-    let out = std::process::Command::new("cargo")
+    let cargo = find_tool("cargo", &[])
+        .ok_or_else(|| anyhow::anyhow!("cargo not found"))?;
+    let out = std::process::Command::new(&cargo)
         .current_dir(launcher_dir)
         .args(["metadata", "--format-version=1", "--no-deps"])
         .output()?;
@@ -286,6 +301,123 @@ fn cargo_target_dir(launcher_dir: &Path) -> Result<PathBuf> {
     let dir = v.get("target_directory").and_then(|d| d.as_str())
         .ok_or_else(|| anyhow::anyhow!("no target_directory in cargo metadata"))?;
     Ok(PathBuf::from(dir))
+}
+
+/// Locate an executable: try ICRAFT_<UPPER> env var override, then
+/// PATH lookup via the platform's `where` / `which`, then a list of
+/// standard install locations. Tool-specific paths are baked in for
+/// `git` (Git for Windows + GitHub Desktop bundled git) and `cargo`
+/// (rustup default location).
+fn find_tool(name: &str, extra_candidates: &[&str]) -> Option<PathBuf> {
+    // 1. ICRAFT_<NAME> env var override.
+    let env_key = format!("ICRAFT_{}", name.to_uppercase());
+    if let Ok(p) = std::env::var(&env_key) {
+        let pb = PathBuf::from(p);
+        if pb.exists() { return Some(pb); }
+    }
+
+    // 2. PATH lookup.
+    #[cfg(windows)]
+    let lookup = "where";
+    #[cfg(not(windows))]
+    let lookup = "which";
+    if let Ok(out) = std::process::Command::new(lookup).arg(name).output() {
+        if out.status.success() {
+            if let Ok(s) = std::str::from_utf8(&out.stdout) {
+                if let Some(line) = s.lines().next() {
+                    let pb = PathBuf::from(line.trim());
+                    if pb.exists() { return Some(pb); }
+                }
+            }
+        }
+    }
+
+    // 3. Tool-specific built-in candidates.
+    let mut candidates: Vec<String> = extra_candidates.iter().map(|s| s.to_string()).collect();
+    #[cfg(windows)]
+    {
+        match name {
+            "git" => {
+                candidates.extend([
+                    "C:\\Program Files\\Git\\cmd\\git.exe".into(),
+                    "C:\\Program Files\\Git\\bin\\git.exe".into(),
+                    "C:\\Program Files (x86)\\Git\\cmd\\git.exe".into(),
+                    expand_env("%LOCALAPPDATA%\\Programs\\Git\\cmd\\git.exe"),
+                ]);
+                // GitHub Desktop's bundled git: <LOCALAPPDATA>\GitHubDesktop\app-<ver>\resources\app\git\cmd\git.exe.
+                // The version subdir changes; pick the newest.
+                if let Some(p) = find_github_desktop_git() {
+                    candidates.push(p.display().to_string());
+                }
+            }
+            "cargo" => {
+                candidates.push(expand_env("%USERPROFILE%\\.cargo\\bin\\cargo.exe"));
+                candidates.push("C:\\Program Files\\Rust\\cargo.exe".into());
+            }
+            _ => {}
+        }
+    }
+    #[cfg(not(windows))]
+    {
+        match name {
+            "git" => candidates.extend(["/usr/bin/git".into(), "/usr/local/bin/git".into()]),
+            "cargo" => {
+                if let Ok(home) = std::env::var("HOME") {
+                    candidates.push(format!("{home}/.cargo/bin/cargo"));
+                }
+                candidates.push("/usr/local/bin/cargo".into());
+            }
+            _ => {}
+        }
+    }
+
+    for c in &candidates {
+        let pb = PathBuf::from(c);
+        if pb.exists() { return Some(pb); }
+    }
+    None
+}
+
+#[cfg(windows)]
+fn expand_env(s: &str) -> String {
+    let mut out = String::new();
+    let mut chars = s.chars().peekable();
+    while let Some(c) = chars.next() {
+        if c == '%' {
+            let mut name = String::new();
+            while let Some(&nc) = chars.peek() {
+                chars.next();
+                if nc == '%' { break; }
+                name.push(nc);
+            }
+            if let Ok(v) = std::env::var(&name) {
+                out.push_str(&v);
+            }
+        } else {
+            out.push(c);
+        }
+    }
+    out
+}
+
+#[cfg(windows)]
+fn find_github_desktop_git() -> Option<PathBuf> {
+    let local_app_data = std::env::var("LOCALAPPDATA").ok()?;
+    let root = PathBuf::from(local_app_data).join("GitHubDesktop");
+    if !root.exists() { return None; }
+    let mut newest: Option<(std::time::SystemTime, PathBuf)> = None;
+    for entry in fs::read_dir(&root).ok()?.flatten() {
+        let name = entry.file_name();
+        let name_s = name.to_string_lossy();
+        if !name_s.starts_with("app-") { continue; }
+        let git = entry.path().join("resources").join("app").join("git").join("cmd").join("git.exe");
+        if !git.exists() { continue; }
+        let mtime = entry.metadata().and_then(|m| m.modified()).ok()?;
+        if newest.as_ref().map_or(true, |(t, _)| mtime > *t) {
+            newest = Some((mtime, git));
+        }
+    }
+    newest.map(|(_, p)| p)
 }
 
 fn find_built_exe(target_dir: &Path, name: &str) -> Option<PathBuf> {

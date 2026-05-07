@@ -430,16 +430,26 @@ impl IcraftApp {
                 // on the running .exe. Bat re-spawns icraft-gui.exe at
                 // the end on success.
                 self.spawn("rebuild-gui", move |_c| {
-                    let exe = std::env::current_exe()?;
-                    // exe lives at <repo>/.minecraft/server_distribution/icraft-gui.exe;
-                    // bat lives at <repo>/iridescent-launcher/rebuild_gui.bat.
-                    let repo_root = exe.parent()
-                        .and_then(|p| p.parent())
-                        .and_then(|p| p.parent())
-                        .ok_or_else(|| anyhow::anyhow!("could not derive repo root from {}", exe.display()))?;
-                    let bat = repo_root.join("iridescent-launcher").join("rebuild_gui.bat");
+                    // Locate rebuild_gui.bat. Prefer ICRAFT_LAUNCHER_SRC
+                    // since the user has it set for self-update; fall back
+                    // to walking up from current_exe (works for the nested
+                    // <repo>/.minecraft/server_distribution/ layout).
+                    let bat = if let Ok(src) = std::env::var("ICRAFT_LAUNCHER_SRC") {
+                        std::path::PathBuf::from(src).join("rebuild_gui.bat")
+                    } else {
+                        let exe = std::env::current_exe()?;
+                        let repo_root = exe.parent()
+                            .and_then(|p| p.parent())
+                            .and_then(|p| p.parent())
+                            .ok_or_else(|| anyhow::anyhow!("could not derive repo root from {}", exe.display()))?;
+                        repo_root.join("iridescent-launcher").join("rebuild_gui.bat")
+                    };
                     if !bat.exists() {
-                        anyhow::bail!("rebuild_gui.bat not found at {}", bat.display());
+                        anyhow::bail!(
+                            "rebuild_gui.bat not found at {}. \
+                             Set ICRAFT_LAUNCHER_SRC to the iridescent-launcher source dir.",
+                            bat.display()
+                        );
                     }
                     let bat_str = bat.to_str()
                         .ok_or_else(|| anyhow::anyhow!("bat path not utf-8: {}", bat.display()))?;
