@@ -35,19 +35,37 @@ if errorlevel 1 (
     exit /b 1
 )
 
-set "SRC=target\release\icraft-gui.exe"
-set "DEST=..\.minecraft\server_distribution\icraft-gui.exe"
+REM Cargo's actual target dir may differ from .\target if the user has
+REM CARGO_TARGET_DIR set, [build] target-dir in ~\.cargo\config.toml,
+REM or a default target triple (which adds a triple subdir like
+REM target\x86_64-pc-windows-msvc\release). Ask cargo where things
+REM actually went via `cargo metadata`, then dir-walk to find the
+REM freshest icraft-gui.exe under that root.
+echo.
+echo [rebuild_gui] Locating built binary via cargo metadata...
+set "TARGET_DIR=target"
+powershell -NoProfile -Command "(cargo metadata --format-version=1 --no-deps | ConvertFrom-Json).target_directory" > "%TEMP%\icraft_target.txt" 2>nul
+if not errorlevel 1 (
+    set /p TARGET_DIR=<"%TEMP%\icraft_target.txt"
+)
+del "%TEMP%\icraft_target.txt" 2>nul
 
-if not exist "%SRC%" (
+set "BUILT_EXE="
+for /f "delims=" %%E in ('dir /s /b /o-d "!TARGET_DIR!\icraft-gui.exe" 2^>nul') do (
+    if not defined BUILT_EXE set "BUILT_EXE=%%E"
+)
+if not defined BUILT_EXE (
     echo.
-    echo [rebuild_gui] ERROR: build succeeded but %SRC% was not produced.
+    echo [rebuild_gui] ERROR: could not locate icraft-gui.exe under !TARGET_DIR!.
+    echo [rebuild_gui]        cargo reported "Finished" but the binary isn't on disk.
     pause
     exit /b 1
 )
 
-echo.
+set "DEST=..\.minecraft\server_distribution\icraft-gui.exe"
+echo [rebuild_gui] Found:    !BUILT_EXE!
 echo [rebuild_gui] Deploying to %DEST%
-copy /Y "%SRC%" "%DEST%" >nul
+copy /Y "!BUILT_EXE!" "%DEST%" >nul
 if errorlevel 1 (
     echo [rebuild_gui] ERROR: copy failed.
     pause
