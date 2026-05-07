@@ -43,6 +43,13 @@ use anyhow::Result;
 pub struct ServeOptions {
     pub force_sync: bool,
     pub headless: bool,
+    pub watchdog: run::WatchdogOptions,
+}
+
+impl Default for ServeOptions {
+    fn default() -> Self {
+        Self { force_sync: false, headless: false, watchdog: run::WatchdogOptions::default() }
+    }
 }
 
 pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
@@ -79,8 +86,8 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
     // Phase 3: EULA
     eula::accept(cfg)?;
 
-    // Phase 4: launch the server
-    let exit_code = run::launch_server(cfg, opts.headless)?;
+    // Phase 4: launch the server (with watchdog)
+    let exit_code = run::launch_server_watched(cfg, opts.watchdog)?;
 
     // Phase 5: post-exit handling
     if exit_code != 0 {

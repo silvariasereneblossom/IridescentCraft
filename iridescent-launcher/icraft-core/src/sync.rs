@@ -27,7 +27,7 @@ use anyhow::{anyhow, Context, Result};
 use std::fs;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 use crate::config::{ServerConfig, GITHUB_REPO_BRANCH, GITHUB_REPO_NAME, GITHUB_REPO_OWNER, REPO_SERVER_PATH};
 use crate::github;
@@ -50,16 +50,21 @@ const SELF_UPDATE_FILES: &[&str] = &[
 pub fn z_mirror_or_zip(cfg: &ServerConfig) -> Result<()> {
     let bat = cfg.server_dir.join("sync_from_repo.bat");
     let sh  = cfg.server_dir.join("sync_from_repo.sh");
+    // stdin=null forces `pause` and `Read-Host` to read EOF and return
+    // immediately. Without this, sync_from_repo.bat's trailing
+    // `pause >nul` hangs the orchestrator forever.
     if cfg!(target_os = "windows") && bat.exists() {
         log::info!("[sync] phase -1: sync_from_repo.bat");
         let st = Command::new("cmd").args(["/c", &bat.to_string_lossy()])
             .current_dir(&cfg.server_dir)
+            .stdin(Stdio::null())
             .status()?;
         if !st.success() { return Err(anyhow!("sync_from_repo.bat exit {}", st.code().unwrap_or(-1))); }
     } else if sh.exists() {
         log::info!("[sync] phase -1: sync_from_repo.sh");
         let st = Command::new("bash").arg(&sh)
             .current_dir(&cfg.server_dir)
+            .stdin(Stdio::null())
             .status()?;
         if !st.success() { return Err(anyhow!("sync_from_repo.sh exit {}", st.code().unwrap_or(-1))); }
     } else {

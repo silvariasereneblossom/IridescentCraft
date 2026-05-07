@@ -10,7 +10,7 @@
 //! fallback URLs.
 
 use anyhow::{anyhow, Context, Result};
-use std::process::Command;
+use std::process::{Command, Stdio};
 
 use crate::config::{ServerConfig, FORGE_INSTALLER_URL, FORGE_VERSION};
 use crate::http;
@@ -50,6 +50,7 @@ pub fn ensure_forge(cfg: &ServerConfig) -> Result<()> {
         .arg("-jar").arg(cfg.forge_installer())
         .arg("--installServer")
         .current_dir(&cfg.server_dir)
+        .stdin(Stdio::null())
         .status()?;
     if !st.success() {
         return Err(anyhow!("forge installer exit {}", st.code().unwrap_or(-1)));

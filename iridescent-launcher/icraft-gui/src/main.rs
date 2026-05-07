@@ -323,7 +323,7 @@ impl IcraftApp {
         ui.horizontal_wrapped(|ui| {
             if action_btn(ui, "Serve (full)", busy).clicked() {
                 self.spawn("serve", move |c| {
-                    icraft_core::serve(&c, icraft_core::ServeOptions { force_sync: false, headless: false }).map(|_| ())
+                    icraft_core::serve(&c, icraft_core::ServeOptions::default()).map(|_| ())
                 });
             }
             if action_btn(ui, "Run only", busy).clicked() {

@@ -40,6 +40,14 @@ enum Cmd {
         /// Force a full GitHub re-sync instead of diff sync.
         #[arg(long)]
         force_sync: bool,
+        /// Seconds without log activity before declaring a boot hang.
+        /// 0 disables. Defaults to 900 (15 min).
+        #[arg(long, default_value_t = 900)]
+        boot_timeout: u64,
+        /// Seconds without log activity (post-boot) before declaring
+        /// an idle hang. 0 disables. Defaults to 900.
+        #[arg(long, default_value_t = 900)]
+        idle_timeout: u64,
     },
 
     /// Phase -1 + 0 sync only -- pull from Z: mirror or GitHub diff.
@@ -81,7 +89,12 @@ enum Cmd {
     AcceptEula,
 
     /// Just launch the server (skip sync/install). Aikar flags applied.
-    Run,
+    Run {
+        #[arg(long, default_value_t = 900)]
+        boot_timeout: u64,
+        #[arg(long, default_value_t = 900)]
+        idle_timeout: u64,
+    },
 
     /// Capture latest crash report + tail of latest.log + push to git.
     PushCrashLogs,
@@ -122,10 +135,11 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
     use icraft_core::*;
 
     match cmd {
-        Cmd::Serve { force_sync } => {
+        Cmd::Serve { force_sync, boot_timeout, idle_timeout } => {
             let code = icraft_core::serve(cfg, ServeOptions {
                 force_sync: *force_sync,
                 headless: false,
+                watchdog: build_watchdog(*boot_timeout, *idle_timeout),
             })?;
             // Truncate i32 -> u8 for ExitCode. Common server exit codes
             // (0, 1, 130, 137, 143) all fit; anything larger gets clamped.
@@ -161,8 +175,8 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
             Ok(0)
         }
         Cmd::AcceptEula => { eula::accept(cfg)?; Ok(0) }
-        Cmd::Run => {
-            let code = run::launch_server(cfg, false)?;
+        Cmd::Run { boot_timeout, idle_timeout } => {
+            let code = run::launch_server_watched(cfg, build_watchdog(*boot_timeout, *idle_timeout))?;
             Ok(code.try_into().unwrap_or(1))
         }
         Cmd::PushCrashLogs => { crash::push_logs(cfg)?; Ok(0) }
@@ -174,6 +188,15 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
             print!("{}", firewall::audit()?);
             Ok(0)
         }
+    }
+}
+
+fn build_watchdog(boot_secs: u64, idle_secs: u64) -> icraft_core::run::WatchdogOptions {
+    use std::time::Duration;
+    icraft_core::run::WatchdogOptions {
+        boot_timeout: Duration::from_secs(boot_secs),
+        idle_timeout: Duration::from_secs(idle_secs),
+        poll_interval: Duration::from_secs(10),
     }
 }
 
