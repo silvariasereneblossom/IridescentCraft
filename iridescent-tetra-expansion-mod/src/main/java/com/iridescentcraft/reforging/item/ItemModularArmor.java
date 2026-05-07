@@ -13,10 +13,13 @@ import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterial;
 import net.minecraft.world.item.ItemStack;
 import net.minecraftforge.client.extensions.common.IClientItemExtensions;
+import se.mickelus.tetra.data.DataManager;
 import se.mickelus.tetra.items.modular.IModularItem;
+import se.mickelus.tetra.module.SchematicRegistry;
 import se.mickelus.tetra.module.data.EffectData;
 import se.mickelus.tetra.module.data.ItemProperties;
 import se.mickelus.tetra.module.data.SynergyData;
+import se.mickelus.tetra.module.schematic.RepairSchematic;
 import software.bernie.geckolib.animatable.GeoItem;
 import software.bernie.geckolib.core.animatable.instance.AnimatableInstanceCache;
 import software.bernie.geckolib.core.animatable.instance.SingletonAnimatableInstanceCache;
@@ -91,16 +94,40 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     private final String[] minorModuleKeys;
     private final String[] requiredModules;
 
+    /** Tetra item identifier for schematic registration. Mirrors the
+     *  per-piece identifier the spell book items pass (TETRA_IDENTIFIER).
+     *  Each armor piece (helmet/chestplate/leggings/boots) registers a
+     *  distinct RepairSchematic via this field. Required for the
+     *  workbench Repair button to appear on the item. */
+    private final String tetraIdentifier;
+
     public ItemModularArmor(ArmorMaterial baseMaterial,
                             Type slotType,
                             Properties props,
                             String[] majorModuleKeys,
                             String[] minorModuleKeys,
-                            String[] requiredModules) {
+                            String[] requiredModules,
+                            String tetraIdentifier) {
         super(baseMaterial, slotType, props);
         this.majorModuleKeys = majorModuleKeys;
         this.minorModuleKeys = minorModuleKeys;
         this.requiredModules = requiredModules;
+        this.tetraIdentifier = tetraIdentifier;
+
+        // Two registrations both spell book items already do but armor
+        // missed -- adding here so workbench Repair shows up + caches
+        // flush on /reload:
+        //
+        //   1. RepairSchematic -- without this, Tetra's workbench has
+        //      no repair option for the item. Matching tetraIdentifier
+        //      lets Tetra cycle through installed modules and use each
+        //      module's material as the repair input.
+        //   2. DataManager onReload hook -- clears the per-stack
+        //      attribute / property / effect caches when data packs
+        //      reload, so workbench changes take effect without a
+        //      relog.
+        SchematicRegistry.instance.registerSchematic(new RepairSchematic(this, tetraIdentifier));
+        DataManager.instance.moduleData.onReload(this::clearCaches);
     }
 
     // ── IModularItem abstract surface ──────────────────────────────────

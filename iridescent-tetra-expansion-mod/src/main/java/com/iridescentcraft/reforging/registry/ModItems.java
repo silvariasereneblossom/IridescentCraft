@@ -57,7 +57,8 @@ public final class ModItems {
                     com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.HELMET,
                     new Item.Properties(),
-                    HELMET_MAJOR, HELMET_MINOR, HELMET_REQUIRED));
+                    HELMET_MAJOR, HELMET_MINOR, HELMET_REQUIRED,
+                    "iridescent_reforged_helmet"));
 
     public static final RegistryObject<Item> REFORGED_CHESTPLATE = ITEMS.register(
             "reforged_chestplate",
@@ -65,7 +66,8 @@ public final class ModItems {
                     com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.CHESTPLATE,
                     new Item.Properties(),
-                    CHESTPLATE_MAJOR, CHESTPLATE_MINOR, CHESTPLATE_REQUIRED));
+                    CHESTPLATE_MAJOR, CHESTPLATE_MINOR, CHESTPLATE_REQUIRED,
+                    "iridescent_reforged_chestplate"));
 
     public static final RegistryObject<Item> REFORGED_LEGGINGS = ITEMS.register(
             "reforged_leggings",
@@ -73,7 +75,8 @@ public final class ModItems {
                     com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.LEGGINGS,
                     new Item.Properties(),
-                    LEGGINGS_MAJOR, LEGGINGS_MINOR, LEGGINGS_REQUIRED));
+                    LEGGINGS_MAJOR, LEGGINGS_MINOR, LEGGINGS_REQUIRED,
+                    "iridescent_reforged_leggings"));
 
     public static final RegistryObject<Item> REFORGED_BOOTS = ITEMS.register(
             "reforged_boots",
@@ -81,7 +84,8 @@ public final class ModItems {
                     com.iridescentcraft.reforging.item.ReforgingArmorMaterial.INSTANCE,
                     ArmorItem.Type.BOOTS,
                     new Item.Properties(),
-                    BOOTS_MAJOR, BOOTS_MINOR, BOOTS_REQUIRED));
+                    BOOTS_MAJOR, BOOTS_MINOR, BOOTS_REQUIRED,
+                    "iridescent_reforged_boots"));
 
     private ModItems() {}
 }
