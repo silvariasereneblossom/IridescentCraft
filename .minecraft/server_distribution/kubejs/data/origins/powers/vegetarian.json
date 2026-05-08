@@ -1,9 +1,9 @@
 {
-  "type": "origins:modify_food",
+  "type": "apoli:modify_food",
   "name": "Plant Preference",
   "description": "Meat provides 50% less nourishment. Your avian metabolism thrives on plants and grains.",
   "item_condition": {
-    "type": "origins:ingredient",
+    "type": "apoli:ingredient",
     "ingredient": {
       "tag": "origins:meat"
     }

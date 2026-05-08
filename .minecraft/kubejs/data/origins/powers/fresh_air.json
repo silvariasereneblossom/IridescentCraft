@@ -1,15 +1,15 @@
 {
-  "type": "origins:multiple",
+  "type": "apoli:multiple",
   "name": "Sky Affinity",
-  "description": "You feel at home in open skies. At high altitudes, you gain speed and agility.",
+  "description": "You feel at home in open skies. At high altitudes, you gain speed and agility (Y>=80: Speed I + Jump Boost I; Y>=150: + Slow Falling). No sleep restriction.",
   "tag_on_gain": {
-    "type": "origins:action_on_callback",
+    "type": "apoli:action_on_callback",
     "entity_action_added": {
-      "type": "origins:execute_command",
+      "type": "apoli:execute_command",
       "command": "tag @s add icraft_avian"
     },
     "entity_action_removed": {
-      "type": "origins:execute_command",
+      "type": "apoli:execute_command",
       "command": "tag @s remove icraft_avian"
     }
   }
