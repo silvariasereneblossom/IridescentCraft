@@ -13,8 +13,10 @@ use anyhow::{anyhow, Result};
 use std::path::Path;
 use std::process::{Command, Output};
 
+use crate::tools::git_exe;
+
 fn run_git(cwd: &Path, args: &[&str]) -> Result<Output> {
-    let out = Command::new("git").current_dir(cwd).args(args).output()?;
+    let out = Command::new(git_exe()).current_dir(cwd).args(args).output()?;
     if !out.status.success() {
         return Err(anyhow!(
             "git {} failed (exit {}): {}",
@@ -29,7 +31,7 @@ fn run_git(cwd: &Path, args: &[&str]) -> Result<Output> {
 /// `git rev-parse HEAD` -> short SHA. Returns `None` if the path isn't
 /// inside a working tree.
 pub fn head_sha(cwd: &Path) -> Result<Option<String>> {
-    let out = Command::new("git")
+    let out = Command::new(git_exe())
         .current_dir(cwd)
         .args(["rev-parse", "HEAD"])
         .output()?;
@@ -41,7 +43,7 @@ pub fn head_sha(cwd: &Path) -> Result<Option<String>> {
 
 /// `git status --porcelain` with `Ok(None)` if not a working tree.
 pub fn status_porcelain(cwd: &Path) -> Result<Option<String>> {
-    let out = Command::new("git")
+    let out = Command::new(git_exe())
         .current_dir(cwd)
         .args(["status", "--porcelain"])
         .output()?;

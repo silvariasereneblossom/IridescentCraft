@@ -34,6 +34,7 @@ pub mod packwiz;
 pub mod run;
 pub mod self_update;
 pub mod sync;
+pub mod tools;
 
 use anyhow::Result;
 
