@@ -405,18 +405,24 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
         .args(["show", &format!("{remote_ref}:{rel}")])
         .stdout(Stdio::from(staged_file))
         .status()?;
-    if !show.success() {
-        let _ = fs::remove_file(&staged);
-        anyhow::bail!(
-            "git show failed -- is {rel} tracked in {remote_ref}? \
-             (make sure the dev box has pushed the binary)"
-        );
-    }
     let bytes = fs::metadata(&staged).map(|m| m.len()).unwrap_or(0);
-    if bytes == 0 {
+    if !show.success() || bytes == 0 {
         let _ = fs::remove_file(&staged);
+        // Common case: dev hasn't pushed a binary to the repo yet.
+        // If cargo is installed, fall through to the source-build
+        // path automatically -- one click does the right thing
+        // regardless of whether a prebuilt binary exists upstream.
+        if crate::tools::find_tool("cargo", &[]).is_some() {
+            log::info!(
+                "[self-update] {rel} isn't tracked in {remote_ref} (no binary published) -- \
+                 cargo is available, falling back to source build"
+            );
+            return pull_build_apply_gui(cfg);
+        }
         anyhow::bail!(
-            "staged file is empty -- {rel} likely isn't tracked in {remote_ref}"
+            "git show failed -- {rel} not tracked in {remote_ref}, and cargo isn't \
+             available to build from source. Either push a binary from a dev box \
+             or install rustup so this box can rebuild locally."
         );
     }
     log::info!("[self-update] staged {} bytes", bytes);
