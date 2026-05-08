@@ -322,7 +322,7 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
 /// Requires git on PATH (or ICRAFT_GIT). Does NOT require cargo.
 pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     use std::fs::File;
-    use std::process::{Command, Stdio};
+    use std::process::Stdio;
 
     let git = find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
         "git not found. Install Git for Windows (https://git-scm.com/download/win) \
@@ -362,8 +362,7 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
 
     // Resolve the remote ref to read the binary from. Track HEAD's
     // upstream branch so weird branches (release/*, etc.) just work.
-    let upstream = Command::new(&git)
-        .current_dir(&repo_root)
+    let upstream = crate::git::authed_command(&repo_root, pat.as_deref())
         .args(["rev-parse", "--abbrev-ref", "--symbolic-full-name", "@{u}"])
         .output()?;
     let remote_ref = if upstream.status.success() {
@@ -383,8 +382,7 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     log::info!("[self-update] git show {remote_ref}:{rel} > {}", staged.display());
     let staged_file = File::create(&staged)
         .map_err(|e| anyhow::anyhow!("create {}: {e}", staged.display()))?;
-    let show = Command::new(&git)
-        .current_dir(&repo_root)
+    let show = crate::git::authed_command(&repo_root, pat.as_deref())
         .args(["show", &format!("{remote_ref}:{rel}")])
         .stdout(Stdio::from(staged_file))
         .status()?;
@@ -432,25 +430,22 @@ fn git_commit_push_binary(
     exe_name: &str,
     pat: Option<&str>,
 ) -> Result<()> {
-    use std::process::Command;
+    let _ = git_exe; // routed through authed_command which goes via tools::git_exe
     let rel = format!(".minecraft/server_distribution/{exe_name}");
-    let add = Command::new(git_exe)
-        .current_dir(repo_root).args(["add", &rel])
-        .status()?;
+    let add = crate::git::authed_command(repo_root, pat)
+        .args(["add", &rel]).status()?;
     if !add.success() {
         anyhow::bail!("git add failed");
     }
-    let unchanged = Command::new(git_exe)
-        .current_dir(repo_root).args(["diff", "--cached", "--quiet"])
-        .status()?.success();
+    let unchanged = crate::git::authed_command(repo_root, pat)
+        .args(["diff", "--cached", "--quiet"]).status()?.success();
     if unchanged {
         log::info!("[self-update] binary unchanged; nothing to push");
         let _ = canonical;
         return Ok(());
     }
-    let commit = Command::new(git_exe)
-        .current_dir(repo_root).args(["commit", "-m", &format!("{exe_name}: rebuild")])
-        .status()?;
+    let commit = crate::git::authed_command(repo_root, pat)
+        .args(["commit", "-m", &format!("{exe_name}: rebuild")]).status()?;
     if !commit.success() {
         anyhow::bail!("git commit failed");
     }

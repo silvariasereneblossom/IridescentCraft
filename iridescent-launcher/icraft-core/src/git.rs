@@ -16,7 +16,7 @@ use std::process::{Command, Output};
 use crate::tools::git_exe;
 
 fn run_git(cwd: &Path, args: &[&str]) -> Result<Output> {
-    let out = Command::new(git_exe()).current_dir(cwd).args(args).output()?;
+    let out = base_command(cwd).args(args).output()?;
     if !out.status.success() {
         return Err(anyhow!(
             "git {} failed (exit {}): {}",
@@ -28,13 +28,27 @@ fn run_git(cwd: &Path, args: &[&str]) -> Result<Output> {
     Ok(out)
 }
 
+/// Build a base `git` Command with prompt-suppressing env vars applied.
+/// GIT_TERMINAL_PROMPT=0 -- git's classic credential read fails fast
+/// instead of stalling on a TTY read or, in a GUI context, popping
+/// the system credential manager.
+/// GCM_INTERACTIVE=Never -- Git Credential Manager (the default helper
+/// on modern Git for Windows installs) skips its browser-OAuth
+/// fallback. Combined, no credential prompt of any kind reaches the
+/// operator -- if the configured auth (extraHeader bearer token, or
+/// nothing) is rejected, git returns a clean 401/403 error instead.
+fn base_command(cwd: &Path) -> Command {
+    let mut cmd = Command::new(git_exe());
+    cmd.current_dir(cwd);
+    cmd.env("GIT_TERMINAL_PROMPT", "0");
+    cmd.env("GCM_INTERACTIVE", "Never");
+    cmd
+}
+
 /// `git rev-parse HEAD` -> short SHA. Returns `None` if the path isn't
 /// inside a working tree.
 pub fn head_sha(cwd: &Path) -> Result<Option<String>> {
-    let out = Command::new(git_exe())
-        .current_dir(cwd)
-        .args(["rev-parse", "HEAD"])
-        .output()?;
+    let out = base_command(cwd).args(["rev-parse", "HEAD"]).output()?;
     if !out.status.success() {
         return Ok(None);
     }
@@ -43,10 +57,7 @@ pub fn head_sha(cwd: &Path) -> Result<Option<String>> {
 
 /// `git status --porcelain` with `Ok(None)` if not a working tree.
 pub fn status_porcelain(cwd: &Path) -> Result<Option<String>> {
-    let out = Command::new(git_exe())
-        .current_dir(cwd)
-        .args(["status", "--porcelain"])
-        .output()?;
+    let out = base_command(cwd).args(["status", "--porcelain"]).output()?;
     if !out.status.success() {
         return Ok(None);
     }
@@ -91,8 +102,7 @@ pub fn push_with_pat(cwd: &Path, pat: &str) -> Result<()> {
 /// pane instead of the operator seeing a browser pop and trying to
 /// guess what's wrong.
 pub fn authed_command(cwd: &Path, pat: Option<&str>) -> Command {
-    let mut cmd = Command::new(git_exe());
-    cmd.current_dir(cwd);
+    let mut cmd = base_command(cwd);
     if let Some(p) = pat {
         cmd.arg("-c").arg(format!("http.extraHeader=AUTHORIZATION: bearer {p}"));
         cmd.arg("-c").arg("credential.helper=");
