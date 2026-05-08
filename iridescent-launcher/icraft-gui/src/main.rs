@@ -14,7 +14,8 @@
 
 use std::path::{Path, PathBuf};
 use std::sync::mpsc::{channel, Receiver, Sender};
-use std::sync::Mutex;
+use std::sync::atomic::{AtomicBool, Ordering};
+use std::sync::{Arc, Mutex};
 use std::thread::JoinHandle;
 
 use eframe::egui;
@@ -144,6 +145,11 @@ struct IcraftApp {
     /// Free-form server console input -- also reused as the username/arg
     /// for the per-command quick buttons (op, ban, kick, ...).
     console_input: String,
+    /// Remote (GitHub) HEAD SHA for the configured branch, fetched in
+    /// the background. None until the first fetch completes.
+    remote_sha: Arc<Mutex<Option<String>>>,
+    /// True while a remote-sha fetch is in flight; prevents duplicates.
+    remote_fetching: Arc<AtomicBool>,
 }
 
 #[derive(Default, Clone)]
@@ -181,9 +187,41 @@ impl IcraftApp {
             running_task: None,
             status: InstallStatus::default(),
             console_input: String::new(),
+            remote_sha: Arc::new(Mutex::new(None)),
+            remote_fetching: Arc::new(AtomicBool::new(false)),
         };
         app.refresh_status();
+        app.refresh_remote_sha();
         app
+    }
+
+    /// Fire off a background fetch of GitHub's HEAD SHA for the
+    /// configured branch. Result lands in `self.remote_sha`. Skips
+    /// if a fetch is already in flight (so spamming Refresh doesn't
+    /// stack up requests). Network failures are logged and leave the
+    /// previous value in place.
+    fn refresh_remote_sha(&self) {
+        if self.remote_fetching.swap(true, Ordering::AcqRel) {
+            return;
+        }
+        let slot = Arc::clone(&self.remote_sha);
+        let busy = Arc::clone(&self.remote_fetching);
+        std::thread::spawn(move || {
+            // Hardcoded for now -- the alpha repo. If we ever ship
+            // forks, switch to reading `git config remote.origin.url`
+            // out of the working tree. For now this matches what
+            // pull_repo_binary_apply_gui assumes.
+            let r = icraft_core::github::head_sha(
+                "silvariasereneblossom",
+                "IridescentCraft",
+                "main",
+            );
+            match r {
+                Ok(sha) => { *slot.lock().unwrap() = Some(sha); }
+                Err(e) => log::warn!("[github] HEAD fetch failed: {e}"),
+            }
+            busy.store(false, Ordering::Release);
+        });
     }
 
     fn refresh_status(&mut self) {
@@ -263,9 +301,16 @@ impl eframe::App for IcraftApp {
             if h.is_finished() {
                 self.running_task = None;
                 self.refresh_status();
+                self.refresh_remote_sha();
             } else {
                 ctx.request_repaint_after(std::time::Duration::from_millis(200));
             }
+        }
+        // Tick frequently while a remote-sha fetch is in flight so the
+        // (checking...) -> (in sync)/(behind) transition shows up
+        // promptly even when the user isn't moving the mouse.
+        if self.remote_fetching.load(Ordering::Relaxed) {
+            ctx.request_repaint_after(std::time::Duration::from_millis(250));
         }
 
         egui::TopBottomPanel::top("hdr").show(ctx, |ui| {
@@ -325,7 +370,10 @@ impl IcraftApp {
                     self.refresh_status();
                 }
             }
-            if ui.button("Refresh").clicked() { self.refresh_status(); }
+            if ui.button("Refresh").clicked() {
+                self.refresh_status();
+                self.refresh_remote_sha();
+            }
         });
     }
 
@@ -338,6 +386,38 @@ impl IcraftApp {
                 .map(|s| s.chars().take(7).collect::<String>())
                 .unwrap_or_else(|| "(none)".to_string());
             badge(ui, "Last sync", self.status.last_sha.is_some(), &sha_label);
+
+            // Repo HEAD: shows the latest GitHub SHA + tells you if your
+            // local last_sync is up to date. Three states:
+            //   - matches local       -> green, "<sha> (in sync)"
+            //   - differs from local  -> orange-ish ("behind") so you
+            //                            know to click Apply Self-Update
+            //   - fetch hasn't landed -> grey "(checking...)"
+            let remote = self.remote_sha.lock().unwrap().clone();
+            let fetching = self.remote_fetching.load(Ordering::Relaxed);
+            match remote.as_deref() {
+                Some(rsha) => {
+                    let short = rsha.chars().take(7).collect::<String>();
+                    let in_sync = self.status.last_sha.as_deref() == Some(rsha);
+                    let value = if in_sync {
+                        format!("{short} (in sync)")
+                    } else {
+                        format!("{short} (behind)")
+                    };
+                    badge(ui, "Repo HEAD", in_sync, &value);
+                }
+                None if fetching => {
+                    ui.label(egui::RichText::new("Repo HEAD:").strong());
+                    ui.label(egui::RichText::new("(checking...)").weak());
+                    ui.separator();
+                }
+                None => {
+                    ui.label(egui::RichText::new("Repo HEAD:").strong());
+                    ui.label(egui::RichText::new("(offline?)")
+                        .color(egui::Color32::from_rgb(180, 180, 180)));
+                    ui.separator();
+                }
+            }
         });
     }
 
