@@ -14,6 +14,7 @@ log.workspace = true
 ureq.workspace = true
 zip.workspace = true
 toml.workspace = true
+base64 = "0.22"
 
 # Win32 console mode (disable QuickEdit at startup) + watchdog soft-kick
 # (write \r\n to child stdin before the hard kill). Pulled in only on

@@ -112,36 +112,55 @@ pub fn push(cwd: &Path) -> Result<()> {
     run_git(cwd, &["push"]).map(|_| ())
 }
 
-/// Push using a PAT via `http.extraHeader=AUTHORIZATION: bearer <PAT>`.
-/// Also disables the credential helper for this invocation so a
-/// malformed / insufficient-scope PAT fails cleanly with an explicit
-/// error instead of falling back to Git Credential Manager's
-/// browser-based OAuth prompt.
+/// Push using a PAT via HTTP Basic auth in `http.extraHeader`. Also
+/// disables the credential helper for this invocation so a
+/// malformed / insufficient-scope PAT fails cleanly instead of
+/// falling back to Git Credential Manager's browser-based OAuth.
 pub fn push_with_pat(cwd: &Path, pat: &str) -> Result<()> {
-    let header = format!("http.extraHeader=AUTHORIZATION: bearer {pat}");
+    let header = format!("http.extraHeader=Authorization: Basic {}", basic_auth_b64(pat));
     run_git(cwd, &["-c", &header, "-c", "credential.helper=", "push"]).map(|_| ())
 }
 
-/// Build a `Command` that runs git in `cwd` with `http.extraHeader`
-/// set to bearer-auth `pat` when provided. Use for any network op
-/// (clone, fetch, push, pull) where you'd otherwise hit Windows
-/// Credential Manager popups or Git Credential Manager browser-OAuth
-/// flows.
+/// Build a `Command` that runs git in `cwd` with HTTP Basic auth
+/// (`x-access-token:<pat>` base64-encoded) injected via
+/// `http.extraHeader` when a PAT is provided. Use for any network
+/// op (clone, fetch, push, pull) where you'd otherwise hit a
+/// Windows Credential Manager popup or Git Credential Manager
+/// browser flow.
 ///
-/// When a PAT is supplied, also passes `-c credential.helper=` to
-/// disable the configured credential helper for this single
-/// invocation. Combined with the bearer header, this guarantees the
-/// PAT is the only auth attempted -- if it's wrong/insufficient,
-/// the operation fails with a real HTTP 401/403 error in the log
-/// pane instead of the operator seeing a browser pop and trying to
-/// guess what's wrong.
+/// Why Basic instead of Bearer: GitHub's REST API accepts
+/// `Authorization: Bearer <pat>`, but the Git smart-HTTP push
+/// endpoint canonicalizes on Basic auth with the PAT as the
+/// password. We hit a real session where Bearer was rejected and
+/// git fell through to prompt for username/password (user's
+/// 2026-05-08 push_logs failure). Switching to Basic mirrors the
+/// `https://x-access-token:<pat>@github.com/...` URL pattern
+/// GitHub officially recommends.
+///
+/// Also passes `-c credential.helper=` to disable any configured
+/// helper for this single invocation, so a bad/insufficient-scope
+/// PAT fails with a real HTTP 401/403 in the log pane instead of
+/// triggering a fallback prompt.
 pub fn authed_command(cwd: &Path, pat: Option<&str>) -> Command {
     let mut cmd = base_command(cwd);
     if let Some(p) = pat {
-        cmd.arg("-c").arg(format!("http.extraHeader=AUTHORIZATION: bearer {p}"));
+        cmd.arg("-c").arg(format!(
+            "http.extraHeader=Authorization: Basic {}",
+            basic_auth_b64(p)
+        ));
         cmd.arg("-c").arg("credential.helper=");
     }
     cmd
+}
+
+/// Encode `x-access-token:<pat>` as base64 for HTTP Basic auth.
+/// The username "x-access-token" is the GitHub-recommended literal
+/// that signals "the password is a PAT, not a password" -- works
+/// for both classic and fine-grained PATs.
+fn basic_auth_b64(pat: &str) -> String {
+    use base64::Engine;
+    base64::engine::general_purpose::STANDARD
+        .encode(format!("x-access-token:{pat}"))
 }
 
 /// Walk parents until a `.git` directory is found. Used by the crash
