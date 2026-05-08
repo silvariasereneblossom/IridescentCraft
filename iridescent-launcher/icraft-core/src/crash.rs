@@ -65,7 +65,11 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
 
     // Find a git working tree from cwd upwards. If none, we're done.
     let Some(root) = crate::git::find_git_root(&cfg.server_dir) else {
-        log::debug!("[crash] no git working tree -- skip push");
+        log::warn!(
+            "[crash] no git working tree found from {} upward -- skipping push. \
+             Set Install dir to your IridescentCraft clone to enable.",
+            cfg.server_dir.display()
+        );
         return Ok(());
     };
     log::info!("[crash] git root: {}", root.display());
@@ -79,8 +83,10 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
         Local::now().format("%Y-%m-%d %H:%M")
     );
     if let Err(e) = crate::git::commit(&root, &msg) {
-        // Common case: nothing to commit. Don't escalate.
-        log::debug!("[crash] git commit no-op or failed: {e}");
+        // Common case: nothing to commit. Don't escalate, but make
+        // visible so the user can tell push was a no-op vs. mirror
+        // landing in the wrong place.
+        log::info!("[crash] git commit skipped: {e}");
         return Ok(());
     }
 
