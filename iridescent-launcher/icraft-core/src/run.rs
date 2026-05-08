@@ -382,23 +382,64 @@ pub fn send_console_line(line: &str) -> Result<()> {
 /// Pump a stream (stdout or stderr from Java) line-by-line into the
 /// log so the GUI pane shows server output. Detached daemon thread,
 /// exits silently on EOF or read error. Watches each line for
-/// lifecycle markers and updates SERVER_STATE accordingly so the
-/// GUI badge stays current without polling the log pane.
+/// lifecycle markers (server up/down) and operational events
+/// (player join/leave, lag warnings, error/fatal) and emits a
+/// prominent tagged log line for each so they stand out from
+/// the line-by-line stream of normal log4j chatter.
 fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
     use std::io::BufRead;
     thread::spawn(move || {
         for line in std::io::BufReader::new(reader).lines().map_while(Result::ok) {
-            // Forge dedicated server's "Done (Xs)! For help, type
-            // \"help\"" line is the canonical 'now listening' marker.
-            // 'Stopping the server' fires when /stop or SIGTERM hits.
+            // Lifecycle state transitions
             if line.contains("Done (") && line.contains("For help") {
                 set_server_state(ServerState::Listening);
             } else if line.contains("Stopping the server") {
                 set_server_state(ServerState::Stopping);
             }
-            log::info!("[server] {line}");
+
+            // Operational event highlights -- player session + lag
+            // warnings get an extra prominent log line above the
+            // raw [server] one so the operator can find them in
+            // the log pane without scrolling through boot spam.
+            if line.contains("joined the game") {
+                log::info!("[event] >> player joined: {}", extract_player(&line, "joined the game"));
+            } else if line.contains("left the game") {
+                log::info!("[event] << player left:   {}", extract_player(&line, "left the game"));
+            } else if line.contains("logged in with entity id") {
+                log::info!("[event] >> player login: {line}");
+            } else if line.contains("lost connection: ") {
+                log::info!("[event] << disconnect: {line}");
+            } else if line.contains("Can't keep up!") || line.contains("Is the server overloaded") {
+                log::warn!("[event] LAG: {line}");
+            } else if line.contains("Running ") && line.contains("ms or ") && line.contains("ticks behind") {
+                log::warn!("[event] LAG: {line}");
+            }
+
+            // Surface log4j ERROR / WARN lines at the matching log
+            // level so they're highlighted in the GUI.
+            if line.contains("/ERROR]") || line.contains("/FATAL]") {
+                log::error!("[server] {line}");
+            } else if line.contains("/WARN]") {
+                log::warn!("[server] {line}");
+            } else {
+                log::info!("[server] {line}");
+            }
         }
     });
+}
+
+/// Extract a player name from a Forge log line of the form
+/// `... <username> joined the game` (or `left the game`). Returns
+/// the substring between the previous `]: ` and the marker. Falls
+/// back to the full line if the pattern doesn't match.
+fn extract_player(line: &str, marker: &str) -> String {
+    if let Some(idx) = line.find(marker) {
+        let before = &line[..idx];
+        if let Some(prefix_end) = before.rfind("]: ") {
+            return before[prefix_end + 3..].trim().to_string();
+        }
+    }
+    line.to_string()
 }
 
 /// Forward bytes from the parent's stdin to the child's stdin so

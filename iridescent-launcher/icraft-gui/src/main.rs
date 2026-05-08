@@ -249,9 +249,14 @@ impl IcraftApp {
         if let Some(rx) = &self.log_rx {
             while let Ok(line) = rx.try_recv() {
                 self.log_lines.push(line);
-                // cap buffer to keep the GUI snappy
-                if self.log_lines.len() > 5000 {
-                    let drop = self.log_lines.len() - 4000;
+                // 50000-line cap covers a typical Forge session
+                // end-to-end (~30K-100K lines incl. boot spam, KubeJS
+                // chatter, and disconnect/lag warnings). Smaller caps
+                // dropped late-session disconnect lines before the
+                // operator could read them. Drains to 40000 once
+                // exceeded to keep the GUI snappy.
+                if self.log_lines.len() > 50000 {
+                    let drop = self.log_lines.len() - 40000;
                     self.log_lines.drain(..drop);
                 }
             }
