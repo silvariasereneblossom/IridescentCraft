@@ -120,16 +120,24 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
         log::warn!("[crash] git add failed: {e}");
         return Ok(());
     }
+    // Pre-check: if nothing is staged after the add, there's no point
+    // attempting a commit. This is the most common reason push_logs
+    // exits early ("server hasn't generated new logs since last push"),
+    // and treating it as a clean noop -- not a failure -- avoids
+    // alarming-looking 'commit failed' lines in the log pane.
+    if crate::git::staged_is_empty(&root)? {
+        log::info!("[crash] no new logs to push (working tree matches HEAD)");
+        return Ok(());
+    }
+    // Ephemeral cache repos start without user.email/user.name; git
+    // refuses to commit without identity. Set scratch values inline
+    // so the commit succeeds without polluting global git config.
     let msg = format!(
         "server logs auto-mirror {}",
         Local::now().format("%Y-%m-%d %H:%M")
     );
-    if let Err(e) = crate::git::commit(&root, &msg) {
-        // Common case: nothing to commit (mirror identical to last
-        // push). Visible at info so the user can tell apart 'mirror
-        // landed in wrong place' (nothing staged) from 'mirror
-        // succeeded but no new content' (nothing to commit).
-        log::info!("[crash] git commit skipped: {e}");
+    if let Err(e) = crate::git::commit_with_identity(&root, &msg) {
+        log::warn!("[crash] git commit failed: {e}");
         return Ok(());
     }
 

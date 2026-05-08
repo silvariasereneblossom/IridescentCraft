@@ -18,11 +18,22 @@ use crate::tools::git_exe;
 fn run_git(cwd: &Path, args: &[&str]) -> Result<Output> {
     let out = base_command(cwd).args(args).output()?;
     if !out.status.success() {
+        // Some git messages (commit "nothing to commit", refusing to
+        // touch sparse paths, etc.) go to stdout instead of stderr.
+        // Include both so the operator sees the real reason in the log.
+        let stderr = String::from_utf8_lossy(&out.stderr);
+        let stdout = String::from_utf8_lossy(&out.stdout);
+        let detail = match (stderr.trim().is_empty(), stdout.trim().is_empty()) {
+            (false, false) => format!("{} | {}", stderr.trim(), stdout.trim()),
+            (false, true)  => stderr.trim().to_string(),
+            (true,  false) => stdout.trim().to_string(),
+            (true,  true)  => "(no output)".to_string(),
+        };
         return Err(anyhow!(
             "git {} failed (exit {}): {}",
             args.join(" "),
             out.status.code().unwrap_or(-1),
-            String::from_utf8_lossy(&out.stderr).trim()
+            detail
         ));
     }
     Ok(out)
@@ -72,6 +83,29 @@ pub fn add(cwd: &Path, paths: &[&str]) -> Result<()> {
 
 pub fn commit(cwd: &Path, message: &str) -> Result<()> {
     run_git(cwd, &["commit", "-m", message]).map(|_| ())
+}
+
+/// `git commit -m <msg>` with scratch user.email + user.name passed
+/// inline via `-c`. Use for ephemeral / cache repos that don't have
+/// global identity configured -- otherwise git refuses to commit
+/// with `*** Please tell me who you are`. Doesn't pollute the global
+/// or repo-local config; the values live only for this invocation.
+pub fn commit_with_identity(cwd: &Path, message: &str) -> Result<()> {
+    run_git(cwd, &[
+        "-c", "user.email=icraft-launcher@local",
+        "-c", "user.name=icraft-launcher",
+        "commit", "-m", message,
+    ]).map(|_| ())
+}
+
+/// True when there are no staged changes (`git diff --cached --quiet`
+/// returns 0). False when there are staged changes (exit 1) OR when
+/// the diff command itself fails (we treat 'unknown' as 'has changes'
+/// so the caller still attempts the commit and surfaces any real
+/// underlying error).
+pub fn staged_is_empty(cwd: &Path) -> Result<bool> {
+    let status = base_command(cwd).args(["diff", "--cached", "--quiet"]).status()?;
+    Ok(status.success())
 }
 
 pub fn push(cwd: &Path) -> Result<()> {
