@@ -150,7 +150,11 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
             Ok(code.try_into().unwrap_or(1))
         }
         Cmd::Sync { force } => {
-            sync::z_mirror_or_zip(cfg)?;
+            // Single incremental call. Pre-fix the CLI also called
+            // z_mirror_or_zip (which itself called github_diff with
+            // force=true), causing every invocation to clear the SHA
+            // and full-zip. github_diff with `*force` covers both the
+            // default incremental path and the explicit --force reset.
             sync::github_diff(cfg, *force)?;
             Ok(0)
         }

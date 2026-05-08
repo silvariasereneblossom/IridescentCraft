@@ -525,10 +525,10 @@ impl IcraftApp {
                 });
             }
             if action_btn(ui, "Sync repo", busy).clicked() {
-                self.spawn("sync-repo", move |c| {
-                    icraft_core::sync::z_mirror_or_zip(&c)?;
-                    icraft_core::sync::github_diff(&c, false)
-                });
+                // Single incremental sync. Diff-based: hits compare API,
+                // fetches only changed files. The "Sync (--force)" button
+                // below is the explicit full-pull reset.
+                self.spawn("sync-repo", move |c| icraft_core::sync::github_diff(&c, false));
             }
             if action_btn(ui, "Sync (--force)", busy).clicked() {
                 self.spawn("sync-force", move |c| icraft_core::sync::github_diff(&c, true));

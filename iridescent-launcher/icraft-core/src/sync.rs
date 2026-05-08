@@ -50,27 +50,30 @@ const SELF_UPDATE_FILES: &[&str] = &[
 // GitHub remote, not from a network drive that may serve stale data.
 // =============================================================================
 
-/// Bulk-pull the modpack tree from the GitHub remote.
+/// Incremental sync from the GitHub remote.
 ///
-/// This used to shell out to `sync_from_repo.bat` (or .sh), which
-/// preferred a `Z:` network mapping pointing at the dev box's
-/// PrismLauncher instance and only fell back to GitHub if the drive
-/// was missing. That meant a stale dev-side clone produced stale
-/// jars on the server, with no obvious failure (Phase -1 succeeded,
-/// just copied old content).
+/// Historically this was Phase -1 — a `Z:` drive mirror copy from a
+/// dev-box working tree, with a Phase 0 zip fallback if the drive
+/// wasn't present. After the Z: dependency was retired, the function
+/// briefly hardcoded `force = true` here, which **cleared the local
+/// SHA marker on every invocation** and forced a full repo zip
+/// download instead of the diff fast-path. That made every
+/// `Run (full)` and every `Sync repo` press redownload the entire
+/// repo, behaving worse than the bat it replaced.
 ///
-/// New behavior: always route through `github_diff` with
-/// `force = true`, so every Phase -1 invocation walks the GitHub
-/// compare API and fetches files via raw URLs directly. No network
-/// drive dependency. Same auth path as the rest of our HTTP traffic
-/// (ureq + optional PAT).
+/// Current behavior: `force = false`. Reads `.icraft_last_sha`,
+/// hits the GitHub compare API for changed files only, and downloads
+/// just those via raw URLs. Matches the incremental semantics of
+/// `sync_from_repo.bat`. The "force a full pull" path is reachable
+/// via the GUI's `Sync (--force)` button or `icraft sync --force`,
+/// both of which call `github_diff(cfg, true)` directly.
 ///
-/// Function name + signature kept stable -- the GUI's `Sync repo`
+/// Function name + signature kept stable so the GUI's `Sync repo`
 /// button, the CLI's `sync` subcommand, and `serve()`'s phase -1
-/// step all keep working.
+/// step keep working without churn.
 pub fn z_mirror_or_zip(cfg: &ServerConfig) -> Result<()> {
-    log::info!("[sync] phase -1: github_diff (bulk pull from origin/main; legacy Z: bat path retired)");
-    github_diff(cfg, true)
+    log::info!("[sync] incremental sync (origin/main, GitHub compare API)");
+    github_diff(cfg, false)
 }
 
 // =============================================================================

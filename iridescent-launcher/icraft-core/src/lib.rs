@@ -67,12 +67,14 @@ impl Default for ServeOptions {
 pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
     banner::startup_banner();
 
-    // Phase -1: Z: mirror (or GitHub zip fallback)
-    if let Err(e) = sync::z_mirror_or_zip(cfg) {
-        log::warn!("[sync] Z: mirror skipped: {e}");
-    }
-
-    // Phase 0: diff-based GitHub sync
+    // Phase 0: incremental GitHub sync (compare API + raw fetches).
+    // Phase -1 used to do a separate Z: drive mirror copy here. After
+    // the Z: dependency was retired and z_mirror_or_zip was rewritten
+    // to call github_diff, running both phases just made the same
+    // call twice -- and worse, the Phase -1 variant was hardcoded to
+    // force=true, clearing the SHA marker so Phase 0 always full-
+    // zipped. Single phase now: respect opts.force_sync, default
+    // incremental.
     if let Err(e) = sync::github_diff(cfg, opts.force_sync) {
         log::warn!("[sync] GitHub diff sync failed: {e}");
     }
