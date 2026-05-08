@@ -4,6 +4,20 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-08 — ItemModularArmor + spell books: inline `ModularItemDamageEvent` guard (bootstrap mixin failed)
+
+Third recurrence of the `ItemModularArmor → ModularItem` ClassCastException crash from Aetheric Tetranomicon's `VeridiumInfusionEffect` listener. Earlier "fix" (commit c0472d0d) added a generic `EventBusInvokeMixin` in `iridescent-durability-clamp` that wrapped every Forge listener invoke in try/catch CCE. Mixin registered ("Preparing iridescent_durability_clamp.mixins.json (2)") but never applied — debug.log shows `ItemStackHurtAndBreakMixin` mixed in but no `Mixing EventBusInvokeMixin...` line.
+
+Root cause: Forge's `ASMEventHandler` lives in the `MC-BOOTSTRAP` module layer (visible in stack trace as `MC-BOOTSTRAP/net.minecraftforge.eventbus/...ASMEventHandler.invoke`). Bootstrap classes load before the regular mod-mixin transform stage runs, so mod-level mixins targeting `ASMEventHandler` are never given the chance to instrument it.
+
+Fix: revert to the inline-guard pattern at the call site. `ItemModularArmor.damageItem`, `ModularSpellBookItem.damageItem`, and `ModularArsSpellBookItem.damageItem` now each inline the body of `IModularItem.damageItemImpl` (post `ModularItemDamageEvent`, apply `BloodboundEffect`, clamp to `maxDamage - 1`) with a try/catch ClassCastException around `MinecraftForge.EVENT_BUS.post(event)`. The throwing listener's contribution and any same-priority-or-later listener get skipped on impacted hits; everything else (BloodboundEffect, clamp) still runs. Server stays up.
+
+Tradeoff: addons that subscribe to `ModularItemDamageEvent` and run after Aetheric's listener silently lose their amount mutations on our items. Acceptable given the alternative is hard-crashing every armor hit. Proper fix would need a transformation-service-level mixin or Sinytra Connector pre-launch hook — neither in scope today.
+
+`EventBusInvokeMixin` stays in the durability-clamp jar as a no-op safety net for non-bootstrap CCE patterns; class-level Javadoc updated to flag the limitation so future readers don't waste time wondering why it doesn't fire.
+
+---
+
 ## 2026-05-07 — Reforged armor: workbench Repair tab now appears
 
 Bug report: holding a reforged armor piece at the Tetra workbench showed no Repair tab at all. Tetra cycles through installed modules and uses each module's material as the repair input — but only if the item registered a `RepairSchematic` at construction time.

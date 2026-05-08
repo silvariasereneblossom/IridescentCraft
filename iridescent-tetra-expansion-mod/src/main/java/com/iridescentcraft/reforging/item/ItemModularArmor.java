@@ -132,35 +132,58 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     }
 
     /**
-     * Tetra-native durability clamp. Vanilla ItemStack.hurtAndBreak calls
-     * Item.damageItem(stack, amount, entity, onBroken) BEFORE running the
-     * destruction check. Tetra's `ModularItem` (the concrete base most
-     * Tetra items extend) overrides damageItem to delegate to
-     * IModularItem.damageItemImpl, which clamps via
-     *   Math.min(maxDamage - currentDamage - 1, amount)
-     * and posts ModularItemDamageEvent + applies BloodboundEffect.
+     * Tetra-native durability clamp. Inlined version of
+     * IModularItem.damageItemImpl so we can wrap the ModularItemDamageEvent
+     * post() call in a local try/catch ClassCastException.
      *
-     * Our ItemModularArmor extends ArmorItem directly (not ModularItem)
-     * so without this override we inherit vanilla's no-op default and
-     * the clamp never fires. Result: items destroyed at maxDamage.
+     * Why inline instead of calling damageItemImpl + relying on a
+     * generic event-bus mixin: Forge's ASMEventHandler (the per-listener
+     * dispatch class that throws when third-party listeners cast our
+     * stack to a concrete ModularItem) lives in the MC-BOOTSTRAP module
+     * layer. It is class-loaded before mod mixins enter the transform
+     * stage, so iridescent_durability_clamp's EventBusInvokeMixin is
+     * registered but never applied -- mixin can't transform a class
+     * already loaded by the bootstrap classloader. We confirmed this
+     * via debug.log: "Preparing iridescent_durability_clamp.mixins.json
+     * (2)" appears, ItemStackHurtAndBreakMixin applies, but the
+     * EventBusInvokeMixin "Mixing ..." line never prints.
      *
-     * History: an earlier revision inlined the clamp here to avoid
-     * posting ModularItemDamageEvent, because Aetheric Tetranomicon's
-     * VeridiumInfusionEffect listener does an unchecked cast to the
-     * concrete ModularItem class and crashed when it received our
-     * subclass (real session, 2026-05-08 14:12). That workaround
-     * lost BloodboundEffect + third-party damage-modifier integration
-     * on our items. Restored to the proper damageItemImpl call now
-     * that iridescent_durability_clamp's EventBusInvokeMixin guards
-     * every Forge listener in a try/catch ClassCastException -- the
-     * bad cast still throws inside the addon listener but the guard
-     * swallows it, logs once via [event-guard], and continues. Our
-     * post-event chain (BloodboundEffect, the maxDamage-1 clamp)
-     * runs normally.
+     * Tradeoff: when Aetheric Tetranomicon's VeridiumInfusionEffect
+     * listener (or any other listener that casts to concrete
+     * ModularItem) throws, EventBus.post bubbles the exception up
+     * through this catch. Listeners scheduled AFTER the throwing one
+     * in priority order do not run. BloodboundEffect (called inline
+     * below post()) and the maxDamage-1 clamp still apply, so the item
+     * doesn't break and the server doesn't crash. Listeners that ran
+     * BEFORE the throw kept their event.amount mutations.
+     *
+     * Lost vs. ideal: any same-priority-or-later listener that would
+     * have modified the damage amount is silently skipped on impacted
+     * stacks. Acceptable: the alternative is a hard crash on every
+     * armor hit while Aetheric is installed.
+     *
+     * If/when we move to a transformation-service-level mixin or
+     * Sinytra-Connector pre-launch hook, this can revert to a plain
+     * damageItemImpl(...) call.
      */
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        return damageItemImpl(stack, amount, entity, onBroken);
+        se.mickelus.tetra.event.ModularItemDamageEvent event =
+                new se.mickelus.tetra.event.ModularItemDamageEvent(entity, stack, amount);
+        try {
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
+        } catch (ClassCastException cce) {
+            org.apache.logging.log4j.LogManager.getLogger("iridescent_reforging").warn(
+                    "[icraft] ModularItemDamageEvent listener threw CCE ({}). Skipping that listener's contribution; later listeners on this event were not invoked.",
+                    cce.toString());
+        }
+        int actualAmount = event.getAmount();
+        try {
+            actualAmount = se.mickelus.tetra.effect.BloodboundEffect.reduceDamage(stack, entity, actualAmount);
+        } catch (Throwable t) {
+            // BloodboundEffect failures must not crash item damage.
+        }
+        return Math.min(stack.getMaxDamage() - stack.getDamageValue() - 1, actualAmount);
     }
 
     // ── IModularItem abstract surface ──────────────────────────────────

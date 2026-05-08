@@ -14,6 +14,14 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### `ModularItemDamageEvent` listeners after Aetheric's broken cast lose contributions (2026-05-08)
+- **Status:** Mitigated — server no longer crashes; some addon listeners are silently skipped on impacted stacks
+- **Description:** Aetheric Tetranomicon's `VeridiumInfusionEffect.durabilityEvent` listener does an unchecked cast to the concrete `se.mickelus.tetra.items.modular.ModularItem`. Our `ItemModularArmor` (extends `ArmorItem`) and modular spell books (extend ISS/Ars `SpellBook`) only implement `IModularItem`, so the cast throws `ClassCastException` and `EventBus.post` aborts iteration mid-listener.
+- **Mitigation:** `ItemModularArmor.damageItem` / `ModularSpellBookItem.damageItem` / `ModularArsSpellBookItem.damageItem` inline `IModularItem.damageItemImpl` and wrap `MinecraftForge.EVENT_BUS.post(event)` in try/catch CCE. `BloodboundEffect.reduceDamage` and the `maxDamage - 1` clamp run unconditionally afterward.
+- **Tradeoff:** any `ModularItemDamageEvent` listener registered at the same priority as Aetheric's, or after it, is silently skipped on hits where Aetheric's cast throws. Currently only Aetheric is known to subscribe; if another addon adds a listener later, expect to revisit.
+- **Why not a generic mixin:** Forge's `ASMEventHandler` (the per-listener dispatch class) loads in the `MC-BOOTSTRAP` module layer, which is past the point where mod mixins are allowed to transform. Confirmed via debug.log — `EventBusInvokeMixin` registers ("Preparing iridescent_durability_clamp.mixins.json (2)") but never emits the matching "Mixing EventBusInvokeMixin..." line. Proper fix would need a transformation-service-level mixin or Sinytra Connector pre-launch hook.
+- **Long-term:** ping Aetheric Tetranomicon upstream with a typed-cast PR (replace `(ModularItem) stack.getItem()` with `IModularItem`).
+
 ### Mekasuit has no innate armor stats (2026-05-03)
 - **Status:** Active — parked, fix later (no need to ship immediately)
 - **Description:** Mekanism's Mekasuit set (top-tier endgame armor — `mekanism:mekasuit_helmet`, `mekasuit_bodyarmor`, `mekasuit_pants`, `mekasuit_boots`) has no innate `max_health` / `armor` / `armor_toughness` modifiers on the bare items. Stats come entirely from installed Mekanism modules (Auto-Feeder, Frost-Walker, etc.) via the mod's own attribute system, not vanilla `getDefaultAttributeModifiers`. As a result it doesn't auto-classify into our weight tags (currently NOT in `armor_heavy.json` despite being a metal-themed power suit) AND doesn't compose normally with the difficulty multiplier system because there's no base armor value for the multiplier to scale.

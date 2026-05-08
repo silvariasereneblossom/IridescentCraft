@@ -190,18 +190,34 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
     public Cache<String, ItemProperties> getPropertyCache() { return propertyCache; }
 
     /**
-     * Tetra-native durability clamp via IModularItem.damageItemImpl
-     * (posts ModularItemDamageEvent, applies BloodboundEffect, then
-     * Math.min(maxDamage - currentDamage - 1, amount)). Safe to call
-     * because iridescent_durability_clamp's EventBusInvokeMixin
-     * guards listeners against the unchecked-cast crash that earlier
-     * forced an inline clamp here. See ItemModularArmor.damageItem
-     * for the full history.
+     * Inlined IModularItem.damageItemImpl with a local try/catch around
+     * the ModularItemDamageEvent post(). See ItemModularArmor.damageItem
+     * for the rationale: ASMEventHandler is in the MC-BOOTSTRAP layer
+     * so iridescent_durability_clamp's EventBusInvokeMixin can never
+     * apply, and Aetheric Tetranomicon's listener crashes on our
+     * subclass. Inline guard preserves BloodboundEffect + the
+     * maxDamage-1 clamp at the cost of any later listener's
+     * contribution on impacted stacks.
      */
     @Override
     public <T extends net.minecraft.world.entity.LivingEntity> int damageItem(
             ItemStack stack, int amount, T entity, java.util.function.Consumer<T> onBroken) {
-        return damageItemImpl(stack, amount, entity, onBroken);
+        se.mickelus.tetra.event.ModularItemDamageEvent event =
+                new se.mickelus.tetra.event.ModularItemDamageEvent(entity, stack, amount);
+        try {
+            net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
+        } catch (ClassCastException cce) {
+            org.apache.logging.log4j.LogManager.getLogger("iridescent_modular_spells").warn(
+                    "[icraft] ModularItemDamageEvent listener threw CCE ({}). Skipping that listener's contribution; later listeners on this event were not invoked.",
+                    cce.toString());
+        }
+        int actualAmount = event.getAmount();
+        try {
+            actualAmount = se.mickelus.tetra.effect.BloodboundEffect.reduceDamage(stack, entity, actualAmount);
+        } catch (Throwable t) {
+            // best-effort
+        }
+        return Math.min(stack.getMaxDamage() - stack.getDamageValue() - 1, actualAmount);
     }
 
     // ===== Held/offhand attribute pipeline (vanilla slot path) =====
