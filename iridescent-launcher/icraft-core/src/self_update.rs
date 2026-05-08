@@ -260,33 +260,12 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
             target_dir.display()
         ))?;
     log::info!("[self-update] built: {}", built.display());
+    let _ = git_exe; // unused now that we don't deploy/push from here
 
-    // Deploy + commit + push the binary to the repo so consumer boxes
-    // (no git/cargo) can pull via Update Launcher's HTTP-based github_diff.
-    // Repo root: prefer ICRAFT_REPO_ROOT, else assume launcher source is
-    // a sibling of .minecraft\ inside the same repo (the nested layout).
-    let deploy_root = std::env::var("ICRAFT_REPO_ROOT").ok().map(PathBuf::from)
-        .or_else(|| src_dir.parent().map(Path::to_path_buf));
-    if let Some(root) = deploy_root {
-        let canonical = root.join(".minecraft").join("server_distribution").join(&exe_name);
-        if canonical.parent().map_or(false, |p| p.exists()) {
-            log::info!("[self-update] deploying canonical -> {}", canonical.display());
-            fs::copy(&built, &canonical)
-                .map_err(|e| anyhow::anyhow!("canonical copy: {e}"))?;
-            if let Err(e) = git_commit_push_binary(&git_exe, &root, &canonical, &exe_name, pat.as_deref()) {
-                // Non-fatal: local apply still proceeds even if push fails.
-                log::warn!("[self-update] repo push skipped: {e:#}");
-            }
-        } else {
-            log::info!(
-                "[self-update] {} doesn't have .minecraft/server_distribution/; \
-                 skipping repo deploy (set ICRAFT_REPO_ROOT to enable)",
-                root.display()
-            );
-        }
-    }
-
-    // Stage as <running>.new next to the running binary.
+    // Stage as <running>.new next to the running binary. The build
+    // is ephemeral -- no commit + push to the repo, no canonical
+    // deploy. Source is the only canonical artifact; binaries are
+    // local build outputs each box produces for itself.
     let live = std::env::current_exe()?;
     let staged = live.with_file_name(format!("{exe_name}.new"));
     fs::copy(&built, &staged)
@@ -444,55 +423,11 @@ fn find_git_root(start: &Path) -> Option<PathBuf> {
     None
 }
 
-/// Stage + commit + push the freshly built binary to the repo so consumer
-/// boxes can pull it via Update Launcher. No-op silently if there's
-/// nothing to commit (binary byte-identical to the existing repo copy).
-/// Errors bubble up but the caller treats them as non-fatal.
-fn git_commit_push_binary(
-    git_exe: &Path,
-    repo_root: &Path,
-    canonical: &Path,
-    exe_name: &str,
-    pat: Option<&str>,
-) -> Result<()> {
-    let _ = git_exe; // routed through authed_command which goes via tools::git_exe
-    let rel = format!(".minecraft/server_distribution/{exe_name}");
-    let add = crate::git::authed_command(repo_root, pat)
-        .args(["add", &rel]).status()?;
-    if !add.success() {
-        anyhow::bail!("git add failed");
-    }
-    let unchanged = crate::git::authed_command(repo_root, pat)
-        .args(["diff", "--cached", "--quiet"]).status()?.success();
-    if unchanged {
-        log::info!("[self-update] binary unchanged; nothing to push");
-        let _ = canonical;
-        return Ok(());
-    }
-    let commit = crate::git::authed_command(repo_root, pat)
-        .args(["commit", "-m", &format!("{exe_name}: rebuild")]).status()?;
-    if !commit.success() {
-        anyhow::bail!("git commit failed");
-    }
-    // PAT-authed push: extraHeader bypasses Windows Credential
-    // Manager so the operator never sees a prompt.
-    let push_result = match pat {
-        Some(p) => crate::git::push_with_pat(repo_root, p),
-        None    => {
-            log::warn!(
-                "[self-update] no PAT configured; falling back to plain git push \
-                 (may prompt for credentials). Save a PAT via the GitHub auth \
-                 panel to avoid this."
-            );
-            crate::git::push(repo_root)
-        }
-    };
-    if let Err(e) = push_result {
-        anyhow::bail!("git push failed: {e}");
-    }
-    log::info!("[self-update] pushed new {exe_name} to repo");
-    Ok(())
-}
+// git_commit_push_binary removed: pull_build_apply_gui no longer
+// publishes binaries to the repo. Source is the canonical artifact;
+// each box builds locally and applies in place. If a binary push
+// is ever needed (e.g. for cargo-less consumer boxes), use
+// rebuild_gui.bat --push from a dev shell.
 
 fn current_exe_name() -> String {
     std::env::current_exe()
