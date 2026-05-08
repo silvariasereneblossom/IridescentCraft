@@ -467,20 +467,42 @@ fn current_exe_name() -> String {
 fn find_launcher_src() -> Option<PathBuf> {
     if let Ok(p) = std::env::var("ICRAFT_LAUNCHER_SRC") {
         let pb = PathBuf::from(p);
-        if is_launcher_src(&pb) { return Some(pb); }
+        if is_launcher_src(&pb) {
+            if has_git_history(&pb) {
+                return Some(pb);
+            }
+            log::warn!(
+                "[self-update] ICRAFT_LAUNCHER_SRC points at {} but no .git history found there or in its parent -- falling through to auto-clone cache. Set the env var to a real git working tree, or clear it (setx ICRAFT_LAUNCHER_SRC \"\") to silence this warning.",
+                pb.display()
+            );
+        }
     }
     // Walk up from the running exe's directory.
     let exe = std::env::current_exe().ok()?;
     let mut cur = exe.parent();
     while let Some(c) = cur {
         let candidate = c.join("iridescent-launcher");
-        if is_launcher_src(&candidate) { return Some(candidate); }
+        if is_launcher_src(&candidate) && has_git_history(&candidate) {
+            return Some(candidate);
+        }
         // Also check `c` itself, in case the exe is sitting inside the
         // launcher source tree (e.g. running directly from target/release/).
-        if is_launcher_src(c) { return Some(c.to_path_buf()); }
+        if is_launcher_src(c) && has_git_history(c) {
+            return Some(c.to_path_buf());
+        }
         cur = c.parent();
     }
     None
+}
+
+/// True if `p` or its direct parent contains a `.git` entry. We
+/// require a real working tree because the build flow does
+/// `git pull --ff-only` -- a Cargo.toml-only source dir without
+/// .git history is unbuildable in our pipeline (the pull step
+/// fails with `fatal: not a git repository`).
+fn has_git_history(p: &Path) -> bool {
+    p.join(".git").exists()
+        || p.parent().map_or(false, |par| par.join(".git").exists())
 }
 
 /// Default repo to clone from when no local source can be located.
