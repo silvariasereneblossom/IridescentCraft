@@ -393,7 +393,7 @@ impl IcraftApp {
             let (state_label, state_ok) = match icraft_core::run::server_state() {
                 icraft_core::run::ServerState::Idle      => ("idle (ready)",        true),
                 icraft_core::run::ServerState::Starting  => ("starting",            true),
-                icraft_core::run::ServerState::Listening => ("LISTENING (up)",      true),
+                icraft_core::run::ServerState::Started   => ("STARTED (listening)", true),
                 icraft_core::run::ServerState::Stopping  => ("stopping",            false),
                 icraft_core::run::ServerState::PostExit  => ("post-exit hooks",     false),
             };

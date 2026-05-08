@@ -292,13 +292,20 @@ static ACTIVE_CHILD_PID: Mutex<Option<u32>> = Mutex::new(None);
 
 /// Coarse-grained server lifecycle state, derived from key markers in
 /// the JVM's piped log output. The GUI badge reads this to show
-/// "Starting / Listening / Stopping / Stopped (post-mortem) / Idle"
-/// without the operator having to scan the log pane themselves.
+/// "Starting / Started / Stopping / Post-exit / Idle" without the
+/// operator having to scan the log pane themselves.
+///
+/// Starting -> Started transition fires when Forge prints
+/// `Done (Xs)! For help, type "help"` -- the canonical "server is now
+/// listening for connections" marker.
 #[derive(Debug, Clone, Copy, PartialEq, Eq)]
 pub enum ServerState {
     Idle,
     Starting,
-    Listening,
+    /// Server has finished boot and is accepting connections.
+    /// Triggered by the Forge "Done (X)!" log line. Equivalent to
+    /// "the JVM is listening on the port for player connections."
+    Started,
     Stopping,
     PostExit,
 }
@@ -392,7 +399,7 @@ fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
         for line in std::io::BufReader::new(reader).lines().map_while(Result::ok) {
             // Lifecycle state transitions
             if line.contains("Done (") && line.contains("For help") {
-                set_server_state(ServerState::Listening);
+                set_server_state(ServerState::Started);
             } else if line.contains("Stopping the server") {
                 set_server_state(ServerState::Stopping);
             }

@@ -53,14 +53,27 @@ pub fn capture_crash_log(cfg: &ServerConfig, exit_code: i32) -> Result<PathBuf> 
 /// logged but never fatal — the server should not refuse to exit
 /// because we couldn't push logs.
 pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
-    let src = cfg.logs_dir();
-    if !src.exists() { return Ok(()); }
+    let src_logs    = cfg.logs_dir();
+    let src_crashes = cfg.crash_reports();
+    if !src_logs.exists() && !src_crashes.exists() { return Ok(()); }
 
-    // Mirror to TesterLogs/Server Logs/ inside the install tree if it
-    // exists. push_crash_logs.bat originally did this with xcopy.
+    // Mirror BOTH logs/ and crash-reports/ into TesterLogs/Server Logs/.
+    // The bat-based push_crash_logs.bat handles them as separate copy
+    // sources; the in-app version was only mirroring logs/ before, so
+    // crash-2026-*.txt files were silently absent from every push.
+    // Reported by the operator on 2026-05-08 ("push crash logs didn't
+    // seem to actually push the same crash logs the independent bat
+    // does").
     let mirror = cfg.server_dir.join("TesterLogs").join("Server Logs");
-    if let Err(e) = mirror_dir(&src, &mirror) {
-        log::warn!("[crash] mirror to TesterLogs failed: {e}");
+    if src_logs.exists() {
+        if let Err(e) = mirror_dir(&src_logs, &mirror) {
+            log::warn!("[crash] mirror logs/ to TesterLogs failed: {e}");
+        }
+    }
+    if src_crashes.exists() {
+        if let Err(e) = mirror_dir(&src_crashes, &mirror) {
+            log::warn!("[crash] mirror crash-reports/ to TesterLogs failed: {e}");
+        }
     }
 
     // Read PAT once -- used both for the eventual push AND for any
@@ -81,14 +94,22 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
     let (root, rel_path) = match crate::git::find_git_root(&cfg.server_dir) {
         Some(root) => {
             log::info!("[crash] git root: {}", root.display());
-            // Re-mirror logs into the local tree's expected path so
-            // 'git add TesterLogs' picks them up regardless of where
-            // server_dir landed relative to the working tree.
+            // Re-mirror logs + crash-reports into the local tree's
+            // expected path so 'git add TesterLogs' picks them up
+            // regardless of where server_dir landed relative to the
+            // working tree.
             let local_mirror = root.join(".minecraft").join("server_distribution")
                 .join("TesterLogs").join("Server Logs");
             if !mirror.exists() {
-                if let Err(e) = mirror_dir(&src, &local_mirror) {
-                    log::warn!("[crash] mirror to local tree failed: {e}");
+                if src_logs.exists() {
+                    if let Err(e) = mirror_dir(&src_logs, &local_mirror) {
+                        log::warn!("[crash] mirror logs/ to local tree failed: {e}");
+                    }
+                }
+                if src_crashes.exists() {
+                    if let Err(e) = mirror_dir(&src_crashes, &local_mirror) {
+                        log::warn!("[crash] mirror crash-reports/ to local tree failed: {e}");
+                    }
                 }
             }
             (root, "TesterLogs")
@@ -104,14 +125,21 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
                     return Ok(());
                 }
             };
-            // Mirror logs into the cache tree at the canonical repo
-            // path so git tracks them under the same TesterLogs/...
-            // hierarchy other testers use.
+            // Mirror logs + crash-reports into the cache tree at the
+            // canonical repo path so git tracks them under the same
+            // TesterLogs/... hierarchy other testers use.
             let cache_mirror = cache.join(".minecraft").join("server_distribution")
                 .join("TesterLogs").join("Server Logs");
-            if let Err(e) = mirror_dir(&src, &cache_mirror) {
-                log::warn!("[crash] mirror to push cache failed: {e}");
-                return Ok(());
+            if src_logs.exists() {
+                if let Err(e) = mirror_dir(&src_logs, &cache_mirror) {
+                    log::warn!("[crash] mirror logs/ to push cache failed: {e}");
+                    return Ok(());
+                }
+            }
+            if src_crashes.exists() {
+                if let Err(e) = mirror_dir(&src_crashes, &cache_mirror) {
+                    log::warn!("[crash] mirror crash-reports/ to push cache failed: {e}");
+                }
             }
             (cache, ".minecraft/server_distribution/TesterLogs")
         }
