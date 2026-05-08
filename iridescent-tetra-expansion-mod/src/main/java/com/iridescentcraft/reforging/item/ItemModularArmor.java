@@ -144,25 +144,23 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
      * so without this override we inherit vanilla's no-op default and
      * the clamp never fires. Result: items destroyed at maxDamage.
      *
-     * Why we don't just call IModularItem.damageItemImpl: that method
-     * posts ModularItemDamageEvent on the Forge bus. Aetheric
-     * Tetranomicon's VeridiumInfusionEffect (and likely other Tetra
-     * addon listeners) handle that event by casting
-     *   (se.mickelus.tetra.items.modular.ModularItem) event.getItem()
-     * to the concrete base class -- but we extend ArmorItem and only
-     * implement the IModularItem interface. The cast throws
-     * ClassCastException and crashes the server (real session, 2026-
-     * 05-08 14:12). Workaround: inline the clamp here, skip the
-     * event post entirely. We sacrifice ModularItemDamageEvent
-     * integration on our items (BloodboundEffect, custom damage
-     * modifiers from third-party Tetra addons) to keep the server
-     * up; the durability clamp itself is what actually matters.
+     * History: an earlier revision inlined the clamp here to avoid
+     * posting ModularItemDamageEvent, because Aetheric Tetranomicon's
+     * VeridiumInfusionEffect listener does an unchecked cast to the
+     * concrete ModularItem class and crashed when it received our
+     * subclass (real session, 2026-05-08 14:12). That workaround
+     * lost BloodboundEffect + third-party damage-modifier integration
+     * on our items. Restored to the proper damageItemImpl call now
+     * that iridescent_durability_clamp's EventBusInvokeMixin guards
+     * every Forge listener in a try/catch ClassCastException -- the
+     * bad cast still throws inside the addon listener but the guard
+     * swallows it, logs once via [event-guard], and continues. Our
+     * post-event chain (BloodboundEffect, the maxDamage-1 clamp)
+     * runs normally.
      */
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        int max = stack.getMaxDamage();
-        int cur = stack.getDamageValue();
-        return Math.min(max - cur - 1, amount);
+        return damageItemImpl(stack, amount, entity, onBroken);
     }
 
     // ── IModularItem abstract surface ──────────────────────────────────

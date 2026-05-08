@@ -130,19 +130,18 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
     }
 
     /**
-     * Tetra-native durability clamp. Inlined Math.min(maxDamage -
-     * currentDamage - 1, amount) instead of calling damageItemImpl,
-     * because damageItemImpl posts ModularItemDamageEvent and Aetheric
-     * Tetranomicon's listener crashes when the event's item is one of
-     * our IModularItem-implementing-but-not-extending-ModularItem
-     * subclasses. See ItemModularArmor.damageItem for the full story.
+     * Tetra-native durability clamp via IModularItem.damageItemImpl
+     * (posts ModularItemDamageEvent, applies BloodboundEffect, then
+     * Math.min(maxDamage - currentDamage - 1, amount)). Safe to call
+     * because iridescent_durability_clamp's EventBusInvokeMixin
+     * guards listeners against the unchecked-cast crash that earlier
+     * forced an inline clamp here. See ItemModularArmor.damageItem
+     * for the full history.
      */
     @Override
     public <T extends net.minecraft.world.entity.LivingEntity> int damageItem(
             ItemStack stack, int amount, T entity, java.util.function.Consumer<T> onBroken) {
-        int max = stack.getMaxDamage();
-        int cur = stack.getDamageValue();
-        return Math.min(max - cur - 1, amount);
+        return damageItemImpl(stack, amount, entity, onBroken);
     }
 
     /**
