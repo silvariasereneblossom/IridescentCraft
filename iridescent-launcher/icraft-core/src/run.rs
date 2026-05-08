@@ -126,6 +126,7 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
 
     log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
     let mut child = cmd.spawn().context("spawning java")?;
+    *ACTIVE_CHILD_PID.lock().unwrap() = Some(child.id());
 
     if pipe_output {
         if let Some(stdout) = child.stdout.take() {
@@ -172,9 +173,10 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
         kill_signal.store(true, Ordering::Relaxed);
         let _ = h.join();
     }
-    // Drop the global handle -- subsequent send_console_line calls
-    // will see "no server running" until the next launch.
+    // Drop the globals -- subsequent send_console_line / kill_active_server
+    // calls will see "no server running" until the next launch.
     *ACTIVE_HANDLE.lock().unwrap() = None;
+    *ACTIVE_CHILD_PID.lock().unwrap() = None;
 
     if killed_by_watchdog {
         log::warn!("[run] server killed by watchdog (hang detected)");
@@ -274,6 +276,53 @@ const NEWLINE: &[u8] = b"\n";
 /// writes don't block the launch/exit machinery.
 static ACTIVE_HANDLE: Mutex<Option<Arc<Mutex<Option<ChildStdin>>>>> =
     Mutex::new(None);
+
+/// PID of the running Java child, populated by launch_server_inner
+/// at spawn and cleared at exit. Used by kill_active_server so the
+/// GUI's Kill / Force kill buttons can target the correct process
+/// without holding a Child reference (Child is owned exclusively by
+/// the worker thread blocked on child.wait()).
+static ACTIVE_CHILD_PID: Mutex<Option<u32>> = Mutex::new(None);
+
+/// Send a termination signal to the running server, bypassing the
+/// "stop" stdin command (which a hung JVM may not process). When
+/// `force` is false, sends a graceful signal -- SIGTERM on Unix,
+/// taskkill /T on Windows -- so the JVM's shutdown hooks fire and
+/// chunks flush. When `force` is true, sends SIGKILL / taskkill /F /T;
+/// world saves are LOST but the process dies immediately, useful for
+/// truly stuck servers where graceful shutdown stalls indefinitely.
+///
+/// Returns Err("no server running") when no Java child is active.
+pub fn kill_active_server(force: bool) -> Result<()> {
+    let pid = ACTIVE_CHILD_PID.lock().unwrap()
+        .ok_or_else(|| anyhow::anyhow!("no server running"))?;
+    if force {
+        log::warn!("[run] FORCE killing pid {pid} (worlds may not flush)");
+        kill_pid_force(pid)
+            .map_err(|e| anyhow::anyhow!("force kill failed: {e}"))?;
+    } else {
+        log::info!("[run] sending graceful kill to pid {pid}");
+        kill_pid(pid)
+            .map_err(|e| anyhow::anyhow!("graceful kill failed: {e}"))?;
+    }
+    Ok(())
+}
+
+#[cfg(unix)]
+fn kill_pid_force(pid: u32) -> std::io::Result<()> {
+    use std::process::Command;
+    Command::new("kill").args(["-9", &pid.to_string()]).status()?;
+    Ok(())
+}
+
+#[cfg(windows)]
+fn kill_pid_force(pid: u32) -> std::io::Result<()> {
+    use std::process::Command;
+    Command::new("taskkill")
+        .args(["/F", "/PID", &pid.to_string(), "/T"])
+        .status()?;
+    Ok(())
+}
 
 /// Write a single command line into the running server's stdin, with
 /// a platform-appropriate line ending appended. Used by the GUI

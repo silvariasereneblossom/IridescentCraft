@@ -453,11 +453,32 @@ impl IcraftApp {
                     Ok(())
                 });
             }
-            // Stop is intentionally NOT gated on `busy` -- it has to be
-            // clickable while a "serve" task is running, which is
-            // exactly when `busy` is true.
+            // Stop / Kill / Force kill are intentionally NOT gated on
+            // `busy` -- they have to be clickable while a "serve" task
+            // is running, which is exactly when `busy` is true.
             if ui.add(egui::Button::new("Stop").min_size(egui::vec2(140.0, 28.0))).clicked() {
                 send_console("stop");
+            }
+            if ui.add(egui::Button::new("Kill").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                // Graceful: SIGTERM / taskkill (no /F). JVM's shutdown
+                // hooks fire so worlds flush. Use when "stop" via
+                // stdin doesn't get processed (server hung or output
+                // buffer back-pressured). Takes ~30s for the JVM to
+                // wind down.
+                log::info!("[lifecycle] Kill clicked");
+                if let Err(e) = icraft_core::run::kill_active_server(false) {
+                    log::warn!("[lifecycle] kill failed: {e}");
+                }
+            }
+            if ui.add(egui::Button::new("Force kill").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                // Last resort: SIGKILL / taskkill /F /T. Process dies
+                // immediately. World saves NOT flushed -- chunks since
+                // last autosave are lost. Use only when graceful Kill
+                // also stalls.
+                log::warn!("[lifecycle] Force kill clicked -- worlds may not flush");
+                if let Err(e) = icraft_core::run::kill_active_server(true) {
+                    log::warn!("[lifecycle] force kill failed: {e}");
+                }
             }
             if action_btn(ui, "Accept EULA", busy).clicked() {
                 self.spawn("accept-eula", move |c| icraft_core::eula::accept(&c));
