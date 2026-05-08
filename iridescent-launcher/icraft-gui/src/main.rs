@@ -633,10 +633,12 @@ impl IcraftApp {
         let (status_text, status_ok) = match &status {
             icraft_core::crash::PatStatus::EnvVar =>
                 ("PAT source: ICRAFT_GH_TOKEN environment variable".to_string(), true),
+            icraft_core::crash::PatStatus::FileInAppData(p) =>
+                (format!("PAT source: {}", p.display()), true),
             icraft_core::crash::PatStatus::FileNextToExe(p) =>
-                (format!("PAT source: {}", p.display()), true),
+                (format!("PAT source (legacy): {} -- save again to migrate to %LOCALAPPDATA%\\icraft-launcher\\.icraft_token (safe from modpack sync)", p.display()), true),
             icraft_core::crash::PatStatus::FileInServerDir(p) =>
-                (format!("PAT source: {}", p.display()), true),
+                (format!("PAT source (legacy): {} -- WARNING: this location gets wiped by sync_from_repo.bat. Save again to migrate.", p.display()), true),
             icraft_core::crash::PatStatus::None =>
                 ("No PAT configured".to_string(), false),
         };

@@ -69,8 +69,9 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
     let pat = read_pat(cfg);
     match pat_status(cfg) {
         PatStatus::EnvVar             => log::info!("[crash] PAT source: ICRAFT_GH_TOKEN env var"),
-        PatStatus::FileNextToExe(p)   => log::info!("[crash] PAT source: {}", p.display()),
-        PatStatus::FileInServerDir(p) => log::info!("[crash] PAT source: {}", p.display()),
+        PatStatus::FileInAppData(p)   => log::info!("[crash] PAT source: {}", p.display()),
+        PatStatus::FileNextToExe(p)   => log::info!("[crash] PAT source (legacy): {}", p.display()),
+        PatStatus::FileInServerDir(p) => log::info!("[crash] PAT source (legacy): {}", p.display()),
         PatStatus::None               => log::warn!("[crash] no PAT configured -- git ops will likely prompt or fail"),
     };
 
@@ -156,16 +157,22 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
 }
 
 /// Read the GitHub PAT used for log-push auth. Order of precedence:
-///   1. `ICRAFT_GH_TOKEN` environment variable (set system-wide on
-///      the server box, survives reboots, no on-disk file)
-///   2. `.icraft_token` file next to the running binary (one line,
-///      the PAT only)
-///   3. `.icraft_token` file in `cfg.server_dir` (modpack root)
+///   1. `ICRAFT_GH_TOKEN` environment variable
+///   2. `<appdata>/icraft-launcher/.icraft_token` (canonical save
+///      location -- safe from modpack-sync flows)
+///   3. `.icraft_token` next to the running binary (legacy)
+///   4. `.icraft_token` in `cfg.server_dir` (legacy; vulnerable to
+///      sync_from_repo.bat's robocopy /MIR -- still readable for
+///      backward compat with existing setups, but new saves don't
+///      go here)
 /// Returns None if none of the above yields a non-empty token.
 pub fn read_pat(cfg: &ServerConfig) -> Option<String> {
     if let Ok(t) = std::env::var("ICRAFT_GH_TOKEN") {
         let t = t.trim().to_string();
         if !t.is_empty() { return Some(t); }
+    }
+    if let Some(p) = pat_appdata_path() {
+        if let Some(t) = read_token_file(&p) { return Some(t); }
     }
     if let Ok(exe) = std::env::current_exe() {
         if let Some(parent) = exe.parent() {
@@ -175,6 +182,20 @@ pub fn read_pat(cfg: &ServerConfig) -> Option<String> {
         }
     }
     read_token_file(&cfg.server_dir.join(".icraft_token"))
+}
+
+/// Canonical PAT save location: `%LOCALAPPDATA%\icraft-launcher\
+/// .icraft_token` on Windows, `~/.config/icraft-launcher/.icraft_token`
+/// elsewhere. Lives outside the modpack tree so sync_from_repo.bat
+/// (or any other repo-sync flow) can't wipe it.
+fn pat_appdata_path() -> Option<PathBuf> {
+    let base = if cfg!(windows) {
+        std::env::var("LOCALAPPDATA").ok().map(PathBuf::from)?
+    } else {
+        std::env::var("XDG_CONFIG_HOME").ok().map(PathBuf::from)
+            .or_else(|| std::env::var("HOME").ok().map(|h| PathBuf::from(h).join(".config")))?
+    };
+    Some(base.join("icraft-launcher").join(".icraft_token"))
 }
 
 fn read_token_file(p: &std::path::Path) -> Option<String> {
@@ -187,17 +208,28 @@ fn read_token_file(p: &std::path::Path) -> Option<String> {
 #[derive(Debug, Clone)]
 pub enum PatStatus {
     EnvVar,
+    /// Canonical save location -- `%LOCALAPPDATA%\icraft-launcher\
+    /// .icraft_token` (Windows) or equivalent.
+    FileInAppData(PathBuf),
+    /// Legacy: file next to the running exe.
     FileNextToExe(PathBuf),
+    /// Legacy: file in the modpack root. Vulnerable to
+    /// sync_from_repo.bat /MIR wiping it.
     FileInServerDir(PathBuf),
     None,
 }
 
-/// Mirror of `read_pat`'s search order, but reports the source path
+/// Mirror of `read_pat`'s search order. Reports the source path
 /// instead of the token. For UI status display -- never returns the
 /// token itself.
 pub fn pat_status(cfg: &ServerConfig) -> PatStatus {
     if std::env::var("ICRAFT_GH_TOKEN").map(|v| !v.trim().is_empty()).unwrap_or(false) {
         return PatStatus::EnvVar;
+    }
+    if let Some(p) = pat_appdata_path() {
+        if read_token_file(&p).is_some() {
+            return PatStatus::FileInAppData(p);
+        }
     }
     if let Ok(exe) = std::env::current_exe() {
         if let Some(parent) = exe.parent() {
@@ -214,15 +246,16 @@ pub fn pat_status(cfg: &ServerConfig) -> PatStatus {
     PatStatus::None
 }
 
-/// Persist `token` to `.icraft_token` next to the running exe. On
-/// Unix the file mode is set to 0600 so other users can't read it.
-/// `.icraft_token` is gitignored so an accidentally-committed working
-/// tree won't leak the token. Returns the absolute path written.
+/// Persist `token` to `%LOCALAPPDATA%\icraft-launcher\.icraft_token`
+/// (or platform-equivalent). Lives outside the modpack tree so the
+/// modpack-sync flow can't wipe it. Creates parent dirs as needed.
+/// On Unix sets mode 0600. Returns the absolute path written.
 pub fn write_pat_to_file(token: &str) -> Result<PathBuf> {
-    let exe = std::env::current_exe()?;
-    let parent = exe.parent()
-        .ok_or_else(|| anyhow::anyhow!("current_exe has no parent: {}", exe.display()))?;
-    let path = parent.join(".icraft_token");
+    let path = pat_appdata_path()
+        .ok_or_else(|| anyhow::anyhow!("no LOCALAPPDATA / HOME env var; can't pick a PAT save location"))?;
+    if let Some(dir) = path.parent() {
+        std::fs::create_dir_all(dir)?;
+    }
     std::fs::write(&path, token.trim())?;
     #[cfg(unix)]
     {
@@ -236,14 +269,14 @@ pub fn write_pat_to_file(token: &str) -> Result<PathBuf> {
     Ok(path)
 }
 
-/// Remove `.icraft_token` next to the running exe. Returns Ok(true)
-/// if a file was actually removed, Ok(false) if there was nothing to
-/// clear.
+/// Remove the canonical PAT file (appdata location). Returns
+/// Ok(true) if a file was actually removed, Ok(false) if there was
+/// nothing to clear. Doesn't touch legacy locations (next-to-exe /
+/// server-dir) -- if the operator wants those gone, they can delete
+/// them by hand or save a new token (which writes to appdata).
 pub fn clear_pat_file() -> Result<bool> {
-    let exe = std::env::current_exe()?;
-    let parent = exe.parent()
-        .ok_or_else(|| anyhow::anyhow!("current_exe has no parent"))?;
-    let path = parent.join(".icraft_token");
+    let path = pat_appdata_path()
+        .ok_or_else(|| anyhow::anyhow!("no LOCALAPPDATA / HOME env var"))?;
     if path.exists() {
         std::fs::remove_file(&path)?;
         Ok(true)
