@@ -393,10 +393,34 @@ pub fn send_console_line(line: &str) -> Result<()> {
 /// (player join/leave, lag warnings, error/fatal) and emits a
 /// prominent tagged log line for each so they stand out from
 /// the line-by-line stream of normal log4j chatter.
+///
+/// **Encoding**: reads raw bytes via `read_until(b'\n')` and decodes
+/// with `from_utf8_lossy`. The earlier `BufReader::lines()` impl
+/// errored with `InvalidData` on the first non-UTF-8 byte and
+/// `map_while(Result::ok)` silently terminated the thread, which is
+/// what made the GUI log pane stop at "Found plugin source kubejs"
+/// (KubeJS's plugin scan emits lines with high-byte chars in file
+/// paths / mod names; on Windows the JVM writes stdout in the system
+/// code page, typically cp1252). Lossy decode replaces invalid bytes
+/// with U+FFFD instead of killing the pump.
 fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
     use std::io::BufRead;
     thread::spawn(move || {
-        for line in std::io::BufReader::new(reader).lines().map_while(Result::ok) {
+        let mut reader = std::io::BufReader::new(reader);
+        let mut buf: Vec<u8> = Vec::with_capacity(4096);
+        loop {
+            buf.clear();
+            match reader.read_until(b'\n', &mut buf) {
+                Ok(0) => break, // clean EOF
+                Ok(_) => {}
+                Err(_) => break, // hard I/O failure
+            }
+            // Strip trailing CR/LF so log lines render cleanly.
+            while matches!(buf.last(), Some(&b'\n') | Some(&b'\r')) {
+                buf.pop();
+            }
+            let line: String = String::from_utf8_lossy(&buf).into_owned();
+
             // Lifecycle state transitions
             if line.contains("Done (") && line.contains("For help") {
                 set_server_state(ServerState::Started);
