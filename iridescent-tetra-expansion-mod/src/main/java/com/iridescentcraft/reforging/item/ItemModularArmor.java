@@ -144,13 +144,25 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
      * so without this override we inherit vanilla's no-op default and
      * the clamp never fires. Result: items destroyed at maxDamage.
      *
-     * IModularItem.damageItemImpl is a default method on the interface
-     * we already implement -- this override just routes vanilla's
-     * damageItem call into it. One line.
+     * Why we don't just call IModularItem.damageItemImpl: that method
+     * posts ModularItemDamageEvent on the Forge bus. Aetheric
+     * Tetranomicon's VeridiumInfusionEffect (and likely other Tetra
+     * addon listeners) handle that event by casting
+     *   (se.mickelus.tetra.items.modular.ModularItem) event.getItem()
+     * to the concrete base class -- but we extend ArmorItem and only
+     * implement the IModularItem interface. The cast throws
+     * ClassCastException and crashes the server (real session, 2026-
+     * 05-08 14:12). Workaround: inline the clamp here, skip the
+     * event post entirely. We sacrifice ModularItemDamageEvent
+     * integration on our items (BloodboundEffect, custom damage
+     * modifiers from third-party Tetra addons) to keep the server
+     * up; the durability clamp itself is what actually matters.
      */
     @Override
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
-        return damageItemImpl(stack, amount, entity, onBroken);
+        int max = stack.getMaxDamage();
+        int cur = stack.getDamageValue();
+        return Math.min(max - cur - 1, amount);
     }
 
     // ── IModularItem abstract surface ──────────────────────────────────
