@@ -165,7 +165,10 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     use std::io::{BufRead, BufReader};
     use std::process::{Command, Stdio};
 
-    let src_dir = ensure_launcher_src()?;
+    // Read PAT once for clone/fetch + final binary push so the
+    // credential manager never gets a chance to prompt.
+    let pat = crate::crash::read_pat(cfg);
+    let src_dir = ensure_launcher_src(pat.as_deref())?;
     log::info!("[self-update] launcher source: {}", src_dir.display());
 
     // Repo root for git pull -- the launcher dir's parent. (For a
@@ -184,8 +187,7 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     ))?;
     log::info!("[self-update] git: {}", git_exe.display());
     log::info!("[self-update] git pull --ff-only in {}", repo_root.display());
-    let pull = Command::new(&git_exe)
-        .current_dir(&repo_root)
+    let pull = crate::git::authed_command(&repo_root, pat.as_deref())
         .args(["pull", "--ff-only"])
         .status()
         .map_err(|e| anyhow::anyhow!("running git pull failed: {e}"))?;
@@ -252,7 +254,7 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
             log::info!("[self-update] deploying canonical -> {}", canonical.display());
             fs::copy(&built, &canonical)
                 .map_err(|e| anyhow::anyhow!("canonical copy: {e}"))?;
-            if let Err(e) = git_commit_push_binary(&git_exe, &root, &canonical, &exe_name) {
+            if let Err(e) = git_commit_push_binary(&git_exe, &root, &canonical, &exe_name, pat.as_deref()) {
                 // Non-fatal: local apply still proceeds even if push fails.
                 log::warn!("[self-update] repo push skipped: {e:#}");
             }
@@ -308,6 +310,8 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
          or set ICRAFT_GIT to your git.exe path."
     ))?;
     log::info!("[self-update] git: {}", git.display());
+    // PAT-authed network ops bypass the credential manager prompt.
+    let pat = crate::crash::read_pat(cfg);
 
     let exe = std::env::current_exe()?;
     let repo_root = find_git_root(exe.parent().unwrap_or(&exe)).ok_or_else(|| anyhow::anyhow!(
@@ -329,8 +333,7 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
         .replace('\\', "/");
 
     log::info!("[self-update] git fetch origin --depth=1");
-    let fetch = Command::new(&git)
-        .current_dir(&repo_root)
+    let fetch = crate::git::authed_command(&repo_root, pat.as_deref())
         .args(["fetch", "origin", "--depth=1"])
         .status()
         .map_err(|e| anyhow::anyhow!("running git fetch: {e}"))?;
@@ -408,9 +411,9 @@ fn git_commit_push_binary(
     repo_root: &Path,
     canonical: &Path,
     exe_name: &str,
+    pat: Option<&str>,
 ) -> Result<()> {
     use std::process::Command;
-    // Stage. Use forward-slash path -- git accepts both on Windows.
     let rel = format!(".minecraft/server_distribution/{exe_name}");
     let add = Command::new(git_exe)
         .current_dir(repo_root).args(["add", &rel])
@@ -418,13 +421,12 @@ fn git_commit_push_binary(
     if !add.success() {
         anyhow::bail!("git add failed");
     }
-    // No staged changes? Nothing to commit.
     let unchanged = Command::new(git_exe)
         .current_dir(repo_root).args(["diff", "--cached", "--quiet"])
         .status()?.success();
     if unchanged {
         log::info!("[self-update] binary unchanged; nothing to push");
-        let _ = canonical; // suppress unused if we skip the rest
+        let _ = canonical;
         return Ok(());
     }
     let commit = Command::new(git_exe)
@@ -433,14 +435,21 @@ fn git_commit_push_binary(
     if !commit.success() {
         anyhow::bail!("git commit failed");
     }
-    let push = Command::new(git_exe)
-        .current_dir(repo_root).arg("push")
-        .status()?;
-    if !push.success() {
-        anyhow::bail!(
-            "git push failed (resolve auth -- e.g. via GitHub Desktop credential \
-             helper -- and retry; the commit is local)"
-        );
+    // PAT-authed push: extraHeader bypasses Windows Credential
+    // Manager so the operator never sees a prompt.
+    let push_result = match pat {
+        Some(p) => crate::git::push_with_pat(repo_root, p),
+        None    => {
+            log::warn!(
+                "[self-update] no PAT configured; falling back to plain git push \
+                 (may prompt for credentials). Save a PAT via the GitHub auth \
+                 panel to avoid this."
+            );
+            crate::git::push(repo_root)
+        }
+    };
+    if let Err(e) = push_result {
+        anyhow::bail!("git push failed: {e}");
     }
     log::info!("[self-update] pushed new {exe_name} to repo");
     Ok(())
@@ -493,23 +502,21 @@ const DEFAULT_LAUNCHER_REPO: &str = "https://github.com/silvariasereneblossom/Ir
 /// Result: the user can drop icraft-gui.exe anywhere, click Rebuild,
 /// and it just works -- the cache dir is created and populated on
 /// first use, then incrementally pulled on subsequent rebuilds.
-fn ensure_launcher_src() -> Result<PathBuf> {
+fn ensure_launcher_src(pat: Option<&str>) -> Result<PathBuf> {
     if let Some(p) = find_launcher_src() {
         return Ok(p);
     }
-    // No local source -- fall through to cache dir.
     let cache = launcher_cache_dir()?;
     let cached_src = cache.join("iridescent-launcher");
     if is_launcher_src(&cached_src) {
         log::info!("[self-update] using cached source: {}", cached_src.display());
         return Ok(cached_src);
     }
-    // Cache dir doesn't have a valid checkout -- clone fresh.
     log::info!(
         "[self-update] no local source found; cloning launcher source into {}",
         cache.display()
     );
-    sparse_clone_launcher(&cache)?;
+    sparse_clone_launcher(&cache, pat)?;
     if !is_launcher_src(&cached_src) {
         anyhow::bail!(
             "clone succeeded but {} doesn't look like a valid launcher source",
@@ -538,24 +545,21 @@ fn launcher_cache_dir() -> Result<PathBuf> {
 /// Sparse-clone the launcher source into `dest` (must already exist
 /// and be empty). Pulls only iridescent-launcher\ from the repo via
 /// blob-filter + cone-mode sparse-checkout.
-fn sparse_clone_launcher(dest: &Path) -> Result<()> {
-    use std::process::Command;
-    let git = crate::tools::find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
+fn sparse_clone_launcher(dest: &Path, pat: Option<&str>) -> Result<()> {
+    let _ = crate::tools::find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
         "git not found. Install Git for Windows (https://git-scm.com/download/win) \
          or set ICRAFT_GIT to your git.exe path."
     ))?;
     let repo = std::env::var("ICRAFT_LAUNCHER_REPO")
         .unwrap_or_else(|_| DEFAULT_LAUNCHER_REPO.to_string());
 
-    // If dest already has a .git, treat as resumable -- skip clone.
     if dest.join(".git").exists() {
         log::info!("[self-update] cache .git already exists -- skipping clone");
         return Ok(());
     }
 
     log::info!("[self-update] git clone --filter=blob:none --sparse {repo}");
-    let status = Command::new(&git)
-        .current_dir(dest)
+    let status = crate::git::authed_command(dest, pat)
         .args(["clone", "--filter=blob:none", "--sparse", &repo, "."])
         .status()
         .map_err(|e| anyhow::anyhow!("running git clone: {e}"))?;
@@ -564,8 +568,7 @@ fn sparse_clone_launcher(dest: &Path) -> Result<()> {
     }
 
     log::info!("[self-update] git sparse-checkout set iridescent-launcher");
-    let status = Command::new(&git)
-        .current_dir(dest)
+    let status = crate::git::authed_command(dest, pat)
         .args(["sparse-checkout", "set", "iridescent-launcher"])
         .status()?;
     if !status.success() {

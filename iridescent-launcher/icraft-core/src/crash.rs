@@ -63,6 +63,11 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
         log::warn!("[crash] mirror to TesterLogs failed: {e}");
     }
 
+    // Read PAT once -- used both for the eventual push AND for any
+    // clone/fetch on the ephemeral cache path so credential prompts
+    // never pop up.
+    let pat = read_pat(cfg);
+
     // Find a git working tree from cwd upwards. If none, fall back
     // to an ephemeral cache clone so pushing works even when the
     // Install dir isn't itself a checkout.
@@ -85,7 +90,7 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
             log::info!(
                 "[crash] no local git working tree; using ephemeral push cache"
             );
-            let cache = match ensure_push_working_tree() {
+            let cache = match ensure_push_working_tree(pat.as_deref()) {
                 Ok(p) => p,
                 Err(e) => {
                     log::warn!("[crash] couldn't prepare push cache: {e}");
@@ -122,7 +127,6 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
         return Ok(());
     }
 
-    let pat = read_pat(cfg);
     let push_result = match &pat {
         Some(p) => crate::git::push_with_pat(&root, p),
         None    => {
@@ -144,7 +148,7 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
 ///      the PAT only)
 ///   3. `.icraft_token` file in `cfg.server_dir` (modpack root)
 /// Returns None if none of the above yields a non-empty token.
-fn read_pat(cfg: &ServerConfig) -> Option<String> {
+pub fn read_pat(cfg: &ServerConfig) -> Option<String> {
     if let Ok(t) = std::env::var("ICRAFT_GH_TOKEN") {
         let t = t.trim().to_string();
         if !t.is_empty() { return Some(t); }
@@ -272,10 +276,9 @@ fn read_tail(path: &std::path::Path, lines: usize) -> std::io::Result<String> {
 ///
 /// Workable answer to: "Install dir isn't a git checkout; can we
 /// still push crash logs without manually setting one up?"
-fn ensure_push_working_tree() -> Result<PathBuf> {
-    use std::process::Command;
+fn ensure_push_working_tree(pat: Option<&str>) -> Result<PathBuf> {
     let cache = push_cache_dir()?;
-    let git = crate::tools::find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
+    let _ = crate::tools::find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
         "git not found. Install Git for Windows or set ICRAFT_GIT to git.exe path."
     ))?;
     let repo = std::env::var("ICRAFT_LAUNCHER_REPO").unwrap_or_else(|_|
@@ -284,25 +287,26 @@ fn ensure_push_working_tree() -> Result<PathBuf> {
 
     if cache.join(".git").exists() {
         log::info!("[crash] refreshing push cache: {}", cache.display());
-        // Discard any leftover state, sync to remote tip. Errors
-        // are non-fatal at this stage -- worst case we push with
-        // stale parent commit and git rejects on push (handled below).
-        let _ = Command::new(&git).current_dir(&cache)
+        // PAT-authed fetch + reset so the credential helper never
+        // gets a chance to prompt. Errors are non-fatal at this
+        // stage -- worst case we push with stale parent and git
+        // rejects on push (caught below).
+        let _ = crate::git::authed_command(&cache, pat)
             .args(["fetch", "origin", "main", "--depth=1"]).status();
-        let _ = Command::new(&git).current_dir(&cache)
+        let _ = crate::git::authed_command(&cache, pat)
             .args(["reset", "--hard", "FETCH_HEAD"]).status();
         return Ok(cache);
     }
 
     log::info!("[crash] cloning push cache into {} ({})", cache.display(), repo);
-    let status = Command::new(&git).current_dir(&cache)
+    let status = crate::git::authed_command(&cache, pat)
         .args(["clone", "--filter=blob:none", "--sparse", "--depth=1", &repo, "."])
         .status()
         .map_err(|e| anyhow::anyhow!("running git clone: {e}"))?;
     if !status.success() {
         anyhow::bail!("git clone failed for push cache");
     }
-    let status = Command::new(&git).current_dir(&cache)
+    let status = crate::git::authed_command(&cache, pat)
         .args(["sparse-checkout", "set", ".minecraft/server_distribution/TesterLogs"])
         .status()?;
     if !status.success() {

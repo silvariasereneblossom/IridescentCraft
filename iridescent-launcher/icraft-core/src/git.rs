@@ -76,6 +76,20 @@ pub fn push_with_pat(cwd: &Path, pat: &str) -> Result<()> {
     run_git(cwd, &["-c", &header, "push"]).map(|_| ())
 }
 
+/// Build a `Command` that runs git in `cwd` with `http.extraHeader`
+/// set to bearer-auth `pat` when provided. Use for any network op
+/// (clone, fetch, push, pull) where you'd otherwise see Windows
+/// Credential Manager prompts. Doesn't write the PAT to disk; the
+/// header only lives for this Command's invocation.
+pub fn authed_command(cwd: &Path, pat: Option<&str>) -> Command {
+    let mut cmd = Command::new(git_exe());
+    cmd.current_dir(cwd);
+    if let Some(p) = pat {
+        cmd.arg("-c").arg(format!("http.extraHeader=AUTHORIZATION: bearer {p}"));
+    }
+    cmd
+}
+
 /// Walk parents until a `.git` directory is found. Used by the crash
 /// log push flow to discover whether the install is nested in a working
 /// tree (Topology B: Z: mirror with the dev PC clone).
