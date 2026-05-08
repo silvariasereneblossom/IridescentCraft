@@ -143,6 +143,7 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 force_sync: *force_sync,
                 headless: false,
                 watchdog: build_watchdog(*boot_timeout, *idle_timeout),
+                pipe_output: false, // CLI inherits stdio for plain Forge output
             })?;
             // Truncate i32 -> u8 for ExitCode. Common server exit codes
             // (0, 1, 130, 137, 143) all fit; anything larger gets clamped.
