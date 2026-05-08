@@ -165,13 +165,7 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     use std::io::{BufRead, BufReader};
     use std::process::{Command, Stdio};
 
-    let Some(src_dir) = find_launcher_src() else {
-        log::info!(
-            "[self-update] no iridescent-launcher source located -- skipping pull+build. \
-             Set ICRAFT_LAUNCHER_SRC to the launcher source path to enable."
-        );
-        return Ok(false);
-    };
+    let src_dir = ensure_launcher_src()?;
     log::info!("[self-update] launcher source: {}", src_dir.display());
 
     // Repo root for git pull -- the launcher dir's parent. (For a
@@ -476,6 +470,108 @@ fn find_launcher_src() -> Option<PathBuf> {
         cur = c.parent();
     }
     None
+}
+
+/// Default repo to clone from when no local source can be located.
+/// Override via ICRAFT_LAUNCHER_REPO env var (useful for forks or
+/// testing branches).
+const DEFAULT_LAUNCHER_REPO: &str = "https://github.com/silvariasereneblossom/IridescentCraft.git";
+
+/// Locate the launcher source, AUTO-CLONING into a cache dir if no
+/// local copy exists. Lookup order:
+///
+///   1. ICRAFT_LAUNCHER_SRC env var (explicit override)
+///   2. Walk up from current_exe (find iridescent-launcher\ as
+///      sibling, or current dir if exe is inside the source tree)
+///   3. Cache dir from a previous auto-clone:
+///        Windows: %LOCALAPPDATA%\icraft-launcher\source\
+///        Unix:    ~/.cache/icraft-launcher/source/
+///   4. Fresh sparse-clone of DEFAULT_LAUNCHER_REPO into the cache
+///      dir, sparse-checkout to `iridescent-launcher` only (~5MB
+///      source + ~10MB .git instead of the full ~GB modpack repo)
+///
+/// Result: the user can drop icraft-gui.exe anywhere, click Rebuild,
+/// and it just works -- the cache dir is created and populated on
+/// first use, then incrementally pulled on subsequent rebuilds.
+fn ensure_launcher_src() -> Result<PathBuf> {
+    if let Some(p) = find_launcher_src() {
+        return Ok(p);
+    }
+    // No local source -- fall through to cache dir.
+    let cache = launcher_cache_dir()?;
+    let cached_src = cache.join("iridescent-launcher");
+    if is_launcher_src(&cached_src) {
+        log::info!("[self-update] using cached source: {}", cached_src.display());
+        return Ok(cached_src);
+    }
+    // Cache dir doesn't have a valid checkout -- clone fresh.
+    log::info!(
+        "[self-update] no local source found; cloning launcher source into {}",
+        cache.display()
+    );
+    sparse_clone_launcher(&cache)?;
+    if !is_launcher_src(&cached_src) {
+        anyhow::bail!(
+            "clone succeeded but {} doesn't look like a valid launcher source",
+            cached_src.display()
+        );
+    }
+    Ok(cached_src)
+}
+
+fn launcher_cache_dir() -> Result<PathBuf> {
+    let base = if cfg!(windows) {
+        std::env::var("LOCALAPPDATA").map(PathBuf::from).map_err(|_|
+            anyhow::anyhow!("no LOCALAPPDATA env var; can't pick a cache dir")
+        )?
+    } else {
+        let home = std::env::var("HOME").map_err(|_|
+            anyhow::anyhow!("no HOME env var; can't pick a cache dir")
+        )?;
+        PathBuf::from(home).join(".cache")
+    };
+    let dir = base.join("icraft-launcher").join("source");
+    std::fs::create_dir_all(&dir)?;
+    Ok(dir)
+}
+
+/// Sparse-clone the launcher source into `dest` (must already exist
+/// and be empty). Pulls only iridescent-launcher\ from the repo via
+/// blob-filter + cone-mode sparse-checkout.
+fn sparse_clone_launcher(dest: &Path) -> Result<()> {
+    use std::process::Command;
+    let git = crate::tools::find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
+        "git not found. Install Git for Windows (https://git-scm.com/download/win) \
+         or set ICRAFT_GIT to your git.exe path."
+    ))?;
+    let repo = std::env::var("ICRAFT_LAUNCHER_REPO")
+        .unwrap_or_else(|_| DEFAULT_LAUNCHER_REPO.to_string());
+
+    // If dest already has a .git, treat as resumable -- skip clone.
+    if dest.join(".git").exists() {
+        log::info!("[self-update] cache .git already exists -- skipping clone");
+        return Ok(());
+    }
+
+    log::info!("[self-update] git clone --filter=blob:none --sparse {repo}");
+    let status = Command::new(&git)
+        .current_dir(dest)
+        .args(["clone", "--filter=blob:none", "--sparse", &repo, "."])
+        .status()
+        .map_err(|e| anyhow::anyhow!("running git clone: {e}"))?;
+    if !status.success() {
+        anyhow::bail!("git clone failed (network/auth/repo URL?)");
+    }
+
+    log::info!("[self-update] git sparse-checkout set iridescent-launcher");
+    let status = Command::new(&git)
+        .current_dir(dest)
+        .args(["sparse-checkout", "set", "iridescent-launcher"])
+        .status()?;
+    if !status.success() {
+        anyhow::bail!("git sparse-checkout failed");
+    }
+    Ok(())
 }
 
 fn is_launcher_src(p: &Path) -> bool {
