@@ -68,24 +68,34 @@ pub fn push(cwd: &Path) -> Result<()> {
 }
 
 /// Push using a PAT via `http.extraHeader=AUTHORIZATION: bearer <PAT>`.
-/// GitHub-recommended pattern; doesn't leak the PAT into the process
-/// command line, doesn't persist into .git/config. The header lives
-/// only for the duration of this invocation.
+/// Also disables the credential helper for this invocation so a
+/// malformed / insufficient-scope PAT fails cleanly with an explicit
+/// error instead of falling back to Git Credential Manager's
+/// browser-based OAuth prompt.
 pub fn push_with_pat(cwd: &Path, pat: &str) -> Result<()> {
     let header = format!("http.extraHeader=AUTHORIZATION: bearer {pat}");
-    run_git(cwd, &["-c", &header, "push"]).map(|_| ())
+    run_git(cwd, &["-c", &header, "-c", "credential.helper=", "push"]).map(|_| ())
 }
 
 /// Build a `Command` that runs git in `cwd` with `http.extraHeader`
 /// set to bearer-auth `pat` when provided. Use for any network op
-/// (clone, fetch, push, pull) where you'd otherwise see Windows
-/// Credential Manager prompts. Doesn't write the PAT to disk; the
-/// header only lives for this Command's invocation.
+/// (clone, fetch, push, pull) where you'd otherwise hit Windows
+/// Credential Manager popups or Git Credential Manager browser-OAuth
+/// flows.
+///
+/// When a PAT is supplied, also passes `-c credential.helper=` to
+/// disable the configured credential helper for this single
+/// invocation. Combined with the bearer header, this guarantees the
+/// PAT is the only auth attempted -- if it's wrong/insufficient,
+/// the operation fails with a real HTTP 401/403 error in the log
+/// pane instead of the operator seeing a browser pop and trying to
+/// guess what's wrong.
 pub fn authed_command(cwd: &Path, pat: Option<&str>) -> Command {
     let mut cmd = Command::new(git_exe());
     cmd.current_dir(cwd);
     if let Some(p) = pat {
         cmd.arg("-c").arg(format!("http.extraHeader=AUTHORIZATION: bearer {p}"));
+        cmd.arg("-c").arg("credential.helper=");
     }
     cmd
 }

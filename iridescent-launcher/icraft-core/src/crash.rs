@@ -67,6 +67,12 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
     // clone/fetch on the ephemeral cache path so credential prompts
     // never pop up.
     let pat = read_pat(cfg);
+    match pat_status(cfg) {
+        PatStatus::EnvVar             => log::info!("[crash] PAT source: ICRAFT_GH_TOKEN env var"),
+        PatStatus::FileNextToExe(p)   => log::info!("[crash] PAT source: {}", p.display()),
+        PatStatus::FileInServerDir(p) => log::info!("[crash] PAT source: {}", p.display()),
+        PatStatus::None               => log::warn!("[crash] no PAT configured -- git ops will likely prompt or fail"),
+    };
 
     // Find a git working tree from cwd upwards. If none, fall back
     // to an ephemeral cache clone so pushing works even when the
