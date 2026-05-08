@@ -66,6 +66,10 @@ EntityEvents.spawned(event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
+  // Centralized ISS-mob skip + bail log via 0_iss_guard.js. The local
+  // BROKEN_ENTITIES + isIronsSpellbooksMob checks below remain as a
+  // fallback in case the guard script ever fails to load first.
+  if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'mob_equipment')) return
   var resId = entityResId(entity)
   if (MOB_EQUIP_BROKEN_ENTITIES.has(resId)) return
   if (isIronsSpellbooksMob(resId)) return

@@ -78,15 +78,15 @@ EntityEvents.spawned(event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
+  // Centralized ISS-mob skip + bail log via 0_iss_guard.js.
+  if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'affix_skyshatter_mob_strip')) return
 
   let data = entity.persistentData
   if (data.contains('icraft_skyshatter_scrubbed')) return
 
   let resId = _skyshatterEntityResId(entity)
   if (SKYSHATTER_STRIP_BROKEN_ENTITIES.has(resId)) return
-  // Skip the whole irons_spellbooks: namespace -- 8+ wizard subclasses
-  // can throw AbstractMethodError on getItemBySlot, and none of them
-  // legitimately wear skyshatter-affixed gear anyway.
+  // Local fallback: namespace check in case 0_iss_guard.js failed to load.
   if (resId.indexOf('irons_spellbooks:') === 0) return
 
   let scrubbed = false

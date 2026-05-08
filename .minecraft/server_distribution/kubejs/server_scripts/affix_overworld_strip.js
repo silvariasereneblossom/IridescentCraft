@@ -57,6 +57,9 @@ EntityEvents.spawned(event => {
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
   if (event.level.dimension != 'minecraft:overworld') return
+  // Centralized ISS-mob skip + bail log via 0_iss_guard.js. Local
+  // BROKEN_ENTITIES + _affixStripIsIssMob below remain as fallback.
+  if (global.icraftSkipIssMob && global.icraftSkipIssMob(entity, 'affix_overworld_strip')) return
 
   let data = entity.persistentData
   if (data.contains('apoth.boss')) return
