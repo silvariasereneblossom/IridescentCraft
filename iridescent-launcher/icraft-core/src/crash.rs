@@ -63,18 +63,49 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
         log::warn!("[crash] mirror to TesterLogs failed: {e}");
     }
 
-    // Find a git working tree from cwd upwards. If none, we're done.
-    let Some(root) = crate::git::find_git_root(&cfg.server_dir) else {
-        log::warn!(
-            "[crash] no git working tree found from {} upward -- skipping push. \
-             Set Install dir to your IridescentCraft clone to enable.",
-            cfg.server_dir.display()
-        );
-        return Ok(());
+    // Find a git working tree from cwd upwards. If none, fall back
+    // to an ephemeral cache clone so pushing works even when the
+    // Install dir isn't itself a checkout.
+    let (root, rel_path) = match crate::git::find_git_root(&cfg.server_dir) {
+        Some(root) => {
+            log::info!("[crash] git root: {}", root.display());
+            // Re-mirror logs into the local tree's expected path so
+            // 'git add TesterLogs' picks them up regardless of where
+            // server_dir landed relative to the working tree.
+            let local_mirror = root.join(".minecraft").join("server_distribution")
+                .join("TesterLogs").join("Server Logs");
+            if !mirror.exists() {
+                if let Err(e) = mirror_dir(&src, &local_mirror) {
+                    log::warn!("[crash] mirror to local tree failed: {e}");
+                }
+            }
+            (root, "TesterLogs")
+        }
+        None => {
+            log::info!(
+                "[crash] no local git working tree; using ephemeral push cache"
+            );
+            let cache = match ensure_push_working_tree() {
+                Ok(p) => p,
+                Err(e) => {
+                    log::warn!("[crash] couldn't prepare push cache: {e}");
+                    return Ok(());
+                }
+            };
+            // Mirror logs into the cache tree at the canonical repo
+            // path so git tracks them under the same TesterLogs/...
+            // hierarchy other testers use.
+            let cache_mirror = cache.join(".minecraft").join("server_distribution")
+                .join("TesterLogs").join("Server Logs");
+            if let Err(e) = mirror_dir(&src, &cache_mirror) {
+                log::warn!("[crash] mirror to push cache failed: {e}");
+                return Ok(());
+            }
+            (cache, ".minecraft/server_distribution/TesterLogs")
+        }
     };
-    log::info!("[crash] git root: {}", root.display());
 
-    if let Err(e) = crate::git::add(&root, &["TesterLogs"]) {
+    if let Err(e) = crate::git::add(&root, &[rel_path]) {
         log::warn!("[crash] git add failed: {e}");
         return Ok(());
     }
@@ -83,9 +114,10 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
         Local::now().format("%Y-%m-%d %H:%M")
     );
     if let Err(e) = crate::git::commit(&root, &msg) {
-        // Common case: nothing to commit. Don't escalate, but make
-        // visible so the user can tell push was a no-op vs. mirror
-        // landing in the wrong place.
+        // Common case: nothing to commit (mirror identical to last
+        // push). Visible at info so the user can tell apart 'mirror
+        // landed in wrong place' (nothing staged) from 'mirror
+        // succeeded but no new content' (nothing to commit).
         log::info!("[crash] git commit skipped: {e}");
         return Ok(());
     }
@@ -226,6 +258,73 @@ fn read_tail(path: &std::path::Path, lines: usize) -> std::io::Result<String> {
     let collected: Vec<&str> = all.lines().collect();
     let start = collected.len().saturating_sub(lines);
     Ok(collected[start..].join("\n"))
+}
+
+/// Ephemeral working tree for push. Sparse-cloned the first time
+/// from DEFAULT_LAUNCHER_REPO into a cache dir, sparse-checkout
+/// to .minecraft/server_distribution/TesterLogs only. Reset to
+/// origin/main on each invocation so any leftover state from a
+/// previous failed push doesn't leak into the next commit.
+///
+/// Cache dir:
+///   Windows: %LOCALAPPDATA%\icraft-launcher\push\
+///   Unix:    ~/.cache/icraft-launcher/push/
+///
+/// Workable answer to: "Install dir isn't a git checkout; can we
+/// still push crash logs without manually setting one up?"
+fn ensure_push_working_tree() -> Result<PathBuf> {
+    use std::process::Command;
+    let cache = push_cache_dir()?;
+    let git = crate::tools::find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
+        "git not found. Install Git for Windows or set ICRAFT_GIT to git.exe path."
+    ))?;
+    let repo = std::env::var("ICRAFT_LAUNCHER_REPO").unwrap_or_else(|_|
+        "https://github.com/silvariasereneblossom/IridescentCraft.git".to_string()
+    );
+
+    if cache.join(".git").exists() {
+        log::info!("[crash] refreshing push cache: {}", cache.display());
+        // Discard any leftover state, sync to remote tip. Errors
+        // are non-fatal at this stage -- worst case we push with
+        // stale parent commit and git rejects on push (handled below).
+        let _ = Command::new(&git).current_dir(&cache)
+            .args(["fetch", "origin", "main", "--depth=1"]).status();
+        let _ = Command::new(&git).current_dir(&cache)
+            .args(["reset", "--hard", "FETCH_HEAD"]).status();
+        return Ok(cache);
+    }
+
+    log::info!("[crash] cloning push cache into {} ({})", cache.display(), repo);
+    let status = Command::new(&git).current_dir(&cache)
+        .args(["clone", "--filter=blob:none", "--sparse", "--depth=1", &repo, "."])
+        .status()
+        .map_err(|e| anyhow::anyhow!("running git clone: {e}"))?;
+    if !status.success() {
+        anyhow::bail!("git clone failed for push cache");
+    }
+    let status = Command::new(&git).current_dir(&cache)
+        .args(["sparse-checkout", "set", ".minecraft/server_distribution/TesterLogs"])
+        .status()?;
+    if !status.success() {
+        anyhow::bail!("git sparse-checkout failed for push cache");
+    }
+    Ok(cache)
+}
+
+fn push_cache_dir() -> Result<PathBuf> {
+    let base = if cfg!(windows) {
+        std::env::var("LOCALAPPDATA").map(PathBuf::from).map_err(|_|
+            anyhow::anyhow!("no LOCALAPPDATA env var; can't pick a push cache dir")
+        )?
+    } else {
+        let home = std::env::var("HOME").map_err(|_|
+            anyhow::anyhow!("no HOME env var; can't pick a push cache dir")
+        )?;
+        PathBuf::from(home).join(".cache")
+    };
+    let dir = base.join("icraft-launcher").join("push");
+    std::fs::create_dir_all(&dir)?;
+    Ok(dir)
 }
 
 fn mirror_dir(src: &std::path::Path, dst: &std::path::Path) -> std::io::Result<()> {
