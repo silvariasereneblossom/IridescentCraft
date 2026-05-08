@@ -208,10 +208,32 @@ pub fn pull_build_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     log::info!("[self-update] git pull --ff-only in {}", repo_root.display());
     let pull = crate::git::authed_command(&repo_root, pat.as_deref())
         .args(["pull", "--ff-only"])
-        .status()
+        .output()
         .map_err(|e| anyhow::anyhow!("running git pull failed: {e}"))?;
-    if !pull.success() {
-        anyhow::bail!("git pull failed (resolve conflicts and retry)");
+    if !pull.status.success() {
+        let stderr = String::from_utf8_lossy(&pull.stderr).trim().to_string();
+        let stdout = String::from_utf8_lossy(&pull.stdout).trim().to_string();
+        let detail = match (stderr.is_empty(), stdout.is_empty()) {
+            (false, false) => format!("{stderr} | {stdout}"),
+            (false, true)  => stderr,
+            (true,  false) => stdout,
+            (true,  true)  => "(no output)".to_string(),
+        };
+        // Surface common diagnoses inline -- saves one round trip
+        // per support request.
+        let hint = if detail.contains("Not possible to fast-forward") || detail.contains("non-fast-forward") {
+            "\n  hint: local commits diverge from origin/main. Either reset (git reset --hard origin/main) or rebase (git pull --rebase) manually, then retry."
+        } else if detail.contains("would be overwritten by merge") {
+            "\n  hint: uncommitted local changes block the pull. Stash (git stash) or commit them, then retry."
+        } else if detail.contains("refusing to merge unrelated histories") {
+            "\n  hint: source dir's git history doesn't share an ancestor with origin. Check ICRAFT_LAUNCHER_SRC points at the right repo."
+        } else if detail.contains("401") || detail.contains("403") || detail.contains("Authentication") {
+            "\n  hint: PAT auth rejected. Verify the saved token has Contents:Read on this repo."
+        } else {
+            ""
+        };
+        anyhow::bail!("git pull failed (exit {}): {}{}",
+            pull.status.code().unwrap_or(-1), detail, hint);
     }
 
     let cargo_exe = find_tool("cargo", &[]).ok_or_else(|| anyhow::anyhow!(
@@ -352,13 +374,19 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     };
 
     log::info!("[self-update] git fetch origin --depth=1");
-    let fetch = crate::git::authed_command(&repo_root, pat.as_deref())
+    let fetch_out = crate::git::authed_command(&repo_root, pat.as_deref())
         .args(["fetch", "origin", "--depth=1"])
-        .status()
+        .output()
         .map_err(|e| anyhow::anyhow!("running git fetch: {e}"))?;
+    let fetch = fetch_out.status;
     if !fetch.success() {
-        anyhow::bail!("git fetch failed (resolve auth/network and retry)");
+        let stderr = String::from_utf8_lossy(&fetch_out.stderr).trim().to_string();
+        let stdout = String::from_utf8_lossy(&fetch_out.stdout).trim().to_string();
+        anyhow::bail!("git fetch failed (exit {}): {}",
+            fetch.code().unwrap_or(-1),
+            if !stderr.is_empty() { stderr } else if !stdout.is_empty() { stdout } else { "(no output)".to_string() });
     }
+    let _ = fetch;
 
     // Resolve the remote ref to read the binary from. Track HEAD's
     // upstream branch so weird branches (release/*, etc.) just work.
