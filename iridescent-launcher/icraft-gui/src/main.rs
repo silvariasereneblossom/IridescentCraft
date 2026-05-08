@@ -145,6 +145,8 @@ struct IcraftApp {
     /// Free-form server console input -- also reused as the username/arg
     /// for the per-command quick buttons (op, ban, kick, ...).
     console_input: String,
+    /// PAT input (password-masked). Cleared after Save.
+    pat_input: String,
     /// Remote (GitHub) HEAD SHA for the configured branch, fetched in
     /// the background. None until the first fetch completes.
     remote_sha: Arc<Mutex<Option<String>>>,
@@ -187,6 +189,7 @@ impl IcraftApp {
             running_task: None,
             status: InstallStatus::default(),
             console_input: String::new(),
+            pat_input: String::new(),
             remote_sha: Arc::new(Mutex::new(None)),
             remote_fetching: Arc::new(AtomicBool::new(false)),
         };
@@ -598,6 +601,65 @@ impl IcraftApp {
             }
             if action_btn(ui, "Push crash logs", busy).clicked() {
                 self.spawn("push-crash-logs", move |c| icraft_core::crash::push_logs(&c));
+            }
+        });
+
+        ui.add_space(8.0);
+        ui.heading("GitHub auth");
+        ui.label(egui::RichText::new(
+            "PAT used by 'Push crash logs' + Apply Self-Update binary push. Stored in .icraft_token next to the running exe (gitignored). Token needs Contents:write on the IridescentCraft repo."
+        ).small().weak());
+        ui.add_space(2.0);
+
+        let status = icraft_core::crash::pat_status(&cfg);
+        let (status_text, status_ok) = match &status {
+            icraft_core::crash::PatStatus::EnvVar =>
+                ("PAT source: ICRAFT_GH_TOKEN environment variable".to_string(), true),
+            icraft_core::crash::PatStatus::FileNextToExe(p) =>
+                (format!("PAT source: {}", p.display()), true),
+            icraft_core::crash::PatStatus::FileInServerDir(p) =>
+                (format!("PAT source: {}", p.display()), true),
+            icraft_core::crash::PatStatus::None =>
+                ("No PAT configured".to_string(), false),
+        };
+        let status_color = if status_ok {
+            egui::Color32::from_rgb(120, 200, 140)
+        } else {
+            egui::Color32::from_rgb(220, 140, 140)
+        };
+        ui.label(egui::RichText::new(status_text).color(status_color));
+
+        ui.horizontal(|ui| {
+            ui.label("Token:");
+            ui.add(
+                egui::TextEdit::singleline(&mut self.pat_input)
+                    .desired_width(f32::INFINITY)
+                    .password(true)
+                    .hint_text("github_pat_..."),
+            );
+        });
+        ui.horizontal(|ui| {
+            if ui.button("Save").clicked() {
+                let token = self.pat_input.trim().to_string();
+                if token.is_empty() {
+                    log::warn!("[auth] empty token; nothing to save");
+                } else {
+                    match icraft_core::crash::write_pat_to_file(&token) {
+                        Ok(p) => {
+                            log::info!("[auth] saved PAT to {}", p.display());
+                            self.pat_input.clear();
+                        }
+                        Err(e) => log::error!("[auth] save failed: {e}"),
+                    }
+                }
+            }
+            if ui.button("Clear").clicked() {
+                match icraft_core::crash::clear_pat_file() {
+                    Ok(true)  => log::info!("[auth] removed .icraft_token"),
+                    Ok(false) => log::info!("[auth] no .icraft_token file to remove"),
+                    Err(e)    => log::error!("[auth] clear failed: {e}"),
+                }
+                self.pat_input.clear();
             }
         });
 

@@ -127,6 +127,75 @@ fn read_token_file(p: &std::path::Path) -> Option<String> {
     if first.is_empty() { None } else { Some(first) }
 }
 
+/// Where a configured PAT is currently being read from.
+#[derive(Debug, Clone)]
+pub enum PatStatus {
+    EnvVar,
+    FileNextToExe(PathBuf),
+    FileInServerDir(PathBuf),
+    None,
+}
+
+/// Mirror of `read_pat`'s search order, but reports the source path
+/// instead of the token. For UI status display -- never returns the
+/// token itself.
+pub fn pat_status(cfg: &ServerConfig) -> PatStatus {
+    if std::env::var("ICRAFT_GH_TOKEN").map(|v| !v.trim().is_empty()).unwrap_or(false) {
+        return PatStatus::EnvVar;
+    }
+    if let Ok(exe) = std::env::current_exe() {
+        if let Some(parent) = exe.parent() {
+            let p = parent.join(".icraft_token");
+            if read_token_file(&p).is_some() {
+                return PatStatus::FileNextToExe(p);
+            }
+        }
+    }
+    let p = cfg.server_dir.join(".icraft_token");
+    if read_token_file(&p).is_some() {
+        return PatStatus::FileInServerDir(p);
+    }
+    PatStatus::None
+}
+
+/// Persist `token` to `.icraft_token` next to the running exe. On
+/// Unix the file mode is set to 0600 so other users can't read it.
+/// `.icraft_token` is gitignored so an accidentally-committed working
+/// tree won't leak the token. Returns the absolute path written.
+pub fn write_pat_to_file(token: &str) -> Result<PathBuf> {
+    let exe = std::env::current_exe()?;
+    let parent = exe.parent()
+        .ok_or_else(|| anyhow::anyhow!("current_exe has no parent: {}", exe.display()))?;
+    let path = parent.join(".icraft_token");
+    std::fs::write(&path, token.trim())?;
+    #[cfg(unix)]
+    {
+        use std::os::unix::fs::PermissionsExt;
+        if let Ok(meta) = std::fs::metadata(&path) {
+            let mut perms = meta.permissions();
+            perms.set_mode(0o600);
+            let _ = std::fs::set_permissions(&path, perms);
+        }
+    }
+    Ok(path)
+}
+
+/// Remove `.icraft_token` next to the running exe. Returns Ok(true)
+/// if a file was actually removed, Ok(false) if there was nothing to
+/// clear.
+pub fn clear_pat_file() -> Result<bool> {
+    let exe = std::env::current_exe()?;
+    let parent = exe.parent()
+        .ok_or_else(|| anyhow::anyhow!("current_exe has no parent"))?;
+    let path = parent.join(".icraft_token");
+    if path.exists() {
+        std::fs::remove_file(&path)?;
+        Ok(true)
+    } else {
+        Ok(false)
+    }
+}
+
 fn newest_crash_report(cfg: &ServerConfig) -> Option<PathBuf> {
     let dir = cfg.crash_reports();
     if !dir.is_dir() { return None; }
