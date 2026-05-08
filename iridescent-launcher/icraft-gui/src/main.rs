@@ -430,12 +430,16 @@ impl IcraftApp {
         ui.horizontal_wrapped(|ui| {
             if action_btn(ui, "Serve (full)", busy).clicked() {
                 self.spawn("serve", move |c| {
-                    icraft_core::serve(&c, icraft_core::ServeOptions::default()).map(|_| ())
+                    let opts = icraft_core::ServeOptions {
+                        pipe_output: true, // -> server log streams into GUI
+                        ..Default::default()
+                    };
+                    icraft_core::serve(&c, opts).map(|_| ())
                 });
             }
             if action_btn(ui, "Run only", busy).clicked() {
                 self.spawn("run", move |c| {
-                    icraft_core::run::launch_server(&c, false).map(|_| ())
+                    icraft_core::run::launch_server_piped(&c, false).map(|_| ())
                 });
             }
             // Stop is intentionally NOT gated on `busy` -- it has to be

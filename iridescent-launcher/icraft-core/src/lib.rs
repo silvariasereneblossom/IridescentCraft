@@ -45,11 +45,21 @@ pub struct ServeOptions {
     pub force_sync: bool,
     pub headless: bool,
     pub watchdog: run::WatchdogOptions,
+    /// Pipe Java's stdout/stderr through `log::info!` instead of
+    /// inheriting the parent's stdio. The GUI sets this so server
+    /// output streams into the in-app log pane; the CLI leaves it
+    /// off so operators see plain Forge output in their terminal.
+    pub pipe_output: bool,
 }
 
 impl Default for ServeOptions {
     fn default() -> Self {
-        Self { force_sync: false, headless: false, watchdog: run::WatchdogOptions::default() }
+        Self {
+            force_sync: false,
+            headless: false,
+            watchdog: run::WatchdogOptions::default(),
+            pipe_output: false,
+        }
     }
 }
 
@@ -88,7 +98,11 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
     eula::accept(cfg)?;
 
     // Phase 4: launch the server (with watchdog)
-    let exit_code = run::launch_server_watched(cfg, opts.watchdog)?;
+    let exit_code = if opts.pipe_output {
+        run::launch_server_watched_piped(cfg, opts.watchdog)?
+    } else {
+        run::launch_server_watched(cfg, opts.watchdog)?
+    };
 
     // Phase 5: post-exit handling
     if exit_code != 0 {

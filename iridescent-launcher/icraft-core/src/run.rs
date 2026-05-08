@@ -68,10 +68,29 @@ impl WatchdogOptions {
 }
 
 pub fn launch_server(cfg: &ServerConfig, _headless: bool) -> Result<i32> {
-    launch_server_watched(cfg, WatchdogOptions::default())
+    launch_server_inner(cfg, WatchdogOptions::default(), false)
+}
+
+/// Same as [`launch_server`] but pipes stdout/stderr through
+/// `log::info!` so the GUI's log pane gets server output line by
+/// line. Used by the GUI's "Run only" button. CLI keeps inherit.
+pub fn launch_server_piped(cfg: &ServerConfig, _headless: bool) -> Result<i32> {
+    launch_server_inner(cfg, WatchdogOptions::default(), true)
 }
 
 pub fn launch_server_watched(cfg: &ServerConfig, opts: WatchdogOptions) -> Result<i32> {
+    launch_server_inner(cfg, opts, false)
+}
+
+/// Same as [`launch_server_watched`] but pipes stdout/stderr through
+/// `log::info!`. Used by the GUI's "Serve (full)" button so the
+/// server's Forge log streams into the in-app log pane and the
+/// operator never has to see a separate cmd window.
+pub fn launch_server_watched_piped(cfg: &ServerConfig, opts: WatchdogOptions) -> Result<i32> {
+    launch_server_inner(cfg, opts, true)
+}
+
+fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: bool) -> Result<i32> {
     launch_banner();
 
     let argfile = pick_argfile(cfg)?;
@@ -83,15 +102,39 @@ pub fn launch_server_watched(cfg: &ServerConfig, opts: WatchdogOptions) -> Resul
     cmd.arg(format!("@{}", argfile.display()));
     cmd.arg("nogui");
 
-    // Pipe stdin so the watchdog can write a newline as a soft kick
-    // before the hard kill. Stdout/stderr inherit so server logs
-    // appear directly in the operator console.
-    cmd.stdin(Stdio::piped())
-       .stdout(Stdio::inherit())
-       .stderr(Stdio::inherit());
+    // Stdin always piped so the watchdog (soft kick) and the GUI's
+    // console-input panel can write into Java. Stdout/stderr piping
+    // is per-caller: GUI pipes -> log::info!, CLI inherits so operator
+    // sees plain Forge output in their terminal.
+    cmd.stdin(Stdio::piped());
+    if pipe_output {
+        cmd.stdout(Stdio::piped()).stderr(Stdio::piped());
+        // On Windows, when launched from a GUI subsystem app (no
+        // console attached), spawning a console application like
+        // java.exe pops a black cmd window for the duration of the
+        // child. CREATE_NO_WINDOW suppresses it -- safe because we
+        // pipe stdio and don't need an attached console anywhere.
+        #[cfg(windows)]
+        {
+            use std::os::windows::process::CommandExt;
+            const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+            cmd.creation_flags(CREATE_NO_WINDOW);
+        }
+    } else {
+        cmd.stdout(Stdio::inherit()).stderr(Stdio::inherit());
+    }
 
     log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
     let mut child = cmd.spawn().context("spawning java")?;
+
+    if pipe_output {
+        if let Some(stdout) = child.stdout.take() {
+            spawn_log_pump(stdout);
+        }
+        if let Some(stderr) = child.stderr.take() {
+            spawn_log_pump(stderr);
+        }
+    }
 
     // Shared handle to the child's stdin -- the operator-stdin
     // forwarder thread, the watchdog soft-kick path, and the
@@ -252,6 +295,18 @@ pub fn send_console_line(line: &str) -> Result<()> {
     stdin.write_all(NEWLINE)?;
     stdin.flush()?;
     Ok(())
+}
+
+/// Pump a stream (stdout or stderr from Java) line-by-line into the
+/// log so the GUI pane shows server output. Detached daemon thread,
+/// exits silently on EOF or read error.
+fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
+    use std::io::BufRead;
+    thread::spawn(move || {
+        for line in std::io::BufReader::new(reader).lines().map_while(Result::ok) {
+            log::info!("[server] {line}");
+        }
+    });
 }
 
 /// Forward bytes from the parent's stdin to the child's stdin so
