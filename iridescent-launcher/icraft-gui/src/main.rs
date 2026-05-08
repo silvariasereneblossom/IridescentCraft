@@ -508,51 +508,22 @@ impl IcraftApp {
                     Ok(())
                 });
             }
-            #[cfg(windows)]
             if action_btn(ui, "Rebuild + Push GUI", busy).clicked() {
-                // Dev-side counterpart of "Update Launcher": cargo build
-                // the GUI on this box, copy to the repo, commit + push,
-                // then bring the GUI back up. Spawns rebuild_gui.bat
-                // --relaunch in a detached cmd window and exits the GUI
-                // so the bat's copy step doesn't trip on Windows' lock
-                // on the running .exe. Bat re-spawns icraft-gui.exe at
-                // the end on success.
-                self.spawn("rebuild-gui", move |_c| {
-                    // Locate rebuild_gui.bat. Prefer ICRAFT_LAUNCHER_SRC
-                    // since the user has it set for self-update; fall back
-                    // to walking up from current_exe (works for the nested
-                    // <repo>/.minecraft/server_distribution/ layout).
-                    let bat = if let Ok(src) = std::env::var("ICRAFT_LAUNCHER_SRC") {
-                        std::path::PathBuf::from(src).join("rebuild_gui.bat")
-                    } else {
-                        let exe = std::env::current_exe()?;
-                        let repo_root = exe.parent()
-                            .and_then(|p| p.parent())
-                            .and_then(|p| p.parent())
-                            .ok_or_else(|| anyhow::anyhow!("could not derive repo root from {}", exe.display()))?;
-                        repo_root.join("iridescent-launcher").join("rebuild_gui.bat")
-                    };
-                    if !bat.exists() {
-                        anyhow::bail!(
-                            "rebuild_gui.bat not found at {}. \
-                             Set ICRAFT_LAUNCHER_SRC to the iridescent-launcher source dir.",
-                            bat.display()
-                        );
+                // In-process build flow: cargo build the GUI from
+                // ICRAFT_LAUNCHER_SRC (or auto-located source), stage the
+                // result as <running>.new next to current_exe wherever
+                // it sits, best-effort commit+push to the repo, then
+                // apply + relaunch. No external bat, no layout
+                // assumptions -- works regardless of where the running
+                // exe was placed on disk. Cargo output streams into
+                // the log pane in real time.
+                self.spawn("rebuild-gui", move |c| {
+                    if icraft_core::self_update::pull_build_apply_gui(&c)? {
+                        log::info!("[rebuild] new GUI spawned -- exiting");
+                        std::thread::sleep(std::time::Duration::from_millis(500));
+                        std::process::exit(0);
                     }
-                    let bat_str = bat.to_str()
-                        .ok_or_else(|| anyhow::anyhow!("bat path not utf-8: {}", bat.display()))?;
-                    log::info!("[rebuild] launching {bat_str}");
-                    log::info!("[rebuild] GUI will exit; bat will rebuild + push, then relaunch.");
-                    // Flush so the log lines hit the buffer before exit.
-                    std::thread::sleep(std::time::Duration::from_millis(600));
-                    // `start` needs an empty title arg first; otherwise
-                    // it treats the bat path as the window title and
-                    // silently runs nothing.
-                    std::process::Command::new("cmd")
-                        .args(["/c", "start", "", "cmd", "/c", bat_str, "--relaunch"])
-                        .spawn()?;
-                    std::thread::sleep(std::time::Duration::from_millis(200));
-                    std::process::exit(0);
+                    Ok(())
                 });
             }
         });
