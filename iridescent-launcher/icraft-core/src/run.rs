@@ -127,6 +127,7 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     log::info!("[run] launching: java {} ...", AIKAR_FLAGS.join(" "));
     let mut child = cmd.spawn().context("spawning java")?;
     *ACTIVE_CHILD_PID.lock().unwrap() = Some(child.id());
+    set_server_state(ServerState::Starting);
 
     if pipe_output {
         if let Some(stdout) = child.stdout.take() {
@@ -167,6 +168,8 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
     let exit_status = child.wait().context("waiting for java")?;
     let code = exit_status.code().unwrap_or(-1);
     let killed_by_watchdog = kill_signal.load(Ordering::Relaxed);
+    set_server_state(ServerState::PostExit);
+    log::info!("[run] *** Java process exited with code {code}; running post-exit hooks ***");
 
     // Tell the watchdog we're done so it doesn't try to kill an already-dead PID.
     if let Some(h) = watchdog_handle {
@@ -174,7 +177,10 @@ fn launch_server_inner(cfg: &ServerConfig, opts: WatchdogOptions, pipe_output: b
         let _ = h.join();
     }
     // Drop the globals -- subsequent send_console_line / kill_active_server
-    // calls will see "no server running" until the next launch.
+    // calls will see "no server running" until the next launch. State
+    // stays at PostExit so the GUI badge reflects "post-exit hooks
+    // still running"; the caller resets to Idle when push_logs etc.
+    // have finished.
     *ACTIVE_HANDLE.lock().unwrap() = None;
     *ACTIVE_CHILD_PID.lock().unwrap() = None;
 
@@ -284,6 +290,33 @@ static ACTIVE_HANDLE: Mutex<Option<Arc<Mutex<Option<ChildStdin>>>>> =
 /// the worker thread blocked on child.wait()).
 static ACTIVE_CHILD_PID: Mutex<Option<u32>> = Mutex::new(None);
 
+/// Coarse-grained server lifecycle state, derived from key markers in
+/// the JVM's piped log output. The GUI badge reads this to show
+/// "Starting / Listening / Stopping / Stopped (post-mortem) / Idle"
+/// without the operator having to scan the log pane themselves.
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum ServerState {
+    Idle,
+    Starting,
+    Listening,
+    Stopping,
+    PostExit,
+}
+
+static SERVER_STATE: Mutex<ServerState> = Mutex::new(ServerState::Idle);
+
+pub fn server_state() -> ServerState {
+    *SERVER_STATE.lock().unwrap()
+}
+
+pub fn set_server_state(s: ServerState) {
+    let mut g = SERVER_STATE.lock().unwrap();
+    if *g != s {
+        log::info!("[run] *** server state: {:?} -> {:?} ***", *g, s);
+        *g = s;
+    }
+}
+
 /// Send a termination signal to the running server, bypassing the
 /// "stop" stdin command (which a hung JVM may not process). When
 /// `force` is false, sends a graceful signal -- SIGTERM on Unix,
@@ -348,11 +381,21 @@ pub fn send_console_line(line: &str) -> Result<()> {
 
 /// Pump a stream (stdout or stderr from Java) line-by-line into the
 /// log so the GUI pane shows server output. Detached daemon thread,
-/// exits silently on EOF or read error.
+/// exits silently on EOF or read error. Watches each line for
+/// lifecycle markers and updates SERVER_STATE accordingly so the
+/// GUI badge stays current without polling the log pane.
 fn spawn_log_pump<R: std::io::Read + Send + 'static>(reader: R) {
     use std::io::BufRead;
     thread::spawn(move || {
         for line in std::io::BufReader::new(reader).lines().map_while(Result::ok) {
+            // Forge dedicated server's "Done (Xs)! For help, type
+            // \"help\"" line is the canonical 'now listening' marker.
+            // 'Stopping the server' fires when /stop or SIGTERM hits.
+            if line.contains("Done (") && line.contains("For help") {
+                set_server_state(ServerState::Listening);
+            } else if line.contains("Stopping the server") {
+                set_server_state(ServerState::Stopping);
+            }
             log::info!("[server] {line}");
         }
     });

@@ -382,6 +382,18 @@ impl IcraftApp {
 
     fn draw_status_badges(&self, ui: &mut egui::Ui) {
         ui.horizontal_wrapped(|ui| {
+            // Server lifecycle badge -- updates from the run module's
+            // SERVER_STATE which is set on spawn / detected from piped
+            // log output / cleared once post-exit hooks complete.
+            let (state_label, state_ok) = match icraft_core::run::server_state() {
+                icraft_core::run::ServerState::Idle      => ("idle (ready)",        true),
+                icraft_core::run::ServerState::Starting  => ("starting",            true),
+                icraft_core::run::ServerState::Listening => ("LISTENING (up)",      true),
+                icraft_core::run::ServerState::Stopping  => ("stopping",            false),
+                icraft_core::run::ServerState::PostExit  => ("post-exit hooks",     false),
+            };
+            badge(ui, "Server", state_ok, state_label);
+
             badge(ui, "Forge",   self.status.forge_present, if self.status.forge_present { "installed" } else { "missing" });
             badge(ui, "EULA",    self.status.eula_present,  if self.status.eula_present  { "accepted"  } else { "missing" });
             badge(ui, "Mods",    self.status.mod_count > 0, &format!("{} jar(s)", self.status.mod_count));
@@ -437,20 +449,21 @@ impl IcraftApp {
                         pipe_output: true, // -> server log streams into GUI
                         ..Default::default()
                     };
-                    icraft_core::serve(&c, opts).map(|_| ())
+                    let r = icraft_core::serve(&c, opts).map(|_| ());
+                    icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
+                    log::info!("[run] *** all post-exit hooks complete -- ready ***");
+                    r
                 });
             }
             if action_btn(ui, "Run only", busy).clicked() {
                 self.spawn("run", move |c| {
-                    icraft_core::run::launch_server_piped(&c, false)?;
-                    // Match Serve (full)'s post-exit behavior: auto-push
-                    // logs (and any captured crash report) so the operator
-                    // never has to remember to click Push crash logs after
-                    // a server exit.
+                    let result = icraft_core::run::launch_server_piped(&c, false).map(|_| ());
                     if let Err(e) = icraft_core::crash::push_logs(&c) {
                         log::warn!("[run] post-exit log push failed: {e}");
                     }
-                    Ok(())
+                    icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
+                    log::info!("[run] *** all post-exit hooks complete -- ready ***");
+                    result
                 });
             }
             // Stop / Kill / Force kill are intentionally NOT gated on
