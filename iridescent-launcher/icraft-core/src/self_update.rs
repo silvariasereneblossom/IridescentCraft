@@ -333,23 +333,44 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     let pat = crate::crash::read_pat(cfg);
 
     let exe = std::env::current_exe()?;
-    let repo_root = find_git_root(exe.parent().unwrap_or(&exe)).ok_or_else(|| anyhow::anyhow!(
-        "no git working tree found containing {}. Initialize one in the dir \
-         the exe runs from (see pull_repo_binary_apply_gui docs for the \
-         flat / sparse-checkout setup).",
-        exe.display()
-    ))?;
-    log::info!("[self-update] git working tree: {}", repo_root.display());
+    let exe_name = exe.file_name().and_then(|n| n.to_str())
+        .unwrap_or(if cfg!(windows) { "icraft-gui.exe" } else { "icraft-gui" })
+        .to_string();
 
-    // Path of the running exe relative to the working tree, with
-    // forward slashes so git's pathspec accepts it on both platforms.
-    let rel = exe.strip_prefix(&repo_root)
-        .map_err(|_| anyhow::anyhow!(
-            "exe {} is not inside repo at {}",
-            exe.display(), repo_root.display()
-        ))?
-        .to_string_lossy()
-        .replace('\\', "/");
+    // Two paths for picking a git working tree:
+    //   A) Walk up from the exe -- the operator already has a sparse
+    //      / flat checkout containing the running binary.
+    //   B) No working tree containing the exe -- auto-clone a sparse
+    //      cache at %LOCALAPPDATA%\icraft-launcher\binary-pull\
+    //      filtered to .minecraft/server_distribution. The running
+    //      exe stays where it is; we just need a tree to git-show
+    //      out of.
+    let (repo_root, rel) = match find_git_root(exe.parent().unwrap_or(&exe)) {
+        Some(root) => {
+            log::info!("[self-update] git working tree: {}", root.display());
+            let rel = exe.strip_prefix(&root)
+                .map_err(|_| anyhow::anyhow!(
+                    "exe {} is not inside repo at {}",
+                    exe.display(), root.display()
+                ))?
+                .to_string_lossy()
+                .replace('\\', "/");
+            (root, rel)
+        }
+        None => {
+            log::info!(
+                "[self-update] no local git tree containing {} -- using binary-pull cache",
+                exe.display()
+            );
+            let cache = ensure_binary_pull_cache(pat.as_deref())?;
+            // Canonical repo path for the binary. Override via
+            // ICRAFT_BINARY_REPO_PATH if your fork has it elsewhere.
+            let rel = std::env::var("ICRAFT_BINARY_REPO_PATH").unwrap_or_else(|_|
+                format!(".minecraft/server_distribution/{exe_name}")
+            );
+            (cache, rel)
+        }
+    };
 
     log::info!("[self-update] git fetch origin --depth=1");
     let fetch = crate::git::authed_command(&repo_root, pat.as_deref())
@@ -376,8 +397,6 @@ pub fn pull_repo_binary_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     // Extract `rel` from `remote_ref` straight to <exe>.new. This
     // bypasses git's working-tree merge entirely, so the running exe
     // doesn't get touched (no Windows file-lock collision).
-    let exe_name = exe.file_name().and_then(|n| n.to_str())
-        .unwrap_or(if cfg!(windows) { "icraft-gui.exe" } else { "icraft-gui" });
     let staged = exe.with_file_name(format!("{exe_name}.new"));
     log::info!("[self-update] git show {remote_ref}:{rel} > {}", staged.display());
     let staged_file = File::create(&staged)
@@ -538,6 +557,57 @@ fn ensure_launcher_src(pat: Option<&str>) -> Result<PathBuf> {
         );
     }
     Ok(cached_src)
+}
+
+/// Sparse-checkout cache for the binary-pull self-update path. Holds
+/// only `.minecraft/server_distribution/` so `git show <ref>:<bin>`
+/// resolves regardless of whether the operator's running exe lives
+/// inside an existing repo working tree. Cloned once into
+/// `%LOCALAPPDATA%\icraft-launcher\binary-pull\` (or
+/// `~/.cache/icraft-launcher/binary-pull/`); the next `git fetch`
+/// keeps it current. Disk footprint after first clone: a few MB.
+fn ensure_binary_pull_cache(pat: Option<&str>) -> Result<PathBuf> {
+    let cache = binary_pull_cache_dir()?;
+    if cache.join(".git").exists() {
+        log::info!("[self-update] reusing binary-pull cache: {}", cache.display());
+        return Ok(cache);
+    }
+    let _ = crate::tools::find_tool("git", &[]).ok_or_else(|| anyhow::anyhow!(
+        "git not found. Install Git for Windows or set ICRAFT_GIT."
+    ))?;
+    let repo = std::env::var("ICRAFT_LAUNCHER_REPO")
+        .unwrap_or_else(|_| DEFAULT_LAUNCHER_REPO.to_string());
+    log::info!("[self-update] cloning binary-pull cache into {} ({})", cache.display(), repo);
+    let status = crate::git::authed_command(&cache, pat)
+        .args(["clone", "--filter=blob:none", "--sparse", "--depth=1", &repo, "."])
+        .status()
+        .map_err(|e| anyhow::anyhow!("git clone for binary cache: {e}"))?;
+    if !status.success() {
+        anyhow::bail!("git clone failed for binary-pull cache");
+    }
+    let status = crate::git::authed_command(&cache, pat)
+        .args(["sparse-checkout", "set", ".minecraft/server_distribution"])
+        .status()?;
+    if !status.success() {
+        anyhow::bail!("git sparse-checkout failed for binary-pull cache");
+    }
+    Ok(cache)
+}
+
+fn binary_pull_cache_dir() -> Result<PathBuf> {
+    let base = if cfg!(windows) {
+        std::env::var("LOCALAPPDATA").map(PathBuf::from).map_err(|_|
+            anyhow::anyhow!("no LOCALAPPDATA env var; can't pick a binary-pull cache dir")
+        )?
+    } else {
+        let home = std::env::var("HOME").map_err(|_|
+            anyhow::anyhow!("no HOME env var; can't pick a binary-pull cache dir")
+        )?;
+        PathBuf::from(home).join(".cache")
+    };
+    let dir = base.join("icraft-launcher").join("binary-pull");
+    std::fs::create_dir_all(&dir)?;
+    Ok(dir)
 }
 
 fn launcher_cache_dir() -> Result<PathBuf> {
