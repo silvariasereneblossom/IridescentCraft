@@ -442,7 +442,15 @@ impl IcraftApp {
             }
             if action_btn(ui, "Run only", busy).clicked() {
                 self.spawn("run", move |c| {
-                    icraft_core::run::launch_server_piped(&c, false).map(|_| ())
+                    icraft_core::run::launch_server_piped(&c, false)?;
+                    // Match Serve (full)'s post-exit behavior: auto-push
+                    // logs (and any captured crash report) so the operator
+                    // never has to remember to click Push crash logs after
+                    // a server exit.
+                    if let Err(e) = icraft_core::crash::push_logs(&c) {
+                        log::warn!("[run] post-exit log push failed: {e}");
+                    }
+                    Ok(())
                 });
             }
             // Stop is intentionally NOT gated on `busy` -- it has to be
@@ -458,9 +466,27 @@ impl IcraftApp {
 
         ui.add_space(8.0);
         ui.heading("Sync + install");
+        ui.label(egui::RichText::new(
+            "'Sync' is the one-button update: dev boxes (cargo available) rebuild + push + apply; server boxes pull the latest binary + apply. Use Apply Self-Update / Rebuild + Push GUI directly only when you need to override the auto-routing."
+        ).small().weak());
+        ui.add_space(2.0);
         ui.horizontal_wrapped(|ui| {
-            if action_btn(ui, "Sync repo", busy).clicked() {
+            if action_btn(ui, "Sync", busy).clicked() {
+                // One-button update. self_update::sync_apply_gui auto-
+                // routes between dev (rebuild + push) and server
+                // (pull binary) based on cargo availability. Caller
+                // exits 0 if a new GUI spawned.
                 self.spawn("sync", move |c| {
+                    if icraft_core::self_update::sync_apply_gui(&c)? {
+                        log::info!("[sync] new GUI spawned -- exiting current process");
+                        std::thread::sleep(std::time::Duration::from_millis(500));
+                        std::process::exit(0);
+                    }
+                    Ok(())
+                });
+            }
+            if action_btn(ui, "Sync repo", busy).clicked() {
+                self.spawn("sync-repo", move |c| {
                     icraft_core::sync::z_mirror_or_zip(&c)?;
                     icraft_core::sync::github_diff(&c, false)
                 });

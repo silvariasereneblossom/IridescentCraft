@@ -146,6 +146,25 @@ pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
     Ok(true)
 }
 
+/// One-button sync: auto-route between the dev path (pull source +
+/// rebuild + push binary + apply) and the server path (pull binary
+/// from repo + apply). Detection: presence of `cargo` on PATH or in
+/// the standard install locations. If cargo is available, assume
+/// dev box; otherwise assume server box and use the binary-pull
+/// path.
+///
+/// Returns Ok(true) if a new GUI was applied + spawned; caller must
+/// `std::process::exit(0)` to release the file lock.
+pub fn sync_apply_gui(cfg: &ServerConfig) -> Result<bool> {
+    if crate::tools::find_tool("cargo", &[]).is_some() {
+        log::info!("[sync] cargo available -- dev path: rebuild + push + apply");
+        pull_build_apply_gui(cfg)
+    } else {
+        log::info!("[sync] cargo not found -- server path: pull binary + apply");
+        pull_repo_binary_apply_gui(cfg)
+    }
+}
+
 /// Pull source from the repo, build the GUI in release mode, stage the
 /// resulting binary as `<live>.new`, then apply + relaunch.
 ///
