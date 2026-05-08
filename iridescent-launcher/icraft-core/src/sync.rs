@@ -27,7 +27,8 @@ use anyhow::{anyhow, Context, Result};
 use std::fs;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
-use std::process::{Command, Stdio};
+// std::process::Command/Stdio dropped along with the bat-shell-out
+// path in z_mirror_or_zip; sync now stays in-Rust via ureq.
 
 use crate::config::{ServerConfig, GITHUB_REPO_BRANCH, GITHUB_REPO_NAME, GITHUB_REPO_OWNER, REPO_SERVER_PATH};
 use crate::github;
@@ -44,33 +45,32 @@ const SELF_UPDATE_FILES: &[&str] = &[
 ];
 
 // =============================================================================
-// Phase -1 — Z: mirror / dev PC source
+// Phase -1 — formerly Z: mirror / dev PC source. Now a thin wrapper
+// around github_diff so the launcher pulls everything from the
+// GitHub remote, not from a network drive that may serve stale data.
 // =============================================================================
 
+/// Bulk-pull the modpack tree from the GitHub remote.
+///
+/// This used to shell out to `sync_from_repo.bat` (or .sh), which
+/// preferred a `Z:` network mapping pointing at the dev box's
+/// PrismLauncher instance and only fell back to GitHub if the drive
+/// was missing. That meant a stale dev-side clone produced stale
+/// jars on the server, with no obvious failure (Phase -1 succeeded,
+/// just copied old content).
+///
+/// New behavior: always route through `github_diff` with
+/// `force = true`, so every Phase -1 invocation walks the GitHub
+/// compare API and fetches files via raw URLs directly. No network
+/// drive dependency. Same auth path as the rest of our HTTP traffic
+/// (ureq + optional PAT).
+///
+/// Function name + signature kept stable -- the GUI's `Sync repo`
+/// button, the CLI's `sync` subcommand, and `serve()`'s phase -1
+/// step all keep working.
 pub fn z_mirror_or_zip(cfg: &ServerConfig) -> Result<()> {
-    let bat = cfg.server_dir.join("sync_from_repo.bat");
-    let sh  = cfg.server_dir.join("sync_from_repo.sh");
-    // stdin=null forces `pause` and `Read-Host` to read EOF and return
-    // immediately. Without this, sync_from_repo.bat's trailing
-    // `pause >nul` hangs the orchestrator forever.
-    if cfg!(target_os = "windows") && bat.exists() {
-        log::info!("[sync] phase -1: sync_from_repo.bat");
-        let st = Command::new("cmd").args(["/c", &bat.to_string_lossy()])
-            .current_dir(&cfg.server_dir)
-            .stdin(Stdio::null())
-            .status()?;
-        if !st.success() { return Err(anyhow!("sync_from_repo.bat exit {}", st.code().unwrap_or(-1))); }
-    } else if sh.exists() {
-        log::info!("[sync] phase -1: sync_from_repo.sh");
-        let st = Command::new("bash").arg(&sh)
-            .current_dir(&cfg.server_dir)
-            .stdin(Stdio::null())
-            .status()?;
-        if !st.success() { return Err(anyhow!("sync_from_repo.sh exit {}", st.code().unwrap_or(-1))); }
-    } else {
-        log::debug!("[sync] phase -1: no sync_from_repo script — skip");
-    }
-    Ok(())
+    log::info!("[sync] phase -1: github_diff (bulk pull from origin/main; legacy Z: bat path retired)");
+    github_diff(cfg, true)
 }
 
 // =============================================================================
