@@ -3,7 +3,7 @@
   "name": "Sunlight Sensitivity",
   "description": "Sunlight weakens and slows you but no longer burns. Wear a helmet or stay in shade.",
   "weakness": {
-    "type": "origins:stacking_status_effect",
+    "type": "apoli:stacking_status_effect",
     "min_stacks": 0,
     "max_stacks": 1,
     "duration_per_stack": 80,
@@ -19,7 +19,7 @@
       "type": "origins:and",
       "conditions": [
         {
-          "type": "origins:exposed_to_sun"
+          "type": "apoli:exposed_to_sun"
         },
         {
           "type": "origins:equipped_item",
@@ -32,7 +32,7 @@
     }
   },
   "slowness": {
-    "type": "origins:stacking_status_effect",
+    "type": "apoli:stacking_status_effect",
     "min_stacks": 0,
     "max_stacks": 1,
     "duration_per_stack": 80,
@@ -48,7 +48,7 @@
       "type": "origins:and",
       "conditions": [
         {
-          "type": "origins:exposed_to_sun"
+          "type": "apoli:exposed_to_sun"
         },
         {
           "type": "origins:equipped_item",

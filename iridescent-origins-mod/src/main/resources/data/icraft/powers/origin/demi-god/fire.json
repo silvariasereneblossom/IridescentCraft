@@ -1,7 +1,7 @@
 {
   "type": "origins:modify_damage_taken",
   "damage_condition": {
-    "type": "origins:fire"
+    "type": "apoli:fire"
   },
   "modifier": {
     "operation": "multiply_base",

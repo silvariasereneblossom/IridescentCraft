@@ -1,5 +1,5 @@
 {
-  "type": "origins:effect_immunity",
+  "type": "apoli:effect_immunity",
   "name": "icraft.power.origin.witherborn.wither_immunity.name",
   "description": "icraft.power.origin.witherborn.wither_immunity.description",
   "effects": [

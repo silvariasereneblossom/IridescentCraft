@@ -1,11 +1,11 @@
 {
-  "type": "origins:modify_food",
+  "type": "apoli:modify_food",
   "name": "Meat Preference",
   "description": "Non-meat foods provide 50% less nourishment. Your spider metabolism prefers protein.",
   "item_condition": {
     "type": "origins:ingredient",
     "ingredient": {
-      "tag": "origins:meat"
+      "tag": "apoli:meat"
     },
     "inverted": true
   },

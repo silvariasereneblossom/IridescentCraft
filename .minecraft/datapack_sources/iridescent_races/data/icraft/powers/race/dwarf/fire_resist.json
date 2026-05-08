@@ -3,7 +3,7 @@
   "name": "Forge-Hardened",
   "description": "50% fire resistance \u2014 take half damage from fire sources.",
   "damage_condition": {
-    "type": "origins:fire"
+    "type": "apoli:fire"
   },
   "modifier": {
     "operation": "multiply_total_multiplicative",

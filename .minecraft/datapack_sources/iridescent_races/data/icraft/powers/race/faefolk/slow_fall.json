@@ -1,5 +1,5 @@
 {
-  "type": "origins:modify_falling",
+  "type": "apoli:modify_falling",
   "name": "Fae Wings",
   "description": "Passive slow fall \u2014 reduced fall speed and damage.",
   "velocity": -0.01

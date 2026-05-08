@@ -1,5 +1,5 @@
 {
-  "type": "origins:effect_immunity",
+  "type": "apoli:effect_immunity",
   "effect": "minecraft:poison",
   "name": "Hotblooded",
   "description": "Your hot body burns up venoms, making you immune to poison. Your metabolism is otherwise normal."

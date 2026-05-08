@@ -1,5 +1,5 @@
 {
-  "type": "origins:modify_food",
+  "type": "apoli:modify_food",
   "food_modifier": {
     "name": "Halfling Food Bonus",
     "operation": "multiply_total_multiplicative",

@@ -36,7 +36,7 @@
 		}
 	},
 	"weak":{
-		"type":"origins:stacking_status_effect",
+		"type":"apoli:stacking_status_effect",
 		"condition":{
 			"type":"origins:power_active",
 			"power":"*:*_toggle"
@@ -55,7 +55,7 @@
 		"type":"origins:action_over_time",
 		"interval":1,
 		"entity_action":{
-			"type":"origins:if_else",
+			"type":"apoli:if_else",
 			"condition":{
 				"type":"origins:power_active",
 				"power":"*:*_toggle"
@@ -73,7 +73,7 @@
 		}
 	},
 	"wither":{
-		"type":"origins:stacking_status_effect",
+		"type":"apoli:stacking_status_effect",
 		"min_stacks":0,
 		"max_stacks":1,
 		"duration_per_stack":20,

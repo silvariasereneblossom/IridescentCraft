@@ -7,7 +7,7 @@
     "key": "key.saveToolbarActivator"
   },
   "climbing": {
-    "type": "origins:climbing",
+    "type": "apoli:climbing",
     "hold_condition": {
       "type": "origins:and",
       "conditions": [
@@ -15,13 +15,13 @@
           "type": "origins:or",
           "conditions": [
             {
-              "type": "origins:block_collision",
+              "type": "apoli:block_collision",
               "offset_x": 0.01,
               "offset_z": 0.01,
               "offset_y": 0
             },
             {
-              "type": "origins:block_collision",
+              "type": "apoli:block_collision",
               "offset_x": -0.01,
               "offset_z": -0.01,
               "offset_y": 0
@@ -38,7 +38,7 @@
       "type": "origins:and",
       "conditions": [
         {
-          "type": "origins:collided_horizontally"
+          "type": "apoli:collided_horizontally"
         },
         {
           "type": "origins:power_active",

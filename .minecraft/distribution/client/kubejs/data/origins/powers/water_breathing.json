@@ -13,7 +13,7 @@
       }
     ],
     "condition": {
-      "type": "origins:submerged_in",
+      "type": "apoli:submerged_in",
       "fluid": "minecraft:water"
     }
   },

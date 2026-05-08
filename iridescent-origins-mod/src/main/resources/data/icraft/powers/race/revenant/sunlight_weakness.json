@@ -3,7 +3,7 @@
   "name": "icraft.power.race.revenant.sunlight_weakness.name",
   "description": "icraft.power.race.revenant.sunlight_weakness.description",
   "weakness": {
-    "type": "origins:stacking_status_effect",
+    "type": "apoli:stacking_status_effect",
     "min_stacks": 0,
     "max_stacks": 1,
     "duration_per_stack": 80,
@@ -18,7 +18,7 @@
       "type": "origins:and",
       "conditions": [
         {
-          "type": "origins:exposed_to_sun"
+          "type": "apoli:exposed_to_sun"
         },
         {
           "type": "origins:equipped_item",
@@ -31,7 +31,7 @@
     }
   },
   "slowness": {
-    "type": "origins:stacking_status_effect",
+    "type": "apoli:stacking_status_effect",
     "min_stacks": 0,
     "max_stacks": 1,
     "duration_per_stack": 80,
@@ -46,7 +46,7 @@
       "type": "origins:and",
       "conditions": [
         {
-          "type": "origins:exposed_to_sun"
+          "type": "apoli:exposed_to_sun"
         },
         {
           "type": "origins:equipped_item",

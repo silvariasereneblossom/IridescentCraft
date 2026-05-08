@@ -1,7 +1,7 @@
 {
   "name": "icraft.power.origin.fallen_angel.immunity.name",
   "description": "icraft.power.origin.fallen_angel.immunity.description",
-  "type": "origins:effect_immunity",
+  "type": "apoli:effect_immunity",
   "effects": [
     "minecraft:wither",
     "minecraft:poison",

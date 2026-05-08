@@ -3,7 +3,7 @@
   "name": "Sunlight Sensitivity",
   "description": "Sunlight causes Weakness and Slowness. Wear a helmet or stay in shade.",
   "weakness": {
-    "type": "origins:stacking_status_effect",
+    "type": "apoli:stacking_status_effect",
     "min_stacks": 0,
     "max_stacks": 1,
     "duration_per_stack": 80,
@@ -17,13 +17,13 @@
     "condition": {
       "type": "origins:and",
       "conditions": [
-        { "type": "origins:exposed_to_sun" },
+        { "type": "apoli:exposed_to_sun" },
         { "type": "origins:equipped_item", "equipment_slot": "head", "item_condition": { "type": "origins:empty" } }
       ]
     }
   },
   "slowness": {
-    "type": "origins:stacking_status_effect",
+    "type": "apoli:stacking_status_effect",
     "min_stacks": 0,
     "max_stacks": 1,
     "duration_per_stack": 80,
@@ -37,7 +37,7 @@
     "condition": {
       "type": "origins:and",
       "conditions": [
-        { "type": "origins:exposed_to_sun" },
+        { "type": "apoli:exposed_to_sun" },
         { "type": "origins:equipped_item", "equipment_slot": "head", "item_condition": { "type": "origins:empty" } }
       ]
     }

@@ -1,7 +1,7 @@
 {
   "name": "icraft.power.origin.kirin.dislike_of_water.name",
   "description": "icraft.power.origin.kirin.dislike_of_water.description",
-  "type": "origins:stacking_status_effect",
+  "type": "apoli:stacking_status_effect",
   "min_stacks": 0,
   "max_stacks": 1,
   "duration_per_stack": 20,
@@ -18,7 +18,7 @@
     }
   ],
   "condition": {
-    "type": "origins:submerged_in",
+    "type": "apoli:submerged_in",
     "fluid": "minecraft:water"
   }
 }

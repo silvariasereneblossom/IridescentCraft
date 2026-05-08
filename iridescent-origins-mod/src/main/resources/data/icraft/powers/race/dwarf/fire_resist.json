@@ -3,7 +3,7 @@
   "name": "icraft.power.race.dwarf.fire_resist.name",
   "description": "icraft.power.race.dwarf.fire_resist.description",
   "damage_condition": {
-    "type": "origins:fire"
+    "type": "apoli:fire"
   },
   "modifier": {
     "operation": "multiply_total_multiplicative",

@@ -1,5 +1,5 @@
 {
-  "type": "origins:night_vision",
+  "type": "apoli:night_vision",
   "name": "icraft.power.race.elf.night_vision.name",
   "description": "icraft.power.race.elf.night_vision.description",
   "strength": 0.5

@@ -1,5 +1,5 @@
 {
-  "type": "origins:modify_food",
+  "type": "apoli:modify_food",
   "item_condition": {
     "type": "origins:ingredient",
     "ingredient": {

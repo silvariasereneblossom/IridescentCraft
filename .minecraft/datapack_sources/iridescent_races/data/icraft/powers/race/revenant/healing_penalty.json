@@ -1,5 +1,5 @@
 {
-  "type": "origins:modify_food",
+  "type": "apoli:modify_food",
   "food_modifier": {
     "name": "Cursed Flesh Food",
     "operation": "multiply_total_multiplicative",

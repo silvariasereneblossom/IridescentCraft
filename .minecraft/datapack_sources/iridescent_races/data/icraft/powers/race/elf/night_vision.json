@@ -1,5 +1,5 @@
 {
-  "type": "origins:night_vision",
+  "type": "apoli:night_vision",
   "name": "Darkvision",
   "description": "Natural night vision.",
   "strength": 0.5

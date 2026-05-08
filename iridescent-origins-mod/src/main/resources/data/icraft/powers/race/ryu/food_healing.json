@@ -6,7 +6,7 @@
     "amount": 1
   },
   "condition": {
-    "type": "origins:food_level",
+    "type": "apoli:food_level",
     "comparison": ">=",
     "compare_to": 18
   },

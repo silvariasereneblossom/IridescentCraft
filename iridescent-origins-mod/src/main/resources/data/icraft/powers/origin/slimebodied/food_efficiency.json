@@ -1,5 +1,5 @@
 {
-  "type": "origins:modify_food",
+  "type": "apoli:modify_food",
   "name": "icraft.power.origin.slimebodied.food_efficiency.name",
   "description": "icraft.power.origin.slimebodied.food_efficiency.description",
   "food_modifier": {

@@ -1,5 +1,5 @@
 {
-  "type": "origins:night_vision",
+  "type": "apoli:night_vision",
   "name": "Deathless Eyes",
   "description": "Enhanced night vision.",
   "strength": 1.1
