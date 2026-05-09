@@ -6,6 +6,7 @@
   "refmap": "iridescent_durability_clamp.refmap.json",
   "mixins": [
     "ItemStackHurtAndBreakMixin",
+    "ItemStackHurtMixin",
     "EventBusInvokeMixin"
   ],
   "client": [],
