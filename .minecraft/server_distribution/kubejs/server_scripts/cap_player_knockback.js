@@ -36,25 +36,31 @@ try {
   var Consumer_kb = Java.loadClass('java.util.function.Consumer')
   var Player_kb = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  // EMERGENCY CAP 2026-05-09: dropped from 1.5 to 0.25.
+  // EMERGENCY CAP 2026-05-09: 1.5 -> 0.25 -> 0.125.
   //
-  // Tester report: skeleton-jockey mount produces "very noticeable"
-  // KB on the player (other arrows feel fine). cap_player_knockback
-  // log on 2026-05-09 02:38 captured 6 events with strength=0.400
-  // (vanilla minimum -- spider melee with no Knockback enchant) and
-  // un-normalized ratios in the 5-18 magnitude range (likely raw
-  // attacker-to-victim delta vector instead of unit direction).
-  // The previous cap of 1.5 didn't engage at strength 0.4, so each
-  // bite went through at full vanilla strength; jockey-mount spiders
-  // attack at high cadence, producing the cumulative "noticeable" feel.
+  // Tester report: skeleton-jockey ARROW KB (not the spider mount
+  // melee as initially suspected) is the felt source. After the 0.25
+  // cap landed it still felt ~1.5-2x of intended; halving to 0.125
+  // targets ~0.5x of vanilla arrow KB.
+  //
+  // History:
+  //   - 1.5 (initial): too loose. Vanilla mob melee strength=0.4 plus
+  //     vanilla arrow strength~0.5 (Punch I) both passed through
+  //     unclamped. Tester observed "very noticeable" stack-up.
+  //   - 0.25 (first emergency tighten): clamped 0.4 -> 0.25 (~38%
+  //     reduction). Tester reported it still felt 1.5-2x intended on
+  //     the jockey arrows specifically.
+  //   - 0.125 (current): halve again, target 0.5x of vanilla. Catches
+  //     all KB events at this magnitude regardless of source.
   //
   // Universal cap reduction as band-aid until MOBDIAG-SPAWN (whose
-  // UUID lookup was fixed in commit 15f72dd0) tells us which mob /
-  // affix is producing these events so we can scope a targeted fix.
-  // Trade-off accepted by user: legitimate Punch-bow KB and player-
-  // on-mob KB also dampened in the meantime. Revert path: bump back
-  // to 1.5 once we identify and patch the source.
-  var KNOCKBACK_CAP = 0.25
+  // UUID lookup was fixed in commit 15f72dd0) reveals which mob /
+  // affix / projectile is producing these events so we can scope a
+  // targeted fix. Trade-off accepted by user: legitimate Punch-bow KB
+  // and player-on-mob KB are dampened universally in the meantime.
+  // Revert path: bump back to 1.5 once we identify and patch the
+  // source.
+  var KNOCKBACK_CAP = 0.125
   // Vanilla unit-vector ratios are length 1.0. Anything >1.5 is a mod
   // bug producing un-normalized direction. Cap at 1.5 (slack for natural
   // floating-point variance) and renormalize to 1.0 if exceeded.
