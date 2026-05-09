@@ -51,8 +51,17 @@ const SOULBOUND_ENCHANT = 'ensorcellation:soulbound'
 // NBT tag for broken items
 const BROKEN_TAG = 'icraft_broken'
 
-// Equipment slots to apply penalty to
-const ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
+// Equipment slots to apply penalty to.
+// `var` (not `const`) because armor_weight.js declares the same global
+// in the shared KubeJS Rhino scope. Two `const` declarations of the
+// same name throw "TypeError: redeclaration of const ARMOR_SLOTS" at
+// load time, which silently aborts THIS entire file -- the death
+// event handler never registers, the keepInventory gamerule never
+// gets set, and items drop normally on death (real bug, debug.log
+// 2026-05-09 11:40:51.767, tester complaint "armor disappeared on
+// death"). var is redeclaration-tolerant in Rhino so order doesn't
+// matter.
+var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 
 // =============================================================================
 // SECTION 1: DEATH EVENT — Apply durability loss

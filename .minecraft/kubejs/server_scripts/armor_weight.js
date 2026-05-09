@@ -59,7 +59,10 @@ const ROBE_SET_BONUS_MANA = 0.5  // ADDITION on irons_spellbooks:mana_regen at 4
 // Wearing full robes bypasses the penalty entirely (caster identity payoff).
 const FAEFOLK_TOUGHNESS_PENALTY = -0.5
 
-const ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
+// var (not const) so death_penalty.js can also declare the same name in
+// the shared KubeJS Rhino scope without throwing "redeclaration of const
+// ARMOR_SLOTS". See the matching note in death_penalty.js.
+var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 
 // Reforged armor (iridescent_reforging:reforged_*) doesn't have a static
 // item tag — its weight class is dynamic, decided by the installed major
