@@ -98,6 +98,34 @@ try {
     try { return String(item.toString()) } catch (e) { return '?' }
   }
 
+  // UUID lookup helper. The naive `entity.getStringUUID()` call fails
+  // with TypeError "Cannot find function getStringUUID" for every
+  // spawn in our Rhino build (whether due to KubeJS method filtering,
+  // SRG/official remap mismatch, or a class-loader interaction with
+  // Sinytra Connector is unclear; reproduces on every entity type
+  // including vanilla Skeleton/Zombie/Spider per debug.log
+  // 2026-05-09 02:36). Pre-fix the diag handler bailed on every
+  // spawn before logging anything useful -- defeating the whole
+  // point of MOBDIAG-SPAWN. Cascade through alternative accessors
+  // and return null on total failure so the rest of the record
+  // still logs.
+  var entityUuidStr = function(e) {
+    try { return String(e.getStringUUID()) } catch (_) {}
+    try { return String(e.getUUID()) } catch (_) {}
+    try { return String(e.uuid) } catch (_) {}
+    try {
+      // Last resort -- pull the UUID off the entity's serialized NBT.
+      // Every Entity persists "UUID" as an int-array NBT field.
+      var saveTag = new (Java.loadClass('net.minecraft.nbt.CompoundTag'))()
+      e.saveWithoutId(saveTag)
+      if (saveTag.contains('UUID')) {
+        var uuid = saveTag.getUUID('UUID')
+        return String(uuid)
+      }
+    } catch (_) {}
+    return null
+  }
+
   // Helpers ------------------------------------------------------------------
   var getStackInfo = function(stack) {
     if (!stack || stack.isEmpty()) return null
@@ -155,7 +183,7 @@ try {
       var iter = ps.iterator()
       while (iter.hasNext()) {
         var p = iter.next()
-        out.push({ id: entityResId(p), uuid: String(p.getStringUUID()) })
+        out.push({ id: entityResId(p), uuid: entityUuidStr(p) })
       }
       return out
     } catch (e) { return null }
@@ -165,7 +193,7 @@ try {
     try {
       var v = mob.getVehicle()
       if (!v) return null
-      return { id: entityResId(v), uuid: String(v.getStringUUID()) }
+      return { id: entityResId(v), uuid: entityUuidStr(v) }
     } catch (e) { return null }
   }
 
@@ -234,7 +262,7 @@ try {
         var record = {
           ts:        Date.now(),
           entity:    dmsResId,
-          uuid:      String(entity.getStringUUID()),
+          uuid:      entityUuidStr(entity),
           dimension: String(entity.level().dimension().location()),
           pos:       [Math.round(pos.x() * 10) / 10, Math.round(pos.y() * 10) / 10, Math.round(pos.z() * 10) / 10],
           customName: entity.hasCustomName() ? String(entity.getCustomName().getString()) : null,

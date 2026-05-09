@@ -85,6 +85,24 @@ try {
       return raw
     } catch (e) { return '' }
   }
+  // UUID lookup helper. Bare entity.getStringUUID() throws TypeError
+  // ("Cannot find function getStringUUID") for every entity in our
+  // Rhino build (KubeJS method filtering / SRG remap interaction --
+  // reproduces on every entity type per debug.log 2026-05-09 02:36).
+  // Cascade through alternative accessors so the diag handler logs
+  // the rest of the record instead of bailing on every drop.
+  var entityUuidStr = function(e) {
+    try { return String(e.getStringUUID()) } catch (_) {}
+    try { return String(e.getUUID()) } catch (_) {}
+    try { return String(e.uuid) } catch (_) {}
+    try {
+      var saveTag = new (Java.loadClass('net.minecraft.nbt.CompoundTag'))()
+      e.saveWithoutId(saveTag)
+      if (saveTag.contains('UUID')) return String(saveTag.getUUID('UUID'))
+    } catch (_) {}
+    return null
+  }
+
   var itemId = function(item) {
     try { return String(item.builtInRegistryHolder().key().location()) } catch (e) {}
     try { return String(item.toString()) } catch (e) { return '?' }
@@ -125,7 +143,7 @@ try {
       var iter = ps.iterator()
       while (iter.hasNext()) {
         var p = iter.next()
-        out.push({ id: entityResId(p), uuid: String(p.getStringUUID()) })
+        out.push({ id: entityResId(p), uuid: entityUuidStr(p) })
       }
       return out
     } catch (e) { return null }
@@ -135,7 +153,7 @@ try {
     try {
       var v = mob.getVehicle()
       if (!v) return null
-      return { id: entityResId(v), uuid: String(v.getStringUUID()) }
+      return { id: entityResId(v), uuid: entityUuidStr(v) }
     } catch (e) { return null }
   }
 
@@ -170,7 +188,7 @@ try {
         var preState = {
           ts:        Date.now(),
           entity:    dmdResId,
-          uuid:      String(entity.getStringUUID()),
+          uuid:      entityUuidStr(entity),
           dimension: String(entity.level().dimension().location()),
           pos:       [Math.round(pos.x() * 10) / 10, Math.round(pos.y() * 10) / 10, Math.round(pos.z() * 10) / 10],
           customName: entity.hasCustomName() ? String(entity.getCustomName().getString()) : null,
