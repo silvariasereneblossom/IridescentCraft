@@ -119,34 +119,59 @@ EntityEvents.death(event => {
     let durLoss = Math.ceil(maxDur * effectiveLoss)
     if (durLoss <= 0) return
 
-    // Route through ItemStack.hurtAndBreak so the durability-clamp
-    // mixin (clamps amount to maxDamage - currentDamage - 1) AND
-    // Tetra's own clamp (in our overridden Item.damageItem on
-    // ItemModularArmor / ModularSpellBookItem / ModularArsSpellBookItem)
-    // both fire. Single source of truth for the "never destroy"
-    // invariant -- previous direct-NBT-write approach bypassed BOTH
-    // clamps and could destroy already-broken Tetra items on death
-    // (real bug, 2026-05-09: tester died holding a broken Tetra item,
-    // it disappeared post-respawn).
+    // Two layers of clamping at different thresholds:
     //
-    // hurtAndBreak also runs Unbreaking enchant probability, so an
-    // Unbreaking-IV piece takes proportionally less death-penalty
-    // damage. Per design choice 2026-05-09: this is desired -- it
-    // matches in-combat behavior and rewards Unbreaking investment
-    // beyond just normal use. Stacks multiplicatively with Soulbound.
+    //   (a) PACK invariant -- "death penalty stops at the inert
+    //       threshold (maxDur - 100, or maxDur - half_max for short-
+    //       life items)". The live-tick sweep enforces this for
+    //       in-combat wear; the death penalty must respect the same
+    //       ceiling so equipment doesn't end up at 1 dura remaining
+    //       after every death (which is the visible "broken on
+    //       death" state we want to avoid).
     //
-    // Empty onBroken consumer: the clamps prevent destruction, so the
-    // break callback can't fire. If Vanilla.hurt() ever returns true
-    // (e.g. a future regression in either clamp), the consumer is a
-    // no-op rather than broadcasting a false break event.
-    stack.hurtAndBreak(durLoss, player, function (e) {})
-
-    // Tag broken if at/past our inert threshold so the live-tick
-    // checks (zero attack damage, mining cancellation, right-click
-    // block) keep running. Done after hurtAndBreak so we read the
-    // post-clamp damage value.
+    //   (b) MIXIN invariant -- "never destroyed", clamps at
+    //       maxDur - 1. This is the absolute hard floor enforced
+    //       by ItemStackHurtAndBreakMixin + Tetra's own damageItemImpl
+    //       (and our overridden Item.damageItem on the modular
+    //       armor / spell book classes).
+    //
+    // (a) is stricter than (b); we compute the (a)-capped amount in
+    // JS and then route through hurtAndBreak so (b) is also honored
+    // belt-and-suspenders. Earlier fix (commit 1017eda3) called
+    // hurtAndBreak with the raw durLoss and lost the (a) cap --
+    // items landed at maxDur - 1, the live-tick sweep then bumped
+    // them back to maxDur - inertThreshold a couple of ticks later,
+    // but to the player the post-respawn item read as fully broken.
+    //
+    // hurtAndBreak still runs Unbreaking probability inside, which
+    // is the design choice from 2026-05-09 -- Unbreaking
+    // proportionally reduces post-cap damage, stacking
+    // multiplicatively with Soulbound.
     let inertThreshold = Math.min(100, Math.floor(maxDur * 0.5))
-    if (stack.damageValue >= maxDur - inertThreshold) {
+    let inertCeiling = maxDur - inertThreshold
+    let allowedLoss = Math.max(0, inertCeiling - stack.damageValue)
+    let cappedLoss = Math.min(durLoss, allowedLoss)
+    if (cappedLoss <= 0) {
+      // Already at / past the inert ceiling. No further damage to
+      // apply, but make sure the broken tag is set so the live-tick
+      // inert-state effects stay armed.
+      if (!stack.nbt) stack.nbt = {}
+      stack.nbt.putBoolean(BROKEN_TAG, true)
+      return
+    }
+
+    // Route the capped amount through hurtAndBreak so the mixin
+    // clamp + Tetra's clamp + Unbreaking all run as designed.
+    // Empty onBroken consumer: the clamps prevent destruction, so
+    // the break callback can't fire. If Vanilla.hurt() ever returns
+    // true (regression in either clamp), the consumer is a no-op
+    // rather than broadcasting a false break event.
+    stack.hurtAndBreak(cappedLoss, player, function (e) {})
+
+    // Tag broken if the post-clamp damage crosses the inert
+    // threshold so the live-tick checks (zero attack damage,
+    // mining cancellation, right-click block) activate.
+    if (stack.damageValue >= inertCeiling) {
       if (!stack.nbt) stack.nbt = {}
       stack.nbt.putBoolean(BROKEN_TAG, true)
     }

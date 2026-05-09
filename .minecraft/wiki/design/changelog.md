@@ -4,6 +4,19 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-09 — Death penalty caps at `maxDur - INERT_THRESHOLD` (was leaving items at 1 dura)
+
+Yesterday's fix (route through `hurtAndBreak`) preserved the "never destroyed" invariant but lost the pack's stricter "stop at the inert threshold" invariant. With the JS-side ceiling removed, the death-penalty damage flowed through the mixin's `maxDur - 1` clamp and items ended up at exactly 1 dura remaining post-respawn. The live-tick sweep was bumping them back to `maxDur - INERT_THRESHOLD` a few ticks later, but to the player the post-respawn moment showed a fully-broken item.
+
+Two clamping layers now operate at different thresholds:
+
+- **Pack invariant** (stricter): death-penalty cap at `maxDur - INERT_THRESHOLD` (`= maxDur - min(100, maxDur/2)`). Computed in JS *before* the `hurtAndBreak` call. If a stack is already at / past the inert ceiling, no `hurtAndBreak` call is made; the `BROKEN_TAG` is just refreshed.
+- **Mixin invariant** (absolute floor): "never destroyed", clamps at `maxDur - 1`. Enforced by `ItemStackHurtAndBreakMixin` + Tetra's `damageItemImpl` + our overridden `Item.damageItem` on `ItemModularArmor` / `ModularSpellBookItem` / `ModularArsSpellBookItem`. Belt-and-suspenders fallback.
+
+Death-penalty `applyDurabilityLoss` now: clamp `durLoss` to `(maxDur - INERT_THRESHOLD) - currentDamage` → call `stack.hurtAndBreak(cappedLoss, ...)` → stamp `BROKEN_TAG` if post-call damage crosses the inert ceiling. Unbreaking enchant still applies to the *capped* amount.
+
+---
+
 ## 2026-05-09 — Death-penalty durability loss now routes through `hurtAndBreak`
 
 Tester report: died holding a broken Tetra equip; it disappeared post-respawn. Root cause: `death_penalty.js` `applyDurabilityLoss` wrote `Damage` NBT directly (`stack.nbt.putInt('Damage', targetDamage)`), which bypassed BOTH the `ItemStackHurtAndBreakMixin` clamp AND Tetra's own `damageItemImpl` clamp. The script attempted its own clamp at `maxDur - min(100, maxDur/2)` — different from the mixin's `maxDur - 1` — and the clamp logic interacted badly with already-broken items (writing a damage value below the current one in some edge cases, leaving the broken-tag set on a stack the live tick sweep didn't expect to encounter).
