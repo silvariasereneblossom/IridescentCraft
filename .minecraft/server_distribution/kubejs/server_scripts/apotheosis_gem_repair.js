@@ -83,6 +83,26 @@
     return KNOWN_GEMS[idx]
   }
 
+  // Recent-context lookup: bare gems can appear in a player's inventory
+  // by three paths -- ItemEntity pickup (covered by EntityEvents.spawned
+  // below), direct chest-take, or some other server-side inventory
+  // mutation. To capture the chest-take path, the BlockEvents.rightClicked
+  // handler below stamps `_lastChestPos` + `_lastChestTick` onto the
+  // player's persistent data whenever they interact with a chest /
+  // barrel / shulker. When a bare gem turns up here within a short
+  // window of that interaction, the log line includes the chest pos so
+  // the operator can correlate gem source -> structure / loot table.
+  function recentChestContext(player) {
+    try {
+      var pd = player.persistentData
+      if (!pd.contains('_lastChestPos') || !pd.contains('_lastChestTick')) return ''
+      var dt = player.tickCount - pd.getLong('_lastChestTick')
+      if (dt < 0 || dt > 200) return ''  // only correlate within ~10s
+      return ' (recent chest at ' + pd.getString('_lastChestPos')
+           + ' opened ' + dt + 't ago)'
+    } catch (_) { return '' }
+  }
+
   function repairGem(stack, player, slotLabel) {
     var gemId = pickRandomGem()
     if (!stack.nbt) stack.nbt = {}
@@ -94,13 +114,37 @@
     affixData.putString('rarity', 'common')
     stack.nbt.put('affix_data', affixData)
 
+    var ctx = recentChestContext(player)
     console.log('[gem-repair] bare apotheosis:gem in ' + slotLabel
-              + ' (player=' + player.username + ') -> ' + gemId)
+              + ' (player=' + player.username + ')'
+              + ctx
+              + ' -> ' + gemId)
     try {
       player.tell(Text.gray('A bare gem in your ' + slotLabel
                           + ' was auto-repaired to ' + gemId + ' (common).'))
     } catch (_) {}
   }
+
+  // Stamp the player with the position + tick of the most recent chest /
+  // barrel / shulker / spawner-loot block they interacted with, so the
+  // gem repair logs can include "recent chest at X opened Yt ago" --
+  // converts an otherwise-source-less log line into a forensic clue
+  // about which loot table is producing bare gems.
+  BlockEvents.rightClicked(event => {
+    try {
+      if (!event.block || !event.player) return
+      var blockId = String(event.block.id)
+      var match = blockId.indexOf('chest') >= 0
+               || blockId.indexOf('barrel') >= 0
+               || blockId.indexOf('shulker_box') >= 0
+               || blockId.indexOf('spawner') >= 0
+      if (!match) return
+      var pos = event.block.pos
+      var pd = event.player.persistentData
+      pd.putString('_lastChestPos', pos.x + ',' + pos.y + ',' + pos.z + ' ' + blockId)
+      pd.putLong('_lastChestTick', event.player.tickCount)
+    } catch (_) {}
+  })
 
   // Player tick at 60-tick cadence (~3s). Bare gems are an edge case --
   // no need for a tighter scan rate. Most repairs will happen on the
