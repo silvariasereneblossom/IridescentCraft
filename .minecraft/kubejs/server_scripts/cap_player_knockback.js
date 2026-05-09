@@ -36,10 +36,31 @@ try {
   var Consumer_kb = Java.loadClass('java.util.function.Consumer')
   var Player_kb = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  var KNOCKBACK_CAP = 1.5
+  // EMERGENCY CAP 2026-05-09: dropped from 1.5 to 0.25.
+  //
+  // Tester report: skeleton-jockey mount produces "very noticeable"
+  // KB on the player (other arrows feel fine). cap_player_knockback
+  // log on 2026-05-09 02:38 captured 6 events with strength=0.400
+  // (vanilla minimum -- spider melee with no Knockback enchant) and
+  // un-normalized ratios in the 5-18 magnitude range (likely raw
+  // attacker-to-victim delta vector instead of unit direction).
+  // The previous cap of 1.5 didn't engage at strength 0.4, so each
+  // bite went through at full vanilla strength; jockey-mount spiders
+  // attack at high cadence, producing the cumulative "noticeable" feel.
+  //
+  // Universal cap reduction as band-aid until MOBDIAG-SPAWN (whose
+  // UUID lookup was fixed in commit 15f72dd0) tells us which mob /
+  // affix is producing these events so we can scope a targeted fix.
+  // Trade-off accepted by user: legitimate Punch-bow KB and player-
+  // on-mob KB also dampened in the meantime. Revert path: bump back
+  // to 1.5 once we identify and patch the source.
+  var KNOCKBACK_CAP = 0.25
   // Vanilla unit-vector ratios are length 1.0. Anything >1.5 is a mod
   // bug producing un-normalized direction. Cap at 1.5 (slack for natural
   // floating-point variance) and renormalize to 1.0 if exceeded.
+  // (Vanilla LivingEntity.knockback() re-normalizes internally, so this
+  // cap matters only when a downstream mod reads ratio without
+  // renormalizing. Kept at 1.5 -- not part of the emergency tightening.)
   var RATIO_CAP = 1.5
 
   var handler = new Consumer_kb({
@@ -134,7 +155,7 @@ try {
   MinecraftForge_kb.EVENT_BUS.addListener(EventPriority_kb.NORMAL, false,
                                           LivingKnockBackEvent, handler)
   console.log('[IridescentCraft] cap_player_knockback loaded (cap=' +
-              KNOCKBACK_CAP + ')')
+              KNOCKBACK_CAP + ', EMERGENCY -- tighten until jockey diag lands)')
 } catch (e) {
   console.warn('[IridescentCraft] cap_player_knockback bootstrap FAILED: ' + e)
 }
