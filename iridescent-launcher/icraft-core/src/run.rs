@@ -327,10 +327,22 @@ pub fn set_server_state(s: ServerState) {
 /// Send a termination signal to the running server, bypassing the
 /// "stop" stdin command (which a hung JVM may not process). When
 /// `force` is false, sends a graceful signal -- SIGTERM on Unix,
-/// taskkill /T on Windows -- so the JVM's shutdown hooks fire and
-/// chunks flush. When `force` is true, sends SIGKILL / taskkill /F /T;
-/// world saves are LOST but the process dies immediately, useful for
-/// truly stuck servers where graceful shutdown stalls indefinitely.
+/// stdin-stop-then-taskkill /F on Windows. When `force` is true,
+/// SIGKILL / taskkill /F /T immediately; world saves are LOST but
+/// the process dies right away, useful for truly stuck servers.
+///
+/// **Windows graceful kill caveat**: plain `taskkill /T` (without
+/// `/F`) sends `WM_CLOSE` to the process's top-level windows. Java
+/// children spawned with `CREATE_NO_WINDOW` (which the GUI launcher
+/// does, to avoid flashing a console) have NO window, so `WM_CLOSE`
+/// is delivered nowhere and the call is a silent no-op. The JVM
+/// just keeps running. To actually terminate a headless Java child
+/// on Windows, the only mechanism is `TerminateProcess` (i.e.
+/// `taskkill /F`), which skips shutdown hooks. So Windows graceful
+/// kill writes `stop` to stdin first (in case the JVM is still
+/// responsive enough to do its own clean shutdown), waits a short
+/// grace period, then falls through to `taskkill /F` if it's still
+/// alive. Best effort -- there's no clean middle ground.
 ///
 /// Returns Err("no server running") when no Java child is active.
 pub fn kill_active_server(force: bool) -> Result<()> {
@@ -346,6 +358,80 @@ pub fn kill_active_server(force: bool) -> Result<()> {
             .map_err(|e| anyhow::anyhow!("graceful kill failed: {e}"))?;
     }
     Ok(())
+}
+
+/// Send `stop` to the running server's stdin, then spawn a watchdog
+/// thread that escalates to graceful kill (after `grace_secs`) and
+/// finally to force kill (after another `force_secs`) if the server
+/// hasn't exited. The watchdog captures the PID at start time and
+/// aborts on PID change so a subsequent server start isn't killed
+/// by a stale escalation timer.
+///
+/// Returns Err if no server is running or the stdin write fails.
+/// The watchdog runs detached -- caller doesn't need to wait on it.
+pub fn stop_with_escalation(grace_secs: u64, force_secs: u64) -> Result<()> {
+    let pid = ACTIVE_CHILD_PID.lock().unwrap()
+        .ok_or_else(|| anyhow::anyhow!("no server running"))?;
+
+    log::info!("[run] sending 'stop' to server pid {pid} (escalates after {grace_secs}s)");
+    if let Err(e) = send_console_line("stop") {
+        log::warn!("[run] stop via stdin failed ({e}); skipping ahead to graceful kill");
+        // Even with stdin broken we still want the watchdog to run --
+        // the PID is alive, we just have no clean shutdown channel.
+    }
+
+    thread::spawn(move || {
+        // Phase 1: poll for clean exit during the grace period. If
+        // the server exits cleanly (ACTIVE_CHILD_PID cleared), we're
+        // done -- no kill needed.
+        let waited = wait_for_exit(pid, Duration::from_secs(grace_secs));
+        if waited {
+            log::info!("[run] server exited cleanly during stop grace ({pid})");
+            return;
+        }
+
+        // Phase 2: graceful kill. On Unix that's SIGTERM (shutdown
+        // hooks fire). On Windows it's stdin-stop + taskkill /F
+        // (the only thing that actually terminates headless Java).
+        log::warn!("[run] server still alive after {grace_secs}s 'stop' grace -- sending graceful kill");
+        if let Err(e) = kill_active_server(false) {
+            log::warn!("[run] graceful kill returned err: {e}");
+        }
+
+        // Phase 3: poll for exit during force grace, then force kill.
+        let waited = wait_for_exit(pid, Duration::from_secs(force_secs));
+        if waited {
+            log::info!("[run] server exited after graceful kill ({pid})");
+            return;
+        }
+        log::warn!("[run] still alive after graceful kill -- escalating to force kill");
+        if let Err(e) = kill_active_server(true) {
+            log::warn!("[run] force kill returned err: {e}");
+        }
+    });
+
+    Ok(())
+}
+
+/// Poll `ACTIVE_CHILD_PID` until it differs from `original_pid` or
+/// `timeout` elapses. Returns true if the original process is no
+/// longer the active one (cleanly exited or replaced by a new run).
+/// Returns false on timeout.
+///
+/// 200ms poll cadence -- responsive enough for a 30s grace window
+/// without burning CPU.
+fn wait_for_exit(original_pid: u32, timeout: Duration) -> bool {
+    let deadline = Instant::now() + timeout;
+    loop {
+        let now_pid = *ACTIVE_CHILD_PID.lock().unwrap();
+        if now_pid != Some(original_pid) {
+            return true; // exited or new run started
+        }
+        if Instant::now() >= deadline {
+            return false;
+        }
+        thread::sleep(Duration::from_millis(200));
+    }
 }
 
 #[cfg(unix)]
@@ -515,12 +601,31 @@ fn kill_pid(pid: u32) -> std::io::Result<()> {
 
 #[cfg(windows)]
 fn kill_pid(pid: u32) -> std::io::Result<()> {
-    // taskkill /T kills the whole tree; /F is force. Without /F the JVM
-    // gets a graceful shutdown signal first; we want graceful so worlds
-    // flush cleanly, so omit /F.
+    // Plain `taskkill /T` (no /F) sends WM_CLOSE to the process's
+    // top-level windows. Headless Java children (spawned with
+    // CREATE_NO_WINDOW by the GUI launcher) have no window, so WM_CLOSE
+    // is delivered nowhere and the call is a silent no-op -- the JVM
+    // keeps running. Earlier impl assumed Unix-style "graceful kill"
+    // semantics existed on Windows for headless processes; they don't.
+    //
+    // Best-effort graceful path: write `stop` to stdin in case the
+    // JVM is still responsive (it'll run shutdown hooks, flush worlds,
+    // exit cleanly), wait a short grace, then fall through to /F.
+    // /F skips shutdown hooks but at least the process actually dies.
     use std::process::Command;
+    if let Err(e) = send_console_line("stop") {
+        log::debug!("[run] stdin stop failed during graceful kill: {e}");
+    }
+    // 5s grace for stdin path to take effect. If the JVM is responsive
+    // it'll start shutting down within this window; if not, /F follows.
+    thread::sleep(Duration::from_secs(5));
+    // If the process already exited cleanly during the grace, skip /F.
+    if !ACTIVE_CHILD_PID.lock().unwrap().map(|p| p == pid).unwrap_or(false) {
+        return Ok(());
+    }
+    log::info!("[run] graceful kill grace expired, escalating to taskkill /F /T on pid {pid}");
     Command::new("taskkill")
-        .args(["/PID", &pid.to_string(), "/T"])
+        .args(["/F", "/PID", &pid.to_string(), "/T"])
         .status()?;
     Ok(())
 }

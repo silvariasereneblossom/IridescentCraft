@@ -475,14 +475,25 @@ impl IcraftApp {
             // `busy` -- they have to be clickable while a "serve" task
             // is running, which is exactly when `busy` is true.
             if ui.add(egui::Button::new("Stop").min_size(egui::vec2(140.0, 28.0))).clicked() {
-                send_console("stop");
+                // Sends `stop` via stdin (operator command -- normal
+                // shutdown path: Forge prints "Stopping the server",
+                // unloads worlds, saves chunks, exits clean), then
+                // arms a watchdog that escalates to graceful kill
+                // after 30s and force kill 10s after that. Aborts on
+                // PID change so a new run isn't killed by a stale
+                // timer.
+                log::info!("[lifecycle] Stop clicked (auto-escalates after 30s)");
+                if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                    log::warn!("[lifecycle] stop failed: {e}");
+                }
             }
             if ui.add(egui::Button::new("Kill").min_size(egui::vec2(140.0, 28.0))).clicked() {
-                // Graceful: SIGTERM / taskkill (no /F). JVM's shutdown
-                // hooks fire so worlds flush. Use when "stop" via
-                // stdin doesn't get processed (server hung or output
-                // buffer back-pressured). Takes ~30s for the JVM to
-                // wind down.
+                // Graceful kill bypassing the auto-escalate watchdog.
+                // Unix: SIGTERM (JVM shutdown hooks fire, worlds
+                // flush). Windows: writes `stop` to stdin, waits 5s,
+                // then taskkill /F (since plain taskkill /T is a no-op
+                // for headless Java -- no window to receive WM_CLOSE).
+                // Use when Stop's 30s grace is too long to wait.
                 log::info!("[lifecycle] Kill clicked");
                 if let Err(e) = icraft_core::run::kill_active_server(false) {
                     log::warn!("[lifecycle] kill failed: {e}");
