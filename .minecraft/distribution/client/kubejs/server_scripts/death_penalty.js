@@ -117,25 +117,38 @@ EntityEvents.death(event => {
     // Calculate durability damage
     let maxDur = stack.maxDamage
     let durLoss = Math.ceil(maxDur * effectiveLoss)
+    if (durLoss <= 0) return
 
-    // Apply damage (stack.damageValue is current damage, higher = more broken)
-    // Clamp to maxDur - threshold so vanilla never sees >= maxDamage.
-    // Uses the same INERT_THRESHOLD as the live durability sweep below
-    // (defined further down in the file as a top-level const) so the
-    // death-penalty clamp lines up with the live-clamp position.
-    var threshold = Math.min(100, Math.floor(maxDur * 0.5))
-    var targetDamage = stack.damageValue + durLoss
+    // Route through ItemStack.hurtAndBreak so the durability-clamp
+    // mixin (clamps amount to maxDamage - currentDamage - 1) AND
+    // Tetra's own clamp (in our overridden Item.damageItem on
+    // ItemModularArmor / ModularSpellBookItem / ModularArsSpellBookItem)
+    // both fire. Single source of truth for the "never destroy"
+    // invariant -- previous direct-NBT-write approach bypassed BOTH
+    // clamps and could destroy already-broken Tetra items on death
+    // (real bug, 2026-05-09: tester died holding a broken Tetra item,
+    // it disappeared post-respawn).
+    //
+    // hurtAndBreak also runs Unbreaking enchant probability, so an
+    // Unbreaking-IV piece takes proportionally less death-penalty
+    // damage. Per design choice 2026-05-09: this is desired -- it
+    // matches in-combat behavior and rewards Unbreaking investment
+    // beyond just normal use. Stacks multiplicatively with Soulbound.
+    //
+    // Empty onBroken consumer: the clamps prevent destruction, so the
+    // break callback can't fire. If Vanilla.hurt() ever returns true
+    // (e.g. a future regression in either clamp), the consumer is a
+    // no-op rather than broadcasting a false break event.
+    stack.hurtAndBreak(durLoss, player, function (e) {})
 
-    if (targetDamage >= maxDur - threshold) {
-      // Item would go inert — use setDamageValue via NBT to avoid
-      // triggering vanilla's break logic in the damageValue setter
-      targetDamage = maxDur - threshold
+    // Tag broken if at/past our inert threshold so the live-tick
+    // checks (zero attack damage, mining cancellation, right-click
+    // block) keep running. Done after hurtAndBreak so we read the
+    // post-clamp damage value.
+    let inertThreshold = Math.min(100, Math.floor(maxDur * 0.5))
+    if (stack.damageValue >= maxDur - inertThreshold) {
       if (!stack.nbt) stack.nbt = {}
-      stack.nbt.putInt('Damage', targetDamage)
       stack.nbt.putBoolean(BROKEN_TAG, true)
-    } else {
-      // Safe range — normal damage application
-      stack.nbt.putInt('Damage', targetDamage)
     }
   }
 

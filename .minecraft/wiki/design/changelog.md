@@ -4,6 +4,20 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-09 — Death-penalty durability loss now routes through `hurtAndBreak`
+
+Tester report: died holding a broken Tetra equip; it disappeared post-respawn. Root cause: `death_penalty.js` `applyDurabilityLoss` wrote `Damage` NBT directly (`stack.nbt.putInt('Damage', targetDamage)`), which bypassed BOTH the `ItemStackHurtAndBreakMixin` clamp AND Tetra's own `damageItemImpl` clamp. The script attempted its own clamp at `maxDur - min(100, maxDur/2)` — different from the mixin's `maxDur - 1` — and the clamp logic interacted badly with already-broken items (writing a damage value below the current one in some edge cases, leaving the broken-tag set on a stack the live tick sweep didn't expect to encounter).
+
+Additionally, `hasNativeBreakProtection` (which skips Tetra in the live-tick + proactive-hurt clamp paths) was NOT consulted in the death penalty — so Tetra items got the JS clamp applied without their own clamp running. Both clamp layers bypassed.
+
+Fix: replace the direct NBT write with `stack.hurtAndBreak(durLoss, player, e => {})`. This routes through the mixin (clamps `amount` to `maxDamage - currentDamage - 1` at HEAD) AND through `Item.damageItem` (which our `ItemModularArmor` / `ModularSpellBookItem` / `ModularArsSpellBookItem` overrides apply Tetra's clamp for modular items). Single source of truth — items can never reach `maxDamage` through any path now.
+
+Side effects:
+- **Unbreaking applies on death**: `hurtAndBreak` runs Unbreaking probability, so an Unbreaking-IV piece takes proportionally less death-penalty damage. Per design decision 2026-05-09 this is desired — matches in-combat behavior, rewards Unbreaking investment, stacks multiplicatively with Soulbound.
+- **JS-side dual clamp removed**: the `targetDamage = maxDur - threshold` branch is gone. The `BROKEN_TAG` is still set when post-clamp damage crosses the inert threshold so the live-tick inert-state effects (zero attack damage, mining cancellation, right-click block) keep working.
+
+---
+
 ## 2026-05-08 — ItemModularArmor + spell books: inline `ModularItemDamageEvent` guard (bootstrap mixin failed)
 
 Third recurrence of the `ItemModularArmor → ModularItem` ClassCastException crash from Aetheric Tetranomicon's `VeridiumInfusionEffect` listener. Earlier "fix" (commit c0472d0d) added a generic `EventBusInvokeMixin` in `iridescent-durability-clamp` that wrapped every Forge listener invoke in try/catch CCE. Mixin registered ("Preparing iridescent_durability_clamp.mixins.json (2)") but never applied — debug.log shows `ItemStackHurtAndBreakMixin` mixed in but no `Mixing EventBusInvokeMixin...` line.

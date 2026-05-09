@@ -14,6 +14,12 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Death-penalty destroyed broken Tetra items (2026-05-09) — RESOLVED
+- **Status:** Resolved 2026-05-09
+- **Description:** Tester died holding a broken Tetra equip; the item disappeared post-respawn. `death_penalty.js` `applyDurabilityLoss` wrote `Damage` NBT directly, bypassing both `ItemStackHurtAndBreakMixin` and Tetra's `damageItemImpl` clamp. JS-side clamp had different threshold semantics from the mixin, and `hasNativeBreakProtection` (which skips Tetra in the live tick path) wasn't consulted in the death-penalty path.
+- **Fix:** Replaced direct NBT write with `stack.hurtAndBreak(durLoss, player, e => {})` so both clamp layers fire. Removed the JS-side duplicate clamp; `BROKEN_TAG` set after post-clamp damage check. Unbreaking enchant now applies to death loss (intentional, per design decision).
+- **Files:** `kubejs/server_scripts/death_penalty.js` lines 113-148 (synced to all 3 distros).
+
 ### `ModularItemDamageEvent` listeners after Aetheric's broken cast lose contributions (2026-05-08)
 - **Status:** Mitigated — server no longer crashes; some addon listeners are silently skipped on impacted stacks
 - **Description:** Aetheric Tetranomicon's `VeridiumInfusionEffect.durabilityEvent` listener does an unchecked cast to the concrete `se.mickelus.tetra.items.modular.ModularItem`. Our `ItemModularArmor` (extends `ArmorItem`) and modular spell books (extend ISS/Ars `SpellBook`) only implement `IModularItem`, so the cast throws `ClassCastException` and `EventBus.post` aborts iteration mid-listener.
