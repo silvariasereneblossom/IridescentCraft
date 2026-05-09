@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "blue_skies:charoite" ]
+        "items": [
+            "blue_skies:charoite"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:gold"
+    },
+    "attributes": {
+        "**irons_spellbooks:ender_spell_power": 0.06
     }
 }

@@ -10,8 +10,24 @@
     "magicCapacity": 110,
     "toolLevel": "minecraft:netherite",
     "toolEfficiency": 9,
-    "tints": { "glyph": "1a1a1a", "texture": "1a1a1a" },
-    "textures": [ "shiny", "heavy", "default" ],
-    "material": { "items": [ "terramity:onyx" ] },
-    "requiredTools": { "hammer_dig": "minecraft:netherite" }
+    "tints": {
+        "glyph": "1a1a1a",
+        "texture": "1a1a1a"
+    },
+    "textures": [
+        "shiny",
+        "heavy",
+        "default"
+    ],
+    "material": {
+        "items": [
+            "terramity:onyx"
+        ]
+    },
+    "requiredTools": {
+        "hammer_dig": "minecraft:netherite"
+    },
+    "attributes": {
+        "**irons_spellbooks:ender_spell_power": 0.12
+    }
 }

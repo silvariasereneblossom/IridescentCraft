@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "thermal:enderium_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/enderium"
+}

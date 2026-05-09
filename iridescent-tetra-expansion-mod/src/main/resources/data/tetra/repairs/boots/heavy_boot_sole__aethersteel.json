@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "aethersteel:aethersteel_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "heavy_boot_sole/aethersteel"
+}

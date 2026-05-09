@@ -20,9 +20,14 @@
         "default"
     ],
     "material": {
-        "items": [ "theabyss:unorithe_ingot" ]
+        "items": [
+            "theabyss:unorithe_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:diamond"
+    },
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.05
     }
 }

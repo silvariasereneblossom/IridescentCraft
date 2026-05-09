@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "twilightforest:knightmetal_ingot" ]
+        "items": [
+            "twilightforest:knightmetal_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**minecraft:generic.armor": 0.05
     }
 }

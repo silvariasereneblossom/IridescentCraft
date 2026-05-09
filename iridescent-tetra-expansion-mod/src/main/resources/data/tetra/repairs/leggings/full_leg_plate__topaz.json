@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "terramity:topaz"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/topaz"
+}

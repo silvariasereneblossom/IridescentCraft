@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "thermal:lumium_ingot" ]
+        "items": [
+            "thermal:lumium_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:holy_spell_power": 0.08
     }
 }

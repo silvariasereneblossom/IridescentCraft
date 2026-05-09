@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "blue_skies:horizonite_ingot" ]
+        "items": [
+            "blue_skies:horizonite_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:holy_spell_power": 0.08
     }
 }

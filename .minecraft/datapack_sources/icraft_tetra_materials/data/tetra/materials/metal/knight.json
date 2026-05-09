@@ -20,9 +20,14 @@
         "default"
     ],
     "material": {
-        "items": [ "theabyss:knight_ingot" ]
+        "items": [
+            "theabyss:knight_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:diamond"
+    },
+    "attributes": {
+        "**minecraft:generic.armor": 0.04
     }
 }

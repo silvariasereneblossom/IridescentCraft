@@ -19,9 +19,14 @@
         "default"
     ],
     "material": {
-        "items": [ "twilightforest:steeleaf_ingot" ]
+        "items": [
+            "twilightforest:steeleaf_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:nature_spell_power": 0.12
     }
 }

@@ -10,8 +10,23 @@
     "magicCapacity": 90,
     "toolLevel": "minecraft:diamond",
     "toolEfficiency": 7.5,
-    "tints": { "glyph": "e0202f", "texture": "e0202f" },
-    "textures": [ "shiny", "default" ],
-    "material": { "items": [ "terramity:ruby" ] },
-    "requiredTools": { "hammer_dig": "minecraft:diamond" }
+    "tints": {
+        "glyph": "e0202f",
+        "texture": "e0202f"
+    },
+    "textures": [
+        "shiny",
+        "default"
+    ],
+    "material": {
+        "items": [
+            "terramity:ruby"
+        ]
+    },
+    "requiredTools": {
+        "hammer_dig": "minecraft:diamond"
+    },
+    "attributes": {
+        "**irons_spellbooks:fire_spell_power": 0.08
+    }
 }

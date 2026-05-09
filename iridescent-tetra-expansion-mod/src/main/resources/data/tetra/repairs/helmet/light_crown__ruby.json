@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "terramity:ruby"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/ruby"
+}

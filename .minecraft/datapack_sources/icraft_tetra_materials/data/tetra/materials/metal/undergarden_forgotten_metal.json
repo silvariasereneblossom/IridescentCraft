@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "undergarden:forgotten_ingot" ]
+        "items": [
+            "undergarden:forgotten_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:ender_spell_power": 0.08
     }
 }

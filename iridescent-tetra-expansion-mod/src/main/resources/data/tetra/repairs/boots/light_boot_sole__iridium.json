@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "terramity:iridium"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/iridium"
+}

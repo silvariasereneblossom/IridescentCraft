@@ -1,37 +1,697 @@
 {
-    "type": "tetra:basic_module",
-    "slots": [
-        "ars_book/back_cover"
-    ],
-    "improvements": [
-        "ars_book_lining_fabric/",
-        "ars_book_lining_fibre/",
-        "ars_book_lining_skin/"
-    ],
-    "variants": [
-        {
-            "materials": [
-                "tetra:skin/",
-                "tetra:metal/",
-                "tetra:bone/",
-                "tetra:gem/"
-            ],
-            "key": "back_cover/",
-            "extract": {
-                "primaryAttributes": {
-                    "ars_nouveau:ars_nouveau.perk.max_mana": 5
-                },
-                "integrity": 1,
-                "glyph": {
-                    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-                    "textureX": 0,
-                    "textureY": 0
-                },
-                "availableTextures": [
-                    ""
-                ],
-                "models": []
-            }
-        }
-    ]
+  "type": "tetra:basic_module",
+  "slots": [
+    "ars_book/back_cover"
+  ],
+  "improvements": [
+    "ars_book_lining_fabric/",
+    "ars_book_lining_fibre/",
+    "ars_book_lining_skin/"
+  ],
+  "variants": [
+    {
+      "materials": [
+        "tetra:skin/",
+        "tetra:metal/",
+        "tetra:bone/",
+        "tetra:gem/"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "back_cover/aethersteel",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/brass"
+      ],
+      "key": "back_cover/brass",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "key": "back_cover/charoite",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/deorum"
+      ],
+      "key": "back_cover/deorum",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dimlite"
+      ],
+      "key": "back_cover/dimlite",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/diopside"
+      ],
+      "key": "back_cover/diopside",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 3
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "key": "back_cover/elementium",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/enderium"
+      ],
+      "key": "back_cover/enderium",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "key": "back_cover/fiery",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/garnite"
+      ],
+      "key": "back_cover/garnite",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "key": "back_cover/horizonite",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iridium"
+      ],
+      "key": "back_cover/iridium",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "key": "back_cover/ironwood",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knight"
+      ],
+      "key": "back_cover/knight",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "key": "back_cover/knightmetal",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/lumium"
+      ],
+      "key": "back_cover/lumium",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "key": "back_cover/manasteel",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/osmium"
+      ],
+      "key": "back_cover/osmium",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/phantom"
+      ],
+      "key": "back_cover/phantom",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/refined_obsidian"
+      ],
+      "key": "back_cover/refined_obsidian",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/signalum"
+      ],
+      "key": "back_cover/signalum",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steel"
+      ],
+      "key": "back_cover/steel",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "key": "back_cover/steeleaf",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "key": "back_cover/terrasteel",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 7
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "key": "back_cover/undergarden_cloggrum",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 3
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_forgotten_metal"
+      ],
+      "key": "back_cover/undergarden_forgotten_metal",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 3
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "key": "back_cover/undergarden_froststeel",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/unorithe"
+      ],
+      "key": "back_cover/unorithe",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_flesh"
+      ],
+      "key": "back_cover/rotten_flesh",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "back_cover/rotten_leather",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    }
+  ]
 }

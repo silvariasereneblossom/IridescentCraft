@@ -19,9 +19,14 @@
         "default"
     ],
     "material": {
-        "items": [ "undergarden:cloggrum_ingot" ]
+        "items": [
+            "undergarden:cloggrum_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:stone"
+    },
+    "attributes": {
+        "**minecraft:generic.armor": 0.04
     }
 }

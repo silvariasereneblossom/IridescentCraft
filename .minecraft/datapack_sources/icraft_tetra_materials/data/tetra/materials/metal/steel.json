@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "thermal:steel_ingot" ]
+        "items": [
+            "thermal:steel_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**minecraft:generic.armor": 0.04
     }
 }

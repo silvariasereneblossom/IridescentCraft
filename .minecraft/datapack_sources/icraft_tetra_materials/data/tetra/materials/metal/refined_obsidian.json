@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "mekanism:ingot_refined_obsidian" ]
+        "items": [
+            "mekanism:ingot_refined_obsidian"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "minecraft:generic.knockback_resistance": 0.05
     }
 }

@@ -20,9 +20,15 @@
         "metal"
     ],
     "material": {
-        "items": [ "aethersteel:aethersteel_ingot" ]
+        "items": [
+            "aethersteel:aethersteel_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:diamond"
+    },
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.1,
+        "**irons_spellbooks:max_mana": 0.1
     }
 }

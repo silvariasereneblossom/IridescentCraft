@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "terramity:iridium"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/iridium"
+}

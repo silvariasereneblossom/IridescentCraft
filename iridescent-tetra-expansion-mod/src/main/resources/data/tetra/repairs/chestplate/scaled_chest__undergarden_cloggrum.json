@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "undergarden:cloggrum_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "scaled_chest/undergarden_cloggrum"
+}

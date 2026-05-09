@@ -10,8 +10,24 @@
     "magicCapacity": 100,
     "toolLevel": "minecraft:netherite",
     "toolEfficiency": 10,
-    "tints": { "glyph": "aabbbb", "texture": "aabbbb" },
-    "textures": [ "shiny", "heavy", "metal" ],
-    "material": { "items": [ "terramity:iridium" ] },
-    "requiredTools": { "hammer_dig": "minecraft:netherite" }
+    "tints": {
+        "glyph": "aabbbb",
+        "texture": "aabbbb"
+    },
+    "textures": [
+        "shiny",
+        "heavy",
+        "metal"
+    ],
+    "material": {
+        "items": [
+            "terramity:iridium"
+        ]
+    },
+    "requiredTools": {
+        "hammer_dig": "minecraft:netherite"
+    },
+    "attributes": {
+        "**minecraft:generic.armor": 0.1
+    }
 }

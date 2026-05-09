@@ -19,9 +19,15 @@
         "metal"
     ],
     "material": {
-        "items": [ "botania:elementium_ingot" ]
+        "items": [
+            "botania:elementium_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.06,
+        "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.06
     }
 }

@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:deorum_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/deorum"
+}

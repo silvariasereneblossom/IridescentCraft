@@ -20,9 +20,14 @@
         "default"
     ],
     "material": {
-        "items": [ "undergarden:utherium_crystal" ]
+        "items": [
+            "undergarden:utherium_crystal"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:blood_spell_power": 0.08
     }
 }

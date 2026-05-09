@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:horizonite_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/horizonite"
+}

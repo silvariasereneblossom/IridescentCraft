@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "terramity:sapphire"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "heavy_boot_sole/sapphire"
+}

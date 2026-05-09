@@ -19,9 +19,14 @@
         "default"
     ],
     "material": {
-        "items": [ "mekanism:ingot_osmium" ]
+        "items": [
+            "mekanism:ingot_osmium"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:mana_regen": 0.04
     }
 }

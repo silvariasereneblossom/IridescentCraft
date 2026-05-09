@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "mekanism:ingot_refined_obsidian"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/refined_obsidian"
+}

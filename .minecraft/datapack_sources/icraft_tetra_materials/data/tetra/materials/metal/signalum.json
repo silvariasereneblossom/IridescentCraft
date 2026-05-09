@@ -19,9 +19,14 @@
         "metal"
     ],
     "material": {
-        "items": [ "thermal:signalum_ingot" ]
+        "items": [
+            "thermal:signalum_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:lightning_spell_power": 0.1
     }
 }

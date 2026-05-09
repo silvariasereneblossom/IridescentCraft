@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "botania:terrasteel_ingot"
+    ],
+    "count": 1
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/terrasteel"
+}

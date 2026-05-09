@@ -19,9 +19,15 @@
         "metal"
     ],
     "material": {
-        "items": [ "botania:terrasteel_ingot" ]
+        "items": [
+            "botania:terrasteel_ingot"
+        ]
     },
     "requiredTools": {
         "hammer_dig": "minecraft:iron"
+    },
+    "attributes": {
+        "**irons_spellbooks:max_mana": 0.1,
+        "**irons_spellbooks:mana_regen": 0.05
     }
 }

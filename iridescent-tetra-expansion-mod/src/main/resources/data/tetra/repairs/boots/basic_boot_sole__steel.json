@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "thermal:steel_ingot"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/steel"
+}

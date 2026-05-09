@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "mekanism:ingot_refined_obsidian"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/refined_obsidian"
+}
