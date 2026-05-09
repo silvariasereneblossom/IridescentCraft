@@ -158,14 +158,34 @@ EntityEvents.death(event => {
     // multiplicatively with Soulbound.
     let inertThreshold = Math.min(100, Math.floor(maxDur * 0.5))
     let inertCeiling = maxDur - inertThreshold
-    let allowedLoss = Math.max(0, inertCeiling - stack.damageValue)
+    let preDamage = stack.damageValue
+    let allowedLoss = Math.max(0, inertCeiling - preDamage)
     let cappedLoss = Math.min(durLoss, allowedLoss)
+
+    // Diagnostic: tester reports items still landing past the inert
+    // ceiling after death. Math says cappedLoss can't push past, so
+    // either (a) the actual hurtAndBreak applies more damage than
+    // requested (mixin / Tetra clamp not firing for KubeJS-initiated
+    // calls), (b) stack.maxDamage / damageValue read off (Tetra
+    // dynamic durability vs cached value), or (c) some other handler
+    // runs after this and pushes further. Log per-slot before/after
+    // so the next test session reveals which case it is.
+    let itemId = String(stack.item.id)
+    console.log('[death-pen] ' + itemId
+              + ' max=' + maxDur
+              + ' pre=' + preDamage
+              + ' durLoss=' + durLoss
+              + ' ceiling=' + inertCeiling
+              + ' allowed=' + allowedLoss
+              + ' capped=' + cappedLoss)
+
     if (cappedLoss <= 0) {
       // Already at / past the inert ceiling. No further damage to
       // apply, but make sure the broken tag is set so the live-tick
       // inert-state effects stay armed.
       if (!stack.nbt) stack.nbt = {}
       stack.nbt.putBoolean(BROKEN_TAG, true)
+      console.log('[death-pen]   skip hurtAndBreak (already past ceiling), tagged broken')
       return
     }
 
@@ -177,10 +197,17 @@ EntityEvents.death(event => {
     // rather than broadcasting a false break event.
     stack.hurtAndBreak(cappedLoss, player, function (e) {})
 
+    let postDamage = stack.damageValue
+    let actualDelta = postDamage - preDamage
+    console.log('[death-pen]   post=' + postDamage
+              + ' delta=' + actualDelta
+              + (postDamage > inertCeiling ? ' OVERSHOT_CEILING' : '')
+              + (postDamage >= maxDur ? ' AT_OR_PAST_MAXDUR' : ''))
+
     // Tag broken if the post-clamp damage crosses the inert
     // threshold so the live-tick checks (zero attack damage,
     // mining cancellation, right-click block) activate.
-    if (stack.damageValue >= inertCeiling) {
+    if (postDamage >= inertCeiling) {
       if (!stack.nbt) stack.nbt = {}
       stack.nbt.putBoolean(BROKEN_TAG, true)
     }
