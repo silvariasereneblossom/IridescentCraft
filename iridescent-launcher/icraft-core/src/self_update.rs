@@ -119,16 +119,47 @@ pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
     // the running exe to .old, then rename .new to the live name. The
     // OS allows this because we're moving a held-open file to a new
     // path, then placing a new file at the now-vacated path.
+    //
+    // Caveat: the rename CAN fail with ERROR_ACCESS_DENIED. Reasons
+    // we've actually seen:
+    //   - Defender / AV mid-scan holding a transient handle
+    //   - The loader opened the exe with a share mode that excludes
+    //     DELETE access (rare, but happens on some Server SKUs and
+    //     anti-tamper-aware setups)
+    //   - A stale `<exe>.old` from a previous self-update is
+    //     DELETE_PENDING (the remove_file below succeeded but the
+    //     unlink hasn't finalized; the rename target collides)
+    //   - Controlled Folder Access on the parent dir
+    // For all of those, the fallback is to delegate the rename to a
+    // tiny .cmd stub that runs AFTER we exit. The stub polls for our
+    // PID, performs the rename, spawns the new exe, and self-deletes.
     #[cfg(windows)]
     {
         let backup = exe.with_extension("exe.old");
         let _ = fs::remove_file(&backup);
-        fs::rename(&exe, &backup)
-            .map_err(|e| anyhow::anyhow!("rename running exe -> .old: {e}"))?;
-        if let Err(e) = fs::rename(&staged, &exe) {
-            // Try to restore the backup before bubbling
-            let _ = fs::rename(&backup, &exe);
-            return Err(anyhow::anyhow!("rename .new -> live: {e}"));
+        match fs::rename(&exe, &backup) {
+            Ok(()) => {
+                if let Err(e) = fs::rename(&staged, &exe) {
+                    let _ = fs::rename(&backup, &exe);
+                    return Err(anyhow::anyhow!("rename .new -> live: {e}"));
+                }
+                // Direct path succeeded; spawn the new binary now.
+                log::info!("[self-update] spawning new instance: {}", exe.display());
+                std::process::Command::new(&exe)
+                    .current_dir(&cfg.server_dir)
+                    .spawn()?;
+                return Ok(true);
+            }
+            Err(e) => {
+                log::warn!(
+                    "[self-update] direct rename failed ({e}); using stub-script fallback"
+                );
+                spawn_update_stub_windows(&exe, &staged)?;
+                // Stub will spawn the new binary after we exit. Caller
+                // must call std::process::exit(0) to release the file
+                // lock so the stub's rename succeeds.
+                return Ok(true);
+            }
         }
     }
 
@@ -136,14 +167,74 @@ pub fn apply_and_relaunch_gui(cfg: &ServerConfig) -> Result<bool> {
     {
         fs::rename(&staged, &exe)
             .map_err(|e| anyhow::anyhow!("rename .new -> live: {e}"))?;
+        // Spawn the new binary as a detached child. Caller exits.
+        log::info!("[self-update] spawning new instance: {}", exe.display());
+        std::process::Command::new(&exe)
+            .current_dir(&cfg.server_dir)
+            .spawn()?;
+        Ok(true)
     }
+}
 
-    // Spawn the new binary as a detached child. Caller exits.
-    log::info!("[self-update] spawning new instance: {}", exe.display());
-    std::process::Command::new(&exe)
-        .current_dir(&cfg.server_dir)
-        .spawn()?;
-    Ok(true)
+/// Write a temp .cmd stub that polls for our PID to exit, then
+/// renames the live exe to .old, moves the staged .new into place,
+/// spawns the new binary, and self-deletes. Used as a fallback when
+/// the direct in-process rename fails on Windows (AV / share mode /
+/// Controlled Folder Access). Stub runs in a hidden console.
+///
+/// The stub is intentionally simple: cmd-only, no PowerShell, no
+/// dependencies. Polls every ~1s via `tasklist /FI` and exits the
+/// loop once our PID disappears from the process list.
+#[cfg(windows)]
+fn spawn_update_stub_windows(live: &std::path::Path, staged: &std::path::Path) -> Result<()> {
+    use std::os::windows::process::CommandExt;
+    const CREATE_NO_WINDOW: u32 = 0x0800_0000;
+
+    let pid = std::process::id();
+    let backup = live.with_extension("exe.old");
+    let live_str = live.display().to_string();
+    let staged_str = staged.display().to_string();
+    let backup_str = backup.display().to_string();
+
+    let stub_path = std::env::temp_dir().join(format!("icraft-gui-update-{pid}.cmd"));
+    let script = format!(
+        "@echo off\r\n\
+         setlocal\r\n\
+         rem Wait for the GUI (PID {pid}) to release the exe lock.\r\n\
+         :wait\r\n\
+         tasklist /FI \"PID eq {pid}\" 2>nul | findstr /I \"{pid}\" >nul\r\n\
+         if errorlevel 1 goto exited\r\n\
+         ping -n 2 127.0.0.1 >nul\r\n\
+         goto wait\r\n\
+         :exited\r\n\
+         rem Brief extra grace so the loader fully drops the file handle.\r\n\
+         ping -n 2 127.0.0.1 >nul\r\n\
+         del \"{backup_str}\" 2>nul\r\n\
+         move /Y \"{live_str}\" \"{backup_str}\" >nul\r\n\
+         if errorlevel 1 (\r\n\
+           rem Couldn't even rename live -> .old after exit. Bail rather\r\n\
+           rem than leaving the user without a working binary.\r\n\
+           exit /b 1\r\n\
+         )\r\n\
+         move /Y \"{staged_str}\" \"{live_str}\" >nul\r\n\
+         if errorlevel 1 (\r\n\
+           rem Restore live exe so the user has something runnable.\r\n\
+           move /Y \"{backup_str}\" \"{live_str}\" >nul\r\n\
+           exit /b 1\r\n\
+         )\r\n\
+         start \"\" \"{live_str}\"\r\n\
+         (goto) 2>nul & del \"%~f0\"\r\n",
+    );
+    fs::write(&stub_path, script)
+        .map_err(|e| anyhow::anyhow!("write stub {}: {e}", stub_path.display()))?;
+    log::info!("[self-update] stub: {}", stub_path.display());
+
+    std::process::Command::new("cmd")
+        .args(["/C", &stub_path.display().to_string()])
+        .creation_flags(CREATE_NO_WINDOW)
+        .spawn()
+        .map_err(|e| anyhow::anyhow!("spawning stub: {e}"))?;
+    Ok(())
 }
 
 /// One-button sync: auto-route between the dev path (pull source +
