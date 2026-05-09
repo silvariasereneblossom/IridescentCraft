@@ -137,7 +137,13 @@ struct PersistedState {
 struct IcraftApp {
     server_dir: PathBuf,
     server_dir_text: String,    // text input buffer, separate from PathBuf for editing
-    log_lines: Vec<String>,
+    /// Ring buffer of recent log lines. VecDeque so the
+    /// trim-on-overflow path is O(1) at the front instead of an
+    /// O(n) shift on a Vec. The visible log pane uses
+    /// ScrollArea::show_rows for virtualized rendering, so a long
+    /// buffer is cheap as long as random indexing is O(1) (which
+    /// VecDeque is, as long as both halves of the ring fit).
+    log_lines: std::collections::VecDeque<String>,
     log_rx: Option<Receiver<String>>,
     running_task: Option<JoinHandle<()>>,
     /// Snapshot of install state, refreshed manually + after each task.
@@ -184,7 +190,7 @@ impl IcraftApp {
         let mut app = Self {
             server_dir_text: server_dir.display().to_string(),
             server_dir,
-            log_lines: Vec::with_capacity(1024),
+            log_lines: std::collections::VecDeque::with_capacity(1024),
             log_rx: LOG_RX.lock().unwrap().take(),
             running_task: None,
             status: InstallStatus::default(),
@@ -248,16 +254,19 @@ impl IcraftApp {
     fn drain_log(&mut self) {
         if let Some(rx) = &self.log_rx {
             while let Ok(line) = rx.try_recv() {
-                self.log_lines.push(line);
-                // 50000-line cap covers a typical Forge session
-                // end-to-end (~30K-100K lines incl. boot spam, KubeJS
-                // chatter, and disconnect/lag warnings). Smaller caps
-                // dropped late-session disconnect lines before the
-                // operator could read them. Drains to 40000 once
-                // exceeded to keep the GUI snappy.
-                if self.log_lines.len() > 50000 {
-                    let drop = self.log_lines.len() - 40000;
-                    self.log_lines.drain(..drop);
+                self.log_lines.push_back(line);
+                // 20000-line cap. With virtualized rendering
+                // (ScrollArea::show_rows) only the visible window of
+                // ~30 rows is laid out per frame, so this is more
+                // about memory + GC than UI cost. Earlier 50K cap
+                // existed because a non-virtualized log pane fell
+                // off a cliff above ~10K lines (every frame laid out
+                // every label off-screen), which manifested as the
+                // pane appearing to hang at the last visible line
+                // while the channel piled up behind it. Now the GUI
+                // can keep up with the firehose during boot.
+                while self.log_lines.len() > 20000 {
+                    self.log_lines.pop_front();
                 }
             }
         }
@@ -775,16 +784,34 @@ impl IcraftApp {
     }
 
     fn draw_log_pane(&self, ui: &mut egui::Ui) {
-        egui::ScrollArea::vertical().stick_to_bottom(true).show(ui, |ui| {
-            for line in &self.log_lines {
-                let color = if line.starts_with("[ERROR")        { egui::Color32::from_rgb(244, 102, 102) }
-                           else if line.starts_with("[ WARN")    { egui::Color32::from_rgb(244, 199, 102) }
-                           else if line.starts_with("[ INFO")    { egui::Color32::from_rgb(180, 220, 255) }
-                           else if line.starts_with("[DEBUG")    { egui::Color32::from_rgb(140, 140, 140) }
-                           else                                  { egui::Color32::LIGHT_GRAY };
-                ui.colored_label(color, line);
-            }
-        });
+        // Virtualized rendering: ScrollArea::show_rows lays out only
+        // the rows currently in the viewport (typically ~30) instead
+        // of the entire buffer. Without this the pane would lay out
+        // every line in self.log_lines on every frame, which at 10K+
+        // lines stalls the UI thread badly enough that the channel
+        // feeding new log lines piles up and the pane appears to
+        // hang at the last successfully-rendered line during boot
+        // (real bug, 2026-05-09: tester saw hang at YACL deserialize
+        // line while server kept booting fine in the background).
+        let row_height = ui.text_style_height(&egui::TextStyle::Body);
+        let total = self.log_lines.len();
+        egui::ScrollArea::vertical()
+            .stick_to_bottom(true)
+            .auto_shrink([false, false])
+            .show_rows(ui, row_height, total, |ui, range| {
+                for i in range {
+                    // VecDeque random access is O(1) when both halves
+                    // of the ring fit (always, for our sizes); .get
+                    // is the safe lookup that returns Option.
+                    let Some(line) = self.log_lines.get(i) else { continue };
+                    let color = if line.starts_with("[ERROR")        { egui::Color32::from_rgb(244, 102, 102) }
+                               else if line.starts_with("[ WARN")    { egui::Color32::from_rgb(244, 199, 102) }
+                               else if line.starts_with("[ INFO")    { egui::Color32::from_rgb(180, 220, 255) }
+                               else if line.starts_with("[DEBUG")    { egui::Color32::from_rgb(140, 140, 140) }
+                               else                                  { egui::Color32::LIGHT_GRAY };
+                    ui.colored_label(color, line);
+                }
+            });
     }
 }
 
