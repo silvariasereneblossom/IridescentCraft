@@ -131,6 +131,83 @@
   }
   global.registerPlayerTick('tick_apothGemRepair', 60, 0)
 
+  // ── Inject-source diag ────────────────────────────────────────────────────
+  // A bare apotheosis:gem stack arrives in a player's inventory only after
+  // it spawns somewhere in the world (loot generation -> ItemEntity drop ->
+  // pickup). Hook ItemEntity spawn events and log every bare-gem ItemEntity
+  // with position, block context, and timestamp so we can correlate the
+  // log line to whatever the operator was just doing (chest opened at
+  // position X? mob killed near Y? spawner triggered at Z?). After enough
+  // sightings the pattern reveals which generator is emitting them.
+  //
+  // Dedupe by approximate spawn position + tick window so a single chest
+  // dump producing one gem doesn't spam 5 lines.
+  global._gem_trace_seen = global._gem_trace_seen || {}
+
+  EntityEvents.spawned(event => {
+    try {
+      var entity = event.entity
+      // ItemEntity has type minecraft:item.
+      var typeId = ''
+      try { typeId = String(entity.type) } catch (_) {}
+      if (typeId !== 'minecraft:item') return
+
+      // entity.item is the ItemStack the entity wraps.
+      var stack
+      try { stack = entity.item } catch (_) { return }
+      if (!stack || stack.isEmpty) return
+      if (String(stack.item.id) !== 'apotheosis:gem') return
+      if (!isBareGem(stack)) return
+
+      var pos = entity.position()
+      var px = Math.floor(pos.x()), py = Math.floor(pos.y()), pz = Math.floor(pos.z())
+      var lvl = entity.level
+      var dim = 'unknown'
+      try { dim = String(lvl.dimension().location()) } catch (_) {
+        try { dim = String(lvl.dimension) } catch (_) {}
+      }
+
+      // Per-(dimension, position-within-3-blocks) one-shot per session
+      // to avoid log spam from a single source.
+      var key = dim + '|' + Math.floor(px / 3) + '|' + Math.floor(py / 3) + '|' + Math.floor(pz / 3)
+      if (global._gem_trace_seen[key]) return
+      global._gem_trace_seen[key] = true
+
+      // Sample blocks near the spawn position so we can identify the
+      // source (chest? mob_spawner? a specific block?). Walk a small
+      // box; report the most distinctive non-air block id if any.
+      var nearbyBlock = ''
+      try {
+        for (var dy = -2; dy <= 2 && !nearbyBlock; dy++) {
+          for (var dx = -2; dx <= 2 && !nearbyBlock; dx++) {
+            for (var dz = -2; dz <= 2 && !nearbyBlock; dz++) {
+              var bx = px + dx, by = py + dy, bz = pz + dz
+              var b = lvl.getBlock(bx, by, bz)
+              if (!b) continue
+              var bid = String(b.id)
+              if (bid === 'minecraft:air' || bid === 'minecraft:cave_air') continue
+              // Only report blocks that look like containers / spawners.
+              if (bid.indexOf('chest') >= 0
+                  || bid.indexOf('barrel') >= 0
+                  || bid.indexOf('spawner') >= 0
+                  || bid.indexOf('shulker') >= 0) {
+                nearbyBlock = bid + '@' + bx + ',' + by + ',' + bz
+              }
+            }
+          }
+        }
+      } catch (_) {}
+
+      console.warn('[gem-trace] bare apotheosis:gem spawned'
+                + ' pos=' + px + ',' + py + ',' + pz
+                + ' dim=' + dim
+                + (nearbyBlock ? ' nearby=' + nearbyBlock : '')
+                + ' tick=' + entity.age)
+    } catch (e) {
+      try { console.warn('[gem-trace] handler threw: ' + e) } catch (_) {}
+    }
+  })
+
   console.log('[IridescentCraft] apotheosis_gem_repair loaded ('
-            + KNOWN_GEMS.length + ' fallback IDs)')
+            + KNOWN_GEMS.length + ' fallback IDs, with inject-source trace)')
 })()
