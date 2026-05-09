@@ -126,6 +126,26 @@ try {
     return null
   }
 
+  // Entity.level lookup helper. Forge 1.20.1 has BOTH a public `level`
+  // field on Entity AND a `level()` getter method. Rhino's NativeJava
+  // bridge resolves `e.level` to the field (returning a Level
+  // instance), so `e.level()` tries to invoke that Level instance as
+  // a function and throws "Cannot call property level ... It is not
+  // a function, it is 'object'". Reproduces on every spawn per
+  // debug.log 2026-05-09 11:52. Use the field-style access first.
+  var entityLevel = function(e) {
+    try { return e.level } catch (_) {}
+    try { return e.level() } catch (_) {}
+    return null
+  }
+  var entityDimensionStr = function(e) {
+    var lvl = entityLevel(e)
+    if (!lvl) return 'unknown'
+    try { return String(lvl.dimension().location()) } catch (_) {}
+    try { return String(lvl.dimension) } catch (_) {}
+    return 'unknown'
+  }
+
   // Helpers ------------------------------------------------------------------
   var getStackInfo = function(stack) {
     if (!stack || stack.isEmpty()) return null
@@ -263,7 +283,7 @@ try {
           ts:        Date.now(),
           entity:    dmsResId,
           uuid:      entityUuidStr(entity),
-          dimension: String(entity.level().dimension().location()),
+          dimension: entityDimensionStr(entity),
           pos:       [Math.round(pos.x() * 10) / 10, Math.round(pos.y() * 10) / 10, Math.round(pos.z() * 10) / 10],
           customName: entity.hasCustomName() ? String(entity.getCustomName().getString()) : null,
           tagKeys:   nbtTopKeys(entity),

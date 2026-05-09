@@ -103,6 +103,25 @@ try {
     return null
   }
 
+  // Level lookup helper. Forge 1.20.1 Entity exposes both a `level`
+  // field AND a `level()` getter; Rhino resolves `e.level` to the
+  // field (returning a Level instance), so `e.level()` throws
+  // "Cannot call property level ... It is not a function, it is
+  // 'object'" -- reproduces on every entity per debug.log
+  // 2026-05-09 11:52. Field-style access works.
+  var entityLevel = function(e) {
+    try { return e.level } catch (_) {}
+    try { return e.level() } catch (_) {}
+    return null
+  }
+  var entityDimensionStr = function(e) {
+    var lvl = entityLevel(e)
+    if (!lvl) return 'unknown'
+    try { return String(lvl.dimension().location()) } catch (_) {}
+    try { return String(lvl.dimension) } catch (_) {}
+    return 'unknown'
+  }
+
   var itemId = function(item) {
     try { return String(item.builtInRegistryHolder().key().location()) } catch (e) {}
     try { return String(item.toString()) } catch (e) { return '?' }
@@ -189,7 +208,7 @@ try {
           ts:        Date.now(),
           entity:    dmdResId,
           uuid:      entityUuidStr(entity),
-          dimension: String(entity.level().dimension().location()),
+          dimension: entityDimensionStr(entity),
           pos:       [Math.round(pos.x() * 10) / 10, Math.round(pos.y() * 10) / 10, Math.round(pos.z() * 10) / 10],
           customName: entity.hasCustomName() ? String(entity.getCustomName().getString()) : null,
           tagKeys:   nbtTopKeys(entity),
@@ -205,7 +224,7 @@ try {
           })()
         }
 
-        var level = entity.level()
+        var level = entityLevel(entity)
 
         // 1-tick delayed scan for ItemEntities near death position. Drops
         // that come from the death loot table appear within a small radius
