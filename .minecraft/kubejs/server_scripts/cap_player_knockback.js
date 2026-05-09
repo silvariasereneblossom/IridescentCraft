@@ -36,31 +36,30 @@ try {
   var Consumer_kb = Java.loadClass('java.util.function.Consumer')
   var Player_kb = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  // EMERGENCY CAP 2026-05-09: 1.5 -> 0.25 -> 0.125.
+  // EMERGENCY CAP 2026-05-09: 1.5 -> 0.25 -> 0.5.
   //
-  // Tester report: skeleton-jockey ARROW KB (not the spider mount
-  // melee as initially suspected) is the felt source. After the 0.25
-  // cap landed it still felt ~1.5-2x of intended; halving to 0.125
-  // targets ~0.5x of vanilla arrow KB.
+  // Sized to keep vanilla ranges intact while clamping mod-affix
+  // outliers. Reference points:
+  //   Vanilla mob melee, no enchant       0.4
+  //   Vanilla mob melee + Knockback I     0.9 (-> 0.5 capped)
+  //   Vanilla bow arrow, Punch I          0.5
+  //   Vanilla bow arrow, Punch II         1.0 (-> 0.5 capped)
+  //   Apoth attack-knockback affix        2.0+ (-> 0.5 capped)
   //
   // History:
-  //   - 1.5 (initial): too loose. Vanilla mob melee strength=0.4 plus
-  //     vanilla arrow strength~0.5 (Punch I) both passed through
-  //     unclamped. Tester observed "very noticeable" stack-up.
-  //   - 0.25 (first emergency tighten): clamped 0.4 -> 0.25 (~38%
-  //     reduction). Tester reported it still felt 1.5-2x intended on
-  //     the jockey arrows specifically.
-  //   - 0.125 (current): halve again, target 0.5x of vanilla. Catches
-  //     all KB events at this magnitude regardless of source.
+  //   - 1.5 (initial): too loose; jockey-affix arrows passed unclamped.
+  //   - 0.25 (first tighten): clamped legitimate mob-melee/Punch-I
+  //     KB too aggressively, also dampened normal PvP / player-on-mob
+  //     KB. Below the unmodified baseline.
+  //   - 0.5 (current, doubled from 0.25): keeps unmodified vanilla
+  //     mob-melee + Punch-I bow KB untouched, only bites at Punch-II
+  //     and above plus mod-affix outliers. Lands in normal feel range.
   //
-  // Universal cap reduction as band-aid until MOBDIAG-SPAWN (whose
-  // UUID lookup was fixed in commit 15f72dd0) reveals which mob /
-  // affix / projectile is producing these events so we can scope a
-  // targeted fix. Trade-off accepted by user: legitimate Punch-bow KB
-  // and player-on-mob KB are dampened universally in the meantime.
-  // Revert path: bump back to 1.5 once we identify and patch the
-  // source.
-  var KNOCKBACK_CAP = 0.125
+  // Cap is universal until MOBDIAG-SPAWN (UUID lookup fixed in
+  // 15f72dd0) reveals which mob / affix / projectile is producing the
+  // jockey arrows; we'll then scope per-entity-type and bump the
+  // global cap back toward 1.5.
+  var KNOCKBACK_CAP = 0.5
   // Vanilla unit-vector ratios are length 1.0. Anything >1.5 is a mod
   // bug producing un-normalized direction. Cap at 1.5 (slack for natural
   // floating-point variance) and renormalize to 1.0 if exceeded.
