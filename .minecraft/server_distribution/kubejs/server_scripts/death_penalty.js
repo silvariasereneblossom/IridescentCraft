@@ -68,9 +68,44 @@ var ARMOR_SLOTS = ['head', 'chest', 'legs', 'feet']
 // =============================================================================
 
 EntityEvents.death(event => {
-  if (!event.entity.player) return
-  const player = event.entity
-  const dimId = player.level.dimension.toString()
+  // Unconditional entry log so we can confirm the handler fires at all.
+  // 8 player deaths in the 14:31 session produced no [death-pen] lines
+  // despite the script loading and ServerEvents.loaded firing -- which
+  // means either this handler doesn't fire for player deaths, or the
+  // `event.entity.player` filter below rejects the player. Top trace
+  // distinguishes the two cases.
+  try {
+    var deathEntity = event.entity
+    var entityType = deathEntity ? String(deathEntity.type) : 'null'
+    var isPlayerCheck = deathEntity ? String(deathEntity.player) : 'no-entity'
+    var hasEventPlayer = false
+    try { hasEventPlayer = !!event.player } catch (_) {}
+    console.log('[death-event] fired entity.type=' + entityType
+              + ' entity.player=' + isPlayerCheck
+              + ' event.player=' + hasEventPlayer)
+  } catch (e) {
+    try { console.log('[death-event] entry-log threw: ' + e) } catch (_) {}
+  }
+
+  // Player filter -- accept either the legacy `entity.player` truthy-
+  // boolean form or the documented `event.player` getter form. Keep
+  // both so we work regardless of which path KubeJS exposes.
+  var player = null
+  try {
+    if (event.player) player = event.player
+    else if (event.entity && event.entity.player) player = event.entity
+  } catch (_) {}
+  if (!player) {
+    console.log('[death-event] no player resolved -- skipping')
+    return
+  }
+
+  const dimId = (function () {
+    try { return String(player.level.dimension().location()) } catch (_) {}
+    try { return String(player.level.dimension) } catch (_) {}
+    try { return String(player.level.dimension.toString()) } catch (_) {}
+    return 'unknown'
+  })()
 
   // Get loss percentage for this dimension
   let lossPct = DIMENSION_DURABILITY_LOSS[dimId] || DEFAULT_LOSS
