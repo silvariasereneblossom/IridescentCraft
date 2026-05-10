@@ -105,56 +105,62 @@ ServerEvents.recipes(event => {
   //   .A.
   // W = woodenwand, R = element reagent, A = amethyst_powder (cross-mod link).
 
-  // T1 element: wind
+  // 2026-05-10 user direction: reagents must be EXISTING pack materials
+  // (Simple Staves' own ores are stripped from worldgen — see
+  // kubejs/data/simple_staves/forge/biome_modifier/*.json overlays).
+  // Mapping decisions: feather for wind T1, ISS runes for T2 (mix-in),
+  // ISS runes + eye_of_ender for T3, nether_star for tenebrium T4.
+
+  // T1 element: wind — minecraft:feather (chicken drop, day 1)
   event.shaped('simple_staves:wind_essence_wand', [' R ', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:wind_essence',
+    R: 'minecraft:feather',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_wind_wand_t1')
 
-  // T2 elements: flame, thunder, venomite
+  // T2 elements — mix in ISS runes for fire/lightning, fermented_spider_eye for venom
   event.shaped('simple_staves:flame_wand', [' R ', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:flame_crystal',
+    R: 'irons_spellbooks:fire_rune',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_flame_wand_t2')
 
   event.shaped('simple_staves:thunder_wand', [' R ', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:storm_essence',
+    R: 'irons_spellbooks:lightning_rune',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_thunder_wand_t2')
 
   event.shaped('simple_staves:venomite_wand', [' R ', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:venomite',
+    R: 'minecraft:fermented_spider_eye',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_venomite_wand_t2')
 
-  // T3 elements: viritium, veil, void
+  // T3 elements — ISS runes (nature, holy) + eye_of_ender for void
   event.shaped('simple_staves:viritium_wand', ['RRR', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:viritium',
+    R: 'irons_spellbooks:nature_rune',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_viritium_wand_t3')
 
   event.shaped('simple_staves:veil_wand', ['RRR', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:veil_essence',
+    R: 'irons_spellbooks:holy_rune',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_veil_wand_t3')
 
   event.shaped('simple_staves:void_wand', ['RRR', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:void_crystal',
+    R: 'minecraft:eye_of_ender',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_void_wand_t3')
 
-  // T4 element: tenebrium (uses 6 reagents to gate T4 cost)
-  event.shaped('simple_staves:tenebrium_wand', ['RRR', 'RWR', 'RAR'], {
+  // T4 endgame: tenebrium — nether_star centerpiece (Wither kill = T4 gate)
+  event.shaped('simple_staves:tenebrium_wand', ['EEE', 'EWE', 'EAE'], {
     W: 'simple_staves:woodenwand',
-    R: 'simple_staves:tenebrium',
-    A: 'dna:amethyst_powder'
+    E: 'minecraft:eye_of_ender',
+    A: 'minecraft:nether_star'
   }).id('icraft:ss_tenebrium_wand_t4')
 
   // Note: simple_staves:woodenwand keeps default Simple Staves recipe
