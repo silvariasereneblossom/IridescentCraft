@@ -14,12 +14,19 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
-### Modded grass seeds (SimpleFarming) suppressed by GLM allowlist (2026-05-10) — RESOLVED
-- **Status:** Resolved 2026-05-10
-- **Description:** Tester observed that non-wheat seeds (modded crops) had stopped dropping from grass. Pack-level `data/forge/loot_modifiers/global_loot_modifiers.json` ships `"replace": true` with an allowlist (introduced 2026-04-26 to gate Artifacts/Celestial/Relics/ISB chest injection). With `replace:true`, every GLM not on the allowlist is dropped from the registry — including the four `simplefarming:*_seeds` GLMs that inject Pam-style modded seeds at 6.25%/grass break.
-- **Fix:** Added `simplefarming:fern_seeds`, `simplefarming:grass_seeds`, `simplefarming:large_fern_seeds`, `simplefarming:tall_grass_seeds` to the allowlist in all four file copies (`.minecraft/kubejs/data/forge/loot_modifiers/global_loot_modifiers.json`, the two distro copies, and the `datapack_sources/icraft_loot_overrides/...` copy — also resynced the divergent datapack source with the kubejs canonical version).
-- **Not fixed:** PamHC2 GLMs (`pamhc2crops:fern_drops`, `grass_drops`, `tall_grass_drops`) — the mod jar registers the GLM IDs but ships no implementation files at `data/pamhc2crops/loot_modifiers/*.json`. Adding them to the allowlist would only generate Forge "unknown modifier" errors. Vendor-side bug, not pack-fixable.
-- **Player impact (pre-fix):** Modded crop seeds rarely / never appearing from grass tile breaks since 2026-04-26.
+### Modded GLMs broadly suppressed by `replace:true` allowlist (2026-04-26 — 2026-05-10) — RESOLVED
+- **Status:** Resolved 2026-05-10 (structural fix; superseded the same-day SimpleFarming-only patch)
+- **Description:** Pack-level `data/forge/loot_modifiers/global_loot_modifiers.json` was set to `replace:true` on 2026-04-26 (commit `f74f7d59`) with a curated allowlist intended to suppress aggressive Artifacts/Celestial/Relics/ISB chest injection. The allowlist was incomplete: every modded GLM not enumerated was silently dropped from the Forge registry. Tester report "barely seeing any non-wheat seeds" surfaced the symptom; jar audit confirmed the breadth.
+- **Confirmed silently suppressed for two weeks (audit results):**
+  - Thermal Cultivation `seeds_from_grass` (15 modded seeds)
+  - Farmer's Delight: all 34 GLMs (chest injections, scavenging entity drops, cake/pie slicing, `straw_from_*` grass drops)
+  - Aether: all 10 GLMs (vanilla `remove_seeds`, pig drops, 6 gloves piglin loot tiers, enchanted grass berry bush, double drops)
+  - SimpleFarming: 4 grass-block seed GLMs (caught earlier same day; restored via point fix that was then superseded)
+  - Probably more — only audited the most-suspected mods.
+- **Fix:** Inverted the strategy. All four copies of `global_loot_modifiers.json` (kubejs source + 2 distros + `datapack_sources/icraft_loot_overrides/`) now ship `{"replace": false, "entries": []}`. Modded GLMs merge into the registry as Forge's default behavior. Targeted suppression of the previously-aggressive injects now uses 17 empty-pool override JSONs in `icraft_loot_overrides`: 9× `data/celestial_artifacts/loot_modifiers/chests/*.json` and 8× `data/irons_spellbooks/loot_modifiers/chest_loot/*.json`. Each shadow keeps the original modifier type so it loads cleanly, but uses an impossible condition (`any_of` with empty `terms`) and a `minecraft:empty` loot reference.
+- **Adjacent finding (carry into audit revisions):** `audits/rpgseteffects.md` claimed `replace:true` was suppressing `rpgseteffects:loot_injection/*`. Inspection of `class-artifacts-forge-2.0.5.jar` shows that mod uses Java-side `LootInjection` classes that bypass the Forge GLM registry entirely. Neither approach (`replace:true` allowlist OR `replace:false` shadows) was ever affecting that mod. If we want to throttle it, separate work is needed.
+- **Not fixed:** PamHC2 GLMs (`pamhc2crops:fern_drops` / `grass_drops` / `tall_grass_drops`) — the jar registers the IDs but ships no impl files. Vendor bug; under either GLM strategy this is unrecoverable without a datapack creating the missing impl files.
+- **Player impact (pre-fix):** Modded grass seeds, modded chest injections, Aether dimension oddities, and Farmer's Delight scavenging/straw drops all silently absent for two weeks.
 
 ### Death-penalty destroyed broken Tetra items (2026-05-09) — RESOLVED
 - **Status:** Resolved 2026-05-09

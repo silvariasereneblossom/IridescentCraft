@@ -4,13 +4,34 @@ All changes to the master design document are logged here with date, description
 
 ---
 
-## 2026-05-10 — SimpleFarming GLMs whitelisted (modded grass seeds were being suppressed)
+## 2026-05-10 — GLM strategy switched from `replace:true` allowlist to `replace:false` + targeted shadows
 
-Tester report: "previously other, non-wheat seeds would spawn, but I've barely seen any". Root cause: pack-level `data/forge/loot_modifiers/global_loot_modifiers.json` ships `"replace": true` with an explicit allowlist (introduced in commit `f74f7d59` to suppress chest injection from Artifacts/Celestial/Relics/ISB). With `replace:true` Forge discards every GLM not on our list — including SimpleFarming's four grass-block GLMs (`fern_seeds`, `grass_seeds`, `large_fern_seeds`, `tall_grass_seeds`), which inject modded seeds at 6.25% per non-shears grass break.
+Followed up on the same-day SimpleFarming patch. Tester pushback: "lots more than 4 modded seeds would have been blacklisted if that's the case." Audit confirmed it. Pulled mod jars and counted what `replace:true` had been silently killing since the 2026-04-26 introduction:
 
-Fix: added the four `simplefarming:*_seeds` entries to the allowlist in all four file copies (kubejs source, server distro, client distro, and the divergent datapack source under `datapack_sources/icraft_loot_overrides/`). Datapack source was also resynced with the kubejs canonical copy — it had been frozen at the original Artifacts-only set since commit `30aa62b7`, and two `replace:true` files in different namespaces had nondeterministic load-order semantics.
+- **Thermal Cultivation:** 1 GLM (`thermal:seeds_from_grass`) — injects 15 modded seeds (amaranth/barley/bell_pepper/corn/eggplant/flax/green_bean/onion/peanut/radish/rice/sadiroot/spinach/strawberry/tomato) into grass/fern/tall_grass/large_fern.
+- **Farmer's Delight:** 34 GLMs — 14 chest injections, 10 entity scavenging modifiers, 5 cake/pie slicing handlers, 5 `straw_from_*` (grass/sandy_shrub/tall_grass/mature_wheat/mature_rice).
+- **Aether:** 10 GLMs — `remove_seeds` (vanilla seeds were supposed to NOT drop in Aether; suppression broke that), pig drops, 6 piglin gloves loot tiers, enchanted grass berry bush, double drops.
 
-PamHC2 GLMs (`pamhc2crops:fern_drops`, `grass_drops`, `tall_grass_drops`) deliberately NOT added: the mod's own jar registers the GLM IDs in its `global_loot_modifiers.json` but ships no implementation file at `data/pamhc2crops/loot_modifiers/*.json`, so adding to allowlist would only generate Forge "unknown modifier" errors. PamHC2 grass-seed drops are a vendor-side bug, not something the pack can fix.
+That's ~45 confirmed broken GLMs from three mods alone, plus the 4 SimpleFarming ones the morning patch had restored — and we hadn't audited every mod yet.
+
+The original `replace:true` allowlist was introduced to suppress aggressive chest injection from Artifacts (~25-30% village artifact rate, replaced with curated 4% pool in `lootjs_overhaul.js`), Celestial Artifacts, and Iron's Spells. But the lever was too coarse — it discarded **every** non-allowlisted GLM, requiring exhaustive re-enumeration per mod update.
+
+**Switched approach.** All four GLM file copies (`kubejs/data/forge/loot_modifiers/global_loot_modifiers.json` × main + 2 distros + datapack source) are now `{"replace": false, "entries": []}`. Mods register their own GLMs through the merged registry as Forge's default behavior intends. Suppression now happens via 17 empty-pool override JSONs in `datapack_sources/icraft_loot_overrides/` at the same paths as the mod-shipped impl files (datapack-over-jar precedence makes our shadow win):
+
+- **9× `data/celestial_artifacts/loot_modifiers/chests/*.json`** — abandoned_mineshaft, ancient_city, bastion_treasure, desert_pyramid, end_city_treasure, jungle_temple, nether_bridge, underwater_ruin_big, village_plains_house. Kept `chests/fishing_treasure` and the 5 `fishing_box/*` GLMs intact since those are item-effect mechanics tied to the Treasure Hunter Necklace, not chest pollution.
+- **8× `data/irons_spellbooks/loot_modifiers/chest_loot/*.json`** — vanilla_generic, compat_generic, compat_good, compat_treasure, end_city, ancient_city, stronghold_library, nether. Spell-book seeding is curated through `lootjs_overhaul.js` per the existing design.
+
+Each shadow uses the original modifier type but replaces the conditions block with `[{"condition": "minecraft:any_of", "terms": []}]` (impossible) and points the loot reference at `minecraft:empty`, so the modifier loads cleanly but never fires.
+
+**Discovery during the audit:** the `audits/rpgseteffects.md` claim that `replace:true` was suppressing `rpgseteffects:loot_injection/*` was factually wrong. Class Artifacts (the `rpgseteffects` namespace mod) does NOT use the Forge GLM registry — it uses Java-side `LootInjection` classes (`OverworldArtifactLootInjection`, etc.) that bypass the GLM system entirely. The mod has been injecting at native rates the whole time. If we want to throttle it, that's a separate problem requiring a different mechanism (Mixin or LootJS-side stripping).
+
+icraft_loot_overrides.zip rebuilt and copied to all three Paxi datapack locations (`config/paxi/datapacks/` in main + server_distribution + distribution/client).
+
+---
+
+## 2026-05-10 — SimpleFarming GLMs whitelisted (superseded by structural fix later same day)
+
+Initial response to the tester report ("previously other, non-wheat seeds would spawn, but I've barely seen any"). Added four `simplefarming:*_seeds` entries to the `replace:true` allowlist. Two hours later replaced this point fix with the structural strategy switch above — the allowlist approach was killing dozens of other mods' GLMs (Thermal Cultivation, Farmer's Delight, Aether, etc.) that the changelog entry had not enumerated. See entry above for the full audit + replacement strategy.
 
 ---
 

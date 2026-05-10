@@ -1,0 +1,7 @@
+{
+  "type": "celestial_core:add_loot_table",
+  "conditions": [
+    { "condition": "minecraft:any_of", "terms": [] }
+  ],
+  "lootTable": "minecraft:empty"
+}
