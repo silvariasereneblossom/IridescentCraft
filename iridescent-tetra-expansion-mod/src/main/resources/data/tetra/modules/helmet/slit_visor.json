@@ -34,7 +34,7 @@
       "key": "slit_visor/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.044
+          "minecraft:generic.armor": 0.143
         },
         "integrity": 0,
         "glyph": {
@@ -55,7 +55,7 @@
       "key": "slit_visor/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.08
+          "minecraft:generic.armor": 0.286
         },
         "integrity": 0,
         "glyph": {
@@ -76,7 +76,7 @@
       "key": "slit_visor/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.068,
+          "minecraft:generic.armor": 0.286,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -98,8 +98,8 @@
       "key": "slit_visor/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.112,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 0.429,
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 0,
         "glyph": {
@@ -120,8 +120,9 @@
       "key": "slit_visor/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.128,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.429,
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 0,
         "glyph": {

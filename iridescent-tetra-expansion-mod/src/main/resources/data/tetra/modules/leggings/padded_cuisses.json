@@ -36,7 +36,7 @@
       "key": "padded_cuisses/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.066
+          "minecraft:generic.armor": 0.222
         },
         "integrity": 0,
         "glyph": {
@@ -57,7 +57,7 @@
       "key": "padded_cuisses/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.12
+          "minecraft:generic.armor": 0.555
         },
         "integrity": 0,
         "glyph": {
@@ -78,7 +78,7 @@
       "key": "padded_cuisses/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.102,
+          "minecraft:generic.armor": 0.333,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -100,8 +100,8 @@
       "key": "padded_cuisses/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.168,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 0.667,
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 0,
         "glyph": {
@@ -122,8 +122,9 @@
       "key": "padded_cuisses/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.192,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.667,
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 0,
         "glyph": {

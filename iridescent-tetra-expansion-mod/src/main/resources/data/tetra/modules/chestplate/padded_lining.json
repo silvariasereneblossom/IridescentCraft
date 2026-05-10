@@ -35,7 +35,7 @@
       "key": "padded_lining/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.088
+          "minecraft:generic.armor": 0.324
         },
         "integrity": 0,
         "glyph": {
@@ -56,7 +56,7 @@
       "key": "padded_lining/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.16
+          "minecraft:generic.armor": 0.649
         },
         "integrity": 0,
         "glyph": {
@@ -77,7 +77,7 @@
       "key": "padded_lining/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.136,
+          "minecraft:generic.armor": 0.54,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -99,8 +99,8 @@
       "key": "padded_lining/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.224,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 0.865,
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 0,
         "glyph": {
@@ -121,8 +121,9 @@
       "key": "padded_lining/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.256,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.865,
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 0,
         "glyph": {

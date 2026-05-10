@@ -39,7 +39,7 @@
       "key": "breastplate/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.66
+          "minecraft:generic.armor": 2.432
         },
         "integrity": 2,
         "glyph": {
@@ -61,7 +61,7 @@
       "key": "breastplate/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.2
+          "minecraft:generic.armor": 4.865
         },
         "integrity": 2,
         "glyph": {
@@ -83,7 +83,7 @@
       "key": "breastplate/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.02,
+          "minecraft:generic.armor": 4.054,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 2,
@@ -106,8 +106,8 @@
       "key": "breastplate/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.68,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 6.486,
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 2,
         "glyph": {
@@ -129,8 +129,9 @@
       "key": "breastplate/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.92,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 6.486,
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 2,
         "glyph": {

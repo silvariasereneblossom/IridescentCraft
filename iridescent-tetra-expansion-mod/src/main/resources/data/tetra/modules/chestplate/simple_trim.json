@@ -100,7 +100,7 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 0,
         "glyph": {
@@ -122,7 +122,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 0,
         "glyph": {

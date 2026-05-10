@@ -4,6 +4,40 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Vanilla armor parity in reforged defaults + Apotheosis affix "axe" → "breaker"
+
+**Tetra armor rebalance.** Audit found vanilla material variants in `iridescent-tetra-expansion-mod` systematically undertuned vs vanilla equivalents:
+
+| Material | Helmet (current → vanilla) | Chestplate | Leggings | Boots |
+|---|---|---|---|---|
+| Leather | 0.31 → 1.0 | 0.81 → 3.0 | 0.59 → 2.0 | 0.31 → 1.0 |
+| Iron | 0.56 → 2.0 | 1.48 → 6.0 | 1.08 → 5.0 | 0.56 → 2.0 |
+| Diamond | 0.78 → 3.0 | 2.07 → 8.0 | 1.51 → 6.0 | 0.78 → 3.0 |
+| Netherite | 0.90 → 3.0 | 2.37 → 8.0 | 1.73 → 6.0 | 0.90 → 3.0 |
+
+A bare-default reforged stack (vanilla leather armor → workbench) was producing ~30% of vanilla armor stats. Players saw this as "all attributes broken" on the leather set — the visible numbers were nonsensical.
+
+**Fix:** rebalanced all 6 vanilla material variants (leather/golden/chainmail/iron/diamond/netherite) across the 16 default modules (4 per piece type × 4 pieces) so the per-piece sum hits vanilla parity. Preserved the existing proportional split (major ~71%, secondary ~14%, two minors ~7-8%) — only scaled values, didn't reshape the distribution. Diamond gets `armor_toughness: 2.0` per piece (split 0.5 across 4 modules); netherite gets `armor_toughness: 3.0` + `knockback_resistance: 0.1` per piece (0.75 + 0.025 split). `iridescent_tetra_expansion-1.0.0.jar` rebuilt via `build_mod.sh` and deployed to all 3 distros.
+
+**Modded materials NOT touched in this pass.** ~150 modded armor replacement files reference material variants like `aether:gravitite`, `blue_skies:falsite`, `forbidden_arcanus:draco_arcanus`, etc. Each modded material would need its source mod's vanilla armor stats looked up to set targets, so those are tracked as a follow-up. Modded materials currently use whatever values they had pre-rebalance (typically scaled relative to iron in their mod's own data, so they may be roughly proportional but not vanilla-parity).
+
+**Apotheosis "axe" → "breaker"** (`kubejs/data/apotheosis/affixes/*.json`). 36 affix files used `"types": ["sword", "axe", ...]`. Apotheosis 1.20.1's `LootCategory` enum has no `"axe"` member — axes fall under `"breaker"` (which also covers pickaxes/shovels). The 33-hit `Codec failure for type affixes, message: Unknown element name:axe` log spam at startup was Apotheosis rejecting these JSONs and dropping the affixes from the registry. Replaced `"axe"` → `"breaker"` across all 36 files. Side effect: pickaxes and shovels are now eligible for affixes that were previously sword+axe-only (omnivamp, lethal, chilling, igniting, lichbane, etc.). If any of those should NOT spawn on tools, drop `"breaker"` from the array entirely (a separate balance pass).
+
+**Screen-class load noise on dedicated server (NOT fixed).** Two log lines per server start:
+
+```
+[main/ERROR] [RuntimeDistCleaner]: Attempted to load class net/minecraft/client/gui/screens/Screen for invalid dist DEDICATED_SERVER
+[main/WARN] [mixin]: @Mixin target ... Screen was not found ...
+```
+
+Sources:
+1. **`relics.mixins.json`** lists `ScreenMixin` in the `mixins` array (loaded on both sides) but `Screen` is a client-only class. Should be in the `client` array. This is an upstream relics-mod author bug.
+2. **`fabric-screen-api-v1`** (loaded transitively via Connector for some Fabric-on-Forge mod) registers Screen mixins that don't apply on server.
+
+Forge's `RuntimeDistCleaner` correctly rejects the load — the system is working as intended. The ERROR/WARN level is misleading; the dist-cleaning is a successful safety check, not a real failure. Fixing requires either (a) bytecode-patching relics.jar to move `ScreenMixin` to the client section + adding the patched jar to the cleanup allowlist + writing a re-patch step into the install pipeline (matching the existing Patchouli/Ars Nouveau infrastructure), or (b) shipping a custom mixin-plugin coremod that filters mixin loads. Both are heavy infrastructure changes for 2 benign log lines per startup. Documented as known issue; deferred.
+
+---
+
 ## 2026-05-10 — debug.log error sweep: block_break_speed, stale recipe IDs, planetary_extraction guards
 
 Audited `latest.log` (clean — zero ERROR/WARN) and the rotated `debug.log` (215 ERROR / 1080 WARN). Most errors clustered into 5 known/manageable categories. Surgical fixes for 3 of them landed this commit:

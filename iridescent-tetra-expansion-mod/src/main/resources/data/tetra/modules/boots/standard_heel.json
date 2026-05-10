@@ -35,7 +35,7 @@
       "key": "standard_heel/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.022
+          "minecraft:generic.armor": 0.071
         },
         "integrity": 0,
         "glyph": {
@@ -56,7 +56,7 @@
       "key": "standard_heel/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.04
+          "minecraft:generic.armor": 0.143
         },
         "integrity": 0,
         "glyph": {
@@ -77,7 +77,7 @@
       "key": "standard_heel/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.034,
+          "minecraft:generic.armor": 0.071,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 0,
@@ -99,8 +99,8 @@
       "key": "standard_heel/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.056,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 0.214,
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 0,
         "glyph": {
@@ -121,8 +121,9 @@
       "key": "standard_heel/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.064,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 0.214,
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 0,
         "glyph": {

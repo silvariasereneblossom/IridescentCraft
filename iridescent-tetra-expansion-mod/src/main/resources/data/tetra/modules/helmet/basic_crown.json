@@ -39,7 +39,7 @@
       "key": "basic_crown/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.22
+          "minecraft:generic.armor": 0.714
         },
         "integrity": 2,
         "glyph": {
@@ -61,7 +61,7 @@
       "key": "basic_crown/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4
+          "minecraft:generic.armor": 1.429
         },
         "integrity": 2,
         "glyph": {
@@ -83,7 +83,7 @@
       "key": "basic_crown/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.34,
+          "minecraft:generic.armor": 1.429,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 2,
@@ -106,8 +106,8 @@
       "key": "basic_crown/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.56,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 2.143,
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 2,
         "glyph": {
@@ -129,8 +129,9 @@
       "key": "basic_crown/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.64,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 2.143,
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 2,
         "glyph": {

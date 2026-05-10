@@ -39,7 +39,7 @@
       "key": "full_leg_plate/leather",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.44
+          "minecraft:generic.armor": 1.481
         },
         "integrity": 2,
         "glyph": {
@@ -61,7 +61,7 @@
       "key": "full_leg_plate/iron",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.8
+          "minecraft:generic.armor": 3.704
         },
         "integrity": 2,
         "glyph": {
@@ -83,7 +83,7 @@
       "key": "full_leg_plate/gold",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.68,
+          "minecraft:generic.armor": 2.222,
           "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 2,
@@ -106,8 +106,8 @@
       "key": "full_leg_plate/diamond",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.12,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 4.444,
+          "minecraft:generic.armor_toughness": 0.5
         },
         "integrity": 2,
         "glyph": {
@@ -129,8 +129,9 @@
       "key": "full_leg_plate/netherite",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.28,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 4.444,
+          "minecraft:generic.knockback_resistance": 0.025,
+          "minecraft:generic.armor_toughness": 0.75
         },
         "integrity": 2,
         "glyph": {
