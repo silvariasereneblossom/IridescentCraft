@@ -4,6 +4,28 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Village fletcher coverage + Lootr `additional_chests` populated
+
+Two follow-on gaps surfaced after the GLM strategy switch the same day.
+
+**Village fletcher missing from sanitization.** `lootjs_overhaul.js` `villageChests` array (line 1843) covered 15 of 16 vanilla 1.20.1 village chest types — `village_fletcher` was absent. That meant fletcher chests retained diamond gear, horse armor, enchanted golden apples, blank enchanted books, rotten flesh, wood/stone filler, AND skipped the curated `villageArtifactPool` flat ~10% roll. (Fletcher WAS already in the line 1453 `T1_IRON_BASELINE_CHESTS` array, which is why the gap went unnoticed — partial coverage.) Added `minecraft:chests/village/village_fletcher` to the main `villageChests` list. All other village types behave identically; fletcher now does too.
+
+**Lootr `additional_chests` was empty.** Lootr only auto-converts vanilla `minecraft:chest` and `minecraft:trapped_chest` (plus mineshaft minecart chests). Mods that ship custom chest BLOCK types bypass Lootr entirely — meaning shared single-roll loot per chest, not per-player rolls. Audited the major dimensional mods:
+
+- **Blue Skies:** 7 custom chest types (bluebright, comet, dusk, frostbright, lunar, maple, starlit) — confirmed `SkyChestBlockEntity` extends vanilla `ChestBlockEntity` (which extends `RandomizableContainerBlockEntity`), so all 7 are eligible.
+- **Aether:** `treasure_chest` (the gold-keyed dungeon chest) — confirmed `TreasureChestBlockEntity` extends `RandomizableContainerBlockEntity` directly. Eligible. (`chest_mimic` is a mob, not a chest, skipped.)
+- **The Undergarden:** no custom chest blocks (only `chest_boat` items, which are entity passengers and irrelevant to Lootr). Uses vanilla chest, already Lootr-converted.
+- **Deeper Darker:** same — no custom chest blocks, only chest boats.
+- **Twilight Forest:** uses vanilla chest blocks (per design). Already Lootr-converted.
+
+Added 8 entries to `config/lootr-common.toml` `additional_chests`. Synced to all 3 distros. Pre-fix: any chest in Skyroot/Bluebright/Everbright/Everdawn dungeons + Aether gold dungeons was a shared-roll chest; post-fix: per-player rolls like vanilla.
+
+**Not audited yet** (deferred): Cataclysm, Brutal Bosses, Stalwart Dungeons, When Dungeons Arise, Dungeon Crawl, Valhelsia, Yung's, Repurposed Structures, structore_towers, Terramity, Epic Dungeons, Aether sub-mods (Treasure Reforging, Enhanced Extinguishing, Protect Your Moa). Most of those should be using vanilla chest blocks; spot-checking is the next step.
+
+**Stale-rate correction:** the earlier 2026-05-10 changelog entry for the GLM strategy switch said "replaced with curated 4% pool." Actual current rate is **~10% combined** — 11 items at ~0.91% each in `villageArtifactPool`. The 4% figure was the original 25-item pool from 2026-04-11; bumped to 15% (2026-04-19), then dialed back to 10% (2026-04-20). Today's earlier changelog entry has been corrected in-place.
+
+---
+
 ## 2026-05-10 — GLM strategy switched from `replace:true` allowlist to `replace:false` + targeted shadows
 
 Followed up on the same-day SimpleFarming patch. Tester pushback: "lots more than 4 modded seeds would have been blacklisted if that's the case." Audit confirmed it. Pulled mod jars and counted what `replace:true` had been silently killing since the 2026-04-26 introduction:
@@ -14,7 +36,7 @@ Followed up on the same-day SimpleFarming patch. Tester pushback: "lots more tha
 
 That's ~45 confirmed broken GLMs from three mods alone, plus the 4 SimpleFarming ones the morning patch had restored — and we hadn't audited every mod yet.
 
-The original `replace:true` allowlist was introduced to suppress aggressive chest injection from Artifacts (~25-30% village artifact rate, replaced with curated 4% pool in `lootjs_overhaul.js`), Celestial Artifacts, and Iron's Spells. But the lever was too coarse — it discarded **every** non-allowlisted GLM, requiring exhaustive re-enumeration per mod update.
+The original `replace:true` allowlist was introduced to suppress aggressive chest injection from Artifacts (~25-30% village artifact rate, replaced with the curated `villageArtifactPool` in `lootjs_overhaul.js` — currently 11 items at ~10% combined per village chest, dialed in over April), Celestial Artifacts, and Iron's Spells. But the lever was too coarse — it discarded **every** non-allowlisted GLM, requiring exhaustive re-enumeration per mod update.
 
 **Switched approach.** All four GLM file copies (`kubejs/data/forge/loot_modifiers/global_loot_modifiers.json` × main + 2 distros + datapack source) are now `{"replace": false, "entries": []}`. Mods register their own GLMs through the merged registry as Forge's default behavior intends. Suppression now happens via 17 empty-pool override JSONs in `datapack_sources/icraft_loot_overrides/` at the same paths as the mod-shipped impl files (datapack-over-jar precedence makes our shadow win):
 

@@ -1851,6 +1851,7 @@ LootJS.modifiers(event => {
     'minecraft:chests/village/village_taiga_house',
     'minecraft:chests/village/village_temple',
     'minecraft:chests/village/village_fisher',
+    'minecraft:chests/village/village_fletcher',
     'minecraft:chests/village/village_tannery',
     'minecraft:chests/village/village_shepherd',
     'minecraft:chests/village/village_butcher',
