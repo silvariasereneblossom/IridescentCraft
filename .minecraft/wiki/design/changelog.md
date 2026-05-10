@@ -4,6 +4,33 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Combat affixes off mining tools + first pass of modded armor tier remap
+
+**Apotheosis combat affixes off `breaker`.** All 36 affixes that had `"types": ["sword", "breaker", "trident"]` (combat-themed: omnivamp, lethal, igniting, lichbane, chilling, vorpal, executioners, etc.) now drop `"breaker"` entirely. Pickaxes/shovels/axes no longer roll combat-on-hit affixes. Side effect: axes lose these affixes too, since Apotheosis 1.20.1's `LootCategory` enum has no combat-axe-only category — `breaker` covers axe+pick+shovel as a unit. Tracked: if axes need combat affixes back, would require either a custom Apotheosis affix type or a separate axe-only mixin.
+
+**Modded armor — first pass.** Audited 52 (mod, material) pairs across 11 mods via bytecode extraction (javap on each `ArmorMaterials.class`) to read per-piece protection + toughness from each source mod's enum constants. Discovered ALL 191 modded replacement files were referencing `*/iron` variants for their default modules — meaning every modded armor (gravitite, terrasteel, neptunium, etc.) was inheriting iron stats regardless of the source mod's intended tier.
+
+Successfully extracted from 6 mods (Aether, Botania, Twilight Forest, Aquaculture, Undergarden, Deep Aether). Remapped **16 replacement files** that map cleanly to vanilla diamond tier or vanilla leather tier:
+- Aether GRAVITITE / VALKYRIE / PHOENIX → `/diamond` (3/6/8/3 + tough 2)
+- Botania MANAWEAVE → `/leather` (1/2/3/1)
+
+Materials in the iron tier (2/5/6/2, e.g. zanite, manasteel, elementium, ironwood, ancient) were already correctly inheriting iron stats — no remap needed.
+
+**Deferred — 34 files with custom stats** that don't match a vanilla tier exactly: TF naga (3/6/7/2), TF fiery (4/7/9/4 — high tier), TF ironwood (2/5/7/2), TF knightmetal (3/6/8/3 + tough 1), TF yeti (3/6/7/4), TF arctic (2/5/7/2 + tough 2), Aether neptune (iron+tough 1), Aether obsidian (diamond armor + 0 tough), UG cloggrum (1/5/6/2), UG froststeel (2/6/7/3 + tough 4 + KB 0.05). These need per-material variant entries added to the `helmet/`, `chestplate/`, `leggings/`, `boots/` module files (e.g. `basic_crown/aether_neptune` with custom attribute values). Tracked as follow-up.
+
+**Deferred — 96 files from 5 unextracted mods**: Iron's Spellbooks (16 mage-robe materials), Forbidden Arcanus (3), DeeperDarker (2 — partial), Blue Skies (5), Cataclysm (1). The bytecode extractor needs more cases for non-EnumMap patterns (FA uses constructor-int-args + lambda-from-captures, ISS uses a custom interface). Some, especially the ISS mage robes, are intentionally low-armor + magic-bonus and arguably aren't "non-specialized" — design call needed before remapping.
+
+**Screen-class load noise on dedicated server (NOT fixed).** Two log lines per server start:
+
+```
+[main/ERROR] [RuntimeDistCleaner]: Attempted to load class net/minecraft/client/gui/screens/Screen for invalid dist DEDICATED_SERVER
+[main/WARN] [mixin]: @Mixin target ... Screen was not found ...
+```
+
+Sources: `relics.mixins.json` puts `ScreenMixin` in the `mixins` array (loads on both sides) instead of the `client` array (upstream relics-mod author bug); `fabric-screen-api-v1` registers Screen mixins on dedicated server via Connector. Forge's `RuntimeDistCleaner` correctly rejects the load — system working as intended; the ERROR/WARN level is misleading. Fixing requires bytecode-patching relics.jar (move `ScreenMixin` to client section) + adding to cleanup allowlist + writing a re-patch step into install pipeline; documented as known issue.
+
+---
+
 ## 2026-05-10 — Vanilla armor parity in reforged defaults + Apotheosis affix "axe" → "breaker"
 
 **Tetra armor rebalance.** Audit found vanilla material variants in `iridescent-tetra-expansion-mod` systematically undertuned vs vanilla equivalents:
