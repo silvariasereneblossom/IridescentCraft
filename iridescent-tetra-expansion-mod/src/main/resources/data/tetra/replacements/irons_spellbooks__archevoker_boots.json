@@ -9,19 +9,19 @@
     "modules": {
       "boots/boot_sole": [
         "boots/robed_boot_sole",
-        "robed_boot_sole/leather"
+        "robed_boot_sole/wool"
       ],
       "boots/boot_lining": [
         "boots/padded_boot_lining",
-        "padded_boot_lining/iron"
+        "padded_boot_lining/wool"
       ],
       "boots/heel": [
         "boots/standard_heel",
-        "standard_heel/iron"
+        "standard_heel/wool"
       ],
       "boots/lacing": [
         "boots/leather_lacing",
-        "leather_lacing/iron"
+        "leather_lacing/wool"
       ]
     }
   }

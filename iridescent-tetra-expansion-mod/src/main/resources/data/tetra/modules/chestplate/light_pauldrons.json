@@ -748,6 +748,28 @@
         ],
         "models": []
       }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool"
+      ],
+      "key": "light_pauldrons/wool",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.146,
+          "irons_spellbooks:max_mana": 5
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
     }
   ]
 }

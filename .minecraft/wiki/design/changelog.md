@@ -4,6 +4,28 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Modded armor: round 4 (ISS mage robes → /wool, all 11 mods complete)
+
+ISS handled per the user's clarification: "I would think they'd be wool/cloth at base." NBT magic bonuses (mana, spell_power, element-specific powers) transfer from the source ISS item via `SpecializedReplacementHook` (per `dev/lessons-learned.md` — the workbench-driven replacement hook restores skin/affix/enchantment NBT after Tetra's vanilla replacement runs). So our modular variants only need correct **base armor** at cloth/wool tier; the magic side comes from the source NBT.
+
+**Added 16 `/wool` variants** (4 default minor modules per piece × 4 pieces) using `tetra:fabric/wool` material reference. Stats per piece: helmet 0.6 / chestplate 1.8 / leggings 1.2 / boots 0.6 — well below leather's already-low totals. Each minor slot also gets `+5 max_mana` for a small magical feel before NBT bonuses apply. Major modules already had curated `/wool` variants (circlet, robe_chest, robed_leg_plate, robed_boot_sole) with proper mana/spell_power scaling — left alone.
+
+**Remapped 49 ISS replacement files** (53 total minus 4 plate-style exceptions): all variant suffixes changed to `/wool`. Per-mod averages now:
+
+- Mage robes (wizard, archevoker, cultist, cryomancer, electromancer, infernal_sorcerer, plagued, priest, pyromancer, shadowwalker, wandering_magician, netherite_mage, pumpkin, dev): ~0.27 armor (helmet/boots), ~0.55 (chestplate), ~0.4 (leggings), with 25-65 mana per piece + 0.03-0.05 spell_power on majors.
+
+**4 ISS replacements kept at `/iron`** — these use plate-style major modules (not robe modules), so they're not robes at all:
+- `paladin_chestplate` (paladin = holy warrior, breastplate-style major)
+- `gold_crown` (special crown item, basic_crown)
+- `speed_boots` (Boots of Speed utility item, basic_boot_sole)
+- `tarnished_helmet` (cosmetic, basic_crown)
+
+`wool` already in MATERIAL_ITEM_MAP (`['minecraft:white_wool']`); no changes needed there.
+
+**All 11 modded armor mods are now complete** for the original "non-specialized armor → matching-material modules" framing. ~140 of 191 modded replacement files now use material-appropriate variants (cloth/leather/iron/diamond/diamond_no_t/per-mod-custom). The 4 plate-style ISS items stay on iron defaults intentionally.
+
+---
+
 ## 2026-05-10 — Modded armor: round 3 (DeeperDarker + Cataclysm) — only ISS robes remain
 
 Final round of modded-armor work. Two more mods added:
