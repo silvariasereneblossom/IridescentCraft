@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ignitium_ingot"
+    ],
+    "count": 1
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/cm_ignitium"
+}

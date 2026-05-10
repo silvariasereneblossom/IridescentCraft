@@ -107,6 +107,10 @@ MATERIAL_ITEM_MAP = {
     'bs_pyrope':              (['blue_skies:pyrope_gem'],        2, HAMMER_IRON),
     # Shared variant: diamond armor with 0 toughness — repair via vanilla diamond.
     'diamond_no_t':           (['minecraft:diamond'],            2, HAMMER_IRON),
+    # Round 3: DeeperDarker + Cataclysm
+    'dd_resonarium':          (['deeperdarker:resonarium'],      2, HAMMER_IRON),
+    'dd_warden':              (['deeperdarker:reinforced_echo_shard'], 1, HAMMER_DIAMOND),
+    'cm_ignitium':            (['cataclysm:ignitium_ingot'],     1, HAMMER_DIAMOND),
     # tetra:skin/fabric/fibre fixtures
     'leather':      (['minecraft:leather'],         2, HAMMER_IRON),
     'wool':         (['minecraft:white_wool'],      2, HAMMER_IRON),

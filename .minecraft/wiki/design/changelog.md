@@ -4,6 +4,56 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Modded armor: round 3 (DeeperDarker + Cataclysm) — only ISS robes remain
+
+Final round of modded-armor work. Two more mods added:
+
+- **DeeperDarker (2 materials, 8 files):** Re-extracted from bytecode after fixing the `accept:([I)` int-array-capture pattern. RESONARIUM 2/6/7/3 + tough 1 (`/dd_resonarium`), WARDEN 4/7/9/4 + tough 4 + KB 0.1 (`/dd_warden` — sculk-themed top tier). Both replacements remapped from `/iron`.
+- **Cataclysm IGNITIUM (1 material, 4 files):** Hardcoded from community-documented stats since Cataclysm uses anonymous-class lambda suppliers in `ModItems.class` rather than an enum (would require deep bytecode dive). Values: 5/8/11/5 + tough 5 + KB 0.4 (top-tier endgame fire armor — comparable to FA Tyr at the high end). `/cm_ignitium` variant added with these values.
+
+`MATERIAL_ITEM_MAP` extended with three new entries (`dd_resonarium → deeperdarker:resonarium`, `dd_warden → deeperdarker:reinforced_echo_shard` repaired via diamond hammer, `cm_ignitium → cataclysm:ignitium_ingot` repaired via diamond hammer).
+
+**Final state of modded armor coverage:**
+
+| Mod | Status |
+|---|---|
+| Aether (6 materials) | ✓ Complete |
+| Twilight Forest (8) | ✓ Complete |
+| Botania (4) | ✓ Complete |
+| Undergarden (4) | ✓ Complete |
+| Aquaculture (1) | ✓ |
+| Deep Aether (2) | ✓ |
+| Forbidden Arcanus (3) | ✓ Complete |
+| Blue Skies (5) | ✓ Complete |
+| **DeeperDarker (2)** | **✓ Complete (this commit)** |
+| **Cataclysm (1)** | **✓ Complete (this commit, hardcoded)** |
+| Iron's Spellbooks (16 mage robes) | Deferred — design call (see below) |
+
+**ISS mage robes — deliberately deferred.** All 16 ISS armor materials (TARNISHED, WIZARD, ARCHEVOKER, CULTIST, PRIEST, CRYOMANCER, SHADOWWALKER, PLAGUED, ELECTROMANCER, NETHERITE_BATTLEMAGE, PALADIN, INFERNAL_SORCERER, BOOTS_OF_SPEED, WANDERING_MAGICIAN, PUMPKIN, PYROMANCER) currently inherit `/iron` stats. The user's framing was "non-specialized armor" — these are mage robes with low armor + high magic bonuses by design, arguably the canonical "specialized" case. Standardizing them to source-mod stats would either:
+- Underweight them (most are leather-tier protection per source) and lose the implicit balance the iron-default provides for mixed-class players, OR
+- Require attaching mod-specific magic-attribute bonuses (mana, spell power, etc.) per-variant, which goes beyond the "match source armor stats" framing.
+
+Open question: should ISS robes get the source-mod's actual low-armor stats (exposing them as the squishy magic gear they're designed to be), or stay on iron as a small balance buff for mages? Tracked, no auto-fix this round.
+
+**Audit summary across 217 replacement files:**
+
+| Mod | Files | Avg armor | Range |
+|---|---|---|---|
+| vanilla | 25 | 3.6 | 1–8 |
+| aether | 24 | 4.6 | 2–8 |
+| twilightforest | 28 | 5.0 | 2–9 |
+| forbidden_arcanus | 12 | 6.5 | 1–12 |
+| cataclysm | 4 | 8.0 | 5–11 |
+| deeperdarker | 8 | 5.6 | 2–9 |
+| blue_skies | 20 | 3.75 | 1–8 |
+| botania | 16 | 3.6 | 1–8 |
+| undergarden | 15 | 4.3 | 1–8 |
+| aquaculture | 4 | 5.0 | 3–8 |
+| deep_aether | 8 | 5.0 | 3–8 |
+| irons_spellbooks | 53 | 1.24 | 0.68–6 (still on /iron — deferred) |
+
+---
+
 ## 2026-05-10 — Modded armor: round 2 (custom variants + diamond_no_t shared variant + FA/BS extracted)
 
 Continuation of the first-pass modded armor work. Three layers of fixes this commit:

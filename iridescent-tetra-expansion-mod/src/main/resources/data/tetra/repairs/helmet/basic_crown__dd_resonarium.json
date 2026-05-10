@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:resonarium"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/dd_resonarium"
+}
