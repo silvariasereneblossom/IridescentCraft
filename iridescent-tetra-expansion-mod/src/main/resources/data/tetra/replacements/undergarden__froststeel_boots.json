@@ -9,19 +9,19 @@
     "modules": {
       "boots/boot_sole": [
         "boots/basic_boot_sole",
-        "basic_boot_sole/iron"
+        "basic_boot_sole/ug_froststeel"
       ],
       "boots/boot_lining": [
         "boots/padded_boot_lining",
-        "padded_boot_lining/iron"
+        "padded_boot_lining/ug_froststeel"
       ],
       "boots/heel": [
         "boots/standard_heel",
-        "standard_heel/iron"
+        "standard_heel/ug_froststeel"
       ],
       "boots/lacing": [
         "boots/leather_lacing",
-        "leather_lacing/iron"
+        "leather_lacing/ug_froststeel"
       ]
     }
   }

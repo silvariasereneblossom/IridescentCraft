@@ -9,19 +9,19 @@
     "modules": {
       "boots/boot_sole": [
         "boots/basic_boot_sole",
-        "basic_boot_sole/iron"
+        "basic_boot_sole/fa_tyr"
       ],
       "boots/boot_lining": [
         "boots/padded_boot_lining",
-        "padded_boot_lining/iron"
+        "padded_boot_lining/fa_tyr"
       ],
       "boots/heel": [
         "boots/standard_heel",
-        "standard_heel/iron"
+        "standard_heel/fa_tyr"
       ],
       "boots/lacing": [
         "boots/leather_lacing",
-        "leather_lacing/iron"
+        "leather_lacing/fa_tyr"
       ]
     }
   }

@@ -312,6 +312,374 @@
         ],
         "models": []
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/aether_neptune",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.649,
+          "minecraft:generic.armor_toughness": 0.25
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/aether_obsidian",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.865
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/tf_arctic",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.757,
+          "minecraft:generic.armor_toughness": 0.5
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/tf_fiery",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.973
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/tf_ironwood",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.757
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/tf_knightmetal",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.865,
+          "minecraft:generic.armor_toughness": 0.25
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/tf_naga",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.757,
+          "minecraft:generic.armor_toughness": 0.125
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/tf_yeti",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.757
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/ug_cloggrum",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.649
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/ug_froststeel",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.757,
+          "minecraft:generic.armor_toughness": 1.0,
+          "minecraft:generic.knockback_resistance": 0.013
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/fa_draco_arcanus",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.081,
+          "minecraft:generic.armor_toughness": 0.75,
+          "minecraft:generic.knockback_resistance": 0.025
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/fa_tyr",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.297,
+          "minecraft:generic.armor_toughness": 1.0,
+          "minecraft:generic.knockback_resistance": 0.05
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/fa_mortem",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.54,
+          "minecraft:generic.armor_toughness": 0.25
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/bs_pyrope",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.54
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/bs_horizonite",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.54
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/bs_diopside",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.757
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "padded_lining/diamond_no_t",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.865
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": []
+      }
     }
   ]
 }

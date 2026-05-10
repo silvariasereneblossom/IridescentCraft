@@ -4,6 +4,53 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Modded armor: round 2 (custom variants + diamond_no_t shared variant + FA/BS extracted)
+
+Continuation of the first-pass modded armor work. Three layers of fixes this commit:
+
+**Custom variants for non-vanilla-tier materials** (added 160 variant entries across 16 default-module files; 38 replacement files remapped). Materials whose stats don't fit a clean vanilla tier got their own `<module>/<suffix>` variant with the source mod's exact per-piece protection split proportionally across the 4 default modules:
+- Aether NEPTUNE (`aether_neptune`, 2/5/6/2 + tough 1)
+- Aether OBSIDIAN (handled via shared `diamond_no_t` below)
+- TF ARCTIC (`tf_arctic`, 2/5/7/2 + tough 2)
+- TF FIERY (`tf_fiery`, 4/7/9/4)
+- TF IRONWOOD (`tf_ironwood`, 2/5/7/2)
+- TF KNIGHTMETAL (`tf_knightmetal`, 3/6/8/3 + tough 1)
+- TF NAGA (`tf_naga`, 3/6/7/2 + tough 0.5; chestplate+leggings only)
+- TF YETI (`tf_yeti`, 3/6/7/4)
+- UG CLOGGRUM (`ug_cloggrum`, 1/5/6/2)
+- UG FROSTSTEEL (`ug_froststeel`, 2/6/7/3 + tough 4 + KB 0.05)
+
+**Improved jar-bytecode extractor** to handle FA/ISS-style constructor-int-arg patterns (was previously capturing vanilla's `HEALTH_PER_SLOT [13,15,16,11]` constants by mistake — fixed by scoping each chunk between `new MaterialClass` and its matching `putstatic`, plus reading int constants positionally for `accept:(IIII)` lambdas).
+
+Newly extracted + remapped:
+
+- **Forbidden Arcanus (3 materials, 12 files):** DRACO_ARCANUS (6/8/10/6 + tough 3 + KB 0.1), TYR (8/10/12/7 + tough 4 + KB 0.2), MORTEM (1/4/5/1 + tough 1 — mage-style low armor with toughness).
+- **Blue Skies (5 materials, 20 files):** AQUITE (2/5/6/2, iron-tier, no remap needed), PYROPE (1/4/5/2), HORIZONITE (1/4/5/2), DIOPSIDE (2/5/7/2), CHAROITE (3/6/8/3 + tough 2 → `/diamond`).
+
+**Shared `diamond_no_t` variant for diamond-armor-with-zero-toughness materials** (32 replacement files remapped). Many mods use vanilla diamond's `(3,6,8,3)` protection but with 0 toughness — different from vanilla diamond which has 2 toughness. Created one shared variant rather than per-mod. Users:
+- aether obsidian
+- aquaculture neptunium
+- botania terrasteel
+- twilightforest steeleaf, phantom
+- undergarden utherium
+- deep_aether skyjade, stormforged
+
+Note these were previously incorrectly inheriting iron stats (`/iron` after the round-1 classifier mapped `(3,6,8,3) tough==0` to iron as a fallback). Now correctly hit 3/6/8/3 with 0 toughness.
+
+**Audit confirms parity.** All 217 replacement files now have non-trivial armor totals. Per-mod averages: Aether 4.6, Botania 3.6, Forbidden Arcanus 6.5 (top-tier), TF 5.0, BS 3.75, UG 4.3, Aether sub-mods 5.0, Aquaculture 5.0. Vanilla 3.6 (mostly leather to diamond range).
+
+**Still deferred (no extraction yet):**
+- **Iron's Spellbooks** (16 mage robes — some have non-standard patterns my extractor misreads). Currently inheriting iron stats. Per the user's "non-specialized armor" framing, these arguably are specialized (mage-themed, low armor + magic bonuses) — design call before remapping.
+- **Cataclysm** (1 material — IGNITIUM). Class structure differs from the patterns my extractor handles; would need targeted decompile or hardcoded values.
+- **DeeperDarker** (2 materials — RESONARIUM, WARDEN). My extractor returns suspect values (4/0/2/1, 4/0/4/1) suggesting it's missing some constants. DD uses `accept:([I)` (int-array capture) — different pattern.
+
+Three add-on improvements possible later:
+1. Add the 5 ISS robes the user wants standardized (if any)
+2. Hardcode Cataclysm IGNITIUM stats
+3. Improve extractor for `accept:([I)` array-capture pattern (DeeperDarker)
+
+---
+
 ## 2026-05-10 — Combat affixes off mining tools + first pass of modded armor tier remap
 
 **Apotheosis combat affixes off `breaker`.** All 36 affixes that had `"types": ["sword", "breaker", "trident"]` (combat-themed: omnivamp, lethal, igniting, lichbane, chilling, vorpal, executioners, etc.) now drop `"breaker"` entirely. Pickaxes/shovels/axes no longer roll combat-on-hit affixes. Side effect: axes lose these affixes too, since Apotheosis 1.20.1's `LootCategory` enum has no combat-axe-only category — `breaker` covers axe+pick+shovel as a unit. Tracked: if axes need combat affixes back, would require either a custom Apotheosis affix type or a separate axe-only mixin.

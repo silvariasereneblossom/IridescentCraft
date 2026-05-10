@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:bone"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/fa_mortem"
+}

@@ -86,6 +86,27 @@ MATERIAL_ITEM_MAP = {
     'undergarden_cloggrum':   (['undergarden:cloggrum_ingot'],   2, HAMMER_IRON),
     'undergarden_froststeel': (['undergarden:froststeel_ingot'], 2, HAMMER_IRON),
     'undergarden_utherium':   (['undergarden:utherium_ingot'],   2, HAMMER_IRON),
+    # 2026-05-10: per-mod material variants for non-vanilla-tier modded armor
+    # (added during the modded-armor rebalance pass; each variant has the
+    # source mod's exact armor profile mapped onto our 4 default modules).
+    'aether_neptune':         (['aether:zanite_gemstone'],       2, HAMMER_IRON),
+    'aether_obsidian':        (['minecraft:obsidian'],           2, HAMMER_IRON),
+    'tf_arctic':              (['twilightforest:arctic_fur'],    2, HAMMER_IRON),
+    'tf_fiery':               (['twilightforest:fiery_ingot'],   2, HAMMER_IRON),
+    'tf_ironwood':            (['twilightforest:ironwood_ingot'],2, HAMMER_IRON),
+    'tf_knightmetal':         (['twilightforest:knightmetal_ingot'], 2, HAMMER_IRON),
+    'tf_naga':                (['twilightforest:naga_scale'],    2, HAMMER_IRON),
+    'tf_yeti':                (['twilightforest:alpha_fur'],     2, HAMMER_IRON),
+    'ug_cloggrum':            (['undergarden:cloggrum_ingot'],   2, HAMMER_IRON),
+    'ug_froststeel':          (['undergarden:froststeel_ingot'], 2, HAMMER_IRON),
+    'fa_draco_arcanus':       (['forbidden_arcanus:draco_arcanus_ingot'], 2, HAMMER_DIAMOND),
+    'fa_mortem':              (['forbidden_arcanus:bone'],       2, HAMMER_IRON),
+    'fa_tyr':                 (['forbidden_arcanus:tyr_ingot'],  2, HAMMER_DIAMOND),
+    'bs_diopside':            (['blue_skies:diopside_gem'],      2, HAMMER_IRON),
+    'bs_horizonite':          (['blue_skies:horizonite_ingot'],  2, HAMMER_IRON),
+    'bs_pyrope':              (['blue_skies:pyrope_gem'],        2, HAMMER_IRON),
+    # Shared variant: diamond armor with 0 toughness — repair via vanilla diamond.
+    'diamond_no_t':           (['minecraft:diamond'],            2, HAMMER_IRON),
     # tetra:skin/fabric/fibre fixtures
     'leather':      (['minecraft:leather'],         2, HAMMER_IRON),
     'wool':         (['minecraft:white_wool'],      2, HAMMER_IRON),

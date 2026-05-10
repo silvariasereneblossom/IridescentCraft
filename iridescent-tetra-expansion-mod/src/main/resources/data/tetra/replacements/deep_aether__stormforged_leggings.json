@@ -9,19 +9,19 @@
     "modules": {
       "leggings/leg_plate": [
         "leggings/full_leg_plate",
-        "full_leg_plate/iron"
+        "full_leg_plate/diamond_no_t"
       ],
       "leggings/belt": [
         "leggings/leather_belt",
-        "leather_belt/iron"
+        "leather_belt/diamond_no_t"
       ],
       "leggings/greaves": [
         "leggings/standard_greaves",
-        "standard_greaves/iron"
+        "standard_greaves/diamond_no_t"
       ],
       "leggings/cuisses": [
         "leggings/padded_cuisses",
-        "padded_cuisses/iron"
+        "padded_cuisses/diamond_no_t"
       ]
     }
   }

@@ -1,0 +1,13 @@
+{
+  "material": {
+    "items": [
+      "minecraft:obsidian"
+    ],
+    "count": 2
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/aether_obsidian"
+}

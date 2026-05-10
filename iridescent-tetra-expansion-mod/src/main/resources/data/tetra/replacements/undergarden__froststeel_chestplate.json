@@ -9,19 +9,19 @@
     "modules": {
       "chestplate/chest_plate": [
         "chestplate/breastplate",
-        "breastplate/iron"
+        "breastplate/ug_froststeel"
       ],
       "chestplate/chest_lining": [
         "chestplate/padded_lining",
-        "padded_lining/iron"
+        "padded_lining/ug_froststeel"
       ],
       "chestplate/trim": [
         "chestplate/simple_trim",
-        "simple_trim/iron"
+        "simple_trim/ug_froststeel"
       ],
       "chestplate/pauldrons": [
         "chestplate/light_pauldrons",
-        "light_pauldrons/iron"
+        "light_pauldrons/ug_froststeel"
       ]
     }
   }
