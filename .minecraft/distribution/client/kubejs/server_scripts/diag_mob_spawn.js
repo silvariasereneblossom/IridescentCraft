@@ -174,8 +174,40 @@ try {
     return out
   }
 
+  // Cache the registry classes once to avoid Java.loadClass per call.
+  var ForgeRegistries_dms = (function () {
+    try { return Java.loadClass('net.minecraftforge.registries.ForgeRegistries') } catch (e) { return null }
+  })()
+  var BuiltInRegistries_dms = (function () {
+    try { return Java.loadClass('net.minecraft.core.registries.BuiltInRegistries') } catch (e) { return null }
+  })()
+
   var effectId = function(effect) {
+    // Path 1: vanilla holder method. Built-in MobEffects expose this; many
+    // modded effects don't have a builtInRegistryHolder set up and throw.
     try { return String(effect.builtInRegistryHolder().key().location()) } catch (e) {}
+    // Path 2: Forge's IForgeRegistry lookup. Always works for any effect
+    // that registered through Forge's DeferredRegister, which is most
+    // modded effects.
+    try {
+      if (ForgeRegistries_dms !== null) {
+        var rl = ForgeRegistries_dms.MOB_EFFECTS.getKey(effect)
+        if (rl) return String(rl)
+      }
+    } catch (e) {}
+    // Path 3: vanilla BuiltInRegistries. Catches DataPack-registered
+    // dynamic registries on the rare path where the holder method
+    // throws but the registry still has the entry.
+    try {
+      if (BuiltInRegistries_dms !== null) {
+        var rl2 = BuiltInRegistries_dms.MOB_EFFECT.getKey(effect)
+        if (rl2) return String(rl2)
+      }
+    } catch (e) {}
+    // Path 4: descriptionId fallback (e.g., "effect.minecraft.resistance"
+    // -> usable for human reading even if not a resource location).
+    try { return String(effect.getDescriptionId()) } catch (e) {}
+    // Last resort: opaque Java ref. Better than crashing.
     try { return String(effect.toString()) } catch (e) { return '?' }
   }
 
