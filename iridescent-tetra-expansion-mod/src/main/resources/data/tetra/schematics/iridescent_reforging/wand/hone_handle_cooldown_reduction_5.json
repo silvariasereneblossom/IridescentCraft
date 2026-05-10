@@ -1,0 +1,32 @@
+{
+  "slots": [ "wand/handle" ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": { "textureY": 240 },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "wand_handle_hone_cooldown_reduction",
+        "level": 4
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_handle_hone_cooldown_reduction",
+          "level": 5
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": { "hammer_dig": "minecraft:netherite" },
+      "improvements": { "wand_handle_hone_cooldown_reduction": 1 }
+    }
+  ]
+}

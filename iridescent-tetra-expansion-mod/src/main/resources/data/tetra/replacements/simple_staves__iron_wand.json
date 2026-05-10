@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "simple_staves:iron_wand"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_wand",
+    "modules": {
+      "wand/handle": [
+        "wand/basic_handle",
+        "basic_handle/iron"
+      ],
+      "wand/cap": [
+        "wand/basic_cap",
+        "basic_cap/iron"
+      ],
+      "wand/core": [
+        "wand/basic_core",
+        "basic_core/iron"
+      ],
+      "wand/inlay": [
+        "wand/basic_inlay",
+        "basic_inlay/iron"
+      ]
+    }
+  }
+]

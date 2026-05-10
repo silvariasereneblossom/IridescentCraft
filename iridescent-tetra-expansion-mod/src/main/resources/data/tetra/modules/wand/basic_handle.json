@@ -1,0 +1,164 @@
+{
+  "type": "tetra:basic_major_module",
+  "slots": [
+    "wand/handle"
+  ],
+  "improvements": [
+    "iridescent_reforging:wand/"
+  ],
+  "variants": [
+    {
+      "materials": [
+        "tetra:wood/",
+        "tetra:stone/",
+        "tetra:metal/",
+        "tetra:gem/"
+      ],
+      "key": "basic_handle/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.005
+        },
+        "integrity": 3,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [ "tetra:wood/" ],
+      "key": "basic_handle/wood",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.005
+        },
+        "integrity": 3,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [ "default" ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [ "tetra:stone/" ],
+      "key": "basic_handle/stone",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.008
+        },
+        "integrity": 3,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [ "default" ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [ "tetra:metal/iron" ],
+      "key": "basic_handle/iron",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.010
+        },
+        "integrity": 3,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [ "default" ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [ "tetra:metal/gold" ],
+      "key": "basic_handle/gold",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.012,
+          "irons_spellbooks:max_mana": 5.0
+        },
+        "integrity": 3,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [ "default" ],
+        "models": [],
+        "magicCapacity": 7
+      }
+    },
+    {
+      "materials": [ "tetra:gem/diamond" ],
+      "key": "basic_handle/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.014
+        },
+        "integrity": 3,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [ "default" ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [ "tetra:metal/netherite" ],
+      "key": "basic_handle/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.018
+        },
+        "integrity": 3,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [ "default" ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [ "tetra:metal/aethersteel" ],
+      "key": "basic_handle/aethersteel",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.022,
+          "irons_spellbooks:max_mana": 5.0
+        },
+        "integrity": 4,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [ "default" ],
+        "models": [],
+        "magicCapacity": 8
+      }
+    }
+  ]
+}

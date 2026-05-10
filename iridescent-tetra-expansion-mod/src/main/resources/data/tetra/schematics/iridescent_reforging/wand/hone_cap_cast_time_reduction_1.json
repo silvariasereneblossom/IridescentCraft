@@ -1,0 +1,21 @@
+{
+  "slots": [ "wand/cap" ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": { "textureY": 240 },
+  "requirement": {
+    "type": "tetra:not",
+    "requirement": {
+      "type": "tetra:improvement",
+      "improvement": "wand_cap_hone_cast_time_reduction"
+    }
+  },
+  "outcomes": [
+    {
+      "requiredTools": { "hammer_dig": "minecraft:gold" },
+      "improvements": { "wand_cap_hone_cast_time_reduction": 1 }
+    }
+  ]
+}

@@ -1,0 +1,25 @@
+{
+  "replace": true,
+  "slots": [ "wand/core" ],
+  "materialSlotCount": 1,
+  "displayType": "minor",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": { "integrity": 0 },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:wood/",
+        "tetra:stone/",
+        "tetra:metal/",
+        "tetra:gem/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "wand/basic_core",
+      "moduleVariant": "basic_core/"
+    }
+  ]
+}

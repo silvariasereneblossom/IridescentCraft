@@ -53,7 +53,10 @@ THEMED_DIR  = os.path.join(ROOT, 'src/main/resources/data/tetra/materials/themed
 # Slots we generate repair defs for. Spell book core/front_cover have
 # only one variant (the slot fixture, no material variation) -- they
 # use a different repair path via book material schematics.
-ARMOR_SLOTS = ('helmet', 'chestplate', 'leggings', 'boots')
+# 'wand' is a non-armor major-bearing slot (reforged_wand item, Phase D
+# of the staves/wands integration) — its handle module is the major and
+# drives repair material identity exactly like armor's crown/chest_plate.
+ARMOR_SLOTS = ('helmet', 'chestplate', 'leggings', 'boots', 'wand')
 
 # Material suffix -> (item_id, count, required_hammer_tool_level).
 # Combines the values from the 19 pre-refactor repair JSONs (verified
@@ -111,6 +114,9 @@ MATERIAL_ITEM_MAP = {
     'dd_resonarium':          (['deeperdarker:resonarium'],      2, HAMMER_IRON),
     'dd_warden':              (['deeperdarker:reinforced_echo_shard'], 1, HAMMER_DIAMOND),
     'cm_ignitium':            (['cataclysm:ignitium_ingot'],     1, HAMMER_DIAMOND),
+    # tetra:wood/stone for the wand slot (reforged_wand T1 materials)
+    'wood':         (['minecraft:stick'],           2, HAMMER_IRON),
+    'stone':        (['minecraft:cobblestone'],     2, HAMMER_IRON),
     # tetra:skin/fabric/fibre fixtures
     'leather':      (['minecraft:leather'],         2, HAMMER_IRON),
     'wool':         (['minecraft:white_wool'],      2, HAMMER_IRON),

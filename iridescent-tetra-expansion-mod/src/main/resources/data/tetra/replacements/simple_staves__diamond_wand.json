@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "simple_staves:diamond_wand"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_wand",
+    "modules": {
+      "wand/handle": [
+        "wand/basic_handle",
+        "basic_handle/diamond"
+      ],
+      "wand/cap": [
+        "wand/basic_cap",
+        "basic_cap/diamond"
+      ],
+      "wand/core": [
+        "wand/basic_core",
+        "basic_core/diamond"
+      ],
+      "wand/inlay": [
+        "wand/basic_inlay",
+        "basic_inlay/diamond"
+      ]
+    }
+  }
+]

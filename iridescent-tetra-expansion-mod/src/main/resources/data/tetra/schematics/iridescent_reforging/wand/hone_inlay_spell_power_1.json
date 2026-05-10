@@ -1,0 +1,21 @@
+{
+  "slots": [ "wand/inlay" ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": { "textureY": 240 },
+  "requirement": {
+    "type": "tetra:not",
+    "requirement": {
+      "type": "tetra:improvement",
+      "improvement": "wand_inlay_hone_spell_power"
+    }
+  },
+  "outcomes": [
+    {
+      "requiredTools": { "hammer_dig": "minecraft:gold" },
+      "improvements": { "wand_inlay_hone_spell_power": 1 }
+    }
+  ]
+}

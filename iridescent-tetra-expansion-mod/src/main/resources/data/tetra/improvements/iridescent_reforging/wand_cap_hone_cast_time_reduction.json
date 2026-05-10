@@ -1,0 +1,7 @@
+[
+  { "key": "wand_cap_hone_cast_time_reduction", "level": 1, "attributes": { "**irons_spellbooks:cast_time_reduction": 0.005 } },
+  { "key": "wand_cap_hone_cast_time_reduction", "level": 2, "attributes": { "**irons_spellbooks:cast_time_reduction": 0.010 } },
+  { "key": "wand_cap_hone_cast_time_reduction", "level": 3, "attributes": { "**irons_spellbooks:cast_time_reduction": 0.016 } },
+  { "key": "wand_cap_hone_cast_time_reduction", "level": 4, "attributes": { "**irons_spellbooks:cast_time_reduction": 0.022 } },
+  { "key": "wand_cap_hone_cast_time_reduction", "level": 5, "attributes": { "**irons_spellbooks:cast_time_reduction": 0.030 } }
+]

@@ -4,6 +4,54 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Phase D: Simple Staves material wands -> Tetra-modular `reforged_wand`
+
+Closes the deferred Phase D from the staves/wands integration plan. The 6 Simple Staves material wands (woodenwand / stone / iron / gold / diamond / netherite) now auto-convert to `iridescent_reforging:reforged_wand` when dropped on a Tetra workbench. A post-T4 **aethersteel** variant is reachable by swapping the handle module at the workbench (no SS source item exists for it).
+
+**New item** — `iridescent_reforging:reforged_wand` (Java: `com.iridescentcraft.reforging.item.ItemModularWand`). 1 major + 3 minor slots:
+
+| Slot | Role | Primary attribute |
+|---|---|---|
+| handle (major) | material identity | `**irons_spellbooks:cooldown_reduction` |
+| cap (minor) | channeling | `**irons_spellbooks:cast_time_reduction` |
+| core (minor) | mana reservoir | `irons_spellbooks:max_mana` (flat) |
+| inlay (minor) | resonance | `**irons_spellbooks:spell_power` |
+
+All 4 slots marked `REQUIRED`; players swap variants via install schematics but the wand never enters an empty-slot state. GUI layout mirrors the armor diamond (NE major, W/SW/SE minors).
+
+**Material ladder** (per-slot variant suffixes; each tier scales the slot's primary attribute):
+
+| Material | Source | Notable extras |
+|---|---|---|
+| wood | `simple_staves:woodenwand` replacement | baseline |
+| stone | `simple_staves:stone_wand` replacement | — |
+| iron | `simple_staves:iron_wand` replacement | — |
+| gold | `simple_staves:gold_wand` replacement | +5 max_mana on handle, +3 on cap/inlay (mage mat tilt) |
+| diamond | `simple_staves:diamond_wand` replacement | — |
+| netherite | `simple_staves:netherite_wand` replacement | — |
+| **aethersteel** | workbench upgrade only (no SS source) | post-T4: +0.5% CDR rider on inlay, +1 integrity on each module |
+
+**Hone improvements** (4 stats x 5 levels, chained via `tetra:improvement` requirement: handle/Chronos = cooldown_reduction, cap/Flow = cast_time_reduction, core/Reservoir = max_mana, inlay/Resonance = spell_power). Tool progression mirrors `iss_book`: gold -> iron -> thermal:steel -> diamond -> netherite.
+
+**Files shipped**:
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/item/ItemModularWand.java` (new)
+- `registry/ModItems.java` — registered `REFORGED_WAND` (durability 500, stacksTo 1, UNCOMMON rarity)
+- `data/tetra/modules/wand/{basic_handle,basic_cap,basic_core,basic_inlay}.json`
+- `data/tetra/schematics/iridescent_reforging/wand/{handle,cap,core,inlay}.json` + 20 `hone_<slot>_<stat>_<1-5>.json`
+- `data/tetra/improvements/iridescent_reforging/wand_<slot>_hone_<stat>.json` (4 files)
+- `data/tetra/replacements/simple_staves__<6 material>_wand.json`
+- `tools/gen_repair_definitions.py` — added `wand` to `ARMOR_SLOTS`; added `wood`/`stone` to MATERIAL_ITEM_MAP; emits 7 wand repair JSONs
+- `assets/iridescent_reforging/lang/en_us.json` — 60 new entries (module/variant/improvement/schematic labels, `tetra.material.wood/stone`, item names)
+- `assets/iridescent_reforging/models/item/reforged_wand.json` — base model + 6 overrides (`material_index` 1-6) dispatching to per-variant child models
+- `assets/iridescent_reforging/models/item/reforged_wand_{stone,iron,gold,diamond,netherite,aethersteel}.json` — 6 child models. Source-mod sprites: `simple_staves:item/<wooden|stone|iron|gold|netherite>_wand` + `simple_staves:item/diamondwand` (note: no underscore in SS source for diamond); aethersteel uses `minecraft:item/end_rod` as a thematic stand-in (no SS source exists).
+- `client/WandMaterialIndexProperty.java` — registers `iridescent_reforging:material_index` on REFORGED_WAND, reads the handle module's material suffix and maps it to a 0-6 index (wood=0 base case). Wired into `IridescentReforging.onClientSetup`. Independent of armor's `MaterialIndexProperty`.
+
+**Mage main-hand progression complete**: T1 wooden_wand (now Tetra-modular) -> T2 iron/stone_wand or SS element wands -> T3 diamond/gold_wand or SS T3 element wands -> T4 netherite_wand or tenebrium_wand -> **endgame aethersteel_wand** via workbench upgrade. Each material wand can be independently honed across the 4 slots for ~3% CDR / 3% CTR / 40 mana / 14% spell_power max from honing alone, stacked on the variant baselines.
+
+Built + deployed to all 3 distros (`.minecraft/mods`, `.minecraft/server_distribution/mods`, `.minecraft/distribution/client/mods`).
+
+---
+
 ## 2026-05-10 — Phase A/B/C/E: Dan's Magic + Simple Staves integrated as T1-T4 mage progression
 
 Adds two new mods (Dan's Magic + Simple Staves) and reskins them into the pack's mage main-hand progression. Phases A (packwiz add), B (Dan's respec), C (Simple Staves element respec), E (recipe gating) shipped in this commit. Phase D (material wands → Tetra modular) deferred to next session — requires Java mod work in `iridescent-tetra-expansion-mod`. Phase F is playtest.

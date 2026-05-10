@@ -2,9 +2,11 @@ package com.iridescentcraft.reforging.registry;
 
 import com.iridescentcraft.reforging.IridescentReforging;
 import com.iridescentcraft.reforging.item.ItemModularArmor;
+import com.iridescentcraft.reforging.item.ItemModularWand;
 import net.minecraft.world.item.ArmorItem;
 import net.minecraft.world.item.ArmorMaterials;
 import net.minecraft.world.item.Item;
+import net.minecraft.world.item.Rarity;
 import net.minecraftforge.registries.DeferredRegister;
 import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
@@ -51,6 +53,15 @@ public final class ModItems {
     private static final String[] BOOTS_MINOR    = { "boots/boot_lining", "boots/heel", "boots/lacing" };
     private static final String[] BOOTS_REQUIRED = { "boots/boot_sole", "boots/boot_lining", "boots/heel", "boots/lacing" };
 
+    // Wand: 1 major (handle drives material identity / CDR) + 3 minors
+    // (cap = mana regen, core = max mana, inlay = spell power). All four
+    // marked REQUIRED so removal isn't offered from the workbench — players
+    // swap via install schematics but the wand never enters a state with
+    // an empty slot. Mirror of the armor pattern above.
+    private static final String[] WAND_MAJOR    = { "wand/handle" };
+    private static final String[] WAND_MINOR    = { "wand/cap", "wand/core", "wand/inlay" };
+    private static final String[] WAND_REQUIRED = { "wand/handle", "wand/cap", "wand/core", "wand/inlay" };
+
     public static final RegistryObject<Item> REFORGED_HELMET = ITEMS.register(
             "reforged_helmet",
             () -> new ItemModularArmor(
@@ -86,6 +97,13 @@ public final class ModItems {
                     new Item.Properties(),
                     BOOTS_MAJOR, BOOTS_MINOR, BOOTS_REQUIRED,
                     "iridescent_reforged_boots"));
+
+    public static final RegistryObject<Item> REFORGED_WAND = ITEMS.register(
+            "reforged_wand",
+            () -> new ItemModularWand(
+                    new Item.Properties().stacksTo(1).durability(500).rarity(Rarity.UNCOMMON),
+                    WAND_MAJOR, WAND_MINOR, WAND_REQUIRED,
+                    "iridescent_reforged_wand"));
 
     private ModItems() {}
 }

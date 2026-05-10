@@ -1,0 +1,28 @@
+[
+  {
+    "predicate": {
+      "items": [
+        "simple_staves:woodenwand"
+      ]
+    },
+    "item": "iridescent_reforging:reforged_wand",
+    "modules": {
+      "wand/handle": [
+        "wand/basic_handle",
+        "basic_handle/wood"
+      ],
+      "wand/cap": [
+        "wand/basic_cap",
+        "basic_cap/wood"
+      ],
+      "wand/core": [
+        "wand/basic_core",
+        "basic_core/wood"
+      ],
+      "wand/inlay": [
+        "wand/basic_inlay",
+        "basic_inlay/wood"
+      ]
+    }
+  }
+]
