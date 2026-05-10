@@ -22,7 +22,9 @@ User clarified that SS uniques are balanced against **vanilla**, not Tetra-enhan
 
 Other SS uniques (icewhisper +7, soulrender +4, etc.) left alone — they're already at appropriate tier values when measured against vanilla baseline.
 
-**Spellsword scaling hook** (`kubejs/server_scripts/origins/ss_unique_spellsword_scaling.js`): every melee hit with one of the 44 SS uniques in main hand adds **+0.5 AD per 50% bonus spell power** (= +1 AD per 100% bonus SP). Hooks into `EntityEvents.hurt`; melee-only (skips arrow/trident/fireball/thrown sources). Half the rate of Battlemage's Arcane Cleave and FREE (no mana cost), so:
+**Spellsword scaling hook** (`kubejs/server_scripts/origins/ss_unique_spellsword_scaling.js`): every melee hit with an **elemental** SS unique in main hand adds **+0.5 AD per 50% bonus spell power** (= +1 AD per 100% bonus SP). 33 of the 44 uniques qualify — those whose theme is an explicit element: fire (7), ice (2), lightning (4), wind (2), nature (2), light (2), shadow/necro (9), arcane (4), poison (1). Pure-physical / utility / unclear uniques (enigma, harbinger, ribboncleaver, livyatan, waxweaver, watching_warglaive, watcher_claymore, wickpiercer, sword_on_a_stick, dormant_relic — 11 items) are excluded.
+
+Hooks into `EntityEvents.hurt`; melee-only (skips arrow/trident/fireball/thrown sources). Half the rate of Battlemage's Arcane Cleave and FREE (no mana cost), so:
 
 - Battlemage stays distinct: their Arcane Cleave is +1/50% (double rate) but consumes 10 mana per swing and triggers Mana Reaver kill-restore loop
 - SS unique wielders get a small permanent buff regardless of class — pushes wider playerbase toward spellsword/hybrid builds

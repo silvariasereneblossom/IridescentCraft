@@ -24,30 +24,38 @@
 
 const SS_UNIQUE_AD_PER_HALF_SP = 1.0  // +0.5 AD per 50% bonus SP == +1 AD per 100%
 
-// All 44 Simply Swords drop-only unique weapons (mirrors the strip list
-// in tier_gated_recipes.js Section E). Items not in this set don't scale.
+// Elemental SS uniques only — weapons whose theme is an explicit element
+// (fire/ice/lightning/wind/nature/light/shadow/arcane/poison). Pure-physical
+// or unclear-theme uniques (enigma, harbinger, ribboncleaver, livyatan,
+// waxweaver, watching_warglaive, watcher_claymore, wickpiercer,
+// sword_on_a_stick, dormant_relic) are NOT in this set — they're
+// physical/utility weapons that shouldn't scale with spell power.
 const SS_UNIQUES = new Set([
-  // T2 boss-allocated
-  'simplyswords:emberblade', 'simplyswords:frostfall', 'simplyswords:icewhisper',
-  'simplyswords:tempest', 'simplyswords:soulrender', 'simplyswords:whisperwind',
-  'simplyswords:enigma', 'simplyswords:hiveheart', 'simplyswords:toxic_longsword',
-  'simplyswords:stars_edge', 'simplyswords:waxweaver', 'simplyswords:thunderbrand',
-  'simplyswords:caelestis', 'simplyswords:sunfire', 'simplyswords:flamewind',
-  // T3 boss-allocated
-  'simplyswords:brimstone_claymore', 'simplyswords:molten_edge', 'simplyswords:shadowsting',
-  'simplyswords:livyatan', 'simplyswords:twisted_blade', 'simplyswords:emberlash',
-  'simplyswords:bramblethorn', 'simplyswords:soulstealer', 'simplyswords:soulpyre',
-  'simplyswords:soulkeeper',
-  // T4 boss-allocated
-  'simplyswords:waking_lichblade', 'simplyswords:magiblade', 'simplyswords:arcanethyst',
-  'simplyswords:awakened_lichblade', 'simplyswords:stormbringer', 'simplyswords:watching_warglaive',
-  // Unassigned reserves (still uniques)
-  'simplyswords:harbinger', 'simplyswords:hearthflame', 'simplyswords:magiscythe',
-  'simplyswords:magispear', 'simplyswords:ribboncleaver', 'simplyswords:slumbering_lichblade',
-  'simplyswords:wickpiercer', 'simplyswords:mjolnir', 'simplyswords:storms_edge',
-  'simplyswords:sword_on_a_stick', 'simplyswords:watcher_claymore',
-  // Relic
-  'simplyswords:dormant_relic'
+  // Fire (7)
+  'simplyswords:emberblade', 'simplyswords:emberlash', 'simplyswords:sunfire',
+  'simplyswords:flamewind', 'simplyswords:molten_edge', 'simplyswords:brimstone_claymore',
+  'simplyswords:hearthflame',
+  // Ice (2)
+  'simplyswords:frostfall', 'simplyswords:icewhisper',
+  // Lightning / Thunder (4)
+  'simplyswords:stormbringer', 'simplyswords:thunderbrand', 'simplyswords:mjolnir',
+  'simplyswords:storms_edge',
+  // Wind (2)
+  'simplyswords:tempest', 'simplyswords:whisperwind',
+  // Nature / Earth (2)
+  'simplyswords:bramblethorn', 'simplyswords:hiveheart',
+  // Light / Cosmic (2)
+  'simplyswords:caelestis', 'simplyswords:stars_edge',
+  // Shadow / Necro (9)
+  'simplyswords:shadowsting', 'simplyswords:soulrender', 'simplyswords:soulpyre',
+  'simplyswords:soulkeeper', 'simplyswords:soulstealer', 'simplyswords:waking_lichblade',
+  'simplyswords:awakened_lichblade', 'simplyswords:slumbering_lichblade',
+  'simplyswords:twisted_blade',
+  // Arcane (4)
+  'simplyswords:magiblade', 'simplyswords:magiscythe', 'simplyswords:magispear',
+  'simplyswords:arcanethyst',
+  // Poison (1)
+  'simplyswords:toxic_longsword'
 ])
 
 try {
