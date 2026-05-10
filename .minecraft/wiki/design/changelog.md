@@ -4,6 +4,16 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — SimpleFarming GLMs whitelisted (modded grass seeds were being suppressed)
+
+Tester report: "previously other, non-wheat seeds would spawn, but I've barely seen any". Root cause: pack-level `data/forge/loot_modifiers/global_loot_modifiers.json` ships `"replace": true` with an explicit allowlist (introduced in commit `f74f7d59` to suppress chest injection from Artifacts/Celestial/Relics/ISB). With `replace:true` Forge discards every GLM not on our list — including SimpleFarming's four grass-block GLMs (`fern_seeds`, `grass_seeds`, `large_fern_seeds`, `tall_grass_seeds`), which inject modded seeds at 6.25% per non-shears grass break.
+
+Fix: added the four `simplefarming:*_seeds` entries to the allowlist in all four file copies (kubejs source, server distro, client distro, and the divergent datapack source under `datapack_sources/icraft_loot_overrides/`). Datapack source was also resynced with the kubejs canonical copy — it had been frozen at the original Artifacts-only set since commit `30aa62b7`, and two `replace:true` files in different namespaces had nondeterministic load-order semantics.
+
+PamHC2 GLMs (`pamhc2crops:fern_drops`, `grass_drops`, `tall_grass_drops`) deliberately NOT added: the mod's own jar registers the GLM IDs in its `global_loot_modifiers.json` but ships no implementation file at `data/pamhc2crops/loot_modifiers/*.json`, so adding to allowlist would only generate Forge "unknown modifier" errors. PamHC2 grass-seed drops are a vendor-side bug, not something the pack can fix.
+
+---
+
 ## 2026-05-09 — Death penalty caps at `maxDur - INERT_THRESHOLD` (was leaving items at 1 dura)
 
 Yesterday's fix (route through `hurtAndBreak`) preserved the "never destroyed" invariant but lost the pack's stricter "stop at the inert threshold" invariant. With the JS-side ceiling removed, the death-penalty damage flowed through the mixin's `maxDur - 1` clamp and items ended up at exactly 1 dura remaining post-respawn. The live-tick sweep was bumping them back to `maxDur - INERT_THRESHOLD` a few ticks later, but to the player the post-respawn moment showed a fully-broken item.

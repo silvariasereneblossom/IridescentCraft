@@ -75,7 +75,12 @@
     "forbidden_arcanus:entities/additions/squid_additions",
     "forbidden_arcanus:entities/additions/zombie_additions",
 
-    "tetra:bartering_additions"
+    "tetra:bartering_additions",
+
+    "simplefarming:fern_seeds",
+    "simplefarming:grass_seeds",
+    "simplefarming:large_fern_seeds",
+    "simplefarming:tall_grass_seeds"
   ],
   "replace": true
 }

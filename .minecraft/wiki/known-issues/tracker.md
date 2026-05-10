@@ -14,6 +14,13 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Modded grass seeds (SimpleFarming) suppressed by GLM allowlist (2026-05-10) — RESOLVED
+- **Status:** Resolved 2026-05-10
+- **Description:** Tester observed that non-wheat seeds (modded crops) had stopped dropping from grass. Pack-level `data/forge/loot_modifiers/global_loot_modifiers.json` ships `"replace": true` with an allowlist (introduced 2026-04-26 to gate Artifacts/Celestial/Relics/ISB chest injection). With `replace:true`, every GLM not on the allowlist is dropped from the registry — including the four `simplefarming:*_seeds` GLMs that inject Pam-style modded seeds at 6.25%/grass break.
+- **Fix:** Added `simplefarming:fern_seeds`, `simplefarming:grass_seeds`, `simplefarming:large_fern_seeds`, `simplefarming:tall_grass_seeds` to the allowlist in all four file copies (`.minecraft/kubejs/data/forge/loot_modifiers/global_loot_modifiers.json`, the two distro copies, and the `datapack_sources/icraft_loot_overrides/...` copy — also resynced the divergent datapack source with the kubejs canonical version).
+- **Not fixed:** PamHC2 GLMs (`pamhc2crops:fern_drops`, `grass_drops`, `tall_grass_drops`) — the mod jar registers the GLM IDs but ships no implementation files at `data/pamhc2crops/loot_modifiers/*.json`. Adding them to the allowlist would only generate Forge "unknown modifier" errors. Vendor-side bug, not pack-fixable.
+- **Player impact (pre-fix):** Modded crop seeds rarely / never appearing from grass tile breaks since 2026-04-26.
+
 ### Death-penalty destroyed broken Tetra items (2026-05-09) — RESOLVED
 - **Status:** Resolved 2026-05-09
 - **Description:** Tester died holding a broken Tetra equip; the item disappeared post-respawn. `death_penalty.js` `applyDurabilityLoss` wrote `Damage` NBT directly, bypassing both `ItemStackHurtAndBreakMixin` and Tetra's `damageItemImpl` clamp. JS-side clamp had different threshold semantics from the mixin, and `hasNativeBreakProtection` (which skips Tetra in the live tick path) wasn't consulted in the death-penalty path.
