@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Truly Modular framework removed (deprecated by Tetra; also the spider-jockey buff source)
+
+Pulled the entire Truly Modular stack from the pack:
+- `modular-item-api` (MiApi, `Truly-Modular-miapi-forge-1.1.49`) — the underlying framework, bundles `nucleus-{core,codec,config,facet,pose}` jars via JIJ.
+- `truly-modular-arsenal` (`tm_arsenal`) — modular weapons.
+- `truly-modular-archery` (`archery`) — modular bows.
+
+Removed from all 3 packwiz indexes (main + server_distribution + distribution/client) and the matching `config/miapi.jsonc` from each. With `truly-modular-armory` already retired in phase 9 (replaced by `iridescent_reforging`) and `create-truly-modular` retired alongside it, no remaining mods depend on the framework.
+
+**Two reasons for the removal:**
+1. **Deprecated by Tetra.** Iridescent Reforging (custom Tetra-armor extension) + Tetra core + the Iridescent Modular Spells Tetra integration cover the same gameplay surface. MiApi's modular weapons/bows duplicate functionality already present in the Tetra-derived stack.
+2. **Source of the spider-jockey buff package.** 890 MOBDIAG captures from a single recent session showed cave_spider+skeleton jockeys spawning at high rate (124 pairs in one session) with the rider receiving permanent regen amp 0 + dolphins_grace amp 1 + sometimes invisibility amp 1 (durations clustered at ~100M ticks). The cave_spider entities carried a `nucleus:facets` NBT compound — `nucleus-facet-forge` is bundled exclusively inside MiApi's jar. Removing the framework removes the facet attachment point, resolving the spider buff package as a side effect of the deprecation cleanup.
+
+**Cleanup script** (`kubejs/server_scripts/cleanup/strip_truly_modular_items.js`, synced to all 3 distros): on `PlayerEvents.inventoryChanged` and `PlayerEvents.loggedIn`, strips any item whose ID prefix matches `miapi:`, `archery:`, `tm_arsenal:`, `modular_item_api:`, or `truly_modular:` and replaces with `minecraft:air`. Eliminates ghost-stack "Unknown Item" placeholders for any TM-framework items players were carrying. Self-cleaning — once world has cycled through every player's inventory and every chest interaction, no live stacks remain. Persistent chests in unloaded chunks may still contain ghost items until first open; vanilla shows them as "Unknown" anyway and they vanish on pickup (the receiving inventory's change event triggers the strip).
+
+**Independent design call still pending:** the Majrusz `jockey_spawn.chance: 0.125` config setting (separately responsible for the inflated spawn rate) is unchanged. The buff package was the offensive part; high-rate vanilla-style spider+skeleton jockeys without the buff package are a balance question, not a bug.
+
+---
+
 ## 2026-05-10 — Diamond strip belt-and-suspenders + Megatorch de-gated to T1
 
 **Diamond strip extended.** Audited mod-shipped chest loot tables for `minecraft:diamond*` entries; found 5 in OW-spawning structures: `artifacts:chests/campsite_chest` (diamond axe/pickaxe/shovel) and 4 ISS structure chests (`battleground/burial_loot`, `catacombs/coffin_loot`, `catacombs/wall_loot`, `generic_magic_treasure` — full diamond gear sets each). Existing `preT3DiamondStrip` (Section 5A1.5) uses `LootType.CHEST + anyDimension` predicate, which **should** catch these, but the lessons-learned 2026-04-21 entry warned about that predicate failing for non-vanilla loot contexts (Lootr aggressive_mode wrapping was the example). Belt-and-suspenders added two new strip layers in the same section:
