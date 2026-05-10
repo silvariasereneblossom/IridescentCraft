@@ -1591,6 +1591,55 @@ LootJS.modifiers(event => {
   preT3DiamondStrip.removeLoot('minecraft:diamond_boots')
   preT3DiamondStrip.removeLoot('minecraft:diamond_horse_armor')
 
+  // ─── Belt-and-suspenders: explicit per-table strips ───
+  // 2026-05-10 audit found mod-shipped chest tables in pre-T3 dims that
+  // contain vanilla diamond gear. The LootType.CHEST + anyDimension predicate
+  // above SHOULD catch these, but custom mod calls can bypass the LootType
+  // categorization (lessons-learned 2026-04-21 noted Lootr aggressive_mode
+  // wrapping breaking similar predicates for villages). Per-table strips
+  // are unambiguous regardless of how the table is invoked.
+  var perTableDiamondStrip = event.addLootTableModifier(
+    'artifacts:chests/campsite_chest',
+    'irons_spellbooks:chests/battleground/burial_loot',
+    'irons_spellbooks:chests/catacombs/coffin_loot',
+    'irons_spellbooks:chests/catacombs/wall_loot',
+    'irons_spellbooks:chests/generic_magic_treasure'
+  )
+  perTableDiamondStrip.removeLoot('minecraft:diamond')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_sword')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_pickaxe')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_axe')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_shovel')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_hoe')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_helmet')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_chestplate')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_leggings')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_boots')
+  perTableDiamondStrip.removeLoot('minecraft:diamond_horse_armor')
+
+  // ─── Wide regex catch-all: any chest-pathed table in pre-T3 dims ───
+  // Matches any loot table whose path contains "chests/" or "chest/" under
+  // any namespace. The dim filter restricts to OW + T2 dims so T3+ chests
+  // still legitimately roll diamonds. This catches future modded structures
+  // we haven't audited yet without requiring per-table maintenance.
+  var regexDiamondStrip = event
+    .addLootTableModifier(/^[a-z0-9_]+:.*chests?\//)
+    .anyDimension('minecraft:overworld',
+      'twilightforest:twilight_forest',
+      'aether:the_aether', 'deep_aether:the_aether',
+      'blue_skies:everbright', 'blue_skies:everdawn')
+  regexDiamondStrip.removeLoot('minecraft:diamond')
+  regexDiamondStrip.removeLoot('minecraft:diamond_sword')
+  regexDiamondStrip.removeLoot('minecraft:diamond_pickaxe')
+  regexDiamondStrip.removeLoot('minecraft:diamond_axe')
+  regexDiamondStrip.removeLoot('minecraft:diamond_shovel')
+  regexDiamondStrip.removeLoot('minecraft:diamond_hoe')
+  regexDiamondStrip.removeLoot('minecraft:diamond_helmet')
+  regexDiamondStrip.removeLoot('minecraft:diamond_chestplate')
+  regexDiamondStrip.removeLoot('minecraft:diamond_leggings')
+  regexDiamondStrip.removeLoot('minecraft:diamond_boots')
+  regexDiamondStrip.removeLoot('minecraft:diamond_horse_armor')
+
   // =========================================================================
   // SECTION 5A2: OVERWORLD CURIO DROPS
   // =========================================================================

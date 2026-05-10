@@ -4,6 +4,19 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Diamond strip belt-and-suspenders + Megatorch de-gated to T1
+
+**Diamond strip extended.** Audited mod-shipped chest loot tables for `minecraft:diamond*` entries; found 5 in OW-spawning structures: `artifacts:chests/campsite_chest` (diamond axe/pickaxe/shovel) and 4 ISS structure chests (`battleground/burial_loot`, `catacombs/coffin_loot`, `catacombs/wall_loot`, `generic_magic_treasure` — full diamond gear sets each). Existing `preT3DiamondStrip` (Section 5A1.5) uses `LootType.CHEST + anyDimension` predicate, which **should** catch these, but the lessons-learned 2026-04-21 entry warned about that predicate failing for non-vanilla loot contexts (Lootr aggressive_mode wrapping was the example). Belt-and-suspenders added two new strip layers in the same section:
+
+1. **Per-table strip** for the 5 confirmed leak tables — unambiguous match by table name regardless of how the loot is invoked.
+2. **Regex catch-all** matching `/^[a-z0-9_]+:.*chests?\//` (any chest-pathed table under any namespace), gated to the same OW + T2 dim list. Catches future modded structures we haven't audited yet without per-table maintenance.
+
+On the "after GLM" question: LootJS in 1.20.1 hooks loot via a `LootTable` mixin that fires at the *end* of loot resolution, so the strip operates on the post-GLM result. The 5 leak tables aren't a GLM-injection problem — they're mod-shipped table content that the existing `LootType.CHEST` predicate may have been failing to match. Per-table + regex coverage closes both the predicate gap and any future GLM-added diamonds.
+
+**Megatorch de-gated to T1** (`tier_gated_recipes.js` Section I.11). Vanilla recipe required 2× diamond + 2× log + 2× gold block + 3× torch — diamonds gate Megatorch to T3 by which point its mob-spawn suppression is no longer the gameplay problem it solves. New recipe: 3× torch + 2× iron block + 2× redstone block + 2× gold block. Replaces 2 diamonds with 2 iron blocks (early-game accessible) and the 2 logs with 2 redstone blocks (logs were free filler; redstone adds thematic signal/power fit for the spawn-detection radius). Net cost ≈ 18 iron + 8 gold + 18 redstone dust — meaningful T1 investment for a permanent base defense item.
+
+---
+
 ## 2026-05-10 — Village fletcher coverage + Lootr `additional_chests` populated
 
 Two follow-on gaps surfaced after the GLM strategy switch the same day.

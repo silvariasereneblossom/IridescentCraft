@@ -447,6 +447,26 @@ ServerEvents.recipes(event => {
   }).id('icraft:disenchanter_t1')
 
 
+  // ═══ SECTION I.11: TORCHMASTER MEGATORCH → T1 ═══
+  // Vanilla torchmaster:megatorch requires 3× torch + 2× diamond + 2× log
+  // + 2× gold block. Megatorch is a wide-radius mob-spawn-suppression item
+  // that's most useful early game (T1-T2 base defense), but the diamonds
+  // gate it to T3 — by which point the player has progressed past the
+  // problem it solves. Replace 2× diamond with 2× iron block, and replace
+  // 2× log with 2× redstone block (logs are essentially free filler;
+  // redstone block adds a thematic signal/power component fitting the
+  // mob-detection-radius theme). Net cost: 18 iron + 8 gold + 18 redstone
+  // dust = clearly T1-craftable but still meaningful investment for a
+  // permanent base defense item.
+  event.remove({ id: 'torchmaster:megatorch' })
+  event.shaped('torchmaster:megatorch', ['TTT','IRI','GRG'], {
+    T: 'minecraft:torch',
+    I: 'minecraft:iron_block',
+    R: 'minecraft:redstone_block',
+    G: 'minecraft:gold_block'
+  }).id('icraft:megatorch_t1')
+
+
   // ═══ SECTION J: COMPASS OF RETURN (T2 craftable) ═══
   // Found as 5% loot in surface dimension chests (T1 rare find).
   // Craftable at T2: compass + ender pearls + gold (spatial magic theme).
