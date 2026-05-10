@@ -4,6 +4,34 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Simply Swords drop-tier rebalance + spellsword scaling hook
+
+User clarified that SS uniques are balanced against **vanilla**, not Tetra-enhanced — so the +3 raw modifier on T2-T4 boss drops is genuinely undertuned vs. what a player can craft via Tetra at the same tier. Plus shadowsting's **-2.0 modifier** (negative) is too steep a tax even for a CC-utility weapon. Shipped 9 config tweaks in `simplyswords_main/weapon_attributes.json5` (synced to all 3 distros):
+
+| Weapon | Tier | Old | New | Reason |
+|---|---|---|---|---|
+| shadowsting | T3 (Harbinger) | -2.0 | **+1.0** | Keep utility tax but stop it being negative; CC weapons should still be USABLE for combat |
+| stormbringer | T4 (Warden) | +3.0 | **+8.0** | Endgame boss; +3 was T2 equivalent |
+| magiblade | T4 (Gaia Guardian) | +3.0 | **+7.0** | Endgame boss; +3 was T2 equivalent |
+| emberblade | T2 (Hydra) | +3.0 | **+5.0** | T2 boss should beat diamond Tetra |
+| sunfire | T2 (Aether Sun Spirit) | +3.0 | **+5.0** | T2 boss |
+| flamewind | T2 (Deep Aether EotsController) | +3.0 | **+5.0** | T2 boss |
+| whisperwind | T2 (Ur-Ghast) | +3.0 | **+5.0** | T2 boss |
+| stars_edge | T2 (BS Starlit Crusher) | +3.0 | **+5.0** | T2 boss |
+| toxic_longsword (longswordofplague) | T2 (BS Alchemist) | +3.0 | **+5.0** | T2 boss |
+
+Other SS uniques (icewhisper +7, soulrender +4, etc.) left alone — they're already at appropriate tier values when measured against vanilla baseline.
+
+**Spellsword scaling hook** (`kubejs/server_scripts/origins/ss_unique_spellsword_scaling.js`): every melee hit with one of the 44 SS uniques in main hand adds **+0.5 AD per 50% bonus spell power** (= +1 AD per 100% bonus SP). Hooks into `EntityEvents.hurt`; melee-only (skips arrow/trident/fireball/thrown sources). Half the rate of Battlemage's Arcane Cleave and FREE (no mana cost), so:
+
+- Battlemage stays distinct: their Arcane Cleave is +1/50% (double rate) but consumes 10 mana per swing and triggers Mana Reaver kill-restore loop
+- SS unique wielders get a small permanent buff regardless of class — pushes wider playerbase toward spellsword/hybrid builds
+- A wizard with +200% bonus SP wielding emberblade gets +2 AD on top of the +5 base modifier — meaningful incentive to pick up melee uniques rather than dismissing them as caster-incompatible
+
+Hook gate is the explicit unique set (44 items mirroring `tier_gated_recipes.js` strip list); generic material-tier SS weapons (diamond_longsword etc.) are unaffected.
+
+---
+
 ## 2026-05-10 — Modded armor: round 4 (ISS mage robes → /wool, all 11 mods complete)
 
 ISS handled per the user's clarification: "I would think they'd be wool/cloth at base." NBT magic bonuses (mana, spell_power, element-specific powers) transfer from the source ISS item via `SpecializedReplacementHook` (per `dev/lessons-learned.md` — the workbench-driven replacement hook restores skin/affix/enchantment NBT after Tetra's vanilla replacement runs). So our modular variants only need correct **base armor** at cloth/wool tier; the magic side comes from the source NBT.
