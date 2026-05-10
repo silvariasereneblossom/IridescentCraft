@@ -270,6 +270,34 @@ ServerEvents.recipes(event => {
   ].forEach(id => event.remove({ output: id }))
 
 
+  // ═══ SECTION K: STAFF / WAND DROP-ONLY ENFORCEMENT ═══
+  // Companion to loot/staff_wand_drops.js — the 11 staves that ship with
+  // crafting recipes in their source mods (out of the 15 added there +
+  // 2 already-seeded in iss_boss_drops.js). Strip recipes so these items
+  // are exclusively boss-drops, mirroring the Simply Swords pattern.
+  // The other 4 (hither_thither_wand, staff_of_the_nines, cloud_staff,
+  // perish_staff) ship without recipes already.
+  ;[
+    // ISS — graybeard, pyrium (also pyrium has armor route)
+    'irons_spellbooks:graybeard_staff',
+    'irons_spellbooks:pyrium_staff',
+    // Twilight Forest — 4 scepters
+    'twilightforest:fortification_scepter',
+    'twilightforest:lifedrain_scepter',
+    'twilightforest:twilight_scepter',
+    'twilightforest:zombie_scepter',
+    // Forbidden Arcanus — 2 draco staves
+    'forbidden_arcanus:draco_arcanus_staff',
+    'forbidden_arcanus:draco_arcanus_scepter',
+    // Aether — nature_staff
+    'aether:nature_staff',
+    // Terramity — lightning_staff
+    'terramity:lightning_staff',
+    // DeeperDarker — sonorous_staff
+    'deeperdarker:sonorous_staff'
+  ].forEach(id => event.remove({ output: id }))
+
+
   // ═══ SECTION F: APOTHEOSIS WORKSTATION RECIPES ═══
 
   // Salvaging Table — T1 (ungated). LEAVE default.

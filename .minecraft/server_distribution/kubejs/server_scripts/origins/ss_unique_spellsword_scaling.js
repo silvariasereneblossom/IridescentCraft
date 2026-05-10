@@ -1,22 +1,21 @@
 // =============================================================================
-// SIMPLY SWORDS UNIQUES — Spellsword damage scaling
+// SIMPLY SWORDS ELEMENTAL UNIQUES — Spell-power utility for non-casters
 // =============================================================================
-// Pushes Simply Swords drop-only unique weapons toward spellsword/Battlemage
-// builds: every melee hit with a held SS unique adds bonus AD scaled by the
-// player's bonus spell power.
+// Design intent: non-casters who happen to have spell power (from gear, an
+// origin perk, an artifact, etc.) get *some* return on it when wielding an
+// elemental SS unique. Without this, spell power is dead stat for any class
+// that doesn't cast — a warrior who finds a wizard helmet has no reason to
+// keep wearing it. With this, that warrior gets a small AD bump on their
+// elemental SS sword for every 50% bonus SP they accrue.
 //
 //   Formula: +0.5 AD per 50% bonus spell power (== +1 AD per 100% bonus SP).
-//   Half the rate of Battlemage's Arcane Cleave (which gives +1/50% but
-//   costs 10 mana per swing). This one is FREE — small permanent buff for
-//   any wielder, regardless of class.
+//   Free, no mana cost. Half the rate of Battlemage's Arcane Cleave (which
+//   gives +1/50% but costs 10 mana per swing) — so Battlemage stays
+//   distinctive as the dedicated spellsword class.
 //
-// Why on every wielder, not just Battlemage:
-//   - SS uniques are all magic-themed (emberblade fire / frostfall ice /
-//     soulrender necro / arcanethyst arcane / etc.)
-//   - User intent: "push them harder toward Battlemage builds" — this is
-//     an INCENTIVE (small bonus rewards mages who melee) not a gate.
-//   - Battlemage class stays distinctive via Arcane Cleave (higher rate,
-//     mana cost, kill-restore loop).
+// Scope: only ELEMENTAL uniques (fire/ice/lightning/wind/nature/light/
+// shadow/arcane/poison themes). Pure-physical or unclear-theme uniques
+// don't scale — their damage shouldn't draw from a magical stat thematically.
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks),
 //         feedback_kubejs_event_scope.md (EntityEvents.hurt is server-scope).

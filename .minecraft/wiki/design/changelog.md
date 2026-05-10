@@ -4,6 +4,40 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Staff/wand drop-tier seeding + SS scaling hook reframe
+
+**SS spellsword hook reframed**, same code: comment now describes the design as "non-casters who happen to have spell power get *some* return on it" — not "wizards pick up melee." The mechanic was always: a warrior who finds a wizard helmet shouldn't have spell power as dead stat; with this hook, that warrior gets a small AD bump on their elemental SS sword for every 50% bonus SP they accrue. Battlemage stays distinctive via the higher rate + mana cost + Mana Reaver kill-loop on Arcane Cleave.
+
+**Staff/wand drop-tier seeding** (closes task #249). The pack already had 17 staff/wand items across 9 mods but only 2 were seeded in our loot scripts (blood_staff, ice_staff in `iss_boss_drops.js`). Created `kubejs/server_scripts/loot/staff_wand_drops.js` mirroring the Simply Swords boss-allocation pattern. 15 staves now seeded:
+
+**T2 (~25-35% rate):**
+- `twilightforest:fortification_scepter` → Knight Phantom (defender boss)
+- `twilightforest:lifedrain_scepter` → Lich (life-drain theme)
+- `twilightforest:twilight_scepter` → Ur-Ghast
+- `twilightforest:zombie_scepter` → Minoshroom
+- `irons_spellbooks:graybeard_staff` → Wandering Magician (old-mage)
+- `irons_spellbooks:hither_thither_wand` → Archevoker (teleport-mage)
+- `savage_and_ravage:wand_of_freezing` → SAR Executioner
+
+**T3 (~15-25%):**
+- `irons_spellbooks:pyrium_staff` → Pyromancer (alongside existing armor drops)
+- `aether:nature_staff` → Slider
+- `terramity:perish_staff` → Cataclysm Maledictus
+- `forbidden_arcanus:draco_arcanus_staff` → Cataclysm Harbinger
+
+**T4 (~10-20%):**
+- `irons_spellbooks:staff_of_the_nines` → Dead King (alt to blood_staff)
+- `aether:cloud_staff` → Valkyrie Queen
+- `deeperdarker:sonorous_staff` → vanilla Warden + Cataclysm Ender Guardian (sonic theme)
+- `forbidden_arcanus:draco_arcanus_scepter` → Cataclysm Ender Guardian
+- `terramity:lightning_staff` → vanilla Warden
+
+**Recipe-strip enforcement** (`tier_gated_recipes.js` Section K): 11 of the 15 staves ship with crafting recipes in their source mods. All stripped via `event.remove({output:})`. The 4 already drop-only without recipes (hither_thither_wand, staff_of_the_nines, cloud_staff, perish_staff) need no strip. Pattern mirrors Section E (Simply Swords strip).
+
+Pure-mage main-hand niche is now properly tiered. Combined with the SS spellsword scaling hook, mage-class players have a complete weapon progression: Ars spellbook off-hand for basic casts, ISS spellbook curio for abilities, drop-tier staff/wand for main-hand, with SS uniques as cross-class options that scale with whatever SP the player accrues.
+
+---
+
 ## 2026-05-10 — Simply Swords drop-tier rebalance + spellsword scaling hook
 
 User clarified that SS uniques are balanced against **vanilla**, not Tetra-enhanced — so the +3 raw modifier on T2-T4 boss drops is genuinely undertuned vs. what a player can craft via Tetra at the same tier. Plus shadowsting's **-2.0 modifier** (negative) is too steep a tax even for a CC-utility weapon. Shipped 9 config tweaks in `simplyswords_main/weapon_attributes.json5` (synced to all 3 distros):
