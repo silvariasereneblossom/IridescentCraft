@@ -4,6 +4,54 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — Phase A/B/C/E: Dan's Magic + Simple Staves integrated as T1-T4 mage progression
+
+Adds two new mods (Dan's Magic + Simple Staves) and reskins them into the pack's mage main-hand progression. Phases A (packwiz add), B (Dan's respec), C (Simple Staves element respec), E (recipe gating) shipped in this commit. Phase D (material wands → Tetra modular) deferred to next session — requires Java mod work in `iridescent-tetra-expansion-mod`. Phase F is playtest.
+
+**Phase A — packwiz**: added `dans-magic.pw.toml` + `simple-staves.pw.toml` to all 3 distros. Both pull from CurseForge metadata.
+
+**Phase B — Dan's Magic respec** (5 staves, T1 element-buff items):
+
+| Staff | T1 Recipe | Held effect |
+|---|---|---|
+| ice_staff | stick + packed_ice + amethyst_powder (vertical) | +20% ISS ice_spell_power |
+| lightning_staff | stick + copper_ingot + amethyst_powder | +20% lightning_spell_power |
+| magma_staff | stick + magma_cream + amethyst_powder | +20% fire_spell_power |
+| toxic_staff | stick + spider_eye + amethyst_powder | +20% nature_spell_power (toxic→nature mapping) |
+| **tnt_staff → Apprentice Battlerod** | stick + gunpowder + 2× iron_ingot + amethyst_powder | +5% generic spell_power + 6 attack_damage (~7 total, +2 above iron sword) + sword-tier attack_speed |
+
+Right-click projectile use stripped via `kubejs/server_scripts/integration/dna_simple_staves_strip.js` (`ItemEvents.firstRightClicked` cancellation per item ID). MCreator advancement triggers blanked via `kubejs/data/dna/advancements/*.json` overlays (impossible-trigger pattern). The `tnt_staff` display name is renamed to "Apprentice Battlerod" via `ItemEvents.modification` in `startup_scripts/dna_simple_staves_buffs.js`.
+
+**Phase C — Simple Staves element wands** (8 wands kept, explosion stripped):
+
+| Wand | Tier | Effect | Reagent |
+|---|---|---|---|
+| wind_essence_wand | T1 | +20% lightning_spell_power + 0.05 movement_speed | wind_essence (overworld ore) |
+| flame_wand | T2 | +35% fire_spell_power | flame_crystal (overworld ore) |
+| thunder_wand | T2 | +35% lightning_spell_power | storm_essence (crafted void+wind) |
+| venomite_wand | T2 | +35% nature_spell_power | venomite (overworld ore) |
+| viritium_wand | T3 | +50% nature_spell_power | viritium (overworld ore) |
+| veil_wand | T3 | +50% holy_spell_power | veil_essence (overworld ore) |
+| void_wand | T3 | +50% ender_spell_power | void_crystal (End ore) |
+| tenebrium_wand | T4 | +75% ender_spell_power | tenebrium (Nether ore) |
+| ~~explosion_wand~~ | — | — | **STRIPPED** — redundant with Apprentice Battlerod |
+
+All recipes replaced via `kubejs/server_scripts/recipes/staff_wand_recipes.js` Section K-equivalent: shape `[' R '][' RWR '][' A ']` with W=woodenwand (default Simple Staves recipe kept), R=tier reagent, A=amethyst_powder (cross-mod link to Dan's Magic). T3-T4 wands use heavier reagent counts.
+
+**Phase E — recipe strips**: original Dan's Magic recipes (used Nether ghast_tear/lightning_rod/staff_base) and original Simple Staves element recipes (used netherite_stick base) all stripped via `event.remove({output:})`. The 6 Simple Staves material wands keep default recipes (sticks + planks → woodenwand etc.) — they're the Tetra-modular base for Phase D.
+
+**MCreator scaffolding strip**:
+- 9 Dan's Magic advancements + 1 Simple Staves advancement → blanked to impossible-trigger
+- Right-click projectile use → cancelled for all 14 staff/wand items (no more themed projectiles fired on use)
+- Particles/sounds vanish implicitly with the right-click cancellation
+- Projectile entity classes left registered (no harm; no longer triggered from items)
+
+**Mage main-hand progression now:** T1 wooden_wand (currently default Simple Staves item; will become Tetra-modular base) + Dan's element staves OR ISS lightning_rod (drop), T2 thunder/flame/venomite element wands (overworld craft) OR ISS T2 staves (drops), T3-T4 viritium/veil/void/tenebrium element wands OR ISS endgame staves. Three parallel ladders converge on the main-hand slot.
+
+**Phase D — pending** (separate session): convert simple_staves material wands to Tetra-modular `iridescent_reforging:reforged_wand` with 4 slots (handle/cap/core/inlay), material variants, hone improvements. Requires new Java item class + module data + replacement files in `iridescent-tetra-expansion-mod`.
+
+---
+
 ## 2026-05-10 — Staff/wand drop-tier seeding + SS scaling hook reframe
 
 **SS spellsword hook reframed**, same code: comment now describes the design as "non-casters who happen to have spell power get *some* return on it" — not "wizards pick up melee." The mechanic was always: a warrior who finds a wizard helmet shouldn't have spell power as dead stat; with this hook, that warrior gets a small AD bump on their elemental SS sword for every 50% bonus SP they accrue. Battlemage stays distinctive via the higher rate + mana cost + Mana Reaver kill-loop on Arcane Cleave.

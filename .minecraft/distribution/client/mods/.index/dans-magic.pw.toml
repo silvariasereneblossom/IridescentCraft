@@ -1,0 +1,16 @@
+filename = 'DAN-magic2.0.jar'
+name = "Dan's Magic"
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '702235a70d008af037e774b11b8144df92823c9e'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 5058039
+project-id = 910025
