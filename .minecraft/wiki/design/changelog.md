@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-10 — debug.log error sweep: block_break_speed, stale recipe IDs, planetary_extraction guards
+
+Audited `latest.log` (clean — zero ERROR/WARN) and the rotated `debug.log` (215 ERROR / 1080 WARN). Most errors clustered into 5 known/manageable categories. Surgical fixes for 3 of them landed this commit:
+
+**1. `puffish_attributes:mining_speed` correction** (`skills/justleveling_skills.js:250`). Quarryman skill (BLD ≥ 10) was calling `player.modifyAttribute('minecraft:player.block_break_speed', ...)`. That's a Minecraft 1.21 attribute — doesn't exist on 1.20.1. The empty-catch swallowed the NPE silently but per-tick spam in debug.log was the result (TickMaster runs the skills loop continuously). Replaced with `puffish_attributes:mining_speed`, which is the same attribute already used in the gathering category JSON (`data/icraft/puffish_skills/categories/gathering/category.json`).
+
+**2. Stale `disenchanting_table` + `table_of_experience` IDs** (`recipes/tier_gated_recipes.js` Section H). The H.1 block tried to remove + reshape `disenchanting:disenchanting_table` (item doesn't exist; the actual mod item is `disenchanting:disenchanter`, already correctly handled in Section I.10). Removed the stale H.1 block. H.2 had `toe:table_of_experience` — actual ID is `toe:table_of_expieriance` (sic — the mod ships the misspelled form, confirmed against `TesterLogs/Item Audit/all_items.tsv`). Fixed both `event.remove({output:...})` and `event.shaped(...)` arguments.
+
+**3. `planetary_extraction.js` Create recipe + Mekanism recipe guards.** KubeJS's 2-arg `event.recipes.create.crushing(outputs, input)` constructor stopped resolving on the current Create version (same root cause as `if_latex_rework.js`'s already-wrapped block). All 5 planet-stone crushing recipes + the hydrogen→fuel `mekanism:condensentrating` custom recipe (Mekanism's actual type for gas↔fluid is `mekanism:rotary`, so this was an unknown-type rejection too) are now `try/catch`-wrapped with `console.warn` fallbacks. Until the API mismatch is rewritten, those recipes silently no-op rather than aborting the script. Matches the existing `if_latex_rework.js` pattern.
+
+**Deferred (not in this commit):**
+
+- **Apotheosis affix `Unknown element name: axe`** (33 hits at startup across 36 affix files in `kubejs/data/apotheosis/affixes/`). `"types": ["sword", "axe", ...]` — Apotheosis 1.20.1's LootCategory enum doesn't include `"axe"`; axes fall under `"breaker"` (which also covers pickaxes/shovels). Replacing `"axe"` → `"breaker"` would let the affixes load but would also extend them to non-weapon breakers — a balance call. Removing `"axe"` from each array (leaving sword/trident) is safer if the design intent is sword-themed only. Tracked but not auto-resolved.
+- **Tetra `blade_katana.json contains invalid property healthPercent-old / armor_pen-old`** (3 hits). Logger is `[ModularItem API]` — this came from MiApi (Truly Modular framework). Already removed in the framework-removal commit earlier today; should auto-resolve next session.
+- **`fabric-screen-api-v1` + `relics` Screen-class load attempts on dedicated server** (2 hits). Forge's `RuntimeDistCleaner` correctly rejects the load (it's working as intended), the WARN/ERROR is benign log noise from the `@Mixin target Screen was not found` follow-up. Could silence by marking the offending mods as `side='client'` in server `.pw.toml` + adding to `strip_client_mods` lists, but the cost outweighs the benefit (relics has server-side gameplay; can't strip).
+
+---
+
 ## 2026-05-10 — Truly Modular framework removed (deprecated by Tetra; also the spider-jockey buff source)
 
 Pulled the entire Truly Modular stack from the pack:

@@ -311,17 +311,17 @@ ServerEvents.recipes(event => {
   // Disenchanting Table, Table of Experience → require steel ingots
   // These mods let players freely manipulate enchantments/XP, too powerful for T1.
 
-  // H.1: Disenchanting Table → T2 (steel)
-  // Default recipe is enchanting table shape with obsidian. Replace with steel requirement.
-  event.remove({ output: 'disenchanting:disenchanting_table' })
-  event.shaped('disenchanting:disenchanting_table', ['SBS','IRI','SIS'], {
-    S:'thermal:steel_ingot', B:'minecraft:book', I:'minecraft:iron_ingot', R:'minecraft:redstone_block'
-  }).id('icraft:disenchanting_table_t2')
+  // H.1: Disenchanting → handled in Section I.10 below (not duplicated here).
+  // 2026-05-10: removed stale block referencing `disenchanting:disenchanting_table`
+  // — the actual mod item is `disenchanting:disenchanter` (per `TesterLogs/Item Audit/all_items.tsv`).
+  // I.10 already does the de-gate to T1 with the correct ID.
 
   // H.2: Table of Experience → T2 (steel)
   // Lets players convert items to XP and vice versa. Gate behind steel.
-  event.remove({ output: 'toe:table_of_experience' })
-  event.shaped('toe:table_of_experience', ['SBS','IEI','SIS'], {
+  // 2026-05-10: item id is `toe:table_of_expieriance` (sic — the mod ships
+  // the misspelled form, confirmed against item audit registry).
+  event.remove({ output: 'toe:table_of_expieriance' })
+  event.shaped('toe:table_of_expieriance', ['SBS','IEI','SIS'], {
     S:'thermal:steel_ingot', B:'minecraft:book', I:'minecraft:iron_ingot', E:'minecraft:experience_bottle'
   }).id('icraft:table_of_experience_t2')
 

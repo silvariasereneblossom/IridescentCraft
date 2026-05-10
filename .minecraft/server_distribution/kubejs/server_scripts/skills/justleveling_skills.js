@@ -245,9 +245,13 @@ global.tick_justlevelingSkills = (event) => {
     } catch (e) {}
 
     // ── Quarryman (BLD >= 10): +5% block break speed ──
+    // 2026-05-10: was minecraft:player.block_break_speed (1.21 attribute, doesn't exist
+    // on 1.20.1 — silent NPE swallowed by catch but spammed debug.log every tick).
+    // PuffishSkills' puffish_attributes:mining_speed is the correct ID and is
+    // already used by the gathering skill category JSONs.
     try {
       let qmSpeed = (apt.bld >= 10) ? 0.05 : 0
-      player.modifyAttribute('minecraft:player.block_break_speed',
+      player.modifyAttribute('puffish_attributes:mining_speed',
         'icraft_quarryman', qmSpeed, 'multiply_base')
     } catch (e) {}
 
