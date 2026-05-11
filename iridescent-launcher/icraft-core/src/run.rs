@@ -6,9 +6,16 @@
 //!
 //! Two thresholds:
 //!   - `boot_timeout`: max time without ANY log activity (catches
-//!     stuck-during-init / never-creates-latest.log)
+//!     stuck-during-init / never-creates-latest.log). Defaults to
+//!     15 min. Boot legitimately produces log activity, so silence
+//!     here is a real hang.
 //!   - `idle_timeout`: max time without log activity once we've seen
-//!     any output (catches mid-runtime freezes / GC death spirals)
+//!     any output. **Defaults to 0 (disabled).** A quiet idle server
+//!     with no players online produces no log lines for long
+//!     stretches and would trip the old 15-min default. We now rely
+//!     on JVM process-exit as the only reliable crash signal post-
+//!     boot. Operators can pass a non-zero value to re-enable
+//!     log-silence hang detection if they specifically want it.
 //!
 //! Stdio handling: stdout/stderr passes through to the parent. Stdin
 //! is `piped()` and a forwarder thread copies bytes from the parent's
@@ -51,7 +58,13 @@ impl Default for WatchdogOptions {
     fn default() -> Self {
         Self {
             boot_timeout: Duration::from_secs(15 * 60),
-            idle_timeout: Duration::from_secs(15 * 60),
+            // idle_timeout disabled by default: an idle server with no
+            // players legitimately produces no log activity for 15+ min
+            // at a time, and the old default kept killing healthy idle
+            // servers thinking they were hung. JVM process-exit is our
+            // only reliable crash signal; trust it. Callers (e.g. CLI
+            // operators) can opt back in by passing a non-zero value.
+            idle_timeout: Duration::ZERO,
             poll_interval: Duration::from_secs(10),
         }
     }

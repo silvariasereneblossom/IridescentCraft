@@ -41,12 +41,21 @@ enum Cmd {
         #[arg(long)]
         force_sync: bool,
         /// Seconds without log activity before declaring a boot hang.
+        /// During boot the server MUST produce log lines (mod init,
+        /// world load, etc.) -- silence here is a real hang.
         /// 0 disables. Defaults to 900 (15 min).
         #[arg(long, default_value_t = 900)]
         boot_timeout: u64,
         /// Seconds without log activity (post-boot) before declaring
-        /// an idle hang. 0 disables. Defaults to 900.
-        #[arg(long, default_value_t = 900)]
+        /// an idle hang. Default DISABLED (0) because an idle server
+        /// with no players online legitimately goes long stretches
+        /// with no log activity, and the watchdog used to kill it
+        /// thinking it had hung. JVM-process exit is the only reliable
+        /// crash signal we have without adding RCON / query-protocol
+        /// pings; we rely on that and trust quiet idle. Operators who
+        /// genuinely want idle-hang detection can pass `--idle-timeout
+        /// 1800` etc. explicitly.
+        #[arg(long, default_value_t = 0)]
         idle_timeout: u64,
     },
 

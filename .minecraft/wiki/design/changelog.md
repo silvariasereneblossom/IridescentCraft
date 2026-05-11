@@ -4,6 +4,22 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — icraft-cli/core: disable idle_timeout watchdog by default
+
+The launcher's hang watchdog polls `latest.log` mtime and kills the JVM after N seconds of no log growth. Two thresholds: `boot_timeout` (during init) and `idle_timeout` (post-boot). Default was 15 min each.
+
+**Bug:** the post-boot `idle_timeout` was firing on healthy idle servers. With no players online, MC legitimately produces no log lines for 15+ min at a time -- chunk autosaves are sparse, GC messages are filtered by default logger config, the AI tick / network tick is silent unless events fire. The watchdog interpreted this as a hang, did the soft-kick (newline to stdin), waited one poll interval, and hard-killed the JVM. Operator perception: "the server randomly shuts down when nobody's on it."
+
+**Fix:** default `idle_timeout` to `0` (disabled) in both `icraft-cli/src/main.rs` (the `Serve` subcommand's clap arg) and `icraft-core/src/run.rs` (`WatchdogOptions::default()`). `boot_timeout` stays at 15 min because boot SHOULD produce log activity by definition -- if it doesn't, something genuinely went wrong. Post-boot, we trust JVM process-exit as the crash signal: if the JVM exits unexpectedly, that's a real crash and the launcher handles it via the child wait. Quiet idle is left alone.
+
+Operators who specifically want idle-hang detection (e.g. monitoring for OOM death spirals on a public server) can pass `--idle-timeout 1800` to re-enable it. The mechanism stays, only the default flips.
+
+Affected binaries: `icraft-cli` (CLI `serve` command) and any `icraft-gui` callers that use `WatchdogOptions::default()`. Rebuild via `rebuild_cli.bat` / `rebuild_gui.bat` on the server box; old binaries continue to behave as before until rebuilt.
+
+Tradeoff acknowledged: lose silence-based hang detection for "JVM alive but unresponsive" cases (deadlock, GC death spiral without exit). No reliable detection of that state without adding RCON or query-protocol pinging. The right long-term answer is probably an RCON `list` ping every N minutes; deferred until someone reports an actual deadlock case.
+
+---
+
 ## 2026-05-11 — prism_prelaunch.bat: restore working-tree-deleted .pw.toml before pull
 
 Closes the infinite loop where new packwiz entries (dans-magic, simple-staves) never made it through to mod-load. Sequence observed on operator's instance via `git status`:
