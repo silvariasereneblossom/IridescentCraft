@@ -31,7 +31,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "chainmail_lining/leather",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.11,
@@ -53,7 +53,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "chainmail_lining/iron",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.2,
@@ -75,7 +75,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "chainmail_lining/gold",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.17,
@@ -98,7 +98,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "chainmail_lining/diamond",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.28,
@@ -121,7 +121,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "chainmail_lining/netherite",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.32,
@@ -143,7 +143,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "chainmail_lining/fire",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -166,7 +166,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "chainmail_lining/ice",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -189,7 +189,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "chainmail_lining/shadow",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -212,7 +212,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "chainmail_lining/holy",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "chainmail_lining/lightning",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -258,7 +258,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "chainmail_lining/nature",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -281,7 +281,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "chainmail_lining/ender",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -304,7 +304,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "chainmail_lining/blood",
+      "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,

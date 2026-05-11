@@ -31,7 +31,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "sash/leather",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -53,7 +53,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "sash/iron",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -75,7 +75,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "sash/gold",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -97,7 +97,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "sash/diamond",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -120,7 +120,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "sash/netherite",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -143,7 +143,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "sash/fire",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -166,7 +166,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "sash/ice",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -189,7 +189,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "sash/shadow",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -212,7 +212,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "sash/holy",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "sash/lightning",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -258,7 +258,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "sash/nature",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -281,7 +281,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "sash/ender",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -304,7 +304,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "sash/blood",
+      "key": "sash/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,

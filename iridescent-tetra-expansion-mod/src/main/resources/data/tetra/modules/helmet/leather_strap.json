@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "leather_strap/leather",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.071
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "leather_strap/iron",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "leather_strap/gold",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "leather_strap/diamond",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "leather_strap/netherite",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "leather_strap/fire",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "leather_strap/ice",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "leather_strap/shadow",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "leather_strap/holy",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "leather_strap/lightning",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "leather_strap/nature",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "leather_strap/ender",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "leather_strap/blood",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "leather_strap/wool",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.043,

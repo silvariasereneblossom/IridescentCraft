@@ -30,7 +30,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "spine/aethersteel",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.01
@@ -52,7 +52,7 @@
       "materials": [
         "tetra:metal/brass"
       ],
-      "key": "spine/brass",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.008
@@ -74,7 +74,7 @@
       "materials": [
         "tetra:metal/charoite"
       ],
-      "key": "spine/charoite",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.01
@@ -96,7 +96,7 @@
       "materials": [
         "tetra:metal/deorum"
       ],
-      "key": "spine/deorum",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.011
@@ -118,7 +118,7 @@
       "materials": [
         "tetra:metal/dimlite"
       ],
-      "key": "spine/dimlite",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.013
@@ -140,7 +140,7 @@
       "materials": [
         "tetra:metal/diopside"
       ],
-      "key": "spine/diopside",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.006
@@ -162,7 +162,7 @@
       "materials": [
         "tetra:metal/elementium"
       ],
-      "key": "spine/elementium",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.015
@@ -184,7 +184,7 @@
       "materials": [
         "tetra:metal/enderium"
       ],
-      "key": "spine/enderium",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.011
@@ -206,7 +206,7 @@
       "materials": [
         "tetra:metal/fiery"
       ],
-      "key": "spine/fiery",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0086
@@ -228,7 +228,7 @@
       "materials": [
         "tetra:metal/garnite"
       ],
-      "key": "spine/garnite",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.007
@@ -250,7 +250,7 @@
       "materials": [
         "tetra:metal/horizonite"
       ],
-      "key": "spine/horizonite",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.007
@@ -272,7 +272,7 @@
       "materials": [
         "tetra:metal/iridium"
       ],
-      "key": "spine/iridium",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.01
@@ -294,7 +294,7 @@
       "materials": [
         "tetra:metal/ironwood"
       ],
-      "key": "spine/ironwood",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0096
@@ -316,7 +316,7 @@
       "materials": [
         "tetra:metal/knight"
       ],
-      "key": "spine/knight",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0085
@@ -338,7 +338,7 @@
       "materials": [
         "tetra:metal/knightmetal"
       ],
-      "key": "spine/knightmetal",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0078
@@ -360,7 +360,7 @@
       "materials": [
         "tetra:metal/lumium"
       ],
-      "key": "spine/lumium",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.01
@@ -382,7 +382,7 @@
       "materials": [
         "tetra:metal/manasteel"
       ],
-      "key": "spine/manasteel",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.012
@@ -404,7 +404,7 @@
       "materials": [
         "tetra:metal/osmium"
       ],
-      "key": "spine/osmium",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0088
@@ -426,7 +426,7 @@
       "materials": [
         "tetra:metal/phantom"
       ],
-      "key": "spine/phantom",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0095
@@ -448,7 +448,7 @@
       "materials": [
         "tetra:metal/refined_obsidian"
       ],
-      "key": "spine/refined_obsidian",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0076
@@ -470,7 +470,7 @@
       "materials": [
         "tetra:metal/signalum"
       ],
-      "key": "spine/signalum",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0096
@@ -492,7 +492,7 @@
       "materials": [
         "tetra:metal/steel"
       ],
-      "key": "spine/steel",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0072
@@ -514,7 +514,7 @@
       "materials": [
         "tetra:metal/steeleaf"
       ],
-      "key": "spine/steeleaf",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.009
@@ -536,7 +536,7 @@
       "materials": [
         "tetra:metal/terrasteel"
       ],
-      "key": "spine/terrasteel",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.014
@@ -558,7 +558,7 @@
       "materials": [
         "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "spine/undergarden_cloggrum",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.005
@@ -580,7 +580,7 @@
       "materials": [
         "tetra:metal/undergarden_forgotten_metal"
       ],
-      "key": "spine/undergarden_forgotten_metal",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.006
@@ -602,7 +602,7 @@
       "materials": [
         "tetra:metal/undergarden_froststeel"
       ],
-      "key": "spine/undergarden_froststeel",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0075
@@ -624,7 +624,7 @@
       "materials": [
         "tetra:metal/unorithe"
       ],
-      "key": "spine/unorithe",
+      "key": "spine/",
       "extract": {
         "primaryAttributes": {
           "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.009

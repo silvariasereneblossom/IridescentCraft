@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "slit_visor/leather",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "slit_visor/iron",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.286
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "slit_visor/gold",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.286,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "slit_visor/diamond",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.429,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "slit_visor/netherite",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.429,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "slit_visor/fire",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "slit_visor/ice",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "slit_visor/shadow",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "slit_visor/holy",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "slit_visor/lightning",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "slit_visor/nature",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "slit_visor/ender",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "slit_visor/blood",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "slit_visor/wool",
+      "key": "slit_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.086,

@@ -36,7 +36,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "circlet/leather",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.11,
@@ -60,7 +60,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "circlet/fire",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -85,7 +85,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "circlet/ice",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -110,7 +110,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "circlet/shadow",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -135,7 +135,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "circlet/holy",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "circlet/lightning",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -185,7 +185,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "circlet/nature",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -210,7 +210,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "circlet/ender",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "circlet/blood",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -260,7 +260,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "circlet/wool",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.1,
@@ -284,7 +284,7 @@
       "materials": [
         "tetra:fibre/string"
       ],
-      "key": "circlet/string",
+      "key": "circlet/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.08,

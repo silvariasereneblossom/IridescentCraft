@@ -34,7 +34,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "light_leg_plate/leather",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264
@@ -56,7 +56,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "light_leg_plate/iron",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.48
@@ -78,7 +78,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "light_leg_plate/gold",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.408,
@@ -101,7 +101,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "light_leg_plate/diamond",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.672,
@@ -124,7 +124,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "light_leg_plate/netherite",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.768,
@@ -147,7 +147,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "light_leg_plate/fire",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -170,7 +170,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "light_leg_plate/ice",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -193,7 +193,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "light_leg_plate/shadow",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -216,7 +216,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "light_leg_plate/holy",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -239,7 +239,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "light_leg_plate/lightning",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -262,7 +262,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "light_leg_plate/nature",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -285,7 +285,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "light_leg_plate/ender",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -308,7 +308,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "light_leg_plate/blood",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.504,
@@ -331,7 +331,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "light_leg_plate/aethersteel",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.816,
@@ -355,7 +355,7 @@
       "materials": [
         "tetra:metal/brass"
       ],
-      "key": "light_leg_plate/brass",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.432
@@ -377,7 +377,7 @@
       "materials": [
         "tetra:metal/charoite"
       ],
-      "key": "light_leg_plate/charoite",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.499
@@ -399,7 +399,7 @@
       "materials": [
         "tetra:metal/deorum"
       ],
-      "key": "light_leg_plate/deorum",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.576,
@@ -422,7 +422,7 @@
       "materials": [
         "tetra:metal/dimlite"
       ],
-      "key": "light_leg_plate/dimlite",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.624,
@@ -445,7 +445,7 @@
       "materials": [
         "tetra:metal/diopside"
       ],
-      "key": "light_leg_plate/diopside",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.48
@@ -467,7 +467,7 @@
       "materials": [
         "tetra:metal/elementium"
       ],
-      "key": "light_leg_plate/elementium",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.595,
@@ -490,7 +490,7 @@
       "materials": [
         "tetra:metal/enderium"
       ],
-      "key": "light_leg_plate/enderium",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.653,
@@ -514,7 +514,7 @@
       "materials": [
         "tetra:metal/fiery"
       ],
-      "key": "light_leg_plate/fiery",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.557,
@@ -537,7 +537,7 @@
       "materials": [
         "tetra:metal/garnite"
       ],
-      "key": "light_leg_plate/garnite",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.528,
@@ -560,7 +560,7 @@
       "materials": [
         "tetra:metal/horizonite"
       ],
-      "key": "light_leg_plate/horizonite",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.528,
@@ -583,7 +583,7 @@
       "materials": [
         "tetra:metal/iridium"
       ],
-      "key": "light_leg_plate/iridium",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.768,
@@ -607,7 +607,7 @@
       "materials": [
         "tetra:metal/ironwood"
       ],
-      "key": "light_leg_plate/ironwood",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.48
@@ -629,7 +629,7 @@
       "materials": [
         "tetra:metal/knight"
       ],
-      "key": "light_leg_plate/knight",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.624,
@@ -652,7 +652,7 @@
       "materials": [
         "tetra:metal/knightmetal"
       ],
-      "key": "light_leg_plate/knightmetal",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.538,
@@ -675,7 +675,7 @@
       "materials": [
         "tetra:metal/lumium"
       ],
-      "key": "light_leg_plate/lumium",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.461,
@@ -698,7 +698,7 @@
       "materials": [
         "tetra:metal/manasteel"
       ],
-      "key": "light_leg_plate/manasteel",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.499,
@@ -721,7 +721,7 @@
       "materials": [
         "tetra:metal/osmium"
       ],
-      "key": "light_leg_plate/osmium",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.576,
@@ -744,7 +744,7 @@
       "materials": [
         "tetra:metal/phantom"
       ],
-      "key": "light_leg_plate/phantom",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.576,
@@ -767,7 +767,7 @@
       "materials": [
         "tetra:metal/refined_obsidian"
       ],
-      "key": "light_leg_plate/refined_obsidian",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.672,
@@ -791,7 +791,7 @@
       "materials": [
         "tetra:metal/signalum"
       ],
-      "key": "light_leg_plate/signalum",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.48,
@@ -814,7 +814,7 @@
       "materials": [
         "tetra:metal/steel"
       ],
-      "key": "light_leg_plate/steel",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.528,
@@ -837,7 +837,7 @@
       "materials": [
         "tetra:metal/steeleaf"
       ],
-      "key": "light_leg_plate/steeleaf",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.509,
@@ -860,7 +860,7 @@
       "materials": [
         "tetra:metal/terrasteel"
       ],
-      "key": "light_leg_plate/terrasteel",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.624,
@@ -883,7 +883,7 @@
       "materials": [
         "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "light_leg_plate/undergarden_cloggrum",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.528
@@ -905,7 +905,7 @@
       "materials": [
         "tetra:metal/undergarden_forgotten_metal"
       ],
-      "key": "light_leg_plate/undergarden_forgotten_metal",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.653,
@@ -928,7 +928,7 @@
       "materials": [
         "tetra:metal/undergarden_froststeel"
       ],
-      "key": "light_leg_plate/undergarden_froststeel",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.557,
@@ -951,7 +951,7 @@
       "materials": [
         "tetra:metal/unorithe"
       ],
-      "key": "light_leg_plate/unorithe",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.672,
@@ -975,7 +975,7 @@
       "materials": [
         "tetra:gem/onyx"
       ],
-      "key": "light_leg_plate/onyx",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.72,
@@ -999,7 +999,7 @@
       "materials": [
         "tetra:gem/ruby"
       ],
-      "key": "light_leg_plate/ruby",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.672,
@@ -1022,7 +1022,7 @@
       "materials": [
         "tetra:gem/sapphire"
       ],
-      "key": "light_leg_plate/sapphire",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.624,
@@ -1045,7 +1045,7 @@
       "materials": [
         "tetra:gem/topaz"
       ],
-      "key": "light_leg_plate/topaz",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.624,
@@ -1068,7 +1068,7 @@
       "materials": [
         "tetra:gem/undergarden_utherium"
       ],
-      "key": "light_leg_plate/undergarden_utherium",
+      "key": "light_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.595,

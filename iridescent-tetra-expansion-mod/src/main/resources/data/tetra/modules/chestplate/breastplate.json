@@ -34,7 +34,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "breastplate/leather",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.432
@@ -56,7 +56,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "breastplate/iron",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 4.865
@@ -78,7 +78,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "breastplate/gold",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 4.054,
@@ -101,7 +101,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "breastplate/diamond",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 6.486,
@@ -124,7 +124,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "breastplate/netherite",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 6.486,
@@ -148,7 +148,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "breastplate/fire",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -171,7 +171,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "breastplate/ice",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -194,7 +194,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "breastplate/shadow",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -217,7 +217,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "breastplate/holy",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -240,7 +240,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "breastplate/lightning",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -263,7 +263,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "breastplate/nature",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -286,7 +286,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "breastplate/ender",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -309,7 +309,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "breastplate/blood",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.26,
@@ -332,7 +332,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "breastplate/aethersteel",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.04,
@@ -356,7 +356,7 @@
       "materials": [
         "tetra:metal/brass"
       ],
-      "key": "breastplate/brass",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.08
@@ -378,7 +378,7 @@
       "materials": [
         "tetra:metal/charoite"
       ],
-      "key": "breastplate/charoite",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.248
@@ -400,7 +400,7 @@
       "materials": [
         "tetra:metal/deorum"
       ],
-      "key": "breastplate/deorum",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.44,
@@ -423,7 +423,7 @@
       "materials": [
         "tetra:metal/dimlite"
       ],
-      "key": "breastplate/dimlite",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.56,
@@ -446,7 +446,7 @@
       "materials": [
         "tetra:metal/diopside"
       ],
-      "key": "breastplate/diopside",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.2
@@ -468,7 +468,7 @@
       "materials": [
         "tetra:metal/elementium"
       ],
-      "key": "breastplate/elementium",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.488,
@@ -491,7 +491,7 @@
       "materials": [
         "tetra:metal/enderium"
       ],
-      "key": "breastplate/enderium",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.632,
@@ -515,7 +515,7 @@
       "materials": [
         "tetra:metal/fiery"
       ],
-      "key": "breastplate/fiery",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.392,
@@ -538,7 +538,7 @@
       "materials": [
         "tetra:metal/garnite"
       ],
-      "key": "breastplate/garnite",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.32,
@@ -561,7 +561,7 @@
       "materials": [
         "tetra:metal/horizonite"
       ],
-      "key": "breastplate/horizonite",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.32,
@@ -584,7 +584,7 @@
       "materials": [
         "tetra:metal/iridium"
       ],
-      "key": "breastplate/iridium",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.92,
@@ -608,7 +608,7 @@
       "materials": [
         "tetra:metal/ironwood"
       ],
-      "key": "breastplate/ironwood",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.2
@@ -630,7 +630,7 @@
       "materials": [
         "tetra:metal/knight"
       ],
-      "key": "breastplate/knight",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.56,
@@ -653,7 +653,7 @@
       "materials": [
         "tetra:metal/knightmetal"
       ],
-      "key": "breastplate/knightmetal",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.344,
@@ -676,7 +676,7 @@
       "materials": [
         "tetra:metal/lumium"
       ],
-      "key": "breastplate/lumium",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.152,
@@ -699,7 +699,7 @@
       "materials": [
         "tetra:metal/manasteel"
       ],
-      "key": "breastplate/manasteel",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.248,
@@ -722,7 +722,7 @@
       "materials": [
         "tetra:metal/osmium"
       ],
-      "key": "breastplate/osmium",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.44,
@@ -745,7 +745,7 @@
       "materials": [
         "tetra:metal/phantom"
       ],
-      "key": "breastplate/phantom",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.44,
@@ -768,7 +768,7 @@
       "materials": [
         "tetra:metal/refined_obsidian"
       ],
-      "key": "breastplate/refined_obsidian",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -792,7 +792,7 @@
       "materials": [
         "tetra:metal/signalum"
       ],
-      "key": "breastplate/signalum",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.2,
@@ -815,7 +815,7 @@
       "materials": [
         "tetra:metal/steel"
       ],
-      "key": "breastplate/steel",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.32,
@@ -838,7 +838,7 @@
       "materials": [
         "tetra:metal/steeleaf"
       ],
-      "key": "breastplate/steeleaf",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.272,
@@ -861,7 +861,7 @@
       "materials": [
         "tetra:metal/terrasteel"
       ],
-      "key": "breastplate/terrasteel",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.56,
@@ -884,7 +884,7 @@
       "materials": [
         "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "breastplate/undergarden_cloggrum",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.32
@@ -906,7 +906,7 @@
       "materials": [
         "tetra:metal/undergarden_forgotten_metal"
       ],
-      "key": "breastplate/undergarden_forgotten_metal",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.632,
@@ -929,7 +929,7 @@
       "materials": [
         "tetra:metal/undergarden_froststeel"
       ],
-      "key": "breastplate/undergarden_froststeel",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.392,
@@ -952,7 +952,7 @@
       "materials": [
         "tetra:metal/unorithe"
       ],
-      "key": "breastplate/unorithe",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -976,7 +976,7 @@
       "materials": [
         "tetra:gem/onyx"
       ],
-      "key": "breastplate/onyx",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.8,
@@ -1000,7 +1000,7 @@
       "materials": [
         "tetra:gem/ruby"
       ],
-      "key": "breastplate/ruby",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -1023,7 +1023,7 @@
       "materials": [
         "tetra:gem/sapphire"
       ],
-      "key": "breastplate/sapphire",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.56,
@@ -1046,7 +1046,7 @@
       "materials": [
         "tetra:gem/topaz"
       ],
-      "key": "breastplate/topaz",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.56,
@@ -1069,7 +1069,7 @@
       "materials": [
         "tetra:gem/undergarden_utherium"
       ],
-      "key": "breastplate/undergarden_utherium",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.488,
@@ -1528,7 +1528,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "breastplate/wool",
+      "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.459

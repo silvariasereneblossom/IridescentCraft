@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "fur_boot_lining/leather",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.066
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "fur_boot_lining/iron",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.12
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "fur_boot_lining/gold",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.102,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "fur_boot_lining/diamond",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "fur_boot_lining/netherite",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.192,
@@ -138,7 +138,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "fur_boot_lining/fire",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "fur_boot_lining/ice",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -182,7 +182,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "fur_boot_lining/shadow",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -204,7 +204,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "fur_boot_lining/holy",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -226,7 +226,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "fur_boot_lining/lightning",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -248,7 +248,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "fur_boot_lining/nature",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -270,7 +270,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "fur_boot_lining/ender",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -292,7 +292,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "fur_boot_lining/blood",
+      "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,

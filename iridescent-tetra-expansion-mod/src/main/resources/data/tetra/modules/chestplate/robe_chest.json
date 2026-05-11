@@ -36,7 +36,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "robe_chest/leather",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.33,
@@ -60,7 +60,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "robe_chest/fire",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -85,7 +85,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "robe_chest/ice",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -110,7 +110,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "robe_chest/shadow",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -135,7 +135,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "robe_chest/holy",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "robe_chest/lightning",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -185,7 +185,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "robe_chest/nature",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -210,7 +210,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "robe_chest/ender",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "robe_chest/blood",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.63,
@@ -260,7 +260,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "robe_chest/wool",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.2,
@@ -284,7 +284,7 @@
       "materials": [
         "tetra:fibre/string"
       ],
-      "key": "robe_chest/string",
+      "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.15,

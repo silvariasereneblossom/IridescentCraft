@@ -35,7 +35,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "robed_boot_sole/leather",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.11,
@@ -58,7 +58,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "robed_boot_sole/fire",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -82,7 +82,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "robed_boot_sole/ice",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -106,7 +106,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "robed_boot_sole/shadow",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -130,7 +130,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "robed_boot_sole/holy",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -154,7 +154,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "robed_boot_sole/lightning",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -178,7 +178,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "robed_boot_sole/nature",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -202,7 +202,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "robed_boot_sole/ender",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -226,7 +226,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "robed_boot_sole/blood",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -250,7 +250,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "robed_boot_sole/wool",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.1,
@@ -274,7 +274,7 @@
       "materials": [
         "tetra:fibre/string"
       ],
-      "key": "robed_boot_sole/string",
+      "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.08,

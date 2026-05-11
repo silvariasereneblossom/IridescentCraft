@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "simple_trim/leather",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "simple_trim/iron",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "simple_trim/gold",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "simple_trim/diamond",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "simple_trim/netherite",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "simple_trim/fire",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "simple_trim/ice",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "simple_trim/shadow",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "simple_trim/holy",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "simple_trim/lightning",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "simple_trim/nature",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "simple_trim/ender",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "simple_trim/blood",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "simple_trim/wool",
+      "key": "simple_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,

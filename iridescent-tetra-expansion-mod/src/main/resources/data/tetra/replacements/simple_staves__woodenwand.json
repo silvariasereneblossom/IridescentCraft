@@ -9,19 +9,19 @@
     "modules": {
       "wand/handle": [
         "wand/basic_handle",
-        "basic_handle/wood"
+        "basic_handle/oak"
       ],
       "wand/cap": [
         "wand/basic_cap",
-        "basic_cap/wood"
+        "basic_cap/oak"
       ],
       "wand/core": [
         "wand/basic_core",
-        "basic_core/wood"
+        "basic_core/oak"
       ],
       "wand/inlay": [
         "wand/basic_inlay",
-        "basic_inlay/wood"
+        "basic_inlay/oak"
       ]
     }
   }

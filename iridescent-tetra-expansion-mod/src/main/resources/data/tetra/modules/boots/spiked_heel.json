@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "spiked_heel/leather",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.022
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "spiked_heel/iron",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.04
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "spiked_heel/gold",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.034,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "spiked_heel/diamond",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.056,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "spiked_heel/netherite",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.064,
@@ -138,7 +138,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "spiked_heel/fire",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "spiked_heel/ice",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -182,7 +182,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "spiked_heel/shadow",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -204,7 +204,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "spiked_heel/holy",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -226,7 +226,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "spiked_heel/lightning",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -248,7 +248,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "spiked_heel/nature",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -270,7 +270,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "spiked_heel/ender",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -292,7 +292,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "spiked_heel/blood",
+      "key": "spiked_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,

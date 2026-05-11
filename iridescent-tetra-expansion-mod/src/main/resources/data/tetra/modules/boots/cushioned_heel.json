@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "cushioned_heel/leather",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "cushioned_heel/iron",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "cushioned_heel/gold",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "cushioned_heel/diamond",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "cushioned_heel/netherite",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -138,7 +138,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "cushioned_heel/fire",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "cushioned_heel/ice",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -182,7 +182,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "cushioned_heel/shadow",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -204,7 +204,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "cushioned_heel/holy",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -226,7 +226,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "cushioned_heel/lightning",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -248,7 +248,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "cushioned_heel/nature",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -270,7 +270,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "cushioned_heel/ender",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -292,7 +292,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "cushioned_heel/blood",
+      "key": "cushioned_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,

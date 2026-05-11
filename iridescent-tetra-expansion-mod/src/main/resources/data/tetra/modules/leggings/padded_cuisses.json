@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "padded_cuisses/leather",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.222
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "padded_cuisses/iron",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.555
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "padded_cuisses/gold",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.333,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "padded_cuisses/diamond",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.667,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "padded_cuisses/netherite",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.667,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "padded_cuisses/fire",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "padded_cuisses/ice",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "padded_cuisses/shadow",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "padded_cuisses/holy",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "padded_cuisses/lightning",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "padded_cuisses/nature",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "padded_cuisses/ender",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "padded_cuisses/blood",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.126,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "padded_cuisses/wool",
+      "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.133,

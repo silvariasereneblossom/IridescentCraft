@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "padded_lining/leather",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.324
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "padded_lining/iron",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.649
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "padded_lining/gold",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.54,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "padded_lining/diamond",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.865,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "padded_lining/netherite",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.865,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "padded_lining/fire",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "padded_lining/ice",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "padded_lining/shadow",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "padded_lining/holy",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "padded_lining/lightning",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "padded_lining/nature",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "padded_lining/ender",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "padded_lining/blood",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "padded_lining/wool",
+      "key": "padded_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.195,

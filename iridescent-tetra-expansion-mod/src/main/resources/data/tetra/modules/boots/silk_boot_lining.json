@@ -31,7 +31,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "silk_boot_lining/leather",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -53,7 +53,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "silk_boot_lining/iron",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -75,7 +75,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "silk_boot_lining/gold",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -97,7 +97,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "silk_boot_lining/diamond",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -120,7 +120,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "silk_boot_lining/netherite",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -143,7 +143,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "silk_boot_lining/fire",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -166,7 +166,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "silk_boot_lining/ice",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -189,7 +189,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "silk_boot_lining/shadow",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -212,7 +212,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "silk_boot_lining/holy",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "silk_boot_lining/lightning",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -258,7 +258,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "silk_boot_lining/nature",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -281,7 +281,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "silk_boot_lining/ender",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -304,7 +304,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "silk_boot_lining/blood",
+      "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,

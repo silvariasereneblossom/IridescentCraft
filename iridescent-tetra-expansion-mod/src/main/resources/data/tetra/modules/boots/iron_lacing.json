@@ -31,7 +31,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "iron_lacing/leather",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.044,
@@ -53,7 +53,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "iron_lacing/iron",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.08,
@@ -75,7 +75,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "iron_lacing/gold",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.068,
@@ -98,7 +98,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "iron_lacing/diamond",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.112,
@@ -121,7 +121,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "iron_lacing/netherite",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.128,
@@ -143,7 +143,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "iron_lacing/fire",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -166,7 +166,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "iron_lacing/ice",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -189,7 +189,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "iron_lacing/shadow",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -212,7 +212,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "iron_lacing/holy",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "iron_lacing/lightning",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -258,7 +258,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "iron_lacing/nature",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -281,7 +281,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "iron_lacing/ender",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -304,7 +304,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "iron_lacing/blood",
+      "key": "iron_lacing/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,

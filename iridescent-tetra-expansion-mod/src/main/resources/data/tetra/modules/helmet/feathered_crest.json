@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "feathered_crest/leather",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "feathered_crest/iron",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "feathered_crest/gold",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "feathered_crest/diamond",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "feathered_crest/netherite",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -138,7 +138,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "feathered_crest/fire",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "feathered_crest/ice",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -182,7 +182,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "feathered_crest/shadow",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -204,7 +204,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "feathered_crest/holy",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -226,7 +226,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "feathered_crest/lightning",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -248,7 +248,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "feathered_crest/nature",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -270,7 +270,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "feathered_crest/ender",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
@@ -292,7 +292,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "feathered_crest/blood",
+      "key": "feathered_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,

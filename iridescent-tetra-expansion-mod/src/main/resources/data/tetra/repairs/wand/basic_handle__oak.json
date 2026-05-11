@@ -1,7 +1,7 @@
 {
   "material": {
     "items": [
-      "minecraft:stick"
+      "minecraft:oak_planks"
     ],
     "count": 2
   },
@@ -9,5 +9,5 @@
     "hammer_dig": "minecraft:iron"
   },
   "moduleKey": "wand/handle",
-  "moduleVariant": "basic_handle/wood"
+  "moduleVariant": "basic_handle/oak"
 }

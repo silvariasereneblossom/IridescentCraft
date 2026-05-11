@@ -31,7 +31,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "chain_strap/leather",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.044,
@@ -53,7 +53,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "chain_strap/iron",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.08,
@@ -75,7 +75,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "chain_strap/gold",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.068,
@@ -98,7 +98,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "chain_strap/diamond",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.112,
@@ -121,7 +121,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "chain_strap/netherite",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.128,
@@ -143,7 +143,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "chain_strap/fire",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -166,7 +166,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "chain_strap/ice",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -189,7 +189,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "chain_strap/shadow",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -212,7 +212,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "chain_strap/holy",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "chain_strap/lightning",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -258,7 +258,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "chain_strap/nature",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -281,7 +281,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "chain_strap/ender",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,
@@ -304,7 +304,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "chain_strap/blood",
+      "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.084,

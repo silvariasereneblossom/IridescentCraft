@@ -115,7 +115,10 @@ MATERIAL_ITEM_MAP = {
     'dd_warden':              (['deeperdarker:reinforced_echo_shard'], 1, HAMMER_DIAMOND),
     'cm_ignitium':            (['cataclysm:ignitium_ingot'],     1, HAMMER_DIAMOND),
     # tetra:wood/stone for the wand slot (reforged_wand T1 materials)
+    # After 2026-05-11 sweep, wand wildcards expand using material.key
+    # (tetra:wood/oak -> key=oak), so we map oak in addition to legacy wood.
     'wood':         (['minecraft:stick'],           2, HAMMER_IRON),
+    'oak':          (['minecraft:oak_planks'],      2, HAMMER_IRON),
     'stone':        (['minecraft:cobblestone'],     2, HAMMER_IRON),
     # tetra:skin/fabric/fibre fixtures
     'leather':      (['minecraft:leather'],         2, HAMMER_IRON),
@@ -244,18 +247,47 @@ def regenerate():
 
             for v in d.get('variants', []):
                 vk = v.get('key', '')
-                mat = variant_material_suffix(vk)
-                if not mat:
-                    skipped += 1
-                    continue
-                lookup = MATERIAL_ITEM_MAP.get(mat)
-                if not lookup:
-                    unknown.add(mat)
-                    skipped += 1
-                    continue
-                items, count, tools = lookup
-                emit_repair(slot, archetype, mat, items, count, tools, vk)
-                written += 1
+                mats = v.get('materials', [])
+                if vk.endswith('/'):
+                    # Wildcard variant (canonical Tetra shape). Derive
+                    # per-material expansion from the materials list.
+                    # Tetra's combine() produces key = <wildcard><material.key>
+                    # at module-load time; we mirror that so repair lookups
+                    # match the stamped variant key.
+                    for m in mats:
+                        if m.endswith('/'):
+                            # Category wildcard (e.g. tetra:metal/) -- we don't
+                            # enumerate every material under a category here;
+                            # repairs are emitted only for explicit material refs.
+                            continue
+                        mat_key = m.split('/')[-1]
+                        if mat_key not in MATERIAL_ITEM_MAP:
+                            unknown.add(mat_key)
+                            skipped += 1
+                            continue
+                        items, count, tools = MATERIAL_ITEM_MAP[mat_key]
+                        expanded_key = vk + mat_key
+                        emit_repair(slot, archetype, mat_key, items, count, tools, expanded_key)
+                        written += 1
+                else:
+                    # Legacy named variant (modded materials deferred from the
+                    # 2026-05-11 doubling-fix sweep). Use the suffix as the
+                    # material lookup; the variant is dead until those modded
+                    # materials are registered, but we still emit a repair
+                    # entry keyed to the suffix in case the schematic path
+                    # somehow stamps it.
+                    mat = variant_material_suffix(vk)
+                    if not mat:
+                        skipped += 1
+                        continue
+                    lookup = MATERIAL_ITEM_MAP.get(mat)
+                    if not lookup:
+                        unknown.add(mat)
+                        skipped += 1
+                        continue
+                    items, count, tools = lookup
+                    emit_repair(slot, archetype, mat, items, count, tools, vk)
+                    written += 1
 
     print(f'gen_repair_definitions: wrote {written} repair JSONs')
     if skipped:

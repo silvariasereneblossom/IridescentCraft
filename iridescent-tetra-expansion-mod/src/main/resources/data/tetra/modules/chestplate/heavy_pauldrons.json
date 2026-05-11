@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "heavy_pauldrons/leather",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.154
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "heavy_pauldrons/iron",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.28
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "heavy_pauldrons/gold",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.238,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "heavy_pauldrons/diamond",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.392,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "heavy_pauldrons/netherite",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.448,
@@ -138,7 +138,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "heavy_pauldrons/fire",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "heavy_pauldrons/ice",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,
@@ -182,7 +182,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "heavy_pauldrons/shadow",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,
@@ -204,7 +204,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "heavy_pauldrons/holy",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,
@@ -226,7 +226,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "heavy_pauldrons/lightning",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,
@@ -248,7 +248,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "heavy_pauldrons/nature",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,
@@ -270,7 +270,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "heavy_pauldrons/ender",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,
@@ -292,7 +292,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "heavy_pauldrons/blood",
+      "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.294,

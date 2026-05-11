@@ -35,7 +35,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "cuirass/leather",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.88,
@@ -58,7 +58,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "cuirass/iron",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.6,
@@ -81,7 +81,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "cuirass/gold",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.36,
@@ -105,7 +105,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "cuirass/diamond",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.24,
@@ -129,7 +129,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "cuirass/netherite",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.56,
@@ -152,7 +152,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "cuirass/fire",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -176,7 +176,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "cuirass/ice",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -200,7 +200,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "cuirass/shadow",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -224,7 +224,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "cuirass/holy",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -248,7 +248,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "cuirass/lightning",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -272,7 +272,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "cuirass/nature",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -296,7 +296,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "cuirass/ender",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -320,7 +320,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "cuirass/blood",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.68,
@@ -344,7 +344,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "cuirass/aethersteel",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.72,
@@ -368,7 +368,7 @@
       "materials": [
         "tetra:metal/brass"
       ],
-      "key": "cuirass/brass",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.44,
@@ -391,7 +391,7 @@
       "materials": [
         "tetra:metal/charoite"
       ],
-      "key": "cuirass/charoite",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.664,
@@ -414,7 +414,7 @@
       "materials": [
         "tetra:metal/deorum"
       ],
-      "key": "cuirass/deorum",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.92,
@@ -438,7 +438,7 @@
       "materials": [
         "tetra:metal/dimlite"
       ],
-      "key": "cuirass/dimlite",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.08,
@@ -462,7 +462,7 @@
       "materials": [
         "tetra:metal/diopside"
       ],
-      "key": "cuirass/diopside",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.6,
@@ -485,7 +485,7 @@
       "materials": [
         "tetra:metal/elementium"
       ],
-      "key": "cuirass/elementium",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.984,
@@ -509,7 +509,7 @@
       "materials": [
         "tetra:metal/enderium"
       ],
-      "key": "cuirass/enderium",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.176,
@@ -533,7 +533,7 @@
       "materials": [
         "tetra:metal/fiery"
       ],
-      "key": "cuirass/fiery",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.856,
@@ -557,7 +557,7 @@
       "materials": [
         "tetra:metal/garnite"
       ],
-      "key": "cuirass/garnite",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.76,
@@ -581,7 +581,7 @@
       "materials": [
         "tetra:metal/horizonite"
       ],
-      "key": "cuirass/horizonite",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.76,
@@ -605,7 +605,7 @@
       "materials": [
         "tetra:metal/iridium"
       ],
-      "key": "cuirass/iridium",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.56,
@@ -629,7 +629,7 @@
       "materials": [
         "tetra:metal/ironwood"
       ],
-      "key": "cuirass/ironwood",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.6,
@@ -652,7 +652,7 @@
       "materials": [
         "tetra:metal/knight"
       ],
-      "key": "cuirass/knight",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.08,
@@ -676,7 +676,7 @@
       "materials": [
         "tetra:metal/knightmetal"
       ],
-      "key": "cuirass/knightmetal",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.792,
@@ -700,7 +700,7 @@
       "materials": [
         "tetra:metal/lumium"
       ],
-      "key": "cuirass/lumium",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.536,
@@ -724,7 +724,7 @@
       "materials": [
         "tetra:metal/manasteel"
       ],
-      "key": "cuirass/manasteel",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.664,
@@ -748,7 +748,7 @@
       "materials": [
         "tetra:metal/osmium"
       ],
-      "key": "cuirass/osmium",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.92,
@@ -772,7 +772,7 @@
       "materials": [
         "tetra:metal/phantom"
       ],
-      "key": "cuirass/phantom",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.92,
@@ -796,7 +796,7 @@
       "materials": [
         "tetra:metal/refined_obsidian"
       ],
-      "key": "cuirass/refined_obsidian",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.24,
@@ -820,7 +820,7 @@
       "materials": [
         "tetra:metal/signalum"
       ],
-      "key": "cuirass/signalum",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.6,
@@ -844,7 +844,7 @@
       "materials": [
         "tetra:metal/steel"
       ],
-      "key": "cuirass/steel",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.76,
@@ -868,7 +868,7 @@
       "materials": [
         "tetra:metal/steeleaf"
       ],
-      "key": "cuirass/steeleaf",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.696,
@@ -892,7 +892,7 @@
       "materials": [
         "tetra:metal/terrasteel"
       ],
-      "key": "cuirass/terrasteel",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.08,
@@ -916,7 +916,7 @@
       "materials": [
         "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "cuirass/undergarden_cloggrum",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.76,
@@ -939,7 +939,7 @@
       "materials": [
         "tetra:metal/undergarden_forgotten_metal"
       ],
-      "key": "cuirass/undergarden_forgotten_metal",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.176,
@@ -963,7 +963,7 @@
       "materials": [
         "tetra:metal/undergarden_froststeel"
       ],
-      "key": "cuirass/undergarden_froststeel",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.856,
@@ -987,7 +987,7 @@
       "materials": [
         "tetra:metal/unorithe"
       ],
-      "key": "cuirass/unorithe",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.24,
@@ -1011,7 +1011,7 @@
       "materials": [
         "tetra:gem/onyx"
       ],
-      "key": "cuirass/onyx",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.4,
@@ -1035,7 +1035,7 @@
       "materials": [
         "tetra:gem/ruby"
       ],
-      "key": "cuirass/ruby",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.24,
@@ -1059,7 +1059,7 @@
       "materials": [
         "tetra:gem/sapphire"
       ],
-      "key": "cuirass/sapphire",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.08,
@@ -1083,7 +1083,7 @@
       "materials": [
         "tetra:gem/topaz"
       ],
-      "key": "cuirass/topaz",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.08,
@@ -1107,7 +1107,7 @@
       "materials": [
         "tetra:gem/undergarden_utherium"
       ],
-      "key": "cuirass/undergarden_utherium",
+      "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.984,

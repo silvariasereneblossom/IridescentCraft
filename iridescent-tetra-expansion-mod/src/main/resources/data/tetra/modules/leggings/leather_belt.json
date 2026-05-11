@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "leather_belt/leather",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.074
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "leather_belt/iron",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.185
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "leather_belt/gold",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.111,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "leather_belt/diamond",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.222,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "leather_belt/netherite",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.222,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "leather_belt/fire",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "leather_belt/ice",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "leather_belt/shadow",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "leather_belt/holy",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "leather_belt/lightning",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "leather_belt/nature",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "leather_belt/ender",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "leather_belt/blood",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "leather_belt/wool",
+      "key": "leather_belt/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.044,

@@ -34,7 +34,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "light_crown/leather",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.132
@@ -56,7 +56,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "light_crown/iron",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24
@@ -78,7 +78,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "light_crown/gold",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.204,
@@ -101,7 +101,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "light_crown/diamond",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -124,7 +124,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "light_crown/netherite",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.384,
@@ -147,7 +147,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "light_crown/fire",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -170,7 +170,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "light_crown/ice",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -193,7 +193,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "light_crown/shadow",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -216,7 +216,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "light_crown/holy",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -239,7 +239,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "light_crown/lightning",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -262,7 +262,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "light_crown/nature",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -285,7 +285,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "light_crown/ender",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -308,7 +308,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "light_crown/blood",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -331,7 +331,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "light_crown/aethersteel",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.408,
@@ -355,7 +355,7 @@
       "materials": [
         "tetra:metal/brass"
       ],
-      "key": "light_crown/brass",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.216
@@ -377,7 +377,7 @@
       "materials": [
         "tetra:metal/charoite"
       ],
-      "key": "light_crown/charoite",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.25
@@ -399,7 +399,7 @@
       "materials": [
         "tetra:metal/deorum"
       ],
-      "key": "light_crown/deorum",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.288,
@@ -422,7 +422,7 @@
       "materials": [
         "tetra:metal/dimlite"
       ],
-      "key": "light_crown/dimlite",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -445,7 +445,7 @@
       "materials": [
         "tetra:metal/diopside"
       ],
-      "key": "light_crown/diopside",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24
@@ -467,7 +467,7 @@
       "materials": [
         "tetra:metal/elementium"
       ],
-      "key": "light_crown/elementium",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.298,
@@ -490,7 +490,7 @@
       "materials": [
         "tetra:metal/enderium"
       ],
-      "key": "light_crown/enderium",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.326,
@@ -514,7 +514,7 @@
       "materials": [
         "tetra:metal/fiery"
       ],
-      "key": "light_crown/fiery",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.278,
@@ -537,7 +537,7 @@
       "materials": [
         "tetra:metal/garnite"
       ],
-      "key": "light_crown/garnite",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264,
@@ -560,7 +560,7 @@
       "materials": [
         "tetra:metal/horizonite"
       ],
-      "key": "light_crown/horizonite",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264,
@@ -583,7 +583,7 @@
       "materials": [
         "tetra:metal/iridium"
       ],
-      "key": "light_crown/iridium",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.384,
@@ -607,7 +607,7 @@
       "materials": [
         "tetra:metal/ironwood"
       ],
-      "key": "light_crown/ironwood",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24
@@ -629,7 +629,7 @@
       "materials": [
         "tetra:metal/knight"
       ],
-      "key": "light_crown/knight",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -652,7 +652,7 @@
       "materials": [
         "tetra:metal/knightmetal"
       ],
-      "key": "light_crown/knightmetal",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.269,
@@ -675,7 +675,7 @@
       "materials": [
         "tetra:metal/lumium"
       ],
-      "key": "light_crown/lumium",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.23,
@@ -698,7 +698,7 @@
       "materials": [
         "tetra:metal/manasteel"
       ],
-      "key": "light_crown/manasteel",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.25,
@@ -721,7 +721,7 @@
       "materials": [
         "tetra:metal/osmium"
       ],
-      "key": "light_crown/osmium",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.288,
@@ -744,7 +744,7 @@
       "materials": [
         "tetra:metal/phantom"
       ],
-      "key": "light_crown/phantom",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.288,
@@ -767,7 +767,7 @@
       "materials": [
         "tetra:metal/refined_obsidian"
       ],
-      "key": "light_crown/refined_obsidian",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -791,7 +791,7 @@
       "materials": [
         "tetra:metal/signalum"
       ],
-      "key": "light_crown/signalum",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24,
@@ -814,7 +814,7 @@
       "materials": [
         "tetra:metal/steel"
       ],
-      "key": "light_crown/steel",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264,
@@ -837,7 +837,7 @@
       "materials": [
         "tetra:metal/steeleaf"
       ],
-      "key": "light_crown/steeleaf",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.254,
@@ -860,7 +860,7 @@
       "materials": [
         "tetra:metal/terrasteel"
       ],
-      "key": "light_crown/terrasteel",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -883,7 +883,7 @@
       "materials": [
         "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "light_crown/undergarden_cloggrum",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264
@@ -905,7 +905,7 @@
       "materials": [
         "tetra:metal/undergarden_forgotten_metal"
       ],
-      "key": "light_crown/undergarden_forgotten_metal",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.326,
@@ -928,7 +928,7 @@
       "materials": [
         "tetra:metal/undergarden_froststeel"
       ],
-      "key": "light_crown/undergarden_froststeel",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.278,
@@ -951,7 +951,7 @@
       "materials": [
         "tetra:metal/unorithe"
       ],
-      "key": "light_crown/unorithe",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -975,7 +975,7 @@
       "materials": [
         "tetra:gem/onyx"
       ],
-      "key": "light_crown/onyx",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.36,
@@ -999,7 +999,7 @@
       "materials": [
         "tetra:gem/ruby"
       ],
-      "key": "light_crown/ruby",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -1022,7 +1022,7 @@
       "materials": [
         "tetra:gem/sapphire"
       ],
-      "key": "light_crown/sapphire",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -1045,7 +1045,7 @@
       "materials": [
         "tetra:gem/topaz"
       ],
-      "key": "light_crown/topaz",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -1068,7 +1068,7 @@
       "materials": [
         "tetra:gem/undergarden_utherium"
       ],
-      "key": "light_crown/undergarden_utherium",
+      "key": "light_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.298,

@@ -31,7 +31,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "gilded_trim/leather",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.022,
@@ -53,7 +53,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "gilded_trim/iron",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.04,
@@ -75,7 +75,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "gilded_trim/gold",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.034,
@@ -98,7 +98,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "gilded_trim/diamond",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.056,
@@ -121,7 +121,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "gilded_trim/netherite",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.064,
@@ -144,7 +144,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "gilded_trim/fire",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -167,7 +167,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "gilded_trim/ice",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -190,7 +190,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "gilded_trim/shadow",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -213,7 +213,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "gilded_trim/holy",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -236,7 +236,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "gilded_trim/lightning",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -259,7 +259,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "gilded_trim/nature",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -282,7 +282,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "gilded_trim/ender",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -305,7 +305,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "gilded_trim/blood",
+      "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,

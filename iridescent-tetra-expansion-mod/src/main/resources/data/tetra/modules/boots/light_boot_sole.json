@@ -35,7 +35,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "light_boot_sole/leather",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.132,
@@ -58,7 +58,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "light_boot_sole/iron",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24,
@@ -81,7 +81,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "light_boot_sole/gold",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.204,
@@ -105,7 +105,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "light_boot_sole/diamond",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -129,7 +129,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "light_boot_sole/netherite",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.384,
@@ -153,7 +153,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "light_boot_sole/fire",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -177,7 +177,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "light_boot_sole/ice",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -201,7 +201,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "light_boot_sole/shadow",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -225,7 +225,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "light_boot_sole/holy",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "light_boot_sole/lightning",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -273,7 +273,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "light_boot_sole/nature",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -297,7 +297,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "light_boot_sole/ender",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -321,7 +321,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "light_boot_sole/blood",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.252,
@@ -345,7 +345,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "light_boot_sole/aethersteel",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.408,
@@ -370,7 +370,7 @@
       "materials": [
         "tetra:metal/brass"
       ],
-      "key": "light_boot_sole/brass",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.216,
@@ -393,7 +393,7 @@
       "materials": [
         "tetra:metal/charoite"
       ],
-      "key": "light_boot_sole/charoite",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.25,
@@ -416,7 +416,7 @@
       "materials": [
         "tetra:metal/deorum"
       ],
-      "key": "light_boot_sole/deorum",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.288,
@@ -440,7 +440,7 @@
       "materials": [
         "tetra:metal/dimlite"
       ],
-      "key": "light_boot_sole/dimlite",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -464,7 +464,7 @@
       "materials": [
         "tetra:metal/diopside"
       ],
-      "key": "light_boot_sole/diopside",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24,
@@ -487,7 +487,7 @@
       "materials": [
         "tetra:metal/elementium"
       ],
-      "key": "light_boot_sole/elementium",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.298,
@@ -511,7 +511,7 @@
       "materials": [
         "tetra:metal/enderium"
       ],
-      "key": "light_boot_sole/enderium",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.326,
@@ -536,7 +536,7 @@
       "materials": [
         "tetra:metal/fiery"
       ],
-      "key": "light_boot_sole/fiery",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.278,
@@ -560,7 +560,7 @@
       "materials": [
         "tetra:metal/garnite"
       ],
-      "key": "light_boot_sole/garnite",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264,
@@ -584,7 +584,7 @@
       "materials": [
         "tetra:metal/horizonite"
       ],
-      "key": "light_boot_sole/horizonite",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264,
@@ -608,7 +608,7 @@
       "materials": [
         "tetra:metal/iridium"
       ],
-      "key": "light_boot_sole/iridium",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.384,
@@ -633,7 +633,7 @@
       "materials": [
         "tetra:metal/ironwood"
       ],
-      "key": "light_boot_sole/ironwood",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24,
@@ -656,7 +656,7 @@
       "materials": [
         "tetra:metal/knight"
       ],
-      "key": "light_boot_sole/knight",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -680,7 +680,7 @@
       "materials": [
         "tetra:metal/knightmetal"
       ],
-      "key": "light_boot_sole/knightmetal",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.269,
@@ -704,7 +704,7 @@
       "materials": [
         "tetra:metal/lumium"
       ],
-      "key": "light_boot_sole/lumium",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.23,
@@ -728,7 +728,7 @@
       "materials": [
         "tetra:metal/manasteel"
       ],
-      "key": "light_boot_sole/manasteel",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.25,
@@ -752,7 +752,7 @@
       "materials": [
         "tetra:metal/osmium"
       ],
-      "key": "light_boot_sole/osmium",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.288,
@@ -776,7 +776,7 @@
       "materials": [
         "tetra:metal/phantom"
       ],
-      "key": "light_boot_sole/phantom",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.288,
@@ -800,7 +800,7 @@
       "materials": [
         "tetra:metal/refined_obsidian"
       ],
-      "key": "light_boot_sole/refined_obsidian",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -825,7 +825,7 @@
       "materials": [
         "tetra:metal/signalum"
       ],
-      "key": "light_boot_sole/signalum",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.24,
@@ -849,7 +849,7 @@
       "materials": [
         "tetra:metal/steel"
       ],
-      "key": "light_boot_sole/steel",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264,
@@ -873,7 +873,7 @@
       "materials": [
         "tetra:metal/steeleaf"
       ],
-      "key": "light_boot_sole/steeleaf",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.254,
@@ -897,7 +897,7 @@
       "materials": [
         "tetra:metal/terrasteel"
       ],
-      "key": "light_boot_sole/terrasteel",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -921,7 +921,7 @@
       "materials": [
         "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "light_boot_sole/undergarden_cloggrum",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.264,
@@ -944,7 +944,7 @@
       "materials": [
         "tetra:metal/undergarden_forgotten_metal"
       ],
-      "key": "light_boot_sole/undergarden_forgotten_metal",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.326,
@@ -968,7 +968,7 @@
       "materials": [
         "tetra:metal/undergarden_froststeel"
       ],
-      "key": "light_boot_sole/undergarden_froststeel",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.278,
@@ -992,7 +992,7 @@
       "materials": [
         "tetra:metal/unorithe"
       ],
-      "key": "light_boot_sole/unorithe",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -1017,7 +1017,7 @@
       "materials": [
         "tetra:gem/onyx"
       ],
-      "key": "light_boot_sole/onyx",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.36,
@@ -1042,7 +1042,7 @@
       "materials": [
         "tetra:gem/ruby"
       ],
-      "key": "light_boot_sole/ruby",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.336,
@@ -1066,7 +1066,7 @@
       "materials": [
         "tetra:gem/sapphire"
       ],
-      "key": "light_boot_sole/sapphire",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -1090,7 +1090,7 @@
       "materials": [
         "tetra:gem/topaz"
       ],
-      "key": "light_boot_sole/topaz",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.312,
@@ -1114,7 +1114,7 @@
       "materials": [
         "tetra:gem/undergarden_utherium"
       ],
-      "key": "light_boot_sole/undergarden_utherium",
+      "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.298,

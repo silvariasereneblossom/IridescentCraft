@@ -36,7 +36,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "robed_leg_plate/leather",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.22,
@@ -60,7 +60,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "robed_leg_plate/fire",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -85,7 +85,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "robed_leg_plate/ice",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -110,7 +110,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "robed_leg_plate/shadow",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -135,7 +135,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "robed_leg_plate/holy",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "robed_leg_plate/lightning",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -185,7 +185,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "robed_leg_plate/nature",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -210,7 +210,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "robed_leg_plate/ender",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -235,7 +235,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "robed_leg_plate/blood",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.42,
@@ -260,7 +260,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "robed_leg_plate/wool",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.15,
@@ -284,7 +284,7 @@
       "materials": [
         "tetra:fibre/string"
       ],
-      "key": "robed_leg_plate/string",
+      "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.12,

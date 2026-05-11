@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "reinforced_greaves/leather",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.11
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "reinforced_greaves/iron",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.2
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "reinforced_greaves/gold",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.17,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "reinforced_greaves/diamond",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.28,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "reinforced_greaves/netherite",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.32,
@@ -138,7 +138,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "reinforced_greaves/fire",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -160,7 +160,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "reinforced_greaves/ice",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -182,7 +182,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "reinforced_greaves/shadow",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -204,7 +204,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "reinforced_greaves/holy",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -226,7 +226,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "reinforced_greaves/lightning",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -248,7 +248,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "reinforced_greaves/nature",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -270,7 +270,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "reinforced_greaves/ender",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
@@ -292,7 +292,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "reinforced_greaves/blood",
+      "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,

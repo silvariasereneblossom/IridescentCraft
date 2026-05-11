@@ -36,7 +36,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "front_cover/aethersteel",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
@@ -58,7 +58,7 @@
       "materials": [
         "tetra:metal/brass"
       ],
-      "key": "front_cover/brass",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.004
@@ -80,7 +80,7 @@
       "materials": [
         "tetra:metal/charoite"
       ],
-      "key": "front_cover/charoite",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
@@ -102,7 +102,7 @@
       "materials": [
         "tetra:metal/deorum"
       ],
-      "key": "front_cover/deorum",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0055
@@ -124,7 +124,7 @@
       "materials": [
         "tetra:metal/dimlite"
       ],
-      "key": "front_cover/dimlite",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0065
@@ -146,7 +146,7 @@
       "materials": [
         "tetra:metal/diopside"
       ],
-      "key": "front_cover/diopside",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.003
@@ -168,7 +168,7 @@
       "materials": [
         "tetra:metal/elementium"
       ],
-      "key": "front_cover/elementium",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0075
@@ -190,7 +190,7 @@
       "materials": [
         "tetra:metal/enderium"
       ],
-      "key": "front_cover/enderium",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0055
@@ -212,7 +212,7 @@
       "materials": [
         "tetra:metal/fiery"
       ],
-      "key": "front_cover/fiery",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0043
@@ -234,7 +234,7 @@
       "materials": [
         "tetra:metal/garnite"
       ],
-      "key": "front_cover/garnite",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0035
@@ -256,7 +256,7 @@
       "materials": [
         "tetra:metal/horizonite"
       ],
-      "key": "front_cover/horizonite",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0035
@@ -278,7 +278,7 @@
       "materials": [
         "tetra:metal/iridium"
       ],
-      "key": "front_cover/iridium",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
@@ -300,7 +300,7 @@
       "materials": [
         "tetra:metal/ironwood"
       ],
-      "key": "front_cover/ironwood",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0048
@@ -322,7 +322,7 @@
       "materials": [
         "tetra:metal/knight"
       ],
-      "key": "front_cover/knight",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0043
@@ -344,7 +344,7 @@
       "materials": [
         "tetra:metal/knightmetal"
       ],
-      "key": "front_cover/knightmetal",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0039
@@ -366,7 +366,7 @@
       "materials": [
         "tetra:metal/lumium"
       ],
-      "key": "front_cover/lumium",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
@@ -388,7 +388,7 @@
       "materials": [
         "tetra:metal/manasteel"
       ],
-      "key": "front_cover/manasteel",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.006
@@ -410,7 +410,7 @@
       "materials": [
         "tetra:metal/osmium"
       ],
-      "key": "front_cover/osmium",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0044
@@ -432,7 +432,7 @@
       "materials": [
         "tetra:metal/phantom"
       ],
-      "key": "front_cover/phantom",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0047
@@ -454,7 +454,7 @@
       "materials": [
         "tetra:metal/refined_obsidian"
       ],
-      "key": "front_cover/refined_obsidian",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0038
@@ -476,7 +476,7 @@
       "materials": [
         "tetra:metal/signalum"
       ],
-      "key": "front_cover/signalum",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0048
@@ -498,7 +498,7 @@
       "materials": [
         "tetra:metal/steel"
       ],
-      "key": "front_cover/steel",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0036
@@ -520,7 +520,7 @@
       "materials": [
         "tetra:metal/steeleaf"
       ],
-      "key": "front_cover/steeleaf",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0045
@@ -542,7 +542,7 @@
       "materials": [
         "tetra:metal/terrasteel"
       ],
-      "key": "front_cover/terrasteel",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.007
@@ -564,7 +564,7 @@
       "materials": [
         "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "front_cover/undergarden_cloggrum",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0025
@@ -586,7 +586,7 @@
       "materials": [
         "tetra:metal/undergarden_forgotten_metal"
       ],
-      "key": "front_cover/undergarden_forgotten_metal",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.003
@@ -608,7 +608,7 @@
       "materials": [
         "tetra:metal/undergarden_froststeel"
       ],
-      "key": "front_cover/undergarden_froststeel",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0037
@@ -630,7 +630,7 @@
       "materials": [
         "tetra:metal/unorithe"
       ],
-      "key": "front_cover/unorithe",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0045
@@ -652,7 +652,7 @@
       "materials": [
         "tetra:skin/rotten_flesh"
       ],
-      "key": "front_cover/rotten_flesh",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0035
@@ -674,7 +674,7 @@
       "materials": [
         "tetra:skin/rotten_leather"
       ],
-      "key": "front_cover/rotten_leather",
+      "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0055

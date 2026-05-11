@@ -31,7 +31,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "full_visor/leather",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.088,
@@ -53,7 +53,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "full_visor/iron",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.16,
@@ -75,7 +75,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "full_visor/gold",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.136,
@@ -98,7 +98,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "full_visor/diamond",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.224,
@@ -121,7 +121,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "full_visor/netherite",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.256,
@@ -144,7 +144,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "full_visor/fire",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -167,7 +167,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "full_visor/ice",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -190,7 +190,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "full_visor/shadow",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -213,7 +213,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "full_visor/holy",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -236,7 +236,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "full_visor/lightning",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -259,7 +259,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "full_visor/nature",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -282,7 +282,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "full_visor/ender",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,
@@ -305,7 +305,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "full_visor/blood",
+      "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.168,

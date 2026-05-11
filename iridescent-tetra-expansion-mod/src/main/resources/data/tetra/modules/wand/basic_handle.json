@@ -31,31 +31,9 @@
     },
     {
       "materials": [
-        "tetra:wood/oak"
-      ],
-      "key": "basic_handle/wood",
-      "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.05
-        },
-        "integrity": 3,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 4
-      }
-    },
-    {
-      "materials": [
         "tetra:stone/stone"
       ],
-      "key": "basic_handle/stone",
+      "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:cooldown_reduction": 0.1
@@ -77,7 +55,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "basic_handle/iron",
+      "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:cooldown_reduction": 0.15
@@ -99,7 +77,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "basic_handle/gold",
+      "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:cooldown_reduction": 0.2,
@@ -122,7 +100,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "basic_handle/diamond",
+      "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:cooldown_reduction": 0.25
@@ -144,7 +122,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "basic_handle/netherite",
+      "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:cooldown_reduction": 0.3
@@ -166,7 +144,7 @@
       "materials": [
         "tetra:metal/aethersteel"
       ],
-      "key": "basic_handle/aethersteel",
+      "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
           "**irons_spellbooks:cooldown_reduction": 0.35,

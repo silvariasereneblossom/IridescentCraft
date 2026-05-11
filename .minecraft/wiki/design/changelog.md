@@ -4,6 +4,71 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — Tetra variant key doubling fix: collapse named keys to wildcard form (1280 variants across 62 files)
+
+Root cause of "random material fallback" reported by tester: every named per-material variant in our module files had the wrong key shape, and Tetra's `MaterialVariantData.combine(MaterialData)` was DOUBLING them at load time.
+
+### The bug
+
+Tetra expands `MaterialVariantData` (any variant with a `materials` field) at module-load time. The expansion code reads:
+
+```java
+// Bytecode of MaterialVariantData.combine(MaterialData):
+new_variant.key = this.key + material.key;  // string concat
+```
+
+So a JSON variant of the shape:
+
+```json
+{ "key": "breastplate/iron", "materials": ["tetra:metal/iron"], "extract": {...} }
+```
+
+produces an expanded variant with key `breastplate/iron` + `iron` = **`breastplate/ironiron`**. Every one of our 1280 named variants (52 materials -- vanilla + themed + per-mod families -- across 16 armor module files + 4 wand module files + a couple of book modules) was suffering this doubling.
+
+Downstream effect: every schematic-outcome / replacement-file stamp wrote variant key `breastplate/iron` to NBT, but `variantData[]` only contained `breastplate/ironiron` after expansion. `ItemModule.getVariantData(String)` does exact-string equality on `.key`, so every lookup missed and fell to `getDefaultData() = variantData[0]`. With the 2026-04 base-variant materials list of `[tetra:metal/, tetra:gem/, iridescent_reforging:themed/]`, `variantData[0]` was the FIRST expansion of the first-in-JSON variant -- which after HashMap-based dedup was effectively random across all metal/gem/themed materials. Hence reports of leather chestplates rendering as "Emerald Breastplate" / "Lined Iron Breastplate" / "Cherry Breastplate".
+
+### Why this hid for so long
+
+`variantData[0]` fallback is the same mechanism flagged in `dev/lessons-learned.md` lesson 9 ("`variantData[0]` fallback masks NBT-mismatch bugs"). Tetra never crashes on a missed lookup -- it just silently substitutes the catch-all, which often APPEARS to work. Symptom is "wrong material on workbench convert," cause looks like "missing variant" but is actually "variant key doubled at expansion." Lessons-learned line 626 documents this exact failure mode for an older 3-segment-key case; we re-introduced the same shape with 2-segment named variants when shipping the modded-armor rollout (`742e3753` through `a5fa0fc9`).
+
+### Canonical Tetra pattern (verified against stock `data/tetra/modules/double/basic_hammer.json`)
+
+```json
+{ "key": "basic_hammer/", "materials": ["tetra:metal/iron"],    "extract": {iron-tier stats}}
+{ "key": "basic_hammer/", "materials": ["tetra:metal/copper"],  "extract": {copper-tier stats}}
+{ "key": "basic_hammer/", "materials": ["tetra:stone/stone"],   "extract": {stone-tier stats}}
+{ "key": "basic_hammer/", "materials": ["tetra:wood/"],         "extract": {wood-tier stats}}
+```
+
+EVERY variant uses the wildcard key (ends in `/`). Expansion produces `<wildcard><material.key>` = `basic_hammer/iron`, `basic_hammer/copper`, etc. -- matches what the schematic stamps. No doubling.
+
+### Fix
+
+Mechanical Python sweep across `data/tetra/modules/**/*.json`: for any variant where `key = "<module>/<suffix>"` and the suffix matches the material's key (so `breastplate/iron` with `tetra:metal/iron`, `breastplate/leather` with `tetra:skin/leather`, ...), rewrite the key to the wildcard form `<module>/`. Materials field and extract block untouched. Tetra's combine then produces the correct downstream keys.
+
+Coverage: 1280 variants across 62 module files. 51 distinct vanilla/themed/modded material suffixes that already had a 1:1 material reference.
+
+### Deferred (next pass)
+
+324 variants for 20 modded-material suffixes were left as-is: `aether_neptune`, `aether_obsidian`, `bs_pyrope`, `bs_horizonite`, `bs_diopside`, `cm_ignitium`, `dd_resonarium`, `dd_warden`, `diamond_no_t`, `fa_draco_arcanus`, `fa_mortem`, `fa_tyr`, `tf_arctic`, `tf_fiery`, `tf_ironwood`, `tf_knightmetal`, `tf_naga`, `tf_yeti`, `ug_cloggrum`, `ug_froststeel`. These were authored with placeholder `materials: [tetra:metal/iron]` (the iron tier's stats) and no matching Tetra material registered for the suffix. Transforming them would create collisions with the iron variant. Proper fix is registering an `iridescent_reforging:modded/<material>` Tetra material per suffix (~21 JSON files), then re-pointing each variant's `materials` field at the registered material. Tracked as a follow-up; vanilla conversion path is unblocked in the meantime, and modded items now consistently fall through to iron-tier defaults instead of randomly rolling.
+
+### Wand wood/oak
+
+The 4 wand modules had `basic_<part>/wood` named variants where the material was `tetra:wood/oak` (key=oak, not wood). After the sweep, the wand wildcards expand to `basic_<part>/oak`. Updated `data/tetra/replacements/simple_staves__woodenwand.json` to stamp `basic_<part>/oak` (matching the expansion). Lang entries for `tetra.variant.basic_<part>/wood` renamed to `.../oak`. Other tier wands (stone/iron/gold/diamond/netherite) already had matching suffix=material-key so no replacement-file changes needed.
+
+### Lang
+
+4 missing book-cover entries added (`tetra.variant.<back|front|pages|spine>_cover/leather`). Total lang file now 2546 entries.
+
+### Build + audit
+
+- Sweep transformed 1280 variants across 62 files
+- `tools/audit_modules.py` warnings cluster on the 324 deferred modded variants (expected) + base-variant `magicCapacity=0` (pre-expansion default, overridden per-material at runtime)
+- JSON validity verified
+- Jar rebuilt + deployed to all 3 distros
+
+---
+
 ## 2026-05-11 — Tetra wand overhaul: random-material lockdown, spell-stat baselines per tier, T2 recipe nether-tier fix
 
 Three interlocking fixes for the modular wand (Phase D `reforged_wand`) shipping together because they share the same surface: workbench display and per-material scaling.

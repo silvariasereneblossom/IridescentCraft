@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "standard_heel/leather",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.071
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "standard_heel/iron",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "standard_heel/gold",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.071,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "standard_heel/diamond",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "standard_heel/netherite",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "standard_heel/fire",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "standard_heel/ice",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "standard_heel/shadow",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "standard_heel/holy",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "standard_heel/lightning",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "standard_heel/nature",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "standard_heel/ender",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "standard_heel/blood",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "standard_heel/wool",
+      "key": "standard_heel/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.043,

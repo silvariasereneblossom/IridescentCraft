@@ -30,7 +30,7 @@
       "materials": [
         "tetra:skin/leather"
       ],
-      "key": "plain_crest/leather",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.071
@@ -51,7 +51,7 @@
       "materials": [
         "tetra:metal/iron"
       ],
-      "key": "plain_crest/iron",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -72,7 +72,7 @@
       "materials": [
         "tetra:metal/gold"
       ],
-      "key": "plain_crest/gold",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143,
@@ -94,7 +94,7 @@
       "materials": [
         "tetra:gem/diamond"
       ],
-      "key": "plain_crest/diamond",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -116,7 +116,7 @@
       "materials": [
         "tetra:metal/netherite"
       ],
-      "key": "plain_crest/netherite",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -139,7 +139,7 @@
       "materials": [
         "iridescent_reforging:themed/fire"
       ],
-      "key": "plain_crest/fire",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -161,7 +161,7 @@
       "materials": [
         "iridescent_reforging:themed/ice"
       ],
-      "key": "plain_crest/ice",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -183,7 +183,7 @@
       "materials": [
         "iridescent_reforging:themed/shadow"
       ],
-      "key": "plain_crest/shadow",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -205,7 +205,7 @@
       "materials": [
         "iridescent_reforging:themed/holy"
       ],
-      "key": "plain_crest/holy",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -227,7 +227,7 @@
       "materials": [
         "iridescent_reforging:themed/lightning"
       ],
-      "key": "plain_crest/lightning",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -249,7 +249,7 @@
       "materials": [
         "iridescent_reforging:themed/nature"
       ],
-      "key": "plain_crest/nature",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -271,7 +271,7 @@
       "materials": [
         "iridescent_reforging:themed/ender"
       ],
-      "key": "plain_crest/ender",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -293,7 +293,7 @@
       "materials": [
         "iridescent_reforging:themed/blood"
       ],
-      "key": "plain_crest/blood",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
@@ -751,7 +751,7 @@
       "materials": [
         "tetra:fabric/wool"
       ],
-      "key": "plain_crest/wool",
+      "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.043,
