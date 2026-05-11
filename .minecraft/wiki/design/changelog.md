@@ -4,6 +4,26 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — Lang sweep: 344 missing `tetra.variant.*` entries across modded materials
+
+Recurring instance of `feedback_tetra_translation_keys.md` pattern. Operator reported a converted chestplate showing `tetra.variant.breastplate/nether...` as raw translation key in the workbench UI. Side-by-side audit of every module's variant keys vs lang entries found **344 missing entries** -- every 21-variant modded set (aether_neptune, aether_obsidian, bs_*, cm_ignitium, dd_*, fa_*, tf_*, ug_*, diamond_no_t, wool) was missing across all 16 default module file types (basic_crown / basic_boot_sole / breastplate / full_leg_plate / leather_belt / leather_lacing / leather_strap / light_pauldrons / padded_boot_lining / padded_cuisses / padded_lining / plain_crest / simple_trim / slit_visor / standard_greaves / standard_heel) + a handful on the robe modules (circlet / robe_chest / robed_boot_sole / robed_leg_plate -- 2 per).
+
+Generated via Python audit over `data/tetra/modules/**/*.json`, diff'd against `tetra.variant.*` keys in `en_us.json`, output 344 entries with friendly material names:
+- Vanilla / generic: `wool` -> "Wool", `diamond_no_t` -> "Diamond" (no-toughness variant, still reads as diamond)
+- Aether: `aether_neptune` -> "Aether Neptune", `aether_obsidian` -> "Aether Obsidian"
+- Blue Skies: `bs_diopside` -> "Blue Skies Diopside" etc.
+- Cataclysm: `cm_ignitium` -> "Cataclysm Ignitium"
+- Deeper Darker: `dd_resonarium` -> "Deeper Darker Resonarium", `dd_warden` -> "Deeper Darker Warden"
+- Forbidden Arcanus: `fa_draco_arcanus` -> "Draco Arcanus", `fa_mortem` -> "Mortem", `fa_tyr` -> "Tyr"
+- Twilight Forest: `tf_naga` -> "Naga Scale", `tf_yeti` -> "Yeti Fur", `tf_arctic` -> "Arctic Fur", `tf_fiery`/`tf_ironwood`/`tf_knightmetal` -> "X (TF)" disambiguation
+- Undergarden: `ug_cloggrum` -> "Cloggrum", `ug_froststeel` -> "Froststeel"
+
+Entries follow the existing `<Material> <module>` convention (underscores in module name replaced with spaces). Total lang file grew from 2198 to 2542 entries. JSON validity verified before build; jar rebuilt + deployed to all 3 distros.
+
+This was the pre-existing pattern from the round-1 modded-armor rebalance pass (when the 21 modded variants were added) but the lang sweep got skipped. Future: bake the audit into `audit_modules.py` (per `feedback_tetra_wiring.md`) so this is caught at ship time rather than surfacing in a workbench screenshot.
+
+---
+
 ## 2026-05-11 — icraft-cli/core: disable idle_timeout watchdog by default
 
 The launcher's hang watchdog polls `latest.log` mtime and kills the JVM after N seconds of no log growth. Two thresholds: `boot_timeout` (during init) and `idle_timeout` (post-boot). Default was 15 min each.
