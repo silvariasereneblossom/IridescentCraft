@@ -4,6 +4,24 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — prism_prelaunch.bat: self-relaunch so updates take effect same launch
+
+Closes the launch-after-pull edge that's been a recurring footgun. Previously, when a `git pull` updated `prism_prelaunch.bat` itself, cmd.exe kept the old bat buffered for the rest of the launch — the new hooks took effect only on the NEXT launch. Operators reported "I pulled and relaunched and it STILL doesn't work" multiple times this week.
+
+Two-phase self-relaunch design:
+
+  - **Phase 1** (top of bat): just `git pull`, then `call %~f0 --post-pull` and exit. cmd.exe re-opens the bat from disk on each `call`, so the inner invocation reads whatever bat content is on disk AFTER the pull. Subject to NTFS + FILE_SHARE_DELETE semantics for in-place replacement (which both Git for Windows and cmd.exe honour) — works in practice on Win10+.
+
+  - **Phase 2** (after `:post_pull` label): cleanup + download_mods + wire. Runs from the just-pulled bat content — new hooks, new defaults, new arg lists all in effect same launch.
+
+  - Re-exec is gated on the `--post-pull` arg so recursion stops at depth 2. Errorlevel propagates correctly via `endlocal & exit /b` (errorlevel is process-scoped, not part of the setlocal scope).
+
+Result: when we add a new pre-launch step upstream (e.g. last week's `download_mods.ps1` invocation), the operator's very next launch picks it up. No manual one-shot bootstrap, no "launch twice" workaround.
+
+Server-side `iridescentserver.bat` already has analogous staging via the `.new` finalization dance — this brings the client-side git-checkout flow to parity.
+
+---
+
 ## 2026-05-11 — Client mod sync hardened to match server-side robustness
 
 Symptom: even after fixing `prism_prelaunch.bat` to invoke `download_mods.ps1`, the client kept failing handshake with `Channels [dna:dna,simple_staves:simple_staves] rejected their client side version number` -> screenshot UI "Your client is missing the following mods" with Dan's Magic 1.0.0 + Simple Staves 1.0.3 listed. The client `download_mods.ps1` was running, but failing silently.
