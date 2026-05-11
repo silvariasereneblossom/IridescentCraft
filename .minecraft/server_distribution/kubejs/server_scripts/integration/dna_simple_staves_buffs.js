@@ -53,41 +53,12 @@ const HANDHELD_BUFFS = {
   'simple_staves:void_wand':          { 'irons_spellbooks:ender_spell_power':     ['addition', 0.50] },
   'simple_staves:tenebrium_wand':     { 'irons_spellbooks:ender_spell_power':     ['addition', 0.75] },
 
-  // Simple Staves — 6 vanilla material wands (base spell stats per tier).
-  // Each tier grants matched % on spell_power + mana_regen + cooldown_reduction.
-  // Mirrors the Tetra variant primaryAttributes on basic_handle/cap/core/inlay
-  // so the player gets the same numbers pre- and post-Tetra-workbench conversion.
-  // Tier ladder: wood 5%, stone 10%, iron 15%, gold 20%, diamond 25%, netherite 30%.
-  'simple_staves:woodenwand': {
-    'irons_spellbooks:spell_power':         ['addition', 0.05],
-    'irons_spellbooks:mana_regen':          ['addition', 0.05],
-    'irons_spellbooks:cooldown_reduction':  ['addition', 0.05],
-  },
-  'simple_staves:stone_wand': {
-    'irons_spellbooks:spell_power':         ['addition', 0.10],
-    'irons_spellbooks:mana_regen':          ['addition', 0.10],
-    'irons_spellbooks:cooldown_reduction':  ['addition', 0.10],
-  },
-  'simple_staves:iron_wand': {
-    'irons_spellbooks:spell_power':         ['addition', 0.15],
-    'irons_spellbooks:mana_regen':          ['addition', 0.15],
-    'irons_spellbooks:cooldown_reduction':  ['addition', 0.15],
-  },
-  'simple_staves:gold_wand': {
-    'irons_spellbooks:spell_power':         ['addition', 0.20],
-    'irons_spellbooks:mana_regen':          ['addition', 0.20],
-    'irons_spellbooks:cooldown_reduction':  ['addition', 0.20],
-  },
-  'simple_staves:diamond_wand': {
-    'irons_spellbooks:spell_power':         ['addition', 0.25],
-    'irons_spellbooks:mana_regen':          ['addition', 0.25],
-    'irons_spellbooks:cooldown_reduction':  ['addition', 0.25],
-  },
-  'simple_staves:netherite_wand': {
-    'irons_spellbooks:spell_power':         ['addition', 0.30],
-    'irons_spellbooks:mana_regen':          ['addition', 0.30],
-    'irons_spellbooks:cooldown_reduction':  ['addition', 0.30],
-  },
+  // Note: Simple Staves' 6 vanilla material wands (wooden/stone/iron/gold/
+  // diamond/netherite_wand) carry their base spell stats at the ITEM level
+  // via SimpleStavesWandAttributes.java (ItemAttributeModifierEvent
+  // injection). Same approach as Tetra modular items -- the modifiers are
+  // bound to the item itself, visible in tooltips, applied by vanilla
+  // mainhand-slot logic. Don't add tick-driven entries here for them.
 }
 
 // Flat list of every (itemId, attr) modifier slot we manage. Iterated each

@@ -63,15 +63,19 @@ T3 element wands (viritium/veil/void) keep ISS runes -- those are correctly Neth
 
 Lang file `assets/iridescent_reforging/lang/en_us.json` validated (2542 entries, JSON parses). Recipe script synced to all 3 distros (main + server + client). Jar rebuild via `build_mod.sh` next; deployment via packwiz pull on next client launch.
 
-### 5. Pre-Tetra base stats on Simple Staves vanilla material wands
+### 5. Pre-Tetra base stats on Simple Staves vanilla material wands — item-level injection
 
 The Tetra reforged_wand variant primaryAttributes provide the per-tier 5/10/15/20/25/30% on cooldown/mana_regen/spell_power AFTER a player drops the wand on the workbench. Before the workbench step, the player is just holding the base `simple_staves:woodenwand` / `stone_wand` / `iron_wand` / `gold_wand` / `diamond_wand` / `netherite_wand` -- those have no spell attributes in their stock Simple Staves form, so the wand felt useless until the player learned about the Tetra conversion step.
 
-Added 6 entries to `kubejs/server_scripts/integration/dna_simple_staves_buffs.js` (HANDHELD_BUFFS table) so the tick-driven player-side modifier system applies the same base stats while the wand is held in its pre-Tetra form. Numbers match the Tetra variant exactly, so the player gets the same effective stats either way (the Tetra conversion is a one-way upgrade path to unlock module/honing customization, not a stat upgrade by itself).
+**Approach: item-level, not player-tick.** First pass used the tick-driven `HANDHELD_BUFFS` table in `dna_simple_staves_buffs.js` (the same path the elemental wands take), but that ties the stats to the player rather than the item -- they don't show in tooltips, JEI shows nothing on hover, and the symmetry with Tetra (where modifiers live on the variant primaryAttributes / IModularItem.getAttributeModifiers) is broken.
 
-Matching tooltip lines added to `kubejs/client_scripts/dna_simple_staves_tooltip.js` so JEI/inventory hover shows `+X% Spell Power / +X% Mana Regen / +X% Cooldown Reduction` lines. Synced both files to all 3 distros.
+Replaced with `SimpleStavesWandAttributes.java` in `iridescent-tetra-expansion-mod`: a Forge `@SubscribeEvent` handler on `ItemAttributeModifierEvent` that runs every time vanilla queries the item's attribute modifiers. For MAINHAND queries on the six wand IDs, injects 3 modifiers (spell_power, mana_regen, cooldown_reduction) at the matching tier percent using stable per-attribute UUIDs.
 
-Now the workflow is symmetric: craft -> hold -> use, optionally workbench-convert for Tetra customization. The stat baseline is the same on both sides of the conversion -- the conversion is value-neutral, only adding module/honing surface area.
+This makes the wand carry its stats natively, the same way Tetra modular items do via `getAttributeModifiers(EquipmentSlot, ItemStack)`. The vanilla tooltip renderer auto-formats them as `When in Main Hand: +X% Spell Power` lines, the equipment-slot logic auto-applies them on hand swap, and there's no per-tick scan. The Simple Staves wand is now baseline-equivalent to a Tetra wand of the same tier even before workbench conversion.
+
+The corresponding `HANDHELD_BUFFS` and `dna_simple_staves_tooltip.js` entries were removed since the item-level path covers them. The 13 dna/element wand entries stay on the tick-driven path -- those use element-specific attributes (fire_spell_power, lightning_spell_power, etc.) that don't render usefully in vanilla tooltips and need server-tick state for compound effects like wind_essence_wand's movement_speed.
+
+Jar rebuilt + deployed to all 3 distros.
 
 ---
 
