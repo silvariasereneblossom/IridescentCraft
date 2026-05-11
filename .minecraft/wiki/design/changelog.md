@@ -63,6 +63,16 @@ T3 element wands (viritium/veil/void) keep ISS runes -- those are correctly Neth
 
 Lang file `assets/iridescent_reforging/lang/en_us.json` validated (2542 entries, JSON parses). Recipe script synced to all 3 distros (main + server + client). Jar rebuild via `build_mod.sh` next; deployment via packwiz pull on next client launch.
 
+### 5. Pre-Tetra base stats on Simple Staves vanilla material wands
+
+The Tetra reforged_wand variant primaryAttributes provide the per-tier 5/10/15/20/25/30% on cooldown/mana_regen/spell_power AFTER a player drops the wand on the workbench. Before the workbench step, the player is just holding the base `simple_staves:woodenwand` / `stone_wand` / `iron_wand` / `gold_wand` / `diamond_wand` / `netherite_wand` -- those have no spell attributes in their stock Simple Staves form, so the wand felt useless until the player learned about the Tetra conversion step.
+
+Added 6 entries to `kubejs/server_scripts/integration/dna_simple_staves_buffs.js` (HANDHELD_BUFFS table) so the tick-driven player-side modifier system applies the same base stats while the wand is held in its pre-Tetra form. Numbers match the Tetra variant exactly, so the player gets the same effective stats either way (the Tetra conversion is a one-way upgrade path to unlock module/honing customization, not a stat upgrade by itself).
+
+Matching tooltip lines added to `kubejs/client_scripts/dna_simple_staves_tooltip.js` so JEI/inventory hover shows `+X% Spell Power / +X% Mana Regen / +X% Cooldown Reduction` lines. Synced both files to all 3 distros.
+
+Now the workflow is symmetric: craft -> hold -> use, optionally workbench-convert for Tetra customization. The stat baseline is the same on both sides of the conversion -- the conversion is value-neutral, only adding module/honing surface area.
+
 ---
 
 ## 2026-05-11 — Lang sweep: 344 missing `tetra.variant.*` entries across modded materials

@@ -79,4 +79,45 @@ ItemEvents.tooltip(event => {
     text.add(Text.of('+75% Ender Spell Power').color('dark_purple'))
   })
 
+  // ─── Simple Staves — material wands (per-tier base spell stats) ────────
+  // Wood 5%, Stone 10%, Iron 15%, Gold 20%, Diamond 25%, Netherite 30% on
+  // Spell Power + Mana Regen + Cooldown Reduction. Tetra workbench
+  // conversion preserves the same numbers via variant primaryAttributes.
+
+  event.addAdvanced('simple_staves:woodenwand', (stack, advanced, text) => {
+    text.add(Text.of('+5% Spell Power').color('light_purple'))
+    text.add(Text.of('+5% Mana Regen').color('aqua'))
+    text.add(Text.of('+5% Cooldown Reduction').color('yellow'))
+  })
+
+  event.addAdvanced('simple_staves:stone_wand', (stack, advanced, text) => {
+    text.add(Text.of('+10% Spell Power').color('light_purple'))
+    text.add(Text.of('+10% Mana Regen').color('aqua'))
+    text.add(Text.of('+10% Cooldown Reduction').color('yellow'))
+  })
+
+  event.addAdvanced('simple_staves:iron_wand', (stack, advanced, text) => {
+    text.add(Text.of('+15% Spell Power').color('light_purple'))
+    text.add(Text.of('+15% Mana Regen').color('aqua'))
+    text.add(Text.of('+15% Cooldown Reduction').color('yellow'))
+  })
+
+  event.addAdvanced('simple_staves:gold_wand', (stack, advanced, text) => {
+    text.add(Text.of('+20% Spell Power').color('light_purple'))
+    text.add(Text.of('+20% Mana Regen').color('aqua'))
+    text.add(Text.of('+20% Cooldown Reduction').color('yellow'))
+  })
+
+  event.addAdvanced('simple_staves:diamond_wand', (stack, advanced, text) => {
+    text.add(Text.of('+25% Spell Power').color('light_purple'))
+    text.add(Text.of('+25% Mana Regen').color('aqua'))
+    text.add(Text.of('+25% Cooldown Reduction').color('yellow'))
+  })
+
+  event.addAdvanced('simple_staves:netherite_wand', (stack, advanced, text) => {
+    text.add(Text.of('+30% Spell Power').color('light_purple'))
+    text.add(Text.of('+30% Mana Regen').color('aqua'))
+    text.add(Text.of('+30% Cooldown Reduction').color('yellow'))
+  })
+
 })
