@@ -4,6 +4,31 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — prism_prelaunch.bat: restore working-tree-deleted .pw.toml before pull
+
+Closes the infinite loop where new packwiz entries (dans-magic, simple-staves) never made it through to mod-load. Sequence observed on operator's instance via `git status`:
+
+```
+deleted:    .index/dans-magic.pw.toml
+deleted:    .index/simple-staves.pw.toml
+```
+
+Yet `git log` showed HEAD at `4d309f9` (well past `fcacdd48` which added those files). Branch was "up to date with 'origin/main'". So git pull succeeded -- but the .pw.toml files were physically deleted from the working tree at some prior moment, and `git pull --ff-only` treats working-tree deletions as local changes and does NOT restore them on fast-forward.
+
+Most likely cause: **PrismLauncher 11's Mod manager** sweeps `mods/.index/*.pw.toml` and removes entries whose matching jar isn't on disk. Sequence:
+
+1. Launch N: bat pulls `<.pw.toml>`. download_mods.ps1 would fetch the jar, but PrismLauncher's mod-list refresh fires BEFORE pre-launch in some scenarios -- or the sweep happens at launch teardown -- and the orphan `.pw.toml` (no matching jar yet) gets deleted.
+2. Launch N+1: git pull --ff-only sees branch is current. The deletion remains in working tree. download_mods.ps1 reads the .index, only sees 435 of the 437 tracked tomls, never knows about dans-magic / simple-staves. Forge launches without them. Server handshake fails.
+3. Infinite loop.
+
+Fix: prepend `git restore -- .minecraft/mods/.index/` to the bat's Phase 1 (before `git pull`). `git restore` only undoes working-tree deletions of files still tracked in HEAD -- intentional removals (via `git rm` + commit) record in the index and are unaffected. Safe to run every launch.
+
+After the restore, `git pull --ff-only` fast-forwards cleanly with all 437 .pw.toml files present. download_mods.ps1 sees the dans-magic / simple-staves entries and fetches them via the v2 UA + fallback chain. Forge loads the jars. Handshake passes.
+
+Architectural note: this is a quirk of mixing **two** packwiz-aware tools on the same `.index/` directory -- our git-based sync and PrismLauncher's built-in mod manager. The clean long-term fix is either (a) migrate to PrismLauncher's pack.toml URL flow (let PrismLauncher own the index end-to-end), or (b) tell PrismLauncher not to manage this instance's index. The `git restore` mitigation keeps both tools coexisting without conflict.
+
+---
+
 ## 2026-05-11 — prism_prelaunch.bat: self-relaunch so updates take effect same launch
 
 Closes the launch-after-pull edge that's been a recurring footgun. Previously, when a `git pull` updated `prism_prelaunch.bat` itself, cmd.exe kept the old bat buffered for the rest of the launch — the new hooks took effect only on the NEXT launch. Operators reported "I pulled and relaunched and it STILL doesn't work" multiple times this week.

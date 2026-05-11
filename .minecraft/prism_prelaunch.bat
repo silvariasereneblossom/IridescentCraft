@@ -40,6 +40,21 @@ REM Re-exec is gated on the --post-pull arg so we don't recurse forever.
 REM On the SECOND entry (with --post-pull set), this block is skipped
 REM and control flows straight to :post_pull.
 if /i not "%~1"=="--post-pull" (
+    REM Restore any working-tree-deleted .pw.toml files in mods/.index/
+    REM before pulling. PrismLauncher 11's Mod manager (and any similar
+    REM packwiz-aware tool) sweeps mods/.index/*.pw.toml and removes
+    REM entries whose matching jar isn't on disk yet. Without restoring
+    REM them, `git pull --ff-only` succeeds ("up to date") but leaves
+    REM the deletions in place -- download_mods.ps1 then can't see the
+    REM tomls and never fetches the jars. Infinite loop.
+    REM
+    REM `git restore` only undoes working-tree deletions of files still
+    REM tracked in HEAD; intentional removals (via `git rm` + commit)
+    REM are recorded in the index and unaffected. Safe to run every
+    REM launch.
+    echo [prism_prelaunch] restore deleted .pw.toml index entries...
+    git -C "!INSTANCE_DIR!" restore -- .minecraft/mods/.index/ 2>nul
+
     echo [prism_prelaunch] git pull...
     git -C "!INSTANCE_DIR!" pull --ff-only
     if errorlevel 1 (
