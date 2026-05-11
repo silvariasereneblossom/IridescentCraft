@@ -4,6 +4,28 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — Hotfix: rewrite Dan's Magic + Simple Staves buffs for KubeJS 2001 API
+
+Crash: server boot at 2026-05-10 19:43:32 (`crash-2026-05-10_19.43.32-fml.txt`). KubeJS marked `ERROR` during the complete-event phase. Root cause in `kubejs/startup.log`: `dna_simple_staves_buffs.js#30: Cannot find function attribute in object ice_staff`.
+
+KubeJS 2001.6.5-build.16 changed `ItemEvents.modification` to pass a raw `net.minecraft.world.item.Item` to the callback — no `.attribute()` helper. Vanilla `Item.defaultAttributeModifiers` is final and set at construction, so we can't bake modifiers in post-construction. The pre-2001 `item.attribute('mainhand', attr, name, value, op)` pattern is fundamentally incompatible with this build.
+
+**Fix**: re-implemented as a server-tick handler that applies / clears `AttributeModifier`s on the PLAYER via `player.modifyAttribute(attr, name, amount, op)`. Same pattern the existing skill system uses (`server_scripts/skills/justleveling_skills.js`).
+
+Files:
+- **new** `kubejs/server_scripts/integration/dna_simple_staves_buffs.js` — registers `tick_dna_simple_staves_buffs` with `0_tick_master` (10-tick interval, 2 Hz, offset 4). Each tick iterates online players, reads `mainHandItem.id`, applies the buff if held and clears (amount=0) for every other modifier slot. Deterministic `icraft_hh_<item>_<attr>` modifier names make calls idempotent and prevent leaks across item swaps.
+- **new** `kubejs/client_scripts/dna_simple_staves_tooltip.js` — restores the per-item buff tooltip line that lived on `Item.defaultModifiers` in the original baked-modifier design. 14 per-id `event.addAdvanced` calls (NOT `addAdvancedToAll` — silent no-op in this KubeJS build). Element-themed colors (aqua / yellow / red / green / dark_purple / gold / light_purple).
+- **new** `kubejs/assets/dna/lang/en_us.json` — `{ "item.dna.tnt_staff": "Apprentice Battlerod" }`. Lang overlay replaces the pre-2001 `item.displayName(...)` call. Resource-pack overlay path (mirror of `kubejs/assets/icraft/lang/en_us.json`).
+- **deleted** `kubejs/startup_scripts/dna_simple_staves_buffs.js` (the broken pre-2001 script).
+
+All four changes mirrored across `/.minecraft/`, `server_distribution/`, `distribution/client/`. md5sums verified identical across distros.
+
+**Tradeoffs vs the original baked-modifier design**: ~0.5s swap latency (10-tick interval — imperceptible in play); buff visible in tooltip via the client overlay; server tick load is ~14 items × N players × 2 Hz `modifyAttribute` calls (negligible). Works for items from other mods (no mixin required).
+
+Phase D's `iridescent_tetra_expansion-1.0.0.jar` and KubeJS scripts are independent — Phase D was not implicated; the crash would have happened on the prior Phase A/B/C/E push the moment the tester pulled it. The next pull boot will succeed.
+
+---
+
 ## 2026-05-10 — Phase D: Simple Staves material wands -> Tetra-modular `reforged_wand`
 
 Closes the deferred Phase D from the staves/wands integration plan. The 6 Simple Staves material wands (woodenwand / stone / iron / gold / diamond / netherite) now auto-convert to `iridescent_reforging:reforged_wand` when dropped on a Tetra workbench. A post-T4 **aethersteel** variant is reachable by swapping the handle module at the workbench (no SS source item exists for it).
