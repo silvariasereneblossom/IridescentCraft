@@ -10,9 +10,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:metal/",
-        "tetra:skin/",
-        "iridescent_reforging:themed/"
+        "tetra:metal/iron"
       ],
       "key": "basic_boot_sole/",
       "extract": {

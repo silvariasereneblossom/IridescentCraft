@@ -7,9 +7,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:skin/",
-        "tetra:fabric/",
-        "iridescent_reforging:themed/"
+        "tetra:metal/iron"
       ],
       "key": "silk_boot_lining/",
       "extract": {

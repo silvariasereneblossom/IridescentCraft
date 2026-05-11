@@ -7,9 +7,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:skin/",
-        "tetra:fabric/",
-        "iridescent_reforging:themed/"
+        "tetra:skin/leather"
       ],
       "key": "padded_boot_lining/",
       "extract": {

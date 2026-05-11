@@ -9,10 +9,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:wood/",
-        "tetra:stone/",
-        "tetra:metal/",
-        "tetra:gem/"
+        "tetra:wood/oak"
       ],
       "key": "basic_inlay/",
       "extract": {
@@ -25,38 +22,167 @@
           "textureX": 0,
           "textureY": 0
         },
-        "availableTextures": [ "" ],
+        "availableTextures": [
+          ""
+        ],
         "models": [],
         "magicCapacity": 3
       }
     },
-    { "materials": [ "tetra:wood/" ], "key": "basic_inlay/wood",
-      "extract": { "primaryAttributes": { "**irons_spellbooks:spell_power": 0.02 },
-        "integrity": 1, "glyph": { "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png", "textureX": 0, "textureY": 0 },
-        "availableTextures": [ "" ], "models": [], "magicCapacity": 3 } },
-    { "materials": [ "tetra:stone/" ], "key": "basic_inlay/stone",
-      "extract": { "primaryAttributes": { "**irons_spellbooks:spell_power": 0.03 },
-        "integrity": 1, "glyph": { "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png", "textureX": 0, "textureY": 0 },
-        "availableTextures": [ "" ], "models": [], "magicCapacity": 3 } },
-    { "materials": [ "tetra:metal/iron" ], "key": "basic_inlay/iron",
-      "extract": { "primaryAttributes": { "**irons_spellbooks:spell_power": 0.04 },
-        "integrity": 1, "glyph": { "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png", "textureX": 0, "textureY": 0 },
-        "availableTextures": [ "" ], "models": [], "magicCapacity": 4 } },
-    { "materials": [ "tetra:metal/gold" ], "key": "basic_inlay/gold",
-      "extract": { "primaryAttributes": { "**irons_spellbooks:spell_power": 0.05, "irons_spellbooks:max_mana": 3.0 },
-        "integrity": 1, "glyph": { "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png", "textureX": 0, "textureY": 0 },
-        "availableTextures": [ "" ], "models": [], "magicCapacity": 6 } },
-    { "materials": [ "tetra:gem/diamond" ], "key": "basic_inlay/diamond",
-      "extract": { "primaryAttributes": { "**irons_spellbooks:spell_power": 0.06 },
-        "integrity": 1, "glyph": { "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png", "textureX": 0, "textureY": 0 },
-        "availableTextures": [ "" ], "models": [], "magicCapacity": 5 } },
-    { "materials": [ "tetra:metal/netherite" ], "key": "basic_inlay/netherite",
-      "extract": { "primaryAttributes": { "**irons_spellbooks:spell_power": 0.08 },
-        "integrity": 1, "glyph": { "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png", "textureX": 0, "textureY": 0 },
-        "availableTextures": [ "" ], "models": [], "magicCapacity": 5 } },
-    { "materials": [ "tetra:metal/aethersteel" ], "key": "basic_inlay/aethersteel",
-      "extract": { "primaryAttributes": { "**irons_spellbooks:spell_power": 0.12, "**irons_spellbooks:cooldown_reduction": 0.005 },
-        "integrity": 2, "glyph": { "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png", "textureX": 0, "textureY": 0 },
-        "availableTextures": [ "" ], "models": [], "magicCapacity": 7 } }
+    {
+      "materials": [
+        "tetra:wood/oak"
+      ],
+      "key": "basic_inlay/wood",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.05
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:stone/stone"
+      ],
+      "key": "basic_inlay/stone",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.1
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "basic_inlay/iron",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.15
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "basic_inlay/gold",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.2,
+          "irons_spellbooks:max_mana": 3.0
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "basic_inlay/diamond",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.25
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "basic_inlay/netherite",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.3
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "basic_inlay/aethersteel",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.35
+        },
+        "integrity": 2,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 7
+      }
+    }
   ]
 }

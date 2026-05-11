@@ -7,8 +7,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:metal/",
-        "iridescent_reforging:themed/"
+        "tetra:metal/iron"
       ],
       "key": "goggles/",
       "extract": {

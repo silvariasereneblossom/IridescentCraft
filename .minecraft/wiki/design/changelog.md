@@ -4,6 +4,67 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — Tetra wand overhaul: random-material lockdown, spell-stat baselines per tier, T2 recipe nether-tier fix
+
+Three interlocking fixes for the modular wand (Phase D `reforged_wand`) shipping together because they share the same surface: workbench display and per-material scaling.
+
+### 1. Wildcard variant lockdown (66 modules)
+
+Tetra's `key: "<module>/"` wildcard variant accepts a `materials` array of tag refs and picks a RANDOM concrete material from the resolved tag set when no slot-specific variant matches. Our wand/robe/armor modules used broad tag refs (`tetra:wood/`, `tetra:metal/`, `tetra:fabric/`) which include all extension-mod materials (Aether's `lined_iron`, Forbidden Arcanus' `gilded_zinc`, Twilight Forest's `cherry`, etc.) -- so freshly-converted vanilla items got rolled into random modded materials, often ones with broken textures or missing lang. Same root cause as the 2026-05-10 leather chestplate "49 stack double-netherite" report.
+
+Narrowed all 66 module-file wildcards to safe single-material defaults:
+- **Wand modules** (handle/cap/core/inlay basic_*): `tetra:wood/oak`
+- **Robe modules** (circlet, robe_chest, robed_leg_plate, robed_boot_sole): `tetra:fabric/wool`
+- **Lining/strap modules**: `tetra:skin/leather`
+- **Book modules** (iss_book/back_cover, ars_book/spine): `tetra:skin/leather`
+- **Default** (armor majors, remaining minors): `tetra:metal/iron`
+- **Preserved as themed-tag** (intentional broad lists): `iss_book/core` (`tetra:icraft_iss_books/`), `ars_book/core` (`tetra:icraft_ars_books/`), `ars_book/dye` (fabric/fibre)
+
+This is a behavioral floor: when the workbench has to fall through to the wildcard, players now get a canonical safe variant instead of a random extension-mod roll. Specific slot variants (`basic_handle/wood`, `basic_handle/iron`, etc.) are untouched -- the fallback only fires when no concrete variant matches the inserted material, which should be rare.
+
+### 2. Wand spell-stat baselines per tier (5/10/15/20/25/30/35%)
+
+Material wands (wood through aethersteel) were under-tiered relative to their material identity: the cap/core/inlay attributes were placeholder values from the Phase D scaffold. Rewrote per-tier `primaryAttributes` across all 4 wand modules (handle/cap/core/inlay) with a consistent ladder:
+
+| Tier | Material | Handle (`cooldown_reduction`) | Cap (`mana_regen`) | Core (`max_mana`) | Inlay (`spell_power`) |
+|------|----------|-------------------------------|--------------------|--------------------|------------------------|
+| 1    | Wood (oak)   | 5%   | 5%   | +5  flat | 5%   |
+| 2    | Stone        | 10%  | 10%  | +10 flat | 10%  |
+| 3    | Iron         | 15%  | 15%  | +15 flat | 15%  |
+| 4    | Gold         | 20%  | 20%* | +20 flat | 20%  |
+| 5    | Diamond      | 25%  | 25%  | +25 flat | 25%  |
+| 6    | Netherite    | 30%  | 30%  | +30 flat | 30%  |
+| 7    | Aethersteel  | 35%* | 35%* | +40 flat | 35%  |
+
+`*` Gold and aethersteel cap/handle carry +3/+5 `max_mana` riders (mage-side material flavor). All percentage stats are multiplicative (`**` prefix on the attribute key).
+
+Wildcard variants (`basic_X/`) now use the wood tier defaults so the fallback case still produces sensible numbers if a player somehow lands on it.
+
+### 3. Cap hone: `cast_time_reduction` -> `mana_regen` (rename + attribute swap)
+
+The cap-hone improvement chain (`tetra.improvement.wand_cap_hone_*`) was attached to `cast_time_reduction`, which duplicated the handle's recovery role and left mana regen un-honable. Renamed and replumbed:
+- Improvement file: `wand_cap_hone_cast_time_reduction.json` -> `wand_cap_hone_mana_regen.json` (attribute swapped throughout)
+- 5 schematic files: `hone_cap_cast_time_reduction_{1..5}.json` -> `hone_cap_mana_regen_{1..5}.json` (content rewritten, schematic key now references the new improvement)
+- Lang: `tetra.improvement.wand_cap_hone_mana_regen.name` -> "Flow", description -> "Honed cap accelerates mana recovery. Increases mana regen."
+- Old `cast_time_reduction` keys removed; no dangling references remain (verified via grep over `data/tetra/`)
+
+Hone ladder (level 1-5): +0.5% / +1% / +1.6% / +2.3% / +3% mana regen (multiplicative). Matches the existing handle-hone curve for cooldown reduction.
+
+### 4. T2 elemental wand recipes: drop ISS Nether-tier reagents
+
+`kubejs/server_scripts/recipes/staff_wand_recipes.js` -- the T2 wand block. ISS `fire_rune` and `lightning_rune` are Nether-tier per ISS gating (they drop from Piglin Brutes / Blazes), which pulled `flame_wand` and `thunder_wand` forward into T3 territory. Swap to pre-Nether reagents:
+- `simple_staves:flame_wand`: `irons_spellbooks:fire_rune` -> `minecraft:redstone_block` (deep caves, T2 overworld)
+- `simple_staves:thunder_wand`: `irons_spellbooks:lightning_rune` -> `minecraft:copper_block` (lightning rod metaphor, T2 overworld)
+- `simple_staves:venomite_wand`: unchanged (`fermented_spider_eye`, already T1 overworld)
+
+T3 element wands (viritium/veil/void) keep ISS runes -- those are correctly Nether-tier. T4 tenebrium keeps nether_star centerpiece.
+
+### Workflow
+
+Lang file `assets/iridescent_reforging/lang/en_us.json` validated (2542 entries, JSON parses). Recipe script synced to all 3 distros (main + server + client). Jar rebuild via `build_mod.sh` next; deployment via packwiz pull on next client launch.
+
+---
+
 ## 2026-05-11 — Lang sweep: 344 missing `tetra.variant.*` entries across modded materials
 
 Recurring instance of `feedback_tetra_translation_keys.md` pattern. Operator reported a converted chestplate showing `tetra.variant.breastplate/nether...` as raw translation key in the workbench UI. Side-by-side audit of every module's variant keys vs lang entries found **344 missing entries** -- every 21-variant modded set (aether_neptune, aether_obsidian, bs_*, cm_ignitium, dd_*, fa_*, tf_*, ug_*, diamond_no_t, wool) was missing across all 16 default module file types (basic_crown / basic_boot_sole / breastplate / full_leg_plate / leather_belt / leather_lacing / leather_strap / light_pauldrons / padded_boot_lining / padded_cuisses / padded_lining / plain_crest / simple_trim / slit_visor / standard_greaves / standard_heel) + a handful on the robe modules (circlet / robe_chest / robed_boot_sole / robed_leg_plate -- 2 per).

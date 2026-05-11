@@ -7,10 +7,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:skin/",
-        "tetra:fabric/",
-        "tetra:metal/",
-        "iridescent_reforging:themed/"
+        "tetra:metal/iron"
       ],
       "key": "cloth_cuisses/",
       "extract": {

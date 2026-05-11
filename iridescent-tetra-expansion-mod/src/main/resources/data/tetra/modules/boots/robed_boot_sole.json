@@ -10,9 +10,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:fabric/",
-        "tetra:skin/",
-        "tetra:fibre/"
+        "tetra:fabric/wool"
       ],
       "key": "robed_boot_sole/",
       "extract": {

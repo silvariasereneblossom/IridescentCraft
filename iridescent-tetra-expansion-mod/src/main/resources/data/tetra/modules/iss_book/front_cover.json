@@ -12,10 +12,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:skin/",
-        "tetra:metal/",
-        "tetra:bone/",
-        "tetra:gem/"
+        "tetra:skin/leather"
       ],
       "key": "front_cover/",
       "extract": {

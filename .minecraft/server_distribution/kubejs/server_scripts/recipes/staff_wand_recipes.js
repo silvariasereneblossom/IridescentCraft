@@ -118,16 +118,22 @@ ServerEvents.recipes(event => {
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_wind_wand_t1')
 
-  // T2 elements — mix in ISS runes for fire/lightning, fermented_spider_eye for venom
+  // T2 elements — overworld-only reagents (ISS fire_rune + lightning_rune
+  // are Nether-tier per ISS gating; using them here pulled the T2 wands
+  // forward into T3-territory accidentally). Swap to pre-Nether materials
+  // so T2 wands remain craftable before the player enters the Nether.
+  //   flame -> redstone_block (energy/heat metaphor, T2 overworld via deep caves)
+  //   thunder -> copper_block (lightning rod is copper; T2 overworld)
+  //   venomite -> fermented_spider_eye (T1 overworld, unchanged)
   event.shaped('simple_staves:flame_wand', [' R ', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'irons_spellbooks:fire_rune',
+    R: 'minecraft:redstone_block',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_flame_wand_t2')
 
   event.shaped('simple_staves:thunder_wand', [' R ', 'RWR', ' A '], {
     W: 'simple_staves:woodenwand',
-    R: 'irons_spellbooks:lightning_rune',
+    R: 'minecraft:copper_block',
     A: 'dna:amethyst_powder'
   }).id('icraft:ss_thunder_wand_t2')
 
