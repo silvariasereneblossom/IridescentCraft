@@ -15,7 +15,16 @@ REM      was deleted upstream but the jar still sits in mods/ (e.g.,
 REM      ScalingMobs / ImprovedMobs / Azukaars after the 2026-05-03
 REM      deprecation of those 3 mods, or Truly-Modular-* after the
 REM      2026-05 tetra-expansion replaced them).
-REM   3. wire_instance_cfg.ps1 to ensure PostExitCommand stays wired to
+REM   3. download_mods.ps1 to fetch any packwiz-managed jars whose
+REM      .pw.toml was added/updated upstream but whose jar isn't
+REM      committed to the repo (mode = 'metadata:curseforge' mods are
+REM      metadata-only in git; the jar is fetched at runtime). Without
+REM      this, `git pull` brings in a new .pw.toml and cleanup sees the
+REM      metadata file as "expected" -- but mods/ has no actual jar
+REM      and Forge silently launches without the mod. Added 2026-05-11
+REM      after dans-magic + simple-staves landed via .pw.toml only and
+REM      the client failed to load them.
+REM   4. wire_instance_cfg.ps1 to ensure PostExitCommand stays wired to
 REM      prism_postexit.bat. Self-heals if instance.cfg ever drifts
 REM      (e.g., PrismLauncher version upgrade resets the field) and is
 REM      a no-op when both fields are already set correctly. Replaces
@@ -48,6 +57,13 @@ if exist "%MC_DIR%\distribution\client\cleanup_stale_jars.ps1" (
     powershell -ExecutionPolicy Bypass -File "%MC_DIR%\distribution\client\cleanup_stale_jars.ps1" -ModsDir "%MC_DIR%\mods" -IndexDir "%MC_DIR%\mods\.index"
 ) else (
     echo [prism_prelaunch] cleanup_stale_jars.ps1 not found at distribution/client/, skipping
+)
+
+echo [prism_prelaunch] download missing packwiz jars...
+if exist "%MC_DIR%\distribution\client\download_mods.ps1" (
+    powershell -ExecutionPolicy Bypass -File "%MC_DIR%\distribution\client\download_mods.ps1" -IndexDir "%MC_DIR%\mods\.index" -ModsDir "%MC_DIR%\mods"
+) else (
+    echo [prism_prelaunch] download_mods.ps1 not found at distribution/client/, skipping
 )
 
 echo [prism_prelaunch] wire instance.cfg (PreLaunch + PostExit hooks)...
