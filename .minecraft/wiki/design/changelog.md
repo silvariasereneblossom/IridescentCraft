@@ -4,6 +4,44 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-11 — Client mod sync hardened to match server-side robustness
+
+Symptom: even after fixing `prism_prelaunch.bat` to invoke `download_mods.ps1`, the client kept failing handshake with `Channels [dna:dna,simple_staves:simple_staves] rejected their client side version number` -> screenshot UI "Your client is missing the following mods" with Dan's Magic 1.0.0 + Simple Staves 1.0.3 listed. The client `download_mods.ps1` was running, but failing silently.
+
+Root cause: side-by-side audit against the server-side `update_mods.ps1` (and its Rust port in `icraft-core/src/mods.rs` + `packwiz.rs`) showed the client downloader was missing four robustness features the server has:
+
+| Feature | Server | Client (v1) |
+|---|---|---|
+| `User-Agent: Mozilla/5.0 IridescentCraft-Updater` header | yes | **missing** |
+| Fallback URL: `curseforge.com/api/v1/mods/.../download` when CDN fails | yes | **missing** |
+| Filename percent-encoding in CDN path | yes | **missing** |
+| Non-zero exit code on download failure | yes | always exited 0 |
+| Old-version removal by base-name diff | yes | **missing** |
+
+The smoking gun: `edge.forgecdn.net` now returns 403 for unauthenticated GETs without a User-Agent header. The v1 client downloader's `WebClient.DownloadFile` sent no UA, so every CurseForge-metadata mod that was missing on disk failed silently. The failure landed in `download_log.txt` but never surfaced to PrismLauncher's pre-launch log (exit code was always 0). New mods (the dna + SS pair added in `fcacdd48`) showed the gap; old mods were grandfathered because they'd been downloaded before the CDN tightened.
+
+Fix (`.minecraft/distribution/client/download_mods.ps1` v2):
+- Adds `Mozilla/5.0 IridescentCraft-Updater` UA on every `WebClient` request (same string the server + Rust ports use)
+- Builds candidate URL list per-mod: `edge.forgecdn.net` first, `curseforge.com/api/v1/mods/<pid>/files/<fid>/download` as fallback. 2 attempts per URL.
+- `[System.Uri]::EscapeDataString` on filename in the CDN URL path
+- Reports `via <host>` per successful download so failures can be triaged
+- Returns exit code 1 on any failure, with per-mod URL list + failure list logged to `download_log.txt`
+- Old-version removal by `strip_version` base-name match (mirrors `mods.rs::strip_version`): when packwiz bumps a mod's filename, the old jar gets cleaned up so we don't accumulate duplicates
+
+Plus `prism_prelaunch.bat`:
+- Captures download_mods.ps1's exit code and emits a loud `[prism_prelaunch] WARNING` block with the path to `download_log.txt` when downloads fail. PrismLauncher's pre-launch log surfaces this so future failures are immediately visible (vs. the prior silent-pass).
+- Still exits 0 overall (don't block launch on download failures — operator may be intentionally offline) but the warning is unmissable.
+
+The launch-after-pull edge remains (cmd.exe buffers the old bat for the rest of the launch where git pull replaces it); operator can run the same one-liner manually as a one-shot bootstrap:
+
+```
+powershell -ExecutionPolicy Bypass -File ".\distribution\client\download_mods.ps1" -IndexDir ".\mods\.index" -ModsDir ".\mods"
+```
+
+That now succeeds for any CurseForge-metadata mod because of the UA + fallback chain.
+
+---
+
 ## 2026-05-11 — Hotfix: rewrite Dan's Magic + Simple Staves buffs for KubeJS 2001 API
 
 Crash: server boot at 2026-05-10 19:43:32 (`crash-2026-05-10_19.43.32-fml.txt`). KubeJS marked `ERROR` during the complete-event phase. Root cause in `kubejs/startup.log`: `dna_simple_staves_buffs.js#30: Cannot find function attribute in object ice_staff`.
