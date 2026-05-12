@@ -13,9 +13,7 @@
       ],
       "key": "basic_inlay/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.02
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -35,9 +33,7 @@
       ],
       "key": "basic_inlay/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.1
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -57,9 +53,7 @@
       ],
       "key": "basic_inlay/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.15
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -79,10 +73,7 @@
       ],
       "key": "basic_inlay/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.2,
-          "irons_spellbooks:max_mana": 3.0
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -102,9 +93,7 @@
       ],
       "key": "basic_inlay/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.25
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -124,9 +113,7 @@
       ],
       "key": "basic_inlay/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.3
-        },
+        "primaryAttributes": {},
         "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
@@ -146,9 +133,7 @@
       ],
       "key": "basic_inlay/",
       "extract": {
-        "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.35
-        },
+        "primaryAttributes": {},
         "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",

@@ -14,7 +14,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.005
+          "**irons_spellbooks:spell_power": 0.05,
+          "**irons_spellbooks:mana_regen": 0.05,
+          "**irons_spellbooks:cooldown_reduction": 0.05,
+          "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 3,
         "glyph": {
@@ -36,7 +39,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.1
+          "**irons_spellbooks:spell_power": 0.1,
+          "**irons_spellbooks:mana_regen": 0.1,
+          "**irons_spellbooks:cooldown_reduction": 0.1,
+          "irons_spellbooks:max_mana": 10.0
         },
         "integrity": 3,
         "glyph": {
@@ -58,7 +64,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.15
+          "**irons_spellbooks:spell_power": 0.15,
+          "**irons_spellbooks:mana_regen": 0.15,
+          "**irons_spellbooks:cooldown_reduction": 0.15,
+          "irons_spellbooks:max_mana": 15.0
         },
         "integrity": 3,
         "glyph": {
@@ -80,8 +89,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.2,
+          "**irons_spellbooks:mana_regen": 0.2,
           "**irons_spellbooks:cooldown_reduction": 0.2,
-          "irons_spellbooks:max_mana": 5.0
+          "irons_spellbooks:max_mana": 20.0
         },
         "integrity": 3,
         "glyph": {
@@ -103,7 +114,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.25
+          "**irons_spellbooks:spell_power": 0.25,
+          "**irons_spellbooks:mana_regen": 0.25,
+          "**irons_spellbooks:cooldown_reduction": 0.25,
+          "irons_spellbooks:max_mana": 25.0
         },
         "integrity": 3,
         "glyph": {
@@ -125,7 +139,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.3
+          "**irons_spellbooks:spell_power": 0.3,
+          "**irons_spellbooks:mana_regen": 0.3,
+          "**irons_spellbooks:cooldown_reduction": 0.3,
+          "irons_spellbooks:max_mana": 30.0
         },
         "integrity": 3,
         "glyph": {
@@ -147,8 +164,10 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.35,
+          "**irons_spellbooks:mana_regen": 0.35,
           "**irons_spellbooks:cooldown_reduction": 0.35,
-          "irons_spellbooks:max_mana": 5.0
+          "irons_spellbooks:max_mana": 35.0
         },
         "integrity": 4,
         "glyph": {

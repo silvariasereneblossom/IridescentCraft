@@ -14,7 +14,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5.0
+          "irons_spellbooks:max_mana": 2.5
         },
         "integrity": 1,
         "glyph": {
@@ -36,7 +36,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 10.0
+          "irons_spellbooks:max_mana": 5.0
         },
         "integrity": 1,
         "glyph": {
@@ -58,7 +58,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 15.0
+          "irons_spellbooks:max_mana": 7.5
         },
         "integrity": 1,
         "glyph": {
@@ -80,7 +80,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 20.0
+          "irons_spellbooks:max_mana": 10.0
         },
         "integrity": 1,
         "glyph": {
@@ -102,7 +102,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 25.0
+          "irons_spellbooks:max_mana": 12.5
         },
         "integrity": 1,
         "glyph": {
@@ -124,7 +124,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 30.0
+          "irons_spellbooks:max_mana": 15.0
         },
         "integrity": 1,
         "glyph": {
@@ -146,7 +146,7 @@
       "key": "basic_core/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 40.0
+          "irons_spellbooks:max_mana": 17.5
         },
         "integrity": 2,
         "glyph": {
