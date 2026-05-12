@@ -7,7 +7,7 @@
     "durability": 2500,
     "integrityCost": 4,
     "integrityGain": 12,
-    "magicCapacity": 200,
+    "magicCapacity": 210,
     "toolLevel": "minecraft:netherite",
     "toolEfficiency": 11,
     "tints": {

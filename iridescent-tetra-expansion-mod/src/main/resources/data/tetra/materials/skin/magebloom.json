@@ -6,8 +6,8 @@
     "tertiary": 1.0,
     "durability": 90,
     "integrityCost": 1,
-    "integrityGain": 2,
-    "magicCapacity": 50,
+    "integrityGain": 3,
+    "magicCapacity": 130,
     "tints": {
         "glyph": "d28cf2",
         "texture": "d28cf2"

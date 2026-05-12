@@ -28,7 +28,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -51,7 +51,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 3
+        "magicCapacity": 1.0
       }
     },
     {
@@ -75,7 +75,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -99,7 +99,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -123,7 +123,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 1.0
       }
     },
     {
@@ -147,7 +147,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -171,7 +171,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -195,7 +195,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -219,7 +219,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -243,7 +243,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -267,7 +267,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -291,7 +291,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -315,7 +315,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -340,7 +340,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -363,7 +363,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -386,7 +386,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -410,7 +410,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 9
+        "magicCapacity": 1.0
       }
     },
     {
@@ -434,7 +434,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 11
+        "magicCapacity": 1.0
       }
     },
     {
@@ -457,7 +457,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -481,7 +481,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 1.0
       }
     },
     {
@@ -506,7 +506,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 9
+        "magicCapacity": 1.0
       }
     },
     {
@@ -530,7 +530,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -554,7 +554,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 1.0
       }
     },
     {
@@ -578,7 +578,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -603,7 +603,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -626,7 +626,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -650,7 +650,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -674,7 +674,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -698,7 +698,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -722,7 +722,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 1.0
       }
     },
     {
@@ -746,7 +746,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -770,7 +770,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -795,7 +795,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 1.0
       }
     },
     {
@@ -819,7 +819,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -843,7 +843,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 1.0
       }
     },
     {
@@ -867,7 +867,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -891,7 +891,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 1.0
       }
     },
     {
@@ -914,7 +914,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -938,7 +938,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -962,7 +962,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -987,7 +987,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -1012,7 +1012,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 9
+        "magicCapacity": 1.0
       }
     },
     {
@@ -1036,7 +1036,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -1060,7 +1060,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -1084,7 +1084,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 1.0
       }
     },
     {
@@ -1108,7 +1108,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 10
+        "magicCapacity": 1.0
       }
     }
   ]

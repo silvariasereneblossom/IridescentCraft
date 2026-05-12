@@ -21,7 +21,8 @@
         "availableTextures": [
           ""
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     }
   ]

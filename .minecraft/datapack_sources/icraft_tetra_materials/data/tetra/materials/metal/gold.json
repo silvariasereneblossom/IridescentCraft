@@ -3,6 +3,6 @@
     "category": "metal",
     "primary": 3.0,
     "replace": false,
-    "integrityGain": 3,
-    "magicCapacity": 75
+    "integrityGain": 2,
+    "magicCapacity": 165
 }

@@ -6,8 +6,8 @@
     "tertiary": 3.2,
     "durability": 460,
     "integrityCost": 2,
-    "integrityGain": 6,
-    "magicCapacity": 110,
+    "integrityGain": 5,
+    "magicCapacity": 165,
     "toolLevel": "minecraft:diamond",
     "toolEfficiency": 7.5,
     "tints": {

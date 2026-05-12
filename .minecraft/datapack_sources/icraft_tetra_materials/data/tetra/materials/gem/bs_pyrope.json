@@ -7,7 +7,7 @@
     "durability": 280,
     "integrityCost": 2,
     "integrityGain": 4,
-    "magicCapacity": 84,
+    "magicCapacity": 145,
     "toolLevel": "minecraft:iron",
     "toolEfficiency": 6,
     "tints": {

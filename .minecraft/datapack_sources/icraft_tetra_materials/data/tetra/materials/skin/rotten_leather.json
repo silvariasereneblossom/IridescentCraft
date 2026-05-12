@@ -6,8 +6,8 @@
     "tertiary": 1,
     "durability": 180,
     "integrityCost": 1,
-    "integrityGain": 4,
-    "magicCapacity": 84,
+    "integrityGain": 3,
+    "magicCapacity": 100,
     "toolLevel": 0,
     "toolEfficiency": 0,
     "tints": {

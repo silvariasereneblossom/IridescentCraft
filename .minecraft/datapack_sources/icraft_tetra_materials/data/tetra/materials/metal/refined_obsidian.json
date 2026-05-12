@@ -6,8 +6,8 @@
     "tertiary": 4.0,
     "durability": 1000,
     "integrityCost": 3,
-    "integrityGain": 8,
-    "magicCapacity": 140,
+    "integrityGain": 9,
+    "magicCapacity": 150,
     "toolLevel": "minecraft:netherite",
     "toolEfficiency": 9,
     "tints": {

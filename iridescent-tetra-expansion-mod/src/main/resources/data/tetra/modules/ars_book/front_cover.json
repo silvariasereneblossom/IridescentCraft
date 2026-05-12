@@ -28,7 +28,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -50,7 +50,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -72,7 +72,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 3
+        "magicCapacity": 1.0
       }
     },
     {
@@ -94,7 +94,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -116,7 +116,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -138,7 +138,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -160,7 +160,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 2
+        "magicCapacity": 1.0
       }
     },
     {
@@ -182,7 +182,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 1.0
       }
     },
     {
@@ -204,7 +204,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -226,7 +226,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -248,7 +248,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 3
+        "magicCapacity": 1.0
       }
     },
     {
@@ -270,7 +270,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -292,7 +292,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -314,7 +314,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -336,7 +336,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 3
+        "magicCapacity": 1.0
       }
     },
     {
@@ -358,7 +358,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -380,7 +380,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -402,7 +402,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -424,7 +424,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -446,7 +446,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -468,7 +468,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 3
+        "magicCapacity": 1.0
       }
     },
     {
@@ -490,7 +490,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -512,7 +512,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 3
+        "magicCapacity": 1.0
       }
     },
     {
@@ -534,7 +534,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -556,7 +556,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 1.0
       }
     },
     {
@@ -578,7 +578,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -600,7 +600,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 2
+        "magicCapacity": 1.0
       }
     },
     {
@@ -622,7 +622,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -644,7 +644,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -666,7 +666,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 3
+        "magicCapacity": 1.0
       }
     },
     {
@@ -688,7 +688,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -710,7 +710,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 1.0
       }
     },
     {
@@ -732,7 +732,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 1.0
       }
     },
     {
@@ -755,7 +755,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 1.0
       }
     },
     {
@@ -777,7 +777,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     },
     {
@@ -799,7 +799,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 1.0
       }
     }
   ]

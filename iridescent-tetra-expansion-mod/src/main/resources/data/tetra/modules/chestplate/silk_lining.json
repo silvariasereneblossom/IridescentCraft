@@ -25,7 +25,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -48,7 +49,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -71,7 +73,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -95,7 +98,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -119,7 +123,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -143,7 +148,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -167,7 +173,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -191,7 +198,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -215,7 +223,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -239,7 +248,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -263,7 +273,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -287,7 +298,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     },
     {
@@ -311,7 +323,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 0.5
       }
     }
   ]
