@@ -16,44 +16,96 @@ import java.util.Map;
 import java.util.UUID;
 
 /**
- * Bakes per-tier base spell stats onto the six Simple Staves vanilla
- * material wands at the item level (not via player-tick injection).
+ * Bakes per-tier base spell stats (spell_power, mana_regen,
+ * cooldown_reduction) onto wand-like items at the item level via
+ * ItemAttributeModifierEvent.
  *
- * <p>Mirrors the Tetra variant primaryAttributes on basic_handle/cap/
- * core/inlay so the workbench conversion is value-neutral -- the player
- * gets the same numbers pre- and post-conversion, the conversion only
- * adds module/honing customization surface area.
- *
- * <p>Tier ladder (% on spell_power, mana_regen, cooldown_reduction):
- * wood 5, stone 10, iron 15, gold 20, diamond 25, netherite 30.
+ * <p>Two ladders coexist:
+ * <ul>
+ *   <li><b>Craftable ladder</b> (5-30%): Simple Staves vanilla material
+ *       wands. Pre- and post-Tetra conversion: pre-conversion the SS item
+ *       picks up its tier here; post-conversion the reforged_wand picks
+ *       it up via basic_handle variant primaryAttributes (value-neutral).</li>
+ *   <li><b>Drop ladder</b> (15/25/35/45% = T1/T2/T3/T4): non-Tetra wands
+ *       and staves from Simple Staves (elementals), Dan's Magic, and Iron's
+ *       Spellbooks. Drops sit above craftables -- a reward for loot vs.
+ *       crafting. Mage-archetype uncapped stacking per
+ *       project_mage_loadout memory.</li>
+ * </ul>
  *
  * <p>Why ItemAttributeModifierEvent: vanilla calls Item.getAttributeModifiers
  * when computing held-item bonuses AND when rendering tooltips. Subscribing
- * here means the wand carries its stats natively -- they appear in the
+ * here means each wand carries its stats natively -- they appear in the
  * tooltip via the standard "When in Main Hand: ..." line, get applied to
  * the holder by vanilla equipment-slot logic, and survive any container
  * shuffle without needing a server-tick scan. Item-level, like vanilla
  * armor protection or sword damage.
  *
- * <p>Why Item.defaultModifiers can't be used: it's final on the base
- * Item class and Simple Staves doesn't expose a way to inject at item
- * construction time. ItemAttributeModifierEvent fires every time the
+ * <p>Why Item.defaultModifiers can't be used: it's final on the base Item
+ * class and the host mods (SS, DM, ISS) don't expose a way to inject at
+ * item construction time. ItemAttributeModifierEvent fires every time the
  * modifiers are queried, which is the standard Forge pattern for adding
  * to a third-party mod's items.
+ *
+ * <p>Layering with mod-defined attributes: ISS staves carry their own
+ * attribute defaults via StaffTier (damage, attack speed, etc.). Our SP/
+ * MR/CDR additions are independent attribute IDs, so they ADD to the
+ * mod's stats rather than replace -- matching the user's "T1 = +15% on
+ * top of the base bonus" directive.
  */
 @Mod.EventBusSubscriber(modid = IridescentReforging.MODID,
         bus = Mod.EventBusSubscriber.Bus.FORGE)
-public class SimpleStavesWandAttributes {
+public class WandTierAttributes {
 
     /** Wand item id -> tier percent (decimal). */
     private static final Map<String, Double> TIER_PERCENT = new HashMap<>();
     static {
+        // -- Craftable ladder: Simple Staves vanilla material wands --
         TIER_PERCENT.put("simple_staves:woodenwand",     0.05);
         TIER_PERCENT.put("simple_staves:stone_wand",     0.10);
         TIER_PERCENT.put("simple_staves:iron_wand",      0.15);
         TIER_PERCENT.put("simple_staves:gold_wand",      0.20);
         TIER_PERCENT.put("simple_staves:diamond_wand",   0.25);
         TIER_PERCENT.put("simple_staves:netherite_wand", 0.30);
+
+        // -- Drop ladder T1 = 15% --
+        // Simple Staves elementals on stick handles + single-ore essence:
+        TIER_PERCENT.put("simple_staves:flame_wand",        0.15);
+        TIER_PERCENT.put("simple_staves:veil_wand",         0.15);
+        TIER_PERCENT.put("simple_staves:void_wand",         0.15);
+        TIER_PERCENT.put("simple_staves:tenebrium_wand",    0.15);
+        TIER_PERCENT.put("simple_staves:wind_essence_wand", 0.15);
+        // ISS entry-tier:
+        TIER_PERCENT.put("irons_spellbooks:wimpy_spell_book", 0.15);
+        TIER_PERCENT.put("irons_spellbooks:blood_staff",      0.15);
+
+        // -- Drop ladder T2 = 25% --
+        // Simple Staves iron-handle elementals:
+        TIER_PERCENT.put("simple_staves:viritium_wand", 0.25);
+        TIER_PERCENT.put("simple_staves:venomite_wand", 0.25);
+        // Dan's Magic overworld/mid staves:
+        TIER_PERCENT.put("dna:ice_staff",   0.25);
+        TIER_PERCENT.put("dna:toxic_staff", 0.25);
+        TIER_PERCENT.put("dna:tnt_staff",   0.25);
+        // ISS mid staves + unique drop book:
+        TIER_PERCENT.put("irons_spellbooks:graybeard_staff",        0.25);
+        TIER_PERCENT.put("irons_spellbooks:ice_staff",              0.25);
+        TIER_PERCENT.put("irons_spellbooks:cursed_doll_spell_book", 0.25);
+
+        // -- Drop ladder T3 = 35% --
+        // Simple Staves netherite-handle elementals:
+        TIER_PERCENT.put("simple_staves:thunder_wand",   0.35);
+        TIER_PERCENT.put("simple_staves:explosion_wand", 0.35);
+        // Dan's Magic nether-component staves:
+        TIER_PERCENT.put("dna:lightning_staff", 0.35);
+        TIER_PERCENT.put("dna:magma_staff",     0.35);
+        // ISS late staves:
+        TIER_PERCENT.put("irons_spellbooks:improved_blood_staff", 0.35);
+        TIER_PERCENT.put("irons_spellbooks:pyrium_staff",         0.35);
+
+        // -- Drop ladder T4 = 45% --
+        // ISS endgame staff:
+        TIER_PERCENT.put("irons_spellbooks:staff_of_the_nines", 0.45);
     }
 
     /** Stable UUIDs per attribute so vanilla's de-dup keys identify our

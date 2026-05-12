@@ -4,6 +4,57 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-12 — Drop-wand tier ladder: T1/T2/T3/T4 = +15/25/35/45% SP/MR/CDR across SS elementals, Dan's Magic, ISS staves
+
+Extended the wand base-attribute wiring beyond the 6 Simple Staves vanilla material wands (which were on the craftable 5-30% ladder via `SimpleStavesWandAttributes`) to all non-Tetra droppable wands and staves across three mods. Renamed the class `SimpleStavesWandAttributes` -> `WandTierAttributes` since scope is no longer SS-specific.
+
+### Tier scheme
+
+Drops sit ABOVE craftable wands -- loot reward > crafted reward. The two ladders coexist:
+- Craftable ladder (Simple Staves vanilla wands): wood 5% / stone 10% / iron 15% / gold 20% / diamond 25% / netherite 30%
+- Drop ladder: T1 = +15%, T2 = +25%, T3 = +35%, T4 = +45% on top of any mod-defined base attributes
+
+### Drop-wand tier assignments (24 items)
+
+**T1 (+15%):**
+- Simple Staves stick-handle elementals: `flame_wand`, `veil_wand`, `void_wand`, `tenebrium_wand`, `wind_essence_wand`
+- ISS entry: `wimpy_spell_book`, `blood_staff`
+
+**T2 (+25%):**
+- Simple Staves iron-handle elementals: `viritium_wand`, `venomite_wand`
+- Dan's Magic overworld-component staves: `dna:ice_staff`, `dna:toxic_staff`, `dna:tnt_staff`
+- ISS mid + unique drop: `graybeard_staff`, `ice_staff`, `cursed_doll_spell_book` (Vampiric)
+
+**T3 (+35%):**
+- Simple Staves netherite-handle elementals: `thunder_wand`, `explosion_wand`
+- Dan's Magic nether-component staves: `dna:lightning_staff`, `dna:magma_staff`
+- ISS late: `improved_blood_staff`, `pyrium_staff`
+
+**T4 (+45%):**
+- ISS endgame: `staff_of_the_nines`
+
+### Tier rationale
+
+- Simple Staves elementals tiered by recipe handle (stick / iron_stick / netherite_stick) -- the mod's own progression signal.
+- Dan's Magic staves all use `staff_base = gold + diamond + stick`; differentiated by secondary ingredient origin (overworld T2, nether T3).
+- ISS staves match the mod's natural progression order: blood -> graybeard/ice -> improved_blood/pyrium -> nines.
+- ISS books: wimpy is literal "starter" tier; cursed_doll drops from a unique mob and is mid-tier.
+
+### Mechanism (unchanged from SS class)
+
+`ItemAttributeModifierEvent` -> `addModifier(SP_ATTR/MR_ATTR/CDR_ATTR, pct)` keyed by item ID. Item-level (not player-tick), shows in tooltips, layered with mod-defined attributes additively. Stable UUIDs across hover/equip queries.
+
+### Files
+
+- Renamed `SimpleStavesWandAttributes.java` -> `WandTierAttributes.java`; expanded `TIER_PERCENT` map from 6 to 30 entries.
+- Class auto-registers via `@Mod.EventBusSubscriber` so no other wiring needed.
+
+### Tester impact
+
+Loot drops that previously had no SP/MR/CDR signal (Blood Staff, Pyrium Staff, etc.) now carry visible tooltip stats and contribute to the mage's spell stats while held. Ladder remains uncapped (mage power-curve memory).
+
+---
+
 ## 2026-05-12 — Client log mirror: surface git errors + auto-heal divergence
 
 Tester reported "git pull failed" at PrismLauncher launch + their `TesterLogs/silvieserene/latest.log` on the remote was stuck at `May 6 03:47` despite six days of play sessions. Root cause: `prism_postexit.bat` ran `git commit` and `git push` with `>nul 2>&1`, so any push failure (auth, network, divergence) was invisible. Once a single push failed, the local TesterLogs commit sat on `main` ahead of `origin/main`; the next prelaunch's `git pull --ff-only` then couldn't fast-forward, the WARNING ran past too fast to read, and every subsequent postexit push compounded the divergence. Net effect: silent 6-day log mirror outage.
