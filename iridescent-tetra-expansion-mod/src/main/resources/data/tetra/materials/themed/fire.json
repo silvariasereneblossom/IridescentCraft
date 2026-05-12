@@ -18,5 +18,7 @@
             "minecraft:blaze_rod"
         ]
     },
-    "attributes": {}
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.05
+    }
 }

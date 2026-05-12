@@ -27,6 +27,7 @@
         "hammer_dig": "minecraft:iron"
     },
     "attributes": {
-        "**irons_spellbooks:mana_regen": 0.04
+        "**irons_spellbooks:mana_regen": 0.04,
+        "**irons_spellbooks:spell_power": 0.25
     }
 }

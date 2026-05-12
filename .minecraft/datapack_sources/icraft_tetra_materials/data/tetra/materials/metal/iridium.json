@@ -28,6 +28,7 @@
         "hammer_dig": "minecraft:netherite"
     },
     "attributes": {
-        "**minecraft:generic.armor": 0.1
+        "**minecraft:generic.armor": 0.1,
+        "**irons_spellbooks:spell_power": 0.3
     }
 }

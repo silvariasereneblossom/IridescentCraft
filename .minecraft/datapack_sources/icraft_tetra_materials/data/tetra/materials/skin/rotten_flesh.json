@@ -19,13 +19,16 @@
         "default"
     ],
     "material": {
-        "items": [ "minecraft:rotten_flesh" ]
+        "items": [
+            "minecraft:rotten_flesh"
+        ]
     },
     "requiredTools": {
         "cut": "minecraft:wood"
     },
     "attributes": {
         "**irons_spellbooks:holy_spell_power": 0.05,
-        "**irons_spellbooks:mana_regen": 0.02
+        "**irons_spellbooks:mana_regen": 0.02,
+        "**irons_spellbooks:spell_power": 0.05
     }
 }

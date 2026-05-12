@@ -18,5 +18,7 @@
             "minecraft:glowstone_dust"
         ]
     },
-    "attributes": {}
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.05
+    }
 }

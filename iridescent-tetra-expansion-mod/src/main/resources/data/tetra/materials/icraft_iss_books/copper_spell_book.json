@@ -28,5 +28,7 @@
             "modid": "irons_spellbooks"
         }
     ],
-    "attributes": {}
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.05
+    }
 }

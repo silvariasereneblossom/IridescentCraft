@@ -28,5 +28,7 @@
             "modid": "ars_nouveau"
         }
     ],
-    "attributes": {}
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.05
+    }
 }

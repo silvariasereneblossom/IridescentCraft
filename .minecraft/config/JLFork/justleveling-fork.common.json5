@@ -330,11 +330,11 @@
 	// Required level to unlock skill
 	diamondSkinRequiredLevel: 30,
 	// Required level to unlock skill
-	scholarRequiredLevel: 999,
+	scholarRequiredLevel: -1,
 	// Required level to unlock skill
-	hagglerRequiredLevel: 10,
+	hagglerRequiredLevel: -1,
 	// Required level to unlock skill
-	alchemyManipulationRequiredLevel: 20,
+	alchemyManipulationRequiredLevel: -1,
 	// Required level to unlock skill
 	obsidianSmasherRequiredLevel: 10,
 	// Required level to unlock skill
@@ -342,11 +342,21 @@
 	// Required level to unlock skill
 	convergenceRequiredLevel: 30,
 	// Required level to unlock skill
-	safePortRequiredLevel: 10,
+	safePortRequiredLevel: -1,
 	// Required level to unlock skill
-	lifeEaterRequiredLevel: 20,
+	lifeEaterRequiredLevel: -1,
 	// Required level to unlock skill
-	wornholeStorageRequiredLevel: 30,
+	wornholeStorageRequiredLevel: -1,
+	manaSparkRequiredLevel: 5,
+	conservationOfMagicRequiredLevel: 10,
+	manaBlazeRequiredLevel: 15,
+	mysticWardRequiredLevel: 20,
+	manaInfernoRequiredLevel: 30,
+	curiousRequiredLevel: 5,
+	arcaneEfficiencyRequiredLevel: 10,
+	insightRequiredLevel: 15,
+	materialsScienceRequiredLevel: 20,
+	enlightenmentRequiredLevel: 30,
 	// Required level to unlock skill
 	criticalRollRequiredLevel: 10,
 	// Required level to unlock skill

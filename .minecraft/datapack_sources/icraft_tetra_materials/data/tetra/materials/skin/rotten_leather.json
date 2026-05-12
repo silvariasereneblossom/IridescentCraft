@@ -19,16 +19,22 @@
         "leather"
     ],
     "material": {
-        "items": [ "forbidden_arcanus:rotten_leather" ]
+        "items": [
+            "forbidden_arcanus:rotten_leather"
+        ]
     },
     "requiredTools": {
         "cut": "minecraft:gold"
     },
     "conditions": [
-        { "type": "forge:mod_loaded", "modid": "forbidden_arcanus" }
+        {
+            "type": "forge:mod_loaded",
+            "modid": "forbidden_arcanus"
+        }
     ],
     "attributes": {
-        "**irons_spellbooks:holy_spell_power": 0.10,
-        "**irons_spellbooks:mana_regen": 0.05
+        "**irons_spellbooks:holy_spell_power": 0.1,
+        "**irons_spellbooks:mana_regen": 0.05,
+        "**irons_spellbooks:spell_power": 0.15
     }
 }

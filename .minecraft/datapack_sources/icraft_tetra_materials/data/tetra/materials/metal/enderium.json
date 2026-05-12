@@ -27,6 +27,7 @@
         "hammer_dig": "minecraft:iron"
     },
     "attributes": {
-        "**irons_spellbooks:ender_spell_power": 0.1
+        "**irons_spellbooks:ender_spell_power": 0.1,
+        "**irons_spellbooks:spell_power": 0.3
     }
 }

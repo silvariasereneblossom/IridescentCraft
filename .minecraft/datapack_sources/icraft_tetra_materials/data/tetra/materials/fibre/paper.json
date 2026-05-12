@@ -18,9 +18,14 @@
         "default"
     ],
     "material": {
-        "items": [ "minecraft:paper" ]
+        "items": [
+            "minecraft:paper"
+        ]
     },
     "requiredTools": {
         "cut": "minecraft:wood"
+    },
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.05
     }
 }

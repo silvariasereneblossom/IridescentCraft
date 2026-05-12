@@ -27,6 +27,7 @@
         "hammer_dig": "minecraft:diamond"
     },
     "attributes": {
-        "**irons_spellbooks:ice_spell_power": 0.08
+        "**irons_spellbooks:ice_spell_power": 0.08,
+        "**irons_spellbooks:spell_power": 0.25
     }
 }

@@ -26,5 +26,8 @@
             "type": "forge:mod_loaded",
             "modid": "ars_nouveau"
         }
-    ]
+    ],
+    "attributes": {
+        "**irons_spellbooks:spell_power": 0.05
+    }
 }
