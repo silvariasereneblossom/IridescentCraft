@@ -4,6 +4,41 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-12 — Client launcher: fix silent mod-download failure + bat self-update propagation
+
+Tester report: after `fcacdd48` (Dan's Magic + Simple Staves added 2026-05-10), the two staff mods failed to auto-download on the next launch. Manual mod copy was required.
+
+### Root causes (two compounding bugs)
+
+1. **`install.ps1` line 230 omitted `download_mods.ps1`** from the post-install copy loop. Fresh installs had `sync_client.ps1`, `sync_client.bat`, and `cleanup_stale_jars.ps1` in the instance but not `download_mods.ps1` — so step 4b of `sync_client.ps1` silently no-op'd whenever it looked for the script at `$instanceMC\download_mods.ps1`. The fallback at line 396 (`Join-Path $src 'distribution\client\download_mods.ps1'`) only resolved on the full-zip overlay path where `$src` was defined; the diff-sync path left `$src` unset and the fallback skipped.
+
+2. **`sync_client.ps1` diff path dropped launcher-script updates at line 184.** The filter `if (-not $inOverlay -and $relPath.Contains('/'))` was intended to allow top-level scripts (no `/` in path) through while filtering out unrelated nested files. Launcher scripts live at `.minecraft/distribution/client/<script>` — `$relPath` ends up as `distribution/client/<script>` which contains `/`, AND `distribution/` isn't in `$overlayDirs`, so the filter skipped them. The `.new` staging block at line 196-209 was unreachable on the diff path. Self-update only worked on the rarely-hit full-zip path (initial sync OR SHA-compare API cap of 300+ files).
+
+Effect: any tester running on a diff-sync cadence never received launcher-script updates. The download-mods regression was unfixable for them; bat-flow changes propagated only on full-zip overlays.
+
+### Fixes (this commit)
+
+**`install.ps1` line 230** — added `download_mods.ps1` to the post-install copy array. Fresh installs now have all four launcher scripts.
+
+**`sync_client.bat` lines 25-49 (new Phase -1 self-heal block)** — before the existing `.new` finalization loop, the bat now fetches any of `sync_client.ps1` / `download_mods.ps1` / `cleanup_stale_jars.ps1` directly from `raw.githubusercontent.com/.../main/.../distribution/client/<script>` if missing locally. This is the bootstrap path for existing instances that pre-date the install.ps1 fix — one launch after the bat lands, the missing script self-heals and the sync proceeds normally. The bat itself can't self-heal (it's the entrypoint).
+
+**`sync_client.ps1` line 167-211 (diff filter + staging block restructure)** — `$relForSelfUpdate` and `$isSelfUpdate` now computed BEFORE the overlay filter. The filter condition is now `(-not $inOverlay -and -not $isSelfUpdate -and $relPath.Contains('/'))` — self-update files always pass through. Staging block uses `Split-Path -Leaf` to write `<scriptname>.new` flat at `$instanceMC` (where the launcher scripts live) instead of the nested `distribution/client/<scriptname>.new`. Bat-flow changes now propagate on diff syncs with 1-launch lag (acceptable per the bat's existing self-update quirk comment).
+
+### Verification path on tester's existing instance
+
+1. Push lands. Next launch: `sync_client.bat` finalization moves any staged `.new` (none, since previous diff didn't stage). Then `sync_client.ps1` runs diff sync; launcher-script updates now stage as `.new` flat at instance root. Phase -1 self-heal in the OLD bat runs if `download_mods.ps1` is missing — fetches it directly from main HEAD.
+2. Same launch's step 4b finds `download_mods.ps1` (either from self-heal or from install.ps1 copy on fresh installs), runs it against `mods/.index/*.pw.toml`. Dan's Magic + Simple Staves jars (or any subsequent packwiz additions) download.
+3. Next launch: `.new` files finalize, replacing the previous launcher scripts with the new versions. Future bat-flow changes ride the same `.new` staging path.
+
+### Known follow-ups (audit-flagged, not fixed here)
+
+- `install.ps1` doesn't verify Java 17. Fresh tester without Java 17 will see PrismLauncher open but the first launch crashes with "No Java runtime found." Either invoke Prism's auto-Java-download flow or emit a clear error.
+- `wire_instance_cfg.ps1` line 55 still rewrites `PreLaunchCommand` to deprecated `prism_prelaunch.bat`. KubeJS handler that spawns it could silently break auto-sync on first login.
+- PrismLauncher Portable extract leaves no Start Menu entry. Either swap to NSIS installer asset or surface the exe path explicitly.
+- `sync_from_repo.bat` inline allowlist missing `class-artifacts-forge-2.0.5.jar` (server-operator script, not tester-blocking).
+
+---
+
 ## 2026-05-12 — Tetra armor: dedup 52 zombie variants resurrected by the wildcard-key sweep; ISS unique integrity restored
 
 The 2026-05-11 wildcard-key sweep (previous entry) had unintended fallout. 52 variants that were previously dead-due-to-doubling came back alive as duplicate-expanded keys, and Tetra's expansion picked one nondeterministically per material — so unique armor pieces could roll either the intended mage-tier stats or a stale wool-tier draft, depending on JVM map iteration order.

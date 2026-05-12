@@ -175,13 +175,25 @@ if ($useDiff) {
         }
         if ($skip) { continue }
 
+        # Pre-compute self-update path BEFORE the overlay filter so launcher
+        # scripts under distribution/client/ (which aren't in $overlayDirs)
+        # don't get dropped before reaching the staging block at line ~196.
+        # Pre-2026-05-12 the filter at "if (-not $inOverlay -and $relPath.Contains('/'))"
+        # silently skipped every launcher-script update on the diff path -
+        # bat-flow changes only propagated when SHA-compare caps hit and the
+        # full-zip path took over. Tester report: Dan's Magic + Simple Staves
+        # mod download stayed broken across multiple syncs.
+        $relForSelfUpdate = $file.filename.Substring('.minecraft/'.Length)
+        $isSelfUpdate = $selfUpdateFiles -contains $relForSelfUpdate
+
         # Skip non-overlay paths (only sync dirs we care about + mods)
+        # but always let self-update files through.
         $inOverlay = $false
         foreach ($dir in ($overlayDirs + @('mods'))) {
             if ($relPath.StartsWith("$dir/") -or $relPath -eq $dir) { $inOverlay = $true; break }
         }
-        # Also allow top-level files like sync_client.ps1
-        if (-not $inOverlay -and $relPath.Contains('/')) { continue }
+        # Also allow top-level files like sync_client.ps1 + nested self-update scripts
+        if (-not $inOverlay -and -not $isSelfUpdate -and $relPath.Contains('/')) { continue }
 
         $target = Join-Path $instanceMC $relPath
 
@@ -191,10 +203,12 @@ if ($useDiff) {
         }
 
         # Self-update files: stage as .new in their target location so the
-        # .bat wrapper can finalize on next launch.
-        $relForSelfUpdate = $file.filename.Substring('.minecraft/'.Length)
-        if ($selfUpdateFiles -contains $relForSelfUpdate) {
-            $stageTarget = "$target.new"
+        # .bat wrapper can finalize on next launch. Target for these is the
+        # script basename at the instance root, not the nested repo path -
+        # the launcher scripts live flat in $instanceMC.
+        if ($isSelfUpdate) {
+            $scriptName = Split-Path $relForSelfUpdate -Leaf
+            $stageTarget = Join-Path $instanceMC "$scriptName.new"
             try {
                 $targetDir = Split-Path $stageTarget -Parent
                 if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }

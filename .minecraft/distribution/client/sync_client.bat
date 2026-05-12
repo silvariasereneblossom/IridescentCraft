@@ -22,7 +22,33 @@ setlocal enabledelayedexpansion
 set "SCRIPT_DIR=%~dp0"
 if "%SCRIPT_DIR:~-1%"=="\" set "SCRIPT_DIR=%SCRIPT_DIR:~0,-1%"
 
-REM ── Phase 0: finalize any staged <name>.new files from previous sync ──
+REM -- Phase -1: self-heal missing launcher scripts from main HEAD --
+REM Bootstrap any of sync_client.ps1 / download_mods.ps1 / cleanup_stale_jars.ps1
+REM that are absent from the instance. The original install.ps1 pre-2026-05-12
+REM didn't copy download_mods.ps1 into the instance, which broke step 4b of
+REM sync_client.ps1 silently (diff sync would land new .pw.toml files but
+REM never download the actual jars - tester report: Dan's Magic + Simple
+REM Staves required manual mod copy on 2026-05-11). This block ensures that
+REM ANY of these scripts can be self-bootstrapped from a fresh main HEAD if
+REM missing locally - subsequent normal .new staging takes over for updates.
+REM
+REM sync_client.bat itself can't self-heal (it's the entrypoint). If the
+REM .bat is missing, the user must re-run install.ps1.
+for %%S in (sync_client.ps1 download_mods.ps1 cleanup_stale_jars.ps1) do (
+    if not exist "%SCRIPT_DIR%\%%S" (
+        echo   [SELF-HEAL] %%S missing, fetching from main HEAD...
+        powershell -ExecutionPolicy Bypass -Command ^
+            "[Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12;" ^
+            "try { Invoke-WebRequest -Uri 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/%%S' -OutFile '%SCRIPT_DIR%\%%S' -UseBasicParsing -TimeoutSec 30 } catch { Write-Host '  [SELF-HEAL] FETCH FAILED:' $_.Exception.Message -ForegroundColor Yellow }"
+        if exist "%SCRIPT_DIR%\%%S" (
+            echo   [SELF-HEAL] %%S restored.
+        ) else (
+            echo   [SELF-HEAL] WARN: %%S still missing after fetch attempt.
+        )
+    )
+)
+
+REM -- Phase 0: finalize any staged <name>.new files from previous sync --
 REM Mirrors server-side iridescentserver.bat lines 100-145. Self-update
 REM staging exists because PowerShell holds an exclusive read-handle on
 REM .ps1 files while they execute, and Windows file-locks block
