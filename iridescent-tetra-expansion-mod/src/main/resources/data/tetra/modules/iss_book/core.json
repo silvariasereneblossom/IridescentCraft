@@ -12,7 +12,7 @@
       ],
       "key": "iss_core/",
       "extract": {
-        "integrity": -2,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

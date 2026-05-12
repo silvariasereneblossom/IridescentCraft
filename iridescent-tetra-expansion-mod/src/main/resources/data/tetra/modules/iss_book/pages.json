@@ -14,7 +14,7 @@
         "tertiaryAttributes": {
           "**irons_spellbooks:cast_time_reduction": 0.01
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 16,
