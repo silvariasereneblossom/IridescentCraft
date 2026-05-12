@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:elementium_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "iss_book/front_cover",
+  "moduleVariant": "front_cover/elementium"
+}

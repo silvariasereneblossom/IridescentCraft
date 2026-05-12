@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mekanism:ingot_refined_obsidian"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/refined_obsidian"
+}

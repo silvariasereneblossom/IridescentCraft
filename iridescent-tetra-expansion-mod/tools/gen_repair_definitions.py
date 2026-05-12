@@ -56,7 +56,8 @@ THEMED_DIR  = os.path.join(ROOT, 'src/main/resources/data/tetra/materials/themed
 # 'wand' is a non-armor major-bearing slot (reforged_wand item, Phase D
 # of the staves/wands integration) — its handle module is the major and
 # drives repair material identity exactly like armor's crown/chest_plate.
-ARMOR_SLOTS = ('helmet', 'chestplate', 'leggings', 'boots', 'wand')
+ARMOR_SLOTS = ('helmet', 'chestplate', 'leggings', 'boots', 'wand',
+               'ars_book', 'iss_book')
 
 # Material suffix -> (item_id, count, required_hammer_tool_level).
 # Combines the values from the 19 pre-refactor repair JSONs (verified
@@ -121,9 +122,12 @@ MATERIAL_ITEM_MAP = {
     'oak':          (['minecraft:oak_planks'],      2, HAMMER_IRON),
     'stone':        (['minecraft:cobblestone'],     2, HAMMER_IRON),
     # tetra:skin/fabric/fibre fixtures
-    'leather':      (['minecraft:leather'],         2, HAMMER_IRON),
-    'wool':         (['minecraft:white_wool'],      2, HAMMER_IRON),
-    'string':       (['minecraft:string'],          4, HAMMER_IRON),
+    'leather':       (['minecraft:leather'],            2, HAMMER_IRON),
+    'wool':          (['minecraft:white_wool'],         2, HAMMER_IRON),
+    'string':        (['minecraft:string'],             4, HAMMER_IRON),
+    'paper':         (['minecraft:paper'],              4, HAMMER_IRON),
+    'rotten_flesh':  (['minecraft:rotten_flesh'],       4, HAMMER_IRON),
+    'rotten_leather':(['forbidden_arcanus:rotten_leather'], 2, HAMMER_IRON),
     # themed (added below from data/tetra/materials/themed/*.json)
 }
 

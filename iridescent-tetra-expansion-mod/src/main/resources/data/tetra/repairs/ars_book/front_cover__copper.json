@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:copper_ingot"
+    ],
+    "count": 3
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/copper"
+}
