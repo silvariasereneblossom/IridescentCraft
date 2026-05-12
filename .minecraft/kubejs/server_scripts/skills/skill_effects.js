@@ -172,7 +172,7 @@ BlockEvents.broken(event => {
   // Crop Yield: bonus drop on crop harvest
   let cropTypes = ['wheat','carrots','potatoes','beetroots','nether_wart',
     'cocoa','sweet_berry','melon','pumpkin','pamhc','farmersdelight',
-    'simple_farming','brewinandchewin']
+    'brewinandchewin','thermal']
   if (cropTypes.some(c => blockId.includes(c))) {
     let cropBonus = getScore(srv, name, 'icraft_crop_yield')
     if (cropBonus > 0 && Math.random() * 100 < cropBonus) {

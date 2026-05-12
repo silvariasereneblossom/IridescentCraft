@@ -4,6 +4,63 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-12 — Food-mod overlap audit: remove Simple Farming, dedup ~86 items across Thermal/Blue Skies/VC/Pam FoodExt/FD addons
+
+Audited 18 food/cooking mods (Pam HC2 stack, FD + 6 addons, Brewin', VC, Cooking 4 Blockheads, Refined Cooking, Simple Farming, SoL Carrot, Create Estrogen, Tetra's Delight). Detected 171 cross-mod food/item dupes within the food-mod set. Widened the scan to non-food mods that add crops: Thermal Cultivation (14 Pam dupes), Blue Skies (legacy_pack filtered to 1), Aquaculture (3), Naturalist (2), Supplementaries (2), and one-off dupes across 6 more mods.
+
+### Decisions (per user audit responses)
+
+- **Pam HC2 wins crops + raw produce.** It has the largest content area and is the cleanest canonical for tomato/onion/rice/corn/eggplant/etc.
+- **Farmer's Delight wins prepared dishes** where it has one; FD addons (Cultural, Delightful, Brewin', Nether's, Ocean's, Alex's) win their themed dishes.
+- **Simple Farming removed entirely** — 295 items, ~108 cross-mod overlap rows resolved. Pam HC2 covers everything SF added; SF's unique recipes (banana_bread, blackberry_pie) have Pam HC2 equivalents.
+- **Thermal Cultivation crop dupes hidden** via KubeJS; phytosoil + watering can + unique items (frost_melon, sadiroot, coffee, tea, mushrooms) retained.
+- **Blue Skies maple_sapling hidden** (only real overlap after legacy_pack lang filter).
+- **Vanilla Cookbook duplicates hidden** (28 items: apple_pie, fruit_salad, pumpkin_soup, etc.). VC retains unique flavor items.
+- **Pam FoodExt internal duplicates hidden** (8 items: bakedbeans/carrotjuice/chocolatemilk/etc. that also exist in Crops/FoodCore).
+- **Cultural Delights raw-crop dupes hidden** (13 items: avocado/cucumber/eggplant/ginger/etc. + smoked variants). Its prepared dishes (kimchi, fish tacos, tortilla wraps) stay.
+- **Delightful raw dupes hidden** (3 items: acorn, cantaloupe, cantaloupe_seeds). Its prepared dishes (baklava, blueberry pie, smore, chorus muffin) stay.
+
+### Files
+
+- **Removed:** `simple-farming.pw.toml` from all 3 distros (`mods/.index/`).
+- **Added:**
+  - `kubejs/client_scripts/food_dedup_jei_hide.js` — hides 86 dupe items from JEI search
+  - `kubejs/server_scripts/food_dedup_recipes.js` — removes crafting recipes that produce the dupes
+  - Both deployed to `.minecraft/`, `server_distribution/`, `distribution/client/`
+- **Updated:** `kubejs/server_scripts/skills/skill_effects.js` — dropped `'simple_farming'` from crop-yield bonus substring list, added `'thermal'`.
+
+### Items hidden (86 total)
+
+- Thermal Cultivation: 33 (crops + cooked variants + dough/flour/peanut_butter/spring_salad/stuffed_pepper)
+- Vanilla Cookbook: 28 (apple_pie, fruit_salad, pumpkin_soup, chocolate_cake, melon_juice, milk_bottle, cooked_egg, etc.)
+- Cultural Delights: 13 (raw crops + smoked variants + tortilla)
+- Pam HC2 FoodExt: 8 (internal Core/Crops dupes)
+- Delightful: 3 (acorn, cantaloupe, cantaloupe_seeds)
+- Blue Skies: 1 (maple_sapling)
+
+### Soft cleanup semantics
+
+Items are HIDDEN from JEI (visible in inventory if a player already has one). Recipes are REMOVED from crafting tables / smokers / cooking pots. World-placed dupe blocks still work (Thermal's tomato plant grows; the harvested tomato just isn't visible in JEI search). Existing player stacks aren't touched. To fully purge them, players can drop stacks into lava manually; we don't auto-confiscate.
+
+### Why not just remove ALL the dupe mods
+
+- Thermal Cultivation: phytosoil watering mechanic is unique + has 50 non-overlapping items.
+- Blue Skies: it's a dimension mod; its 1 overlap doesn't justify dropping it.
+- Vanilla Cookbook: retains 100+ unique flavor recipes/items after dedup; cheap to keep.
+- Cultural Delights / Delightful: own a large chunk of unique prepared dishes.
+- Pam HC2 FoodExt: still wanted for its 800+ unique items; just the 8 internal Core dupes get hidden.
+
+### What's NOT touched
+
+- Tetra's Delight: 0 food items (Tetra material patch for FD knives/machetes). Kept.
+- Cooking 4 Blockheads: utility blocks only; cutting_board overlap with FD is by design (CFB's is the upgrade station).
+- Refined Cooking: 3 items, RS integration; no overlap.
+- SoL Carrot: 1 item, diversity mechanic.
+- Create Estrogen: 6 items, dairy theme; minor overlap, kept.
+- Brewin' & Chewin' / Nether's / Ocean's / Alex's Delight: minor 1-2 item overlaps not worth scripting.
+
+---
+
 ## 2026-05-12 — Drop-wand tier ladder: T1/T2/T3/T4 = +15/25/35/45% SP/MR/CDR across SS elementals, Dan's Magic, ISS staves
 
 Extended the wand base-attribute wiring beyond the 6 Simple Staves vanilla material wands (which were on the craftable 5-30% ladder via `SimpleStavesWandAttributes`) to all non-Tetra droppable wands and staves across three mods. Renamed the class `SimpleStavesWandAttributes` -> `WandTierAttributes` since scope is no longer SS-specific.
