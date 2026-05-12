@@ -68,44 +68,51 @@ public class WandTierAttributes {
         TIER_PERCENT.put("simple_staves:diamond_wand",   0.25);
         TIER_PERCENT.put("simple_staves:netherite_wand", 0.30);
 
+        // Uniques are tiered as standalone items, not by recipe inputs.
+        // SS elementals, DM staves, and ISS staves are all UNIQUES -- their
+        // recipe handle (stick / iron_stick / netherite_stick) doesn't signal
+        // power. Only the 6 SS vanilla material wands above are part of the
+        // material-progression ladder (they convert to reforged_wand).
+
         // -- Drop ladder T1 = 15% --
-        // Simple Staves elementals on stick handles + single-ore essence:
-        TIER_PERCENT.put("simple_staves:flame_wand",        0.15);
-        TIER_PERCENT.put("simple_staves:veil_wand",         0.15);
-        TIER_PERCENT.put("simple_staves:void_wand",         0.15);
-        TIER_PERCENT.put("simple_staves:tenebrium_wand",    0.15);
-        TIER_PERCENT.put("simple_staves:wind_essence_wand", 0.15);
-        // ISS entry-tier:
+        // ISS entry book (literal starter, no boss/unique flavor):
         TIER_PERCENT.put("irons_spellbooks:wimpy_spell_book", 0.15);
-        TIER_PERCENT.put("irons_spellbooks:blood_staff",      0.15);
 
         // -- Drop ladder T2 = 25% --
-        // Simple Staves iron-handle elementals:
-        TIER_PERCENT.put("simple_staves:viritium_wand", 0.25);
-        TIER_PERCENT.put("simple_staves:venomite_wand", 0.25);
-        // Dan's Magic overworld/mid staves:
-        TIER_PERCENT.put("dna:ice_staff",   0.25);
-        TIER_PERCENT.put("dna:toxic_staff", 0.25);
-        TIER_PERCENT.put("dna:tnt_staff",   0.25);
-        // ISS mid staves + unique drop book:
-        TIER_PERCENT.put("irons_spellbooks:graybeard_staff",        0.25);
-        TIER_PERCENT.put("irons_spellbooks:ice_staff",              0.25);
-        TIER_PERCENT.put("irons_spellbooks:cursed_doll_spell_book", 0.25);
+        // Simple Staves elementals (all 9 uniform; elementals are flavor-themed
+        // crafted uniques without a clear in-mod tier hierarchy):
+        TIER_PERCENT.put("simple_staves:flame_wand",        0.25);
+        TIER_PERCENT.put("simple_staves:veil_wand",         0.25);
+        TIER_PERCENT.put("simple_staves:void_wand",         0.25);
+        TIER_PERCENT.put("simple_staves:tenebrium_wand",    0.25);
+        TIER_PERCENT.put("simple_staves:wind_essence_wand", 0.25);
+        TIER_PERCENT.put("simple_staves:viritium_wand",     0.25);
+        TIER_PERCENT.put("simple_staves:venomite_wand",     0.25);
+        TIER_PERCENT.put("simple_staves:thunder_wand",      0.25);
+        TIER_PERCENT.put("simple_staves:explosion_wand",    0.25);
+        // ISS early staff (bumped from natural ISS tier 1 to T2):
+        TIER_PERCENT.put("irons_spellbooks:blood_staff", 0.25);
 
         // -- Drop ladder T3 = 35% --
-        // Simple Staves netherite-handle elementals:
-        TIER_PERCENT.put("simple_staves:thunder_wand",   0.35);
-        TIER_PERCENT.put("simple_staves:explosion_wand", 0.35);
-        // Dan's Magic nether-component staves:
+        // Dan's Magic staves (all 5 uniform; same staff_base recipe, themed
+        // accent ingredients don't justify intra-mod splits):
+        TIER_PERCENT.put("dna:ice_staff",       0.35);
+        TIER_PERCENT.put("dna:toxic_staff",     0.35);
+        TIER_PERCENT.put("dna:tnt_staff",       0.35);
         TIER_PERCENT.put("dna:lightning_staff", 0.35);
         TIER_PERCENT.put("dna:magma_staff",     0.35);
-        // ISS late staves:
-        TIER_PERCENT.put("irons_spellbooks:improved_blood_staff", 0.35);
-        TIER_PERCENT.put("irons_spellbooks:pyrium_staff",         0.35);
+        // ISS mid staves (bumped from natural ISS tier 2 to T3):
+        TIER_PERCENT.put("irons_spellbooks:graybeard_staff", 0.35);
+        TIER_PERCENT.put("irons_spellbooks:ice_staff",       0.35);
+        // ISS unique mob-drop book (Vampiric):
+        TIER_PERCENT.put("irons_spellbooks:cursed_doll_spell_book", 0.35);
 
         // -- Drop ladder T4 = 45% --
-        // ISS endgame staff:
-        TIER_PERCENT.put("irons_spellbooks:staff_of_the_nines", 0.45);
+        // ISS late + endgame staves (improved_blood and pyrium bumped from
+        // their natural ISS tier 3 to T4 alongside the endgame nines):
+        TIER_PERCENT.put("irons_spellbooks:improved_blood_staff", 0.45);
+        TIER_PERCENT.put("irons_spellbooks:pyrium_staff",         0.45);
+        TIER_PERCENT.put("irons_spellbooks:staff_of_the_nines",   0.45);
     }
 
     /** Stable UUIDs per attribute so vanilla's de-dup keys identify our

@@ -17,28 +17,28 @@ Drops sit ABOVE craftable wands -- loot reward > crafted reward. The two ladders
 ### Drop-wand tier assignments (24 items)
 
 **T1 (+15%):**
-- Simple Staves stick-handle elementals: `flame_wand`, `veil_wand`, `void_wand`, `tenebrium_wand`, `wind_essence_wand`
-- ISS entry: `wimpy_spell_book`, `blood_staff`
+- ISS entry: `wimpy_spell_book`
 
 **T2 (+25%):**
-- Simple Staves iron-handle elementals: `viritium_wand`, `venomite_wand`
-- Dan's Magic overworld-component staves: `dna:ice_staff`, `dna:toxic_staff`, `dna:tnt_staff`
-- ISS mid + unique drop: `graybeard_staff`, `ice_staff`, `cursed_doll_spell_book` (Vampiric)
+- Simple Staves elementals (all 9 uniform): `flame_wand`, `veil_wand`, `void_wand`, `tenebrium_wand`, `wind_essence_wand`, `viritium_wand`, `venomite_wand`, `thunder_wand`, `explosion_wand`
+- ISS early: `blood_staff`
 
 **T3 (+35%):**
-- Simple Staves netherite-handle elementals: `thunder_wand`, `explosion_wand`
-- Dan's Magic nether-component staves: `dna:lightning_staff`, `dna:magma_staff`
-- ISS late: `improved_blood_staff`, `pyrium_staff`
+- Dan's Magic staves (all 5 uniform): `dna:ice_staff`, `dna:toxic_staff`, `dna:tnt_staff`, `dna:lightning_staff`, `dna:magma_staff`
+- ISS mid: `graybeard_staff`, `ice_staff`
+- ISS unique drop: `cursed_doll_spell_book` (Vampiric)
 
 **T4 (+45%):**
-- ISS endgame: `staff_of_the_nines`
+- ISS late + endgame: `improved_blood_staff`, `pyrium_staff`, `staff_of_the_nines`
 
 ### Tier rationale
 
-- Simple Staves elementals tiered by recipe handle (stick / iron_stick / netherite_stick) -- the mod's own progression signal.
-- Dan's Magic staves all use `staff_base = gold + diamond + stick`; differentiated by secondary ingredient origin (overworld T2, nether T3).
-- ISS staves match the mod's natural progression order: blood -> graybeard/ice -> improved_blood/pyrium -> nines.
-- ISS books: wimpy is literal "starter" tier; cursed_doll drops from a unique mob and is mid-tier.
+Uniques are tiered as standalone items, NOT by recipe inputs. The recipe handle (stick / iron_stick / netherite_stick) is irrelevant for non-Tetra wands -- only the 6 SS vanilla material wands belong to the material-progression ladder (they convert to reforged_wand).
+
+- SS elementals: 9 themed crafted uniques with no clear in-mod hierarchy -> flat T2.
+- DM staves: 5 themed crafted uniques, all share `staff_base` recipe -> flat T3.
+- ISS staves: bumped one tier above natural ISS progression (blood T2, graybeard/ice T3, improved_blood/pyrium/nines T4). ISS staves are rarer + carry mod-defined attributes already, so they sit at the top of the drop ladder.
+- ISS books: wimpy stays T1 as the literal starter; cursed_doll (Vampiric) bumped to T3 for "unique mob drop" theme.
 
 ### Mechanism (unchanged from SS class)
 
