@@ -18,7 +18,7 @@
       "materials": [
         "tetra:skin/",
         "tetra:fabric/",
-        "iridescent_reforging:themed/"
+        "tetra:themed/"
       ],
       "countFactor": 1,
       "moduleKey": "chestplate/padded_lining",

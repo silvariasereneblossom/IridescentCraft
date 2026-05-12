@@ -19,7 +19,7 @@
         "tetra:skin/",
         "tetra:fabric/",
         "tetra:metal/",
-        "iridescent_reforging:themed/"
+        "tetra:themed/"
       ],
       "countFactor": 1,
       "moduleKey": "leggings/padded_cuisses",

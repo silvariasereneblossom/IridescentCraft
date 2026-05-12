@@ -17,7 +17,7 @@
     {
       "materials": [
         "tetra:metal/",
-        "iridescent_reforging:themed/"
+        "tetra:themed/"
       ],
       "countFactor": 1,
       "moduleKey": "helmet/full_visor",

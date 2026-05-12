@@ -18,7 +18,7 @@
       "materials": [
         "tetra:metal/",
         "tetra:skin/",
-        "iridescent_reforging:themed/"
+        "tetra:themed/"
       ],
       "countFactor": 1,
       "moduleKey": "boots/spiked_heel",

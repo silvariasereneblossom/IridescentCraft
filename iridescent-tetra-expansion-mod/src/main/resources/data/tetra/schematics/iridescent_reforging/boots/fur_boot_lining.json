@@ -18,7 +18,7 @@
       "materials": [
         "tetra:skin/",
         "tetra:fabric/",
-        "iridescent_reforging:themed/"
+        "tetra:themed/"
       ],
       "countFactor": 1,
       "moduleKey": "boots/fur_boot_lining",

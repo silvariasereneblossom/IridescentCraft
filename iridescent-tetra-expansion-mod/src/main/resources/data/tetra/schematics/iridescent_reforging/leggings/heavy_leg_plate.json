@@ -18,7 +18,7 @@
       "materials": [
         "tetra:metal/",
         "tetra:gem/",
-        "iridescent_reforging:themed/"
+        "tetra:themed/"
       ],
       "countFactor": 1,
       "moduleKey": "leggings/heavy_leg_plate",
