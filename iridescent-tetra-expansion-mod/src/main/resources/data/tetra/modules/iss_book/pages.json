@@ -25,6 +25,28 @@
         ],
         "models": []
       }
+    },
+    {
+      "materials": [
+        "tetra:fibre/paper"
+      ],
+      "key": "pages/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.01
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
     }
   ]
 }

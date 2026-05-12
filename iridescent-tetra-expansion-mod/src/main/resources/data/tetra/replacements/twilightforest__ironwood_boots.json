@@ -9,19 +9,19 @@
     "modules": {
       "boots/boot_sole": [
         "boots/basic_boot_sole",
-        "basic_boot_sole/tf_ironwood"
+        "basic_boot_sole/ironwood"
       ],
       "boots/boot_lining": [
         "boots/padded_boot_lining",
-        "padded_boot_lining/tf_ironwood"
+        "padded_boot_lining/ironwood"
       ],
       "boots/heel": [
         "boots/standard_heel",
-        "standard_heel/tf_ironwood"
+        "standard_heel/ironwood"
       ],
       "boots/lacing": [
         "boots/leather_lacing",
-        "leather_lacing/tf_ironwood"
+        "leather_lacing/ironwood"
       ]
     }
   }

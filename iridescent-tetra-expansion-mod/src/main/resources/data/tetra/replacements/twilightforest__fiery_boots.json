@@ -9,19 +9,19 @@
     "modules": {
       "boots/boot_sole": [
         "boots/basic_boot_sole",
-        "basic_boot_sole/tf_fiery"
+        "basic_boot_sole/fiery"
       ],
       "boots/boot_lining": [
         "boots/padded_boot_lining",
-        "padded_boot_lining/tf_fiery"
+        "padded_boot_lining/fiery"
       ],
       "boots/heel": [
         "boots/standard_heel",
-        "standard_heel/tf_fiery"
+        "standard_heel/fiery"
       ],
       "boots/lacing": [
         "boots/leather_lacing",
-        "leather_lacing/tf_fiery"
+        "leather_lacing/fiery"
       ]
     }
   }

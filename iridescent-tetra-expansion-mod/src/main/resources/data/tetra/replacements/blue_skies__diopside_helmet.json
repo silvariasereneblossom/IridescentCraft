@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/bs_diopside"
+        "basic_crown/diopside"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/bs_diopside"
+        "slit_visor/diopside"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/bs_diopside"
+        "plain_crest/diopside"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/bs_diopside"
+        "leather_strap/diopside"
       ]
     }
   }

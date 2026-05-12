@@ -215,7 +215,7 @@
         "primaryAttributes": {
           "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -259,7 +259,7 @@
         "primaryAttributes": {
           "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -303,7 +303,7 @@
         "primaryAttributes": {
           "ars_nouveau:ars_nouveau.perk.max_mana": 5
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -347,7 +347,7 @@
         "primaryAttributes": {
           "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -567,7 +567,7 @@
         "primaryAttributes": {
           "ars_nouveau:ars_nouveau.perk.max_mana": 3
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -611,7 +611,7 @@
         "primaryAttributes": {
           "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 1,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -688,6 +688,117 @@
         ],
         "models": [],
         "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.008
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.01
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.015,
+          "irons_spellbooks:max_mana": 2.0
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.02
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 7
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.025
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 7
       }
     }
   ]

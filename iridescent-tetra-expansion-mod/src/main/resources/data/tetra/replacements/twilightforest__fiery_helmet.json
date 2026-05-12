@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/tf_fiery"
+        "basic_crown/fiery"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/tf_fiery"
+        "slit_visor/fiery"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/tf_fiery"
+        "plain_crest/fiery"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/tf_fiery"
+        "leather_strap/fiery"
       ]
     }
   }

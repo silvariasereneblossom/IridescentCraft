@@ -509,7 +509,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 5
       }
     },
     {
@@ -555,7 +555,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {
@@ -601,7 +601,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 5
       }
     },
     {
@@ -647,7 +647,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {
@@ -877,7 +877,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 5
       }
     },
     {
@@ -923,7 +923,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {
@@ -1068,15 +1068,15 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/aether_neptune"
       ],
-      "key": "basic_crown/aether_neptune",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.429,
           "minecraft:generic.armor_toughness": 0.25
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1085,19 +1085,20 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/aether_obsidian"
       ],
-      "key": "basic_crown/aether_obsidian",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.143
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1106,20 +1107,21 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:skin/tf_arctic"
       ],
-      "key": "basic_crown/tf_arctic",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.429,
           "minecraft:generic.armor_toughness": 0.5
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1128,84 +1130,21 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:bone/tf_naga"
       ],
-      "key": "basic_crown/tf_fiery",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 2.857
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "basic_crown/tf_ironwood",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.429
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "basic_crown/tf_knightmetal",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 2.143,
-          "minecraft:generic.armor_toughness": 0.25
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "basic_crown/tf_naga",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.429,
           "minecraft:generic.armor_toughness": 0.125
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1214,19 +1153,20 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:skin/tf_yeti"
       ],
-      "key": "basic_crown/tf_yeti",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.857
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1235,65 +1175,22 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/fa_draco_arcanus"
       ],
-      "key": "basic_crown/ug_cloggrum",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.429
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "basic_crown/ug_froststeel",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 2.143,
-          "minecraft:generic.armor_toughness": 1.0,
-          "minecraft:generic.knockback_resistance": 0.013
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "basic_crown/fa_draco_arcanus",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 4.286,
           "minecraft:generic.armor_toughness": 0.75,
           "minecraft:generic.knockback_resistance": 0.025
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1302,21 +1199,22 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/fa_tyr"
       ],
-      "key": "basic_crown/fa_tyr",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 5.0,
           "minecraft:generic.armor_toughness": 1.0,
           "minecraft:generic.knockback_resistance": 0.05
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1325,20 +1223,21 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/fa_mortem"
       ],
-      "key": "basic_crown/fa_mortem",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.714,
           "minecraft:generic.armor_toughness": 0.25
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1347,19 +1246,20 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/bs_pyrope"
       ],
-      "key": "basic_crown/bs_pyrope",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 1.429
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1368,61 +1268,20 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/diamond_no_t"
       ],
-      "key": "basic_crown/bs_horizonite",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.429
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "basic_crown/bs_diopside",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.429
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "basic_crown/diamond_no_t",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.143
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1431,20 +1290,21 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/dd_resonarium"
       ],
-      "key": "basic_crown/dd_resonarium",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.143,
           "minecraft:generic.armor_toughness": 0.25
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1453,21 +1313,22 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/dd_warden"
       ],
-      "key": "basic_crown/dd_warden",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 2.857,
           "minecraft:generic.armor_toughness": 1.0,
           "minecraft:generic.knockback_resistance": 0.025
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1476,21 +1337,22 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/cm_ignitium"
       ],
-      "key": "basic_crown/cm_ignitium",
+      "key": "basic_crown/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 3.572,
           "minecraft:generic.armor_toughness": 1.25,
           "minecraft:generic.knockback_resistance": 0.1
         },
-        "integrity": 0,
+        "integrity": 2,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1499,7 +1361,8 @@
         "availableTextures": [
           "default"
         ],
-        "models": []
+        "models": [],
+        "magicCapacity": 5
       }
     },
     {

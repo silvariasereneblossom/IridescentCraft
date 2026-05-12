@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/ug_froststeel"
+        "basic_crown/undergarden_froststeel"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/ug_froststeel"
+        "slit_visor/undergarden_froststeel"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/ug_froststeel"
+        "plain_crest/undergarden_froststeel"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/ug_froststeel"
+        "leather_strap/undergarden_froststeel"
       ]
     }
   }

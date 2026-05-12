@@ -1,0 +1,34 @@
+{
+    "key": "tf_naga",
+    "category": "bone",
+    "primary": 5.6,
+    "secondary": 3.8,
+    "tertiary": 3,
+    "durability": 400,
+    "integrityCost": 2,
+    "integrityGain": 5,
+    "magicCapacity": 70,
+    "toolLevel": "minecraft:iron",
+    "toolEfficiency": 6,
+    "tints": {
+        "glyph": "888888",
+        "texture": "888888"
+    },
+    "textures": [
+        "default"
+    ],
+    "material": {
+        "items": [
+            "twilightforest:naga_scale"
+        ]
+    },
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "twilightforest"
+        }
+    ],
+    "attributes": {
+        "**irons_spellbooks:nature_spell_power": 0.08
+    }
+}

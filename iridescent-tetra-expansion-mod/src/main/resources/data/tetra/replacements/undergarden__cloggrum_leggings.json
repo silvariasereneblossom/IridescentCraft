@@ -9,19 +9,19 @@
     "modules": {
       "leggings/leg_plate": [
         "leggings/full_leg_plate",
-        "full_leg_plate/ug_cloggrum"
+        "full_leg_plate/undergarden_cloggrum"
       ],
       "leggings/belt": [
         "leggings/leather_belt",
-        "leather_belt/ug_cloggrum"
+        "leather_belt/undergarden_cloggrum"
       ],
       "leggings/greaves": [
         "leggings/standard_greaves",
-        "standard_greaves/ug_cloggrum"
+        "standard_greaves/undergarden_cloggrum"
       ],
       "leggings/cuisses": [
         "leggings/padded_cuisses",
-        "padded_cuisses/ug_cloggrum"
+        "padded_cuisses/undergarden_cloggrum"
       ]
     }
   }

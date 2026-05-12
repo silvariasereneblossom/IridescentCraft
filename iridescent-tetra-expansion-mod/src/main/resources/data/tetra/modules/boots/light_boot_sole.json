@@ -530,7 +530,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 5
       }
     },
     {
@@ -578,7 +578,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {
@@ -626,7 +626,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 8
+        "magicCapacity": 5
       }
     },
     {
@@ -674,7 +674,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {
@@ -914,7 +914,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 4
+        "magicCapacity": 5
       }
     },
     {
@@ -962,7 +962,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {

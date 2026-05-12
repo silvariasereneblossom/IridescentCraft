@@ -1,0 +1,36 @@
+{
+    "key": "fa_tyr",
+    "category": "metal",
+    "primary": 6.6,
+    "secondary": 3.8,
+    "tertiary": 3,
+    "durability": 620,
+    "integrityCost": 2,
+    "integrityGain": 5,
+    "magicCapacity": 100,
+    "toolLevel": "minecraft:iron",
+    "toolEfficiency": 6,
+    "tints": {
+        "glyph": "888888",
+        "texture": "888888"
+    },
+    "textures": [
+        "metal",
+        "default"
+    ],
+    "material": {
+        "items": [
+            "forbidden_arcanus:tyr_ingot"
+        ]
+    },
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "forbidden_arcanus"
+        }
+    ],
+    "attributes": {
+        "**irons_spellbooks:holy_spell_power": 0.12,
+        "**irons_spellbooks:holy_magic_resist": 0.08
+    }
+}

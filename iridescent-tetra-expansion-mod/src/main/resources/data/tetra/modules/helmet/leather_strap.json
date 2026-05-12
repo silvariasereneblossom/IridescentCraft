@@ -292,9 +292,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/aether_neptune"
       ],
-      "key": "leather_strap/aether_neptune",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143,
@@ -314,9 +314,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/aether_obsidian"
       ],
-      "key": "leather_strap/aether_obsidian",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214
@@ -335,9 +335,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:skin/tf_arctic"
       ],
-      "key": "leather_strap/tf_arctic",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143,
@@ -357,9 +357,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/fiery"
       ],
-      "key": "leather_strap/tf_fiery",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.286
@@ -378,9 +378,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/ironwood"
       ],
-      "key": "leather_strap/tf_ironwood",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -399,9 +399,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/knightmetal"
       ],
-      "key": "leather_strap/tf_knightmetal",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -421,9 +421,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:bone/tf_naga"
       ],
-      "key": "leather_strap/tf_naga",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143,
@@ -443,9 +443,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:skin/tf_yeti"
       ],
-      "key": "leather_strap/tf_yeti",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.286
@@ -464,9 +464,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/undergarden_cloggrum"
       ],
-      "key": "leather_strap/ug_cloggrum",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -485,9 +485,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/undergarden_froststeel"
       ],
-      "key": "leather_strap/ug_froststeel",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -508,9 +508,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/fa_draco_arcanus"
       ],
-      "key": "leather_strap/fa_draco_arcanus",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.428,
@@ -531,9 +531,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/fa_tyr"
       ],
-      "key": "leather_strap/fa_tyr",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.5,
@@ -554,9 +554,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/fa_mortem"
       ],
-      "key": "leather_strap/fa_mortem",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.071,
@@ -576,9 +576,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/bs_pyrope"
       ],
-      "key": "leather_strap/bs_pyrope",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -597,9 +597,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/horizonite"
       ],
-      "key": "leather_strap/bs_horizonite",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -618,9 +618,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/diopside"
       ],
-      "key": "leather_strap/bs_diopside",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.143
@@ -639,9 +639,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/diamond_no_t"
       ],
-      "key": "leather_strap/diamond_no_t",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214
@@ -660,9 +660,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:gem/dd_resonarium"
       ],
-      "key": "leather_strap/dd_resonarium",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.214,
@@ -682,9 +682,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/dd_warden"
       ],
-      "key": "leather_strap/dd_warden",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.286,
@@ -705,9 +705,9 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
+        "tetra:metal/cm_ignitium"
       ],
-      "key": "leather_strap/cm_ignitium",
+      "key": "leather_strap/",
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.357,

@@ -1,0 +1,35 @@
+{
+    "key": "bs_pyrope",
+    "category": "gem",
+    "primary": 5.0,
+    "secondary": 3.8,
+    "tertiary": 3,
+    "durability": 280,
+    "integrityCost": 2,
+    "integrityGain": 5,
+    "magicCapacity": 70,
+    "toolLevel": "minecraft:iron",
+    "toolEfficiency": 6,
+    "tints": {
+        "glyph": "888888",
+        "texture": "888888"
+    },
+    "textures": [
+        "shiny",
+        "metal"
+    ],
+    "material": {
+        "items": [
+            "blue_skies:pyrope"
+        ]
+    },
+    "conditions": [
+        {
+            "type": "forge:mod_loaded",
+            "modid": "blue_skies"
+        }
+    ],
+    "attributes": {
+        "**irons_spellbooks:fire_spell_power": 0.06
+    }
+}

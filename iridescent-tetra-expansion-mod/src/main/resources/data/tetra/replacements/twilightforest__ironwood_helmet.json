@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/tf_ironwood"
+        "basic_crown/ironwood"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/tf_ironwood"
+        "slit_visor/ironwood"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/tf_ironwood"
+        "plain_crest/ironwood"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/tf_ironwood"
+        "leather_strap/ironwood"
       ]
     }
   }

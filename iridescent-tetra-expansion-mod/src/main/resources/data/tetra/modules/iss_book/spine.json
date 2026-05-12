@@ -641,6 +641,78 @@
         "models": [],
         "magicCapacity": 3
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "spine/",
+      "extract": {
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iron"
+      ],
+      "key": "spine/",
+      "extract": {
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/gold"
+      ],
+      "key": "spine/",
+      "extract": {
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/netherite"
+      ],
+      "key": "spine/",
+      "extract": {
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": []
+      }
     }
   ]
 }

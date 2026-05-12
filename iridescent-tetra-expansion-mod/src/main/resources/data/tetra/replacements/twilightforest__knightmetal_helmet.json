@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/tf_knightmetal"
+        "basic_crown/knightmetal"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/tf_knightmetal"
+        "slit_visor/knightmetal"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/tf_knightmetal"
+        "plain_crest/knightmetal"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/tf_knightmetal"
+        "leather_strap/knightmetal"
       ]
     }
   }

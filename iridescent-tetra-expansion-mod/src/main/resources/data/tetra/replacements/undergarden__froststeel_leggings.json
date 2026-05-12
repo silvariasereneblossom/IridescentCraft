@@ -9,19 +9,19 @@
     "modules": {
       "leggings/leg_plate": [
         "leggings/full_leg_plate",
-        "full_leg_plate/ug_froststeel"
+        "full_leg_plate/undergarden_froststeel"
       ],
       "leggings/belt": [
         "leggings/leather_belt",
-        "leather_belt/ug_froststeel"
+        "leather_belt/undergarden_froststeel"
       ],
       "leggings/greaves": [
         "leggings/standard_greaves",
-        "standard_greaves/ug_froststeel"
+        "standard_greaves/undergarden_froststeel"
       ],
       "leggings/cuisses": [
         "leggings/padded_cuisses",
-        "padded_cuisses/ug_froststeel"
+        "padded_cuisses/undergarden_froststeel"
       ]
     }
   }

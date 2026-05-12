@@ -4,6 +4,51 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-12 — Modded armor variant systemic fix: register 13 missing materials, normalize 20 suffixes, populate book vanilla tiers
+
+Tester screenshot evidence (modded chestplate + helmet) showed module-slot variants displaying doubled keys like `padded_lining/dd_wardeniron`, `simple_trim/bs_pyropeiron`, `slit_visor/bs_diopsideiron`. These were the deferred modded variants from the 2026-05-11 doubling-fix sweep finally surfacing in the wild — every modded armor piece converted to a reforged armor item displays garbage in the workbench slots.
+
+### Root cause audit (cross-replacement vs variant)
+
+Built a cross-reference audit script (matches every replacement-file stamp against every module-variant expansion). Found **328 unresolvable stamps**:
+
+- 320 modded armor stamps (20 modded suffixes × 16 armor modules). Variants had key shape `<module>/<modded_suffix>` with placeholder `materials: [tetra:metal/iron]`. Tetra's `MaterialVariantData.combine()` produced `<module>/<modded_suffix>iron` (doubled).
+- 14 book stamps. ISS replacement files for vanilla iron/gold/diamond/netherite/copper spell books stamped `front_cover/iron` etc., but the book modules had no `iron`/`gold`/`diamond`/`netherite`/`copper` variants registered. Lookup fell to variantData[0] (leather). Visible symptom: vanilla iron spell book renders with leather front_cover.
+- 1 dye stamp (resolves via `tetra:fibre/` category wildcard at module-load).
+
+Cross-reference with the existing `icraft_tetra_materials` datapack: of the 20 modded suffixes, 0 exactly matched a registered material. 7 could be **renamed** to match existing (e.g., `tf_fiery` → `fiery`, `ug_cloggrum` → `undergarden_cloggrum`). 13 needed **new** registrations.
+
+### Fix (this commit)
+
+**13 new Tetra material registrations** under `icraft_tetra_materials/data/tetra/materials/<cat>/<key>.json`. Format mirrors vanilla Tetra's iron.json structure: `key`, `category`, `primary`/`secondary`/`tertiary`, `durability`, `integrityCost`/`Gain`, `magicCapacity`, `toolLevel`, `tints`, `textures`, `material.items`, `conditions: [{forge:mod_loaded modid}]`, and per-mod-theme `attributes` (e.g., `cm_ignitium` gets `fire_spell_power: +0.10`, `dd_warden` gets `ender_spell_power: +0.10`). Stats are iron-tier baseline with per-mod overrides where tier context was obvious; per-mod balance refinement is a follow-up pass. The 13: `aether_neptune`, `aether_obsidian`, `bs_pyrope`, `cm_ignitium`, `dd_resonarium`, `dd_warden`, `diamond_no_t` (generic diamond-tier fallback), `fa_draco_arcanus`, `fa_mortem`, `fa_tyr`, `tf_arctic`, `tf_naga`, `tf_yeti`.
+
+**20 modded variant collapses + 7 suffix renames** across 16 armor module files. For each named variant of the form `key: "<module>/<modded_suffix>"` with placeholder `materials: [tetra:metal/iron]`, the key is rewritten to wildcard form `<module>/` and the material reference is rewired to point at the registered Tetra material. The 7 renamable suffixes get their final-key changed in lockstep (`tf_fiery` → `fiery`, etc.), with all referencing replacement files updated to match. Tetra's `MaterialVariantData.combine()` now produces clean expanded keys matching what the replacements stamp.
+
+**28 duplicate-placeholder variants dropped** from the 4 major armor module files (basic_boot_sole, breastplate, basic_crown, full_leg_plate). After the 7 renames, the renamed-from-`tf_X` wildcards collided with pre-existing wildcards already pointing at the same materials; the placeholder-stat versions were dropped to preserve the authored stat profiles.
+
+**29 vanilla material variants added to book modules**: iron/gold/diamond/netherite/copper for `front_cover`, `back_cover`, `spine` in both `ars_book` and `iss_book`. Plus a `tetra:fibre/paper` variant for `iss_book/pages`. Now vanilla ISS spell books (iron/gold/diamond/etc.) display the correct material on each module slot post-conversion.
+
+**112 stamp renames** across 28 modded-armor replacement files for the 7 suffix-renamed materials. Replacements now stamp `padded_lining/fiery` instead of `padded_lining/tf_fiery`, etc.
+
+**Modded variants normalized**: integrity=2 / magicCapacity=5 on every major-module modded variant (mirrors the canonical vanilla wildcard major pattern), integrity=0 on every minor-module modded variant (no-consume).
+
+### Post-fix audit
+
+- Unresolvable stamps: 0 (was 328)
+- Duplicate expanded variants: 0
+- `variant_suffix_no_match` audit warnings: 0 (was 320)
+- `major_module_no_magic_capacity`: 84 → 4 (4 residual book entries; not tester-facing)
+
+Repair JSONs regenerated (659 total — fewer than 687 previously because the collapsed modded variants share material entries instead of duplicating per-suffix). Jar rebuilt + deployed to all 3 distros.
+
+### Known follow-up
+
+Mod-item-ID guesses in the 13 new material JSONs use mod-naming-convention (`forbidden_arcanus:tyr_ingot`, `deeperdarker:warden_bone`, etc.). Each ID needs verification against the actual mod jar — wrong IDs cause repair-tab item rejection but don't affect rendering or stat resolution. Tracked as a verification pass.
+
+The repair-tool implement requirement reported by the tester (separate from the doubled-variant issue) still needs investigation; this commit's repair JSONs continue the no-`requiredTools` pattern from the 2026-05-12 socket-pattern fix. If the implement requirement persists post-jar-update, the source is likely workbench-tile-level rather than per-repair-definition.
+
+---
+
 ## 2026-05-12 — Custom armor + wand repair: drop `requiredTools` to match base Tetra socket pattern
 
 Tester report: workbench Repair tab on reforged armor required an iron hammer (implement). Base Tetra socket repairs (e.g. `data/tetra/repairs/sockets/double/pristine_diamond.json`) accept the material with no hammer needed — verified by extracting `tetra-1.20.1-6.12.0.jar` and inspecting the 35 stock repair JSONs (17 require tools, 18 don't; all 18 no-tool entries are socket-related). The "no-tool" shape simply OMITS the `requiredTools` field from the JSON; Tetra deserialises absent as an empty `ToolData` and `RepairSchematic.getRequiredToolLevels` returns an empty map.

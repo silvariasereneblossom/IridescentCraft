@@ -9,19 +9,19 @@
     "modules": {
       "helmet/crown": [
         "helmet/basic_crown",
-        "basic_crown/bs_horizonite"
+        "basic_crown/horizonite"
       ],
       "helmet/visor": [
         "helmet/slit_visor",
-        "slit_visor/bs_horizonite"
+        "slit_visor/horizonite"
       ],
       "helmet/crest": [
         "helmet/plain_crest",
-        "plain_crest/bs_horizonite"
+        "plain_crest/horizonite"
       ],
       "helmet/strap": [
         "helmet/leather_strap",
-        "leather_strap/bs_horizonite"
+        "leather_strap/horizonite"
       ]
     }
   }
