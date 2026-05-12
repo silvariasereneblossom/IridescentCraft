@@ -15,7 +15,7 @@
       "key": "full_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.8
+          "minecraft:generic.armor": 3.704
         },
         "integrity": 2,
         "glyph": {

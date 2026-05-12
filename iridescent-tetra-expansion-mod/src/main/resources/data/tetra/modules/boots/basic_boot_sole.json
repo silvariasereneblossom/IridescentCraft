@@ -15,7 +15,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4
+          "minecraft:generic.armor": 1.429
         },
         "integrity": 2,
         "glyph": {

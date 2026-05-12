@@ -44,9 +44,13 @@ Resolved every replacement stamp in `data/tetra/replacements/irons_spellbooks__*
 
 Modded armor (aether/blue_skies/twilightforest/etc.) still resolves via variantData[0] fallback (deferred from 2026-05-11) — but variantData[0] post-dedup is also +2/+5, so modded sets are consistent with ISS uniques rather than rolling 0 or negative.
 
-### Known follow-up
+### Known follow-up (resolved same session)
 
-Variant [N] for non-mage MAJORS carried the "vanilla-scale armor calibration" from commit `78efe6ed` (e.g. breastplate/iron armor 4.865 instead of 1.2). The dedup kept variant [0]'s lower armor values to preserve play-tested state. Re-applying the calibration to the surviving variants is a separate balance pass; tracking on roadmap.
+Vanilla armor parity calibration from commit `5e421b2b` (2026-05-10) lived in the LOSER variants of the dedup. The dedup kept variant [0]'s lower armor values, dropping the calibration. Tester would have seen reforged armor at ~30% of vanilla stats (the pre-`5e421b2b` symptom).
+
+Resolution: applied calibrated `primaryAttributes` from the dropped pre-dedup variants to the surviving wildcard variants for the 16 modules `5e421b2b` actually rebalanced. Of those: 12 already had the calibrated [N] values winning (correct dedup outcome); 4 majors (breastplate, basic_crown, basic_boot_sole, full_leg_plate) needed `primaryAttributes` re-application because integrity-tie tiebreak picked [0] (lower armor). Three minors my first-pass script over-reached on (chainmail_lining, silk_lining, fur_boot_lining — not in `5e421b2b`'s scope) were reverted to post-dedup state.
+
+Verification: iron chestplate now sums to 6.001 (`breastplate/iron 4.865 + padded_lining/iron 0.649 + simple_trim/iron 0.0 + light_pauldrons/iron 0.487`) — vanilla iron chestplate parity restored.
 
 Repair JSONs regenerated (`tools/gen_repair_definitions.py` → 687 files). Jar rebuilt and deployed to all 3 distros.
 
