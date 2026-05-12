@@ -406,13 +406,33 @@ public class HandlerCommonConfig {
     public int diamondSkinRequiredLevel = 30;
     @SerialEntry(comment = "Required level to unlock skill")
     @IntField(min = 1)
-    public int scholarRequiredLevel = 8;
-    @SerialEntry(comment = "Required level to unlock skill")
-    @IntField(min = 1)
-    public int hagglerRequiredLevel = 16;
-    @SerialEntry(comment = "Required level to unlock skill")
-    @IntField(min = 1)
-    public int alchemyManipulationRequiredLevel = 30;
+    // Iridescent fork: deprecated INT natives set to -1 (skip registration).
+    // Replaced by Curious (INT 5), Arcane Efficiency (INT 10), Insight (INT 15),
+    // Materials Science (INT 20), Enlightenment (INT 30) per design plan.
+    public int scholarRequiredLevel = -1;
+    @SerialEntry(comment = "DEPRECATED - replaced by Curious/Arcane Efficiency/Insight/Materials Science/Enlightenment")
+    @IntField(min = -1)
+    public int hagglerRequiredLevel = -1;
+    @SerialEntry(comment = "DEPRECATED")
+    @IntField(min = -1)
+    public int alchemyManipulationRequiredLevel = -1;
+
+    // Iridescent fork: new INT skills at design thresholds 5/10/15/20/30.
+    @SerialEntry(comment = "INT 5 — Curious: +10% XP gain")
+    @IntField(min = -1)
+    public int curiousRequiredLevel = 5;
+    @SerialEntry(comment = "INT 10 — Arcane Efficiency: 25% XP refund when spending XP near enchanting table")
+    @IntField(min = -1)
+    public int arcaneEfficiencyRequiredLevel = 10;
+    @SerialEntry(comment = "INT 15 — Insight: +20% XP gain (stacks with Curious + Enlightenment)")
+    @IntField(min = -1)
+    public int insightRequiredLevel = 15;
+    @SerialEntry(comment = "INT 20 — Materials Science: 25% XP refund on anvil repairs")
+    @IntField(min = -1)
+    public int materialsScienceRequiredLevel = 20;
+    @SerialEntry(comment = "INT 30 — Enlightenment: +30% XP gain (capstone)")
+    @IntField(min = -1)
+    public int enlightenmentRequiredLevel = 30;
     @SerialEntry(comment = "Required level to unlock skill")
     @IntField(min = 1)
     public int obsidianSmasherRequiredLevel = 12;
@@ -424,13 +444,33 @@ public class HandlerCommonConfig {
     public int convergenceRequiredLevel = 30;
     @SerialEntry(comment = "Required level to unlock skill")
     @IntField(min = 1)
-    public int safePortRequiredLevel = 12;
-    @SerialEntry(comment = "Required level to unlock skill")
-    @IntField(min = 1)
-    public int lifeEaterRequiredLevel = 18;
-    @SerialEntry(comment = "Required level to unlock skill")
-    @IntField(min = 1)
-    public int wornholeStorageRequiredLevel = 32;
+    // Iridescent fork: deprecated MAG natives set to -1 (skip registration).
+    // Replaced by Mana Spark (MAG 5), Conservation (MAG 10), Mana Blaze (MAG 15),
+    // Mystic Ward (MAG 20), Mana Inferno (MAG 30) per design plan.
+    public int safePortRequiredLevel = -1;
+    @SerialEntry(comment = "DEPRECATED - replaced by Mana Spark/Conservation/Mana Blaze/Mystic Ward/Mana Inferno")
+    @IntField(min = -1)
+    public int lifeEaterRequiredLevel = -1;
+    @SerialEntry(comment = "DEPRECATED")
+    @IntField(min = -1)
+    public int wornholeStorageRequiredLevel = -1;
+
+    // Iridescent fork: new MAG skills at design thresholds 5/10/15/20/30.
+    @SerialEntry(comment = "MAG 5 — Mana Spark: +20 max mana, +5% spell power")
+    @IntField(min = -1)
+    public int manaSparkRequiredLevel = 5;
+    @SerialEntry(comment = "MAG 10 — Conservation of Magic: +15% mana regen (approximates spell cost reduction)")
+    @IntField(min = -1)
+    public int conservationOfMagicRequiredLevel = 10;
+    @SerialEntry(comment = "MAG 15 — Mana Blaze: +15% spell power")
+    @IntField(min = -1)
+    public int manaBlazeRequiredLevel = 15;
+    @SerialEntry(comment = "MAG 20 — Mystic Ward: dynamic damage reduction scaled by bonus spell power")
+    @IntField(min = -1)
+    public int mysticWardRequiredLevel = 20;
+    @SerialEntry(comment = "MAG 30 — Mana Inferno: +30% spell power (capstone)")
+    @IntField(min = -1)
+    public int manaInfernoRequiredLevel = 30;
     @SerialEntry(comment = "Required level to unlock skill")
     @IntField(min = 1)
     public int criticalRollRequiredLevel = 12;

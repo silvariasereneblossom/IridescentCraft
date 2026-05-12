@@ -73,6 +73,25 @@ public class RegistrySkills {
 
     public static final RegistryObject<Skill> LIMIT_BREAKER = HandlerCommonConfig.HANDLER.instance().limitBreakerRequiredLevel < 0 ? null : SKILLS.register("limit_breaker", () -> register("limit_breaker", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().limitBreakerRequiredLevel, HandlerResources.LIMIT_BREAKER_SKILL, new Value(ValueType.PROBABILITY, HandlerCommonConfig.HANDLER.instance().limitBreakerProbability), new Value(ValueType.AMPLIFIER, HandlerCommonConfig.HANDLER.instance().limitBreakerAmplifier)));
 
+    // ─── Iridescent fork: design-aligned MAG line at 5/10/15/20/30 ────────────
+    // Effects fire from kubejs/server_scripts/skills/justleveling_skills.js
+    // based on aptitude level alone; these registrations exist to surface the
+    // skills in the JLFork UI at the design-spec slots. Textures reuse the
+    // deprecated natives' assets (safe_port/life_eater/wormhole_storage) so
+    // we don't ship blank skill icons.
+    public static final RegistryObject<Skill> MANA_SPARK = HandlerCommonConfig.HANDLER.instance().manaSparkRequiredLevel < 0 ? null : SKILLS.register("mana_spark", () -> register("mana_spark", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().manaSparkRequiredLevel, HandlerResources.SAFE_PORT_SKILL));
+    public static final RegistryObject<Skill> CONSERVATION_OF_MAGIC = HandlerCommonConfig.HANDLER.instance().conservationOfMagicRequiredLevel < 0 ? null : SKILLS.register("conservation_of_magic", () -> register("conservation_of_magic", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().conservationOfMagicRequiredLevel, HandlerResources.SAFE_PORT_SKILL));
+    public static final RegistryObject<Skill> MANA_BLAZE = HandlerCommonConfig.HANDLER.instance().manaBlazeRequiredLevel < 0 ? null : SKILLS.register("mana_blaze", () -> register("mana_blaze", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().manaBlazeRequiredLevel, HandlerResources.LIFE_EATER_SKILL));
+    public static final RegistryObject<Skill> MYSTIC_WARD = HandlerCommonConfig.HANDLER.instance().mysticWardRequiredLevel < 0 ? null : SKILLS.register("mystic_ward", () -> register("mystic_ward", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().mysticWardRequiredLevel, HandlerResources.LIFE_EATER_SKILL));
+    public static final RegistryObject<Skill> MANA_INFERNO = HandlerCommonConfig.HANDLER.instance().manaInfernoRequiredLevel < 0 ? null : SKILLS.register("mana_inferno", () -> register("mana_inferno", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().manaInfernoRequiredLevel, HandlerResources.WORMHOLE_STORAGE_SKILL));
+
+    // ─── Iridescent fork: design-aligned INT line at 5/10/15/20/30 ────────────
+    public static final RegistryObject<Skill> CURIOUS = HandlerCommonConfig.HANDLER.instance().curiousRequiredLevel < 0 ? null : SKILLS.register("curious", () -> register("curious", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().curiousRequiredLevel, HandlerResources.SCHOLAR_SKILL));
+    public static final RegistryObject<Skill> ARCANE_EFFICIENCY = HandlerCommonConfig.HANDLER.instance().arcaneEfficiencyRequiredLevel < 0 ? null : SKILLS.register("arcane_efficiency", () -> register("arcane_efficiency", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().arcaneEfficiencyRequiredLevel, HandlerResources.SCHOLAR_SKILL));
+    public static final RegistryObject<Skill> INSIGHT = HandlerCommonConfig.HANDLER.instance().insightRequiredLevel < 0 ? null : SKILLS.register("insight", () -> register("insight", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().insightRequiredLevel, HandlerResources.HAGGLER_SKILL));
+    public static final RegistryObject<Skill> MATERIALS_SCIENCE = HandlerCommonConfig.HANDLER.instance().materialsScienceRequiredLevel < 0 ? null : SKILLS.register("materials_science", () -> register("materials_science", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().materialsScienceRequiredLevel, HandlerResources.HAGGLER_SKILL));
+    public static final RegistryObject<Skill> ENLIGHTENMENT = HandlerCommonConfig.HANDLER.instance().enlightenmentRequiredLevel < 0 ? null : SKILLS.register("enlightenment", () -> register("enlightenment", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().enlightenmentRequiredLevel, HandlerResources.ALCHEMY_MANIPULATION_SKILL));
+
     private static Skill register(String name, Aptitude aptitude, int requiredLvl, ResourceLocation texture, Value... configValues) {
         ResourceLocation key = new ResourceLocation(JustLevelingFork.MOD_ID, name);
         return new Skill(key, aptitude, requiredLvl, texture, configValues);

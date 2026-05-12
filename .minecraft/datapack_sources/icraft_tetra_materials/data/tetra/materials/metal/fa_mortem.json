@@ -31,6 +31,7 @@
     ],
     "attributes": {
         "**irons_spellbooks:ender_spell_power": 0.08,
-        "**irons_spellbooks:blood_spell_power": 0.06
+        "**irons_spellbooks:blood_spell_power": 0.06,
+        "**irons_spellbooks:spell_power": 0.15
     }
 }

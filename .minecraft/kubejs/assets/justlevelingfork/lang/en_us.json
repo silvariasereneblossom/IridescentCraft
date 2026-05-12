@@ -35,14 +35,22 @@
   "skill.justlevelingfork.diamond_skin": "Lion Heart",
   "skill.justlevelingfork.diamond_skin.description": "Damage reduction increases as your health decreases.",
 
-  "skill.justlevelingfork.scholar": "Scholar",
-  "skill.justlevelingfork.scholar.description": "Disabled — enchanting is no longer level-gated.",
+  "_comment_int_natives_deprecated": "Old INT natives (scholar/haggler/alchemy_manipulation) replaced by Curious/Arcane Efficiency/Insight/Materials Science/Enlightenment at 5/10/15/20/30.",
 
-  "skill.justlevelingfork.haggler": "Haggler",
-  "skill.justlevelingfork.haggler.description": "Villagers give you a %s discount on all trades.",
+  "skill.justlevelingfork.curious": "Curious",
+  "skill.justlevelingfork.curious.description": "Knowledge comes faster. +10% XP gain from all sources.",
 
-  "skill.justlevelingfork.alchemy_manipulation": "Potion Manipulation",
-  "skill.justlevelingfork.alchemy_manipulation.description": "Potions you drink have their amplifier increased by %s.",
+  "skill.justlevelingfork.arcane_efficiency": "Arcane Efficiency",
+  "skill.justlevelingfork.arcane_efficiency.description": "Enchanting costs 25% less XP — refund applied when you spend XP near an enchanting table.",
+
+  "skill.justlevelingfork.insight": "Insight",
+  "skill.justlevelingfork.insight.description": "Deeper understanding. +20% XP gain (stacks with Curious and Enlightenment).",
+
+  "skill.justlevelingfork.materials_science": "Materials Science",
+  "skill.justlevelingfork.materials_science.description": "Anvil repairs cost 25% less XP — refund applied when you spend XP near an anvil.",
+
+  "skill.justlevelingfork.enlightenment": "Enlightenment",
+  "skill.justlevelingfork.enlightenment.description": "Capstone of the Intelligence line. +30% XP gain.",
 
   "skill.justlevelingfork.obsidian_smasher": "Obsidian Smasher",
   "skill.justlevelingfork.obsidian_smasher.description": "Mine obsidian %s times faster.",
@@ -53,14 +61,22 @@
   "skill.justlevelingfork.treasure_hunter": "Resourceful",
   "skill.justlevelingfork.treasure_hunter.description": "8%% chance to refund a crafting material when you craft, including modded recipes.",
 
-  "skill.justlevelingfork.safe_port": "Arcane Efficiency",
-  "skill.justlevelingfork.safe_port.description": "Enchanting costs 25%% less XP — refund applied when you spend XP near an enchanting table.",
+  "_comment_mag_natives_deprecated": "Old MAG natives (safe_port/life_eater/wormhole_storage) replaced by Mana Spark/Conservation/Mana Blaze/Mystic Ward/Mana Inferno at 5/10/15/20/30.",
 
-  "skill.justlevelingfork.life_eater": "Mystic Ward",
-  "skill.justlevelingfork.life_eater.description": "Damage reduction scales with bonus spell power: 5%% base + 1%% per 20%% spellpower bonus, capped at 20%%.",
+  "skill.justlevelingfork.mana_spark": "Mana Spark",
+  "skill.justlevelingfork.mana_spark.description": "The first stirring of magic. +20 max mana and +5% spell power.",
 
-  "skill.justlevelingfork.wormhole_storage": "Mana Inferno",
-  "skill.justlevelingfork.wormhole_storage.description": "Capstone of the Magic line. Spells deal +30%% damage.",
+  "skill.justlevelingfork.conservation_of_magic": "Conservation of Magic",
+  "skill.justlevelingfork.conservation_of_magic.description": "Spells flow with practiced economy. +15% mana regeneration (approximates reduced spell cost).",
+
+  "skill.justlevelingfork.mana_blaze": "Mana Blaze",
+  "skill.justlevelingfork.mana_blaze.description": "Your magic burns brighter. +15% spell power.",
+
+  "skill.justlevelingfork.mystic_ward": "Mystic Ward",
+  "skill.justlevelingfork.mystic_ward.description": "Damage reduction scales with bonus spell power: 5% base + 1% per 20% spellpower bonus, capped at 20%.",
+
+  "skill.justlevelingfork.mana_inferno": "Mana Inferno",
+  "skill.justlevelingfork.mana_inferno.description": "Capstone of the Magic line. +30% spell power.",
 
   "skill.justlevelingfork.critical_roll": "Lucky Strike",
   "skill.justlevelingfork.critical_roll.description": "20%% chance to deal 120%% damage on any attack.",
