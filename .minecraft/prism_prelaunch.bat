@@ -58,7 +58,23 @@ if /i not "%~1"=="--post-pull" (
     echo [prism_prelaunch] git pull...
     git -C "!INSTANCE_DIR!" pull --ff-only
     if errorlevel 1 (
-        echo [prism_prelaunch] WARNING: git pull failed; continuing with current working tree
+        REM ff-only fails when local main has commits ahead of origin -- the
+        REM classic divergence pattern is unpushed TesterLogs commits stacked
+        REM up from a prior failed postexit push. Try rebase fallback so the
+        REM next postexit can push the accumulated stack. autostash protects
+        REM unrelated working-tree edits. If THIS also fails (real conflict
+        REM with origin), abort cleanly and continue with the existing tree.
+        echo [prism_prelaunch] ff-only failed; trying rebase fallback to absorb upstream...
+        git -C "!INSTANCE_DIR!" pull --rebase --autostash
+        if errorlevel 1 (
+            echo [prism_prelaunch] WARNING: rebase fallback also failed -- aborting.
+            git -C "!INSTANCE_DIR!" rebase --abort >nul 2>&1
+            echo [prism_prelaunch] Continuing with current working tree.
+            echo [prism_prelaunch] If logs keep failing to mirror, check:
+            echo [prism_prelaunch]   cd /d "!INSTANCE_DIR!" ^&^& git status
+        ) else (
+            echo [prism_prelaunch] rebase fallback succeeded; tree is now aligned with origin
+        )
     )
     REM Re-execute the bat. cmd.exe re-opens the file from disk, so any
     REM pull-applied update to THIS bat takes effect right now.

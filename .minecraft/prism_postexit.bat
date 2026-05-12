@@ -14,12 +14,21 @@ REM   2. Mirrors session logs into .minecraft/TesterLogs/<username>/ +
 REM      .minecraft/TesterLogs/<username>/kubejs/, plus any crash reports
 REM      created during this session (latest.log creation time as the
 REM      session-start anchor).
-REM   3. git add + commit + push the WHOLE TesterLogs/ tree so server-side
-REM      logs deposited via Z: by push_crash_logs.bat ride along.
+REM   3. git add + commit + (fetch + rebase) + push the WHOLE TesterLogs/
+REM      tree so server-side logs deposited via Z: by push_crash_logs.bat
+REM      ride along.
 REM
 REM Always pushes latest.log + debug.log + kubejs/{client,server,startup}.log,
-REM regardless of clean exit or crash. Failure modes are quiet -- this script
-REM never blocks PrismLauncher from finishing the exit.
+REM regardless of clean exit or crash. Failure modes surface error text
+REM (previously >nul 2>&1 swallowed git failures, so unpushed local commits
+REM silently accumulated for days when push hit auth/network/divergence).
+REM This script never blocks PrismLauncher from finishing the exit.
+REM
+REM Self-healing for divergence: postexit does `git pull --rebase --autostash`
+REM before pushing. That way if a prior session's push failed and left a
+REM local-only commit, the next postexit absorbs upstream commits and
+REM re-pushes the stack -- no manual recovery needed. Prelaunch keeps its
+REM `git pull --ff-only` so it never silently rewrites user edits.
 REM
 REM Set automatically by kubejs/client_scripts/auto_fix_prism_prelaunch.js on
 REM first login; no manual config needed.
@@ -67,20 +76,64 @@ if exist "%MC_DIR%\crash-reports" (
     powershell -NoProfile -Command "$session = (Get-Item '%MC_DIR%\logs\latest.log' -ErrorAction SilentlyContinue).CreationTime; if ($session) { Get-ChildItem '%MC_DIR%\crash-reports\*.txt' -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -ge $session } | Copy-Item -Destination '%DEST%\crash-reports\' -Force -ErrorAction SilentlyContinue }"
 )
 
-REM ── git add + commit + push ─────────────────────────────────────────────────
+REM ── git add + commit + rebase + push ────────────────────────────────────────
 REM Add the entire TesterLogs/ tree, not just %USERNAME%/, so server logs
 REM that landed via push_crash_logs.bat (Z: mirror) ride along on this push.
+REM Errors are NOT silenced -- they were prior to 2026-05-12 and that masked
+REM six days of failed pushes after a single divergence.
 pushd "%INSTANCE_DIR%"
-git add ".minecraft/TesterLogs/" >nul 2>&1
-git diff --cached --quiet
-if errorlevel 1 (
-    git commit -m "TesterLogs: session logs (%USERNAME%)" >nul 2>&1
-    git push >nul 2>&1
-    echo [postexit] Logs pushed
-) else (
-    echo [postexit] No changes to push
-)
-popd
 
+git add ".minecraft/TesterLogs/"
+if errorlevel 1 echo [postexit] WARN: git add returned non-zero
+
+REM Check if there's anything staged. `git diff --cached --quiet` returns
+REM errorlevel 1 when staged changes exist, 0 when clean.
+git diff --cached --quiet
+if not errorlevel 1 (
+    echo [postexit] No changes to push
+    popd
+    endlocal
+    exit /b 0
+)
+
+git commit -m "TesterLogs: session logs (%USERNAME%)"
+if errorlevel 1 (
+    echo [postexit] ERROR: git commit failed. Logs mirrored to disk only.
+    popd
+    endlocal
+    exit /b 0
+)
+
+echo [postexit] git fetch + rebase + push ...
+git fetch
+if errorlevel 1 echo [postexit] WARN: git fetch failed -- offline? Attempting push anyway.
+
+REM Pull-rebase to absorb any upstream commits (likely if previous push
+REM failed and origin has since moved forward). --autostash protects any
+REM unrelated working-tree edits during the rebase. On conflict, abort
+REM cleanly so the working tree is left consistent for the user.
+git pull --rebase --autostash
+if errorlevel 1 (
+    echo [postexit] ERROR: rebase failed; aborting rebase.
+    git rebase --abort >nul 2>&1
+    echo [postexit] Logs committed locally but NOT pushed. From the instance dir:
+    echo [postexit]   git status
+    echo [postexit]   git pull --rebase
+    echo [postexit]   resolve conflicts, then: git rebase --continue ^&^& git push
+    popd
+    endlocal
+    exit /b 0
+)
+
+git push
+if errorlevel 1 (
+    echo [postexit] ERROR: git push failed. Logs committed locally only.
+    echo [postexit] Likely network/auth -- check Windows Credential Manager
+    echo [postexit] for a github.com entry. Logs remain in .minecraft\TesterLogs\.
+) else (
+    echo [postexit] Logs pushed
+)
+
+popd
 endlocal
 exit /b 0

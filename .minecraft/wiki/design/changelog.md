@@ -4,6 +4,37 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-12 — Client log mirror: surface git errors + auto-heal divergence
+
+Tester reported "git pull failed" at PrismLauncher launch + their `TesterLogs/silvieserene/latest.log` on the remote was stuck at `May 6 03:47` despite six days of play sessions. Root cause: `prism_postexit.bat` ran `git commit` and `git push` with `>nul 2>&1`, so any push failure (auth, network, divergence) was invisible. Once a single push failed, the local TesterLogs commit sat on `main` ahead of `origin/main`; the next prelaunch's `git pull --ff-only` then couldn't fast-forward, the WARNING ran past too fast to read, and every subsequent postexit push compounded the divergence. Net effect: silent 6-day log mirror outage.
+
+### Fix
+
+**`prism_postexit.bat`** — Strip `>nul 2>&1` from `git commit` and `git push`. Add `git fetch` + `git pull --rebase --autostash` before push to absorb any upstream commits (the normal case after the first failed-push session). On rebase conflict, `git rebase --abort` cleans up and the script surfaces the manual-recovery steps. On push failure, surface "logs committed locally only" with the credential-manager hint. Self-healing: next launch the rebase+push absorbs the accumulated local commit stack and ships it.
+
+**`prism_prelaunch.bat`** — When `git pull --ff-only` fails, fall back to `git pull --rebase --autostash` so a session that hit the divergence can auto-recover at launch time (not just at next exit). If THAT also fails (real conflict with origin), abort the rebase cleanly and continue with the existing tree — the user still gets into the game.
+
+### Why
+
+The original silenced-error pattern was load-bearing for "this script never blocks PrismLauncher from finishing the exit" — but redirecting stderr to nul also hid the actionable error text. The fix preserves "never block exit" (script always `exit /b 0`) while surfacing errors to the launcher console where the user can see them. Rebase-with-autostash is the safe recovery shape: it touches only the user's `main` HEAD pointer, never their working-tree edits.
+
+### Files touched
+
+- `.minecraft/prism_postexit.bat` — rewrote git-flow tail (lines ~70-end)
+- `.minecraft/prism_prelaunch.bat` — added rebase fallback to the Phase 1 pull (lines ~58-78)
+
+### Tester action
+
+After this lands on `origin/main`, the user's next launch should:
+1. Phase 1 prelaunch sees ff-only fail (existing divergence), falls back to rebase, succeeds
+2. Game launches normally
+3. Phase 5 postexit copies logs, commits, fetches, rebases (no-op now), pushes — push succeeds
+4. `TesterLogs/silvieserene/latest.log` on the remote updates to the live session
+
+If for some reason rebase still fails (unlikely — local commits should only be log commits which can't conflict with our jar/lang changes), the manual recovery banner now appears in the launcher console.
+
+---
+
 ## 2026-05-12 — Modded armor variant systemic fix: register 13 missing materials, normalize 20 suffixes, populate book vanilla tiers
 
 Tester screenshot evidence (modded chestplate + helmet) showed module-slot variants displaying doubled keys like `padded_lining/dd_wardeniron`, `simple_trim/bs_pyropeiron`, `slit_visor/bs_diopsideiron`. These were the deferred modded variants from the 2026-05-11 doubling-fix sweep finally surfacing in the wild — every modded armor piece converted to a reforged armor item displays garbage in the workbench slots.
