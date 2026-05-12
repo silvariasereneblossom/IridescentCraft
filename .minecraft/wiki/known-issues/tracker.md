@@ -14,6 +14,13 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Wandering Mage (and all ISS unique) integrity nondeterministic (2026-05-12) — RESOLVED
+- **Status:** Resolved 2026-05-12
+- **Description:** Tester reported Wandering Magician chestplate showing wrong / negative integrity budget at the workbench. 2026-05-11's wildcard-key sweep had resurrected 52 variants that were previously dead-due-to-doubling, creating duplicate expanded keys (e.g. `robe_chest/wool`, `padded_lining/leather`). Tetra's `MaterialVariantData.expand()` dedupes by final key but the winner is implementation-defined — so unique armor pieces rolled stats nondeterministically between the intended mage-tier variant and a stale wool-tier draft. Scope was every ISS unique set (17 total), not just Wandering Magician.
+- **Fix:** Audit script enumerated `expanded_key = variant.key + material.suffix` across all `tetra:basic_major_module` + `tetra:basic_module` files and flagged 52 collisions (boots ×13, chestplate ×13, helmet ×13, leggings ×13). Dedup choice: keep MAJOR=[0] (preserves mage tier's +2 integrity / 5 magicCap), keep MINOR=[N] (post commit `e7ec7a16` no-consume integrity=0). Repair JSONs regenerated; jar rebuilt + deployed to all 3 distros.
+- **Verification:** All 17 ISS unique sets now report `integrity=+2 magicCap=+5` per piece (was nondeterministic). Modded armor sets (aether/blue_skies/twilightforest/etc.) fall back to variantData[0] post-dedup which is also +2/+5 — consistent with ISS uniques rather than rolling 0 / negative.
+- **Follow-up:** Variant [N] for non-mage MAJORS carried the vanilla-scale armor calibration from commit `78efe6ed` (breastplate/iron armor 4.865 vs the kept 1.2, etc.). Dedup kept variant [0] to preserve play-tested state. Re-applying the calibration to surviving variants is a separate balance pass.
+
 ### Modded GLMs broadly suppressed by `replace:true` allowlist (2026-04-26 — 2026-05-10) — RESOLVED
 - **Status:** Resolved 2026-05-10 (structural fix; superseded the same-day SimpleFarming-only patch)
 - **Description:** Pack-level `data/forge/loot_modifiers/global_loot_modifiers.json` was set to `replace:true` on 2026-04-26 (commit `f74f7d59`) with a curated allowlist intended to suppress aggressive Artifacts/Celestial/Relics/ISB chest injection. The allowlist was incomplete: every modded GLM not enumerated was silently dropped from the Forge registry. Tester report "barely seeing any non-wheat seeds" surfaced the symptom; jar audit confirmed the breadth.

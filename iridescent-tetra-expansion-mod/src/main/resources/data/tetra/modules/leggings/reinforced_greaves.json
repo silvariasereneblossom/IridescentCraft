@@ -7,27 +7,6 @@
   "variants": [
     {
       "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "reinforced_greaves/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.2
-        },
-        "integrity": -1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
         "tetra:skin/leather"
       ],
       "key": "reinforced_greaves/",

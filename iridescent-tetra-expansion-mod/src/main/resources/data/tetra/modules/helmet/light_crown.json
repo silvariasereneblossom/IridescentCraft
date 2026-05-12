@@ -54,28 +54,6 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "light_crown/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.24
-        },
-        "integrity": 2,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 5
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/gold"
       ],
       "key": "light_crown/",

@@ -15,28 +15,6 @@
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:max_mana": 2.0
         },
-        "integrity": -1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:skin/leather"
-      ],
-      "key": "cloth_strap/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 2.0
-        },
         "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",

@@ -12,27 +12,6 @@
       "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.12
-        },
-        "integrity": -1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:skin/leather"
-      ],
-      "key": "padded_cuisses/",
-      "extract": {
-        "primaryAttributes": {
           "minecraft:generic.armor": 0.222
         },
         "integrity": 0,

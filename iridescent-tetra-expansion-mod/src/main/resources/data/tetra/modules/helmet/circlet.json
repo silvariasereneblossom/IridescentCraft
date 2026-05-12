@@ -258,30 +258,6 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool"
-      ],
-      "key": "circlet/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.1,
-          "irons_spellbooks:max_mana": 25.0,
-          "irons_spellbooks:spell_power": 0.03
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 3
-      }
-    },
-    {
-      "materials": [
         "tetra:fibre/string"
       ],
       "key": "circlet/",

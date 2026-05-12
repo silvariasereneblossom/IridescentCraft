@@ -4,6 +4,54 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-12 — Tetra armor: dedup 52 zombie variants resurrected by the wildcard-key sweep; ISS unique integrity restored
+
+The 2026-05-11 wildcard-key sweep (previous entry) had unintended fallout. 52 variants that were previously dead-due-to-doubling came back alive as duplicate-expanded keys, and Tetra's expansion picked one nondeterministically per material — so unique armor pieces could roll either the intended mage-tier stats or a stale wool-tier draft, depending on JVM map iteration order.
+
+### Symptom (tester report)
+
+"Integrity issue on Wandering Mage armor." Wandering Magician chestplate intermittently showed budget `-N / 5` or `0 / 3` instead of the intended `2 / 5`, and improvements were silently rejected when budget went negative.
+
+### Root cause
+
+Pre-sweep, every named-key variant (`<module>/<material>` with matching material in `materials[]`) was a dead doubled key (`<module>/<material><material>`). The "live" variant for each material was the *wildcard* sibling (`<module>/` with the same material). Tester-visible stats came exclusively from the wildcard.
+
+Post-sweep, both variants ended up with the wildcard key `<module>/` plus the same material, expanding to the SAME final key. 52 such collisions across 16 armor module files. Tetra's `MaterialVariantData.expand()` dedupes by final key but the winner is implementation-defined.
+
+### Audit + fix
+
+`scripts inline`: enumerate every `expanded_key = key + material_suffix` across all `tetra:basic_major_module` + `tetra:basic_module` files; group by expanded key; flag groups with >1 contributing variant index.
+
+Result: 52 real collisions (plus 1 false positive in `ars_book/dye` from a single variant with two category-wildcard materials — same expanded key but same variant, not a collision).
+
+Patterns:
+- **MAGE MAJORS** (robe_chest/wool, circlet/wool, robed_leg_plate/wool, robed_boot_sole/wool): variant [0] integrity=+2 magicCap=5 (mage-tier intent); variant [10] integrity=0 magicCap=3 (vanilla wool draft).
+- **NON-MAGE MAJORS** (breastplate/iron, basic_crown/iron, etc.): integrity+magicCap identical between dupes; only armor calibration differs ([0] uncalibrated, [N] vanilla-scale post commit `78efe6ed`).
+- **MINORS** (padded_lining/leather, simple_trim/iron, etc.): [0] integrity=-1 (old "consume" convention); [N] integrity=0 (post commit `e7ec7a16` no-consume).
+
+Dedup choice: keep MAJOR=[0], MINOR=[N]. Mage majors keep +2 integrity / 5 magicCap; minors stop consuming budget.
+
+### ISS unique audit after the fix
+
+Resolved every replacement stamp in `data/tetra/replacements/irons_spellbooks__*.json` against the new module state. All 17 unique sets now report `integrity=+2 magicCap=+5` per piece (was nondeterministic +2/0/+5/+3). Wandering Magician chestplate budget: `+2 −0 −0 −0 = +2` free for improvements.
+
+| Unique set | Pieces | Per-piece integrity | Per-piece magicCap |
+|---|---|---|---|
+| archevoker, cryomancer, cultist, electromancer, netherite_mage, plagued, priest, pumpkin, pyromancer, shadowwalker, wandering_magician, wizard | 4 each | +2 | +5 |
+| infernal_sorcerer, paladin | chestplate | +2 | +5 |
+| gold_crown, tarnished_helmet | helmet | +2 | +5 |
+| speed_boots | boots | +2 | +5 |
+
+Modded armor (aether/blue_skies/twilightforest/etc.) still resolves via variantData[0] fallback (deferred from 2026-05-11) — but variantData[0] post-dedup is also +2/+5, so modded sets are consistent with ISS uniques rather than rolling 0 or negative.
+
+### Known follow-up
+
+Variant [N] for non-mage MAJORS carried the "vanilla-scale armor calibration" from commit `78efe6ed` (e.g. breastplate/iron armor 4.865 instead of 1.2). The dedup kept variant [0]'s lower armor values to preserve play-tested state. Re-applying the calibration to the surviving variants is a separate balance pass; tracking on roadmap.
+
+Repair JSONs regenerated (`tools/gen_repair_definitions.py` → 687 files). Jar rebuilt and deployed to all 3 distros.
+
+---
+
 ## 2026-05-11 — Tetra variant key doubling fix: collapse named keys to wildcard form (1280 variants across 62 files)
 
 Root cause of "random material fallback" reported by tester: every named per-material variant in our module files had the wrong key shape, and Tetra's `MaterialVariantData.combine(MaterialData)` was DOUBLING them at load time.

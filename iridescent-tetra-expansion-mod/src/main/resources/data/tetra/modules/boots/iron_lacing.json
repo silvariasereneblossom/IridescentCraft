@@ -7,28 +7,6 @@
   "variants": [
     {
       "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "iron_lacing/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.08,
-          "minecraft:generic.knockback_resistance": 0.008
-        },
-        "integrity": -1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
         "tetra:skin/leather"
       ],
       "key": "iron_lacing/",

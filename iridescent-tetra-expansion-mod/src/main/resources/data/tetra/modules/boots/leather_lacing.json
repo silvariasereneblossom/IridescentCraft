@@ -12,27 +12,6 @@
       "key": "leather_lacing/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.04
-        },
-        "integrity": -1,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": []
-      }
-    },
-    {
-      "materials": [
-        "tetra:skin/leather"
-      ],
-      "key": "leather_lacing/",
-      "extract": {
-        "primaryAttributes": {
           "minecraft:generic.armor": 0.071
         },
         "integrity": 0,

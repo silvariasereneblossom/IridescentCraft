@@ -54,28 +54,6 @@
     },
     {
       "materials": [
-        "tetra:metal/iron"
-      ],
-      "key": "full_leg_plate/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 3.704
-        },
-        "integrity": 2,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 5
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/gold"
       ],
       "key": "full_leg_plate/",
