@@ -5,9 +5,6 @@
     ],
     "count": 2
   },
-  "requiredTools": {
-    "hammer_dig": "minecraft:iron"
-  },
   "moduleKey": "leggings/leg_plate",
   "moduleVariant": "heavy_leg_plate/ice"
 }

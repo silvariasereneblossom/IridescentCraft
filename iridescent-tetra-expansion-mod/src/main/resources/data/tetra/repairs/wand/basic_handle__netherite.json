@@ -5,9 +5,6 @@
     ],
     "count": 1
   },
-  "requiredTools": {
-    "hammer_dig": "minecraft:diamond"
-  },
   "moduleKey": "wand/handle",
   "moduleVariant": "basic_handle/netherite"
 }

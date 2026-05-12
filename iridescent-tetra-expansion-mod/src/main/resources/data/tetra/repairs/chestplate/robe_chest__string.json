@@ -5,9 +5,6 @@
     ],
     "count": 4
   },
-  "requiredTools": {
-    "hammer_dig": "minecraft:iron"
-  },
   "moduleKey": "chestplate/chest_plate",
   "moduleVariant": "robe_chest/string"
 }

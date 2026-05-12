@@ -4,6 +4,32 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-12 — Custom armor + wand repair: drop `requiredTools` to match base Tetra socket pattern
+
+Tester report: workbench Repair tab on reforged armor required an iron hammer (implement). Base Tetra socket repairs (e.g. `data/tetra/repairs/sockets/double/pristine_diamond.json`) accept the material with no hammer needed — verified by extracting `tetra-1.20.1-6.12.0.jar` and inspecting the 35 stock repair JSONs (17 require tools, 18 don't; all 18 no-tool entries are socket-related). The "no-tool" shape simply OMITS the `requiredTools` field from the JSON; Tetra deserialises absent as an empty `ToolData` and `RepairSchematic.getRequiredToolLevels` returns an empty map.
+
+Our `tools/gen_repair_definitions.py` was emitting `requiredTools: {"hammer_dig": "minecraft:iron"}` (or `diamond` for netherite-tier materials) on every one of the 687 generated repair JSONs — armor and wand alike. Workbench Repair tab refused the material unless the player had the implement in the tool slots.
+
+### Fix
+
+`tools/gen_repair_definitions.py` `emit_repair()` no longer writes `requiredTools` to the output JSON. The MATERIAL_ITEM_MAP still tracks per-material tool tiers (HAMMER_IRON / HAMMER_DIAMOND) so reinstating an implement requirement later is a one-line revert if a tier ever warrants gating. Tetra's RepairDefinition class treats missing `requiredTools` as null/empty — same semantics as base Tetra's socket repair JSONs.
+
+Regenerated 687 repair JSONs. Sample post-fix shape (armor):
+
+```json
+{
+  "material": {"items": ["minecraft:iron_ingot"], "count": 2},
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/iron"
+}
+```
+
+Workbench now accepts the listed material at the repair tab with no implement requirement. Matches the "feels like anvil repair" UX the tester expected from base Tetra.
+
+Jar rebuilt and deployed to all 3 distros.
+
+---
+
 ## 2026-05-12 — Client launcher: fix silent mod-download failure + bat self-update propagation
 
 Tester report: after `fcacdd48` (Dan's Magic + Simple Staves added 2026-05-10), the two staff mods failed to auto-download on the next launch. Manual mod copy was required.

@@ -5,9 +5,6 @@
     ],
     "count": 1
   },
-  "requiredTools": {
-    "hammer_dig": "minecraft:diamond"
-  },
   "moduleKey": "helmet/crown",
   "moduleVariant": "basic_crown/dd_warden"
 }

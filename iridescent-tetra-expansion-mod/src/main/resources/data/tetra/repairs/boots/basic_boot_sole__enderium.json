@@ -5,9 +5,6 @@
     ],
     "count": 2
   },
-  "requiredTools": {
-    "hammer_dig": "minecraft:diamond"
-  },
   "moduleKey": "boots/boot_sole",
   "moduleVariant": "basic_boot_sole/enderium"
 }

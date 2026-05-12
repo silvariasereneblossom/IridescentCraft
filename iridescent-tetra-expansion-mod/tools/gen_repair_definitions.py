@@ -192,13 +192,24 @@ def variant_material_suffix(variant_key):
 
 def emit_repair(slot, archetype, material, items, count, tools, variant_key):
     """Write a single repair JSON. Filename includes archetype + material
-    so multi-archetype slots don't collide."""
+    so multi-archetype slots don't collide.
+
+    `requiredTools` is OMITTED from the output (mirrors base Tetra's
+    `data/tetra/repairs/sockets/**/*.json` shape — see e.g. socket/
+    pristine_diamond.json). The workbench Repair tab then accepts the
+    listed material with no hammer/wrench implement required, which
+    matches how vanilla armor repair feels at an anvil. We still compute
+    the per-material tool tier in MATERIAL_ITEM_MAP so reinstating an
+    implement requirement later is a one-line revert if a tier ever
+    warrants gating. Tetra deserialises missing requiredTools as an
+    empty ToolData; RepairSchematic.getRequiredToolLevels returns an
+    empty map and the workbench accepts material-only repair."""
+    _ = tools  # intentionally unused; see docstring
     out_dir = os.path.join(REPAIRS_DIR, slot)
     os.makedirs(out_dir, exist_ok=True)
     fname = f'{archetype}__{material}.json'
     out = {
         'material':      {'items': items, 'count': count},
-        'requiredTools': tools,
         'moduleKey':     archetype_to_module_key(slot, archetype),
         'moduleVariant': variant_key,
     }
