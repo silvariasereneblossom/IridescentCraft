@@ -16,7 +16,7 @@
         "primaryAttributes": {
           "irons_spellbooks:max_mana": 0.833
         },
-        "integrity": 1,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -38,7 +38,7 @@
         "primaryAttributes": {
           "irons_spellbooks:max_mana": 1.25
         },
-        "integrity": 1,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -60,7 +60,7 @@
         "primaryAttributes": {
           "irons_spellbooks:max_mana": 1.5
         },
-        "integrity": 1,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -82,7 +82,7 @@
         "primaryAttributes": {
           "irons_spellbooks:max_mana": 3.333
         },
-        "integrity": 1,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -104,7 +104,7 @@
         "primaryAttributes": {
           "irons_spellbooks:max_mana": 2.083
         },
-        "integrity": 1,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -126,7 +126,7 @@
         "primaryAttributes": {
           "irons_spellbooks:max_mana": 2.072
         },
-        "integrity": 1,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -148,7 +148,7 @@
         "primaryAttributes": {
           "irons_spellbooks:max_mana": 2.059
         },
-        "integrity": 2,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

@@ -1,0 +1,8 @@
+{
+    "key": "diamond",
+    "category": "gem",
+    "primary": 6.0,
+    "replace": false,
+    "integrityGain": 6,
+    "magicCapacity": 110
+}

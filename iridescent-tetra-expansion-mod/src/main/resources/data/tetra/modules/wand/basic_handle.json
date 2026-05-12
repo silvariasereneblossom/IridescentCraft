@@ -19,7 +19,7 @@
           "**irons_spellbooks:cooldown_reduction": 0.0167,
           "irons_spellbooks:max_mana": 1.667
         },
-        "integrity": 3,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -44,7 +44,7 @@
           "**irons_spellbooks:cooldown_reduction": 0.025,
           "irons_spellbooks:max_mana": 2.5
         },
-        "integrity": 3,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -69,7 +69,7 @@
           "**irons_spellbooks:cooldown_reduction": 0.03,
           "irons_spellbooks:max_mana": 3.0
         },
-        "integrity": 3,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -94,7 +94,7 @@
           "**irons_spellbooks:cooldown_reduction": 0.0667,
           "irons_spellbooks:max_mana": 6.667
         },
-        "integrity": 3,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -119,7 +119,7 @@
           "**irons_spellbooks:cooldown_reduction": 0.0417,
           "irons_spellbooks:max_mana": 4.167
         },
-        "integrity": 3,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -144,7 +144,7 @@
           "**irons_spellbooks:cooldown_reduction": 0.0414,
           "irons_spellbooks:max_mana": 4.144
         },
-        "integrity": 3,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -169,7 +169,7 @@
           "**irons_spellbooks:cooldown_reduction": 0.0412,
           "irons_spellbooks:max_mana": 4.118
         },
-        "integrity": 4,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

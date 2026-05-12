@@ -17,7 +17,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 1.429
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -39,7 +39,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.714
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -62,7 +62,7 @@
           "minecraft:generic.armor": 0.714,
           "irons_spellbooks:max_mana": 5.0
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -85,7 +85,7 @@
           "minecraft:generic.armor": 2.143,
           "minecraft:generic.armor_toughness": 0.5
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -109,7 +109,7 @@
           "minecraft:generic.knockback_resistance": 0.025,
           "minecraft:generic.armor_toughness": 0.75
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -132,7 +132,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:fire_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -155,7 +155,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:ice_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -178,7 +178,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:ender_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -201,7 +201,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:holy_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -224,7 +224,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:lightning_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -247,7 +247,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:nature_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -270,7 +270,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:ender_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -293,7 +293,7 @@
           "minecraft:generic.armor": 0.42,
           "irons_spellbooks:blood_spell_power": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -317,7 +317,7 @@
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -339,7 +339,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.36
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -361,7 +361,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.416
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -384,7 +384,7 @@
           "minecraft:generic.armor": 0.48,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -407,7 +407,7 @@
           "minecraft:generic.armor": 0.52,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -429,7 +429,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.4
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -452,7 +452,7 @@
           "minecraft:generic.armor": 0.496,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -476,7 +476,7 @@
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -499,7 +499,7 @@
           "minecraft:generic.armor": 0.464,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -522,7 +522,7 @@
           "minecraft:generic.armor": 0.44,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -545,7 +545,7 @@
           "minecraft:generic.armor": 0.44,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -569,7 +569,7 @@
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -591,7 +591,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.4
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -614,7 +614,7 @@
           "minecraft:generic.armor": 0.52,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -637,7 +637,7 @@
           "minecraft:generic.armor": 0.448,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -660,7 +660,7 @@
           "minecraft:generic.armor": 0.384,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -683,7 +683,7 @@
           "minecraft:generic.armor": 0.416,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -706,7 +706,7 @@
           "minecraft:generic.armor": 0.48,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -729,7 +729,7 @@
           "minecraft:generic.armor": 0.48,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -753,7 +753,7 @@
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -776,7 +776,7 @@
           "minecraft:generic.armor": 0.4,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -799,7 +799,7 @@
           "minecraft:generic.armor": 0.44,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -822,7 +822,7 @@
           "minecraft:generic.armor": 0.424,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -845,7 +845,7 @@
           "minecraft:generic.armor": 0.52,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -867,7 +867,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.44
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -890,7 +890,7 @@
           "minecraft:generic.armor": 0.544,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -913,7 +913,7 @@
           "minecraft:generic.armor": 0.464,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -937,7 +937,7 @@
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -961,7 +961,7 @@
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -984,7 +984,7 @@
           "minecraft:generic.armor": 0.56,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1007,7 +1007,7 @@
           "minecraft:generic.armor": 0.52,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1030,7 +1030,7 @@
           "minecraft:generic.armor": 0.52,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1053,7 +1053,7 @@
           "minecraft:generic.armor": 0.496,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1076,7 +1076,7 @@
           "minecraft:generic.armor": 1.429,
           "minecraft:generic.armor_toughness": 0.25
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1098,7 +1098,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 2.143
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1121,7 +1121,7 @@
           "minecraft:generic.armor": 1.429,
           "minecraft:generic.armor_toughness": 0.5
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1144,7 +1144,7 @@
           "minecraft:generic.armor": 2.143,
           "minecraft:generic.armor_toughness": 0.125
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1166,7 +1166,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 2.143
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1190,7 +1190,7 @@
           "minecraft:generic.armor_toughness": 0.75,
           "minecraft:generic.knockback_resistance": 0.025
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1214,7 +1214,7 @@
           "minecraft:generic.armor_toughness": 1.0,
           "minecraft:generic.knockback_resistance": 0.05
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1237,7 +1237,7 @@
           "minecraft:generic.armor": 0.714,
           "minecraft:generic.armor_toughness": 0.25
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1259,7 +1259,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.714
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1281,7 +1281,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 2.143
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1304,7 +1304,7 @@
           "minecraft:generic.armor": 1.429,
           "minecraft:generic.armor_toughness": 0.25
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1328,7 +1328,7 @@
           "minecraft:generic.armor_toughness": 1.0,
           "minecraft:generic.knockback_resistance": 0.025
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1352,7 +1352,7 @@
           "minecraft:generic.armor_toughness": 1.25,
           "minecraft:generic.knockback_resistance": 0.1
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1374,7 +1374,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.429
         },
-        "integrity": 0,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

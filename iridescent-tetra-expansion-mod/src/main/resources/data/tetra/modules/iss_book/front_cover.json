@@ -19,7 +19,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -41,7 +41,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -63,7 +63,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.004
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -85,7 +85,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -107,7 +107,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0055
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -129,7 +129,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0065
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -151,7 +151,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.003
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -173,7 +173,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0075
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -195,7 +195,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0055
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -217,7 +217,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0043
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -239,7 +239,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0035
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -261,7 +261,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0035
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -283,7 +283,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -305,7 +305,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0048
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -327,7 +327,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0043
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -349,7 +349,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0039
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -371,7 +371,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.005
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -393,7 +393,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.006
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -415,7 +415,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0044
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -437,7 +437,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0047
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -459,7 +459,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0038
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -481,7 +481,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0048
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -503,7 +503,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0036
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -525,7 +525,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0045
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -547,7 +547,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.007
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -569,7 +569,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0025
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -591,7 +591,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.003
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -613,7 +613,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0037
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -635,7 +635,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0045
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -657,7 +657,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0035
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -679,7 +679,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.0055
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -701,7 +701,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.008
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -723,7 +723,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.01
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -746,7 +746,7 @@
           "**irons_spellbooks:spell_power": 0.015,
           "irons_spellbooks:max_mana": 2.0
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -768,7 +768,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.02
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -790,7 +790,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:spell_power": 0.025
         },
-        "integrity": 2,
+        "integrity": 1.0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,

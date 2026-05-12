@@ -1,0 +1,8 @@
+{
+    "key": "netherite",
+    "category": "metal",
+    "primary": 7.24,
+    "replace": false,
+    "integrityGain": 9,
+    "magicCapacity": 155
+}

@@ -14,7 +14,7 @@
         "tertiaryAttributes": {
           "**irons_spellbooks:cast_time_reduction": 0.01
         },
-        "integrity": 0,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 16,
@@ -35,7 +35,7 @@
         "primaryAttributes": {
           "**irons_spellbooks:mana_regen": 0.01
         },
-        "integrity": 0,
+        "integrity": 0.5,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
