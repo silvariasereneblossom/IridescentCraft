@@ -10,7 +10,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:fabric/wool"
+        "tetra:fabric/wool/wool"
       ],
       "key": "circlet/",
       "extract": {
@@ -58,7 +58,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "circlet/",
       "extract": {
@@ -83,7 +83,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "circlet/",
       "extract": {
@@ -108,7 +108,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "circlet/",
       "extract": {
@@ -133,7 +133,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "circlet/",
       "extract": {
@@ -158,7 +158,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "circlet/",
       "extract": {
@@ -183,7 +183,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "circlet/",
       "extract": {
@@ -208,7 +208,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "circlet/",
       "extract": {
@@ -233,7 +233,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "circlet/",
       "extract": {

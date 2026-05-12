@@ -115,7 +115,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "decorative_trim/",
       "extract": {
@@ -137,7 +137,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "decorative_trim/",
       "extract": {
@@ -159,7 +159,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "decorative_trim/",
       "extract": {
@@ -181,7 +181,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "decorative_trim/",
       "extract": {
@@ -203,7 +203,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "decorative_trim/",
       "extract": {
@@ -225,7 +225,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "decorative_trim/",
       "extract": {
@@ -247,7 +247,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "decorative_trim/",
       "extract": {
@@ -269,7 +269,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "decorative_trim/",
       "extract": {

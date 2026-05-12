@@ -116,7 +116,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -138,7 +138,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -160,7 +160,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -182,7 +182,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -204,7 +204,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -226,7 +226,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -248,7 +248,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -270,7 +270,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -618,7 +618,7 @@
     },
     {
       "materials": [
-        "tetra:gem/diopside"
+        "tetra:metal/diopside"
       ],
       "key": "padded_boot_lining/",
       "extract": {
@@ -728,7 +728,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool"
+        "tetra:fabric/wool/wool"
       ],
       "key": "padded_boot_lining/",
       "extract": {

@@ -119,7 +119,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -142,7 +142,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -165,7 +165,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -188,7 +188,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -211,7 +211,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -234,7 +234,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -257,7 +257,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -280,7 +280,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "chainmail_lining/",
       "extract": {

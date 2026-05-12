@@ -124,7 +124,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "goggles/",
       "extract": {
@@ -148,7 +148,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "goggles/",
       "extract": {
@@ -172,7 +172,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "goggles/",
       "extract": {
@@ -196,7 +196,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "goggles/",
       "extract": {
@@ -220,7 +220,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "goggles/",
       "extract": {
@@ -244,7 +244,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "goggles/",
       "extract": {
@@ -268,7 +268,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "goggles/",
       "extract": {
@@ -292,7 +292,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "goggles/",
       "extract": {

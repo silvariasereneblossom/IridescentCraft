@@ -10,7 +10,7 @@
   "variants": [
     {
       "materials": [
-        "tetra:fabric/wool"
+        "tetra:fabric/wool/wool"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -56,7 +56,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -80,7 +80,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -104,7 +104,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -128,7 +128,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -152,7 +152,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -176,7 +176,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -200,7 +200,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "robed_boot_sole/",
       "extract": {
@@ -224,7 +224,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "robed_boot_sole/",
       "extract": {

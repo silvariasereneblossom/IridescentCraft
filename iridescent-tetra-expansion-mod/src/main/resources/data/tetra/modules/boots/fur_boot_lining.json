@@ -115,7 +115,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "fur_boot_lining/",
       "extract": {
@@ -137,7 +137,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "fur_boot_lining/",
       "extract": {
@@ -159,7 +159,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "fur_boot_lining/",
       "extract": {
@@ -181,7 +181,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "fur_boot_lining/",
       "extract": {
@@ -203,7 +203,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "fur_boot_lining/",
       "extract": {
@@ -225,7 +225,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "fur_boot_lining/",
       "extract": {
@@ -247,7 +247,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "fur_boot_lining/",
       "extract": {
@@ -269,7 +269,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "fur_boot_lining/",
       "extract": {

@@ -123,7 +123,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "light_leg_plate/",
       "extract": {
@@ -146,7 +146,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "light_leg_plate/",
       "extract": {
@@ -169,7 +169,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "light_leg_plate/",
       "extract": {
@@ -192,7 +192,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "light_leg_plate/",
       "extract": {
@@ -215,7 +215,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "light_leg_plate/",
       "extract": {
@@ -238,7 +238,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "light_leg_plate/",
       "extract": {
@@ -261,7 +261,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "light_leg_plate/",
       "extract": {
@@ -284,7 +284,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "light_leg_plate/",
       "extract": {

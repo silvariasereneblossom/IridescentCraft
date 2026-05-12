@@ -116,7 +116,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/fire"
+        "tetra:themed/fire"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -138,7 +138,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ice"
+        "tetra:themed/ice"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -160,7 +160,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/shadow"
+        "tetra:themed/shadow"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -182,7 +182,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/holy"
+        "tetra:themed/holy"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -204,7 +204,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/lightning"
+        "tetra:themed/lightning"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -226,7 +226,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/nature"
+        "tetra:themed/nature"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -248,7 +248,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/ender"
+        "tetra:themed/ender"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -270,7 +270,7 @@
     },
     {
       "materials": [
-        "iridescent_reforging:themed/blood"
+        "tetra:themed/blood"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -618,7 +618,7 @@
     },
     {
       "materials": [
-        "tetra:gem/diopside"
+        "tetra:metal/diopside"
       ],
       "key": "slit_visor/",
       "extract": {
@@ -728,7 +728,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool"
+        "tetra:fabric/wool/wool"
       ],
       "key": "slit_visor/",
       "extract": {
