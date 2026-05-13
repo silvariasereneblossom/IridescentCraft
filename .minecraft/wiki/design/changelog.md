@@ -4,6 +4,33 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — Thermal Cultivation crops: auto-replant on right-click harvest
+
+Tester report: "some Thermal crops don't harvest properly - the crop is removed, it doesn't auto-replant." Confirmed via bytecode of `cofh.lib.common.block.CropBlockCoFH.harvest`: the method calls `getPostHarvestAge()`, and if it returns < 0, follows the destroy-block path (drops loot, destroys block) instead of the replant path. The default return is `-1`. None of Thermal Cultivation's crop subclasses override this, so right-click harvest destroys every Thermal crop.
+
+### Fix
+
+New mixin `CropBlockCoFHReplantMixin` in `iridescent-tetra-expansion-mod` (uses existing mixin infrastructure). Injects into `CropBlockCoFH.getPostHarvestAge` HEAD and returns 0 instead. Routes harvest into the replant branch: drops `2 + binomialDist(fortuneLevel, 0.5)` crop items and resets state to age 0.
+
+Affects all CoFH-based crops in the modpack — confirmed by inspection that only Thermal Cultivation extends `CropBlockCoFH`: amaranth, barley, bell_pepper, coffee, corn, eggplant, flax, frost_melon, green_bean, hops, onion, peanut, radish, rice, sadiroot, spinach, strawberry, tea, tomato.
+
+### Why mixin vs KubeJS BlockEvents.rightClicked
+
+KubeJS could cancel the default action and reimplement drop+replant in JS, but:
+- The drop math (`binomialDist(fortune, 0.5)`) is non-trivial to replicate
+- Right-click handling has timing edge cases
+- A single one-method mixin is fewer moving parts than a KubeJS handler
+
+### Files
+
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/mixin/CropBlockCoFHReplantMixin.java` (new)
+- `iridescent_tetra_expansion.mixins.json` -- added CropBlockCoFHReplantMixin to `mixins` array (universal target, server+client)
+- `build.gradle` -- added `compileOnly fg.deobf("blank:cofh_core:1.20.1-11.0.2.56")`
+- `libs/cofh_core.jar` -- staged from Modrinth CDN
+- Jar rebuilt + deployed to 3 distros
+
+---
+
 ## 2026-05-13 — light_fragment / midnight_fragment: strip wither-stage gate
 
 Tester confirmed that drop rate is fine (5%), but the actual issue was a player-progression flag gate. celestial_core's loot modifier for `light_fragment` and `midnight_fragment` includes a `celestial_core:player_flag` condition requiring the `NETHER_STAGE` flag, which celestial_core sets ONLY when the player kills a `WitherBoss`. So husks/strays don't drop fragments until the player has killed the wither.
