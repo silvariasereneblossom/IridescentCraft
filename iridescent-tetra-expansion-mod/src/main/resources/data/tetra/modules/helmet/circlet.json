@@ -255,9 +255,7 @@
       "key": "circlet/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.11,
-          "irons_spellbooks:max_mana": 20.0,
-          "irons_spellbooks:spell_power": 0.02
+          "minecraft:generic.armor": 0.11
         },
         "integrity": 1.0,
         "glyph": {
@@ -279,9 +277,7 @@
       "key": "circlet/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2,
-          "irons_spellbooks:max_mana": 20.0,
-          "irons_spellbooks:spell_power": 0.02
+          "minecraft:generic.armor": 0.2
         },
         "integrity": 1.0,
         "glyph": {

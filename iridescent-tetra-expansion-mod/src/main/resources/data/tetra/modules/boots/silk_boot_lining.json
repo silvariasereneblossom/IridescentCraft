@@ -290,8 +290,7 @@
       "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 6.0
+          "minecraft:generic.armor": 0.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -313,8 +312,7 @@
       "key": "silk_boot_lining/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 6.0
+          "minecraft:generic.armor": 0.0
         },
         "integrity": 0.5,
         "glyph": {

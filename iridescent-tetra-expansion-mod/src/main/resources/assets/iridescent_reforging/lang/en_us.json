@@ -2773,5 +2773,6 @@
   "tetra.variant.spiked_heel/blood": "Blood Spiked Heel",
   "tetra.variant.standard_heel/arcane_ingot": "Arcane Standard Heel",
   "tetra.variant.standard_heel/arcane_cloth": "Arcane-woven Standard Heel",
-  "tetra.variant.standard_heel/blood": "Blood Standard Heel"
+  "tetra.variant.standard_heel/blood": "Blood Standard Heel",
+  "attribute.iridescent_reforging.damage_vs_undead": "Damage vs Undead"
 }

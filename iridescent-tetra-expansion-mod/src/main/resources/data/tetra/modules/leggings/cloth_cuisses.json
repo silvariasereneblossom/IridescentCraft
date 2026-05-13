@@ -290,8 +290,7 @@
       "key": "cloth_cuisses/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.022,
-          "irons_spellbooks:max_mana": 8.0
+          "minecraft:generic.armor": 0.022
         },
         "integrity": 0.5,
         "glyph": {
@@ -313,8 +312,7 @@
       "key": "cloth_cuisses/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.036,
-          "irons_spellbooks:max_mana": 8.0
+          "minecraft:generic.armor": 0.036
         },
         "integrity": 0.5,
         "glyph": {

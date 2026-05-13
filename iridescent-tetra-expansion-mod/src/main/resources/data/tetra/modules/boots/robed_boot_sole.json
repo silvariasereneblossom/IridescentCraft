@@ -246,8 +246,7 @@
       "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.11,
-          "irons_spellbooks:max_mana": 12.0
+          "minecraft:generic.armor": 0.11
         },
         "integrity": 1.0,
         "glyph": {
@@ -269,8 +268,7 @@
       "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2,
-          "irons_spellbooks:max_mana": 12.0
+          "minecraft:generic.armor": 0.2
         },
         "integrity": 1.0,
         "glyph": {

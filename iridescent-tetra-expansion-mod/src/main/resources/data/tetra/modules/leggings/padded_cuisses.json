@@ -803,8 +803,7 @@
       "key": "padded_cuisses/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.133,
-          "irons_spellbooks:max_mana": 5
+          "minecraft:generic.armor": 0.133
         },
         "integrity": 0.5,
         "glyph": {

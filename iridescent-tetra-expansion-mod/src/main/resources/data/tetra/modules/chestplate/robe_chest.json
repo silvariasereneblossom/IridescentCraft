@@ -255,9 +255,7 @@
       "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.33,
-          "irons_spellbooks:max_mana": 40.0,
-          "irons_spellbooks:spell_power": 0.04
+          "minecraft:generic.armor": 0.33
         },
         "integrity": 1.0,
         "glyph": {
@@ -279,9 +277,7 @@
       "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
-          "irons_spellbooks:max_mana": 40.0,
-          "irons_spellbooks:spell_power": 0.04
+          "minecraft:generic.armor": 0.6
         },
         "integrity": 1.0,
         "glyph": {

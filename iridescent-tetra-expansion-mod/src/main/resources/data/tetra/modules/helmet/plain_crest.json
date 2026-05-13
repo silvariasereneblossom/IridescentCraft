@@ -803,8 +803,7 @@
       "key": "plain_crest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.043,
-          "irons_spellbooks:max_mana": 5
+          "minecraft:generic.armor": 0.043
         },
         "integrity": 0.5,
         "glyph": {

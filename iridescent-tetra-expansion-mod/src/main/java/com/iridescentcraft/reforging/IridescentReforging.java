@@ -29,6 +29,9 @@ public class IridescentReforging {
         ModItems.ITEMS.register(modBus);
         ModRecipeTypes.SERIALIZERS.register(modBus);
         ModRecipeTypes.TYPES.register(modBus);
+        // Custom Forge attributes (damage_vs_undead, etc.) -- must register
+        // BEFORE the EntityAttributeModificationEvent fires.
+        com.iridescentcraft.reforging.attribute.IcraftAttributes.register(modBus);
 
         // Server-side: register data-pack reload listener for skins.
         // Forge bus, not mod bus — AddReloadListenerEvent fires on world

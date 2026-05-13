@@ -255,9 +255,7 @@
       "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.22,
-          "irons_spellbooks:max_mana": 24.0,
-          "irons_spellbooks:spell_power": 0.02
+          "minecraft:generic.armor": 0.22
         },
         "integrity": 1.0,
         "glyph": {
@@ -279,9 +277,7 @@
       "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4,
-          "irons_spellbooks:max_mana": 24.0,
-          "irons_spellbooks:spell_power": 0.02
+          "minecraft:generic.armor": 0.4
         },
         "integrity": 1.0,
         "glyph": {

@@ -290,8 +290,7 @@
       "key": "cloth_strap/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 2.0
+          "minecraft:generic.armor": 0.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -313,8 +312,7 @@
       "key": "cloth_strap/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 2.0
+          "minecraft:generic.armor": 0.0
         },
         "integrity": 0.5,
         "glyph": {
