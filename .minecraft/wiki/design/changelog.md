@@ -4,6 +4,82 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — ISS percent attrs: unify on single * MULTIPLY_BASE for linear-additive +X% display
+
+Tester report: tooltips showed "Spell Power (flat)" and "Spell Power (percentage)" simultaneously, confusing because they're the same attribute with different operations. User stated intent: "X% Spell Power" should mean damage increased by exactly X%, with multiple sources stacking additively (linear bucket), and school-specific SP applied as a separate sequential multiplier:
+
+```
+damage = base * (1 + sum_of_generic_sp_pct) * (1 + sum_of_school_sp_pct)
+example: 10 dmg * 2.50 (+150% generic) * 1.35 (+35% fire) = 33.75
+```
+
+### Math context
+
+ISS uses `MagicPercentAttribute` for `spell_power`, school-specific SPs, `mana_regen`, `cooldown_reduction`, all magic resists, etc. Base value is 1.0 (= 100%, no modifier). Spell damage uses `damage * generic_sp * school_sp` (verified by decompiling `AbstractSpell.getSpellPower`).
+
+Forge attribute math:
+```
+value = (base + sum_ADDITION) * (1 + sum_MULTIPLY_BASE) * prod(1 + each_MULTIPLY_TOTAL)
+```
+
+For 4 sources each contributing +5% spell_power (base 1.0):
+- `*X` MULTIPLY_BASE: `1.0 * (1 + 0.20) = 1.20` -> +20% damage (linear sum within bucket)
+- `**X` MULTIPLY_TOTAL: `1.0 * 1.05^4 = 1.2155` -> +21.55% damage (compound)
+- bare ADDITION: `1.0 + 0.20 = 1.20` -> +20% damage (linear, BUT tooltip renders as flat decimal `+0.05`)
+
+### Conversion
+
+Switched ALL 329 ISS percent-attribute usages to **single `*` (MULTIPLY_BASE)**:
+- Linear additive stacking within each bucket -> matches user's intuition
+- Vanilla tooltip renders single `*` as `+X%` (no longer the ugly `+0.05`)
+
+Pool of converted attributes (26 total):
+- `spell_power`, all 9 `<school>_spell_power`
+- `mana_regen`, `cooldown_reduction`, `spell_resist`, `cast_time_reduction`, `summon_damage`, `casting_movespeed`
+- All 9 `<school>_magic_resist`
+
+NOT converted (intentional ADDITION semantics):
+- `irons_spellbooks:max_mana` -- flat `RangedAttribute` base 0.0; `+25` means +25 to mana cap
+
+3 pre-existing `**irons_spellbooks:max_mana` entries in aethersteel/dimlite/terrasteel left as-is (percent-scaled max mana was intentional there).
+
+### Files
+
+- 101 JSON files modified (variant primaryAttributes + material attributes + improvements + datapack)
+- Net 329 operation conversions: `**` -> `*`
+
+---
+
+## 2026-05-13 — damage_vs_undead Forge attribute + percent display formatter
+
+Tester report: deathskin tooltip showed "Mana" (max_mana) increase not "Mana Regeneration", and damage_vs_undead was invisible (event-driven, no tooltip line).
+
+### Root cause (mana display)
+
+When the 2026-05-13 deathskin migration created skin/deathskin variants by cloning skin/leather templates, mage-flavored modules (circlet, robe_chest, silk_lining, sash, etc.) inherited the leather variants' `irons_spellbooks:max_mana` overrides in `extract.primaryAttributes`. The material attribute (+2.5% mana_regen) was correct -- the visible "Mana" was stealthy +max_mana from cloning. Same inheritance bug existed for arcane_ingot (cloned iron) and arcane_cloth (cloned wool).
+
+**Fix:** stripped 44 `irons_spellbooks:*` attribute overrides from variant primaryAttributes of skin/deathskin, metal/arcane_ingot, fabric/arcane_cloth across 23 modules. Only `generic.armor` remains in variant overrides; material-level attributes are now the sole source of mana/spell stats from these new materials.
+
+### Root cause (damage_vs_undead invisible)
+
+The KubeJS LivingHurtEvent hook applied a hardcoded 1.05 damage multiplier but there was no corresponding attribute to display in the tooltip. User wanted "a mixin to show the damage to undead attribute."
+
+**Fix:** registered `iridescent_reforging:damage_vs_undead` as a real Forge attribute (new file `IcraftAttributes.java`). Material-defined attributes flow through Tetra's `AttributesDeserializer` into the item's `defaultModifiers`, then vanilla tooltip rendering generates the standard "When equipped: +5% Damage vs Undead" line automatically. No mixin needed -- this is the cleaner pattern.
+
+`PercentRangedAttribute` helper class (new file) implements Apothic Attributes' `IFormattableAttribute` and overrides `toValueComponent` to always render as percent (`attributeslib.value.percent` lang key: value × 100 + %).
+
+deathskin material attributes now:
+- `*irons_spellbooks:mana_regen: 0.025`  (+2.5% mana regen)
+- `iridescent_reforging:damage_vs_undead: 0.05`  (+5% damage vs undead)
+
+KubeJS hook (`deathskin_undead_bonus.js`) rewritten to READ the attacker's damage_vs_undead attribute value (instead of hardcoded 1.05). The attribute drives both display (tooltip) AND behavior (damage bonus), single source of truth. Stacking is natural via Forge attribute math: 4 deathskin pieces -> attribute sums to 0.20 -> +20% damage vs undead.
+
+### Coverage audit
+
+deathskin is on 52/52 armor modules with a skin tier (100%). Verified via `tools/audit_modules.py` + ad-hoc grep.
+
+---
+
 ## 2026-05-13 — Themed school SP: strip variant overrides + extend ISS fire_focus tag to cinder_essence
 
 Two follow-ups to the earlier ISS-Tetra-materials commit:
