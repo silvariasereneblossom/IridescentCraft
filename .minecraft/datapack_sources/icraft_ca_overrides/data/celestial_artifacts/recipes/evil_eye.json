@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "evil_eye"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:ender_eye"
+    },
+    "B": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "C": {
+      "item": "minecraft:ink_sac"
+    },
+    "D": {
+      "item": "celestial_core:midnight_fragment"
+    }
+  },
+  "pattern": [
+    " B ",
+    "BAB",
+    "DCD"
+  ],
+  "result": {
+    "item": "celestial_artifacts:evil_eye"
+  },
+  "show_notification": true
+}

@@ -13,11 +13,11 @@
 	#Range: 0.0 ~ 1.0
 	shulkerScrapChance = 0.5
 	#Range: 0.0 ~ 1.0
-	lightFragmentChance = 0.05
+	lightFragmentChance = 0.10
 	#Range: 0.0 ~ 1.0
-	midnightFragmentChance = 0.05
+	midnightFragmentChance = 0.10
 	#Range: 0.0 ~ 1.0
-	sakuraFragmentChance = 0.1
+	sakuraFragmentChance = 0.20
 	#Range: 0.0 ~ 1.0
 	virtualGoldNuggetChance = 0.5
 	#Range: 0 ~ 100

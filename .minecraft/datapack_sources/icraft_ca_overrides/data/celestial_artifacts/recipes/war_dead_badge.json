@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "war_dead_badge"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:coal"
+    },
+    "B": {
+      "item": "celestial_core:death_essence"
+    },
+    "C": {
+      "item": "celestial_artifacts:the_end_dust"
+    },
+    "D": {
+      "item": "celestial_artifacts:nebula_cube"
+    },
+    "E": {
+      "item": "celestial_artifacts:nihility_etching"
+    }
+  },
+  "pattern": [
+    "DCD",
+    "BEA",
+    "DCD"
+  ],
+  "result": {
+    "item": "celestial_artifacts:war_dead_badge"
+  },
+  "show_notification": true
+}

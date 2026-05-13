@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "chaotic_pendant"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:enchanted_book"
+    },
+    "B": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "celestial_artifacts:the_end_dust"
+    },
+    "D": {
+      "item": "celestial_artifacts:unowned_pendant"
+    }
+  },
+  "pattern": [
+    " C ",
+    "BDB",
+    " A "
+  ],
+  "result": {
+    "item": "celestial_artifacts:chaotic_pendant"
+  },
+  "show_notification": true
+}

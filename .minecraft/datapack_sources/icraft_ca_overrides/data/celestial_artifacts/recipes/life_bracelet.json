@@ -1,0 +1,35 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "life_bracelet"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:redstone"
+    },
+    "B": {
+      "item": "celestial_core:treasure_fragment"
+    },
+    "C": {
+      "item": "minecraft:slime_ball"
+    }
+  },
+  "pattern": [
+    " A ",
+    "ABA",
+    " C "
+  ],
+  "result": {
+    "item": "celestial_artifacts:life_bracelet"
+  },
+  "show_notification": true
+}

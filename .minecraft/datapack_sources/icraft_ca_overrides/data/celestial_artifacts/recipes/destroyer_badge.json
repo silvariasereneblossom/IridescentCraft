@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "destroyer_badge"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:zombie_head"
+    },
+    "B": {
+      "item": "minecraft:gold_ingot"
+    },
+    "C": {
+      "item": "minecraft:amethyst_shard"
+    },
+    "D": {
+      "item": "celestial_core:death_essence"
+    }
+  },
+  "pattern": [
+    "CBC",
+    "BAB",
+    "DCD"
+  ],
+  "result": {
+    "item": "celestial_artifacts:destroyer_badge"
+  },
+  "show_notification": true
+}

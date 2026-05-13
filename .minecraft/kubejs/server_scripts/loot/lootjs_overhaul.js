@@ -677,10 +677,12 @@ LootJS.modifiers(event => {
     // too_many_bows T1 — utility bows (audit Phase 2.2, 2026-04-27)
     'too_many_bows:dark_bow', 'too_many_bows:hunter_bow',
     'too_many_bows:flame_bow', 'too_many_bows:torchbearer',
-    // celestial_artifacts T1 — flavor (audit Phase 4.3, 2026-04-27 chat-color
-    // triage: yellow/pink → T1 per locked-in mapping)
-    'celestial_artifacts:yellow_duck', 'celestial_artifacts:angel_desire',
-    'celestial_artifacts:sakura_hairpin'
+    // celestial_artifacts T1 — flavor (re-audit 2026-05-13: angel_desire
+    // moved to T3 — pure_nether_star recipe is endgame; bearing_stamen
+    // moved here — basic plant material recipe; etchings T1: desire/origin)
+    'celestial_artifacts:yellow_duck', 'celestial_artifacts:sakura_hairpin',
+    'celestial_artifacts:bearing_stamen',
+    'celestial_artifacts:desire_etching', 'celestial_artifacts:origin_etching'
   ]
   // 2026-04-22: was 15 independent addLoot calls at ~0.67% each. Math
   // said 0.1 artifacts/chest expected, but variance allowed 2-4 in
@@ -711,7 +713,11 @@ LootJS.modifiers(event => {
     'artifacts:crystal_heart', 'artifacts:obsidian_skull',
     'celestial_artifacts:cross_necklace', 'celestial_artifacts:iron_scabbard',
     'celestial_artifacts:copper_reinforce_plate', 'celestial_artifacts:amethyst_ring',
-    'celestial_artifacts:forest_cloak', 'celestial_artifacts:holy_talisman',
+    'celestial_artifacts:forest_cloak',
+    // (re-audit 2026-05-13: holy_talisman -> T3 endgame, holy_sword -> T3,
+    //  bearing_stamen -> T1, chaotic_pendant added from T4, prayer_crown
+    //  added from T4, spirit_crown removed entirely)
+    'celestial_artifacts:chaotic_pendant', 'celestial_artifacts:prayer_crown',
     'celestial_artifacts:life_bracelet', 'celestial_artifacts:fang_necklace',
     'ars_nouveau:apprentice_spell_book', 'irons_spellbooks:uncommon_ink',
     // moreartifacts T2 — defensive curios + mid-tier accessories
@@ -725,13 +731,15 @@ LootJS.modifiers(event => {
     'too_many_bows:vitality_weaver', 'too_many_bows:verdant_vigor',
     'too_many_bows:webstring',
     // celestial_artifacts T2 — green/dark_green/red curios + EPIC defensive
-    // (audit Phase 4.3, 2026-04-27)
+    // (re-audit 2026-05-13: bearing_stamen -> T1)
     'celestial_artifacts:precious_bracelet', 'celestial_artifacts:spirit_necklace',
     'celestial_artifacts:emerald_ring', 'celestial_artifacts:emerald_necklace',
     'celestial_artifacts:emerald_bracelet', 'celestial_artifacts:gaia_totem',
     'celestial_artifacts:ring_of_life', 'celestial_artifacts:spirit_bracelet',
-    'celestial_artifacts:spirit_arrow_bag', 'celestial_artifacts:bearing_stamen',
-    'celestial_artifacts:red_ruby_bracelet', 'celestial_artifacts:scarlet_bracelet'
+    'celestial_artifacts:spirit_arrow_bag',
+    'celestial_artifacts:red_ruby_bracelet', 'celestial_artifacts:scarlet_bracelet',
+    // etchings T2: truth (raiders), life (high-HP mobs)
+    'celestial_artifacts:truth_etching', 'celestial_artifacts:life_etching'
   ]
   const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
@@ -768,19 +776,26 @@ LootJS.modifiers(event => {
     'too_many_bows:cursed_stone', 'too_many_bows:soul_fragment',
     'too_many_bows:radiance', 'too_many_bows:wind_glove',
     'too_many_bows:stormbound_signet',
-    // celestial_artifacts T3 — 9 EPIC corruption + 8 dark_purple + 2 dark_aqua
-    // (audit Phase 4.3, 2026-04-27 — closes the T2->T4 cliff per audit
-    // recommendation; mid-power corruption/abyss-themed curios)
+    // celestial_artifacts T3 — corruption + dark_purple + dark_aqua
+    // (re-audit 2026-05-13: twisted_brain REMOVED -- design-intent entity-
+    //  drop only; soul_box -> T4 endgame; angel_desire/holy_talisman/holy_sword
+    //  /evil_eye added from T1/T2/T4; end_etching added)
     'celestial_artifacts:cursed_protector', 'celestial_artifacts:destroyer_badge',
     'celestial_artifacts:gluttony_badge', 'celestial_artifacts:greedy_heart',
-    'celestial_artifacts:magic_horseshoe', 'celestial_artifacts:twisted_brain',
-    'celestial_artifacts:sacrificial_object', 'celestial_artifacts:soul_box',
+    'celestial_artifacts:magic_horseshoe',
+    'celestial_artifacts:sacrificial_object',
     'celestial_artifacts:ender_protector',
     'celestial_artifacts:war_dead_badge', 'celestial_artifacts:corrupt_badge',
     'celestial_artifacts:hidden_bracelet', 'celestial_artifacts:shadow_pendant',
     'celestial_artifacts:demon_curse', 'celestial_artifacts:cursed_talisman',
     'celestial_artifacts:twisted_scabbard', 'celestial_artifacts:catastrophe_scroll',
-    'celestial_artifacts:abyss_will_badge', 'celestial_artifacts:lock_of_abyss'
+    'celestial_artifacts:abyss_will_badge', 'celestial_artifacts:lock_of_abyss',
+    'celestial_artifacts:angel_desire', 'celestial_artifacts:holy_talisman',
+    'celestial_artifacts:holy_sword', 'celestial_artifacts:evil_eye',
+    // etching T3: end (harmful-effect-count theme)
+    'celestial_artifacts:end_etching'
+    // flight_ring deliberately NOT in T3 -- per 2026-05-13 design call,
+    // it lives only in End+ as an extremely-rare standalone entry.
   ]
   const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
@@ -796,10 +811,14 @@ LootJS.modifiers(event => {
     'relics:enders_hand', 'relics:space_dissector', 'relics:shadow_glaive',
     'relics:elytra_booster', 'relics:magic_mirror', 'relics:holy_locket',
     'relics:arrow_quiver', 'relics:wool_mitten',
+    // (re-audit 2026-05-13: nebula_cube + the_end_dust REMOVED (base
+    //  crafting materials, not curios); flight_ring -> separate End+
+    //  rare entry below; prayer_crown -> T2; spirit_crown REMOVED
+    //  entirely (CA jungle_temple GLM covers it); end_etching -> T3;
+    //  soul_box added from T3; angel_pearl added from non-pool)
     'celestial_artifacts:demon_heart', 'celestial_artifacts:abyss_core',
-    'celestial_artifacts:angel_heart', 'celestial_artifacts:nebula_cube',
-    'celestial_artifacts:flight_ring', 'celestial_artifacts:prayer_crown',
-    'celestial_artifacts:spirit_crown', 'celestial_artifacts:end_etching',
+    'celestial_artifacts:angel_heart', 'celestial_artifacts:angel_pearl',
+    'celestial_artifacts:soul_box',
     // moreartifacts T4 — End/Sculk-themed endgame curios
     // (audit Phase 2.1, 2026-04-27 — Dragon/Sculk → T4 per locked-in mapping)
     'moreartifacts:ender_dragon_claw', 'moreartifacts:dragon_eye',
@@ -813,13 +832,15 @@ LootJS.modifiers(event => {
     'too_many_bows:spectral_whisper', 'too_many_bows:shulker_blast',
     'too_many_bows:arc_heavens', 'too_many_bows:twin_shadows',
     'too_many_bows:power_crystal', 'too_many_bows:dead_eyes_pendant',
-    // celestial_artifacts T4 — endgame curios (4 EPIC + 3 dark_purple peak + 1 gold)
-    // (audit Phase 4.3, 2026-04-27)
-    'celestial_artifacts:ender_jump_scepter', 'celestial_artifacts:evil_eye',
-    'celestial_artifacts:the_end_dust', 'celestial_artifacts:chaotic_pendant',
+    // celestial_artifacts T4 — endgame curios
+    // (re-audit 2026-05-13: evil_eye -> T3; the_end_dust REMOVED (base
+    //  material); chaotic_pendant -> T2)
+    'celestial_artifacts:ender_jump_scepter',
     'celestial_artifacts:cursed_totem', 'celestial_artifacts:twisted_heart',
     'celestial_artifacts:twisted_scroll',
-    'celestial_artifacts:heart_of_revenge'
+    'celestial_artifacts:heart_of_revenge',
+    // etchings T4: nihility (abyss-damage), chaotic (explosion-damage)
+    'celestial_artifacts:nihility_etching', 'celestial_artifacts:chaotic_etching'
   ]
   const artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event
@@ -828,6 +849,16 @@ LootJS.modifiers(event => {
   artifactT4Pool.forEach(function(item) {
     modT4.addLoot(LootEntry.of(item).when(c => c.randomChance(artifactT4PerItem)))
   })
+
+  // --- Flight Ring: ultra-rare End+ standalone (0.5% per End+ chest) ---
+  // Sits outside the T4 pool so the rate is independent of pool size.
+  // Per 2026-05-13 design call: creative-flight unlock should be a
+  // legendary find, not a tier-rate-shared chance.
+  event
+    .addLootTypeModifier(LootType.CHEST)
+    .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
+    .addLoot(LootEntry.of('celestial_artifacts:flight_ring')
+      .when(function(c) { return c.randomChance(0.005) }))
 
   // =========================================================================
   // SECTION 2: TIER 1 STRUCTURE LOOT (Overworld)

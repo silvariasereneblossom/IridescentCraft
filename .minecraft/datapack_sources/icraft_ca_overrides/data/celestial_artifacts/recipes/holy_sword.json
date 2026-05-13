@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "holy_sword"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "B": {
+      "item": "celestial_core:light_fragment"
+    },
+    "C": {
+      "item": "celestial_core:soaring_wings"
+    },
+    "D": {
+      "item": "celestial_artifacts:nebula_cube"
+    },
+    "E": {
+      "item": "celestial_artifacts:desire_etching"
+    }
+  },
+  "pattern": [
+    "DAD",
+    "CEC",
+    "DBD"
+  ],
+  "result": {
+    "item": "celestial_artifacts:holy_sword"
+  },
+  "show_notification": true
+}

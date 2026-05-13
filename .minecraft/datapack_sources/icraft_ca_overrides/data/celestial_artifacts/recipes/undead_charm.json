@@ -1,0 +1,41 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "undead_charm"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:zombie_head"
+    },
+    "B": {
+      "item": "celestial_artifacts:life_etching"
+    },
+    "C": {
+      "item": "celestial_artifacts:desire_etching"
+    },
+    "D": {
+      "item": "celestial_artifacts:nebula_cube"
+    },
+    "E": {
+      "item": "minecraft:rotten_flesh"
+    }
+  },
+  "pattern": [
+    "DCD",
+    "EAE",
+    "DBD"
+  ],
+  "result": {
+    "item": "celestial_artifacts:undead_charm"
+  },
+  "show_notification": true
+}

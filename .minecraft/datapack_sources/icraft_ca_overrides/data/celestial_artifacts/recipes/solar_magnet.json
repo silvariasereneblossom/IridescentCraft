@@ -1,0 +1,38 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "solar_magnet"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:redstone"
+    },
+    "C": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "D": {
+      "item": "minecraft:experience_bottle"
+    }
+  },
+  "pattern": [
+    "B B",
+    "ADA",
+    "ACA"
+  ],
+  "result": {
+    "item": "celestial_artifacts:solar_magnet"
+  },
+  "show_notification": true
+}

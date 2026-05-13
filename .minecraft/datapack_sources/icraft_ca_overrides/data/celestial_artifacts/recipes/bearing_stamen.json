@@ -1,0 +1,44 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "conditions": [
+    {
+      "type": "l2library:boolean_config",
+      "expected": true,
+      "line": [
+        "itemToggle",
+        "bearing_stamen"
+      ],
+      "path": "celestial_configs/celestial_artifacts-common.toml"
+    }
+  ],
+  "key": {
+    "A": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "B": {
+      "item": "minecraft:kelp"
+    },
+    "C": {
+      "item": "minecraft:slime_ball"
+    },
+    "D": {
+      "item": "minecraft:mossy_cobblestone"
+    },
+    "E": {
+      "item": "celestial_artifacts:life_etching"
+    },
+    "F": {
+      "item": "minecraft:spore_blossom"
+    }
+  },
+  "pattern": [
+    "DFD",
+    "BEA",
+    "DCD"
+  ],
+  "result": {
+    "item": "celestial_artifacts:bearing_stamen"
+  },
+  "show_notification": true
+}

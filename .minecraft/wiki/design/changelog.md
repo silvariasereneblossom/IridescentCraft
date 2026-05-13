@@ -4,6 +4,94 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — Celestial Artifacts re-audit: T1-accessible recipes, tier reshuffles, etching chest drops, flight_ring rare
+
+User design principle: "most curios are T1 unless otherwise specified." Audit found 37 CA recipes blocked by non-T1 ingredients (Nether/End/Wither/Warden/Ocean Monument items); separately, our LootJS tier placements had 11 misplaced items vs gameplay rarity, and 7 etchings (recipe components for ~25 craftable curios) were entity-drop-only and unreachable via chest loot.
+
+### 1. CA recipe overrides (12 recipes, Paxi datapack `icraft_ca_overrides`)
+
+For recipes blocked by a SINGLE swappable non-T1 ingredient, swapped to T1 equivalents (datapack overrides original CA recipes via Paxi load order):
+
+| Curio | Swap |
+|---|---|
+| yellow_duck | celestial_core:ocean_essence -> minecraft:kelp |
+| bearing_stamen | fire_essence -> glowstone_dust, ocean_essence -> kelp, ghast_tear -> slime_ball |
+| flame_arrow_bag | blaze_powder -> redstone |
+| star_necklace | blaze_powder -> glowstone_dust |
+| evil_eye | blaze_powder -> glowstone_dust |
+| chaotic_pendant | blaze_powder -> redstone |
+| holy_sword | fire_essence -> glowstone_dust |
+| solar_magnet | fire_essence -> glowstone_dust |
+| war_dead_badge | fire_essence -> coal |
+| destroyer_badge | piglin_head -> zombie_head |
+| life_bracelet | ghast_tear -> slime_ball |
+| undead_charm | shulker_scrap -> rotten_flesh, skeleton_skull -> zombie_head |
+
+Genuine endgame curios (24) keep their non-T1 recipes intact: pure_nether_star, nether_star, totem_of_undying, echo_shard, shulker_scrap, warden_sclerite, heart_of_the_sea, end_crystal, and netherite ingredients are preserved on items like angel_desire/heart/pearl, holy_talisman, sea_god_*, ender_protector, knight_shelter, abyss_will_badge, twisted_scabbard, etc.
+
+### 2. Celestial Core T1 drop chance bumps
+
+`config/celestial_configs/celestial_core-common.toml`:
+- lightFragmentChance 0.05 -> **0.10** (husk drops; common-mob throughput)
+- midnightFragmentChance 0.05 -> **0.10** (stray drops)
+- sakuraFragmentChance 0.10 -> **0.20** (cherry_leaves block break)
+
+Reduces grind for T1 curios that use these fragments (sakura_hairpin, deer_inscribed_amulet, deers_mercy_amulet, holy_necklace, prayer_crown, soul_box, etc.).
+
+### 3. LootJS tier reshuffles in `lootjs_overhaul.js`
+
+11 misplaced items moved:
+- **angel_desire** T1 -> T3 (pure_nether_star recipe is endgame)
+- **holy_talisman** T2 -> T3 (pure_nether_star + light_fragment + life_etching)
+- **holy_sword** T2 -> T3 (fire_essence + light_fragment + soaring_wings)
+- **chaotic_pendant** T4 -> T2 (cheap blaze+ender+unowned_pendant recipe; now T1 via override)
+- **evil_eye** T4 -> T3 (ender_eye + glowstone via override; mid-power immune)
+- **prayer_crown** T4 -> T2 (basic recipe, mid-tier damage recovery)
+- **flight_ring** T4 pool -> standalone ultra-rare End+ entry at 0.5% (creative-flight is legendary)
+- **twisted_brain** T3 -> REMOVED (entity-only drop per CA design)
+- **bearing_stamen** T2 -> T1 (basic plant material recipe via override)
+- **soul_box** T3 -> T4 (warden_sclerite + pure_nether_star ingredients)
+- **spirit_crown** T4 -> REMOVED entirely (CA jungle_temple GLM covers it at 25%)
+
+Base materials removed from T4 pool: `nebula_cube`, `the_end_dust` (these are crafting components, not curios).
+
+### 4. Etching tier placement (theme-mapped)
+
+Etchings (`desire`, `origin`, `truth`, `life`, `end`, `nihility`, `chaotic`) are required ingredients for ~25 craftable curios. Previously entity-drop only (e.g., chaotic_etching requires wither + explosion damage). Now added to chest pools by theme:
+
+| Etching | Tier | Theme |
+|---|---|---|
+| desire_etching | T1 | "% with looting" - Overworld combat |
+| origin_etching | T1 | "% at y=200+" - sky/build-tall |
+| truth_etching | T2 | "raiders" - pillager/raid loot |
+| life_etching | T2 | "high-HP mobs" - mid-tier combat |
+| end_etching | T3 | "with N+ harmful effects" - Nether conditions |
+| nihility_etching | T4 | "abyss damage" - Abyss-themed |
+| chaotic_etching | T4 | "explosion damage" - Wither endgame |
+
+Total etching chance per chest is the sum of items in that tier divided by total tier weight (~5% T1, ~9% T2, ~5% T3, ~17% T4).
+
+### 5. Pool count after re-audit
+
+- T1: 5 CA items (was 3)
+- T2: 22 CA items (was 20)
+- T3: 22 CA items (was 19; gained 4 reshuffles + 1 etching, lost 2)
+- T4: 12 CA items (was 16; lost 4 misplaced + 2 base materials + 1 separate-rare + 1 removed; gained 2 etchings + 1 reshuffle)
+- Standalone: flight_ring at 0.5% End+
+
+### Files
+
+- New Paxi datapack: `icraft_ca_overrides` (12 recipe overrides + pack.mcmeta) + added to `datapack_load_order.json` between icraft_loot_overrides and icraft_tower_overrides
+- Edited: `config/celestial_configs/celestial_core-common.toml` (3 drop chances)
+- Edited: `kubejs/server_scripts/loot/lootjs_overhaul.js` (4 tier pools)
+- All synced to .minecraft, server_distribution, distribution/client
+
+### Not done in this pass
+
+- Dedup CA's own GLM vs our LootJS T1-T4 pools (deferred per user)
+
+---
+
 ## 2026-05-13 — ISS percent attrs: unify on single * MULTIPLY_BASE for linear-additive +X% display
 
 Tester report: tooltips showed "Spell Power (flat)" and "Spell Power (percentage)" simultaneously, confusing because they're the same attribute with different operations. User stated intent: "X% Spell Power" should mean damage increased by exactly X%, with multiple sources stacking additively (linear bucket), and school-specific SP applied as a separate sequential multiplier:
