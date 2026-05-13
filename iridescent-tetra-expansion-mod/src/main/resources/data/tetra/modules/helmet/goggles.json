@@ -136,8 +136,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:fire_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -161,8 +160,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:ice_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -186,8 +184,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -211,8 +208,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:holy_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -236,8 +232,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:lightning_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -261,8 +256,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:nature_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -286,8 +280,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
           "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {
@@ -358,8 +351,7 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.0,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {

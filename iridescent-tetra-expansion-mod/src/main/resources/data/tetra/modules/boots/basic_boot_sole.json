@@ -129,8 +129,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:fire_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {
@@ -152,8 +151,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:ice_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {
@@ -175,8 +173,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {
@@ -198,8 +195,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:holy_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {
@@ -221,8 +217,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:lightning_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {
@@ -244,8 +239,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:nature_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {
@@ -267,8 +261,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {
@@ -1437,8 +1430,7 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.42
         },
         "integrity": 1.0,
         "glyph": {

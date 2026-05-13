@@ -128,8 +128,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:fire_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {
@@ -151,8 +150,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:ice_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {
@@ -174,8 +172,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {
@@ -197,8 +194,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:holy_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {
@@ -220,8 +216,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:lightning_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {
@@ -243,8 +238,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:nature_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {
@@ -266,8 +260,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {
@@ -1093,8 +1086,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.134,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 1.134
         },
         "integrity": 1.0,
         "glyph": {

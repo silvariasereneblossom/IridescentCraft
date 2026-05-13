@@ -4,6 +4,37 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — Themed school SP: strip variant overrides + extend ISS fire_focus tag to cinder_essence
+
+Two follow-ups to the earlier ISS-Tetra-materials commit:
+
+### 1. Strip variant SP overrides (416 entries across 52 modules)
+
+Per the heads-up in the previous changelog entry: the themed/X armor variants on each module had legacy `irons_spellbooks:<school>_spell_power: 0.05` (+5%) entries in `extract.primaryAttributes`. With the new material attribute of +10% on themed/X, the two stacked to roughly +15.5% per piece -- not what we wanted.
+
+Stripped ALL school-SP overrides from variant primaryAttributes for the 9 themed schools (fire/ice/lightning/holy/blood/nature/ender/shadow/eldritch). Armor value (`minecraft:generic.armor`) is preserved -- only school SP overrides removed. Net effect per themed/X armor piece is now exactly the material attribute: `+10% <school>_spell_power` multiplicative.
+
+Verification: `themed/fire` variant on boots/basic_boot_sole now has only `{ "minecraft:generic.armor": 0.42 }` in primaryAttributes (was: `{ "minecraft:generic.armor": 0.42, "irons_spellbooks:fire_spell_power": 0.05 }`).
+
+### 2. Fire rune crafting accepts cinder_essence
+
+New Paxi datapack `icraft_iss_overrides` adds `irons_spellbooks:cinder_essence` to the ISS `irons_spellbooks:fire_focus` item tag. `"replace": false` so blaze_rod stays accepted for backwards compat -- both work.
+
+Structure:
+```
+icraft_iss_overrides/
+  pack.mcmeta              (format 15 for 1.20.1)
+  data/irons_spellbooks/tags/items/fire_focus.json
+```
+
+Added to `config/paxi/datapack_load_order.json` between `icraft_skills.zip` and `icraft_apotheosis_affixes.zip` (early in load order; ISS tag overrides should resolve before other datapacks scan the tag).
+
+### Note on user terminology
+
+User said "fire essence" -- ISS only has `cinder_essence`, no `fire_essence`. Used cinder_essence (the canonical ISS fire-themed material from Ancient Knight drops).
+
+---
+
 ## 2026-05-13 — ISS items as Tetra materials: Arcane Ingot + Arcane Cloth + school focus item upgrades
 
 Added 2 new Tetra materials and upgraded the 5 school-themed materials to use canonical ISS focus items instead of vanilla placeholders.

@@ -125,8 +125,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:fire_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
@@ -148,8 +147,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:ice_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
@@ -171,8 +169,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
@@ -194,8 +191,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:holy_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
@@ -217,8 +213,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:lightning_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
@@ -240,8 +235,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:nature_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
@@ -263,8 +257,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:ender_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
@@ -330,8 +323,7 @@
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.042
         },
         "integrity": 0.5,
         "glyph": {
