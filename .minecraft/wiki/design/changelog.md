@@ -4,6 +4,48 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — Mutant Monsters: strip all item drops, 10x XP
+
+User design call: Mutant Monsters items (hulk_hammer, mutant_skeleton bones/armor, creeper_shard, endersoul fragments/hand, chemical_x) provide marginal value compared to the same content already covered by other mods in the pack. Strip all mutant entity drops; compensate by boosting XP drops 10x so fighting mutants remains rewarding (just rewards levels instead of unique loot).
+
+### Strip via Paxi datapack `icraft_mm_overrides`
+
+15 loot table overrides shipping empty stubs `{"type":"minecraft:entity"}`:
+
+- **Entity loot tables:** creeper_minion, mutant_creeper (strips music_disc + creeper_shard hardcoded path), mutant_enderman, mutant_enderman_continuous (strips ender_eye/pearl), mutant_zombie (strips hulk_hammer), mutant_skeleton, mutant_snow_golem (strips 32-48 snowballs), spider_pig (strips string + inherited pig drops), endersoul_clone
+- **Mutant skeleton cluster:** limb, pelvis, rib, shoulder_pad, skull body-part entities
+- **Block:** mutant_skeleton_skull (when broken)
+
+Datapack added to `datapack_load_order.json` between `icraft_loot_overrides.zip` and `icraft_ca_overrides.zip`.
+
+### 10x XP via KubeJS LivingExperienceDropEvent
+
+`kubejs/server_scripts/mutant_xp_boost.js` hooks Forge's `LivingExperienceDropEvent`. When a `mutantmonsters:*` entity dies, multiplies the dropped XP by 10. Affects all 8 mutant entities + creeper_minion + endersoul_clone.
+
+Effective XP per kill (vanilla values × 10):
+- Mutant zombie: ~50 XP (was 5)
+- Mutant skeleton: ~50 XP (was 5)
+- Mutant creeper: ~100 XP (was 10)
+- Mutant enderman: ~100 XP (was 10)
+- Mutant snow golem: ~50 XP (was 5)
+- Spider-pig: ~30 XP (was 3)
+- Creeper minion: ~10 XP (was 1)
+
+(Exact original XP varies per mutant entity class; these are illustrative.)
+
+### Why strip everything (including vanilla items)
+
+The user said "strip ALL of the Mutant Monsters items" — interpreted broadly to mean strip ALL drops, since the Mutant Monsters drops include vanilla items thematically tied to the mutants (ender_pearl, gunpowder, snowball, music_disc). Mutants now drop only XP, period. If we want vanilla items back later (e.g., spider_pig's pig-loot inheritance), just remove the spider_pig.json override.
+
+### Files
+
+- New Paxi datapack: `icraft_mm_overrides` (15 empty loot tables + pack.mcmeta)
+- `config/paxi/datapack_load_order.json` updated in 3 distros
+- New KubeJS: `kubejs/server_scripts/mutant_xp_boost.js` deployed to 3 distros
+- Datapack zip deployed to 3 distros
+
+---
+
 ## 2026-05-13 — Thermal Cultivation crops: auto-replant on right-click harvest
 
 Tester report: "some Thermal crops don't harvest properly - the crop is removed, it doesn't auto-replant." Confirmed via bytecode of `cofh.lib.common.block.CropBlockCoFH.harvest`: the method calls `getPostHarvestAge()`, and if it returns < 0, follows the destroy-block path (drops loot, destroys block) instead of the replant path. The default return is `-1`. None of Thermal Cultivation's crop subclasses override this, so right-click harvest destroys every Thermal crop.
