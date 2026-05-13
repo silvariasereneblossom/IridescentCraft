@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — light_fragment / midnight_fragment: strip wither-stage gate
+
+Tester confirmed that drop rate is fine (5%), but the actual issue was a player-progression flag gate. celestial_core's loot modifier for `light_fragment` and `midnight_fragment` includes a `celestial_core:player_flag` condition requiring the `NETHER_STAGE` flag, which celestial_core sets ONLY when the player kills a `WitherBoss`. So husks/strays don't drop fragments until the player has killed the wither.
+
+Paxi datapack `icraft_ca_overrides` now overrides both loot modifier JSONs with the `player_flag` condition removed. Husks drop light_fragment at 5%, strays drop midnight_fragment at 5%, from world start. Sakura hairpin and other T1 curios that use these fragments are now genuinely T1-accessible.
+
+Reverted the chance bumps from the previous changelog entry (lightFragmentChance + midnightFragmentChance + sakuraFragmentChance back to mod defaults). User said the rate is fine; the gate was the blocker.
+
+`demon_curse` and `pure_nether_star` keep their NETHER_STAGE gate intact (those are intentional endgame).
+
+---
+
 ## 2026-05-13 — Celestial Artifacts re-audit: T1-accessible recipes, tier reshuffles, etching chest drops, flight_ring rare
 
 User design principle: "most curios are T1 unless otherwise specified." Audit found 37 CA recipes blocked by non-T1 ingredients (Nether/End/Wither/Warden/Ocean Monument items); separately, our LootJS tier placements had 11 misplaced items vs gameplay rarity, and 7 etchings (recipe components for ~25 craftable curios) were entity-drop-only and unreachable via chest loot.

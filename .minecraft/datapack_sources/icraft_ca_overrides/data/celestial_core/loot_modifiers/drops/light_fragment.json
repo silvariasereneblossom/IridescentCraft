@@ -1,0 +1,14 @@
+{
+  "type": "celestial_core:add_item",
+  "chance": "celestial_configs/celestial_core-common.toml/materials.lightFragmentChance",
+  "conditions": [
+    {
+      "condition": "minecraft:entity_properties",
+      "entity": "this",
+      "predicate": {
+        "type": "minecraft:husk"
+      }
+    }
+  ],
+  "item": "celestial_core:light_fragment"
+}
