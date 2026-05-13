@@ -3,8 +3,8 @@
     "items": [
       "minecraft:rotten_flesh"
     ],
-    "count": 2
+    "count": 4
   },
   "moduleKey": "leggings/leg_plate",
-  "moduleVariant": "full_leg_plate/blood"
+  "moduleVariant": "heavy_leg_plate/deathskin"
 }

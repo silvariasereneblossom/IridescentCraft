@@ -295,30 +295,6 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
-      ],
-      "key": "heavy_crown/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.588,
-          "minecraft:generic.knockback_resistance": 0.02,
-          "irons_spellbooks:blood_spell_power": 0.05
-        },
-        "integrity": 1.0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1.0
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/aethersteel"
       ],
       "key": "heavy_crown/",
@@ -1090,6 +1066,29 @@
           "minecraft:generic.armor": 0.694,
           "minecraft:generic.knockback_resistance": 0.02,
           "minecraft:generic.armor_toughness": 0.1
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/deathskin"
+      ],
+      "key": "heavy_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.308,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 1.0,
         "glyph": {

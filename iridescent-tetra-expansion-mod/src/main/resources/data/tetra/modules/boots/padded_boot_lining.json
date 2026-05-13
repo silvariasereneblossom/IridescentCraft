@@ -282,29 +282,6 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
-      ],
-      "key": "padded_boot_lining/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.084,
-          "irons_spellbooks:blood_spell_power": 0.05
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 0.5
-      }
-    },
-    {
-      "materials": [
         "tetra:gem/aether_neptune"
       ],
       "key": "padded_boot_lining/",
@@ -768,6 +745,28 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.086,
           "irons_spellbooks:max_mana": 5
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/deathskin"
+      ],
+      "key": "padded_boot_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.143
         },
         "integrity": 0.5,
         "glyph": {

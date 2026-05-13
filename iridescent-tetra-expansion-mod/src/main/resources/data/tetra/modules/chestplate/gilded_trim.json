@@ -293,14 +293,13 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "gilded_trim/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "minecraft:generic.luck": 0.2,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.022,
+          "minecraft:generic.luck": 0.2
         },
         "integrity": 0.5,
         "glyph": {

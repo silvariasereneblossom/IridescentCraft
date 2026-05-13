@@ -292,14 +292,13 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "chainmail_lining/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "minecraft:generic.knockback_resistance": 0.04,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.11,
+          "minecraft:generic.knockback_resistance": 0.04
         },
         "integrity": 0.5,
         "glyph": {

@@ -127,6 +127,7 @@ MATERIAL_ITEM_MAP = {
     'string':        (['minecraft:string'],             4, HAMMER_IRON),
     'paper':         (['minecraft:paper'],              4, HAMMER_IRON),
     'rotten_flesh':  (['minecraft:rotten_flesh'],       4, HAMMER_IRON),
+    'deathskin':     (['minecraft:rotten_flesh'],       4, HAMMER_IRON),
     'rotten_leather':(['forbidden_arcanus:rotten_leather'], 2, HAMMER_IRON),
     # themed (added below from data/tetra/materials/themed/*.json)
 }

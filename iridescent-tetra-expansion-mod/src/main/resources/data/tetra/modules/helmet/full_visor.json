@@ -293,14 +293,13 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "full_visor/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.168,
-          "minecraft:generic.attack_speed": -0.02,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.088,
+          "minecraft:generic.attack_speed": -0.02
         },
         "integrity": 0.5,
         "glyph": {

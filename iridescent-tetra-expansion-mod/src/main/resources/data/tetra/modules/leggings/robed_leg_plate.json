@@ -233,15 +233,14 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:fibre/string"
       ],
       "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.42,
-          "irons_spellbooks:max_mana": 24.0,
-          "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.12,
+          "irons_spellbooks:max_mana": 38.0,
+          "irons_spellbooks:spell_power": 0.04
         },
         "integrity": 1.0,
         "glyph": {
@@ -258,14 +257,14 @@
     },
     {
       "materials": [
-        "tetra:fibre/string"
+        "tetra:skin/deathskin"
       ],
       "key": "robed_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.12,
-          "irons_spellbooks:max_mana": 38.0,
-          "irons_spellbooks:spell_power": 0.04
+          "minecraft:generic.armor": 0.22,
+          "irons_spellbooks:max_mana": 24.0,
+          "irons_spellbooks:spell_power": 0.02
         },
         "integrity": 1.0,
         "glyph": {

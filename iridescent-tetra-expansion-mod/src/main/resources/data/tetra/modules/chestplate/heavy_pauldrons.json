@@ -281,13 +281,12 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "heavy_pauldrons/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.294,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.154
         },
         "integrity": 0.5,
         "glyph": {

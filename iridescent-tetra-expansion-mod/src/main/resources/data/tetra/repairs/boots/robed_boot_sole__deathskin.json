@@ -3,8 +3,8 @@
     "items": [
       "minecraft:rotten_flesh"
     ],
-    "count": 2
+    "count": 4
   },
   "moduleKey": "boots/boot_sole",
-  "moduleVariant": "light_boot_sole/blood"
+  "moduleVariant": "robed_boot_sole/deathskin"
 }

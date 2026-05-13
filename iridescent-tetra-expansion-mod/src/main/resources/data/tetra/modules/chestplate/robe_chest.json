@@ -233,15 +233,14 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:fibre/string"
       ],
       "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.63,
-          "irons_spellbooks:max_mana": 40.0,
-          "irons_spellbooks:spell_power": 0.04,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.15,
+          "irons_spellbooks:max_mana": 55.0,
+          "irons_spellbooks:spell_power": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -258,14 +257,14 @@
     },
     {
       "materials": [
-        "tetra:fibre/string"
+        "tetra:skin/deathskin"
       ],
       "key": "robe_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.15,
-          "irons_spellbooks:max_mana": 55.0,
-          "irons_spellbooks:spell_power": 0.05
+          "minecraft:generic.armor": 0.33,
+          "irons_spellbooks:max_mana": 40.0,
+          "irons_spellbooks:spell_power": 0.04
         },
         "integrity": 1.0,
         "glyph": {

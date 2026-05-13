@@ -292,14 +292,13 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "chain_strap/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.084,
-          "minecraft:generic.knockback_resistance": 0.02,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.044,
+          "minecraft:generic.knockback_resistance": 0.02
         },
         "integrity": 0.5,
         "glyph": {

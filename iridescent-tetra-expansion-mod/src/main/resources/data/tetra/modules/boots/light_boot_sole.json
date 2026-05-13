@@ -296,30 +296,6 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
-      ],
-      "key": "light_boot_sole/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.252,
-          "forge:step_height_addition": 0.2,
-          "irons_spellbooks:blood_spell_power": 0.05
-        },
-        "integrity": 1.0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1.0
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/aethersteel"
       ],
       "key": "light_boot_sole/",
@@ -1096,6 +1072,29 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.298,
           "minecraft:generic.armor_toughness": 0.1,
+          "forge:step_height_addition": 0.2
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/deathskin"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.132,
           "forge:step_height_addition": 0.2
         },
         "integrity": 1.0,

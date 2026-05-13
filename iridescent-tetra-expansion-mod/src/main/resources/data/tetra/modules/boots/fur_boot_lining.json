@@ -281,13 +281,12 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "fur_boot_lining/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.126,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.066
         },
         "integrity": 0.5,
         "glyph": {

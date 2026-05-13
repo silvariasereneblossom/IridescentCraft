@@ -3,8 +3,8 @@
     "items": [
       "minecraft:rotten_flesh"
     ],
-    "count": 2
+    "count": 4
   },
   "moduleKey": "helmet/crown",
-  "moduleVariant": "basic_crown/blood"
+  "moduleVariant": "circlet/deathskin"
 }

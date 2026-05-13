@@ -224,14 +224,14 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:fibre/string"
       ],
       "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.08,
+          "irons_spellbooks:max_mana": 22.0,
+          "irons_spellbooks:spell_power": 0.03
         },
         "integrity": 1.0,
         "glyph": {
@@ -248,14 +248,13 @@
     },
     {
       "materials": [
-        "tetra:fibre/string"
+        "tetra:skin/deathskin"
       ],
       "key": "robed_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.08,
-          "irons_spellbooks:max_mana": 22.0,
-          "irons_spellbooks:spell_power": 0.03
+          "minecraft:generic.armor": 0.11,
+          "irons_spellbooks:max_mana": 12.0
         },
         "integrity": 1.0,
         "glyph": {

@@ -4,6 +4,58 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — Deathskin: unify rotten_flesh material, kill themed/blood, add undead damage bonus
+
+User report: rotten_flesh on armor was showing as "Blood / blood_spell_power" but had been originally spec'd to "holy damage." Audit traced this to TWO materials accepting `minecraft:rotten_flesh`:
+- `themed/blood` (mod jar): `spell_power +5%`, used by every armor module's themed/blood variant which adds `blood_spell_power +5%` on top -> "Blood" identity on armor
+- `skin/rotten_flesh` (datapack): `holy_spell_power + mana_regen + spell_power`, used by 4 book modules -> "Rotten Flesh / Holy" identity on books
+
+That's why the same item displayed two ways depending on container slot. User decision: unify into a single `Deathskin` identity with `+5% damage vs undead, +2.5% mana regen`.
+
+### Changes
+
+**Material:**
+- Renamed datapack file `skin/rotten_flesh.json` -> `skin/deathskin.json`. Key changed `rotten_flesh` -> `deathskin`. Attributes reduced to `**irons_spellbooks:mana_regen: 0.025` (multiplicative-total, +2.5%). The undead damage bonus is event-driven (see below) since no Forge / Apothic / ISS attribute exists for "damage vs undead."
+- Deleted `iridescent-tetra-expansion-mod/.../materials/themed/blood.json` entirely. Rotten flesh now resolves uniquely to `skin/deathskin`.
+
+**Armor modules (52 total: helmet/chestplate/leggings/boots * 13 majors+minors):**
+- Removed all 52 `themed/blood` variants
+- Added 52 `skin/deathskin` variants. Each new variant mirrors the module's `skin/leather` variant's `primaryAttributes` (armor value) -- deathskin armor is leather-tier with mana_regen bonus + undead damage from the KubeJS hook.
+
+**Book modules (4): ars_book + iss_book front/back_cover** -- `tetra:skin/rotten_flesh` references rewritten to `tetra:skin/deathskin`; variant keys `front_cover/rotten_flesh` etc. renamed to `*/deathskin`.
+
+**Repair tables:**
+- Deleted 16 armor `*__blood.json` repair files (the themed/blood material is gone, so no repairs needed)
+- Renamed 2 book `*__rotten_flesh.json` -> `*__deathskin.json`
+- Added `deathskin` to `gen_repair_definitions.py` MATERIAL_ITEM_MAP so future builds emit 52 new `*__deathskin.json` repair tables
+
+**Lang:**
+- Removed `tetra.material.blood`, `tetra.material.blood.prefix`, plus 52 `tetra.variant.<module>/blood` entries
+- Renamed `tetra.material.rotten_flesh` -> `tetra.material.deathskin: "Deathskin"`
+- Renamed 4 book `tetra.variant.<X>/rotten_flesh` entries to `<X>/deathskin`
+- Added 52 new `tetra.variant.<module>/deathskin: "Deathskin <Pretty Module Name>"` entries
+
+**KubeJS undead damage hook (`kubejs/server_scripts/deathskin_undead_bonus.js`):**
+- Subscribes to `LivingHurtEvent` (NORMAL priority)
+- Checks if target's `MobType == UNDEAD` (covers skeleton/zombie/wither_skeleton/phantom/stray/husk/drowned/zombie_villager/etc.)
+- Scans attacker's 4 armor slots; for each Iridescent Reforging modular armor, looks for `'/deathskin'` substring in the stack's NBT tag string (robust against Tetra version-specific NBT layout)
+- If any slot has a deathskin module, multiplies the damage amount by 1.05 (single instance flag, doesn't stack with multiple deathskin pieces)
+- Affects ALL outgoing damage (melee, ranged, spells) -- the user wanted broad "vs undead" bonus, not melee-only
+
+### Files
+
+- New: `.minecraft/kubejs/server_scripts/deathskin_undead_bonus.js` (3 distros)
+- Modified: 52 armor module JSONs, 4 book module JSONs, 2 lang files, 1 datapack material file, `gen_repair_definitions.py`
+- Deleted: 1 mod-jar material file (`themed/blood.json`), 16 repair files (`*__blood.json`)
+- Renamed: 1 datapack material file, 2 repair files
+- Repacked datapack zip in 3 distros
+
+### Why not just rename without the rest
+
+The user observed the duplicate-identity problem ("blood/blood magic" vs "holy") because TWO materials accepted rotten_flesh as input. Renaming one wouldn't have fixed which one Tetra picked at variant resolution -- the duplicate had to be deleted. Removing `themed/blood` entirely was the cleanest cut; the school can be re-introduced later with a different source item if desired.
+
+---
+
 ## 2026-05-13 — Skeleton Punch-arrow knockback: LootJS strip on Majrusz skeleton bows
 
 Tester report: solo skeletons / skeleton jockeys randomly cause huge knockback. Distinct from the 2026-05-04 Apotheosis Levitation affix issue (resolved). Investigation traced the root cause to Majrusz Progressive Difficulty's `MobGroups.tryToSpawnGroup` subscribing to `OnEntitySpawned` and applying `majruszsdifficulty:mob_groups/skeleton_leader` equipment to 10% of normal-stage skeleton spawns. The leader's bow loot table uses `minecraft:enchant_randomly` with no filter, so **Punch I/II** can roll. Same pattern in `mob_groups/skeleton_sidekick` and every `undead_army/wave_N_skeleton` table. When sidekick spawn fails (terrain block), the leader walks alone — "solo huge-knockback skeleton."

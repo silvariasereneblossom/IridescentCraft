@@ -650,7 +650,7 @@
     },
     {
       "materials": [
-        "tetra:skin/rotten_flesh"
+        "tetra:skin/deathskin"
       ],
       "key": "front_cover/",
       "extract": {

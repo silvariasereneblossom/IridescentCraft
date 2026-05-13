@@ -292,14 +292,13 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "cloth_cuisses/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:max_mana": 8.0,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.022,
+          "irons_spellbooks:max_mana": 8.0
         },
         "integrity": 0.5,
         "glyph": {

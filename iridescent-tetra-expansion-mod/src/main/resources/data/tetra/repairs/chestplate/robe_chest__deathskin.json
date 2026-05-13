@@ -3,8 +3,8 @@
     "items": [
       "minecraft:rotten_flesh"
     ],
-    "count": 2
+    "count": 4
   },
   "moduleKey": "chestplate/chest_plate",
-  "moduleVariant": "scaled_chest/blood"
+  "moduleVariant": "robe_chest/deathskin"
 }

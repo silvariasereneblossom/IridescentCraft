@@ -281,13 +281,12 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "agile_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.042,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.022
         },
         "integrity": 0.5,
         "glyph": {

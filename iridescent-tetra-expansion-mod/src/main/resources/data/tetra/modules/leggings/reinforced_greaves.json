@@ -281,13 +281,12 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:skin/deathskin"
       ],
       "key": "reinforced_greaves/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.11
         },
         "integrity": 0.5,
         "glyph": {

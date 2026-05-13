@@ -233,15 +233,14 @@
     },
     {
       "materials": [
-        "tetra:themed/blood"
+        "tetra:fibre/string"
       ],
       "key": "circlet/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 20.0,
-          "irons_spellbooks:spell_power": 0.02,
-          "irons_spellbooks:blood_spell_power": 0.05
+          "minecraft:generic.armor": 0.08,
+          "irons_spellbooks:max_mana": 28.0,
+          "irons_spellbooks:spell_power": 0.03
         },
         "integrity": 1.0,
         "glyph": {
@@ -258,14 +257,14 @@
     },
     {
       "materials": [
-        "tetra:fibre/string"
+        "tetra:skin/deathskin"
       ],
       "key": "circlet/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.08,
-          "irons_spellbooks:max_mana": 28.0,
-          "irons_spellbooks:spell_power": 0.03
+          "minecraft:generic.armor": 0.11,
+          "irons_spellbooks:max_mana": 20.0,
+          "irons_spellbooks:spell_power": 0.02
         },
         "integrity": 1.0,
         "glyph": {
