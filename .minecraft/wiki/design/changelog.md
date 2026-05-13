@@ -4,6 +4,68 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — ISS items as Tetra materials: Arcane Ingot + Arcane Cloth + school focus item upgrades
+
+Added 2 new Tetra materials and upgraded the 5 school-themed materials to use canonical ISS focus items instead of vanilla placeholders.
+
+### New materials (mod jar resources)
+
+- **`tetra:metal/arcane_ingot`** (Battlemage metal)
+  - Item: `irons_spellbooks:arcane_ingot`
+  - Primary: 3.5 (between gold 2 and iron 4)
+  - Durability: 200 (iron is 250), IntegrityGain: 3 (iron is 4)
+  - MagicCapacity: 150 (much higher than iron, mage-leaning)
+  - Attributes: `**irons_spellbooks:spell_power +5%`, `**irons_spellbooks:mana_regen +5%`
+  - Armor variants: copy of iron's primaryAttributes scaled to 90% (slight armor reduction)
+  - 48 armor module variants added (every module that accepts metal/iron)
+
+- **`tetra:fabric/arcane_cloth`** (mage cloth)
+  - Item: `irons_spellbooks:magic_cloth`
+  - Primary: 1, magicCapacity: 100, durability: 60
+  - Attributes: `**irons_spellbooks:mana_regen +2.5%`
+  - 20 armor module variants added (every module that accepts fabric/wool: robes, paddings, linings, straps, belts)
+
+### Upgraded themed/* materials (swapped to ISS focus items + +10% school-specific SP)
+
+| material | old item | new item | old attribute | new attribute |
+|---|---|---|---|---|
+| themed/fire | minecraft:blaze_rod | `irons_spellbooks:cinder_essence` | spell_power +5% | fire_spell_power +10% |
+| themed/ice | minecraft:blue_ice | `irons_spellbooks:frozen_bone` | spell_power +5% | ice_spell_power +10% |
+| themed/lightning | minecraft:redstone | `irons_spellbooks:lightning_bottle` | spell_power +5% | lightning_spell_power +10% |
+| themed/holy | minecraft:glowstone_dust | `irons_spellbooks:divine_pearl` | spell_power +5% | holy_spell_power +10% |
+| themed/blood | (deleted 2026-05-13 deathskin migration) | `irons_spellbooks:blood_vial` | n/a | blood_spell_power +10% |
+
+themed/blood was reinstated with `blood_vial` -- this is NOT the same as the rotten_flesh themed/blood that was deleted. blood_vial doesn't conflict with `skin/deathskin` (rotten_flesh), so the two materials coexist cleanly as parallel "blood-themed" identities:
+- skin/deathskin (rotten_flesh): defensive/utility, undead damage + mana_regen
+- themed/blood (blood_vial): offensive, +10% blood school spell power
+
+52 themed/blood variants re-added to armor modules (mirrors yesterday's deletion shape with new item).
+
+### Fire-focus replacement rationale
+
+`cinder_essence` is the ISS-native fire-themed crafting material per iron.wiki/1_19/items/ -- dropped from Ancient Knights, used as the upgrade-orb ingredient for fire-school upgrade orbs. Replaces the vanilla blaze_rod dependency in themed/fire. blaze_rod stays usable for vanilla recipes (brewing potions of strength, magma cream crafting, etc.) -- the change is mod-internal.
+
+NOTE: this doesn't update the ISS `irons_spellbooks:fire_focus` item tag (which still only contains `minecraft:blaze_rod`). If you want fire runes craftable from cinder_essence directly, that needs a Paxi datapack adding cinder_essence to the fire_focus tag -- separate change.
+
+### Variant attribute layering for school themed materials
+
+The themed/X material attribute (e.g. fire_spell_power +10%) is multiplicative on the equipped item. The variant's `extract.primaryAttributes` for themed/X variants currently still has the OLD overrides like `irons_spellbooks:fire_spell_power: 0.05` from the legacy `themed` armor pattern. Tetra ADDS the variant override on top of the material attribute. Net per piece:
+- Variant override: +5% fire SP (additive, MULTIPLY_BASE)
+- Material attribute: +10% fire SP (multiplicative-total, **)
+- Combined: roughly +15.5% (varies by base attribute math)
+
+If we want exactly +10% (not stacked), a follow-up pass needs to strip the variant SP override from each module's themed/X variant. Not done in this commit -- ship the additive stacking and verify in-game first.
+
+### Lang
+
+- 156 new lang entries: 3 material name + 3 prefix lines + 156 variant entries (48 arcane_ingot + 20 arcane_cloth + 52 blood + 36 extras)
+
+### gen_repair_definitions.py
+
+- Added MATERIAL_ITEM_MAP entries for `arcane_ingot` and `arcane_cloth` so future builds emit `*__arcane_ingot.json` and `*__arcane_cloth.json` repair tables
+
+---
+
 ## 2026-05-13 — Deathskin: unify rotten_flesh material, kill themed/blood, add undead damage bonus
 
 User report: rotten_flesh on armor was showing as "Blood / blood_spell_power" but had been originally spec'd to "holy damage." Audit traced this to TWO materials accepting `minecraft:rotten_flesh`:

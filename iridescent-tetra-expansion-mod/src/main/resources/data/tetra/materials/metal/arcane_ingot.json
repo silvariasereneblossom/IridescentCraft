@@ -1,0 +1,27 @@
+{
+  "key": "arcane_ingot",
+  "category": "metal",
+  "primary": 3.5,
+  "secondary": 1,
+  "tertiary": 1,
+  "durability": 200,
+  "integrityCost": 0,
+  "integrityGain": 3,
+  "magicCapacity": 150,
+  "toolLevel": 2,
+  "toolEfficiency": 6.0,
+  "tints": {
+    "glyph": "9b6cd6",
+    "texture": "9b6cd6"
+  },
+  "textures": [],
+  "material": {
+    "items": [
+      "irons_spellbooks:arcane_ingot"
+    ]
+  },
+  "attributes": {
+    "**irons_spellbooks:spell_power": 0.05,
+    "**irons_spellbooks:mana_regen": 0.05
+  }
+}

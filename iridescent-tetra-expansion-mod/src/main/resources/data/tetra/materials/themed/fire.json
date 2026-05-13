@@ -1,24 +1,24 @@
 {
-    "key": "fire",
-    "category": "themed",
-    "primary": 1.0,
-    "secondary": 1.0,
-    "tertiary": 1.0,
-    "durability": 0,
-    "integrityCost": 2,
-    "integrityGain": 1,
-    "magicCapacity": 100,
-    "tints": {
-        "glyph": "ffffff",
-        "texture": "ffffff"
-    },
-    "textures": [],
-    "material": {
-        "items": [
-            "minecraft:blaze_rod"
-        ]
-    },
-    "attributes": {
-        "**irons_spellbooks:spell_power": 0.05
-    }
+  "key": "fire",
+  "category": "themed",
+  "primary": 1.0,
+  "secondary": 1.0,
+  "tertiary": 1.0,
+  "durability": 0,
+  "integrityCost": 2,
+  "integrityGain": 1,
+  "magicCapacity": 100,
+  "tints": {
+    "glyph": "ffffff",
+    "texture": "ffffff"
+  },
+  "textures": [],
+  "material": {
+    "items": [
+      "irons_spellbooks:cinder_essence"
+    ]
+  },
+  "attributes": {
+    "**irons_spellbooks:fire_spell_power": 0.1
+  }
 }

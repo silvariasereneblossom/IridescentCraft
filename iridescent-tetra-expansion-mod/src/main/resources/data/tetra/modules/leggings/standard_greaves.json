@@ -780,6 +780,74 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/arcane_ingot"
+      ],
+      "key": "standard_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.5
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/arcane_cloth"
+      ],
+      "key": "standard_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.133,
+          "irons_spellbooks:max_mana": 5
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/blood"
+      ],
+      "key": "standard_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.126,
+          "irons_spellbooks:blood_spell_power": 0.05
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
     }
   ]
 }

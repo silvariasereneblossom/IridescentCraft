@@ -1,0 +1,26 @@
+{
+  "key": "arcane_cloth",
+  "category": "fabric",
+  "primary": 1,
+  "secondary": 1,
+  "tertiary": 1,
+  "durability": 60,
+  "integrityCost": 2,
+  "integrityGain": 1,
+  "magicCapacity": 100,
+  "toolLevel": 0,
+  "toolEfficiency": 0.0,
+  "tints": {
+    "glyph": "c8a8ff",
+    "texture": "c8a8ff"
+  },
+  "textures": [],
+  "material": {
+    "items": [
+      "irons_spellbooks:magic_cloth"
+    ]
+  },
+  "attributes": {
+    "**irons_spellbooks:mana_regen": 0.025
+  }
+}
