@@ -4,6 +4,35 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-13 — Skeleton Punch-arrow knockback: LootJS strip on Majrusz skeleton bows
+
+Tester report: solo skeletons / skeleton jockeys randomly cause huge knockback. Distinct from the 2026-05-04 Apotheosis Levitation affix issue (resolved). Investigation traced the root cause to Majrusz Progressive Difficulty's `MobGroups.tryToSpawnGroup` subscribing to `OnEntitySpawned` and applying `majruszsdifficulty:mob_groups/skeleton_leader` equipment to 10% of normal-stage skeleton spawns. The leader's bow loot table uses `minecraft:enchant_randomly` with no filter, so **Punch I/II** can roll. Same pattern in `mob_groups/skeleton_sidekick` and every `undead_army/wave_N_skeleton` table. When sidekick spawn fails (terrain block), the leader walks alone — "solo huge-knockback skeleton."
+
+### Fix
+
+`kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js` — LootJS modifier that filters bows from 7 Majrusz skeleton tables and removes `minecraft:punch` from the rolled enchantments. Other outcomes (Power / Flame / Infinity / Unbreaking) preserved.
+
+Tables covered (regex):
+- `majruszsdifficulty:mob_groups/skeleton_(leader|sidekick)`
+- `majruszsdifficulty:undead_army/wave_[0-9]+_(wither_)?skeleton`
+
+Mechanism: `event.addLootTableModifier(re).modifyLoot(bowFilter, stripPunch)`. The `stripPunch` callback reads the stack's `Enchantments` NBT list, removes entries with `id == "minecraft:punch"`, returns the modified stack to replace the original in the loot pool.
+
+### Why not the global knockback cap
+
+`cap_player_knockback.js` (cap=0.5) is in place and firing per-event (server logs from 5/10 confirm it capping ratio magnitudes of 4-5 down to 1.0). But the cap is per-event — multiple skeletons firing simultaneously in a group each trigger separate `LivingKnockBackEvent`s, so 3 arrows in 1 tick = 3 × 0.5 = 1.5 of impulse total. The cap stops one-shot launches but doesn't compose across multi-arrow barrages from grouped spawns. Removing Punch at the source kills the compound effect.
+
+### Tangential: chain armor on the same skeletons
+
+User also observed "full chain armor" on the offending skeletons. Tracing that: Majrusz's `crd_penalty` is currently `0.0` for all stages, so Progressive Difficulty isn't boosting regional difficulty. Chain comes from **vanilla `Mob.populateDefaultEquipmentSlots`** rolling armor at high `RegionalDifficulty.getSpecialMultiplier()` (~1.5+, which late-game chunks naturally reach), plus Apotheosis Adventure `Random Affix Chance = 0.11` replacing one slot with a random-tier affix piece. Majrusz `skeleton_leader` loot table grants leather (67% per slot), so the leader's mixed leather+vanilla-chain outfit can leave ~33% per slot as vanilla-rolled chain. Decision (2026-05-13): leave chain armor alone for now; ship the Punch-strip first and re-evaluate skeleton tanky-ness post-fix.
+
+### Files
+
+- New: `.minecraft/kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js` (94 lines, deployed to all 3 distros)
+- Updated: `.minecraft/wiki/known-issues/tracker.md` (new entry under the resolved Levitation entry)
+
+---
+
 ## 2026-05-12 — Food-mod overlap audit: remove Simple Farming, dedup ~86 items across Thermal/Blue Skies/VC/Pam FoodExt/FD addons
 
 Audited 18 food/cooking mods (Pam HC2 stack, FD + 6 addons, Brewin', VC, Cooking 4 Blockheads, Refined Cooking, Simple Farming, SoL Carrot, Create Estrogen, Tetra's Delight). Detected 171 cross-mod food/item dupes within the food-mod set. Widened the scan to non-food mods that add crops: Thermal Cultivation (14 Pam dupes), Blue Skies (legacy_pack filtered to 1), Aquaculture (3), Naturalist (2), Supplementaries (2), and one-off dupes across 6 more mods.
