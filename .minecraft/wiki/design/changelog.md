@@ -16,9 +16,13 @@ Stripped ALL school-SP overrides from variant primaryAttributes for the 9 themed
 
 Verification: `themed/fire` variant on boots/basic_boot_sole now has only `{ "minecraft:generic.armor": 0.42 }` in primaryAttributes (was: `{ "minecraft:generic.armor": 0.42, "irons_spellbooks:fire_spell_power": 0.05 }`).
 
-### 2. Fire rune crafting accepts cinder_essence
+### 2. Fire rune crafting accepts cinder_essence ONLY (blaze_rod disabled)
 
-New Paxi datapack `icraft_iss_overrides` adds `irons_spellbooks:cinder_essence` to the ISS `irons_spellbooks:fire_focus` item tag. `"replace": false` so blaze_rod stays accepted for backwards compat -- both work.
+New Paxi datapack `icraft_iss_overrides` REPLACES the ISS `irons_spellbooks:fire_focus` item tag with `["irons_spellbooks:cinder_essence"]`. `"replace": true` removes vanilla blaze_rod from the focus pool entirely -- fire runes can ONLY be crafted with cinder_essence.
+
+Originally this was `replace: false` (additive); user follow-up requested blaze_rod removal so the mod-internal cinder_essence is the canonical fire focus.
+
+blaze_rod still works for vanilla recipes (brewing potions, magma cream crafting, etc.) -- only the ISS fire_focus tag is restricted.
 
 Structure:
 ```

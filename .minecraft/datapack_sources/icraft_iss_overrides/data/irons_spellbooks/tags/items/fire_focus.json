@@ -1,5 +1,5 @@
 {
-  "replace": false,
+  "replace": true,
   "values": [
     "irons_spellbooks:cinder_essence"
   ]
