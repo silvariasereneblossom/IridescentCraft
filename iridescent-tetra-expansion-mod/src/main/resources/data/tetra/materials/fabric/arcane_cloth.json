@@ -21,6 +21,6 @@
     ]
   },
   "attributes": {
-    "**irons_spellbooks:mana_regen": 0.025
+    "*irons_spellbooks:mana_regen": 0.025
   }
 }

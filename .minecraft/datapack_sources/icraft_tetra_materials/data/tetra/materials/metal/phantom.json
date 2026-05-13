@@ -1,34 +1,34 @@
 {
-    "key": "phantom",
-    "category": "metal",
-    "primary": 6.0,
-    "secondary": 5.5,
-    "tertiary": 3.5,
-    "durability": 600,
-    "integrityCost": 3,
-    "integrityGain": 5,
-    "magicCapacity": 145,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 8,
-    "tints": {
-        "glyph": "6a2d8e",
-        "texture": "6a2d8e"
-    },
-    "textures": [
-        "shiny",
-        "metal",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "theabyss:phantom_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**irons_spellbooks:ender_spell_power": 0.06,
-        "**irons_spellbooks:spell_power": 0.25
-    }
+  "key": "phantom",
+  "category": "metal",
+  "primary": 6.0,
+  "secondary": 5.5,
+  "tertiary": 3.5,
+  "durability": 600,
+  "integrityCost": 3,
+  "integrityGain": 5,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 8,
+  "tints": {
+    "glyph": "6a2d8e",
+    "texture": "6a2d8e"
+  },
+  "textures": [
+    "shiny",
+    "metal",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "theabyss:phantom_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "*irons_spellbooks:ender_spell_power": 0.06,
+    "*irons_spellbooks:spell_power": 0.25
+  }
 }

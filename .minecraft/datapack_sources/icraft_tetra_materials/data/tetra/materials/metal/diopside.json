@@ -1,34 +1,34 @@
 {
-    "key": "diopside",
-    "category": "gem",
-    "primary": 5.0,
-    "secondary": 4.5,
-    "tertiary": 3.0,
-    "durability": 350,
-    "integrityCost": 2,
-    "integrityGain": 5,
-    "magicCapacity": 90,
-    "toolLevel": "minecraft:iron",
-    "toolEfficiency": 8.0,
-    "tints": {
-        "glyph": "2d8f4e",
-        "texture": "2d8f4e"
-    },
-    "textures": [
-        "shiny",
-        "metal",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "blue_skies:diopside"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:gold"
-    },
-    "attributes": {
-        "**irons_spellbooks:nature_spell_power": 0.06,
-        "**irons_spellbooks:spell_power": 0.15
-    }
+  "key": "diopside",
+  "category": "gem",
+  "primary": 5.0,
+  "secondary": 4.5,
+  "tertiary": 3.0,
+  "durability": 350,
+  "integrityCost": 2,
+  "integrityGain": 5,
+  "magicCapacity": 90,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 8.0,
+  "tints": {
+    "glyph": "2d8f4e",
+    "texture": "2d8f4e"
+  },
+  "textures": [
+    "shiny",
+    "metal",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "blue_skies:diopside"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:gold"
+  },
+  "attributes": {
+    "*irons_spellbooks:nature_spell_power": 0.06,
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }

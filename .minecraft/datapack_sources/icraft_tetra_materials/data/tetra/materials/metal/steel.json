@@ -1,33 +1,33 @@
 {
-    "key": "steel",
-    "category": "metal",
-    "primary": 5.5,
-    "secondary": 3.5,
-    "tertiary": 3.2,
-    "durability": 400,
-    "integrityCost": 2,
-    "integrityGain": 5,
-    "magicCapacity": 90,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7,
-    "tints": {
-        "glyph": "8a8a8a",
-        "texture": "8a8a8a"
-    },
-    "textures": [
-        "heavy",
-        "metal"
-    ],
-    "material": {
-        "items": [
-            "thermal:steel_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**minecraft:generic.armor": 0.04,
-        "**irons_spellbooks:spell_power": 0.15
-    }
+  "key": "steel",
+  "category": "metal",
+  "primary": 5.5,
+  "secondary": 3.5,
+  "tertiary": 3.2,
+  "durability": 400,
+  "integrityCost": 2,
+  "integrityGain": 5,
+  "magicCapacity": 90,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "8a8a8a",
+    "texture": "8a8a8a"
+  },
+  "textures": [
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "thermal:steel_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "**minecraft:generic.armor": 0.04,
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }

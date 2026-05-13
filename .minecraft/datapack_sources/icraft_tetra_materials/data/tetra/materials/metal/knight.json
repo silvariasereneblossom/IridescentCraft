@@ -1,34 +1,34 @@
 {
-    "key": "knight",
-    "category": "metal",
-    "primary": 6.5,
-    "secondary": 6.0,
-    "tertiary": 4.0,
-    "durability": 750,
-    "integrityCost": 3,
-    "integrityGain": 8,
-    "magicCapacity": 145,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 8.5,
-    "tints": {
-        "glyph": "2a4a6b",
-        "texture": "2a4a6b"
-    },
-    "textures": [
-        "shiny",
-        "metal",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "theabyss:knight_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:diamond"
-    },
-    "attributes": {
-        "**minecraft:generic.armor": 0.04,
-        "**irons_spellbooks:spell_power": 0.25
-    }
+  "key": "knight",
+  "category": "metal",
+  "primary": 6.5,
+  "secondary": 6.0,
+  "tertiary": 4.0,
+  "durability": 750,
+  "integrityCost": 3,
+  "integrityGain": 8,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 8.5,
+  "tints": {
+    "glyph": "2a4a6b",
+    "texture": "2a4a6b"
+  },
+  "textures": [
+    "shiny",
+    "metal",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "theabyss:knight_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "attributes": {
+    "**minecraft:generic.armor": 0.04,
+    "*irons_spellbooks:spell_power": 0.25
+  }
 }

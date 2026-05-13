@@ -1,33 +1,33 @@
 {
-    "key": "steeleaf",
-    "category": "metal",
-    "primary": 5.3,
-    "secondary": 3.8,
-    "tertiary": 3.0,
-    "durability": 380,
-    "integrityCost": 2,
-    "integrityGain": 5,
-    "magicCapacity": 110,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7,
-    "tints": {
-        "glyph": "3a7a2c",
-        "texture": "3a7a2c"
-    },
-    "textures": [
-        "metal",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "twilightforest:steeleaf_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**irons_spellbooks:nature_spell_power": 0.12,
-        "**irons_spellbooks:spell_power": 0.15
-    }
+  "key": "steeleaf",
+  "category": "metal",
+  "primary": 5.3,
+  "secondary": 3.8,
+  "tertiary": 3.0,
+  "durability": 380,
+  "integrityCost": 2,
+  "integrityGain": 5,
+  "magicCapacity": 110,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "3a7a2c",
+    "texture": "3a7a2c"
+  },
+  "textures": [
+    "metal",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "twilightforest:steeleaf_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "*irons_spellbooks:nature_spell_power": 0.12,
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }

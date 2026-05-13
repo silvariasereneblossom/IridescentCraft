@@ -1,33 +1,33 @@
 {
-    "key": "sapphire",
-    "category": "gem",
-    "primary": 6.5,
-    "secondary": 3.5,
-    "tertiary": 3.0,
-    "durability": 1000,
-    "integrityCost": 3,
-    "integrityGain": 6,
-    "magicCapacity": 145,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7.5,
-    "tints": {
-        "glyph": "4070ff",
-        "texture": "4070ff"
-    },
-    "textures": [
-        "shiny",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "terramity:sapphire"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:diamond"
-    },
-    "attributes": {
-        "**irons_spellbooks:ice_spell_power": 0.08,
-        "**irons_spellbooks:spell_power": 0.25
-    }
+  "key": "sapphire",
+  "category": "gem",
+  "primary": 6.5,
+  "secondary": 3.5,
+  "tertiary": 3.0,
+  "durability": 1000,
+  "integrityCost": 3,
+  "integrityGain": 6,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7.5,
+  "tints": {
+    "glyph": "4070ff",
+    "texture": "4070ff"
+  },
+  "textures": [
+    "shiny",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "terramity:sapphire"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "attributes": {
+    "*irons_spellbooks:ice_spell_power": 0.08,
+    "*irons_spellbooks:spell_power": 0.25
+  }
 }

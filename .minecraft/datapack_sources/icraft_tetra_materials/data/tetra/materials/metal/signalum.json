@@ -1,33 +1,33 @@
 {
-    "key": "signalum",
-    "category": "metal",
-    "primary": 5.0,
-    "secondary": 4.2,
-    "tertiary": 2.5,
-    "durability": 300,
-    "integrityCost": 2,
-    "integrityGain": 3,
-    "magicCapacity": 130,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7.5,
-    "tints": {
-        "glyph": "d84b20",
-        "texture": "d84b20"
-    },
-    "textures": [
-        "shiny",
-        "metal"
-    ],
-    "material": {
-        "items": [
-            "thermal:signalum_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**irons_spellbooks:lightning_spell_power": 0.1,
-        "**irons_spellbooks:spell_power": 0.15
-    }
+  "key": "signalum",
+  "category": "metal",
+  "primary": 5.0,
+  "secondary": 4.2,
+  "tertiary": 2.5,
+  "durability": 300,
+  "integrityCost": 2,
+  "integrityGain": 3,
+  "magicCapacity": 130,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7.5,
+  "tints": {
+    "glyph": "d84b20",
+    "texture": "d84b20"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "thermal:signalum_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "*irons_spellbooks:lightning_spell_power": 0.1,
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }

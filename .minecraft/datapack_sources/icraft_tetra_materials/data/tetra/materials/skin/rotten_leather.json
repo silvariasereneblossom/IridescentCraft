@@ -1,40 +1,40 @@
 {
-    "key": "rotten_leather",
-    "category": "skin",
-    "primary": 5,
-    "secondary": 2,
-    "tertiary": 1,
-    "durability": 180,
-    "integrityCost": 1,
-    "integrityGain": 3,
-    "magicCapacity": 100,
-    "toolLevel": 0,
-    "toolEfficiency": 0,
-    "tints": {
-        "glyph": "8a4a3e",
-        "texture": "8a4a3e"
-    },
-    "textures": [
-        "default",
-        "leather"
-    ],
-    "material": {
-        "items": [
-            "forbidden_arcanus:rotten_leather"
-        ]
-    },
-    "requiredTools": {
-        "cut": "minecraft:gold"
-    },
-    "conditions": [
-        {
-            "type": "forge:mod_loaded",
-            "modid": "forbidden_arcanus"
-        }
-    ],
-    "attributes": {
-        "**irons_spellbooks:holy_spell_power": 0.1,
-        "**irons_spellbooks:mana_regen": 0.05,
-        "**irons_spellbooks:spell_power": 0.15
+  "key": "rotten_leather",
+  "category": "skin",
+  "primary": 5,
+  "secondary": 2,
+  "tertiary": 1,
+  "durability": 180,
+  "integrityCost": 1,
+  "integrityGain": 3,
+  "magicCapacity": 100,
+  "toolLevel": 0,
+  "toolEfficiency": 0,
+  "tints": {
+    "glyph": "8a4a3e",
+    "texture": "8a4a3e"
+  },
+  "textures": [
+    "default",
+    "leather"
+  ],
+  "material": {
+    "items": [
+      "forbidden_arcanus:rotten_leather"
+    ]
+  },
+  "requiredTools": {
+    "cut": "minecraft:gold"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "forbidden_arcanus"
     }
+  ],
+  "attributes": {
+    "*irons_spellbooks:holy_spell_power": 0.1,
+    "*irons_spellbooks:mana_regen": 0.05,
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }

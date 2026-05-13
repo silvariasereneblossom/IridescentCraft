@@ -14,9 +14,9 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0167,
-          "**irons_spellbooks:mana_regen": 0.0167,
-          "**irons_spellbooks:cooldown_reduction": 0.0167,
+          "*irons_spellbooks:spell_power": 0.0167,
+          "*irons_spellbooks:mana_regen": 0.0167,
+          "*irons_spellbooks:cooldown_reduction": 0.0167,
           "irons_spellbooks:max_mana": 1.667
         },
         "integrity": 1.0,
@@ -39,9 +39,9 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.025,
-          "**irons_spellbooks:mana_regen": 0.025,
-          "**irons_spellbooks:cooldown_reduction": 0.025,
+          "*irons_spellbooks:spell_power": 0.025,
+          "*irons_spellbooks:mana_regen": 0.025,
+          "*irons_spellbooks:cooldown_reduction": 0.025,
           "irons_spellbooks:max_mana": 2.5
         },
         "integrity": 1.0,
@@ -64,9 +64,9 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.03,
-          "**irons_spellbooks:mana_regen": 0.03,
-          "**irons_spellbooks:cooldown_reduction": 0.03,
+          "*irons_spellbooks:spell_power": 0.03,
+          "*irons_spellbooks:mana_regen": 0.03,
+          "*irons_spellbooks:cooldown_reduction": 0.03,
           "irons_spellbooks:max_mana": 3.0
         },
         "integrity": 1.0,
@@ -89,9 +89,9 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0667,
-          "**irons_spellbooks:mana_regen": 0.0667,
-          "**irons_spellbooks:cooldown_reduction": 0.0667,
+          "*irons_spellbooks:spell_power": 0.0667,
+          "*irons_spellbooks:mana_regen": 0.0667,
+          "*irons_spellbooks:cooldown_reduction": 0.0667,
           "irons_spellbooks:max_mana": 6.667
         },
         "integrity": 1.0,
@@ -114,9 +114,9 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0417,
-          "**irons_spellbooks:mana_regen": 0.0417,
-          "**irons_spellbooks:cooldown_reduction": 0.0417,
+          "*irons_spellbooks:spell_power": 0.0417,
+          "*irons_spellbooks:mana_regen": 0.0417,
+          "*irons_spellbooks:cooldown_reduction": 0.0417,
           "irons_spellbooks:max_mana": 4.167
         },
         "integrity": 1.0,
@@ -139,9 +139,9 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0414,
-          "**irons_spellbooks:mana_regen": 0.0414,
-          "**irons_spellbooks:cooldown_reduction": 0.0414,
+          "*irons_spellbooks:spell_power": 0.0414,
+          "*irons_spellbooks:mana_regen": 0.0414,
+          "*irons_spellbooks:cooldown_reduction": 0.0414,
           "irons_spellbooks:max_mana": 4.144
         },
         "integrity": 1.0,
@@ -164,9 +164,9 @@
       "key": "basic_handle/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0412,
-          "**irons_spellbooks:mana_regen": 0.0412,
-          "**irons_spellbooks:cooldown_reduction": 0.0412,
+          "*irons_spellbooks:spell_power": 0.0412,
+          "*irons_spellbooks:mana_regen": 0.0412,
+          "*irons_spellbooks:cooldown_reduction": 0.0412,
           "irons_spellbooks:max_mana": 4.118
         },
         "integrity": 1.0,

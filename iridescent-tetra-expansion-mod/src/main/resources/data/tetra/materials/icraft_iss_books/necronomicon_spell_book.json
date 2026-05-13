@@ -1,37 +1,37 @@
 {
-    "key": "necronomicon_spell_book",
-    "category": "icraft_iss_books",
-    "primary": 0.0,
-    "secondary": 0.0,
-    "tertiary": 0.0,
-    "durability": 0,
-    "integrityCost": 3,
-    "integrityGain": 7,
-    "magicCapacity": 165,
-    "toolLevel": 0,
-    "toolEfficiency": 0,
-    "tints": {
-        "glyph": "451a1a",
-        "texture": "451a1a"
-    },
-    "textures": [
-        "necronomicon_spell_book"
-    ],
-    "material": {
-        "items": [
-            "irons_spellbooks:necronomicon_spell_book"
-        ]
-    },
-    "conditions": [
-        {
-            "type": "forge:mod_loaded",
-            "modid": "irons_spellbooks"
-        }
-    ],
-    "attributes": {
-        "**irons_spellbooks:blood_spell_power": 0.3,
-        "**irons_spellbooks:eldritch_spell_power": 0.3,
-        "**irons_spellbooks:cooldown_reduction": 0.1,
-        "**irons_spellbooks:spell_power": 0.05
+  "key": "necronomicon_spell_book",
+  "category": "icraft_iss_books",
+  "primary": 0.0,
+  "secondary": 0.0,
+  "tertiary": 0.0,
+  "durability": 0,
+  "integrityCost": 3,
+  "integrityGain": 7,
+  "magicCapacity": 165,
+  "toolLevel": 0,
+  "toolEfficiency": 0,
+  "tints": {
+    "glyph": "451a1a",
+    "texture": "451a1a"
+  },
+  "textures": [
+    "necronomicon_spell_book"
+  ],
+  "material": {
+    "items": [
+      "irons_spellbooks:necronomicon_spell_book"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "irons_spellbooks"
     }
+  ],
+  "attributes": {
+    "*irons_spellbooks:blood_spell_power": 0.3,
+    "*irons_spellbooks:eldritch_spell_power": 0.3,
+    "*irons_spellbooks:cooldown_reduction": 0.1,
+    "*irons_spellbooks:spell_power": 0.05
+  }
 }

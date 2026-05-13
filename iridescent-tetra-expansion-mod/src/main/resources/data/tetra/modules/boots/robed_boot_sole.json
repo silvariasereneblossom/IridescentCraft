@@ -224,7 +224,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.08,
           "irons_spellbooks:max_mana": 22.0,
-          "irons_spellbooks:spell_power": 0.03
+          "*irons_spellbooks:spell_power": 0.03
         },
         "integrity": 1.0,
         "glyph": {

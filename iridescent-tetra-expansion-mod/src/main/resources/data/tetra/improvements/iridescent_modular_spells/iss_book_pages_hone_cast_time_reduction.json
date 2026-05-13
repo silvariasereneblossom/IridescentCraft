@@ -3,35 +3,35 @@
     "key": "iss_book_pages_hone_cast_time_reduction",
     "level": 1,
     "attributes": {
-      "irons_spellbooks:cast_time_reduction": 0.01
+      "*irons_spellbooks:cast_time_reduction": 0.01
     }
   },
   {
     "key": "iss_book_pages_hone_cast_time_reduction",
     "level": 2,
     "attributes": {
-      "irons_spellbooks:cast_time_reduction": 0.02
+      "*irons_spellbooks:cast_time_reduction": 0.02
     }
   },
   {
     "key": "iss_book_pages_hone_cast_time_reduction",
     "level": 3,
     "attributes": {
-      "irons_spellbooks:cast_time_reduction": 0.04
+      "*irons_spellbooks:cast_time_reduction": 0.04
     }
   },
   {
     "key": "iss_book_pages_hone_cast_time_reduction",
     "level": 4,
     "attributes": {
-      "irons_spellbooks:cast_time_reduction": 0.06
+      "*irons_spellbooks:cast_time_reduction": 0.06
     }
   },
   {
     "key": "iss_book_pages_hone_cast_time_reduction",
     "level": 5,
     "attributes": {
-      "irons_spellbooks:cast_time_reduction": 0.1
+      "*irons_spellbooks:cast_time_reduction": 0.1
     }
   }
 ]

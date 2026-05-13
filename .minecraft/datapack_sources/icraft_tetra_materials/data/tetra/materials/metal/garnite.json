@@ -1,34 +1,34 @@
 {
-    "key": "garnite",
-    "category": "metal",
-    "primary": 5.5,
-    "secondary": 5.0,
-    "tertiary": 3.0,
-    "durability": 400,
-    "integrityCost": 2,
-    "integrityGain": 5,
-    "magicCapacity": 100,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7.5,
-    "tints": {
-        "glyph": "8b3a62",
-        "texture": "8b3a62"
-    },
-    "textures": [
-        "shiny",
-        "metal",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "theabyss:garnite_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**irons_spellbooks:fire_spell_power": 0.06,
-        "**irons_spellbooks:spell_power": 0.15
-    }
+  "key": "garnite",
+  "category": "metal",
+  "primary": 5.5,
+  "secondary": 5.0,
+  "tertiary": 3.0,
+  "durability": 400,
+  "integrityCost": 2,
+  "integrityGain": 5,
+  "magicCapacity": 100,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7.5,
+  "tints": {
+    "glyph": "8b3a62",
+    "texture": "8b3a62"
+  },
+  "textures": [
+    "shiny",
+    "metal",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "theabyss:garnite_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "*irons_spellbooks:fire_spell_power": 0.06,
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }

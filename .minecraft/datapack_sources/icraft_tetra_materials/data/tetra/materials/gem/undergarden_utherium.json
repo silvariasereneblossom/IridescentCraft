@@ -1,34 +1,34 @@
 {
-    "key": "undergarden_utherium",
-    "category": "gem",
-    "primary": 6.2,
-    "secondary": 3.8,
-    "tertiary": 3.2,
-    "durability": 600,
-    "integrityCost": 2,
-    "integrityGain": 7,
-    "magicCapacity": 140,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7.5,
-    "tints": {
-        "glyph": "9b30ff",
-        "texture": "9b30ff"
-    },
-    "textures": [
-        "shiny",
-        "metal",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "undergarden:utherium_crystal"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**irons_spellbooks:blood_spell_power": 0.08,
-        "**irons_spellbooks:spell_power": 0.25
-    }
+  "key": "undergarden_utherium",
+  "category": "gem",
+  "primary": 6.2,
+  "secondary": 3.8,
+  "tertiary": 3.2,
+  "durability": 600,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 140,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7.5,
+  "tints": {
+    "glyph": "9b30ff",
+    "texture": "9b30ff"
+  },
+  "textures": [
+    "shiny",
+    "metal",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "undergarden:utherium_crystal"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "*irons_spellbooks:blood_spell_power": 0.08,
+    "*irons_spellbooks:spell_power": 0.25
+  }
 }

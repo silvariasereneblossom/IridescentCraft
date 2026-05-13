@@ -1,33 +1,33 @@
 {
-    "key": "magebloom",
-    "category": "skin",
-    "primary": 0.6,
-    "secondary": 4.5,
-    "tertiary": 1.0,
-    "durability": 90,
-    "integrityCost": 1,
-    "integrityGain": 3,
-    "magicCapacity": 130,
-    "tints": {
-        "glyph": "d28cf2",
-        "texture": "d28cf2"
-    },
-    "textures": [
-        "fabric",
-        "default"
-    ],
-    "material": {
-        "items": [
-            "ars_nouveau:magebloom_fiber"
-        ]
-    },
-    "conditions": [
-        {
-            "type": "forge:mod_loaded",
-            "modid": "ars_nouveau"
-        }
-    ],
-    "attributes": {
-        "**irons_spellbooks:spell_power": 0.05
+  "key": "magebloom",
+  "category": "skin",
+  "primary": 0.6,
+  "secondary": 4.5,
+  "tertiary": 1.0,
+  "durability": 90,
+  "integrityCost": 1,
+  "integrityGain": 3,
+  "magicCapacity": 130,
+  "tints": {
+    "glyph": "d28cf2",
+    "texture": "d28cf2"
+  },
+  "textures": [
+    "fabric",
+    "default"
+  ],
+  "material": {
+    "items": [
+      "ars_nouveau:magebloom_fiber"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "ars_nouveau"
     }
+  ],
+  "attributes": {
+    "*irons_spellbooks:spell_power": 0.05
+  }
 }

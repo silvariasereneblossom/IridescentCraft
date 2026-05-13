@@ -1,33 +1,33 @@
 {
-    "key": "knightmetal",
-    "category": "metal",
-    "primary": 5.6,
-    "secondary": 3.2,
-    "tertiary": 3.5,
-    "durability": 500,
-    "integrityCost": 2,
-    "integrityGain": 6,
-    "magicCapacity": 95,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7.5,
-    "tints": {
-        "glyph": "c4b57a",
-        "texture": "c4b57a"
-    },
-    "textures": [
-        "heavy",
-        "metal"
-    ],
-    "material": {
-        "items": [
-            "twilightforest:knightmetal_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**minecraft:generic.armor": 0.05,
-        "**irons_spellbooks:spell_power": 0.25
-    }
+  "key": "knightmetal",
+  "category": "metal",
+  "primary": 5.6,
+  "secondary": 3.2,
+  "tertiary": 3.5,
+  "durability": 500,
+  "integrityCost": 2,
+  "integrityGain": 6,
+  "magicCapacity": 95,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7.5,
+  "tints": {
+    "glyph": "c4b57a",
+    "texture": "c4b57a"
+  },
+  "textures": [
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "twilightforest:knightmetal_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "**minecraft:generic.armor": 0.05,
+    "*irons_spellbooks:spell_power": 0.25
+  }
 }

@@ -19,6 +19,6 @@
     ]
   },
   "attributes": {
-    "**irons_spellbooks:holy_spell_power": 0.1
+    "*irons_spellbooks:holy_spell_power": 0.1
   }
 }

@@ -1,36 +1,36 @@
 {
-    "key": "tf_arctic",
-    "category": "skin",
-    "primary": 4.8,
-    "secondary": 3.8,
-    "tertiary": 3,
-    "durability": 220,
-    "integrityCost": 2,
-    "integrityGain": 4,
-    "magicCapacity": 100,
-    "toolLevel": "minecraft:iron",
-    "toolEfficiency": 6,
-    "tints": {
-        "glyph": "888888",
-        "texture": "888888"
-    },
-    "textures": [
-        "default",
-        "leather"
-    ],
-    "material": {
-        "items": [
-            "twilightforest:arctic_fur"
-        ]
-    },
-    "conditions": [
-        {
-            "type": "forge:mod_loaded",
-            "modid": "twilightforest"
-        }
-    ],
-    "attributes": {
-        "**irons_spellbooks:ice_magic_resist": 0.1,
-        "**irons_spellbooks:spell_power": 0.1
+  "key": "tf_arctic",
+  "category": "skin",
+  "primary": 4.8,
+  "secondary": 3.8,
+  "tertiary": 3,
+  "durability": 220,
+  "integrityCost": 2,
+  "integrityGain": 4,
+  "magicCapacity": 100,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 6,
+  "tints": {
+    "glyph": "888888",
+    "texture": "888888"
+  },
+  "textures": [
+    "default",
+    "leather"
+  ],
+  "material": {
+    "items": [
+      "twilightforest:arctic_fur"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "twilightforest"
     }
+  ],
+  "attributes": {
+    "*irons_spellbooks:ice_magic_resist": 0.1,
+    "*irons_spellbooks:spell_power": 0.1
+  }
 }

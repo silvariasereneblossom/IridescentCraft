@@ -1,33 +1,33 @@
 {
-    "key": "elementium",
-    "category": "metal",
-    "primary": 6.2,
-    "secondary": 3.4,
-    "tertiary": 2.5,
-    "durability": 720,
-    "integrityCost": 3,
-    "integrityGain": 5,
-    "magicCapacity": 175,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 8.5,
-    "tints": {
-        "glyph": "e565c9",
-        "texture": "e565c9"
-    },
-    "textures": [
-        "shiny",
-        "metal"
-    ],
-    "material": {
-        "items": [
-            "botania:elementium_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**irons_spellbooks:spell_power": 0.06,
-        "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.06
-    }
+  "key": "elementium",
+  "category": "metal",
+  "primary": 6.2,
+  "secondary": 3.4,
+  "tertiary": 2.5,
+  "durability": 720,
+  "integrityCost": 3,
+  "integrityGain": 5,
+  "magicCapacity": 175,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 8.5,
+  "tints": {
+    "glyph": "e565c9",
+    "texture": "e565c9"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "botania:elementium_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "*irons_spellbooks:spell_power": 0.06,
+    "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.06
+  }
 }

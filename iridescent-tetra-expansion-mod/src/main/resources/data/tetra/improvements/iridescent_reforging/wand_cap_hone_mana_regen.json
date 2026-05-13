@@ -3,35 +3,35 @@
     "key": "wand_cap_hone_mana_regen",
     "level": 1,
     "attributes": {
-      "**irons_spellbooks:mana_regen": 0.005
+      "*irons_spellbooks:mana_regen": 0.005
     }
   },
   {
     "key": "wand_cap_hone_mana_regen",
     "level": 2,
     "attributes": {
-      "**irons_spellbooks:mana_regen": 0.01
+      "*irons_spellbooks:mana_regen": 0.01
     }
   },
   {
     "key": "wand_cap_hone_mana_regen",
     "level": 3,
     "attributes": {
-      "**irons_spellbooks:mana_regen": 0.016
+      "*irons_spellbooks:mana_regen": 0.016
     }
   },
   {
     "key": "wand_cap_hone_mana_regen",
     "level": 4,
     "attributes": {
-      "**irons_spellbooks:mana_regen": 0.022
+      "*irons_spellbooks:mana_regen": 0.022
     }
   },
   {
     "key": "wand_cap_hone_mana_regen",
     "level": 5,
     "attributes": {
-      "**irons_spellbooks:mana_regen": 0.03
+      "*irons_spellbooks:mana_regen": 0.03
     }
   }
 ]

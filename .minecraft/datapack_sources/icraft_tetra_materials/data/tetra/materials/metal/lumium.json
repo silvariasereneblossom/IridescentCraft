@@ -1,33 +1,33 @@
 {
-    "key": "lumium",
-    "category": "metal",
-    "primary": 4.8,
-    "secondary": 4.4,
-    "tertiary": 2.3,
-    "durability": 320,
-    "integrityCost": 2,
-    "integrityGain": 3,
-    "magicCapacity": 130,
-    "toolLevel": "minecraft:diamond",
-    "toolEfficiency": 7.5,
-    "tints": {
-        "glyph": "f5e16f",
-        "texture": "f5e16f"
-    },
-    "textures": [
-        "shiny",
-        "metal"
-    ],
-    "material": {
-        "items": [
-            "thermal:lumium_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:iron"
-    },
-    "attributes": {
-        "**irons_spellbooks:holy_spell_power": 0.08,
-        "**irons_spellbooks:spell_power": 0.15
-    }
+  "key": "lumium",
+  "category": "metal",
+  "primary": 4.8,
+  "secondary": 4.4,
+  "tertiary": 2.3,
+  "durability": 320,
+  "integrityCost": 2,
+  "integrityGain": 3,
+  "magicCapacity": 130,
+  "toolLevel": "minecraft:diamond",
+  "toolEfficiency": 7.5,
+  "tints": {
+    "glyph": "f5e16f",
+    "texture": "f5e16f"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "thermal:lumium_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:iron"
+  },
+  "attributes": {
+    "*irons_spellbooks:holy_spell_power": 0.08,
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }

@@ -1,34 +1,34 @@
 {
-    "key": "aethersteel",
-    "category": "metal",
-    "primary": 8.5,
-    "secondary": 3.2,
-    "tertiary": 4.5,
-    "durability": 2500,
-    "integrityCost": 4,
-    "integrityGain": 12,
-    "magicCapacity": 210,
-    "toolLevel": "minecraft:netherite",
-    "toolEfficiency": 11,
-    "tints": {
-        "glyph": "7ad6e8",
-        "texture": "7ad6e8"
-    },
-    "textures": [
-        "shiny",
-        "heavy",
-        "metal"
-    ],
-    "material": {
-        "items": [
-            "aethersteel:aethersteel_ingot"
-        ]
-    },
-    "requiredTools": {
-        "hammer_dig": "minecraft:diamond"
-    },
-    "attributes": {
-        "**irons_spellbooks:spell_power": 0.1,
-        "**irons_spellbooks:max_mana": 0.1
-    }
+  "key": "aethersteel",
+  "category": "metal",
+  "primary": 8.5,
+  "secondary": 3.2,
+  "tertiary": 4.5,
+  "durability": 2500,
+  "integrityCost": 4,
+  "integrityGain": 12,
+  "magicCapacity": 210,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 11,
+  "tints": {
+    "glyph": "7ad6e8",
+    "texture": "7ad6e8"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "aethersteel:aethersteel_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "attributes": {
+    "*irons_spellbooks:spell_power": 0.1,
+    "**irons_spellbooks:max_mana": 0.1
+  }
 }

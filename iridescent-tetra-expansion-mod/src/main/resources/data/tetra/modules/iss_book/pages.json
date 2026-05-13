@@ -12,7 +12,7 @@
       "key": "pages/",
       "extract": {
         "tertiaryAttributes": {
-          "**irons_spellbooks:cast_time_reduction": 0.01
+          "*irons_spellbooks:cast_time_reduction": 0.01
         },
         "integrity": 0.5,
         "glyph": {
@@ -34,7 +34,7 @@
       "key": "pages/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:mana_regen": 0.01
+          "*irons_spellbooks:mana_regen": 0.01
         },
         "integrity": 0.5,
         "glyph": {

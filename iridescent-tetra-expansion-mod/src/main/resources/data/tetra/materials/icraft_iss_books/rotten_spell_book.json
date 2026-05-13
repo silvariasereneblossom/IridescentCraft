@@ -1,34 +1,34 @@
 {
-    "key": "rotten_spell_book",
-    "category": "icraft_iss_books",
-    "primary": 0.0,
-    "secondary": 0.0,
-    "tertiary": 0.0,
-    "durability": 0,
-    "integrityCost": 1,
-    "integrityGain": 3,
-    "magicCapacity": 100,
-    "toolLevel": 0,
-    "toolEfficiency": 0,
-    "tints": {
-        "glyph": "5a6b3a",
-        "texture": "5a6b3a"
-    },
-    "textures": [
-        "rotten_spell_book"
-    ],
-    "material": {
-        "items": [
-            "irons_spellbooks:rotten_spell_book"
-        ]
-    },
-    "conditions": [
-        {
-            "type": "forge:mod_loaded",
-            "modid": "irons_spellbooks"
-        }
-    ],
-    "attributes": {
-        "**irons_spellbooks:spell_power": 0.15
+  "key": "rotten_spell_book",
+  "category": "icraft_iss_books",
+  "primary": 0.0,
+  "secondary": 0.0,
+  "tertiary": 0.0,
+  "durability": 0,
+  "integrityCost": 1,
+  "integrityGain": 3,
+  "magicCapacity": 100,
+  "toolLevel": 0,
+  "toolEfficiency": 0,
+  "tints": {
+    "glyph": "5a6b3a",
+    "texture": "5a6b3a"
+  },
+  "textures": [
+    "rotten_spell_book"
+  ],
+  "material": {
+    "items": [
+      "irons_spellbooks:rotten_spell_book"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "irons_spellbooks"
     }
+  ],
+  "attributes": {
+    "*irons_spellbooks:spell_power": 0.15
+  }
 }
