@@ -4,6 +4,67 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Mana bridge followups: UI unification + ISS school SP -> Ars spell damage
+
+### UI: hide Ars perk mana rows from Apothic Stats GUI
+The mana bridge keeps `irons_spellbooks:max_mana` and `ars_nouveau.perk.max_mana`
+at equivalent player-level values, but each attribute had a different base
+(ISS = 100, Ars = 0). So the Apothic Attributes Stats screen showed both as
+separate rows with confusingly different numbers ("Max Mana: 150" + "Max Mana
+(Ars): 50"). Hidden the Ars rows via `config/attributeslib.cfg` "Hidden
+Attributes" list. ISS rows are canonical; bridge maintains Ars equivalence
+silently in the background.
+
+Entries added:
+- `ars_nouveau:ars_nouveau.perk.max_mana`
+- `ars_nouveau:ars_nouveau.perk.mana_regen`
+
+### ISS school SP -> Ars spell damage
+New: `kubejs/server_scripts/attributes/iss_school_to_ars_spell.js`. Hooks
+Forge's `LivingHurtEvent` and, when the damage source is one of the 4 Ars
+elemental damage types, multiplies the damage by the attacker's matching
+ISS school SP.
+
+Mapping (elemental only -- no generic spell bridge per design call):
+
+| Ars damage type | ISS attribute | Effect glyphs that emit this |
+|---|---|---|
+| `ars_nouveau:flare` | `irons_spellbooks:fire_spell_power` | EffectFlare (direct fire damage) |
+| `ars_nouveau:frost` | `irons_spellbooks:ice_spell_power` | EffectColdSnap, frost-type direct |
+| `ars_nouveau:windshear` | `irons_spellbooks:lightning_spell_power` | Air/wind direct-damage glyphs |
+| `ars_nouveau:crush` | `irons_spellbooks:nature_spell_power` | EffectCrush (earth/nature) |
+
+Generic `ars_nouveau:spell` intentionally NOT mapped -- non-elemental glyphs
+(EffectHarm, etc.) stay on their own damage math.
+
+**Coverage gap (acknowledged):** Some elemental-school glyphs route damage
+through VANILLA damage types rather than the Ars elemental ones:
+- `EffectIgnite` calls `setSecondsOnFire` -> damage flows as `minecraft:on_fire`
+- `EffectLightning` spawns a vanilla lightning entity -> `minecraft:lightning_bolt`
+- `EffectExplosion` creates a vanilla explosion -> `minecraft:explosion`
+
+These won't trigger the bridge because the damage source at hit-time is
+vanilla, not Ars's. Direct-damage elemental glyphs (Flare, ColdSnap, Crush
+etc.) ARE covered. If broader coverage is needed later, the right path is
+hooking Ars's `SpellDamageEvent.Pre` to inspect the spell context for school
+tags before the damage event fires.
+
+### Files
+- `config/attributeslib.cfg` (Hidden Attributes list extended)
+- `kubejs/server_scripts/attributes/iss_school_to_ars_spell.js` (new)
+- Deployed to 3 distros
+
+### Open question
+"Ars book should boost both" -- the current architecture is that Ars books
+emit only Ars attributes and the mana bridge mirrors them to ISS at the
+player level. That already makes the book "boost both" effectively. If the
+intent is instead that the Ars book should emit ISS attributes NATIVELY
+(showing two lines on the tooltip and applying additively as a single
+item), that would double-count under the current bridge math. Flagged for
+your call.
+
+---
+
 ## 2026-05-14 — ISS Apotheosis gems buffed; bidirectional ISS<->Ars mana bridge
 
 ### ISS gems were under-tuned
