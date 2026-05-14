@@ -6,6 +6,45 @@ Future features, improvements, and technical debt. Organized by priority.
 
 ## High Priority
 
+### Blue Skies → T1 (post-alpha tier rebalance)
+
+Move Blue Skies from T2 to T1, making it a day-1-accessible alternative
+dimension alongside vanilla Overworld. Coherent with the existing gatekeeper
+house lore (overworld plains/mountain/snowy structures that ARE the entry
+point) and fleshes T1 out into a more complete-feeling tier.
+
+**Why:** the "each tier feels like a complete modpack experience in its own
+right" design pillar. T1 with just overworld + bottom Botania + early Create
+feels thin. Adding Blue Skies gives T1:
+- A second dimension to explore on day 1
+- More biomes, mobs, structures, and a non-linear early loop
+- Natural use of the gatekeeper houses (currently we strip their T2 loot;
+  post-move, they become legitimate T1 discovery loot)
+- An alt-path for early-game variety
+
+**Work involved:**
+1. Remove Blue Skies dimension gate from `astages_restrictions.js` (T2 stage entry)
+2. Remove `LootJS` strips for Blue Skies items in overworld chests (currently
+   in `lootjs_overhaul.js` ~line 1820)
+3. Remove the explicit `gatekeeper_house/{plains,book}` ventium/moonstone
+   strips added 2026-05-14
+4. Rebalance Blue Skies mob scaling: D.4 currently sets BS at HP×2.0, DMG×2.3,
+   Armor×1.4 (T2). Bring down to ~HP×1.3, DMG×1.2, Armor×1.1 (T1+ range).
+5. Move Blue Skies-tier metals (Ventium, Falsite, Charoite, Diopside) to a
+   sub-gate within Blue Skies — either Everbright/Everdawn dungeon-locked,
+   or behind a Blue Skies T1 boss kill (Summoner / Alchemist / Starlit Crusher
+   are currently T2 — would become "Blue Skies T1 bosses" with reduced HP).
+6. Update D.1 affix rarity clamp for Blue Skies dimensions from common-epic
+   to common-rare (T1 ceiling).
+7. Update mod roster F.1/F.2 sections in master-appendix to reflect new tier.
+8. Update master.md Part II (Tier System) and Part IV (Worlds & Dimensions)
+   to mention Blue Skies as a T1 alternative dimension.
+9. Verify Blue Skies recipes (gatekeeper crafted? Crystal-block-tier?) are
+   T1-craftable with adjusted materials.
+
+**Blocked by:** alpha testing completion. Want playtester data on how the
+current T2 Blue Skies feels vs the T1 version before committing.
+
 ### Modrinth Pack Publication
 - Convert modpack to Modrinth's pack format for one-click installation
 - Eliminates all custom client deployment complexity

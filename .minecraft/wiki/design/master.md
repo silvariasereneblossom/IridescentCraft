@@ -98,6 +98,16 @@ The pack moves through four tiers. Each tier is a step-change in power, availabl
 
 > **Implementation note.** Tier transitions are explicit: the player unlocks AStages stages `tier_2`, `tier_3`, `tier_4`. Items, recipes, dimensions, and ores all gate-check against the active stage.
 
+> **Design pillar — each tier feels complete.** A player who never moves
+> past T1 should still feel like they're playing a full, satisfying modpack.
+> Each tier ships with: a dedicated dimension or alt-loop, enough biome/mob/
+> structure variety to fill 20+ hours of exploration, a workable progression
+> ladder for both combat and magic builds, a complete cooking/farming layer,
+> and at least one major endgame-style hook (a chase item, a worthy boss,
+> a satisfying mid-tier capstone). Gates limit *content access between tiers*;
+> they don't reduce *quality within a tier*. The pack isn't a tutorial that
+> opens up at T4 — it's four overlapping modpacks stitched into a progression.
+
 ### Tier identity
 
 | Tier | Identity | Player feel |
