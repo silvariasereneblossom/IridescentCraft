@@ -4,6 +4,36 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Pam's HC2 seeds restored to grass drops (vendor bug workaround)
+
+Tester reported "only Thermal seeds drop from grass". Root cause: Pam's
+HarvestCraft 2 declares 3 GLMs (`pamhc2crops:fern_drops` / `grass_drops` /
+`tall_grass_drops`) in `data/forge/loot_modifiers/global_loot_modifiers.json`
+but ships neither the impl JSON files NOR a registered Java GLM type. They
+have been silently dead for the lifetime of the pack -- a vendor bug
+documented in the 2026-05-10 changelog entry but not previously worked
+around.
+
+### Workaround
+`kubejs/server_scripts/loot/grass_pam_seeds.js` -- LootJS modifier that
+hooks 4 vanilla blocks (`minecraft:grass`, `minecraft:tall_grass`,
+`minecraft:fern`, `minecraft:large_fern`) and adds all 97 Pam's HC2 seed
+items as low-individual-chance entries.
+
+Per-seed chance: 0.072% per break. Total expected drop rate across the
+pool: ~7% chance of getting some Pam seed per grass break, distributed
+uniformly across all 97 crops (agave through zucchini). Tuned so the
+seed pool's BREADTH does the work -- every grass session yields surprise
+finds across Pam's full crop catalog without flooding the inventory.
+
+Coexists with Thermal Cultivation's working `seeds_from_grass` GLM
+(15 modded Thermal seeds, untouched).
+
+### Files
+- `kubejs/server_scripts/loot/grass_pam_seeds.js` (new, 3 distros)
+
+---
+
 ## 2026-05-14 — Copper variants across all modules + small magic bonuses on inert metal slots
 
 Tester reported the armor workbench falling back to a "Holy" themed-material
