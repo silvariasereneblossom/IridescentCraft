@@ -4,6 +4,63 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Apotheosis toolkit ungated; rarity ladder is the gate
+
+User design call: "the gates should be the rarity of gems and affixes
+available, not the actual crafting." All 9 Apotheosis workstations
+previously held behind AStages tier flags are now available from T1.
+
+### Workstations ungated
+Removed from `kubejs/server_scripts/gates/astages_restrictions.js`:
+
+| Workstation | Was gated at |
+|---|---|
+| `apotheosis:simple_reforging_table` | T2 |
+| `apotheosis:gem_cutting_table` | T2 |
+| `apotheosis:sigil_of_socketing` | T2 |
+| `apotheosis:reforging_table` | T3 |
+| `apotheosis:sigil_of_rebirth` | T3 |
+| `apotheosis:sigil_of_withdrawal` | T3 |
+| `apotheosis:augmenting_table` | T4 |
+| `apotheosis:sigil_of_enhancement` | T4 |
+| `apotheosis:sigil_of_unnaming` | T4 |
+
+Entries kept in the file as commented-out for audit trail with a pointer
+back to this design call.
+
+### Why ungating is safe
+The original gates were belt-and-suspenders. Three independent caps already
+constrain affix/gem progression:
+1. **Dimensional rarity clamp** (`config/apotheosis/adventure.cfg`,
+   "Affix Convert Rarities" + "Gem Dimensional Rarities") -- per-dimension
+   min/max rarity for affix conversion and gem drops.
+2. **Boss-drop tokens** (basic / advanced / ultimate reforging tokens) --
+   each reforging tier consumes a token that only drops from
+   tier-appropriate bosses.
+3. **Mob/source tier inference** -- Apotheosis infers affix rarity from
+   the dimension of the source mob/chest.
+
+### T1 rarity bump (uncommon -> rare)
+Tester observation: Rare (blue) affixes/gems were already appearing in T1
+Overworld content despite the conversion clamp saying `common-uncommon`.
+That's because the "Affix Item Loot Rules" path (fresh affix generation)
+isn't clamped by Convert Rarities -- only the convert/reroll path is.
+So the natural ceiling was already Rare; the conversion clamp was MORE
+restrictive than the dimension's natural drops.
+
+Aligning the clamp to the observed natural ceiling:
+- `minecraft:overworld` Affix Convert Rarities: `common|uncommon` -> `common|rare`
+- `minecraft:overworld` Gem Dimensional Rarities: `common|uncommon` -> `common|rare`
+
+T2/T3/T4 clamps unchanged. Higher-tier observation data not yet collected.
+
+### Files
+- `kubejs/server_scripts/gates/astages_restrictions.js` (9 entries commented out)
+- `config/apotheosis/adventure.cfg` (Affix Convert + Gem Dimensional T1 caps bumped)
+- Deployed to all 3 distros
+
+---
+
 ## 2026-05-14 — Pam's HC2 seeds restored to grass drops (vendor bug workaround)
 
 Tester reported "only Thermal seeds drop from grass". Root cause: Pam's

@@ -143,10 +143,14 @@ ServerEvents.loaded(event => {
     'botania:manasteel_sword', 'botania:manasteel_pick',
     'botania:manasteel_axe', 'botania:manasteel_shovel',
     'botania:mana_diamond_block',
-    // Apotheosis T2 workstations
-    'apotheosis:simple_reforging_table',
-    'apotheosis:gem_cutting_table',
-    'apotheosis:sigil_of_socketing',
+    // Apotheosis T2 workstations -- UNGATED 2026-05-14 per design call.
+    // Affix rarity is dimension-clamped via config/apotheosis/adventure.cfg
+    // "Affix Convert Rarities" (overworld -> common..rare, etc.). Gem rarity
+    // is set at boss drop time. The workstation gates were belt-and-suspenders;
+    // the actual progression gate is the rarity ladder, not the table itself.
+    //   'apotheosis:simple_reforging_table',
+    //   'apotheosis:gem_cutting_table',
+    //   'apotheosis:sigil_of_socketing',
     // Epic RPG Class Artifacts — normal-tier artifacts require T2 to equip
     'rpgseteffects:altharion_artifact',
     'rpgseteffects:blade_dancer_artifact',
@@ -240,10 +244,10 @@ ServerEvents.loaded(event => {
     'thermal:enderium_ingot',
     // T3 vanilla derivatives
     'minecraft:beacon',
-    // Apotheosis T3 workstations
-    'apotheosis:reforging_table',
-    'apotheosis:sigil_of_rebirth',
-    'apotheosis:sigil_of_withdrawal',
+    // Apotheosis T3 workstations -- UNGATED 2026-05-14 (see T2 block above).
+    //   'apotheosis:reforging_table',
+    //   'apotheosis:sigil_of_rebirth',
+    //   'apotheosis:sigil_of_withdrawal',
     // Forbidden Arcanus T3 entry — gates the whole F&A progression chain
     // since arcane crystal is the prerequisite material for nearly everything
     // F&A. Mod is intentionally not blanket-gated (per the comment above)
@@ -356,10 +360,10 @@ ServerEvents.loaded(event => {
     'botania:gaia_ingot', 'botania:gaia_block',
     // End portal
     'endportalrecipe:portal_catalyst',
-    // Apotheosis T4 workstations
-    'apotheosis:augmenting_table',
-    'apotheosis:sigil_of_enhancement',
-    'apotheosis:sigil_of_unnaming',
+    // Apotheosis T4 workstations -- UNGATED 2026-05-14 (see T2 block above).
+    //   'apotheosis:augmenting_table',
+    //   'apotheosis:sigil_of_enhancement',
+    //   'apotheosis:sigil_of_unnaming',
     // Aethersteel — T4 endgame material (spawns in Deep Aether only)
     'aethersteel:aethersteel_ingot', 'aethersteel:aethersteel_block',
     'aethersteel:aethersteel_nugget', 'aethersteel:aethersteel_scrap',
