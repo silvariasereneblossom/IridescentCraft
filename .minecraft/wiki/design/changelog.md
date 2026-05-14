@@ -4,6 +4,45 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Relics: actually strip removed relics at the config layer (Relics GLM was bypassing our LootJS removeLoot)
+
+User report: "infinity_ham is still around -- I thought we stripped that?"
+
+### Why it survived
+
+`lootjs_overhaul.js` line 248 lists 15 relics to strip via `event.addLootTypeModifier(LootType.CHEST).removeLoot(r)`. That call removes a relic from any STATIC loot table entry that names it. But Relics doesn't put its items into static loot tables — it ships ONE custom GLM type (`relics:relic_loot`) that runs Java-side and dynamically injects items per its per-relic config:
+
+```
+config/relics/<relic>.json -> loot.entries = { "<regex>": <chance>, ... }
+```
+
+Each relic config has a regex of loot-table IDs and a chance (`0.025` typical). The GLM evaluates these at runtime AFTER LootJS modifiers run, so `removeLoot('relics:infinity_ham')` never sees the item.
+
+infinity_ham's native config injects at 2.5% in any village chest:
+```
+"[\\w]+:chests\\/[\\w_\\/]*village[\\w_\\/]*": 0.025
+```
+
+### Fix
+
+Set `loot.entries = {}` (empty object) on all 15 "removed" relic configs:
+
+- **Fully removed (13):** infinity_ham, magic_mirror, aqua_walker, amphibian_boot, magma_walker, ice_skates, roller_skates, horse_flute, chorus_inhibitor, elytra_booster, spatial_sign, midnight_robe, ice_breaker
+- **Relocated (2):** enders_hand (now exclusive Dragon drop via LootJS), space_dissector (now End+ rare drop) -- their native chest spawn is also zeroed so OUR injection is the only source
+
+Patched `config/relics/<relic>.json` in all 3 distros.
+
+### Other relics with active native drops (NOT touched)
+
+These keep their default Relics-native drop chances (we accept them as-is via our T1-T4 chest pools):
+- arrow_quiver, bastion_ring, blazing_flask, drowned_belt, holy_locket, hunter_belt, jellyfish_necklace, leather_belt, rage_glove, reflection_necklace, shadow_glaive, spore_sack, wool_mitten
+
+### Lesson
+
+When a mod ships a custom GLM type for dynamic loot injection, LootJS's static-entry filters can't see it. The fix is at the mod's CONFIG layer, not the loot-modifier layer. Worth a check on any mod with `data/<mod>/loot_modifiers/*.json` -- if it references `<mod>:<custom_type>` and not `forge:add_item` / `forge:replace_item`, LootJS can't touch its output.
+
+---
+
 ## 2026-05-13 — Mutant Monsters: strip all item drops, 10x XP
 
 User design call: Mutant Monsters items (hulk_hammer, mutant_skeleton bones/armor, creeper_shard, endersoul fragments/hand, chemical_x) provide marginal value compared to the same content already covered by other mods in the pack. Strip all mutant entity drops; compensate by boosting XP drops 10x so fighting mutants remains rewarding (just rewards levels instead of unique loot).

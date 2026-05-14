@@ -15,8 +15,8 @@
           "time": {
             "minInitialValue": 20.0,
             "maxInitialValue": 50.0,
-            "minThresholdValue": 4.9E-324,
-            "maxThresholdValue": 1.7976931348623157E308,
+            "minThresholdValue": 5e-324,
+            "maxThresholdValue": 1.7976931348623157e+308,
             "upgradeOperation": "MULTIPLY_BASE",
             "upgradeModifier": 0.1
           }
@@ -30,11 +30,7 @@
     "step": 200
   },
   "loot": {
-    "entries": {
-      "minecraft:chests/ruined_portal": 0.025,
-      "[\\w]+:chests\\/[\\w_\\/]*(nether|hell|lava|magma|fire|burn|fortress)[\\w_\\/]*": 0.025,
-      "[\\w]+:chests\\/[\\w_\\/]*(bastion|piglin)[\\w_\\/]*": 0.025
-    }
+    "entries": {}
   },
   "style": {
     "background": {

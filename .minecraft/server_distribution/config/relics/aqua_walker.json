@@ -9,8 +9,8 @@
           "time": {
             "minInitialValue": 30.0,
             "maxInitialValue": 60.0,
-            "minThresholdValue": 4.9E-324,
-            "maxThresholdValue": 1.7976931348623157E308,
+            "minThresholdValue": 5e-324,
+            "maxThresholdValue": 1.7976931348623157e+308,
             "upgradeOperation": "MULTIPLY_BASE",
             "upgradeModifier": 0.1
           }
@@ -24,10 +24,7 @@
     "step": 100
   },
   "loot": {
-    "entries": {
-      "[\\w]+:chests\\/[\\w_\\/]*(water|ocean|river|(?<!air)ship|aqua)[\\w_\\/]*": 0.025,
-      "minecraft:chests/buried_treasure": 0.025
-    }
+    "entries": {}
   },
   "style": {
     "background": {
