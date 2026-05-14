@@ -302,16 +302,18 @@ ServerEvents.recipes(event => {
 
   // Salvaging Table — T1 (ungated). LEAVE default.
 
-  // Simple Reforging + Gem Cutting → T2 (steel)
+  // Simple Reforging + Gem Cutting -- T1 craftable (2026-05-14 design call:
+  // workstations ungated, rarity ladder + boss-drop tokens are the gate;
+  // see master-appendix D.2). Iron recipe instead of steel.
   event.remove({ id: 'apotheosis:simple_reforging_table' })
-  event.shaped('apotheosis:simple_reforging_table', ['SIS','IAI','SIS'], {
-    S:'thermal:steel_ingot', I:'minecraft:iron_ingot', A:'minecraft:anvil'
-  }).id('icraft:simple_reforging_table_t2')
+  event.shaped('apotheosis:simple_reforging_table', ['IGI','IAI','IGI'], {
+    I:'minecraft:iron_ingot', G:'apotheosis:gem_dust', A:'minecraft:anvil'
+  }).id('icraft:simple_reforging_table_t1')
 
   event.remove({ id: 'apotheosis:gem_cutting_table' })
-  event.shaped('apotheosis:gem_cutting_table', ['SIS','IGI','SIS'], {
-    S:'thermal:steel_ingot', I:'minecraft:iron_ingot', G:'minecraft:gold_block'
-  }).id('icraft:gem_cutting_table_t2')
+  event.shaped('apotheosis:gem_cutting_table', ['IGI','ICI','IGI'], {
+    I:'minecraft:iron_ingot', G:'apotheosis:gem_dust', C:'minecraft:smooth_stone'
+  }).id('icraft:gem_cutting_table_t1')
 
   // Reforging Table → T3
   event.remove({ id: 'apotheosis:reforging_table' })
