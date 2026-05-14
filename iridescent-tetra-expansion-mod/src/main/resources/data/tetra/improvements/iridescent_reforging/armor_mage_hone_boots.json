@@ -3,35 +3,35 @@
     "key": "armor/mage_hone/boots",
     "level": 1,
     "attributes": {
-      "*irons_spellbooks:cooldown_reduction": 0.005
+      "**irons_spellbooks:cooldown_reduction": 0.005
     }
   },
   {
     "key": "armor/mage_hone/boots",
     "level": 2,
     "attributes": {
-      "*irons_spellbooks:cooldown_reduction": 0.01
+      "**irons_spellbooks:cooldown_reduction": 0.01
     }
   },
   {
     "key": "armor/mage_hone/boots",
     "level": 3,
     "attributes": {
-      "*irons_spellbooks:cooldown_reduction": 0.016
+      "**irons_spellbooks:cooldown_reduction": 0.016
     }
   },
   {
     "key": "armor/mage_hone/boots",
     "level": 4,
     "attributes": {
-      "*irons_spellbooks:cooldown_reduction": 0.022
+      "**irons_spellbooks:cooldown_reduction": 0.022
     }
   },
   {
     "key": "armor/mage_hone/boots",
     "level": 5,
     "attributes": {
-      "*irons_spellbooks:cooldown_reduction": 0.03
+      "**irons_spellbooks:cooldown_reduction": 0.03
     }
   }
 ]

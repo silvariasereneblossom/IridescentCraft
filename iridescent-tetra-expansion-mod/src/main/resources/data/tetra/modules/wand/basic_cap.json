@@ -54,7 +54,7 @@
       "key": "basic_cap/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:mana_regen": 0.005
+          "**irons_spellbooks:mana_regen": 0.005
         },
         "integrity": 0.5,
         "glyph": {
@@ -76,7 +76,7 @@
       "key": "basic_cap/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:mana_regen": 0.005
+          "**irons_spellbooks:mana_regen": 0.005
         },
         "integrity": 0.5,
         "glyph": {

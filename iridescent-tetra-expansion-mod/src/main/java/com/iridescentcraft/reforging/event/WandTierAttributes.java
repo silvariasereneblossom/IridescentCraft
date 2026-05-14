@@ -151,7 +151,11 @@ public class WandTierAttributes {
                                    double amount) {
         Attribute attr = ForgeRegistries.ATTRIBUTES.getValue(attrId);
         if (attr == null) return;  // ISS absent
+        // 2026-05-14: MULTIPLY_BASE so vanilla Forge tooltip renders as "+X%"
+        // instead of raw decimal. Vanilla material wands inject via Forge's
+        // ItemAttributeModifierEvent (not Tetra's collapse path), so the
+        // MULTIPLY_BASE-collapses-to-zero bug doesn't affect this code path.
         event.addModifier(attr, new AttributeModifier(
-                uuid, name, amount, AttributeModifier.Operation.ADDITION));
+                uuid, name, amount, AttributeModifier.Operation.MULTIPLY_BASE));
     }
 }

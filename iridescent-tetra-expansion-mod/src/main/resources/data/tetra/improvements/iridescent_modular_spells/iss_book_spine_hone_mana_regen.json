@@ -3,35 +3,35 @@
     "key": "iss_book_spine_hone_mana_regen",
     "level": 1,
     "attributes": {
-      "*irons_spellbooks:mana_regen": 0.05
+      "**irons_spellbooks:mana_regen": 0.05
     }
   },
   {
     "key": "iss_book_spine_hone_mana_regen",
     "level": 2,
     "attributes": {
-      "*irons_spellbooks:mana_regen": 0.1
+      "**irons_spellbooks:mana_regen": 0.1
     }
   },
   {
     "key": "iss_book_spine_hone_mana_regen",
     "level": 3,
     "attributes": {
-      "*irons_spellbooks:mana_regen": 0.16
+      "**irons_spellbooks:mana_regen": 0.16
     }
   },
   {
     "key": "iss_book_spine_hone_mana_regen",
     "level": 4,
     "attributes": {
-      "*irons_spellbooks:mana_regen": 0.23
+      "**irons_spellbooks:mana_regen": 0.23
     }
   },
   {
     "key": "iss_book_spine_hone_mana_regen",
     "level": 5,
     "attributes": {
-      "*irons_spellbooks:mana_regen": 0.32
+      "**irons_spellbooks:mana_regen": 0.32
     }
   }
 ]

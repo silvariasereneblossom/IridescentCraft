@@ -12,7 +12,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.01
         },
         "integrity": 0.5,
         "glyph": {
@@ -34,7 +34,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.01
         },
         "integrity": 0.5,
         "glyph": {
@@ -56,7 +56,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.008
+          "**irons_spellbooks:cooldown_reduction": 0.008
         },
         "integrity": 0.5,
         "glyph": {
@@ -78,7 +78,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.01
         },
         "integrity": 0.5,
         "glyph": {
@@ -100,7 +100,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.011
+          "**irons_spellbooks:cooldown_reduction": 0.011
         },
         "integrity": 0.5,
         "glyph": {
@@ -122,7 +122,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.013
+          "**irons_spellbooks:cooldown_reduction": 0.013
         },
         "integrity": 0.5,
         "glyph": {
@@ -144,7 +144,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.006
+          "**irons_spellbooks:cooldown_reduction": 0.006
         },
         "integrity": 0.5,
         "glyph": {
@@ -166,7 +166,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.015
+          "**irons_spellbooks:cooldown_reduction": 0.015
         },
         "integrity": 0.5,
         "glyph": {
@@ -188,7 +188,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.011
+          "**irons_spellbooks:cooldown_reduction": 0.011
         },
         "integrity": 0.5,
         "glyph": {
@@ -210,7 +210,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0086
+          "**irons_spellbooks:cooldown_reduction": 0.0086
         },
         "integrity": 0.5,
         "glyph": {
@@ -232,7 +232,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.007
+          "**irons_spellbooks:cooldown_reduction": 0.007
         },
         "integrity": 0.5,
         "glyph": {
@@ -254,7 +254,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.007
+          "**irons_spellbooks:cooldown_reduction": 0.007
         },
         "integrity": 0.5,
         "glyph": {
@@ -276,7 +276,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.01
         },
         "integrity": 0.5,
         "glyph": {
@@ -298,7 +298,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0096
+          "**irons_spellbooks:cooldown_reduction": 0.0096
         },
         "integrity": 0.5,
         "glyph": {
@@ -320,7 +320,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0085
+          "**irons_spellbooks:cooldown_reduction": 0.0085
         },
         "integrity": 0.5,
         "glyph": {
@@ -342,7 +342,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0078
+          "**irons_spellbooks:cooldown_reduction": 0.0078
         },
         "integrity": 0.5,
         "glyph": {
@@ -364,7 +364,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.01
         },
         "integrity": 0.5,
         "glyph": {
@@ -386,7 +386,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.012
+          "**irons_spellbooks:cooldown_reduction": 0.012
         },
         "integrity": 0.5,
         "glyph": {
@@ -408,7 +408,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0088
+          "**irons_spellbooks:cooldown_reduction": 0.0088
         },
         "integrity": 0.5,
         "glyph": {
@@ -430,7 +430,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0095
+          "**irons_spellbooks:cooldown_reduction": 0.0095
         },
         "integrity": 0.5,
         "glyph": {
@@ -452,7 +452,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0076
+          "**irons_spellbooks:cooldown_reduction": 0.0076
         },
         "integrity": 0.5,
         "glyph": {
@@ -474,7 +474,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0096
+          "**irons_spellbooks:cooldown_reduction": 0.0096
         },
         "integrity": 0.5,
         "glyph": {
@@ -496,7 +496,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0072
+          "**irons_spellbooks:cooldown_reduction": 0.0072
         },
         "integrity": 0.5,
         "glyph": {
@@ -518,7 +518,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.009
+          "**irons_spellbooks:cooldown_reduction": 0.009
         },
         "integrity": 0.5,
         "glyph": {
@@ -540,7 +540,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.014
+          "**irons_spellbooks:cooldown_reduction": 0.014
         },
         "integrity": 0.5,
         "glyph": {
@@ -562,7 +562,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.005
+          "**irons_spellbooks:cooldown_reduction": 0.005
         },
         "integrity": 0.5,
         "glyph": {
@@ -584,7 +584,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.006
+          "**irons_spellbooks:cooldown_reduction": 0.006
         },
         "integrity": 0.5,
         "glyph": {
@@ -606,7 +606,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.0075
+          "**irons_spellbooks:cooldown_reduction": 0.0075
         },
         "integrity": 0.5,
         "glyph": {
@@ -628,7 +628,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.009
+          "**irons_spellbooks:cooldown_reduction": 0.009
         },
         "integrity": 0.5,
         "glyph": {
@@ -661,7 +661,7 @@
         "models": [],
         "magicCapacity": 0.5,
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.005
+          "**irons_spellbooks:cooldown_reduction": 0.005
         }
       }
     },
@@ -683,7 +683,7 @@
         "models": [],
         "magicCapacity": 0.5,
         "primaryAttributes": {
-          "*irons_spellbooks:cooldown_reduction": 0.005
+          "**irons_spellbooks:cooldown_reduction": 0.005
         }
       }
     },

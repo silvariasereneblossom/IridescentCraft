@@ -1,0 +1,9 @@
+{
+  "item.simple_staves.woodenwand":  "Wooden Wand",
+  "item.simple_staves.stone_wand":  "Stone Wand",
+  "item.simple_staves.iron_wand":   "Iron Wand",
+  "item.simple_staves.gold_wand":   "Gold Wand",
+  "item.simple_staves.diamond_wand":"Diamond Wand",
+  "item.simple_staves.netherite_wand": "Netherite Wand",
+  "item.simple_staves.venomite_wand":  "Venomite Wand"
+}

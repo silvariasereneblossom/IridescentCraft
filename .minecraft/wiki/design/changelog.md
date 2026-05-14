@@ -4,6 +4,80 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Tetra MULTIPLY_BASE display bug: switch percent attrs to MULTIPLY_TOTAL
+
+Tester reported the modular wand showing only `Max Mana` -- the three percent
+stats (spell_power / mana_regen / cooldown_reduction) had vanished from the
+tooltip. Vanilla material wands were still showing all four (but as raw
+decimals, e.g., "+0.15 Spell Power").
+
+### Root cause
+Decompiled `se.mickelus.tetra.properties.AttributeHelper.collapse()`:
+
+```java
+public static double getAdditionAmount(Collection<AttributeModifier> modifiers) {
+    double base = modifiers.stream().filter(ADDITION).sum();
+    return base + modifiers.stream().filter(MULTIPLY_BASE)
+        .map(amount -> amount * Math.abs(base)).sum();
+}
+```
+
+When an attribute has only MULTIPLY_BASE modifiers and no ADDITION ones,
+`base == 0` and every MULTIPLY_BASE contribution gets multiplied by 0 and
+silently dropped. The collapsed output has no modifier for that attribute,
+so the tooltip omits it entirely.
+
+Modular wand variants had `*spell_power`, `*mana_regen`, `*cooldown_reduction`
+(MULTIPLY_BASE) with no ADDITION sibling -> all three collapsed to zero.
+`max_mana` survived because it's ADDITION.
+
+Vanilla material wands inject via Forge's `ItemAttributeModifierEvent`
+(`WandTierAttributes.java`), which bypasses Tetra's collapse path entirely
+-- so their ADDITION modifiers rendered fine (just as ugly raw decimals).
+
+### Fix (3 parts)
+
+1. **Bulk convert `*` -> `**`** (MULTIPLY_BASE -> MULTIPLY_TOTAL) across all
+   Tetra modular item attributes. `getMultiplyAmount` uses
+   `product(1 + each)` which doesn't depend on a base, so collapse emits
+   a non-zero modifier that vanilla Forge tooltip renders as "+X%".
+   - 35 files modified, 246 attribute keys converted
+   - Scope: every JSON under `data/tetra/modules/**` and
+     `data/tetra/improvements/**` (wand, iss_book, ars_book, armor pieces,
+     hone improvements)
+
+2. **Switch WandTierAttributes.java** from `ADDITION` to `MULTIPLY_BASE`.
+   The vanilla material wands now display "+X%" instead of "+0.X" because
+   vanilla Forge's tooltip code handles MULTIPLY_BASE correctly when
+   bypassing Tetra's collapse. (Affects: simple_staves vanilla material
+   wands + ISS staves + Dan's Magic staves + non-Tetra spell books on
+   the drop ladder.)
+
+3. **Title-case the vanilla SS wand display names** via
+   `kubejs/assets/simple_staves/lang/en_us.json`. Simple Staves shipped
+   "wooden wand", "stone wand", "iron wand", "gold wand", "diamond wand"
+   all lowercase; override to "Wooden Wand" etc. for consistency with
+   the rest of the pack. (Other SS wands like Tenebrium Wand were already
+   title-cased upstream.)
+
+### Math impact of the stacking-mode change
+MULTIPLY_BASE was the "linear-additive stacking" choice per the
+2026-05-12 design call (revoked from an earlier MULTIPLY_TOTAL). The
+display bug forced this revert. At typical per-module values (5-10%),
+the multiplicative compounding adds <5% to the stacking total vs
+additive -- within tolerance. At high stacks the difference grows.
+The `feedback_mage_power_curve.md` memory's "uncapped multiplicative
+stacking is intentional" guideline applies, so multiplicative is
+acceptable.
+
+### Files
+- 35 module + improvement JSONs across the mod source
+- `iridescent-tetra-expansion-mod/.../WandTierAttributes.java`
+- `kubejs/assets/simple_staves/lang/en_us.json`
+- jar rebuilt + deployed to all 3 distros
+
+---
+
 ## 2026-05-14 — Mana bridge followups: UI unification + ISS school SP -> Ars spell damage
 
 ### UI: hide Ars perk mana rows from Apothic Stats GUI

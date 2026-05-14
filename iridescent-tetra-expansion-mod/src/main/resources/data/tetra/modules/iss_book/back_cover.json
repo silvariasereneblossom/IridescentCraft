@@ -698,7 +698,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:spell_power": 0.008
+          "**irons_spellbooks:spell_power": 0.008
         },
         "integrity": 0.5,
         "glyph": {
@@ -720,7 +720,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:spell_power": 0.01
+          "**irons_spellbooks:spell_power": 0.01
         },
         "integrity": 0.5,
         "glyph": {
@@ -742,8 +742,8 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:spell_power": 0.015,
-          "irons_spellbooks:max_mana": 2.0
+          "irons_spellbooks:max_mana": 2.0,
+          "**irons_spellbooks:spell_power": 0.015
         },
         "integrity": 0.5,
         "glyph": {
@@ -765,7 +765,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:spell_power": 0.02
+          "**irons_spellbooks:spell_power": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -787,7 +787,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "*irons_spellbooks:spell_power": 0.025
+          "**irons_spellbooks:spell_power": 0.025
         },
         "integrity": 0.5,
         "glyph": {

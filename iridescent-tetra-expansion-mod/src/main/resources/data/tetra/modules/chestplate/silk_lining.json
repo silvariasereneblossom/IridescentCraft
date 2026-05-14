@@ -14,7 +14,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.022,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -38,7 +38,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.04,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -62,7 +62,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.04,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -86,7 +86,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.034,
           "irons_spellbooks:max_mana": 17.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -110,8 +110,8 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.056,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor_toughness": 0.2,
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -135,8 +135,8 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.064,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.knockback_resistance": 0.05,
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -160,7 +160,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -184,7 +184,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -208,7 +208,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -232,7 +232,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -256,7 +256,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -280,7 +280,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -304,7 +304,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
@@ -372,7 +372,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.042,
           "irons_spellbooks:max_mana": 12.0,
-          "*irons_spellbooks:mana_regen": 0.02
+          "**irons_spellbooks:mana_regen": 0.02
         },
         "integrity": 0.5,
         "glyph": {
