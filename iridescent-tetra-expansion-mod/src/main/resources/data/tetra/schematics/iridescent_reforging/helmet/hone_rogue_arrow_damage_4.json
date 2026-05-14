@@ -1,0 +1,44 @@
+{
+  "slots": [
+    "helmet/crown"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:accepts_improvement",
+        "improvement": "armor/rogue_hone/helmet"
+      },
+      {
+        "type": "tetra:improvement",
+        "improvement": "armor/rogue_hone/helmet",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "armor/rogue_hone/helmet",
+          "level": 4
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:diamond"
+      },
+      "improvements": {
+        "armor/rogue_hone/helmet": 1
+      }
+    }
+  ]
+}

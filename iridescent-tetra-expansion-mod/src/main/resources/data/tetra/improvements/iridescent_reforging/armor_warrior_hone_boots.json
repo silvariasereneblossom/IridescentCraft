@@ -1,0 +1,37 @@
+[
+  {
+    "key": "armor/warrior_hone/boots",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.armor": 2
+    }
+  },
+  {
+    "key": "armor/warrior_hone/boots",
+    "level": 2,
+    "attributes": {
+      "minecraft:generic.armor": 3
+    }
+  },
+  {
+    "key": "armor/warrior_hone/boots",
+    "level": 3,
+    "attributes": {
+      "minecraft:generic.armor": 4
+    }
+  },
+  {
+    "key": "armor/warrior_hone/boots",
+    "level": 4,
+    "attributes": {
+      "minecraft:generic.armor": 5
+    }
+  },
+  {
+    "key": "armor/warrior_hone/boots",
+    "level": 5,
+    "attributes": {
+      "minecraft:generic.armor": 6
+    }
+  }
+]

@@ -5,7 +5,8 @@
   ],
   "improvements": [
     "tetra:armor/mage/",
-    "tetra:armor/shared/"
+    "tetra:armor/shared/",
+    "tetra:armor/mage_hone/"
   ],
   "variants": [
     {

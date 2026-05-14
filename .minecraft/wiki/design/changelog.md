@@ -4,6 +4,70 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Armor + wand honing: full archetype-specific stack
+
+### Armor: 80 new hone schematics (major-slot, archetype-gated)
+
+Previously the armor stack had zero hone options (only the 5 archetype
+improvements: tempered/runic/streamlined/reinforced/polished). Added a hone
+ladder per (archetype, piece) targeting the major slot.
+
+Tetra-API constraint: requirement types only test the target module, so
+cross-slot archetype gating on minor slots isn't possible without a custom
+Java requirement. Decision: ship major-slot-only hones with strict
+`tetra:accepts_improvement` gating. Mirrors the existing armor improvement
+pattern. Minor slots remain un-honable for now (revisitable as Phase 2 with
+a small custom requirement type if needed).
+
+Matrix (1 stat per archetype-piece, 5 levels each):
+
+| Archetype | Chestplate | Helmet | Boots | Leggings |
+|---|---|---|---|---|
+| Warrior  | Armor (+2/3/4/5/6) | Armor (+2..+6) | Armor (+2..+6) | Armor (+2..+6) |
+| Balanced | Armor (+1..+5) | Armor (+1..+5) | Movement Speed (+1%..+5%) | Armor (+1..+5) |
+| Rogue    | Attack Damage (+0.5..+2.5) | Arrow Damage (+0.5..+2.5) | Movement Speed (+1%..+5%) | Movement Speed (+1%..+5%) |
+| Mage     | Spell Power (+2%..+14% MULT) | Spell Power | Cooldown Reduction (+0.5%..+3% MULT) | Max Mana (+5..+40) |
+
+Tool gate per level (matches wand): L1 gold / L2 iron / L3 thermal:steel /
+L4 diamond / L5 netherite hammers.
+
+Gating: each major-slot module (cuirass / breastplate / robe_chest /
+scaled_chest, plus helmet/boots/leggings equivalents) now declares it
+accepts a synthetic `tetra:armor/<archetype>_hone/` improvement type. Hone
+schematics check `tetra:accepts_improvement` against that type, so the hone
+is only available when the matching archetype module is installed in the
+major slot.
+
+### Wand: full multi-option menu (3 paths per module)
+
+Previously each wand module had ONE hone path (handle->cooldown_reduction,
+core->max_mana, cap->mana_regen, inlay->spell_power). Added two additional
+paths per module with mutual-exclusion gating: once the player applies
+level 1 of any path on a module, the other two paths are locked out.
+
+| Module | Path A (existing) | Path B (new) | Path C (new) |
+|---|---|---|---|
+| handle | Cooldown Reduction | Spell Power     | Mana Regen |
+| core   | Max Mana           | Mana Regen      | Cooldown Reduction |
+| cap    | Mana Regen         | Max Mana        | Spell Resist |
+| inlay  | Spell Power        | Crit Chance     | Crit Damage |
+
+20 path-A schematics rewritten to include mutex requirements against the
+new B/C paths. 40 new schematics + 8 new improvement files. Apothic
+Attributes provides `crit_chance` and `crit_damage`; ISS provides
+`spell_resist`. No custom attributes needed.
+
+### Files
+- `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/schematics/iridescent_reforging/{chestplate,helmet,boots,leggings}/hone_*.json` (80 new)
+- `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/schematics/iridescent_reforging/wand/hone_*.json` (40 new, 20 rewritten)
+- `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/improvements/iridescent_reforging/armor_*_hone_*.json` (16 new)
+- `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/improvements/iridescent_reforging/wand_*_hone_*_{b,c}.json` (8 new)
+- `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/modules/{chestplate,helmet,boots,leggings}/*.json` (16 major-slot modules updated to accept synthetic archetype-hone improvement type)
+- `iridescent-tetra-expansion-mod/src/main/resources/assets/iridescent_reforging/lang/en_us.json` (48 new keys)
+- Jar rebuilt + deployed to all 3 distros
+
+---
+
 ## 2026-05-14 — Mutant Monsters: recipe strip + Hulk Hammer kept as T1 melee drop
 
 Followup to the 2026-05-13 MM drop/XP overhaul. Drops were zeroed via the

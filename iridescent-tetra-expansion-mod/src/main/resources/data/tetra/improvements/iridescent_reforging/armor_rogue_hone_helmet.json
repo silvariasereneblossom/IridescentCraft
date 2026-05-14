@@ -1,0 +1,37 @@
+[
+  {
+    "key": "armor/rogue_hone/helmet",
+    "level": 1,
+    "attributes": {
+      "attributeslib:arrow_damage": 0.5
+    }
+  },
+  {
+    "key": "armor/rogue_hone/helmet",
+    "level": 2,
+    "attributes": {
+      "attributeslib:arrow_damage": 1.0
+    }
+  },
+  {
+    "key": "armor/rogue_hone/helmet",
+    "level": 3,
+    "attributes": {
+      "attributeslib:arrow_damage": 1.5
+    }
+  },
+  {
+    "key": "armor/rogue_hone/helmet",
+    "level": 4,
+    "attributes": {
+      "attributeslib:arrow_damage": 2.0
+    }
+  },
+  {
+    "key": "armor/rogue_hone/helmet",
+    "level": 5,
+    "attributes": {
+      "attributeslib:arrow_damage": 2.5
+    }
+  }
+]

@@ -1,0 +1,37 @@
+[
+  {
+    "key": "wand_inlay_hone_crit_chance_b",
+    "level": 1,
+    "attributes": {
+      "attributeslib:crit_chance": 0.02
+    }
+  },
+  {
+    "key": "wand_inlay_hone_crit_chance_b",
+    "level": 2,
+    "attributes": {
+      "attributeslib:crit_chance": 0.04
+    }
+  },
+  {
+    "key": "wand_inlay_hone_crit_chance_b",
+    "level": 3,
+    "attributes": {
+      "attributeslib:crit_chance": 0.06
+    }
+  },
+  {
+    "key": "wand_inlay_hone_crit_chance_b",
+    "level": 4,
+    "attributes": {
+      "attributeslib:crit_chance": 0.08
+    }
+  },
+  {
+    "key": "wand_inlay_hone_crit_chance_b",
+    "level": 5,
+    "attributes": {
+      "attributeslib:crit_chance": 0.1
+    }
+  }
+]

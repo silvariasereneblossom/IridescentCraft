@@ -1,0 +1,56 @@
+{
+  "slots": [
+    "wand/handle"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "wand_handle_hone_spell_power_b",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_handle_hone_spell_power_b",
+          "level": 4
+        }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_handle_hone_cooldown_reduction",
+          "level": 1
+        }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_handle_hone_mana_regen_c",
+          "level": 1
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:diamond"
+      },
+      "improvements": {
+        "wand_handle_hone_spell_power_b": 1
+      }
+    }
+  ]
+}

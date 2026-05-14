@@ -1,10 +1,14 @@
 {
-  "slots": [ "wand/core" ],
+  "slots": [
+    "wand/core"
+  ],
   "materialSlotCount": 0,
   "hone": true,
   "rarity": "hone",
   "displayType": "improvement",
-  "glyph": { "textureY": 240 },
+  "glyph": {
+    "textureY": 240
+  },
   "requirement": {
     "type": "tetra:and",
     "requirements": [
@@ -20,13 +24,33 @@
           "improvement": "wand_core_hone_max_mana",
           "level": 2
         }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_core_hone_mana_regen_b",
+          "level": 1
+        }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_core_hone_cooldown_reduction_c",
+          "level": 1
+        }
       }
     ]
   },
   "outcomes": [
     {
-      "requiredTools": { "hammer_dig": "minecraft:iron" },
-      "improvements": { "wand_core_hone_max_mana": 1 }
+      "requiredTools": {
+        "hammer_dig": "minecraft:iron"
+      },
+      "improvements": {
+        "wand_core_hone_max_mana": 1
+      }
     }
   ]
 }

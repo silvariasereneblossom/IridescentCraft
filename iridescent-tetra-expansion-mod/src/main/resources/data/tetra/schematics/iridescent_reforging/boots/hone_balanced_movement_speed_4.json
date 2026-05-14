@@ -1,0 +1,44 @@
+{
+  "slots": [
+    "boots/boot_sole"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:accepts_improvement",
+        "improvement": "armor/balanced_hone/boots"
+      },
+      {
+        "type": "tetra:improvement",
+        "improvement": "armor/balanced_hone/boots",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "armor/balanced_hone/boots",
+          "level": 4
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:diamond"
+      },
+      "improvements": {
+        "armor/balanced_hone/boots": 1
+      }
+    }
+  ]
+}

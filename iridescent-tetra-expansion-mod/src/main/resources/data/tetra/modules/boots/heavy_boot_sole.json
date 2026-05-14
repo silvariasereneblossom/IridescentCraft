@@ -5,7 +5,8 @@
   ],
   "improvements": [
     "tetra:armor/warrior/",
-    "tetra:armor/shared/"
+    "tetra:armor/shared/",
+    "tetra:armor/warrior_hone/"
   ],
   "variants": [
     {

@@ -1,0 +1,56 @@
+{
+  "slots": [
+    "wand/cap"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:improvement",
+        "improvement": "wand_cap_hone_spell_resist_c",
+        "level": 3
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_cap_hone_spell_resist_c",
+          "level": 4
+        }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_cap_hone_mana_regen",
+          "level": 1
+        }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_cap_hone_max_mana_b",
+          "level": 1
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:diamond"
+      },
+      "improvements": {
+        "wand_cap_hone_spell_resist_c": 1
+      }
+    }
+  ]
+}

@@ -5,7 +5,8 @@
   ],
   "improvements": [
     "tetra:armor/balanced/",
-    "tetra:armor/shared/"
+    "tetra:armor/shared/",
+    "tetra:armor/balanced_hone/"
   ],
   "variants": [
     {

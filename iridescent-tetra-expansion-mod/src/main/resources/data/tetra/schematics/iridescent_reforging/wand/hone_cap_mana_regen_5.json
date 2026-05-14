@@ -24,6 +24,22 @@
           "improvement": "wand_cap_hone_mana_regen",
           "level": 5
         }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_cap_hone_max_mana_b",
+          "level": 1
+        }
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "wand_cap_hone_spell_resist_c",
+          "level": 1
+        }
       }
     ]
   },

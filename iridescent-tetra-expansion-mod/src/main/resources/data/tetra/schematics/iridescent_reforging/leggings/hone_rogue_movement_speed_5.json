@@ -1,0 +1,44 @@
+{
+  "slots": [
+    "leggings/leg_plate"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:accepts_improvement",
+        "improvement": "armor/rogue_hone/leggings"
+      },
+      {
+        "type": "tetra:improvement",
+        "improvement": "armor/rogue_hone/leggings",
+        "level": 4
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "armor/rogue_hone/leggings",
+          "level": 5
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "minecraft:netherite"
+      },
+      "improvements": {
+        "armor/rogue_hone/leggings": 1
+      }
+    }
+  ]
+}

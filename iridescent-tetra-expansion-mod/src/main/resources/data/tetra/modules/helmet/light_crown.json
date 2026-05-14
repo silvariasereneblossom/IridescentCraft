@@ -5,7 +5,8 @@
   ],
   "improvements": [
     "tetra:armor/rogue/",
-    "tetra:armor/shared/"
+    "tetra:armor/shared/",
+    "tetra:armor/rogue_hone/"
   ],
   "variants": [
     {

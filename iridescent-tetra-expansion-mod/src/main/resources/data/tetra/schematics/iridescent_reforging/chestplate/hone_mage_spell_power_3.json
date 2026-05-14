@@ -1,0 +1,44 @@
+{
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "materialSlotCount": 0,
+  "hone": true,
+  "rarity": "hone",
+  "displayType": "improvement",
+  "glyph": {
+    "textureY": 240
+  },
+  "requirement": {
+    "type": "tetra:and",
+    "requirements": [
+      {
+        "type": "tetra:accepts_improvement",
+        "improvement": "armor/mage_hone/chestplate"
+      },
+      {
+        "type": "tetra:improvement",
+        "improvement": "armor/mage_hone/chestplate",
+        "level": 2
+      },
+      {
+        "type": "tetra:not",
+        "requirement": {
+          "type": "tetra:improvement",
+          "improvement": "armor/mage_hone/chestplate",
+          "level": 3
+        }
+      }
+    ]
+  },
+  "outcomes": [
+    {
+      "requiredTools": {
+        "hammer_dig": "thermal:steel"
+      },
+      "improvements": {
+        "armor/mage_hone/chestplate": 1
+      }
+    }
+  ]
+}

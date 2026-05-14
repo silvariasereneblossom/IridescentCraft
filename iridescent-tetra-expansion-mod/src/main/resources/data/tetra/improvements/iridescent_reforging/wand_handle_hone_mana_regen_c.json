@@ -1,0 +1,37 @@
+[
+  {
+    "key": "wand_handle_hone_mana_regen_c",
+    "level": 1,
+    "attributes": {
+      "*irons_spellbooks:mana_regen": 0.005
+    }
+  },
+  {
+    "key": "wand_handle_hone_mana_regen_c",
+    "level": 2,
+    "attributes": {
+      "*irons_spellbooks:mana_regen": 0.01
+    }
+  },
+  {
+    "key": "wand_handle_hone_mana_regen_c",
+    "level": 3,
+    "attributes": {
+      "*irons_spellbooks:mana_regen": 0.016
+    }
+  },
+  {
+    "key": "wand_handle_hone_mana_regen_c",
+    "level": 4,
+    "attributes": {
+      "*irons_spellbooks:mana_regen": 0.022
+    }
+  },
+  {
+    "key": "wand_handle_hone_mana_regen_c",
+    "level": 5,
+    "attributes": {
+      "*irons_spellbooks:mana_regen": 0.03
+    }
+  }
+]
