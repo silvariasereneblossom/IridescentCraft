@@ -40,11 +40,23 @@ on previously injected entries when path is reclassified).
 
 Result: 489 scroll entries, 0 missing `randomize_spell` across all 3 distros.
 
+### Retroactive fix for existing blank scrolls
+The override-pack fix only takes effect on NEW loot rolls. Existing chests
+(already generated) and scrolls already in player inventories still carry the
+legacy "None" state. Added `kubejs/server_scripts/randomize_blank_scrolls.js`:
+on `PlayerEvents.loggedIn` and `PlayerEvents.inventoryChanged`, scan the
+player's main inventory for blank scrolls and bind a random spell via
+`ISpellContainer.createScrollContainer`. Spell selection mirrors
+`RandomizeSpellFunction` (rarity-weighted: COMMON=40, UNCOMMON=30, RARE=15,
+EPIC=8, LEGENDARY=4); T1 quality (0.0-0.2) — scrolls left in chests get
+randomized the moment the player picks them up.
+
 ### Files
 - `datapack_sources/icraft_loot_overrides/data/**/*.json` — 477 files modified
 - `config/paxi/datapacks/icraft_loot_overrides.zip` — rebuilt
 - `server_distribution/config/paxi/datapacks/icraft_loot_overrides.zip` — rebuilt
 - `distribution/client/config/paxi/datapacks/icraft_loot_overrides.zip` — rebuilt
+- `kubejs/server_scripts/randomize_blank_scrolls.js` — new file, 3 distros
 
 ### Lesson
 The previous fix only touched the 5 files Claude could see in a single inspection
