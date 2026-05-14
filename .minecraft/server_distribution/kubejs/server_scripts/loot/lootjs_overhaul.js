@@ -1832,6 +1832,28 @@ LootJS.modifiers(event => {
     .removeLoot('blue_skies:charoite')
     .removeLoot('blue_skies:diopside')
 
+  // Blue Skies gatekeeper houses spawn in overworld plains/mountain/snowy
+  // biomes (the lore entry-point to Blue Skies dimensions). Their barrels
+  // contain T2 leakage that the broad LootType.CHEST + anyDimension strip
+  // above isn't catching reliably -- tester confirmed ventium_ingot and
+  // moonstone_shard still appearing. Belt-and-suspenders: explicit
+  // table-targeted strips for the 4 gatekeeper tables.
+  //
+  // plains:   ventium_ingot (T2 leak)
+  // book:     moonstone_shard (T2 portal material -- Blue Skies access gate)
+  // mountain: clean (food + leather_boots)
+  // snowy:    clean (food + winter flavor)
+  //
+  // Note (2026-05-14): post-alpha, if Blue Skies moves to T1, this strip
+  // can be removed entirely and gatekeeper houses become legitimate T1
+  // discovery loot. Until then, gate the metals.
+  event
+    .addLootTableModifier('blue_skies:chests/gatekeeper_house/plains')
+    .removeLoot('blue_skies:ventium_ingot')
+  event
+    .addLootTableModifier('blue_skies:chests/gatekeeper_house/book')
+    .removeLoot('blue_skies:moonstone_shard')
+
   // =========================================================================
   // SECTION 5C: OCEAN STRUCTURE LOOT
   // =========================================================================
