@@ -3,35 +3,35 @@
     "key": "wand_cap_hone_spell_resist_c",
     "level": 1,
     "attributes": {
-      "irons_spellbooks:spell_resist": 0.05
+      "**irons_spellbooks:spell_resist": 0.05
     }
   },
   {
     "key": "wand_cap_hone_spell_resist_c",
     "level": 2,
     "attributes": {
-      "irons_spellbooks:spell_resist": 0.1
+      "**irons_spellbooks:spell_resist": 0.1
     }
   },
   {
     "key": "wand_cap_hone_spell_resist_c",
     "level": 3,
     "attributes": {
-      "irons_spellbooks:spell_resist": 0.15
+      "**irons_spellbooks:spell_resist": 0.15
     }
   },
   {
     "key": "wand_cap_hone_spell_resist_c",
     "level": 4,
     "attributes": {
-      "irons_spellbooks:spell_resist": 0.2
+      "**irons_spellbooks:spell_resist": 0.2
     }
   },
   {
     "key": "wand_cap_hone_spell_resist_c",
     "level": 5,
     "attributes": {
-      "irons_spellbooks:spell_resist": 0.25
+      "**irons_spellbooks:spell_resist": 0.25
     }
   }
 ]
