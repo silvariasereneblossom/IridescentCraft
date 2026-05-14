@@ -1,0 +1,48 @@
+{
+  "variant": "cast_time",
+  "weight": 10,
+  "quality": 0,
+  "dimensions": [],
+  "bonuses": [
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "anything"
+      },
+      "attribute": "irons_spellbooks:cast_time_reduction",
+      "operation": "MULTIPLY_TOTAL",
+      "values": {
+        "common": {
+          "min": 0.05,
+          "steps": 3,
+          "step": 0.01
+        },
+        "uncommon": {
+          "min": 0.08,
+          "steps": 4,
+          "step": 0.01
+        },
+        "rare": {
+          "min": 0.12,
+          "steps": 6,
+          "step": 0.01
+        },
+        "epic": {
+          "min": 0.18,
+          "steps": 8,
+          "step": 0.01
+        },
+        "mythic": {
+          "min": 0.26,
+          "steps": 10,
+          "step": 0.01
+        },
+        "ancient": {
+          "min": 0.34,
+          "steps": 12,
+          "step": 0.01
+        }
+      }
+    }
+  ]
+}

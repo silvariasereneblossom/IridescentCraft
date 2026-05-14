@@ -1,0 +1,48 @@
+{
+  "variant": "evocation",
+  "weight": 10,
+  "quality": 0,
+  "dimensions": [],
+  "bonuses": [
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "anything"
+      },
+      "attribute": "irons_spellbooks:evocation_spell_power",
+      "operation": "MULTIPLY_TOTAL",
+      "values": {
+        "common": {
+          "min": 0.06,
+          "steps": 3,
+          "step": 0.01
+        },
+        "uncommon": {
+          "min": 0.09,
+          "steps": 5,
+          "step": 0.01
+        },
+        "rare": {
+          "min": 0.15,
+          "steps": 7,
+          "step": 0.01
+        },
+        "epic": {
+          "min": 0.23,
+          "steps": 9,
+          "step": 0.01
+        },
+        "mythic": {
+          "min": 0.33,
+          "steps": 11,
+          "step": 0.01
+        },
+        "ancient": {
+          "min": 0.45,
+          "steps": 16,
+          "step": 0.01
+        }
+      }
+    }
+  ]
+}

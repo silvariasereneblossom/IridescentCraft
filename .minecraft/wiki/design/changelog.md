@@ -4,6 +4,79 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — ISS Apotheosis gems buffed; bidirectional ISS<->Ars mana bridge
+
+### ISS gems were under-tuned
+ISS ships 13 Apotheosis-compatible gems (data at `data/irons_spellbooks/gems/`)
+with uniformly weak values: 1/3/5/7/10/15% MULTIPLY_TOTAL flat, no roll
+variance within a tier. Native Apotheosis gems sit at ~3x these magnitudes.
+
+### Buff via Paxi override (`icraft_iss_gem_buffs.zip`)
+13 gem JSONs overriding the ISS defaults. New ladder:
+
+| Gem set | Operation | C / U / R / E / M / A |
+|---|---|---|
+| 8 school SP (blood / ender / evocation / fire / holy / ice / lightning / nature) + summoning | MULTIPLY_TOTAL | 6-8 / 9-13 / 15-21 / 23-31 / 33-43 / 45-60% |
+| cast_time / cooldown | MULTIPLY_TOTAL | 5-7 / 8-11 / 12-17 / 18-25 / 26-35 / 34-45% |
+| **`spell_resist` REPURPOSED -> generic spell_power gem** | MULTIPLY_TOTAL | 3-5 / 6-9 / 8-12 / 13-17 / 18-23 / 24-30% |
+| intelligent (multi-bonus: max_mana + mana_regen) | ADDITION / MULTIPLY_BASE | mm: 5-14 / 15-29 / 30-49 / 50-79 / 80-119 / 120-180 (flat)<br/>regen: 3-5 / 6-9 / 8-12 / 13-17 / 18-23 / 24-30% |
+
+The `spell_resist` filename + variant key is preserved so ISS's bundled
+asset/model/texture/lang hooks still resolve. A KubeJS asset override at
+`kubejs/assets/apotheosis/lang/en_us.json` renames the displayed gem
+"Gem of Spell Resistance" -> "Gem of Arcane Affinity" (Apotheosis lang
+key: `item.apotheosis.gem.irons_spellbooks:spell_resist`).
+
+All gems pick up tier-internal roll variance via `steps`/`step` per rarity,
+so the chase loop now extends across each rarity band (a roll-perfect
+ancient feels distinct from a roll-floor one).
+
+### Bidirectional mana bridge (ISS <-> Ars)
+`kubejs/server_scripts/attributes/mana_bridge.js` -- 1 Hz server tick that
+mirrors gear-contributed mana modifiers between mods:
+
+- `irons_spellbooks:max_mana` <-> `ars_nouveau:ars_nouveau.perk.max_mana` (ADDITION)
+- `irons_spellbooks:mana_regen` <-> `ars_nouveau:ars_nouveau.perk.mana_regen` (MULTIPLY_BASE)
+
+Math: per attribute pair, sum gear modifiers (excluding our own bridge
+contribution to avoid self-feedback), then upsert a deterministic-UUID
+bridge modifier on the OTHER attribute with that sum. Stable across ticks.
+
+Result: a player wearing an ISS-only ring (+50 max_mana) gets the equivalent
++50 mana effect when casting Ars spells, and vice versa. The intelligent
+gem also benefits -- it emits ISS attributes only, but the bridge mirrors
+them to Ars at the player level, so the gem feels universal.
+
+Items stay mono-namespace (ISS books emit ISS attrs; Ars books emit Ars).
+This keeps individual item tooltips unified (one mana line per item) while
+the bridge handles cross-mod equivalence at the player level. The Apothic
+Attributes Stats panel WILL still show both attributes separately -- they
+exist as separate Forge attributes with different base values -- but that's
+expected and isn't visible during normal play.
+
+Ars caches max_mana via `IManaCap.setMaxMana(int)`; the bridge force-kicks
+the cache only when the mirrored value actually changes (tracked per-player
+to avoid per-tick cache thrash).
+
+### Files
+- `datapack_sources/icraft_iss_gem_buffs/` -- new Paxi datapack source
+  (13 gem JSONs in `data/irons_spellbooks/gems/`)
+- `config/paxi/datapacks/icraft_iss_gem_buffs.zip` -- built + deployed 3x
+- `config/paxi/datapack_load_order.json` -- added entry just after iss_overrides
+- `kubejs/server_scripts/attributes/mana_bridge.js` -- new bridge script
+- `kubejs/assets/apotheosis/lang/en_us.json` -- spell_resist gem display rename
+- All deployed to 3 distros
+
+### Follow-up audit hint
+`iridescent-tetra-expansion-mod/.../ars_book/{back_cover,front_cover}.json` IRON
+variants currently emit `irons_spellbooks:max_mana` (cross-pollination bug from
+an earlier authoring pass). Ars books should be Ars-only; if you see double
+Max Mana lines on an Ars book held in hand, that's the source. Fixable in a
+separate sweep -- the bridge masks the symptom but the right fix is to make
+the variant emit Ars-only attributes.
+
+---
+
 ## 2026-05-14 — Apotheosis toolkit ungated; rarity ladder is the gate
 
 User design call: "the gates should be the rarity of gems and affixes

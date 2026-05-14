@@ -1,0 +1,48 @@
+{
+  "variant": "spell_resist",
+  "weight": 10,
+  "quality": 0,
+  "dimensions": [],
+  "bonuses": [
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "anything"
+      },
+      "attribute": "irons_spellbooks:spell_power",
+      "operation": "MULTIPLY_TOTAL",
+      "values": {
+        "common": {
+          "min": 0.03,
+          "steps": 3,
+          "step": 0.01
+        },
+        "uncommon": {
+          "min": 0.06,
+          "steps": 4,
+          "step": 0.01
+        },
+        "rare": {
+          "min": 0.08,
+          "steps": 5,
+          "step": 0.01
+        },
+        "epic": {
+          "min": 0.13,
+          "steps": 5,
+          "step": 0.01
+        },
+        "mythic": {
+          "min": 0.18,
+          "steps": 6,
+          "step": 0.01
+        },
+        "ancient": {
+          "min": 0.24,
+          "steps": 7,
+          "step": 0.01
+        }
+      }
+    }
+  ]
+}
