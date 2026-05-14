@@ -110,12 +110,12 @@ The pack moves through four tiers. Each tier is a step-change in power, availabl
 
 ### Tier identity
 
-| Tier | Identity | Player feel |
-|------|----------|-------------|
-| **T1** — Bronze Age Explorer | Overworld only. Iron / copper / brass. Create kinetics. Starter spells. First village trades. | *"I'm exploring and learning. Magic feels possible. Tech feels achievable."* |
-| **T2** — Enchanted Adventurer | Twilight Forest, Blue Skies, the Aether. First dimensional bosses. Steel and Manasteel. Ars Nouveau source infrastructure. Themed Simply Swords uniques. | *"I'm specializing. My class identity is forming. I have a clear next-target boss."* |
-| **T3** — Empowered Slayer | Undergarden, Deeper Darker, Nether, Abyss. Diamond access. Terrasteel / Elementium / Enderium. Mekanism basic + Refined Storage. F&A Hephaestus Forge. Occultism spirit bindings. Cataclysm boss line. | *"I'm powerful. I'm scaling. I have a factory or a mage-lab or a death-set."* |
-| **T4** — God-Killer | Deep Aether, the End, Ad Astra. Netherite / Gaia / Aethersteel. Mahou Tsukai. MekaSuit + Mekanism advanced. RFTools Dimensions. Ascension and Rifts. | *"I'm absurd. The world responds in kind. The Ender Dragon and Ancient Remnant exist to be killed by me."* |
+| Tier | Identity | "Complete experience" composition | Player feel |
+|------|----------|-----------------------------------|-------------|
+| **T1** — Bronze Age Explorer | Overworld + Botania starter chain + Create kinetics + early ISS/Ars magic. Iron / copper / brass. (Post-alpha: Blue Skies as alt T1 dimension; see [Roadmap](../roadmap/planned.md).) | Overworld worldgen depth, Botania mana entry, Create early automation, starter spell scrolls, first village trades, Tetra modular weapons / wands / books, Apotheosis affix loop (common-rare). | *"I'm exploring and learning. Magic feels possible. Tech feels achievable."* |
+| **T2** — Enchanted Adventurer | Twilight Forest + Aether + Blue Skies (until T1 move) — three dimensional alt-paths. First mechanized tech via Thermal Series. New combat addons: Simply Swords uniques, Apotheosis-tier elite mobs, themed boss drops. | Three dimensions with distinct progression curves, first dimensional bosses (Naga / Hydra / Lich / Sun Spirit / etc.), Thermal Series mechanized intro (steam dynamos / pulverizers / induction smelters), Ars Nouveau source infrastructure, Manasteel + Steel + dimension-themed metals. | *"I'm specializing. My class identity is forming. I have a clear next-target boss."* |
+| **T3** — Empowered Slayer | Undergarden + Deeper Darker + Nether + Abyss. **The Mekanism tier** — most of the Mekanism progression chain (basic-to-intermediate factories, gas pipelines, fission/fusion prep). Diamond access. F&A Hephaestus Forge. Occultism spirit bindings. | Four mid-tier dimensions, Mekanism factories + Refined Storage networks, Terrasteel / Elementium / Enderium, Cataclysm boss line, Diamond/Netherite material chain unlocks, the affix Mythic ceiling. | *"I'm powerful. I'm scaling. I have a factory or a mage-lab or a death-set."* |
+| **T4** — God-Killer | Deep Aether + the End + Ad Astra planets. **Full package** — Mekanism advanced (MekaSuit, fission, antimatter), Mahou Tsukai, RFTools Dimensions, Ascension cycles, Rifts. | Endgame dimensions (each with its own boss + chase items), MekaSuit Mk2 + Mahou Tsukai + Ascension loops, Gaia / Aethersteel / Primordial Essence, Mythic Forge, Ancient affix ceiling. | *"I'm absurd. The world responds in kind. The Ender Dragon and Ancient Remnant exist to be killed by me."* |
 
 → Per-tier material lists and mod placements: [Appendix §A](master-appendix.md#a-tier-material-reference) and [§F](master-appendix.md#f-mod-roster-by-tier).
 
