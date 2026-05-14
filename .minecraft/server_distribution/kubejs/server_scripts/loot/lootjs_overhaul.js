@@ -1834,25 +1834,51 @@ LootJS.modifiers(event => {
 
   // Blue Skies gatekeeper houses spawn in overworld plains/mountain/snowy
   // biomes (the lore entry-point to Blue Skies dimensions). Their barrels
-  // contain T2 leakage that the broad LootType.CHEST + anyDimension strip
-  // above isn't catching reliably -- tester confirmed ventium_ingot and
-  // moonstone_shard still appearing. Belt-and-suspenders: explicit
-  // table-targeted strips for the 4 gatekeeper tables.
+  // were falling outside the broad LootType.CHEST + anyDimension('overworld')
+  // matchers above -- so they were getting:
+  //   - Unfiltered Relics GLM injection (Infinity Ham + other strips)
+  //   - Unfiltered Apotheosis gem GLM injection (uncut/dead gems)
+  //   - Unfiltered Artifacts GLM injection (untiered artifacts)
+  //   - Native T2 leakage in the barrel tables (ventium, moonstone)
   //
-  // plains:   ventium_ingot (T2 leak)
-  // book:     moonstone_shard (T2 portal material -- Blue Skies access gate)
-  // mountain: clean (food + leather_boots)
-  // snowy:    clean (food + winter flavor)
+  // Fix (2026-05-14): explicit per-table strip applying the same
+  // namespaced filters our overworld chests get, but routed via
+  // addLootTableModifier so the targeting can't be missed.
   //
-  // Note (2026-05-14): post-alpha, if Blue Skies moves to T1, this strip
-  // can be removed entirely and gatekeeper houses become legitimate T1
-  // discovery loot. Until then, gate the metals.
-  event
-    .addLootTableModifier('blue_skies:chests/gatekeeper_house/plains')
-    .removeLoot('blue_skies:ventium_ingot')
-  event
-    .addLootTableModifier('blue_skies:chests/gatekeeper_house/book')
-    .removeLoot('blue_skies:moonstone_shard')
+  // Native barrel contents observed in the BS jar:
+  //   plains:   baked_potato/black_wool/bread/dandelion + ventium_ingot (T2)
+  //   book:     book/paper/bread/map + moonstone_shard (T2 portal mat)
+  //   mountain: wheat/stick/bread/spruce_log + cooked_monitor_tail + leather_boots
+  //   snowy:    wheat/charcoal/bread/sweet_berries + snowcap_pinhead
+  //
+  // Note: post-alpha, if Blue Skies moves to T1 (see roadmap/planned.md),
+  // remove this whole block -- gatekeeper houses become legitimate T1
+  // discovery loot at that point.
+  const gatekeeperHouseChests = [
+    'blue_skies:chests/gatekeeper_house/plains',
+    'blue_skies:chests/gatekeeper_house/mountain',
+    'blue_skies:chests/gatekeeper_house/snowy',
+    'blue_skies:chests/gatekeeper_house/book',
+  ]
+  gatekeeperHouseChests.forEach(table => {
+    let mod = event.addLootTableModifier(table)
+    // Same curated relic strip the overworld chests get
+    removedRelics.forEach(r => mod.removeLoot(r))
+    // T2+ Blue Skies metals + portal material
+    mod.removeLoot('blue_skies:ventium_ingot')
+    mod.removeLoot('blue_skies:moonstone_shard')
+    mod.removeLoot('blue_skies:falsite_ingot')
+    mod.removeLoot('blue_skies:horizonite_ingot')
+    mod.removeLoot('blue_skies:charoite')
+    mod.removeLoot('blue_skies:diopside')
+    // Apotheosis GLM injects uncut/dead gems here -- strip the whole
+    // namespace from gatekeeper barrels (legitimate gems still flow into
+    // villages + dungeons via curated paths elsewhere).
+    mod.removeLoot('@apotheosis')
+    // Artifacts GLM injects untiered artifacts -- T1 villages get a
+    // curated artifact pool in Section 6; gatekeeper barrels just strip.
+    mod.removeLoot('@artifacts')
+  })
 
   // =========================================================================
   // SECTION 5C: OCEAN STRUCTURE LOOT
