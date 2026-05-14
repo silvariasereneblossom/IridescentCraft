@@ -14,6 +14,28 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Tetra MULTIPLY_BASE percent attrs silently collapse to zero (2026-05-14) — RESOLVED
+- **Status:** Resolved 2026-05-14
+- **Description:** Tester reported the modular wand showing only Max Mana in tooltip; spell_power / mana_regen / cooldown_reduction were invisible. Vanilla material wands showed all four but as raw decimals.
+- **Root cause:** `se.mickelus.tetra.properties.AttributeHelper.collapse()` math: `base + sum(MULTIPLY_BASE * |base|)` where `base` is sum of ADDITION modifiers on the attr. With no ADDITION sibling, base=0, every MULTIPLY_BASE × 0 = 0, attribute drops from output entirely. Affected every Tetra modular item percent attr using `*` prefix.
+- **Fix:** Bulk converted `*` → `**` (MULTIPLY_BASE → MULTIPLY_TOTAL) across 35 Tetra module + improvement JSONs (246 keys). Switched `WandTierAttributes.java` (vanilla material wand path) from ADDITION → MULTIPLY_BASE so vanilla Forge tooltip renders as percent. Title-cased 7 lowercase SS wand display names via lang override.
+- **Lessons:** [`lessons-learned-Tetra.md`](../../IridescentCraft-internal-link) 2026-05-14 entry. Hard rule for Tetra modular items: always `**` (MULTIPLY_TOTAL) for percent attributes.
+
+### Ars perk mana rows duplicated ISS mana rows in Apothic Stats GUI (2026-05-14) — RESOLVED
+- **Status:** Resolved 2026-05-14
+- **Description:** After shipping the bidirectional ISS↔Ars mana bridge, the Apothic Attributes Stats panel showed both `irons_spellbooks:max_mana` and `ars_nouveau.perk.max_mana` rows with confusingly different numbers (Ars base = 0, ISS base = 100). Same for mana_regen.
+- **Fix:** Hidden `ars_nouveau:ars_nouveau.perk.max_mana` and `ars_nouveau:ars_nouveau.perk.mana_regen` from the Apothic Stats GUI via `config/attributeslib.cfg` "Hidden Attributes" list. ISS rows are canonical; bridge maintains Ars-side equivalence invisibly.
+
+### Apotheosis workstations AStages-gated despite rarity ladder being the real gate (2026-05-14) — RESOLVED
+- **Status:** Resolved 2026-05-14 (design call to ungate)
+- **Description:** All 9 Apotheosis workstations (3 reforging tables + 5 sigils + gem cutting) were AStages-gated at T2/T3/T4. Belt-and-suspenders — the rarity clamp + boss-drop tokens were already the functional gate. Tester observation: Rare (blue) affixes/gems already appearing in T1 content because the fresh-spawn path isn't clamped by Convert Rarities — only the convert/reroll path was clamped, AND more restrictively than the spawn ceiling.
+- **Fix:** Ungated all 9 workstations in `astages_restrictions.js` (commented out with audit trail). Bumped per-dimension rarity clamps one tier in `config/apotheosis/adventure.cfg` to match natural ceilings: T1 = Common-Rare, T2 = Common-Epic, T3 = Common-Mythic, T4 = Common-Ancient. Both Affix Convert + Gem Dimensional clamps updated.
+
+### Pam's HC2 grass GLMs silently dead (vendor bug, latent for whole pack lifetime) (2026-05-14) — RESOLVED
+- **Status:** Resolved 2026-05-14 (LootJS workaround)
+- **Description:** Tester reported only Thermal seeds dropping from grass. Pam's HarvestCraft 2 declares 3 grass GLMs (`pamhc2crops:fern_drops` / `grass_drops` / `tall_grass_drops`) in its forge `global_loot_modifiers.json` but ships NEITHER the impl JSON files NOR a registered Java GLM type. They've been silently dead since the pack started shipping.
+- **Fix:** `kubejs/server_scripts/loot/grass_pam_seeds.js` — LootJS modifier that hooks 4 vanilla grass-family blocks and adds all 97 Pam seed items at low individual chances (0.072% each). Total expected ~7% per grass break of getting some Pam seed.
+
 ### Blank ("None") scrolls in chests (2026-05-14) — RESOLVED
 - **Status:** Resolved 2026-05-14
 - **Description:** Tester reported `irons_spellbooks:scroll` items dropping with no spell inscribed across many chest types (dungeons, fortresses, ancient cities, end shipwrecks, etc.). Previously cleared this for village houses + LootJS-injected scrolls, but the regression came from the `icraft_loot_overrides` Paxi datapack mirroring native loot tables that don't include the `irons_spellbooks:randomize_spell` function.

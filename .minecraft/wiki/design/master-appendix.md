@@ -23,6 +23,8 @@
 | I | [KubeJS Script Index](#i-kubejs-script-index) |
 | J | [Bytecode Patches](#j-bytecode-patches) |
 | K | [Character Build Reference](#k-character-build-reference) |
+| L | [Iridescent Reforging Honing System](#l-iridescent-reforging-honing-system) |
+| M | [ISS + Ars Nouveau Cross-Mod Integration](#m-iss--ars-nouveau-cross-mod-integration) |
 
 ---
 
@@ -446,21 +448,44 @@ Each class should have 3–4 viable unique options across the full progression �
 
 ### D.1 Affix rates by tier
 
-| Tier | Common | Uncommon | Rare | Epic | Mythic | Max Sockets |
-|------|-------:|---------:|-----:|-----:|-------:|------------:|
-| 1 | 15% | 5% | — | — | — | 1 |
-| 2 | 25% | 15% | 5% | — | — | 2 |
-| 3 | 35% | 25% | 15% | 8% | — | 3 |
-| 4 | 35% | 25% | 15% | 10% | 5% | 4+ |
+Per-dimension rarity clamps (controls both fresh-spawn ceiling and convert/reroll cap).
+Updated 2026-05-14: clamps bumped to match natural fresh-spawn ceilings; convert
+path was previously more restrictive than fresh spawns. Both `config/apotheosis/
+adventure.cfg` "Affix Convert Rarities" and "Gem Dimensional Rarities" mirror
+these clamps.
 
-Configured in `config/apotheosis/affixes/` with per-dimension tier inference. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`) + 5 Champions custom-affixes (Commanding, Draining, Hexing, Leaping, Summoning).
+| Tier | Dimensions | Rarity range | Max Sockets |
+|------|-----------|--------------|------------:|
+| 1 | Overworld | Common-Rare | 1 |
+| 2 | Twilight Forest / Blue Skies / Aether | Common-Epic | 2 |
+| 3 | Nether / Undergarden / Deeper Darker / Abyss | Common-Mythic | 3 |
+| 4 | Deep Aether / End | Common-Ancient | 4+ |
+
+Per-dimension floor (min rarity) keeps natural floors for higher tiers: Nether
+mob drops floor at Rare, Deep Aether floors at Rare, End floors at Epic — no
+"junk Common rolls in T4" pollution.
+
+Configured in `config/apotheosis/affixes/` + `config/apotheosis/adventure.cfg` with per-dimension tier inference. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`) + 5 Champions custom-affixes (Commanding, Draining, Hexing, Leaping, Summoning).
 
 ### D.2 Reforging gates
 
-- **Basic reforging** (T2): Tier 2 boss-drop reforging token required.
-- **Advanced reforging** (T3): Tier 3 token + expensive materials.
-- **Ultimate reforging** (T4): Tier 4 token + Gaia ingots / antimatter.
-- Implementation: Apotheosis Reforging Table T3-staged; Sigil of Rebirth + Sigil of Withdrawal T3; Augmenting Table + Sigil of Enhancement + Sigil of Unnaming T4.
+**Workstations are NOT AStages-gated** (changed 2026-05-14). All 9 Apotheosis
+workstations (simple_reforging_table, reforging_table, augmenting_table,
+gem_cutting_table, sigil_of_socketing, sigil_of_rebirth, sigil_of_withdrawal,
+sigil_of_enhancement, sigil_of_unnaming) are available from T1. Crafting them
+is a T1 activity.
+
+The actual progression gate is the **rarity ladder** (D.1 above) plus boss-drop
+tokens for reroll operations:
+
+- **Basic reroll** at simple_reforging_table: Tier 2 boss `basic_reforging_token` required.
+- **Advanced reroll** at reforging_table: Tier 3 boss `advanced_reforging_token` + expensive materials.
+- **Ultimate reroll** at augmenting_table: Tier 4 boss `ultimate_reforging_token` + Gaia ingots / antimatter.
+
+Rationale: previous workstation gating was belt-and-suspenders. Three caps
+already constrain affix/gem progression (dimensional rarity clamp + boss-drop
+tokens + Apotheosis's source-tier inference). Workstation gates added nothing
+functional; they just blocked crafting/placement. Removed.
 
 ### D.3 Gem tiers
 
@@ -1451,6 +1476,8 @@ Custom block via KubeJS. Recipe: tier-appropriate boss material + crafting stati
 ### K.9 Reforging progression
 
 Apotheosis-style affix-rerolling, gated by reforging-tier tokens (boss drops).
+Workstations themselves are ungated (T1-accessible per 2026-05-14 design call);
+the **tokens** are the actual gate.
 
 | Tier | Requirement | Behavior |
 |------|-------------|----------|
@@ -1458,7 +1485,13 @@ Apotheosis-style affix-rerolling, gated by reforging-tier tokens (boss drops).
 | **Advanced** | T3 token + expensive materials | Reroll with weighted odds toward desired type |
 | **Ultimate** | T4 token + Gaia ingots / antimatter | Reroll with guaranteed minimum rarity |
 
-Reforging at all three tiers happens at the corresponding Apotheosis workstation (Reforging Table → Advanced → Augmenting Table). Tokens drop from tier-appropriate bosses.
+Reroll operations at three Apotheosis workstations (Reforging Table → Advanced
+→ Augmenting Table). Tokens drop from tier-appropriate bosses. All three
+workstations are crafable from T1.
+
+The **rarity ladder** (D.1) is the second gate — even with tokens, a player in
+Overworld can't reroll above Rare, in Twilight/Aether can't reroll above Epic,
+etc. So token + dimension form the joint gate; workstation crafting is free.
 
 ### K.10 Implementation notes
 
@@ -1472,6 +1505,135 @@ Reforging at all three tiers happens at the corresponding Apotheosis workstation
 - **Race size modification** — Pehkui integration where applicable.
 - **Class Altar** — KubeJS custom block + script.
 - **Skill trees** — Pufferfish's Skills datapack (`icraft_skills`).
+
+---
+
+## L. Iridescent Reforging Honing System
+
+Added 2026-05-14. Two parallel hone systems share the same Tetra workbench
+infrastructure; values + paths differ.
+
+### L.1 Wand honing (multi-option)
+
+Each of the 4 wand modules has **3 mutually-exclusive hone paths**. Applying
+level 1 of any path locks out the other two paths for that module (via
+`tetra:not` requirements on each schematic). 5 levels per path. Total:
+4 × 3 × 5 = 60 schematics + 12 improvement files.
+
+| Module | Path A (current) | Path B | Path C |
+|--------|------------------|--------|--------|
+| handle | cooldown_reduction | spell_power | mana_regen |
+| core   | max_mana           | mana_regen | cooldown_reduction |
+| cap    | mana_regen         | max_mana   | spell_resist |
+| inlay  | spell_power        | crit_chance (Apothic) | crit_damage (Apothic) |
+
+Tool gate per level: L1 gold / L2 iron / L3 thermal:steel / L4 diamond / L5 netherite hammers.
+
+### L.2 Armor honing (archetype-gated, major-slot only)
+
+Honing on armor is restricted to the 4 archetype-coded major slots
+(chestplate/chest_plate, helmet/crown, boots/boot_sole, leggings/leg_plate).
+Minor slots (linings/pauldrons/trim/etc.) are not honable in v1 — Tetra's
+requirement types only test the target module, so cross-slot archetype
+gating on minors needs a custom Java requirement (deferred).
+
+Gating via synthetic `tetra:armor/<archetype>_hone/` improvement type declared
+on each major-slot module. `tetra:accepts_improvement` requirement on the
+hone schematic gates by archetype.
+
+| Archetype | Chestplate | Helmet | Boots | Leggings |
+|-----------|------------|--------|-------|----------|
+| **Warrior** | Armor (big, +2..+6) | Armor | Armor | Armor |
+| **Balanced** | Armor (modest, +1..+5) | Armor | Movement Speed | Armor |
+| **Rogue** | Attack Damage | Arrow Damage | Movement Speed | Movement Speed |
+| **Mage** | Spell Power | Spell Power | Cooldown Reduction | Max Mana |
+
+5 levels each, same tool gate ladder as wand. Total: 4 × 4 × 5 = 80 schematics + 16 improvement files.
+
+### L.3 Tetra MULTIPLY_BASE display rule
+
+**ISS percent attributes on Tetra modular items MUST use the `**` prefix
+(MULTIPLY_TOTAL)**, not `*` (MULTIPLY_BASE). Tetra's `AttributeHelper.collapse()`
+math drops MULTIPLY_BASE modifiers to 0 when no ADDITION sibling exists on the
+same attribute, silently making those stats invisible on tooltips.
+
+Hard rule: any new module variant or improvement file targeting a percent
+attribute (spell_power, mana_regen, cooldown_reduction, cast_time_reduction,
+spell_resist, school SP, summon_damage) gets `**` prefix.
+
+Stacking effect: MULTIPLY_TOTAL compounds across modules (vs near-additive
+MULTIPLY_BASE). At small per-module values (5-10%) the difference is < 5%;
+at high stacks it compounds noticeably. Aligned with the mage glass-cannon
+uncapped-multiplicative-stacking design intent.
+
+---
+
+## M. ISS + Ars Nouveau Cross-Mod Integration
+
+Added 2026-05-14. Design intent: "mana regen and mana are universal" — sources
+that boost one system's mana should affect the other equivalently.
+
+### M.1 Bidirectional mana bridge
+
+`kubejs/server_scripts/attributes/mana_bridge.js` — 1 Hz server tick that
+mirrors gear-contributed modifiers between paired ISS / Ars attributes:
+
+| Pair | Operation |
+|------|-----------|
+| `irons_spellbooks:max_mana` ↔ `ars_nouveau.perk.max_mana` | ADDITION |
+| `irons_spellbooks:mana_regen` ↔ `ars_nouveau.perk.mana_regen` | MULTIPLY_BASE |
+
+Math per pair: sum gear modifiers excluding bridge's own UUIDs, then upsert
+deterministic-UUID bridge modifier on the other attribute with that sum.
+Stable across ticks (excluding own contribution avoids self-feedback).
+
+UI: Apothic Attributes Stats GUI hides `ars_nouveau.perk.max_mana` and
+`ars_nouveau.perk.mana_regen` rows so the player sees a single canonical mana
+display (ISS rows). `config/attributeslib.cfg` Hidden Attributes list.
+
+### M.2 ISS school SP → Ars elemental damage
+
+Two-handler architecture for boosting Ars elemental glyph damage by the
+player's matching ISS school SP attribute.
+
+| Handler | Trigger | Coverage |
+|---------|---------|----------|
+| `iss_school_to_ars_spell.js` (LivingHurtEvent) | damage_type ∈ {flare, frost, windshear, crush} | Direct Ars elemental damage |
+| `iss_school_to_ars_glyph.js` (SpellDamageEvent.Pre) | spell.recipe has fire/water/air/earth school glyph | Other glyphs with spell context (EffectHarm, EffectExplosion, etc.) |
+
+Mapping (both handlers):
+- fire → `irons_spellbooks:fire_spell_power`
+- water/ice → `irons_spellbooks:ice_spell_power`
+- air/lightning → `irons_spellbooks:lightning_spell_power`
+- earth/nature → `irons_spellbooks:nature_spell_power`
+
+Anti-double-count: SpellDamageEvent handler skips damage types in the
+LivingHurtEvent map. Mutual exclusion.
+
+Residual gap: damage from Ars-spawned entities after spell context drops
+(delayed lightning from EffectLightning, on_fire ticks from EffectIgnite)
+doesn't carry SpellDamageEvent context. Acknowledged, deferred (would need
+NBT-tag-on-cast pattern).
+
+### M.3 ISS Apotheosis gems (buffed values, repurposed spell_resist)
+
+ISS ships 13 Apotheosis-compatible gems under namespace `irons_spellbooks`
+(loaded as `data/irons_spellbooks/gems/*.json`). Native values were uniformly
+weak (1/3/5/7/10/15% MULTIPLY_TOTAL flat). Override via Paxi datapack
+`icraft_iss_gem_buffs`:
+
+| Gem set | Values (Common / Uncommon / Rare / Epic / Mythic / Ancient) |
+|---------|-------------------------------------------------------------|
+| 8 school SP + summoning | 6-8 / 9-13 / 15-21 / 23-31 / 33-43 / 45-60% |
+| cast_time / cooldown | 5-7 / 8-11 / 12-17 / 18-25 / 26-35 / 34-45% |
+| **spell_resist (REPURPOSED as generic SP)** | 3-5 / 6-9 / 8-12 / 13-17 / 18-23 / 24-30% |
+| intelligent: max_mana | flat 5-14 / 15-29 / 30-49 / 50-79 / 80-119 / 120-180 |
+| intelligent: mana_regen | 3-5 / 6-9 / 8-12 / 13-17 / 18-23 / 24-30% (MULTIPLY_BASE) |
+
+All gems have `steps`/`step` ranges per rarity for tier-internal roll variance
+(native ISS gems had no variance). spell_resist filename preserved so ISS's
+bundled model/texture/lang hooks line up; KubeJS lang override renames display
+to "Gem of Arcane Affinity".
 
 ---
 

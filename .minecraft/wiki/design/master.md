@@ -521,6 +521,8 @@ Each modular book has 4 module slots (front_cover / back_cover / spine / pages f
 
 **12 ISS variants + 3 Ars variants = 15 modular spell books total**, each tier-staged, each available via Tetra workbench crafting.
 
+**Cross-mod equivalence (2026-05-14).** ISS and Ars Nouveau are treated as a single magic system from the player's perspective. A bidirectional bridge mirrors gear-contributed `max_mana` and `mana_regen` modifiers between `irons_spellbooks:*` and `ars_nouveau.perk.*` attributes — a mana-regen ring crafted for ISS also feeds Ars wand casting and vice versa. ISS school SP (`fire_spell_power`, `ice_spell_power`, etc.) also boost Ars elemental glyph damage via two-handler architecture (LivingHurtEvent for direct Ars damage types, SpellDamageEvent.Pre for glyph-school-tagged damage). ISS's built-in Apotheosis gems are buffed and integrated into the same gem ladder as native Apotheosis gems. See [Appendix §M](master-appendix.md#m-iss--ars-nouveau-cross-mod-integration).
+
 > **Future work.** Phase 7 design adds 6 elemental subclasses (Pyromancer / Cryomancer / Necromancer / Priest / Druid / Stormcaller) layered on top of the Mage classes. Each gives +50% to one school with a -10% melee malus (vs Archmage's -25%). Add-alongside, not replace. Implementation deferred.
 
 → Detailed stat profiles, slot definitions, lining attribute mappings: [Appendix §E](master-appendix.md#e-custom-items-registry).
@@ -644,6 +646,10 @@ The curio mod stack: Artifacts, More Artifacts, Relics, Celestial Artifacts, Ely
 Tetra is the cross-cutting framework. **Nine mod-integrated material categories** are wired in: vanilla metals + 27 modded metals + 5 gems + skin / bone / fibre / wool natively from Tetra. The pack ships an `icraft_tetra_materials` datapack adding these. Players craft Tetra modular weapons, modular spell books, and modular tools all using the same workbench.
 
 This is what makes the cross-mod material economy feel coherent. A diamond pickaxe head can hold a steel handle with a knightmetal accessory and a fiery cap; the player hones the result at the workbench, then improves it further with linings.
+
+**Copper added as a low tier material (2026-05-14).** Copper variants now sit between leather and iron on every armor + wand + spell book module that accepts metals. Tetra's material.primary auto-scales copper's stats to ~80% of iron's without per-module authoring (copper.primary=4 vs iron.primary=5).
+
+**Honing system (2026-05-14).** Two parallel hone systems share the workbench infrastructure: wand multi-option (4 modules × 3 mutually-exclusive paths × 5 levels), and armor major-slot archetype-gated (4 archetypes × 4 pieces × 5 levels). See [Appendix §L](master-appendix.md#l-iridescent-reforging-honing-system).
 
 → Full curio chest-pool composition, Simply Swords boss allocation, custom-item registry: [Appendix §C](master-appendix.md#c-boss--loot-mapping) and [§E](master-appendix.md#e-custom-items-registry).
 
