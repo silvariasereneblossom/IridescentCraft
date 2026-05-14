@@ -4,6 +4,37 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Infinity Ham: full strip (zero abilities + JEI hide + inventory-tick removal)
+
+User: "we actually want to strip Infinity Ham - it breaks our food setup."
+
+Previous commit zeroed the native `loot.entries` for infinity_ham (no new spawns from Relics' custom GLM), but pre-existing infinity_hams from earlier sessions still tick autophagy onto the wearer, bypassing our hunger balance.
+
+Three-layer kill switch:
+
+1. **Config abilities zeroed** (`config/relics/infinity_ham.json` in 3 distros):
+   - `autophagy.feed.{min,max}InitialValue = 0`, threshold = 0, upgradeModifier = 0
+   - `infusion.duration.{min,max}InitialValue = 0`, threshold = 0, upgradeModifier = 0
+   - Both abilities `requiredLevel = 1000` (unreachable via leveling)
+   
+   New infinity_hams roll all-zero stats; existing ones with saved NBT stats are unaffected by config but the ability handlers should also no-op at the upper bound math.
+
+2. **JEI hide** (`kubejs/client_scripts/jei_hiding.js`): added `event.hide('relics:infinity_ham')` so creative-mode discovery is suppressed.
+
+3. **Inventory-tick stripper** (`kubejs/server_scripts/strip_infinity_ham.js`, new file): on `PlayerEvents.inventoryChanged` AND `PlayerEvents.loggedIn`, walks the player's main inventory + Curios trinket slots, sets count = 0 on any `relics:infinity_ham` stack. Logs once per session per player.
+
+Net effect: any existing infinity_ham in a player inventory disappears on their next inventory change (or login if already in inventory). New ones never spawn (loot.entries empty). Anyone who summons one via /give still gets the stack removed on next inv-tick.
+
+Why three layers: defense-in-depth. Config-only would leave existing hams ticking until removed; JEI hide doesn't prevent creative summoning; the inventory tick catches all paths.
+
+### Files
+
+- `config/relics/infinity_ham.json` patched (3 distros)
+- `kubejs/client_scripts/jei_hiding.js` updated (3 distros)
+- `kubejs/server_scripts/strip_infinity_ham.js` new (3 distros)
+
+---
+
 ## 2026-05-14 — Relics: actually strip removed relics at the config layer (Relics GLM was bypassing our LootJS removeLoot)
 
 User report: "infinity_ham is still around -- I thought we stripped that?"

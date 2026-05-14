@@ -38,4 +38,12 @@ JEIEvents.hideItems(event => {
     'terramity:gunsmith_station', 'terramity:advanced_gun_parts',
     'terramity:ammo_bag', 'terramity:ammo_box', 'terramity:bottomless_ammo_box',
   ].forEach(id => event.hide(id))
+
+  // Infinity Ham (Relics) -- breaks our food/hunger balance (autophagy
+  // ability ticks feed onto the wearer). Native loot.entries zeroed in
+  // config/relics/infinity_ham.json (2026-05-14); ability stats zeroed
+  // + required levels raised to 1000 same date. Hidden from JEI here.
+  // Paired with strip_infinity_ham.js (server) which removes any held
+  // instance from inventories on inventoryChanged.
+  event.hide('relics:infinity_ham')
 })

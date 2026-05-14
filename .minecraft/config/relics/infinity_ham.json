@@ -3,31 +3,31 @@
     "abilities": {
       "autophagy": {
         "requiredPoints": 1,
-        "requiredLevel": 0,
+        "requiredLevel": 1000,
         "maxLevel": 10,
         "stats": {
           "feed": {
-            "minInitialValue": 0.015,
-            "maxInitialValue": 0.03,
-            "minThresholdValue": 5e-324,
-            "maxThresholdValue": 1.7976931348623157e+308,
+            "minInitialValue": 0,
+            "maxInitialValue": 0,
+            "minThresholdValue": 0,
+            "maxThresholdValue": 0,
             "upgradeOperation": "MULTIPLY_BASE",
-            "upgradeModifier": 0.15
+            "upgradeModifier": 0
           }
         }
       },
       "infusion": {
         "requiredPoints": 1,
-        "requiredLevel": 5,
+        "requiredLevel": 1000,
         "maxLevel": 10,
         "stats": {
           "duration": {
-            "minInitialValue": 0.1,
-            "maxInitialValue": 0.5,
-            "minThresholdValue": 5e-324,
-            "maxThresholdValue": 1.7976931348623157e+308,
+            "minInitialValue": 0,
+            "maxInitialValue": 0,
+            "minThresholdValue": 0,
+            "maxThresholdValue": 0,
             "upgradeOperation": "MULTIPLY_BASE",
-            "upgradeModifier": 0.5
+            "upgradeModifier": 0
           }
         }
       }
