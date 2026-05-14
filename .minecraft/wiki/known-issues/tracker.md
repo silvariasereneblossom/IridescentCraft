@@ -14,6 +14,14 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Blank ("None") scrolls in chests (2026-05-14) — RESOLVED
+- **Status:** Resolved 2026-05-14
+- **Description:** Tester reported `irons_spellbooks:scroll` items dropping with no spell inscribed across many chest types (dungeons, fortresses, ancient cities, end shipwrecks, etc.). Previously cleared this for village houses + LootJS-injected scrolls, but the regression came from the `icraft_loot_overrides` Paxi datapack mirroring native loot tables that don't include the `irons_spellbooks:randomize_spell` function.
+- **Audit:** 487 loot tables contained `irons_spellbooks:scroll`; only 10 had the randomize_spell function. 477 tables (479 entries) were dropping blank scrolls.
+- **Fix:** Bulk-injected `randomize_spell` with tier-aware quality by path keyword (T1 0.0-0.2 default; T2 0.2-0.5 for nether/fortress/warped/crimson/soul/basalt/wasteland/obsidian/blackstone; T3 0.5-0.8 for end/deeper-darker/ancient_cities). Rebuilt `icraft_loot_overrides.zip` and deployed to all 3 distros. Final count: 489 scroll entries, 0 missing randomize_spell.
+- **Files:** `datapack_sources/icraft_loot_overrides/data/**/*.json` (477 files); 3× `config/paxi/datapacks/icraft_loot_overrides.zip`.
+- **Lesson:** Any time a loot override hand-authors `irons_spellbooks:scroll`, the `randomize_spell` function MUST be present. Adding a programmatic audit to lessons-learned.
+
 ### Wandering Mage (and all ISS unique) integrity nondeterministic (2026-05-12) — RESOLVED
 - **Status:** Resolved 2026-05-12
 - **Description:** Tester reported Wandering Magician chestplate showing wrong / negative integrity budget at the workbench. 2026-05-11's wildcard-key sweep had resurrected 52 variants that were previously dead-due-to-doubling, creating duplicate expanded keys (e.g. `robe_chest/wool`, `padded_lining/leather`). Tetra's `MaterialVariantData.expand()` dedupes by final key but the winner is implementation-defined — so unique armor pieces rolled stats nondeterministically between the intended mage-tier variant and a stale wool-tier draft. Scope was every ISS unique set (17 total), not just Wandering Magician.

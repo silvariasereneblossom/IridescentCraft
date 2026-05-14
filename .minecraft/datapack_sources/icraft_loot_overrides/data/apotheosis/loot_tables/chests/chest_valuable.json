@@ -500,7 +500,7 @@
               "function": "irons_spellbooks:randomize_spell",
               "quality": {
                 "min": 0.0,
-                "max": 0.5
+                "max": 0.2
               }
             }
           ]

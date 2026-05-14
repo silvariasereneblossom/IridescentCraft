@@ -4,6 +4,56 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — None scrolls in chests: regression fix (Paxi loot overrides missing randomize_spell)
+
+### Symptom
+Tester reports "None scrolls" appearing in chests — `irons_spellbooks:scroll` items
+with no spell inscribed. We previously cleared this for the 5 village house tables
+(2026-04 entry) and for the LootJS-injected scrolls in `lootjs_overhaul.js`, but the
+issue resurfaced in dungeons, fortresses, ancient cities, end shipwrecks, etc.
+
+### Root cause
+The `icraft_loot_overrides` Paxi datapack mirrors mod-native loot tables across 17
+namespaces (apotheosis, betterdungeons, betterfortresses, betterstrongholds,
+betteroceanmonuments, betterdeserttemples, dungeoncrawl, dungeons_arise,
+dungeons_plus, explorify, repurposed_structures, structory, structory_towers,
+totw_reworked, valhelsia_structures, minecraft, icraft). The native tables
+reference `irons_spellbooks:scroll` directly with no `randomize_spell` function —
+so when our overrides duplicated those entries, scrolls dropped blank.
+
+Audit: 487 loot tables contained scroll entries; only **10** had the
+`irons_spellbooks:randomize_spell` function applied. The other **477 tables (479
+entries) dropped blank scrolls.**
+
+### Fix
+Bulk-injected `irons_spellbooks:randomize_spell` into every scroll entry via
+tier-aware path classifier:
+
+- **T3 (quality 0.5-0.8)** — End / deeper-darker / ancient_cities (20 files)
+- **T2 (quality 0.2-0.5)** — Nether / fortress / warped / crimson / soul / basalt
+  / wasteland / obsidian / blackstone (67 files)
+- **T1 (quality 0.0-0.2)** — Everything else: overworld dungeons, villages,
+  shipwrecks, ruins, ancient cities ocean variants, etc. (400 files)
+
+Path-keyword rules in `/tmp/fix_scrolls.py`; idempotent (re-runs upgrade T1->T3
+on previously injected entries when path is reclassified).
+
+Result: 489 scroll entries, 0 missing `randomize_spell` across all 3 distros.
+
+### Files
+- `datapack_sources/icraft_loot_overrides/data/**/*.json` — 477 files modified
+- `config/paxi/datapacks/icraft_loot_overrides.zip` — rebuilt
+- `server_distribution/config/paxi/datapacks/icraft_loot_overrides.zip` — rebuilt
+- `distribution/client/config/paxi/datapacks/icraft_loot_overrides.zip` — rebuilt
+
+### Lesson
+The previous fix only touched the 5 files Claude could see in a single inspection
+pass; the rest of the override pack carried the same bug silently. Any time we
+hand-author a loot override for ISS scrolls, the `randomize_spell` function must
+be present — adding a programmatic audit pass to lessons-learned.
+
+---
+
 ## 2026-05-14 — Infinity Ham: full strip (zero abilities + JEI hide + inventory-tick removal)
 
 User: "we actually want to strip Infinity Ham - it breaks our food setup."
