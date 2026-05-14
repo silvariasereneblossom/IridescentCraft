@@ -29,6 +29,28 @@
     },
     {
       "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "padded_cuisses/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.555
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
+    },
+    {
+      "materials": [
         "tetra:metal/iron"
       ],
       "key": "padded_cuisses/",

@@ -30,6 +30,29 @@
     },
     {
       "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "gilded_trim/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.luck": 0.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
+    },
+    {
+      "materials": [
         "tetra:metal/iron"
       ],
       "key": "gilded_trim/",

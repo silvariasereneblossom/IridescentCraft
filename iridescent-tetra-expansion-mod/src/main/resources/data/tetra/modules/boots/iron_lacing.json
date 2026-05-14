@@ -30,6 +30,29 @@
     },
     {
       "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "iron_lacing/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.08,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
+    },
+    {
+      "materials": [
         "tetra:metal/iron"
       ],
       "key": "iron_lacing/",

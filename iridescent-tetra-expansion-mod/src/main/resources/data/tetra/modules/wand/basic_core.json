@@ -53,6 +53,28 @@
     },
     {
       "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "basic_core/",
+      "extract": {
+        "primaryAttributes": {
+          "irons_spellbooks:max_mana": 1.5
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 0.5
+      }
+    },
+    {
+      "materials": [
         "tetra:metal/iron"
       ],
       "key": "basic_core/",

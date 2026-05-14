@@ -4,6 +4,52 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Copper variants across all modules + small magic bonuses on inert metal slots
+
+Tester reported the armor workbench falling back to a "Holy" themed-material
+display when copper was placed -- root cause: NO module in the pack had a
+`tetra:metal/copper` variant. Tetra had no matching entry for copper across
+52 modules, so the workbench picked a default (whichever sat at the right
+variant-list index, which happened to be themed/holy at index 8 on
+breastplate).
+
+### Copper variant added to 52 modules
+Cloned each module's iron variant for copper (same `extract` block, just the
+`materials` field changed). Tetra's `MaterialVariantData.combine()` auto-scales
+`extract.primaryAttributes` by `material.primary`:
+- iron primary = 5.0  -> iron-tier stats
+- copper primary = 4.0 -> copper stats automatically 80% of iron
+
+Modules affected: 48 armor (chestplate/helmet/boots/leggings, all non-robe
+modules) + 4 wand bases + book modules where iron variants already existed.
+
+Skipped: 4 robe-only mage modules (robe_chest, circlet, robed_boot_sole,
+robed_leg_plate) -- they don't have iron variants and don't accept metals;
+the mage archetype intentionally bypasses metallic armor.
+
+### Inert metal slots: small magic bonus added
+Four magic modules had empty `primaryAttributes` on their iron variant --
+plain iron gave nothing for those slots. Added a small magic bonus that
+applies to BOTH iron and copper, auto-scaled by material.primary:
+
+| Module | New iron variant attribute | iron final (×5) | copper final (×4) |
+|---|---|---|---|
+| wand/basic_cap | `*irons_spellbooks:mana_regen` | 0.005 raw -> 2.5% | 2.0% |
+| wand/basic_inlay | `*irons_spellbooks:spell_power` | 0.005 raw -> 2.5% | 2.0% |
+| iss_book/spine | `*irons_spellbooks:cooldown_reduction` | 0.005 raw -> 2.5% | 2.0% |
+| ars_book/spine | `**ars_nouveau:ars_nouveau.perk.mana_regen` | 0.005 raw -> 2.5% | 2.0% |
+
+Rationale: copper + iron are the early-game accessible metals; lifting them
+above "empty stat" makes early casters' wands and books feel worth crafting
+before they have arcane_ingot or aethersteel access.
+
+### Files
+- 52 module JSONs in `iridescent-tetra-expansion-mod/src/main/resources/data/tetra/modules/` updated with copper variant
+- 4 magic-module JSONs additionally patched with small iron+copper magic bonuses
+- Jar rebuilt + deployed to all 3 distros
+
+---
+
 ## 2026-05-14 — Armor + wand honing: full archetype-specific stack
 
 ### Armor: 80 new hone schematics (major-slot, archetype-gated)

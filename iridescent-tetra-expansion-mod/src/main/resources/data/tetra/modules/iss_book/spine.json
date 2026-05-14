@@ -659,7 +659,10 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 0.5,
+        "primaryAttributes": {
+          "*irons_spellbooks:cooldown_reduction": 0.005
+        }
       }
     },
     {
@@ -678,7 +681,10 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 0.5,
+        "primaryAttributes": {
+          "*irons_spellbooks:cooldown_reduction": 0.005
+        }
       }
     },
     {

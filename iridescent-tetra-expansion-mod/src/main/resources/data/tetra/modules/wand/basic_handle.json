@@ -59,6 +59,31 @@
     },
     {
       "materials": [
+        "tetra:metal/copper"
+      ],
+      "key": "basic_handle/",
+      "extract": {
+        "primaryAttributes": {
+          "*irons_spellbooks:spell_power": 0.03,
+          "*irons_spellbooks:mana_regen": 0.03,
+          "*irons_spellbooks:cooldown_reduction": 0.03,
+          "irons_spellbooks:max_mana": 3.0
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
         "tetra:metal/iron"
       ],
       "key": "basic_handle/",

@@ -659,7 +659,10 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 0.5,
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.005
+        }
       }
     },
     {
@@ -678,7 +681,10 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 0.5,
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.005
+        }
       }
     },
     {
