@@ -1,1 +1,25 @@
-{"type":"minecraft:entity"}
+{
+  "type": "minecraft:entity",
+  "pools": [
+    {
+      "rolls": 1,
+      "entries": [
+        {
+          "type": "minecraft:item",
+          "name": "mutantmonsters:hulk_hammer",
+          "functions": [
+            {
+              "function": "minecraft:set_nbt",
+              "tag": "{Enchantments:[{id:\"minecraft:knockback\",lvl:2s}]}"
+            }
+          ]
+        }
+      ],
+      "conditions": [
+        { "condition": "minecraft:killed_by_player" },
+        { "condition": "minecraft:random_chance", "chance": 0.25 }
+      ]
+    }
+  ],
+  "random_sequence": "mutantmonsters:entities/mutant_zombie"
+}

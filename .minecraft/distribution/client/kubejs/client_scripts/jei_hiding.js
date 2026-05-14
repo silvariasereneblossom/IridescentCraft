@@ -46,4 +46,28 @@ JEIEvents.hideItems(event => {
   // Paired with strip_infinity_ham.js (server) which removes any held
   // instance from inventories on inventoryChanged.
   event.hide('relics:infinity_ham')
+
+  // Mutant Monsters (2026-05-14) -- strip all crafted/drop items from
+  // JEI. Drops zeroed via icraft_mm_overrides datapack; recipes removed
+  // in server_scripts/recipes/strip_mutant_monsters.js. Spawn eggs kept
+  // visible (admin/creative use). Hulk Hammer kept visible as a fun T1
+  // melee drop from mutant_zombie (25% on player kill, modified stats).
+  ;[
+    'mutantmonsters:chemical_x',
+    'mutantmonsters:lingering_chemical_x',
+    'mutantmonsters:splash_chemical_x',
+    'mutantmonsters:creeper_minion_tracker',
+    'mutantmonsters:creeper_shard',
+    'mutantmonsters:endersoul_hand',
+    'mutantmonsters:mutant_skeleton_arms',
+    'mutantmonsters:mutant_skeleton_boots',
+    'mutantmonsters:mutant_skeleton_chestplate',
+    'mutantmonsters:mutant_skeleton_leggings',
+    'mutantmonsters:mutant_skeleton_limb',
+    'mutantmonsters:mutant_skeleton_pelvis',
+    'mutantmonsters:mutant_skeleton_rib',
+    'mutantmonsters:mutant_skeleton_rib_cage',
+    'mutantmonsters:mutant_skeleton_shoulder_pad',
+    'mutantmonsters:mutant_skeleton_skull',
+  ].forEach(id => event.hide(id))
 })

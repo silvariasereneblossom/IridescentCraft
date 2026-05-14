@@ -4,6 +4,62 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-14 — Mutant Monsters: recipe strip + Hulk Hammer kept as T1 melee drop
+
+Followup to the 2026-05-13 MM drop/XP overhaul. Drops were zeroed via the
+`icraft_mm_overrides` Paxi datapack but the 6 in-jar recipes (5 mutant skeleton
+armor pieces + creeper_minion_tracker) and JEI item entries remained. User noted
+the recipes still showed in JEI -- closing those gaps now and restoring one
+signature drop on a tuned curve.
+
+### Recipe strip
+`kubejs/server_scripts/recipes/strip_mutant_monsters.js` removes:
+- `mutantmonsters:creeper_minion_tracker`
+- `mutantmonsters:mutant_skeleton_arms` / `_boots` / `_chestplate` / `_leggings` / `_rib_cage`
+
+### JEI hide
+`kubejs/client_scripts/jei_hiding.js` adds 16 MM items: chemical_x potions x3,
+creeper_minion_tracker, creeper_shard, endersoul_hand, mutant_skeleton_arms,
+_boots, _chestplate, _leggings, _limb, _pelvis, _rib, _rib_cage, _shoulder_pad,
+_skull. Spawn eggs stay visible (admin/creative use). **Hulk Hammer stays
+visible** -- it's the modified T1 melee drop.
+
+### Hulk Hammer modifications
+
+Native: 9 attack damage / 1.0 attack speed / 64 durability / UNCOMMON / drops
+100% from mutant_zombie on player kill.
+
+Modified to "fun T1 melee drop":
+- **Attack Damage: 20** (native +8 ADDITION -> +19 ADDITION; total 1 base + 19 = 20)
+- **Attack Speed: 0.5** (native -3 -> -3.5 ADDITION; total 4 base - 3.5 = 0.5)
+- **Durability: 640** (native 64 x10) -- via reflection on `Item.maxDamage` in
+  `kubejs/startup_scripts/hulk_hammer_durability.js`
+- **+50% Damage vs Undead** (`iridescent_reforging:damage_vs_undead` +0.5
+  ADDITION; existing `deathskin_undead_bonus.js` LivingHurtEvent handler
+  multiplies outgoing damage to UNDEAD by `1 + attr`)
+- **Innate Knockback II** (baked into the loot drop via `set_nbt` Enchantments
+  tag; substituted for user-requested "Punch II" since Punch is bow-only)
+- **Drop rate: 25%** on player-killed mutant_zombie (native 100%)
+
+Attribute overrides via `kubejs/server_scripts/hulk_hammer_attributes.js`
+subscribing to `ItemAttributeModifierEvent`. Strips native +8/-3 modifiers
+via `event.removeAttribute` so the tooltip shows clean single-line stats.
+
+### Files
+- `kubejs/server_scripts/recipes/strip_mutant_monsters.js` -- new, 3 distros
+- `kubejs/startup_scripts/hulk_hammer_durability.js` -- new, 3 distros
+- `kubejs/server_scripts/hulk_hammer_attributes.js` -- new, 3 distros
+- `kubejs/client_scripts/jei_hiding.js` -- appended MM block
+- `datapack_sources/icraft_mm_overrides/data/mutantmonsters/loot_tables/entities/mutant_zombie.json`
+- 3x `config/paxi/datapacks/icraft_mm_overrides.zip` -- rebuilt
+
+### Companion: existing XP boost remains
+`kubejs/server_scripts/mutant_xp_boost.js` continues multiplying XP drops 10x
+on any mutantmonsters:* entity death. Players still get the XP reward;
+mutant_zombie now also has a 25% chance to drop the modified hammer.
+
+---
+
 ## 2026-05-14 — None scrolls in chests: regression fix (Paxi loot overrides missing randomize_spell)
 
 ### Symptom
