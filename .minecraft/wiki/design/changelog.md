@@ -37,17 +37,35 @@ Mapping (elemental only -- no generic spell bridge per design call):
 Generic `ars_nouveau:spell` intentionally NOT mapped -- non-elemental glyphs
 (EffectHarm, etc.) stay on their own damage math.
 
-**Coverage gap (acknowledged):** Some elemental-school glyphs route damage
-through VANILLA damage types rather than the Ars elemental ones:
-- `EffectIgnite` calls `setSecondsOnFire` -> damage flows as `minecraft:on_fire`
-- `EffectLightning` spawns a vanilla lightning entity -> `minecraft:lightning_bolt`
-- `EffectExplosion` creates a vanilla explosion -> `minecraft:explosion`
+**Broader coverage via SpellDamageEvent.Pre:** Companion script
+`kubejs/server_scripts/attributes/iss_school_to_ars_glyph.js` hooks Ars's
+`SpellDamageEvent.Pre`, which fires before damage is dealt and carries the
+spell context. The handler:
+1. Walks `event.context.spell.recipe` (the glyph list)
+2. Finds the first glyph with an elemental school (`fire` / `water` / `air` / `earth`)
+3. Multiplies `event.damage` by the caster's matching ISS school SP
 
-These won't trigger the bridge because the damage source at hit-time is
-vanilla, not Ars's. Direct-damage elemental glyphs (Flare, ColdSnap, Crush
-etc.) ARE covered. If broader coverage is needed later, the right path is
-hooking Ars's `SpellDamageEvent.Pre` to inspect the spell context for school
-tags before the damage event fires.
+So even when a glyph's damage flows through a VANILLA damage type
+(e.g., `EffectHarm` -> `ars_nouveau:spell` source but ELEMENTAL_EARTH school),
+the bridge still applies. The school-glyph mapping is independent of the
+damage type.
+
+Anti-double-count: the SpellDamageEvent handler SKIPS damage sources whose
+type is in the LivingHurtEvent handler's 4-elemental map. Those go through
+the LivingHurtEvent path; everything else goes through SpellDamageEvent.Pre.
+
+| Coverage path | When it fires | Example |
+|---|---|---|
+| LivingHurtEvent (`iss_school_to_ars_spell.js`) | damage_type in {flare, frost, windshear, crush} | EffectCrush, EffectFlare direct hits |
+| SpellDamageEvent.Pre (`iss_school_to_ars_glyph.js`) | spell context present, school in {fire, water, air, earth} | EffectHarm (earth), Burst+Ignite (fire), most multi-glyph spells |
+
+**Residual gap (small):** damage from Ars-spawned entities AFTER the spell
+context is gone (vanilla lightning entity from `EffectLightning` striking
+20 ticks after cast, vanilla on_fire ticks from `EffectIgnite`) doesn't
+carry SpellDamageEvent context and isn't caught. Closing those would need
+NBT-tagging the affected entity at cast time + boosting subsequent
+on_fire / lightning damage. Deferred -- volume of edge cases is small
+relative to the value of the main path.
 
 ### Files
 - `config/attributeslib.cfg` (Hidden Attributes list extended)
