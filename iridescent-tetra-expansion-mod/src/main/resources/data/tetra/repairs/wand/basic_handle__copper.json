@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:copper_ingot"
+    ],
+    "count": 3
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/copper"
+}

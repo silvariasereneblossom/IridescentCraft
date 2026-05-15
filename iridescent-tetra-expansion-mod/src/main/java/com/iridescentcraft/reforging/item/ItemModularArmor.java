@@ -170,13 +170,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     public <T extends LivingEntity> int damageItem(ItemStack stack, int amount, T entity, Consumer<T> onBroken) {
         se.mickelus.tetra.event.ModularItemDamageEvent event =
                 new se.mickelus.tetra.event.ModularItemDamageEvent(entity, stack, amount);
-        try {
-            net.minecraftforge.common.MinecraftForge.EVENT_BUS.post(event);
-        } catch (ClassCastException cce) {
-            org.apache.logging.log4j.LogManager.getLogger("iridescent_reforging").warn(
-                    "[icraft] ModularItemDamageEvent listener threw CCE ({}). Skipping that listener's contribution; later listeners on this event were not invoked.",
-                    cce.toString());
-        }
+        com.iridescentcraft.reforging.event.ModularDamageBus.safePost(event, "armor", "iridescent_reforging");
         int actualAmount = event.getAmount();
         try {
             actualAmount = se.mickelus.tetra.effect.BloodboundEffect.reduceDamage(stack, entity, actualAmount);

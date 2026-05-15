@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:copper_ingot"
+    ],
+    "count": 3
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/copper"
+}

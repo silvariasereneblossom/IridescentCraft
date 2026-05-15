@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:copper_ingot"
+    ],
+    "count": 3
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/copper"
+}

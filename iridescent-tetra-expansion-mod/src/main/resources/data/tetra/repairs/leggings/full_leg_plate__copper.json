@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:copper_ingot"
+    ],
+    "count": 3
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/copper"
+}

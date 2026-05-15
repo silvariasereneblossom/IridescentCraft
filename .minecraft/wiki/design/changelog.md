@@ -4,6 +4,54 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Rate-limit Aetheric CCE log noise
+
+Tester's server log was spamming one `[WARN] [icraft] ModularItemDamageEvent
+listener threw CCE` plus one `[ERROR] [ne.mi.ev.EventBus/EVENTBUS]` per
+armor hit / spell-book damage tick whenever Aetheric Tetranomicon was
+installed. Functional impact: zero — the mitigation in place since
+2026-05-08 already prevents the crash. Issue was purely log volume.
+
+### Confirmed cast site
+Decompiled `aetheric_tetranomicon-*.jar`:
+`com/syric/aetheric_tetranomicon/effects/VeridiumInfusionEffect.class`
+→ `durabilityEvent` does `ModularItem modularItem = (ModularItem) stack.getItem();`
+without an `instanceof` guard. Our `ItemModularArmor` /
+`ItemModularWand` / `ModularSpellBookItem` / `ModularArsSpellBookItem`
+implement `IModularItem` but don't extend the concrete `ModularItem`
+class, so the cast throws CCE on every tick. The method only ever
+reads `getEffectLevel` — which `IModularItem` also exposes — so the
+typed-cast PR is one line upstream.
+
+### Fix
+New `com.iridescentcraft.reforging.event.ModularDamageBus.safePost`
+helper centralizes the post-with-try/catch logic and de-dupes:
+
+- Key: `(contextLabel, cce.getMessage())` — message embeds both the
+  source and target class names, so distinct cast sites (different
+  third-party listeners with different casts) each get a first WARN.
+- Set: `ConcurrentHashMap.newKeySet()` shared across all four item
+  classes for the JVM lifetime.
+- First occurrence per key → WARN with a "subsequent occurrences
+  suppressed" note. Every subsequent occurrence → DEBUG.
+
+Result: at most four WARN lines over a server's lifetime (one per
+context label: `armor`, `wand`, `spellbook_iss`, `spellbook_ars`)
+assuming Aetheric is the only misbehaving listener. Forge's own
+`EventBus` ERROR line still fires once per hit because that logger is
+inside Forge's bus dispatch, before our catch — documented in
+`known-issues/tracker.md`. Suppressing it would require either a
+log4j filter targeting `net.minecraftforge.eventbus.EventBus` ERRORs
+matching this exact CCE, or replacing the EventBus class itself —
+both have wider blast radius than the noise warrants.
+
+### Files
+- NEW `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/event/ModularDamageBus.java`
+- `ItemModularArmor.damageItem` / `ItemModularWand.damageItem` / `ModularSpellBookItem.damageItem` / `ModularArsSpellBookItem.damageItem` — replaced inline try/catch + WARN with `ModularDamageBus.safePost(event, "<label>", "<logger>")`
+- `known-issues/tracker.md` — 2026-05-08 entry updated with the dedup behavior
+
+---
+
 ## 2026-05-14 — Tetra MULTIPLY_BASE display bug: switch percent attrs to MULTIPLY_TOTAL
 
 Tester reported the modular wand showing only `Max Mana` -- the three percent
