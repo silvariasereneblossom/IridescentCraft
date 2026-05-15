@@ -1,7 +1,7 @@
 {
   "type": "apotheosis:mob_effect",
   "mob_effect": "minecraft:poison",
-  "target": "user_target",
+  "target": "attack_target",
   "values": {
     "common": {
       "min": 0.1,

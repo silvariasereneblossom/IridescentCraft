@@ -1,7 +1,7 @@
 {
   "type": "apotheosis:mob_effect",
   "mob_effect": "minecraft:wither",
-  "target": "user_target",
+  "target": "attack_target",
   "amplifier": 1,
   "values": {
     "common": {

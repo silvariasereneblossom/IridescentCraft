@@ -1,7 +1,7 @@
 {
   "type": "origins:attribute",
   "modifier": {
-    "attribute": "forge:break_speed",
+    "attribute": "attributeslib:mining_speed",
     "value": 0.20,
     "operation": "multiply_base",
     "name": "Shulk Mining Speed"

@@ -1,0 +1,8 @@
+{
+  "_comment": "Stub for terramity:deleted_mod_element. Terramity's fairy_advancement.json (vendor bug 0.9.8) references this as its parent but the file doesn't ship in the mod jar -- the whole advancement chain (fairy -> prismatic_jewel -> microcosm/ocarina/opaline_moonstone/angel_feather/frenzied_flame) fails to load. This stub provides a valid root so the chain resolves.",
+  "criteria": {
+    "tick": {
+      "trigger": "minecraft:tick"
+    }
+  }
+}

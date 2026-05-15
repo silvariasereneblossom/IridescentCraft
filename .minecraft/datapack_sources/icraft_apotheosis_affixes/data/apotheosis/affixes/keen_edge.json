@@ -1,6 +1,6 @@
 {
   "type": "apotheosis:attribute",
-  "attribute": "puffish_attributes:critical_damage",
+  "attribute": "attributeslib:crit_damage",
   "operation": "MULTIPLY_BASE",
   "values": {
     "common": {

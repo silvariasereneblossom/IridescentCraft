@@ -1,7 +1,7 @@
 {
   "type": "apotheosis:mob_effect",
   "mob_effect": "minecraft:slowness",
-  "target": "user_target",
+  "target": "attack_target",
   "amplifier": 2,
   "values": {
     "common": {
