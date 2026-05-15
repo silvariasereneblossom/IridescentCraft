@@ -37,47 +37,19 @@
     },
     "outcomes": [
         {
-            "material": {
-                "items": [
-                    "minecraft:white_wool",
-                    "minecraft:black_wool",
-                    "minecraft:gray_wool",
-                    "minecraft:red_wool",
-                    "minecraft:blue_wool",
-                    "minecraft:green_wool",
-                    "minecraft:yellow_wool",
-                    "minecraft:purple_wool",
-                    "ars_nouveau:manaweave_cloth",
-                    "ars_nouveau:sorcerers_robes",
-                    "botania:manaweave_cloth",
-                    "botania:spell_cloth",
-                    "minecraft:string"
-                ]
-            },
+            "materials": [ "tetra:fabric/" ],
             "improvements": {
                 "ars_book_lining_fabric": 1
             }
         },
         {
-            "material": {
-                "items": [
-                    "minecraft:paper",
-                    "ars_nouveau:parchment",
-                    "minecraft:sugar_cane",
-                    "minecraft:wheat"
-                ]
-            },
+            "materials": [ "tetra:fibre/" ],
             "improvements": {
                 "ars_book_lining_fibre": 1
             }
         },
         {
-            "material": {
-                "items": [
-                    "minecraft:leather",
-                    "minecraft:rabbit_hide"
-                ]
-            },
+            "materials": [ "tetra:skin/" ],
             "improvements": {
                 "ars_book_lining_skin": 1
             }

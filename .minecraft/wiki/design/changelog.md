@@ -4,6 +4,103 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Spellbook lining schematics: switch to Tetra material categories
+
+Tester: "the back lining only accepts leather as a material -- can you
+check that?" Investigation confirmed both back and front lining
+schematics (ars + iss × front + back, 4 files) silently degraded to a
+single working outcome.
+
+### Root cause
+The schematics' fabric and fibre outcomes used `"material": { "items": [...] }`
+lists that contained bogus item IDs:
+- Fabric: `ars_nouveau:manaweave_cloth` (doesn't exist; Botania has
+  it, Ars doesn't), `ars_nouveau:sorcerers_robes` (wrong: Ars's item is
+  `sorcerer_robes` singular)
+- Fibre: `ars_nouveau:parchment` (wrong: Ars's items are
+  `blank_parchment` and `spell_parchment`)
+
+Vanilla `ItemPredicate.fromJson` reads each ID through
+`BuiltInRegistries.ITEM.getOptional(rl).orElseThrow(...)`. ONE unknown
+ID kills the entire outcome's predicate (Tetra's
+`ItemPredicateDeserializer` catches the `JsonSyntaxException` and
+returns null, then `getOutcomeFromMaterial` filters out outcomes with
+`predicate == null`). Skin outcome (`leather`, `rabbit_hide`) had no
+bogus IDs, so it survived. Hence the tester only saw leather work.
+
+### Fix
+Rewrote all 4 lining schematics to use Tetra-stock material category
+references, matching the canonical `shield/plate/trim.json` pattern:
+
+```json
+"outcomes": [
+    { "materials": [ "tetra:fabric/" ], "improvements": { "ars_book_lining_fabric": 1 } },
+    { "materials": [ "tetra:fibre/"  ], "improvements": { "ars_book_lining_fibre":  1 } },
+    { "materials": [ "tetra:skin/"   ], "improvements": { "ars_book_lining_skin":   1 } }
+]
+```
+
+Tetra material categories already cover:
+- `tetra:fabric/` — wool (all 16 colors)
+- `tetra:fibre/` — string, vines, weeping vine, twisting vine,
+  phantom membrane, dragon sinew
+- `tetra:skin/` — leather, hide
+
+Paper / parchment / sugar cane / wheat are no longer accepted as
+lining materials (they were never working anyway because the
+deserializer ate the fibre outcome the moment it hit
+`ars_nouveau:parchment`).
+
+### Lesson
+When authoring schematics that reference cross-mod items, prefer
+Tetra material-category tags (they're authored by Tetra itself
+and stay correct as cross-mod item IDs change). Raw item-ID lists
+should be reserved for items registered by mods we control or that
+we've verified exist in the running registry.
+
+### Files
+- `src/main/resources/data/tetra/schematics/ars_book/back_cover_lining.json`
+- `src/main/resources/data/tetra/schematics/ars_book/front_cover_lining.json`
+- `src/main/resources/data/tetra/schematics/iss_book/back_cover_lining.json`
+- `src/main/resources/data/tetra/schematics/iss_book/front_cover_lining.json`
+
+---
+
+## 2026-05-15 — Suppress duplicate Ars perk lines on modular spellbook tooltip
+
+Tester: "There's still an 'Ars Max Mana' line on the Ars Nouveau book."
+
+### Root cause
+The 2026-05-14 mana-bridge work mirrors ISS max_mana / mana_regen
+onto the equivalent Ars perk attributes so the two ecosystems stay in
+lockstep. We added the perk attribute IDs to `attributeslib.cfg`'s
+"Hidden Attributes" list, but that config only hides attributes from
+the Attributes GUI screen -- it does NOT filter item tooltips.
+
+Apothic Attributes replaces vanilla's attribute-tooltip rendering via
+an `ItemTooltipEvent` handler that walks the stack's
+`getAttributeModifiers(slot)` for each slot and renders each modifier
+line. It posts `GatherSkippedAttributeTooltipsEvent` to let other
+mods opt out individual UUIDs.
+
+### Fix
+New `com.iridescentcraft.modspells.client.HidePerkTooltips`
+event subscriber: on `GatherSkippedAttributeTooltipsEvent`, if the
+stack's item is `ModularSpellBookItem` or `ModularArsSpellBookItem`,
+walks every `EquipmentSlot` for modifiers on the three Ars perk
+attributes (`ars_nouveau.perk.max_mana`, `mana_regen`,
+`spell_damage`) and calls `event.skipUUID(modifier.getId())` for
+each. Client-only, registered via `@Mod.EventBusSubscriber(value =
+Dist.CLIENT, bus = FORGE)`.
+
+ISS rows remain canonical; Ars rows are silently equivalent under
+the mana bridge.
+
+### Files
+- NEW `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/modspells/client/HidePerkTooltips.java`
+
+---
+
 ## 2026-05-15 — Rate-limit Aetheric CCE log noise
 
 Tester's server log was spamming one `[WARN] [icraft] ModularItemDamageEvent
