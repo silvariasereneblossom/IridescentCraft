@@ -36,7 +36,7 @@
   },
   "types": [
     "sword",
-    "axe",
+    "heavy_weapon",
     "trident"
   ]
 }

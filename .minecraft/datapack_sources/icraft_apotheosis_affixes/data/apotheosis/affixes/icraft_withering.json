@@ -1,7 +1,7 @@
 {
   "type": "apotheosis:mob_effect",
   "mob_effect": "minecraft:wither",
-  "target": "user_target",
+  "target": "attack_target",
   "values": {
     "common": {
       "min": 0.02,
@@ -36,7 +36,7 @@
   },
   "types": [
     "sword",
-    "axe",
+    "heavy_weapon",
     "trident"
   ]
 }
