@@ -89,7 +89,7 @@ public abstract class ArsManaCapMixin implements IManaCap {
 
     /**
      * @author IridescentCraft
-     * @reason Unified mana pool -- deduct discounted cost from ISS
+     * @reason Unified mana pool -- deduct displayed cost from ISS
      */
     @Overwrite
     public double removeMana(double manaToRemove) {
@@ -98,12 +98,11 @@ public abstract class ArsManaCapMixin implements IManaCap {
         try {
             MagicData md = MagicData.getPlayerMagicData(owner);
             if (md == null) return 0;
-            // 1/3 discount: Ars is the "reliable, spammable" side of the
-            // unified pool. Displayed spell cost is divided by 3 when
-            // actually deducted from the ISS mana pool. Negative inputs
-            // clamped to 0 (matches Ars's original removeMana contract).
-            double discounted = Math.max(0.0, manaToRemove) / 3.0;
-            float newMana = (float) Math.max(0.0, md.getMana() - discounted);
+            // 2026-05-15: discount removed per user directive. Ars spells
+            // deduct their displayed cost 1:1 from the ISS pool. Negative
+            // inputs clamped to 0 (matches Ars's original contract).
+            double deduction = Math.max(0.0, manaToRemove);
+            float newMana = (float) Math.max(0.0, md.getMana() - deduction);
             md.setMana(newMana);
             // ISS's MagicData.setMana mutates the server field but does NOT
             // emit a sync packet -- ISS's own callers (MagicManager.tick)

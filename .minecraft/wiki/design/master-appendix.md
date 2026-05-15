@@ -1583,15 +1583,16 @@ There is one source of truth (ISS) and one visible bar (ISS HUD).
 |------------|-----------------|
 | `getCurrentMana()` | `MagicData.getPlayerMagicData(le).getMana()` |
 | `getMaxMana()` | `le.getAttributeValue(AttributeRegistry.MAX_MANA.get())` |
-| `removeMana(cost)` | `MagicData.setMana(mana - cost / 3.0)` -- **1/3 cost discount** |
+| `removeMana(cost)` | `MagicData.setMana(mana - cost)` -- **1:1 deduction, no discount** |
 | `addMana(_)` / `setMana(_)` / `setMaxMana(_)` | no-op (ISS owns regen + state) |
 | `getGlyphBonus` / `setGlyphBonus` / `getBookTier` / `setBookTier` | unchanged (Ars caster progression metadata) |
 
-**Cost discount rationale.** Ars stays "reliable, spammable" via the 1/3
-deduction: a glyph spell with displayed cost 30 actually costs 10 ISS mana.
-ISS keeps "high-impact, long-CD" identity by paying full cost on its own
-spells. The discount applies on top of Ars's existing mage-tier internal
-reductions (which already adjust the displayed cost).
+**Cost model.** Ars spells deduct their displayed cost 1:1 from the ISS
+pool. No multiplier. An earlier iteration (2026-05-15 initial cut) applied
+a 1/3 discount to keep Ars "spammable" relative to ISS; the discount was
+removed the same session after the smaller-than-expected drain made the
+unified pool feel disconnected from spell costs. Both ecosystems now
+charge the same per-mana rate.
 
 **HUD.** `ArsGuiManaHudMixin` injects on `GuiManaHUD.shouldDisplayBar` and
 returns false unconditionally. The Ars bar would visually duplicate the ISS

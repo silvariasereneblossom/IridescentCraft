@@ -4,6 +4,27 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Unified pool: drop the 1/3 discount, Ars deducts 1:1
+
+User: "It should just be displayed_cost, no /3."
+
+The 1/3 discount was the initial cut to preserve Ars's "reliable
+spammable" identity in the unified pool. After playtest it felt
+disconnected -- small Ars spells barely moved the (then-inflated)
+ISS bar, making the cap feel cosmetic. Simpler model: same per-mana
+rate across both ecosystems.
+
+`removeMana(cost)` now deducts `cost` from ISS (not `cost / 3.0`).
+Master + appendix updated to match. The `MagicStatsBars` /
+`ARS_STAT_LABELS` decorative-perk handling is unaffected.
+
+### Files
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/mixin/ArsManaCapMixin.java`
+- `wiki/design/master.md` -- cross-mod paragraph
+- `wiki/design/master-appendix.md` -- §M.1 cost model
+
+---
+
 ## 2026-05-15 — Unified pool followup: send SyncManaPacket after Ars-side deduction
 
 Tester: spells cast successfully (owner tracker works) but the ISS
