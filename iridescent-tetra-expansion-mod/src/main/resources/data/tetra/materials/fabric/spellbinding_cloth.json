@@ -1,0 +1,27 @@
+{
+    "key": "spellbinding_cloth",
+    "category": "fabric",
+    "primary": 1,
+    "secondary": 1,
+    "tertiary": 5,
+    "durability": 320,
+    "integrityCost": 1,
+    "integrityGain": 4,
+    "magicCapacity": 200,
+    "toolLevel": 0,
+    "toolEfficiency": 0,
+    "tints": {
+        "glyph": "d8a3ff",
+        "texture": "c890ff"
+    },
+    "textures": [
+        "crude",
+        "default"
+    ],
+    "material": {
+        "items": [ "botania:spell_cloth" ]
+    },
+    "requiredTools": {
+        "cut": "minecraft:wood"
+    }
+}

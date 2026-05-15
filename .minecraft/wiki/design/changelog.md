@@ -4,6 +4,35 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Register Botania cloth as Tetra fabric materials
+
+Followup to the lining-schematic rewrite: with `tetra:fabric/` now
+the only fabric source the lining accepts, Botania's two magic
+cloths weren't surfacing at the workbench (since Tetra-stock fabric
+only knows about wool). Author Tetra material JSONs for them so
+they show up under any `tetra:fabric/` reference:
+
+- `data/tetra/materials/fabric/manaweave.json` -- registers
+  `botania:manaweave_cloth`. Durability 240, magicCapacity 150.
+  Mid-tier mage-flavor cloth.
+- `data/tetra/materials/fabric/spellbinding_cloth.json` -- registers
+  `botania:spell_cloth`. Durability 320, magicCapacity 200. Stronger
+  variant since Spellbinding Cloth is a higher-tier Botania item.
+- `assets/tetra/lang/en_us.json` -- lang entries for both
+  (`tetra.material.<key>` + `.prefix`).
+
+Both materials are additive to Tetra's existing fabric category, so
+ANY schematic that references `tetra:fabric/` (not just our lining)
+will now accept them. That matches the design pillar: magic items
+should consume magic-flavored materials when available.
+
+### Files
+- NEW `src/main/resources/data/tetra/materials/fabric/manaweave.json`
+- NEW `src/main/resources/data/tetra/materials/fabric/spellbinding_cloth.json`
+- NEW `src/main/resources/assets/tetra/lang/en_us.json`
+
+---
+
 ## 2026-05-15 — Spellbook lining schematics: switch to Tetra material categories
 
 Tester: "the back lining only accepts leather as a material -- can you
