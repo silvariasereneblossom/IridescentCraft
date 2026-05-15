@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Creatures of ancient magic and wild nature. Faefolk channel devastating arcane power at the cost of physical resilience.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Nature's Blessing$() - $(item)+30% magic damage$() and $(item)+10% mana regen$(). The highest racial magic bonus.$(br2)$(bold)Fae Swiftness$() - $(item)+10% movement speed$().$(br2)$(bold)Slow Fall$() - Gentle drift on the wind. Reduced fall speed and damage."
+      "text": "$(italic)Creatures of ancient magic and wild nature. Faefolk channel devastating arcane power at the cost of physical resilience.$()$(br2)$(bold)Racial Traits:$()$(br2)$(bold)Nature's Blessing$() - $(item)+30% Spell Power$() and $(item)+10% mana regen$(). The highest racial magic bonus.$(br2)$(bold)Fae Swiftness$() - $(item)+10% movement speed$().$(br2)$(bold)Slow Fall$() - Gentle drift on the wind. Reduced fall speed and damage."
     },
     {
       "type": "patchouli:text",
@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Build Notes",
-      "text": "$(bold)Archmage$() - best fit. Pure caster, full robes, +30% magic stacks with Arcane Supremacy.$(br2)$(bold)Battlemage$() - $(thing)offmeta but viable$(). The -30% melee malus hurts, but Arcane Cleave converts your spell power to bonus AD. You'll never out-DPS an Orc Battlemage in raw melee, but spell-fueled hits + Mana Shield make you tankier than a pure mage.$(br2)$(bold)Avoid:$() Berserker, Vanguard, Paladin - the melee malus and HP loss make these strictly worse choices."
+      "text": "$(bold)Archmage$() - best fit. Pure caster, full robes, +30% Spell Power stacks with Arcane Supremacy.$(br2)$(bold)Battlemage$() - $(thing)offmeta but viable$(). The -30% melee malus hurts, but Arcane Cleave converts your spell power to bonus AD. You'll never out-DPS an Orc Battlemage in raw melee, but spell-fueled hits + Mana Shield make you tankier than a pure mage.$(br2)$(bold)Avoid:$() Berserker, Vanguard, Paladin - the melee malus and HP loss make these strictly worse choices."
     }
   ]
 }

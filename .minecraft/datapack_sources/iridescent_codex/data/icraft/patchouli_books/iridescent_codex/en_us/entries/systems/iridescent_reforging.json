@@ -46,7 +46,7 @@
     {
       "type": "patchouli:text",
       "title": "Specialized skin coverage",
-      "text": "$(bold)v0.4 covers 42+ sets$() across ISS, Aether, Twilight Forest, Cataclysm, Aquaculture, Forbidden Arcanus, Undergarden, Deeperdarker, Botania, Blue Skies, Deep Aether.$(br2)Each set's signature attributes — armor, toughness, magic damage, school-specific spell power — carry through to the reforged version. The Geckolib visual model is preserved for ISS armors; vanilla armor textures route through the source mod's existing texture path for non-Geckolib sets.$(br2)Theabyss elemental sets, Aethersteel, and Alex's Mobs single-slot specialty pieces land in v0.4.x."
+      "text": "$(bold)v0.4 covers 42+ sets$() across ISS, Aether, Twilight Forest, Cataclysm, Aquaculture, Forbidden Arcanus, Undergarden, Deeperdarker, Botania, Blue Skies, Deep Aether.$(br2)Each set's signature attributes — armor, toughness, Spell Power, school-specific Spell Power (fire/ice/lightning/etc.) — carry through to the reforged version. The Geckolib visual model is preserved for ISS armors; vanilla armor textures route through the source mod's existing texture path for non-Geckolib sets.$(br2)Theabyss elemental sets, Aethersteel, and Alex's Mobs single-slot specialty pieces land in v0.4.x."
     },
     {
       "type": "patchouli:text",

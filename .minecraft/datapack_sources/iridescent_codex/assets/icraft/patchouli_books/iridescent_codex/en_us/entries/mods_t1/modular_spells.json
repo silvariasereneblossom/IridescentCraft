@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Custom enchants",
-      "text": "Modular books accept four book-exclusive enchants on the enchanting table:$(br2)$(item)Mana Capacity$() I-V — +5% max mana per level (both ISS + Ars).$(br)$(item)Mana Flow$() I-III — +5% mana regen per level.$(br)$(item)Arcane Edge$() I-III — +5% magic crit chance per level.$(br)$(item)Arcane Devastation$() I-III — +25% magic crit damage per level.$(br2)$(bold)Yes — magic CAN crit$() with these enchants installed. Vanilla magic doesn't crit, but the modular system adds it via on-hit damage hooks."
+      "text": "Modular books accept four book-exclusive enchants on the enchanting table:$(br2)$(item)Mana Capacity$() I-V — +5% max mana per level (both ISS + Ars).$(br)$(item)Mana Flow$() I-III — +5% mana regen per level.$(br)$(item)Arcane Edge$() I-III — +5% magic crit chance per level (Spell Power-scaling).$(br)$(item)Arcane Devastation$() I-III — +25% magic crit damage per level.$(br2)$(bold)Yes — magic CAN crit$() with these enchants installed. Vanilla magic doesn't crit, but the modular system adds it via on-hit damage hooks."
     },
     {
       "type": "patchouli:text",

@@ -11,12 +11,12 @@
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Supremacy$() — $(item)+50% magic damage$(). Highest in the game. Applies to Iron's Spells and Ars Nouveau.$(br2)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling magic amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()$(br2)$(bold)Expanded Pool$() — Mana pool $(item)1.5x base$() (shared across all three magic classes). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -4 armor, -2 toughness, halved equipment HP."
+      "text": "$(bold)Arcane Supremacy$() — $(item)+50% Spell Power$(). Highest in the game. Applies to Iron's Spells and Ars Nouveau. Surfaced as ISS Spell Power via the magic-damage sync handler.$(br2)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling Spell Power amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()$(br2)$(bold)Expanded Pool$() — Mana pool $(item)1.5x base$() (shared across all three magic classes). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -4 armor, -2 toughness, halved equipment HP."
     },
     {
       "type": "patchouli:text",
       "title": "Glass Nuke",
-      "text": "$(thing)Faefolk Archmage$() at T4 in full robes:$(br)  +50% (Supremacy) + 30% (Faefolk) + 15% (Mana Attunement T4) + ~16% (MAG L100) = $(item)~+111% magic$()$(br)  But: -35% HP, halved gear, -20% generic armor.$(br2)One hit kills you. One spell kills everything else.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() - Glass nuke supreme. +111% magic at T4.$(br)$(thing)Elf$() - +5% magic + speed. Safer kit.$(br)$(thing)Demi-God$() - +40% HP offsets fragility."
+      "text": "$(thing)Faefolk Archmage$() at T4 in full robes:$(br)  +50% (Supremacy) + 30% (Faefolk) + 15% (Mana Attunement T4) + ~16% (MAG L100) = $(item)~+111% Spell Power$()$(br)  But: -35% HP, halved gear, -20% generic armor.$(br2)One hit kills you. One spell kills everything else.$(br2)$(bold)Best race pairings:$()$(br)$(thing)Faefolk$() - Glass nuke supreme. +111% Spell Power at T4.$(br)$(thing)Elf$() - +5% Spell Power + speed. Safer kit.$(br)$(thing)Demi-God$() - +40% HP offsets fragility."
     }
   ]
 }
