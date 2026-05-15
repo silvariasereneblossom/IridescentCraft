@@ -395,16 +395,18 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         return null;
     }
 
+    // 2026-05-15: unified mana pool migration collapsed Ars perk attrs into
+    // their ISS equivalents. The original 5-entry table had ars_max_mana +
+    // ars_mana_regen + ars_spell_damage + iss_max_mana + iss_mana_regen --
+    // post-migration the first three collide with the last two on key, so
+    // the table is the de-duplicated 3-entry ISS-canonical form.
     private static final Map<String, String> ARS_STAT_LABELS = new LinkedHashMap<>();
     static {
-        ARS_STAT_LABELS.put("irons_spellbooks:max_mana",     "Max Mana");
-        ARS_STAT_LABELS.put("irons_spellbooks:mana_regen",   "Mana Regen");
-        ARS_STAT_LABELS.put("irons_spellbooks:spell_power", "Spell Damage");
-        ARS_STAT_LABELS.put("irons_spellbooks:max_mana",                 "ISS Max Mana");
-        ARS_STAT_LABELS.put("irons_spellbooks:mana_regen",               "ISS Mana Regen");
+        ARS_STAT_LABELS.put("irons_spellbooks:max_mana",    "Max Mana");
+        ARS_STAT_LABELS.put("irons_spellbooks:mana_regen",  "Mana Regen");
+        ARS_STAT_LABELS.put("irons_spellbooks:spell_power", "Spell Power");
     }
     private static final java.util.Set<String> ARS_FLAT_STATS = java.util.Set.of(
-            "irons_spellbooks:max_mana",
             "irons_spellbooks:max_mana"
     );
 

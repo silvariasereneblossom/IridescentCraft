@@ -69,10 +69,10 @@ public final class MagicStatsBars {
         addBar("eldritchPower",      "irons_spellbooks:eldritch_spell_power",  0.0,    1.00,  true);
         addBar("evocationPower",     "irons_spellbooks:evocation_spell_power", 0.0,    1.00,  true);
         addBar("summonDamage",       "irons_spellbooks:summon_damage",         0.0,    1.00,  true);
-        // Ars Nouveau attributes
-        addBar("arsMaxMana",         "irons_spellbooks:max_mana",     0.0,    500.0, false);
-        addBar("arsManaRegen",       "irons_spellbooks:mana_regen",  -0.50,   1.00,  true);
-        addBar("arsSpellDamage",     "irons_spellbooks:spell_power",-0.50,   1.00,  true);
+        // Ars Nouveau bars removed 2026-05-15: unified mana pool migration
+        // collapsed Ars perk attrs into the ISS equivalents (max_mana /
+        // mana_regen / spell_power), so the dedicated arsMaxMana etc bars
+        // would just duplicate the rows above.
     }
 
     /**

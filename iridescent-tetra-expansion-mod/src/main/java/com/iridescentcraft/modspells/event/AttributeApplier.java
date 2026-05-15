@@ -99,17 +99,13 @@ public class AttributeApplier {
     // because mana_pool_bonuses.js already cross-applies a global +25%
     // against both ISS and Ars max_mana attributes.
 
-    /** Source attribute id -> destination unified stat name. */
+    /** Source attribute id -> destination unified stat name.
+     *  Post-2026-05-15 unified mana pool: the Ars perk attribute entries
+     *  collapsed into the ISS ones. Single source per stat. */
     private static final Map<String, String> ICRAFT_MIRROR_MAP = new HashMap<>();
     static {
-        // ISS-side feeds spell_power.
-        ICRAFT_MIRROR_MAP.put("irons_spellbooks:spell_power",       "spell_power");
-        // Ars perk.spell_damage is the Ars equivalent of spell_power.
-        ICRAFT_MIRROR_MAP.put("irons_spellbooks:spell_power", "spell_power");
-        // Mana regen has parallel registrations on both sides.
-        ICRAFT_MIRROR_MAP.put("irons_spellbooks:mana_regen",        "mana_regen");
-        ICRAFT_MIRROR_MAP.put("irons_spellbooks:mana_regen",   "mana_regen");
-        // Cooldown reduction only exists on the ISS side.
+        ICRAFT_MIRROR_MAP.put("irons_spellbooks:spell_power",        "spell_power");
+        ICRAFT_MIRROR_MAP.put("irons_spellbooks:mana_regen",         "mana_regen");
         ICRAFT_MIRROR_MAP.put("irons_spellbooks:cooldown_reduction", "cooldown_reduction");
     }
 
