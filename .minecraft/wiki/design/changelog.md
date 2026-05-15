@@ -4,6 +4,61 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Diamond leak probe + 4th hard-strip layer
+
+Tester: "still seeing diamond spawns in chest in overworld" despite
+the three strip layers in `lootjs_overhaul.js` Section 5A1.5:
+1. `LootType.CHEST + anyDimension(...).removeLoot(diamond + diamond gear)`
+2. Per-table explicit strip on 5 known leak tables
+3. Regex catch-all on `^*:.*chests?/`
+
+The strips are belt-and-suspenders but still miss leaks. Without
+knowing the source table we can't add a targeted strip, and without
+ground-truth log capture we can't even confirm which strip layer is
+firing on the leak.
+
+### New file
+`kubejs/server_scripts/loot/diamond_leak_probe.js` -- registers
+three new LootJS modifiers, each combining `.apply(ctx)` (logs the
+source table + dim + item id once per triple) with `.modifyLoot`
+(zeroes the offending stack so it never reaches the chest UI):
+
+- Layer A: `LootType.CHEST` classifier + pre-T3 dim filter
+- Layer B: regex `^*:.*chests?/` + pre-T3 dim filter (catches
+  non-CHEST-classified chest tables, e.g. Lootr wrap)
+- Layer C: ALL loot tables `/.+/` + pre-T3 dim filter (catches mob
+  drops, block drops, backpack injections, anything else carrying
+  diamonds that doesn't show up in A or B)
+
+### Diagnosis output
+First time each `(table, item, dim)` triple is seen:
+```
+[diamond-leak] item=minecraft:diamond table=<source_table>
+               dim=<source_dim>
+               (one log line per (table, item, dim) per JVM)
+```
+
+When the tester reports another leak, the log line names the exact
+source table. Then we add a targeted strip in `lootjs_overhaul.js`
+or audit the mod's loot table.
+
+### Item IDs caught
+`minecraft:diamond` + 7 diamond tools/armor + `diamond_horse_armor`.
+Does NOT catch `botania:mana_diamond` or other modded diamond
+variants -- those are intentional progression items.
+
+### Performance note
+Layer C runs on every loot table evaluation in pre-T3 dims. The
+`.apply` callback returns immediately when no diamond is present
+(constant-time loot-list scan, no allocations). modifyLoot's filter
+checks `stack.id` against an 11-entry hash and short-circuits.
+Overhead is bounded.
+
+### Files
+- NEW `kubejs/server_scripts/loot/diamond_leak_probe.js` (3 distros)
+
+---
+
 ## 2026-05-15 — Register Botania cloth as Tetra fabric materials
 
 Followup to the lining-schematic rewrite: with `tetra:fabric/` now
