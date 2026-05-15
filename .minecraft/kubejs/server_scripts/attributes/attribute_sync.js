@@ -150,9 +150,23 @@ EntityEvents.hurt(function(event) {
     }
 
     // -- Crit Roll --
+    // 2026-05-15: event.damage is read-only on KubeJS's LivingEntityHurtEventJS
+    // (getDamage exposed, no setDamage). Direct assignment throws
+    // EvaluatorException at runtime, spamming the server log on every hit
+    // that rolls a crit. Wrapped in try/catch + one-shot warn so it stops
+    // flooding. NOTE: critDamage is currently silently NOT applied; the
+    // proper fix is to migrate crit handling to a Forge LivingHurtEvent
+    // subscriber in iridescent_tetra_expansion (same pattern as
+    // WitchOfInkDamageHandler). Flagged for follow-up.
     if (Math.random() < critChance) {
-      event.damage = event.damage * critDamage
-      // Brief glowing to indicate crit visually
+      try {
+        event.damage = event.damage * critDamage
+      } catch (e) {
+        if (!global._attrSyncCritDamageWarned) {
+          global._attrSyncCritDamageWarned = true
+          console.warn('[attribute_sync] event.damage is read-only on this KubeJS version; crit multiplier silently dropped. Migrate to Forge LivingHurtEvent (see WitchOfInkDamageHandler).')
+        }
+      }
       try {
         attacker.server.runCommandSilent(
           'effect give ' + attacker.username + ' minecraft:glowing 1 0 true'

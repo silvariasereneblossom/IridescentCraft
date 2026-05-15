@@ -113,55 +113,14 @@ EntityEvents.death(event => {
   applyPenthesileaHP(player)
 })
 
-// ── LivingHurtEvent: total-damage multiplier on outgoing damage ──────────
-// MULTIPLY_TOTAL on attack_damage only covers melee, leaving magic and
-// projectile damage untouched. Hooking the hurt event multiplies whatever
-// the damage source ended up being -- works for melee, bow, ISS spells,
-// Ars spells, anything that goes through the standard damage pipeline.
-EntityEvents.hurt(event => {
-  let src = event.source
-  if (!src) return
-  let attacker = null
-  try { attacker = src.player } catch (e) { return }
-  if (!attacker || !isWitchOfInk(attacker)) return
-
-  let data = attacker.persistentData
-  let count = data.getInt('icraft_witch_ink_counter') || 0
-  let hasPenthesilea = data.getBoolean('icraft_witch_penthesilea')
-
-  // Per-counter scaling (cap 20% at count=200)
-  let pct = Math.min(0.20, count * PER_COUNTER_PCT)
-
-  if (hasPenthesilea) {
-    pct += PENTHESILEA_BONUS_PCT  // additive +10%
-    // Spellpower-to-AD conversion: 15% of (spell_power - 1.0).
-    // ISS spell_power has base 1.0 (= 100%, the no-buff baseline). The
-    // bonus portion above 1.0 is what counts.
-    let sp = 1.0
-    try {
-      let attr = global._witchSpellPowerAttr
-      if (attr) {
-        let inst = attacker.getAttribute(attr)
-        if (inst) sp = inst.getValue()
-      }
-    } catch (e) {}
-    let bonusFromSP = Math.max(0, sp - 1.0) * SP_TO_AD_RATIO
-    pct += bonusFromSP
-  }
-
-  if (pct > 0 && event.damage > 0) {
-    event.damage = event.damage * (1 + pct)
-  }
-})
-
-// Cache the ISS spell_power Attribute object once (it's stable across runtime).
-try {
-  let _RL = Java.loadClass('net.minecraft.resources.ResourceLocation')
-  let _FR = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
-  global._witchSpellPowerAttr = _FR.ATTRIBUTES.getValue(_RL.tryParse(SP_ATTR_ID))
-} catch (e) {
-  global._witchSpellPowerAttr = null
-}
+// ── Damage multiplier moved to Java (iridescent_tetra_expansion mod) ─────
+// KubeJS's EntityEvents.hurt wrapper exposes getDamage() but no settable
+// damage -- `event.damage = X` throws EvaluatorException at runtime on
+// this KubeJS version. The Witch's per-counter + Penthesilea total-damage
+// multiplier is now applied by `WitchOfInkDamageHandler` in the mod jar,
+// subscribed directly to Forge's LivingHurtEvent (which has setAmount).
+// Same NBT keys (icraft_witch_ink_counter / icraft_witch_penthesilea)
+// drive both sides; this JS file just writes them.
 
 // ── Defense scaling: armor_toughness, capstone HP ────────────────────────
 function applyWitchToughness(player) {
