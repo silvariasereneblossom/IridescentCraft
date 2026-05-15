@@ -22,7 +22,27 @@
     {
       "type": "patchouli:text",
       "title": "Origins (3/3)",
-      "text": "$(bold)Mundane$() — No powers or weaknesses. Let Race and Class define you.$(br2)$(bold)Witch of Ink$() — Paint reality with dyes. -20% HP, half food. $(note)Hyperscaler:$() Kill bosses to grow stronger (200 kills for Blessing of Penthesilea).$(br2)$(bold)Artificial Construct$() — Iron golem. Eat iron for food + Regen III. $(note)Hyperscaler:$() Consume iron to permanently upgrade (+35% stats at max)."
+      "text": "$(bold)Mundane$() — No powers or weaknesses. Let Race and Class define you.$(br2)$(bold)Witch of Ink$() — Pure passive hyperscaler. -20% HP, half food, fire weakness. Boss kills scale your TOTAL damage (melee + magic). 200 kills unlocks Blessing of Penthesilea. $(thing)/icraft witch_status$()$(br2)$(bold)Artificial Construct$() — Iron golem. Eat iron ingots/blocks for food + Regen III. 5-level forge ladder caps at L5 + Iron Apotheosis capstone. $(thing)/icraft construct_status$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Witch of Ink — Tracker",
+      "text": "$(bold)Counter$() (max 200):$(br)  $(item)Apotheosis/Champions boss$() — +1$(br)  $(item)Dimensional boss$() — +10 (Wither, Dragon, Naga, Lich, etc.)$(br2)$(bold)Per counter:$()$(br)  +0.1% TOTAL damage (cap +20%)$(br)  +0.1 armor toughness (cap +20)$(br2)Run $(thing)/icraft witch_status$() to see your live counter, current bonuses, and capstone payout."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Penthesilea Capstone",
+      "text": "At 200 counter, $(bold)Blessing of Penthesilea$() activates permanently:$(br2)$(item)+10%$() additive total damage (1.20 ladder + 0.10 = $(bold)1.30x$())$(br)$(item)+15%$() Spell Power → Attack Damage conversion$(br)$(item)+15%$() max HP$(br)$(item)Permanent:$() Haste I, Resistance I, Fire Resistance, Regeneration I$(br2)The damage buffs are $(bold)multiplicative on FINAL damage$() — they affect melee, ranged, and all magic spells (ISS + Ars)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Construct — Tracker",
+      "text": "$(bold)Iron-consumed ladder$() (right-click iron ingot/block to eat):$(br)  L1 — 1000 iron — +5%$(br)  L2 — 2000 — +10% cum.$(br)  L3 — 4000 — +15% cum.$(br)  L4 — 8000 — +25% cum.$(br)  L5 — 16000 — $(bold)+35% cum.$()$(br2)Each level: MULTIPLY_BASE on HP + melee, ADD_VALUE × 4 on armor + toughness.$(br2)Run $(thing)/icraft construct_status$() for live state."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Iron Apotheosis Capstone",
+      "text": "Reaching L5 unlocks $(bold)Iron Apotheosis$() permanently:$(br2)$(item)+25%$() max HP (on top of L5 → +60% total)$(br)$(item)+25%$() melee damage (→ +60% total)$(br)$(item)+1.0$() armor toughness (on top of L5 +1.4 → +2.4)$(br2)Iron-eating retains its Regen III for 10s on consume regardless of level."
     },
     {
       "type": "patchouli:text",

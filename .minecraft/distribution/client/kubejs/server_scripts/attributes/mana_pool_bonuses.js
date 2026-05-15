@@ -50,8 +50,21 @@ try {
     try { inst = player.getAttribute(manaAttr) } catch (e) { return }
     if (!inst) return
 
+    // 2026-05-15: bypass the class_passives cache here -- class_passives's
+    // own loggedIn handler DELETES the cache entry without re-populating,
+    // and refreshClassCache only runs every 600 ticks. Our login handler
+    // was firing before the next refresh, so getClass() returned null and
+    // the mage buff never applied until 30s post-login. Direct hasClass
+    // probes via /execute are 3 commands per call (cheap) and always
+    // current. The tick handler still benefits from the cache, but this
+    // path uses the canonical hasClass to be timing-independent.
     var playerClass = null
-    try { playerClass = getClass(player) } catch (e) { return }
+    var mageList = ['archmage', 'battlemage', 'void_summoner']
+    for (var ci = 0; ci < mageList.length; ci++) {
+      try {
+        if (hasClass(player, mageList[ci])) { playerClass = mageList[ci]; break }
+      } catch (e) {}
+    }
 
     // Walk all mage-class UUIDs. For the active class, apply (idempotent
     // upsert). For inactive classes, remove (returns silently if absent).

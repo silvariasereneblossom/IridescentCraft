@@ -118,9 +118,16 @@ function checkIronUpgrade(player, totalIron) {
       let nextReq = IRON_THRESHOLDS[newLevel]
       player.tell('\u00a77  Next upgrade: ' + nextReq + ' total iron consumed')
     } else {
-      player.tell('\u00a7e  Maximum iron forging achieved!')
+      // Capstone: L5 unlocks Iron Apotheosis (+25% HP/AD, +1 toughness on top)
+      data.putBoolean('icraft_construct_apotheosis', true)
+      player.tell('\u00a76\u00a7l[Iron Apotheosis]\u00a7r')
+      player.tell('\u00a7eYour body is forged anew in iron and intent.')
+      player.tell('\u00a7e+25% HP, +25% melee damage, +1 armor toughness (on top of L5).')
       player.server.runCommandSilent(
-        `title ${player.username} title {"text":"Iron Forging Complete","color":"gold","bold":true}`
+        `title ${player.username} title {"text":"Iron Apotheosis","color":"gold","bold":true}`
+      )
+      player.server.runCommandSilent(
+        `title ${player.username} subtitle {"text":"Maximum iron forging achieved","color":"white"}`
       )
     }
 
@@ -128,9 +135,18 @@ function checkIronUpgrade(player, totalIron) {
   }
 }
 
+// Capstone at level 5: +25% on top of the L5 ladder bonus, on max_health,
+// attack_damage, and armor_toughness. Set via the new "Iron Apotheosis"
+// flag (persistent). Triggered automatically when checkIronUpgrade flips
+// the level to 5.
+const CAPSTONE_HP_BONUS = 0.25
+const CAPSTONE_AD_BONUS = 0.25
+const CAPSTONE_TOUGHNESS_BONUS = 1.0  // ADD_VALUE (matches L1-L5 scale of bonus*4)
+
 function applyConstructBonuses(player) {
   let data = player.persistentData
   let level = data.getInt('icraft_construct_level') || 0
+  let hasApotheosis = data.getBoolean('icraft_construct_apotheosis')
   let bonus = 0
   for (let i = 0; i < level; i++) bonus += BONUS_PER_LEVEL[i]
 
@@ -141,6 +157,9 @@ function applyConstructBonuses(player) {
   player.server.runCommandSilent(`attribute ${name} minecraft:generic.attack_damage modifier remove icraft:construct_damage`)
   player.server.runCommandSilent(`attribute ${name} minecraft:generic.armor_toughness modifier remove icraft:construct_toughness`)
   player.server.runCommandSilent(`attribute ${name} minecraft:generic.armor modifier remove icraft:construct_armor`)
+  player.server.runCommandSilent(`attribute ${name} minecraft:generic.max_health modifier remove icraft:construct_apotheosis_hp`)
+  player.server.runCommandSilent(`attribute ${name} minecraft:generic.attack_damage modifier remove icraft:construct_apotheosis_ad`)
+  player.server.runCommandSilent(`attribute ${name} minecraft:generic.armor_toughness modifier remove icraft:construct_apotheosis_tough`)
 
   if (bonus > 0) {
     player.server.runCommandSilent(
@@ -154,6 +173,23 @@ function applyConstructBonuses(player) {
     )
     player.server.runCommandSilent(
       `attribute ${name} minecraft:generic.armor modifier add icraft:construct_armor ${bonus * 4} add_value`
+    )
+  }
+
+  // Capstone (Iron Apotheosis at L5): +25% HP + AD MULTIPLY_BASE,
+  // +1.0 armor_toughness ADD_VALUE. Stacks ADDITIVELY with the ladder
+  // bonus for MULTIPLY_BASE attrs (so L5 + capstone HP = +35% + +25% = +60%
+  // multiply_base on a single attribute). For toughness it's a flat
+  // additional +1 on top of the L5 +1.4.
+  if (hasApotheosis) {
+    player.server.runCommandSilent(
+      `attribute ${name} minecraft:generic.max_health modifier add icraft:construct_apotheosis_hp ${CAPSTONE_HP_BONUS} multiply_base`
+    )
+    player.server.runCommandSilent(
+      `attribute ${name} minecraft:generic.attack_damage modifier add icraft:construct_apotheosis_ad ${CAPSTONE_AD_BONUS} multiply_base`
+    )
+    player.server.runCommandSilent(
+      `attribute ${name} minecraft:generic.armor_toughness modifier add icraft:construct_apotheosis_tough ${CAPSTONE_TOUGHNESS_BONUS} add_value`
     )
   }
 }

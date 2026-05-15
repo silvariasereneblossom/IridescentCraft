@@ -4,6 +4,84 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Origin progression rework + capstones + status commands
+
+Five-part update:
+
+### 1. Mana pool fix: bypass class_passives cache on apply
+The 1.5x mage buff (`mana_pool_bonuses.js v2`) wasn't applying for new
+sessions because `class_passives.js`'s `loggedIn` handler DELETES the
+cache entry without repopulating it, and `refreshClassCache` only runs
+every 600 ticks. Our login handler fired before the next refresh, so
+`getClass()` returned null and the buff never applied until 30 s
+post-login.
+
+`applyMageBuff` now calls `hasClass(player, name)` directly for the
+three mage classes (canonical /execute probe, ~3 commands per call --
+cheap, always current). Tick handler same behavior; only login path
+changed.
+
+### 2. Witch of Ink: damage scaling moved to LivingHurtEvent
+Per-counter `+0.1%` is now applied via `EntityEvents.hurt` as a
+multiplicative-on-final-damage factor. Affects **all outgoing damage**:
+melee, ranged, ISS spells, Ars spells -- whatever ends up going through
+the hurt pipeline. The previous attribute-modifier approach only
+covered melee.
+
+At counter=200 the base damage multiplier is 1.20x. Capstone adds
+additively: 1.20 + 0.10 = 1.30x.
+
+### 3. Witch of Ink: capstone rework
+Blessing of Penthesilea at counter=200 now grants:
+- +10% additive total damage (so cap+capstone = 1.30x)
+- +15% Spell-Power-to-Attack-Damage conversion: `(spell_power - 1.0) × 0.15`
+  added as a multiplier on outgoing damage. A player at 200% SP gets
+  +15% damage from the conversion; at 300% SP, +30%.
+- +15% max HP (preserved from previous capstone)
+- Permanent Haste I + **Resistance I + Fire Resistance + Regeneration I**
+  (new). Renewed every 2 minutes by the existing tick handler.
+
+### 4. Artificial Construct: Iron Apotheosis capstone (new)
+L5 (16000 iron consumed) now ALSO unlocks Iron Apotheosis permanently:
+- +25% max HP MULTIPLY_BASE (on top of L5 +35% → +60% total)
+- +25% melee damage MULTIPLY_BASE (same → +60% total)
+- +1.0 armor toughness ADD_VALUE (on top of L5 +1.4 → +2.4 total)
+
+### 5. NEW: `/icraft witch_status` + `/icraft construct_status`
+Self-service progression-readout commands (no permission gate -- a
+player should always be able to check their own state).
+
+Witch status shows:
+- Current counter / 200 (and percentage)
+- Current per-counter damage + toughness bonuses
+- Penthesilea state + capstone bonus values + SP-to-AD preview
+- Effective total damage multiplier
+
+Construct status shows:
+- Total iron consumed
+- Forge level (0-5) + cumulative bonus
+- Next threshold + iron remaining
+- Iron Apotheosis state + capstone bonus values
+
+### 6. Codex (Patchouli)
+`origins_guide.json` extended with three new pages:
+- Witch tracker page (counter + per-counter bonuses + command pointer)
+- Penthesilea capstone page
+- Construct tracker page (iron ladder + capstone)
+- Iron Apotheosis page
+
+Rebuilt + deployed via `build_codex.sh` to all 3 distros.
+
+### Files
+- `kubejs/server_scripts/attributes/mana_pool_bonuses.js` (cache bypass)
+- `kubejs/server_scripts/origins/witch_of_ink_progression.js` (full rewrite)
+- `kubejs/server_scripts/origins/artificial_construct_progression.js` (capstone)
+- NEW `kubejs/server_scripts/origins/origin_status_commands.js`
+- `datapack_sources/iridescent_codex/.../origins_guide.json` (codex)
+- `wiki/classes/overview.md`, `wiki/design/master-appendix.md`
+
+---
+
 ## 2026-05-15 — Unified pool v3: Ars half-cost + mage 1.5x pool (transient)
 
 After two playtest passes:
