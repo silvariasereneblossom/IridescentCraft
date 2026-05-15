@@ -252,6 +252,65 @@
     }
   })
 
+  // ── Loot-table-level diag + fix ──────────────────────────────────────────
+  // 2026-05-15: tester reports bare gems still appearing in CHEST inventories
+  // (not as ItemEntity drops). The EntityEvents.spawned hook above only fires
+  // when a gem entity spawns in-world; chest contents are populated via loot
+  // tables directly, bypassing entity spawn. Hook LootJS for every chest
+  // loot table: scan generated items, log table id when a bare gem is found,
+  // and replace it with a properly-bonded random gem so the player never
+  // sees the broken tooltip in the chest UI.
+  //
+  // Logs once per (tableId, dim) pair per session via _gem_loot_seen.
+  global._gem_loot_seen = global._gem_loot_seen || {}
+
+  LootJS.modifiers(event => {
+    event.addLootTypeModifier(LootType.CHEST).modifyLoot(
+      // filter: bare apotheosis:gem stacks
+      function(stack) {
+        if (!stack || stack.isEmpty) return false
+        if (String(stack.item.id) !== 'apotheosis:gem') return false
+        return isBareGem(stack)
+      },
+      // callback: log + replace
+      function(context, stack) {
+        try {
+          var tableId = 'unknown'
+          try { tableId = String(context.queriedLootTableId) } catch (_) {}
+          var dim = 'unknown'
+          try { dim = String(context.level.dimension().location()) } catch (_) {}
+          var key = tableId + '|' + dim
+          if (!global._gem_loot_seen[key]) {
+            global._gem_loot_seen[key] = true
+            console.warn('[gem-loot-trace] bare apotheosis:gem from table='
+                       + tableId + ' dim=' + dim + ' (logging once per pair)')
+          }
+        } catch (e) {
+          try { console.warn('[gem-loot-trace] handler threw: ' + e) } catch (_) {}
+        }
+        // Repair in place: write fallback variant + common rarity into NBT.
+        // Mirrors the inventory-tick repair so the chest tooltip is correct.
+        try {
+          var nbt = stack.nbt
+          if (!nbt) {
+            nbt = new CompoundTag_gr()
+            stack.nbt = nbt
+          }
+          var pickIdx = Math.floor(Math.random() * KNOWN_GEMS.length)
+          nbt.putString('gem', KNOWN_GEMS[pickIdx])
+          var affixData = nbt.contains('affix_data')
+            ? nbt.getCompound('affix_data')
+            : new CompoundTag_gr()
+          affixData.putString('rarity', 'apotheosis:common')
+          nbt.put('affix_data', affixData)
+        } catch (e) {
+          try { console.warn('[gem-loot-trace] repair threw: ' + e) } catch (_) {}
+        }
+        return stack
+      }
+    )
+  })
+
   console.log('[IridescentCraft] apotheosis_gem_repair loaded ('
-            + KNOWN_GEMS.length + ' fallback IDs, with inject-source trace)')
+            + KNOWN_GEMS.length + ' fallback IDs, with inject-source trace + loot-table trace)')
 })()
