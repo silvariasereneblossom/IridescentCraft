@@ -3,7 +3,7 @@
     "key": "ars_book_lining_fabric",
     "level": 1,
     "attributes": {
-      "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.02
+      "**irons_spellbooks:mana_regen": 0.02
     }
   }
 ]

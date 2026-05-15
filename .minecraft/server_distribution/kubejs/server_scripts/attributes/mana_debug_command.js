@@ -1,16 +1,12 @@
 // =============================================================================
-// /icraft mana_debug -- dump ISS + Ars max_mana attribute state
+// /icraft mana_debug -- dump unified mana pool state
 // =============================================================================
-// Diagnoses mana_bridge.js. Prints to chat: ISS attribute base, modifier
-// list (UUID, name, amount, op), aggregated value; same for Ars; and Ars's
-// cached IManaCap.getMaxMana() (the value the visible mana bar reads).
+// Post-2026-05-15 (unified pool): Ars ManaCap is mixin-redirected to the ISS
+// pool. There is only one mana value -- the ISS attribute and ISS MagicData.
+// This command prints that attribute's modifier list, plus the Ars cap to
+// confirm getCurrentMana/getMaxMana are returning the ISS values.
 //
-// Tester report: ISS bar grows from gear buffs, Ars bar doesn't. The bridge
-// should mirror ISS gear modifiers onto Ars max_mana. This command reveals
-// whether the bridge modifier actually lands on the Ars attribute and
-// whether Ars's cap cache has picked it up.
-//
-// Op-only (permission level 2). Memory: feedback_rhino_scoping.md.
+// Op-only (permission level 2).
 // =============================================================================
 
 try {
@@ -18,10 +14,9 @@ try {
   var ForgeRegistries_mdc = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
 
   var ATTRS_TO_DUMP = [
-    { label: 'ISS max_mana',        id: 'irons_spellbooks:max_mana' },
-    { label: 'Ars max_mana (perk)', id: 'ars_nouveau:ars_nouveau.perk.max_mana' },
-    { label: 'ISS mana_regen',      id: 'irons_spellbooks:mana_regen' },
-    { label: 'Ars mana_regen (perk)', id: 'ars_nouveau:ars_nouveau.perk.mana_regen' },
+    { label: 'ISS max_mana',    id: 'irons_spellbooks:max_mana' },
+    { label: 'ISS mana_regen',  id: 'irons_spellbooks:mana_regen' },
+    { label: 'ISS spell_power', id: 'irons_spellbooks:spell_power' },
   ]
 
   var resolveAttr = function(id) {

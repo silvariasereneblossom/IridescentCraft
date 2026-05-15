@@ -3,35 +3,35 @@
     "key": "ars_book_front_cover_hone_max_mana",
     "level": 1,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.max_mana": 5
+      "irons_spellbooks:max_mana": 5
     }
   },
   {
     "key": "ars_book_front_cover_hone_max_mana",
     "level": 2,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.max_mana": 10
+      "irons_spellbooks:max_mana": 10
     }
   },
   {
     "key": "ars_book_front_cover_hone_max_mana",
     "level": 3,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.max_mana": 20
+      "irons_spellbooks:max_mana": 20
     }
   },
   {
     "key": "ars_book_front_cover_hone_max_mana",
     "level": 4,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.max_mana": 35
+      "irons_spellbooks:max_mana": 35
     }
   },
   {
     "key": "ars_book_front_cover_hone_max_mana",
     "level": 5,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.max_mana": 60
+      "irons_spellbooks:max_mana": 60
     }
   }
 ]

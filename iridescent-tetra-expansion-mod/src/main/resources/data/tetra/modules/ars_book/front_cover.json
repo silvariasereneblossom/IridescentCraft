@@ -16,7 +16,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
+          "**irons_spellbooks:spell_power": 0.005
         },
         "integrity": 1.0,
         "glyph": {
@@ -38,7 +38,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
+          "**irons_spellbooks:spell_power": 0.005
         },
         "integrity": 1.0,
         "glyph": {
@@ -60,7 +60,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.004
+          "**irons_spellbooks:spell_power": 0.004
         },
         "integrity": 1.0,
         "glyph": {
@@ -82,7 +82,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
+          "**irons_spellbooks:spell_power": 0.005
         },
         "integrity": 1.0,
         "glyph": {
@@ -104,7 +104,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0055
+          "**irons_spellbooks:spell_power": 0.0055
         },
         "integrity": 1.0,
         "glyph": {
@@ -126,7 +126,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0065
+          "**irons_spellbooks:spell_power": 0.0065
         },
         "integrity": 1.0,
         "glyph": {
@@ -148,7 +148,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.003
+          "**irons_spellbooks:spell_power": 0.003
         },
         "integrity": 1.0,
         "glyph": {
@@ -170,7 +170,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0075
+          "**irons_spellbooks:spell_power": 0.0075
         },
         "integrity": 1.0,
         "glyph": {
@@ -192,7 +192,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0055
+          "**irons_spellbooks:spell_power": 0.0055
         },
         "integrity": 1.0,
         "glyph": {
@@ -214,7 +214,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0043
+          "**irons_spellbooks:spell_power": 0.0043
         },
         "integrity": 1.0,
         "glyph": {
@@ -236,7 +236,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0035
+          "**irons_spellbooks:spell_power": 0.0035
         },
         "integrity": 1.0,
         "glyph": {
@@ -258,7 +258,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0035
+          "**irons_spellbooks:spell_power": 0.0035
         },
         "integrity": 1.0,
         "glyph": {
@@ -280,7 +280,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
+          "**irons_spellbooks:spell_power": 0.005
         },
         "integrity": 1.0,
         "glyph": {
@@ -302,7 +302,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0048
+          "**irons_spellbooks:spell_power": 0.0048
         },
         "integrity": 1.0,
         "glyph": {
@@ -324,7 +324,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0043
+          "**irons_spellbooks:spell_power": 0.0043
         },
         "integrity": 1.0,
         "glyph": {
@@ -346,7 +346,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0039
+          "**irons_spellbooks:spell_power": 0.0039
         },
         "integrity": 1.0,
         "glyph": {
@@ -368,7 +368,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
+          "**irons_spellbooks:spell_power": 0.005
         },
         "integrity": 1.0,
         "glyph": {
@@ -390,7 +390,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.006
+          "**irons_spellbooks:spell_power": 0.006
         },
         "integrity": 1.0,
         "glyph": {
@@ -412,7 +412,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0044
+          "**irons_spellbooks:spell_power": 0.0044
         },
         "integrity": 1.0,
         "glyph": {
@@ -434,7 +434,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0047
+          "**irons_spellbooks:spell_power": 0.0047
         },
         "integrity": 1.0,
         "glyph": {
@@ -456,7 +456,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0038
+          "**irons_spellbooks:spell_power": 0.0038
         },
         "integrity": 1.0,
         "glyph": {
@@ -478,7 +478,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0048
+          "**irons_spellbooks:spell_power": 0.0048
         },
         "integrity": 1.0,
         "glyph": {
@@ -500,7 +500,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0036
+          "**irons_spellbooks:spell_power": 0.0036
         },
         "integrity": 1.0,
         "glyph": {
@@ -522,7 +522,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0045
+          "**irons_spellbooks:spell_power": 0.0045
         },
         "integrity": 1.0,
         "glyph": {
@@ -544,7 +544,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.007
+          "**irons_spellbooks:spell_power": 0.007
         },
         "integrity": 1.0,
         "glyph": {
@@ -566,7 +566,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0025
+          "**irons_spellbooks:spell_power": 0.0025
         },
         "integrity": 1.0,
         "glyph": {
@@ -588,7 +588,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.003
+          "**irons_spellbooks:spell_power": 0.003
         },
         "integrity": 1.0,
         "glyph": {
@@ -610,7 +610,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0037
+          "**irons_spellbooks:spell_power": 0.0037
         },
         "integrity": 1.0,
         "glyph": {
@@ -632,7 +632,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0045
+          "**irons_spellbooks:spell_power": 0.0045
         },
         "integrity": 1.0,
         "glyph": {
@@ -654,7 +654,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0035
+          "**irons_spellbooks:spell_power": 0.0035
         },
         "integrity": 1.0,
         "glyph": {
@@ -676,7 +676,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0055
+          "**irons_spellbooks:spell_power": 0.0055
         },
         "integrity": 1.0,
         "glyph": {

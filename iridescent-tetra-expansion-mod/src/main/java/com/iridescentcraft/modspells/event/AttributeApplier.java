@@ -105,10 +105,10 @@ public class AttributeApplier {
         // ISS-side feeds spell_power.
         ICRAFT_MIRROR_MAP.put("irons_spellbooks:spell_power",       "spell_power");
         // Ars perk.spell_damage is the Ars equivalent of spell_power.
-        ICRAFT_MIRROR_MAP.put("ars_nouveau:ars_nouveau.perk.spell_damage", "spell_power");
+        ICRAFT_MIRROR_MAP.put("irons_spellbooks:spell_power", "spell_power");
         // Mana regen has parallel registrations on both sides.
         ICRAFT_MIRROR_MAP.put("irons_spellbooks:mana_regen",        "mana_regen");
-        ICRAFT_MIRROR_MAP.put("ars_nouveau:ars_nouveau.perk.mana_regen",   "mana_regen");
+        ICRAFT_MIRROR_MAP.put("irons_spellbooks:mana_regen",   "mana_regen");
         // Cooldown reduction only exists on the ISS side.
         ICRAFT_MIRROR_MAP.put("irons_spellbooks:cooldown_reduction", "cooldown_reduction");
     }

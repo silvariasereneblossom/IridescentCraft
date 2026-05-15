@@ -415,8 +415,8 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
         MAX_MANA("Max Mana", "irons_spellbooks:max_mana"),
         MANA_REGEN("Mana Regen", "irons_spellbooks:mana_regen"),
         COOLDOWN_REDUCTION("Cooldown Reduction", "irons_spellbooks:cooldown_reduction"),
-        ARS_MAX_MANA("Max Mana (Ars)", "ars_nouveau:ars_nouveau.perk.max_mana"),
-        ARS_SPELL_DAMAGE("Spell Damage (Ars)", "ars_nouveau:ars_nouveau.perk.spell_damage");
+        ARS_MAX_MANA("Max Mana (Ars)", "irons_spellbooks:max_mana"),
+        ARS_SPELL_DAMAGE("Spell Damage (Ars)", "irons_spellbooks:spell_power");
 
         public final String displayName;
         public final String attributeId;

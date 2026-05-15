@@ -29,7 +29,7 @@
     }
   ],
   "attributes": {
-    "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.1,
+    "**irons_spellbooks:spell_power": 0.1,
     "*irons_spellbooks:spell_power": 0.05
   }
 }

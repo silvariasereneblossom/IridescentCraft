@@ -397,14 +397,14 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
 
     private static final Map<String, String> ARS_STAT_LABELS = new LinkedHashMap<>();
     static {
-        ARS_STAT_LABELS.put("ars_nouveau:ars_nouveau.perk.max_mana",     "Max Mana");
-        ARS_STAT_LABELS.put("ars_nouveau:ars_nouveau.perk.mana_regen",   "Mana Regen");
-        ARS_STAT_LABELS.put("ars_nouveau:ars_nouveau.perk.spell_damage", "Spell Damage");
+        ARS_STAT_LABELS.put("irons_spellbooks:max_mana",     "Max Mana");
+        ARS_STAT_LABELS.put("irons_spellbooks:mana_regen",   "Mana Regen");
+        ARS_STAT_LABELS.put("irons_spellbooks:spell_power", "Spell Damage");
         ARS_STAT_LABELS.put("irons_spellbooks:max_mana",                 "ISS Max Mana");
         ARS_STAT_LABELS.put("irons_spellbooks:mana_regen",               "ISS Mana Regen");
     }
     private static final java.util.Set<String> ARS_FLAT_STATS = java.util.Set.of(
-            "ars_nouveau:ars_nouveau.perk.max_mana",
+            "irons_spellbooks:max_mana",
             "irons_spellbooks:max_mana"
     );
 

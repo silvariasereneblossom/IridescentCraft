@@ -225,7 +225,7 @@ global.tick_classPassives = (event) => {
             'icraft_archmage_attunement', magicBonus, 'multiply_base')
           player.modifyAttribute('irons_spellbooks:spell_power',
             'icraft_archmage_attunement', magicBonus, 'multiply_base')
-          player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+          player.modifyAttribute('irons_spellbooks:spell_power',
             'icraft_archmage_attunement', magicBonus, 'multiply_base')
         } catch (e) {}
       }

@@ -19,7 +19,7 @@
 //
 // Applied to BOTH magic systems present in the pack:
 //   - irons_spellbooks:max_mana
-//   - ars_nouveau:ars_nouveau.perk.max_mana
+//   - irons_spellbooks:max_mana
 // If either mod is absent, the attribute lookup returns null and we skip
 // silently for that mod -- no error, no spam.
 //
@@ -40,20 +40,19 @@ try {
   var Operation_mp = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
   var UUID_mp = Java.loadClass('java.util.UUID')
 
-  // Attribute IDs we target (one per magic system).
+  // 2026-05-15: unified mana pool migration. Ars's ManaCap is mixin-routed
+  // to ISS via ArsManaCapMixin -- the Ars perk attribute is now decorative.
+  // We apply pool bonuses only to the ISS attribute (the canonical pool).
   var MANA_ATTRS = [
-    'irons_spellbooks:max_mana',
-    'ars_nouveau:ars_nouveau.perk.max_mana'
+    'irons_spellbooks:max_mana'
   ]
 
-  // Stable UUIDs. Layout: -2020<class><attr>NN
-  // class: 0=global, 1=archmage, 2=battlemage, 3=void_summoner
-  // attr : 0=ISS, 1=Ars
+  // Stable per-class UUIDs.
   var UUIDS = {
-    'global':        ['9c1e0c01-2e1d-4f0a-9d1f-202000000001', '9c1e0c01-2e1d-4f0a-9d1f-202000000002'],
-    'archmage':      ['9c1e0c01-2e1d-4f0a-9d1f-202000000011', '9c1e0c01-2e1d-4f0a-9d1f-202000000012'],
-    'battlemage':    ['9c1e0c01-2e1d-4f0a-9d1f-202000000021', '9c1e0c01-2e1d-4f0a-9d1f-202000000022'],
-    'void_summoner': ['9c1e0c01-2e1d-4f0a-9d1f-202000000031', '9c1e0c01-2e1d-4f0a-9d1f-202000000032']
+    'global':        ['9c1e0c01-2e1d-4f0a-9d1f-202000000001'],
+    'archmage':      ['9c1e0c01-2e1d-4f0a-9d1f-202000000011'],
+    'battlemage':    ['9c1e0c01-2e1d-4f0a-9d1f-202000000021'],
+    'void_summoner': ['9c1e0c01-2e1d-4f0a-9d1f-202000000031']
   }
 
   // Class -> multiplier (MULTIPLY_TOTAL amount). 0 = no class modifier.
@@ -137,24 +136,9 @@ try {
       }
     }
 
-    // 2026-04-25: Ars Nouveau caches max mana via IManaCap.setMaxMana(int)
-    // and only recomputes on PlayerLoggedInEvent / Respawn / Equip changes.
-    // Our attribute modifier sits on ars_nouveau:ars_nouveau.perk.max_mana
-    // but the cap displayed in the bar (ManaCap NBT) doesn't refresh until
-    // one of those events fires. Force-kick the cache here whenever the
-    // class changes so the player sees the buff immediately.
-    try {
-      var manaUtil = Java.loadClass('com.hollingsworth.arsnouveau.api.util.ManaUtil')
-      var capReg = Java.loadClass('com.hollingsworth.arsnouveau.setup.registry.CapabilityRegistry')
-      var manaResult = manaUtil.calcMaxMana(player)  // also re-applies their internal modifier
-      var capOpt = capReg.getMana(player)
-      if (capOpt) {
-        var cap = capOpt.orElse(null)
-        if (cap) cap.setMaxMana(manaResult.getRealMax())
-      }
-    } catch (e) {
-      // Ars Nouveau absent or API changed -- silent skip
-    }
+    // 2026-05-15: Ars cap refresh code removed. ArsManaCapMixin routes
+    // every Ars ManaCap getMaxMana / getCurrentMana call through the ISS
+    // pipeline -- the cap is never stale, no force-refresh needed.
 
     lastClassApplied[name] = playerClass
   }

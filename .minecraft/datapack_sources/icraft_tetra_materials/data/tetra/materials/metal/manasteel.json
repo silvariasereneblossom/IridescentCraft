@@ -28,7 +28,7 @@
   },
   "attributes": {
     "*irons_spellbooks:mana_regen": 0.04,
-    "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.04,
+    "**irons_spellbooks:mana_regen": 0.04,
     "*irons_spellbooks:spell_power": 0.15
   }
 }

@@ -5,11 +5,13 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "iridescent_tetra_expansion.refmap.json",
   "mixins": [
-    "CropBlockCoFHReplantMixin"
+    "CropBlockCoFHReplantMixin",
+    "ArsManaCapMixin"
   ],
   "client": [
     "GuiModuleSlotSubheadingMixin",
-    "AttributesGuiToggleBtnMixin"
+    "AttributesGuiToggleBtnMixin",
+    "ArsGuiManaHudMixin"
   ],
   "server": [],
   "injectors": {

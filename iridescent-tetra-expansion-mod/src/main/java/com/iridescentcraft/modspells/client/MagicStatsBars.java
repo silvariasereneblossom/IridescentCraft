@@ -70,9 +70,9 @@ public final class MagicStatsBars {
         addBar("evocationPower",     "irons_spellbooks:evocation_spell_power", 0.0,    1.00,  true);
         addBar("summonDamage",       "irons_spellbooks:summon_damage",         0.0,    1.00,  true);
         // Ars Nouveau attributes
-        addBar("arsMaxMana",         "ars_nouveau:ars_nouveau.perk.max_mana",     0.0,    500.0, false);
-        addBar("arsManaRegen",       "ars_nouveau:ars_nouveau.perk.mana_regen",  -0.50,   1.00,  true);
-        addBar("arsSpellDamage",     "ars_nouveau:ars_nouveau.perk.spell_damage",-0.50,   1.00,  true);
+        addBar("arsMaxMana",         "irons_spellbooks:max_mana",     0.0,    500.0, false);
+        addBar("arsManaRegen",       "irons_spellbooks:mana_regen",  -0.50,   1.00,  true);
+        addBar("arsSpellDamage",     "irons_spellbooks:spell_power",-0.50,   1.00,  true);
     }
 
     /**

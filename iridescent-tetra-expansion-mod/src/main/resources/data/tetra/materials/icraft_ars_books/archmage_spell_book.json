@@ -29,8 +29,8 @@
     }
   ],
   "attributes": {
-    "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.2,
-    "**ars_nouveau:ars_nouveau.perk.max_mana": 0.15,
+    "**irons_spellbooks:spell_power": 0.2,
+    "**irons_spellbooks:max_mana": 0.15,
     "*irons_spellbooks:spell_power": 0.05
   }
 }

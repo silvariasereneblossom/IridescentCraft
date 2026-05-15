@@ -16,7 +16,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -38,7 +38,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -60,7 +60,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -82,7 +82,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -104,7 +104,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+          "irons_spellbooks:max_mana": 6
         },
         "integrity": 0.5,
         "glyph": {
@@ -126,7 +126,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+          "irons_spellbooks:max_mana": 6
         },
         "integrity": 0.5,
         "glyph": {
@@ -148,7 +148,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 3
+          "irons_spellbooks:max_mana": 3
         },
         "integrity": 0.5,
         "glyph": {
@@ -170,7 +170,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 8
+          "irons_spellbooks:max_mana": 8
         },
         "integrity": 0.5,
         "glyph": {
@@ -192,7 +192,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+          "irons_spellbooks:max_mana": 6
         },
         "integrity": 0.5,
         "glyph": {
@@ -214,7 +214,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -236,7 +236,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -258,7 +258,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -280,7 +280,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -302,7 +302,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -324,7 +324,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -346,7 +346,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -368,7 +368,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -390,7 +390,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+          "irons_spellbooks:max_mana": 6
         },
         "integrity": 0.5,
         "glyph": {
@@ -412,7 +412,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -434,7 +434,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -456,7 +456,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -478,7 +478,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
@@ -500,7 +500,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -522,7 +522,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -544,7 +544,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 7
+          "irons_spellbooks:max_mana": 7
         },
         "integrity": 0.5,
         "glyph": {
@@ -566,7 +566,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 3
+          "irons_spellbooks:max_mana": 3
         },
         "integrity": 0.5,
         "glyph": {
@@ -588,7 +588,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 3
+          "irons_spellbooks:max_mana": 3
         },
         "integrity": 0.5,
         "glyph": {
@@ -610,7 +610,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -632,7 +632,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -654,7 +654,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 4
+          "irons_spellbooks:max_mana": 4
         },
         "integrity": 0.5,
         "glyph": {
@@ -676,7 +676,7 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+          "irons_spellbooks:max_mana": 6
         },
         "integrity": 0.5,
         "glyph": {

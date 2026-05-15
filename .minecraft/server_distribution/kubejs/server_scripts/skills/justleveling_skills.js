@@ -213,13 +213,13 @@ global.tick_justlevelingSkills = (event) => {
       let mpDmg  = (apt.mag >= 5) ? 0.05 : 0
       player.modifyAttribute('irons_spellbooks:max_mana',
         'icraft_mana_spark_iss_mp', mpFlat, 'addition')
-      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.max_mana',
+      player.modifyAttribute('irons_spellbooks:max_mana',
         'icraft_mana_spark_ars_mp', mpFlat, 'addition')
       player.modifyAttribute('puffish_attributes:magic_damage',
         'icraft_mana_spark_dmg', mpDmg, 'multiply_base')
       player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_mana_spark_iss_dmg', mpDmg, 'multiply_base')
-      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+      player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_mana_spark_ars_dmg', mpDmg, 'multiply_base')
     } catch (e) {}
 
@@ -281,7 +281,7 @@ global.tick_justlevelingSkills = (event) => {
       let cmRegen = (apt.mag >= 10) ? 0.15 : 0
       player.modifyAttribute('irons_spellbooks:mana_regen',
         'icraft_conservation_iss', cmRegen, 'multiply_base')
-      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.mana_regen',
+      player.modifyAttribute('irons_spellbooks:mana_regen',
         'icraft_conservation_ars', cmRegen, 'multiply_base')
     } catch (e) {}
 
@@ -301,7 +301,7 @@ global.tick_justlevelingSkills = (event) => {
         'icraft_mana_blaze', mbDmg, 'multiply_base')
       player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_mana_blaze_iss', mbDmg, 'multiply_base')
-      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+      player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_mana_blaze_ars', mbDmg, 'multiply_base')
     } catch (e) {}
 
@@ -319,7 +319,7 @@ global.tick_justlevelingSkills = (event) => {
         'icraft_mana_inferno', miDmg, 'multiply_base')
       player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_mana_inferno_iss', miDmg, 'multiply_base')
-      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+      player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_mana_inferno_ars', miDmg, 'multiply_base')
     } catch (e) {}
 
@@ -381,7 +381,7 @@ global.tick_justlevelingSkills = (event) => {
     try {
       player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_spell_attunement', 0, 'multiply_base')
-      player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+      player.modifyAttribute('irons_spellbooks:spell_power',
         'icraft_spell_attunement', 0, 'multiply_base')
     } catch (e) {}
 

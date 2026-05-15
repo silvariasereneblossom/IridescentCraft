@@ -3,35 +3,35 @@
     "key": "ars_book_back_cover_hone_spell_power",
     "level": 1,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.spell_damage": 0.02
+      "irons_spellbooks:spell_power": 0.02
     }
   },
   {
     "key": "ars_book_back_cover_hone_spell_power",
     "level": 2,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.spell_damage": 0.04
+      "irons_spellbooks:spell_power": 0.04
     }
   },
   {
     "key": "ars_book_back_cover_hone_spell_power",
     "level": 3,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.spell_damage": 0.07
+      "irons_spellbooks:spell_power": 0.07
     }
   },
   {
     "key": "ars_book_back_cover_hone_spell_power",
     "level": 4,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.spell_damage": 0.09
+      "irons_spellbooks:spell_power": 0.09
     }
   },
   {
     "key": "ars_book_back_cover_hone_spell_power",
     "level": 5,
     "attributes": {
-      "ars_nouveau:ars_nouveau.perk.spell_damage": 0.1
+      "irons_spellbooks:spell_power": 0.1
     }
   }
 ]

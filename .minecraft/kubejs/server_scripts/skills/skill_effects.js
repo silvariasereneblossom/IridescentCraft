@@ -503,7 +503,7 @@ global.tick_skillEffects = (event) => {
         } catch(e) {}
 
         if (magicBonus > 0) {
-          player.modifyAttribute('ars_nouveau:ars_nouveau.perk.spell_damage',
+          player.modifyAttribute('irons_spellbooks:spell_power',
             'icraft_magic_damage_sync', magicBonus, 'multiply_base')
           player.modifyAttribute('irons_spellbooks:spell_power',
             'icraft_magic_damage_sync', magicBonus, 'multiply_base')

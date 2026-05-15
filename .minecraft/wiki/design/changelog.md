@@ -4,6 +4,97 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Unified mana pool: Ars routes through ISS via ManaCap mixin
+
+User feasibility check: instead of reconciling two mana systems via the
+bridge, mixin Ars's `ManaCap` to read/write through the ISS pool
+directly. One source of truth.
+
+Design pillar carried through: Ars stays "reliable, spammable" via a
+1/3 cost discount when its spells spend from the unified pool. ISS
+remains "high-impact, long-CD" by paying full cost.
+
+### Engineering
+
+**NEW `ArsManaCapMixin`** (`com.iridescentcraft.reforging.mixin`):
+- Targets `com.hollingsworth.arsnouveau.common.capability.ManaCap`
+- `@Overwrite` of 6 IManaCap methods:
+  - `getCurrentMana()` → `MagicData.getPlayerMagicData(livingEntity).getMana()`
+  - `getMaxMana()` → `livingEntity.getAttributeValue(AttributeRegistry.MAX_MANA.get())`
+  - `removeMana(cost)` → `MagicData.setMana(mana - cost/3)`. **1/3 discount on Ars cost** (user directive). Negative inputs clamped to 0.
+  - `addMana(_)` → no-op (ISS's `MagicManager.regenPlayerMana` is canonical)
+  - `setMana(_)` → no-op (the cap doesn't store mana anymore)
+  - `setMaxMana(_)` → no-op (ISS attribute owns it)
+- `getGlyphBonus` / `setGlyphBonus` / `getBookTier` / `setBookTier` left
+  alone — they store Ars caster progression metadata persisted in NBT
+  and used for spell-tier gating.
+- All accessors wrapped in try/catch with `0` fallback in case ISS is
+  absent or `livingEntity` is null.
+
+**NEW `ArsGuiManaHudMixin`** (client-only):
+- Targets `com.hollingsworth.arsnouveau.client.gui.GuiManaHUD`
+- `@Inject(cancellable)` on `shouldDisplayBar` → forces return `false`.
+- Why: with the cap reading ISS mana, the Ars bar would visually
+  duplicate the ISS bar. ISS is canonical.
+
+**Mixin config**:
+- Added `ArsManaCapMixin` to `"mixins"` (common bus)
+- Added `ArsGuiManaHudMixin` to `"client"` (Dist.CLIENT)
+
+### Bulk migration (25 files)
+
+Substituted across mod resources + KubeJS scripts + datapack sources:
+- `ars_nouveau:ars_nouveau.perk.max_mana` → `irons_spellbooks:max_mana`
+- `ars_nouveau:ars_nouveau.perk.mana_regen` → `irons_spellbooks:mana_regen`
+- `ars_nouveau:ars_nouveau.perk.spell_damage` → `irons_spellbooks:spell_power`
+
+Files touched: ars_book module + improvement JSONs, icraft_ars_books
+material files, icraft_tetra_materials metal definitions (elementium,
+manasteel), `skill_effects.js`, `justleveling_skills.js`,
+`class_passives.js`, `mana_pool_bonuses.js`, `mana_debug_command.js`,
+and the modspells item / event / client Java files.
+
+The `**` MULTIPLY_TOTAL prefix is preserved verbatim — same operation
+on the ISS attribute (which has base=1.0 for percent attrs and
+base=100 for max_mana, both work cleanly under MULTIPLY math, no
+collapse-to-zero like the Ars perk attrs had).
+
+### Deletions
+
+- `mana_bridge.js` deleted from all 3 distros. The bridge's job is
+  obsoleted by the cap mixin.
+- `mana_pool_bonuses.js` Ars-attribute path removed. Per-class
+  multipliers now apply to ISS attribute only; cap force-refresh
+  block deleted (cap is now always-fresh via mixin).
+
+### Datapack rebuild
+
+`icraft_tetra_materials.zip` rebuilt and redeployed to all 3 distros'
+`config/paxi/datapacks/` so the migrated metal material JSONs land
+on the Paxi loader path.
+
+### Items granting Ars perk attributes
+
+After this change, items that previously granted
+`ars_nouveau:ars_nouveau.perk.max_mana` etc. now grant the ISS
+equivalents. The Ars perk attributes still exist on the player (Ars
+registers them via EntityAttributeModificationEvent) but become
+decorative — nothing in our codebase grants them, and the cap reads
+ISS regardless. `HidePerkTooltips.java` continues to suppress them
+on tooltips if anything else ever applies them.
+
+### Files
+- NEW `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/mixin/ArsManaCapMixin.java`
+- NEW `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/mixin/ArsGuiManaHudMixin.java`
+- `iridescent_tetra_expansion.mixins.json` — 2 entries added
+- 25 files bulk-migrated (mod resources + kubejs scripts + datapack sources)
+- `mana_bridge.js` deleted (3 distros)
+- `mana_pool_bonuses.js` simplified
+- `mana_debug_command.js` repurposed for the unified pool
+- `icraft_tetra_materials.zip` rebuilt + redeployed (3 distros)
+
+---
+
 ## 2026-05-15 — /icraft mana_debug command for Ars/ISS bridge diagnosis
 
 Tester: "Ars Nouveau attacks are too limited" + "mana buffs aren't
