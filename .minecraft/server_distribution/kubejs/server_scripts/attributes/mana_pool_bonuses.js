@@ -1,167 +1,71 @@
 // =============================================================================
-// MANA POOL BONUSES -- global +25% baseline, class-stacked multipliers
+// MANA POOL BONUSES -- REVERTED to cleanup-only (2026-05-15)
 // =============================================================================
-// Tester directive 2026-04-25: speccing into magic should let you use it as
-// a primary form of combat immediately, even if weaker than melee speccing.
-// Mana costs early-game were prohibitive in the punishing Archmage +
-// Faefolk + Witch-of-Ink combo.
+// Original purpose: layered mana-pool buffs (Global +25% MULTIPLY_BASE,
+// Archmage +1.0 MULTIPLY_TOTAL, Battlemage/Void Summoner +0.5 MULTIPLY_TOTAL)
+// added 2026-04-25 to make magic-spec viable from session 1. Removed
+// 2026-05-15 while diagnosing unified-pool drain behavior -- the buffs
+// inflated the pool past the point where a small Ars deduction is visible
+// in the bar.
 //
-// Solution: layered mana-pool buffs.
-//   Global  : MULTIPLY_BASE  +0.25  -> every player gets +25% baseline pool
-//   Archmage: MULTIPLY_TOTAL +1.00  -> 2x the new base = 2.5x raw default
-//   Battlemage / Void Summoner: MULTIPLY_TOTAL +0.50  -> 1.5x the new base
+// Why this isn't just `git rm`: the original applied modifiers via
+// `addPermanentModifier`, which writes to player NBT. Existing players
+// already have the four UUIDs persisted on their `irons_spellbooks:max_mana`
+// attribute. Deleting the script would leave the buffs stuck on every
+// online player's data until manual cleanup. This file now CLEARS those
+// four UUIDs on every tick so the revert is total.
 //
-// Math (default base = 100):
-//   Non-mage    : 100 * (1 + 0.25)             = 125
-//   Battlemage  : 100 * (1 + 0.25) * (1 + 0.5) = 187.5
-//   Void Summoner: 100 * (1 + 0.25) * (1 + 0.5) = 187.5
-//   Archmage    : 100 * (1 + 0.25) * (1 + 1.0) = 250
-//
-// Applied to BOTH magic systems present in the pack:
-//   - irons_spellbooks:max_mana
-//   - irons_spellbooks:max_mana
-// If either mod is absent, the attribute lookup returns null and we skip
-// silently for that mod -- no error, no spam.
-//
-// Implementation: Java-interop via Java.loadClass mirroring the pattern in
-// AttributeApplier.java (iridescent-modular-spells-mod). Stable UUIDs per
-// (class, mod) so the modifier is upsert-able and idempotent across class
-// switches. Removed when class changes away.
-//
-// Cadence: 5s tick, matching class_attribute_bonuses.js.
-//
-// Memory: feedback_wiki_reference.md (Rhino var-not-const), feedback_jar_audit.md.
+// To restore the buffs later, `git revert` this commit (or copy the
+// original-design block back).
 // =============================================================================
 
 try {
+  var UUID_mp = Java.loadClass('java.util.UUID')
   var ResourceLocation_mp = Java.loadClass('net.minecraft.resources.ResourceLocation')
   var ForgeRegistries_mp = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
-  var AttributeModifier_mp = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
-  var Operation_mp = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier$Operation')
-  var UUID_mp = Java.loadClass('java.util.UUID')
 
-  // 2026-05-15: unified mana pool migration. Ars's ManaCap is mixin-routed
-  // to ISS via ArsManaCapMixin -- the Ars perk attribute is now decorative.
-  // We apply pool bonuses only to the ISS attribute (the canonical pool).
-  var MANA_ATTRS = [
-    'irons_spellbooks:max_mana'
+  // Same UUIDs the original applied. Listed here for the cleanup pass.
+  var STALE_UUIDS = [
+    '9c1e0c01-2e1d-4f0a-9d1f-202000000001',  // global +25%
+    '9c1e0c01-2e1d-4f0a-9d1f-202000000011',  // archmage x2
+    '9c1e0c01-2e1d-4f0a-9d1f-202000000021',  // battlemage x1.5
+    '9c1e0c01-2e1d-4f0a-9d1f-202000000031',  // void_summoner x1.5
   ]
 
-  // Stable per-class UUIDs.
-  var UUIDS = {
-    'global':        ['9c1e0c01-2e1d-4f0a-9d1f-202000000001'],
-    'archmage':      ['9c1e0c01-2e1d-4f0a-9d1f-202000000011'],
-    'battlemage':    ['9c1e0c01-2e1d-4f0a-9d1f-202000000021'],
-    'void_summoner': ['9c1e0c01-2e1d-4f0a-9d1f-202000000031']
-  }
+  // ISS max_mana is the only attribute that ever carried these modifiers
+  // (the 2026-05-15 unified-pool migration collapsed the Ars-side path).
+  var rl = ResourceLocation_mp.tryParse('irons_spellbooks:max_mana')
+  var manaAttr = rl ? ForgeRegistries_mp.ATTRIBUTES.getValue(rl) : null
 
-  // Class -> multiplier (MULTIPLY_TOTAL amount). 0 = no class modifier.
-  var CLASS_MULT = {
-    'archmage':      1.00,
-    'battlemage':    0.50,
-    'void_summoner': 0.50
-  }
-
-  var GLOBAL_BASE = 0.25  // MULTIPLY_BASE amount
-
-  // Resolve attribute objects once on script load. Skipped attributes
-  // (mod absent) are stored as null and bailed at apply time.
-  var resolvedAttrs = []
-  for (var i = 0; i < MANA_ATTRS.length; i++) {
-    var rl = ResourceLocation_mp.tryParse(MANA_ATTRS[i])
-    var attr = rl ? ForgeRegistries_mp.ATTRIBUTES.getValue(rl) : null
-    resolvedAttrs.push(attr)
-    if (!attr) console.log('[mana_pool] attribute not registered (mod absent?): ' + MANA_ATTRS[i])
-  }
-
-  var upsertModifier = function(player, attr, uuidStr, name, amount, op) {
-    if (!attr) return
+  var removeStaleFromPlayer = function(player) {
+    if (!manaAttr) return
     var inst = null
-    try { inst = player.getAttribute(attr) } catch (e) { return }
+    try { inst = player.getAttribute(manaAttr) } catch (e) { return }
     if (!inst) return
-    var uuid = UUID_mp.fromString(uuidStr)
-    var existing = null
-    try { existing = inst.getModifier(uuid) } catch (e) {}
-    if (existing) {
-      try { inst.removeModifier(uuid) } catch (e) {}
+    for (var i = 0; i < STALE_UUIDS.length; i++) {
+      try {
+        var uuid = UUID_mp.fromString(STALE_UUIDS[i])
+        try { inst.removeModifier(uuid) } catch (e) {}
+      } catch (e) {}
     }
-    if (amount !== 0.0) {
-      var m = new AttributeModifier_mp(uuid, name, amount, op)
-      try { inst.addPermanentModifier(m) } catch (e) {
-        console.warn('[mana_pool] addPermanentModifier failed for ' + name + ': ' + e)
-      }
-    }
-  }
-
-  // Track applied class per player so we can clear stale class modifiers
-  // when a class changes.
-  var lastClassApplied = {}
-
-  var applyManaPoolBonuses = function(player) {
-    var name = player.username
-    var playerClass = null
-    try { playerClass = getClass(player) } catch (e) { return }  // class_passives.js not loaded yet
-
-    var prev = lastClassApplied[name] || null
-
-    // Global +25% always present (idempotent upsert).
-    for (var ai = 0; ai < resolvedAttrs.length; ai++) {
-      upsertModifier(player, resolvedAttrs[ai], UUIDS['global'][ai],
-                     'icraft.mana_pool.global', GLOBAL_BASE,
-                     Operation_mp.MULTIPLY_BASE)
-    }
-
-    // Skip class work if class hasn't changed since last application.
-    if (playerClass === prev) return
-
-    // Clear any prior-class modifier on both attributes.
-    var classKeys = Object.keys(CLASS_MULT)
-    for (var ci = 0; ci < classKeys.length; ci++) {
-      var k = classKeys[ci]
-      for (var aj = 0; aj < resolvedAttrs.length; aj++) {
-        // amount=0 -> remove only
-        upsertModifier(player, resolvedAttrs[aj], UUIDS[k][aj],
-                       'icraft.mana_pool.' + k, 0,
-                       Operation_mp.MULTIPLY_TOTAL)
-      }
-    }
-
-    // Apply current class modifier (if any).
-    if (playerClass && CLASS_MULT[playerClass] !== undefined) {
-      for (var ak = 0; ak < resolvedAttrs.length; ak++) {
-        upsertModifier(player, resolvedAttrs[ak], UUIDS[playerClass][ak],
-                       'icraft.mana_pool.' + playerClass,
-                       CLASS_MULT[playerClass],
-                       Operation_mp.MULTIPLY_TOTAL)
-      }
-    }
-
-    // 2026-05-15: Ars cap refresh code removed. ArsManaCapMixin routes
-    // every Ars ManaCap getMaxMana / getCurrentMana call through the ISS
-    // pipeline -- the cap is never stale, no force-refresh needed.
-
-    lastClassApplied[name] = playerClass
   }
 
   global.tick_manaPoolBonuses = function(event) {
     event.server.players.forEach(function(player) {
-      try { applyManaPoolBonuses(player) } catch (e) {
-        console.warn('[mana_pool] applyManaPoolBonuses threw: ' + e)
+      try { removeStaleFromPlayer(player) } catch (e) {
+        console.warn('[mana_pool] cleanup threw: ' + e)
       }
     })
   }
   global.registerServerTick('tick_manaPoolBonuses', 100, 60)
 
-  // Force re-apply on login so class changes made offline are picked up.
+  // Also run on login so a returning player gets cleared before any spell
+  // resolution observes the stale buff.
   PlayerEvents.loggedIn(function(event) {
-    delete lastClassApplied[event.player.username]
+    try { removeStaleFromPlayer(event.player) } catch (e) {}
   })
 
-  console.log('[IridescentCraft] mana_pool_bonuses loaded')
-  console.log('  Global: max_mana +25% (MULTIPLY_BASE)')
-  console.log('  Archmage: x2 on top of new base (MULTIPLY_TOTAL +1.00)')
-  console.log('  Battlemage: x1.5 on top of new base (MULTIPLY_TOTAL +0.50)')
-  console.log('  Void Summoner: x1.5 on top of new base (MULTIPLY_TOTAL +0.50)')
+  console.log('[IridescentCraft] mana_pool_bonuses reverted to cleanup-only')
 } catch (e) {
-  console.warn('[IridescentCraft] mana_pool_bonuses bootstrap FAILED: ' + e)
+  console.warn('[IridescentCraft] mana_pool_bonuses (cleanup) bootstrap FAILED: ' + e)
 }
