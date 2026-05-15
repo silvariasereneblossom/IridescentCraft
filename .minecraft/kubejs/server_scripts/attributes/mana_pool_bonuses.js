@@ -44,31 +44,44 @@ try {
   var manaAttrRl = ResourceLocation_mp.tryParse('irons_spellbooks:max_mana')
   var manaAttr = manaAttrRl ? ForgeRegistries_mp.ATTRIBUTES.getValue(manaAttrRl) : null
 
+  // 2026-05-15: bypass the class_passives cache + inline the class probe
+  // here so we don't depend on cross-script function visibility (Rhino's
+  // shared-script-scope is unreliable in practice). class_passives's own
+  // loggedIn handler DELETES the cache entry without re-populating, and
+  // refreshClassCache only runs every 600 ticks. Our login handler was
+  // firing before the next refresh, so getClass() returned null and the
+  // mage buff never applied until 30s post-login.
+  var probeClass = function(player, className) {
+    try {
+      var r = player.server.runCommandSilent(
+        'execute if entity ' + player.username +
+        '[nbt={ForgeCaps:{"origins:origins":{Origins:{"origins:class":"icraft:' +
+        className + '"}}}}]'
+      )
+      return r > 0
+    } catch (e) { return false }
+  }
+
+  // Track whether we've ever successfully applied for diagnostics. One-shot
+  // log so we get proof-of-life in the server log without per-tick spam.
+  var _firstApplySeen = {}
+
   var applyMageBuff = function(player) {
     if (!manaAttr) return
     var inst = null
     try { inst = player.getAttribute(manaAttr) } catch (e) { return }
     if (!inst) return
 
-    // 2026-05-15: bypass the class_passives cache here -- class_passives's
-    // own loggedIn handler DELETES the cache entry without re-populating,
-    // and refreshClassCache only runs every 600 ticks. Our login handler
-    // was firing before the next refresh, so getClass() returned null and
-    // the mage buff never applied until 30s post-login. Direct hasClass
-    // probes via /execute are 3 commands per call (cheap) and always
-    // current. The tick handler still benefits from the cache, but this
-    // path uses the canonical hasClass to be timing-independent.
     var playerClass = null
     var mageList = ['archmage', 'battlemage', 'void_summoner']
     for (var ci = 0; ci < mageList.length; ci++) {
-      try {
-        if (hasClass(player, mageList[ci])) { playerClass = mageList[ci]; break }
-      } catch (e) {}
+      if (probeClass(player, mageList[ci])) { playerClass = mageList[ci]; break }
     }
 
     // Walk all mage-class UUIDs. For the active class, apply (idempotent
     // upsert). For inactive classes, remove (returns silently if absent).
     var classes = Object.keys(MAGE_CLASS_UUIDS)
+    var applied = false
     for (var i = 0; i < classes.length; i++) {
       var k = classes[i]
       var uuid
@@ -78,9 +91,27 @@ try {
         try {
           var m = new AttributeModifier_mp(uuid, 'icraft.mana_pool.' + k, MAGE_MULT, Operation_mp.MULTIPLY_TOTAL)
           inst.addTransientModifier(m)
+          applied = true
         } catch (e) {
           console.warn('[mana_pool] addTransientModifier failed for ' + k + ': ' + e)
         }
+      }
+    }
+
+    // One-shot proof-of-apply log per (player, class) pair, so the server
+    // log records that the buff is actually landing without flooding the
+    // log on every 5s tick.
+    var diagKey = String(player.username) + ':' + (playerClass || '<none>') + ':' + (applied ? 'ok' : 'noop')
+    if (!_firstApplySeen[diagKey]) {
+      _firstApplySeen[diagKey] = true
+      if (applied) {
+        try {
+          var preview = inst.getValue()
+          console.log('[mana_pool] applied 1.5x ' + playerClass + ' buff to '
+                    + player.username + '; aggregated max_mana=' + preview)
+        } catch (e) {}
+      } else if (!playerClass) {
+        console.log('[mana_pool] ' + player.username + ' has no mage class; skipping (one-shot log)')
       }
     }
   }
