@@ -134,7 +134,7 @@ LootJS.modifiers(event => {
   event
     .addLootTableModifier(/^irons_spellbooks:chests\/.*/)
     .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
-      .withCount(2, 4)
+      .limitCount([2, 4])
       .when(c => c.randomChance(0.45)))
 
   // Vanilla magic mobs — small flat chance per kill
@@ -143,7 +143,7 @@ LootJS.modifiers(event => {
     event
       .addEntityLootModifier(mobId)
       .addLoot(LootEntry.of('irons_spellbooks:arcane_essence')
-        .withCount(1, 2)
+        .limitCount([1, 2])
         .when(c => c.randomChance(0.35)))
   })
 

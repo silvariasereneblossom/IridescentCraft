@@ -35,7 +35,6 @@
     }
   },
   "types": [
-    "sword",
-    "axe"
+    "sword"
   ]
 }

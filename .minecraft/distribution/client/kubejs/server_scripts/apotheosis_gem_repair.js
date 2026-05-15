@@ -264,14 +264,18 @@
   // Logs once per (tableId, dim) pair per session via _gem_loot_seen.
   global._gem_loot_seen = global._gem_loot_seen || {}
 
+  var ItemFilter_gr = Java.loadClass('com.almostreliable.lootjs.filters.ItemFilter')
+  var bareGemFilter = ItemFilter_gr.custom(function(stack) {
+    if (!stack || stack.isEmpty()) return false
+    try {
+      if (String(stack.item.id) !== 'apotheosis:gem') return false
+    } catch (_) { return false }
+    return isBareGem(stack)
+  })
+
   LootJS.modifiers(event => {
     event.addLootTypeModifier(LootType.CHEST).modifyLoot(
-      // filter: bare apotheosis:gem stacks
-      function(stack) {
-        if (!stack || stack.isEmpty) return false
-        if (String(stack.item.id) !== 'apotheosis:gem') return false
-        return isBareGem(stack)
-      },
+      bareGemFilter,
       // callback: log + replace
       function(context, stack) {
         try {

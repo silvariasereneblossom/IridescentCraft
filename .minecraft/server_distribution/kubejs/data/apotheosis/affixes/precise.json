@@ -1,6 +1,6 @@
 {
   "type": "apotheosis:attribute",
-  "attribute": "puffish_attributes:critical_chance",
+  "attribute": "attributeslib:crit_chance",
   "operation": "ADDITION",
   "values": {
     "common": {
@@ -36,7 +36,6 @@
   },
   "types": [
     "sword",
-    "axe",
     "trident"
   ]
 }

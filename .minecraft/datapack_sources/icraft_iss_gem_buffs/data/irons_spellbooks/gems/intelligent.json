@@ -7,7 +7,13 @@
     {
       "type": "apotheosis:attribute",
       "gem_class": {
-        "key": "anything"
+        "key": "anything",
+        "types": [
+          "helmet",
+          "chestplate",
+          "leggings",
+          "boots"
+        ]
       },
       "attribute": "irons_spellbooks:max_mana",
       "operation": "ADDITION",
@@ -47,7 +53,13 @@
     {
       "type": "apotheosis:attribute",
       "gem_class": {
-        "key": "anything"
+        "key": "anything",
+        "types": [
+          "helmet",
+          "chestplate",
+          "leggings",
+          "boots"
+        ]
       },
       "attribute": "irons_spellbooks:mana_regen",
       "operation": "MULTIPLY_BASE",

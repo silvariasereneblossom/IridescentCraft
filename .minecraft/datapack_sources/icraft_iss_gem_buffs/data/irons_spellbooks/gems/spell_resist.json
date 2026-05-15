@@ -7,7 +7,13 @@
     {
       "type": "apotheosis:attribute",
       "gem_class": {
-        "key": "anything"
+        "key": "anything",
+        "types": [
+          "helmet",
+          "chestplate",
+          "leggings",
+          "boots"
+        ]
       },
       "attribute": "irons_spellbooks:spell_power",
       "operation": "MULTIPLY_TOTAL",
