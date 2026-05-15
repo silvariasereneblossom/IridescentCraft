@@ -4,6 +4,51 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — /icraft mana_debug command for Ars/ISS bridge diagnosis
+
+Tester: "Ars Nouveau attacks are too limited" + "mana buffs aren't
+affecting the Ars bar at all". ISS bar shows gear buffs; Ars bar
+does not. The mana_bridge.js script should mirror ISS gear modifiers
+onto Ars's `ars_nouveau.perk.max_mana` attribute, but apparently
+isn't landing the modifier (or Ars's IManaCap cache isn't picking
+it up).
+
+### New diagnostic
+`kubejs/server_scripts/attributes/mana_debug_command.js` -- registers
+`/icraft mana_debug` (op-only, perm level 2). When run, prints to
+chat:
+
+- For each of {ISS max_mana, Ars max_mana, ISS mana_regen, Ars
+  mana_regen}: attribute base value, list of every modifier (UUID,
+  name, amount, operation), final aggregated `.getValue()`.
+- Ars `IManaCap` state: `getCurrentMana()`, `getMaxMana()` (the
+  value the visible mana bar reads), `getGlyphBonus()`,
+  `getBookTier()`.
+- A fresh `ManaUtil.calcMaxMana(player).getRealMax()` to see what
+  Ars *thinks* the max SHOULD be -- if this differs from the cap's
+  cached `getMaxMana()`, the cap is stale and the command
+  force-refreshes it.
+
+Output identifies which of the 3 likely failure modes is hitting:
+1. Bridge modifier isn't on the Ars attribute at all
+2. Modifier IS there but `calcMaxMana` doesn't account for it
+3. Both are correct but the cap cache isn't refreshing
+
+Tester runs `/icraft mana_debug` while wearing the buff source and
+pastes the chat output. We patch from the actual data instead of
+guessing.
+
+### Open question: "attacks too limited"
+The user also reports Ars spells are too mana-expensive. This is
+likely a downstream symptom of the same bug -- if the Ars pool
+isn't growing past 100, even cheap spells eat the whole bar. The
+fix is the same: make the bridge land its modifier.
+
+### Files
+- NEW `kubejs/server_scripts/attributes/mana_debug_command.js` (3 distros)
+
+---
+
 ## 2026-05-15 — Diamond leak probe + 4th hard-strip layer
 
 Tester: "still seeing diamond spawns in chest in overworld" despite
