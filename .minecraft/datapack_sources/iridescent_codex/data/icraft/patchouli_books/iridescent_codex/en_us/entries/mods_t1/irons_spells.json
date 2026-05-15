@@ -17,9 +17,8 @@
       "text": "$(bold)Spellcasting schools:$() Fire, Ice, Lightning, Poison, Blood, Eldritch, Holy, Ender, Nature. Not all schools are immediately accessible \u2014 higher-level books require finding them in dungeons.$(br2)$(bold)Mini-bosses:$() Archevoker, Cryomancer, Necromancer, and Pyromancer spawn in Overworld structures. They drop T2 token peeks and spell books."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "irons_spellbooks:arcane_compendium",
-      "text": "Craft the $(bold)Arcane Compendium$() for the full Iron's Spellbooks reference \u2014 spell scrolls, upgrade paths, and school breakdowns."
+      "type": "patchouli:text",
+      "text": "Craft the $(bold)Arcane Compendium$() for the full Iron's Spellbooks reference \u2014 spell scrolls, upgrade paths, and school breakdowns.$(br2)Access: open the Arcane Compendium via JEI (or check the Iron's Spellbooks wiki). No craftable book item."
     }
   ]
 }

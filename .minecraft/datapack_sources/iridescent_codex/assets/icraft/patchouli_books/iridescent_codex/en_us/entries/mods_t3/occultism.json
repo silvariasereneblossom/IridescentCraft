@@ -17,9 +17,8 @@
       "text": "$(bold)Key rituals:$() Golden Sacrifice (converts mob spawners), Possession ritual (entity capturing for dimensional storage), Summoning rituals for crafting assistants."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "occultism:dictionary_of_spirits",
-      "text": "Craft the $(bold)Dictionary of Spirits$() for the full Occultism reference \u2014 ritual circles, spirit summoning, djinn work orders, and storage systems."
+      "type": "patchouli:text",
+      "text": "Craft the $(bold)Dictionary of Spirits$() for the full Occultism reference \u2014 ritual circles, spirit summoning, djinn work orders, and storage systems.$(br2)Access: spawned for new players via the Occultism welcome advancement. If lost, the contents are also available via the in-game JEI integration."
     }
   ],
   "advancement": "icraft:stage_tier_3"

@@ -17,9 +17,9 @@
       "text": "$(bold)Faefolk synergy:$() +10% spell power from the Nature Magic racial. Ars Nouveau's nature-flavored spells benefit the most.$(br2)$(bold)What unlocks at T2:$() Full spellbook access, Bookwyrm familiar, Drygmy for mob farming, Whirlisprig for crop automation. These become available once you have T2 stage."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "ars_nouveau:worn_notebook",
-      "text": "Craft the $(bold)Worn Notebook$() for the full Ars Nouveau reference \u2014 every glyph, every augment, familiar guides, and automation setups."
+      "type": "patchouli:spotlight",
+      "item": "ars_nouveau:worn_notebook",
+      "text": "Craft the $(bold)Worn Notebook$() for the full Ars Nouveau reference \u2014 every glyph, every augment, familiar guides, and automation setups.$(br2)Granted to all players on first join (Ars Nouveau's starter handout). If lost, craft it: paper + amethyst shard."
     }
   ],
   "advancement": "icraft:stage_tier_2"

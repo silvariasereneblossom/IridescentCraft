@@ -17,14 +17,12 @@
       "text": "$(bold)Affix system:$() Random stat rolls on weapons and armor from Common (T1) to Mythic (endgame). Reforging Station lets you reroll affixes using tokens.$(br2)$(bold)Spawner overhaul:$() Apotheosis spawners can be modified with upgrades (speed, range, spawn caps). Farming spawners is a valid progression strategy."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "apotheosis:enchanting/tome",
-      "text": "Craft the $(bold)Chronicle of Shadows$() for the full Apotheosis reference \u2014 enchantment mechanics, affix system, gem socketing, boss spawners, and the Adventure module."
+      "type": "patchouli:text",
+      "text": "Craft the $(bold)Chronicle of Shadows$() for the full Apotheosis reference \u2014 enchantment mechanics, affix system, gem socketing, boss spawners, and the Adventure module.$(br2)Access: there is no in-game guidebook. Apotheosis mechanics live in JEI tooltips and the Adventure module config. See $(thing)Codex > Systems$()."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "apotheosis:apoth_chronicle",
-      "text": "Craft the $(bold)Apoth Chronicle$() for the full Apotheosis reference \u2014 enchantment library, gem socketing, boss spawners, village overhaul, and the adventure module."
+      "type": "patchouli:text",
+      "text": "Craft the $(bold)Apoth Chronicle$() for the full Apotheosis reference \u2014 enchantment library, gem socketing, boss spawners, village overhaul, and the adventure module.$(br2)Access: no Chronicle item exists in this version of Apotheosis. Mechanics are surfaced via JEI tooltips and the dedicated Codex pages in $(thing)Systems$()."
     }
   ]
 }

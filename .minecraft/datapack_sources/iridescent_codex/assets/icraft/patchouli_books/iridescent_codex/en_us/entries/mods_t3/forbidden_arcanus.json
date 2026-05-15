@@ -17,9 +17,8 @@
       "text": "$(bold)Stellarite:$() T4 material from Forbidden & Arcanus. Requires deep T3 investment to produce. Used in several T4 endgame recipes."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "forbidden_arcanus:tome_of_arcana",
-      "text": "Craft the $(bold)Tome of Arcana$() for the full Forbidden & Arcanus reference \u2014 Arcana magic, cursed items, and Corruptus lore."
+      "type": "patchouli:text",
+      "text": "Craft the $(bold)Tome of Arcana$() for the full Forbidden & Arcanus reference \u2014 Arcana magic, cursed items, and Corruptus lore.$(br2)Access: the Tome of Arcana is granted via Forbidden Arcanus's starter advancement. If lost, /give yourself the Tome of Arcana (forbidden_arcanus mod) -- mechanics are in JEI tooltips."
     }
   ],
   "advancement": "icraft:stage_tier_3"

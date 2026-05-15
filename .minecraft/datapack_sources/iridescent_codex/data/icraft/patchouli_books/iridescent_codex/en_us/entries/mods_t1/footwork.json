@@ -13,9 +13,8 @@
       "text": "$(bold)Role in the pack:$() Footwork is available from T1 and changes how every combat encounter feels. Dodge rolling costs stamina and has a cooldown \u2014 positioning and timing matter.$(br2)$(bold)Class synergy:$() Ranger and Samurai classes benefit most from Footwork's mobility options. Berserker and Vanguard can use it defensively to close gaps or disengage."
     },
     {
-      "type": "patchouli:crafting",
-      "recipe": "footwork:combat_manual",
-      "text": "Craft the $(bold)Combatant's Companion$() for the full Footwork reference \u2014 dodge mechanics, stamina management, keybinds, and advanced movement techniques."
+      "type": "patchouli:text",
+      "text": "Craft the $(bold)Combatant's Companion$() for the full Footwork reference \u2014 dodge mechanics, stamina management, keybinds, and advanced movement techniques.$(br2)Access: Footwork mechanics are listed in JEI. Held-item tooltips describe each move."
     }
   ]
 }
