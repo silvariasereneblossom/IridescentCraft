@@ -369,12 +369,12 @@ A two-layer system (Origin + Class) collapses too many dimensions into one choic
 
 Beyond the nine rebalanced vanilla origins, the pack ships four custom:
 
-- **Witch of Ink** — ritual-magic specialist
-- **Artificial Construct** — machine-themed tech bias
+- **Witch of Ink** — passive hyperscaler (boss-kill counter; capstone Blessing of Penthesilea at 200 kills)
+- **Artificial Construct** — machine-themed tech bias (iron eating; 5-level iron-consumed ladder)
 - **Witherborn** — undead aesthetic + Wither immunity
 - **Slimebodied** — slime physics + bouncing combat
 
-Each has its own progression hook and dimension tie-in.
+Each has its own progression hook and dimension tie-in. Values + capstone payouts live in [Appendix §K.4](master-appendix.md#k4-origin-system).
 
 ### Glass-cannon classes
 

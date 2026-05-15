@@ -1338,8 +1338,8 @@ Permanent at character creation. Mild tradeoffs (vs. class's strong tradeoffs).
 
 | Origin | Theme | Progression hook |
 |--------|-------|------------------|
-| **Witch of Ink** | Ritual-magic specialist — paint magic, feeds from paintings, 50% food reduction | Boss-kill counter (max 200) scales damage/DR/armor toughness; Blessing of Penthesilea capstone unlock at high boss count |
-| **Artificial Construct** | Machine-themed tech bias — 25% food efficiency, eats iron ingots and iron blocks for sustenance | Iron upgrade ladder — 1000→16000 iron consumed unlocks 5 levels, +5% per level, max +25% |
+| **Witch of Ink** | Pure passive hyperscaler — 50% food reduction, 20% less HP, fire weakness. Paint actives were stripped 2026-03-30 (`58e4834c`); no painting consumption mechanic. | Boss-kill counter (max 200): Apotheosis/Champions bosses +1, dimensional bosses +10. **Per counter:** +0.1% melee damage (MULTIPLY_BASE) + 0.1 armor toughness (ADD_VALUE), caps at +20% / +20. **Capstone (Blessing of Penthesilea, at 200):** +15% max HP + permanent Haste I (renewed every 2 minutes). |
+| **Artificial Construct** | Machine-themed tech bias — 25% food efficiency, eats iron ingots/blocks for sustenance (Regen III for 10 s on consume). | 5-level iron-consumed ladder at thresholds 1000 / 2000 / 4000 / 8000 / 16000. **Per-level bonuses** (cumulative MULTIPLY_BASE on max_health + attack_damage; ADD_VALUE × 4 on armor + armor_toughness): +5% (L1) → +10% (L2) → +15% (L3) → +25% (L4) → **+35% (L5)**. |
 | **Witherborn** | Undead aesthetic + Wither immunity | Undead-aligned bonuses; pairs with Void Summoner |
 | **Slimebodied** | Slime physics + bouncing combat | Bouncy-mobility + slime-combo identity |
 
