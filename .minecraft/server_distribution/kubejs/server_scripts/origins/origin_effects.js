@@ -94,37 +94,39 @@ global.tick_blazebornNetherAffinity = (event) => {
 }
 global.registerPlayerTick('tick_blazebornNetherAffinity', 200, 50)
 
-// Apply damage bonus via EntityEvents.hurt (dealing damage)
-EntityEvents.hurt(event => {
-  let source = event.source
-  if (!source || !source.player) return
-  let player = source.player
-  if (!player.tags.contains('icraft_blazeborn')) return
+// Apply damage bonus + reduction via DamageModifierRegistry.
+// 2026-05-15: migrated off EntityEvents.hurt — that KubeJS wrapper has no
+// settable damage field. The registry dispatches the RAW Forge
+// LivingHurtEvent, which supports event.setAmount(...) (and Rhino-style
+// `event.amount = X` resolves to setAmount).
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  let inNether = player.level.dimension.toString() === 'minecraft:the_nether'
-  let awakened = player.persistentData.getBoolean('icraft_nether_visited')
+  // Dealing damage in/after Nether: +10% (in Nether) or +20% (after awakening, anywhere)
+  DR.register('icraft.origin.blazeborn.deal', function(event) {
+    var attacker = event.source.entity
+    if (!attacker || !(attacker instanceof PlayerClass)) return
+    if (!attacker.tags.contains('icraft_blazeborn')) return
+    var inNether = attacker.level.dimension.toString() === 'minecraft:the_nether'
+    var awakened = attacker.persistentData.getBoolean('icraft_nether_visited')
+    if (!inNether && !awakened) return
+    var bonus = awakened ? 0.20 : 0.10
+    event.amount = event.amount * (1 + bonus)
+  })
 
-  if (inNether || awakened) {
-    let bonus = awakened ? 0.20 : 0.10 // 20% if awakened, 10% if just in Nether
-    event.damage = event.damage * (1 + bonus)
-  }
-})
-
-// Apply damage reduction via EntityEvents.hurt (taking damage)
-EntityEvents.hurt(event => {
-  let entity = event.entity
-  if (!entity.player) return
-  let player = entity
-  if (!player.tags.contains('icraft_blazeborn')) return
-
-  let inNether = player.level.dimension.toString() === 'minecraft:the_nether'
-  let awakened = player.persistentData.getBoolean('icraft_nether_visited')
-
-  if (inNether || awakened) {
-    let reduction = awakened ? 0.20 : 0.10 // 20% if awakened, 10% if just in Nether
-    event.damage = event.damage * (1 - reduction)
-  }
-})
+  // Taking damage in/after Nether: -10% / -20%
+  DR.register('icraft.origin.blazeborn.take', function(event) {
+    var entity = event.entity
+    if (!(entity instanceof PlayerClass)) return
+    if (!entity.tags.contains('icraft_blazeborn')) return
+    var inNether = entity.level.dimension.toString() === 'minecraft:the_nether'
+    var awakened = entity.persistentData.getBoolean('icraft_nether_visited')
+    if (!inNether && !awakened) return
+    var reduction = awakened ? 0.20 : 0.10
+    event.amount = event.amount * (1 - reduction)
+  })
+})()
 
 // =============================================================================
 // ENDERIAN — Ender Shift (teleport + damage buff)
@@ -132,20 +134,21 @@ EntityEvents.hurt(event => {
 // Uses ender pearl throw detection as trigger.
 // =============================================================================
 
-// Track Enderian ender pearl use for damage buff
-EntityEvents.hurt(event => {
-  let source = event.source
-  if (!source || !source.player) return
-  let player = source.player
-  if (!player.tags.contains('icraft_enderian')) return
-
-  // Check if player has the ender shift damage buff active
-  let data = player.persistentData
-  let buffExpiry = data.getLong('icraft_ender_shift_expires')
-  if (player.level.server.tickCount < buffExpiry) {
-    event.damage = event.damage * 1.15 // +15% damage
-  }
-})
+// Enderian: +15% damage for 10s after teleport. Via DamageModifierRegistry.
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR.register('icraft.origin.enderian.shift', function(event) {
+    var attacker = event.source.entity
+    if (!attacker || !(attacker instanceof PlayerClass)) return
+    if (!attacker.tags.contains('icraft_enderian')) return
+    var data = attacker.persistentData
+    var buffExpiry = data.getLong('icraft_ender_shift_expires')
+    if (attacker.level.server.tickCount < buffExpiry) {
+      event.amount = event.amount * 1.15
+    }
+  })
+})()
 
 // Detect ender pearl landing / teleport and apply buff
 global.tick_enderianShift = (event) => {

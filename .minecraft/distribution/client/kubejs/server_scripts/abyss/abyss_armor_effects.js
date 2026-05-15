@@ -141,90 +141,81 @@ global.registerServerTick('tick_abyssArmorEffects', 40, 0)
 
 
 // ==========================================================================
-// ███ ON-HIT ARMOR SET EFFECTS (player takes damage) ███
+// ███ ON-HIT ARMOR SET EFFECTS (via DamageModifierRegistry) ███
 // ==========================================================================
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
-  let attacker = event.source ? event.source.actual : null
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  // ── Aberythe Set: Reduce/negate poison damage ──
-  // Full set handled in tick (removes poison entirely)
-  // Per piece: reduce poison damage by 25% per piece
-  if (event.source && event.source.type === 'poison') {
-    let pieces = countAbyssPieces(player, 'aberythe')
-    if (pieces > 0) {
-      let reduction = pieces * 0.25
-      event.damage = event.damage * (1.0 - Math.min(reduction, 1.0))
-      if (event.damage <= 0) event.cancel()
-    }
-  }
+  // PLAYER TAKES DAMAGE
+  DR.register('icraft.abyss.armor.take', function(event) {
+    var player = event.entity
+    if (!(player instanceof PlayerClass)) return
+    var src = event.source
+    var attacker = src ? src.entity : null
 
-  // ── Fusion Set: Explosion damage reduction ──
-  if (event.source && (event.source.type === 'explosion' || event.source.type === 'player_explosion')) {
-    let pieces = countAbyssPieces(player, 'fusion')
-    if (pieces > 0) {
-      let reduction = hasFullSet(player, 'fusion') ? 0.25 : (pieces * 0.06)
-      event.damage = event.damage * (1.0 - reduction)
-    }
-  }
-
-  if (!attacker || !attacker.living) return
-
-  // ── Glacerythe Set: Freeze attackers ──
-  // Full set: Slowness II for 3s on attacker
-  // Per piece: Slowness I for 2s on attacker
-  let glacerythePieces = countAbyssPieces(player, 'glacerythe')
-  if (glacerythePieces > 0) {
-    try {
-      if (hasFullSet(player, 'glacerythe')) {
-        attacker.potionEffects.add('minecraft:slowness', 60, 1, false, true)
-      } else {
-        attacker.potionEffects.add('minecraft:slowness', 40, 0, false, true)
+    // Aberythe -- reduce poison
+    if (src && src.type === 'poison') {
+      var pieces = countAbyssPieces(player, 'aberythe')
+      if (pieces > 0) {
+        var reduction = pieces * 0.25
+        event.amount = event.amount * (1.0 - Math.min(reduction, 1.0))
+        if (event.amount <= 0) event.setCanceled(true)
       }
-    } catch(e) {}
-  }
+    }
 
-  // ── Ignisithe Set: Fire thorns ──
-  // Full set: attacker ignites for 3s
-  // Per piece: attacker ignites for 1s
-  let ignisithePieces = countAbyssPieces(player, 'ignisithe')
-  if (ignisithePieces > 0) {
-    try {
-      if (hasFullSet(player, 'ignisithe')) {
-        attacker.setSecondsOnFire(3)
-      } else {
-        attacker.setSecondsOnFire(1)
+    // Fusion -- explosion DR
+    if (src && (src.type === 'explosion' || src.type === 'player_explosion')) {
+      var fpieces = countAbyssPieces(player, 'fusion')
+      if (fpieces > 0) {
+        var fred = hasFullSet(player, 'fusion') ? 0.25 : (fpieces * 0.06)
+        event.amount = event.amount * (1.0 - fred)
       }
-    } catch(e) {}
-  }
-
-  // ── Phantom Set: 2% life steal (full set only) ──
-  // On taking damage, heal 2% of the damage back
-  if (hasFullSet(player, 'phantom')) {
-    let healAmount = event.damage * 0.02
-    if (healAmount > 0) {
-      player.heal(healAmount)
     }
-  }
-})
 
+    if (!attacker) return
 
-// ==========================================================================
-// ███ ON-HIT ARMOR SET EFFECTS (player deals damage — life steal) ███
-// ==========================================================================
-EntityEvents.hurt(event => {
-  if (!event.source || !event.source.player) return
-  let player = event.source.player
-
-  // ── Phantom Set: 2% life steal on attacks (full set only) ──
-  if (hasFullSet(player, 'phantom')) {
-    let healAmount = event.damage * 0.02
-    if (healAmount > 0) {
-      player.heal(healAmount)
+    // Glacerythe -- slow attacker
+    var glacerythePieces = countAbyssPieces(player, 'glacerythe')
+    if (glacerythePieces > 0) {
+      try {
+        if (hasFullSet(player, 'glacerythe')) {
+          attacker.potionEffects.add('minecraft:slowness', 60, 1, false, true)
+        } else {
+          attacker.potionEffects.add('minecraft:slowness', 40, 0, false, true)
+        }
+      } catch(e) {}
     }
-  }
-})
+
+    // Ignisithe -- fire thorns
+    var ignisithePieces = countAbyssPieces(player, 'ignisithe')
+    if (ignisithePieces > 0) {
+      try {
+        if (hasFullSet(player, 'ignisithe')) {
+          attacker.setSecondsOnFire(3)
+        } else {
+          attacker.setSecondsOnFire(1)
+        }
+      } catch(e) {}
+    }
+
+    // Phantom (full) -- 2% lifesteal on damage TAKEN
+    if (hasFullSet(player, 'phantom')) {
+      var healAmount = event.amount * 0.02
+      if (healAmount > 0) player.heal(healAmount)
+    }
+  })
+
+  // PLAYER DEALS DAMAGE -- Phantom lifesteal
+  DR.register('icraft.abyss.armor.deal', function(event) {
+    var player = event.source.entity
+    if (!(player instanceof PlayerClass)) return
+    if (hasFullSet(player, 'phantom')) {
+      var healAmount = event.amount * 0.02
+      if (healAmount > 0) player.heal(healAmount)
+    }
+  })
+})()
 
 
 console.log('[IridescentCraft] abyss_armor_effects.js loaded — 7 armor set effects active')

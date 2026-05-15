@@ -81,55 +81,50 @@ try {
   // Register at 2s cadence -- light enough to not affect tps
   global.registerServerTick('tick_terramityTetraPerks', 40, 30)
 
-  // -- Hurt handler: on-hit perks (topaz, ruby, onyx, iridium)
-  EntityEvents.hurt(function(event) {
+  // -- Hurt handler via DamageModifierRegistry (raw LivingHurtEvent).
+  var DR_tp = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_tp = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR_tp.register('icraft.tetra_terramity_perks', function(event) {
     try {
       var target = event.entity
       if (!target) return
 
-      var src = null
-      try { src = event.source } catch (_) { return }
+      var src = event.source
       if (!src) return
 
-      // Determine the player attacker (direct or via projectile owner)
-      var attacker = null
-      try { attacker = src.actual } catch (_) {}      // KubeJS shortcut
-      if (!attacker) {
-        try { attacker = src.player } catch (_) {}
-      }
+      var attacker = src.entity
 
-      // 1. Owned-minion damage boost (Onyx) -- check if attacker has owner UUID
-      // and that owner's mainhand has Onyx tetra
+      // 1. Owned-minion Onyx bonus: attacker has owner UUID -> check owner's mainhand
       try {
         if (attacker && attacker.getOwnerUUID && attacker.getOwnerUUID()) {
           var ownerUuid = attacker.getOwnerUUID()
-          var owner = event.server.getPlayer(ownerUuid)
+          // Cross-level player lookup; server is global
+          var server = target.level.server
+          var owner = server ? server.getPlayer(ownerUuid) : null
           if (owner) {
             var ownerMats = getTetraMaterials(owner.getMainHandItem())
             if (hasMat(ownerMats, 'onyx')) {
-              event.damage = event.damage * 1.15
+              event.amount = event.amount * 1.15
             }
           }
         }
       } catch (_) {}
 
-      // For player-direct perks, we need a player attacker
-      if (!attacker || !attacker.player) return
+      // Player-direct perks require a player attacker
+      if (!(attacker instanceof PlayerClass_tp)) return
       var aMats = getTetraMaterials(attacker.getMainHandItem())
       if (aMats.length === 0) return
 
-      // 2. Topaz -- set target on fire 2s
       if (hasMat(aMats, 'topaz')) {
         try { target.setRemainingFireTicks(40) } catch (_) {}
       }
 
-      // 3. Ruby -- +50% damage when source is fire-typed
       if (hasMat(aMats, 'ruby')) {
         var srcId = ''
         try { srcId = String(src.type ? src.type : src.msgId || '') } catch (_) {}
         if (srcId.indexOf('fire') >= 0 || srcId.indexOf('lava') >= 0 ||
             srcId.indexOf('hot_floor') >= 0 || srcId.indexOf('on_fire') >= 0) {
-          event.damage = event.damage * 1.5
+          event.amount = event.amount * 1.5
         }
       }
 

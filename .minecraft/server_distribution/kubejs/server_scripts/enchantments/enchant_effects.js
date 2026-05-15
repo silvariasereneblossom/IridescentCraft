@@ -69,187 +69,172 @@ function isBoss(type) {
 
 
 // ==========================================================================
-// ███ DAMAGE DEALT BY PLAYER (weapon enchants) ███
+// ███ DAMAGE DEALT BY PLAYER (weapon enchants) — DamageModifierRegistry ███
 // ==========================================================================
-EntityEvents.hurt(event => {
-  if (!event.source || !event.source.player) return
-  let player = event.source.player
-  let target = event.entity
-  if (!target || !target.living) return
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  // ── Titan Slayer: +4% damage per level vs entities with >100 HP ──
-  let titan = getWeaponEnchLevel(player, 'icraft:titan_slayer')
-  if (titan > 0 && target.maxHealth > 100) {
-    let bonus = 1 + (titan * 0.04) * (target.maxHealth / 100)
-    event.damage *= Math.min(bonus, 1 + titan * 0.20) // Cap at +20% per level
-  }
+  DR.register('icraft.enchants.weapon', function(event) {
+    var player = event.source.entity
+    if (!(player instanceof PlayerClass)) return
+    var target = event.entity
+    if (!target) return
 
-  // ── Adrenaline: +6% damage per level when player below 30% HP ──
-  let adren = getWeaponEnchLevel(player, 'icraft:adrenaline')
-  if (adren > 0 && player.health / player.maxHealth < 0.30) {
-    event.damage *= (1 + adren * 0.06)
-  }
-
-  // ── Crowd Control: +5% damage per level per nearby enemy (3 block radius) ──
-  let crowd = getWeaponEnchLevel(player, 'icraft:crowd_control')
-  if (crowd > 0) {
-    let r = 3.0
-    let nearbyCount = 0
-    try {
-      let nearby = player.level.getEntitiesWithin(
-        AABB.of(player.x-r, player.y-r, player.z-r, player.x+r, player.y+r, player.z+r)
-      )
-      nearby.forEach(e => {
-        if (e !== player && e.living && e.monster) nearbyCount++
-      })
-    } catch(e) {}
-    if (nearbyCount > 1) {
-      let bonus = Math.min(nearbyCount - 1, 5) * crowd * 0.05
-      event.damage *= (1 + bonus)
+    var titan = getWeaponEnchLevel(player, 'icraft:titan_slayer')
+    if (titan > 0 && target.maxHealth > 100) {
+      var bonus = 1 + (titan * 0.04) * (target.maxHealth / 100)
+      event.amount *= Math.min(bonus, 1 + titan * 0.20)
     }
-  }
 
-  // ── Nemesis: +3% damage per hit against same boss (tracked via NBT) ──
-  let nemesis = getWeaponEnchLevel(player, 'icraft:nemesis')
-  if (nemesis > 0 && isBoss(target.type)) {
-    let key = 'icraft_nemesis_' + target.type.replace(':', '_')
-    let stacks = player.persistentData.contains(key)
-      ? player.persistentData.getInt(key) : 0
-    stacks = Math.min(stacks + 1, 10 * nemesis) // Cap at 10 stacks per level
-    player.persistentData.putInt(key, stacks)
-    event.damage *= (1 + stacks * 0.03)
-  }
-
-  // ── Momentum: +attack speed stacking with consecutive hits ──
-  let momentum = getWeaponEnchLevel(player, 'icraft:momentum')
-  if (momentum > 0) {
-    let momStacks = player.persistentData.contains('icraft_momentum')
-      ? player.persistentData.getInt('icraft_momentum') : 0
-    momStacks = Math.min(momStacks + 1, 5 * momentum)
-    player.persistentData.putInt('icraft_momentum', momStacks)
-    player.persistentData.putLong('icraft_momentum_time', player.level.gameTime)
-    // Apply speed via attribute
-    try {
-      player.modifyAttribute('minecraft:generic.attack_speed',
-        'icraft_momentum_bonus', momStacks * 0.02, 'multiply_base')
-    } catch(e) {}
-  }
-
-  // ── Primal Force: +3% damage per level based on food saturation ──
-  let primal = getWeaponEnchLevel(player, 'icraft:primal_force')
-  if (primal > 0) {
-    let saturation = player.foodData ? player.foodData.saturationLevel : 0
-    let bonus = primal * 0.03 * (saturation / 5.0) // Normalized to ~5 max saturation
-    event.damage *= (1 + Math.min(bonus, primal * 0.15))
-  }
-
-  // ── Mana Temper: bonus damage scaling with mana (Iron's Spells) ──
-  // Can't directly read mana pool from KubeJS. Approximate: check if player
-  // has magic items equipped and apply flat bonus.
-  let manaTemp = getWeaponEnchLevel(player, 'icraft:mana_temper')
-  if (manaTemp > 0) {
-    // Check offhand for magic items (staves, spellbooks, source gems)
-    let offhand = player.offHandItem
-    let hasMagic = offhand && (offhand.id.includes('spell') || offhand.id.includes('staff') ||
-      offhand.id.includes('wand') || offhand.id.includes('source') || offhand.id.includes('mana'))
-    if (hasMagic) {
-      event.damage *= (1 + manaTemp * 0.08) // +8% per level when dual-wielding magic
+    var adren = getWeaponEnchLevel(player, 'icraft:adrenaline')
+    if (adren > 0 && player.health / player.maxHealth < 0.30) {
+      event.amount *= (1 + adren * 0.06)
     }
-  }
-})
+
+    var crowd = getWeaponEnchLevel(player, 'icraft:crowd_control')
+    if (crowd > 0) {
+      var r = 3.0
+      var nearbyCount = 0
+      try {
+        var nearby = player.level.getEntitiesWithin(
+          AABB.of(player.x-r, player.y-r, player.z-r, player.x+r, player.y+r, player.z+r)
+        )
+        nearby.forEach(function(e) {
+          if (e !== player && e.living && e.monster) nearbyCount++
+        })
+      } catch(e) {}
+      if (nearbyCount > 1) {
+        var bonus2 = Math.min(nearbyCount - 1, 5) * crowd * 0.05
+        event.amount *= (1 + bonus2)
+      }
+    }
+
+    var nemesis = getWeaponEnchLevel(player, 'icraft:nemesis')
+    if (nemesis > 0 && isBoss(target.type)) {
+      var key = 'icraft_nemesis_' + target.type.replace(':', '_')
+      var stacks = player.persistentData.contains(key)
+        ? player.persistentData.getInt(key) : 0
+      stacks = Math.min(stacks + 1, 10 * nemesis)
+      player.persistentData.putInt(key, stacks)
+      event.amount *= (1 + stacks * 0.03)
+    }
+
+    var momentum = getWeaponEnchLevel(player, 'icraft:momentum')
+    if (momentum > 0) {
+      var momStacks = player.persistentData.contains('icraft_momentum')
+        ? player.persistentData.getInt('icraft_momentum') : 0
+      momStacks = Math.min(momStacks + 1, 5 * momentum)
+      player.persistentData.putInt('icraft_momentum', momStacks)
+      player.persistentData.putLong('icraft_momentum_time', player.level.gameTime)
+      try {
+        player.modifyAttribute('minecraft:generic.attack_speed',
+          'icraft_momentum_bonus', momStacks * 0.02, 'multiply_base')
+      } catch(e) {}
+    }
+
+    var primal = getWeaponEnchLevel(player, 'icraft:primal_force')
+    if (primal > 0) {
+      var saturation = player.foodData ? player.foodData.saturationLevel : 0
+      var pbonus = primal * 0.03 * (saturation / 5.0)
+      event.amount *= (1 + Math.min(pbonus, primal * 0.15))
+    }
+
+    var manaTemp = getWeaponEnchLevel(player, 'icraft:mana_temper')
+    if (manaTemp > 0) {
+      var offhand = player.offHandItem
+      var hasMagic = offhand && (offhand.id.includes('spell') || offhand.id.includes('staff') ||
+        offhand.id.includes('wand') || offhand.id.includes('source') || offhand.id.includes('mana'))
+      if (hasMagic) {
+        event.amount *= (1 + manaTemp * 0.08)
+      }
+    }
+  })
+})()
 
 
 // ==========================================================================
-// ███ DAMAGE TAKEN BY PLAYER (armor enchants) ███
+// ███ DAMAGE TAKEN BY PLAYER (armor enchants) — DamageModifierRegistry ███
 // ==========================================================================
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
-  let source = event.source
+;(function(){
+  var DR_at = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_at = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  let srcType = source && source.type ? String(source.type) : ""
+  DR_at.register('icraft.enchants.armor', function(event) {
+  var player = event.entity
+  if (!(player instanceof PlayerClass_at)) return
+  var source = event.source
+
+  var srcType = source && source.type ? String(source.type) : ""
   // ── Heatward: -8% fire damage per level ──
   if (source && (srcType.includes('fire') || srcType.includes('lava') ||
       srcType === 'minecraft:on_fire' || srcType === 'minecraft:in_fire')) {
-    let heat = getArmorEnchTotal(player, 'icraft:heatward')
+    var heat = getArmorEnchTotal(player, 'icraft:heatward')
     if (heat > 0) {
-      event.damage *= Math.max(0.1, 1 - heat * 0.08)
+      event.amount *= Math.max(0.1, 1 - heat * 0.08)
     }
   }
 
-  // ── Voidward: -8% void/wither/darkness damage per level ──
   if (source && (srcType.includes('void') || srcType.includes('wither') ||
       srcType === 'minecraft:out_of_world')) {
-    let voidw = getArmorEnchTotal(player, 'icraft:voidward')
+    var voidw = getArmorEnchTotal(player, 'icraft:voidward')
     if (voidw > 0) {
-      event.damage *= Math.max(0.1, 1 - voidw * 0.08)
+      event.amount *= Math.max(0.1, 1 - voidw * 0.08)
     }
   }
 
-  // ── Depthstrider Custom: -10% damage per level below Y=0 ──
   if (player.y < 0) {
-    let depth = getArmorEnchTotal(player, 'icraft:depthstrider_custom')
+    var depth = getArmorEnchTotal(player, 'icraft:depthstrider_custom')
     if (depth > 0) {
-      event.damage *= Math.max(0.2, 1 - depth * 0.10)
+      event.amount *= Math.max(0.2, 1 - depth * 0.10)
     }
   }
 
-  // ── Boss Ward: -5% damage per level from boss entities ──
-  if (source && source.actual && isBoss(source.actual.type)) {
-    let ward = getArmorEnchTotal(player, 'icraft:boss_ward')
+  if (source && source.entity && isBoss(source.entity.type)) {
+    var ward = getArmorEnchTotal(player, 'icraft:boss_ward')
     if (ward > 0) {
-      event.damage *= Math.max(0.2, 1 - ward * 0.05)
+      event.amount *= Math.max(0.2, 1 - ward * 0.05)
     }
   }
 
-  // ── Adaptive: After taking 3 hits of same type, gain resistance ──
-  let adaptive = getArmorEnchTotal(player, 'icraft:adaptive')
+  var adaptive = getArmorEnchTotal(player, 'icraft:adaptive')
   if (adaptive > 0 && source) {
-    let dmgType = source.type || 'generic'
-    let key = 'icraft_adapt_' + dmgType
-    let hits = player.persistentData.contains(key) ? player.persistentData.getInt(key) : 0
+    var dmgType = source.type || 'generic'
+    var key = 'icraft_adapt_' + dmgType
+    var hits = player.persistentData.contains(key) ? player.persistentData.getInt(key) : 0
     hits++
     player.persistentData.putInt(key, Math.min(hits, 10))
     if (hits >= 3) {
-      let reduction = Math.min((hits - 2) * adaptive * 0.03, 0.30)
-      event.damage *= (1 - reduction)
+      var reduction = Math.min((hits - 2) * adaptive * 0.03, 0.30)
+      event.amount *= (1 - reduction)
     }
   }
 
-  // ── Phalanx: -6% damage per level when blocking ──
-  let phalanx = getEnchLevel(player, 'icraft:phalanx')
+  var phalanx = getEnchLevel(player, 'icraft:phalanx')
   if (phalanx > 0 && player.isBlocking()) {
-    event.damage *= Math.max(0.1, 1 - phalanx * 0.06)
+    event.amount *= Math.max(0.1, 1 - phalanx * 0.06)
   }
 
-  // ── Last Stand: Survive lethal hit at 1 HP (5 min cooldown) ──
-  let lastStand = getArmorEnchTotal(player, 'icraft:last_stand')
-  if (lastStand > 0 && event.damage >= player.health) {
-    let lastUsed = player.persistentData.contains('icraft_last_stand_time')
+  var lastStand = getArmorEnchTotal(player, 'icraft:last_stand')
+  if (lastStand > 0 && event.amount >= player.health) {
+    var lastUsed = player.persistentData.contains('icraft_last_stand_time')
       ? player.persistentData.getLong('icraft_last_stand_time') : 0
-    let now = player.level.gameTime
-    if (now - lastUsed > 6000) { // 5 minute cooldown (6000 ticks)
-      event.damage = player.health - 1.0
+    var now = player.level.gameTime
+    if (now - lastUsed > 6000) {
+      event.amount = player.health - 1.0
       player.persistentData.putLong('icraft_last_stand_time', now)
       player.potionEffects.add('minecraft:absorption', 100, 1, false, true)
-      player.potionEffects.add('minecraft:resistance', 40, 2, false, true) // 2s invuln
+      player.potionEffects.add('minecraft:resistance', 40, 2, false, true)
       player.tell('§6§lLast Stand activated! §r§7(5 min cooldown)')
     }
   }
 
-  // ── Warp Shield: Resist ender displacement (End mechanic) ──
-  // This is checked in dimension_mechanics.js where displacement is applied.
-  // Enchantment presence reduces teleport chance.
-
-  // ── RF Capacitance: Damage reduction scaling with... RF items in inventory ──
-  // Approximate: check if player has energy storage items (Mekanism, Thermal)
-  let rfCap = getArmorEnchTotal(player, 'icraft:rf_capacitance')
+  var rfCap = getArmorEnchTotal(player, 'icraft:rf_capacitance')
   if (rfCap > 0) {
-    // Check for energy items in inventory as proxy for "stored RF"
-    let hasEnergy = false
-    for (let i = 0; i < player.inventory.size; i++) {
+    var hasEnergy = false
+    for (var i = 0; i < player.inventory.size; i++) {
       try {
-        let item = player.inventory.get(i)
+        var item = player.inventory.get(i)
         if (item && (item.id.includes('energy_cube') || item.id.includes('flux') ||
             item.id.includes('capacitor') || item.id.includes('battery') ||
             item.id.includes('cell'))) {
@@ -259,10 +244,11 @@ EntityEvents.hurt(event => {
       } catch(e) {}
     }
     if (hasEnergy) {
-      event.damage *= Math.max(0.3, 1 - rfCap * 0.04)
+      event.amount *= Math.max(0.3, 1 - rfCap * 0.04)
     }
   }
-})
+  })  // close DR_at.register callback
+})()  // close IIFE
 
 
 // ==========================================================================
@@ -525,47 +511,49 @@ global.tick_enchantLunarStride = (event) => {
 }
 global.registerServerTick('tick_enchantLunarStride', 40, 15)
 
-// ── Lunar Stride: Fall damage reduction (33% per level) ──
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
-  let source = event.source
-  if (!source || String(source.type || "") !== 'minecraft:fall') return
+// ── Lunar Stride + Stellar Shield (DamageModifierRegistry) ─────────────
+;(function(){
+  var DR_planet = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_planet = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  let dim = player.level.dimension
-  if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
-      dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
-      dim !== 'ad_astra:glacio') return
+  // Lunar Stride: Fall damage reduction (33% per level)
+  DR_planet.register('icraft.enchants.lunar_stride', function(event) {
+    var player = event.entity
+    if (!(player instanceof PlayerClass_planet)) return
+    var source = event.source
+    if (!source || String(source.type || '') !== 'minecraft:fall') return
+    var dim = player.level.dimension
+    if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
+        dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
+        dim !== 'ad_astra:glacio') return
+    var lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
+    if (lunar > 0) {
+      var reduction = Math.min(lunar * 0.33, 1.0)
+      event.amount *= (1.0 - reduction)
+    }
+  })
 
-  let lunar = getArmorEnchTotal(player, 'icraft:lunar_stride')
-  if (lunar > 0) {
-    let reduction = Math.min(lunar * 0.33, 1.0)
-    event.damage *= (1.0 - reduction)
-  }
-})
-
-// ── Stellar Shield: Fire resistance on planets ──
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
-  let source = event.source
-  if (!source) return
-
-  let dim = player.level.dimension
-  if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
-      dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
-      dim !== 'ad_astra:glacio') return
-
-  let isFireDmg = srcType.includes('fire') || srcType.includes('lava') ||
-    srcType === 'minecraft:on_fire' || srcType === 'minecraft:in_fire'
-  if (!isFireDmg) return
-
-  let stellar = getArmorEnchTotal(player, 'icraft:stellar_shield')
-  if (stellar > 0) {
-    let reduction = Math.min(stellar * 0.33, 1.0)
-    event.damage *= (1.0 - reduction)
-  }
-})
+  // Stellar Shield: Fire resistance on planets
+  DR_planet.register('icraft.enchants.stellar_shield', function(event) {
+    var player = event.entity
+    if (!(player instanceof PlayerClass_planet)) return
+    var source = event.source
+    if (!source) return
+    var dim = player.level.dimension
+    if (dim !== 'ad_astra:moon' && dim !== 'ad_astra:mars' &&
+        dim !== 'ad_astra:mercury' && dim !== 'ad_astra:venus' &&
+        dim !== 'ad_astra:glacio') return
+    var srcType = String(source.type || '')
+    var isFireDmg = srcType.includes('fire') || srcType.includes('lava') ||
+      srcType === 'minecraft:on_fire' || srcType === 'minecraft:in_fire'
+    if (!isFireDmg) return
+    var stellar = getArmorEnchTotal(player, 'icraft:stellar_shield')
+    if (stellar > 0) {
+      var reduction = Math.min(stellar * 0.33, 1.0)
+      event.amount *= (1.0 - reduction)
+    }
+  })
+})()
 
 
 console.log('[IridescentCraft] enchant_effects.js loaded — 29 custom enchantment effects')

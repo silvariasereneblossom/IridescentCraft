@@ -132,55 +132,50 @@ global.registerServerTick('tick_abyssRingEffects', 20, 0)
 
 
 // ==========================================================================
-// ███ ON-HIT RING EFFECTS (damage dealt by player) ███
+// ███ ON-HIT RING EFFECTS — via DamageModifierRegistry (raw LivingHurtEvent) ███
 // ==========================================================================
-EntityEvents.hurt(event => {
-  if (!event.source || !event.source.player) return
-  let player = event.source.player
-  let target = event.entity
-  if (!target || !target.living) return
+// 2026-05-15: migrated off EntityEvents.hurt (no settable damage on the
+// KubeJS wrapper). Same logic, raw Forge event.
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  // ── Ring of the Knight: +10% melee damage ──
-  if (hasRingInInventory(player, 'kubejs:ring_of_the_knight')) {
-    event.damage = event.damage * 1.10
-  }
+  // Damage DEALT: knight, dark pact (dealt), unorithe + lifesteal.
+  DR.register('icraft.abyss.rings.deal', function(event) {
+    var attacker = event.source.entity
+    if (!attacker || !(attacker instanceof PlayerClass)) return
+    var target = event.entity
+    if (!target) return
 
-  // ── Ring of Dark Pact: +15% damage dealt ──
-  if (hasRingInInventory(player, 'kubejs:ring_of_dark_pact')) {
-    event.damage = event.damage * 1.15
-  }
-
-  // ── Ring of Unorithe: +5% attack damage + 1% life steal ──
-  if (hasRingInInventory(player, 'kubejs:ring_of_unorithe')) {
-    event.damage = event.damage * 1.05
-    let healAmount = event.damage * 0.01
-    if (healAmount > 0) {
-      player.heal(healAmount)
+    if (hasRingInInventory(attacker, 'kubejs:ring_of_the_knight')) {
+      event.amount = event.amount * 1.10
     }
-  }
-})
-
-
-// ==========================================================================
-// ███ ON-HIT RING EFFECTS (damage taken by player) ███
-// ==========================================================================
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
-
-  // ── Ring of the Phantom: 10% chance to dodge (cancel damage) ──
-  if (hasRingInInventory(player, 'kubejs:ring_of_the_phantom')) {
-    if (Math.random() < 0.10) {
-      event.cancel()
-      return
+    if (hasRingInInventory(attacker, 'kubejs:ring_of_dark_pact')) {
+      event.amount = event.amount * 1.15
     }
-  }
+    if (hasRingInInventory(attacker, 'kubejs:ring_of_unorithe')) {
+      event.amount = event.amount * 1.05
+      var healAmount = event.amount * 0.01
+      if (healAmount > 0) attacker.heal(healAmount)
+    }
+  })
 
-  // ── Ring of Dark Pact: +10% damage taken ──
-  if (hasRingInInventory(player, 'kubejs:ring_of_dark_pact')) {
-    event.damage = event.damage * 1.10
-  }
-})
+  // Damage TAKEN: phantom dodge (cancel), dark pact extra-taken.
+  DR.register('icraft.abyss.rings.take', function(event) {
+    var entity = event.entity
+    if (!(entity instanceof PlayerClass)) return
+
+    if (hasRingInInventory(entity, 'kubejs:ring_of_the_phantom')) {
+      if (Math.random() < 0.10) {
+        event.setCanceled(true)
+        return
+      }
+    }
+    if (hasRingInInventory(entity, 'kubejs:ring_of_dark_pact')) {
+      event.amount = event.amount * 1.10
+    }
+  })
+})()
 
 
 console.log('[IridescentCraft] abyss_ring_effects.js loaded — 8 custom ring effects active')

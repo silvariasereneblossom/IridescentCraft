@@ -389,46 +389,45 @@ global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
 // the upcoming durability loss here and pre-clamp any armor that would
 // cross maxDamage, the about-to-run vanilla durability subtraction lands
 // in safe territory rather than synchronously breaking the item.
-EntityEvents.hurt(event => {
-  try {
-    if (!event.entity || !event.entity.player) return
-    var player = event.entity
-    var dmg = event.damage
-    if (!dmg || dmg <= 0) return
-    // Vanilla per-piece durability damage formula
-    var perPiece = Math.max(1, Math.floor(dmg / 4))
+// 2026-05-15: migrated to DamageModifierRegistry (raw LivingHurtEvent).
+// This handler READS damage to predict the upcoming durability tick; it
+// doesn't modify damage. event.amount (not event.damage) on the raw event.
+;(function(){
+  var DR_dpa = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_dpa = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR_dpa.register('icraft.death_penalty.armor_clamp', function(event) {
+    try {
+      var player = event.entity
+      if (!(player instanceof PlayerClass_dpa)) return
+      var dmg = event.amount
+      if (!dmg || dmg <= 0) return
+      var perPiece = Math.max(1, Math.floor(dmg / 4))
 
-    ARMOR_SLOTS.forEach(function(slot) {
-      try {
-        var stack = player.getEquipment(slot)
-        if (!stack || stack.isEmpty || !stack.isDamageableItem) return
-        if (hasNativeBreakProtection(stack)) return
-        var maxDur = stack.maxDamage
-        if (maxDur <= 0) return
-        var threshold = Math.min(INERT_THRESHOLD, Math.floor(maxDur * 0.5))
-        var clampPos = maxDur - threshold
-        // If the upcoming vanilla hit would push the piece into or past the
-        // inert zone, clamp+tag now. Vanilla will then apply +perPiece on
-        // top, leaving the piece at clampPos+perPiece — still under maxDur
-        // as long as perPiece < threshold (true unless dmg > 4*threshold).
-        if (stack.damageValue + perPiece >= clampPos) {
-          // Clamp far enough below clampPos that the upcoming vanilla
-          // durability subtraction won't push past. clampPos-perPiece keeps
-          // the post-hit value at clampPos exactly.
-          var safe = Math.max(0, clampPos - perPiece)
-          if (stack.damageValue !== safe) {
-            stack.damageValue = safe
+      ARMOR_SLOTS.forEach(function(slot) {
+        try {
+          var stack = player.getEquipment(slot)
+          if (!stack || stack.isEmpty || !stack.isDamageableItem) return
+          if (hasNativeBreakProtection(stack)) return
+          var maxDur = stack.maxDamage
+          if (maxDur <= 0) return
+          var threshold = Math.min(INERT_THRESHOLD, Math.floor(maxDur * 0.5))
+          var clampPos = maxDur - threshold
+          if (stack.damageValue + perPiece >= clampPos) {
+            var safe = Math.max(0, clampPos - perPiece)
+            if (stack.damageValue !== safe) {
+              stack.damageValue = safe
+            }
+            if (!stack.nbt) stack.nbt = {}
+            stack.nbt.putBoolean(BROKEN_TAG, true)
+            player.setEquipment(slot, stack)
           }
-          if (!stack.nbt) stack.nbt = {}
-          stack.nbt.putBoolean(BROKEN_TAG, true)
-          player.setEquipment(slot, stack)
-        }
-      } catch (e) {}
-    })
-  } catch (e) {
-    console.warn('[durability] proactive armor clamp threw: ' + e)
-  }
-})
+        } catch (e) {}
+      })
+    } catch (e) {
+      console.warn('[durability] proactive armor clamp threw: ' + e)
+    }
+  })
+})()
 
 // Slower full-inventory + Curios sweep. Catches damageable items that aren't
 // in the player's actively-equipped slots (hotbar slots other than the held
@@ -511,18 +510,19 @@ BlockEvents.broken(event => {
   }
 })
 
-// Prevent broken weapons from dealing damage
-EntityEvents.hurt(event => {
-  const source = event.source
-  if (!source || !source.player) return
-
-  const player = source.player
-  const weapon = player.mainHandItem
-  if (!weapon.isEmpty && weapon.nbt && weapon.nbt.getBoolean(BROKEN_TAG)) {
-    // Reduce damage to base fist damage (1)
-    event.damage = 1.0
-  }
-})
+// Prevent broken weapons from dealing damage. Via DamageModifierRegistry.
+;(function(){
+  var DR_dpw = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_dpw = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR_dpw.register('icraft.death_penalty.broken_weapon', function(event) {
+    var player = event.source.entity
+    if (!(player instanceof PlayerClass_dpw)) return
+    var weapon = player.mainHandItem
+    if (!weapon.isEmpty && weapon.nbt && weapon.nbt.getBoolean(BROKEN_TAG)) {
+      event.amount = 1.0
+    }
+  })
+})()
 
 // Prevent broken items from being used (right-click actions)
 ItemEvents.rightClicked(event => {

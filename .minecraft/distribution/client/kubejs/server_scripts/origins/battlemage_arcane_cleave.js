@@ -74,15 +74,17 @@ try {
     } catch (e) { return 0 }
   }
 
-  // ─── ARCANE CLEAVE: deal-damage hook ─────────────────────────────────
-  EntityEvents.hurt(function(event) {
+  // ─── ARCANE CLEAVE: deal-damage hook (DamageModifierRegistry) ─────────
+  var DR_bc = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_bc = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR_bc.register('icraft.battlemage_arcane_cleave', function(event) {
     try {
-      if (!event.source || !event.source.player) return
-      var player = event.source.player
+      var player = event.source.entity
+      if (!(player instanceof PlayerClass_bc)) return
       var target = event.entity
-      if (!target || !target.living || target.player) return
+      if (!target) return
+      if (target instanceof PlayerClass_bc) return  // skip PvP
 
-      // Melee-only check (mirrors justleveling_skills.js convention)
       var srcType = ''
       try { srcType = String(event.source.type || '') } catch (e) {}
       var isProjectile = srcType.indexOf('arrow') >= 0 ||
@@ -97,22 +99,14 @@ try {
       if (!isBattlemage(player)) return
 
       var mana = getPlayerMana(player)
-      if (mana < ARCANE_CLEAVE_MANA_COST) {
-        // Insufficient mana — no bonus, no cost. Hit lands as plain melee.
-        return
-      }
+      if (mana < ARCANE_CLEAVE_MANA_COST) return
 
       var bonusSP = getBonusSpellPower(player)
-      // bonusSP units: 0.5 = 50% bonus → +1 AD
       var bonusAD = bonusSP * ARCANE_CLEAVE_AD_PER_HALF
-      if (bonusAD <= 0) {
-        // No spell power bonus to convert — no cost, no effect
-        return
-      }
+      if (bonusAD <= 0) return
 
-      // Pay mana cost, apply damage bonus
       addPlayerMana(player, -ARCANE_CLEAVE_MANA_COST)
-      event.damage = event.damage + bonusAD
+      event.amount = event.amount + bonusAD
 
       // Subtle visual: a few enchantment particles on the target
       try {

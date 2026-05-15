@@ -26,23 +26,26 @@
 
 try {
   var SOFTENER_MULTIPLIER = 0.7  // 30% damage reduction
+  // 2026-05-15: migrated to DamageModifierRegistry. EntityEvents.hurt's
+  // KubeJS wrapper has no settable damage; the raw Forge LivingHurtEvent
+  // dispatched through DR has setAmount.
+  var DR_t1soft = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_t1soft = Java.loadClass('net.minecraft.world.entity.player.Player')
 
-  EntityEvents.hurt(function(event) {
+  DR_t1soft.register('icraft.t1_softener', function(event) {
     try {
       var entity = event.entity
-      if (!entity || !entity.player) return
+      if (!(entity instanceof PlayerClass_t1soft)) return
 
-      // Soften only if tier_1 active AND tier_2 NOT active (i.e. haven't
-      // progressed). AStages object exposed by AStages mod.
+      // Soften only if tier_1 active AND tier_2 NOT active.
       var hasT1 = false, hasT2 = false
       try { hasT1 = AStages.playerHasStage('tier_1', entity) } catch (_) {}
       try { hasT2 = AStages.playerHasStage('tier_2', entity) } catch (_) {}
       if (!hasT1 || hasT2) return
 
-      var orig = event.damage
-      event.damage = orig * SOFTENER_MULTIPLIER
+      var orig = event.amount
+      event.amount = orig * SOFTENER_MULTIPLIER
 
-      // One-shot per session per attacker so we know it's biting without spam.
       if (!global._t1_softener_seen) global._t1_softener_seen = {}
       var src = null
       try { src = event.source } catch (_) {}
@@ -52,7 +55,7 @@ try {
       if (!global._t1_softener_seen[atkType]) {
         global._t1_softener_seen[atkType] = true
         console.log('[t1_softener] reduced ' + orig.toFixed(2) + ' -> ' +
-                    event.damage.toFixed(2) + ' from ' + atkType +
+                    event.amount.toFixed(2) + ' from ' + atkType +
                     ' for ' + entity.username)
       }
     } catch (_) {}

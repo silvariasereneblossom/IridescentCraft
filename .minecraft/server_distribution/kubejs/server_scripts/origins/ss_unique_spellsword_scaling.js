@@ -66,12 +66,14 @@ try {
     } catch (e) { return 0 }
   }
 
-  EntityEvents.hurt(function(event) {
+  // 2026-05-15: migrated to DamageModifierRegistry.
+  var DR_ss = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_ss = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR_ss.register('icraft.ss_unique_spellsword', function(event) {
     try {
-      if (!event.source || !event.source.player) return
-      var player = event.source.player
+      var player = event.source.entity
+      if (!(player instanceof PlayerClass_ss)) return
 
-      // Held weapon must be an SS unique
       var stack = player.mainHandItem
       if (!stack || stack.isEmpty()) return
       var id = String(stack.id || '')
@@ -87,12 +89,10 @@ try {
       if (isProjectile) return
 
       var bonusSP = getBonusSpellPower(player)
-      // bonusSP is the BONUS portion (0.5 = +50% spell power).
-      // 0.5 AD per 50% SP == bonusSP * 1.0 raw AD bonus.
       var bonusAD = bonusSP * SS_UNIQUE_AD_PER_HALF_SP
       if (bonusAD <= 0) return
 
-      event.damage = event.damage + bonusAD
+      event.amount = event.amount + bonusAD
     } catch (e) {
       console.warn('[ss_unique_spellsword_scaling] hurt handler threw: ' + e)
     }

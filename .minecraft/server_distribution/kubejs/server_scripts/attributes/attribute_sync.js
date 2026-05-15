@@ -94,103 +94,86 @@ PlayerEvents.loggedIn(function(event) {
 //   attributecore:life_steal     -> adds to lifesteal
 //   attributecore:dodge_chance   -> adds to dodge_chance
 
-EntityEvents.hurt(function(event) {
-  var entity = event.entity
-  var source = event.source
+// 2026-05-15: migrated to DamageModifierRegistry (raw Forge LivingHurtEvent
+// with mutable amount). KubeJS's EntityEvents.hurt wrapper has no settable
+// damage field; the prior `event.damage = X` lines threw EvaluatorException
+// on every hit and silently dropped crit/spell-power/armor-pen/magic-res.
+;(function(){
+  var DR_as = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_as = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR_as.register('icraft.attribute_sync.hurt', function(event) {
+    var entity = event.entity
+    var source = event.source
 
-  // -- Dodge (defender is player) --
-  if (entity.player) {
-    var dodgeChance = getAttr(entity, 'dodge_chance', 0)
-    // Stack attributecore dodge on top
-    dodgeChance += getAttrCore(entity, 'attributecore:dodge_chance', 0)
-
-    if (dodgeChance > 0 && Math.random() < dodgeChance) {
-      event.cancel()
-      entity.tell(Text.gray('[Dodge] Attack evaded!'))
-      return
-    }
-
-    // -- Magic Resistance (defender is player, damage is magic) --
-    var sourceType = String(source.type || '')
-    if (sourceType.includes('magic') || sourceType.includes('indirect_magic')) {
-      var magicRes = getAttr(entity, 'magic_resistance', 0)
-      if (magicRes > 0) {
-        event.damage = event.damage * (1.0 - magicRes)
+    // -- Dodge (defender is player) --
+    if (entity instanceof PlayerClass_as) {
+      var dodgeChance = getAttr(entity, 'dodge_chance', 0)
+      dodgeChance += getAttrCore(entity, 'attributecore:dodge_chance', 0)
+      if (dodgeChance > 0 && Math.random() < dodgeChance) {
+        event.setCanceled(true)
+        entity.tell(Text.gray('[Dodge] Attack evaded!'))
+        return
       }
-    }
-  }
-
-  // -- Attacker-side stats (attacker is player) --
-  if (source && source.player) {
-    var attacker = source.player
-    var critChance = getAttr(attacker, 'crit_chance', 0.05)
-    var critDamage = getAttr(attacker, 'crit_damage', 1.5)
-    var lifesteal  = getAttr(attacker, 'lifesteal', 0)
-    var spellPower = getAttr(attacker, 'spell_power', 1.0)
-    var armorPen   = getAttr(attacker, 'armor_penetration', 0)
-
-    // Stack XP Attribute Core values on top of icraft base
-    critChance += getAttrCore(attacker, 'attributecore:crit_chance', 0)
-    critDamage += getAttrCore(attacker, 'attributecore:critical_damage', 0)
-    lifesteal  += getAttrCore(attacker, 'attributecore:life_steal', 0)
-
-    // -- Armor Penetration --
-    // Scales with both penetration % and target's armor value.
-    // Formula: bonus damage = base * armorPen * (targetArmor / 30)
-    // At 10% pen vs 20 armor target: +6.7% bonus damage
-    // At 10% pen vs 30 armor target: +10% bonus damage
-    if (armorPen > 0 && entity.isLiving()) {
-      try {
-        var targetArmor = entity.getAttributeBaseValue('minecraft:generic.armor') || 0
-        if (targetArmor > 0) {
-          var penMultiplier = 1.0 + (armorPen * targetArmor / 30.0)
-          event.damage = event.damage * penMultiplier
-        }
-      } catch (e) {}
-    }
-
-    // -- Crit Roll --
-    // 2026-05-15: event.damage is read-only on KubeJS's LivingEntityHurtEventJS
-    // (getDamage exposed, no setDamage). Direct assignment throws
-    // EvaluatorException at runtime, spamming the server log on every hit
-    // that rolls a crit. Wrapped in try/catch + one-shot warn so it stops
-    // flooding. NOTE: critDamage is currently silently NOT applied; the
-    // proper fix is to migrate crit handling to a Forge LivingHurtEvent
-    // subscriber in iridescent_tetra_expansion (same pattern as
-    // WitchOfInkDamageHandler). Flagged for follow-up.
-    if (Math.random() < critChance) {
-      try {
-        event.damage = event.damage * critDamage
-      } catch (e) {
-        if (!global._attrSyncCritDamageWarned) {
-          global._attrSyncCritDamageWarned = true
-          console.warn('[attribute_sync] event.damage is read-only on this KubeJS version; crit multiplier silently dropped. Migrate to Forge LivingHurtEvent (see WitchOfInkDamageHandler).')
+      // -- Magic Resistance --
+      var sourceType = String(source.type || '')
+      if (sourceType.includes('magic') || sourceType.includes('indirect_magic')) {
+        var magicRes = getAttr(entity, 'magic_resistance', 0)
+        if (magicRes > 0) {
+          event.amount = event.amount * (1.0 - magicRes)
         }
       }
-      try {
-        attacker.server.runCommandSilent(
-          'effect give ' + attacker.username + ' minecraft:glowing 1 0 true'
-        )
-      } catch (e) {}
     }
 
-    // -- Spell Power scaling (magic/indirect damage types) --
-    // Covers: Ars Nouveau spells, Iron's Spellbooks spells, potion damage,
-    // and any other source tagged as magic or indirect_magic.
-    var atkSourceType = String(source.type || '')
-    if (atkSourceType.includes('magic') || atkSourceType.includes('indirect')) {
-      event.damage = event.damage * spellPower
-    }
+    // -- Attacker-side stats --
+    var attacker = source ? source.entity : null
+    if (attacker instanceof PlayerClass_as) {
+      var critChance = getAttr(attacker, 'crit_chance', 0.05)
+      var critDamage = getAttr(attacker, 'crit_damage', 1.5)
+      var lifesteal  = getAttr(attacker, 'lifesteal', 0)
+      var spellPower = getAttr(attacker, 'spell_power', 1.0)
+      var armorPen   = getAttr(attacker, 'armor_penetration', 0)
 
-    // -- Lifesteal (applied after all damage calcs) --
-    if (lifesteal > 0) {
-      var healAmount = event.damage * lifesteal
-      if (healAmount > 0 && attacker.health < attacker.maxHealth) {
-        attacker.heal(healAmount)
+      critChance += getAttrCore(attacker, 'attributecore:crit_chance', 0)
+      critDamage += getAttrCore(attacker, 'attributecore:critical_damage', 0)
+      lifesteal  += getAttrCore(attacker, 'attributecore:life_steal', 0)
+
+      // -- Armor Penetration --
+      if (armorPen > 0 && entity.isLiving()) {
+        try {
+          var targetArmor = entity.getAttributeBaseValue('minecraft:generic.armor') || 0
+          if (targetArmor > 0) {
+            var penMultiplier = 1.0 + (armorPen * targetArmor / 30.0)
+            event.amount = event.amount * penMultiplier
+          }
+        } catch (e) {}
+      }
+
+      // -- Crit Roll --
+      if (Math.random() < critChance) {
+        event.amount = event.amount * critDamage
+        try {
+          attacker.server.runCommandSilent(
+            'effect give ' + attacker.username + ' minecraft:glowing 1 0 true'
+          )
+        } catch (e) {}
+      }
+
+      // -- Spell Power scaling --
+      var atkSourceType = String(source.type || '')
+      if (atkSourceType.includes('magic') || atkSourceType.includes('indirect')) {
+        event.amount = event.amount * spellPower
+      }
+
+      // -- Lifesteal --
+      if (lifesteal > 0) {
+        var healAmount = event.amount * lifesteal
+        if (healAmount > 0 && attacker.health < attacker.maxHealth) {
+          attacker.heal(healAmount)
+        }
       }
     }
-  }
-})
+  })
+})()
 
 // --- XP MULTIPLIER (tick-diff) ---
 // 2026-04-22: KubeJS 2001.6.5-build.16 doesn't expose PlayerEvents.xpChange,

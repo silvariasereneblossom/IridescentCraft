@@ -62,53 +62,47 @@ try {
       return false
     }
 
-    EntityEvents.hurt(function(event) {
+    // 2026-05-15: migrated to DamageModifierRegistry (raw Forge LivingHurtEvent).
+    var DR_mc = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+    var PlayerClass_mc = Java.loadClass('net.minecraft.world.entity.player.Player')
+    DR_mc.register('icraft.magic_crit', function(event) {
       try {
-        var src = null
-        try { src = event.source } catch (_) { return }
+        var src = event.source
         if (!src) return
 
-        // Resolve attacker — direct player or projectile owner
-        var attacker = null
-        try { attacker = src.actual } catch (_) {}
-        if (!attacker) {
-          try { attacker = src.player } catch (_) {}
-        }
-        if (!attacker || !attacker.player) return
+        // Resolve attacker. Forge DamageSource.getEntity() returns the cause
+        // (player), while getDirectEntity() returns the projectile. Either
+        // could be the player here.
+        var attacker = src.entity
+        if (!(attacker instanceof PlayerClass_mc)) return
 
         if (!isMagicDamage(src)) return
 
-        // Read enchant levels from mainhand spell book
         var stack = attacker.getMainHandItem()
         if (!stack || stack.isEmpty()) return
         var critChanceLvl = getEnchLevel(stack, resolvedCritChance)
         var critDamageLvl = getEnchLevel(stack, resolvedCritDamage)
-        if (critChanceLvl <= 0) return  // can't crit without chance enchant
+        if (critChanceLvl <= 0) return
 
-        // Total chance: 5% per level, plus the player's attributecore:crit_chance
-        // attribute for cross-system synergy with melee crit
         var enchChance = critChanceLvl * 0.05
         var attrChance = 0.0
         try { attrChance = attacker.persistentData.getDouble('icraft_crit_chance') } catch (_) {}
         var totalChance = enchChance + attrChance
         if (totalChance <= 0) return
+        if (Math.random() >= totalChance) return
 
-        if (Math.random() >= totalChance) return  // didn't crit
+        var critDamageBonus = 0.5 + (critDamageLvl * 0.25)
+        if (critDamageLvl <= 0) critDamageBonus = 0.5
 
-        // Roll crit damage multiplier: 25% per level, base 1.5x at level 1
-        var critDamageBonus = 0.5 + (critDamageLvl * 0.25)  // L0=0.5x, L1=0.75x extra, L3=1.25x extra
-        if (critDamageLvl <= 0) critDamageBonus = 0.5  // base crit even without dmg enchant
+        var origDamage = event.amount
+        event.amount = origDamage * (1.0 + critDamageBonus)
 
-        var origDamage = event.damage
-        event.damage = origDamage * (1.0 + critDamageBonus)
-
-        // Per-attacker one-shot log so it's visible without spam
         if (!global._magic_crit_seen) global._magic_crit_seen = {}
         var name = String(attacker.username)
         if (!global._magic_crit_seen[name]) {
           global._magic_crit_seen[name] = true
           console.log('[magic_crit] ' + name + ' MAGIC CRIT! ' +
-                      origDamage.toFixed(2) + ' -> ' + event.damage.toFixed(2) +
+                      origDamage.toFixed(2) + ' -> ' + event.amount.toFixed(2) +
                       ' (chance=' + (totalChance * 100).toFixed(1) + '% damage=+' +
                       (critDamageBonus * 100).toFixed(0) + '%)')
         }

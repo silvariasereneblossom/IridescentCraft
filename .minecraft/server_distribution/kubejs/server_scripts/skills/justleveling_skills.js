@@ -625,9 +625,13 @@ PlayerEvents.inventoryChanged(event => {
 // COMBAT: DEALING DAMAGE
 // Hemorrhage (STR 20), True Strength (STR 30), Excitement kill tracking (DEX 30)
 // ═══════════════════════════════════════════════════════════════════════════════
-EntityEvents.hurt(event => {
-  if (!event.source || !event.source.player) return
-  let player = event.source.player
+// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR.register('icraft.justleveling.1', function(event) {
+  var player = event.source.entity
+    if (!(player instanceof PlayerClass)) return
   let target = event.entity
   if (!target || !target.living) return
   // Don't trigger on players (PvP protection for bleed/execute)
@@ -654,7 +658,7 @@ EntityEvents.hurt(event => {
       try {
         let last = lastCombatTick[uuid] || 0
         if ((now - last) > 100) {
-          event.damage *= 1.20
+          event.amount *= 1.20
           try {
             let pos = target.blockPosition()
             server.runCommandSilent(
@@ -677,7 +681,7 @@ EntityEvents.hurt(event => {
         let targetArmor = target.getAttributeValue('minecraft:generic.armor')
         if (targetArmor > 0) {
           let bonus = Math.min(0.05, targetArmor * 0.004)
-          event.damage *= (1 + bonus)
+          event.amount *= (1 + bonus)
         }
       } catch (e) {}
     }
@@ -692,7 +696,7 @@ EntityEvents.hurt(event => {
     // ── True Strength (STR >= 30): Execute at <= 5% HP ──
     if (apt.str >= 30) {
       try {
-        let remainingHp = target.health - event.damage
+        let remainingHp = target.health - event.amount
         let threshold = target.maxHealth * 0.05
         if (remainingHp > 0 && remainingHp <= threshold) {
           // Don't execute boss-type entities
@@ -718,7 +722,7 @@ EntityEvents.hurt(event => {
   // Check if this hit would kill the target
   if (apt.dex >= 30) {
     try {
-      let remainingHp = target.health - event.damage
+      let remainingHp = target.health - event.amount
       if (remainingHp <= 0 && !target.player) {
         // Target will die from this hit — grant speed + attack speed buff
         player.potionEffects.add('minecraft:speed', 200, 2, false, true)      // Speed III, 10s
@@ -731,16 +735,18 @@ EntityEvents.hurt(event => {
       }
     } catch (e) {}
   }
-})
-
-
-// ═══════════════════════════════════════════════════════════════════════════════
+  })
+})()// ═══════════════════════════════════════════════════════════════════════════════
 // COMBAT: TAKING DAMAGE
 // Lion Heart (DEF 30), Mystic Ward (MAG 20 dynamic), Cleave combat-tracker stamp
 // ═══════════════════════════════════════════════════════════════════════════════
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
+// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR.register('icraft.justleveling.2', function(event) {
+  var player = event.entity
+    if (!(player instanceof PlayerClass)) return
   let server = player.server
   let apt = getCachedAptitudes(server, player)
   let uuid = player.uuid.toString()
@@ -756,7 +762,7 @@ EntityEvents.hurt(event => {
       let missingPercent = 1 - (player.health / player.maxHealth)
       let dr = missingPercent * 0.30
       if (dr > 0.01) {
-        event.damage *= (1 - dr)
+        event.amount *= (1 - dr)
       }
     } catch (e) {}
   }
@@ -774,14 +780,12 @@ EntityEvents.hurt(event => {
       let bonus = Math.max(0, total - 1.0)
       let dr = Math.min(0.20, 0.05 + 0.01 * Math.floor(bonus / 0.20))
       if (dr > 0) {
-        event.damage *= (1 - dr)
+        event.amount *= (1 - dr)
       }
     } catch (e) {}
   }
-})
-
-
-// ═══════════════════════════════════════════════════════════════════════════════
+  })
+})()// ═══════════════════════════════════════════════════════════════════════════════
 // COMBAT: KILL TRACKING via EntityEvents.death
 // Excitement (DEX 30): additional kill detection for cases where damage
 // doesn't immediately register as lethal in the hurt event

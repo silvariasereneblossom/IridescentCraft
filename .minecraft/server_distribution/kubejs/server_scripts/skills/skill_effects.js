@@ -102,9 +102,13 @@ let FURNACE_KEYS = [
 // ═══════════════════════════════════════════════════════════════════════════
 // COMBAT: Player Dealing Damage
 // ═══════════════════════════════════════════════════════════════════════════
-EntityEvents.hurt(event => {
-  if (!event.source || !event.source.player) return
-  let player = event.source.player
+// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR.register('icraft.skill_effects.1', function(event) {
+  var player = event.source.entity
+    if (!(player instanceof PlayerClass)) return
   let target = event.entity
   if (!target || !target.living) return
   let srv = player.server
@@ -113,7 +117,7 @@ EntityEvents.hurt(event => {
   // Execute Damage: +X% to targets below 30% HP
   let exec = getScore(srv, name, 'icraft_execute_damage')
   if (exec > 0 && target.health / target.maxHealth < 0.30) {
-    event.damage *= (1 + exec / 100)
+    event.amount *= (1 + exec / 100)
   }
 
   // AoE Splash: projectile hits deal splash to nearby enemies
@@ -124,7 +128,7 @@ EntityEvents.hurt(event => {
   if (isProjectile) {
     let splash = getScore(srv, name, 'icraft_aoe_splash')
     if (splash > 0) {
-      let splashDmg = event.damage * (splash / 100)
+      let splashDmg = event.amount * (splash / 100)
       if (splashDmg >= 0.5) {
         let r = 3.0
         let nearby = target.level.getEntitiesWithin(
@@ -144,23 +148,23 @@ EntityEvents.hurt(event => {
       player.give('minecraft:arrow')
     }
   }
-})
-
-
-// ═══════════════════════════════════════════════════════════════════════════
+  })
+})()// ═══════════════════════════════════════════════════════════════════════════
 // DEFENSE: Player Taking Damage
 // ═══════════════════════════════════════════════════════════════════════════
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
+// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
+;(function(){
+  var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR.register('icraft.skill_effects.2', function(event) {
+  var player = event.entity
+    if (!(player instanceof PlayerClass)) return
   let resist = getScore(player.server, player.username, 'icraft_all_resistance')
   if (resist > 0) {
-    event.damage *= Math.max(0.1, 1 - resist / 100)
+    event.amount *= Math.max(0.1, 1 - resist / 100)
   }
-})
-
-
-// ═══════════════════════════════════════════════════════════════════════════
+  })
+})()// ═══════════════════════════════════════════════════════════════════════════
 // GATHERING: Block Break Effects
 // ═══════════════════════════════════════════════════════════════════════════
 BlockEvents.broken(event => {

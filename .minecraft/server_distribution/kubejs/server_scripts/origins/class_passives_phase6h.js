@@ -119,28 +119,27 @@ try {
     }
   })
 
-  // ── BERSERKER Battle Trance — track combat by tagging hit-tick ─────────
-  // ── SAMURAI Bushido — full-HP bonus + post-kill speed ───────────────────
-  EntityEvents.hurt(function(event) {
+  // ── BERSERKER Battle Trance + SAMURAI Bushido + WANDERER Adaptable ──
+  // 2026-05-15: migrated to DamageModifierRegistry (raw LivingHurtEvent).
+  var DR_h6 = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+  var PlayerClass_h6 = Java.loadClass('net.minecraft.world.entity.player.Player')
+  DR_h6.register('icraft.class_passives_h6', function(event) {
     try {
-      var attacker = event.source && event.source.player
-      if (!attacker || !attacker.username) return
+      var attacker = event.source.entity
+      if (!(attacker instanceof PlayerClass_h6)) return
+      if (!attacker.username) return
       var name = attacker.username
       var data = attacker.persistentData
       var server = attacker.server
 
-      // Berserker: stamp last-hit tick for Battle Trance
       if (hasClassH6(attacker, 'berserker')) {
         data.putLong('icraft_berserker_lastHitTick', server.tickCount)
       }
 
-      // Samurai Bushido: +15% damage when target is at full HP at moment of hit
       if (hasClassH6(attacker, 'samurai')) {
         var target = event.entity
         if (target && target.maxHealth && target.health >= target.maxHealth - 0.01) {
-          // Full-HP hit -> add bonus damage to event
-          event.damage = event.damage * 1.15
-          // Stamp first-strike tick for kill-speed-boost window (3s = 60 ticks)
+          event.amount = event.amount * 1.15
           data.putLong('icraft_samurai_firstStrikeTick', server.tickCount)
         }
       }

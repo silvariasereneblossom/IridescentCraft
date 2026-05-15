@@ -92,9 +92,13 @@ function getNearbyHostiles(entity, radius) {
 // ███ OFFENSIVE ON-HIT AFFIX EFFECTS (player attacks mob) ███
 // ==========================================================================
 
-EntityEvents.hurt(event => {
-  if (!event.source || !event.source.player) return
-  let player = event.source.player
+// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
+  ;(function(){
+    var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+    var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+    DR.register('icraft.affixes.offensive', function(event) {
+  var player = event.source.entity
+    if (!(player instanceof PlayerClass)) return
   let target = event.entity
   if (!target || !target.living) return
   let weapon = player.mainHandItem
@@ -142,7 +146,7 @@ EntityEvents.hurt(event => {
     let markTime = target.persistentData.getLong('icraft_marked')
     if (target.level.gameTime - markTime < 100) { // 5 seconds
       let bonus = target.persistentData.getInt('icraft_mark_bonus')
-      event.damage *= (1 + bonus / 100)
+      event.amount *= (1 + bonus / 100)
     }
   }
 
@@ -151,7 +155,7 @@ EntityEvents.hurt(event => {
     if (!target.type.includes('boss') && !target.type.includes('dragon') &&
         !target.type.includes('wither')) {
       if (target.health / target.maxHealth < 0.15 && Math.random() < 0.03) {
-        event.damage = target.health + 10 // Lethal
+        event.amount = target.health + 10 // Lethal
       }
     }
   }
@@ -159,14 +163,14 @@ EntityEvents.hurt(event => {
   // ── Gaia's Judgment: Execute scaling with missing HP ──
   if (hasAffix(weapon, "Judgment")) {
     let missingPct = 1 - (target.health / target.maxHealth)
-    event.damage *= (1 + missingPct * 0.50) // Up to +50% at 10% HP
+    event.amount *= (1 + missingPct * 0.50) // Up to +50% at 10% HP
   }
 
   // ── Primordial Force: Ignore 30% armor ──
   if (hasAffix(weapon, "Primordial")) {
     let targetArmor = target.getAttributeValue('minecraft:generic.armor') || 0
     if (targetArmor > 0) {
-      event.damage += targetArmor * 0.15 // Flat bonus based on armor
+      event.amount += targetArmor * 0.15 // Flat bonus based on armor
     }
   }
 
@@ -179,7 +183,7 @@ EntityEvents.hurt(event => {
       let stacks = player.persistentData.getInt('icraft_entropic_stacks') + 1
       stacks = Math.min(stacks, 10)
       player.persistentData.putInt('icraft_entropic_stacks', stacks)
-      event.damage *= (1 + stacks * 0.05)
+      event.amount *= (1 + stacks * 0.05)
     } else {
       player.persistentData.putString('icraft_entropic_target', targetId)
       player.persistentData.putInt('icraft_entropic_stacks', 0)
@@ -238,7 +242,7 @@ EntityEvents.hurt(event => {
   // ── Necrotic Supremacy: Wither damage also heals player ──
   if (hasAffix(weapon, "Necrotic")) {
     target.potionEffects.add('minecraft:wither', 80, 1, false, false)
-    player.heal(event.damage * 0.1) // 10% of damage dealt as healing
+    player.heal(event.amount * 0.1) // 10% of damage dealt as healing
   }
 
   // ── Reality Fracture: 5% chance to freeze target in time (stun) ──
@@ -255,7 +259,7 @@ EntityEvents.hurt(event => {
 
   // ── Worldbreaker: +15% damage to ALL mob types ──
   if (hasAffix(weapon, "Worldbreaker")) {
-    event.damage *= 1.15
+    event.amount *= 1.15
   }
 
   // ── Relentless: +10% damage to targets hit in last 3s ──
@@ -265,7 +269,7 @@ EntityEvents.hurt(event => {
     let lastHit = player.persistentData.contains(lastHitKey)
       ? player.persistentData.getLong(lastHitKey) : 0
     if (player.level.gameTime - lastHit < 60) { // 3 seconds
-      event.damage *= 1.10
+      event.amount *= 1.10
     }
     player.persistentData.putLong(lastHitKey, player.level.gameTime)
   }
@@ -273,7 +277,7 @@ EntityEvents.hurt(event => {
   // ── Executioner's: +20% damage to targets below 30% HP ──
   if (hasAffix(weapon, "Executioner")) {
     if (target.health / target.maxHealth < 0.30) {
-      event.damage *= 1.20
+      event.amount *= 1.20
     }
   }
 
@@ -282,7 +286,7 @@ EntityEvents.hurt(event => {
     let splashTargets = getNearbyHostiles(target, 1.5)
     splashTargets.forEach(e => {
       try {
-        e.hurt('player', event.damage * 0.3)
+        e.hurt('player', event.amount * 0.3)
       } catch(ex) {}
     })
   }
@@ -291,7 +295,7 @@ EntityEvents.hurt(event => {
   if (hasAffix(weapon, "Twilit")) {
     let lightLevel = target.level.getBrightness(target.blockPosition()) || 7
     if (lightLevel >= 4 && lightLevel <= 10) {
-      event.damage *= 1.15
+      event.amount *= 1.15
     }
   }
 
@@ -299,7 +303,7 @@ EntityEvents.hurt(event => {
   if (hasAffix(weapon, "Abyssal")) {
     let lightLevel = target.level.getBrightness(target.blockPosition()) || 7
     if (lightLevel <= 4) {
-      event.damage *= 1.20
+      event.amount *= 1.20
     }
     target.potionEffects.add('minecraft:darkness', 60, 0, false, false)
   }
@@ -326,7 +330,7 @@ EntityEvents.hurt(event => {
 
   // ── Valkyrie's Strike: +25% damage while airborne/falling ──
   if (hasAffix(weapon, "Valkyrie") && !player.onGround()) {
-    event.damage *= 1.25
+    event.amount *= 1.25
   }
 
   // ── Void-Touched: Attacks briefly levitate target (anti-melee, End-themed) ──
@@ -342,7 +346,7 @@ EntityEvents.hurt(event => {
     if (targetType.includes('enderman') || targetType.includes('shulker') ||
         targetType.includes('ender_dragon') || targetType.includes('endermite') ||
         targetType.includes('ender_guardian') || targetType.includes('ender_golem')) {
-      event.damage *= 1.15
+      event.amount *= 1.15
     }
   }
 
@@ -358,7 +362,7 @@ EntityEvents.hurt(event => {
     if (targetType.includes('enderman') || targetType.includes('shulker') ||
         targetType.includes('ender_dragon') || targetType.includes('phantom') ||
         targetType.includes('endermite')) {
-      event.damage *= 1.25
+      event.amount *= 1.25
     }
   }
 
@@ -366,7 +370,7 @@ EntityEvents.hurt(event => {
   if (hasAffix(weapon, "Rotbane")) {
     let targetType = target.type.toString()
     if (targetType.includes('undergarden')) {
-      event.damage *= 1.25
+      event.amount *= 1.25
     }
     // Also grant poison immunity proxy — clear poison from player
     player.removeEffect('minecraft:poison')
@@ -417,7 +421,7 @@ EntityEvents.hurt(event => {
       apexStacks = 0
     }
     if (apexStacks > 0) {
-      event.damage *= (1 + Math.min(apexStacks, 5) * 0.05)
+      event.amount *= (1 + Math.min(apexStacks, 5) * 0.05)
     }
   }
 
@@ -428,7 +432,7 @@ EntityEvents.hurt(event => {
         targetType.includes('wither') || targetType.includes('phantom') ||
         targetType.includes('drowned') || targetType.includes('husk') ||
         targetType.includes('stray') || targetType.includes('zombified')) {
-      event.damage *= 2.0
+      event.amount *= 2.0
     }
     // Heal nearby allies
     let allies = getNearbyEntities(player, 5)
@@ -448,7 +452,7 @@ EntityEvents.hurt(event => {
       let nearby = getNearbyHostiles(target, 3)
       nearby.forEach(e => {
         try {
-          e.hurt('player', event.damage * 0.4)
+          e.hurt('player', event.amount * 0.4)
         } catch(ex) {}
       })
       player.persistentData.putLong('icraft_shockwave_cd', player.level.gameTime)
@@ -463,7 +467,7 @@ EntityEvents.hurt(event => {
       let nearby = getNearbyHostiles(target, 4)
       nearby.forEach(e => {
         try {
-          e.hurt('player', event.damage * 0.5)
+          e.hurt('player', event.amount * 0.5)
           // Knockback approximation via potion
           e.potionEffects.add('minecraft:slowness', 20, 2, false, false)
         } catch(ex) {}
@@ -515,10 +519,8 @@ EntityEvents.hurt(event => {
       player.persistentData.putLong('icraft_starfall_cd', player.level.gameTime)
     }
   }
-})
-
-
-// ==========================================================================
+    })
+  })()// ==========================================================================
 // ███ ON-KILL AFFIX EFFECTS ███
 // ==========================================================================
 
@@ -605,9 +607,13 @@ EntityEvents.death(event => {
 // ███ DEFENSIVE AFFIX EFFECTS (player gets hit) ███
 // ==========================================================================
 
-EntityEvents.hurt(event => {
-  if (!event.entity || !event.entity.player) return
-  let player = event.entity
+// 2026-05-15 DamageModifierRegistry wrap (raw LivingHurtEvent).
+  ;(function(){
+    var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+    var PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+    DR.register('icraft.affixes.defensive', function(event) {
+  var player = event.entity
+    if (!(player instanceof PlayerClass)) return
 
   // ── Second Wind: Regen II at low HP ──
   if (player.health / player.maxHealth < 0.30 && hasAnyAffix(player, "Second Wind")) {
@@ -623,8 +629,8 @@ EntityEvents.hurt(event => {
   let srcType = event.source && event.source.type ? String(event.source.type) : ''
   if (srcType && (srcType.includes('fire') || srcType.includes('lava'))) {
     if (hasAnyAffix(player, "Ignis Core") || hasAnyAffix(player, "Ignis")) {
-      let healAmount = event.damage * 0.5
-      event.damage = 0
+      let healAmount = event.amount * 0.5
+      event.amount = 0
       player.heal(healAmount)
     }
   }
@@ -648,14 +654,14 @@ EntityEvents.hurt(event => {
     if (attacker.living && attacker.type &&
         (attacker.type.includes('boss') || attacker.type.includes('dragon'))) {
       if (hasAnyAffix(player, "Challenger")) {
-        event.damage *= 0.90
+        event.amount *= 0.90
       }
     }
   }
 
   // ── Dragon's Dominion: -15% damage from all mobs ──
   if (hasAnyAffix(player, "Dominion")) {
-    event.damage *= 0.85
+    event.amount *= 0.85
   }
 
   // ── Chorus Shift: Random teleport when hit below 20% HP ──
@@ -672,11 +678,11 @@ EntityEvents.hurt(event => {
 
   // ── Undying Flame: Survive lethal hit at 1 HP + fire nova (5 min cooldown) ──
   if (hasAnyAffix(player, "Undying") || hasAnyAffix(player, "Undying Flame")) {
-    if (event.damage >= player.health) {
+    if (event.amount >= player.health) {
       let lastUndying = player.persistentData.contains('icraft_undying_cd')
         ? player.persistentData.getLong('icraft_undying_cd') : 0
       if (player.level.gameTime - lastUndying > 6000) { // 5 min cooldown
-        event.damage = 0
+        event.amount = 0
         player.health = 1
         // Fire nova
         let nearby = getNearbyHostiles(player, 5)
@@ -693,11 +699,11 @@ EntityEvents.hurt(event => {
 
   // ── Immortal: Negate killing blow (10 min cooldown) ──
   if (hasAnyAffix(player, "Immortal")) {
-    if (event.damage >= player.health) {
+    if (event.amount >= player.health) {
       let lastImmortal = player.persistentData.contains('icraft_immortal_cd')
         ? player.persistentData.getLong('icraft_immortal_cd') : 0
       if (player.level.gameTime - lastImmortal > 12000) { // 10 min cooldown
-        event.damage = 0
+        event.amount = 0
         player.health = 1
         player.potionEffects.add('minecraft:resistance', 40, 3, false, true)
         player.persistentData.putLong('icraft_immortal_cd', player.level.gameTime)
@@ -712,7 +718,7 @@ EntityEvents.hurt(event => {
       let lastDash = player.persistentData.contains('icraft_dash_cd')
         ? player.persistentData.getLong('icraft_dash_cd') : 0
       if (player.level.gameTime - lastDash > 160) { // 8s cooldown
-        event.damage = 0
+        event.amount = 0
         player.potionEffects.add('minecraft:speed', 20, 2, false, true)
         player.persistentData.putLong('icraft_dash_cd', player.level.gameTime)
       }
@@ -722,7 +728,7 @@ EntityEvents.hurt(event => {
   // ── Valkyrie Ascension: While airborne -15% damage taken, +15% dealt ──
   if (hasAnyAffix(player, "Valkyrie Ascension") || hasAnyAffix(player, "Ascension")) {
     if (!player.onGround()) {
-      event.damage *= 0.85
+      event.amount *= 0.85
     }
   }
 
@@ -733,7 +739,7 @@ EntityEvents.hurt(event => {
         ? player.persistentData.getString('icraft_adapt_type') : ''
       let currentType = event.source.type.toString()
       if (lastDmgType === currentType) {
-        event.damage *= 0.90 // 10% reduction for repeated damage type
+        event.amount *= 0.90 // 10% reduction for repeated damage type
       }
       player.persistentData.putString('icraft_adapt_type', currentType)
     }
@@ -744,7 +750,7 @@ EntityEvents.hurt(event => {
     let nearby = getNearbyHostiles(player, 8)
     let stacks = Math.min(nearby.length, 5)
     if (stacks > 0) {
-      event.damage *= (1 - stacks * 0.03)
+      event.amount *= (1 - stacks * 0.03)
     }
   }
 
@@ -758,7 +764,7 @@ EntityEvents.hurt(event => {
       let attacker = event.source.actual
       if (attacker.living) {
         try {
-          attacker.hurt('thorns', event.damage * 0.35)
+          attacker.hurt('thorns', event.amount * 0.35)
         } catch(e) {}
       }
     }
@@ -849,10 +855,8 @@ EntityEvents.hurt(event => {
   if (hasAnyAffix(player, "Empyrean")) {
     player.potionEffects.add('minecraft:resistance', 40, 0, false, false)
   }
-})
-
-
-// ==========================================================================
+    })
+  })()// ==========================================================================
 // ███ DIMENSIONAL & PASSIVE AFFIX EFFECTS (tick-based) ███
 // ==========================================================================
 global.tick_affixEffects = (event) => {
