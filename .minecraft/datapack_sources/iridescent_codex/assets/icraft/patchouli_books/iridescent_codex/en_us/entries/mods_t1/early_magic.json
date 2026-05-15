@@ -36,7 +36,7 @@
     {
       "type": "patchouli:text",
       "title": "Casting",
-      "text": "Iron's Spellbooks: right-click to cast the scroll or spell book. Scrolls are consumed on use; spell books charge mana and can be recast.$(br2)Ars Nouveau: right-click the inscribed spell book. The glyph chain runs in sequence (form applies the effect).$(br2)$(bold)Source vs Mana:$() Iron's uses Mana (blue bar), Ars uses Source (server-side pool). Both regenerate passively; T2 unlocks faster regen + higher caps.$(br2)$(bold)Mana pool baseline:$() every player gets $(item)+25%$() max mana on both systems. Mage classes layer multipliers on top: $(thing)Archmage$() $(item)2.5x$(), $(thing)Battlemage$() / $(thing)Void Summoner$() $(item)~1.9x$(). Speccing into magic should let you use it as primary combat from day one."
+      "text": "Iron's Spellbooks: right-click to cast the scroll or spell book. Scrolls are consumed on use; spell books charge mana and can be recast.$(br2)Ars Nouveau: right-click the inscribed spell book. The glyph chain runs in sequence (form applies the effect).$(br2)$(bold)Source vs Mana:$() Iron's uses Mana (blue bar), Ars uses Source (server-side pool). Both regenerate passively; T2 unlocks faster regen + higher caps.$(br2)$(bold)Mana pool baseline:$() Magic classes get a flat $(item)1.5x$() max mana via MULTIPLY_TOTAL +0.5 (Archmage, Battlemage, Void Summoner all identical). Non-mage classes use the base ISS pool. There is no global baseline buff -- speccing into a magic class is the way to expand the pool."
     }
   ]
 }

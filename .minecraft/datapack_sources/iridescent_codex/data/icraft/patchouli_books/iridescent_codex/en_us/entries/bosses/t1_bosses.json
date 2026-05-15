@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Mutant Zombie$() (Mutant Monsters)$(br)Overworld, structures and open world. Drops: Mutant Zombie Chunks, Tier 1 tokens.$(br2)$(bold)Mutant Skeleton$() (Mutant Monsters)$(br)Overworld. Drops: Mutant Skeleton Shards, Tier 1 tokens.$(br2)$(bold)Mutant Spider$() (Mutant Monsters)$(br)Overworld. Drops: Mutant Spider Eyes, Tier 1 tokens."
+      "text": "$(bold)Mutant Zombie$() (Mutant Monsters)$(br)Overworld surface + structures. Drops: $(item)Hulk Hammer$() (25%, fun T1 melee drop with custom stats: 20 attack damage, 0.5 attack speed, Knockback II, +50% vs undead), Uncommon Ink (20%), Blood Rune (10%).$(br2)$(bold)Mutant Skeleton$() (Mutant Monsters)$(br)Overworld surface. Drops: Uncommon Ink (20%), Ice Rune (10%).$(br2)$(bold)Mutant Creeper$() (Mutant Monsters)$(br)Overworld surface. Drops: Uncommon Ink (20%), Fire Rune (10%).$(br2)$(italic)Note: Mutant Monsters crafting recipes are stripped -- you cannot craft armor/tools from drops. The Hulk Hammer + rune/ink drops are the intended T1 reward path.$()"
     },
     {
       "type": "patchouli:text",

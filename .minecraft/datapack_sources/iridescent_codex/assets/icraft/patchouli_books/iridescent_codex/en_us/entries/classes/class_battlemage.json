@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)Where sword meets sorcery. Stack magic gear to become both deadlier and harder to kill.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)Mana Pool: $(item)~1.9x base$() (~187 from default 100)$(br)$(bold)Core Identity:$() Dual +15% melee/magic + scaling Mana Shield."
+      "text": "$(italic)Where sword meets sorcery. Stack magic gear to become both deadlier and harder to kill.$()$(br2)HP Modifier: +5%  |  Equipment HP: Full$(br)Mana Pool: $(item)1.5x base$() (150 from default 100)$(br)$(bold)Core Identity:$() Dual +15% melee/magic + scaling Mana Shield."
     },
     {
       "type": "patchouli:text",
