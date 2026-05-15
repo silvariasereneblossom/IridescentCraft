@@ -105,6 +105,24 @@ public abstract class ArsManaCapMixin implements IManaCap {
             double discounted = Math.max(0.0, manaToRemove) / 3.0;
             float newMana = (float) Math.max(0.0, md.getMana() - discounted);
             md.setMana(newMana);
+            // ISS's MagicData.setMana mutates the server field but does NOT
+            // emit a sync packet -- ISS's own callers (MagicManager.tick)
+            // always pair setMana with PacketDistributor.sendToPlayer +
+            // SyncManaPacket. Without this dispatch the client bar stays at
+            // its pre-cast value and the next regen tick (~0.5 s later)
+            // re-syncs the server's *also-old* number after partial regen
+            // erases our deduction. Push the packet immediately so the bar
+            // drops the instant the spell resolves.
+            if (owner instanceof net.minecraft.server.level.ServerPlayer sp) {
+                try {
+                    io.redspace.ironsspellbooks.setup.PacketDistributor.sendToPlayer(sp,
+                            new io.redspace.ironsspellbooks.network.SyncManaPacket(md));
+                } catch (Throwable ignored) {
+                    // ISS network missing or API moved -- silently skip.
+                    // setMana already updated server state; client will
+                    // catch up at next ISS regen-tick sync.
+                }
+            }
             return newMana;
         } catch (Throwable t) {
             return 0;

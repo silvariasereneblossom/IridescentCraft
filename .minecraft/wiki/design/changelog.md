@@ -4,6 +4,54 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Unified pool followup: send SyncManaPacket after Ars-side deduction
+
+Tester: spells cast successfully (owner tracker works) but the ISS
+bar doesn't drain when Ars spells fire.
+
+### Root cause
+`ISS MagicData.setMana(float)` mutates the server's `this.mana`
+field but does NOT emit a sync packet. ISS's own callers always
+pair `setMana` with an explicit
+`PacketDistributor.sendToPlayer(sp, new SyncManaPacket(md))` --
+see `MagicManager.tick` post-regen path. Our `ArsManaCapMixin.removeMana`
+called `setMana` but never dispatched the packet, so:
+1. Server's `mana` field DID decrement post-cast.
+2. Client never received the update; bar stayed at the pre-cast value.
+3. ISS's next regen tick (~0.5 s later) sees `mana < maxMana`, regens
+   the difference, and broadcasts the *post-regen* value -- which
+   visibly looks like the deduction never happened.
+
+### Fix
+Append the dispatch to `removeMana`:
+```java
+md.setMana(newMana);
+if (owner instanceof ServerPlayer sp) {
+    PacketDistributor.sendToPlayer(sp, new SyncManaPacket(md));
+}
+```
+Server-only branch (the cast check fails on client; harmless).
+Catches `Throwable` so an ISS API rename surfaces as bar lag rather
+than a crash.
+
+`addMana` and `setMana` overrides stay as no-ops -- those paths are
+exercised by Ars's own per-tick regen (which we want to drop because
+ISS regen is canonical) and by external callers we'd need a separate
+audit before routing.
+
+### Lesson
+**Capability writes are not automatically synced.** When mixin-redirecting
+write methods to a third-party data class, audit the original
+callers to see what packet they pair the write with. Common pattern:
+the data class has plain field setters, the network layer is
+explicit in the caller. Skipping the explicit dispatch silently
+desyncs the client.
+
+### Files
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/mixin/ArsManaCapMixin.java`
+
+---
+
 ## 2026-05-15 — Unified pool followup: route owner via side-channel (cap has no entity)
 
 Tester: "When I try to cast an Ars spell it says not enough mana --
