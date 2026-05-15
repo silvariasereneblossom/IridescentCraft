@@ -4,6 +4,63 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Unified pool followup: route owner via side-channel (cap has no entity)
+
+Tester: "When I try to cast an Ars spell it says not enough mana --
+it's not detecting the ISS pool."
+
+### Root cause
+`ArsManaCapMixin.getCurrentMana` returned 0 unconditionally because
+the `@Shadow`-ed `livingEntity` field is always null. Ars's
+`ManaCapAttacher.ManaCapProvider` constructs the cap with
+`new ManaCap(null)` -- the constructor parameter is `@Nullable` and
+Ars never threads the actual entity through. The cap doesn't know
+its owner; our mixin's first check (`if (livingEntity == null) return 0`)
+short-circuited every spell-cast mana check to 0.
+
+### Fix
+Side-channel weak map populated via Forge events.
+
+NEW `com.iridescentcraft.modspells.event.ArsManaCapOwnerTracker`:
+- Static `WeakHashMap<IManaCap, LivingEntity> OWNERS`. Default
+  identity hash/equals on IManaCap (no override on either Ars's
+  `ManaCap` or the interface), so the WeakHashMap behaves as
+  identity-keyed.
+- Subscribes to EntityJoinLevelEvent (covers initial spawn + login),
+  PlayerEvent.Clone (death/respawn), PlayerEvent.PlayerRespawnEvent,
+  and PlayerEvent.PlayerChangedDimensionEvent. Each handler calls
+  `CapabilityRegistry.getMana(player).ifPresent(cap -> OWNERS.put(cap, player))`.
+- WeakHashMap entries GC naturally when the cap is no longer reachable
+  (player despawned, cap detached).
+
+UPDATED `ArsManaCapMixin`:
+- New private helper `icraft_resolveOwner()`: tries the shadow field
+  first (in case Ars or a sibling mod constructs with non-null), then
+  falls back to `ArsManaCapOwnerTracker.OWNERS.get(this)`.
+- All three overwrites (getCurrentMana / getMaxMana / removeMana) now
+  call `icraft_resolveOwner()` instead of reading the shadow field
+  directly.
+- Class declaration adds `implements IManaCap` so `this` resolves to
+  the map's key type without an explicit cast (abstract class allowed
+  to skip implementing interface methods that mixin merges from the
+  target).
+
+### Files
+- NEW `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/modspells/event/ArsManaCapOwnerTracker.java`
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/mixin/ArsManaCapMixin.java`
+
+### Lesson
+When mixin-injecting into a capability's data class, **don't trust
+that a parameter-passed entity field is populated**. Capability
+attachers commonly construct with null and rely on Forge's
+provider->entity association rather than an explicit field. Either
+the cap class itself stores the owner (verify by decompiling), or
+the mixin needs to recover the owner via a side channel keyed on
+the cap instance. Add this check to the mixin-design workflow
+alongside the existing "verify class isn't sealed / final" review.
+
+---
+
 ## 2026-05-15 — Server startup crash: duplicate ISS attr id in Set.of (cascading Naturalist failure)
 
 Server failed to boot after the unified-pool push:

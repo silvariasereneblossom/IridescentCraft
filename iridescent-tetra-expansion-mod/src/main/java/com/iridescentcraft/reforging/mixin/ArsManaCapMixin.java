@@ -1,6 +1,8 @@
 package com.iridescentcraft.reforging.mixin;
 
+import com.hollingsworth.arsnouveau.api.mana.IManaCap;
 import com.hollingsworth.arsnouveau.common.capability.ManaCap;
+import com.iridescentcraft.modspells.event.ArsManaCapOwnerTracker;
 import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 
@@ -36,10 +38,22 @@ import org.spongepowered.asm.mixin.Shadow;
  * Replaces the prior mana_bridge.js attribute-mirror approach.
  */
 @Mixin(value = ManaCap.class, remap = false)
-public abstract class ArsManaCapMixin {
+public abstract class ArsManaCapMixin implements IManaCap {
 
     @Shadow @Final
     private LivingEntity livingEntity;
+
+    /**
+     * Resolve the owning player. Ars's `ManaCapAttacher` constructs the
+     * cap via `new ManaCap(null)`, so the shadow `livingEntity` field is
+     * always null in practice. We fall back to the
+     * {@link ArsManaCapOwnerTracker} side-channel map populated by
+     * AttachCapabilities / Clone / Respawn / DimensionChange events.
+     */
+    private LivingEntity icraft_resolveOwner() {
+        if (this.livingEntity != null) return this.livingEntity;
+        return ArsManaCapOwnerTracker.OWNERS.get(this);
+    }
 
     /**
      * @author IridescentCraft
@@ -47,9 +61,10 @@ public abstract class ArsManaCapMixin {
      */
     @Overwrite
     public double getCurrentMana() {
-        if (this.livingEntity == null) return 0;
+        LivingEntity owner = icraft_resolveOwner();
+        if (owner == null) return 0;
         try {
-            MagicData md = MagicData.getPlayerMagicData(this.livingEntity);
+            MagicData md = MagicData.getPlayerMagicData(owner);
             return md != null ? md.getMana() : 0;
         } catch (Throwable t) {
             return 0;
@@ -62,10 +77,11 @@ public abstract class ArsManaCapMixin {
      */
     @Overwrite
     public int getMaxMana() {
-        if (this.livingEntity == null) return 0;
+        LivingEntity owner = icraft_resolveOwner();
+        if (owner == null) return 0;
         try {
             Attribute max = AttributeRegistry.MAX_MANA.get();
-            return (int) this.livingEntity.getAttributeValue(max);
+            return (int) owner.getAttributeValue(max);
         } catch (Throwable t) {
             return 0;
         }
@@ -77,9 +93,10 @@ public abstract class ArsManaCapMixin {
      */
     @Overwrite
     public double removeMana(double manaToRemove) {
-        if (this.livingEntity == null) return 0;
+        LivingEntity owner = icraft_resolveOwner();
+        if (owner == null) return 0;
         try {
-            MagicData md = MagicData.getPlayerMagicData(this.livingEntity);
+            MagicData md = MagicData.getPlayerMagicData(owner);
             if (md == null) return 0;
             // 1/3 discount: Ars is the "reliable, spammable" side of the
             // unified pool. Displayed spell cost is divided by 3 when
