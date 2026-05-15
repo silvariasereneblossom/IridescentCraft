@@ -1570,26 +1570,51 @@ uncapped-multiplicative-stacking design intent.
 
 ## M. ISS + Ars Nouveau Cross-Mod Integration
 
-Added 2026-05-14. Design intent: "mana regen and mana are universal" — sources
-that boost one system's mana should affect the other equivalently.
+Added 2026-05-14, restructured 2026-05-15. Design intent: "mana regen and
+mana are universal" — sources that boost one system's mana should affect
+the other equivalently.
 
-### M.1 Bidirectional mana bridge
+### M.1 Unified mana pool via ManaCap mixin (replaces the 2026-05-14 bridge)
 
-`kubejs/server_scripts/attributes/mana_bridge.js` — 1 Hz server tick that
-mirrors gear-contributed modifiers between paired ISS / Ars attributes:
+**Architecture:** Ars's `IManaCap` is mixin-redirected to the ISS pool.
+There is one source of truth (ISS) and one visible bar (ISS HUD).
 
-| Pair | Operation |
-|------|-----------|
-| `irons_spellbooks:max_mana` ↔ `ars_nouveau.perk.max_mana` | ADDITION |
-| `irons_spellbooks:mana_regen` ↔ `ars_nouveau.perk.mana_regen` | MULTIPLY_BASE |
+| Ars method | Redirect target |
+|------------|-----------------|
+| `getCurrentMana()` | `MagicData.getPlayerMagicData(le).getMana()` |
+| `getMaxMana()` | `le.getAttributeValue(AttributeRegistry.MAX_MANA.get())` |
+| `removeMana(cost)` | `MagicData.setMana(mana - cost / 3.0)` -- **1/3 cost discount** |
+| `addMana(_)` / `setMana(_)` / `setMaxMana(_)` | no-op (ISS owns regen + state) |
+| `getGlyphBonus` / `setGlyphBonus` / `getBookTier` / `setBookTier` | unchanged (Ars caster progression metadata) |
 
-Math per pair: sum gear modifiers excluding bridge's own UUIDs, then upsert
-deterministic-UUID bridge modifier on the other attribute with that sum.
-Stable across ticks (excluding own contribution avoids self-feedback).
+**Cost discount rationale.** Ars stays "reliable, spammable" via the 1/3
+deduction: a glyph spell with displayed cost 30 actually costs 10 ISS mana.
+ISS keeps "high-impact, long-CD" identity by paying full cost on its own
+spells. The discount applies on top of Ars's existing mage-tier internal
+reductions (which already adjust the displayed cost).
 
-UI: Apothic Attributes Stats GUI hides `ars_nouveau.perk.max_mana` and
-`ars_nouveau.perk.mana_regen` rows so the player sees a single canonical mana
-display (ISS rows). `config/attributeslib.cfg` Hidden Attributes list.
+**HUD.** `ArsGuiManaHudMixin` injects on `GuiManaHUD.shouldDisplayBar` and
+returns false unconditionally. The Ars bar would visually duplicate the ISS
+bar otherwise (both reading the same pool).
+
+**Mixin location.** `iridescent-tetra-expansion-mod` mixin package
+`com.iridescentcraft.reforging.mixin`, classes `ArsManaCapMixin` (common
+bus) and `ArsGuiManaHudMixin` (client bus).
+
+**Items granting Ars perk attributes.** All `ars_nouveau:ars_nouveau.perk.*`
+references in our codebase were migrated to `irons_spellbooks:*` on
+2026-05-15. The Ars perk attributes still exist on the player (Ars registers
+them via `EntityAttributeModificationEvent`) but become decorative — nothing
+in our codebase grants them, and the cap reads ISS regardless of their
+value. `HidePerkTooltips` continues to suppress those attributes on tooltips
+if anything else ever applies them.
+
+**Predecessor.** The original 2026-05-14 bridge (`mana_bridge.js`,
+1Hz tick mirroring `irons_spellbooks:max_mana` <-> `ars_nouveau.perk.max_mana`
+modifiers between the two attributes) was deleted in the 2026-05-15 unified
+pool migration. The cap mixin is strictly cleaner: no tick overhead, no
+double-counting risk, no MULTIPLY_BASE collapse-to-zero on the Ars side
+(which would have happened because the Ars perk attribute has base=0).
 
 ### M.2 ISS school SP → Ars elemental damage
 

@@ -14,6 +14,33 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Bulk sed migration created duplicate `Set.of(...)` element -> server bootloop (2026-05-15) — RESOLVED
+- **Status:** Resolved 2026-05-15
+- **Description:** Server failed to start with `ExceptionInInitializerError` at `ModularArsSpellBookItem.<clinit>`. The 2026-05-15 unified-pool migration substituted `ars_nouveau:ars_nouveau.perk.max_mana` -> `irons_spellbooks:max_mana` across all files; a `Set.of(literal, literal)` block held both IDs as distinct strings pre-substitution, post-substitution they collided, `Set.of` throws on duplicate elements. The crash aborted RegisterEvent dispatch at our mod, **subsequent DeferredRegisters in the same RegisterEvent were skipped** -- Naturalist's `BUG_NET` among them. Naturalist's CreativeModeTab static init then tried `BUG_NET.get()` and got null, logging a cascading secondary error that initially looked unrelated.
+- **Fix:** Collapsed the duplicates in `ARS_FLAT_STATS` (`Set.of`), `ARS_STAT_LABELS` (`LinkedHashMap.put`), `MagicStatsBars.registerBars()`, and `AttributeApplier.ICRAFT_MIRROR_MAP` to single ISS-canonical entries.
+- **Lesson:** Bulk sed migrations that collapse multiple keys to a single canonical form must pre-flight grep for `Set.of` / `Map.of` / `ImmutableSet.of` / similar duplicate-rejecting constructors. HashMap-backed collections silently overwrite on duplicate puts (harmless); the immutable constructors throw at class init. Add this check to the bulk-migration workflow.
+- **Files:** `ModularArsSpellBookItem.java`, `MagicStatsBars.java`, `AttributeApplier.java`.
+
+### lootjs_overhaul.js TypeError aborted all LootJS modifier registration (2026-05-15) — RESOLVED
+- **Status:** Resolved 2026-05-15
+- **Description:** Tester reported diamonds still appearing in overworld chests despite three documented strip layers. Server log audit revealed `loot/lootjs_overhaul.js#137: TypeError: Cannot find function withCount in object LootEntry`. The TypeError aborted the **entire** `LootJS.modifiers(event => {...})` block on script load -- ALL our chest modifiers (every diamond strip, every gem add, every tier-token injection) silently failed to register. The strips were in the code but never installed at runtime.
+- **Root cause:** `.withCount(min, max)` is not a LootJS `LootEntry` method. The correct API is `.limitCount([min, max])` (array argument, not two scalars). Two call sites added when the arcane_essence injection was first written; rest of the file used the correct API.
+- **Fix:** Replaced both call sites with `.limitCount([N, M])`. Synced to 3 distros.
+- **Lesson:** A TypeError in any one part of a `LootJS.modifiers` block kills the whole block. When investigating "loot strip not working" reports, **always check that the modifier script itself loaded cleanly** -- grep for `LootJS Server.*ERROR` in the kubejs server log before assuming the predicates missed.
+
+### icraft_iss_gem_buffs Paxi datapack -- all 13 gems failing parse (2026-05-15) — RESOLVED
+- **Status:** Resolved 2026-05-15
+- **Description:** Apotheosis logged `Failed parsing gems file irons_spellbooks:<gem>. Underlying Exception: No bonuses were provided.` for every override file we shipped. Tester wasn't seeing any of the buffed gem values in-game.
+- **Root cause:** Our gem JSONs were missing the required `types` array in `gem_class`. ISS-stock gems use `"gem_class": {"key": "anything", "types": ["helmet", "chestplate", "leggings", "boots"]}`. Without `types`, Apotheosis's codec drops each malformed bonus silently then throws on the now-empty `bonuses` list.
+- **Fix:** Patched all 13 gem files via tooling script to add the types array, rebuilt the Paxi zip, redeployed to 3 distros.
+
+### kubejs/data/apotheosis affixes desync (2026-05-15) — RESOLVED
+- **Status:** Resolved 2026-05-15
+- **Description:** The 2026-05-14 affix rename batch (`axe` -> `heavy_weapon`, `puffish_attributes:critical_*` -> `attributeslib:crit_*`) touched the main distro only. `server_distribution/kubejs/data/apotheosis/affixes/` and `distribution/client/kubejs/data/apotheosis/affixes/` retained 36 stale files each, causing `Apotheosis : Adventure ERROR: Unknown element name: axe` and `Unknown registry key puffish_attributes:critical_damage` for each affix on every server boot.
+- **Why missed:** KubeJS data folder is a virtual datapack that Apotheosis loads independently of our Paxi zips. The Paxi-zip affix copy got migrated and the kubejs-data copy did not -- both surfaces needed the substitution.
+- **Fix:** `cp -a /root/IridescentCraft/.minecraft/kubejs/data/apotheosis/. <other_distro>/kubejs/data/apotheosis/`
+- **Lesson:** Any data file shipped via BOTH kubejs/data AND Paxi datapack zip must be migrated in BOTH locations. The 3-distro sync rule already covers each location separately; the implicit rule is "same content lives in 2 places per distro" for affixes/gems/anything Apotheosis-flavored.
+
 ### Tetra MULTIPLY_BASE percent attrs silently collapse to zero (2026-05-14) — RESOLVED
 - **Status:** Resolved 2026-05-14
 - **Description:** Tester reported the modular wand showing only Max Mana in tooltip; spell_power / mana_regen / cooldown_reduction were invisible. Vanilla material wands showed all four but as raw decimals.

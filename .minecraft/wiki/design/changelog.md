@@ -4,6 +4,96 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Server startup crash: duplicate ISS attr id in Set.of (cascading Naturalist failure)
+
+Server failed to boot after the unified-pool push:
+```
+ExceptionInInitializerError at ModularArsSpellBookItem.<clinit>:406
+Caused by: IllegalArgumentException: duplicate element: irons_spellbooks:max_mana
+```
+
+### Root cause
+The 2026-05-15 bulk sed migration substituted
+`ars_nouveau:ars_nouveau.perk.max_mana` -> `irons_spellbooks:max_mana`
+across all files. `ModularArsSpellBookItem.ARS_FLAT_STATS` held both
+attribute IDs as distinct strings pre-migration; post-substitution
+both became the same literal, and `Set.of(...)` rejects duplicate
+elements with `IllegalArgumentException`. The throw happened in
+class `<clinit>`, marking the class permanently uninitializable.
+`ModularItemRegistry.lambda$static$1` couldn't instantiate the item,
+the DeferredRegister entry failed, RegisterEvent dispatch aborted
+mid-list, **subsequent DeferredRegisters in the same RegisterEvent
+were skipped** (Naturalist's `BUG_NET` among them). Naturalist's
+CreativeModeTab static init then called `BUG_NET.get()` -> null,
+secondary error logged, Forge bailed.
+
+### Fixes
+1. `ModularArsSpellBookItem`: collapsed 5-entry `ARS_STAT_LABELS`
+   `LinkedHashMap` (which silently de-duped via last-write-wins) and
+   the parallel `ARS_FLAT_STATS = Set.of(...)` (which threw) to the
+   3-entry ISS-canonical form (max_mana / mana_regen / spell_power).
+2. `MagicStatsBars`: removed 3 redundant Tetra workbench Status panel
+   bars (`arsMaxMana` / `arsManaRegen` / `arsSpellDamage`) targeting
+   the same ISS attribute IDs as the bars above.
+3. `AttributeApplier.ICRAFT_MIRROR_MAP`: collapsed paired puts (one
+   originally for ISS, one originally for Ars perk -- both now ISS)
+   to one put per stat.
+
+### Lesson
+**Bulk sed migrations that collapse multiple keys to a single
+canonical form must pre-flight grep for `Set.of(...)` and similar
+duplicate-rejecting constructors in the migration scope.** Map.put
+calls and HashMap collections silently overwrite on duplicate keys
+(harmless), but `Set.of` / `Map.of` / `ImmutableSet.of` throw at
+init. The Naturalist cascade compounded the cost -- one Set.of
+duplicate in our class made an unrelated mod's CreativeModeTab look
+broken in the log, which sent us down two parallel investigations.
+
+### Files
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/modspells/item/ModularArsSpellBookItem.java`
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/modspells/client/MagicStatsBars.java`
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/modspells/event/AttributeApplier.java`
+
+---
+
+## 2026-05-15 — Server log audit: LootJS API typo + ISS gem schema + affix sync gap
+
+Audited the server log mirror (boot 2026-05-15 01:14). Three
+real issues hidden under the normal third-party mod noise.
+
+### 1. lootjs_overhaul.js#137 / #146 — TypeError on `withCount`
+`.withCount(2, 4)` does not exist on LootJS `LootEntry`. The
+correct API is `.limitCount([min, max])`. The TypeError aborted
+the **entire** `LootJS.modifiers` block on load -- meaning ALL
+our chest modifiers (including the 3-layer diamond strip) silently
+failed to register. The reported "diamonds still appearing in
+overworld chests" trace back to this: the strips were never
+installed at runtime, not because the predicates missed.
+
+### 2. icraft_iss_gem_buffs — 13 gems failing Apotheosis codec parse
+All 13 ISS gem override JSONs were missing the required `types`
+array in `gem_class`. Apotheosis validation drops malformed
+bonuses silently then throws "No bonuses were provided" on the
+empty list. Patched all gems to add
+`"types": ["helmet", "chestplate", "leggings", "boots"]` (matching
+ISS stock pattern), rebuilt `icraft_iss_gem_buffs.zip`, redeployed
+to 3 distros.
+
+### 3. kubejs/data/apotheosis/ affix sync gap
+36 files in `server_distribution` + `distribution/client` still
+had `"axe"` + `puffish_attributes:critical_*` refs that were
+migrated in main on 2026-05-14 but never propagated. KubeJS data
+folder is a virtual datapack that Apotheosis loads independently
+of our Paxi zip, so the migration needed both surfaces. Synced
+via `cp -a` from main.
+
+### 4. apotheosis_gem_repair.js — invalid filter
+`LootJS: Invalid ingredient for filter: Unknown` — raw JS function
+passed to `modifyLoot` instead of an ItemFilter. Wrapped in
+`ItemFilter.custom(...)`. Cosmetic; modifier still worked.
+
+---
+
 ## 2026-05-15 — Unified mana pool: Ars routes through ISS via ManaCap mixin
 
 User feasibility check: instead of reconciling two mana systems via the
