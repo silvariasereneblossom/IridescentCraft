@@ -1583,16 +1583,34 @@ There is one source of truth (ISS) and one visible bar (ISS HUD).
 |------------|-----------------|
 | `getCurrentMana()` | `MagicData.getPlayerMagicData(le).getMana()` |
 | `getMaxMana()` | `le.getAttributeValue(AttributeRegistry.MAX_MANA.get())` |
-| `removeMana(cost)` | `MagicData.setMana(mana - cost)` -- **1:1 deduction, no discount** |
+| `removeMana(cost)` | `MagicData.setMana(mana - cost / 2.0)` -- **half-cost discount** |
 | `addMana(_)` / `setMana(_)` / `setMaxMana(_)` | no-op (ISS owns regen + state) |
 | `getGlyphBonus` / `setGlyphBonus` / `getBookTier` / `setBookTier` | unchanged (Ars caster progression metadata) |
 
-**Cost model.** Ars spells deduct their displayed cost 1:1 from the ISS
-pool. No multiplier. An earlier iteration (2026-05-15 initial cut) applied
-a 1/3 discount to keep Ars "spammable" relative to ISS; the discount was
-removed the same session after the smaller-than-expected drain made the
-unified pool feel disconnected from spell costs. Both ecosystems now
-charge the same per-mana rate.
+**Cost model.** Ars spells deduct half their displayed cost from the ISS
+pool. Settled on `/2` after two playtest iterations:
+- 2026-05-15 initial: `/3` discount. Felt invisible — small Ars spells barely moved the bar.
+- 2026-05-15 v2: 1:1 (no discount). Felt prohibitive — ~50 mana per cast burned the pool in 2-3 casts.
+- 2026-05-15 v3 (shipped): `/2`. Middle ground. Ars stays "reliable spammable" relative to ISS's "high-impact" spells while a single cast still visibly dents the bar.
+
+### M.1a Magic class mana-pool boost
+
+`kubejs/server_scripts/attributes/mana_pool_bonuses.js` applies a flat
+**MULTIPLY_TOTAL +0.5** (= 1.5× effective) to `irons_spellbooks:max_mana`
+for the three magic classes:
+- Archmage
+- Battlemage
+- Void Summoner
+
+Applied via `addTransientModifier` (not `addPermanentModifier`) — the
+modifier stays attached for the session but doesn't persist in player
+NBT. Reverting the buff is just deleting the script; no UUID-scrub pass
+needed. Lesson from the two prior cleanup-after-revert cycles (legacy
+`mana_pool_bonuses` 2026-04-25 and `mana_bridge` 2026-05-14).
+
+Cleanup of the legacy 8 UUIDs (4 from the 2026-04-25 layered pool buff +
+4 from the 2026-05-14 attribute-mirror bridge) continues running in the
+same script until the alpha-tester roster has cycled through.
 
 **HUD.** `ArsGuiManaHudMixin` injects on `GuiManaHUD.shouldDisplayBar` and
 returns false unconditionally. The Ars bar would visually duplicate the ISS

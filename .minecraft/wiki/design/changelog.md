@@ -4,6 +4,46 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-15 — Unified pool v3: Ars half-cost + mage 1.5x pool (transient)
+
+After two playtest passes:
+- v1 (`/3` discount): tester observed bar barely moved — Ars felt
+  detached from the pool.
+- v2 (1:1, no discount): tester observed "Ars spells take ~50 mana
+  a cast, really exorbitant".
+
+Landed: **`removeMana(cost)` deducts `cost / 2`** -- middle ground.
+Ars stays cheaper than 1:1 (preserving "spammable" identity) while
+a single cast still visibly drains the pool.
+
+### Mage pool buff reinstated -- flat 1.5x, transient
+
+The 2026-04-25 layered pool buff (Global +25% + Archmage 2x +
+Battlemage/VoidSummoner 1.5x) was reverted earlier today to
+diagnose the unified-pool drain. Replacement is simpler:
+
+- **Single rule: MULTIPLY_TOTAL +0.5 = 1.5x** on
+  `irons_spellbooks:max_mana`
+- **Applies to all three magic classes uniformly** (archmage,
+  battlemage, void_summoner). No global bonus for non-mages.
+- **Transient modifier**, not permanent. Per the
+  feedback_permanent_modifier_trap lesson learned today, transient
+  buffs vanish on logout and need no NBT-scrub cleanup if reverted.
+  The 5s tick + login handler re-applies on each session.
+
+The legacy-UUID cleanup (4 mana_pool UUIDs + 4 mana_bridge UUIDs
+across 4 attributes) continues in the same script -- removes
+persistent NBT cruft from the two prior generations until all
+online testers have cycled through at least once.
+
+### Files
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/mixin/ArsManaCapMixin.java`
+- `kubejs/server_scripts/attributes/mana_pool_bonuses.js`
+- `wiki/design/master.md` -- cross-mod paragraph
+- `wiki/design/master-appendix.md` -- §M.1 cost model, §M.1a class buff
+
+---
+
 ## 2026-05-15 — Unified pool: drop the 1/3 discount, Ars deducts 1:1
 
 User: "It should just be displayed_cost, no /3."

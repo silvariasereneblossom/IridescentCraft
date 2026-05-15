@@ -89,7 +89,7 @@ public abstract class ArsManaCapMixin implements IManaCap {
 
     /**
      * @author IridescentCraft
-     * @reason Unified mana pool -- deduct displayed cost from ISS
+     * @reason Unified mana pool -- deduct half displayed cost from ISS
      */
     @Overwrite
     public double removeMana(double manaToRemove) {
@@ -98,10 +98,13 @@ public abstract class ArsManaCapMixin implements IManaCap {
         try {
             MagicData md = MagicData.getPlayerMagicData(owner);
             if (md == null) return 0;
-            // 2026-05-15: discount removed per user directive. Ars spells
-            // deduct their displayed cost 1:1 from the ISS pool. Negative
+            // 2026-05-15: 1/2 discount per playtest. The earlier 1/3 cut
+            // felt invisible; 1:1 ran ~50 mana/cast which was prohibitive
+            // for sustained casting. Half-cost is the middle ground: Ars
+            // is still cheaper than ISS spell costs but Ars casts now
+            // actually drain a noticeable portion of the pool. Negative
             // inputs clamped to 0 (matches Ars's original contract).
-            double deduction = Math.max(0.0, manaToRemove);
+            double deduction = Math.max(0.0, manaToRemove) / 2.0;
             float newMana = (float) Math.max(0.0, md.getMana() - deduction);
             md.setMana(newMana);
             // ISS's MagicData.setMana mutates the server field but does NOT
