@@ -1,18 +1,18 @@
 {
-  "parent": "minecraft:story/mine_diamond",
+  "parent": "minecraft:story/iron_tools",
   "display": {
     "icon": {
       "item": "minecraft:enchanting_table"
     },
     "title": {"translate": "advancements.story.enchant_item.title"},
-    "description": {"text": "Requires Tier 3 — The enchanting table requires diamonds."},
+    "description": {"text": "Tier 1 — Craft from a book, 2 gold ingots, 2 Apotheosis gems, and deepslate."},
     "frame": "task",
-    "hidden": true
+    "hidden": false
   },
   "criteria": {
-    "stage_gate": {
-      "trigger": "minecraft:impossible"
+    "enchanted_item": {
+      "trigger": "minecraft:enchanted_item"
     }
   },
-  "requirements": [["stage_gate"]]
+  "requirements": [["enchanted_item"]]
 }

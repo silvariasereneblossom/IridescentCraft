@@ -103,7 +103,7 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | Celestial Artifacts | `celestial_artifacts-common.toml` | `giveItemsOnStart = false` |
 | Azukaar's Fair Difficulty | config | All stat scaling zeroed (damage, luck, XP multipliers). Behavior features kept. |
 | Icarus | recipes | All default wing recipes removed. 5 new T3 recipes (diamond + phantom membrane). |
-| Disenchanting Table | recipe | T2-gated (requires 4x `thermal:steel_ingot`) |
+| Disenchanting Table | recipe | T1-gated (same pattern as enchanting table — 1 book + 2 gold ingots + 2 Apotheosis gems + 4 deepslate; 2026-05-16) |
 | Table of Experience | recipe | T2-gated (requires 4x `thermal:steel_ingot`) |
 | DarkOrb Orb of Origin | recipe | T2-gated (4x steel + 4x amethyst + heart of the sea) |
 | Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |

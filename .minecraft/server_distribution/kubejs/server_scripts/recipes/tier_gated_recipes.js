@@ -27,23 +27,23 @@ ServerEvents.recipes(event => {
     'minecraft:diamond_chestplate','minecraft:diamond_leggings','minecraft:diamond_boots'
   ].forEach(id => event.remove({ id: id }))
 
-  // A.2: Enchanting table → Apotheosis-gem recipe (2026-05-15)
-  // User-directed recipe: replace vanilla diamonds with apotheosis gems,
-  // gold ingots flanking the book on the top row.
+  // A.2: Enchanting table → Apotheosis-gem T1 recipe (2026-05-16)
+  // User-directed recipe: gold flanking the book, apotheosis gems replacing
+  // diamonds, deepslate rows (NOT obsidian -- obsidian needs a diamond
+  // pickaxe to mine, which would defeat T1 access).
   //   Pattern:  G B G   (gold | book | gold)
-  //             A O A   (apotheosis gem | obsidian | apotheosis gem)
-  //             O O O   (obsidian)
-  // Apotheosis gem is the single item 'apotheosis:gem' with variant in NBT;
-  // listing it as a plain ingredient matches any gem variant. Recipe cost:
-  // 1 book + 2 gold_ingot + 2 apotheosis gems + 4 obsidian. Obsidian access
-  // is the natural gate (needs a diamond pickaxe -- but the gem ingredient
-  // is the symbolic centerpiece, sourcing from Apotheosis affix loot).
+  //             A D A   (apotheosis gem | deepslate | apotheosis gem)
+  //             D D D   (deepslate)
+  // Apotheosis gems are stored as one item 'apotheosis:gem' with the
+  // variant in NBT, so the plain ingredient matches every gem variant.
+  // Cost: 1 book + 2 gold_ingot + 2 apotheosis gems + 4 deepslate. All
+  // T1-craftable -- iron pickaxe is enough.
   event.remove({ id: 'minecraft:enchanting_table' })
-  event.shaped('minecraft:enchanting_table', ['GBG','AOA','OOO'], {
+  event.shaped('minecraft:enchanting_table', ['GBG','ADA','DDD'], {
     G: 'minecraft:gold_ingot',
     B: 'minecraft:book',
     A: 'apotheosis:gem',
-    O: 'minecraft:obsidian'
+    D: 'minecraft:deepslate'
   }).id('icraft:enchanting_table_apoth_gem')
 
   // A.3: Jukebox → amethyst (cosmetic, no gate)
@@ -475,16 +475,16 @@ ServerEvents.recipes(event => {
   // enchanting_table (also T1 per A.2), deepslate. Pairs with the T1
   // enchanting table — basic enchant manipulation should be available
   // alongside basic enchanting.
-  // 2026-05-15: re-overrode with the same pattern as the new enchanting
-  // table (user directive). Gold flanks book, apotheosis gems replace
-  // diamonds, obsidian rows below. Cost matches the enchanting table
-  // exactly -- intentional pairing for "basic enchant manipulation" parity.
+  // 2026-05-16: pattern matches the new enchanting table exactly. Gold
+  // flanks book, apotheosis gems replace diamonds, deepslate rows
+  // (obsidian needs a diamond pickaxe -- would defeat T1 gating).
+  // Intentional pairing for "basic enchant manipulation" parity.
   event.remove({ id: 'disenchanting:disenchanter' })
-  event.shaped('disenchanting:disenchanter', ['GBG','AOA','OOO'], {
+  event.shaped('disenchanting:disenchanter', ['GBG','ADA','DDD'], {
     G: 'minecraft:gold_ingot',
     B: 'minecraft:book',
     A: 'apotheosis:gem',
-    O: 'minecraft:obsidian'
+    D: 'minecraft:deepslate'
   }).id('icraft:disenchanter_apoth_gem')
 
 
