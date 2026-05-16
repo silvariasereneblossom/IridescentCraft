@@ -28,22 +28,32 @@ ServerEvents.recipes(event => {
   ].forEach(id => event.remove({ id: id }))
 
   // A.2: Enchanting table → Apotheosis-gem T1 recipe (2026-05-16)
-  // User-directed recipe: gold flanking the book, apotheosis gems replacing
-  // diamonds, deepslate rows (NOT obsidian -- obsidian needs a diamond
-  // pickaxe to mine, which would defeat T1 access).
+  // Gold flanking the book, apotheosis gems replacing diamonds, deepslate
+  // rows (NOT obsidian -- obsidian needs a diamond pickaxe, would defeat T1).
   //   Pattern:  G B G   (gold | book | gold)
-  //             A D A   (apotheosis gem | deepslate | apotheosis gem)
+  //             A D A   (any common Apotheosis gem | deepslate | any common Apotheosis gem)
   //             D D D   (deepslate)
-  // Apotheosis gems are stored as one item 'apotheosis:gem' with the
-  // variant in NBT, so the plain ingredient matches every gem variant.
-  // Cost: 1 book + 2 gold_ingot + 2 apotheosis gems + 4 deepslate. All
-  // T1-craftable -- iron pickaxe is enough.
+  // The gem slot uses Apotheosis's custom `apotheosis:gem` Forge ingredient
+  // type (registered by AdventureModule). It matches ANY gem item of the
+  // declared rarity and -- crucially for JEI -- returns ALL gem variants ×
+  // that rarity as preview stacks, so the recipe cycles through every gem
+  // like a wood recipe cycles through plank types.
+  // Rarity locked to common: most accessible tier, most thematically
+  // appropriate for a T1 workstation. Rarer gems are gated to higher-tier
+  // structures and shouldn't be required at the T1 entry point.
+  // Authored via event.custom so the `type` field on the gem ingredient
+  // passes through KubeJS to Forge's CraftingHelper.
   event.remove({ id: 'minecraft:enchanting_table' })
-  event.shaped('minecraft:enchanting_table', ['GBG','ADA','DDD'], {
-    G: 'minecraft:gold_ingot',
-    B: 'minecraft:book',
-    A: 'apotheosis:gem',
-    D: 'minecraft:deepslate'
+  event.custom({
+    type: 'minecraft:crafting_shaped',
+    pattern: ['GBG','ADA','DDD'],
+    key: {
+      G: { item: 'minecraft:gold_ingot' },
+      B: { item: 'minecraft:book' },
+      A: { type: 'apotheosis:gem', rarity: 'apotheosis:common' },
+      D: { item: 'minecraft:deepslate' }
+    },
+    result: { item: 'minecraft:enchanting_table', count: 1 }
   }).id('icraft:enchanting_table_apoth_gem')
 
   // A.3: Jukebox → amethyst (cosmetic, no gate)
@@ -475,16 +485,20 @@ ServerEvents.recipes(event => {
   // enchanting_table (also T1 per A.2), deepslate. Pairs with the T1
   // enchanting table — basic enchant manipulation should be available
   // alongside basic enchanting.
-  // 2026-05-16: pattern matches the new enchanting table exactly. Gold
-  // flanks book, apotheosis gems replace diamonds, deepslate rows
-  // (obsidian needs a diamond pickaxe -- would defeat T1 gating).
-  // Intentional pairing for "basic enchant manipulation" parity.
+  // 2026-05-16: pattern matches the new enchanting table exactly.
+  // Same `apotheosis:gem` ingredient type so JEI cycles through all gem
+  // variants like a wood recipe cycles through plank types.
   event.remove({ id: 'disenchanting:disenchanter' })
-  event.shaped('disenchanting:disenchanter', ['GBG','ADA','DDD'], {
-    G: 'minecraft:gold_ingot',
-    B: 'minecraft:book',
-    A: 'apotheosis:gem',
-    D: 'minecraft:deepslate'
+  event.custom({
+    type: 'minecraft:crafting_shaped',
+    pattern: ['GBG','ADA','DDD'],
+    key: {
+      G: { item: 'minecraft:gold_ingot' },
+      B: { item: 'minecraft:book' },
+      A: { type: 'apotheosis:gem', rarity: 'apotheosis:common' },
+      D: { item: 'minecraft:deepslate' }
+    },
+    result: { item: 'disenchanting:disenchanter', count: 1 }
   }).id('icraft:disenchanter_apoth_gem')
 
 
