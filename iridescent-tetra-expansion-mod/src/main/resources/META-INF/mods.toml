@@ -1,6 +1,6 @@
 modLoader="javafml"
 loaderVersion="[47,)"
-license="All Rights Reserved"
+license="MIT"
 issueTrackerURL="https://github.com/silvariasereneblossom/IridescentCraft/issues"
 
 # Single mixin config — currently only the reforging side has mixins
