@@ -6,8 +6,8 @@ license="All Rights Reserved"
 modId="${mod_id}"
 version="${version}"
 displayName="${mod_name}"
-authors="${mod_authors}"
-description='''${mod_description}'''
+authors="Silvaria"
+description='''Custom TerraBlender region for IridescentCraft biomes (cherry_river_valley, cherry_mountains). Original.'''
 
 [[dependencies.${mod_id}]]
     modId="forge"

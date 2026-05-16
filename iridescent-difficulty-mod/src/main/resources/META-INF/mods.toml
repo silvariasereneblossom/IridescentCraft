@@ -7,8 +7,8 @@ issueTrackerURL="https://github.com/silvariasereneblossom/IridescentCraft/issues
 modId="${mod_id}"
 version="${mod_version}"
 displayName="${mod_name}"
-authors="${mod_authors}"
-description='''${mod_description}'''
+authors="Silvaria"
+description='''Per-dimension HP/damage/champion-spawn multipliers + Apotheosis tier scaling for IridescentCraft. Original.'''
 
 [[dependencies.${mod_id}]]
     modId="forge"

@@ -1,0 +1,53 @@
+Iridescent Origins
+==================
+
+This product contains software derived from the following upstream projects:
+
+1. Origins (Fabric) -- Copyright (c) Apace100, MIT License.
+   https://github.com/apace100/origins-fabric
+
+   The Origins API (power types, layered origin selection, NBT data model)
+   was designed and implemented by Apace100 for Fabric. Iridescent Origins
+   uses the same power-JSON data model and depends at runtime on the
+   Origins Forge port (and the Apoli companion library) which extend
+   Apace100's API to the Forge platform.
+
+2. Origins++ -- Copyright (c) MerchantPug, MIT License.
+   https://github.com/MerchantPug/Origins-Plus-Plus
+
+   Iridescent Origins was BOOTSTRAPPED by porting the data assets of
+   Origins++ (origin definitions, power JSONs, and language entries) into
+   the IridescentCraft `icraft` namespace on 2026-03-04 (git commit
+   da3e1b36, "Port all Origins++ data to icraft namespace -- remove
+   Origins++ dependency"). Origins++ is itself an extension of Apace100's
+   Origins. The port allowed IridescentCraft to ship origin content
+   without taking Origins++ as a hard dependency.
+
+Significant divergence from upstream (Silvaria, 2026-03-04 onward):
+
+  - Renamespaced every power, origin, and asset key from `origins-plus-plus:*`
+    to `icraft:*`. Existing world data referencing the old namespace would
+    not migrate.
+  - Removed origins / races / classes that didn't fit IridescentCraft's
+    design (e.g. Mundane origin, vanilla-only race entries).
+  - Added 4 new races (Demi-God, Ryu, Fallen Angel, Kirin) and 10 classes
+    (Archmage, Battlemage, Berserker, Samurai, Ranger, Paladin, Vanguard,
+    Wanderer, Artificer, Void Summoner) with original power JSONs.
+  - Added 4 custom origins (Witch of Ink, Artificial Construct, Witherborn,
+    Slimebodied) with original power JSONs and KubeJS progression hooks.
+  - Custom Java entrypoint (`IridescentOrigins.java`) registering an Origins
+    layer order specific to this pack.
+  - Rebalanced ~all retained Origins++ powers (e.g. melee maluses, HP
+    modifiers, food-preference tradeoffs) for the IridescentCraft tier
+    progression.
+
+The bootstrap of Origins++ data does not imply that this project is
+endorsed by or affiliated with MerchantPug or Apace100. The renamespacing
+and divergence mean the runtime asset layer no longer overlaps with
+Origins++ -- new versions of Origins++ would not conflict with or update
+this mod.
+
+This NOTICE is provided as good-faith attribution. Both upstream projects
+are MIT-licensed; redistribution under the same MIT terms permits the
+fork-and-rename pattern used here, but credit and license preservation
+are required. See the LICENSE file for the full MIT license text.

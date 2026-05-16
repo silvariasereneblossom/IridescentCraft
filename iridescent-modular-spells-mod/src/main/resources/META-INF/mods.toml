@@ -7,8 +7,9 @@ issueTrackerURL="https://github.com/silvariasereneblossom/IridescentCraft/issues
 modId="${mod_id}"
 version="${version}"
 displayName="${mod_name}"
-authors="${mod_authors}"
-description='''${mod_description}'''
+authors="Silvaria"
+credits="Inspired by Tetra Spell Book (ARR-licensed; not derived from it -- original implementation)."
+description='''Tetra-style modular spell books for Iron's Spellbooks + Ars Nouveau. Original code; depends on Tetra (mickelus), Iron's Spellbooks, Ars Nouveau at runtime.'''
 logoFile="iridescent_modular_spells.png"
 
 [[dependencies.${mod_id}]]

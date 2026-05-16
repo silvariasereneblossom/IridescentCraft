@@ -1,12 +1,14 @@
 modLoader="javafml"
 loaderVersion="[47,)"
-license="All Rights Reserved"
+license="MIT"
 
 [[mods]]
 modId="iridescent_origins"
 version="${file.jarVersion}"
 displayName="Iridescent Origins"
-description='''Custom origins, races, and classes for IridescentCraft.'''
+authors="Silvaria"
+credits="Bootstrapped from Origins++ (MerchantPug, MIT) which extends Origins (Apace100, MIT). See NOTICE."
+description='''Custom origins, races, and classes for IridescentCraft. Bootstrapped from Origins++ data, then diverged substantially: 4 custom origins (Witch of Ink, Artificial Construct, Witherborn, Slimebodied), 4 new races, 10 classes, and IridescentCraft-specific rebalancing throughout.'''
 
 [[dependencies.iridescent_origins]]
     modId="forge"

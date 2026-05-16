@@ -10,8 +10,9 @@ mixinConfigs=["${mod_id}.mixins.json"]
 modId="${mod_id}"
 version="${version}"
 displayName="${mod_name}"
-authors="${mod_authors}"
-description='''${mod_description}'''
+authors="Silvaria"
+credits="Built on Tetra (mickelus, LGPL-3.0). Tetra is a runtime dependency, not derived code."
+description='''Tetra-style modular armor for IridescentCraft. Original code; depends on Tetra (mickelus) at runtime.'''
 
 [[dependencies.${mod_id}]]
     modId="forge"

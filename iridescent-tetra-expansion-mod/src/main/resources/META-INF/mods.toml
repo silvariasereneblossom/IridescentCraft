@@ -18,6 +18,7 @@ modId="iridescent_reforging"
 version="1.0.0"
 displayName="Iridescent Tetra Expansion: Reforging"
 authors="Silvaria"
+credits="Built on Tetra (mickelus, LGPL-3.0). Bridges to Iron's Spellbooks and Ars Nouveau via their public APIs."
 description='''Tetra-style modular armor system, shipped as part of the IridescentCraft Tetra Expansion bundle. Extends Tetra's IModularItem to ArmorItem with archetype-coded module alternatives (basic/heavy/light/mage) at 16 slots. Preserves Geckolib renderers and base attributes for specialized armors via NBT-driven skin dispatch.'''
 
 [[dependencies.iridescent_reforging]]
@@ -49,6 +50,7 @@ modId="iridescent_modular_spells"
 version="1.0.0"
 displayName="Iridescent Tetra Expansion: Modular Spells"
 authors="Silvaria"
+credits="Built on Tetra (mickelus, LGPL-3.0). Bridges to Iron's Spellbooks and Ars Nouveau via their public APIs."
 description='''Tetra-style modular spell books for Iron's Spellbooks + Ars Nouveau, shipped as part of the IridescentCraft Tetra Expansion bundle. Books implement IModularItem and route attribute aggregation through the Tetra workbench.'''
 
 [[dependencies.iridescent_modular_spells]]
