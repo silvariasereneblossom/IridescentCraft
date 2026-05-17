@@ -155,7 +155,7 @@ The following mods ship as custom bytecode-patched JARs (added to custom JAR all
 - Diamond/netherite gear: stripped from T1/T2 chests
 - Village chests: sanitized with curated 25-artifact pool at ~4% combined rate
 - Clutter items (horse armor, spider eyes, rotten flesh, etc.): removed from structure chests
-- Food mods: stripped from chest loot to prevent bypassing the food/hunger system
+- Food mods: stripped from chest loot to prevent bypassing the food/hunger system *(village chests exempt — they receive a thematic food + seed boost on top; see below)*
 
 ## Apotheosis Affixes
 
@@ -216,7 +216,7 @@ Class Artifacts' native elite mob system (tier 1/2/3 Elite/Master/Legendary spaw
 
 ## Food & Hunger
 
-Hunger drain rate increased to 2.5x vanilla baseline. Seed drops from grass reduced to 5%. Structure food loot reduced across all loot tables. Spawn protection area provides slower hunger drain for new players.
+Hunger drain rate increased to 2.5x vanilla baseline. Seed drops from grass reduced to 5%. Structure food loot reduced across all loot tables **except village chests** — villages receive a flat food + seed boost (~1.4 food + ~0.6 seeds per chest expected) as of 2026-05-17, walking back the original blanket food reduction which proved overly onerous given the 2.5x hunger drain. Targets: vanilla biome houses (plains/desert/savanna/snowy/taiga), CTOV village chests, Villages and Pillages chests. Spawn protection area provides slower hunger drain for new players.
 
 Spice of Life: Carrot Edition rewards food diversity with HP bonuses. Food is ungated from Tier 1 but best diversity requires dimensional ingredients. Farmer's Delight Cooking Station and Skillet serve as primary food crafting stations (70 recipes converted).
 

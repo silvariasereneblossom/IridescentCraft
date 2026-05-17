@@ -4,6 +4,58 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-17 — Village chest food + seed boost (walking back the 2026-04-20 food strip for villages)
+
+The 2026-04-20 design call that reduced structure food loot by ~90% across
+all Overworld chests proved overly onerous in playtest given the 2.5x hunger
+drain rate. The rationale at the time was "food shouldn't bypass the
+food/hunger system," but combined with the hunger-drain multiplier the
+result was that early-game food friction was meaningfully higher than
+intended.
+
+This change keeps the global Overworld food strip in place (other
+structures still see the 90% reduction — modded foods, dungeon chests,
+etc.) but adds a village-specific food + seed boost on top, which is
+thematically correct (villagers farm) and addresses the early-game food
+shortage where it actually bites.
+
+**Implementation** (`lootjs_overhaul.js` Section 6, added after the
+village house clutter strip):
+
+- 11-entry food boost: `bread`, `wheat`, `carrot`, `potato`, `baked_potato`,
+  `apple`, `beetroot`, `cookie`, `melon_slice`, `pumpkin_pie`, `sweet_berries`
+  at independent 5-20% rolls.
+- 4-entry seed boost: `wheat_seeds` (25%), `beetroot_seeds` (15%),
+  `pumpkin_seeds` (12%), `melon_seeds` (10%).
+- Expected per village chest: ~1.4 food items + ~0.6 seed items.
+
+**Targets:** 5 vanilla biome house chests (plains/desert/savanna/snowy/taiga),
+CTOV village chests (`ctov:.*chests.*`), Villages and Pillages chests
+(`villagesandpillages:.*chests.*`).
+
+**Not changed:** profession chests (butcher/fletcher/etc — they have their
+own themed loot already). Non-village Overworld chests stay on the
+90% food reduction. The 2.5x hunger drain rate is unchanged.
+
+`wiki/systems/overview.md` updated to reflect the exemption.
+
+---
+
+## 2026-05-17 — Marquee structure thematic pool migration (T1-T4, 14 structures)
+
+Replaces `towerCurioPool` (9-item duplicate firing at ~40% combined across
+TotW/Structory/Waystone) + per-structure curio spam with a unified
+per-marquee themed pool framework. Doctrine: themed pool layered on top of
+dimensional baseline at ~70% of tier rate (combined ~17/20/24/27% at
+marquees vs 10/12/14/16% at generic chests). Variety per tier roughly
+doubles. ISS spellbooks capped at 2% per chest across all marquee adds;
+ISS scrolls remain uncapped.
+
+Full doctrine + 14 themed pool item lists + per-marquee theme assignments:
+`master.md` Part XIII §Marquee structures + `master-appendix.md` §N.
+
+---
+
 ## 2026-05-17 — Blank-enchanted-book chest filter removed
 
 The chest-wide blank-enchanted-book filter in

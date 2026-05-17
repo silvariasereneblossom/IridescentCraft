@@ -1418,6 +1418,55 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:rabbit_hide')
   })
 
+  // --- Village food + seed boost (added 2026-05-17) ---
+  // Walks back the 2026-04-20 design call that reduced structure food loot
+  // by 90% across all overworld chests (Section 7B further down). The
+  // original rationale ("food shouldn't bypass the hunger system") was
+  // overblown given how onerous the 2.5x hunger drain actually feels in
+  // play. The global strip still applies to non-village chests; villages
+  // get a flat food/seed boost on top, which is thematically correct
+  // (villagers farm) and addresses the early-game food friction.
+  //
+  // Targets the 5 biome houses + CTOV + Villages and Pillages tables.
+  // Expected items per chest: ~1.4 food + ~0.6 seeds (independent rolls).
+  var VILLAGE_FOOD_BOOST = [
+    ['minecraft:bread',         0.18],
+    ['minecraft:wheat',         0.20],
+    ['minecraft:carrot',        0.15],
+    ['minecraft:potato',        0.15],
+    ['minecraft:baked_potato',  0.10],
+    ['minecraft:apple',         0.10],
+    ['minecraft:beetroot',      0.08],
+    ['minecraft:cookie',        0.10],
+    ['minecraft:melon_slice',   0.08],
+    ['minecraft:pumpkin_pie',   0.06],
+    ['minecraft:sweet_berries', 0.05]
+  ]
+  var VILLAGE_SEED_BOOST = [
+    ['minecraft:wheat_seeds',    0.25],
+    ['minecraft:beetroot_seeds', 0.15],
+    ['minecraft:pumpkin_seeds',  0.12],
+    ['minecraft:melon_seeds',    0.10]
+  ]
+  function addVillageFoodSeedBoost(tableRef) {
+    var mod = event.addLootTableModifier(tableRef)
+    VILLAGE_FOOD_BOOST.forEach(function(entry) {
+      mod.addLoot(LootEntry.of(entry[0]).limitCount([1, 2]).when(c => c.randomChance(entry[1])))
+    })
+    VILLAGE_SEED_BOOST.forEach(function(entry) {
+      mod.addLoot(LootEntry.of(entry[0]).limitCount([1, 3]).when(c => c.randomChance(entry[1])))
+    })
+  }
+  // 5 vanilla biome houses
+  villageHouseChests.forEach(addVillageFoodSeedBoost)
+  // CTOV (Choice Theorem's Overhauled Village) — broad regex; village-only
+  // tables. The ctov: namespace ships dozens of structure-specific chest
+  // tables and the food/seed boost is universally appropriate for any
+  // "this is someone's home" chest in a CTOV village.
+  addVillageFoodSeedBoost(/ctov:.*chests.*/)
+  // Villages and Pillages — similar coverage.
+  addVillageFoodSeedBoost(/villagesandpillages:.*chests.*/)
+
   // =========================================================================
   // SECTION 4E: T1 IRON BASELINE -- guarantee iron in all overworld chests
   // =========================================================================
