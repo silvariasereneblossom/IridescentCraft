@@ -2259,22 +2259,29 @@ LootJS.modifiers(event => {
   // a common curio pool but Keebsz gets floor-tiered loot in Section 8D.
   // =========================================================================
 
-  // Shared tower curio pool (used by Structory Towers, Keebsz upper floors, TotW)
-  var towerCurioPool = [
-    ['artifacts:umbrella', 0.08],
-    ['artifacts:bunny_hoppers', 0.08],
-    ['artifacts:running_shoes', 0.08],
-    ['artifacts:snowshoes', 0.08],
-    ['artifacts:pocket_piston', 0.08],
-    ['artifacts:universal_attractor', 0.06],
-    ['artifacts:crystal_heart', 0.05],
-    ['artifacts:cloud_in_a_bottle', 0.06],
-    ['artifacts:obsidian_skull', 0.05]
-  ]
+  // ─── MARQUEE STRUCTURE THEMED POOLS (added 2026-05-17) ─────────────────
+  // Per master.md Part XIII §Marquee structures + master-appendix.md §N.
+  //
+  // 14 marquee structures across T1-T4 each receive a curated themed pool
+  // layered on top of the dimensional baseline. Themed pool rate is
+  // calibrated at ~70% of tier rate (~7% T1, ~8.4% T2, ~9.8% T3, ~11.2% T4).
+  // Combined per-chest at marquees is ~1.7× tier rate (rewards intentional
+  // exploration); generic chests stay at tier rate.
+  //
+  // ISS spellbooks (copper/apprentice/archmage) capped at 2% per chest. The
+  // starter kit handles "hard to start magic" onboarding; legacy 8-15% rates
+  // (lootjs_overhaul.js pre-2026-05-17) were overkill.
+  //
+  // ISS scrolls remain a primary mage-progression vector — uncapped per
+  // tier (t1Scroll/t2Scroll helpers, added at theme-fitting marquees only).
+  //
+  // Replaces 2026-04-22 towerCurioPool (9-item duplicate firing at ~40%
+  // combined across TotW/Structory/Waystone, the source of the "same few
+  // artifacts over and over again" tester complaint pre-2026-05-17).
 
-  // Helper: T1-quality scroll loot entry (matches village house chest entry).
-  // Uses LootJS customFunction() to apply irons_spellbooks:randomize_spell —
-  // without it, the scroll drops blank (no spell inscribed).
+  // Helper: T1/T2 ISS scroll loot entries (uses LootJS customFunction to
+  // apply irons_spellbooks:randomize_spell — without it the scroll drops
+  // blank). Kept from pre-2026-05-17 code; still used by marquee adds.
   function t1Scroll(chance) {
     return LootEntry.of('irons_spellbooks:scroll')
       .customFunction({
@@ -2292,106 +2299,261 @@ LootJS.modifiers(event => {
       .when(c => c.randomChance(chance))
   }
 
-  // --- Structory Towers — strip + rebuild ---
-  // Strip diamonds (already done in Section 4B), add magic + curios
-  var stMod = event.addLootTableModifier(/structory_towers:.*chests.*/)
-  stMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.10)))
-  stMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').when(c => c.randomChance(0.15)))
-  stMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
-  stMod.addLoot(t1Scroll(0.06))
-  towerCurioPool.forEach(function(entry) {
-    stMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
-  })
+  // Per-tier combined themed rate (~70% of tier rate).
+  var TIER_THEMED_RATE = { 1: 0.07, 2: 0.084, 3: 0.098, 4: 0.112 }
+  var ISS_SPELLBOOK_CAP = 0.02
+  // Per-tier scroll rate (uncapped, but tier-scaled).
+  var TIER_SCROLL_RATE = { 1: 0.10, 2: 0.08, 3: 0.06, 4: 0.04 }
+  // Per-tier enchanted book rate (still uses minecraft:book + enchantWithLevels).
+  var TIER_BOOK_LEVELS = { 1: [5, 15], 2: [10, 20], 3: [15, 25], 4: [20, 30] }
 
-  // =========================================================================
-  // SECTION 8: TOWERS OF THE WILD — STRIP + REBUILD (REBUILT)
-  // =========================================================================
-  // TotW chests: strip tier-breaking items, add guaranteed source_gem +
-  // common_ink, curio drops at 8% per item, magic books, enchanted books.
-  // These are T1 exploration landmarks — magic-themed, not resource farms.
-  // =========================================================================
+  // T1 Magic theme (used by tome_tower, TotW tower, TotW ocean tower).
+  var T1_MAGIC = [
+    'ars_nouveau:source_gem',                'ars_nouveau:novice_spell_book',
+    'irons_spellbooks:common_ink',
+    'artifacts:flame_pendant',               'artifacts:shock_pendant',
+    'artifacts:thorn_pendant',               'artifacts:scarf_of_invisibility',
+    'moreartifacts:purification_charm',      'moreartifacts:bezoar',
+    'celestial_artifacts:traveler_scroll',   'celestial_artifacts:sakura_hairpin',
+    'relics:magic_mirror',                   'relics:reflection_necklace'
+  ]
+  // T1 Generic exploration (Structory towers).
+  var T1_GENERIC_EXPLORATION = [
+    'artifacts:bunny_hoppers',               'artifacts:running_shoes',
+    'artifacts:helium_flamingo',             'artifacts:universal_attractor',
+    'artifacts:digging_claws',               'artifacts:rooted_boots',
+    'artifacts:steadfast_spikes',
+    'moreartifacts:fast_clock',              'moreartifacts:high_jumpers',
+    'moreartifacts:leather_treads',
+    'celestial_artifacts:gallop_necklace',
+    'relics:roller_skates',                  'relics:leather_belt',
+    'relics:horse_flute',                    'relics:amphibian_boot'
+  ]
+  // T1 Aquatic (buried_treasure + underwater_ruin tables).
+  var T1_AQUATIC = [
+    'artifacts:snorkel',                     'artifacts:flippers',
+    'artifacts:aqua_dashers',                'artifacts:rooted_boots',
+    'relics:aqua_walker',                    'relics:amphibian_boot',
+    'relics:drowned_belt',                   'relics:jellyfish_necklace',
+    'relics:spore_sack',
+    'celestial_artifacts:treasure_hunter_necklace',
+    'moreartifacts:ankh_charm'
+  ]
+  // T1 Illager/dark (woodland_mansion).
+  var T1_ILLAGER_DARK = [
+    'artifacts:scarf_of_invisibility',       'artifacts:lucky_scarf',
+    'artifacts:superstitious_hat',           'artifacts:cross_necklace',
+    'artifacts:antidote_vessel',             'artifacts:panic_necklace',
+    'artifacts:thorn_pendant',
+    'moreartifacts:ankh_charm',              'moreartifacts:tainted_mirror',
+    'moreartifacts:purification_charm',      'moreartifacts:spectre_amulet',
+    'relics:midnight_robe',
+    'celestial_artifacts:undead_charm'
+  ]
+  // T1 Ancient/eldritch (stronghold tables).
+  var T1_ANCIENT = [
+    'artifacts:night_vision_goggles',        'artifacts:universal_attractor',
+    'moreartifacts:fast_clock',              'moreartifacts:tainted_mirror',
+    'celestial_artifacts:repent_mirror',     'celestial_artifacts:backtrack_mirror',
+    'celestial_artifacts:heirloom_necklace', 'celestial_artifacts:nostalgic_butterfly_ring',
+    'celestial_artifacts:traveler_scroll',
+    'ars_nouveau:novice_spell_book',         'ars_nouveau:source_gem',
+    'irons_spellbooks:common_ink',
+    'relics:magic_mirror',                   'relics:reflection_necklace'
+  ]
+  // T2 Eldritch (Twilight Lich Tower) — TBD exact table IDs.
+  var T2_ELDRITCH = [
+    'celestial_artifacts:cursed_talisman',   'celestial_artifacts:cursed_protector',
+    'celestial_artifacts:hidden_bracelet',   'celestial_artifacts:shadow_pendant',
+    'moreartifacts:spectre_amulet',          'moreartifacts:venom_amulet',
+    'moreartifacts:decay_amulet',            'moreartifacts:tainted_mirror',
+    'relics:midnight_robe',
+    'artifacts:obsidian_skull',              'artifacts:antidote_vessel',
+    'artifacts:vampiric_glove',
+    'ars_nouveau:apprentice_spell_book',     'irons_spellbooks:uncommon_ink'
+  ]
+  // T2 Sky/cloud (Aether dungeons).
+  var T2_SKY = [
+    'artifacts:cloud_in_a_bottle',           'artifacts:helium_flamingo',
+    'artifacts:lucky_scarf',
+    'moreartifacts:high_jumpers',            'moreartifacts:balloon',
+    'celestial_artifacts:nostalgic_butterfly_ring',
+    'celestial_artifacts:skywalker_scroll',
+    'celestial_artifacts:gallop_necklace',   'celestial_artifacts:magic_horseshoe',
+    'celestial_artifacts:deers_mercy_amulet',
+    'celestial_artifacts:deer_inscribed_amulet',
+    'ars_nouveau:apprentice_spell_book'
+  ]
+  // T2 Elemental (Blue Skies dungeons).
+  var T2_ELEMENTAL = [
+    'celestial_artifacts:freeze_ring',       'celestial_artifacts:thunder_ring',
+    'celestial_artifacts:emerald_ring',
+    'moreartifacts:ice_crystal',             'moreartifacts:sunglasses',
+    'moreartifacts:cobalt_shield',
+    'artifacts:flame_pendant',               'artifacts:shock_pendant',
+    'artifacts:thorn_pendant',               'artifacts:obsidian_skull',
+    'celestial_artifacts:sands_talisman',
+    'ars_nouveau:apprentice_spell_book'
+  ]
+  // T3 Fire/blaze (nether_bridge).
+  var T3_FIRE = [
+    'relics:blazing_flask',                  'relics:magma_walker',
+    'moreartifacts:fire_stone',              'moreartifacts:blazing_treads',
+    'moreartifacts:molten_quiver',           'moreartifacts:obsidian_shield',
+    'artifacts:obsidian_skull',              'artifacts:fire_gauntlet',
+    'celestial_artifacts:nether_fire',
+    'moreartifacts:gilded_scarf',
+    'ars_nouveau:archmage_spell_book',       'irons_spellbooks:rare_ink'
+  ]
+  // T3 Piglin/gold (bastion tables).
+  var T3_PIGLIN = [
+    'moreartifacts:gilded_scarf',            'moreartifacts:golden_headgear',
+    'moreartifacts:mechanical_glove',
+    'celestial_artifacts:gold_ring',         'celestial_artifacts:precious_bracelet',
+    'celestial_artifacts:treasure_hunter_necklace',
+    'celestial_artifacts:emerald_bracelet',
+    'artifacts:golden_hook',
+    'moreartifacts:ruby_ring',               'moreartifacts:lucky_emerald_ring',
+    'ars_nouveau:archmage_spell_book',       'irons_spellbooks:rare_ink'
+  ]
+  // T3 Underdark (Undergarden ruin tables) — TBD exact table IDs.
+  var T3_UNDERDARK = [
+    'moreartifacts:enderian_scarf',          'moreartifacts:shadow_dust',
+    'moreartifacts:obsidian_shield',
+    'relics:bastion_ring',                   'relics:spore_sack',
+    'celestial_artifacts:cursed_protector',
+    'celestial_artifacts:demon_curse',       'celestial_artifacts:abyss_will_badge',
+    'celestial_artifacts:lock_of_abyss',
+    'artifacts:antidote_vessel',             'artifacts:obsidian_skull',
+    'ars_nouveau:archmage_spell_book',       'irons_spellbooks:rare_ink'
+  ]
+  // T4 End/levitation (end_city_treasure).
+  // ender_jump_scepter flagged from celestial_artifacts.md audit — verify rate
+  // in playtest, may pull to boss-drop if too generous.
+  var T4_END = [
+    'celestial_artifacts:ender_jump_scepter',
+    'celestial_artifacts:angel_pearl',       'celestial_artifacts:angel_heart',
+    'moreartifacts:enderian_eye',            'moreartifacts:ender_dragon_claw',
+    'moreartifacts:dragon_eye',              'moreartifacts:enderian_treads',
+    'moreartifacts:true_enderian_scarf',
+    'relics:enders_hand',                    'relics:elytra_booster',
+    'relics:space_dissector',                'relics:arrow_quiver',
+    'relics:chorus_inhibitor'
+  ]
+  // T4 Sculk/echo (Ancient City tables).
+  var T4_SCULK = [
+    'moreartifacts:sculk_lens',              'moreartifacts:sculk_shades',
+    'moreartifacts:sculk_treads',            'moreartifacts:shulker_heart',
+    'moreartifacts:shulked_clock',           'moreartifacts:echo_glove',
+    'celestial_artifacts:soul_box',          'celestial_artifacts:lock_of_abyss',
+    'celestial_artifacts:cursed_totem',      'celestial_artifacts:twisted_heart',
+    'relics:wool_mitten',                    'relics:shadow_glaive',
+    'artifacts:scarf_of_invisibility'
+  ]
+  // T4 Abyssal (The Abyss marquees) — TBD exact table IDs.
+  var T4_ABYSSAL = [
+    'celestial_artifacts:abyss_core',        'celestial_artifacts:abyss_will_badge',
+    'celestial_artifacts:lock_of_abyss',     'celestial_artifacts:demon_heart',
+    'celestial_artifacts:demon_curse',       'celestial_artifacts:twisted_heart',
+    'celestial_artifacts:twisted_scroll',    'celestial_artifacts:twisted_scabbard',
+    'celestial_artifacts:catastrophe_scroll','celestial_artifacts:heart_of_revenge',
+    'celestial_artifacts:chaotic_etching',   'celestial_artifacts:nihility_etching',
+    'relics:shadow_glaive',                  'relics:space_dissector'
+  ]
 
-  // --- Apotheosis tome_tower: strip diamond, add magic materials ---
-  // Single shared table across all 4 biome-variant towers (main/leaf/sand/spruce).
-  // Native pool weights include diamond(30) which violates T1/T2 tier design.
-  // Apoth's tome/affix-item loot (table refs) stays — that's the core reward.
-  var apothMod = event.addLootTableModifier('apotheosis:chests/tome_tower')
-  apothMod.removeLoot('minecraft:diamond')
-  // Guaranteed magic materials (matches TOTW flavor — these are thematic towers)
-  apothMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.60)))
-  apothMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]).when(c => c.randomChance(0.40)))
-  // 10% novice spell book, 8% copper spell book (discovery magic items)
-  apothMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
-  apothMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.08)))
-  // 15% scroll (T1 quality) — these towers ARE the magic-discovery landmark
-  apothMod.addLoot(t1Scroll(0.15))
-  // 10% enchanted book (matches TOTW tier)
-  apothMod.addLoot(
-    LootEntry.of('minecraft:book')
-      .enchantWithLevels(UniformGenerator.between(5, 15), true)
-      .when(c => c.randomChance(0.10))
-  )
-
-  // --- TotW tower_chest + ocean_tower_chest: strip + rebuild ---
-  var totwTables = ['totw_reworked:tower_chest', 'totw_reworked:ocean_tower_chest']
-  totwTables.forEach(function(table) {
-    var totwMod = event.addLootTableModifier(table)
-    // Strip tier-breaking items
-    totwMod.removeLoot('minecraft:diamond')
-    totwMod.removeLoot('botania:manasteel_ingot')
-    totwMod.removeLoot('botania:mana_pearl')
-    totwMod.removeLoot('botania:mana_diamond')
-    totwMod.removeLoot('minecraft:arrow')
-    totwMod.removeLoot('minecraft:spectral_arrow')
-    // Guaranteed magic materials (1 each)
-    totwMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 1]))
-    totwMod.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]))
-    // 15% novice spell book
-    totwMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
-    // 10% copper spell book
-    totwMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.10)))
-    // 10% scroll (T1 quality)
-    totwMod.addLoot(t1Scroll(0.10))
-    // 10% enchanted book (levels 5-15)
-    totwMod.addLoot(
-      LootEntry.of('minecraft:book')
-        .enchantWithLevels(UniformGenerator.between(5, 15), true)
-        .when(c => c.randomChance(0.10))
-    )
-    // Curio drops at 8% each
-    towerCurioPool.forEach(function(entry) {
-      totwMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
+  // Helper: apply marquee themed pool to a table or array of tables.
+  // opts.theme       — array of item IDs (themed pool)
+  // opts.tier        — 1-4 (drives rate)
+  // opts.scroll      — true to add tier-scaled ISS scroll (mage progression)
+  // opts.spellbook   — ISS spellbook ID to add at 2% cap, or null
+  // opts.book        — true to add enchanted book at tier rate (10% default)
+  // opts.strip       — array of item IDs to remove first
+  function applyMarquee(tableRefs, opts) {
+    var tables = (tableRefs instanceof Array) ? tableRefs : [tableRefs]
+    var perItem = TIER_THEMED_RATE[opts.tier] / opts.theme.length
+    var scrollHelper = (opts.tier <= 2) ? t1Scroll : t2Scroll
+    var bookLevels = TIER_BOOK_LEVELS[opts.tier]
+    tables.forEach(function(table) {
+      var mod = event.addLootTableModifier(table)
+      if (opts.strip) {
+        opts.strip.forEach(function(item) { mod.removeLoot(item) })
+      }
+      opts.theme.forEach(function(item) {
+        mod.addLoot(LootEntry.of(item).when(c => c.randomChance(perItem)))
+      })
+      if (opts.scroll) {
+        mod.addLoot(scrollHelper(TIER_SCROLL_RATE[opts.tier]))
+      }
+      if (opts.spellbook) {
+        mod.addLoot(LootEntry.of(opts.spellbook).when(c => c.randomChance(ISS_SPELLBOOK_CAP)))
+      }
+      if (opts.book) {
+        mod.addLoot(
+          LootEntry.of('minecraft:book')
+            .enchantWithLevels(UniformGenerator.between(bookLevels[0], bookLevels[1]), true)
+            .when(c => c.randomChance(0.10))
+        )
+      }
     })
-  })
+  }
 
-  // --- Waystone Towers (stronghold_corridor) — slightly higher rates ---
-  // These are harder to find, so bump rates up
-  var waystoneMod = event.addLootTableModifier('minecraft:chests/stronghold_corridor')
-  // Strip tier-breaking items
-  waystoneMod.removeLoot('minecraft:diamond')
-  waystoneMod.removeLoot('botania:manasteel_ingot')
-  waystoneMod.removeLoot('botania:mana_pearl')
-  waystoneMod.removeLoot('botania:mana_diamond')
-  waystoneMod.removeLoot('minecraft:arrow')
-  waystoneMod.removeLoot('minecraft:spectral_arrow')
-  // 20% novice spell book (higher than TotW)
-  waystoneMod.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
-  // 15% copper spell book
-  waystoneMod.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.15)))
-  // 12% source gem [2-4]
-  waystoneMod.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([2, 4]).when(c => c.randomChance(0.12)))
-  // 8% scroll (T1 quality)
-  waystoneMod.addLoot(t1Scroll(0.08))
-  // 10% enchanted book (levels 5-15)
-  waystoneMod.addLoot(
-    LootEntry.of('minecraft:book')
-      .enchantWithLevels(UniformGenerator.between(5, 15), true)
-      .when(c => c.randomChance(0.10))
-  )
-  // Curio drops at 8% each (same pool)
-  towerCurioPool.forEach(function(entry) {
-    waystoneMod.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
-  })
+  var BOTANIA_T1_STRIP = ['minecraft:diamond', 'botania:manasteel_ingot',
+    'botania:mana_pearl', 'botania:mana_diamond',
+    'minecraft:arrow', 'minecraft:spectral_arrow']
+
+  // === T1 marquees ===
+  applyMarquee('apotheosis:chests/tome_tower',
+    { theme: T1_MAGIC, tier: 1, scroll: true, spellbook: 'irons_spellbooks:copper_spell_book', book: true })
+  applyMarquee(['totw_reworked:tower_chest', 'totw_reworked:ocean_tower_chest'],
+    { theme: T1_MAGIC, tier: 1, scroll: true, spellbook: 'irons_spellbooks:copper_spell_book',
+      book: true, strip: BOTANIA_T1_STRIP })
+  applyMarquee(/structory_towers:.*chests.*/,
+    { theme: T1_GENERIC_EXPLORATION, tier: 1, book: true })
+  applyMarquee(['minecraft:chests/buried_treasure',
+                'minecraft:chests/underwater_ruin_big',
+                'minecraft:chests/underwater_ruin_small'],
+    { theme: T1_AQUATIC, tier: 1, spellbook: 'irons_spellbooks:copper_spell_book' })
+  applyMarquee('minecraft:chests/woodland_mansion',
+    { theme: T1_ILLAGER_DARK, tier: 1, spellbook: 'irons_spellbooks:copper_spell_book', book: true })
+  applyMarquee(['minecraft:chests/stronghold_corridor',
+                'minecraft:chests/stronghold_crossing',
+                'minecraft:chests/stronghold_library'],
+    { theme: T1_ANCIENT, tier: 1, scroll: true, spellbook: 'irons_spellbooks:copper_spell_book',
+      book: true, strip: BOTANIA_T1_STRIP })
+
+  // === T2 marquees ===
+  // Twilight Lich Tower (TBD exact table IDs — likely twilightforest:structures/lichtower/*).
+  // Initial coverage is broad-pattern; verify in playtest.
+  applyMarquee(/twilightforest:structures\/lichtower\/.*/,
+    { theme: T2_ELDRITCH, tier: 2, book: true })
+  // Aether dungeons (TBD exact table IDs — common pattern aether:chests/*).
+  applyMarquee(/aether:chests\/.*dungeon.*/,
+    { theme: T2_SKY, tier: 2, book: true })
+  // Blue Skies dungeons (TBD exact table IDs — broad pattern).
+  applyMarquee(/blue_skies:chests\/.*dungeon.*/,
+    { theme: T2_ELEMENTAL, tier: 2, book: true })
+
+  // === T3 marquees ===
+  applyMarquee('minecraft:chests/nether_bridge',
+    { theme: T3_FIRE, tier: 3, book: true })
+  applyMarquee(['minecraft:chests/bastion_treasure',
+                'minecraft:chests/bastion_hoglin_stable',
+                'minecraft:chests/bastion_bridge',
+                'minecraft:chests/bastion_other'],
+    { theme: T3_PIGLIN, tier: 3, book: true })
+  // Undergarden ruins (TBD exact table IDs).
+  applyMarquee(/undergarden:chests\/.*ruin.*/,
+    { theme: T3_UNDERDARK, tier: 3, book: true })
+
+  // === T4 marquees ===
+  applyMarquee('minecraft:chests/end_city_treasure',
+    { theme: T4_END, tier: 4, book: true })
+  applyMarquee(['minecraft:chests/ancient_city',
+                'minecraft:chests/ancient_city_ice_box'],
+    { theme: T4_SCULK, tier: 4, book: true })
+  // The Abyss marquees (TBD exact table IDs).
+  applyMarquee(/theabyss:chests\/.*/,
+    { theme: T4_ABYSSAL, tier: 4, book: true })
 
   // =========================================================================
   // SECTION 8A: VILLAGE CHEST AFFIX GEAR — WHITE/GREEN ONLY
@@ -2668,10 +2830,10 @@ LootJS.modifiers(event => {
   keebszHighArtifactPool.forEach(function(item) {
     keebszHigh.addLoot(LootEntry.of(item).when(c => c.randomChance(keebszHighArtifactChance)))
   })
-  // Curio drops at 8% each for upper floors
-  towerCurioPool.forEach(function(entry) {
-    keebszHigh.addLoot(LootEntry.of(entry[0]).when(c => c.randomChance(entry[1])))
-  })
+  // Removed 2026-05-17 towerCurioPool.forEach add — Keebsz isn't in the
+  // marquee roster, and the T2/T3 artifact concat above already provides
+  // tier-appropriate curio variety. The towerCurioPool was a 9-item
+  // duplicate firing alongside the wider dimensional pools.
 
   // =========================================================================
   // SECTION 9: ENABLE LOGGING (remove in production)

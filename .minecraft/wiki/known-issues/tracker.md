@@ -14,6 +14,21 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Marquee structure thematic pool migration (2026-05-17) — IN PROGRESS
+- **Status:** Doctrine + 14-marquee roster + per-structure item lists locked in master.md Part XIII and master-appendix.md §N. Code implementation in flight.
+- **Goal:** Migrate from pure-dimensional curio injection to a hybrid model. 14 marquee structures receive themed pools at a 70% themed / 30% baseline split inside the tier's combined rate. Eliminates the towerCurioPool 40%-overshoot bug and the tome_tower datapack Pool 3 duplicate-pool issue.
+- **Reducer changes:**
+  - `towerCurioPool` deleted from `lootjs_overhaul.js` (was firing at ~40% combined from a 9-item pool at TotW/Structory).
+  - Artifact entries removed from `tome_tower.json` datapack Pool 3 (themed pool covers via LootJS).
+  - ISS `copper_spell_book` rate reduced from 8-15% to 2% across all marquee chest adds.
+- **TBD verification:** several marquee table IDs need verification before final wiring — T2 Lich Tower, T2 Aether dungeons, T2 Blue Skies dungeons, T3 Undergarden ruins, T4 Abyss marquees. Initial implementation will use partial coverage for these and fill in once IDs verified.
+- **Affected files:**
+  - `wiki/design/master.md` (Part XIII §Marquee structures — added)
+  - `wiki/design/master-appendix.md` (§N — added)
+  - `wiki/systems/overview.md` (loot section — updated)
+  - `kubejs/server_scripts/loot/lootjs_overhaul.js` (towerCurioPool removed; per-marquee pools added; ISS cap applied)
+  - `datapack_sources/icraft_loot_overrides/data/apotheosis/loot_tables/chests/tome_tower.json` (Pool 3 artifact entries removed)
+
 ### Blank-book chest filter stripping ~97% of legitimate enchanted books (2026-05-17) — RESOLVED
 - **Status:** Resolved 2026-05-17.
 - **Reported:** Tester opened multiple `apotheosis:chests/tome_tower` chests, never saw enchanted books despite the loot table having a weight-350 book entry (~3.4 books per chest expected at ~8.5 rolls). Same chests also never produced artifacts at the documented 8% rate.

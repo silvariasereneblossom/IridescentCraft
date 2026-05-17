@@ -1698,3 +1698,247 @@ Both patches create dead code paths the JVM verifier rejects, so `-noverify` is 
 - **Client**: must be added manually in PrismLauncher → Instance → Settings → Java → JVM arguments → `-noverify`.
 
 Per CLAUDE.md "Custom Bundled JARs" + the protocol checklist, when updating either jar via packwiz/Modrinth/CurseForge, the patches must be re-applied to the new version. Reviewers must check before merging mod updates touching these jars.
+
+## N. Marquee Structures
+
+The marquee-structure roster + per-structure themed pool definitions, paired with the canonical four-pool dimensional baseline in [master.md Part XIII §The four chest pools](master.md#part-xiii--loot-economy). Added 2026-05-17.
+
+### N.1 Roster
+
+14 marquee structures across the four tiers. Each receives a themed pool calibrated at ~70% of the tier's combined rate, **layered on top of** the dimensional baseline (which fires at full tier rate everywhere including marquees). Combined per-chest artifact rate at marquees is therefore ~1.7× the tier rate (~17% T1, ~20% T2, ~24% T3, ~27% T4); generic chests remain at the tier rate (~10/12/14/16%).
+
+Implementation note: LootJS 2.13.1's filter API supports `anyDimension`/`anyStructure`/`anyBiome` but not loot-table-based exclusion, so the strict "reduce dimensional at marquees only" model isn't cleanly achievable without per-marquee structure-ID mapping for every mod. The layered-on-top model is the pragmatic alternative — it also rewards intentional exploration with both more frequent AND more thematic drops, which fits the player-intentional design criterion.
+
+| Tier | Marquee structure | Theme | Loot table ID(s) |
+|------|-------------------|-------|------------------|
+| T1 | Apotheosis tome_tower | Magic | `apotheosis:chests/tome_tower` |
+| T1 | TotW Reworked tower | Magic | `totw_reworked:tower_chest` |
+| T1 | TotW Reworked ocean tower | Magic | `totw_reworked:ocean_tower_chest` |
+| T1 | Structory towers | Generic exploration | `structory_towers:.*chests.*` (regex) |
+| T1 | Aquatic ruins | Aquatic | `minecraft:chests/buried_treasure`, `minecraft:chests/underwater_ruin_big`, `minecraft:chests/underwater_ruin_small` |
+| T1 | Woodland Mansion | Illager / dark | `minecraft:chests/woodland_mansion` |
+| T1 | Stronghold | Ancient / eldritch | `minecraft:chests/stronghold_corridor`, `minecraft:chests/stronghold_crossing`, `minecraft:chests/stronghold_library` |
+| T2 | Twilight Lich Tower | Eldritch | `twilightforest:structures/lichtower/*` (TBD exact IDs) |
+| T2 | Aether dungeons | Sky / cloud | aether boss-dungeon tables (TBD exact IDs) |
+| T2 | Blue Skies dungeons | Elemental | blue_skies dungeon tables (TBD exact IDs) |
+| T3 | Nether Fortress | Fire / blaze | `minecraft:chests/nether_bridge` |
+| T3 | Bastion Remnant | Piglin / gold | `minecraft:chests/bastion_treasure`, `minecraft:chests/bastion_hoglin_stable`, `minecraft:chests/bastion_bridge`, `minecraft:chests/bastion_other` |
+| T3 | Undergarden ruins | Underdark | undergarden ruin tables (TBD exact IDs) |
+| T4 | End City | End / levitation | `minecraft:chests/end_city_treasure` |
+| T4 | Ancient City | Sculk / echo | `minecraft:chests/ancient_city`, `minecraft:chests/ancient_city_ice_box` |
+| T4 | The Abyss marquees | Abyssal | theabyss tables (TBD exact IDs) |
+
+### N.2 Theme catalog
+
+| Theme | Identity | Sourced from |
+|-------|----------|--------------|
+| Magic | Mystic / arcane items, scrolls, source materials | Ars Nouveau, ISS scrolls/spell books (capped), magic-flavored curios |
+| Generic exploration | Utility / movement gear for tower climbing | Movement boots, magnets, timepieces, traveler gear |
+| Aquatic | Underwater traversal + monument lore | Snorkel / flippers / aqua_walker family, sea-themed, anti-drowned |
+| Illager / dark | Trickster / hidden + anti-illager | Invisibility, antidote, panic, mirror items, dark-flavored |
+| Ancient / eldritch | Old-knowledge + library + end-portal-adjacent | Books, scrolls, time / repentance mirrors, ancient curios |
+| Eldritch (T2 Lich) | Death / wraith / corruption + Twilight Forest | Cursed talismans, spectral / decay amulets, midnight robe |
+| Sky / cloud | Flight / jump + Aether lore | Helium flamingo, jump boots, sky / moa / phyg-flavored |
+| Elemental | Blue Skies fire / ice / lightning duality | Element-typed rings, elemental shields, ele-stones |
+| Fire / blaze | Fire immunity + blaze materials | Obsidian skull, fire gauntlet, blazing flask, fire stone |
+| Piglin / gold | Gold-flavored | Gold headgear / ring, treasure hunter, precious bracelets |
+| Underdark | Mushroom / cave / Undergarden | Ancient ruin curios, fungal / cave-themed |
+| End / levitation | End-themed + flight | Ender curios, dragon items, levitation |
+| Sculk / echo | Sculk + Ancient City stealth lore | Sculk lens / shades / treads, echo glove, silent-walking |
+| Abyssal | Abyss-tier dark / corruption | Chorus inhibitor, twisted heart, abyss core, cursed totems |
+
+### N.3 Per-structure themed pools (T1)
+
+**T1 Magic** — used by `tome_tower`, `totw_reworked:tower_chest`, `totw_reworked:ocean_tower_chest` (15 items, ~7% combined):
+
+```
+ars_nouveau:source_gem                 ars_nouveau:novice_spell_book
+irons_spellbooks:common_ink            irons_spellbooks:scroll (uncapped, T1 quality)
+irons_spellbooks:copper_spell_book (CAPPED @ 2%)
+artifacts:flame_pendant                artifacts:shock_pendant
+artifacts:thorn_pendant                artifacts:scarf_of_invisibility
+moreartifacts:purification_charm       moreartifacts:bezoar
+celestial_artifacts:traveler_scroll    celestial_artifacts:sakura_hairpin
+relics:magic_mirror                    relics:reflection_necklace
+```
+
+**T1 Generic exploration** — used by Structory towers (15 items):
+
+```
+artifacts:bunny_hoppers                artifacts:running_shoes
+artifacts:helium_flamingo              artifacts:universal_attractor
+artifacts:digging_claws                artifacts:rooted_boots
+artifacts:steadfast_spikes             moreartifacts:fast_clock
+moreartifacts:high_jumpers             moreartifacts:leather_treads
+celestial_artifacts:gallop_necklace    relics:roller_skates
+relics:leather_belt                    relics:horse_flute
+relics:amphibian_boot
+```
+
+**T1 Aquatic** — used by buried_treasure + underwater_ruin tables (12 items + 2% ISS cap):
+
+```
+artifacts:snorkel                      artifacts:flippers
+artifacts:aqua_dashers                 artifacts:rooted_boots
+relics:aqua_walker                     relics:amphibian_boot
+relics:drowned_belt                    relics:jellyfish_necklace
+relics:spore_sack
+celestial_artifacts:treasure_hunter_necklace
+moreartifacts:ankh_charm
+irons_spellbooks:copper_spell_book (CAPPED @ 2%)
+```
+
+**T1 Illager / dark** — used by `woodland_mansion` (14 items + 2% ISS cap):
+
+```
+artifacts:scarf_of_invisibility        artifacts:lucky_scarf
+artifacts:superstitious_hat            artifacts:cross_necklace
+artifacts:antidote_vessel              artifacts:panic_necklace
+artifacts:thorn_pendant
+moreartifacts:ankh_charm               moreartifacts:tainted_mirror
+moreartifacts:purification_charm       moreartifacts:spectre_amulet
+relics:midnight_robe
+celestial_artifacts:undead_charm
+irons_spellbooks:copper_spell_book (CAPPED @ 2%)
+```
+
+**T1 Ancient / eldritch** — used by stronghold tables (15 items + 2% ISS cap):
+
+```
+artifacts:night_vision_goggles         artifacts:universal_attractor
+moreartifacts:fast_clock               moreartifacts:tainted_mirror
+celestial_artifacts:repent_mirror      celestial_artifacts:backtrack_mirror
+celestial_artifacts:heirloom_necklace  celestial_artifacts:nostalgic_butterfly_ring
+celestial_artifacts:traveler_scroll
+ars_nouveau:novice_spell_book          ars_nouveau:source_gem
+irons_spellbooks:scroll                irons_spellbooks:common_ink
+relics:magic_mirror                    relics:reflection_necklace
+irons_spellbooks:copper_spell_book (CAPPED @ 2%)
+```
+
+### N.4 Per-structure themed pools (T2)
+
+**T2 Eldritch** — Twilight Lich Tower (14 items, ~8.4% combined):
+
+```
+celestial_artifacts:cursed_talisman    celestial_artifacts:cursed_protector
+celestial_artifacts:hidden_bracelet    celestial_artifacts:shadow_pendant
+moreartifacts:spectre_amulet           moreartifacts:venom_amulet
+moreartifacts:decay_amulet             moreartifacts:tainted_mirror
+relics:midnight_robe
+artifacts:obsidian_skull               artifacts:antidote_vessel
+artifacts:vampiric_glove
+ars_nouveau:apprentice_spell_book      irons_spellbooks:uncommon_ink
+```
+
+**T2 Sky / cloud** — Aether dungeons (12 items):
+
+```
+artifacts:cloud_in_a_bottle            artifacts:helium_flamingo
+artifacts:lucky_scarf
+moreartifacts:high_jumpers             moreartifacts:balloon
+celestial_artifacts:nostalgic_butterfly_ring
+celestial_artifacts:skywalker_scroll
+celestial_artifacts:gallop_necklace    celestial_artifacts:magic_horseshoe
+celestial_artifacts:deers_mercy_amulet celestial_artifacts:deer_inscribed_amulet
+ars_nouveau:apprentice_spell_book
+```
+
+**T2 Elemental** — Blue Skies dungeons (12 items):
+
+```
+celestial_artifacts:freeze_ring        celestial_artifacts:thunder_ring
+celestial_artifacts:emerald_ring
+moreartifacts:ice_crystal              moreartifacts:sunglasses
+moreartifacts:cobalt_shield
+artifacts:flame_pendant                artifacts:shock_pendant
+artifacts:thorn_pendant                artifacts:obsidian_skull
+celestial_artifacts:sands_talisman
+ars_nouveau:apprentice_spell_book
+```
+
+### N.5 Per-structure themed pools (T3)
+
+**T3 Fire / blaze** — `minecraft:chests/nether_bridge` (12 items, ~9.8% combined):
+
+```
+relics:blazing_flask                   relics:magma_walker
+moreartifacts:fire_stone               moreartifacts:blazing_treads
+moreartifacts:molten_quiver            moreartifacts:obsidian_shield
+artifacts:obsidian_skull               artifacts:fire_gauntlet
+celestial_artifacts:nether_fire        moreartifacts:gilded_scarf
+ars_nouveau:archmage_spell_book        irons_spellbooks:rare_ink
+```
+
+**T3 Piglin / gold** — bastion tables (12 items):
+
+```
+moreartifacts:gilded_scarf             moreartifacts:golden_headgear
+moreartifacts:mechanical_glove
+celestial_artifacts:gold_ring          celestial_artifacts:precious_bracelet
+celestial_artifacts:treasure_hunter_necklace
+celestial_artifacts:emerald_bracelet
+artifacts:golden_hook
+moreartifacts:ruby_ring                moreartifacts:lucky_emerald_ring
+ars_nouveau:archmage_spell_book        irons_spellbooks:rare_ink
+```
+
+**T3 Underdark** — Undergarden ruin tables (13 items):
+
+```
+moreartifacts:enderian_scarf           moreartifacts:shadow_dust
+moreartifacts:obsidian_shield
+relics:bastion_ring                    relics:spore_sack
+celestial_artifacts:cursed_protector
+celestial_artifacts:demon_curse        celestial_artifacts:abyss_will_badge
+celestial_artifacts:lock_of_abyss
+artifacts:antidote_vessel              artifacts:obsidian_skull
+ars_nouveau:archmage_spell_book        irons_spellbooks:rare_ink
+```
+
+### N.6 Per-structure themed pools (T4)
+
+**T4 End / levitation** — `minecraft:chests/end_city_treasure` (13 items, ~11.2% combined):
+
+```
+celestial_artifacts:ender_jump_scepter (active scepter — verify in playtest, may pull to boss-drop)
+celestial_artifacts:angel_pearl        celestial_artifacts:angel_heart
+moreartifacts:enderian_eye             moreartifacts:ender_dragon_claw
+moreartifacts:dragon_eye               moreartifacts:enderian_treads
+moreartifacts:true_enderian_scarf
+relics:enders_hand                     relics:elytra_booster
+relics:space_dissector                 relics:arrow_quiver
+relics:chorus_inhibitor
+```
+
+**T4 Sculk / echo** — Ancient City tables (13 items):
+
+```
+moreartifacts:sculk_lens               moreartifacts:sculk_shades
+moreartifacts:sculk_treads             moreartifacts:shulker_heart
+moreartifacts:shulked_clock            moreartifacts:echo_glove
+celestial_artifacts:soul_box           celestial_artifacts:lock_of_abyss
+celestial_artifacts:cursed_totem       celestial_artifacts:twisted_heart
+relics:wool_mitten                     relics:shadow_glaive
+artifacts:scarf_of_invisibility
+```
+
+**T4 Abyssal** — The Abyss marquee tables (14 items):
+
+```
+celestial_artifacts:abyss_core         celestial_artifacts:abyss_will_badge
+celestial_artifacts:lock_of_abyss      celestial_artifacts:demon_heart
+celestial_artifacts:demon_curse        celestial_artifacts:twisted_heart
+celestial_artifacts:twisted_scroll     celestial_artifacts:twisted_scabbard
+celestial_artifacts:catastrophe_scroll celestial_artifacts:heart_of_revenge
+celestial_artifacts:chaotic_etching    celestial_artifacts:nihility_etching
+relics:shadow_glaive                   relics:space_dissector
+```
+
+### N.7 Notes
+
+- **ISS spellbook cap (2%).** `irons_spellbooks:copper_spell_book` (T1), `apprentice_spell_book` (T2), `archmage_spell_book` (T3) appear in themed pools where lore-fitting, capped at 2% per chest. Per the rationale in master.md Part XIII, the starter kit handles "hard to start magic" onboarding so higher legacy rates aren't justified.
+- **ISS scrolls are uncapped** and remain a primary mage-progression vector. They appear in T1 Magic and T1 Ancient / Eldritch pools per their tier.
+- **Cataclysm structures** are *intentionally not* in this roster. Cataclysm boss drops handle Cataclysm flavor; per-structure marquee pools on top would be double-coverage.
+- **Tables marked TBD** require packwiz/jar verification before final code wiring: T2 Lich Tower exact loot table IDs, T2 Aether dungeon tables, T2 Blue Skies dungeon tables, T3 Undergarden ruin tables, T4 Abyss marquee tables. Initial implementation may use partial coverage on TBD entries.
+- **`celestial_artifacts:ender_jump_scepter`** is flagged from the celestial_artifacts audit as ungated. Including in T4 End / levitation pool but mark for in-playtest verification — pull to boss-drop only if rate proves too generous.

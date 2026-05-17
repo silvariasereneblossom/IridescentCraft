@@ -207,55 +207,6 @@
       "entries": [
         {
           "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:umbrella"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:superstitious_hat"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:bunny_hoppers"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:running_shoes"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:pocket_piston"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:crystal_heart"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:obsidian_skull"
-        },
-        {
-          "type": "minecraft:item",
-          "weight": 1,
-          "name": "artifacts:cloud_in_a_bottle"
-        },
-        {
-          "type": "minecraft:empty",
-          "weight": 92
-        }
-      ]
-    },
-    {
-      "rolls": 1,
-      "entries": [
-        {
-          "type": "minecraft:item",
           "name": "irons_spellbooks:scroll",
           "weight": 3,
           "functions": [

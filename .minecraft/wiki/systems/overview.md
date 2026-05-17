@@ -133,6 +133,8 @@ After stripping, curated item pools are re-injected at tier-appropriate rates pe
 | T3 | Nether, Undergarden | 14% | Powerful offense artifacts + celestial items |
 | T4 | End, Deeper Darker, Abyss | 16% | Endgame artifacts + relics items |
 
+**Per-structure theming (2026-05-17).** Marquee structures (high-profile landmarks per [master.md §XIII](../design/master.md#part-xiii--loot-economy)) receive a themed pool layered on top of a reduced dimensional baseline — 70% themed / 30% baseline inside the tier's combined rate. 14 marquees across the 4 tiers. Roster, theme catalog, and per-structure item lists: [master-appendix.md §N](../design/master-appendix.md#n-marquee-structures). ISS spellbooks capped at 2% per chest (starter kit handles onboarding). ISS scrolls remain uncapped.
+
 ### Ars Nouveau Glyph Pools
 Ars Nouveau spell books are blank caster tools that require glyphs inscribed at a Scribes Table. Glyphs are seeded into chests per tier (Forms front-loaded in T1–T2):
 

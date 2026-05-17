@@ -980,6 +980,28 @@ Curio, artifact, relic, and spell-book chest loot is distributed across 4 tier-b
 
 Per-tier rates increase modestly as the player progresses, signaling *you're getting better stuff*. Per-item rate is the combined rate divided by pool size — each individual item is roughly a 0.3–0.5% chance per chest. Rolls are independent per item.
 
+### Marquee structures: per-structure thematic pools
+
+Most structures pull purely from the four dimensional pools above. **Marquee structures** — high-profile, theme-coded landmarks the player travels to deliberately — receive an additional layer: a small (10–15 item) themed pool curated to match the structure's lore, layered on top of a reduced dimensional baseline.
+
+Marquee chests receive the themed pool **layered on top of the dimensional baseline**. Themed pool rate is calibrated at ~70% of the tier rate (~7% T1, ~8.4% T2, ~9.8% T3, ~11.2% T4). Combined per-chest rate at marquees is therefore ~1.7× the tier rate (~17% T1, ~20% T2, ~24% T3, ~27% T4); generic chests remain at the tier rate (~10/12/14/16%). Players are rewarded for seeking out marquee landmarks with both more frequent drops AND more thematic drops, which fits the "player-intentional" design criterion. The themed pool dominates by *flavor* — curated, theme-coherent items — while the dimensional baseline contributes background variety.
+
+Marquee status requires three criteria:
+
+1. **Distinct theme.** A coherent lore identity (magic / aquatic / sculk / piglin / fire / ancient / etc.) that maps to artifact-mod content.
+2. **Player-intentional.** Players seek the structure out; not generic ambient loot.
+3. **Theme-appropriate inventory.** At least 8 artifacts in the catalog fit the theme.
+
+*Theme overrides act as flavor, not as power escalation.* Per-item rates inside the themed pool are calibrated so the combined per-chest rate still matches the dimensional target. A T1 marquee chest does not gate stronger artifacts than a generic T1 chest — it just gates *more theme-coherent* ones.
+
+The fight-breaking-curio soft gate from earlier in this part still applies: regardless of theme, T1/T2 marquee pools may not contain fight-breaking curios (fire/wither/poison immunities, flight-granting items). Those remain T2+/T4-only by composition.
+
+ISS spellbooks (`copper_spell_book`, `apprentice_spell_book` etc.) appear at **2% per marquee chest cap** — the starter kit already solves the "hard to start magic" onboarding problem that justified higher legacy rates. ISS scrolls are uncapped and remain a primary mage-progression vector.
+
+Cataclysm-themed structures are *intentionally not* in the marquee roster — Cataclysm boss drops (`cataclysm_boss_drops.js`) already cover Cataclysm flavor; marquee pools on top would be double-coverage.
+
+→ Marquee roster, theme definitions, and per-structure item lists: [Appendix §N](master-appendix.md#n-marquee-structures).
+
 ### Boss-drop allocation files
 
 Boss-specific drops live in ten dedicated files under `kubejs/server_scripts/loot/`:
