@@ -4,6 +4,58 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-17 — Blank-enchanted-book chest filter removed
+
+The chest-wide blank-enchanted-book filter in
+`kubejs/server_scripts/loot/lootjs_overhaul.js` (lines 91-115, added
+2026-04-19 and rewritten three times through 2026-04-22) has been
+removed. The filter was stripping ~97% of legitimate enchanted books
+from every modified chest table in the pack, including `tome_tower`
+and the nine vanilla overrides (stronghold_library, stronghold_corridor,
+abandoned_mineshaft, jungle_temple, etc.).
+
+**Root cause:** the filter's regex + substring predicates were written
+against a no-whitespace NBT toString format. Forge 1.20.1's actual NBT
+output has whitespace after colons:
+
+```
+{StoredEnchantments: [{id: "namespace:name", lvl: Ns}]}
+```
+
+The predicate's substring check `nbtStr.indexOf('StoredEnchantments:[')`
+(no space between `:` and `[`) never matched, so the filter treated
+every enchanted book as blank and stripped it. Confirmed via 10x
+`/loot give @s loot apotheosis:chests/tome_tower` producing 1 book
+against an expected ~34 (datapack pool weight 350 of 882, ~8.5 rolls
+per chest, ~3.4 books per chest expected). NBT format ground-truthed
+against a real dropped book showing `apotheosis:tempting` enchantment.
+
+Three prior rewrites (2026-04-20, -21, -22) added regex sophistication
+without ever validating against the actual NBT format produced by
+`String(stack.getTag())` -- a textbook hallucination-around-verifiable-
+facts pattern.
+
+**Replacement:** `kubejs/server_scripts/diag_blank_book_trace.js`
+(new). A `PlayerEvents.inventoryChanged` handler that logs any blank
+enchanted_book entering a player inventory with player name, dimension,
+position, and NBT. Used to localize any real upstream blank-book source
+if one still exists. The 2026-04-19 problem the filter tried to solve
+(blank `enchanted_book{}` in chests) was real per tester report at the
+time, but a separate fix the same day -- switching LootJS additions
+from raw `enchanted_book` to `book` + `enchantWithLevels` -- had
+already removed the largest known source. The chest-wide filter was a
+belt-and-suspenders measure that turned out to be the suspenders
+strangling the wearer.
+
+Delete the tracer once trace logs are clean for a sustained playtest
+period. If blanks are observed in logs, add a targeted LootJS modifier
+on the specific upstream mod's table rather than reinstating a
+chest-wide filter.
+
+Synced to all 3 distros.
+
+---
+
 ## 2026-05-15 — Origin progression rework + capstones + status commands
 
 Five-part update:

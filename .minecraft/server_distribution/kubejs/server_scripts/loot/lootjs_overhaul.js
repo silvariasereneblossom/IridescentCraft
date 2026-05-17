@@ -65,54 +65,23 @@ LootJS.modifiers(event => {
   // Also adds Ars Nouveau spell books at tier-appropriate rates.
   // =========================================================================
 
-  // --- Strip blank enchanted books (added 2026-04-19) ---
-  // Tester reported `minecraft:enchanted_book{}` still showing up in chests
-  // even after the 2026-04-18 switch to `LootEntry.of('minecraft:book').enchantWithLevels`.
-  // Likely source: modded loot tables that inject raw enchanted_book without
-  // an enchant_with_levels function. Use a predicate-based strip so the
-  // persistent filter only matches BLANK books (empty StoredEnchantments),
-  // letting vanilla + our re-adds pass through untouched.
-  // 2026-04-20 (rewrite): tester confirmed the predicate wasn't catching
-  // blank books even though they clearly have empty NBT `{}`. Likely cause:
-  // KubeJS's `.id` extension getter isn't available on raw ItemStack objects
-  // passed to a LootJS predicate. Rewrote to use the raw Forge ItemStack
-  // API which is always present:
-  //   stack.getItem().builtInRegistryHolder().key().location().toString()
-  // Wrapped in defensive try/catch so any one failed extraction falls back
-  // cleanly instead of aborting the predicate (returning false = "don't
-  // strip this item", same behavior as the prior bug — but at least we
-  // won't throw).
-  // 2026-04-21 (simpler): use string matching on the tag.toString() instead
-  // of Java API introspection. ItemStack.getTag().toString() yields compact
-  // NBT like `{StoredEnchantments:[...]}`. A blank enchanted book either
-  // has no tag, or its tag string doesn't contain 'StoredEnchantments:[{'
-  // (the start of a non-empty enchantment list). This is more robust
-  // across Rhino/KubeJS API quirks than walking ListTag programmatically.
-  var blankEnchantedBookFilter = function(stack) {
-    try {
-      if (!stack || stack.isEmpty()) return false
-      var id = String(stack.id || '')
-      if (!id) {
-        try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {}
-      }
-      if (id !== 'minecraft:enchanted_book') return false
-      var tag = stack.getTag ? stack.getTag() : null
-      if (!tag) return true
-      var nbtStr = String(tag)
-      // A valid enchanted book serializes as:
-      //   {StoredEnchantments:[{id:"namespace:name",lvl:Ns}]}
-      // 2026-04-22 (third rewrite): prior check only asked whether a '{'
-      // appeared before the list's ']'. That passed empty-compound cases
-      // `StoredEnchantments:[{}]` as "has content" — they're blank but
-      // still have the brace. Rewrote as a regex that requires the list
-      // to contain at least one `id:"X:Y"` pair with non-empty namespace
-      // and name. Catches `[]`, `[{}]`, `[{id:""}]`, missing key, and
-      // {id:"",lvl:0s} patterns.
-      if (nbtStr.indexOf('StoredEnchantments:[') < 0) return true
-      return !/StoredEnchantments:\[[^\]]*id:"[^"]+:[^"]+"/.test(nbtStr)
-    } catch (e) { return false }
-  }
-  event.addLootTypeModifier(LootType.CHEST).removeLoot(ItemFilter.custom(blankEnchantedBookFilter))
+  // --- Blank-enchanted-book chest-wide filter REMOVED 2026-05-17 ---
+  // The filter (added 2026-04-19, rewritten 3x) was stripping ~97% of
+  // legitimate enchanted books across every chest table in the pack.
+  // Root cause: the regex/substring predicates were written against a
+  // no-whitespace NBT toString format that does NOT match Forge 1.20.1's
+  // actual output. Real NBT has whitespace after colons:
+  //   {StoredEnchantments: [{id: "namespace:name", lvl: Ns}]}
+  // ground-truthed in playtest 2026-05-17 via /data get on an actual
+  // dropped book (apotheosis:tempting). Each rewrite of the filter added
+  // more regex sophistication without ever validating against actual NBT
+  // — textbook hallucination-around-verifiable-facts.
+  //
+  // Diagnostic replacement: see kubejs/server_scripts/diag_blank_book_trace.js
+  // which logs any blank enchanted_book entering a player inventory so we
+  // can localize a real upstream source if one still exists. If/when blanks
+  // are observed in trace logs, add a targeted LootJS modifier on the
+  // specific mod's table rather than reinstating a chest-wide filter.
 
   // ─── ARCANE ESSENCE INJECTION ─────────────────────────────────────────
   // Magic cloth requires 8 arcane_essence per cloth, 64 per Wizard chestplate
