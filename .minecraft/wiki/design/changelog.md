@@ -4,6 +4,45 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-17 — Village seed pool FD-weighted; butcher meat guaranteed; village biome animal density boosted
+
+Follow-up to the earlier 2026-05-17 village food/seed boost. Three additions:
+
+**1. Village seed pool reweighted toward Farmer's Delight.** FD is the pack's
+farming-mod baseline, so its seeds dominate the seed roll. New weights:
+`cabbage_seeds` (20%), `tomato_seeds` (18%), `onion` (15%), `rice` (15%),
+vanilla `wheat_seeds` (12%), `beetroot_seeds` (8%), `pumpkin_seeds` (6%),
+`melon_seeds` (5%). FD seeds ~68% of the roll vs vanilla ~31%.
+
+**2. FD seeds added to grass + tall_grass loot tables.** Tester report:
+FD seeds weren't discoverable via the standard grass-breaking onboarding
+flow that wheat_seeds uses. Added `cabbage_seeds` and `tomato_seeds` at
+3% (grass) / 4% (tall_grass). FD `onion`/`rice` have their own wild-block
+discovery (wild_onions, wild_rice) so they don't need grass entries.
+
+**3. Butcher chest guaranteed meat.** Vanilla `village_butcher` table had
+all meat at low-weight random rolls; could produce zero meat. Now adds
+1-3 porkchop + 1-3 chicken + 1-2 beef *guaranteed* on top of vanilla
+rolls. Meat is in the food-strip allowlist (line 1411-1412) so it
+isn't affected by the 90% Overworld food reduction.
+
+**4. Village biome animal spawn boost.** New Forge biome_modifier
+(`icraft_worldgen_overrides/data/icraft/forge/biome_modifier/village_animals.json`)
+adds pig/cow/chicken/sheep passive spawn entries to the 9 biomes where
+vanilla villages generate (plains, sunflower_plains, savanna,
+savanna_plateau, taiga, old_growth_pine_taiga, old_growth_spruce_taiga,
+snowy_plains, meadow). Each animal at weight 10-12, minCount 2,
+maxCount 4. Approximates "villages have more farm animals" via
+biome-wide density boost (true village-bounding-box gating would
+require per-biome village structure JSON overrides — deferred).
+
+Desert villages intentionally skipped — rabbits and llamas suit the
+biome more than pigs/cows/sheep.
+
+`systems/overview.md` updated with all four points.
+
+---
+
 ## 2026-05-17 — Village chest food + seed boost (walking back the 2026-04-20 food strip for villages)
 
 The 2026-04-20 design call that reduced structure food loot by ~90% across

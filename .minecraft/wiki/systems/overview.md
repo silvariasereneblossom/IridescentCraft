@@ -218,6 +218,12 @@ Class Artifacts' native elite mob system (tier 1/2/3 Elite/Master/Legendary spaw
 
 Hunger drain rate increased to 2.5x vanilla baseline. Seed drops from grass reduced to 5%. Structure food loot reduced across all loot tables **except village chests** — villages receive a flat food + seed boost (~1.4 food + ~0.6 seeds per chest expected) as of 2026-05-17, walking back the original blanket food reduction which proved overly onerous given the 2.5x hunger drain. Targets: vanilla biome houses (plains/desert/savanna/snowy/taiga), CTOV village chests, Villages and Pillages chests. Spawn protection area provides slower hunger drain for new players.
 
+**Seed economy is Farmer's-Delight-weighted (2026-05-17).** FD is the pack's farming-mod baseline, so its seeds (`cabbage_seeds`, `tomato_seeds`, `onion`, `rice`) make up ~68% of the village seed roll; vanilla wheat/beetroot/pumpkin/melon seeds the remaining ~31%. Cabbage and tomato seeds also drop from grass + tall_grass loot tables (3-4% each) so the discovery-via-grass-breaking onboarding flow covers FD too.
+
+**Village butcher chests have guaranteed meat (2026-05-17).** Vanilla butcher chest tables had all meat at low random-roll weights; a butcher chest could produce zero meat. Now adds 1-3 porkchop + 1-3 chicken + 1-2 beef guaranteed on top of vanilla rolls. Thematically correct, addresses tester report that butcher chests felt broken.
+
+**Village farm-animal density boosted in surrounding biomes (2026-05-17).** Forge biome_modifier (`icraft_worldgen_overrides/data/icraft/forge/biome_modifier/village_animals.json`) adds passive spawn entries for pig/cow/chicken/sheep in the 9 biomes where vanilla villages generate (plains, sunflower_plains, savanna, savanna_plateau, taiga, old_growth_pine_taiga, old_growth_spruce_taiga, snowy_plains, meadow). Approximates "villages have more farm animals" by raising surrounding biome density rather than gating spawns to the village structure bounding box (which would require per-biome village structure JSON overrides). Desert villages skipped (rabbits suit the biome more than pigs/cows/sheep).
+
 Spice of Life: Carrot Edition rewards food diversity with HP bonuses. Food is ungated from Tier 1 but best diversity requires dimensional ingredients. Farmer's Delight Cooking Station and Skillet serve as primary food crafting stations (70 recipes converted).
 
 ## XP Economy

@@ -1,0 +1,21 @@
+{
+  "_comment": "Boost passive farm-animal spawn weights in biomes where villages naturally generate. Approximates 'villages have more farm animals' by raising the surrounding biome density rather than gating spawns to the structure bounding box (which would require per-biome village structure JSON overrides). Added 2026-05-17. See wiki/systems/overview.md.",
+  "type": "forge:add_spawns",
+  "biomes": [
+    "minecraft:plains",
+    "minecraft:sunflower_plains",
+    "minecraft:savanna",
+    "minecraft:savanna_plateau",
+    "minecraft:taiga",
+    "minecraft:old_growth_pine_taiga",
+    "minecraft:old_growth_spruce_taiga",
+    "minecraft:snowy_plains",
+    "minecraft:meadow"
+  ],
+  "spawners": [
+    { "type": "minecraft:pig",     "weight": 12, "minCount": 2, "maxCount": 4 },
+    { "type": "minecraft:cow",     "weight": 12, "minCount": 2, "maxCount": 4 },
+    { "type": "minecraft:chicken", "weight": 10, "minCount": 2, "maxCount": 4 },
+    { "type": "minecraft:sheep",   "weight": 10, "minCount": 2, "maxCount": 4 }
+  ]
+}

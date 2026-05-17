@@ -1442,11 +1442,21 @@ LootJS.modifiers(event => {
     ['minecraft:pumpkin_pie',   0.06],
     ['minecraft:sweet_berries', 0.05]
   ]
+  // Seeds: FD-weighted per 2026-05-17 design call -- Farmer's Delight is
+  // our farming-mod baseline, so its seeds should dominate the village
+  // seed economy. FD cabbage/tomato/onion/rice combined ~68% of seed
+  // rolls; vanilla wheat/beetroot/pumpkin/melon ~31%. FD "onion" and "rice"
+  // items act as seeds when planted (no dedicated seed item exists for
+  // those crops in FD).
   var VILLAGE_SEED_BOOST = [
-    ['minecraft:wheat_seeds',    0.25],
-    ['minecraft:beetroot_seeds', 0.15],
-    ['minecraft:pumpkin_seeds',  0.12],
-    ['minecraft:melon_seeds',    0.10]
+    ['farmersdelight:cabbage_seeds', 0.20],
+    ['farmersdelight:tomato_seeds',  0.18],
+    ['farmersdelight:onion',         0.15],
+    ['farmersdelight:rice',          0.15],
+    ['minecraft:wheat_seeds',        0.12],
+    ['minecraft:beetroot_seeds',     0.08],
+    ['minecraft:pumpkin_seeds',      0.06],
+    ['minecraft:melon_seeds',        0.05]
   ]
   function addVillageFoodSeedBoost(tableRef) {
     var mod = event.addLootTableModifier(tableRef)
@@ -1466,6 +1476,37 @@ LootJS.modifiers(event => {
   addVillageFoodSeedBoost(/ctov:.*chests.*/)
   // Villages and Pillages — similar coverage.
   addVillageFoodSeedBoost(/villagesandpillages:.*chests.*/)
+
+  // --- Butcher chest: guaranteed meat (added 2026-05-17) ---
+  // Vanilla butcher table has all meat at random low-weight rolls so a
+  // butcher chest may produce zero meat. Tester report: butcher chests
+  // felt thematically broken (a butcher with no meat). Adding 3 guaranteed
+  // entries on top — players always get at least 1 each of porkchop,
+  // chicken, beef when looting a butcher chest. (Vanilla raw_porkchop /
+  // raw_chicken / raw_rabbit entries on the table remain intact.)
+  //
+  // Meat is in the food strip allowlist (line 1411-1412) so this isn't
+  // affected by the 90% Overworld food reduction.
+  var butcherMod = event.addLootTableModifier('minecraft:chests/village/village_butcher')
+  butcherMod.addLoot(LootEntry.of('minecraft:porkchop').limitCount([1, 3]))
+  butcherMod.addLoot(LootEntry.of('minecraft:chicken').limitCount([1, 3]))
+  butcherMod.addLoot(LootEntry.of('minecraft:beef').limitCount([1, 2]))
+
+  // --- Farmer's Delight seeds in grass + tall_grass (added 2026-05-17) ---
+  // Tester report: FD seeds aren't discoverable via the standard grass-
+  // breaking onboarding flow that wheat_seeds uses, despite FD being our
+  // farming-mod baseline. Adding cabbage_seeds and tomato_seeds at low
+  // rates to grass/tall_grass loot tables so the discovery mechanism
+  // covers FD too. FD onion/rice have their own wild block discovery
+  // mechanism (wild_onions, wild_rice) so they don't need grass entries.
+  event
+    .addLootTableModifier('minecraft:blocks/grass')
+    .addLoot(LootEntry.of('farmersdelight:cabbage_seeds').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('farmersdelight:tomato_seeds').when(c => c.randomChance(0.03)))
+  event
+    .addLootTableModifier('minecraft:blocks/tall_grass')
+    .addLoot(LootEntry.of('farmersdelight:cabbage_seeds').when(c => c.randomChance(0.04)))
+    .addLoot(LootEntry.of('farmersdelight:tomato_seeds').when(c => c.randomChance(0.04)))
 
   // =========================================================================
   // SECTION 4E: T1 IRON BASELINE -- guarantee iron in all overworld chests
