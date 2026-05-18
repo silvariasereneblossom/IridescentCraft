@@ -359,12 +359,20 @@ impl eframe::App for IcraftApp {
                 // is gentle enough -- refresh_status reads the SHA file
                 // + counts jars in mods/ (~400 entries), well under
                 // 10ms on disk-backed Windows.
+                //
+                // 2026-05-18 fix: do NOT call refresh_remote_sha here.
+                // That hits api.github.com which has a 60/hour unauth
+                // limit; 3s cadence is 1200/hour and rate-limits within
+                // ~3 minutes of any long task. The DURING-task refresh
+                // is for surfacing the LOCAL SHA marker that Phase 0
+                // writes to disk; the REMOTE SHA only changes when
+                // someone pushes to main and is refreshed on task-start,
+                // task-finish, and manual Refresh -- all bounded events.
                 let now = Instant::now();
                 let due = self.last_status_refresh
                     .map_or(true, |t| now.duration_since(t) >= Duration::from_secs(3));
                 if due {
                     self.refresh_status();
-                    self.refresh_remote_sha();
                     self.last_status_refresh = Some(now);
                 }
                 ctx.request_repaint_after(Duration::from_millis(200));
