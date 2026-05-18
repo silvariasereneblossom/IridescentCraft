@@ -74,7 +74,7 @@ function formatStatLine(player, statDef) {
   }
 
   var valueColor = '\u00a7f'
-  if (statDef.isPercent) {
+  if (statDef.isPercent) {  // CI-ignore: statDef.isPercent is a custom JS config-object property, not a method
     var pct = Math.round(val * 100)
     if (pct > 0) valueColor = '\u00a7a'
     return '\u00a77  ' + statDef.name + ': ' + valueColor + pct + '%'

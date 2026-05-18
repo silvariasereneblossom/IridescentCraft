@@ -118,8 +118,10 @@ ItemEvents.rightClicked(event => {
   if (!hasOrigin(player, 'icraft:slimebodied')) return
 
   let item = event.item
-  // Check if item is food
-  if (!item.isEdible) return
+  // Check if item is food (isEdible() is a method on ItemStack — parens required
+  // per feedback_kubejs_tooltip_api; bare `.isEdible` is function-ref-truthy
+  // and would early-return for every item including non-food).
+  if (!item.isEdible()) return
 
   let name = player.username
   let now = player.server.tickCount

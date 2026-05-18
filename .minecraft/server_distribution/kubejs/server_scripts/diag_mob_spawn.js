@@ -155,7 +155,7 @@ try {
       info.tagKeys = []
       var keyIter = tag.getAllKeys().iterator()
       while (keyIter.hasNext()) info.tagKeys.push(String(keyIter.next()))
-      info.hasAffix = tag.contains('affix_data') ? 1 : 0
+      info.hasAffix = tag.contains('affix_data') ? 1 : 0  // CI-ignore: info.hasAffix is a custom JS-object property, not a method
       info.tagDump = String(tag)
     }
     return info

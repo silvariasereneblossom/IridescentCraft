@@ -135,7 +135,7 @@ try {
     var info = { id: itemId(stack.getItem()), count: stack.getCount() }
     var tag = stack.getTag()
     if (tag) {
-      info.hasAffix = tag.contains('affix_data') ? 1 : 0
+      info.hasAffix = tag.contains('affix_data') ? 1 : 0  // CI-ignore: info.hasAffix is a custom JS-object property, not a method
       info.tagDump = String(tag)
     }
     return info
@@ -247,7 +247,7 @@ try {
               if (ie.tickCount > 4) continue
               drops.push(info)
               if (FLAGGED_DROP_IDS[info.id]) anyFlaggedItemDrop = true
-              if (info.hasAffix) anyAffixDrop = true
+              if (info.hasAffix) anyAffixDrop = true  // CI-ignore: info.hasAffix is a custom JS-object property
             }
 
             // Filter: must have at least one anomaly to log.

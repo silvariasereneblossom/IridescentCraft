@@ -1,0 +1,43 @@
+name: KubeJS method-ref validator
+
+# Catches the no-parens function-reference-always-truthy trap in KubeJS scripts.
+# See .minecraft/tools/check_kubejs_method_refs.sh for full rationale, and
+# feedback_kubejs_tooltip_api in the auto-memory for the underlying mechanism.
+#
+# History:
+#   - 2026-05-18: apotheosis_gem_repair.js inventory sweep silently disabled
+#     since script inception due to `stack.isEmpty` no-parens (3 sites).
+#   - 2026-05-18: death_penalty.js `stack.isDamageableItem` no-parens (3 sites)
+#     made the broken-item logic process non-damageable items, tagging gems
+#     with icraft_broken.
+#   - 2026-05-18: witherborn_slimebodied.js `item.isEdible` no-parens made
+#     the slimebodied food-cooldown handler run on every item.
+#
+# All three preventable in one CI pass.
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/server_scripts/**'
+      - '.minecraft/kubejs/startup_scripts/**'
+      - '.minecraft/kubejs/client_scripts/**'
+      - '.minecraft/tools/check_kubejs_method_refs.sh'
+      - '.github/workflows/kubejs-method-ref-validator.yml'
+  pull_request:
+    branches: [main]
+    paths:
+      - '.minecraft/kubejs/server_scripts/**'
+      - '.minecraft/kubejs/startup_scripts/**'
+      - '.minecraft/kubejs/client_scripts/**'
+  workflow_dispatch:
+
+jobs:
+  validate:
+    name: Validate KubeJS scripts
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+      - name: Run validator
+        run: bash .minecraft/tools/check_kubejs_method_refs.sh
