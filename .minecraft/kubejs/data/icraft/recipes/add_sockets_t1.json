@@ -1,0 +1,15 @@
+{
+  "_comment": "T1 Sigil of Socketing: smithing table consumes the sigil + gear and adds one socket up to a cap of 2. Per master-appendix §M.5 (tier sigil table).",
+  "type": "apotheosis:add_sockets",
+  "conditions": [
+    {
+      "type": "apotheosis:module",
+      "module": "adventure"
+    }
+  ],
+  "group": "something",
+  "input": {
+    "item": "icraft:sigil_of_socketing_t1"
+  },
+  "max_sockets": 2
+}

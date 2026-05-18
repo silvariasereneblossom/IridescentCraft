@@ -1,0 +1,15 @@
+{
+  "_comment": "T2 Sigil of Socketing: smithing table cap of 3 sockets.",
+  "type": "apotheosis:add_sockets",
+  "conditions": [
+    {
+      "type": "apotheosis:module",
+      "module": "adventure"
+    }
+  ],
+  "group": "something",
+  "input": {
+    "item": "icraft:sigil_of_socketing_t2"
+  },
+  "max_sockets": 3
+}

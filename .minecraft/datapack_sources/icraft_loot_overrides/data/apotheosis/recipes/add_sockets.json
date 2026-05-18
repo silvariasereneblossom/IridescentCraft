@@ -1,0 +1,15 @@
+{
+  "_comment": "Overrides the canonical apotheosis:add_sockets recipe to raise the cap from 3 to 5 sockets when using the vanilla Sigil of Socketing (which functions as our T4 sigil). Tier sigils T1-T3 use separate add_sockets recipes in kubejs/data/icraft/recipes/ with caps 2/3/4.",
+  "type": "apotheosis:add_sockets",
+  "conditions": [
+    {
+      "type": "apotheosis:module",
+      "module": "adventure"
+    }
+  ],
+  "group": "something",
+  "input": {
+    "item": "apotheosis:sigil_of_socketing"
+  },
+  "max_sockets": 5
+}
