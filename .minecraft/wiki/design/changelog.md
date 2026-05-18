@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-18 (Path B switch) — Elemental Apoth gems: dedicated `magic_weapon` LootCategory replaces TYPE_OVERRIDES alias
+
+Replaced the morning's Path A approach (TYPE_OVERRIDES typing 32 spellbooks as `sword`) with Path B (a dedicated `magic_weapon` LootCategory). Path A was failing for 6 of the 11 elemental gems (earth, inferno, forest, splendor, endersurge, queen) because their canonical bonuses already cover sword or trident — Apotheosis's `Collectors.toMap` (two-arg form) on `Map<LootCategory, GemBonus>` threw `IllegalStateException` on the duplicate key, removing those 6 gems from the registry entirely. In-world stacks of those gems rendered as "Errored gem" with the fallback lang key `item.apotheosis.gem` despite having valid NBT.
+
+Path B parts (all data, ~50 LOC of script):
+
+- `kubejs/startup_scripts/magic_weapon_category.js` registers `LootCategory.magic_weapon` via the public `LootCategory.register(null, "magic_weapon", predicate, slots)` API. Predicate matches `ItemStack.is(TagKey<Item>(icraft:magic_weapon))`. Slots are MAINHAND + OFFHAND. Idempotent guard against re-running.
+- `kubejs/data/icraft/tags/items/magic_weapon.json` holds the 32 spellbook IDs (16 ISS native + 15 modular variants + 1 parent). Adding wands/staves later is a one-line tag edit.
+- All 11 gem overrides (solar, lunar, lightning, guardian, blood_lord, inferno, earth, forest, splendor, endersurge, queen) now use `gem_class: { key: "magic_weapon", types: ["magic_weapon"] }` for the spell-power bonus.
+- The 4 morning multi_attribute merges (solar, lunar, guardian, blood_lord) were reverted to canonical single-attribute on `light_weapon` — spell-power is on the new `magic_weapon` bonus instead.
+- The 31 `|sword` lines in `config/apotheosis/adventure.cfg` `Equipment Type Overrides` were removed.
+- Lang entries `text.apotheosis.category.magic_weapon` + `.plural` added in `kubejs/assets/apotheosis/lang/en_us.json`.
+
+Verified by bytecode inspection on Apotheosis-1.20.1-7.4.8.jar: `LootCategory.BY_ID` is `Collections.unmodifiableMap(BY_ID_INTERNAL)` (live view), so post-init `register()` calls are visible to the gem-JSON codec at datapack-reload time. Spellbooks now sit in a dedicated LootCategory; socketing a Solar gem into a sword gives the canonical `fire_damage` bonus, socketing into a spellbook gives `fire_spell_power`. Path B also preserves the canonical sword bonus on every gem (previous morning approach used multi_attribute to keep them, but only for 4 of the 11).
+
+---
+
 ## 2026-05-18 (scaling bump) — Elemental Apoth gems: 5/10/20/35/55/80 -> 15/25/40/60/90/130%
 
 The initial elemental gem scaling collided with ISS school gems at low rarities — at Common a 5% Apoth elemental gem gave LESS spell_power than a 6-8% ISS universal school gem, defeating the specialization gradient.

@@ -5,8 +5,7 @@
   "dimensions": [],
   "bonuses": [
     {
-      "type": "apotheosis:multi_attribute",
-      "desc": "bonus.apotheosis:multi_attr.desc.and",
+      "type": "apotheosis:attribute",
       "gem_class": {
         "key": "light_weapon",
         "types": [
@@ -14,32 +13,16 @@
           "trident"
         ]
       },
-      "modifiers": [
-        {
-          "attribute": "attributeslib:cold_damage",
-          "operation": "ADDITION",
-          "values": {
-            "common": 1,
-            "uncommon": 1.5,
-            "rare": 2.5,
-            "epic": 4,
-            "mythic": 6,
-            "ancient": 8
-          }
-        },
-        {
-          "attribute": "irons_spellbooks:ice_spell_power",
-          "operation": "MULTIPLY_TOTAL",
-          "values": {
-            "common": 0.15,
-            "uncommon": 0.25,
-            "rare": 0.4,
-            "epic": 0.6,
-            "mythic": 0.9,
-            "ancient": 1.3
-          }
-        }
-      ]
+      "attribute": "attributeslib:cold_damage",
+      "operation": "ADDITION",
+      "values": {
+        "common": 1,
+        "uncommon": 1.5,
+        "rare": 2.5,
+        "epic": 4,
+        "mythic": 6,
+        "ancient": 8
+      }
     },
     {
       "type": "apotheosis:attribute",
@@ -78,6 +61,25 @@
         "epic": 0.45,
         "mythic": 0.6,
         "ancient": 0.8
+      }
+    },
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "magic_weapon",
+        "types": [
+          "magic_weapon"
+        ]
+      },
+      "attribute": "irons_spellbooks:ice_spell_power",
+      "operation": "MULTIPLY_TOTAL",
+      "values": {
+        "common": 0.15,
+        "uncommon": 0.25,
+        "rare": 0.4,
+        "epic": 0.6,
+        "mythic": 0.9,
+        "ancient": 1.3
       }
     }
   ]

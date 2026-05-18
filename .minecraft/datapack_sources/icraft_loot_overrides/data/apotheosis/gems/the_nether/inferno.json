@@ -107,10 +107,9 @@
     {
       "type": "apotheosis:attribute",
       "gem_class": {
-        "key": "melee_weapon",
+        "key": "magic_weapon",
         "types": [
-          "sword",
-          "trident"
+          "magic_weapon"
         ]
       },
       "attribute": "irons_spellbooks:fire_spell_power",

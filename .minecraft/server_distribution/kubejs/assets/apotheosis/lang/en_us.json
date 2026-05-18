@@ -440,5 +440,7 @@
   "affix.apotheosis:zephyrs_grace.prefix": "Zephyr's Grace",
   "affix.apotheosis:zephyrs_grace": "Zephyr's Grace",
   "item.apotheosis.gem.irons_spellbooks:spell_resist": "Gem of Arcane Affinity",
-  "item.apotheosis.gem.irons_spellbooks:spell_resist.desc": "Generic spell power boost."
+  "item.apotheosis.gem.irons_spellbooks:spell_resist.desc": "Generic spell power boost.",
+  "text.apotheosis.category.magic_weapon": "Magic Weapon",
+  "text.apotheosis.category.magic_weapon.plural": "Magic Weapons"
 }

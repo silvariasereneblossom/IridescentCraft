@@ -65,10 +65,9 @@
     {
       "type": "apotheosis:attribute",
       "gem_class": {
-        "key": "light_weapon",
+        "key": "magic_weapon",
         "types": [
-          "sword",
-          "trident"
+          "magic_weapon"
         ]
       },
       "attribute": "irons_spellbooks:nature_spell_power",
