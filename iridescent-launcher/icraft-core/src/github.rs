@@ -6,10 +6,15 @@
 //!   - `fetch_raw(url)` -> bytes — raw.githubusercontent.com content
 //!   - `fetch_zip(url)` -> bytes — codeload.github.com / archive zip
 //!
-//! Auth: anonymous. We hit unauthenticated rate limits (60 req/hr per IP)
-//! but a typical sync makes 1-2 API calls + N raw downloads (no rate
-//! limit on raw.githubusercontent.com). If we ever need to authenticate,
-//! a `GITHUB_TOKEN` env var would slot in here.
+//! Auth: optional. Reads `GITHUB_TOKEN` (or fallback `GH_TOKEN`) from env.
+//! If present, sends `Authorization: Bearer <token>` on every request:
+//! lifts the per-IP API limit from 60/hr (unauthenticated) to 5000/hr
+//! (authenticated). If absent, falls back to anonymous and keeps the
+//! original behavior.
+//!
+//! 2026-05-18 fix: pre-fix icraft-gui burnt the unauth 60/hr bucket via
+//! a 3s polling loop during long tasks, which then locked self-update
+//! out for the rest of the hour. Auth is the durable answer.
 
 use anyhow::{Context, Result};
 use serde::Deserialize;
@@ -17,6 +22,15 @@ use std::io::Read;
 use std::time::Duration;
 
 const USER_AGENT: &str = "IridescentCraft-Server/icraft";
+
+/// Read `GITHUB_TOKEN`, fall back to `GH_TOKEN`. Both are common
+/// conventions (gh CLI uses GH_TOKEN; many CI tools set GITHUB_TOKEN).
+fn auth_token() -> Option<String> {
+    std::env::var("GITHUB_TOKEN")
+        .ok()
+        .or_else(|| std::env::var("GH_TOKEN").ok())
+        .filter(|s| !s.is_empty())
+}
 
 /// 300 is the documented cap on the GitHub compare API's `files` array.
 /// Hitting exactly 300 means the response is silently truncated, so we
@@ -51,9 +65,18 @@ fn agent() -> ureq::Agent {
         .build()
 }
 
+/// Wrap a ureq Request with the auth header if a token is configured.
+/// All call sites go through this so the token is consistently applied.
+fn maybe_auth(req: ureq::Request) -> ureq::Request {
+    match auth_token() {
+        Some(t) => req.set("Authorization", &format!("Bearer {t}")),
+        None => req,
+    }
+}
+
 pub fn head_sha(owner: &str, repo: &str, branch: &str) -> Result<String> {
     let url = format!("https://api.github.com/repos/{owner}/{repo}/commits/{branch}");
-    let resp = agent().get(&url).call()
+    let resp = maybe_auth(agent().get(&url)).call()
         .with_context(|| format!("GET {url}"))?;
     let commit: Commit = resp.into_json().context("parsing /commits response")?;
     Ok(commit.sha)
@@ -61,17 +84,19 @@ pub fn head_sha(owner: &str, repo: &str, branch: &str) -> Result<String> {
 
 pub fn compare(owner: &str, repo: &str, base: &str, head: &str) -> Result<Compare> {
     let url = format!("https://api.github.com/repos/{owner}/{repo}/compare/{base}...{head}");
-    let resp = agent().get(&url).call()
+    let resp = maybe_auth(agent().get(&url)).call()
         .with_context(|| format!("GET {url}"))?;
     let compare: Compare = resp.into_json().context("parsing /compare response")?;
     Ok(compare)
 }
 
 /// Download a raw file from raw.githubusercontent.com. Returns the
-/// entire body as bytes; caller writes to disk.
+/// entire body as bytes; caller writes to disk. raw.githubusercontent.com
+/// isn't rate-limited the same way as api.github.com, but we pass the
+/// auth header anyway (harmless if not needed).
 pub fn fetch_raw(owner: &str, repo: &str, sha: &str, path: &str) -> Result<Vec<u8>> {
     let url = format!("https://raw.githubusercontent.com/{owner}/{repo}/{sha}/{path}");
-    let resp = agent().get(&url).call()
+    let resp = maybe_auth(agent().get(&url)).call()
         .with_context(|| format!("GET {url}"))?;
     let mut body = Vec::new();
     resp.into_reader().read_to_end(&mut body)
@@ -84,7 +109,7 @@ pub fn fetch_raw(owner: &str, repo: &str, sha: &str, path: &str) -> Result<Vec<u
 /// streaming write.
 pub fn fetch_zip<W: std::io::Write>(owner: &str, repo: &str, branch: &str, sink: &mut W) -> Result<()> {
     let url = format!("https://github.com/{owner}/{repo}/archive/refs/heads/{branch}.zip");
-    let resp = agent().get(&url)
+    let resp = maybe_auth(agent().get(&url))
         .timeout(Duration::from_secs(300))   // 5 min for the big download
         .call()
         .with_context(|| format!("GET {url}"))?;
