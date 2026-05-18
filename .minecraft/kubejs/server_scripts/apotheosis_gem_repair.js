@@ -417,7 +417,8 @@
     )
   })
 
-  console.log('[IridescentCraft] apotheosis_gem_repair loaded ('
+  console.log('[IridescentCraft] apotheosis_gem_repair loaded v2026-05-18b ('
             + KNOWN_GEMS.length + ' fallback IDs; inventory-tick sweep + ItemEntity-spawn trace + LootJS-chest trace; '
-            + 'detects (a) bare no-NBT, (b) no/empty gem field, (c) missing affix_data, (d) missing/empty rarity)')
+            + 'detects (a) bare no-NBT, (b) no/empty gem field, (c) missing affix_data, (d) missing/empty rarity, '
+            + '(e) stale icraft_broken tag from the death_penalty isDamageableItem trap)')
 })()
