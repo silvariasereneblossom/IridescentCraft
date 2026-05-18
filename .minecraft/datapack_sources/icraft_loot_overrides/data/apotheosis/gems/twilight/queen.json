@@ -111,12 +111,12 @@
       "attribute": "irons_spellbooks:evocation_spell_power",
       "operation": "MULTIPLY_TOTAL",
       "values": {
-        "common": 0.05,
-        "uncommon": 0.1,
-        "rare": 0.2,
-        "epic": 0.35,
-        "mythic": 0.55,
-        "ancient": 0.8
+        "common": 0.15,
+        "uncommon": 0.25,
+        "rare": 0.4,
+        "epic": 0.6,
+        "mythic": 0.9,
+        "ancient": 1.3
       }
     }
   ]

@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-18 (scaling bump) — Elemental Apoth gems: 5/10/20/35/55/80 -> 15/25/40/60/90/130%
+
+The initial elemental gem scaling collided with ISS school gems at low rarities — at Common a 5% Apoth elemental gem gave LESS spell_power than a 6-8% ISS universal school gem, defeating the specialization gradient.
+
+New scaling (MULTIPLY_TOTAL, per gem rarity):
+
+- Common: 15% (vs ISS 6-8%, ~2x)
+- Uncommon: 25% (vs ISS 9-13%, ~2.2x)
+- Rare: 40% (vs ISS 15-21%, ~2.2x)
+- Epic: 60% (vs ISS 23-31%, ~2.2x)
+- Mythic: 90% (vs ISS 33-43%, ~2.3x)
+- Ancient: 130% (vs ISS 45-60%, ~2.4x)
+
+Roughly 2-2.4x ISS at every rarity. Specialization gradient now clear: Apoth elementals trade flexibility (one school) for raw magnitude (~2x universal). 11 gems regenerated, 3 distros synced, master-appendix.md §M.4 updated with the comparison table.
+
+Mage power curve doctrine (`feedback_mage_power_curve`) supports this — back-loaded glass-cannon multiplicative stacking is intentional.
+
+---
+
 ## 2026-05-18 — icraft-gui: status badges refresh during long tasks + Cycle button
 
 Two small ergonomic fixes after operator feedback.

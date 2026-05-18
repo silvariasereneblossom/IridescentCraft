@@ -1720,14 +1720,16 @@ The vanilla Apotheosis recipe was originally gated by `minecraft:dragon_breath`,
 
 Bonus scaling (MULTIPLY_TOTAL):
 
-| Rarity | Spell power bonus |
-|--------|-------------------|
-| Common | +5% |
-| Uncommon | +10% |
-| Rare | +20% |
-| Epic | +35% |
-| Mythic | +55% |
-| Ancient | +80% |
+| Rarity | Spell power bonus | ISS school gem (universal) at same rarity | Ratio |
+|--------|-------------------|-------------------------------------------|-------|
+| Common | +15% | 6-8% | ~2x |
+| Uncommon | +25% | 9-13% | ~2.2x |
+| Rare | +40% | 15-21% | ~2.2x |
+| Epic | +60% | 23-31% | ~2.2x |
+| Mythic | +90% | 33-43% | ~2.3x |
+| Ancient | +130% | 45-60% | ~2.4x |
+
+The ratio is intentional: ISS school gems are universal (work for any school the player casts), Apotheosis elemental gems are specialized (lock to one school). Specialized = stronger per gem; universal = more flexible per gem. 2026-05-18 bump (commit pending) shifted the curve up — initial 5%/10%/.../80% collided with ISS values at low rarities, defeating the specialization gradient.
 
 Existing gem bonuses (e.g., Solar's `fire_damage`, `gravity`, `step_height`) are preserved. Implementation gotcha (fixed 2026-05-18, see changelog): Apotheosis enforces unique `gem_class.key` per gem via `Collectors.toMap` two-arg form — adding a second `light_weapon` bonus to a gem that already had one throws `IllegalStateException` and silently breaks the entire gem. Five gems (solar, lunar, guardian, blood_lord, inferno) needed merging. For solar/lunar/guardian/blood_lord the two `light_weapon` attribute bonuses are collapsed into one `apotheosis:multi_attribute`. For inferno (whose existing `light_weapon` bonus is a `apotheosis:mob_effect`, which can't merge into multi_attribute) the spell_power bonus uses `gem_class.key = "melee_weapon"` with the same sword+trident types — tooltip slot label reads "Melee Weapons" on this gem only. Martial-only gems (ballast, brawlers, breach, combatant, samurai, slipstream, tyrannical, warlord, royalty) are untouched. Mageslayer skipped per design (anti-magic flavor — opposite direction).
 
