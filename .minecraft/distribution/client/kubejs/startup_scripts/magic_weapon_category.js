@@ -49,16 +49,19 @@
     // Predicate: stack matches the tag. ItemStack.is(TagKey) is the canonical
     // Forge form. stack.isEmpty() called WITH parens (function-ref-truthy
     // trap per feedback_kubejs_tooltip_api).
-    var predicate = new java.util.function.Predicate({
-        test: function (stack) {
-            try {
-                if (stack == null || stack.isEmpty()) return false
-                return stack.is(MAGIC_WEAPON_TAG)
-            } catch (_) {
-                return false
-            }
+    //
+    // KubeJS 6 removed the `new java.util.function.Predicate({test: ...})`
+    // syntax (the old `java()` form, see kubejs.com/kjs6). Plain JS functions
+    // are auto-converted to SAM interfaces by Rhino, so we pass the function
+    // directly to LootCategory.register below.
+    var predicate = function (stack) {
+        try {
+            if (stack == null || stack.isEmpty()) return false
+            return stack.is(MAGIC_WEAPON_TAG)
+        } catch (_) {
+            return false
         }
-    })
+    }
 
     var slots = [EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND]
 
