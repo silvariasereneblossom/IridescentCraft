@@ -2,13 +2,13 @@
   "type": "minecraft:crafting_shaped",
   "pattern": [
     "SSS",
-    "GEG",
+    "GDG",
     "SSS"
   ],
   "key": {
     "G": { "item": "apotheosis:gem_dust" },
     "S": { "item": "apotheosis:gem_fused_slate" },
-    "E": { "item": "minecraft:emerald" }
+    "D": { "item": "minecraft:diamond" }
   },
   "result": {
     "item": "icraft:sigil_of_socketing_t3",

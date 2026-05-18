@@ -1688,15 +1688,21 @@ Added 2026-05-18. Two coupled changes that together unlock Apotheosis socketing 
 | Sigil | Item ID | Socket cap | AStages gate | Recipe gate |
 |-------|---------|-----------:|--------------|-------------|
 | T1 | `icraft:sigil_of_socketing_t1` | 2 | tier_1 (default) | gem_dust + gem_fused_slate + iron_ingot |
-| T2 | `icraft:sigil_of_socketing_t2` | 3 | tier_2 | gem_dust + gem_fused_slate + diamond |
-| T3 | `icraft:sigil_of_socketing_t3` | 4 | tier_3 | gem_dust + gem_fused_slate + emerald |
+| T2 | `icraft:sigil_of_socketing_t2` | 3 | tier_2 | gem_dust + gem_fused_slate + emerald |
+| T3 | `icraft:sigil_of_socketing_t3` | 4 | tier_3 | gem_dust + gem_fused_slate + diamond |
 | T4 (vanilla) | `apotheosis:sigil_of_socketing` | 5 | tier_4 | gem_dust + gem_fused_slate + amethyst + **echo_shard** (replaces vanilla dragon_breath) |
 
 The vanilla Apotheosis recipe was originally gated by `minecraft:dragon_breath`, requiring an Ender Dragon fight before any socketing was possible. The new gate uses `minecraft:echo_shard` (Ancient City — Deep Dark) so a player can reach socketing in early T4 without engaging the dragon. Recipes yield 3 sigils each (matching vanilla ratio).
 
 **Use mechanic.** Sigil in main hand, gear in off hand, right-click: if current sockets < tier cap, increments by 1 and consumes the sigil; otherwise no-op with chat feedback explaining the cap. Implementation in `kubejs/server_scripts/sigil_socket_handler.js` — direct NBT manipulation at `affix_data.sockets` (CompoundTag API per `apotheosis_gem_repair.js` pattern). The vanilla smithing-table use path still works for the Apotheosis sigil.
 
-**Elemental gems → school spell power.** 11 of Apotheosis's 21 gems have clear elemental flavor and now grant ISS school-specific `*_spell_power` when socketed into a spell book (or sword/trident). Datapack overrides at `icraft_loot_overrides/data/apotheosis/gems/*.json` add a new bonus entry to each gem targeting `light_weapon` gem_class (sword + trident — spell books are aliased to sword via TYPE_OVERRIDES, see below).
+**Elemental gems → school spell power.** 11 of Apotheosis's 21 gems have clear elemental flavor and now grant ISS school-specific `*_spell_power` when socketed into a spell book (or sword/trident). Datapack overrides at `icraft_loot_overrides/data/apotheosis/gems/*.json`. Spell books are aliased to sword via TYPE_OVERRIDES (see below) so they pick up sword/trident-targeted bonuses.
+
+> **Critical:** the gem_class.key must be **unique per gem**. Per `feedback_apoth_gem_extensions`: Apotheosis deserializes gem bonuses via `Collectors.toMap` (two-arg form), which throws on duplicate keys — adding a second bonus with the same key silently breaks the entire gem (item still spawns but lang key resolves to `item.apotheosis.gem` and all bonuses are lost). The 2026-05-18 fix-pass landed the proper structure:
+>
+> - **solar / lunar / guardian / blood_lord** (4 gems): existing `light_weapon` bonus was `apotheosis:attribute`. Collapsed both attributes into a single `apotheosis:multi_attribute` on the same `light_weapon` key, with the original attribute and the new SP attribute as two modifiers under one bonus entry.
+> - **inferno** (1 gem): existing `light_weapon` bonus is `apotheosis:mob_effect` (cannot merge into multi_attribute). Added the new SP bonus on `gem_class.key = "melee_weapon"` (types still `["sword","trident"]`); the mob_effect detonation stays on light_weapon. Tooltip reads "Melee Weapons" for the SP bonus on this gem only.
+> - **lightning / earth / forest / endersurge / splendor / queen** (6 gems): no existing `light_weapon` bonus to collide with. Added the SP bonus on `light_weapon` directly.
 
 | Gem | Subdir | School | Attribute |
 |-----|--------|--------|-----------|
