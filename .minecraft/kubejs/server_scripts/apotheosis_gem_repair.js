@@ -114,6 +114,33 @@
     return false
   }
 
+  // Stale-icraft_broken detection (added 2026-05-18 fix-pass): the
+  // death_penalty.js script had an isDamageableItem (no parens) trap
+  // that let it tag NON-DAMAGEABLE items with `icraft_broken: 1b`. Gems
+  // ended up tagged when caught in the durability-loss code path. The
+  // gem's own NBT is otherwise valid (gem ID + affix_data.rarity present)
+  // so isBareGem returns false, but the bogus tag causes the gem to
+  // render in the "broken inert" state in tooltips / handlers.
+  //
+  // Detect: any apotheosis:gem stack with `icraft_broken` in NBT.
+  // Repair: strip the tag, preserve everything else. No reroll needed.
+  function hasStaleBrokenTag(stack) {
+    if (!stack.nbt) return false
+    return stack.nbt.contains('icraft_broken')
+  }
+
+  function stripBrokenTag(stack, player, slotLabel) {
+    stack.nbt.remove('icraft_broken')
+    console.log('[gem-repair] stripped stale icraft_broken from apotheosis:gem in '
+              + slotLabel + ' (player=' + player.username + ', gem='
+              + (stack.nbt.contains('gem') ? stack.nbt.getString('gem') : '?')
+              + ')')
+    try {
+      player.tell(Text.gray('A stale broken-tag in your ' + slotLabel
+                          + ' was stripped from an Apotheosis gem.'))
+    } catch (_) {}
+  }
+
   function pickRandomGem() {
     var idx = Math.floor(Math.random() * KNOWN_GEMS.length)
     return KNOWN_GEMS[idx]
@@ -221,13 +248,29 @@
       var stack
       try { stack = inv.getItem(i) } catch (_) { continue }
       if (!isApothGem(stack)) continue
-      if (!isBareGem(stack)) continue
       var label = (i < 9) ? 'hotbar slot ' + i
                 : (i < 36) ? 'inventory slot ' + i
                 : (i < 40) ? 'armor slot ' + (i - 36)
                 : 'offhand'
-      repairGem(stack, player, label)
-      try { inv.setItem(i, stack) } catch (_) {}
+      // Two independent repair paths:
+      //   1. Stale-broken-tag strip (icraft_broken on a gem from the
+      //      death_penalty.js isDamageableItem-trap window) -- preserve
+      //      the gem's other NBT, just remove the bogus tag.
+      //   2. Bare-gem repair (no NBT / missing gem field / missing
+      //      affix_data / missing rarity) -- reroll to a known-good gem
+      //      with apotheosis:common rarity.
+      var mutated = false
+      if (hasStaleBrokenTag(stack)) {
+        stripBrokenTag(stack, player, label)
+        mutated = true
+      }
+      if (isBareGem(stack)) {
+        repairGem(stack, player, label)
+        mutated = true
+      }
+      if (mutated) {
+        try { inv.setItem(i, stack) } catch (_) {}
+      }
     }
   }
   global.registerPlayerTick('tick_apothGemRepair', 60, 0)
