@@ -1679,6 +1679,58 @@ All gems have `steps`/`step` ranges per rarity for tier-internal roll variance
 bundled model/texture/lang hooks line up; KubeJS lang override renames display
 to "Gem of Arcane Affinity".
 
+### M.4 Tier-gated Sigils of Socketing + elemental Apotheosis gems → school SP
+
+Added 2026-05-18. Two coupled changes that together unlock Apotheosis socketing for caster builds across the tier ladder.
+
+**Tier-gated Sigil of Socketing.** Four sigils, each with a different socket cap:
+
+| Sigil | Item ID | Socket cap | AStages gate | Recipe gate |
+|-------|---------|-----------:|--------------|-------------|
+| T1 | `icraft:sigil_of_socketing_t1` | 2 | tier_1 (default) | gem_dust + gem_fused_slate + iron_ingot |
+| T2 | `icraft:sigil_of_socketing_t2` | 3 | tier_2 | gem_dust + gem_fused_slate + diamond |
+| T3 | `icraft:sigil_of_socketing_t3` | 4 | tier_3 | gem_dust + gem_fused_slate + emerald |
+| T4 (vanilla) | `apotheosis:sigil_of_socketing` | 5 | tier_4 | gem_dust + gem_fused_slate + amethyst + **echo_shard** (replaces vanilla dragon_breath) |
+
+The vanilla Apotheosis recipe was originally gated by `minecraft:dragon_breath`, requiring an Ender Dragon fight before any socketing was possible. The new gate uses `minecraft:echo_shard` (Ancient City — Deep Dark) so a player can reach socketing in early T4 without engaging the dragon. Recipes yield 3 sigils each (matching vanilla ratio).
+
+**Use mechanic.** Sigil in main hand, gear in off hand, right-click: if current sockets < tier cap, increments by 1 and consumes the sigil; otherwise no-op with chat feedback explaining the cap. Implementation in `kubejs/server_scripts/sigil_socket_handler.js` — direct NBT manipulation at `affix_data.sockets` (CompoundTag API per `apotheosis_gem_repair.js` pattern). The vanilla smithing-table use path still works for the Apotheosis sigil.
+
+**Elemental gems → school spell power.** 11 of Apotheosis's 21 gems have clear elemental flavor and now grant ISS school-specific `*_spell_power` when socketed into a spell book (or sword/trident). Datapack overrides at `icraft_loot_overrides/data/apotheosis/gems/*.json` add a new bonus entry to each gem targeting `light_weapon` gem_class (sword + trident — spell books are aliased to sword via TYPE_OVERRIDES, see below).
+
+| Gem | Subdir | School | Attribute |
+|-----|--------|--------|-----------|
+| solar | core | Fire | `irons_spellbooks:fire_spell_power` |
+| inferno | the_nether | Fire | `irons_spellbooks:fire_spell_power` (rarer source, Nether-locked) |
+| lightning | core | Lightning | `irons_spellbooks:lightning_spell_power` |
+| lunar | core | Ice | `irons_spellbooks:ice_spell_power` |
+| blood_lord | the_nether | Blood | `irons_spellbooks:blood_spell_power` |
+| endersurge | the_end | Ender | `irons_spellbooks:ender_spell_power` |
+| earth | overworld | Nature | `irons_spellbooks:nature_spell_power` |
+| forest | twilight | Nature | `irons_spellbooks:nature_spell_power` (Twilight-locked) |
+| guardian | core | Eldritch | `irons_spellbooks:eldritch_spell_power` (thematic stretch — guardian = anti-eldritch protection inverted) |
+| splendor | core | Holy | `irons_spellbooks:holy_spell_power` |
+| queen | twilight | Evocation | `irons_spellbooks:evocation_spell_power` |
+
+Bonus scaling (MULTIPLY_TOTAL):
+
+| Rarity | Spell power bonus |
+|--------|-------------------|
+| Common | +5% |
+| Uncommon | +10% |
+| Rare | +20% |
+| Epic | +35% |
+| Mythic | +55% |
+| Ancient | +80% |
+
+Existing gem bonuses (e.g., Solar's `fire_damage`, `gravity`, `step_height`) are preserved — the school spell_power is an additional entry on the same `gem_class`. Martial-only gems (ballast, brawlers, breach, combatant, samurai, slipstream, tyrannical, warlord, royalty) are untouched. Mageslayer skipped per design (anti-magic flavor — opposite direction).
+
+**TYPE_OVERRIDES (config/apotheosis/adventure.cfg).** Apotheosis classifies items into LootCategory enum values (BOW/SWORD/HEAVY_WEAPON/etc) by Java class hierarchy. SpellBook items extend `Item` directly, so they default to LootCategory.NONE — invisible to socket/gem systems. The `Equipment Type Overrides` config setting lets us alias spell books as SWORD, which puts them in the `light_weapon` gem_class group and lets the school spell_power bonuses apply.
+
+Items aliased: all 16 ISS native spell books (copper / iron / gold / diamond / netherite / legendary / wimpy + 9 themed variants) + all 15 iridescent_modular_spells variants. 31 entries total. Ars Nouveau spell books deliberately not aliased — Ars has its own Source/perk system and doesn't read ISS spell_power attributes.
+
+**Path A choice rationale.** Two alternatives were considered (KubeJS bypass; Mixin a new LootCategory). Path A (TYPE_OVERRIDES alias) was chosen for lowest engineering cost; the "sword spillover" concern (sword wielders also getting fire_spell_power) is a non-issue because spell_power attributes only matter for spell-casters — wasted on melee builds, not harmful.
+
 ---
 
 ## J. Bytecode Patches

@@ -1,0 +1,26 @@
+{
+  "_comment": "Overrides the vanilla Apotheosis Sigil of Socketing recipe (which required minecraft:dragon_breath). Replaces dragon_breath with minecraft:echo_shard — early-T4 gate (Ancient City) instead of post-Ender-Dragon. Added 2026-05-18 per master.md Part XIII §Marquee + appendix §A.4. The vanilla sigil functions as the T4 sigil (cap 5); T1-T3 sigils are custom icraft items with separate recipes.",
+  "type": "minecraft:crafting_shaped",
+  "conditions": [
+    {
+      "type": "apotheosis:module",
+      "module": "adventure"
+    }
+  ],
+  "group": "something",
+  "pattern": [
+    "GDG",
+    "SSS",
+    "GAG"
+  ],
+  "key": {
+    "D": { "item": "minecraft:echo_shard" },
+    "G": { "item": "apotheosis:gem_dust" },
+    "S": { "item": "apotheosis:gem_fused_slate" },
+    "A": { "item": "minecraft:amethyst_shard" }
+  },
+  "result": {
+    "item": "apotheosis:sigil_of_socketing",
+    "count": 3
+  }
+}

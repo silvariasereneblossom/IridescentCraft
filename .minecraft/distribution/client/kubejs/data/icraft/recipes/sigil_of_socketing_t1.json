@@ -1,0 +1,17 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "pattern": [
+    "SSS",
+    "GIG",
+    "SSS"
+  ],
+  "key": {
+    "G": { "item": "apotheosis:gem_dust" },
+    "S": { "item": "apotheosis:gem_fused_slate" },
+    "I": { "item": "minecraft:iron_ingot" }
+  },
+  "result": {
+    "item": "icraft:sigil_of_socketing_t1",
+    "count": 3
+  }
+}

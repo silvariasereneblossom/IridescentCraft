@@ -4,6 +4,41 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-18 — Tier-gated Sigils of Socketing + elemental Apotheosis gems → school SP
+
+Two coupled changes that unlock Apotheosis socketing for caster builds across the tier ladder. Full reference in `master-appendix.md` §M.4.
+
+**Tier-gated Sigils of Socketing.** Four sigils now exist:
+
+- `icraft:sigil_of_socketing_t1` (cap 2, tier_1 default)
+- `icraft:sigil_of_socketing_t2` (cap 3, tier_2 AStages-gated)
+- `icraft:sigil_of_socketing_t3` (cap 4, tier_3 AStages-gated)
+- `apotheosis:sigil_of_socketing` (cap 5, tier_4 AStages-gated, recipe-overridden to use `minecraft:echo_shard` instead of `minecraft:dragon_breath`)
+
+Right-click-to-apply mechanic: sigil in main hand, gear in off hand, right-click. Cap enforcement + chat feedback in `kubejs/server_scripts/sigil_socket_handler.js`. Vanilla smithing-table path still works for the Apotheosis sigil.
+
+The dragon_breath gate was the canonical reason Apotheosis socketing felt locked behind endgame for casters; the echo_shard swap lets early-T4 (Ancient City reach) unlock the top tier, and the T1-T3 sigils give linear progression toward that cap.
+
+**Elemental gems → school spell power.** 11 of Apotheosis's 21 gems mapped to ISS spell schools:
+
+- Solar + Inferno → Fire
+- Lightning → Lightning
+- Lunar → Ice
+- Blood_lord → Blood
+- Endersurge → Ender
+- Earth + Forest → Nature
+- Guardian → Eldritch (thematic stretch)
+- Splendor → Holy
+- Queen → Evocation
+
+Each gem gets a new bonus entry targeting `light_weapon` gem_class (sword + trident) for school `*_spell_power` attribute. Scaling MULTIPLY_TOTAL +5% / +10% / +20% / +35% / +55% / +80% across Common → Ancient rarity. Existing gem bonuses preserved.
+
+**TYPE_OVERRIDES.** 31 spell book items (16 ISS native + 15 iridescent_modular_spells modular variants) aliased to LootCategory.SWORD via `config/apotheosis/adventure.cfg` `Equipment Type Overrides`. Ars Nouveau spell books deliberately excluded — they have their own Source/perk system.
+
+Path A (TYPE_OVERRIDES alias) chosen over B (KubeJS bypass) and C (Mixin a new MAGIC_WEAPON LootCategory) for lowest engineering cost. The "sword spillover" concern (sword wielders also getting spell_power) is harmless — spell_power only matters for spell-casters; melee wielders see no effect.
+
+---
+
 ## 2026-05-17 — Village seed pool FD-weighted; butcher meat guaranteed; village biome animal density boosted
 
 Follow-up to the earlier 2026-05-17 village food/seed boost. Three additions:

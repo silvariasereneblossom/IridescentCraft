@@ -442,8 +442,20 @@ ServerEvents.loaded(event => {
   //   - Emerald jetpack: T4 (emerald=T4 equivalent via rarity)
   // No additional AStages restrictions needed — material gates handle it.
 
+  // =========================================================================
+  // SIGIL OF SOCKETING — tier gates (added 2026-05-18)
+  // =========================================================================
+  // Custom tier-gated Sigils of Socketing per master.md Part XIII §Marquee.
+  // T1 sigil uses tier_1 (default, no restriction needed).
+  // T2/T3 sigils + vanilla Apotheosis sigil restricted to their respective
+  // tiers. Cap enforcement (max sockets per item by tier) is handled in
+  // kubejs/server_scripts/sigil_socket_handler.js.
+  stageItems('tier_2', ['icraft:sigil_of_socketing_t2'], 'icraft/sigil_t2')
+  stageItems('tier_3', ['icraft:sigil_of_socketing_t3'], 'icraft/sigil_t3')
+  stageItems('tier_4', ['apotheosis:sigil_of_socketing'], 'apotheosis/sigil_socketing_t4')
+
   console.log('[IridescentCraft] AStages native restrictions registered')
-  console.log('  Tier 2: 6 mods + 16 items + 4 dimensions')
-  console.log('  Tier 3: 9 mods + 35 items + 5 ores + 4 dimensions')
-  console.log('  Tier 4: 5 mods + 93 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts)')
+  console.log('  Tier 2: 6 mods + 17 items + 4 dimensions')
+  console.log('  Tier 3: 9 mods + 36 items + 5 ores + 4 dimensions')
+  console.log('  Tier 4: 5 mods + 94 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts)')
 })

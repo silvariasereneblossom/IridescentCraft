@@ -1,0 +1,158 @@
+{
+  "weight": 5,
+  "quality": 1.5,
+  "dimensions": [
+    "minecraft:the_nether"
+  ],
+  "unique": true,
+  "min_rarity": "rare",
+  "bonuses": [
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "light_weapon",
+        "types": [
+          "sword",
+          "trident"
+        ]
+      },
+      "attribute": "attributeslib:life_steal",
+      "operation": "ADDITION",
+      "values": {
+        "common": 0.05,
+        "uncommon": 0.25,
+        "rare": 0.4,
+        "epic": 0.525,
+        "mythic": 0.65,
+        "ancient": 0.75
+      }
+    },
+    {
+      "type": "apotheosis:multi_attribute",
+      "desc": "bonus.apotheosis:multi_attr.desc.and",
+      "gem_class": {
+        "key": "heavy_weapon",
+        "types": [
+          "heavy_weapon"
+        ]
+      },
+      "modifiers": [
+        {
+          "attribute": "minecraft:generic.attack_damage",
+          "operation": "MULTIPLY_TOTAL",
+          "values": {
+            "uncommon": 0.15,
+            "rare": 0.25,
+            "epic": 0.35,
+            "mythic": 0.45,
+            "ancient": 0.5
+          }
+        },
+        {
+          "attribute": "minecraft:generic.max_health",
+          "operation": "MULTIPLY_TOTAL",
+          "values": {
+            "uncommon": -0.15,
+            "rare": -0.25,
+            "epic": -0.35,
+            "mythic": -0.45,
+            "ancient": -0.5
+          }
+        }
+      ]
+    },
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "chestplate",
+        "types": [
+          "chestplate"
+        ]
+      },
+      "attribute": "attributeslib:healing_received",
+      "operation": "ADDITION",
+      "values": {
+        "uncommon": 0.15,
+        "rare": 0.2,
+        "epic": 0.3,
+        "mythic": 0.4,
+        "ancient": 0.5
+      }
+    },
+    {
+      "type": "apotheosis:bloody_arrow",
+      "values": {
+        "uncommon": {
+          "health_cost": 0.1,
+          "damage_mult": 1.3,
+          "cooldown": 400
+        },
+        "rare": {
+          "health_cost": 0.2,
+          "damage_mult": 1.6,
+          "cooldown": 450
+        },
+        "epic": {
+          "health_cost": 0.3,
+          "damage_mult": 1.9,
+          "cooldown": 500
+        },
+        "mythic": {
+          "health_cost": 0.4,
+          "damage_mult": 2.2,
+          "cooldown": 550
+        },
+        "ancient": {
+          "health_cost": 0.5,
+          "damage_mult": 2.5,
+          "cooldown": 600
+        }
+      }
+    },
+    {
+      "type": "apotheosis:leech_block",
+      "values": {
+        "uncommon": {
+          "heal_factor": 0.15,
+          "cooldown": 400
+        },
+        "rare": {
+          "heal_factor": 0.25,
+          "cooldown": 650
+        },
+        "epic": {
+          "heal_factor": 0.4,
+          "cooldown": 800
+        },
+        "mythic": {
+          "heal_factor": 0.55,
+          "cooldown": 850
+        },
+        "ancient": {
+          "heal_factor": 0.65,
+          "cooldown": 1000
+        }
+      }
+    },
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "light_weapon",
+        "types": [
+          "sword",
+          "trident"
+        ]
+      },
+      "attribute": "irons_spellbooks:blood_spell_power",
+      "operation": "MULTIPLY_TOTAL",
+      "values": {
+        "common": 0.05,
+        "uncommon": 0.1,
+        "rare": 0.2,
+        "epic": 0.35,
+        "mythic": 0.55,
+        "ancient": 0.8
+      }
+    }
+  ]
+}
