@@ -17,6 +17,7 @@ use std::sync::mpsc::{channel, Receiver, Sender};
 use std::sync::atomic::{AtomicBool, Ordering};
 use std::sync::{Arc, Mutex};
 use std::thread::JoinHandle;
+use std::time::{Duration, Instant};
 
 use eframe::egui;
 use icraft_core::config::ServerConfig;
@@ -158,6 +159,16 @@ struct IcraftApp {
     remote_sha: Arc<Mutex<Option<String>>>,
     /// True while a remote-sha fetch is in flight; prevents duplicates.
     remote_fetching: Arc<AtomicBool>,
+    /// Last time we ran refresh_status while a task was active. Used to
+    /// throttle the periodic refresh during long-running tasks (Serve)
+    /// so the head-SHA badge updates after Phase 0 instead of waiting
+    /// until the server actually stops.
+    last_status_refresh: Option<Instant>,
+    /// Set true when the Cycle button is clicked while a server task is
+    /// running. After the running task completes, update() spawns a
+    /// fresh "serve" task to bring the server back up. Cleared on
+    /// pickup so a second cycle requires another button press.
+    pending_restart: bool,
 }
 
 #[derive(Default, Clone)]
@@ -198,6 +209,8 @@ impl IcraftApp {
             pat_input: String::new(),
             remote_sha: Arc::new(Mutex::new(None)),
             remote_fetching: Arc::new(AtomicBool::new(false)),
+            last_status_refresh: None,
+            pending_restart: false,
         };
         app.refresh_status();
         app.refresh_remote_sha();
@@ -317,17 +330,51 @@ impl eframe::App for IcraftApp {
         if let Some(h) = &self.running_task {
             if h.is_finished() {
                 self.running_task = None;
+                self.last_status_refresh = None;
                 self.refresh_status();
                 self.refresh_remote_sha();
+                // If a Cycle was queued while this task ran (typically
+                // the previous task was a Serve that we just stopped),
+                // boot a fresh serve now that the slot is free.
+                if self.pending_restart {
+                    self.pending_restart = false;
+                    log::info!("[cycle] previous task done -- starting fresh serve");
+                    self.spawn("cycle-restart", move |c| {
+                        let opts = icraft_core::ServeOptions {
+                            pipe_output: true,
+                            ..Default::default()
+                        };
+                        let r = icraft_core::serve(&c, opts).map(|_| ());
+                        icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
+                        log::info!("[cycle] *** all post-exit hooks complete -- ready ***");
+                        r
+                    });
+                }
             } else {
-                ctx.request_repaint_after(std::time::Duration::from_millis(200));
+                // Periodically refresh status while a task is running so
+                // long operations (Serve, which writes a new SHA marker
+                // in Phase 0 then blocks for hours on the launched
+                // server) show updated install state in the badges
+                // without waiting for the task to complete. 3s cadence
+                // is gentle enough -- refresh_status reads the SHA file
+                // + counts jars in mods/ (~400 entries), well under
+                // 10ms on disk-backed Windows.
+                let now = Instant::now();
+                let due = self.last_status_refresh
+                    .map_or(true, |t| now.duration_since(t) >= Duration::from_secs(3));
+                if due {
+                    self.refresh_status();
+                    self.refresh_remote_sha();
+                    self.last_status_refresh = Some(now);
+                }
+                ctx.request_repaint_after(Duration::from_millis(200));
             }
         }
         // Tick frequently while a remote-sha fetch is in flight so the
         // (checking...) -> (in sync)/(behind) transition shows up
         // promptly even when the user isn't moving the mouse.
         if self.remote_fetching.load(Ordering::Relaxed) {
-            ctx.request_repaint_after(std::time::Duration::from_millis(250));
+            ctx.request_repaint_after(Duration::from_millis(250));
         }
 
         egui::TopBottomPanel::top("hdr").show(ctx, |ui| {
@@ -516,6 +563,33 @@ impl IcraftApp {
                 log::warn!("[lifecycle] Force kill clicked -- worlds may not flush");
                 if let Err(e) = icraft_core::run::kill_active_server(true) {
                     log::warn!("[lifecycle] force kill failed: {e}");
+                }
+            }
+            // Cycle = full stop + restart, single click. When a server task
+            // is running we sequence: stop_with_escalation (Stop's 30s
+            // grace + 10s force-kill watchdog), set pending_restart, and
+            // let update()'s task-finished handler spawn a fresh serve
+            // once the slot frees up. When no task is running we just
+            // boot a fresh serve immediately.
+            if ui.add(egui::Button::new("Cycle").min_size(egui::vec2(140.0, 28.0))).clicked() {
+                if self.task_running() {
+                    log::info!("[cycle] stop + restart queued (escalates after 30s)");
+                    if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
+                        log::warn!("[cycle] stop failed: {e}");
+                    }
+                    self.pending_restart = true;
+                } else {
+                    log::info!("[cycle] no server running -- booting fresh serve");
+                    self.spawn("cycle-restart", move |c| {
+                        let opts = icraft_core::ServeOptions {
+                            pipe_output: true,
+                            ..Default::default()
+                        };
+                        let r = icraft_core::serve(&c, opts).map(|_| ());
+                        icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
+                        log::info!("[cycle] *** all post-exit hooks complete -- ready ***");
+                        r
+                    });
                 }
             }
             if action_btn(ui, "Accept EULA", busy).clicked() {

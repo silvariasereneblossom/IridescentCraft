@@ -4,6 +4,18 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-18 — icraft-gui: status badges refresh during long tasks + Cycle button
+
+Two small ergonomic fixes after operator feedback.
+
+**Status badges refresh during long-running tasks.** Previously `refresh_status` (which reads the install's last-SHA marker file and counts jars in `mods/`) only fired on task completion. For "Serve (full)" — which writes a fresh SHA in Phase 0 then blocks for hours on the launched server — the head badge stayed stale until the server stopped, giving the impression sync hadn't run. Now `update()` refreshes status every 3s while a task is running, in addition to the existing post-completion refresh. Cheap (single file read + ~400-entry dir count).
+
+**Cycle button (stop + restart in one click).** New button in the Server-lifecycle row, sized to match Stop/Kill/Force-kill. When a server task is running, sequences: `stop_with_escalation(30, 10)` (Stop's existing escalating watchdog), set `pending_restart`, and let `update()`'s task-finished branch spawn a fresh "serve" task when the slot frees up. When no server is running, boots a fresh serve immediately. Like Stop/Kill/Force-kill, the button is not gated on the busy flag — it has to be clickable exactly when busy is true.
+
+Both changes in `icraft-gui/src/main.rs`. New `IcraftApp` fields: `last_status_refresh: Option<Instant>` (throttle), `pending_restart: bool` (queue flag).
+
+---
+
 ## 2026-05-18 — Fix: 5 elemental gems broken by duplicate `light_weapon` gem_class key
 
 The morning's elemental-gem mapping introduced duplicate `gem_class.key="light_weapon"` entries on 5 gems whose original Apotheosis definitions already had a light_weapon bonus. Apotheosis's `Gem` constructor builds `bonusMap` via `Collectors.toMap(keyMapper, valueMapper)` (two-arg form), which throws `IllegalStateException` on duplicate keys. The exception aborts gem deserialization — items still spawn (rarity comes from rolled NBT, not the data definition) but the lang key doesn't resolve (showing as `item.apotheosis.gem`) and all bonuses are lost.
