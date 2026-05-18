@@ -8,7 +8,8 @@
   "min_rarity": "rare",
   "bonuses": [
     {
-      "type": "apotheosis:attribute",
+      "type": "apotheosis:multi_attribute",
+      "desc": "bonus.apotheosis:multi_attr.desc.and",
       "gem_class": {
         "key": "light_weapon",
         "types": [
@@ -16,16 +17,32 @@
           "trident"
         ]
       },
-      "attribute": "attributeslib:life_steal",
-      "operation": "ADDITION",
-      "values": {
-        "common": 0.05,
-        "uncommon": 0.25,
-        "rare": 0.4,
-        "epic": 0.525,
-        "mythic": 0.65,
-        "ancient": 0.75
-      }
+      "modifiers": [
+        {
+          "attribute": "attributeslib:life_steal",
+          "operation": "ADDITION",
+          "values": {
+            "common": 0.05,
+            "uncommon": 0.25,
+            "rare": 0.4,
+            "epic": 0.525,
+            "mythic": 0.65,
+            "ancient": 0.75
+          }
+        },
+        {
+          "attribute": "irons_spellbooks:blood_spell_power",
+          "operation": "MULTIPLY_TOTAL",
+          "values": {
+            "common": 0.05,
+            "uncommon": 0.1,
+            "rare": 0.2,
+            "epic": 0.35,
+            "mythic": 0.55,
+            "ancient": 0.8
+          }
+        }
+      ]
     },
     {
       "type": "apotheosis:multi_attribute",
@@ -132,26 +149,6 @@
           "heal_factor": 0.65,
           "cooldown": 1000
         }
-      }
-    },
-    {
-      "type": "apotheosis:attribute",
-      "gem_class": {
-        "key": "light_weapon",
-        "types": [
-          "sword",
-          "trident"
-        ]
-      },
-      "attribute": "irons_spellbooks:blood_spell_power",
-      "operation": "MULTIPLY_TOTAL",
-      "values": {
-        "common": 0.05,
-        "uncommon": 0.1,
-        "rare": 0.2,
-        "epic": 0.35,
-        "mythic": 0.55,
-        "ancient": 0.8
       }
     }
   ]

@@ -25,7 +25,8 @@
       }
     },
     {
-      "type": "apotheosis:attribute",
+      "type": "apotheosis:multi_attribute",
+      "desc": "bonus.apotheosis:multi_attr.desc.and",
       "gem_class": {
         "key": "light_weapon",
         "types": [
@@ -33,16 +34,32 @@
           "trident"
         ]
       },
-      "attribute": "attributeslib:life_steal",
-      "operation": "ADDITION",
-      "values": {
-        "common": 0.05,
-        "uncommon": 0.1,
-        "rare": 0.15,
-        "epic": 0.2,
-        "mythic": 0.25,
-        "ancient": 0.3
-      }
+      "modifiers": [
+        {
+          "attribute": "attributeslib:life_steal",
+          "operation": "ADDITION",
+          "values": {
+            "common": 0.05,
+            "uncommon": 0.1,
+            "rare": 0.15,
+            "epic": 0.2,
+            "mythic": 0.25,
+            "ancient": 0.3
+          }
+        },
+        {
+          "attribute": "irons_spellbooks:eldritch_spell_power",
+          "operation": "MULTIPLY_TOTAL",
+          "values": {
+            "common": 0.05,
+            "uncommon": 0.1,
+            "rare": 0.2,
+            "epic": 0.35,
+            "mythic": 0.55,
+            "ancient": 0.8
+          }
+        }
+      ]
     },
     {
       "type": "apotheosis:attribute",
@@ -80,26 +97,6 @@
         "epic": 0.25,
         "mythic": 0.3,
         "ancient": 0.45
-      }
-    },
-    {
-      "type": "apotheosis:attribute",
-      "gem_class": {
-        "key": "light_weapon",
-        "types": [
-          "sword",
-          "trident"
-        ]
-      },
-      "attribute": "irons_spellbooks:eldritch_spell_power",
-      "operation": "MULTIPLY_TOTAL",
-      "values": {
-        "common": 0.05,
-        "uncommon": 0.1,
-        "rare": 0.2,
-        "epic": 0.35,
-        "mythic": 0.55,
-        "ancient": 0.8
       }
     }
   ]

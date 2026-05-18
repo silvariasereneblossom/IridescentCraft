@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-18 — Fix: 5 elemental gems broken by duplicate `light_weapon` gem_class key
+
+The morning's elemental-gem mapping introduced duplicate `gem_class.key="light_weapon"` entries on 5 gems whose original Apotheosis definitions already had a light_weapon bonus. Apotheosis's `Gem` constructor builds `bonusMap` via `Collectors.toMap(keyMapper, valueMapper)` (two-arg form), which throws `IllegalStateException` on duplicate keys. The exception aborts gem deserialization — items still spawn (rarity comes from rolled NBT, not the data definition) but the lang key doesn't resolve (showing as `item.apotheosis.gem`) and all bonuses are lost.
+
+Fixed gems:
+
+- **solar / lunar / guardian / blood_lord** — original `light_weapon` bonus was `apotheosis:attribute`; collapsed both attributes into a single `apotheosis:multi_attribute` (the same pattern blood_lord already uses for its `heavy_weapon` slot) and deleted the duplicate entry.
+- **inferno** — original `light_weapon` bonus is `apotheosis:mob_effect` (cannot merge into multi_attribute). Moved the new `irons_spellbooks:fire_spell_power` bonus to `gem_class.key = "melee_weapon"` (types still `["sword", "trident"]`); the mob_effect detonation stays on `light_weapon`. Tooltip slot label reads "Melee Weapons" for the spell_power bonus on this gem only.
+
+The 6 gems without duplicates (splendor, lightning, earth, endersurge, queen, forest) were unaffected by the bug and untouched by the fix.
+
+Repacked `icraft_loot_overrides.zip` and deployed to all 3 distros (main / client / server).
+
+**Lesson:** Apotheosis enforces unique gem_class keys per gem. When extending an existing gem with a new bonus, check whether the gem already uses that gem_class — if so, merge into a multi_attribute (when both are attributes), use a different gem_class key, or skip the new bonus.
+
+---
+
 ## 2026-05-18 — Tier-gated Sigils of Socketing + elemental Apotheosis gems → school SP
 
 Two coupled changes that unlock Apotheosis socketing for caster builds across the tier ladder. Full reference in `master-appendix.md` §M.4.

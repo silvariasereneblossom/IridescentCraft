@@ -29,6 +29,14 @@ Forge requires network channel lists to match between client and server. Mods th
   - `kubejs/server_scripts/loot/lootjs_overhaul.js` (towerCurioPool removed; per-marquee pools added; ISS cap applied)
   - `datapack_sources/icraft_loot_overrides/data/apotheosis/loot_tables/chests/tome_tower.json` (Pool 3 artifact entries removed)
 
+### 5 elemental Apoth gems broken by duplicate `light_weapon` gem_class key (2026-05-18) — RESOLVED
+- **Status:** Resolved 2026-05-18.
+- **Reported:** Tester noted several Apotheosis gems display as `item.apotheosis.gem` (raw lang key) with no bonuses, though rarity (NBT-rolled) was retained.
+- **Confirmed:** Audit of the 11 elemental gems modified in commit `a54d4137` showed 5 had duplicate `gem_class.key="light_weapon"` entries (solar, lunar, guardian, blood_lord, inferno) — each gem's original Apotheosis definition already had a light_weapon bonus, and the morning's commit blindly appended a new spell_power bonus on the same key.
+- **Root cause:** Apotheosis's `Gem` constructor builds `bonusMap` via `Collectors.toMap(keyMapper, valueMapper)` (two-arg form). Two-arg `toMap` throws `IllegalStateException` on duplicate keys — the exception aborts gem data deserialization. The item still spawns (rarity comes from rolled NBT, not data definition) but the lang key doesn't resolve and bonuses are lost.
+- **Fix:** Collapsed solar/lunar/guardian/blood_lord's two `light_weapon` attribute bonuses into a single `apotheosis:multi_attribute` entry (same pattern blood_lord already used for `heavy_weapon`). Inferno's original light_weapon is `apotheosis:mob_effect` (can't merge into multi_attribute), so its spell_power bonus moved to `gem_class.key = "melee_weapon"` with sword+trident types — tooltip slot label reads "Melee Weapons" for spell_power on this gem only. Repacked `icraft_loot_overrides.zip` and deployed to all 3 distros.
+- **Lesson:** When extending an existing Apotheosis gem with a new bonus, audit the gem's existing `gem_class.key` values first. If the new bonus shares a key with an existing one: merge into `apotheosis:multi_attribute` (if both are attribute bonuses), use a different gem_class key (with appropriate types), or skip the new bonus. Add a JSON-validation step that fails the build on duplicate gem_class keys per gem.
+
 ### Blank-book chest filter stripping ~97% of legitimate enchanted books (2026-05-17) — RESOLVED
 - **Status:** Resolved 2026-05-17.
 - **Reported:** Tester opened multiple `apotheosis:chests/tome_tower` chests, never saw enchanted books despite the loot table having a weight-350 book entry (~3.4 books per chest expected at ~8.5 rolls). Same chests also never produced artifacts at the documented 8% rate.
