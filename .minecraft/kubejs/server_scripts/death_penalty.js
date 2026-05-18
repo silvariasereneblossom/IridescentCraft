@@ -115,7 +115,7 @@ EntityEvents.death(event => {
 
   // Helper: apply durability loss to one item
   function applyDurabilityLoss(stack, slotLossPct) {
-    if (stack.isEmpty) return
+    if (stack.isEmpty()) return
     if (!stack.isDamageableItem) return
 
     // Check Soulbound level on THIS item
@@ -327,7 +327,7 @@ function hasNativeBreakProtection(stack) {
 }
 
 function checkAndMarkBroken(stack) {
-  if (stack.isEmpty || !stack.isDamageableItem) return false
+  if (stack.isEmpty() || !stack.isDamageableItem) return false
   if (hasNativeBreakProtection(stack)) return false
   var threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
   if (stack.damageValue < stack.maxDamage - threshold) return false
@@ -406,7 +406,7 @@ global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
       ARMOR_SLOTS.forEach(function(slot) {
         try {
           var stack = player.getEquipment(slot)
-          if (!stack || stack.isEmpty || !stack.isDamageableItem) return
+          if (!stack || stack.isEmpty() || !stack.isDamageableItem) return
           if (hasNativeBreakProtection(stack)) return
           var maxDur = stack.maxDamage
           if (maxDur <= 0) return
@@ -504,7 +504,7 @@ global.registerPlayerTick('tick_durabilityFullSweep', 10, 0)
 // Prevent broken tools from mining
 BlockEvents.broken(event => {
   const heldItem = event.player.mainHandItem
-  if (!heldItem.isEmpty && heldItem.nbt && heldItem.nbt.getBoolean(BROKEN_TAG)) {
+  if (!heldItem.isEmpty() && heldItem.nbt && heldItem.nbt.getBoolean(BROKEN_TAG)) {
     event.cancel()
     event.player.tell(Text.gray('Your tool is broken and cannot mine. Repair it at an anvil.'))
   }
@@ -518,7 +518,7 @@ BlockEvents.broken(event => {
     var player = event.source.entity
     if (!(player instanceof PlayerClass_dpw)) return
     var weapon = player.mainHandItem
-    if (!weapon.isEmpty && weapon.nbt && weapon.nbt.getBoolean(BROKEN_TAG)) {
+    if (!weapon.isEmpty() && weapon.nbt && weapon.nbt.getBoolean(BROKEN_TAG)) {
       event.amount = 1.0
     }
   })
@@ -527,7 +527,7 @@ BlockEvents.broken(event => {
 // Prevent broken items from being used (right-click actions)
 ItemEvents.rightClicked(event => {
   const stack = event.item
-  if (!stack.isEmpty && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG)) {
+  if (!stack.isEmpty() && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG)) {
     event.cancel()
     event.player.tell(Text.gray('This item is broken. Repair it at an anvil.'))
   }
@@ -544,7 +544,7 @@ ItemEvents.rightClicked(event => {
 // durability > 0, it was repaired. Remove the tag.
 PlayerEvents.inventoryChanged(event => {
   const stack = event.item
-  if (!stack.isEmpty && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG)) {
+  if (!stack.isEmpty() && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG)) {
     let repairThreshold = Math.min(20, Math.floor(stack.maxDamage * 0.5))
     if (stack.damageValue < stack.maxDamage - repairThreshold) {
       // Item has been repaired past the inert threshold — remove broken tag

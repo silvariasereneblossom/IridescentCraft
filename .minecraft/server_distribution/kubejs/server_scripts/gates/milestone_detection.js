@@ -472,7 +472,7 @@ global.tick_tokenAutoConsume = (event) => {
     var total = 0
     for (var i = 0; i < player.inventory.size; i++) {
       var stack = player.inventory.getStackInSlot(i)
-      if (!stack.isEmpty && stack.id === fragment) {
+      if (!stack.isEmpty() && stack.id === fragment) {
         total += stack.count
       }
     }
@@ -482,7 +482,7 @@ global.tick_tokenAutoConsume = (event) => {
       var toRemove = TOKEN_THRESHOLD
       for (var j = 0; j < player.inventory.size && toRemove > 0; j++) {
         var stack2 = player.inventory.getStackInSlot(j)
-        if (!stack2.isEmpty && stack2.id === fragment) {
+        if (!stack2.isEmpty() && stack2.id === fragment) {
           var take = Math.min(stack2.count, toRemove)
           stack2.count -= take
           toRemove -= take
