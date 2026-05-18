@@ -1,31 +1,31 @@
-[01:04:44] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[01:04:44] [INIT] Loaded plugins:
-[01:04:44] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[01:04:44] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[01:04:44] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[01:04:44] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[01:04:44] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[01:04:44] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[01:04:44] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[01:04:44] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[01:04:44] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[01:04:44] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[01:04:44] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[01:04:44] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[01:04:44] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[01:04:44] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.06 s
-[01:04:44] [INFO] Loaded script startup_scripts:custom_items.js in 0.018 s
-[01:04:44] [INFO] Loaded script startup_scripts:endgame_items.js in 0.005 s
-[01:04:44] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
-[01:04:44] [INFO] Loaded script startup_scripts:example.js in 0.001 s
-[01:04:44] [INFO] Loaded script startup_scripts:hulk_hammer_durability.js in 0.01 s
-[01:04:44] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
-[01:04:44] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
-[01:04:44] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
-[01:04:44] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.001 s
-[01:04:44] [INFO] Loaded script startup_scripts:sigil_registry.js in 0.001 s
-[01:04:44] [INFO] Loaded 7/7 KubeJS startup scripts in 0.559 s with 0 errors and 0 warnings
-[01:04:44] [INFO] hulk_hammer_durability.js#35: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
-[01:04:44] [INFO] hulk_hammer_durability.js#36: Loaded Java class 'net.minecraft.resources.ResourceLocation'
-[01:04:44] [INFO] hulk_hammer_durability.js#37: Loaded Java class 'net.minecraft.world.item.Item'
-[01:04:44] [WARN] hulk_hammer_durability.js#51: [hulk_hammer] durability override FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:hulk_hammer_durability.js#45) -- fallback: ship a mixin in iridescent-tetra-expansion-mod
+[01:48:56] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[01:48:56] [INIT] Loaded plugins:
+[01:48:56] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[01:48:56] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[01:48:56] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[01:48:56] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[01:48:56] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[01:48:56] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[01:48:56] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[01:48:56] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[01:48:56] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[01:48:56] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[01:48:56] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[01:48:56] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[01:48:56] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[01:48:56] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.073 s
+[01:48:57] [INFO] Loaded script startup_scripts:custom_items.js in 0.015 s
+[01:48:57] [INFO] Loaded script startup_scripts:endgame_items.js in 0.006 s
+[01:48:57] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
+[01:48:57] [INFO] Loaded script startup_scripts:example.js in 0.001 s
+[01:48:57] [INFO] Loaded script startup_scripts:hulk_hammer_durability.js in 0.007 s
+[01:48:57] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
+[01:48:57] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
+[01:48:57] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
+[01:48:57] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.0 s
+[01:48:57] [INFO] Loaded script startup_scripts:sigil_registry.js in 0.001 s
+[01:48:57] [INFO] Loaded 7/7 KubeJS startup scripts in 0.595 s with 0 errors and 0 warnings
+[01:48:57] [INFO] hulk_hammer_durability.js#35: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
+[01:48:57] [INFO] hulk_hammer_durability.js#36: Loaded Java class 'net.minecraft.resources.ResourceLocation'
+[01:48:57] [INFO] hulk_hammer_durability.js#37: Loaded Java class 'net.minecraft.world.item.Item'
+[01:48:57] [WARN] hulk_hammer_durability.js#51: [hulk_hammer] durability override FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:hulk_hammer_durability.js#45) -- fallback: ship a mixin in iridescent-tetra-expansion-mod
