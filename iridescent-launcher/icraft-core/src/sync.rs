@@ -93,11 +93,28 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
 
     // Remote HEAD; failure here is non-fatal (offline / API down) — we
     // continue with whatever the install already has.
+    //
+    // 2026-05-18 fix: the soft-fail used to be just two warn lines, which
+    // are easy to miss in scrolling launcher output. When sync silently
+    // skips, the server starts with stale files on disk, and the user has
+    // no visible signal that the new commits they expected to deploy didn't
+    // actually deploy. Most common cause: GitHub unauth rate limit (60/hr
+    // per IP) drained by the pre-b3961cac dashboard polling. The token
+    // path (GITHUB_TOKEN env var, see github.rs auth_token()) raises the
+    // limit to 5000/hr; setting it is the durable fix.
+    //
+    // Make the silent-skip visible by escalating to error + an obvious
+    // banner so it scrolls past distinctively. The function still returns
+    // Ok so existing callers (serve() Phase 0) keep their soft-fail
+    // semantics; only the log noise level changes.
     let remote_sha = match github::head_sha(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, GITHUB_REPO_BRANCH) {
         Ok(s) => s,
         Err(e) => {
-            log::warn!("[sync] GitHub API unreachable: {e:#}");
-            log::warn!("[sync] continuing with existing files");
+            log::error!("[sync] !!! GitHub API HEAD fetch FAILED: {e:#}");
+            log::error!("[sync] !!! Sync SKIPPED -- server will start with files currently on disk.");
+            log::error!("[sync] !!! Most common cause: GitHub unauth rate limit (60/hr per IP).");
+            log::error!("[sync] !!! Set GITHUB_TOKEN env var to lift the limit to 5000/hr.");
+            log::error!("[sync] !!! Until then: wait ~1 hour for the bucket to reset before retrying.");
             return Ok(());
         }
     };
