@@ -1696,7 +1696,9 @@ The vanilla Apotheosis recipe was originally gated by `minecraft:dragon_breath`,
 
 **Use mechanic.** Sigil in main hand, gear in off hand, right-click: if current sockets < tier cap, increments by 1 and consumes the sigil; otherwise no-op with chat feedback explaining the cap. Implementation in `kubejs/server_scripts/sigil_socket_handler.js` — direct NBT manipulation at `affix_data.sockets` (CompoundTag API per `apotheosis_gem_repair.js` pattern). The vanilla smithing-table use path still works for the Apotheosis sigil.
 
-**Elemental gems → school spell power.** 11 of Apotheosis's 21 gems have clear elemental flavor and now grant ISS school-specific `*_spell_power` when socketed into a **magic weapon** (spell book, wand, staff — items in the `#icraft:magic_weapon` tag). Datapack overrides at `icraft_loot_overrides/data/apotheosis/gems/*.json`. All 11 carry a bonus on `gem_class.key = "magic_weapon"` (types `["magic_weapon"]`). Canonical sword/trident bonuses on these gems are preserved unchanged — socketing into a sword still gives the canonical effect.
+**Elemental gems → school spell power.** 11 of Apotheosis's 21 gems have clear elemental flavor and now grant ISS school-specific `*_spell_power` when socketed into a **magic weapon** (wands + staves only — items in the `#icraft:magic_weapon` tag). Datapack overrides at `icraft_loot_overrides/data/apotheosis/gems/*.json`. All 11 carry a bonus on `gem_class.key = "magic_weapon"` (types `["magic_weapon"]`). Canonical sword/trident bonuses on these gems are preserved unchanged — socketing into a sword still gives the canonical effect.
+
+> **Scope note (2026-05-18 evening):** The tag covers *main-hand cast-when-held* items only, NOT off-hand spellbook containers. ISS *spellbooks* (the 32 `irons_spellbooks:*_spell_book` items + iridescent_modular_spells variants) are deliberately excluded — they're curio/off-hand containers, not weapons. The tag holds 26 items: the Tetra-modular `iridescent_reforging:reforged_wand`, the 5 ISS staves (blood/graybeard/ice/pyrium/staff_of_the_nines), Dan's Magic's 5 T1 element staves (`dna:*_staff`), and Simple Staves' 15 wands (6 tier + 9 element). Mahou Tsukai's T4 ritual weapons are deferred — pack them into the tag when their progression is firmed up.
 
 > **The collision problem and how we solved it.** Apotheosis builds a `Map<LootCategory, GemBonus>` per gem via `Collectors.toMap` (two-arg form, which throws on duplicate keys). The map is keyed by **LootCategory** (e.g., `SWORD`, `TRIDENT`, `HEAVY_WEAPON`), not by `gem_class.key`. A gem JSON that adds a second bonus whose `gem_class.types` overlaps with an existing bonus's types fails to deserialize entirely — the gem disappears from the registry, and existing in-world stacks render as "Errored gem" with the fallback lang key `item.apotheosis.gem`.
 >
@@ -1749,7 +1751,15 @@ Existing gem bonuses (e.g., Solar's `fire_damage`, `gravity`, `step_height`) are
 
 **`magic_weapon` LootCategory (Path B, 2026-05-18 afternoon).** Registered at runtime by `kubejs/startup_scripts/magic_weapon_category.js`. Membership: items in the `#icraft:magic_weapon` item tag. Slots: MAINHAND + OFFHAND. The startup script is idempotent (re-running no-ops via `LootCategory.byId('magic_weapon') != null` guard).
 
-Items in `#icraft:magic_weapon`: all 16 ISS native spell books + all 15 iridescent_modular_spells variants + the unconfigured `iridescent_modular_spells:modular_spell_book` parent. 32 entries total. Ars Nouveau spell books deliberately not in the tag — Ars has its own Source/perk system and doesn't read ISS `*_spell_power` attributes. Extending the tag (e.g., for Mahou Tsukai foci or Forbidden Arcanus arcane wands) is a single-line edit to the tag JSON; no other plumbing.
+Items in `#icraft:magic_weapon` (26 total, wands + staves only — corrected 2026-05-18 evening; the earlier 32-spellbook list was off-design):
+
+- `iridescent_reforging:reforged_wand` — Tetra-modular wand (core/cap/handle/inlay slots, see §L.1)
+- ISS staves (5): `irons_spellbooks:blood_staff` / `graybeard_staff` / `ice_staff` / `pyrium_staff` / `staff_of_the_nines`
+- Dan's Magic T1 staves (5): `dna:ice_staff` / `lightning_staff` / `magma_staff` / `toxic_staff` / `tnt_staff`
+- Simple Staves tier wands (6): `simple_staves:woodenwand` / `stone_wand` / `iron_wand` / `gold_wand` / `diamond_wand` / `netherite_wand`
+- Simple Staves element wands (9): `flame_wand` / `wind_essence_wand` / `thunder_wand` / `venomite_wand` / `viritium_wand` / `veil_wand` / `void_wand` / `tenebrium_wand` / `explosion_wand`
+
+ISS *spellbooks* (off-hand curio containers, distinct from staves) are deliberately excluded — they hold spells but aren't main-hand cast weapons. Ars Nouveau spell books excluded too (uses Source/perk system, not ISS spell_power). Mahou Tsukai T4 ritual weapons deferred. Extending the tag for new items (e.g., Forbidden Arcanus arcane wands) is a single-line edit to the tag JSON; no other plumbing.
 
 **Path A → Path B switch rationale.** Path A (TYPE_OVERRIDES alias to `sword`) was originally chosen for lowest engineering cost, but it (a) couldn't differentiate spellbooks from swords in gem design, and (b) collided when we tried to add per-school spell-power bonuses on the `light_weapon` key for 6 of the 11 gems. The Path B fix (a tiny KubeJS startup script + an item tag + one lang file) eliminates both problems. Future gem additions get a dedicated mage slot with zero collision risk.
 
