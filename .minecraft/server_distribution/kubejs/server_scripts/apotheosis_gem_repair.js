@@ -1,17 +1,30 @@
 // =============================================================================
-// IridescentCraft — Apotheosis bare-gem auto-repair (bandaid)
+// IridescentCraft — Apotheosis errored-gem auto-repair
 // =============================================================================
-// Tester report 2026-05-09: gems from chest loot occasionally arrive as bare
-// `apotheosis:gem` stacks with no NBT — the item tooltip shows
+// Tester report 2026-05-09 (original): gems from chest loot occasionally arrive
+// as bare `apotheosis:gem` stacks with no NBT — tooltip reads
 //    "Errored gem with no bonus!"
-// because Apotheosis's GemItem.appendHoverText -> UnsocketedGem.of(stack)
-// returns isValid()=false when `tag.gem` is missing.
+// because GemItem.appendHoverText -> UnsocketedGem.of(stack) returns
+// isValid()=false when `tag.gem` is missing.
 //
-// Source not yet identified (world was created post-Apr 29's loot-table
-// cleanup, so it isn't legacy chest data). Until we trace the generator
-// that's emitting these, this script repairs them in-place: scans player
-// inventories every 3 seconds, and for any bare `apotheosis:gem` stack,
-// writes a random valid gem ID + common rarity into the NBT.
+// 2026-05-18 extension: the dup-key gem-deserialization bug (see
+// feedback_apoth_gem_extensions) produced errored gems in a SECOND way —
+// gems with `tag.gem` set to a valid ID but with missing/empty
+// `tag.affix_data` because Apotheosis's deserializer threw mid-stream,
+// writing partial NBT. These render identically to bare gems but
+// isBareGem's original check missed them.
+//
+// Also 2026-05-18: fixed two `stack.isEmpty` (no parens) traps that made
+// `isApothGem` always return false, silently disabling the inventory-tick
+// sweep entirely (the LootJS chest-load path was unaffected because it
+// used the parens form). Net effect: the inventory sweep has been broken
+// since the script was written; "errored gems are still errored" reports
+// were because the sweep never actually ran. Now it runs, and catches both
+// the bare-no-gem case AND the broken-affix-data case.
+//
+// Repair mechanism: scans player inventories every 3 seconds, and for any
+// errored `apotheosis:gem` stack, writes a random valid gem ID +
+// apotheosis:common rarity into the NBT.
 //
 // Apoth 1.20.1 NBT shape for a working gem stack (per Apotheosis source on
 // the 1.20 branch, GemItem.java + AffixHelper.setRarity):
@@ -63,19 +76,42 @@
   var CompoundTag_gr = Java.loadClass('net.minecraft.nbt.CompoundTag')
 
   function isApothGem(stack) {
-    if (!stack || stack.isEmpty) return false
+    // 2026-05-18 fix: stack.isEmpty (no parens) is a function-ref-always-truthy
+    // trap per feedback_kubejs_tooltip_api. Inventory sweep silently did nothing
+    // since this returned false for every stack. Use stack.isEmpty() (with parens).
+    if (!stack || stack.isEmpty()) return false
     return String(stack.item.id) === 'apotheosis:gem'
   }
 
-  // Bare = no NBT, OR has NBT but no `gem` key, OR `gem` key is empty.
-  // We don't try to validate that the gem ID is registered -- if the
-  // user has an unloaded mod gem, leave it alone (a future load might
-  // resolve it). The user complaint is specifically the no-NBT case.
+  // "Errored" gem detection:
+  //   (a) no NBT at all -> bare gem, never initialized
+  //   (b) NBT but no `gem` key -> bare gem, partial init
+  //   (c) `gem` key empty -> bare gem, partial init
+  //   (d) NBT has `gem` but no `affix_data` compound -> rolled during a
+  //       data-load failure (e.g., 2026-05-18 dup-key bug on elemental gems
+  //       broke the gem definition during Apotheosis deserialization and
+  //       partial NBT escaped into player inventories). Tooltip shows
+  //       "Errored gem with no bonus!" even though `gem` looks valid.
+  //   (e) `affix_data.rarity` missing or empty -> same scenario as (d).
+  //
+  // We don't try to validate that the gem ID is registered -- if the user
+  // has an unloaded mod gem, leave it alone. The repair targets gems that
+  // are STRUCTURALLY broken regardless of which gem ID they reference.
   function isBareGem(stack) {
     if (!stack.nbt) return true
     if (!stack.nbt.contains('gem')) return true
     var gemId = stack.nbt.getString('gem')
-    return !gemId || gemId === ''
+    if (!gemId || gemId === '') return true
+    // Extended (2026-05-18): also check affix_data validity. A gem with
+    // tag.gem set but no/empty affix_data renders "errored" identically
+    // to a missing-gem-field case. UnsocketedGem.of(stack).isValid()
+    // checks both the gem registry binding AND the affix-data rarity.
+    if (!stack.nbt.contains('affix_data')) return true
+    var affixData = stack.nbt.getCompound('affix_data')
+    if (!affixData.contains('rarity')) return true
+    var rarity = affixData.getString('rarity')
+    if (!rarity || rarity === '') return true
+    return false
   }
 
   function pickRandomGem() {
@@ -103,25 +139,46 @@
     } catch (_) { return '' }
   }
 
+  // Categorize WHY a gem stack is errored — useful for forensics and for
+  // the chat message the player sees.
+  function diagnoseGem(stack) {
+    if (!stack.nbt) return 'no-nbt'
+    if (!stack.nbt.contains('gem')) return 'no-gem-field'
+    var gemId = stack.nbt.getString('gem')
+    if (!gemId || gemId === '') return 'empty-gem-field'
+    if (!stack.nbt.contains('affix_data')) return 'no-affix-data (gem=' + gemId + ')'
+    var affixData = stack.nbt.getCompound('affix_data')
+    if (!affixData.contains('rarity')) return 'no-rarity (gem=' + gemId + ')'
+    var rarity = affixData.getString('rarity')
+    if (!rarity || rarity === '') return 'empty-rarity (gem=' + gemId + ')'
+    return 'unknown'
+  }
+
   function repairGem(stack, player, slotLabel) {
+    var reason = diagnoseGem(stack)
     var gemId = pickRandomGem()
-    if (!stack.nbt) stack.nbt = {}
+    if (!stack.nbt) stack.nbt = new CompoundTag_gr()
     stack.nbt.putString('gem', gemId)
     // Add affix_data compound with common rarity so GemInstance is fully
     // valid (not just isBound). Without rarity the gem might still
     // tooltip-render but fail to apply bonuses when socketed.
+    // 2026-05-18 fix: write 'apotheosis:common' (resource-location form) to
+    // match the loot-table-level repair path. Plain 'common' likely worked
+    // via default-namespace coercion but the prefixed form is canonical.
     var affixData = new CompoundTag_gr()
-    affixData.putString('rarity', 'common')
+    affixData.putString('rarity', 'apotheosis:common')
     stack.nbt.put('affix_data', affixData)
 
     var ctx = recentChestContext(player)
-    console.log('[gem-repair] bare apotheosis:gem in ' + slotLabel
+    console.log('[gem-repair] errored apotheosis:gem (' + reason + ') in '
+              + slotLabel
               + ' (player=' + player.username + ')'
               + ctx
               + ' -> ' + gemId)
     try {
-      player.tell(Text.gray('A bare gem in your ' + slotLabel
-                          + ' was auto-repaired to ' + gemId + ' (common).'))
+      player.tell(Text.gray('An errored gem in your ' + slotLabel
+                          + ' was auto-repaired to ' + gemId
+                          + ' (common). Reason: ' + reason + '.'))
     } catch (_) {}
   }
 
@@ -199,7 +256,9 @@
       // entity.item is the ItemStack the entity wraps.
       var stack
       try { stack = entity.item } catch (_) { return }
-      if (!stack || stack.isEmpty) return
+      // 2026-05-18 fix: stack.isEmpty (no parens) is function-ref-always-truthy;
+      // use stack.isEmpty() (with parens). Per feedback_kubejs_tooltip_api.
+      if (!stack || stack.isEmpty()) return
       if (String(stack.item.id) !== 'apotheosis:gem') return
       if (!isBareGem(stack)) return
 
@@ -316,5 +375,6 @@
   })
 
   console.log('[IridescentCraft] apotheosis_gem_repair loaded ('
-            + KNOWN_GEMS.length + ' fallback IDs, with inject-source trace + loot-table trace)')
+            + KNOWN_GEMS.length + ' fallback IDs; inventory-tick sweep + ItemEntity-spawn trace + LootJS-chest trace; '
+            + 'detects (a) bare no-NBT, (b) no/empty gem field, (c) missing affix_data, (d) missing/empty rarity)')
 })()
