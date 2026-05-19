@@ -4,6 +4,36 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-19 — Terramity curio survey: fortunes_favor + gaias_tempest re-routed
+
+Decompile of the 19 non-melee Terramity drops surfaced two miscategorizations from the morning's TYPE_OVERRIDES pass:
+
+- **`fortunes_favor`** was routed `helmet` on the assumption it was a head curio. Decompile showed it extends `Item implements GeoItem` (no ICurioItem) with a right-click gambling roll that fires different ammo per outcome (`dart_fire` / `suppressed_pistol_fire` / `large_pistol_fire` / `rifle_fire` / `shotgunfire` / `large_rifle_fire` / `antimatter_rifle_fire`). It's a gun. Re-routed to `bow` (sustained-fire shape, picks up rapid_fire affix pool).
+- **`gaias_tempest`** was routed `magic_weapon` on the assumption it was a tome. Decompile showed it's a 2-handed rocket launcher (`gaias_tempest_reload` / `rapidreload` sounds, custom `HumanoidModel.ArmPose`, `applyForgeHandTransform` for the held pose). Re-routed to `crossbow` (load/fire shape, picks up multishot/piercing affix pool).
+
+Survey also confirmed the actual curio effect magnitudes (logged for future tuning passes; only the speed bracelets are flagged as over-tier — already in known-issues tracker):
+
+| Item | Effect | Magnitude |
+|------|--------|-----------|
+| nyxs_necklace | +max_health on equip | +4 (4 hearts) |
+| sacred_speed_bracelets | +movement_speed on equip | +0.75 (~Speed VIII, see known-issues) |
+| electron_bracelets | +movement_speed on equip | +0.5 (~Speed V, see known-issues) |
+| dragon_band | outgoing damage when wearer attacks | x1.2 |
+| exodium_twin_bracelets | outgoing damage when wearer attacks | x1.2 |
+| exodium_shield_amulet | incoming damage when wearer hit | x0.8 |
+| angel_feather | incoming damage when wearer hit | x0.5 + pushback |
+| antimatter_pacemaker | revive (negate death event) | once-per-death |
+| null_scarf | applies MISPROGRAMMED effect on hit | flavor |
+| malediction_bracelets | 3 negative effects to nearby on kill | flavor |
+| antiprism | no behavior found (placeholder/decorative) | - |
+
+### Files
+
+- `.minecraft/config/apotheosis/adventure.cfg` — `fortunes_favor` helmet → bow; `gaias_tempest` magic_weapon → crossbow
+- Mirrored to distribution/client + server_distribution
+
+---
+
 ## 2026-05-19 — Terramity audit revisit closure: TYPE_OVERRIDES + weapon clamp
 
 Audit revisit on the Terramity ingot families and the 7 audit weapons.

@@ -391,11 +391,35 @@ LootCategories via `config/apotheosis/adventure.cfg` Equipment Type Overrides
 so the reforging table accepts them and sigil-of-socketing recipes apply.
 - 7 audit weapons (6 guns + unholy_lance) → sword (these extend Item, not SwordItem)
 - 5 ingot weapons (auto via SwordItem/AxeItem)
-- 7 tomes → magic_weapon (picks up 47 magic_weapon-typed affixes)
+- 6 tomes → magic_weapon (picks up 47 magic_weapon-typed affixes)
+- 2 ranged firearms (fortunes_favor → bow; gaias_tempest → crossbow) — both
+  initially mis-routed; decompile in the 2026-05-19 curio survey showed
+  these are GeoItem-rendered guns with reload mechanics, not curios/tomes.
 - 5 bracelets/bands → shield
 - 3 chest curios (necklaces/amulets/pacemaker) → chestplate
-- 3 head curios (null_scarf, fortunes_favor, antiprism) → helmet
+- 2 head curios (null_scarf, antiprism) → helmet
 - 1 boots curio (angel_feather) → boots
+
+### C.10b.1 Terramity curio effect catalog (2026-05-19 survey)
+
+Decompile-confirmed effect magnitudes for the 11 worn curios. Values logged
+for future tuning; current state is shipped as-is except for the two speed
+bracelets which are flagged in known-issues/tracker.md as setBaseValue
+proc-trap items pending a post-cutover mixin pass.
+
+| Item | Effect | Magnitude |
+|------|--------|-----------|
+| nyxs_necklace | +max_health (Forge attribute permanent) | +4 (4 hearts) |
+| sacred_speed_bracelets | +movement_speed (mcreator setBaseValue proc) | +0.75 (~Speed VIII) |
+| electron_bracelets | +movement_speed (mcreator setBaseValue proc) | +0.5 (~Speed V) |
+| dragon_band | outgoing damage on LivingHurtEvent | x1.2 (+20%) |
+| exodium_twin_bracelets | outgoing damage on LivingHurtEvent | x1.2 (+20%) |
+| exodium_shield_amulet | incoming damage on LivingHurtEvent | x0.8 (-20%) |
+| angel_feather | incoming damage + pushback attacker | x0.5 (-50%) / -0.5 Y velocity |
+| antimatter_pacemaker | revive (sets death amount to -1.0f) | once per death |
+| null_scarf | applies MISPROGRAMMED effect (custom) | flavor / particle / sound |
+| malediction_bracelets | 3 MobEffectInstances applied on wearer-kill | flavor / curse |
+| antiprism | (plain Item, no proc class registered) | placeholder / decorative |
 
 ### C.10c Terramity weapon clamp (audit 2026-05-19)
 
