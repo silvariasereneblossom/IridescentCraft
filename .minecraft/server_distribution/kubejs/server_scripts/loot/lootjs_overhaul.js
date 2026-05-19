@@ -2929,6 +2929,21 @@ LootJS.modifiers(event => {
   // SECTION 9: ENABLE LOGGING (remove in production)
   // =========================================================================
 
+  // -------------------------------------------------------------------------
+  // SIMPLY SWORDS UNIQUE STRIP — chest tables only
+  // -------------------------------------------------------------------------
+  // Wiki §IX: "Simply Swords is the unique trophy-weapon system. 42 named
+  // uniques, all boss-drop only. Unique-weapon recipes are stripped."
+  // SS ships a global loot modifier that injects uniques into vanilla/modded
+  // chest pools. We strip the @simplyswords namespace from any loot table
+  // whose path contains "chests/" so uniques only come from the per-boss
+  // entries in loot_overhaul.js (Naga -> Tempest, Lich -> Soulrender, etc.).
+  // Entity loot tables (entities/<mob>) are unaffected — boss allocations
+  // keep working.
+  event
+    .addLootTableModifier(/chests\//)
+    .removeLoot('@simplyswords')
+
   // event.enableLogging()
 
   console.log('[IridescentCraft] LootJS structure chest overhaul loaded')
