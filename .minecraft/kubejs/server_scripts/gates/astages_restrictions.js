@@ -220,8 +220,10 @@ ServerEvents.loaded(event => {
     'minecraft:diamond_leggings', 'minecraft:diamond_boots',
     'minecraft:diamond_horse_armor',
     'minecraft:diamond_ore', 'minecraft:deepslate_diamond_ore',
-    // Items crafted from diamond
-    'minecraft:enchanting_table',
+    // (enchanting_table removed from T3 2026-05-19: the recipe override in
+    // tier_gated_recipes.js §A.2 rebuilt it from gold + deepslate + apoth
+    // gem, so it's T1-craftable now. Stale gate was blocking found-in-world
+    // tables from being usable until T3.)
     // Nether materials (Nether is T3)
     'minecraft:ancient_debris',
     'minecraft:respawn_anchor',
