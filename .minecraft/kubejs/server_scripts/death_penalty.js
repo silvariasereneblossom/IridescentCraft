@@ -191,7 +191,7 @@ EntityEvents.death(event => {
     // is the design choice from 2026-05-09 -- Unbreaking
     // proportionally reduces post-cap damage, stacking
     // multiplicatively with Soulbound.
-    let inertThreshold = Math.min(100, Math.floor(maxDur * 0.5))
+    let inertThreshold = INERT_THRESHOLD
     let inertCeiling = maxDur - inertThreshold
     let preDamage = stack.damageValue
     let allowedLoss = Math.max(0, inertCeiling - preDamage)
@@ -305,9 +305,20 @@ ItemEvents.canPickUp(event => {
 // damage to a piece (Apotheosis affixes, Cataclysm bursts, Mahou Tsukai
 // effects can do this) crosses from "safe" past maxDamage in one frame —
 // our 2-tick poll arrives after the item is already destroyed.
-// Bumped to 100 — covers any reasonable single-hit durability burst, while
-// still letting players use most of an item's durability before going inert.
-const INERT_THRESHOLD = 100
+// Originally bumped to 100 to give a generous tick-poll buffer.
+//
+// 2026-05-19: lowered to 1, mirroring Tetra's modular-item clamp at
+// maxDamage-1 (the "1 dura remaining" inert state). The 100-buffer made
+// armor go inert at HALF durability for any item with maxDamage >= 200
+// and earlier for shorter-life items, which surprised testers with
+// `apotheosis:durable` rolls who expected their gear to live longer.
+// The ItemStackHurtAndBreakMixin already pins single-hit damage at
+// maxDamage-1 synchronously inside vanilla's hurtAndBreak (see
+// iridescent-durability-clamp mod), so a 1-buffer is safe against
+// burst damage too — the mixin catches the burst, the script's
+// 2-tick poll catches anything the mixin didn't (none in practice,
+// but kept as belt-and-suspenders).
+const INERT_THRESHOLD = 1
 
 // Mods that already have native "broken but in inventory" handling. Our
 // clamp + icraft_broken tag would collide with their own damaged-beyond-
@@ -329,7 +340,11 @@ function hasNativeBreakProtection(stack) {
 function checkAndMarkBroken(stack) {
   if (stack.isEmpty() || !stack.isDamageableItem()) return false
   if (hasNativeBreakProtection(stack)) return false
-  var threshold = Math.min(INERT_THRESHOLD, Math.floor(stack.maxDamage * 0.5))
+  // 2026-05-19: was Math.min(INERT_THRESHOLD, floor(max * 0.5)). The
+  // half-max safety clamp was pinning long-life armor (e.g. maxDamage 200+)
+  // at half durability, which hid the `apotheosis:durable` affix's benefit.
+  // Now mirrors Tetra: pin at maxDamage - 1 = 1 dura remaining.
+  var threshold = INERT_THRESHOLD
   if (stack.damageValue < stack.maxDamage - threshold) return false
 
   // Past threshold -- clamp AND (re-)mark broken.
@@ -410,7 +425,7 @@ global.registerPlayerTick('tick_deathPenaltyBrokenCheck', 2, 0)
           if (hasNativeBreakProtection(stack)) return
           var maxDur = stack.maxDamage
           if (maxDur <= 0) return
-          var threshold = Math.min(INERT_THRESHOLD, Math.floor(maxDur * 0.5))
+          var threshold = INERT_THRESHOLD
           var clampPos = maxDur - threshold
           if (stack.damageValue + perPiece >= clampPos) {
             var safe = Math.max(0, clampPos - perPiece)
@@ -545,7 +560,10 @@ ItemEvents.rightClicked(event => {
 PlayerEvents.inventoryChanged(event => {
   const stack = event.item
   if (!stack.isEmpty() && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG) && stack.isDamageableItem()) {
-    let repairThreshold = Math.min(20, Math.floor(stack.maxDamage * 0.5))
+    // Small repair buffer — once damageValue dips at least 5 below the
+    // pin point (maxDamage - INERT_THRESHOLD), the player has visibly
+    // repaired the item, so clear the broken tag.
+    let repairThreshold = INERT_THRESHOLD + 5
     if (stack.damageValue < stack.maxDamage - repairThreshold) {
       // Item has been repaired past the inert threshold — remove broken tag
       stack.nbt.remove(BROKEN_TAG)
