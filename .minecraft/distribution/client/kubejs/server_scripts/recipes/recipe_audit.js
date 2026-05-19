@@ -129,12 +129,16 @@ ServerEvents.recipes(event => {
   event.remove({ type: 'occultism:spirit_trade', output: 'minecraft:diamond' })
   event.remove({ type: 'occultism:spirit_trade', output: 'minecraft:emerald' })
 
-  // E.4: Occultism Ritual — dimensional miners that bypass ore removal
-  // Dimensional miners are the main Occultism exploit vector.
-  // The miner spirits produce ores based on the dimension they're in.
-  // This is config-based (occultism miner recipes in data/occultism/recipes/miners/)
-  // and should be handled via datapack overrides, not KubeJS.
-  // NOTE: Verify icraft_occultism_overrides datapack handles this.
+  // E.4: Occultism Ritual — dimensional miners that bypass ore removal.
+  // Handled via the icraft_occultism_overrides datapack:
+  //   datapack_sources/icraft_occultism_overrides/data/occultism/recipes/miner/ores/
+  // Restricts diamond/emerald/arcane_crystal/osmium/nether_quartz/nether_gold/
+  // xpetrified_ore from the `ores` ingredient tag (Foliot+ accessible) to the
+  // `deeps` tag (T3+ Afrit/Marid only). Dimensional_shard_ore is gated to
+  // `master` (T4 Marid only). This closes the audit's P0 finding from
+  // 2026-04-27 — without this datapack a Foliot Miner could produce diamond
+  // (weight 218) without any tier gating. See audits/occultism.md in the
+  // IridescentCraft-internal repo (contributors only).
 
   // E.5: Botania Orechid — already handled via datapack (see tier_gated_recipes.js)
   // The Orechid transforms stone into ores based on weighted tables.
@@ -293,8 +297,105 @@ ServerEvents.recipes(event => {
     'terramity:gundalfs_hat_helmet',
   ].forEach(id => event.remove({ output: id }))
 
+  // I.3: Terramity non-gun EPIC content — recipe removal
+  // (audit Phase 4.1, 2026-04-27 — closes the audit's "non-gun curios + melee
+  // weapons completely ungated" finding. The original Section I covered only
+  // guns + gun-armor; this sub-block covers melee weapons + curios that ALSO
+  // don't fit the pack's RPG progression at low tiers. Recipes removed; loot
+  // allocation in loot/terramity_boss_drops.js.)
+  ;[
+    // 7 EPIC non-gun melee weapons (boss-themed; allocated to T3-T4 bosses)
+    'terramity:blasphemic_rapture', 'terramity:unholy_lance',
+    'terramity:davy_jones', 'terramity:olympus',
+    'terramity:divine_intervention', 'terramity:planet_buster',
+    'terramity:kamehameha',
+    // 8 EPIC curios (out-of-tier-range +stat / proc accessories)
+    'terramity:antimatter_pacemaker', 'terramity:nyxs_necklace',
+    'terramity:antiprism', 'terramity:null_scarf',
+    'terramity:dragon_band', 'terramity:sacred_speed_bracelets',
+    'terramity:angel_feather', 'terramity:fortunes_favor',
+  ].forEach(id => event.remove({ output: id }))
+
   // NOTE: Terramity has no custom enchantments in the enchantment registry.
   // "enchanter_merlin" is a boss mob entity, not an enchantment — kept.
+
+  // I.4: Terramity ingot families — full recipe strip (2026-05-19 user call)
+  // Three EPIC-rarity ingots (`nyxium`, `exodium_superalloy`, `reverium`) feed
+  // armor sets (already stripped in I.2), tools, weapons, curios, and
+  // decorative blocks. The armor recipes were the only previously-gated
+  // outputs; the rest were freely craftable from the ingots, which created
+  // a parallel material progression that competed with our Tetra / iron /
+  // mod-canonical material tiers.
+  //
+  // This block removes recipes for:
+  //   1) the 3 ingots themselves (any smelt/craft path that produces them)
+  //   2) all decorative blocks (block / brick / panelling / plating / tile /
+  //      glass variants — 17 from nyxium, 1 each from exodium + reverium)
+  //   3) all tools (axe/pickaxe/shovel/hoe across all 3 families)
+  //   4) the 7 weapons + curios we want as STRUCTURE DROPS only — recipes
+  //      removed here, drops added in `loot/terramity_structure_drops.js`:
+  //        Nyxium (T4): nyxium_greatsword
+  //        Exodium (T3): exodium_sword, exodium_waraxe,
+  //                      exodium_twin_bracelets, exodium_shield_amulet
+  //        Reverium (T3): reverium_sword, reverium_axe
+  //
+  // Items NOT removed: the 4 armor sets per family are in I.2 above.
+  ;[
+    // === Nyxium family (23 outputs, ingot + tools + decorative + greatsword) ===
+    'terramity:nyxium',
+    'terramity:nyxium_axe', 'terramity:nyxium_hoe',
+    'terramity:nyxium_pickaxe', 'terramity:nyxium_shovel',
+    'terramity:nyxium_greatsword',
+    'terramity:nyxium_block', 'terramity:nyxium_glass',
+    'terramity:nyxium_bricks', 'terramity:nyxium_brick_slab',
+    'terramity:nyxium_brick_stairs', 'terramity:nyxium_brick_wall',
+    'terramity:nyxium_panelling', 'terramity:nyxium_panelling_slab',
+    'terramity:nyxium_panelling_stairs', 'terramity:nyxium_panelling_wall',
+    'terramity:chiseled_nyxium_panelling',
+    'terramity:nyxium_plating', 'terramity:nyxium_plating_slab',
+    'terramity:nyxium_plating_stairs',
+    'terramity:nyxium_tiles', 'terramity:nyxium_tile_slab',
+    'terramity:nyxium_tile_stairs',
+    // === Exodium family (10 outputs) ===
+    'terramity:exodium_superalloy',
+    'terramity:exodium_block',
+    'terramity:exodium_pickaxe', 'terramity:exodium_shovel',
+    'terramity:exodium_hoe',
+    'terramity:exodium_sword', 'terramity:exodium_waraxe',
+    'terramity:exodium_twin_bracelets', 'terramity:exodium_shield_amulet',
+    // === Reverium family (7 outputs) ===
+    'terramity:reverium',
+    'terramity:reverium_block',
+    'terramity:reverium_axe', 'terramity:reverium_hoe',
+    'terramity:reverium_pickaxe', 'terramity:reverium_shovel',
+    'terramity:reverium_sword',
+  ].forEach(id => event.remove({ output: id }))
+
+  // I.5: Terramity RARE tomes + bracelets — recipe strip, structure drops
+  // 9 RARE items the audit flagged as "ungated proc-modifying items":
+  // 7 utility tomes + 2 curio bracelets. Each is a stat or action modifier.
+  // Cosmetic music sheets (14), reagents (iridium/occult_fabric/prismatic_jewel
+  // /warden_soul), fairy bottles, and ISS compat empty_spell_tome are LEFT
+  // ALONE — mod's natural balance fits the pack.
+  //
+  // Tier reasoning:
+  //   T2 (basic mobility/utility): tome_of_commotion (knockback proc),
+  //     galebounce_tome, velocity_flip, dimensional_poof (cosmetic teleport)
+  //   T3 (powerful action mods): tome_of_ascension (mobility chain),
+  //     guardian_grimoire, gaias_tempest (storm proc)
+  //   T3 (curio bracelets): electron_bracelets, malediction_bracelets
+  //
+  // Drop allocations are in `loot/terramity_structure_drops.js` below.
+  ;[
+    // T2 tomes
+    'terramity:tome_of_commotion', 'terramity:galebounce_tome',
+    'terramity:velocity_flip', 'terramity:dimensional_poof',
+    // T3 tomes
+    'terramity:tome_of_ascension', 'terramity:guardian_grimoire',
+    'terramity:gaias_tempest',
+    // T3 bracelets
+    'terramity:electron_bracelets', 'terramity:malediction_bracelets',
+  ].forEach(id => event.remove({ output: id }))
 
 
 
@@ -313,6 +414,14 @@ ServerEvents.recipes(event => {
   event.remove({ id: 'mekanism:refined_obsidian_leggings' })
   event.remove({ id: 'mekanism:refined_obsidian_boots' })
 
+  // J.3: Cataclysm Mechanical Fusion Anvil — design decision (locked-in #2,
+  // 2026-04-27): merge with our existing void_forge/infernal_forge crafting
+  // stations to avoid triple-overlap of T4 crafting blocks. The cataclysm
+  // mod's mechanical_fusion_anvil duplicates functionality already covered
+  // by void_forge (Ender Guardian) and infernal_forge (Ignis). Removing the
+  // recipe + add to T4 stage list as defense against creative leak.
+  event.remove({ output: 'cataclysm:mechanical_fusion_anvil' })
+
 
 
   // ═══ SECTION K: THE ABYSS — RING RECIPE REMOVAL ═══
@@ -329,7 +438,7 @@ ServerEvents.recipes(event => {
   // K.3: Individual ring removal belt-and-suspenders (in case regex misses any)
   ;[
     'theabyss:ring_of_fire', 'theabyss:ring_of_speed', 'theabyss:ring_of_flight',
-    'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghost',
+    'theabyss:ring_of_teleport', 'theabyss:ring_of_time', 'theabyss:ring_of_ghosts',
     'theabyss:ring_of_slide', 'theabyss:ring_of_thunder', 'theabyss:ring_of_freeze',
     'theabyss:ring_of_blackstrike', 'theabyss:ring_of_curse', 'theabyss:ring_of_eagle',
     'theabyss:ring_of_electro', 'theabyss:ring_of_enderchest', 'theabyss:ring_of_fangs',
