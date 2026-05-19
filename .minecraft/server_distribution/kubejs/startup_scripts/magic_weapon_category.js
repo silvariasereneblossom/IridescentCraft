@@ -50,29 +50,33 @@
     // Hardcoded membership: 26 wands + staves. Keep in sync with
     // .minecraft/wiki/design/master-appendix.md §M.4 and the tag file at
     // kubejs/data/icraft/tags/items/magic_weapon.json.
-    var MAGIC_WEAPON_IDS = new java.util.HashSet()
-    var IDS = [
+    //
+    // KubeJS 6 removed the `new java.util.X(...)` constructor pattern
+    // (the old `java()` form, kubejs.com/kjs6), so we use a plain JS
+    // object as a hash set rather than java.util.HashSet. Object.create
+    // also stripped — bare object literal does the job and Rhino's
+    // property lookup is fine for a 26-entry set.
+    var MAGIC_WEAPON_IDS = {
         // Iridescent Reforging Tetra-modular wand
-        'iridescent_reforging:reforged_wand',
+        'iridescent_reforging:reforged_wand': 1,
         // Dan's Magic T1 element staves
-        'dna:ice_staff', 'dna:lightning_staff', 'dna:magma_staff',
-        'dna:toxic_staff', 'dna:tnt_staff',
+        'dna:ice_staff': 1, 'dna:lightning_staff': 1, 'dna:magma_staff': 1,
+        'dna:toxic_staff': 1, 'dna:tnt_staff': 1,
         // Iron's Spellbooks named staves (NOT the spellbook curio items)
-        'irons_spellbooks:blood_staff', 'irons_spellbooks:graybeard_staff',
-        'irons_spellbooks:ice_staff', 'irons_spellbooks:pyrium_staff',
-        'irons_spellbooks:staff_of_the_nines',
+        'irons_spellbooks:blood_staff': 1, 'irons_spellbooks:graybeard_staff': 1,
+        'irons_spellbooks:ice_staff': 1, 'irons_spellbooks:pyrium_staff': 1,
+        'irons_spellbooks:staff_of_the_nines': 1,
         // Simple Staves tier wands
-        'simple_staves:woodenwand', 'simple_staves:stone_wand',
-        'simple_staves:iron_wand', 'simple_staves:gold_wand',
-        'simple_staves:diamond_wand', 'simple_staves:netherite_wand',
+        'simple_staves:woodenwand': 1, 'simple_staves:stone_wand': 1,
+        'simple_staves:iron_wand': 1, 'simple_staves:gold_wand': 1,
+        'simple_staves:diamond_wand': 1, 'simple_staves:netherite_wand': 1,
         // Simple Staves element wands
-        'simple_staves:flame_wand', 'simple_staves:wind_essence_wand',
-        'simple_staves:thunder_wand', 'simple_staves:venomite_wand',
-        'simple_staves:viritium_wand', 'simple_staves:veil_wand',
-        'simple_staves:void_wand', 'simple_staves:tenebrium_wand',
-        'simple_staves:explosion_wand'
-    ]
-    for (var k = 0; k < IDS.length; k++) MAGIC_WEAPON_IDS.add(IDS[k])
+        'simple_staves:flame_wand': 1, 'simple_staves:wind_essence_wand': 1,
+        'simple_staves:thunder_wand': 1, 'simple_staves:venomite_wand': 1,
+        'simple_staves:viritium_wand': 1, 'simple_staves:veil_wand': 1,
+        'simple_staves:void_wand': 1, 'simple_staves:tenebrium_wand': 1,
+        'simple_staves:explosion_wand': 1
+    }
 
     // Predicate: stack's item ID is in the hardcoded set.
     var predicate = function (stack) {
@@ -80,7 +84,7 @@
             if (stack == null || stack.isEmpty()) return false
             var key = ForgeRegistries.ITEMS.getKey(stack.getItem())
             if (key == null) return false
-            return MAGIC_WEAPON_IDS.contains(key.toString())
+            return MAGIC_WEAPON_IDS[key.toString()] === 1
         } catch (_) {
             return false
         }
