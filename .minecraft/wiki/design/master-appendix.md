@@ -1730,7 +1730,8 @@ The vanilla Apotheosis recipe was originally gated by `minecraft:dragon_breath`,
 | endersurge | the_end | Ender | `irons_spellbooks:ender_spell_power` |
 | earth | overworld | Nature | `irons_spellbooks:nature_spell_power` |
 | forest | twilight | Nature | `irons_spellbooks:nature_spell_power` (Twilight-locked) |
-| guardian | core | Eldritch | `irons_spellbooks:eldritch_spell_power` (thematic stretch — guardian = anti-eldritch protection inverted) |
+| tyrannical | core | Eldritch | `irons_spellbooks:eldritch_spell_power` (moved from Guardian 2026-05-19 — tyranny + cosmic dread is a closer fit) |
+| guardian | core | (no school) | Mystic-Ward-flavor magic damage reduction on chestplate (2.5-10% across rarities; non-stacking via `unique:true` + chestplate-only slot) |
 | splendor | core | Holy | `irons_spellbooks:holy_spell_power` |
 | queen | twilight | Evocation | `irons_spellbooks:evocation_spell_power` |
 
