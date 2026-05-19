@@ -4,6 +4,38 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-19 — Terramity audit revisit closure: TYPE_OVERRIDES + weapon clamp
+
+Audit revisit on the Terramity ingot families and the 7 audit weapons.
+
+**Wiring (config/apotheosis/adventure.cfg "Equipment Type Overrides")** — 26 Terramity items routed to LootCategories so the reforging table and sigil-of-socketing recipe accept them:
+- 7 audit weapons (6 guns + unholy_lance) -> `sword` (these extend Item, not SwordItem, so they need explicit routing)
+- 7 tomes (tome_of_commotion / tome_of_ascension / galebounce_tome / dimensional_poof / velocity_flip / guardian_grimoire / gaias_tempest) -> `magic_weapon` (picks up the 47 magic_weapon-typed affixes from icraft_apotheosis_affixes)
+- 5 bracelets/bands (sacred_speed / electron / malediction / exodium_twin / dragon_band) -> `shield`
+- 3 chest curios (nyxs_necklace / exodium_shield_amulet / antimatter_pacemaker) -> `chestplate`
+- 3 head curios (null_scarf / fortunes_favor / antiprism) -> `helmet`
+- 1 boots curio (angel_feather) -> `boots`
+
+The 5 ingot-family melee weapons (nyxium_greatsword, exodium_sword/waraxe, reverium_sword/axe) auto-categorize via SwordItem/AxeItem subclass.
+
+**Weapon clamp (kubejs/startup_scripts/terramity_weapon_durability.js)** — reflection on `Item.maxDamage` to set all 12 Terramity weapons to 2500 durability. Native values were 8124 (ingot weapons, 4x netherite), 16256 (6 guns, 8x netherite), 50000 (unholy_lance, 24x netherite) — making the reforging table cheaper than re-running the structure.
+
+**Damage clamp (kubejs/server_scripts/terramity_weapon_attributes.js)** — ItemAttributeModifierEvent strips native attack damage + speed on exodium_waraxe and reverium_axe and re-adds a clamped value. Both had Tier.getAttackDamageBonus = 14/12 vs vanilla netherite axe = 7. Clamped to tier-bonus 8 (displayed +14, vs netherite +9). The swords (tier-bonus 7-9.5) and other axes weren't outliers and were left alone.
+
+Why this matters: T3/T4 Terramity drops were either too brittle (none) or too powerful (all 12 above netherite), and the reforging/socketing path was silently rejecting them because Apoth's LootCategory.forItem returned NONE for non-SwordItem/AxeItem subclasses. Both gaps closed.
+
+Three known post-cutover tuning items documented in IridescentCraft-internal audits/FIX_PLAN.md sec 4.1+: SacredSpeedBracelets +0.75 movement_speed (setBaseValue in mcreator proc, not ItemAttributeModifierEvent hookable; needs mixin), ElectronBracelets +0.5 movement_speed (same shape), harvest level 6 on nyxium_greatsword + exodium_waraxe (Tier inner class, needs mixin).
+
+### Files
+
+- `.minecraft/config/apotheosis/adventure.cfg` — 26 TYPE_OVERRIDES entries appended
+- `.minecraft/kubejs/startup_scripts/terramity_weapon_durability.js` — NEW, 12-item durability clamp
+- `.minecraft/kubejs/server_scripts/terramity_weapon_attributes.js` — NEW, 2-axe damage clamp
+- Mirrored to distribution/client + server_distribution
+- IridescentCraft-internal/audits/FIX_PLAN.md — sec 4.1+ closure record + post-cutover tuning items
+
+---
+
 ## 2026-05-18 (Path B switch) — Elemental Apoth gems: dedicated `magic_weapon` LootCategory replaces TYPE_OVERRIDES alias
 
 Replaced the morning's Path A approach (TYPE_OVERRIDES typing 32 spellbooks as `sword`) with Path B (a dedicated `magic_weapon` LootCategory). Path A was failing for 6 of the 11 elemental gems (earth, inferno, forest, splendor, endersurge, queen) because their canonical bonuses already cover sword or trident — Apotheosis's `Collectors.toMap` (two-arg form) on `Map<LootCategory, GemBonus>` threw `IllegalStateException` on the duplicate key, removing those 6 gems from the registry entirely. In-world stacks of those gems rendered as "Errored gem" with the fallback lang key `item.apotheosis.gem` despite having valid NBT.

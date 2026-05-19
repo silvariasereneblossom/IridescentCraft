@@ -14,6 +14,18 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Terramity speed-bracelet + harvest-level outliers (2026-05-19) — DEFERRED to post-cutover
+
+- **SacredSpeedBracelets** (T3 EPIC): +0.75 movement_speed (~Speed VIII permanent)
+- **ElectronBracelets** (T2/T3 RARE): +0.5 movement_speed (~Speed V permanent)
+- **NyxiumGreatsword + ExodiumWaraxe**: harvest level 6 (mines anything)
+
+Both speed bracelets use `AttributeInstance.setBaseValue()` in mcreator-generated equipped procedures, NOT a getAttributeModifiers override. ItemAttributeModifierEvent does not intercept setBaseValue. The harvest level lives on a Tier inner class hardcoded in the item's anonymous subclass.
+
+**Fix path:** mixin into the procedure's `execute()` to clamp the added value (or rewrite via ICurioItem-implementing Forge attribute), plus a mixin into the item's `getTier()` for harvest. Belongs in iridescent-tetra-expansion-mod. Not gating cutover; the items are appropriately rare. Drop rates kept modest (4-8%) until fix lands.
+
+**Affected items:** `terramity:sacred_speed_bracelets`, `terramity:electron_bracelets`, `terramity:nyxium_greatsword`, `terramity:exodium_waraxe`.
+
 ### Marquee structure thematic pool migration (2026-05-17) — IN PROGRESS
 - **Status:** Doctrine + 14-marquee roster + per-structure item lists locked in master.md Part XIII and master-appendix.md §N. Code implementation in flight.
 - **Goal:** Migrate from pure-dimensional curio injection to a hybrid model. 14 marquee structures receive themed pools at a 70% themed / 30% baseline split inside the tier's combined rate. Eliminates the towerCurioPool 40%-overshoot bug and the tome_tower datapack Pool 3 duplicate-pool issue.

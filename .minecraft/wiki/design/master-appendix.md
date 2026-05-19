@@ -357,6 +357,59 @@ Cross-mod injection of Mahou reagents:
 - `planet_buster` → Ender Dragon (T4 cosmic) @ 15%
 - `kamehameha` → Ancient Remnant (T4 placeholder until Mythic Forge recipe) @ 5%
 
+### C.10a Terramity ingot-family weapons + curios (`loot/terramity_structure_drops.js`, audit 2026-05-19)
+
+Audit revisit: 3 ingot families (nyxium / exodium / reverium) cut from sourcing
+entirely (40 items removed in recipe_audit.js I.4). The 5 ingot-family weapons
+and 10 curios that previously needed those ingots reappear as T3/T4 drops:
+
+**T3 Exodium (warlock theme) → Nether structures**
+- chthonic_dungeon: exodium_sword 8%, exodium_waraxe 6%, exodium_twin_bracelets 8%, exodium_shield_amulet 6%, tome_of_ascension 8%, guardian_grimoire 8%
+- chthonian_breach: exodium_sword 8%, exodium_waraxe 8%, exodium_twin_bracelets 10%, gaias_tempest 8%, tome_of_ascension 8%
+
+**T3 Reverium (paladin / anti-undead) → underground structures**
+- catacombs: reverium_sword 10%, reverium_axe 8%, angel_feather 8%, guardian_grimoire 10%, malediction_bracelets 8%
+- subterranean_shrine: reverium_sword 10%, reverium_axe 10%, sacred_speed_bracelets 8%, angel_feather 10%, electron_bracelets 8%, malediction_bracelets 8%
+- overgrown_facility: fortunes_favor 10%, electron_bracelets 8%
+
+**T2 tomes → T2 Terramity structures**
+- fire_lookout_tower: tome_of_commotion 10%, galebounce_tome 10%, velocity_flip 8%
+- suspicious_shrine: tome_of_commotion 8%, dimensional_poof 8%, galebounce_tome 8%
+- mudhut: velocity_flip 10%, dimensional_poof 10%
+
+**T4 Nyxium (knight + cosmic-purple) → T4 boss drops**
+Originally allocated to infested_lab + ancient_outcrop (both overworld despite
+late-game loot — T1-accessible by dimension alone). Moved to T4 bosses:
+- cataclysm:netherite_monstrosity: nyxium_greatsword 15%, nyxs_necklace 10%
+- cataclysm:ender_guardian: antimatter_pacemaker 10%, null_scarf 12%
+- minecraft:ender_dragon: antiprism 10%, dragon_band 12%
+
+### C.10b Terramity reforging + socketing wiring (audit 2026-05-19)
+
+All 26 Terramity drops (12 weapons + 14 curios/tomes) routed to Apoth
+LootCategories via `config/apotheosis/adventure.cfg` Equipment Type Overrides
+so the reforging table accepts them and sigil-of-socketing recipes apply.
+- 7 audit weapons (6 guns + unholy_lance) → sword (these extend Item, not SwordItem)
+- 5 ingot weapons (auto via SwordItem/AxeItem)
+- 7 tomes → magic_weapon (picks up 47 magic_weapon-typed affixes)
+- 5 bracelets/bands → shield
+- 3 chest curios (necklaces/amulets/pacemaker) → chestplate
+- 3 head curios (null_scarf, fortunes_favor, antiprism) → helmet
+- 1 boots curio (angel_feather) → boots
+
+### C.10c Terramity weapon clamp (audit 2026-05-19)
+
+`kubejs/startup_scripts/terramity_weapon_durability.js` reflects on
+`Item.maxDamage` to clamp all 12 Terramity weapons to 2500 durability.
+Native values: 8124 ingot weapons (4x netherite), 16256 guns (8x netherite),
+50000 unholy_lance (24x netherite).
+
+`kubejs/server_scripts/terramity_weapon_attributes.js` strips native
+ATTACK_DAMAGE/SPEED on exodium_waraxe + reverium_axe and re-adds clamped
+values. Both had `Tier.getAttackDamageBonus = 14/12` vs vanilla netherite
+axe = 7. Clamped to tier-bonus 8 (displayed +14, vs netherite +9). The
+swords (tier-bonus 7-9.5) weren't outliers and were left alone.
+
 ### C.11 Theabyss bosses (`loot/abyss_boss_loot.js`)
 
 7 custom kubejs rings replace 30 vanilla rings: `kubejs:ring_of_shadows`, `ring_of_the_phantom`, `ring_of_embers`, `ring_of_frost` (Abyss structure chests @ 15% each); `ring_of_void_sight` (Deep Abyss chests @ 10%); `ring_of_the_knight` (Knight boss @ 25%); `ring_of_dark_pact` (Nightblade boss @ 20%); `ring_of_unorithe` (final Abyss boss @ 15%).
