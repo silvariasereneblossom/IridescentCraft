@@ -36,6 +36,7 @@
   },
   "types": [
     "sword",
-    "trident"
+    "trident",
+    "magic_weapon"
   ]
 }

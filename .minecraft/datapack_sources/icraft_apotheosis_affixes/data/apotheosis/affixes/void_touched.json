@@ -36,6 +36,7 @@
   },
   "types": [
     "sword",
-    "heavy_weapon"
+    "heavy_weapon",
+    "magic_weapon"
   ]
 }

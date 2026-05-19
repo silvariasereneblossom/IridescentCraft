@@ -35,6 +35,7 @@
     }
   },
   "types": [
-    "sword"
+    "sword",
+    "magic_weapon"
   ]
 }

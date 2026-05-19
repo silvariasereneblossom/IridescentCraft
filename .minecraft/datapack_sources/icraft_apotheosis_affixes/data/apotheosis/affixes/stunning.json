@@ -38,6 +38,7 @@
   "types": [
     "sword",
     "heavy_weapon",
-    "trident"
+    "trident",
+    "magic_weapon"
   ]
 }
