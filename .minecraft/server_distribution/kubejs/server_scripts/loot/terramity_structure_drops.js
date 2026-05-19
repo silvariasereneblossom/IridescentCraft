@@ -59,14 +59,17 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('terramity:reverium_axe').when(c => c.randomChance(0.10)))
 
   // =========================================================================
-  // T4 NYXIUM (knight + cosmic-purple) — infested_lab + ancient_outcrop
+  // T4 NYXIUM (knight + cosmic-purple) — boss drop instead of structure
   // =========================================================================
+  // Originally allocated to infested_lab + ancient_outcrop chests (2026-05-19
+  // first pass), but both are Overworld structures despite their late-game
+  // loot. Per user audit: T4 power-level should drop from an actual T4 source,
+  // not a structure that's accessible at T1 by dimension alone. Moved to
+  // Cataclysm Netherite Monstrosity — the metallic-knight T4 endgame boss
+  // closest in theme to "nyxium knight greatsword." Drop rate matched to
+  // planet_buster's ender_dragon allocation (0.15 in terramity_boss_drops.js).
   event
-    .addLootTableModifier('terramity:chests/infested_lab_loot')
-    .addLoot(LootEntry.of('terramity:nyxium_greatsword').when(c => c.randomChance(0.15)))
-
-  event
-    .addLootTableModifier('terramity:chests/ancient_outcrop_loot')
+    .addEntityLootModifier('cataclysm:netherite_monstrosity')
     .addLoot(LootEntry.of('terramity:nyxium_greatsword').when(c => c.randomChance(0.15)))
 
   // =========================================================================
@@ -86,19 +89,24 @@ LootJS.modifiers(event => {
     .addLootTableModifier('terramity:chests/overgrown_facility_loot')
     .addLoot(LootEntry.of('terramity:fortunes_favor').when(c => c.randomChance(0.10)))
 
-  // T4 cosmic/void/dragon curios -> Nyxium tier tables
+  // T4 cosmic/void/dragon curios -> T4 boss drops (same rationale as the
+  // Nyxium greatsword above — these were originally in infested_lab +
+  // ancient_outcrop which are Overworld despite their late-game loot
+  // content, so T1 players could reach them by dimension alone. Each
+  // mapped to a T4 boss with thematic fit.)
   event
-    .addLootTableModifier('terramity:chests/infested_lab_loot')
-    .addLoot(LootEntry.of('terramity:antimatter_pacemaker').when(c => c.randomChance(0.08)))
-    .addLoot(LootEntry.of('terramity:nyxs_necklace').when(c => c.randomChance(0.10)))
-    .addLoot(LootEntry.of('terramity:antiprism').when(c => c.randomChance(0.08)))
-    .addLoot(LootEntry.of('terramity:null_scarf').when(c => c.randomChance(0.10)))
+    .addEntityLootModifier('cataclysm:ender_guardian')
+    .addLoot(LootEntry.of('terramity:antimatter_pacemaker').when(c => c.randomChance(0.10)))
+    .addLoot(LootEntry.of('terramity:null_scarf').when(c => c.randomChance(0.12)))
 
   event
-    .addLootTableModifier('terramity:chests/ancient_outcrop_loot')
-    .addLoot(LootEntry.of('terramity:dragon_band').when(c => c.randomChance(0.10)))
-    .addLoot(LootEntry.of('terramity:nyxs_necklace').when(c => c.randomChance(0.08)))
-    .addLoot(LootEntry.of('terramity:null_scarf').when(c => c.randomChance(0.08)))
+    .addEntityLootModifier('cataclysm:netherite_monstrosity')
+    .addLoot(LootEntry.of('terramity:nyxs_necklace').when(c => c.randomChance(0.10)))
+
+  event
+    .addEntityLootModifier('minecraft:ender_dragon')
+    .addLoot(LootEntry.of('terramity:antiprism').when(c => c.randomChance(0.10)))
+    .addLoot(LootEntry.of('terramity:dragon_band').when(c => c.randomChance(0.12)))
 
   // =========================================================================
   // RARE tomes + bracelets — audit Phase 5 closure
