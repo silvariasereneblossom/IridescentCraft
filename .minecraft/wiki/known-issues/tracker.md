@@ -14,6 +14,14 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Vanilla spiders spawning with infinite regeneration (2026-05-20) — INVESTIGATING
+
+- **Status:** Symptom returned 2026-05-20 after the 2026-05-10 fix (kill Truly Modular / nucleus_facets) should have closed it. Drop side defended via new `strip_anomalous_drops.js` LivingDropsEvent layer; spawn-buff source unidentified.
+- **Symptom:** MOBDIAG-SPAWN sample 22:00:14 from today shows vanilla `minecraft:spider` at overworld (-838.5,24.0,-354.5) with `minecraft:regeneration` amp 0 duration -1. No equipment, no jockey, `affixGear: 0`. Different signature from the 2026-04-26 → 2026-05-10 cave_spider+skeleton jockey package (no `nucleus:facets` in tagKeys; duration -1 instead of ~100,000,000 ticks).
+- **Defense in place:** `strip_anomalous_drops.js` removes flagged item IDs from the LivingDropsEvent drop list (post-loot-table), catching the Java-side injector pattern the 2026-04-24 spider+diamond report suggested. Same FLAGGED_DROP_IDS as the diag.
+- **Open follow-up:** identify the new spawn-buff source. Linux side doesn't have mod jars; needs Windows-side `Select-String -Path mods\*.jar -Pattern "REGENERATION"` similar to the 2026-05-10 nucleus-core-forge grep that surfaced Truly Modular last time.
+- **Affected entity:** `minecraft:spider` (vanilla, not cave_spider). Other entity types unconfirmed; the diag log will surface them as samples accrue.
+
 ### Terramity speed-bracelet + harvest-level outliers (2026-05-19) — DEFERRED to post-cutover
 
 - **SacredSpeedBracelets** (T3 EPIC): +0.75 movement_speed (~Speed VIII permanent)

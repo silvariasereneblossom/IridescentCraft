@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-20 — Anomalous-drop strip: LivingDropsEvent layer catches Java-side injectors
+
+User shared a fresh MOBDIAG-SPAWN sample: vanilla spider, `minecraft:overworld`, regeneration amp 0 duration -1 (infinite). No `nucleus:facets` in tagKeys this time — the 2026-05-10 root-cause fix (kill Truly Modular) closed the original buff source but the symptom has returned with a different signature from an unidentified mod.
+
+The historical concern from 2026-04-24 was vanilla spiders dropping `minecraft:diamond + minecraft:ender_eye`. JSON grep across all mods + GLM audit + KubeJS audit found no source — hypothesized to be a Java-side injector adding items via `LivingDropsEvent.dropLoot()` or similar, which bypasses Forge GLMs. The existing `loot_overhaul.js` defensive strip runs at loot-table generation time and would NOT catch that path.
+
+Added `kubejs/server_scripts/strip_anomalous_drops.js`: `LivingDropsEvent` listener at `EventPriority.LOWEST` that iterates the post-loot-table drops list and removes any ItemEntity whose item ID is in the diag's `FLAGGED_DROP_IDS` set. Logs a `[STRIP-DROP]` WARN line per removal with entity id + dimension + position + item id + count.
+
+The strip list mirrors `diag_mob_drops.js FLAGGED_DROP_IDS` verbatim so the diag and the strip operate on identical criteria — anything the diag would flag, the strip will now remove. This is broader than the existing `loot_overhaul.js` entity strip; it additionally removes `enchanted_book` + `enchanted_golden_apple` from mob drops (witches and Apoth-affixed mobs included), matching the diag's existing "anomalous-on-ordinary-mobs" definition.
+
+Insurance against the unidentified buff source: even if a future mod-update introduces another regen/dolphins_grace/etc spawn buff carrying a parallel drop injector, the LivingDropsEvent strip will catch it without re-investigation. Identifying the new spawn-buff source remains a follow-up (Windows-side jar grep needed; can't grep from Linux).
+
+### Files
+
+- `.minecraft/kubejs/server_scripts/strip_anomalous_drops.js` — NEW
+- Mirrored to distribution/client + server_distribution
+
+---
+
 ## 2026-05-19 — Terramity curio survey: fortunes_favor + gaias_tempest re-routed
 
 Decompile of the 19 non-melee Terramity drops surfaced two miscategorizations from the morning's TYPE_OVERRIDES pass:
