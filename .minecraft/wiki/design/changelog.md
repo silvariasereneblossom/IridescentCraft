@@ -4,6 +4,40 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-20 — Virtual Gold (celestial_core) clamped to iron-tier stats
+
+Per user 2026-05-20: the Virtual Gold set ships above-tier (celestial_core's pitch is "real-gold gear without gold's brittleness"). Two attributes worth preserving as the set's identity were called out: the worn fire resistance effect and the high (gold-tier) enchant affinity. Everything else clamped to iron-comparable.
+
+**What changed:**
+- `kubejs/server_scripts/virtual_gold_clamp.js` (NEW) — ItemAttributeModifierEvent strips native ATTACK_DAMAGE / ATTACK_SPEED / ARMOR / ARMOR_TOUGHNESS / KNOCKBACK_RESISTANCE on the 9 virtual_gold items and re-adds iron-tier values.
+- `kubejs/startup_scripts/virtual_gold_durability.js` (NEW) — reflection on Item.maxDamage to set durability to iron-tier (tools 250; helmet 165; chest 240; legs 225; boots 195).
+
+**Target values (vanilla iron equivalence):**
+
+| Item | Damage | Speed | Armor | Tough | Dur |
+|------|--------|-------|-------|-------|-----|
+| virtual_gold_sword | +6 (ADD 5) | -2.4 | - | - | 250 |
+| virtual_gold_axe | +9 (ADD 8) | -3.1 | - | - | 250 |
+| virtual_gold_pickaxe | +5 (ADD 4) | -2.8 | - | - | 250 |
+| virtual_gold_shovel | +3.5 (ADD 2.5) | -3.0 | - | - | 250 |
+| virtual_gold_hoe | +1 (ADD 0) | -3.0 | - | - | 250 |
+| virtual_gold_helmet | - | - | 2 | 0 | 165 |
+| virtual_gold_chestplate | - | - | 6 | 0 | 240 |
+| virtual_gold_leggings | - | - | 5 | 0 | 225 |
+| virtual_gold_boots | - | - | 2 | 0 | 195 |
+
+**What was NOT touched (preserved by design):**
+- `Item.getEnchantmentValue()` — gold-tier enchantability (~22) stays. ItemAttributeModifierEvent doesn't intercept this, and the durability reflection only touches `maxDamage`.
+- Worn fire resistance effect — whatever pathway celestial_core uses (mixin / curio tick / inventoryTick / event listener) is independent of attribute modifiers and isn't intercepted here.
+
+### Files
+
+- `.minecraft/kubejs/server_scripts/virtual_gold_clamp.js` — NEW
+- `.minecraft/kubejs/startup_scripts/virtual_gold_durability.js` — NEW
+- Mirrored to distribution/client + server_distribution
+
+---
+
 ## 2026-05-20 — Anomalous-drop strip: LivingDropsEvent layer catches Java-side injectors
 
 User shared a fresh MOBDIAG-SPAWN sample: vanilla spider, `minecraft:overworld`, regeneration amp 0 duration -1 (infinite). No `nucleus:facets` in tagKeys this time — the 2026-05-10 root-cause fix (kill Truly Modular) closed the original buff source but the symptom has returned with a different signature from an unidentified mod.
