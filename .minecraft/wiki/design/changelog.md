@@ -4,6 +4,25 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-20 — death_penalty: scrub stale icraft_broken tags after INERT_THRESHOLD migration
+
+In-game finding 2026-05-20: tester reported "can't break blocks around my base" despite being far from world spawn (so spawn_protection.js wasn't the source). Root cause traced to the 2026-05-19 `INERT_THRESHOLD: 100 → 1` migration. Items that picked up the `icraft_broken` NBT tag under the OLD 50%-durability-clamp threshold still carry the tag, but their actual durability is now far above the new inert pin (maxDamage - 1). The three cancel paths (`BlockEvents.broken`, `ItemEvents.rightClicked`, `DamageModifier` 0-damage hook) only checked the tag — not whether the item was genuinely inert by the live threshold.
+
+The per-item repair handler exists (`PlayerEvents.inventoryChanged`, line 586) but only fires on inventory motion. A player who keeps using the same pickaxe in slot 0 never triggers it, so the stale tag persists indefinitely.
+
+**Fix in `kubejs/server_scripts/death_penalty.js`:**
+
+1. **New helper `isGenuinelyInert(stack)`**: checks the BROKEN_TAG AND the current damage vs the live INERT_THRESHOLD pin. If the tag is set but damage is below the pin, removes the stale tag and returns false (action proceeds).
+2. **All three cancel paths now use the helper** — block-break, right-click, and the damage-modifier registration each consult `isGenuinelyInert` instead of trusting the raw tag.
+3. **New login sweep** via `PlayerEvents.loggedIn`: iterates the player's full inventory once on join, clears stale tags from any slot. Covers the case where the per-action helper hasn't been triggered yet.
+
+### Files
+
+- `.minecraft/kubejs/server_scripts/death_penalty.js`
+- Mirrored to distribution/client + server_distribution
+
+---
+
 ## 2026-05-20 — Sigils of Removal + Withdrawal: T1 recipe override (was blaze_rod)
 
 In-game audit finding 2026-05-20: `apotheosis:sigil_of_removal` and `apotheosis:sigil_of_withdrawal` canonical recipes use `minecraft:blaze_rod` — a T3 Nether-only material. Both sigils are intentionally ungated per the 2026-05-14 design call (Apoth workstations + sigils run on rarity-ladder gating, not stage gating). The blaze_rod was a silent material gate that locked basic gem-maintenance behind Nether access.

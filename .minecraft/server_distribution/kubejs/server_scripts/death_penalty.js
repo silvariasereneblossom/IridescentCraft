@@ -516,10 +516,28 @@ global.registerPlayerTick('tick_durabilityFullSweep', 10, 0)
 //   - Tools: cannot mine
 // =============================================================================
 
+// Helper: check current damage against the live INERT_THRESHOLD. If the
+// icraft_broken tag was stamped under an older (looser) threshold but the
+// item's actual durability is now above the inert pin point, the tag is
+// stale -- clear it and let the action proceed. Prevents the 2026-05-19
+// INERT_THRESHOLD 100 -> 1 migration from stranding mid-durability tools
+// in a broken state that the PlayerEvents.inventoryChanged repair handler
+// only clears on slot/inventory motion (which never fires while the
+// player keeps mining with the same tool).
+function isGenuinelyInert(stack) {
+  if (!stack || stack.isEmpty() || !stack.nbt || !stack.isDamageableItem()) return false
+  if (!stack.nbt.getBoolean(BROKEN_TAG)) return false
+  let inertPin = stack.maxDamage - INERT_THRESHOLD
+  if (stack.damageValue >= inertPin) return true  // still at/past pin
+  // Tag is stale -- item is healthier than the current threshold
+  stack.nbt.remove(BROKEN_TAG)
+  return false
+}
+
 // Prevent broken tools from mining
 BlockEvents.broken(event => {
   const heldItem = event.player.mainHandItem
-  if (!heldItem.isEmpty() && heldItem.nbt && heldItem.nbt.getBoolean(BROKEN_TAG) && heldItem.isDamageableItem()) {
+  if (isGenuinelyInert(heldItem)) {
     event.cancel()
     event.player.tell(Text.gray('Your tool is broken and cannot mine. Repair it at an anvil.'))
   }
@@ -533,16 +551,24 @@ BlockEvents.broken(event => {
     var player = event.source.entity
     if (!(player instanceof PlayerClass_dpw)) return
     var weapon = player.mainHandItem
-    if (!weapon.isEmpty() && weapon.nbt && weapon.nbt.getBoolean(BROKEN_TAG) && weapon.isDamageableItem()) {
-      event.amount = 1.0
+    // Inline copy of isGenuinelyInert (different scope -- Java-side
+    // registration is outside the KubeJS handler closure that defines it).
+    if (weapon == null || weapon.isEmpty() || !weapon.nbt || !weapon.isDamageableItem()) return
+    if (!weapon.nbt.getBoolean(BROKEN_TAG)) return
+    var inertPin = weapon.maxDamage - INERT_THRESHOLD
+    if (weapon.damageValue < inertPin) {
+      // Stale tag from older threshold -- clear and let damage stand.
+      weapon.nbt.remove(BROKEN_TAG)
+      return
     }
+    event.amount = 1.0
   })
 })()
 
 // Prevent broken items from being used (right-click actions)
 ItemEvents.rightClicked(event => {
   const stack = event.item
-  if (!stack.isEmpty() && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG) && stack.isDamageableItem()) {
+  if (isGenuinelyInert(stack)) {
     event.cancel()
     event.player.tell(Text.gray('This item is broken. Repair it at an anvil.'))
   }
@@ -568,6 +594,34 @@ PlayerEvents.inventoryChanged(event => {
       // Item has been repaired past the inert threshold — remove broken tag
       stack.nbt.remove(BROKEN_TAG)
     }
+  }
+})
+
+// Login sweep -- scrub stale icraft_broken tags that were stamped under
+// an older (looser) INERT_THRESHOLD. Without this, items in the player's
+// hotbar that haven't moved slots since the 2026-05-19 threshold change
+// (100 -> 1) stay tagged broken even though their actual durability is
+// far above the new inert pin. PlayerEvents.inventoryChanged only fires
+// on inventory motion, so a player who keeps using the same pickaxe never
+// triggers the per-item repair handler. The sweep covers every slot once
+// at login, the per-action isGenuinelyInert() helper handles the rest.
+PlayerEvents.loggedIn(event => {
+  let player = event.player
+  if (!player) return
+  let cleared = 0
+  let inv = player.inventory
+  for (let i = 0; i < inv.size(); i++) {
+    let stack = inv.getStackInSlot(i)
+    if (stack.isEmpty() || !stack.nbt || !stack.isDamageableItem()) continue
+    if (!stack.nbt.getBoolean(BROKEN_TAG)) continue
+    let inertPin = stack.maxDamage - INERT_THRESHOLD
+    if (stack.damageValue < inertPin) {
+      stack.nbt.remove(BROKEN_TAG)
+      cleared += 1
+    }
+  }
+  if (cleared > 0) {
+    console.log('[death_penalty] cleared ' + cleared + ' stale icraft_broken tag(s) on login for ' + player.name.string)
   }
 })
 
