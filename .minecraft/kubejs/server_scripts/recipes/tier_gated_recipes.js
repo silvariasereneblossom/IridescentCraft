@@ -339,6 +339,35 @@ ServerEvents.recipes(event => {
     A:'minecraft:anvil', O:'minecraft:obsidian'
   }).id('icraft:reforging_table_t3')
 
+  // Sigil of Removal (destroys gem, frees socket) + Sigil of Withdrawal
+  // (returns gem intact, frees socket) -- both canonical Apoth recipes
+  // require blaze_rod (T3 Nether material). Per 2026-05-14 design call
+  // (sigils ungated) and 2026-05-20 in-game leak finding, override with
+  // T1-only ingredients so gem-maintenance is a Day-1 utility. Apoth-
+  // affixed gear with sockets drops as early as T1 from natural mobs;
+  // forcing T3 access just to clean those up is a friction trap.
+  //
+  // Recipe shape: 4 amethyst_shard (corners) + 4 redstone (sides) + 1
+  // iron_ingot (center). All T1 materials. Amethyst is geode-spawning
+  // overworld; redstone + iron are standard early-game. Identical
+  // recipe for both sigils -- the differentiator is the destroys-vs-
+  // returns behavior which is hardcoded in Apoth, not in the recipe.
+  // Withdrawal is the "expensive" option (keeps gem); Removal is the
+  // "cheap" option (destroys gem). At T1 we want them both reachable;
+  // the in-game cost differentiator becomes "do I have a spare gem to
+  // burn" rather than "do I have blaze_rod access yet."
+  // Output count = 1 (was 4 canonical; T1 amethyst cost is much lower
+  // than T3 blaze_rod, so 1-per-craft keeps per-removal effort similar).
+  event.remove({ id: 'apotheosis:sigil_of_removal' })
+  event.shaped('apotheosis:sigil_of_removal', ['ARA','RIR','ARA'], {
+    A:'minecraft:amethyst_shard', R:'minecraft:redstone', I:'minecraft:iron_ingot'
+  }).id('icraft:sigil_of_removal_t1')
+
+  event.remove({ id: 'apotheosis:sigil_of_withdrawal' })
+  event.shaped('apotheosis:sigil_of_withdrawal', ['ARA','RIR','ARA'], {
+    A:'minecraft:amethyst_shard', R:'minecraft:redstone', I:'minecraft:iron_ingot'
+  }).id('icraft:sigil_of_withdrawal_t1')
+
   // Augmenting Table → T4
   event.remove({ id: 'apotheosis:augmenting_table' })
   event.shaped('apotheosis:augmenting_table', ['NTN','NAN','OOO'], {

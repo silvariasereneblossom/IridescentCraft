@@ -4,6 +4,23 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-20 — Sigils of Removal + Withdrawal: T1 recipe override (was blaze_rod)
+
+In-game audit finding 2026-05-20: `apotheosis:sigil_of_removal` and `apotheosis:sigil_of_withdrawal` canonical recipes use `minecraft:blaze_rod` — a T3 Nether-only material. Both sigils are intentionally ungated per the 2026-05-14 design call (Apoth workstations + sigils run on rarity-ladder gating, not stage gating). The blaze_rod was a silent material gate that locked basic gem-maintenance behind Nether access.
+
+Per design: Apoth-affixed gear with empty sockets drops as early as T1 from natural mobs. Forcing T3 dimension access just to clean those slots is a friction trap on the early-game experience. Override both sigil recipes with T1-only ingredients.
+
+**Recipe:** 4 `minecraft:amethyst_shard` (corners) + 4 `minecraft:redstone` (sides) + 1 `minecraft:iron_ingot` (center). Amethyst is geode-spawning overworld; redstone + iron are standard early-game. Output count = 1 per craft (was 4 canonical; T1 amethyst cost much lower than T3 blaze_rod, so 1-per-craft keeps per-removal effort comparable).
+
+**Identical recipe for both sigils.** The destroys-gem vs returns-gem behavior is hardcoded in Apoth itself, not in the recipe — so we don't try to differentiate cost via the recipe. The in-game cost differentiator becomes "do I have a spare gem to burn" rather than "do I have blaze_rod access yet."
+
+### Files
+
+- `.minecraft/kubejs/server_scripts/recipes/tier_gated_recipes.js` — Section F appended (lines ~342-373)
+- Mirrored to distribution/client + server_distribution
+
+---
+
 ## 2026-05-20 — Virtual Gold (celestial_core) clamped to iron-tier stats
 
 Per user 2026-05-20: the Virtual Gold set ships above-tier (celestial_core's pitch is "real-gold gear without gold's brittleness"). Two attributes worth preserving as the set's identity were called out: the worn fire resistance effect and the high (gold-tier) enchant affinity. Everything else clamped to iron-comparable.
