@@ -4,6 +4,21 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-20 — Tetra replacement hook: preserve ALL source NBT, not just 4 enumerated keys
+
+In-game finding 2026-05-20: tester reported Tetra-upgrading ISS armor (Wandering Mage robes etc.) replaces the source's NBT-driven stats rather than carrying them forward. Traced to `SpecializedReplacementHook.HOOK` in `iridescent-tetra-expansion-mod`: the BiFunction that runs after Tetra's vanilla replacement only explicitly copied `affix_data`, `affixes`, `Enchantments`, `rarity`. ISS armor's stat NBT lives under different keys (`irons_spellbooks:mana_modifier`, `irons_spellbooks:spell_power_modifier`, etc.) — none were preserved.
+
+**Fix:** swapped enumeration for copy-missing-keys. After the explicit copies (kept for documentation / common case), the hook now iterates `srcTag.getAllKeys()` and copies any key the new replaced stack's tag doesn't already own. Tetra-controlled keys (module slots, _material, integrity, honing, improvements) are written by the replacement BEFORE this hook fires so they're skipped by the `contains()` guard. `Damage` and `Skin` are explicitly excluded (start at full durability post-upgrade; Skin set above from definition).
+
+Generic + resilient — no per-mod schema enumeration needed for future drops (ATTS armor, Cataclysm gear with NBT stats, anything).
+
+### Files
+
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/replacement/SpecializedReplacementHook.java`
+- Rebuilt + auto-deployed `iridescent_tetra_expansion-1.0.0.jar` to all 3 distros via `build_mod.sh`
+
+---
+
 ## 2026-05-20 — death_penalty: scrub stale icraft_broken tags after INERT_THRESHOLD migration
 
 In-game finding 2026-05-20: tester reported "can't break blocks around my base" despite being far from world spawn (so spawn_protection.js wasn't the source). Root cause traced to the 2026-05-19 `INERT_THRESHOLD: 100 → 1` migration. Items that picked up the `icraft_broken` NBT tag under the OLD 50%-durability-clamp threshold still carry the tag, but their actual durability is now far above the new inert pin (maxDamage - 1). The three cancel paths (`BlockEvents.broken`, `ItemEvents.rightClicked`, `DamageModifier` 0-damage hook) only checked the tag — not whether the item was genuinely inert by the live threshold.

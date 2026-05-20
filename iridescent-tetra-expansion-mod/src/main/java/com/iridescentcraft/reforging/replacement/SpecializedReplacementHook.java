@@ -73,8 +73,23 @@ public final class SpecializedReplacementHook {
         tag.putString(ItemModularArmorClient.SKIN_NBT_KEY, def.skinId());
 
         // Copy identity-preserving NBT from original.
+        //
+        // 2026-05-20: previously enumerated only 4 keys (affix_data, affixes,
+        // Enchantments, rarity). That dropped ISS armor's stat NBT
+        // (irons_spellbooks:mana_modifier, irons_spellbooks:spell_power_modifier,
+        // and other mod-specific keys) during the replacement -- tester report
+        // "Tetra-upgraded ISS armor stats are getting replaced, not added to."
+        // Switched to copy-missing-keys: for every key in srcTag that the new
+        // replaced stack's tag doesn't already own, copy it over. Generic and
+        // resilient to future mod-specific NBT additions (no per-mod schema
+        // enumeration needed). Tetra-controlled keys (module slots, _material,
+        // integrity, honing, improvements) are written by the replacement
+        // BEFORE this hook runs, so they're already present in `tag` and
+        // skipped by the contains() guard below.
         CompoundTag srcTag = original.getTag();
         if (srcTag != null) {
+            // Explicit copies first -- documents the common identity keys for
+            // future readers. Generic pass below catches everything else.
             if (srcTag.contains("affix_data", Tag.TAG_COMPOUND)) {
                 tag.put("affix_data", srcTag.getCompound("affix_data").copy());
             }
@@ -86,6 +101,23 @@ public final class SpecializedReplacementHook {
             }
             if (srcTag.contains("rarity", Tag.TAG_STRING)) {
                 tag.putString("rarity", srcTag.getString("rarity"));
+            }
+
+            // Generic preservation: copy any source key the new stack doesn't
+            // already own. Excludes vanilla `Damage` so the upgraded item
+            // starts at full durability rather than carrying the source's
+            // wear, and excludes the Skin key we set above (defensive --
+            // shouldn't be in srcTag anyway). Tetra's module/material/honing
+            // keys are written to `tag` before this hook fires, so they're
+            // skipped by the contains() guard.
+            for (String key : srcTag.getAllKeys()) {
+                if (tag.contains(key)) continue;                // already written by Tetra or explicit copy above
+                if ("Damage".equals(key)) continue;             // start at full durability post-upgrade
+                if (ItemModularArmorClient.SKIN_NBT_KEY.equals(key)) continue;
+                Tag value = srcTag.get(key);
+                if (value != null) {
+                    tag.put(key, value.copy());
+                }
             }
         }
 
