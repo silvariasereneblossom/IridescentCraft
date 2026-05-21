@@ -4,6 +4,37 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-21 — Tetra replacement hook: inherit mod attribute modifiers + specialization-comfort baselines
+
+Tester report 2026-05-21: Wizard Leggings → Tetra modular replacement dropped to 150 durability and lost a notable chunk of max mana. The 2026-05-20 NBT-preservation fix didn't catch this because the affected data wasn't in NBT — ISS armor stores its mana / spell_power / cooldown bonuses in the item class's `getDefaultAttributeModifiers(slot)` override, which is lost the moment Tetra swaps the item class.
+
+Two-part finish to the original `SpecializedReplacementHook` design (which was always supposed to handle full identity preservation, not just NBT):
+
+### Part 1: mod-specific attribute inheritance
+
+`SpecializedReplacementHook` now reads `original.getAttributeModifiers(armorSlot)` at replacement time and serializes any non-vanilla (`!minecraft:*`) modifier to NBT under `icraft_inherited_modifiers` (list of {attribute, slot, name, uuid, amount, operation}). Vanilla armor/toughness ADDITION amounts on the source are NOT serialized into this list — they're tracked separately for Part 2.
+
+New class `InheritedAttributeHandler` (forge event-bus subscriber for `ItemAttributeModifierEvent`) reads the NBT and `event.addModifier(...)` each entry when the matching slot is queried. Tetra modular armor's own module-aggregated modifiers (armor / toughness / knockback) are untouched; the inherited mod-specific ones layer on top.
+
+### Part 2: specialization-comfort baselines
+
+Per user direction 2026-05-21: when a unique armor piece gets Tetra-converted, soften the early-game downgrade by carrying forward fractions of the source's raw stats:
+
+- **Durability**: 50% of source maxDamage, floor → `icraft_baseline_durability` (NBT int). `ItemModularArmor.getMaxDamage(ItemStack)` now overrides to add this baseline on top of module-aggregated max.
+- **Armor**: 25% of source's vanilla armor ADDITION sum, floor → `icraft_baseline_armor` (NBT double). Added as a vanilla `minecraft:generic.armor` ADDITION modifier by `InheritedAttributeHandler`.
+- **Toughness**: 25% of source's vanilla toughness ADDITION sum, floor → `icraft_baseline_toughness` (NBT double). Same pattern.
+
+Rationale: Tetra modules can recover the gap later via honing/material upgrades; the baselines just prevent the immediate "I converted my Wizard Leggings into something worse" experience. Multiplicative modifiers on the source aren't baseline-fed (no clean translation to a flat additive).
+
+### Files
+
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/replacement/SpecializedReplacementHook.java` — capture + serialize
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/replacement/InheritedAttributeHandler.java` — NEW, runtime event-bus handler
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/item/ItemModularArmor.java` — `getMaxDamage` override
+- Rebuilt + auto-deployed `iridescent_tetra_expansion-1.0.0.jar` to all 3 distros
+
+---
+
 ## 2026-05-20 — Tetra replacement hook: preserve ALL source NBT, not just 4 enumerated keys
 
 In-game finding 2026-05-20: tester reported Tetra-upgrading ISS armor (Wandering Mage robes etc.) replaces the source's NBT-driven stats rather than carrying them forward. Traced to `SpecializedReplacementHook.HOOK` in `iridescent-tetra-expansion-mod`: the BiFunction that runs after Tetra's vanilla replacement only explicitly copied `affix_data`, `affixes`, `Enchantments`, `rarity`. ISS armor's stat NBT lives under different keys (`irons_spellbooks:mana_modifier`, `irons_spellbooks:spell_power_modifier`, etc.) — none were preserved.

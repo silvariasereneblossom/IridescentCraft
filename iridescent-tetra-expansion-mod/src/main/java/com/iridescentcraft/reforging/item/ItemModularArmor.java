@@ -180,6 +180,35 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
         return Math.min(stack.getMaxDamage() - stack.getDamageValue() - 1, actualAmount);
     }
 
+    /**
+     * Per-stack max-damage override. Adds the
+     * {@code icraft_baseline_durability} NBT bonus on top of the module-
+     * aggregated maxDamage. The bonus is set by
+     * {@link com.iridescentcraft.reforging.replacement.SpecializedReplacementHook}
+     * when an ISS-or-similar unique armor is Tetra-replaced -- 50% of the
+     * source item's maxDamage, floor -- so the player isn't punished for
+     * specialization, especially early-game before module honing can
+     * recover the durability gap.
+     *
+     * <p>Calls super.getMaxDamage(stack) to preserve the existing
+     * IModularItem / Tetra aggregation path. Only adds the baseline if
+     * the NBT key exists and is positive. No-op for normal modular
+     * armor that was crafted from scratch.
+     */
+    @Override
+    public int getMaxDamage(ItemStack stack) {
+        int base = super.getMaxDamage(stack);
+        net.minecraft.nbt.CompoundTag tag = stack.getTag();
+        if (tag == null) return base;
+        if (!tag.contains("icraft_baseline_durability", net.minecraft.nbt.Tag.TAG_INT)
+                && !tag.contains("icraft_baseline_durability", net.minecraft.nbt.Tag.TAG_ANY_NUMERIC)) {
+            return base;
+        }
+        int baseline = tag.getInt("icraft_baseline_durability");
+        if (baseline <= 0) return base;
+        return base + baseline;
+    }
+
     // ── IModularItem abstract surface ──────────────────────────────────
 
     @Override
