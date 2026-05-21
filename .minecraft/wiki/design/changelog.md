@@ -4,6 +4,52 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-21 — All crit sources converted to ADDITION + dual-system bridge
+
+User direction: "rewire all crit sources to be additive." Linear stacking, predictable math, no compounding interactions.
+
+### What changed
+
+**1. Apotheosis affixes converted to ADDITION:**
+- `lethal.json` — crit_damage MULTIPLY_BASE → ADDITION, values × 1.5 to preserve effective magnitude (MULTIPLY_BASE added `base * amount` where base=1.5; ADDITION just adds amount, so scale up to keep the same bonus).
+- `vorpal.json` — same conversion.
+- `keen_edge.json` — same conversion.
+- `icraft_calculated.json` — crit_chance MULTIPLY_TOTAL → ADDITION. **Was a latent no-op bug**: `attributeslib:crit_chance` baseline is 0, so MULTIPLY_TOTAL multiplied 0 by anything = always 0. Values kept as-is (now functional).
+
+**2. Bad attribute reference fixed:**
+- `icraft_precise.json` was pointing to `icraft:crit_chance` (a non-existent attribute — we only register `iridescent_reforging:damage_vs_undead`). Repointed to `attributeslib:crit_chance`.
+
+**3. Custom KubeJS crit system bridged to attributeslib:**
+- `attribute_sync.js:152` runs an independent crit roll on every LivingHurtEvent, using `icraft_*` NBT + `attributecore:*` attribute values for crit_chance and crit_damage. It did NOT read `attributeslib:*` (where all Apoth affixes apply), so Apoth-affixed weapons appeared to do nothing in the custom crit system.
+- Added a bridge that reads `attributeslib:crit_chance` and `attributeslib:crit_damage` (subtracting the 1.5 baseline to avoid double-counting) and adds them into the custom crit roll's totals.
+
+### Stacking semantics now (all additive, all in one number)
+
+For a weapon with:
+- Apoth Lethal affix: +0.225 crit_damage (was +15% MULTIPLY_BASE = 0.225, now 0.225 ADDITION after × 1.5 scaling)
+- Apoth Precise affix: +0.10 crit_chance
+- Player is Berserker class: +0.30 crit_damage (icraft NBT)
+- Player has Arcane Vorpal V on a held magic weapon: +0.50 crit_damage (vorpal_rework.js)
+- AttributeCore crit_chance roll: +0.05
+
+Final calc on the custom crit roll:
+- critChance = 0.05 (base) + 0.10 (precise) + 0.05 (attrcore) = **0.20 (20%)**
+- critDamage = 1.5 (base) + 0.225 (lethal) + 0.30 (berserker) + 0.50 (vorpal) = **2.525x damage on crit**
+
+Vanilla crits (separate fire path) use just `attributeslib:crit_damage` = 1.725 with the Lethal affix.
+
+### Files
+
+- `.minecraft/datapack_sources/icraft_apotheosis_affixes/data/apotheosis/affixes/lethal.json` — MULTIPLY_BASE → ADDITION, values × 1.5
+- `.minecraft/datapack_sources/.../vorpal.json` — same
+- `.minecraft/datapack_sources/.../keen_edge.json` — same
+- `.minecraft/datapack_sources/.../icraft_calculated.json` — MULTIPLY_TOTAL → ADDITION (latent no-op fix)
+- `.minecraft/datapack_sources/.../icraft_precise.json` — attribute repointed (icraft:crit_chance → attributeslib:crit_chance)
+- `.minecraft/kubejs/server_scripts/attributes/attribute_sync.js` — attributeslib bridge added
+- `icraft_apotheosis_affixes.zip` rebuilt + deployed to all 3 distros
+
+---
+
 ## 2026-05-21 — Magic-weapon enchant set + Vorpal crit rework + crit-affix bump
 
 Per user direction (overnight follow-up):

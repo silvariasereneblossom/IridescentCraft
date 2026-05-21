@@ -137,6 +137,28 @@ PlayerEvents.loggedIn(function(event) {
       critDamage += getAttrCore(attacker, 'attributecore:critical_damage', 0)
       lifesteal  += getAttrCore(attacker, 'attributecore:life_steal', 0)
 
+      // 2026-05-21: bridge attributeslib (Apothic Attributes) crit too.
+      // Apoth affixes (precise / lethal / vorpal / keen / keen_edge /
+      // assassins / icraft_butcher / icraft_calculated / icraft_precise)
+      // all target attributeslib:crit_chance + attributeslib:crit_damage.
+      // Without this bridge, the custom crit roll above only sees
+      // attributecore values, so Apoth-affixed weapons appear to do
+      // nothing in the custom crit system. Both attribute namespaces
+      // are ADDITIVE post the same-day MULTIPLY_BASE -> ADDITION
+      // conversion -- linear stacking, no compounding.
+      // attributeslib:crit_damage baseline is 1.5; getAttributeValue
+      // returns (1.5 + sum of ADDITION mods + ...). We subtract 1.5
+      // to get just the bonus portion and add it on top of our crit
+      // damage value, avoiding double-counting the 1.5 base.
+      try {
+        var alibCritChance = attacker.getAttributeValue('attributeslib:crit_chance')
+        if (alibCritChance && alibCritChance > 0) critChance += alibCritChance
+        var alibCritDamage = attacker.getAttributeValue('attributeslib:crit_damage')
+        if (alibCritDamage && alibCritDamage > 1.5) critDamage += (alibCritDamage - 1.5)
+      } catch (e) {
+        // attribute may not be registered on this player; fail soft
+      }
+
       // -- Armor Penetration --
       if (armorPen > 0 && entity.isLiving()) {
         try {

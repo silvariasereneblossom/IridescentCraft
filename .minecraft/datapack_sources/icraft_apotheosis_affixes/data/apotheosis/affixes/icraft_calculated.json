@@ -1,7 +1,7 @@
 {
   "type": "apotheosis:attribute",
   "attribute": "attributeslib:crit_chance",
-  "operation": "MULTIPLY_TOTAL",
+  "operation": "ADDITION",
   "values": {
     "common": {
       "min": 0.08,
@@ -29,18 +29,18 @@
       "step": 0.02
     },
     "ancient": {
-      "min": 0.50,
+      "min": 0.5,
       "steps": 5,
       "step": 0.03
     }
   },
   "weights": {
-    "common":   200,
+    "common": 200,
     "uncommon": 220,
-    "rare":     240,
-    "epic":     260,
-    "mythic":   280,
-    "ancient":  300
+    "rare": 240,
+    "epic": 260,
+    "mythic": 280,
+    "ancient": 300
   },
   "types": [
     "sword",

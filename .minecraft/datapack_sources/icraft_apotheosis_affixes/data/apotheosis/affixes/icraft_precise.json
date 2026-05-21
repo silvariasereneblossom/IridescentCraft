@@ -1,6 +1,6 @@
 {
   "type": "apotheosis:attribute",
-  "attribute": "icraft:crit_chance",
+  "attribute": "attributeslib:crit_chance",
   "operation": "ADDITION",
   "values": {
     "common": {
