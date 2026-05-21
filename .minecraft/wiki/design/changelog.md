@@ -4,6 +4,43 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-21 — Codex tier-unlock checklist + recipe-audit tooling + magic-enchant scope doc
+
+Overnight autonomous work per user direction "push that out while I sleep."
+
+### Shipped
+
+**Codex `tier_unlock_checklist` entry** (`datapack_sources/iridescent_codex/data/icraft/patchouli_books/iridescent_codex/en_us/entries/progression/tier_unlock_checklist.json`) — surfaces the actual milestone triggers per tier from `milestone_detection.js`:
+
+- T2: 14 boss IDs across Twilight Forest + Blue Skies + Aether, OR 10 cumulative T2 boss kills, OR crafting a `thermal:machine_frame`, OR visiting all 3 T2 dimensions, OR completing any one of the 5 quest-book paths.
+- T3: 13 boss IDs across Cataclysm + Undergarden + Deeper Darker + Meet Your Fight + Wither, similar parallel paths, crafting `mekanism:steel_casing`, dimension-visit milestone (Nether + Undergarden + Deeper Darker), quest path.
+- T4: 4 endgame bosses (Ender Dragon, Gaia Guardian, Ender Guardian, Ignited Revenant), crafting `mekanism:ultimate_control_circuit`, quest path.
+- Plus admin command reference (`/astages list`, `/astages add`, `/astages remove`) and the creative-mode bypass / first-join auto-grant safety net documented.
+
+Built via `build_codex.sh` + auto-deployed to all 3 distros.
+
+**Recipe-audit dump tooling** (`.minecraft/tools/recipe_audit_dump.ps1` + `.sh`) — Windows-side + Linux-side jar walker that extracts every mod's `data/<modid>/recipes/*.json` into a flat TSV (recipe_id / type / output / count / ingredients / source_jar). Companion to the T1-leak audit we tabled earlier; gives us the corpus to grep for T2+ ingredients in T1-accessible recipes.
+
+Documented filter commands for the canonical "T2+ ingredient in T1 recipe" query, with the canonical T2/T3/T4 material IDs from master-appendix §A enumerated.
+
+### Scope doc for morning review
+
+`IridescentCraft-internal/design/magic_enchant_scope_2026-05-21.md` covers the three enchant items that need design decisions before code ships:
+
+1. **Mana Boost / Mana Regen on ISS items** — both are Ars-namespace enchants, do NOT apply to ISS items by default. Three fix paths documented (Ars mixin / parallel ISS enchant / unified tag-based enchant), awaiting user choice.
+2. **Shimmer** — couldn't find an enchant literally named Shimmer in our codebase. Most likely user means `apotheosis:chromatic` (cosmetic rainbow-shimmer effect on items, technically enabled but no gameplay impact). Awaiting confirmation + greenlight to repurpose via KubeJS handler.
+3. **New magic-weapon enchant roster** — proposed 4 enchants (Spell Echo, Arcane Focus, Mana Siphon, Resonance) targeting `#icraft:magic_weapon` tag. Requires Java-side registration in `iridescent-tetra-expansion-mod`. Awaiting user approval of the roster / values before implementation.
+
+### Files
+
+- `.minecraft/datapack_sources/iridescent_codex/.../tier_unlock_checklist.json` — NEW
+- `.minecraft/mods/iridescent_codex_data.jar` (rebuilt + auto-deployed)
+- `.minecraft/tools/recipe_audit_dump.ps1` — NEW
+- `.minecraft/tools/recipe_audit_dump.sh` — NEW
+- `IridescentCraft-internal/design/magic_enchant_scope_2026-05-21.md` — NEW
+
+---
+
 ## 2026-05-21 — Tetra replacement hook: inherit mod attribute modifiers + specialization-comfort baselines
 
 Tester report 2026-05-21: Wizard Leggings → Tetra modular replacement dropped to 150 durability and lost a notable chunk of max mana. The 2026-05-20 NBT-preservation fix didn't catch this because the affected data wasn't in NBT — ISS armor stores its mana / spell_power / cooldown bonuses in the item class's `getDefaultAttributeModifiers(slot)` override, which is lost the moment Tetra swaps the item class.

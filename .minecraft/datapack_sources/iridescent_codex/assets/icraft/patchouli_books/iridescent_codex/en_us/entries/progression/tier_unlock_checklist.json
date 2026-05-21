@@ -1,0 +1,42 @@
+{
+  "name": "Tier Unlock Checklist",
+  "icon": "kubejs:tier3_token",
+  "category": "icraft:progression",
+  "sortnum": 4,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Every tier unlocks via $(bold)any one$() of multiple milestones. The system watches in the background and grants the tier the moment you cross a threshold — even without opening the quest book.$(br2)This entry lists the actual triggers per tier. Each is independent: you only need one path complete.$(br2)To check your current tier in-game: open the FTB Quests screen, or use $(bold)/astages list$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tier 2 — Boss kills (any one)",
+      "text": "$(bold)Twilight Forest:$()$(br)Naga · Lich · Hydra · Ur-Ghast · Knight Phantom · Snow Queen · Minoshroom$(br2)$(bold)Blue Skies:$()$(br)Summoner · Alchemist · Starlit Crusher · Arachnarch$(br2)$(bold)The Aether:$()$(br)Slider · Valkyrie Queen · Sun Spirit$(br2)Or: kill 10 Tier 2 bosses cumulatively across multiple visits."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tier 2 — Other paths",
+      "text": "$(bold)Crafting milestone:$() craft a Thermal Series $(italic)machine_frame$().$(br2)$(bold)Dimension visit milestone:$() enter Twilight Forest, Blue Skies, and the Aether at least once each.$(br2)$(bold)Quest path:$() complete any one chapter of the Tier 2 quest book (Grinding, Magic, Combat, Exploration, or Engineering).$(br2)$(italic)Quest-book paths additionally grant skill points + loot boxes; milestone paths grant tier access only.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tier 3 — Boss kills (any one)",
+      "text": "$(bold)Cataclysm:$()$(br)Netherite Monstrosity · Ignis · The Harbinger · The Leviathan · Maledictus · Ancient Remnant · Baby Leviathan$(br2)$(bold)Other:$() Wither · Forgotten Guardian (Undergarden) · Stalker / Shattered (Deeper & Darker) · Dame Fortuna / Rosalyne (Meet Your Fight)$(br2)Or: kill 10 Tier 3 bosses cumulatively."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tier 3 — Other paths",
+      "text": "$(bold)Crafting milestone:$() craft a $(italic)mekanism:steel_casing$().$(br2)$(bold)Dimension visit milestone:$() enter the Nether, Undergarden, and Deeper & Darker.$(br2)$(bold)Quest path:$() complete any one Tier 3 chapter.$(br2)$(warn)Note:$() the Nether is gated behind Tier 3, not Tier 1. You need Tier 3 access to light a Nether portal."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Tier 4 — Boss kills (any one)",
+      "text": "$(bold)Endgame:$()$(br)Ender Dragon · Gaia Guardian (Botania) · Ender Guardian (Cataclysm End boss) · Ignited Revenant (Cataclysm 1000 HP boss)$(br2)Or: kill 10 Tier 4 bosses cumulatively.$(br2)$(bold)Crafting milestone:$() craft a $(italic)mekanism:ultimate_control_circuit$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Backup safety net",
+      "text": "$(bold)tier_1$() is granted automatically on first join. If you ever lose it (creative-mode switching, world transfers), it re-grants periodically.$(br2)$(bold)Creative mode$() bypasses tier gates entirely for the duration. Returning to survival re-applies your saved tier set.$(br2)For admin overrides: $(bold)/astages add <player> tier_X$() forces a stage; $(bold)/astages remove <player> tier_X$() revokes."
+    }
+  ]
+}
