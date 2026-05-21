@@ -3,26 +3,33 @@
 // Place in: kubejs/server_scripts/enchants/vorpal_rework.js
 // =============================================================================
 //
-// 2026-05-21: Per user direction, rework ensorcellation:vorpal so it
-// behaves consistently with the crit system:
-//   - Per-level crit_damage bonus (additive multiplier on the crit
-//     damage attribute), ALWAYS applied to the wielder while held.
-//   - Decapitation roll fires ONLY on critical hits, scaled per level.
-// Previously vorpal had an independent extra-damage-and-instakill roll
-// that ignored the crit system entirely. The new shape ties it into
-// the same crit_damage feedback loop as the apoth crit affixes.
+// 2026-05-21: Per user direction, rework ensorcellation:vorpal as a
+// MIXED crit-chance + crit-damage stacker, not a pure damage modifier.
+// Pure damage was redundant with Lethal / Vorpal-affix; the mixed shape
+// gives Vorpal its own identity as a "land more crits AND make them
+// hurt more, then sometimes behead."
+//
+//   Per-level breakdown (additive, scales with INERT_THRESHOLD-style
+//   linearity for tooltip predictability):
+//     +3% crit_chance  (attributeslib:crit_chance, ADDITION)
+//     +5% crit_damage  (attributeslib:crit_damage, ADDITION on 1.5 base)
+//   At L8 max: +24% crit chance + +40% crit damage + 40% behead-on-crit.
+//
+//   Decapitation roll: unchanged, fires ONLY on critical hits, 5% per
+//   level. Signature melee-Vorpal mechanic stays here -- the magic-
+//   weapon counterpart (icraft:vorpal_arcane) deliberately omits decap
+//   (different identity: stacks crit stats but doesn't behead).
 //
 // We do NOT modify Ensorcellation's VorpalEnchantment Java class --
 // instead we layer behavior on top via:
 //   1. ItemAttributeModifierEvent -- when the held item has vorpal,
-//      add a crit_damage modifier ADDITION scaled to vorpal level.
+//      add crit_chance + crit_damage modifiers ADDITION scaled to level.
 //   2. LivingHurtEvent on the player-source attack -- detect crit
-//      (Player.attackStrengthScale + onGround + sprinting -> see
-//      vanilla Player.attack rules) and roll decapitation per level.
+//      and roll decapitation per level.
 //
 // The original Ensorcellation roll-for-extra-damage path still fires
-// because we don't disable the native enchant code -- but our crit-
-// linked damage scales independently and dominates at high levels.
+// because we don't disable the native enchant code -- but the crit-
+// linked bonuses are the new primary mechanic.
 // =============================================================================
 
 try {
@@ -40,30 +47,48 @@ try {
   var Player_vrp = Java.loadClass('net.minecraft.world.entity.player.Player')
 
   var VORPAL_ENCHANT_ID = new ResourceLocation_vrp('ensorcellation', 'vorpal')
+  var CRIT_CHANCE_ATTR_ID = new ResourceLocation_vrp('attributeslib', 'crit_chance')
   var CRIT_DAMAGE_ATTR_ID = new ResourceLocation_vrp('attributeslib', 'crit_damage')
 
-  // Deterministic UUID per level so duplicate adds at different levels
-  // de-dup correctly (vanilla AttributeMap dedup is by UUID).
-  var mkVorpalUuid = function(level) {
+  // Deterministic UUIDs per level so duplicate adds at different levels
+  // de-dup correctly (vanilla AttributeMap dedup is by UUID). Two
+  // distinct UUIDs (chance + damage) so both modifiers register
+  // independently for the same enchant level.
+  var mkVorpalChanceUuid = function(level) {
     var hex = (level < 16 ? '0' : '') + Number(level).toString(16)
-    return UUID_vrp.fromString('a1c9e205-0000-0000-0000-0000000000' + hex)
+    return UUID_vrp.fromString('a1c9e205-0001-0000-0000-0000000000' + hex)
+  }
+  var mkVorpalDamageUuid = function(level) {
+    var hex = (level < 16 ? '0' : '') + Number(level).toString(16)
+    return UUID_vrp.fromString('a1c9e205-0002-0000-0000-0000000000' + hex)
   }
 
-  // Resolve attribute lazily; AttributeFix may not have populated registry
-  // at script-load time for non-vanilla attributes.
+  // Resolve attributes lazily; AttributeFix may not have populated
+  // registry at script-load time for non-vanilla attributes.
+  var critChanceAttr = null
   var critDamageAttr = null
+  var resolveCritChance = function() {
+    if (critChanceAttr !== null) return critChanceAttr
+    try { critChanceAttr = ForgeRegistries_vrp.ATTRIBUTES.getValue(CRIT_CHANCE_ATTR_ID) } catch (e) {}
+    return critChanceAttr
+  }
   var resolveCritDamage = function() {
     if (critDamageAttr !== null) return critDamageAttr
     try { critDamageAttr = ForgeRegistries_vrp.ATTRIBUTES.getValue(CRIT_DAMAGE_ATTR_ID) } catch (e) {}
     return critDamageAttr
   }
 
-  // Level -> crit_damage bonus (additive, on top of the 1.5 baseline).
-  // L1=+10%, L2=+20%, ..., L8=+80%. So a max-vorpal weapon adds +80%
-  // to crit damage on top of any apoth crit_damage affix and the 1.5
-  // base. Linear scale chosen for tooltip readability.
-  var perLevelCritBonus = function(level) {
-    return 0.1 * level
+  // Per-level scaling (additive, both):
+  //   crit_chance:  +3% per level (L8 max = +24% landing rate)
+  //   crit_damage:  +5% per level (L8 max = +40% bigger crits)
+  // Mixed shape so Vorpal isn't a pure Lethal-affix clone -- it both
+  // increases how often crits land AND how hard they hit, plus the
+  // decap mechanic below as the kill-confirm signature.
+  var perLevelCritChance = function(level) {
+    return 0.03 * level
+  }
+  var perLevelCritDamage = function(level) {
+    return 0.05 * level
   }
 
   // Decapitation chance per crit, per level. L1=5%, L2=10%, ..., L8=40%.
@@ -75,7 +100,8 @@ try {
   }
 
   // -----------------------------------------------------------------------
-  // Hook 1: ItemAttributeModifierEvent -- add crit_damage when held.
+  // Hook 1: ItemAttributeModifierEvent -- add crit_chance + crit_damage
+  // when held. Both ADDITION to fit the all-additive crit model.
   // -----------------------------------------------------------------------
   var attrHandler = new Consumer_vrp({
     accept: function(event) {
@@ -83,19 +109,25 @@ try {
         if (event.getSlotType() !== EquipmentSlot_vrp.MAINHAND) return
         var stack = event.getItemStack()
         if (!stack || stack.isEmpty()) return
-        // EnchantmentHelper.getItemEnchantmentLevel(enchant, stack)
-        // For non-imported enchants, look up by registry.
         var ench = ForgeRegistries_vrp.ENCHANTMENTS.getValue(VORPAL_ENCHANT_ID)
         if (ench == null) return
         var level = EnchantmentHelper_vrp.getItemEnchantmentLevel(ench, stack)
         if (level <= 0) return
 
-        var attrU = resolveCritDamage()
-        if (attrU == null) return
-        var bonus = perLevelCritBonus(level)
-        event.addModifier(attrU,
-          new AttributeModifier_vrp(mkVorpalUuid(level), 'icraft_vorpal_crit',
-                                    bonus, AttributeModifier_vrp.Operation.ADDITION))
+        var chanceAttr = resolveCritChance()
+        if (chanceAttr != null) {
+          event.addModifier(chanceAttr,
+            new AttributeModifier_vrp(mkVorpalChanceUuid(level), 'icraft_vorpal_chance',
+                                      perLevelCritChance(level),
+                                      AttributeModifier_vrp.Operation.ADDITION))
+        }
+        var damageAttr = resolveCritDamage()
+        if (damageAttr != null) {
+          event.addModifier(damageAttr,
+            new AttributeModifier_vrp(mkVorpalDamageUuid(level), 'icraft_vorpal_damage',
+                                      perLevelCritDamage(level),
+                                      AttributeModifier_vrp.Operation.ADDITION))
+        }
       } catch (e) {
         // Fail-soft
       }

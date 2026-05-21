@@ -4,6 +4,48 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-21 — Vorpal mixed crit + Arcane Vorpal wired (spells-only)
+
+Two-part follow-up to the all-additive crit conversion:
+
+### Vorpal reworked to mixed crit_chance + crit_damage
+
+Previous shape: +10% crit_damage per level (pure damage modifier — redundant with Lethal affix, no unique identity). New shape, both ADDITION:
+- **+3% `attributeslib:crit_chance` per level** (L8 max = +24% landing rate)
+- **+5% `attributeslib:crit_damage` per level** (L8 max = +40% bigger crits)
+- Decap-on-crit roll unchanged: 5% per level, L8 = 40% behead-on-crit. Stays as the signature melee-Vorpal kill-confirm mechanic.
+
+Vorpal is now "land more crits AND make them count, then sometimes behead." Distinct identity from Lethal (pure crit_damage stacker) or Precise (pure crit_chance stacker).
+
+### Arcane Vorpal proc wired (magic-weapon Vorpal, spells-only)
+
+The `iridescent_reforging:vorpal_arcane` enchant (registered in the Java mod, previously just data with no effect) now has its KubeJS handler:
+- Same mixed +3% crit_chance / +5% crit_damage per level via ItemAttributeModifierEvent.
+- **No decapitation roll** — beheading from a spell hit doesn't fit the identity; melee Vorpal keeps that signature alone.
+- Max level 5 (vs melee L8) — magic weapons have higher base scaling so the per-level magnitude lands harder; L5 cap keeps it from runaway.
+
+Why the mixed shape carries through to spells: the custom KubeJS crit roll in `attribute_sync.js` (the bridge added earlier today) now reads `attributeslib:crit_chance` + `attributeslib:crit_damage`. Spell damage goes through `LivingHurtEvent` same as melee, so the crit roll fires for spell-source attacks too — Arcane Vorpal's attribute modifiers contribute automatically without needing a dedicated spell-cast handler.
+
+### Stacking confirmation
+
+A mage with:
+- Arcane Vorpal V on held magic weapon: +0.15 crit_chance + +0.25 crit_damage
+- Lethal Rare affix on the same weapon: +0.225 crit_damage
+- Berserker class (hypothetical multi-class): +0.30 crit_damage
+- AttributeCore baseline crit_chance: +0.05
+
+Spell-cast crit math:
+- `critChance` = 0.05 (base) + 0.15 (vorpal_arcane) + 0.05 (attrcore) = **0.25 (25%)** chance to crit
+- `critDamage` = 1.5 (base) + 0.225 (lethal) + 0.25 (vorpal_arcane) + 0.30 (berserker) = **2.275x damage on crit**
+
+### Files
+
+- `.minecraft/kubejs/server_scripts/enchants/vorpal_rework.js` — mixed crit shape
+- `.minecraft/kubejs/server_scripts/enchants/icraft_magic_enchants.js` — Arcane Vorpal handler added
+- Mirrored to distribution/client + server_distribution
+
+---
+
 ## 2026-05-21 — All crit sources converted to ADDITION + dual-system bridge
 
 User direction: "rewire all crit sources to be additive." Linear stacking, predictable math, no compounding interactions.

@@ -49,6 +49,7 @@ try {
   var MANA_BOOST_ENCHANT_ID    = new ResourceLocation_ime('iridescent_reforging', 'mana_boost')
   var MANA_REGEN_ENCHANT_ID    = new ResourceLocation_ime('iridescent_reforging', 'mana_regen')
   var ARCANE_FOCUS_ENCHANT_ID  = new ResourceLocation_ime('iridescent_reforging', 'arcane_focus')
+  var VORPAL_ARCANE_ENCHANT_ID = new ResourceLocation_ime('iridescent_reforging', 'vorpal_arcane')
 
   // We target the unified player attributes so both ISS + Ars mage paths
   // benefit. attribute_sync.js handles the cross-system pipe; we just add
@@ -56,6 +57,10 @@ try {
   var MAX_MANA_ATTR_ID    = new ResourceLocation_ime('irons_spellbooks', 'max_mana')
   var MANA_REGEN_ATTR_ID  = new ResourceLocation_ime('irons_spellbooks', 'mana_regen')
   var SPELL_POWER_ATTR_ID = new ResourceLocation_ime('irons_spellbooks', 'spell_power')
+  // Arcane Vorpal targets attributeslib crit attributes -- same as melee
+  // Vorpal -- so they share the same all-additive crit model.
+  var CRIT_CHANCE_ATTR_ID = new ResourceLocation_ime('attributeslib', 'crit_chance')
+  var CRIT_DAMAGE_ATTR_ID = new ResourceLocation_ime('attributeslib', 'crit_damage')
 
   // Lazy attribute resolution -- ISS registers its attributes at common
   // setup, which fires AFTER this script loads but BEFORE the first
@@ -94,9 +99,17 @@ try {
   // pool. +20% mana_regen at L7 mana_regen feels meaningful but not
   // game-breaking. +20% spell_power at L5 arcane_focus matches the +25%
   // Archmage class bonus -- significant but stackable with affixes.
-  var MANA_BOOST_PER_LEVEL    = 4.0    // +4 max mana per level (so L7 = +28)
-  var MANA_REGEN_PER_LEVEL    = 0.03   // +3% mana_regen per level (L7 = +21%)
-  var ARCANE_FOCUS_PER_LEVEL  = 0.04   // +4% spell_power per level (L5 = +20%)
+  var MANA_BOOST_PER_LEVEL          = 4.0    // +4 max mana per level (so L7 = +28)
+  var MANA_REGEN_PER_LEVEL          = 0.03   // +3% mana_regen per level (L7 = +21%)
+  var ARCANE_FOCUS_PER_LEVEL        = 0.04   // +4% spell_power per level (L5 = +20%)
+  // Arcane Vorpal mirrors melee Vorpal's mixed shape (vorpal_rework.js):
+  // +3% crit_chance + +5% crit_damage per level. L5 max = +15% chance + +25%
+  // damage. Naturally lower max than melee Vorpal (L5 vs L8) since magic
+  // weapons typically have higher base damage / spell scaling already.
+  // No decapitation roll -- beheading from a spell hit doesn't fit the
+  // identity. The melee Vorpal keeps that signature.
+  var VORPAL_ARCANE_CHANCE_PER_LEVEL = 0.03
+  var VORPAL_ARCANE_DAMAGE_PER_LEVEL = 0.05
 
   var handler = new Consumer_ime({
     accept: function(event) {
@@ -144,6 +157,31 @@ try {
               event.addModifier(attr,
                 new AttributeModifier_ime(mkUuid(3, lvl), 'icraft_arcane_focus',
                   ARCANE_FOCUS_PER_LEVEL * lvl, AttributeModifier_ime.Operation.MULTIPLY_BASE))
+            }
+          }
+        }
+
+        // Arcane Vorpal -- mixed crit_chance + crit_damage, spell-routed.
+        // The custom KubeJS crit roll (attribute_sync.js) reads
+        // attributeslib:crit_chance + attributeslib:crit_damage post the
+        // 2026-05-21 bridge, so these modifiers contribute to spell-source
+        // damage automatically (spells go through LivingHurtEvent same as
+        // melee). No proc handler needed beyond the attribute add here.
+        var vorpalArcaneEnch = resolveEnch(VORPAL_ARCANE_ENCHANT_ID)
+        if (vorpalArcaneEnch != null) {
+          var lvl = EnchantmentHelper_ime.getItemEnchantmentLevel(vorpalArcaneEnch, stack)
+          if (lvl > 0) {
+            var chAttr = resolveAttr(CRIT_CHANCE_ATTR_ID)
+            if (chAttr != null) {
+              event.addModifier(chAttr,
+                new AttributeModifier_ime(mkUuid(4, lvl), 'icraft_vorpal_arcane_chance',
+                  VORPAL_ARCANE_CHANCE_PER_LEVEL * lvl, AttributeModifier_ime.Operation.ADDITION))
+            }
+            var dmgAttr = resolveAttr(CRIT_DAMAGE_ATTR_ID)
+            if (dmgAttr != null) {
+              event.addModifier(dmgAttr,
+                new AttributeModifier_ime(mkUuid(5, lvl), 'icraft_vorpal_arcane_damage',
+                  VORPAL_ARCANE_DAMAGE_PER_LEVEL * lvl, AttributeModifier_ime.Operation.ADDITION))
             }
           }
         }
