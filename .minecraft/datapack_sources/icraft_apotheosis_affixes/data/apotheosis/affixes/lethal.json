@@ -39,5 +39,13 @@
     "heavy_weapon",
     "trident",
     "magic_weapon"
-  ]
+  ],
+  "weights": {
+    "common": 200,
+    "uncommon": 220,
+    "rare": 240,
+    "epic": 260,
+    "mythic": 280,
+    "ancient": 300
+  }
 }

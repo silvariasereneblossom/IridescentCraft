@@ -33,6 +33,13 @@ public class IridescentReforging {
         // BEFORE the EntityAttributeModificationEvent fires.
         com.iridescentcraft.reforging.attribute.IcraftAttributes.register(modBus);
 
+        // Custom magic-weapon enchants (icraft:mana_boost / mana_regen /
+        // arcane_focus / spell_echo / mana_siphon / resonance / vorpal_arcane).
+        // Effect logic lives in kubejs/server_scripts/enchants/; this just
+        // registers the enchants and binds them to the #icraft:magic_weapon
+        // category.
+        com.iridescentcraft.reforging.enchant.IcraftEnchantments.register(modBus);
+
         // Server-side: register data-pack reload listener for skins.
         // Forge bus, not mod bus — AddReloadListenerEvent fires on world
         // load and /reload, both of which we need to honor for hot-edits.

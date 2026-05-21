@@ -4,6 +4,67 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-21 — Magic-weapon enchant set + Vorpal crit rework + crit-affix bump
+
+Per user direction (overnight follow-up):
+> 1: Do C, disable ars_nouveau:mana_boost | I think the enchant I'm thinking of is in Ensorcellation (audit) | I like those ones, also Vorpal should be a crit modifier with decapitation on crit, also Apotheosis affixes should roll crit more often.
+
+### What shipped
+
+**1. Disabled `ars_nouveau:mana_boost` + `ars_nouveau:mana_regen`** in `config/apotheosis/enchantments.cfg`. These were category-restricted to Ars items only; ISS books, simple staves, Dan's Magic wands couldn't pick them up. Replaced by the unified icraft enchant set below.
+
+**2. New `iridescent_reforging` enchant registry** (`iridescent-tetra-expansion-mod`). Registers 7 enchants under a custom `MagicWeaponCategory` that accepts any item in the `#icraft:magic_weapon` tag (same membership set the runtime Apoth LootCategory uses):
+
+| Enchant | Max Level | Effect (KubeJS hook) |
+|---------|-----------|----------------------|
+| `iridescent_reforging:mana_boost` | 7 | +4 max_mana per level (ADDITION on `irons_spellbooks:max_mana`) |
+| `iridescent_reforging:mana_regen` | 7 | +3% mana_regen per level (MULTIPLY_BASE on `irons_spellbooks:mana_regen`) |
+| `iridescent_reforging:arcane_focus` | 5 | +4% spell_power per level (MULTIPLY_BASE) |
+| `iridescent_reforging:spell_echo` | 3 | (Java-registered; proc handler scoped for follow-up needing Ars/ISS spell-cast event hooks) |
+| `iridescent_reforging:mana_siphon` | 3 | (Java-registered; proc handler scoped for follow-up) |
+| `iridescent_reforging:resonance` | 3 | (Java-registered; proc handler scoped for follow-up) |
+| `iridescent_reforging:vorpal_arcane` | 5 | (Java-registered; proc handler scoped for follow-up) |
+
+The 3 attribute-bearing ones (mana_boost / mana_regen / arcane_focus) are fully wired via `kubejs/server_scripts/enchants/icraft_magic_enchants.js` -- ItemAttributeModifierEvent reads enchant level from stack NBT and adds the modifier. The 4 proc-based ones need Ars+ISS spell-cast event integration; the registry side is ready and the KubeJS proc handlers are the follow-up.
+
+**3. Vorpal rework** (`kubejs/server_scripts/enchants/vorpal_rework.js`). Layers on top of the existing `ensorcellation:vorpal` enchant without modifying the Java class:
+- **Hook 1**: ItemAttributeModifierEvent adds +10% per level to `attributeslib:crit_damage` (ADDITION) while held. L8 = +80% crit damage.
+- **Hook 2**: LivingHurtEvent listener -- on `source.isCritical()` AND wielder has vorpal, rolls 5% × level chance to set damage to `victim.health + 1` (decapitation). L8 = 40% behead-on-crit. Boss blocklist for Wither, Ender Dragon, Cataclysm bosses, Twilight Forest bosses.
+
+**4. Crit affix weight bump**:
+- Added `"weights"` map (common=200 → ancient=300, 2-3× default) to all 7 existing crit affixes: `precise`, `icraft_precise`, `lethal`, `vorpal`, `keen`, `keen_edge`, `assassins`.
+- Added 2 new crit affix variants:
+  - `icraft_butcher.json` -- crit_damage ADDITION (0.05 common → 0.55+ ancient), targets sword/heavy_weapon/trident/magic_weapon
+  - `icraft_calculated.json` -- crit_chance MULTIPLY_TOTAL (0.08 common → 0.50+ ancient)
+- Rebuilt `icraft_apotheosis_affixes.zip` (105 affix files now, up from 103). Deployed to all 3 distros.
+
+### Q&A: "what IS the crit damage modifier?"
+
+The attribute is **`attributeslib:crit_damage`** (Apothic Attributes), baseline value **1.5** (vanilla crit = 1.5x damage). Affixes apply MULTIPLY_BASE so e.g., `lethal` at `+15% MULTIPLY_BASE` on a Rare crit = 1.5 × 1.15 = **1.725x damage on crit**. Stacks multiplicatively with the new Arcane Vorpal (ADDITION) when both apply.
+
+### Ensorcellation enchant audit (Shimmer search)
+
+30 Ensorcellation enchants enumerated in `enchantments.cfg`. **No enchant literally named "Shimmer"** found. The list: magic_protection, displacement, fire_rebuke, frost_rebuke, air_affinity, xp_boost, gourmand, reach, vitality, damage_ender/illager/villager, cavalier, frost_aspect, instigating, leech, magic_edge, vorpal, excavating, hunter, quick_draw, trueshot, volley, angler, pilfering, bulwark, phalanx, soulbound, curse_fool, curse_mercy. Need user confirmation on which Ensorcellation enchant they were thinking of (likely candidates by theme: `magic_edge`, `displacement`, or `instigating`).
+
+### Files
+
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/enchant/IcraftEnchantments.java` -- NEW
+- `iridescent-tetra-expansion-mod/.../enchant/MagicWeaponCategory.java` -- NEW
+- `iridescent-tetra-expansion-mod/.../enchant/SimpleScalingEnchantment.java` -- NEW
+- `iridescent-tetra-expansion-mod/src/main/java/com/iridescentcraft/reforging/IridescentReforging.java` -- registration call
+- `iridescent-tetra-expansion-mod/src/main/resources/assets/iridescent_reforging/lang/en_us.json` -- 7 enchant lang entries
+- `.minecraft/kubejs/server_scripts/enchants/icraft_magic_enchants.js` -- NEW (attribute hooks for the 3 stat enchants)
+- `.minecraft/kubejs/server_scripts/enchants/vorpal_rework.js` -- NEW (Vorpal crit-coupling)
+- `.minecraft/config/apotheosis/enchantments.cfg` -- Ars mana enchants disabled
+- `.minecraft/datapack_sources/icraft_apotheosis_affixes/data/apotheosis/affixes/icraft_butcher.json` -- NEW
+- `.minecraft/datapack_sources/icraft_apotheosis_affixes/data/apotheosis/affixes/icraft_calculated.json` -- NEW
+- 7 existing crit affix JSONs got "weights" field added
+- `iridescent_tetra_expansion-1.0.0.jar` rebuilt + deployed
+- `icraft_apotheosis_affixes.zip` rebuilt + deployed
+- Mirrored to all 3 distros
+
+---
+
 ## 2026-05-21 — Codex tier-unlock checklist + recipe-audit tooling + magic-enchant scope doc
 
 Overnight autonomous work per user direction "push that out while I sleep."

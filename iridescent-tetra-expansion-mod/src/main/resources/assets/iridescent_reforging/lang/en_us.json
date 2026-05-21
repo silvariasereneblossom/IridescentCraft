@@ -2822,5 +2822,12 @@
   "tooltip.iridescent_reforging.weight.heavy": "Heavy Armor",
   "tooltip.iridescent_reforging.weight.light": "Light Armor",
   "tooltip.iridescent_reforging.weight.medium": "Medium Armor",
-  "tooltip.iridescent_reforging.weight.robe": "Robe Armor"
+  "tooltip.iridescent_reforging.weight.robe": "Robe Armor",
+  "enchantment.iridescent_reforging.mana_boost": "Mana Boost",
+  "enchantment.iridescent_reforging.mana_regen": "Mana Regen",
+  "enchantment.iridescent_reforging.arcane_focus": "Arcane Focus",
+  "enchantment.iridescent_reforging.spell_echo": "Spell Echo",
+  "enchantment.iridescent_reforging.mana_siphon": "Mana Siphon",
+  "enchantment.iridescent_reforging.resonance": "Resonance",
+  "enchantment.iridescent_reforging.vorpal_arcane": "Arcane Vorpal"
 }
