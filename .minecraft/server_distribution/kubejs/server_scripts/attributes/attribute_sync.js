@@ -178,6 +178,17 @@ PlayerEvents.loggedIn(function(event) {
             'effect give ' + attacker.username + ' minecraft:glowing 1 0 true'
           )
         } catch (e) {}
+        // 2026-05-21: Stamp the current tick so post-priority listeners
+        // (e.g. icraft_magic_enchants.js Arcane Vorpal decap) can detect
+        // "the custom crit fired for THIS attack" by comparing
+        // icraft_last_crit_tick to the current server tick. Spell crits
+        // never set DamageSource.isCritical (vanilla only sets that for
+        // Player.attack melee swings), so the flag stamp is the only
+        // post-hoc signal for downstream listeners.
+        try {
+          attacker.persistentData.putLong('icraft_last_crit_tick',
+            attacker.level.server.tickCount)
+        } catch (e) {}
       }
 
       // -- Spell Power scaling --

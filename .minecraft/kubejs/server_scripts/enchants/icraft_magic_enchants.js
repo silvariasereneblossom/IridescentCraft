@@ -36,6 +36,7 @@
 try {
   var MinecraftForge_ime = Java.loadClass('net.minecraftforge.common.MinecraftForge')
   var ItemAttributeModifierEvent_ime = Java.loadClass('net.minecraftforge.event.ItemAttributeModifierEvent')
+  var LivingHurtEvent_ime = Java.loadClass('net.minecraftforge.event.entity.living.LivingHurtEvent')
   var EventPriority_ime = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
   var Consumer_ime = Java.loadClass('java.util.function.Consumer')
   var EquipmentSlot_ime = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
@@ -44,6 +45,7 @@ try {
   var ResourceLocation_ime = Java.loadClass('net.minecraft.resources.ResourceLocation')
   var UUID_ime = Java.loadClass('java.util.UUID')
   var EnchantmentHelper_ime = Java.loadClass('net.minecraft.world.item.enchantment.EnchantmentHelper')
+  var PlayerClass_ime = Java.loadClass('net.minecraft.world.entity.player.Player')
 
   // Enchant + attribute resource locations
   var MANA_BOOST_ENCHANT_ID    = new ResourceLocation_ime('iridescent_reforging', 'mana_boost')
@@ -106,10 +108,34 @@ try {
   // +3% crit_chance + +5% crit_damage per level. L5 max = +15% chance + +25%
   // damage. Naturally lower max than melee Vorpal (L5 vs L8) since magic
   // weapons typically have higher base damage / spell scaling already.
-  // No decapitation roll -- beheading from a spell hit doesn't fit the
-  // identity. The melee Vorpal keeps that signature.
+  // PLUS decapitation roll on custom crit -- matches melee Vorpal's
+  // kill-confirm signature. Scaled per level (L1=5% L5=25%). Triggered
+  // via the custom KubeJS crit roll in attribute_sync.js (spells never
+  // set vanilla DamageSource.isCritical, so we rely on the icraft_last_
+  // crit_tick stamp left by attribute_sync.js on the custom crit fire).
   var VORPAL_ARCANE_CHANCE_PER_LEVEL = 0.03
   var VORPAL_ARCANE_DAMAGE_PER_LEVEL = 0.05
+  var VORPAL_ARCANE_DECAP_PER_LEVEL  = 0.05
+
+  // Boss blocklist (same as melee Vorpal's decap handler). Decap on
+  // these entity types is unfair to the boss-fight pacing.
+  var VORPAL_BOSS_BLOCKLIST = {
+    'minecraft:wither': 1,
+    'minecraft:ender_dragon': 1,
+    'cataclysm:netherite_monstrosity': 1,
+    'cataclysm:ender_guardian': 1,
+    'cataclysm:ignis': 1,
+    'cataclysm:the_leviathan': 1,
+    'cataclysm:maledictus': 1,
+    'cataclysm:ancient_remnant': 1,
+    'twilightforest:naga': 1,
+    'twilightforest:lich': 1,
+    'twilightforest:hydra': 1,
+    'twilightforest:ur_ghast': 1,
+    'twilightforest:knight_phantom': 1,
+    'twilightforest:snow_queen': 1,
+    'twilightforest:minoshroom': 1
+  }
 
   var handler = new Consumer_ime({
     accept: function(event) {
@@ -193,7 +219,56 @@ try {
 
   MinecraftForge_ime.EVENT_BUS.addListener(EventPriority_ime.NORMAL, false,
                                             ItemAttributeModifierEvent_ime, handler)
-  console.log('[IridescentCraft] icraft_magic_enchants loaded (mana_boost + mana_regen + arcane_focus stat hooks)')
+
+  // ---------------------------------------------------------------------
+  // Arcane Vorpal decap hook
+  // ---------------------------------------------------------------------
+  // Spells don't set DamageSource.isCritical (vanilla only sets that
+  // for Player.attack melee swings). Spell damage flows through
+  // LivingHurtEvent same as melee, but the only crit signal is the
+  // custom KubeJS roll in attribute_sync.js (which stamps
+  // icraft_last_crit_tick when it fires). This listener runs at LOW
+  // priority -- after attribute_sync's NORMAL-priority crit roll --
+  // so the stamp is fresh by the time we read it.
+  var decapHandler = new Consumer_ime({
+    accept: function(event) {
+      try {
+        var source = event.getSource()
+        if (source == null) return
+        var attacker = source.getEntity()
+        if (!(attacker instanceof PlayerClass_ime)) return
+        var weapon = attacker.getMainHandItem()
+        if (weapon == null || weapon.isEmpty()) return
+        var ench = resolveEnch(VORPAL_ARCANE_ENCHANT_ID)
+        if (ench == null) return
+        var level = EnchantmentHelper_ime.getItemEnchantmentLevel(ench, weapon)
+        if (level <= 0) return
+
+        // Did the custom crit roll fire on THIS tick? If not, no decap.
+        var lastCrit = attacker.persistentData.getLong('icraft_last_crit_tick')
+        var curTick = attacker.level().getServer().getTickCount()
+        if (lastCrit !== curTick) return
+
+        var victim = event.getEntity()
+        if (victim instanceof PlayerClass_ime) return
+        var vKey = ForgeRegistries_ime.ENTITY_TYPES.getKey(victim.getType())
+        if (vKey == null) return
+        if (VORPAL_BOSS_BLOCKLIST[String(vKey.toString())] === 1) return
+
+        var chance = VORPAL_ARCANE_DECAP_PER_LEVEL * level
+        if (Math.random() >= chance) return
+
+        // Set damage to victim's health + 1 to guarantee lethal.
+        event.setAmount(victim.getHealth() + 1.0)
+      } catch (e) {
+        // Fail-soft
+      }
+    }
+  })
+  MinecraftForge_ime.EVENT_BUS.addListener(EventPriority_ime.LOW, false,
+                                            LivingHurtEvent_ime, decapHandler)
+
+  console.log('[IridescentCraft] icraft_magic_enchants loaded (mana_boost + mana_regen + arcane_focus stat hooks + arcane_vorpal decap)')
 } catch (e) {
   console.warn('[IridescentCraft] icraft_magic_enchants bootstrap FAILED: ' + e)
 }
