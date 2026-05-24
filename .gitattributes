@@ -1,2 +1,61 @@
-# Auto detect text files and perform LF normalization
-* text=auto
+# Per-extension line-ending rules. Per windows-migration.md "Line endings will
+# bite you": the dedicated Linux server reads .sh files literally, and a
+# CRLF-mangled shebang fails silently with "bad interpreter". These rules
+# enforce the correct EOL per file kind regardless of editor defaults or
+# `core.autocrlf` settings on contributor machines.
+
+# Default: text auto-detect, normalise to LF on commit
+* text=auto eol=lf
+
+# Windows-only scripts must keep CRLF (cmd.exe / PowerShell expect it)
+*.bat   text eol=crlf
+*.cmd   text eol=crlf
+*.ps1   text eol=crlf
+*.psm1  text eol=crlf
+*.psd1  text eol=crlf
+
+# Anything the Linux dedicated server or KubeJS/Rhino reads must be LF
+*.sh    text eol=lf
+*.js    text eol=lf
+*.json  text eol=lf
+*.toml  text eol=lf
+*.yml   text eol=lf
+*.yaml  text eol=lf
+*.md    text eol=lf
+*.txt   text eol=lf
+*.lang  text eol=lf
+*.mcmeta text eol=lf
+*.snbt  text eol=lf
+
+# Java/Gradle sources stay LF (cross-platform builds expect it)
+*.java  text eol=lf
+*.kt    text eol=lf
+*.kts   text eol=lf
+*.gradle text eol=lf
+*.properties text eol=lf
+
+# Binary - never line-end-converted, never text-diffed
+*.jar   binary
+*.zip   binary
+*.gz    binary
+*.tar   binary
+*.png   binary
+*.jpg   binary
+*.jpeg  binary
+*.gif   binary
+*.webp  binary
+*.ico   binary
+*.ogg   binary
+*.wav   binary
+*.mp3   binary
+*.mp4   binary
+*.webm  binary
+*.dat   binary
+*.nbt   binary
+*.mca   binary
+*.mcstructure binary
+*.schem binary
+*.schematic binary
+*.psd   binary
+*.blend binary
+*.pdf   binary
