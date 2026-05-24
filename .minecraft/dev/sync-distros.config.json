@@ -10,7 +10,8 @@
     "*.log",
     "*.disabled",
     "kubejs/server_scripts/loot/DEPRECATED*",
-    "kubejs/server_scripts/example.js"
+    "kubejs/server_scripts/example.js",
+    "kubejs/server_scripts/validate_recipe_removals.js"
   ],
   "_architecture_notes": {
     "the_rule": "Per CLAUDE.md 'Distribution Sync': all changes to kubejs, configs, datapacks, or lang files must be mirrored to all three distros (main, server_distribution, distribution/client). In practice this script enforces a conservative subset (server_scripts + startup_scripts) where divergence is almost always a real bug; the rest is left to manual discipline or other tools.",
@@ -22,6 +23,7 @@
     "kubejs/config": "NOT WATCHED. KubeJS-internal config files (probe-settings.json, etc) vary per environment.",
     "datapack_sources": "NOT WATCHED. Build SOURCES for custom datapack jars (iridescent_codex_data.jar etc). Distros ship the BUILT jar in mods/, not the source tree. Only present in main.",
     "config": "NOT WATCHED. Mod configs frequently differ across server vs client (memory tuning, render distance, etc).",
-    "mods": "NOT WATCHED. packwiz manages these; custom jars need the verify_distros.sh|.bat|.ps1 helper per deployment-and-utility-guide.md, not this script."
+    "mods": "NOT WATCHED. packwiz manages these; custom jars need the verify_distros.sh|.bat|.ps1 helper per deployment-and-utility-guide.md, not this script.",
+    "kubejs/server_scripts/validate_recipe_removals.js": "EXCLUDED. Dev-only validator (master-appendix.md §126: 'run at server start as a sanity check for stale IDs'); intentionally not deployed to the distributions."
   }
 }

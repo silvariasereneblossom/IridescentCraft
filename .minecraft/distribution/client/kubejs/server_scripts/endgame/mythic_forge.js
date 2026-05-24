@@ -26,7 +26,7 @@ ServerEvents.recipes(event => {
         'OCO',
         'NNN'
     ], {
-        R: 'kubejs:rift_shard',
+        R: 'kubejs:icraft_rift_shard',
         M: 'mekanism:teleportation_core',
         O: 'minecraft:crying_obsidian',
         C: 'mekanism:steel_casing',
@@ -48,7 +48,7 @@ ServerEvents.recipes(event => {
         D: 'kubejs:dragon_heart',
         G: 'botania:gaia_ingot',
         N: 'minecraft:nether_star',
-        S: 'kubejs:rift_shard'
+        S: 'kubejs:icraft_rift_shard'
     }).id('icraft:rift_keystone')
 
     // =========================================================================
@@ -88,7 +88,7 @@ ServerEvents.recipes(event => {
         'SMS',
         ' F '
     ], {
-        S: 'kubejs:rift_shard',
+        S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge'
     }).id('icraft:mythic_catalyst_1')
@@ -100,7 +100,7 @@ ServerEvents.recipes(event => {
         'SMS',
         'FSF'
     ], {
-        S: 'kubejs:rift_shard',
+        S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge'
     }).id('icraft:mythic_catalyst_2')
@@ -111,7 +111,7 @@ ServerEvents.recipes(event => {
         'FMF',
         'SES'
     ], {
-        S: 'kubejs:rift_shard',
+        S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence'
@@ -123,7 +123,7 @@ ServerEvents.recipes(event => {
         'FMF',
         'SES'
     ], {
-        S: 'kubejs:rift_shard',
+        S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence'
@@ -135,7 +135,7 @@ ServerEvents.recipes(event => {
         'FMF',
         'ECE'
     ], {
-        S: 'kubejs:rift_shard',
+        S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence',
@@ -189,7 +189,7 @@ ServerEvents.recipes(event => {
         'FMF',
         'SRS'
     ], {
-        S: 'kubejs:rift_shard',
+        S: 'kubejs:icraft_rift_shard',
         B: 'kubejs:rift_blueprint',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge',
@@ -209,7 +209,7 @@ ServerEvents.recipes(event => {
     ], {
         B: 'kubejs:rift_blueprint',
         E: 'kubejs:primordial_essence',
-        R: 'kubejs:rift_shard',
+        R: 'kubejs:icraft_rift_shard',
         M: 'kubejs:mythic_forge',
         S: 'kubejs:void_fragment',
         C: 'kubejs:rift_core'
@@ -229,7 +229,7 @@ ServerEvents.recipes(event => {
     ], {
         B: 'kubejs:rift_blueprint',
         E: 'kubejs:primordial_essence',
-        R: 'kubejs:rift_shard',
+        R: 'kubejs:icraft_rift_shard',
         M: 'kubejs:mythic_forge',
         S: 'kubejs:void_fragment'
     }).id('icraft:mythic_riftwalker_boots')
@@ -245,7 +245,7 @@ ServerEvents.recipes(event => {
         'EME',
         'R R'
     ], {
-        S: 'kubejs:rift_shard',
+        S: 'kubejs:icraft_rift_shard',
         B: 'kubejs:rift_blueprint',
         E: 'kubejs:primordial_essence',
         M: 'kubejs:mythic_forge',

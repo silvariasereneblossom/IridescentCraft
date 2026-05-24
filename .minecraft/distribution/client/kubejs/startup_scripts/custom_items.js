@@ -342,8 +342,23 @@ StartupEvents.registry('item', event => {
     // ENDGAME MATERIALS (T4 boss drops for Crucible/Prestige)
     // =========================================================================
 
+    // 2026-04-27 (audit Phase 2.2): renamed to icraft_rift_shard to resolve
+    // namespace collision with too_many_bows:rift_shard. Old kubejs:rift_shard
+    // remains registered for a transition window so any pre-update player
+    // inventories migrate cleanly via PlayerEvents.loggedIn handler in
+    // kubejs/server_scripts/migrations/rift_shard_rename.js. Once testers
+    // confirm migration ran (target: ~2 weeks), this old entry can be removed.
     event.create('kubejs:rift_shard')
-        .displayName('Rift Shard')
+        .displayName('§7Rift Shard (deprecated — relog to convert)')
+        .tooltip('§dA fragment of torn reality')
+        .tooltip('§cDeprecated — relog to receive Iridescent Rift Shard')
+        .maxStackSize(64)
+        .rarity('epic')
+        .textureJson({ layer0: 'minecraft:item/amethyst_shard' })
+        .color(0, 0x9933FF)
+
+    event.create('kubejs:icraft_rift_shard')
+        .displayName('Iridescent Rift Shard')
         .tooltip('§dA fragment of torn reality')
         .tooltip('§7Dropped by T4 bosses')
         .maxStackSize(64)

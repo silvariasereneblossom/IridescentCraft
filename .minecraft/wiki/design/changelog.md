@@ -4,6 +4,32 @@ All changes to the master design document are logged here with date, description
 
 ---
 
+## 2026-05-24 — Post-cutover distro re-sync + rift-shard migration retired
+
+Infrastructure/cleanup pass via the new `.minecraft/dev/sync-distros.ps1` helper. Not a design change in itself — surfaces 8 files that had drifted across the 3 distros during the pre-cutover scramble, and closes one expired migration window.
+
+### Six ACTIVE scripts mirrored main -> server_distribution + distribution/client
+
+Testers and the dedicated server were running stale copies of:
+- `kubejs/startup_scripts/custom_items.js` (core item registry — main was +1K newer)
+- `kubejs/startup_scripts/endgame_items.js` (Rift-exclusive drops)
+- `kubejs/server_scripts/endgame/mythic_forge.js` (Mythic Forge crafting station — main was +1K newer)
+- `kubejs/server_scripts/endgame/rift_mechanics.js` (Oblivion's Rift entry mechanics)
+- `kubejs/server_scripts/recipes/tier_skip.js` (transmutation recipes per master-appendix.md §B.3)
+- `kubejs/server_scripts/loot/terramity_boss_drops.js` (audit Phase 4.1 — MISSING in distros entirely)
+
+All six identified as ACTIVE by cross-referencing master.md, master-appendix.md, and the internal `dev/lessons-learned.md`. `-Fix` ran clean; verification re-run reports 0 mismatches across `kubejs/startup_scripts` + `kubejs/server_scripts`.
+
+### `migrations/rift_shard_rename.js` retired
+
+One-shot `PlayerEvents.loggedIn` migration that renamed `kubejs:rift_shard` -> `kubejs:icraft_rift_shard` (added 2026-04-27 with a ~2-week window per the file's own comment, target ~2026-05-15). Window has now closed; renamed to `.disabled` to preserve archaeology without re-running on logins. The deprecated alias registration still lives in `custom_items.js` and can be removed in a follow-up once any straggler-tester inventories are confirmed migrated.
+
+### `validate_recipe_removals.js` formally excluded from distros
+
+Dev-only validator per master-appendix.md §126 ("run at server start as a sanity check for stale IDs"). Was triggering as a MISSING entry under the distro mirror gate; added to `.minecraft/dev/sync-distros.config.json` EXCLUDE_PATTERNS with rationale.
+
+---
+
 ## 2026-05-21 — Vorpal mixed crit + Arcane Vorpal wired (spells-only)
 
 Two-part follow-up to the all-additive crit conversion:
