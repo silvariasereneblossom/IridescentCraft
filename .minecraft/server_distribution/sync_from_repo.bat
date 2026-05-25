@@ -2,7 +2,7 @@
 title IridescentCraft Server Sync
 setlocal enabledelayedexpansion
 
-set "REPO=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution"
+set "REPO=Z:\Users\silvariazemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution"
 REM Get script directory without trailing backslash
 set "LOCAL=%~dp0"
 if "!LOCAL:~-1!"=="\" set "LOCAL=!LOCAL:~0,-1!"

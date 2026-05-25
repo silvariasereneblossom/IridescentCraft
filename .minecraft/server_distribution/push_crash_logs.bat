@@ -28,13 +28,13 @@ if /i "%1"=="-s"       set "SILENT=1"
 
 cd /d "%~dp0"
 
-set "REMOTE_DEST=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution\TesterLogs\Server Logs"
+set "REMOTE_DEST=Z:\Users\silvariazemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution\TesterLogs\Server Logs"
 set "LOCAL_DEST=TesterLogs\Server Logs"
 
 REM Detect whether Z: is mounted and the repo TesterLogs folder exists.
 REM We check for the server_distribution directory root under the mapped
 REM PrismLauncher instance - if that's there, the repo is accessible.
-set "REPO_ROOT=Z:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution"
+set "REPO_ROOT=Z:\Users\silvariazemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\.minecraft\server_distribution"
 if exist "%REPO_ROOT%" (
     set "DEST=%REMOTE_DEST%"
     set "MODE=repo"

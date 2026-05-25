@@ -32,8 +32,8 @@ cd "$(dirname "$0")"
 
 # On Linux there's no Z: drive; user can override via env. Default fallback
 # is local.
-REMOTE_DEST="${REMOTE_DEST:-/z/Users/Silvaria Zemaitis/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/server_distribution/TesterLogs/Server Logs}"
-REMOTE_ROOT="${REMOTE_ROOT:-/z/Users/Silvaria Zemaitis/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/server_distribution}"
+REMOTE_DEST="${REMOTE_DEST:-/z/Users/silvariazemaitis/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/server_distribution/TesterLogs/Server Logs}"
+REMOTE_ROOT="${REMOTE_ROOT:-/z/Users/silvariazemaitis/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/server_distribution}"
 LOCAL_DEST="TesterLogs/Server Logs"
 
 if [ -d "$REMOTE_ROOT" ]; then

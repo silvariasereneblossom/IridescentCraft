@@ -120,7 +120,7 @@ The canonical design reference for all modpack systems.
 
 | Resource | Location |
 |----------|----------|
-| Game Instance | `C:\Users\Silvaria Zemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\` |
+| Game Instance | `C:\Users\silvariazemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\` |
 | Linux Dev | `/root/IridescentCraft/minecraft/` |
 | GitHub Repo | synced via GitHub Desktop |
 | Design Docs (original) | `designdocs/master_design_document IridescentCraft.docx` |
