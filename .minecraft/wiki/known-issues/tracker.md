@@ -14,6 +14,27 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Tester sync drift - cleanup script didn't catch stale or content-drifted jars (2026-05-25) — RESOLVED
+- **Status:** Resolved 2026-05-25.
+- **Reported:** Two distinct tester failures on the same day.
+  - **Tester F (Falendria):** crash loop on solo world load. Crash: `java.lang.NoClassDefFoundError: Could not initialize class smartin.miapi.registries.RegistryInventory` -> `Can't get event bus for mod 'miapi' because it was not registered!`. Root cause: `Truly-Modular-miapi-forge-1.1.48-1.20.1.jar` (plus 4 sibling jars: archery, armory, arsenal, create_compat) present in tester's `.minecraft/mods/` despite the entire Truly Modular suite being removed from the pack months ago (replaced by iridescent_reforging). Loaded via Sinytra Connector; mixins applied to ModelBakery but `miapi` mod entity never registered with FML, crashing on first model-bake hit.
+  - **Tester 1:** "Failed to synchronize registry data from server, closing connection" on connect. Forge screen showed `iridescent_tetra_expansion: reforging 1.0.0 / 1.0.0` and `iridescent_codex 1.0.0 / 1.0.0` as mismatched. Version strings IDENTICAL on both sides - actual cause was content-hash drift (rebuilt jar with same filename + version string, tester's local copy stale).
+- **Root cause:** `cleanup_stale_jars.ps1` had only an ALLOWLIST mechanism (packwiz .pw.toml entries + hardcoded customJars list). Two gaps:
+  1. No explicit deny-list - so removed-from-pack mods would only get cleaned IF the user's launcher invokes the cleanup script. Falendria's install likely either skipped the cleanup (zip-imported instance without instance.cfg PreLaunchCommand wiring) OR the script ran but the Truly-Modular jars weren't in either side of allowlist-or-allowlist comparison.
+  2. No hash verification for custom jars - same-filename-different-content silently kept.
+- **Fix:** Rewrote `cleanup_stale_jars.ps1` with 3-layer hygiene:
+  1. **DENY-LIST** (substring patterns, highest priority): `truly_modular`, `truly-modular`, `rechiseled`, `supermartijn642`, `connectedglass`, `trashcans`. Any jar whose filename matches gets force-removed regardless of allowlist status.
+  2. **HASH-VERIFY** (custom jars only): reads `custom_jars_manifest.json` (new), compares local SHA-256 against canonical. Mismatch -> remove (next sync re-fetches from canonical).
+  3. **ALLOWLIST-OR-PURGE** (unchanged): existing logic preserved as the third layer.
+- **New artifacts:**
+  - `.minecraft/custom_jars_manifest.json` - committed canonical SHA-256s of 12 custom jars (+ size)
+  - `.minecraft/dev/regen_custom_jars_manifest.ps1` - dev tool to regenerate the manifest after rebuilding any custom jar (must run before commit, otherwise manifest goes stale and hash-verify breaks)
+  - Same `cleanup_stale_jars.ps1` synced to main / server_distribution / distribution/client (all 3 byte-identical)
+  - Same `custom_jars_manifest.json` synced to all 3 distros
+- **Tester immediate action:** Falendria deletes the 5 Truly-Modular jars from `.minecraft/mods/`; Tester 1 deletes `iridescent_tetra_expansion-1.0.0.jar` + `iridescent_codex_data.jar`. After their next git pull, PrismLauncher invokes `prism_prelaunch.bat` -> `cleanup_stale_jars.ps1` (new 3-layer version) -> any future drift in those categories gets caught automatically without manual file-hunting.
+- **Lesson:** When retiring a mod from the pack, allowlist-based cleanup isn't sufficient - testers with manually-installed mods or zip-imported instances never had the mod in the allowlist to begin with. Need an explicit deny-list. Similarly, content drift on same-filename custom jars is invisible to filename-based sync - hash verification is the only catch.
+- **Follow-up TBD:** wire `regen_custom_jars_manifest.ps1` into `build_mod.sh` / `build_mod.ps1` as a post-build step so it can't be forgotten on custom jar rebuilds.
+
 ### Vanilla spiders spawning with infinite regeneration (2026-05-20) — INVESTIGATING
 
 - **Status:** Symptom returned 2026-05-20 after the 2026-05-10 fix (kill Truly Modular / nucleus_facets) should have closed it. Drop side defended via new `strip_anomalous_drops.js` LivingDropsEvent layer; spawn-buff source unidentified.
