@@ -166,7 +166,7 @@ if %errorlevel% neq 0 (
 REM -------------------------------------------------------------------
 REM Phase 2: Install if needed (Forge + mods)
 REM -------------------------------------------------------------------
-if not exist "libraries\net\minecraftforge\forge\1.20.1-47.4.6" (
+if not exist "libraries\cpw\mods\bootstraplauncher" (
     echo [INSTALL] Forge not found - running first-time setup...
     echo.
     if not exist "forge-1.20.1-47.4.6-installer.jar" (
