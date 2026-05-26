@@ -14,6 +14,23 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Server TPS lag from JVM heap exhaustion + per-spawn diag overhead (2026-05-25) — MITIGATED
+- **Status:** Mitigated 2026-05-25; full resolution pending Proxmox VM RAM bump by operator.
+- **Reported:** Operator (silvieserene) felt severe in-game lag despite being LAN-direct (`/10.0.0.5:7667` per server log) with sub-1ms RTT. Initially blamed network or client; ruled out — testers connecting via FRPC tunnel (`/127.0.0.1` from tunnel forward) felt equivalent or smoother because their 30ms+ ping triggers client-side prediction smoothing that masks server tick stutters.
+- **Confirmed:** Server log 19:14-19:20 wall-to-wall `Can't keep up! Running 8-9 seconds / 160-191 ticks behind` warnings, continuous (not spikes) — server running ~10 TPS, half target. Process RSS 11.5 GB against `-Xmx10G` heap cap = heap-pressure → constant GC stop-the-world pauses.
+- **Compounding:** `diag_mob_spawn.js` (15 KB) firing on every entity spawn writing comprehensive NBT-extracted JSON to log. 689 MOBDIAG-SPAWN entries in current session. `diag_mob_drops.js` (13 KB) same shape for deaths. Both expensive server-thread work per event.
+- **Mitigation applied:**
+  - Bumped `iridescentserver.bat` `-Xmx 10G -Xms 8G` -> `-Xmx 14G -Xms 14G` across all 4 copies (repo canonical + nested artifact + Z: live install + nested live artifact). Aikar's recommendation: Xms = Xmx prevents heap-resize lag spikes.
+  - Disabled `diag_mob_spawn.js` + `diag_mob_drops.js` (renamed `.js.disabled`) across all 3 distros (main / server_distribution / distribution/client).
+- **Operator action required:** bump Sereneblossomns VM allocation in Proxmox 16 GB -> 20 GB (take 4 GB from Proxmox host's 8 GB allocation; 4-5 GB is enough for the host in this homelab setup). Without this, the new `-Xmx14G` will starve Windows Server overhead. Hot-add works if memory ballooning is enabled; otherwise stop VM + edit + start.
+- **Side-effect / trade-off:** disabling `diag_mob_spawn.js` PAUSES the vanilla-spider-regen investigation tracked below ("Vanilla spiders spawning with infinite regeneration"). The drop-side defense (`strip_anomalous_drops.js`) stays active. If the investigation needs to resume, rename `.js.disabled` back. Could also rewrite the diag with narrower filter (only log entities with anomalous effects) to keep visibility at lower cost - left as TODO.
+- **Lesson:** allocation-vs-load math matters - `-Xmx10G` was set early when the pack had fewer mods + lower mob density + no diag scripts. As scope grew (450+ mods, complex KubeJS handlers, active testers), the constraint silently became binding. Recheck heap sizing periodically; the symptom is server TPS lag that masquerades as network lag to the lowest-ping player.
+- **Follow-up TBD:**
+  - Operator bumps VM RAM in Proxmox (waiting)
+  - If long-term RAM upgrade lands (4x16 GB matched kit considered), revisit Xmx sizing to 18-20 GB
+  - Audit remaining diag scripts (diag_empty_display_name fires per-spawn but is lightweight; diag_player_velocity may be per-tick; the rest are event-rare)
+  - Consider rewriting diag_mob_spawn with anomaly-only filter so spider investigation can resume
+
 ### Tester sync drift - cleanup script didn't catch stale or content-drifted jars (2026-05-25) — RESOLVED
 - **Status:** Resolved 2026-05-25.
 - **Reported:** Two distinct tester failures on the same day.

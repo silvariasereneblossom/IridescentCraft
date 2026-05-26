@@ -284,8 +284,8 @@ echo.
 
 java ^
     -noverify ^
-    -Xmx10G ^
-    -Xms8G ^
+    -Xmx14G ^
+    -Xms14G ^
     -XX:+UseG1GC ^
     -XX:+ParallelRefProcEnabled ^
     -XX:MaxGCPauseMillis=200 ^
