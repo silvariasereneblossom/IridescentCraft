@@ -14,6 +14,36 @@ Forge requires network channel lists to match between client and server. Mods th
 
 ## Active Issues
 
+### Forge libraries/ partial state committed pre-migration, sabotaging post-migration server bring-up (2026-05-25) — RESOLVED
+- **Status:** Resolved 2026-05-25.
+- **Reported:** After bumping Sereneblossomns VM RAM to 20 GB and applying the Xmx 14G bump from the TPS-lag fix, operator restarted the MC server. Server failed to launch with:
+  ```
+  WARNING: Unknown module: cpw.mods.securejarhandler specified to --add-exports
+  Error: Could not find or load main class cpw.mods.bootstraplauncher.BootstrapLauncher
+  The syntax of the command is incorrect.
+  ```
+  Multiple manual fix attempts (delete libraries/, re-run iridescentserver.bat, force-clear marker files) all failed - the same `libraries/de/` and `libraries/net/` dirs kept reappearing with identical 7-file `mtime May 24 14:15` content after every sync cycle. Phase 2 install-if-missing check kept skipping reinstall because the version dir (with just stub args files) existed.
+- **Root cause chain:**
+  1. **Pre-migration (probably 2026-04 or early-05 on Linux container):** somebody (probably during a server bring-up test) ran `iridescentserver.sh`/`.bat` with the dev tree mounted. Forge installer started, completed the first ~7 files (mcp_config mappings, server jar mapping caches, forge unix_args.txt + win_args.txt), then either interrupted or failed before downloading the actual ~250-400 MB of bundled libraries.
+  2. `.gitignore` didn't cover `libraries/` - existing rules excluded runtime data (world/, logs/, mods/*.jar) but assumed "we'd never have a libraries/ to ignore" because nobody had thought through install-artifact territory.
+  3. A subsequent `git add .` (broad operator commit or auto-commit hook) staged the 7 stub files. They got committed.
+  4. **OLD server's actual libraries/ on its NTFS filesystem was complete** - Forge installer was either re-run successfully there OR a prior image had it. Complete libraries lived outside git tracking. Server worked. Nobody noticed the repo had stubs.
+  5. **2026-05-20 cutover:** migration brought the git repo to IridescentcraftDev. The 7 stub files came along in the blob. The OLD server's untracked-on-disk complete libraries did NOT come along.
+  6. **2026-05-24 distro sweep** propagated the 7 stubs across all 3 distros for parity via sync-distros.ps1.
+  7. **2026-05-25 (today):** new server bring-up was first full "only what git tracks" install since cutover. sync_from_repo restored the stubs every cycle. Phase 2's coarse `if not exist "libraries\net\minecraftforge\forge\1.20.1-47.4.6"` saw the dir present (with stub args files only) → skipped install → Java launch failed → every manual fix got immediately reverted by next sync_from_repo run.
+- **Why nobody caught it earlier:** dev environment + old server both worked because of accumulated runtime state outside git. Migration was the first full bring-up from clean state - revealing the gap. The coarse Phase 2 check silently swept the partial-install state under the rug.
+- **Three-part fix (commit 4d78044):**
+  1. **`.gitignore`** now blocks `libraries/` across all 3 distros (`.minecraft/libraries/`, `.minecraft/server_distribution/libraries/`, `.minecraft/distribution/client/libraries/`) - prevents the partial state from being re-committed via broad `git add .`
+  2. **`git rm -r --cached`** the 7 stub files from server_distribution/libraries/. 502,397 line-deletions in the commit (the mcp_config + server mappings files were each multi-MB obfuscation tables).
+  3. **Phase 2 install-completeness check upgraded** in iridescentserver.bat (canonical + 2 live Z: copies):
+     ```
+     OLD: if not exist "libraries\net\minecraftforge\forge\1.20.1-47.4.6"
+     NEW: if not exist "libraries\cpw\mods\bootstraplauncher"
+     ```
+     bootstraplauncher dir is only created by SUCCESSFUL Forge --installServer. Catches half-installed states that the old version dir check would have falsely-passed.
+- **Generalizable lesson:** if a file gets created by a tool (Forge installer, npm, pip, gradle, etc.), it should be in `.gitignore` from day 1. The "I'll commit it just to be safe" instinct creates exactly this class of latent bug - runtime artifacts in version control diverge from real runtime state and silently corrupt fresh installs. Particularly insidious because the development environment keeps working due to accumulated untracked state.
+- **Related deferred follow-up:** iridescentserver.bat RAM recommendation banner currently says "8-12 GB available for the server" - should update to a player-count-aware formula (e.g., 12 GB base + 2 GB per concurrent player) once the TPS-lag investigation lands a final sizing.
+
 ### Server TPS lag from JVM heap exhaustion + per-spawn diag overhead (2026-05-25) — MITIGATED
 - **Status:** Mitigated 2026-05-25; full resolution pending Proxmox VM RAM bump by operator.
 - **Reported:** Operator (silvieserene) felt severe in-game lag despite being LAN-direct (`/10.0.0.5:7667` per server log) with sub-1ms RTT. Initially blamed network or client; ruled out — testers connecting via FRPC tunnel (`/127.0.0.1` from tunnel forward) felt equivalent or smoother because their 30ms+ ping triggers client-side prediction smoothing that masks server tick stutters.
