@@ -7,7 +7,13 @@ REM Later runs: Skips install (mods already present), starts the server
 REM
 REM Requirements:
 REM   - Java 17 (e.g., Adoptium/Temurin JDK 17)
-REM   - 8-12 GB RAM available for the server
+REM   - RAM: 12 GB base + ~2 GB per concurrent player
+REM     (16 GB for 2 testers; 22 GB for 5; 14 GB single-tester floor)
+REM
+REM Service mode (set ICRAFT_SERVICE_MODE=1 in env):
+REM   - Skips Phase 0 GitHub sync (Z: mirror is authoritative)
+REM   - Skips all `pause` calls so the bat can exit cleanly under NSSM
+REM   - Recommended when launched via Windows service (e.g., NSSM IridescentMC)
 
 title IridescentCraft Server
 
@@ -51,6 +57,30 @@ powershell -Command ^
 echo.
 
 REM -------------------------------------------------------------------
+REM Phase -1: Z:-mounted dev-PC mirror (preferred when reachable)
+REM -------------------------------------------------------------------
+REM sync_from_repo.bat copies the whole server_distribution/ tree from
+REM Z: (dev PC's repo working tree). When Z: is mounted this is
+REM faster + more reliable than phase0_sync's GitHub diff-API:
+REM   - no GitHub API rate limits
+REM   - no truncated-diff edge cases (>=300 changed files -> full zip)
+REM   - sees uncommitted local edits the dev PC has on the working tree
+REM Falls back internally to a GitHub zip download if Z: isn't mounted.
+REM
+REM Phase 0 (phase0_sync.ps1) still runs after as a finer diff-based
+REM check; if this phase brought everything current, Phase 0 is a
+REM no-op. If this phase silently failed, Phase 0 acts as the safety
+REM net. Belt and suspenders.
+if exist "%~dp0sync_from_repo.bat" (
+    echo [SYNC] Phase -1: Z: / GitHub zip mirror...
+    call "%~dp0sync_from_repo.bat"
+    echo.
+) else (
+    echo [SYNC] Phase -1 skipped: sync_from_repo.bat not found.
+    echo.
+)
+
+REM -------------------------------------------------------------------
 REM Phase 0: Self-Update from GitHub (diff-based)
 REM -------------------------------------------------------------------
 REM Uses phase0_sync.ps1 for diff-based updates: compares commit SHAs,
@@ -77,6 +107,18 @@ if defined FORCE_SYNC (
     echo.
 )
 
+REM Service mode skips Phase 0 GitHub sync. Two reasons:
+REM   1. Avoids the auto-overwrite footgun where the GitHub state reverts
+REM      local server-side edits that haven't been pushed yet.
+REM   2. Phase 0's HTTP downloads + child PowerShell hung indefinitely under
+REM      non-foreground scheduled-task execution. Skipping bypasses both.
+REM Z: sync (Phase -1) above is authoritative in service mode.
+if defined ICRAFT_SERVICE_MODE (
+    echo [UPDATE] Phase 0 GitHub sync SKIPPED ^(ICRAFT_SERVICE_MODE - Z: mirror is authoritative^).
+    echo.
+    goto :skip_phase0
+)
+
 echo [UPDATE] Checking for updates from GitHub...
 
 if not exist "%~dp0phase0_sync.ps1" (
@@ -96,6 +138,8 @@ if exist "%~dp0phase0_sync.ps1" (
     echo   [WARN] phase0_sync.ps1 not found. Skipping update check.
 )
 echo.
+
+:skip_phase0
 
 REM -------------------------------------------------------------------
 REM Phase 0.5: Self-update swap (if Phase 0 staged a new bat)
@@ -147,7 +191,7 @@ if "%NEED_RELAUNCH%"=="1" (
     start "" "%SDIR%\iridescentserver.bat"
     if errorlevel 1 (
         echo [UPDATE] ERROR: start command failed. Run iridescentserver.bat manually.
-        pause
+        if not defined ICRAFT_SERVICE_MODE pause
     )
     exit /b 0
 )
@@ -159,7 +203,7 @@ java -version >nul 2>&1
 if %errorlevel% neq 0 (
     echo ERROR: Java not found. Please install Java 17.
     echo Download from: https://adoptium.net/
-    pause
+    if not defined ICRAFT_SERVICE_MODE pause
     exit /b 1
 )
 
@@ -174,7 +218,7 @@ if not exist "libraries\cpw\mods\bootstraplauncher" (
         powershell -Command "Invoke-WebRequest -Uri 'https://maven.minecraftforge.net/net/minecraftforge/forge/1.20.1-47.4.6/forge-1.20.1-47.4.6-installer.jar' -OutFile 'forge-1.20.1-47.4.6-installer.jar' -UseBasicParsing"
         if not exist "forge-1.20.1-47.4.6-installer.jar" (
             echo ERROR: Failed to download Forge installer.
-            pause
+            if not defined ICRAFT_SERVICE_MODE pause
             exit /b 1
         )
         echo [INSTALL] Forge installer downloaded.
@@ -211,12 +255,14 @@ if "!NEED_MODS!"=="1" if exist "mods\.index" (
     if %errorlevel% neq 0 (
         echo.
         echo ERROR: Mod installation failed.
-        pause
+        if not defined ICRAFT_SERVICE_MODE pause
         exit /b 1
     )
     echo.
-    echo Mod download complete. Press Enter to continue to server launch...
-    pause >nul
+    if not defined ICRAFT_SERVICE_MODE (
+        echo Mod download complete. Press Enter to continue to server launch...
+        pause >nul
+    )
     echo.
 )
 endlocal
@@ -277,7 +323,7 @@ powershell -Command ^
   "$blue=\"${e}[38;2;91;206;250m\";$pink=\"${e}[38;2;245;169;184m\";$white=\"${e}[38;2;255;255;255m\";$rs=\"${e}[0m\";" ^
   "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine();" ^
   "[Console]::Write(\"${pink}  Welcome to IridescentCraft!${rs}\");[Console]::WriteLine();" ^
-  "[Console]::Write(\"${white}  Starting server (8-10 GB RAM)${rs}\");[Console]::WriteLine();" ^
+  "[Console]::Write(\"${white}  Starting server (14 GB base + 2 GB/player)${rs}\");[Console]::WriteLine();" ^
   "[Console]::Write(\"${pink}  First startup may take 5-15 minutes${rs}\");[Console]::WriteLine();" ^
   "[Console]::Write(\"${blue}  ==========================================${rs}\");[Console]::WriteLine()"
 echo.
@@ -353,4 +399,19 @@ if %EXIT_CODE% neq 0 (
     echo.
     echo Server stopped normally.
 )
-pause
+
+REM ─────────────────────────────────────────────────────────────────────
+REM Auto-mirror session logs to TesterLogs\Server Logs\ on every exit
+REM (clean or crash). Calls push_crash_logs.bat --silent which copies
+REM logs + does a best-effort git push from instance root if the parent
+REM is a git working tree. Topology B (dedicated Windows Server with
+REM Z: mirror) falls through to dev PC pickup via prism_postexit.bat.
+REM
+REM Manual interactive variant (push_crash_logs.bat without flag) is
+REM kept as a failsafe for one-off pushes.
+REM ─────────────────────────────────────────────────────────────────────
+if exist "%~dp0push_crash_logs.bat" (
+    call "%~dp0push_crash_logs.bat" --silent
+)
+
+if not defined ICRAFT_SERVICE_MODE pause
