@@ -1,0 +1,18 @@
+filename = 'krypton-0.2.3.jar'
+name = 'Krypton'
+side = 'both'
+
+# NOTE: Krypton is a Fabric mod loaded on Forge via Sinytra Connector (already
+# present in the pack). Version 0.2.3 is the latest 1.20.1-compatible release
+# (June 2023); the author has since moved to 1.21+. Should still work cleanly
+# on 1.20.1 via Sinytra. Roll back if any network-pipeline conflict surfaces.
+
+[download]
+hash = '92b73a70737cfc1daebca211bd1525de7684b554be392714ee29cbd558f2a27a8bdda22accbe9176d6e531d74f9bf77798c28c3e8559c970f607422b6038bc9e'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/fQEb0iXm/versions/jiDwS0W1/krypton-0.2.3.jar'
+
+[update.modrinth]
+mod-id = 'fQEb0iXm'
+version = 'jiDwS0W1'
