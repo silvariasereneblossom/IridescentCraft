@@ -72,8 +72,15 @@ echo.
 
 REM Mirror configs, scripts, datapacks (exclude runtime data + mods)
 REM Note: LOCAL has no trailing backslash so paths with spaces are safe
+REM /XD uses BARE DIRECTORY NAMES (not %LOCAL%-prefixed paths). Robocopy /XD
+REM matches against SOURCE paths during scan; dest-prefixed paths silently
+REM fail to match, which means /MIR proceeds to delete dest files (including
+REM the Forge install at libraries/cpw/mods/bootstraplauncher), triggering
+REM the Phase 2 installer to re-run on EVERY bat invocation. Bare names
+REM exclude any directory of that name anywhere in the tree, both for
+REM scan + purge -- which is what we actually want.
 robocopy "%REPO%" "%LOCAL%" /MIR /MT:4 /NJH /NJS /NDL /NP ^
-    /XD "%LOCAL%\world" "%LOCAL%\logs" "%LOCAL%\crash-reports" "%LOCAL%\backups" "%LOCAL%\libraries" "%LOCAL%\.cache" "%LOCAL%\mods" ^
+    /XD world logs crash-reports backups libraries .cache mods ^
     /XF "server_output.log" "crash-*.log" "usercache.json" "banned-ips.json" "banned-players.json" "ops.json" "whitelist.json" "installer.log" ".icraft_last_sha" ".icraft_server" ".icraft_token"
 
 set ROBOCOPY_EXIT=%errorlevel%
