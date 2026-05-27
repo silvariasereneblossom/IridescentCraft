@@ -67,10 +67,18 @@ REM   - no truncated-diff edge cases (>=300 changed files -> full zip)
 REM   - sees uncommitted local edits the dev PC has on the working tree
 REM Falls back internally to a GitHub zip download if Z: isn't mounted.
 REM
-REM Phase 0 (phase0_sync.ps1) still runs after as a finer diff-based
-REM check; if this phase brought everything current, Phase 0 is a
-REM no-op. If this phase silently failed, Phase 0 acts as the safety
-REM net. Belt and suspenders.
+REM Service mode skips Phase -1 entirely:
+REM   - Z: is per-user-session, not visible to LocalSystem service ->
+REM     sync would always fall through to slow GitHub download
+REM   - GitHub download takes 5-15 min per restart (hundreds of MB)
+REM   - Service-mode deployed state IS authoritative; no need to pull
+REM     from anywhere on service start. Dev-box pushes go through the
+REM     interactive bat invocation OR a manual restart after editing.
+if defined ICRAFT_SERVICE_MODE (
+    echo [SYNC] Phase -1 SKIPPED ^(ICRAFT_SERVICE_MODE - deployed state is authoritative^).
+    echo.
+    goto :skip_phase_minus1
+)
 if exist "%~dp0sync_from_repo.bat" (
     echo [SYNC] Phase -1: Z: / GitHub zip mirror...
     call "%~dp0sync_from_repo.bat"
@@ -79,6 +87,7 @@ if exist "%~dp0sync_from_repo.bat" (
     echo [SYNC] Phase -1 skipped: sync_from_repo.bat not found.
     echo.
 )
+:skip_phase_minus1
 
 REM -------------------------------------------------------------------
 REM Phase 0: Self-Update from GitHub (diff-based)
@@ -272,10 +281,17 @@ if exist "mods" (
     call "%~dp0strip_client_mods.bat" >nul 2>&1
 )
 
-REM Update mods (download new, remove old versions)
-if exist "mods\.index" (
-    echo [UPDATE] Syncing mod JARs...
-    powershell -ExecutionPolicy Bypass -File "%~dp0update_mods.ps1" -ModsDir "mods"
+REM Update mods (download new, remove old versions). update_mods.ps1 makes
+REM HTTP calls to packwiz/modrinth for version checks; those hang silently
+REM in non-foreground (service / scheduled-task) contexts. Skip in service
+REM mode -- deployed mod set is authoritative under WinSW management.
+if defined ICRAFT_SERVICE_MODE (
+    echo [UPDATE] Mod sync SKIPPED ^(ICRAFT_SERVICE_MODE - deployed mods are authoritative^).
+) else (
+    if exist "mods\.index" (
+        echo [UPDATE] Syncing mod JARs...
+        powershell -ExecutionPolicy Bypass -File "%~dp0update_mods.ps1" -ModsDir "mods"
+    )
 )
 
 REM Clean stale mod JARs not in any .pw.toml. The full logic lives in
