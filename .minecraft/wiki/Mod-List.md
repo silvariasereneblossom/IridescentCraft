@@ -4,7 +4,6 @@
 > DO NOT edit manually -- re-run the script after pack changes.
 
 **Total: 450 mods | Both: 368 | Client-only: 19 | Server-only: 10**
-**Generated:** 2026-05-27 02:54:34-04:00
 
 ## Both sides (368 mods)
 

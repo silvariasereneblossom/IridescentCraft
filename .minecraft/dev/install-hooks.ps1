@@ -33,26 +33,50 @@ if (-not (Test-Path $HooksDir)) {
 $PrePushPath = Join-Path $HooksDir "pre-push"
 $hookContent = @'
 #!/usr/bin/env bash
-# Three-distro sync gate. Installed by .minecraft/dev/install-hooks.ps1.
-# Fails the push if main, server_distribution, and distribution/client have
-# diverged on any watched path. Bypass for emergencies: git push --no-verify.
+# IridescentCraft pre-push gate. Three checks, in order:
+#   1. generate_modlist.ps1   - regenerate wiki/Mod-List.md from packwiz state
+#   2. mirror-wiki.ps1        - propagate pack-side wiki/ -> ../IridescentCraft.wiki/
+#   3. sync-distros.ps1       - verify the three distros stayed in sync
+# If steps 1-2 produce uncommitted changes, push is BLOCKED so author commits.
+# Step 3 fails on divergence. Bypass for emergencies: git push --no-verify.
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
-SCRIPT="$REPO_ROOT/.minecraft/dev/sync-distros.ps1"
+DEV="$REPO_ROOT/.minecraft/dev"
 
+# Prefer pwsh (PowerShell 7); fall back to Windows PowerShell 5.1.
+if command -v pwsh >/dev/null 2>&1; then
+    PWSH=(pwsh -NoProfile -ExecutionPolicy Bypass)
+else
+    PWSH=(powershell.exe -NoProfile -ExecutionPolicy Bypass)
+fi
+
+# --- Step 1: regenerate Mod-List.md ---
+if [ -f "$DEV/generate_modlist.ps1" ]; then
+    "${PWSH[@]}" -File "$DEV/generate_modlist.ps1"
+fi
+
+# --- Step 2: mirror pack-side wiki to GitHub Wiki repo ---
+if [ -f "$DEV/mirror-wiki.ps1" ]; then
+    "${PWSH[@]}" -File "$DEV/mirror-wiki.ps1"
+fi
+
+# --- Step 1+2 check: did anything change in the main repo? If so, block ---
+if ! git diff --quiet -- .minecraft/wiki/Mod-List.md 2>/dev/null; then
+    echo ""
+    echo "[pre-push] Mod-List.md regenerated and differs from HEAD."
+    echo "  Run: git add .minecraft/wiki/Mod-List.md && git commit -m 'modlist: refresh'"
+    echo "  Then re-push. Bypass: git push --no-verify"
+    exit 1
+fi
+
+# --- Step 3: three-distro sync gate ---
+SCRIPT="$DEV/sync-distros.ps1"
 if [ ! -f "$SCRIPT" ]; then
     echo "[pre-push] WARN: sync-distros.ps1 not found at $SCRIPT - skipping gate"
     exit 0
 fi
-
-# Prefer pwsh (PowerShell 7); fall back to Windows PowerShell 5.1.
-if command -v pwsh >/dev/null 2>&1; then
-    pwsh -NoProfile -File "$SCRIPT"
-else
-    powershell.exe -NoProfile -File "$SCRIPT"
-fi
+"${PWSH[@]}" -File "$SCRIPT"
 RESULT=$?
-
 if [ $RESULT -ne 0 ]; then
     echo ""
     echo "[pre-push] three-distro sync FAILED. Fix with:"

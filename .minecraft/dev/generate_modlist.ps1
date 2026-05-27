@@ -112,7 +112,6 @@ $lines.Add('> DO NOT edit manually -- re-run the script after pack changes.')
 $lines.Add('')
 $lines.Add(("**Total: {0} mods | Both: {1} | Client-only: {2} | Server-only: {3}**" -f `
     $mods.Count, $both.Count, $client.Count, $server.Count))
-$lines.Add(("**Generated:** {0}" -f (Get-Date -Format 'yyyy-MM-dd HH:mm:ssK')))
 $lines.Add('')
 
 $lines.Add(("## Both sides ({0} mods)" -f $both.Count))
