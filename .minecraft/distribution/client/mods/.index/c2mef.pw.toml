@@ -1,0 +1,13 @@
+filename = 'c2meF-0.2.0+alpha.12-all.jar'
+name = 'Concurrent Chunk Management Engine for Forge'
+side = 'both'
+
+[download]
+hash = '71d00b03760bddd6caa5c2a55c6394be77b9cd6085d2199d647d216841e9966937f18d9103349723cc2d2944168803440557bdc32d0eec07dd3f8d49d9939c5c'
+hash-format = 'sha512'
+mode = 'url'
+url = 'https://cdn.modrinth.com/data/yE4MbG65/versions/h9trYS7V/c2meF-0.2.0%2Balpha.12-all.jar'
+
+[update.modrinth]
+mod-id = 'yE4MbG65'
+version = 'h9trYS7V'
