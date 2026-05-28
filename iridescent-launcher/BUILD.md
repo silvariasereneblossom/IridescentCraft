@@ -38,6 +38,30 @@ subcommand, a folder picker for the install dir, status badges
 (forge / EULA / mod count / last sync SHA), and a scrolling log pane
 fed from icraft-core via a custom `log` appender.
 
+### Mesa3D for GPU-less server VMs
+
+The GUI uses eframe's `glow` (OpenGL) renderer, which needs OpenGL 2.0+
+at runtime. Server VMs without GPU passthrough (RDP basic display
+driver, headless KVM) only expose OpenGL 1.1, so glow exits at init
+and the GUI silently fails.
+
+Fix: drop Mesa3D's pure-CPU `opengl32.dll` + `libgallium_wgl.dll` next
+to `icraft-gui.exe`. Windows resolves `opengl32.dll` from the exe dir
+before `system32`, so Mesa intercepts; llvmpipe renders on CPU.
+
+```pwsh
+cd iridescent-launcher
+.\fetch-mesa.ps1 -Dest "C:\Users\<you>\Desktop\IridescentCraft Dedicated Server"
+```
+
+The DLLs are *not* committed to the repo (libgallium_wgl.dll is 59 MB
+per Mesa release). Run `fetch-mesa.ps1` once per server install; Mesa
+itself doesn't need updating unless a future eframe version raises the
+OpenGL floor.
+
+On dev boxes with a real GPU, skip this step -- the system OpenGL ICD
+handles us natively.
+
 ## Cross-compile (Linux host → Windows binary)
 
 For the CLI only (the GUI's wayland/x11 deps don't cross-compile

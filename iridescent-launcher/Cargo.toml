@@ -27,12 +27,19 @@ env_logger = "0.11"
 ureq = { version = "2", default-features = false, features = ["tls", "json"] }
 zip = { version = "0.6", default-features = false, features = ["deflate"] }
 toml = { version = "0.8", default-features = false, features = ["parse"] }
-# wgpu added 2026-05-27: server VM has no OpenGL 2.0+ (no GPU passthrough,
-# RDP basic display driver), so glow backend exits at egui_glow init with
-# "requires opengl 2.0+". wgpu uses DirectX 11/12 on Windows which works
-# in RDP / non-GPU-passed-through VMs. Keeping glow as fallback so a dev
-# machine with native OpenGL can opt in by changing Renderer::Wgpu ->
-# Renderer::Glow in icraft-gui/src/main.rs.
+# Renderer story (revised 2026-05-27):
+#   - Dev boxes hit the system OpenGL ICD via glow. Fine.
+#   - Server VM has no OpenGL 2.0+ (no GPU passthrough, RDP basic display
+#     driver). Glow exits at egui_glow init with "requires opengl 2.0+".
+#   - Tried wgpu briefly -- works on dev (Vulkan/DX12) but the server VM
+#     also exposes no DX/Vulkan adapter, so wgpu errors with "no adapters".
+#   - Settled on Mesa3D software OpenGL: drop `opengl32.dll` +
+#     `libgallium_wgl.dll` (from pal1000/mesa-dist-win) next to
+#     icraft-gui.exe. Windows resolves opengl32 from the exe dir before
+#     system32, so Mesa intercepts and llvmpipe renders on CPU. Works
+#     everywhere; no GPU/DX/Vulkan required. See docs/mesa.md.
+# Keeping the wgpu feature compiled in so a future env that needs DX
+# rendering can flip back without re-touching Cargo.toml.
 eframe = { version = "0.27", default-features = false, features = ["default_fonts", "glow", "wgpu", "persistence"] }
 egui = "0.27"
 

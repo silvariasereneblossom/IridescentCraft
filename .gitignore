@@ -91,3 +91,13 @@ yungs_*/
 .minecraft/libraries/
 .minecraft/server_distribution/libraries/
 .minecraft/distribution/client/libraries/
+
+# Mesa3D software-OpenGL DLLs that ride alongside icraft-gui.exe on
+# GPU-less server VMs (RDP basic display driver, no GL 2.0+). Dropped
+# in by iridescent-launcher/scripts/fetch-mesa.ps1 -- libgallium_wgl.dll
+# alone is 59 MB and Mesa releases monthly, so not worth committing.
+# New server installs run fetch-mesa.ps1 once; updates are out-of-band.
+.minecraft/server_distribution/opengl32.dll
+.minecraft/server_distribution/libgallium_wgl.dll
+.minecraft/distribution/client/opengl32.dll
+.minecraft/distribution/client/libgallium_wgl.dll

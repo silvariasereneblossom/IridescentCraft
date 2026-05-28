@@ -39,17 +39,28 @@ fn main() -> Result<(), eframe::Error> {
     if let Ok(exe) = std::env::current_exe() {
         let _ = std::fs::remove_file(exe.with_extension("exe.old"));
     }
+    // Mesa3D software-OpenGL hints. When the server VM has no GPU
+    // passthrough (RDP basic display driver, headless KVM, etc.), we
+    // drop Mesa's `opengl32.dll` + `libgallium_wgl.dll` next to this
+    // exe. Windows resolves `opengl32.dll` from the exe directory
+    // before system32, so Mesa wins. These env vars tell Mesa to:
+    //  - pick the llvmpipe (pure-CPU) backend, not any DX wrapper
+    //  - advertise OpenGL 4.6 so glow's version probe is satisfied
+    // No-op when Mesa isn't present: the system OpenGL ICD is used.
+    std::env::set_var("GALLIUM_DRIVER", "llvmpipe");
+    std::env::set_var("MESA_GL_VERSION_OVERRIDE", "4.6");
     let opts = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size([720.0, 600.0])
             .with_min_inner_size([520.0, 420.0])
             .with_title(APP_TITLE),
-        // Use wgpu (DirectX 11/12 on Windows) instead of glow (OpenGL 2.0+).
-        // Server VM has no GPU passthrough and RDP's basic display driver
-        // does not expose OpenGL 2.0+, so glow exits silently on init.
-        // wgpu works in those environments. Flip back to Glow on dev
-        // machines with native OpenGL if wgpu has any issue.
-        renderer: eframe::Renderer::Wgpu,
+        // Glow (OpenGL) backend. On dev boxes with a real GPU, the
+        // system ICD handles us. On the server VM with no GPU access,
+        // Mesa3D's drop-in `opengl32.dll` + `libgallium_wgl.dll`
+        // (placed alongside this exe; build/fetch from
+        // github.com/pal1000/mesa-dist-win) provides a pure-CPU
+        // OpenGL 4.6 implementation. See the env vars above.
+        renderer: eframe::Renderer::Glow,
         ..Default::default()
     };
     eframe::run_native(APP_TITLE, opts, Box::new(|cc| Box::new(IcraftApp::new(cc))))
