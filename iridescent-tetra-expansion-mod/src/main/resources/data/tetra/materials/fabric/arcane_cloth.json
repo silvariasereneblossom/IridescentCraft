@@ -3,11 +3,11 @@
   "category": "fabric",
   "primary": 1,
   "secondary": 1,
-  "tertiary": 1,
-  "durability": 60,
-  "integrityCost": 2,
-  "integrityGain": 1,
-  "magicCapacity": 100,
+  "tertiary": 5,
+  "durability": 250,
+  "integrityCost": 1,
+  "integrityGain": 4,
+  "magicCapacity": 160,
   "toolLevel": 0,
   "toolEfficiency": 0.0,
   "tints": {
@@ -21,6 +21,8 @@
     ]
   },
   "attributes": {
-    "*irons_spellbooks:mana_regen": 0.025
+    "**irons_spellbooks:mana_regen": 0.05,
+    "**irons_spellbooks:max_mana": 0.05,
+    "**irons_spellbooks:spell_power": 0.025
   }
 }

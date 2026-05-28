@@ -26,6 +26,6 @@
     "cut": "minecraft:wood"
   },
   "attributes": {
-    "*irons_spellbooks:spell_power": 0.05
+    "**irons_spellbooks:spell_power": 0.05
   }
 }

@@ -30,7 +30,7 @@
     }
   ],
   "attributes": {
-    "*irons_spellbooks:ice_magic_resist": 0.1,
-    "*irons_spellbooks:spell_power": 0.1
+    "**irons_spellbooks:ice_magic_resist": 0.1,
+    "**irons_spellbooks:spell_power": 0.1
   }
 }

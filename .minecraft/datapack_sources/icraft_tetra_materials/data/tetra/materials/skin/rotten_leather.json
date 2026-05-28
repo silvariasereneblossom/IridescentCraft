@@ -33,8 +33,8 @@
     }
   ],
   "attributes": {
-    "*irons_spellbooks:holy_spell_power": 0.1,
-    "*irons_spellbooks:mana_regen": 0.05,
-    "*irons_spellbooks:spell_power": 0.15
+    "**irons_spellbooks:holy_spell_power": 0.1,
+    "**irons_spellbooks:mana_regen": 0.05,
+    "**irons_spellbooks:spell_power": 0.15
   }
 }
