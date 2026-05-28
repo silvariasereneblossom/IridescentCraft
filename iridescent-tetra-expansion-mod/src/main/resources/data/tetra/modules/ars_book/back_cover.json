@@ -38,9 +38,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5
+          "ars_nouveau:ars_nouveau.perk.max_mana": 10
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -50,7 +50,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -60,9 +60,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -72,7 +72,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -82,9 +82,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -94,7 +94,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -104,9 +104,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -116,7 +116,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -126,9 +126,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6
+          "ars_nouveau:ars_nouveau.perk.max_mana": 7
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -138,7 +138,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -148,9 +148,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -160,7 +160,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -170,9 +170,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 8
+          "ars_nouveau:ars_nouveau.perk.max_mana": 9
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -182,7 +182,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -192,9 +192,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -204,7 +204,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -214,9 +214,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -226,7 +226,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -236,9 +236,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -248,7 +248,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -258,9 +258,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -270,7 +270,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -280,9 +280,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5
+          "ars_nouveau:ars_nouveau.perk.max_mana": 9
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -292,7 +292,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -302,9 +302,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -314,7 +314,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -324,9 +324,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 7
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -336,7 +336,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -346,9 +346,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -358,7 +358,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -368,9 +368,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -380,7 +380,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -390,9 +390,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -402,7 +402,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -412,9 +412,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -424,7 +424,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -434,9 +434,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5
+          "ars_nouveau:ars_nouveau.perk.max_mana": 7
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -446,7 +446,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -456,9 +456,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -468,7 +468,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -478,9 +478,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 5
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -490,7 +490,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -500,9 +500,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -512,7 +512,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -522,9 +522,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -534,7 +534,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -544,9 +544,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 7
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -556,7 +556,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -566,9 +566,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -578,7 +578,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -588,9 +588,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 3
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -600,7 +600,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -610,9 +610,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -622,7 +622,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -632,9 +632,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 7
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -644,7 +644,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -654,9 +654,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 4
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -666,7 +666,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -676,9 +676,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 6
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -688,7 +688,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -720,9 +720,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.01
+          "ars_nouveau:ars_nouveau.perk.max_mana": 4
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -732,7 +732,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 2
       }
     },
     {
@@ -742,10 +742,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.0,
-          "**irons_spellbooks:spell_power": 0.015
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -755,7 +754,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -787,9 +786,9 @@
       "key": "back_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.025
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
         },
-        "integrity": 0.5,
+        "integrity": 1,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -799,7 +798,183 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 9
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 8
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 5
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "back_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "ars_nouveau:ars_nouveau.perk.max_mana": 6
+        },
+        "integrity": 1,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
       }
     }
   ]

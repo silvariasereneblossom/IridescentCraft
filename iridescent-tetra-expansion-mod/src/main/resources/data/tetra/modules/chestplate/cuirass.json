@@ -321,7 +321,7 @@
           "minecraft:generic.knockback_resistance": 0.09,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -331,7 +331,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 18
       }
     },
     {
@@ -344,7 +344,7 @@
           "minecraft:generic.armor": 1.44,
           "minecraft:generic.knockback_resistance": 0.04
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -354,7 +354,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 7
       }
     },
     {
@@ -367,7 +367,7 @@
           "minecraft:generic.armor": 1.664,
           "minecraft:generic.knockback_resistance": 0.04
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -377,7 +377,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -391,7 +391,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -401,7 +401,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -415,7 +415,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -425,7 +425,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -438,7 +438,7 @@
           "minecraft:generic.armor": 1.6,
           "minecraft:generic.knockback_resistance": 0.04
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -448,7 +448,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -462,7 +462,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -472,7 +472,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 15
       }
     },
     {
@@ -486,7 +486,7 @@
           "minecraft:generic.knockback_resistance": 0.09,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -496,7 +496,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 14
       }
     },
     {
@@ -510,7 +510,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -520,7 +520,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 14
       }
     },
     {
@@ -534,7 +534,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -544,7 +544,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -558,7 +558,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -568,7 +568,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -582,7 +582,7 @@
           "minecraft:generic.knockback_resistance": 0.09,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -592,7 +592,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 15
       }
     },
     {
@@ -605,7 +605,7 @@
           "minecraft:generic.armor": 1.6,
           "minecraft:generic.knockback_resistance": 0.04
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -615,7 +615,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -629,7 +629,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -639,7 +639,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -653,7 +653,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -663,7 +663,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -677,7 +677,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -687,7 +687,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 11
       }
     },
     {
@@ -701,7 +701,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -711,7 +711,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -725,7 +725,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -735,7 +735,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -749,7 +749,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -759,7 +759,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -773,7 +773,7 @@
           "minecraft:generic.knockback_resistance": 0.09,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -783,7 +783,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -797,7 +797,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -807,7 +807,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 11
       }
     },
     {
@@ -821,7 +821,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -831,7 +831,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -845,7 +845,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -855,7 +855,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -869,7 +869,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -879,7 +879,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -892,7 +892,7 @@
           "minecraft:generic.armor": 1.76,
           "minecraft:generic.knockback_resistance": 0.04
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -902,7 +902,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -916,7 +916,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -926,7 +926,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -940,7 +940,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -950,7 +950,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -964,7 +964,7 @@
           "minecraft:generic.knockback_resistance": 0.09,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -974,7 +974,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -988,7 +988,7 @@
           "minecraft:generic.knockback_resistance": 0.09,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -998,7 +998,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1012,7 +1012,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1022,7 +1022,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1036,7 +1036,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1046,7 +1046,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1060,7 +1060,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1070,7 +1070,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1084,7 +1084,7 @@
           "minecraft:generic.knockback_resistance": 0.04,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1094,7 +1094,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1164,6 +1164,236 @@
         ],
         "models": [],
         "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.856,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 10
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.92,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 12
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.984,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 10
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.048,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 15
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.664,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 13
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.112,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 13
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/aether_neptune"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.664,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 12
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bs_pyrope"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.6,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 12
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/dd_resonarium"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.728,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 14
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond_no_t"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.728,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 11
       }
     }
   ]

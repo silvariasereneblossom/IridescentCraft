@@ -34,9 +34,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.021
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -46,7 +46,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 7
       }
     },
     {
@@ -56,9 +56,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.008
+          "**irons_spellbooks:cooldown_reduction": 0.0085
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -68,7 +68,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -78,9 +78,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.016
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -90,7 +90,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -100,9 +100,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.011
+          "**irons_spellbooks:cooldown_reduction": 0.0155
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -112,7 +112,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -122,9 +122,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.013
+          "**irons_spellbooks:cooldown_reduction": 0.014
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -134,7 +134,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -144,9 +144,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.006
+          "**irons_spellbooks:cooldown_reduction": 0.009
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -156,7 +156,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -166,9 +166,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.015
+          "**irons_spellbooks:cooldown_reduction": 0.0175
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -178,7 +178,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 6
       }
     },
     {
@@ -188,9 +188,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.011
+          "**irons_spellbooks:cooldown_reduction": 0.017
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -200,7 +200,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 6
       }
     },
     {
@@ -210,9 +210,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0086
+          "**irons_spellbooks:cooldown_reduction": 0.0165
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -222,7 +222,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 6
       }
     },
     {
@@ -232,9 +232,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.007
+          "**irons_spellbooks:cooldown_reduction": 0.01
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -244,7 +244,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -254,9 +254,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.007
+          "**irons_spellbooks:cooldown_reduction": 0.0105
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -266,7 +266,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -276,9 +276,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.0175
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -288,7 +288,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 6
       }
     },
     {
@@ -298,9 +298,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0096
+          "**irons_spellbooks:cooldown_reduction": 0.0095
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -310,7 +310,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -320,9 +320,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0085
+          "**irons_spellbooks:cooldown_reduction": 0.0145
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -332,7 +332,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -342,9 +342,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0078
+          "**irons_spellbooks:cooldown_reduction": 0.0095
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -354,7 +354,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -364,9 +364,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.01
+          "**irons_spellbooks:cooldown_reduction": 0.013
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -376,7 +376,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -386,9 +386,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.012
+          "**irons_spellbooks:cooldown_reduction": 0.015
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -398,7 +398,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -408,9 +408,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0088
+          "**irons_spellbooks:cooldown_reduction": 0.011
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -420,7 +420,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -430,9 +430,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0095
+          "**irons_spellbooks:cooldown_reduction": 0.0145
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -442,7 +442,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -452,9 +452,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0076
+          "**irons_spellbooks:cooldown_reduction": 0.015
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -464,7 +464,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -474,9 +474,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0096
+          "**irons_spellbooks:cooldown_reduction": 0.013
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -486,7 +486,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -496,9 +496,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0072
+          "**irons_spellbooks:cooldown_reduction": 0.009
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -508,7 +508,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -518,9 +518,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.009
+          "**irons_spellbooks:cooldown_reduction": 0.011
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -530,7 +530,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -540,9 +540,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.014
+          "**irons_spellbooks:cooldown_reduction": 0.0155
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -552,7 +552,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -562,9 +562,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.005
+          "**irons_spellbooks:cooldown_reduction": 0.009
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -574,7 +574,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 3
       }
     },
     {
@@ -584,9 +584,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.006
+          "**irons_spellbooks:cooldown_reduction": 0.015
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -596,7 +596,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -606,9 +606,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.0075
+          "**irons_spellbooks:cooldown_reduction": 0.0105
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -618,7 +618,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 4
       }
     },
     {
@@ -628,9 +628,9 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.009
+          "**irons_spellbooks:cooldown_reduction": 0.014
         },
-        "integrity": 0.5,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -640,7 +640,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
       }
     },
     {
@@ -671,7 +671,10 @@
       ],
       "key": "spine/",
       "extract": {
-        "integrity": 0.5,
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.0084
+        },
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -681,10 +684,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5,
-        "primaryAttributes": {
-          "**irons_spellbooks:cooldown_reduction": 0.005
-        }
+        "magicCapacity": 3
       }
     },
     {
@@ -693,7 +693,10 @@
       ],
       "key": "spine/",
       "extract": {
-        "integrity": 0.5,
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.0165
+        },
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -703,7 +706,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 6
       }
     },
     {
@@ -712,7 +715,10 @@
       ],
       "key": "spine/",
       "extract": {
-        "integrity": 0.5,
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.0155
+        },
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -722,7 +728,139 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 0.5
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.0115
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.015
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.012
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.0175
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.016
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:cooldown_reduction": 0.0155
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
       }
     }
   ]

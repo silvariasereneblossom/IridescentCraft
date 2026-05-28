@@ -38,9 +38,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.005
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0105
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -50,7 +50,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -60,9 +60,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.004
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0043
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -72,7 +72,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 3
       }
     },
     {
@@ -82,9 +82,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.005
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.008
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -94,7 +94,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -104,9 +104,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0055
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0077
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -116,7 +116,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -126,9 +126,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0065
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.007
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -138,7 +138,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -148,9 +148,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.003
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0045
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -160,7 +160,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -170,9 +170,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0075
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0088
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -182,7 +182,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 7
       }
     },
     {
@@ -192,9 +192,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0055
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0085
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -204,7 +204,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 7
       }
     },
     {
@@ -214,9 +214,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0043
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0083
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -226,7 +226,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 7
       }
     },
     {
@@ -236,9 +236,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0035
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -248,7 +248,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -258,9 +258,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0035
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0053
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -270,7 +270,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -280,9 +280,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.005
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0088
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -292,7 +292,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 7
       }
     },
     {
@@ -302,9 +302,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0048
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0047
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -314,7 +314,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -324,9 +324,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0043
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0073
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -336,7 +336,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -346,9 +346,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0039
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0047
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -358,7 +358,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -368,9 +368,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.005
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0065
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -380,7 +380,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 5
       }
     },
     {
@@ -390,9 +390,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.006
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0075
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -402,7 +402,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -412,9 +412,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0044
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0055
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -424,7 +424,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -434,9 +434,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0047
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0073
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -446,7 +446,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -456,9 +456,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0038
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0075
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -468,7 +468,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -478,9 +478,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0048
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0065
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -490,7 +490,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 5
       }
     },
     {
@@ -500,9 +500,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0036
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0045
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -512,7 +512,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -522,9 +522,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0045
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0055
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -534,7 +534,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -544,9 +544,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.007
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0077
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -556,7 +556,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -566,9 +566,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0025
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0045
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -578,7 +578,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -588,9 +588,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.003
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0075
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -600,7 +600,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -610,9 +610,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0037
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0053
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -622,7 +622,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -632,9 +632,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0045
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.007
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -644,7 +644,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
       }
     },
     {
@@ -654,9 +654,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0035
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.004
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -666,7 +666,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 3
       }
     },
     {
@@ -676,9 +676,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0055
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -688,7 +688,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 4
       }
     },
     {
@@ -720,9 +720,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.01
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0042
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -732,7 +732,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 3
       }
     },
     {
@@ -742,10 +742,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "irons_spellbooks:max_mana": 2.0,
-          "**irons_spellbooks:spell_power": 0.015
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0083
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -755,7 +754,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 7
       }
     },
     {
@@ -787,9 +786,9 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.025
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0077
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -799,7 +798,183 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0057
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0075
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.006
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0088
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 7
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.008
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0077
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 6
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.005
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0055
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
       }
     }
   ]

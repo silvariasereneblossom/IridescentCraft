@@ -34,11 +34,16 @@ entries preserved in the book modules. New per-material entries appended.
 import json, os, sys
 from pathlib import Path
 
-REPO_ROOT = Path("/root/IridescentCraft")
-MAT_DIR = REPO_ROOT / ".minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials"
-MOD_ROOT = REPO_ROOT / "iridescent-tetra-expansion-mod/src/main/resources"
-MODULE_DIR = MOD_ROOT / "data/tetra/modules"
-LANG_FILE = MOD_ROOT / "assets/iridescent_reforging/lang/en_us.json"
+# 2026-05-28: REPO_ROOT now auto-detects from this script's location so the
+# generator runs on the Windows dev host too (was hardcoded /root/...).
+# Script lives at <REPO>/iridescent-tetra-expansion-mod/tools/<this>.py so
+# REPO_ROOT is 2 levels up.
+_SCRIPT_DIR = Path(__file__).resolve().parent
+REPO_ROOT = _SCRIPT_DIR.parent.parent
+MAT_DIR = REPO_ROOT / ".minecraft" / "datapack_sources" / "icraft_tetra_materials" / "data" / "tetra" / "materials"
+MOD_ROOT = REPO_ROOT / "iridescent-tetra-expansion-mod" / "src" / "main" / "resources"
+MODULE_DIR = MOD_ROOT / "data" / "tetra" / "modules"
+LANG_FILE = MOD_ROOT / "assets" / "iridescent_reforging" / "lang" / "en_us.json"
 
 # Existing materials hardcoded in archetype JSONs -- skip these so we don't
 # duplicate or overwrite the hand-tuned vanilla entries.
@@ -130,7 +135,11 @@ def generate_armor_variant(archetype, mat, base_armor):
 
     return {
         "materials": [f"tetra:{cat}/{name}"],
-        "key": f"{archetype}/{name}",
+        # Wildcard trailing-slash key per lesson 2026-05-12: this is the variant
+        # KEY (concatenated at runtime by MaterialVariantData.combine() with
+        # material.key to produce e.g. "basic_crown/iron"). Suffixing material
+        # name here causes doubled NBT like "basic_crown/aethersteelaethersteel".
+        "key": f"{archetype}/",
         "extract": {
             "primaryAttributes": primary_attrs,
             "integrity": 0,
@@ -183,7 +192,7 @@ def generate_spine_variant(book_kind, mat):
 
     return {
         "materials": [f"tetra:{cat}/{name}"],
-        "key": f"spine/{name}",
+        "key": "spine/",  # wildcard trailing slash; see armor variant comment
         "extract": _book_extract({attr_key: cdr}, sp_magic),
     }
 
@@ -204,7 +213,7 @@ def generate_front_cover_variant(book_kind, mat):
 
     return {
         "materials": [f"tetra:{cat}/{name}"],
-        "key": f"front_cover/{name}",
+        "key": "front_cover/",  # wildcard trailing slash; see armor variant comment
         "extract": _book_extract({attr_key: sp}, extra_magic),
     }
 
@@ -225,24 +234,46 @@ def generate_back_cover_variant(book_kind, mat):
 
     return {
         "materials": [f"tetra:{cat}/{name}"],
-        "key": f"back_cover/{name}",
+        "key": "back_cover/",  # wildcard trailing slash; see armor variant comment
         "extract": extract,
     }
 
 
 def update_archetype_json(path, new_variants):
+    """Upsert by materials[0]: replace if a variant with the same material
+    reference exists, append if new. The generator skips the vanilla 6
+    (EXISTING_KEYS) at generation time, so vanilla variants are never in
+    new_variants -- they stay preserved in the file.
+
+    The Tetra variant structure in this codebase has MANY variants sharing
+    the same `key` field (all `basic_crown/`, all `silk_lining/`, etc.) --
+    the unique-per-variant identifier is the materials[0] reference like
+    `tetra:metal/aethersteel`. So upsert by material, not by key.
+
+    2026-05-28: was skip-if-exists, changed to upsert so re-running the
+    generator after material primary stat changes actually updates the
+    modded-metal variants. Previous skip-only behavior was the root cause
+    of the vanilla-vs-modded armor inversion (aethersteel.primary bumped
+    long ago but variants never re-flowed).
+    """
     with open(path) as f:
         data = json.load(f)
-    existing_keys = {v.get("key", "") for v in data.get("variants", [])}
-    added = 0
-    for v in new_variants:
-        if v["key"] not in existing_keys:
-            data["variants"].append(v)
-            added += 1
+    new_by_mat = {v["materials"][0]: v for v in new_variants if v.get("materials")}
+    replaced, kept = 0, []
+    for v in data.get("variants", []):
+        mats = v.get("materials", [])
+        mat0 = mats[0] if mats else None
+        if mat0 in new_by_mat:
+            kept.append(new_by_mat.pop(mat0))
+            replaced += 1
+        else:
+            kept.append(v)
+    appended = list(new_by_mat.values())
+    data["variants"] = kept + appended
     with open(path, "w") as f:
         json.dump(data, f, indent=2)
         f.write("\n")
-    return added
+    return replaced, len(appended)
 
 
 def lang_entry(archetype, mat_name):
@@ -258,6 +289,7 @@ def main():
 
     new_lang = {}
     total_added = 0
+    total_replaced = 0
 
     # ── Armor variants ───────────────────────────────────────────────────────
     for slot, archetypes in METALLIC_ARCHETYPES.items():
@@ -277,9 +309,10 @@ def main():
                 v = generate_armor_variant(arch, mat, base)
                 new_variants.append(v)
                 new_lang[f"tetra.variant.{arch}/{name}"] = lang_entry(arch, name)
-            n = update_archetype_json(path, new_variants)
-            total_added += n
-            print(f"  armor {slot}/{arch}: +{n} variants")
+            replaced, appended = update_archetype_json(path, new_variants)
+            total_added += appended
+            total_replaced += replaced
+            print(f"  armor {slot}/{arch}: replaced {replaced}, appended {appended}")
 
     # ── Book module variants ─────────────────────────────────────────────────
     for book in ("iss_book", "ars_book"):
@@ -298,9 +331,10 @@ def main():
                 if v is None: continue
                 new_variants.append(v)
                 new_lang[f"tetra.variant.{part}/{name}"] = lang_entry(part, name)
-            n = update_archetype_json(path, new_variants)
-            total_added += n
-            print(f"  book {book}/{part}: +{n} variants")
+            replaced, appended = update_archetype_json(path, new_variants)
+            total_added += appended
+            total_replaced += replaced
+            print(f"  book {book}/{part}: replaced {replaced}, appended {appended}")
 
     # ── Lang updates ─────────────────────────────────────────────────────────
     with open(LANG_FILE) as f:
@@ -316,7 +350,7 @@ def main():
         json.dump(lang, f, indent=2, ensure_ascii=False)
         f.write("\n")
     print(f"\nLang: +{lang_added} new keys (total {len(lang)})")
-    print(f"Total variant entries added: {total_added}")
+    print(f"\nTotal variant entries: replaced {total_replaced}, appended {total_added}")
 
 
 if __name__ == "__main__":

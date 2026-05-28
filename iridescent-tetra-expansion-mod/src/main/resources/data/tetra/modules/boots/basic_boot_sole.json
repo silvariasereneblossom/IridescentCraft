@@ -306,11 +306,11 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.68,
+          "minecraft:generic.armor": 2.429,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -320,7 +320,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 18
       }
     },
     {
@@ -330,9 +330,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.36
+          "minecraft:generic.armor": 1.286
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -342,7 +342,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 7
       }
     },
     {
@@ -352,9 +352,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.416
+          "minecraft:generic.armor": 1.486
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -364,7 +364,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -374,10 +374,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.48,
+          "minecraft:generic.armor": 1.715,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -387,7 +387,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -397,10 +397,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.52,
+          "minecraft:generic.armor": 1.858,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -410,7 +410,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -420,9 +420,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4
+          "minecraft:generic.armor": 1.429
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -432,7 +432,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -442,10 +442,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.496,
+          "minecraft:generic.armor": 1.772,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -455,7 +455,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 15
       }
     },
     {
@@ -465,11 +465,11 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.544,
+          "minecraft:generic.armor": 1.943,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -479,7 +479,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 14
       }
     },
     {
@@ -489,10 +489,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.464,
+          "minecraft:generic.armor": 1.658,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -502,7 +502,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 14
       }
     },
     {
@@ -512,10 +512,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.44,
+          "minecraft:generic.armor": 1.572,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -525,7 +525,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -535,10 +535,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.44,
+          "minecraft:generic.armor": 1.572,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -548,7 +548,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -558,11 +558,11 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.64,
+          "minecraft:generic.armor": 2.286,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -572,7 +572,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 15
       }
     },
     {
@@ -582,9 +582,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4
+          "minecraft:generic.armor": 1.429
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -594,7 +594,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -604,10 +604,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.52,
+          "minecraft:generic.armor": 1.858,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -617,7 +617,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -627,10 +627,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.448,
+          "minecraft:generic.armor": 1.6,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -640,7 +640,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -650,10 +650,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.384,
+          "minecraft:generic.armor": 1.372,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -663,7 +663,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 11
       }
     },
     {
@@ -673,10 +673,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.416,
+          "minecraft:generic.armor": 1.486,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -686,7 +686,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -696,10 +696,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.48,
+          "minecraft:generic.armor": 1.715,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -709,7 +709,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -719,10 +719,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.48,
+          "minecraft:generic.armor": 1.715,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -732,7 +732,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -742,11 +742,11 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.56,
+          "minecraft:generic.armor": 2.001,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -756,7 +756,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -766,10 +766,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.4,
+          "minecraft:generic.armor": 1.429,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -779,7 +779,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 11
       }
     },
     {
@@ -789,10 +789,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.44,
+          "minecraft:generic.armor": 1.572,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -802,7 +802,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -812,10 +812,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.424,
+          "minecraft:generic.armor": 1.515,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -825,7 +825,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -835,10 +835,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.52,
+          "minecraft:generic.armor": 1.858,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -848,7 +848,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -858,9 +858,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.44
+          "minecraft:generic.armor": 1.572
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -870,7 +870,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 8
       }
     },
     {
@@ -880,10 +880,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.544,
+          "minecraft:generic.armor": 1.943,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -893,7 +893,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -903,10 +903,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.464,
+          "minecraft:generic.armor": 1.658,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -916,7 +916,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 9
       }
     },
     {
@@ -926,11 +926,11 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.56,
+          "minecraft:generic.armor": 2.001,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -940,7 +940,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -950,11 +950,11 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.6,
+          "minecraft:generic.armor": 2.143,
           "minecraft:generic.knockback_resistance": 0.05,
           "minecraft:generic.armor_toughness": 0.2
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -964,7 +964,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -974,10 +974,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.56,
+          "minecraft:generic.armor": 2.001,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -987,7 +987,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -997,10 +997,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.52,
+          "minecraft:generic.armor": 1.858,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1010,7 +1010,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1020,10 +1020,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.52,
+          "minecraft:generic.armor": 1.858,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1033,7 +1033,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1043,10 +1043,10 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.496,
+          "minecraft:generic.armor": 1.772,
           "minecraft:generic.armor_toughness": 0.1
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1056,7 +1056,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1066,10 +1066,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.429,
-          "minecraft:generic.armor_toughness": 0.25
+          "minecraft:generic.armor": 1.486
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1079,7 +1078,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1089,9 +1088,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.143
+          "minecraft:generic.armor": 1.658
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1101,7 +1100,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 10
       }
     },
     {
@@ -1179,11 +1178,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 4.286,
-          "minecraft:generic.armor_toughness": 0.75,
-          "minecraft:generic.knockback_resistance": 0.025
+          "minecraft:generic.armor": 1.829
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1193,7 +1190,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 15
       }
     },
     {
@@ -1203,11 +1200,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 5.714,
-          "minecraft:generic.armor_toughness": 1.0,
-          "minecraft:generic.knockback_resistance": 0.05
+          "minecraft:generic.armor": 1.886
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1217,7 +1212,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -1227,10 +1222,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.714,
-          "minecraft:generic.armor_toughness": 0.25
+          "minecraft:generic.armor": 1.486
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1240,7 +1234,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 13
       }
     },
     {
@@ -1250,9 +1244,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.714
+          "minecraft:generic.armor": 1.429
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1262,7 +1256,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
@@ -1272,9 +1266,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.143
+          "minecraft:generic.armor": 1.543
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1284,7 +1278,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 11
       }
     },
     {
@@ -1294,10 +1288,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.429,
-          "minecraft:generic.armor_toughness": 0.25
+          "minecraft:generic.armor": 1.543
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1307,7 +1300,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 14
       }
     },
     {
@@ -1317,11 +1310,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 2.857,
-          "minecraft:generic.armor_toughness": 1.0,
-          "minecraft:generic.knockback_resistance": 0.025
+          "minecraft:generic.armor": 1.772
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1331,7 +1322,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 10
       }
     },
     {
@@ -1341,11 +1332,9 @@
       "key": "basic_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 3.572,
-          "minecraft:generic.armor_toughness": 1.25,
-          "minecraft:generic.knockback_resistance": 0.1
+          "minecraft:generic.armor": 1.715
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -1355,7 +1344,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1.0
+        "magicCapacity": 12
       }
     },
     {
