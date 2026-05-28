@@ -44,6 +44,12 @@ fn main() -> Result<(), eframe::Error> {
             .with_inner_size([720.0, 600.0])
             .with_min_inner_size([520.0, 420.0])
             .with_title(APP_TITLE),
+        // Use wgpu (DirectX 11/12 on Windows) instead of glow (OpenGL 2.0+).
+        // Server VM has no GPU passthrough and RDP's basic display driver
+        // does not expose OpenGL 2.0+, so glow exits silently on init.
+        // wgpu works in those environments. Flip back to Glow on dev
+        // machines with native OpenGL if wgpu has any issue.
+        renderer: eframe::Renderer::Wgpu,
         ..Default::default()
     };
     eframe::run_native(APP_TITLE, opts, Box::new(|cc| Box::new(IcraftApp::new(cc))))

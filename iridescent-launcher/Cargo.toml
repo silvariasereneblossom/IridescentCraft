@@ -27,7 +27,13 @@ env_logger = "0.11"
 ureq = { version = "2", default-features = false, features = ["tls", "json"] }
 zip = { version = "0.6", default-features = false, features = ["deflate"] }
 toml = { version = "0.8", default-features = false, features = ["parse"] }
-eframe = { version = "0.27", default-features = false, features = ["default_fonts", "glow", "persistence"] }
+# wgpu added 2026-05-27: server VM has no OpenGL 2.0+ (no GPU passthrough,
+# RDP basic display driver), so glow backend exits at egui_glow init with
+# "requires opengl 2.0+". wgpu uses DirectX 11/12 on Windows which works
+# in RDP / non-GPU-passed-through VMs. Keeping glow as fallback so a dev
+# machine with native OpenGL can opt in by changing Renderer::Wgpu ->
+# Renderer::Glow in icraft-gui/src/main.rs.
+eframe = { version = "0.27", default-features = false, features = ["default_fonts", "glow", "wgpu", "persistence"] }
 egui = "0.27"
 
 [profile.release]
