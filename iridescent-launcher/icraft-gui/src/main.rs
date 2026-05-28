@@ -46,9 +46,13 @@ fn main() -> Result<(), eframe::Error> {
     // before system32, so Mesa wins. These env vars tell Mesa to:
     //  - pick the llvmpipe (pure-CPU) backend, not any DX wrapper
     //  - advertise OpenGL 4.6 so glow's version probe is satisfied
+    //  - cap the rasterizer to 1 worker thread (default is all cores;
+    //    on a server VM that's catastrophic -- Mesa eats every core
+    //    Minecraft needs and TPS tanks even though RAM is fine).
     // No-op when Mesa isn't present: the system OpenGL ICD is used.
     std::env::set_var("GALLIUM_DRIVER", "llvmpipe");
     std::env::set_var("MESA_GL_VERSION_OVERRIDE", "4.6");
+    std::env::set_var("LP_NUM_THREADS", "1");
     let opts = eframe::NativeOptions {
         viewport: egui::ViewportBuilder::default()
             .with_inner_size([720.0, 600.0])
@@ -392,14 +396,24 @@ impl eframe::App for IcraftApp {
                     self.refresh_status();
                     self.last_status_refresh = Some(now);
                 }
-                ctx.request_repaint_after(Duration::from_millis(200));
+                // Heartbeat repaint while a task is running. 2 s is a
+                // compromise between "log pane updates feel live" and
+                // "Mesa software rasterizer doesn't burn the CPU MC
+                // needs". On dev (real GPU) 200 ms was free; on the
+                // server VM (Mesa llvmpipe) every redraw was 5 fps of
+                // pure-CPU rasterization, which combined with default
+                // multi-threaded llvmpipe ate ~half the cores Minecraft
+                // wanted -> server TPS tanked while heap stayed at 8/14 GB.
+                // 2 s is still fast enough to see status badges flip;
+                // drain_log piggybacks on whatever wake happens.
+                ctx.request_repaint_after(Duration::from_millis(2000));
             }
         }
-        // Tick frequently while a remote-sha fetch is in flight so the
+        // Tick faster while a remote-sha fetch is in flight so the
         // (checking...) -> (in sync)/(behind) transition shows up
-        // promptly even when the user isn't moving the mouse.
+        // promptly. Cheap because the state only lasts ~1 s.
         if self.remote_fetching.load(Ordering::Relaxed) {
-            ctx.request_repaint_after(Duration::from_millis(250));
+            ctx.request_repaint_after(Duration::from_millis(400));
         }
 
         egui::TopBottomPanel::top("hdr").show(ctx, |ui| {
