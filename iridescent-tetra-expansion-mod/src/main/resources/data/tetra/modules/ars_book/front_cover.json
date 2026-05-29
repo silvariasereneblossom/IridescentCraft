@@ -126,7 +126,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.007
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0065
         },
         "integrity": 0,
         "glyph": {
@@ -138,7 +138,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {
@@ -280,7 +280,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.0088
+          "**ars_nouveau:ars_nouveau.perk.spell_damage": 0.008
         },
         "integrity": 0,
         "glyph": {
@@ -292,7 +292,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 6
       }
     },
     {

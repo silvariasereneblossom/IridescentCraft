@@ -396,8 +396,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.404,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 1.123
         },
         "integrity": 0,
         "glyph": {
@@ -409,7 +408,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 11
       }
     },
     {
@@ -557,9 +556,8 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.728,
-          "minecraft:generic.knockback_resistance": 0.05,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 1.404,
+          "minecraft:generic.armor_toughness": 0.1
         },
         "integrity": 0,
         "glyph": {
@@ -571,7 +569,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 15
+        "magicCapacity": 13
       }
     },
     {
@@ -963,7 +961,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 14
       }
     },
     {
@@ -973,8 +971,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.512,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 1.188
         },
         "integrity": 0,
         "glyph": {
@@ -986,7 +983,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {
@@ -996,8 +993,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.404,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 1.188
         },
         "integrity": 0,
         "glyph": {
@@ -1009,7 +1005,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {
@@ -1019,8 +1015,7 @@
       "key": "heavy_leg_plate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.404,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 1.188
         },
         "integrity": 0,
         "glyph": {
@@ -1032,7 +1027,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {

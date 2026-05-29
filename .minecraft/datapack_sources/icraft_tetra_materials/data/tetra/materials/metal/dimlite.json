@@ -1,15 +1,15 @@
 {
   "key": "dimlite",
   "category": "metal",
-  "primary": 6.5,
+  "primary": 5.2,
   "secondary": 3.0,
-  "tertiary": 5.5,
-  "durability": 1400,
-  "integrityCost": 3,
-  "integrityGain": 7,
-  "magicCapacity": 140,
-  "toolLevel": "minecraft:diamond",
-  "toolEfficiency": 8,
+  "tertiary": 4.0,
+  "durability": 400,
+  "integrityCost": 2,
+  "integrityGain": 4,
+  "magicCapacity": 130,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
   "tints": {
     "glyph": "ffec99",
     "texture": "ffec99"
@@ -24,11 +24,11 @@
     ]
   },
   "requiredTools": {
-    "hammer_dig": "minecraft:diamond"
+    "hammer_dig": "minecraft:iron"
   },
   "attributes": {
-    "*irons_spellbooks:holy_spell_power": 0.05,
+    "**irons_spellbooks:holy_spell_power": 0.05,
     "**irons_spellbooks:max_mana": 0.05,
-    "*irons_spellbooks:spell_power": 0.25
+    "**irons_spellbooks:spell_power": 0.25
   }
 }

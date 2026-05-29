@@ -127,7 +127,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.007
+          "**irons_spellbooks:spell_power": 0.0065
         },
         "integrity": 0,
         "glyph": {
@@ -139,7 +139,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {
@@ -281,7 +281,7 @@
       "key": "front_cover/",
       "extract": {
         "primaryAttributes": {
-          "**irons_spellbooks:spell_power": 0.0088
+          "**irons_spellbooks:spell_power": 0.008
         },
         "integrity": 0,
         "glyph": {
@@ -293,7 +293,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 7
+        "magicCapacity": 6
       }
     },
     {

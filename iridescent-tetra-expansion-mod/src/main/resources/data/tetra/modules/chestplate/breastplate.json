@@ -397,8 +397,7 @@
       "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 6.325,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 5.06
         },
         "integrity": 0,
         "glyph": {
@@ -410,7 +409,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 11
       }
     },
     {
@@ -558,9 +557,8 @@
       "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 7.784,
-          "minecraft:generic.knockback_resistance": 0.05,
-          "minecraft:generic.armor_toughness": 0.2
+          "minecraft:generic.armor": 6.325,
+          "minecraft:generic.armor_toughness": 0.1
         },
         "integrity": 0,
         "glyph": {
@@ -572,7 +570,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 15
+        "magicCapacity": 13
       }
     },
     {
@@ -964,7 +962,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 14
       }
     },
     {
@@ -974,8 +972,7 @@
       "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 6.811,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 5.352
         },
         "integrity": 0,
         "glyph": {
@@ -987,7 +984,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {
@@ -997,8 +994,7 @@
       "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 6.325,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 5.352
         },
         "integrity": 0,
         "glyph": {
@@ -1010,7 +1006,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {
@@ -1020,8 +1016,7 @@
       "key": "breastplate/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 6.325,
-          "minecraft:generic.armor_toughness": 0.1
+          "minecraft:generic.armor": 5.352
         },
         "integrity": 0,
         "glyph": {
@@ -1033,7 +1028,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {

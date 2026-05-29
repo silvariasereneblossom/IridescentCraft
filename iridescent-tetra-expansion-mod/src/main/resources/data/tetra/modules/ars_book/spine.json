@@ -122,7 +122,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.014
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.013
         },
         "integrity": 0,
         "glyph": {
@@ -134,7 +134,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 5
+        "magicCapacity": 4
       }
     },
     {
@@ -276,7 +276,7 @@
       "key": "spine/",
       "extract": {
         "primaryAttributes": {
-          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0175
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.016
         },
         "integrity": 0,
         "glyph": {
@@ -288,7 +288,7 @@
           ""
         ],
         "models": [],
-        "magicCapacity": 6
+        "magicCapacity": 5
       }
     },
     {

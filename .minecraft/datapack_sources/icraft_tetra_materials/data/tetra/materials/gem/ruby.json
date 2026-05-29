@@ -1,15 +1,15 @@
 {
   "key": "ruby",
   "category": "gem",
-  "primary": 7.0,
-  "secondary": 3.0,
-  "tertiary": 3.5,
-  "durability": 1000,
-  "integrityCost": 3,
-  "integrityGain": 7,
-  "magicCapacity": 150,
-  "toolLevel": "minecraft:diamond",
-  "toolEfficiency": 7.5,
+  "primary": 5.5,
+  "secondary": 3.5,
+  "tertiary": 3.0,
+  "durability": 600,
+  "integrityCost": 2,
+  "integrityGain": 4,
+  "magicCapacity": 125,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
   "tints": {
     "glyph": "e0202f",
     "texture": "e0202f"
@@ -24,10 +24,10 @@
     ]
   },
   "requiredTools": {
-    "hammer_dig": "minecraft:diamond"
+    "hammer_dig": "minecraft:iron"
   },
   "attributes": {
-    "*irons_spellbooks:fire_spell_power": 0.08,
-    "*irons_spellbooks:spell_power": 0.3
+    "**irons_spellbooks:fire_spell_power": 0.08,
+    "**irons_spellbooks:spell_power": 0.3
   }
 }

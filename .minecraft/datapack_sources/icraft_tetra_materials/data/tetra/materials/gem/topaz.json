@@ -1,15 +1,15 @@
 {
   "key": "topaz",
   "category": "gem",
-  "primary": 6.5,
+  "primary": 5.5,
   "secondary": 3.5,
-  "tertiary": 3.2,
-  "durability": 950,
-  "integrityCost": 3,
-  "integrityGain": 6,
-  "magicCapacity": 145,
-  "toolLevel": "minecraft:diamond",
-  "toolEfficiency": 7.5,
+  "tertiary": 3.0,
+  "durability": 600,
+  "integrityCost": 2,
+  "integrityGain": 4,
+  "magicCapacity": 125,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
   "tints": {
     "glyph": "ffd700",
     "texture": "ffd700"
@@ -24,10 +24,10 @@
     ]
   },
   "requiredTools": {
-    "hammer_dig": "minecraft:diamond"
+    "hammer_dig": "minecraft:iron"
   },
   "attributes": {
-    "*irons_spellbooks:lightning_spell_power": 0.08,
-    "*irons_spellbooks:spell_power": 0.25
+    "**irons_spellbooks:lightning_spell_power": 0.08,
+    "**irons_spellbooks:spell_power": 0.25
   }
 }

@@ -413,8 +413,7 @@
       "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.312,
-          "minecraft:generic.armor_toughness": 0.1,
+          "minecraft:generic.armor": 0.25,
           "forge:step_height_addition": 0.2
         },
         "integrity": 0,
@@ -427,7 +426,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 11
       }
     },
     {
@@ -581,9 +580,8 @@
       "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.384,
-          "minecraft:generic.knockback_resistance": 0.05,
-          "minecraft:generic.armor_toughness": 0.2,
+          "minecraft:generic.armor": 0.312,
+          "minecraft:generic.armor_toughness": 0.1,
           "forge:step_height_addition": 0.2
         },
         "integrity": 0,
@@ -596,7 +594,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 15
+        "magicCapacity": 13
       }
     },
     {
@@ -1005,7 +1003,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 14
       }
     },
     {
@@ -1015,8 +1013,7 @@
       "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.336,
-          "minecraft:generic.armor_toughness": 0.1,
+          "minecraft:generic.armor": 0.264,
           "forge:step_height_addition": 0.2
         },
         "integrity": 0,
@@ -1029,7 +1026,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {
@@ -1039,8 +1036,7 @@
       "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.312,
-          "minecraft:generic.armor_toughness": 0.1,
+          "minecraft:generic.armor": 0.264,
           "forge:step_height_addition": 0.2
         },
         "integrity": 0,
@@ -1053,7 +1049,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {
@@ -1063,8 +1059,7 @@
       "key": "light_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.312,
-          "minecraft:generic.armor_toughness": 0.1,
+          "minecraft:generic.armor": 0.264,
           "forge:step_height_addition": 0.2
         },
         "integrity": 0,
@@ -1077,7 +1072,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 12
+        "magicCapacity": 10
       }
     },
     {
