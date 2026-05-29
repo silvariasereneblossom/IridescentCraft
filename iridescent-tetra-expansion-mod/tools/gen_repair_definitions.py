@@ -11,9 +11,9 @@ Background:
   The repair JSONs in this mod were left over from a pre-refactor
   schema where each slot had ONE major module named e.g.
   `full_leg_plate`. The current schema has 4 archetype-coded majors
-  per slot (basic / heavy / light / robed for boots, breastplate /
-  cuirass / robe_chest / scaled_chest for chestplate, etc.) each with
-  12 or 14 material variants. The stale repair JSONs reference
+  per slot (basic / heavy / light / vestment for boots, breastplate /
+  cuirass / vestment_chest / scaled_chest for chestplate, etc.) each
+  with 12 or 14 material variants. The stale repair JSONs reference
   module variants that no longer exist, so RepairRegistry returns
   empty for every current variant key, and the Repair tab accepts
   no input materials.

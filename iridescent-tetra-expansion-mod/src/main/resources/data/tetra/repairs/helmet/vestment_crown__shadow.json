@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:ghast_tear"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "vestment_crown/shadow"
+}

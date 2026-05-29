@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:string"
+    ],
+    "count": 4
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "vestment_boot_sole/string"
+}

@@ -462,7 +462,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
             // friendly gear. Determined by the major module's archetype:
             //   Heavy: heavy_* major  → max armor
             //   Medium: basic / breastplate / full_leg_plate / basic_boot_sole
-            //   Light: light_* + mage majors (circlet, robe, robed_*, scaled_chest)
+            //   Light: light_* + mage majors (vestment_crown, robe, robed_*, scaled_chest)
             ArmorWeight weight = getArmorWeight(stack);
             if (weight != null) {
                 String langKey = "tooltip.iridescent_reforging.weight." + weight.langSuffix;
@@ -487,7 +487,7 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     // ── Armor weight class (visible to players) ────────────────────────
     //
     // Light/Medium/Heavy classification by armor VALUE (not mobility), so
-    // mage majors (circlet/robe/robed_*) bucket as Light alongside rogue
+    // mage majors (vestment_crown/robe/robed_*) bucket as Light alongside rogue
     // light_*. The point is to limit how tanky a mage build can get —
     // robed armor is light-class regardless of its magical properties.
     //
@@ -498,8 +498,8 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
     //   Medium:  1.0× armor      (basic_crown, breastplate, full_leg_plate,
     //                             basic_boot_sole)
     //   Light:   0.5-0.83× armor (light_crown, scaled_chest, light_leg_plate,
-    //                             light_boot_sole, circlet, robe_chest,
-    //                             robed_leg_plate, robed_boot_sole)
+    //                             light_boot_sole, vestment_crown, vestment_chest,
+    //                             vestment_leg_plate, vestment_boot_sole)
     //
     // To find the player's weight class, read the major module's
     // moduleKey (e.g. "leggings/heavy_leg_plate" → HEAVY).
@@ -519,22 +519,22 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
         m.put("helmet/heavy_crown",        ArmorWeight.HEAVY);
         m.put("helmet/basic_crown",        ArmorWeight.MEDIUM);
         m.put("helmet/light_crown",        ArmorWeight.LIGHT);
-        m.put("helmet/circlet",            ArmorWeight.ROBE);
+        m.put("helmet/vestment_crown",            ArmorWeight.ROBE);
         // chestplate
         m.put("chestplate/cuirass",        ArmorWeight.HEAVY);
         m.put("chestplate/breastplate",    ArmorWeight.MEDIUM);
         m.put("chestplate/scaled_chest",   ArmorWeight.LIGHT);
-        m.put("chestplate/robe_chest",     ArmorWeight.ROBE);
+        m.put("chestplate/vestment_chest",     ArmorWeight.ROBE);
         // leggings
         m.put("leggings/heavy_leg_plate",  ArmorWeight.HEAVY);
         m.put("leggings/full_leg_plate",   ArmorWeight.MEDIUM);
         m.put("leggings/light_leg_plate",  ArmorWeight.LIGHT);
-        m.put("leggings/robed_leg_plate",  ArmorWeight.ROBE);
+        m.put("leggings/vestment_leg_plate",  ArmorWeight.ROBE);
         // boots
         m.put("boots/heavy_boot_sole",     ArmorWeight.HEAVY);
         m.put("boots/basic_boot_sole",     ArmorWeight.MEDIUM);
         m.put("boots/light_boot_sole",     ArmorWeight.LIGHT);
-        m.put("boots/robed_boot_sole",     ArmorWeight.ROBE);
+        m.put("boots/vestment_boot_sole",     ArmorWeight.ROBE);
         MAJOR_WEIGHT = java.util.Collections.unmodifiableMap(m);
     }
 

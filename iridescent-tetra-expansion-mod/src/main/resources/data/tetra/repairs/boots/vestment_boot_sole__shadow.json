@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:ghast_tear"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "vestment_boot_sole/shadow"
+}

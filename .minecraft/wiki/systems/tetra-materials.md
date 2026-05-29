@@ -591,7 +591,7 @@ Per `master-appendix.md` Section L.2, each armor piece (helmet / chestplate / le
 | **Warrior** | `heavy_crown` | `breastplate` | `heavy_leg_plate` | `heavy_boot_sole` |
 | **Balanced** | `basic_crown` | `cuirass` | `full_leg_plate` | `basic_boot_sole` |
 | **Rogue** | `light_crown` | `scaled_chest` | `light_leg_plate` | `light_boot_sole` |
-| **Mage** | `circlet` | `robe_chest` | `robed_leg_plate` | `robed_boot_sole` |
+| **Mage (Vestment)** | `vestment_crown` | `vestment_chest` | `vestment_leg_plate` | `vestment_boot_sole` |
 
 Stat priorities (also from L.2):
 

@@ -1,0 +1,29 @@
+{
+  "replace": true,
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "materialSlotCount": 1,
+  "displayType": "major",
+  "glyph": {
+    "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+    "textureX": 0,
+    "textureY": 0
+  },
+  "translation": {
+    "integrity": -5,
+    "magicCapacity": 5
+  },
+  "outcomes": [
+    {
+      "materials": [
+        "tetra:fabric/",
+        "tetra:skin/",
+        "tetra:fibre/"
+      ],
+      "countFactor": 1,
+      "moduleKey": "chestplate/vestment_chest",
+      "moduleVariant": "vestment_chest/"
+    }
+  ]
+}

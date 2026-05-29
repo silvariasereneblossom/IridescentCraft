@@ -8,8 +8,8 @@
     "item": "iridescent_reforging:reforged_chestplate",
     "modules": {
       "chestplate/chest_plate": [
-        "chestplate/robe_chest",
-        "robe_chest/wool"
+        "chestplate/vestment_chest",
+        "vestment_chest/wool"
       ],
       "chestplate/chest_lining": [
         "chestplate/padded_lining",

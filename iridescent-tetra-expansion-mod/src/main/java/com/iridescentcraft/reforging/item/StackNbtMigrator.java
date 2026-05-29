@@ -58,6 +58,35 @@ public final class StackNbtMigrator {
      * module so the variant lookup hits a real entry. Players can
      * upgrade to a different module via the workbench.
      */
+    /**
+     * Map from old module short-name to new module short-name for the
+     * 2026-05-28 Mage archetype rename:
+     *   circlet          -> vestment_crown
+     *   robe_chest       -> vestment_chest
+     *   robed_leg_plate  -> vestment_leg_plate
+     *   robed_boot_sole  -> vestment_boot_sole
+     *
+     * The split is part of the Vestment + Runed Mage archetype design --
+     * vestment_* takes the spot the old robe/circlet modules held (lighter
+     * mage cloth focus, max_mana + mana_regen), and Runed will land as a
+     * sibling archetype later (heavier mage focus, spell_power + cooldown).
+     *
+     * Both still bucket as the conceptual ROBE weight class in
+     * ItemModularArmor -- the rename only touches module identity, not
+     * armor-weight bookkeeping.
+     *
+     * NBT touch points per slot:
+     *   tag["<slot_path>"]            = "<slot_path>/<old_short>"   -> "<slot_path>/<new_short>"
+     *   tag["<slot_path>_material"]   = "<old_short>/<material>"    -> "<new_short>/<material>"
+     */
+    private static final Map<String, String> RENAMED_MODULE_SHORTS = new HashMap<>();
+    static {
+        RENAMED_MODULE_SHORTS.put("circlet",         "vestment_crown");
+        RENAMED_MODULE_SHORTS.put("robe_chest",      "vestment_chest");
+        RENAMED_MODULE_SHORTS.put("robed_leg_plate", "vestment_leg_plate");
+        RENAMED_MODULE_SHORTS.put("robed_boot_sole", "vestment_boot_sole");
+    }
+
     private static final Map<String, String[]> SLOT_TO_DEFAULT = new HashMap<>();
     static {
         // helmet
@@ -116,17 +145,67 @@ public final class StackNbtMigrator {
                     changed = true;
                 }
             }
+            // Step 3: apply the 2026-05-28 Mage archetype rename. Both the
+            // slot tag (if it names an old module) and the variant key (if
+            // its leading segment names an old module) get rewritten to the
+            // new vestment_* short name. Idempotent on already-renamed NBT.
+            fixed = applyRenameToVariantKey(fixed);
+            String slotValueForRename = tag.getString(slotKey);
+            if (!slotValueForRename.isEmpty()) {
+                String renamedSlotValue = applyRenameToSlotValue(slotValueForRename);
+                if (!renamedSlotValue.equals(slotValueForRename)) {
+                    tag.putString(slotKey, renamedSlotValue);
+                    changed = true;
+                }
+            }
             if (!value.equals(fixed)) {
                 tag.putString(key, fixed);
                 changed = true;
             }
         }
-        // Sentinel bumped to v3 with the multi-module-per-slot rewrite.
-        // Existing stacks marked v1/v2 still get scanned at next tick.
-        if (tag.getInt(MIGRATION_TAG) < 3) {
-            tag.putInt(MIGRATION_TAG, 3);
+        // Sentinel bumped to v4 with the Mage archetype rename
+        // (robe/circlet -> vestment_*). Existing stacks marked v1/v2/v3 still
+        // get scanned at next tick.
+        if (tag.getInt(MIGRATION_TAG) < 4) {
+            tag.putInt(MIGRATION_TAG, 4);
         }
         return changed;
+    }
+
+    /**
+     * Rewrite the slot tag value when it names a renamed module.
+     * Example: "chestplate/robe_chest" -> "chestplate/vestment_chest".
+     * Returns input unchanged for unrelated modules, malformed values, or
+     * already-renamed NBT (idempotent).
+     */
+    static String applyRenameToSlotValue(String slotValue) {
+        if (slotValue == null || slotValue.isEmpty()) return slotValue;
+        int lastSlash = slotValue.lastIndexOf('/');
+        if (lastSlash < 0) return slotValue;
+        String moduleShort = slotValue.substring(lastSlash + 1);
+        String renamed = RENAMED_MODULE_SHORTS.get(moduleShort);
+        if (renamed == null) return slotValue;
+        return slotValue.substring(0, lastSlash + 1) + renamed;
+    }
+
+    /**
+     * Rewrite the leading segment of a variant key when it names a
+     * renamed module short.
+     * Examples:
+     *   "robe_chest/wool"        -> "vestment_chest/wool"
+     *   "robed_leg_plate/iron"   -> "vestment_leg_plate/iron"
+     *   "circlet/"               -> "vestment_crown/"
+     *   "vestment_chest/wool"    -> unchanged (idempotent)
+     *   "basic_crown/iron"       -> unchanged (unrelated module)
+     */
+    static String applyRenameToVariantKey(String variantKey) {
+        if (variantKey == null || variantKey.isEmpty()) return variantKey;
+        int firstSlash = variantKey.indexOf('/');
+        if (firstSlash < 0) return variantKey;
+        String shortName = variantKey.substring(0, firstSlash);
+        String renamed = RENAMED_MODULE_SHORTS.get(shortName);
+        if (renamed == null) return variantKey;
+        return renamed + variantKey.substring(firstSlash);
     }
 
     /**
