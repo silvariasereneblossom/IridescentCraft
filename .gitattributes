@@ -34,6 +34,12 @@
 *.gradle text eol=lf
 *.properties text eol=lf
 
+# Gradle wrapper script (no extension; needs LF for WSL/Linux/CI bash)
+# Belt-and-suspenders -- caught CRLF "bad interpreter" failure 2026-05-28
+# even with `* text=auto eol=lf` set above, since gradlew was committed
+# before the default rule was in place.
+gradlew text eol=lf
+
 # Binary - never line-end-converted, never text-diffed
 *.jar   binary
 *.zip   binary
