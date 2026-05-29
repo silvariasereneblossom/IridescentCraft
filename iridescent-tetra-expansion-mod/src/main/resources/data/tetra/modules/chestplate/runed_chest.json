@@ -1,0 +1,331 @@
+{
+  "type": "tetra:basic_major_module",
+  "slots": [
+    "chestplate/chest_plate"
+  ],
+  "improvements": [
+    "tetra:armor/mage/",
+    "tetra:armor/shared/",
+    "tetra:iridescent_reforging/armor_mage_hone_chestplate"
+  ],
+  "variants": [
+    {
+      "materials": [
+        "tetra:fabric/wool/wool"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.75,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.413,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/fire"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/ice"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/shadow"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/holy"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/lightning"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/nature"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/ender"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/string"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.188,
+          "irons_spellbooks:max_mana": 27.5,
+          "**irons_spellbooks:spell_power": 0.1,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/deathskin"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.413
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/arcane_cloth"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.75
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/blood"
+      ],
+      "key": "runed_chest/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.787,
+          "irons_spellbooks:max_mana": 20.0,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    }
+  ]
+}

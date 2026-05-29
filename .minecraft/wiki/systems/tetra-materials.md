@@ -591,7 +591,20 @@ Per `master-appendix.md` Section L.2, each armor piece (helmet / chestplate / le
 | **Warrior** | `heavy_crown` | `breastplate` | `heavy_leg_plate` | `heavy_boot_sole` |
 | **Balanced** | `basic_crown` | `cuirass` | `full_leg_plate` | `basic_boot_sole` |
 | **Rogue** | `light_crown` | `scaled_chest` | `light_leg_plate` | `light_boot_sole` |
-| **Mage (Vestment)** | `vestment_crown` | `vestment_chest` | `vestment_leg_plate` | `vestment_boot_sole` |
+| **Mage / Vestment** | `vestment_crown` | `vestment_chest` | `vestment_leg_plate` | `vestment_boot_sole` |
+| **Mage / Runed** | `runed_crown` | `runed_chest` | `runed_leg_plate` | `runed_boot_sole` |
+
+Vestment and Runed are both sub-variants of the conceptual Mage archetype, sharing `tetra:armor/mage/` improvement gate and the `armor_mage_hone_*` hone chain. They differ in stat-axis emphasis:
+
+| Stat | Vestment | Runed |
+|---|---|---|
+| Identity | Cloth-wrapped caster, sustain/regen | Rune-inscribed gear, raw power |
+| `irons_spellbooks:max_mana` | Baseline | 0.5x Vestment |
+| `**irons_spellbooks:spell_power` | Baseline | 2.0x Vestment |
+| `**irons_spellbooks:cooldown_reduction` | (none) | +5% per piece |
+| `minecraft:generic.armor` | Baseline | 1.25x Vestment |
+
+Both still bucket as the ROBE weight class in `armor_weight.js` (-armor / +mana_regen / +speed per-piece bonuses).
 
 Stat priorities (also from L.2):
 

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:string"
+    ],
+    "count": 4
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "runed_leg_plate/string"
+}

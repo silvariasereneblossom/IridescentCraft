@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:string"
+    ],
+    "count": 4
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/string"
+}

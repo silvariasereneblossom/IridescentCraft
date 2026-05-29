@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:string"
+    ],
+    "count": 4
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "runed_chest/string"
+}

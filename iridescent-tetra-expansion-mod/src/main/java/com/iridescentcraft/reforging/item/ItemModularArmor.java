@@ -519,22 +519,26 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
         m.put("helmet/heavy_crown",        ArmorWeight.HEAVY);
         m.put("helmet/basic_crown",        ArmorWeight.MEDIUM);
         m.put("helmet/light_crown",        ArmorWeight.LIGHT);
-        m.put("helmet/vestment_crown",            ArmorWeight.ROBE);
+        m.put("helmet/vestment_crown",     ArmorWeight.ROBE);
+        m.put("helmet/runed_crown",        ArmorWeight.ROBE);
         // chestplate
         m.put("chestplate/cuirass",        ArmorWeight.HEAVY);
         m.put("chestplate/breastplate",    ArmorWeight.MEDIUM);
         m.put("chestplate/scaled_chest",   ArmorWeight.LIGHT);
-        m.put("chestplate/vestment_chest",     ArmorWeight.ROBE);
+        m.put("chestplate/vestment_chest", ArmorWeight.ROBE);
+        m.put("chestplate/runed_chest",    ArmorWeight.ROBE);
         // leggings
-        m.put("leggings/heavy_leg_plate",  ArmorWeight.HEAVY);
-        m.put("leggings/full_leg_plate",   ArmorWeight.MEDIUM);
-        m.put("leggings/light_leg_plate",  ArmorWeight.LIGHT);
+        m.put("leggings/heavy_leg_plate",     ArmorWeight.HEAVY);
+        m.put("leggings/full_leg_plate",      ArmorWeight.MEDIUM);
+        m.put("leggings/light_leg_plate",     ArmorWeight.LIGHT);
         m.put("leggings/vestment_leg_plate",  ArmorWeight.ROBE);
+        m.put("leggings/runed_leg_plate",     ArmorWeight.ROBE);
         // boots
         m.put("boots/heavy_boot_sole",     ArmorWeight.HEAVY);
         m.put("boots/basic_boot_sole",     ArmorWeight.MEDIUM);
         m.put("boots/light_boot_sole",     ArmorWeight.LIGHT);
-        m.put("boots/vestment_boot_sole",     ArmorWeight.ROBE);
+        m.put("boots/vestment_boot_sole",  ArmorWeight.ROBE);
+        m.put("boots/runed_boot_sole",     ArmorWeight.ROBE);
         MAJOR_WEIGHT = java.util.Collections.unmodifiableMap(m);
     }
 

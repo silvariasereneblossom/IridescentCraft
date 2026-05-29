@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:ender_pearl"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/ender"
+}

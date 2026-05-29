@@ -1,0 +1,331 @@
+{
+  "type": "tetra:basic_major_module",
+  "slots": [
+    "leggings/leg_plate"
+  ],
+  "improvements": [
+    "tetra:armor/mage/",
+    "tetra:armor/shared/",
+    "tetra:iridescent_reforging/armor_mage_hone_leggings"
+  ],
+  "variants": [
+    {
+      "materials": [
+        "tetra:fabric/wool/wool"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.5,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/leather"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.275,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/fire"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/ice"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/shadow"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/holy"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/lightning"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/nature"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/ender"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/string"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.15,
+          "irons_spellbooks:max_mana": 19.0,
+          "**irons_spellbooks:spell_power": 0.08,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/deathskin"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.275
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/arcane_cloth"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.5
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    },
+    {
+      "materials": [
+        "tetra:themed/blood"
+      ],
+      "key": "runed_leg_plate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.525,
+          "irons_spellbooks:max_mana": 12.0,
+          "**irons_spellbooks:cooldown_reduction": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1.0
+      }
+    }
+  ]
+}

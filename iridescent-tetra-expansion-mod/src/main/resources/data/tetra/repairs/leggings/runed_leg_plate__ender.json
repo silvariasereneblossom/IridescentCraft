@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:ender_pearl"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "runed_leg_plate/ender"
+}
