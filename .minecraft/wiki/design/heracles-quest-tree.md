@@ -29,7 +29,9 @@ The Iridescent Codex (Patchouli book at `datapack_sources/iridescent_codex/`) is
 
 ### 2.1 Codex-to-quest linking
 
-Each codex chapter that covers a mod or system ends with a "Quests" section. The section contains one or more action buttons that fire `/heracles open <chapter>` (Heracles' open-chapter command — verify exact syntax during authoring; see §6 JSON shape verification).
+Each codex chapter that covers a mod or system ends with a "Quests" section. The section contains one or more action buttons that fire a quest-tree-open command.
+
+**Implementation note (2026-05-28 verification per `heracles-json-shape.md` §7):** `/heracles open <chapter>` does NOT exist in the in-pack Heracles version. The only built-in command is `/heracles` (opens the root quest UI). To deep-link to a specific chapter/group, we must ship a custom KubeJS command (e.g., `/icraft_quests open <group_id>`) that opens Heracles' UI then navigates to the named group. The codex action buttons fire the custom command, not Heracles' native one.
 
 | Codex chapter | Quest entry point |
 |---|---|
@@ -116,63 +118,87 @@ Anti-patterns to never ship:
 
 ## 4. Quest authoring template
 
-Each quest is a JSON file under `config/heracles/quests/<chapter>/<quest_id>.json`. Heracles JSON shape needs **bytecode verification** before authoring (Tetra-lesson rule: decompile-before-guessing). The shape sketched here is a working hypothesis; revise during chapter 0 authoring.
+Each quest is a JSON file under `config/heracles/quests/<quest_id>.json`. JSON shape verified 2026-05-28 against `Heracles-forge-1.20.1-1.1.13.jar` bytecode — see [`heracles-json-shape.md`](heracles-json-shape.md) for the full reference (17 task types, 5 reward types, every field's codec citation).
+
+**Critical corrections from initial sketch:**
+- Quest **ID is the bare filename**, not a namespaced string. No `id` field exists in the JSON.
+- **`dependencies`** (not `depends_on`).
+- **`display.groups`** map (not a top-level `chapter` field — chapters are emergent from group assignment).
+- **`heracles:item`** task type (not `heracles:item_have`).
+- **`hidden`** is an enum (`LOCKED` / `IN_PROGRESS` / `COMPLETED` / `DEPENDENCIES_VISIBLE`), not a boolean.
+- Field-name casing is inconsistent across the codec (e.g., `xpType` for tasks vs `xptype` for rewards). Copy field names exactly.
+
+Working template (chapter 0 reference quest):
 
 ```jsonc
+// File path: config/heracles/quests/onboarding_tome_tower_entry.json
+//   Filename IS the quest ID. Recommend a chapter-slug prefix on every
+//   filename so cross-chapter ID collisions can't happen silently.
 {
-    "id": "iridescent:overworld_foundations/tome_tower_entry",
-    "title": "tetra.quest.iridescent.tome_tower_entry.title",
-    "icon": "iridescent_codex:tome_of_iridescence",
-    "chapter": "overworld_foundations",
-    "description": "tetra.quest.iridescent.tome_tower_entry.desc",
+    "display": {
+        "title": "tetra.quest.iridescent.tome_tower_entry.title",
+        "description": "tetra.quest.iridescent.tome_tower_entry.desc",
+        "icon": {
+            "item": "iridescent_codex:tome_of_iridescence"
+        },
+        "groups": {
+            "onboarding": {
+                "position": [0, 0]
+            }
+        }
+    },
 
-    // Soft prerequisites: quests the player MUST complete first. Not a
-    // progression gate -- player can skip this quest entirely. Just visual
-    // ordering in the Heracles UI.
-    "depends_on": ["iridescent:overworld_foundations/first_day"],
+    "settings": {
+        "individual_progress": true,
+        "hidden": "LOCKED"
+    },
 
-    // Tasks: ALL must complete to advance the quest.
-    "tasks": [
-        {
+    // Soft prerequisites (filename-based). Heracles SILENTLY DROPS missing
+    // dep IDs from the set, so typos turn hard-gated quests into immediately
+    // available. Belt-and-suspenders: cross-check each ID exists.
+    "dependencies": [
+        "onboarding_first_day"
+    ],
+
+    // Tasks: ALL must complete to advance. Map keyed by arbitrary string;
+    // value's `type` field selects the task implementation.
+    "tasks": {
+        "find_fortress": {
             "type": "heracles:advancement",
             "advancement": "minecraft:nether/find_fortress"
         },
-        {
-            "type": "heracles:item_have",
-            "item": {"id": "iridescent_codex:tome_of_iridescence", "count": 1}
+        "have_tome": {
+            "type": "heracles:item",
+            "item": {"id": "iridescent_codex:tome_of_iridescence"}
         }
-    ],
+    },
 
     // Rewards: granted on quest completion. Tier-bound + mod-bound per §3.2.
-    "rewards": [
-        {
+    "rewards": {
+        "spellbook": {
             "type": "heracles:item",
             "item": {"id": "irons_spellbooks:novice_spellbook", "count": 1}
         },
-        {
+        "repair_kits": {
             "type": "heracles:item",
             "item": {"id": "tetra:repair_kit_iron", "count": 4}
         }
-    ],
-
-    // Optional: bonus read-the-codex reward, granted on codex page open.
-    "iridescent_codex_bonus": {
-        "page": "iridescent_codex:systems/tome-tower",
-        "reward": {"type": "heracles:item", "item": {"id": "ars_nouveau:source_gem", "count": 8}}
     }
 }
 ```
 
-`iridescent_codex_bonus` is **our extension**, not part of Heracles core. Implementation lives in a KubeJS server script that listens for Patchouli page-open and cross-references this field. Must be authored as an idempotent one-time grant per (player × quest × page) tuple.
+**Codex-read bonus reward** is NOT a Heracles field — handled out-of-band by a KubeJS Patchouli page-open listener that cross-references a separate `kubejs/server_scripts/quest_bonus_reads.js` table mapping `quest_id → page_id → bonus_item_stack`. Must be authored as an idempotent one-time grant per (player × quest × page) tuple. Lives outside the Heracles JSON to keep the JSON copy-and-paste compatible with vanilla Heracles tooling.
 
 ### 4.1 Naming conventions
 
 | Element | Convention | Example |
 |---|---|---|
-| Quest ID | `iridescent:<chapter>/<short>` | `iridescent:twilight_midtier/naga_kill` |
+| Quest ID (= filename) | `<chapter_slug>_<short>.json` | `twilight_midtier_naga_kill.json` |
 | Title lang key | `tetra.quest.iridescent.<short>.title` | `tetra.quest.iridescent.naga_kill.title` |
 | Description lang key | `tetra.quest.iridescent.<short>.desc` | `tetra.quest.iridescent.naga_kill.desc` |
-| Chapter ID | snake_case slot | `overworld_foundations`, `twilight_midtier` |
+| Chapter slug (= group key in `display.groups`) | snake_case | `overworld_foundations`, `twilight_midtier` |
+
+**Filename prefix is load-bearing.** Heracles derives quest ID from filename only, ignoring subdirectory paths. `config/heracles/quests/foo.json` and `config/heracles/quests/chapter_2/foo.json` would collide silently with one taking priority. Prefix every filename with its chapter slug to make collisions impossible.
 
 All lang strings live in `iridescent_reforging/lang/en_us.json` per existing convention.
 
@@ -207,19 +233,21 @@ Don't author chapters 1+ in parallel until chapter 0 ships — the template / pl
 
 ---
 
-## 6. Heracles JSON shape verification — TODO
+## 6. Heracles JSON shape verification — COMPLETED 2026-05-28
 
-Pre-authoring decompile work. Open questions to resolve from bytecode:
+Bytecode decompile output: [`heracles-json-shape.md`](heracles-json-shape.md) (843 lines). Resolved every open question:
 
-- Exact `type` strings for tasks (`heracles:advancement`? `heracles:kill`? `heracles:item_have`? `heracles:dimension_enter`?)
-- Reward types (`heracles:item`? `heracles:command`? `heracles:experience`?)
-- Whether `depends_on` is the right field name (could be `prerequisites`, `requires`, etc.)
-- Whether chapters are first-class JSON or just a folder convention
-- Quest-icon path conventions (texture path vs item ID)
-- Multiplayer state — per-player progress vs world-shared?
-- Task-progress visualization (does Heracles show "3/5 zombies killed" automatically, or do we configure it?)
+| Original question | Resolution |
+|---|---|
+| Exact task `type` strings | 17 task types enumerated: `heracles:kill_entity`, `heracles:advancement`, `heracles:item` (NOT `item_have`), `heracles:biome`, `heracles:structure`, `heracles:changed_dimension`, `heracles:check`, `heracles:dummy`, `heracles:entity_interaction`, `heracles:item_interaction`, `heracles:item_use`, `heracles:block_interaction`, `heracles:location`, `heracles:recipe`, `heracles:stat`, + 2 more — see `heracles-json-shape.md` §2. |
+| Reward types | 5 types: `heracles:item`, `heracles:command`, `heracles:experience`, + 2 more — see `heracles-json-shape.md` §3. |
+| Prerequisite field name | `dependencies` (not `depends_on`). Missing IDs silently dropped, not errored. |
+| Chapters as first-class | NO. Emergent from `display.groups` map. Optional ordering via `groups.txt`. |
+| Quest-icon | Object with item ID + texture variants — see `heracles-json-shape.md` §1.6. |
+| Multiplayer | Per-player when `settings.individual_progress=true`; world-shared otherwise. |
+| Task progress | Automatic for count-based tasks (kill_entity, item gather, etc.). |
 
-Output: revise §4 template + a brief decompile note inline (similar to lessons-learned-Tetra entries).
+Other corrections from the audit (referenced in §4 above): quest ID = filename; `hidden` is enum not bool; field-name casing inconsistent. Authoring lessons in `heracles-json-shape.md` §10.
 
 ---
 
