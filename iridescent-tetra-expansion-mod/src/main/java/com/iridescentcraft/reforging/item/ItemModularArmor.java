@@ -240,29 +240,37 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
 
     // ── Workbench module-icon layout ───────────────────────────────────
     //
-    // Modeled on Tetra's ModularSingleHeadedItem (sword/axe):
-    //   sword majorOffsets = (1, -3, -11, 21)   2 majors: NE inner + SW outer
-    //   sword minorOffsets = (-14, 0)            1 minor:  W outer
+    // Modeled on Tetra's ModularDoubleHeadedItem (Stone Hammer / Sledgehammer):
+    //   hammer majorOffsets = (-13, -1, 3, 19, -13, 19)   3 majors: NW, SE, SW
+    //   hammer minorOffsets = (6, 1)                       1 minor:  NE
     //
-    // Our armor is 1-major + 3-minors. We use sword's 3 positions plus an
-    // SE-mirror of the SW position for a fourth slot. Diamond is the same
-    // size across all Tetra items, so coordinates transfer verbatim.
+    // The four positions form a clean box around the central item slot, no
+    // overlap into the item-slot pixel space. Sword/axe (the previous model)
+    // uses NE inner (1, -3) for its first major -- which sits almost on top
+    // of the item slot. Visible overlap caught 2026-05-28; user comparison
+    // screenshot of native hammer UI vs our boots made the gap obvious.
     //
-    //   Major:    (1, -3)     NE inner   text right
-    //   Minor 0:  (-14, 0)    W outer    text left   (sword's minor)
-    //   Minor 1:  (-11, 21)   SW outer   text left   (sword's 2nd major)
-    //   Minor 2:  (3, 21)     SE outer   text right  (new — mirror of SW)
+    // Our armor is 1-major + 3-minors. We map the slots to the hammer's
+    // 4 corner positions, with the major (boot_sole / leg_plate / chest /
+    // crown -- the structural component) at the bottom-right corner so its
+    // text-right label has room to breathe; minors fill the other 3 corners
+    // with text-direction matching the side they're on:
+    //
+    //   Major:    (3, 19)     SE corner   text right
+    //   Minor 0:  (-13, -1)   NW corner   text left
+    //   Minor 1:  (-13, 19)   SW corner   text left
+    //   Minor 2:  (6, 1)      NE corner   text right
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMajorGuiOffsets(ItemStack stack) {
-        return new se.mickelus.tetra.gui.GuiModuleOffsets(1, -3);
+        return new se.mickelus.tetra.gui.GuiModuleOffsets(3, 19);
     }
 
     @Override
     public se.mickelus.tetra.gui.GuiModuleOffsets getMinorGuiOffsets(ItemStack stack) {
         return new se.mickelus.tetra.gui.GuiModuleOffsets(
-                -14, 0,
-                -11, 21,
-                3, 21);
+                -13, -1,
+                -13, 19,
+                6, 1);
     }
 
     @Override
