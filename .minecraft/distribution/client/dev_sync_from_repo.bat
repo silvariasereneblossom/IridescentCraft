@@ -193,6 +193,60 @@ powershell -ExecutionPolicy Bypass -Command ^
     "else { Write-Host '  no stale jars'; }"
 
 REM ----------------------------------------------------------------------------
+REM Phase 5: assert JVM-verification-disable invariant on instance.cfg
+REM
+REM Patchouli + Ars Nouveau ship bytecode-patched JARs that fail JVM class
+REM verification at load. Without -noverify (set via JvmArgs + the gating
+REM OverrideJavaArgs=true), AN's classes fail to load -> mods that depend
+REM on AN fail to register their items -> server registry-sync handshake
+REM fails with "client missing items" even though the mod jar IS present.
+REM
+REM Lost this on 2026-05-28: instance.cfg had drifted to OverrideJavaArgs=false
+REM (PrismLauncher writes it on certain UI interactions), the JvmArgs line
+REM was ignored, AN failed verification, and Vestment/Runed couldn't register.
+REM
+REM Idempotent: only writes instance.cfg when correction is needed.
+REM Preserves user-added JVM args (only INSERTS -noverify if missing).
+REM ----------------------------------------------------------------------------
+echo.
+echo [dev-sync] Phase 5: assert -noverify JVM arg for Patchouli + Ars Nouveau...
+set "INSTANCE_CFG=%LOCAL%\..\instance.cfg"
+if exist "%INSTANCE_CFG%" (
+    powershell -ExecutionPolicy Bypass -Command ^
+        "$cfg = Get-Content -Raw -Encoding UTF8 -Path '%INSTANCE_CFG%';" ^
+        "$changed = $false;" ^
+        "if ($cfg -match '(?m)^OverrideJavaArgs=false') {" ^
+        "  $cfg = $cfg -replace '(?m)^OverrideJavaArgs=false', 'OverrideJavaArgs=true';" ^
+        "  $changed = $true;" ^
+        "  Write-Host '  flipped OverrideJavaArgs=false -> true';" ^
+        "} elseif ($cfg -notmatch '(?m)^OverrideJavaArgs=') {" ^
+        "  if (-not $cfg.EndsWith([Environment]::NewLine)) { $cfg += [Environment]::NewLine };" ^
+        "  $cfg += 'OverrideJavaArgs=true' + [Environment]::NewLine;" ^
+        "  $changed = $true;" ^
+        "  Write-Host '  added missing OverrideJavaArgs=true';" ^
+        "};" ^
+        "if ($cfg -notmatch '(?m)^JvmArgs=.*-noverify') {" ^
+        "  if ($cfg -match '(?m)^JvmArgs=(.*)$') {" ^
+        "    $cfg = $cfg -replace '(?m)^JvmArgs=(.*)$', 'JvmArgs=$1 -noverify';" ^
+        "    Write-Host '  appended -noverify to existing JvmArgs';" ^
+        "  } else {" ^
+        "    if (-not $cfg.EndsWith([Environment]::NewLine)) { $cfg += [Environment]::NewLine };" ^
+        "    $cfg += 'JvmArgs=-noverify' + [Environment]::NewLine;" ^
+        "    Write-Host '  added missing JvmArgs=-noverify';" ^
+        "  };" ^
+        "  $changed = $true;" ^
+        "};" ^
+        "if ($changed) {" ^
+        "  Set-Content -Path '%INSTANCE_CFG%' -Value $cfg -NoNewline -Encoding UTF8;" ^
+        "  Write-Host '  instance.cfg updated';" ^
+        "} else {" ^
+        "  Write-Host '  ok - already wired';" ^
+        "}"
+) else (
+    echo   instance.cfg not found at %INSTANCE_CFG%; skipping
+)
+
+REM ----------------------------------------------------------------------------
 REM Final status. Always exit 0 -- pre-launch warnings shouldn't block the
 REM launch (operator may be intentionally offline or running solo).
 REM ----------------------------------------------------------------------------
