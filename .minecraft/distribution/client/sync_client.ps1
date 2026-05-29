@@ -459,17 +459,36 @@ if ($instDir) {
         }
 
         # (2) -noverify in JvmArgs.
-        if ($cfg -notmatch 'JvmArgs=.*-noverify') {
-            $cfg = $cfg -replace 'OverrideJavaArgs=false', 'OverrideJavaArgs=true'
-            if ($cfg -match 'JvmArgs=(.*)') {
+        #
+        # Two independent invariants:
+        #   (2a) OverrideJavaArgs=true  (gate that makes PrismLauncher actually
+        #        read JvmArgs; PrismLauncher's UI flips this to false on certain
+        #        save paths, silently dropping -noverify even when the JvmArgs
+        #        line still has it -- caught 2026-05-28).
+        #   (2b) JvmArgs contains -noverify  (the arg itself, for bytecode-
+        #        patched Patchouli + Ars Nouveau which fail JVM class
+        #        verification otherwise).
+        # Check both independently; fixing only one if the other already holds
+        # would have masked today's bug.
+        if ($cfg -match '(?m)^OverrideJavaArgs=false') {
+            $cfg = $cfg -replace '(?m)^OverrideJavaArgs=false', 'OverrideJavaArgs=true'
+            $cfgChanged = $true
+            Write-Host "[IridescentCraft Sync] Flipped OverrideJavaArgs=false -> true (was silently dropping JvmArgs)" -ForegroundColor Yellow
+        } elseif ($cfg -notmatch '(?m)^OverrideJavaArgs=') {
+            $cfg = $cfg -replace '(\[General\])', "`$1`nOverrideJavaArgs=true"
+            $cfgChanged = $true
+            Write-Host "[IridescentCraft Sync] Added missing OverrideJavaArgs=true" -ForegroundColor Yellow
+        }
+        if ($cfg -notmatch '(?m)^JvmArgs=.*-noverify') {
+            if ($cfg -match '(?m)^JvmArgs=(.*)$') {
                 $existing = $matches[1].Trim()
                 if ($existing) {
-                    $cfg = $cfg -replace "JvmArgs=.*", "JvmArgs=-noverify $existing"
+                    $cfg = $cfg -replace "(?m)^JvmArgs=.*$", "JvmArgs=-noverify $existing"
                 } else {
-                    $cfg = $cfg -replace "JvmArgs=.*", "JvmArgs=-noverify"
+                    $cfg = $cfg -replace "(?m)^JvmArgs=.*$", "JvmArgs=-noverify"
                 }
-            } elseif ($cfg -notmatch 'JvmArgs=') {
-                $cfg = $cfg -replace '(\[General\])', "`$1`nOverrideJavaArgs=true`nJvmArgs=-noverify"
+            } else {
+                $cfg = $cfg -replace '(\[General\])', "`$1`nJvmArgs=-noverify"
             }
             $cfgChanged = $true
             Write-Host "[IridescentCraft Sync] Added -noverify to JVM args (required for patched mods)" -ForegroundColor Yellow
