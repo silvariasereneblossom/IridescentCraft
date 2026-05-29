@@ -78,6 +78,11 @@ cd "$MOD_ROOT"
 CACHE_PRIMARY="$REPO_ROOT/iridescent-biomes-mod/tools/.cache/all-mods"
 # Z: drive on Windows is mapped at /mnt/z/ inside WSL when accessible.
 CACHE_FALLBACK="/mnt/z/Users/silvariazemaitis/Desktop/IridescentCraft Dedicated Server/mods"
+# PrismLauncher live mods folder — the canonical source of truth for what
+# ships in the pack via CurseForge manifest (mods not committed to the dev
+# repo). Used as a last-resort fallback so compileOnly deps that aren't in
+# either cache can still be staged on a clean WSL checkout.
+CACHE_PRISM="/mnt/c/Users/silvariazemaitis/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/mods"
 
 mkdir -p libs
 
@@ -87,7 +92,7 @@ stage_lib() {
         return 0
     fi
     local hit=""
-    for cache in "$CACHE_PRIMARY" "$CACHE_FALLBACK"; do
+    for cache in "$CACHE_PRIMARY" "$CACHE_FALLBACK" "$CACHE_PRISM"; do
         [ -d "$cache" ] || continue
         hit="$(ls "$cache"/$glob 2>/dev/null | head -n1 || true)"
         [ -n "$hit" ] && break
@@ -100,12 +105,17 @@ stage_lib() {
     fi
 }
 
-stage_lib tetra.jar            'tetra-1.20.1-*.jar'
-stage_lib mutil.jar            'mutil-1.20.1-*.jar'
-stage_lib irons_spellbooks.jar 'irons_spellbooks-1.20.1-*.jar'
-stage_lib curios-forge.jar     'curios-forge-*.jar'
-stage_lib ars_nouveau.jar      'ars_nouveau-1.20.1-*.jar'
-stage_lib geckolib-forge.jar   'geckolib-forge-1.20.1-*.jar'
+stage_lib tetra.jar             'tetra-1.20.1-*.jar'
+stage_lib mutil.jar             'mutil-1.20.1-*.jar'
+stage_lib irons_spellbooks.jar  'irons_spellbooks-1.20.1-*.jar'
+stage_lib curios-forge.jar      'curios-forge-*.jar'
+stage_lib ars_nouveau.jar       'ars_nouveau-1.20.1-*.jar'
+stage_lib geckolib-forge.jar    'geckolib-forge-1.20.1-*.jar'
+# compileOnly mixin targets — not bundled in our libs/ historically because
+# the mixins are pure runtime ride-alongs (UI relocate + harvest-replant),
+# but compilation does need the target classes on the classpath.
+stage_lib ApothicAttributes.jar 'ApothicAttributes-1.20.1-*.jar'
+stage_lib cofh_core.jar         'cofh_core-1.20.1-*.jar'
 
 # --- preprocessor python scripts ---------------------------------------------
 echo "[wsl-build] Running data preprocessors..."
@@ -115,6 +125,14 @@ python3 tools/gen_spellbook_icons.py
 
 # --- gradle ------------------------------------------------------------------
 if [ "$DO_BUILD" = 1 ]; then
+    # gradlew is checked in with CRLF on Windows hosts; bash chokes on the
+    # shebang line ("/bin/sh^M: bad interpreter"). Strip CR in place. Idempotent
+    # if the file is already LF-only. We don't touch gradlew.bat (Windows wants
+    # CRLF there).
+    if grep -q $'\r' gradlew 2>/dev/null; then
+        echo "[wsl-build] Stripping CRLF from gradlew (Windows checkout)"
+        sed -i 's/\r$//' gradlew
+    fi
     chmod +x ./gradlew
     if [ "$DO_CLEAN" = 1 ]; then
         echo "[wsl-build] ./gradlew clean"

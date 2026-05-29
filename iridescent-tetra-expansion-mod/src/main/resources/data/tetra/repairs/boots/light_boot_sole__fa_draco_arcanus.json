@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:draco_arcanus_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/fa_draco_arcanus"
+}

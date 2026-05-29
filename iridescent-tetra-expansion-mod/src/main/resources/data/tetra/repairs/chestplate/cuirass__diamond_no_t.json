@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:diamond"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/diamond_no_t"
+}

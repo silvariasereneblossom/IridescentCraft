@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:zanite_gemstone"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/aether_neptune"
+}

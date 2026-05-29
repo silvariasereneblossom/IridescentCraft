@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:reinforced_echo_shard"
+    ],
+    "count": 1
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/dd_warden"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:resonarium"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/dd_resonarium"
+}

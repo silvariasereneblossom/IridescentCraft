@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:reinforced_echo_shard"
+    ],
+    "count": 1
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/dd_warden"
+}

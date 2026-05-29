@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:obsidian"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/aether_obsidian"
+}

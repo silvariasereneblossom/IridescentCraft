@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:reinforced_echo_shard"
+    ],
+    "count": 1
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/dd_warden"
+}

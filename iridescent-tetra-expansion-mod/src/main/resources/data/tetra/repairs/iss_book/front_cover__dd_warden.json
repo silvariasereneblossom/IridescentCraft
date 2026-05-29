@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:reinforced_echo_shard"
+    ],
+    "count": 1
+  },
+  "moduleKey": "iss_book/front_cover",
+  "moduleVariant": "front_cover/dd_warden"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:pyrope_gem"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/bs_pyrope"
+}

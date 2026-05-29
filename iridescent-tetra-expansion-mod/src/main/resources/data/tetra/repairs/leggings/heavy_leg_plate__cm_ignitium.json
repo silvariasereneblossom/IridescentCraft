@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ignitium_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/cm_ignitium"
+}

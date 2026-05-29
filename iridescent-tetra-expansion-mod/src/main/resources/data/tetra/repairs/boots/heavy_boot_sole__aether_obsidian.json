@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:obsidian"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "heavy_boot_sole/aether_obsidian"
+}

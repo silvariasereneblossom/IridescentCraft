@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ignitium_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/cm_ignitium"
+}

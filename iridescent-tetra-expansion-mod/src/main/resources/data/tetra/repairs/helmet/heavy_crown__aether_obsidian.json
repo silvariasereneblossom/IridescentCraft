@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:obsidian"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/aether_obsidian"
+}

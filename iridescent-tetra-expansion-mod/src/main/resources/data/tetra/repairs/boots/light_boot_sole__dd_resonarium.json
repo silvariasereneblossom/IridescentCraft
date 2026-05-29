@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:resonarium"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/dd_resonarium"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ignitium_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/cm_ignitium"
+}

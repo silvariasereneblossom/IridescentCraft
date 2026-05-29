@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:bone"
+    ],
+    "count": 2
+  },
+  "moduleKey": "iss_book/front_cover",
+  "moduleVariant": "front_cover/fa_mortem"
+}

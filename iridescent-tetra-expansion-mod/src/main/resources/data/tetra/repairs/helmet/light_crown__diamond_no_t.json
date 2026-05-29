@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:diamond"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/diamond_no_t"
+}

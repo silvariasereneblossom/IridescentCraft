@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:diamond"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/diamond_no_t"
+}
