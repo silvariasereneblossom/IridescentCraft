@@ -87,7 +87,9 @@ function _getItemModularArmorClass() {
 
 // Classify a single equipped slot. Returns the tier-name string used
 // to index the COEF_* tables (or null if empty).
-//   'robe'   = mage robe (circlet, robe_chest, robed_*, ISS class robes)
+//   'robe'   = mage cloth weight class (reforged vestment_*, ISS class robes,
+//              Botania manaweave); Runed will sit here too as the heavier
+//              mage sibling once it ships
 //   'light'  = leather/scaled (rogue gear)
 //   'medium' = default — untagged
 //   'heavy'  = plate (diamond, netherite, fiery, etc.)
