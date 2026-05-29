@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:iron_sword"
+    },
+    "title": "First Blood",
+    "subtitle": "Defeat a hostile mob",
+    "description": [
+      "Every adventurer starts somewhere.",
+      "",
+      "Find a hostile creature and put it down."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          0,
+          2
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_tool"
+  ],
+  "tasks": {
+    "kill_hostile": {
+      "type": "heracles:advancement",
+      "advancement": "minecraft:adventure/kill_a_mob"
+    }
+  },
+  "rewards": {
+    "starter_sword": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:stone_sword",
+        "count": 1
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 150
+    }
+  }
+}

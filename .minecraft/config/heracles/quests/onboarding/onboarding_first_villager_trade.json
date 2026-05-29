@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:emerald"
+    },
+    "title": "Local Economy",
+    "subtitle": "Trade with a villager",
+    "description": [
+      "Villagers are your in-world economy.",
+      "",
+      "Find a village, locate a villager with a profession, and complete one trade."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          2,
+          3
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_kill"
+  ],
+  "tasks": {
+    "trade_villager": {
+      "type": "heracles:advancement",
+      "advancement": "minecraft:adventure/trade"
+    }
+  },
+  "rewards": {
+    "starter_emeralds": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:emerald",
+        "count": 4
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 200
+    }
+  }
+}

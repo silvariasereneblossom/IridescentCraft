@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:cobblestone"
+    },
+    "title": "Stone Age",
+    "subtitle": "Mine your first stone",
+    "description": [
+      "Pickaxe in hand, break some stone.",
+      "",
+      "Cobblestone is your gateway to tougher tools, smelting, and shelter."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          2,
+          0
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_tool"
+  ],
+  "tasks": {
+    "mine_stone": {
+      "type": "heracles:advancement",
+      "advancement": "minecraft:story/mine_stone"
+    }
+  },
+  "rewards": {
+    "starter_cobble": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:cobblestone",
+        "count": 16
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 75
+    }
+  }
+}

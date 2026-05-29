@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:iron_ingot"
+    },
+    "title": "Iron Heart",
+    "subtitle": "Acquire your first iron ingot",
+    "description": [
+      "Mine iron ore (needs a stone pickaxe or better) and smelt it in a furnace.",
+      "",
+      "Iron unlocks proper tools and armor."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          1,
+          2
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_stone"
+  ],
+  "tasks": {
+    "smelt_iron": {
+      "type": "heracles:advancement",
+      "advancement": "minecraft:story/smelt_iron"
+    }
+  },
+  "rewards": {
+    "starter_iron": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:iron_ingot",
+        "count": 2
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 200
+    }
+  }
+}

@@ -1,0 +1,50 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:experience_bottle"
+    },
+    "title": "Level Up",
+    "subtitle": "Reach JustLevelingFork level 5",
+    "description": [
+      "JustLevelingFork (JLF) tracks per-character progression separate from skill points.",
+      "",
+      "Earn XP from any source until you hit JLF level 5."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          1,
+          3
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_iron_pick"
+  ],
+  "tasks": {
+    "jlf_level_5": {
+      "type": "heracles:dummy",
+      "value": "jlf_level_5_reached",
+      "description": "Reach JLF level 5 (KubeJS fires this task on level-up)."
+    }
+  },
+  "rewards": {
+    "starter_iron_burst": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:iron_ingot",
+        "count": 4
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 300
+    }
+  }
+}

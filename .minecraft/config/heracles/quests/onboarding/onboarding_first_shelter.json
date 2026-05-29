@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:red_bed"
+    },
+    "title": "Safe Haven",
+    "subtitle": "Sleep in a bed",
+    "description": [
+      "Beds skip the night and set your respawn point.",
+      "",
+      "Craft a bed from 3 wool and 3 planks, place it, and use it after sundown."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          0,
+          1
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_food"
+  ],
+  "tasks": {
+    "sleep": {
+      "type": "heracles:advancement",
+      "advancement": "minecraft:adventure/sleep_in_bed"
+    }
+  },
+  "rewards": {
+    "starter_wool": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:white_wool",
+        "count": 4
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 100
+    }
+  }
+}

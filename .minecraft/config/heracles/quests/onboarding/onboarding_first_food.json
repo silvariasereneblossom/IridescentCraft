@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:cooked_beef"
+    },
+    "title": "First Meal",
+    "subtitle": "Eat something",
+    "description": [
+      "Hunger will kill you faster than monsters.",
+      "",
+      "Eat any food item -- bread, an apple, raw chicken (carefully), anything."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          3,
+          0
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_log"
+  ],
+  "tasks": {
+    "eat_food": {
+      "type": "heracles:advancement",
+      "advancement": "minecraft:husbandry/balanced_diet"
+    }
+  },
+  "rewards": {
+    "starter_food": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:cooked_beef",
+        "count": 4
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 100
+    }
+  }
+}

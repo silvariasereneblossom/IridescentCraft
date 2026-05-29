@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:iron_pickaxe"
+    },
+    "title": "Iron Tools",
+    "subtitle": "Craft an iron pickaxe",
+    "description": [
+      "An iron pickaxe mines diamonds and durable enough for serious work.",
+      "",
+      "Craft one at a crafting table -- 3 iron ingots + 2 sticks."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          2,
+          2
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_iron"
+  ],
+  "tasks": {
+    "have_iron_pick": {
+      "type": "heracles:advancement",
+      "advancement": "minecraft:story/iron_tools"
+    }
+  },
+  "rewards": {
+    "starter_kit_iron": {
+      "type": "heracles:item",
+      "item": {
+        "id": "tetra:repair_kit_iron",
+        "count": 1
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 200
+    }
+  }
+}

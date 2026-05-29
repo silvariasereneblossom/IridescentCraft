@@ -1,0 +1,60 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:totem_of_undying"
+    },
+    "title": "Survivor",
+    "subtitle": "Onboarding complete",
+    "description": [
+      "You've survived the first day, found iron, opened the Codex, and read the essentials.",
+      "",
+      "Welcome to IridescentCraft. You're ready for chapter 1."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          2,
+          4
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_log",
+    "onboarding_first_tool",
+    "onboarding_first_stone",
+    "onboarding_first_food",
+    "onboarding_first_shelter",
+    "onboarding_first_codex_open",
+    "onboarding_intro_read",
+    "onboarding_first_hour_read",
+    "onboarding_first_kill",
+    "onboarding_first_iron",
+    "onboarding_first_iron_pick",
+    "onboarding_keybinds_read",
+    "onboarding_first_level",
+    "onboarding_first_villager_trade"
+  ],
+  "tasks": {
+    "complete_all": {
+      "type": "heracles:dummy",
+      "value": "onboarding_survivor_capstone_check",
+      "description": "Heracles dep-chain check (auto-completes when all 14 prerequisites done)."
+    }
+  },
+  "rewards": {
+    "survivor_broadcast": {
+      "type": "heracles:command",
+      "command": "tellraw @a [{\"text\":\"[Iridescent] \",\"color\":\"light_purple\"},{\"selector\":\"@s\",\"color\":\"aqua\"},{\"text\":\" has survived onboarding and earned the \",\"color\":\"white\"},{\"text\":\"Survivor\",\"color\":\"gold\",\"bold\":true},{\"text\":\" title.\",\"color\":\"white\"}]"
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 500
+    }
+  }
+}
