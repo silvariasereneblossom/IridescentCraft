@@ -48,7 +48,7 @@ What is in / out of the player's accessible material set per tier. Cross-tier me
 - Any modded mid-tier materials (Manasteel, Ironwood, etc. — gated to T2).
 
 **Not gated, intentionally**
-- Wood-tier and iron-tier weapons (vanilla + Truly Modular Tier 1).
+- Wood-tier and iron-tier weapons (vanilla + Tetra-modular Tier 1).
 - Botania starter chain (apothecary, manasteel pre-stage, mana pool entry tier).
 - Iron's Spellbooks copper spell book + starter scrolls (for the Mage origin path).
 - Ars Nouveau novice spell book + Scribes Table (T1 entry per 2026-04-24 design correction).
@@ -82,7 +82,6 @@ What is in / out of the player's accessible material set per tier. Cross-tier me
 - Forbidden Arcanus: Arcane Crystal + dust + ore + deepslate variant (T3 entry to F&A); Hephaestus Forge (T3 with custom recipe).
 - Occultism: Spirit Attuned Crystal/Gem; Foliot/Djinni/Afrit summon books; Iesnium chain (the master-tier ore).
 - Nether materials: ancient debris (T3 gates Nether access).
-- Theabyss: Knight/Unorithe/Ragnarok/Dragon/Death armor materials (boss-drop only, recipes stripped — see Section B).
 - Cataclysm: Witherite, Enderite, Ignitium, Cursium ingots (boss-drop chain — see Section C).
 - Apotheosis T3: Reforging Table, Sigil of Rebirth, Sigil of Withdrawal.
 - Aether: Valkyrie/Slider/Sun Spirit boss-tier materials.
@@ -164,7 +163,7 @@ All `event.remove` and `event.shaped` (override) calls across `kubejs/server_scr
 - J.2: 4 Refined Obsidian armor pieces recipes removed.
 - J.3 (audit Phase 8.4, 2026-04-27): `cataclysm:mechanical_fusion_anvil` recipe removed (merged with `void_forge`/`infernal_forge`).
 
-**Section K — Theabyss rings + Arcane Workbench + boss armor**:
+**Section K — Theabyss rings + Arcane Workbench + boss armor** *(DEAD CODE: theabyss mod is not currently in pack; the strip rules below are no-ops against the unloaded namespace. Retained as documentation of intended strip behavior should the mod be re-added; safe to remove if the absence is permanent — see #47)*:
 - K.1: `event.remove({ mod: 'theabyss', type: 'minecraft:crafting_shaped', output: /theabyss:ring_/ })` (regex bulk strip).
 - K.2: Catch-all `event.remove({ output: /theabyss:ring_/ })` for shapeless/special.
 - K.3: 29-item individual ring removal list (belt-and-suspenders); audit Phase 3.2 fixed `ring_of_ghost` → `ring_of_ghosts` plural drift.
@@ -434,15 +433,15 @@ values. Both had `Tier.getAttackDamageBonus = 14/12` vs vanilla netherite
 axe = 7. Clamped to tier-bonus 8 (displayed +14, vs netherite +9). The
 swords (tier-bonus 7-9.5) weren't outliers and were left alone.
 
-### C.11 Theabyss bosses (`loot/abyss_boss_loot.js`)
+### C.11 Custom Abyss-themed curio system (`loot/abyss_boss_loot.js`)
 
-7 custom kubejs rings replace 30 vanilla rings: `kubejs:ring_of_shadows`, `ring_of_the_phantom`, `ring_of_embers`, `ring_of_frost` (Abyss structure chests @ 15% each); `ring_of_void_sight` (Deep Abyss chests @ 10%); `ring_of_the_knight` (Knight boss @ 25%); `ring_of_dark_pact` (Nightblade boss @ 20%); `ring_of_unorithe` (final Abyss boss @ 15%).
+The Abyss mod (originally planned T3 dimension) is not currently in pack. The 7 custom `kubejs:ring_*` items below ship as a standalone curio chain replacing the originally-planned theabyss ring economy:
 
-5 boss-drop armor sets allocated:
-- Knight set → ice_knight @ 20%
-- Unorithe set → soul_guard @ 15% / guard @ 12%
-- Ragnarok set → guard @ 5%
-- Dragon set / Death set → harder Abyss bosses @ 5%
+`kubejs:ring_of_shadows`, `ring_of_the_phantom`, `ring_of_embers`, `ring_of_frost`, `ring_of_void_sight`, `ring_of_the_knight`, `ring_of_dark_pact`, `ring_of_unorithe` — 8 rings total.
+
+**Drop source reallocation — TBD (per #47 cleanup).** Original sources (Knight boss, Nightblade boss, final Abyss boss, ice_knight, soul_guard, guard) are entities from the absent mod. Pending operator decision on whether to reallocate to in-pack T3 bosses (e.g., Cataclysm Witherite-tier bosses, Twilight Hydra, Aether Sun Spirit) or rip the LootJS hooks entirely.
+
+The 5 boss-drop armor sets (Knight, Unorithe, Ragnarok, Dragon, Death) originally tied here cannot drop — the source items are from the absent mod and have no in-pack equivalent.
 
 ### C.12 Boss mod integration — additional mods (design notes)
 
@@ -486,9 +485,7 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 
 **Mutant Monsters.** Variants of vanilla zombie/skeleton/creeper/enderman with enhanced AI and drops. Block-break suppression in `mutant_monsters_no_griefing.js` — mutant zombie pillar-up and mutant creeper charged explosion bypass mobGriefing=false defaults. Wired via `dimensional_boss_drops.js`.
 
-**NovaBosses.** Reserved for future allocation per the simplyswords audit's 14-weapon reserve list (Section 8 of `loot_overhaul.js`). Currently not allocated.
-
-**Ultimate Bosses.** Reserved similarly.
+**Ultimate Bosses.** In pack (`ultimate-bosses-1.0.4.jar`) but not yet enumerated in the dedicated `*_drops.js` files. Pending T4 loot + Rift materials allocation against the 14-weapon Simply Swords reserve.
 
 #### Loot config priorities
 
@@ -497,9 +494,8 @@ Boss-mod loot tables should be configured in this order during implementation:
 1. Brutal Bosses datapacks — override default loot tables; tier 1 → vanilla materials + small XP; tier 4 → netherite scraps + Rare-Epic Apotheosis affix item; never includes Simply Swords uniques.
 2. Ultris — assign Simply Swords uniques + tier-appropriate materials per the table above.
 3. LuMoreBossesAndMobs — verify no drops bypass tier gating.
-4. Ultimate Bosses — assign T4 loot + Rift materials when integrated.
-5. NovaBosses — identify in-game, place in tier system, assign loot when integrated.
-6. Cataclysm Apotheosis Addon — already installed; verify it integrates Cataclysm drops with Apotheosis affix system.
+4. Ultimate Bosses — assign T4 loot + Rift materials.
+5. Cataclysm-Apotheosis integration — *verify source: per #47 cleanup audit, no `cataclysm*apoth*` jar in the live mods folder; integration may be supplied by `cataclysm_ut` or similar. Operator confirmation needed.*
 
 ### C.13 Simply Swords unique-count audit
 
@@ -542,7 +538,7 @@ Per-dimension floor (min rarity) keeps natural floors for higher tiers: Nether
 mob drops floor at Rare, Deep Aether floors at Rare, End floors at Epic — no
 "junk Common rolls in T4" pollution.
 
-Configured in `config/apotheosis/affixes/` + `config/apotheosis/adventure.cfg` with per-dimension tier inference. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`) + 5 Champions custom-affixes (Commanding, Draining, Hexing, Leaping, Summoning).
+Configured in `config/apotheosis/affixes/` + `config/apotheosis/adventure.cfg` with per-dimension tier inference. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`).
 
 ### D.2 Reforging gates
 
@@ -577,25 +573,24 @@ Four stats scale independently per dimension. **Damage scales fastest, HP modera
 
 Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
 
-| Dimension | Tier | HP × | DMG × | Speed × | Armor × | Champion % | Champion affixes | Mob gear % | Notes |
-|-----------|-----:|-----:|------:|--------:|--------:|-----------:|------------------|-----------:|-------|
-| Overworld | 1 | 1.0 | 1.0 | 1.0 | 1.0 | 5-15% | 1 (basic) | 5% leather/iron | Baseline |
-| Twilight Forest | 2 | 1.8 | 2.0 | 1.05 | 1.3 | 7-20% | 1-2 | 20% iron-tier | Canopy ambushes |
-| Blue Skies | 2 | 2.0 | 2.3 | 1.05 | 1.4 | 8-25% | 1-2 | 25% iron-tier | Elemental damage |
-| The Aether | 2 | 2.2 | 2.5 | 1.08 | 1.5 | 8-30% | 1-2 | 25% iron/steel | Aerial combat |
-| Undergarden | 3 | 3.0 | 3.5 | 1.10 | 2.0 | 10-35% | 2-3 | 40% steel/diamond | Toxic attrition |
-| Deeper Darker | 3 | 3.5 | 4.0 | 1.10 | 2.2 | 10-40% | 2-3 | 45% diamond-tier | Horror stealth |
-| The Abyss | 3 | 3.5 | 4.0 | 1.10 | 2.2 | 10-40% | 2-3 | 45% diamond-tier | Oppressive darkness |
-| The Nether | 3 | 4.0 | 5.0 | 1.12 | 2.5 | 12-50% | 2-3 (fire-weighted) | 50% diamond/netherite | Soulfire bypass |
-| Deep Aether | 4 | 5.0 | 6.5 | 1.15 | 3.0 | 13-50% | 3-4 | 60% netherite | Multi-phase |
-| End — Outer Islands | 4 | 6.0 | 8.0 | 1.15 | 3.5 | 14-60% | 3-4 | 70% netherite | Void proximity |
-| End — Deep End / Cities | 4 | 7.5 | 9.0 | 1.18 | 4.0 | 15% | 3-4 (void-weighted) | 75% netherite | Phase shift |
-| End — Dragon's Domain | 4 | 10.0 | 12.0 | 1.20 | 5.0 | 15% | **4 guaranteed** | 80% netherite + enchanted | Dragon influence |
-| Ad Astra (any planet) | 4 | 5.0-7.0 | 5.0-7.0 | 1.15-1.18 | 3.0-4.0 | 50% (Glacio: 60%) | 3-4 | 60-75% | Per-planet atmospheric |
+| Dimension | Tier | HP × | DMG × | Speed × | Armor × | Mob gear % | Notes |
+|-----------|-----:|-----:|------:|--------:|--------:|-----------:|-------|
+| Overworld | 1 | 1.0 | 1.0 | 1.0 | 1.0 | 5% leather/iron | Baseline |
+| Twilight Forest | 2 | 1.8 | 2.0 | 1.05 | 1.3 | 20% iron-tier | Canopy ambushes |
+| Blue Skies | 2 | 2.0 | 2.3 | 1.05 | 1.4 | 25% iron-tier | Elemental damage |
+| The Aether | 2 | 2.2 | 2.5 | 1.08 | 1.5 | 25% iron/steel | Aerial combat |
+| Undergarden | 3 | 3.0 | 3.5 | 1.10 | 2.0 | 40% steel/diamond | Toxic attrition |
+| Deeper Darker (Otherside) | 3 | 3.5 | 4.0 | 1.10 | 2.2 | 45% diamond-tier | Horror stealth + Abyss-themed custom mechanics |
+| The Nether | 3 | 4.0 | 5.0 | 1.12 | 2.5 | 50% diamond/netherite | Soulfire bypass |
+| Deep Aether | 4 | 5.0 | 6.5 | 1.15 | 3.0 | 60% netherite | Multi-phase |
+| End — Outer Islands | 4 | 6.0 | 8.0 | 1.15 | 3.5 | 70% netherite | Void proximity |
+| End — Deep End / Cities | 4 | 7.5 | 9.0 | 1.18 | 4.0 | 75% netherite | Phase shift |
+| End — Dragon's Domain | 4 | 10.0 | 12.0 | 1.20 | 5.0 | 80% netherite + enchanted | Dragon influence |
+| Ad Astra (any planet) | 4 | 5.0-7.0 | 5.0-7.0 | 1.15-1.18 | 3.0-4.0 | 60-75% | Per-planet atmospheric |
 
 Implementation: `kubejs/server_scripts/scaling/mob_scaling_unified.js`.
 
-The "Champion %" range covers the spawn-rate jitter from Champions Unofficial config; lower bound is the natural-spawn rate, upper bound includes structure-spawn boosts.
+Per-dimension elite-mob density is now handled by **Majrusz's Progressive Difficulty** (Master-stage scaling) since the 2026-04-07 Champions Unofficial removal. Per-mob affix layering remains via Apotheosis adventure affixes (D.1).
 
 ### D.5 Death durability loss by dimension
 
@@ -640,7 +635,6 @@ Per-boss base HP at first kill. All bosses scale with Progressive Bosses (per-wo
 | Ender Dragon | 4 | 1,000 | 2,000 |
 | Gaia Guardian | 4 | 1,200 | 2,400 |
 | `cataclysm:ender_guardian` | 4 | 1,500 | 3,000 |
-| `cataclysm:void_blossom` | 4 | 2,000 | 4,000 |
 | `cataclysm:ancient_remnant` | 4 | 2,500 | 5,000 |
 
 Implementation: `kubejs/server_scripts/scaling/boss_hp.js` + `boss_progressive.js`.
@@ -726,74 +720,11 @@ How long T4 fights should feel from each side. These are the design targets that
 
 These numbers are the design targets — actual gameplay numbers WILL drift via emergent interaction of 7+ gear-enhancement layers, 10 classes, dimension mechanics, and mob scaling. Expect 2-3 full tuning passes minimum during playtesting; start at 80% of designed values and tune up.
 
-### D.10 Champion affix pool
+### D.10 ~~Champion affix pool~~ — REMOVED 2026-04-07
 
-Champions draw from this pool. Affix count scales with dimension (see D.4). Affixes are *combat behavior* modifiers, separate from Apotheosis gear affixes.
-
-#### Offensive affixes
-
-| Affix | Effect |
-|-------|--------|
-| Molten | Melee attacks apply fire (2s). Leaves fire trail when moving. |
-| Arctic | Melee attacks apply Slowness II (3s). Projectiles apply Slowness I. |
-| Venom | Attacks apply Poison II (4s). Poison damage scales with dimension multiplier. |
-| Wither | Attacks apply Wither I (3s). Kills heal Champion 10% max HP. |
-| Desecrating | Leaves damaging ground area on hit location (3s, 2-block radius). |
-| Enkindling | Sets nearby blocks on fire. Increases fire spread rate. |
-
-#### Defensive affixes
-
-| Affix | Effect |
-|-------|--------|
-| Shielding | Periodically generates damage-absorbing shield (one-hit absorb every 10s). |
-| Reflecting | 15% of damage taken reflected to attacker. |
-| Regenerating | Heals 2% max HP per second when not hit for 3s. |
-| Armored | +50% armor effectiveness. |
-| Adaptable | After 5 hits of same damage type, gains 25% resistance to that type. |
-
-#### Mobility affixes
-
-| Affix | Effect |
-|-------|--------|
-| Hasty | +30% movement speed (permanent). |
-| Knockback | Melee attacks have extreme knockback (3× normal). |
-| Blink | Teleports to player when taking ranged damage (anti-kiting). |
-| Leaping | Jumps 4 blocks high. AoE shockwave on landing (2 damage, 3-block radius). |
-
-#### Utility affixes
-
-| Affix | Effect |
-|-------|--------|
-| Commanding | Nearby non-Champion mobs gain +10% damage (aura). |
-| Summoning | Spawns 2 weaker copies when below 50% HP (once per Champion). |
-| Draining | Hits steal 5% of player's current mana / stamina. |
-| Hexing | Hits have 20% chance to apply random negative potion effect (2s). |
-
-#### Dimension-weighted affixes
-
-Certain affixes are weighted higher in specific dimensions (matches the dimension's combat identity):
-
-| Dimension | Weighted affixes |
-|-----------|------------------|
-| Twilight Forest | Commanding, Venom (forest creatures hunt in packs) |
-| Blue Skies | Arctic / Molten (elemental theme) |
-| The Aether | Leaping, Hasty, Knockback (aerial combat) |
-| Undergarden | Venom, Regenerating, Adaptable (attrition theme) |
-| Deeper Darker | Blink, Shielding, Hexing (horror stealth) |
-| The Nether | Molten, Enkindling, Desecrating (fire and destruction) |
-| Deep Aether | Shielding, Leaping, Commanding (celestial warriors) |
-| The End | Blink, Draining, Wither, Adaptable (void corruption) |
-
-#### Champion drop quality by affix count
-
-Champions drop better loot than regular mobs, scaling with affix count.
-
-| Affix count | Loot bonus | Affix-gear chance | XP |
-|------------:|------------|-------------------|-----|
-| 1 | +50% loot quantity | Uncommon Apotheosis gear | base |
-| 2 | +100% loot | Rare gear | bonus XP |
-| 3 | +150% loot | Epic gear | guaranteed bonus XP |
-| 4 | +200% loot | Epic / Legendary gear, guaranteed enchanted book | large XP orb |
+> **Historical reference.** This section documented the Champions Unofficial affix pool. The mod was removed from the pack 2026-04-07 and replaced by **Majrusz's Progressive Difficulty** (per `wiki/systems/overview.md:54`). Master-stage scaling now handles per-dimension elite-mob density without the Champions affix layer. Per-mob affix overlays are handled by Apotheosis adventure affixes (D.1).
+>
+> The original Champions affix pool — Molten / Arctic / Venom / Wither / Desecrating / Enkindling / Shielding / Reflecting / Regenerating / Armored / Adaptable / Hasty / Knockback / Blink / Leaping / Commanding / Summoning / Draining / Hexing — and the dimension-weighted assignment table are retained in git history (this section pre-2026-05-28). Restore only if Champions Unofficial is re-added.
 
 ### D.11 Regular mob equipment progression
 
@@ -812,14 +743,14 @@ Champion mobs spawn with one tier above the base for their dimension, plus a cha
 
 ### D.12 Implementation notes
 
-These targets drive 7 implementation layers:
+These targets drive 6 implementation layers (was 7 — Champions Unofficial layer removed 2026-04-07; replaced by Majrusz Master-stage scaling):
 
 1. **ScalingMobs** — dimension HP / damage / speed / armor multipliers (D.4).
-2. **Champions Unofficial** — affix pools, spawn rates, tier scaling, dimension-weighted affixes (D.10).
+2. **Majrusz's Progressive Difficulty** — per-dimension elite-mob density via Master-stage scaling (replaces former Champions Unofficial layer).
 3. **Improved Mobs** — per-dimension AI (gear usage, block-breaking, coordination, difficulty escalation).
 4. **Progressive Bosses** — per-kill scaling (D.6).
 5. **KubeJS mob event handlers** — dimension-specific mechanics (Twilight ambush, Undergarden spores, End displacement, Nether soulfire).
-6. **Loot table integration** — Champion drops, boss drops, gear scaling per dimension.
+6. **Loot table integration** — elite drops, boss drops, gear scaling per dimension.
 7. **Boss HP overrides** — custom HP via `kubejs/server_scripts/scaling/boss_hp.js` (D.6).
 
 End multi-zone implementation (Outer Islands / Deep End / Dragon's Domain) lives in `kubejs/server_scripts/end/dragon_exploration_gate.js` with biome-based scaling. Environmental hazard scripting (Void Corruption stacks, Celestial Events, Void Storms, Reality Fracture) lives in `kubejs/server_scripts/scaling/dimension_mechanics.js`.
@@ -894,9 +825,9 @@ All `kubejs:*` items, ~80 total. Organized by category. Source: `kubejs/startup_
 - `kubejs:sulfuric_compound` — Venus chain.
 - `kubejs:alien_isotope` — Mercury / Glacio rare.
 
-### E.7 Theabyss replacement rings (custom)
+### E.7 Custom Abyss-themed curio rings
 
-- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe` — 8 custom rings replace 30 vanilla theabyss rings.
+- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe` — 8 custom rings shipped as a standalone curio chain. Originally designed as substitutes for The Abyss mod's 30-ring system; the source mod is not currently shipped, so the rings remain as standalone in-pack content (drop sources TBD per #47 — see C.11).
 
 ### E.8 Misc
 
@@ -958,7 +889,7 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | Aether Treasure Reforging | B | Aether reforging |
 | Aether Protect Your Moa | B | Aether companion |
 | Aetheric Tetranomicon | B | Aether-Tetra bridge |
-| Thermal Series (Foundation, Innovation, Expansion, Locomotion, Cultivation, Dynamics) | B | T2 RF + ore processing |
+| Thermal Series (Foundation, Innovation, Expansion, Cultivation, Dynamics, Integration) | B | T2 RF + ore processing |
 | Industrial Foregoing (basic) | B | T2 mob interaction + automation |
 | Mekanism Tools | B | Tools (T2 entry) |
 | Ad Astra protect-your-moa equiv | B | (none — Ad Astra is T4) |
@@ -979,8 +910,7 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | Occultism | B | T3 chokepoint (per-item gated, NOT mod-blanket) |
 | L_Ender's Cataclysm | B | T3 nether boss line |
 | Cataclysm UT | B | Cataclysm utility addon |
-| The Abyss | B | T3 dimension (Otherside) |
-| Deeper Darker | B | T3 dimension |
+| Deeper Darker | B | T3 dimension (Otherside) — hosts the custom Abyss-themed mechanics in lieu of a dedicated Abyss mod |
 | Mahou Tsukai | B | T4 actually (mod is T4-staged); mahou-related drops at T2-T4 cross-mod |
 | Stalwart Dungeons | B | T3 nether mini-bosses |
 | Mutant Monsters | B | T3 boss-tier mobs |
@@ -1013,7 +943,6 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | JustLevelingFork | B | Passive level scaling |
 | Better Combat | B | Combat animation/feel |
 | Cataclysmic Combat | B | Enhanced AI |
-| Champions Unofficial | B | Elite mob spawning |
 | Improved Mobs | B | Behavior + equipment |
 | ScalingMobs | B | Dimension-keyed scaling |
 | Progressive Bosses | B | Per-kill boss buffing |
@@ -1040,9 +969,8 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | Cataclysm | B | Boss-drop weapons |
 | Iron's Patreon Lib | B | ISS support library |
 | Tetra | B | Modular workbench |
-| Truly Modular (incl. Archery, Armory, Arsenal) | B | Crafted weapons + armor + tools |
+| Tetra + art_of_forging + adtetra + tetra_re_enlarged | B | Crafted modular weapons + armor + tools (formerly documented as "Truly Modular"; verify naming during #47 followup) |
 | Apotheosis | B | Affixes / reforging / gem cutting / sigils |
-| Champions Unofficial | B | Elite affixes |
 | Citadel | B | Library mod |
 | Geckolib (in many mods) | B | Animation library |
 
@@ -1100,11 +1028,10 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 - Apotheosis T3: `reforging_table`, `sigil_of_rebirth`, `sigil_of_withdrawal`.
 - Forbidden Arcanus T3: `arcane_crystal`, `arcane_crystal_block`, `arcane_crystal_ore`, `deepslate_arcane_crystal_ore`.
 - art_of_forging T3 (audit Phase 2.3): `sigil_of_eden`, `devils_soul_gem`.
-- theabyss T3 (audit Phase 4.2): `totem_of_thunder`, `totem_of_abyss`, `totem_of_time`, `eye_of_abyss`, `dream_shifter`, `node_shard`, `enchanted_bottle_of_somnium`, `clock_of_time`, `artifact_of_after_life`.
 
 **Ore replacements**: 8 ore replacements (diamond/deepslate-diamond/ancient-debris → vanilla; osmium/deepslate-osmium → stone/deepslate; arcane_crystal/deepslate-arcane-crystal → stone/deepslate).
 
-**Dimensions**: `undergarden:undergarden`, `deeperdarker:otherside`, `minecraft:the_nether`, `theabyss:the_abyss`.
+**Dimensions**: `undergarden:undergarden`, `deeperdarker:otherside`, `minecraft:the_nether`.
 
 ### G.3 Tier 4 stage
 
@@ -1121,7 +1048,6 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 - rpgseteffects awakening: 14 awakening artifacts.
 - Mekanism T4 specific (11 items): `digital_miner`, `fusion_reactor_controller`, 4 MekaSuit pieces, `meka_tool`, 4 QIO pieces, `ultimate_control_circuit`, `antiprotonic_nucleosynthesizer`, `atomic_alloy`.
 - art_of_forging T4 (audit Phase 2.3): `demonic_axe`, `demonic_blade`, `demonic_flail`, `enigmatic_construct`.
-- theabyss T4 (audit Phase 4.2): `crown_of_nosaj`, `amuled_of_nosaj`, `immortal_substance`.
 - cataclysm T4 (audit Phase 8.4): `mechanical_fusion_anvil`.
 
 **Ore replacements**: `aethersteel:aether_debris` and `aethersteel:aetherslate` replaced with `aether:holystone` until T4.
@@ -1205,7 +1131,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 
 | Script | Role |
 |--------|------|
-| `recipe_audit.js` | Cross-mod tier-skip blocks (Sections A-N): create:mixing, ars:imbuement, mek:enriching/combining/purifying/injecting, F&A clibano, terramity guns/armor, mek tools, theabyss rings + abyss boss armor, BS dusk_arc / shadow / runic_arc, BS Diopside/Charoite/Horizonite material strip, mech_fusion_anvil. ~67 removals |
+| `recipe_audit.js` | Cross-mod tier-skip blocks (Sections A-N): create:mixing, ars:imbuement, mek:enriching/combining/purifying/injecting, F&A clibano, terramity guns/armor, mek tools, theabyss rings + abyss boss armor *(Section K dead-code — mod not in pack)*, BS dusk_arc / shadow / runic_arc, BS Diopside/Charoite/Horizonite material strip, mech_fusion_anvil. ~67 removals |
 | `tier_gated_recipes.js` | Re-recipe overrides for tier-gated workstations (Hephaestus Forge T3, Meka-Tool T4, RFTools dim builders T4, etc.) + Section E Simply Swords removal list (43 entries post-audit-Phase-3.1) |
 | `tier_skip.js` | Cross-tier transmutation recipes (the "bend" mechanism) + Rift Keystone recipe + cross-mod dual-paths |
 | `ad_astra_gating.js` | Ad Astra rocket progression (4-tier) + NASA Workbench T4-gate + 4 MekaSuit Mk2 piece recipes at Mythic Forge |
@@ -1241,10 +1167,10 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 
 | Script | Role |
 |--------|------|
-| `mob_scaling_unified.js` | Dimension-keyed HP/damage multipliers + Champion spawn rates |
+| `mob_scaling_unified.js` | Dimension-keyed HP/damage multipliers (Champion-rate logic was Champions Unofficial-dependent; verify whether the script still references that mod's API or has been refactored — see #47) |
 | `boss_hp.js` | Per-boss HP base values (table in Section D.6) |
 | `boss_progressive.js` | Per-kill boss buffing (Progressive Bosses supplement) |
-| `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Abyss corruption, End multi-zone, Ad Astra atmospheric) |
+| `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Otherside corruption/Abyss-themed mechanics, End multi-zone, Ad Astra atmospheric) |
 | `mob_equipment.js` | Improved Mobs equipment-spawn handler with iron-tier cap |
 | `dimension_scaling.js.disabled` / `mob_tier_hp.js.disabled` | Older systems; superseded |
 
@@ -1303,7 +1229,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 
 | Script | Role |
 |--------|------|
-| `custom_items.js` | ~50 kubejs:* item registrations (progression tokens, boss materials, intermediate alloys, Theabyss replacement rings) |
+| `custom_items.js` | ~50 kubejs:* item registrations (progression tokens, boss materials, intermediate alloys, custom Abyss-themed rings — see E.7) |
 | `endgame_items.js` | ~30 endgame kubejs:* registrations (rift_shard, void_fragment, primordial_essence, mythic_forge, mythic_catalysts, MekaSuit Mk2 4-piece, planetary materials) |
 | `custom_enchantments.js` | 24 custom enchantment registrations |
 | `iridescent_codex.js` | Patchouli codex setup helpers |
@@ -1888,7 +1814,6 @@ Implementation note: LootJS 2.13.1's filter API supports `anyDimension`/`anyStru
 | T3 | Undergarden ruins | Underdark | undergarden ruin tables (TBD exact IDs) |
 | T4 | End City | End / levitation | `minecraft:chests/end_city_treasure` |
 | T4 | Ancient City | Sculk / echo | `minecraft:chests/ancient_city`, `minecraft:chests/ancient_city_ice_box` |
-| T4 | The Abyss marquees | Abyssal | theabyss tables (TBD exact IDs) |
 
 ### N.2 Theme catalog
 
@@ -1907,7 +1832,7 @@ Implementation note: LootJS 2.13.1's filter API supports `anyDimension`/`anyStru
 | Underdark | Mushroom / cave / Undergarden | Ancient ruin curios, fungal / cave-themed |
 | End / levitation | End-themed + flight | Ender curios, dragon items, levitation |
 | Sculk / echo | Sculk + Ancient City stealth lore | Sculk lens / shades / treads, echo glove, silent-walking |
-| Abyssal | Abyss-tier dark / corruption | Chorus inhibitor, twisted heart, abyss core, cursed totems |
+<!-- Abyssal theme row removed 2026-05-28 (#47): consumer was the absent The Abyss marquees row at N.1; original entry was "Abyssal | Abyss-tier dark / corruption | Chorus inhibitor, twisted heart, abyss core, cursed totems". If a future operator pass reassigns the 14-item curated pool (see T4 Abyssal item list below) to a different T4 structure, restore this row retargeted there. -->
 
 ### N.3 Per-structure themed pools (T1)
 
@@ -2085,7 +2010,7 @@ relics:wool_mitten                     relics:shadow_glaive
 artifacts:scarf_of_invisibility
 ```
 
-**T4 Abyssal** — The Abyss marquee tables (14 items):
+**T4 Abyssal — orphaned item pool** *(originally targeted at The Abyss marquees structure which is not in pack; per #47, this 14-item curated pool awaits reassignment to a different T4 structure — e.g., Ancient City, End City, or a Cataclysm endgame structure. Items themselves are in pack via the `celestial_artifacts` / `relics` mods)*:
 
 ```
 celestial_artifacts:abyss_core         celestial_artifacts:abyss_will_badge

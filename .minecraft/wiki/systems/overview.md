@@ -202,10 +202,10 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 | Awakening artifacts | T4 boss direct drops only | 0.7% per awakening × 14 = ~9.3% combined per T4 boss |
 
 ### T2 Boss Sources
-Naga, Lich, Hydra (Twilight Forest), Ignis (Cataclysm), Slider (Aether), Summoner (Blue Skies), Atlatitan (Alex's Caves).
+Naga, Lich, Hydra (Twilight Forest), Ignis (Cataclysm), Slider (Aether), Summoner (Blue Skies).
 
 ### T4 Boss Sources
-Ender Dragon, Ender Guardian, Harbinger (Cataclysm), Shattered (Deeper Darker), Watcher (Alex's Caves).
+Ender Dragon, Ender Guardian, Harbinger (Cataclysm), Shattered (Deeper Darker).
 
 ### AStages Tier Gating
 - Normal artifacts + artifact_piece_pouch → T2 (picked up but not equipped until T2 unlock)
@@ -264,9 +264,9 @@ All stat scaling (damage, luck, XP multipliers) zeroed out to avoid conflicts wi
 
 Generators nerfed across the board to prevent early RF flooding. All machine RF costs doubled (2x). Digital Miner recipe requires higher-tier materials. Mekanism tool and armor recipes removed (MekaTool/MekaSuit remain T4-only via existing gating).
 
-## Abyss Ring & Armor System
+## Custom Abyss-themed Curio System
 
-The Abyss mod received a full overhaul. 30 original ring recipes removed (too accessible for their power level). 8 custom rings created with progression-appropriate recipes gated behind boss drops. 7 armor set bonuses implemented for Abyss armor sets. Key equipment requires Abyss boss drops to craft.
+8 `kubejs:ring_*` curio items shipped as a standalone T3 curio chain — originally designed as a substitute for The Abyss mod's 30-ring system. The Abyss mod is not currently in pack; the rings remain in-pack as a standalone content surface, with drop sources currently pending reallocation to in-pack T3 bosses (see #47 and `master-appendix.md` §C.11).
 
 ## Blue Skies Balance
 
@@ -274,7 +274,7 @@ Dusk Arc weapon and Shadow Armor set removed (overpowered for T2). Runic Arc cha
 
 ## End Overhaul
 
-Dragon Exploration Gate: players must explore End islands and complete objectives before the dragon fight becomes available. 9 advancement overrides replace the vanilla End advancement chain. 5 End-specific Apotheosis affixes. Void Blossom loot table fixed. Entity ID corrections for End mobs. Moog's End Structure loot tables populated.
+Dragon Exploration Gate: players must explore End islands and complete objectives before the dragon fight becomes available. 9 advancement overrides replace the vanilla End advancement chain. 5 End-specific Apotheosis affixes. Entity ID corrections for End mobs. Moog's End Structure loot tables populated.
 
 ## Improved Mobs
 

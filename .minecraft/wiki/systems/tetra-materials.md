@@ -328,15 +328,15 @@ The dominant external source. Provides Tetra material registrations for nearly e
 
 | Category | Count | Notable mods covered |
 |---|---|---|
-| `bone` | 11 | alexscaves, alexsmobs, deep_dark_regrowth, deeperdarker, unusualprehistory |
+| `bone` | 11 | alexsmobs, deep_dark_regrowth, deeperdarker, unusualprehistory |
 | `fibre` | 34 | atmospheric, betterend, betternether, biomesoplenty, blue_skies, deeperdarker, regions_unexplored, silentgear, tropicraft, voidscape |
 | `gem` | 63 | ms_*, oresabovediamonds, organics, phantasm, silentgems_*, tropicraft, voidscape, deeperdarker, blue_skies, betterend |
 | `metal` | 73 | ad_astra, betterend, betternether, blue_skies, create, embers, enderitemod, epicsamurai, forbidden_arcanus, iceandfire, l2complements, majruszdifficulty, ms_*, nature_arise, organics, samurai_dynasty, silentgear, twilightforest |
 | `rod` | 4 | ms_*, tropicraft, betternether |
 | `scale` | 7 | alexsmobs, twilightforest, unusualprehistory |
-| `skin` | 8 | alexscaves, alexsmobs, ms_*, tropicraft |
+| `skin` | 8 | alexsmobs, ms_*, tropicraft |
 | `socket` | 111 | broad coverage of every gem-providing mod |
-| `stone` | 67 | ad_astra, alexscaves, betterend, blue_skies, create, deeperdarker, ms_*, quark, regions_unexplored, unearthed |
+| `stone` | 67 | ad_astra, betterend, blue_skies, create, deeperdarker, ms_*, quark, regions_unexplored, unearthed |
 | `wood` | 119 | atmospheric, autumnity, betterend, betternether, biomesoplenty, blue_skies, ecologics, environmental, ms_*, regions_unexplored, twilightforest, tropicraft |
 
 **Tetranomicon spotlight - top primary by category** (highlights for module balance reference):

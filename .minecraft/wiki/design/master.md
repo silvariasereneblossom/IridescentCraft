@@ -124,7 +124,7 @@ The pack moves through four tiers. Each tier is a step-change in power, availabl
 Tier gating is enforced through **AStages** (per-player tier flags), **KubeJS** event hooks, and a small set of datapack overrides (`icraft_*_overrides`). In concrete terms:
 
 - **Items** — tier-inappropriate items cannot be used (held, equipped, or consumed) until the stage is unlocked. A T2 player who finds an Awakening artifact via creative gift sees it inert until they reach T4.
-- **Dimensions** — locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies, Aether) at T2; T3 dimensions (Undergarden, Deeper Darker, Nether, Abyss) at T3; T4 dimensions (Deep Aether, End, Ad Astra planets) at T4.
+- **Dimensions** — locked until the stage is unlocked. T2 dimensions (Twilight, Blue Skies, Aether) at T2; T3 dimensions (Undergarden, Deeper Darker, Nether) at T3; T4 dimensions (Deep Aether, End, Ad Astra planets) at T4.
 - **Recipes** — tier-gated crafting. Workbenches, advanced materials, and boss-tier crafting stations check the player's stage.
 - **Ores** — visually replaced (with a vanilla equivalent) until the appropriate tier. The player sees stone instead of diamond ore until T3; holystone instead of aether_debris until T4.
 
@@ -219,19 +219,19 @@ A dimension is not a place to grind — it is a content arc. Each dimension has 
 | The Aether | T2 | Slider / Valkyrie Queen / Sun Spirit | Vertigo, thin-air, scarce holystone, flight rewarded |
 | Undergarden | T3 | Forgotten Guardian / Forgotten / Rotbeast | Hostile underground biome, attrition focus |
 | Deeper Darker | T3 | Sculk-themed | Oppressive darkness, stealth-required |
-| The Nether | T3 | Cataclysm line (Netherite Monstrosity, Ignis, the Harbinger, Maledictus, Ancient Remnant) | 50% Champion rate; Wither Skeletons function as mini-bosses |
-| The Abyss | T3 | Nosaj boss line | 30 ring-removal mechanic + 7 elemental armor sets; most-wired mod in the pack |
+| The Nether | T3 | Cataclysm line (Netherite Monstrosity, Ignis, the Harbinger, Maledictus, Ancient Remnant) | Majrusz Master-stage scaling; Wither Skeletons function as mini-bosses |
+| Deeper Darker (Otherside) | T3 | Sculk-themed (extended) | Oppressive darkness mechanic — visibility tuning, slow corruption stat-debuff buildup, scripted fear aura, custom 8-ring `kubejs:ring_*` economy as Otherside/Abyss-themed content surface |
 | Deep Aether | T4 | EotS Controller, custom T4 sky-end | Aethersteel chain (15+ items + 2 ore replacements) |
 | The End | T4 | Ender Dragon (T4 power-buffed) | Multi-zone scaling; Voidheart Blade Mythic Forge venue |
 | Ad Astra (Moon, Mars, Mercury, Venus, Glacio) | T4 | Per-planet | 4-tier rocket gate; Glacio is post-T4 endgame (MekaSuit Mk2 reagent) |
-| Witch of Ink dimension | T3+ (Origin-tied) | — | Origin-specific content surface |
+| Witch of Ink dimension *(not yet in pack; planned origin-specific content surface)* | T3+ (Origin-tied) | — | Origin-specific content surface |
 
 ### Dimensional mechanics — per-dimension play-feel modifiers
 
 Beyond stat multipliers, each dimension has *scripted mechanics* that change how the player interacts with that space:
 
 - **Aether** — thin-air, vertigo, updrafts. Limited oxygen; gentle gravity/glide tuning; updraft columns near floating islands.
-- **Abyss** — oppressive darkness, corruption, fear aura. Visibility tuning, slow corruption stat-debuff buildup, scripted fear aura near specific mob types.
+- **Deeper Darker (Otherside)** — oppressive darkness, corruption, fear aura. Visibility tuning, slow corruption stat-debuff buildup, scripted fear aura near specific mob types. Originally scoped as a separate "Abyss" dimension; absent that mod, the mechanics fire in Otherside via `dimension_mechanics.js`.
 - **End** — multi-zone scaling. The dimension is divided into Outer Islands (T4 baseline), Deep End (T4-amplified), and Dragon's Domain (peak). Scaling factor doubles past a certain distance from spawn. Nine advancement overrides shape the End-progression flow.
 - **Ad Astra** — atmospheric pressure + cryogenic damage. Each planet has its own atmosphere; players need oxygen tanks (T4 entry equipment). Glacio adds cryogenic damage on top.
 
@@ -282,7 +282,7 @@ Each tier has a roster of bosses that serve as the difficulty climax and loot pe
 
 - **T2 bosses** — Twilight (8) + Blue Skies (4) + Aether (3). Entry-tier challenge.
 - **T3 bosses** — Cataclysm (8) + Ignited Revenant + Wither + Stalker. Mid-game peak.
-- **T4 bosses** — Ender Dragon + Ender Guardian + Ancient Remnant + Gaia Guardian + Warden + Coralssus + Void Blossom. Endgame.
+- **T4 bosses** — Ender Dragon + Ender Guardian + Ancient Remnant + Gaia Guardian + Warden + Coralssus. Endgame.
 
 Boss kills are tracked by a per-player T2/T3/T4 boss-kill counter that auto-grants the next AStages tier when the threshold is reached. This is the boss-path unlock from Part III. No physical progression-token items are needed; the internal counter handles it.
 
@@ -318,7 +318,7 @@ Three principles guide the per-dimension design:
 
 **T3 — The Nether: Relentless Aggression.** Permanent aggro from 20 blocks. 30% of melee damage is fire (bypasses armor; Heatward enchant mitigates). Killing Blazes has a 20% chance to spawn 2 smaller "Ember" adds. Mobs inside Nether Fortresses gain stat bonuses and resist knockback (set-piece encounters). Lava-adjacent mobs regenerate. Improved Mobs runs at maximum aggression: all mobs use found gear, piglins flank in 4–6 hunting parties, hoglins charge toward lava (intentional environmental kills).
 
-**T3 — The Abyss.** Oppressive darkness mechanic — visibility tuning, slow corruption stat-debuff buildup, scripted fear aura near specific mob types. Sculk-adjacent and abyss-adjacent mob synergies. Companion to Deeper Darker thematically.
+**T3 — Deeper Darker (Otherside, with Abyss-themed content).** Oppressive darkness mechanic — visibility tuning, slow corruption stat-debuff buildup, scripted fear aura near specific mob types. Sculk-adjacent and Abyss-themed mob synergies. The custom `kubejs:ring_*` content surface (8 rings + Abyss-themed loot tables; see master-appendix §C.11) overlays the dimension in lieu of a separate Abyss mod.
 
 **T4 — Deep Aether: Ascension Trial.** Aerial combat, escalated difficulty, multi-phase mob attack patterns. Celestial Events every 20 minutes give mobs a stat bonus and 50% more loot. Random wind shears push players and projectiles off-course. 20% of mobs spawn with one-hit absorption shields (rewards sustained combat over alpha-strike). Procedural Ascension Towers — each floor adds stats, top floor has a mini-boss. Combo attacks (2–3 hit sequences with increasing damage), telegraphed special attacks (1-second windup), allies heal each other if not interrupted.
 
@@ -606,7 +606,8 @@ Equipment is split into five sub-systems: weapons, armor, curios, modular spell 
 
 **Truly Modular** is the primary crafted-weapon system: parts-based, customizable, scales with material tier. A T2 Truly Modular sword is a 4-part build (blade + handle + guard + accessory) using T2 materials. T4 Truly Modular is the netherite-tier ceiling for crafted weapons.
 
-**Simply Swords** is the unique trophy-weapon system. **42 named uniques, all boss-drop only.** Unique-weapon recipes are stripped. Each unique is allocated to a specific boss — Tempest from Naga, Soulrender from Lich, Emberblade from Hydra, etc. 28 of the 42 are allocated; 14 are reserved for future boss mods (NovaBosses, Ultimate Bosses, Brutal Bosses) and currently creative-only.
+**Simply Swords** is the unique trophy-weapon system. **42 named uniques, all boss-drop only.** Unique-weapon recipes are stripped. Each unique is allocated to a specific boss — Tempest from Naga, Soulrender from Lich, Emberblade from Hydra, etc. 28 of the 42 are allocated; the remaining 14 await allocation against Ultimate Bosses + Brutal Bosses content (both in pack) and currently creative-only. <!-- TODO #47: per cleanup proposal, reallocate the reserved 14 against BB/UB content in a dedicated authoring pass. NovaBosses (originally listed here) is NOT in pack. -->
+
 
 > **Design intent.** The split is clean: crafted weapons are deterministic (build it from materials, get it); trophy weapons are aspirational (kill the boss, get the unique). A Mage can ignore Simply Swords entirely; a Hunter can ignore Truly Modular entirely. Both reach T4.
 
@@ -625,12 +626,11 @@ Other weapon sub-systems:
 Armor follows the same crafted-vs-dropped split. Modular armor is governed by **Iridescent Reforging** (`iridescent-reforging-mod`), a custom Tetra-armor extension that adds Tetra's modular framework to the armor slot. Players drop ANY armor (vanilla iron, ISS Cultist Hood, Aether Phoenix, Aquaculture Neptunium, etc.) into a Tetra workbench's input slot — it's replaced by a Reforged variant with default modules pre-installed. Specialized armor preserves identity (school spell power, set bonus, Apotheosis affixes, enchantments, Geckolib visual model) via an `ItemUpgradeRegistry` replacement hook that patches NBT after Tetra's swap. Vanilla armor gets the modular shape with an iron-tier default module. Honing + module upgrades happen at the same workbench. Boss-drop armor is mod-specific:
 
 - **Cataclysm** Ignitium / Cursium / Witherite armor sets — recipe-stripped, boss-drop only.
-- **Theabyss** Knight / Unorithe / Ragnarok / Dragon / Death armor sets — recipe-stripped, boss-drop only.
 - **Iron's Spellbooks** Pyromancer 4-piece — mob-drop.
 
 Iron Jetpacks are ungated from T1 — early flight is intentional. Mahou Tsukai defensive spells, MekaSuit Mk2, and the Mythic Forge endgame uniques (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) are T4 specific.
 
-> **Armor philosophy.** Layer types should not stack power. A T3 player picks *one* of: Refined Obsidian (Mekanism), Terrasteel (Botania), Diamond (vanilla), or boss-drop (Theabyss). The combinatorial space is wide enough that the choice itself is the build identity.
+> **Armor philosophy.** Layer types should not stack power. A T3 player picks *one* of: Refined Obsidian (Mekanism), Terrasteel (Botania), Diamond (vanilla), or boss-drop (Cataclysm Witherite / Cursium / Ignitium). The combinatorial space is wide enough that the choice itself is the build identity.
 
 ### Curio system — equipping is never gated
 
@@ -641,7 +641,7 @@ Iron Jetpacks are ungated from T1 — early flight is intentional. Mahou Tsukai 
 | T1 | Overworld | ~10% |
 | T2 | Twilight, Aether, Blue Skies, Deep Aether | ~12% |
 | T3 | Nether, Undergarden | ~14% |
-| T4 | End, Deeper Darker, Abyss | ~16% |
+| T4 | End, Deeper Darker (Otherside) | ~16% |
 
 > **Design intent.** Players can always equip anything they find — there is no AStages restriction on curios. If a T1 player obtains an Awakening artifact via creative gift or boss tier-peek, they can equip it. Curio early access is rare enough not to break the gating, and rewards engagement.
 
@@ -976,7 +976,7 @@ Curio, artifact, relic, and spell-book chest loot is distributed across 4 tier-b
 | T1 | Overworld | ~10% | ~19 items |
 | T2 | Twilight, Aether, Blue Skies, Deep Aether | ~12% | ~31 items |
 | T3 | Nether, Undergarden | ~14% | ~38 items |
-| T4 | End, Deeper Darker, Abyss | ~16% | ~33 items |
+| T4 | End, Deeper Darker (Otherside) | ~16% | ~33 items |
 
 Per-tier rates increase modestly as the player progresses, signaling *you're getting better stuff*. Per-item rate is the combined rate divided by pool size — each individual item is roughly a 0.3–0.5% chance per chest. Rolls are independent per item.
 
@@ -1025,7 +1025,6 @@ Boss-specific drops live in ten dedicated files under `kubejs/server_scripts/loo
 
 - **Simply Swords uniques** — boss-drop only.
 - **Cataclysm boss-set armor** (Knight, Ignitium, Cursium, Witherite) — boss-only.
-- **Theabyss boss-set armor** (Knight, Unorithe, Ragnarok, Dragon, Death) — boss-only.
 - **MekaSuit Mk2 components** — Mythic Forge endgame only.
 - **Custom mythic uniques** (Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown) — Mythic Forge crafting only.
 - **Awakening artifacts** (rpgseteffects) — direct T4 boss drops only (the loot pouch table strips them at T2).

@@ -129,13 +129,25 @@ Order of authoring: 1 → 2 → 3 → 5 → 4 (with one boss as seed) → 7 (wit
 
 ---
 
-## 7. Open questions for operator review
+## 7. Resolved design calls
 
-- **Sentinel marker visibility.** Hidden (invisible block, no fanfare on first crossing) vs decorative (e.g., a literal torch lit at the threshold position when bonfire materializes). The torch could double as a discovery cue — "ah, I crossed into a boss zone." Recommend decorative for player feedback; revisit if cosmetic noise becomes an issue.
-- **Compass needle behavior after bonfire ignites.** Once a boss bonfire exists, should the compass needle keep pointing at the boss, or switch to "your bonfire is at X" mode? Recommend: needle still points at boss entity location (re-fight target). Bonfire is the waystone-list entry; needle stays as combat-zone pointer.
-- **Cross-pack waystone collision.** If a 3rd-party pack ships a waystone with the same name as a boss bonfire, what happens? Recommend: prefix all boss bonfire names with `[Boss]` or a Unicode marker to make them visually distinct in the teleport list. Defers to authoring-pass.
-- **Boss respawn semantics.** Some bosses respawn (Twilight Lich on world reload), others don't (Ur-Ghast is one-shot per arena). The bonfire is placed once and stays. For non-respawning bosses, the bonfire becomes a "I beat this once" memorial after kill. For respawning bosses, the bonfire is a re-fight launchpad. Both work with the current design — no special handling needed.
-- **Multiplayer**: when player A reaches a boss arena and the bonfire ignites, does player B (not present) get notified? Per `setGlobal(true)` semantics, player B's teleport list immediately shows the new bonfire. Recommend: server chat broadcast — `"<PlayerA> has lit the Naga Court bonfire"` — when each bonfire first ignites. Cosmetic, but reinforces shared-discovery culture of the pack.
+Locked 2026-05-28 via operator review:
+
+- **Sentinel marker visibility — INVISIBLE / functional-only.** No decorative torch or particle fixture. The sentinel block placed at worldgen is invisible (no model, no particles, no collision). Acknowledgment of "bonfire lit" comes from a **chat message** to the activating player + the global broadcast (see broadcast item below), not from in-world visuals. Implementation simplification: no per-mod fixture-placement logic, no aesthetic conflicts with structure interiors.
+- **Compass needle after bonfire ignites — KEEP pointing at boss.** The compass stays as a combat-zone pointer. Waystone is the return mechanism; compass is the re-target / re-fight mechanism. After ignition, both work independently.
+- **Cross-pack waystone naming — `[Boss]` prefix.** All boss bonfire display names start with `[Boss] ` literal prefix. Example: `[Boss] Naga Court Bonfire`. Visually distinct from player-crafted waystones in the teleport list; trivially greppable; survives any UI font that handles ASCII.
+- **Multiplayer first-ignition broadcast — server-wide chat.** Format: `"{Player} has lit the {Boss} bonfire"`. Fires once per (boss, world) tuple — re-discoveries by other players don't re-broadcast (the bonfire already exists). Reinforces the shared-discovery culture of the pack and ensures off-line / not-present players see the new waystone appear in their teleport list with explicit context.
+
+### 7.1 Implications for §6 implementation milestones
+
+The resolved calls simplify milestones 1-2:
+- **Milestone 1 (NBT marker convention) — unchanged.** The marker still encodes the boss_id and gets read at worldgen.
+- **Milestone 2 (sentinel block) — simplified.** Invisible block, no rendering, no particle hooks. Just a position-holder with `boss_id` NBT.
+- **New milestone 3a:** chat broadcast helper (`fireBonfireBroadcast(player, boss_id)`) — called by `placeBossWaystoneIfAbsent` after the waystone activates. Localized via `chat.iridescent.bonfire_lit` lang key with `{player}` + `{boss}` substitutions.
+
+### 7.2 Boss respawn semantics — no special handling needed
+
+Some bosses respawn (Twilight Lich on world reload), others don't (Ur-Ghast is one-shot per arena). The bonfire is placed once and stays. For non-respawning bosses, the bonfire becomes a "I beat this once" memorial after kill. For respawning bosses, the bonfire is a re-fight launchpad. Both work with the current design — no special handling needed.
 
 ---
 
