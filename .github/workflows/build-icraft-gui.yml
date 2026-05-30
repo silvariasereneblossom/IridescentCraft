@@ -1,0 +1,141 @@
+# =============================================================================
+# Build icraft-gui.exe on GitHub Actions windows-latest and commit it back to
+# .minecraft/server_distribution/icraft-gui.exe.
+#
+# Replaces the "human installs rustup + runs rebuild_gui.bat --push" workflow
+# with CI. Per task #48: rationale is that the launcher is meant to ship as a
+# binary distribution -- operators on server VMs should never see cargo /
+# rustup / "Rebuild + Push GUI" buttons leak into their environment. After
+# this workflow ships, the only human action needed for a launcher fix is a
+# source-code commit; CI handles the build + deploy.
+#
+# Triggers:
+#   - push to main that touches iridescent-launcher/ (source change -> rebuild
+#     needed). Does NOT trigger on commits that only touch the binary at
+#     .minecraft/server_distribution/icraft-gui.exe -- that's how we break
+#     the infinite-loop risk of CI committing back to a path that retriggers
+#     CI.
+#   - manual workflow_dispatch (Actions tab -> Run workflow) for forced rebuilds.
+#
+# Outputs:
+#   - icraft-gui-exe artifact (downloadable from Actions UI for ~30 days)
+#   - commit-back to repo at .minecraft/server_distribution/icraft-gui.exe
+#     (if the new binary differs from what's already there)
+#
+# Hidden contract: the bot commit message intentionally omits any pack/wiki
+# pre-push hook side-effects -- this is a CI push, not a human's, and the
+# hooks are configured client-side so they don't fire on bot pushes anyway.
+# =============================================================================
+
+name: Build icraft-gui
+
+on:
+  push:
+    branches: [main]
+    paths:
+      - 'iridescent-launcher/**'
+      - '.github/workflows/build-icraft-gui.yml'
+  workflow_dispatch:
+
+# Cancel in-flight build if a newer push lands -- we only care about the most
+# recent source.
+concurrency:
+  group: icraft-gui-build-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  build:
+    runs-on: windows-latest
+    timeout-minutes: 45  # First build pulls hundreds of crates; later runs cache-hit fast.
+
+    permissions:
+      # Required so the workflow can git push the rebuilt binary back to main.
+      contents: write
+
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v4
+        with:
+          fetch-depth: 1
+          # Use the default GITHUB_TOKEN -- has contents: write per the
+          # permissions block above.
+          token: ${{ secrets.GITHUB_TOKEN }}
+
+      - name: Print toolchain versions
+        shell: pwsh
+        run: |
+          rustc --version
+          cargo --version
+          # windows-latest ships with a recent stable Rust + MSVC toolchain
+          # pre-installed, so no rustup-init step needed.
+
+      - name: Cache cargo registry + target
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            iridescent-launcher/target
+          key: cargo-${{ runner.os }}-${{ hashFiles('iridescent-launcher/Cargo.lock') }}
+          restore-keys: |
+            cargo-${{ runner.os }}-
+
+      - name: Build icraft-gui (release)
+        working-directory: iridescent-launcher
+        run: cargo build -p icraft-gui --release
+
+      - name: Locate built binary via cargo metadata
+        id: locate
+        working-directory: iridescent-launcher
+        shell: pwsh
+        run: |
+          # Same logic as rebuild_gui.bat: ask cargo where target ended up
+          # (in case the runner has CARGO_TARGET_DIR set globally) and find
+          # icraft-gui.exe under it.
+          $meta = cargo metadata --format-version=1 --no-deps | ConvertFrom-Json
+          $exe = Join-Path $meta.target_directory "release\icraft-gui.exe"
+          if (-not (Test-Path $exe)) {
+              throw "icraft-gui.exe not found at $exe after build."
+          }
+          $size = (Get-Item $exe).Length
+          Write-Host "Built binary: $exe ($size bytes)"
+          "exe=$exe" >> $env:GITHUB_OUTPUT
+
+      - name: Stage binary into server_distribution
+        shell: pwsh
+        run: |
+          $src = "${{ steps.locate.outputs.exe }}"
+          $dst = ".minecraft\server_distribution\icraft-gui.exe"
+          Copy-Item $src $dst -Force
+          $size = (Get-Item $dst).Length
+          Write-Host "Staged: $dst ($size bytes)"
+
+      - name: Upload artifact (Actions UI download)
+        uses: actions/upload-artifact@v4
+        with:
+          name: icraft-gui-exe
+          path: .minecraft/server_distribution/icraft-gui.exe
+          retention-days: 30
+          if-no-files-found: error
+
+      - name: Commit + push if binary changed
+        shell: pwsh
+        run: |
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add ".minecraft/server_distribution/icraft-gui.exe"
+          # `git diff --cached --quiet` exits 1 when there are staged changes,
+          # 0 when there are none. PowerShell maps non-zero to a falsy
+          # $LASTEXITCODE we can branch on.
+          git diff --cached --quiet
+          if ($LASTEXITCODE -ne 0) {
+              $sha = $env:GITHUB_SHA.Substring(0, 7)
+              git commit -m "icraft-gui: CI rebuild $sha"
+              # Push to the branch the workflow ran on. For workflow_dispatch
+              # runs that's typically main; for push triggers it's the source
+              # branch. github.ref_name resolves to the unqualified branch name.
+              git push origin HEAD:${{ github.ref_name }}
+              Write-Host "Committed + pushed updated icraft-gui.exe."
+          } else {
+              Write-Host "No change to icraft-gui.exe -- binary is byte-identical to repo copy. Nothing to commit."
+          }
