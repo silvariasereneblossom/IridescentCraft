@@ -33,12 +33,15 @@ if (-not (Test-Path $HooksDir)) {
 $PrePushPath = Join-Path $HooksDir "pre-push"
 $hookContent = @'
 #!/usr/bin/env bash
-# IridescentCraft pre-push gate. Three checks, in order:
+# IridescentCraft pre-push gate. Four checks, in order:
 #   1. generate_modlist.ps1   - regenerate wiki/Mod-List.md from packwiz state
 #   2. mirror-wiki.ps1        - propagate pack-side wiki/ -> ../IridescentCraft.wiki/
 #   3. sync-distros.ps1       - verify the three distros stayed in sync
+#   4. lessons-pre-push.ps1   - track commits-since-last-scan + optionally
+#                                auto-invoke scan-lessons.ps1 / qa-lessons.ps1
 # If steps 1-2 produce uncommitted changes, push is BLOCKED so author commits.
-# Step 3 fails on divergence. Bypass for emergencies: git push --no-verify.
+# Step 3 fails on divergence. Step 4 never blocks (best-effort instrumentation).
+# Bypass for emergencies: git push --no-verify.
 
 REPO_ROOT="$(git rev-parse --show-toplevel)"
 DEV="$REPO_ROOT/.minecraft/dev"
@@ -83,6 +86,16 @@ if [ $RESULT -ne 0 ]; then
     echo "    pwsh .minecraft/dev/sync-distros.ps1 -Fix"
     echo "  then re-stage and re-push. Bypass: git push --no-verify"
     exit 1
+fi
+
+# --- Step 4: lessons-learned tracker (best-effort, NEVER blocks push) ---
+# Tracks commits-since-last-scan + push-count-since-last-QA. If thresholds
+# are crossed AND ANTHROPIC_API_KEY is set in env, spawns scan-lessons.ps1
+# (and/or qa-lessons.ps1) as a detached background process. The push
+# returns immediately; lessons capture finishes asynchronously and writes
+# to ../IridescentCraft-internal/dev/lessons-learned*.md.
+if [ -f "$DEV/lessons-pre-push.ps1" ]; then
+    "${PWSH[@]}" -File "$DEV/lessons-pre-push.ps1" || true  # never block
 fi
 '@
 

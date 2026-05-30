@@ -101,3 +101,11 @@ yungs_*/
 .minecraft/server_distribution/libgallium_wgl.dll
 .minecraft/distribution/client/opengl32.dll
 .minecraft/distribution/client/libgallium_wgl.dll
+
+# Lessons-learned auto-capture state + logs. State file persists across
+# pushes to track last-scanned-sha + push-count-since-last-QA. Logs are
+# per-invocation diagnostics. Both are local-only operator artifacts;
+# never committed.
+.minecraft/dev/.lessons-state.json
+.minecraft/dev/.lessons-scan.log
+.minecraft/dev/.lessons-qa.log
