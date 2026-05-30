@@ -1,0 +1,11 @@
+[
+  {
+    "key": "armor/upgrade/tempered",
+    "level": 1,
+    "attributes": {
+      "minecraft:generic.max_health": 1.0,
+      "minecraft:generic.armor": 0.5
+    },
+    "integrity": -1
+  }
+]

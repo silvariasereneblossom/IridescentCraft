@@ -4,8 +4,8 @@
     "chestplate/chest_plate"
   ],
   "improvements": [
-    "tetra:armor/balanced/",
-    "tetra:armor/shared/",
+    "tetra:iridescent_reforging/armor_balanced_tempered",
+    "tetra:iridescent_reforging/armor_shared_polished",
     "tetra:iridescent_reforging/armor_balanced_hone_chestplate"
   ],
   "variants": [

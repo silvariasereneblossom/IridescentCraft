@@ -1,6 +1,6 @@
 [
   {
-    "key": "armor/streamlined",
+    "key": "armor/upgrade/streamlined",
     "level": 1,
     "attributes": {
       "*minecraft:generic.movement_speed": 0.05,

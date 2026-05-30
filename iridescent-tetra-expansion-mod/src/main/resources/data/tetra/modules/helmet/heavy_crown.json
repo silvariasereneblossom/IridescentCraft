@@ -4,8 +4,8 @@
     "helmet/crown"
   ],
   "improvements": [
-    "tetra:armor/warrior/",
-    "tetra:armor/shared/",
+    "tetra:iridescent_reforging/armor_warrior_reinforced",
+    "tetra:iridescent_reforging/armor_shared_polished",
     "tetra:iridescent_reforging/armor_warrior_hone_helmet"
   ],
   "variants": [

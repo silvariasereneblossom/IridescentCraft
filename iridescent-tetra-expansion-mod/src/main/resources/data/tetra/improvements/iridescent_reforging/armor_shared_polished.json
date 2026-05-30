@@ -1,6 +1,6 @@
 [
   {
-    "key": "armor/polished",
+    "key": "armor/upgrade/polished",
     "level": 1,
     "attributes": {
       "minecraft:generic.armor_toughness": 0.5

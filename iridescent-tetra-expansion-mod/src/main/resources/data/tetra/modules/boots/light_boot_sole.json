@@ -4,8 +4,8 @@
     "boots/boot_sole"
   ],
   "improvements": [
-    "tetra:armor/rogue/",
-    "tetra:armor/shared/",
+    "tetra:iridescent_reforging/armor_rogue_streamlined",
+    "tetra:iridescent_reforging/armor_shared_polished",
     "tetra:iridescent_reforging/armor_rogue_hone_boots"
   ],
   "variants": [

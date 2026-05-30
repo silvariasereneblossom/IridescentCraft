@@ -1,5 +1,4 @@
 {
-  "replace": true,
   "slots": [
     "helmet/crown",
     "chestplate/chest_plate",
@@ -23,22 +22,22 @@
     "type": "tetra:and",
     "requirements": [
       {
+        "type": "tetra:accepts_improvement",
+        "improvement": "armor/upgrade/tempered"
+      },
+      {
         "type": "tetra:not",
         "requirement": {
           "type": "tetra:improvement",
-          "improvement": "armor/tempered"
+          "improvement": "armor/upgrade/tempered"
         }
-      },
-      {
-        "type": "tetra:accepts_improvement",
-        "improvement": "armor/tempered"
       }
     ]
   },
   "outcomes": [
     {
       "improvements": {
-        "armor/tempered": 1
+        "armor/upgrade/tempered": 1
       }
     }
   ]

@@ -1,6 +1,6 @@
 [
   {
-    "key": "armor/reinforced",
+    "key": "armor/upgrade/reinforced",
     "level": 1,
     "attributes": {
       "minecraft:generic.armor": 1.0,
