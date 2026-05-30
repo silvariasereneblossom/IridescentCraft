@@ -28,9 +28,8 @@ StartupEvents.registry("item", event => {
         .glow(true)
 })
 
-ServerEvents.recipes(event => {
-    event.shapeless("kubejs:boss_compass", [
-        "minecraft:compass",
-        "ars_nouveau:source_gem",
-    ])
-})
+// Recipe registration moved to server_scripts/bonfire/boss_compass_handler.js
+// per KubeJS script-type rules -- ServerEvents.* only fires from server_scripts/,
+// never startup_scripts/. Original error 2026-05-29:
+//   "Tried to register event handler 'ServerEvents.recipes' for invalid script
+//    type STARTUP! Valid script types: [SERVER]"

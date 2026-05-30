@@ -296,5 +296,19 @@ ServerEvents.commandRegistry(event => {
     )
 })
 
+// ---- Crafting recipe -----------------------------------------------------
+//
+// Lives here (not in startup_scripts/boss_compass_item.js) because
+// ServerEvents.* only fires from server_scripts/. The item registration
+// is startup-time (block/item registry), the recipe is server-time
+// (recipe manager runs server-side).
+
+ServerEvents.recipes(event => {
+    event.shapeless("kubejs:boss_compass", [
+        "minecraft:compass",
+        "ars_nouveau:source_gem",
+    ])
+})
+
 console.log("[iridescent/boss_compass] loaded; "
     + Object.keys(COMPASS_BOSSES).length + " boss(es) selectable")
