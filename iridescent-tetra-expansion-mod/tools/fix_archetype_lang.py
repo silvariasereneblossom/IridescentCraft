@@ -66,7 +66,21 @@ for name, (disp, desc) in IMPROVEMENT_LANG.items():
         lang[f"{base}{suf}.name"] = disp
         lang[f"{base}{suf}.description"] = desc
 
+# 4) Escape bare % -> %% in our improvement/schematic descriptions. Minecraft
+# renders these via Component.translatable, which treats a lone % as a format
+# specifier -> "+10% mana" becomes "Format error: ...". %% renders as a literal %.
+PCT_TARGETS = ("armor/mage_upgrade/", "armor/upgrade/",
+               "iridescent_reforging/mage_upgrade/", "iridescent_reforging/upgrade/")
+escaped_pct = 0
+for k in list(lang.keys()):
+    if k.endswith(".description") and any(t in k for t in PCT_TARGETS):
+        v = lang[k]
+        if "%" in v and "%%" not in v:
+            lang[k] = v.replace("%", "%%")
+            escaped_pct += 1
+
 LANG.write_text(json.dumps(lang, indent=2) + "\n", encoding="utf-8")
+print(f"  escaped % -> %% in {escaped_pct} description(s)")
 print(f"  fixed {fixed_variants} Vestment/Runed variant names")
 print(f"  set 8 archetype module descriptions")
 print(f"  added lang for 4 archetype improvements + schematics")
