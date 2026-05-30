@@ -194,15 +194,16 @@ public final class SpecializedReplacementHook {
             }
 
             // -------------------------------------------------------------
-            // Specialization-comfort baselines: per user 2026-05-21, carry
-            // forward a fraction of the source's durability + armor so a
-            // Tetra-converted unique armor doesn't immediately downgrade
-            // the player on raw defense + lifespan stats. Tetra modules
-            // can recover the gap later via honing; the baselines just
-            // soften the early-game hit.
-            //   durability: 50% of source maxDamage, floor
-            //   armor:      25% of vanilla armor ADDITION sum, floor
-            //   toughness:  25% of vanilla toughness ADDITION sum, floor
+            // Specialization-comfort baselines: carry forward part of the
+            // source's durability + armor + toughness so a Tetra-converted
+            // unique armor doesn't immediately downgrade the player on raw
+            // defense + lifespan. Tetra modules + honing recover the rest.
+            //   durability: 50% of source maxDamage, floor (applied here)
+            //   armor:      RAW source armor stored; carried weightClass% at
+            //               runtime (ROBE 50 / LIGHT 65 / MEDIUM 75 / HEAVY
+            //               100) by InheritedAttributeHandler -- a piece built
+            //               heavy keeps all its source armor, robe keeps half.
+            //   toughness:  RAW source toughness stored; same dynamic carry.
             // -------------------------------------------------------------
             int sourceMaxDamage = original.getMaxDamage();
             if (sourceMaxDamage > 0) {
@@ -211,21 +212,18 @@ public final class SpecializedReplacementHook {
                     tag.putInt("icraft_baseline_durability", durBaseline);
                 }
             }
+            // Store the RAW source armor/toughness; the weight-class fraction
+            // is applied dynamically in InheritedAttributeHandler so it tracks
+            // whatever major the player builds (replaces the old flat 25%).
             if (vanillaArmorAddition > 0) {
-                double armorBaseline = Math.floor(vanillaArmorAddition * 0.25);
-                if (armorBaseline > 0) {
-                    tag.putDouble("icraft_baseline_armor", armorBaseline);
-                }
+                tag.putDouble("icraft_source_armor", vanillaArmorAddition);
             }
             if (vanillaToughnessAddition > 0) {
-                double toughBaseline = Math.floor(vanillaToughnessAddition * 0.25);
-                if (toughBaseline > 0) {
-                    tag.putDouble("icraft_baseline_toughness", toughBaseline);
-                }
+                tag.putDouble("icraft_source_toughness", vanillaToughnessAddition);
             }
             IridescentReforging.LOGGER.info(
-                    "[SpecializedReplacementHook] baselines from {}: dura={} armor={} toughness={}",
-                    sourceId, sourceMaxDamage / 2, vanillaArmorAddition * 0.25, vanillaToughnessAddition * 0.25);
+                    "[SpecializedReplacementHook] baselines from {}: dura={} srcArmor={} srcToughness={}",
+                    sourceId, sourceMaxDamage / 2, vanillaArmorAddition, vanillaToughnessAddition);
         }
 
         return replaced;

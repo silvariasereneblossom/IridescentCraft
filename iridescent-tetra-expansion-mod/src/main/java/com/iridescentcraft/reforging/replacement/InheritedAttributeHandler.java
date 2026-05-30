@@ -107,30 +107,74 @@ public final class InheritedAttributeHandler {
         }
 
         // -----------------------------------------------------------------
-        // Pass 2: specialization-comfort baselines (vanilla armor +
-        // toughness ADDITION). Only fires for the armor slot the stack
-        // is registered to -- Forge only queries getAttributeModifiers
-        // for the equipped slot anyway, so the event slot filter is the
-        // natural gate.
+        // Pass 2: weight-class armor/toughness carryover. The hook stores the
+        // RAW source armor + toughness (icraft_source_armor/_toughness); here
+        // we carry weightClass% x source based on the CURRENT major's weight
+        // class -- so a converted piece keeps MORE armor when built HEAVY
+        // (100%) than ROBE (50%). Dynamic: rebuilding the major re-reads it.
+        // Additive on top of module armor -- tanks out-armor the source vs
+        // fodder, by design. Only fires for the equipped slot.
+        //
+        // Back-compat: pre-2026-05-30 conversions stored a pre-multiplied flat
+        // icraft_baseline_armor (25%). Honor it as-is when the new source key
+        // is absent, so old converted items don't lose their baseline.
         // -----------------------------------------------------------------
-        if (tag.contains("icraft_baseline_armor", Tag.TAG_DOUBLE) ||
-            tag.contains("icraft_baseline_armor", Tag.TAG_INT)) {
-            double armorBaseline = tag.getDouble("icraft_baseline_armor");
-            if (armorBaseline > 0 && eventSlot == ((com.iridescentcraft.reforging.item.ItemModularArmor) stack.getItem()).getEquipmentSlot()) {
-                event.addModifier(Attributes.ARMOR,
-                        new AttributeModifier(BASELINE_ARMOR_UUID, "icraft_baseline_armor",
-                                armorBaseline, AttributeModifier.Operation.ADDITION));
+        ItemModularArmor armorItem = (ItemModularArmor) stack.getItem();
+        if (eventSlot == armorItem.getEquipmentSlot()) {
+            double pct = carryoverPct(armorItem.getArmorWeight(stack));
+
+            // -- Armor --
+            if (tag.contains("icraft_source_armor", Tag.TAG_DOUBLE)
+                    || tag.contains("icraft_source_armor", Tag.TAG_INT)) {
+                double carried = tag.getDouble("icraft_source_armor") * pct;
+                if (carried > 0) {
+                    event.addModifier(Attributes.ARMOR, new AttributeModifier(
+                            BASELINE_ARMOR_UUID, "icraft_baseline_armor",
+                            carried, AttributeModifier.Operation.ADDITION));
+                }
+            } else if (tag.contains("icraft_baseline_armor", Tag.TAG_DOUBLE)
+                    || tag.contains("icraft_baseline_armor", Tag.TAG_INT)) {
+                double legacy = tag.getDouble("icraft_baseline_armor");
+                if (legacy > 0) {
+                    event.addModifier(Attributes.ARMOR, new AttributeModifier(
+                            BASELINE_ARMOR_UUID, "icraft_baseline_armor",
+                            legacy, AttributeModifier.Operation.ADDITION));
+                }
+            }
+
+            // -- Toughness --
+            if (tag.contains("icraft_source_toughness", Tag.TAG_DOUBLE)
+                    || tag.contains("icraft_source_toughness", Tag.TAG_INT)) {
+                double carried = tag.getDouble("icraft_source_toughness") * pct;
+                if (carried > 0) {
+                    event.addModifier(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(
+                            BASELINE_TOUGH_UUID, "icraft_baseline_toughness",
+                            carried, AttributeModifier.Operation.ADDITION));
+                }
+            } else if (tag.contains("icraft_baseline_toughness", Tag.TAG_DOUBLE)
+                    || tag.contains("icraft_baseline_toughness", Tag.TAG_INT)) {
+                double legacy = tag.getDouble("icraft_baseline_toughness");
+                if (legacy > 0) {
+                    event.addModifier(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(
+                            BASELINE_TOUGH_UUID, "icraft_baseline_toughness",
+                            legacy, AttributeModifier.Operation.ADDITION));
+                }
             }
         }
-        if (tag.contains("icraft_baseline_toughness", Tag.TAG_DOUBLE) ||
-            tag.contains("icraft_baseline_toughness", Tag.TAG_INT)) {
-            double toughBaseline = tag.getDouble("icraft_baseline_toughness");
-            if (toughBaseline > 0 && eventSlot == ((com.iridescentcraft.reforging.item.ItemModularArmor) stack.getItem()).getEquipmentSlot()) {
-                event.addModifier(Attributes.ARMOR_TOUGHNESS,
-                        new AttributeModifier(BASELINE_TOUGH_UUID, "icraft_baseline_toughness",
-                                toughBaseline, AttributeModifier.Operation.ADDITION));
-            }
-        }
+    }
+
+    /** Carryover fraction of source armor/toughness by the current major's
+     *  weight class. Heavier builds keep more of the converted item's raw
+     *  defense; robe builds trade it for magic. Null (no major installed
+     *  yet) defaults to MEDIUM. */
+    private static double carryoverPct(ItemModularArmor.ArmorWeight weight) {
+        if (weight == null) return 0.75;
+        return switch (weight) {
+            case ROBE   -> 0.50;
+            case LIGHT  -> 0.65;
+            case MEDIUM -> 0.75;
+            case HEAVY  -> 1.00;
+        };
     }
 
     private InheritedAttributeHandler() {}

@@ -4,9 +4,11 @@
     "helmet/crown"
   ],
   "improvements": [
-    "tetra:armor/mage/",
     "tetra:armor/shared/",
-    "tetra:iridescent_reforging/armor_mage_hone_helmet"
+    "tetra:iridescent_reforging/armor_mage_hone_helmet",
+    "tetra:iridescent_reforging/armor_mage_empowered",
+    "tetra:iridescent_reforging/armor_mage_quickened",
+    "tetra:iridescent_reforging/armor_mage_channeling"
   ],
   "variants": [
     {
@@ -18,7 +20,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.25,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -43,7 +45,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.138,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -68,7 +70,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -93,7 +95,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -118,7 +120,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -143,7 +145,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -168,7 +170,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -193,7 +195,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -218,7 +220,7 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:spell_power": 0.04,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -242,8 +244,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.1,
-          "irons_spellbooks:max_mana": 14.0,
-          "**irons_spellbooks:spell_power": 0.06,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -266,7 +268,10 @@
       "key": "runed_crown/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.138
+          "minecraft:generic.armor": 0.138,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
+          "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -288,7 +293,10 @@
       "key": "runed_crown/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.25
+          "minecraft:generic.armor": 0.25,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
+          "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -312,7 +320,8 @@
         "primaryAttributes": {
           "minecraft:generic.armor": 0.263,
           "irons_spellbooks:max_mana": 10.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "**irons_spellbooks:cooldown_reduction": 0.05,
+          "**irons_spellbooks:spell_power": 0.05
         },
         "integrity": 1.0,
         "glyph": {

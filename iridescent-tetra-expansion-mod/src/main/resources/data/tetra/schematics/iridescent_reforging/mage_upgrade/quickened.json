@@ -1,5 +1,4 @@
 {
-  "replace": true,
   "slots": [
     "helmet/crown",
     "chestplate/chest_plate",
@@ -23,22 +22,22 @@
     "type": "tetra:and",
     "requirements": [
       {
+        "type": "tetra:accepts_improvement",
+        "improvement": "armor/mage_upgrade/quickened"
+      },
+      {
         "type": "tetra:not",
         "requirement": {
           "type": "tetra:improvement",
-          "improvement": "armor/runic"
+          "improvement": "armor/mage_upgrade/quickened"
         }
-      },
-      {
-        "type": "tetra:accepts_improvement",
-        "improvement": "armor/runic"
       }
     ]
   },
   "outcomes": [
     {
       "improvements": {
-        "armor/runic": 1
+        "armor/mage_upgrade/quickened": 1
       }
     }
   ]

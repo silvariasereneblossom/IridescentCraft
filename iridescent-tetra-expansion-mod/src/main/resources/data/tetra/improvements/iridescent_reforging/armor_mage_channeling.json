@@ -1,0 +1,10 @@
+[
+  {
+    "key": "armor/mage_upgrade/channeling",
+    "level": 1,
+    "attributes": {
+      "**irons_spellbooks:mana_regen": 0.10
+    },
+    "integrity": -1
+  }
+]

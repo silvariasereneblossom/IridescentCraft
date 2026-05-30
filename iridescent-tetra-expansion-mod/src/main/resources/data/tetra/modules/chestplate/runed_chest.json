@@ -4,9 +4,11 @@
     "chestplate/chest_plate"
   ],
   "improvements": [
-    "tetra:armor/mage/",
     "tetra:armor/shared/",
-    "tetra:iridescent_reforging/armor_mage_hone_chestplate"
+    "tetra:iridescent_reforging/armor_mage_hone_chestplate",
+    "tetra:iridescent_reforging/armor_mage_empowered",
+    "tetra:iridescent_reforging/armor_mage_quickened",
+    "tetra:iridescent_reforging/armor_mage_channeling"
   ],
   "variants": [
     {
@@ -17,8 +19,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.75,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -42,8 +44,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.413,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -67,8 +69,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -92,8 +94,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -117,8 +119,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -142,8 +144,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -167,8 +169,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -192,8 +194,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -217,8 +219,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:spell_power": 0.08,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -242,8 +244,8 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.188,
-          "irons_spellbooks:max_mana": 27.5,
-          "**irons_spellbooks:spell_power": 0.1,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
           "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
@@ -266,7 +268,10 @@
       "key": "runed_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.413
+          "minecraft:generic.armor": 0.413,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
+          "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -288,7 +293,10 @@
       "key": "runed_chest/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.75
+          "minecraft:generic.armor": 0.75,
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:spell_power": 0.05,
+          "**irons_spellbooks:cooldown_reduction": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -311,8 +319,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.787,
-          "irons_spellbooks:max_mana": 20.0,
-          "**irons_spellbooks:cooldown_reduction": 0.05
+          "irons_spellbooks:max_mana": 10.0,
+          "**irons_spellbooks:cooldown_reduction": 0.05,
+          "**irons_spellbooks:spell_power": 0.05
         },
         "integrity": 1.0,
         "glyph": {

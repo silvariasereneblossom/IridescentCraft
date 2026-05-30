@@ -79,11 +79,17 @@ REM   convention.
 REM /XD world: some packs ship example worlds; the live save lives under
 REM   the same name in saves/ and isn't reached by per-subdir scan anyway,
 REM   but be defensive.
+REM /XD fancymenu: config/fancymenu/ is per-instance FancyMenu state -- the
+REM   "welcome screen dismissed" flag lives in options.txt. The repo ships NO
+REM   fancymenu config, so /MIR deleted the instance's copy every launch ->
+REM   FancyMenu regenerated a default -> its WelcomeScreen fired on EVERY
+REM   launch. Treat it like oculus.properties (excluded in /XF below): per-user
+REM   render/UI state, never mirror-managed.
 for %%D in (config defaultconfigs kubejs shaderpacks) do (
     if exist "%REPO%\%%D" (
         if not exist "%LOCAL%\%%D" mkdir "%LOCAL%\%%D"
         robocopy "%REPO%\%%D" "%LOCAL%\%%D" /MIR /MT:4 /NJH /NJS /NDL /NP ^
-            /XD libraries world ^
+            /XD libraries world fancymenu ^
             /XF "voicechat-client.properties" "voicechat-microphone-test.ogg" "bookmarks.ini" "lookupHistory.ini" "cached.dat" "indigo-renderer.properties" "packetfixer.properties" "oculus.properties" "libraryferret_*.properties" "*-client.properties" "*.local"
         if errorlevel 8 set /a ROBOCOPY_EXIT=8
         echo   %%D: synced

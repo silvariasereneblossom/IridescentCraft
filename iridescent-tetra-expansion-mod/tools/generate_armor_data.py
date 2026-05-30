@@ -681,6 +681,24 @@ def write(p: Path, content: str):
         f.write(content)
 
 def main():
+    # ---- SAFETY GUARD (2026-05-30) ----------------------------------------
+    # This generator is STALE / ABANDONED. Its MODULES table predates the
+    # Vestment/Runed split (#41) -- it still has circlet/robe_chest/robed_* --
+    # and it has NO honing generation, yet the wipe step below deletes ALL 384
+    # hone schematics + the module files. Running it would REVERT the mage
+    # split AND DESTROY the honing system + the new mage_upgrade improvements.
+    # The armor data is hand-authored now: edit the JSON directly or use the
+    # targeted tools/ scripts (e.g. set_mage_archetype_stats.py). --force to run.
+    if "--force" not in sys.argv:
+        print("=" * 72)
+        print("REFUSING TO RUN: generate_armor_data.py is STALE / ABANDONED.")
+        print("It predates the Vestment/Runed split + the honing system, but its")
+        print("wipe step would DELETE both (384 hone schematics, the mage split,")
+        print("and the mage_upgrade improvements). The armor data is hand-authored")
+        print("now -- edit JSON directly or use tools/ scripts. Pass --force to run.")
+        print("=" * 72)
+        sys.exit(1)
+
     # 1) Wipe old module files (16) + old _main schematics (16) + hone schematics (384)
     for piece in ("helmet", "chestplate", "leggings", "boots"):
         modules_dir = DATA / "modules" / piece

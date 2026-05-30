@@ -4,9 +4,11 @@
     "boots/boot_sole"
   ],
   "improvements": [
-    "tetra:armor/mage/",
     "tetra:armor/shared/",
-    "tetra:iridescent_reforging/armor_mage_hone_boots"
+    "tetra:iridescent_reforging/armor_mage_hone_boots",
+    "tetra:iridescent_reforging/armor_mage_empowered",
+    "tetra:iridescent_reforging/armor_mage_quickened",
+    "tetra:iridescent_reforging/armor_mage_channeling"
   ],
   "variants": [
     {
@@ -17,7 +19,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.2,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -40,7 +44,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.11,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -63,7 +69,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -86,7 +94,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -109,7 +119,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -132,7 +144,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -155,7 +169,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -178,7 +194,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -201,7 +219,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -224,8 +244,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.08,
-          "irons_spellbooks:max_mana": 22.0,
-          "**irons_spellbooks:spell_power": 0.03
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -247,7 +268,10 @@
       "key": "vestment_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.11
+          "minecraft:generic.armor": 0.11,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -269,7 +293,10 @@
       "key": "vestment_boot_sole/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 0.2
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
@@ -292,7 +319,9 @@
       "extract": {
         "primaryAttributes": {
           "minecraft:generic.armor": 0.21,
-          "irons_spellbooks:max_mana": 12.0
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
         },
         "integrity": 1.0,
         "glyph": {
