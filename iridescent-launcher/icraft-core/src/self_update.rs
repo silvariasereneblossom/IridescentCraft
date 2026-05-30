@@ -21,6 +21,12 @@ const STAGED_FILES: &[&str] = &[
     "iridescentserver.sh",
     "icraft.exe",
     "icraft",
+    // GUI variant (2026-05-29): same fix as sync.rs SELF_UPDATE_FILES --
+    // when the launcher swapped CLI -> GUI, this activator list wasn't
+    // updated either, so even if a .new were staged, it would never
+    // be renamed in. Both lists must stay aligned.
+    "icraft-gui.exe",
+    "icraft-gui",
 ];
 
 /// Returns true if at least one staged file was applied (caller should

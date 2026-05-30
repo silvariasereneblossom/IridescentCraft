@@ -42,6 +42,13 @@ const SELF_UPDATE_FILES: &[&str] = &[
     // so the next icraft run picks them up.
     "icraft.exe",
     "icraft",
+    // GUI variant (added 2026-05-29): the launcher swapped from CLI
+    // (icraft.exe) to GUI (icraft-gui.exe) but this list wasn't
+    // updated -- mirror_distro was treating the running .exe as a
+    // regular file and hitting "being used by another process" on
+    // Windows. STAGED_FILES in self_update.rs MUST match this list.
+    "icraft-gui.exe",
+    "icraft-gui",
 ];
 
 // =============================================================================
