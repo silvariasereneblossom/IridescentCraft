@@ -1,39 +1,41 @@
-[09:40:21] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[09:40:21] [INIT] Loaded plugins:
-[09:40:21] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[09:40:21] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[09:40:21] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[09:40:21] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[09:40:21] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[09:40:21] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[09:40:21] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[09:40:21] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[09:40:21] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[09:40:21] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[09:40:21] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[09:40:21] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[09:40:21] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[09:40:23] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.334 s
-[09:40:23] [INFO] Loaded script startup_scripts:custom_items.js in 0.029 s
-[09:40:23] [INFO] Loaded script startup_scripts:endgame_items.js in 0.007 s
-[09:40:23] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
-[09:40:23] [INFO] Loaded script startup_scripts:example.js in 0.004 s
-[09:40:23] [INFO] Loaded script startup_scripts:hulk_hammer_durability.js in 0.044 s
-[09:40:23] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
-[09:40:23] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
-[09:40:23] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
-[09:40:23] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.0 s
-[09:40:23] [INFO] magic_weapon_category.js#40: Loaded Java class 'dev.shadowsoffire.apotheosis.adventure.loot.LootCategory'
-[09:40:23] [INFO] magic_weapon_category.js#41: Loaded Java class 'net.minecraft.world.entity.EquipmentSlot'
-[09:40:23] [INFO] magic_weapon_category.js#42: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
-[09:40:23] [INFO] magic_weapon_category.js#100: [magic-weapon] LootCategory.magic_weapon registered (hardcoded 26-ID set, MAINHAND/OFFHAND slots, inserted before SWORD for SwordItem-extending wand precedence)
-[09:40:23] [INFO] Loaded script startup_scripts:magic_weapon_category.js in 0.045 s
-[09:40:23] [INFO] Loaded script startup_scripts:sigil_registry.js in 0.002 s
-[09:40:23] [INFO] Loaded script startup_scripts:terramity_weapon_durability.js in 0.015 s
-[09:40:23] [INFO] Loaded script startup_scripts:virtual_gold_durability.js in 0.003 s
-[09:40:23] [INFO] Loaded 10/10 KubeJS startup scripts in 1.96 s with 0 errors and 0 warnings
-[09:40:24] [INFO] hulk_hammer_durability.js#36: Loaded Java class 'net.minecraft.resources.ResourceLocation'
-[09:40:24] [INFO] hulk_hammer_durability.js#37: Loaded Java class 'net.minecraft.world.item.Item'
-[09:40:24] [WARN] hulk_hammer_durability.js#51: [hulk_hammer] durability override FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:hulk_hammer_durability.js#45) -- fallback: ship a mixin in iridescent-tetra-expansion-mod
-[09:40:24] [WARN] terramity_weapon_durability.js#65: [terramity_weapon_durability] FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:terramity_weapon_durability.js#45) -- fallback: ship a mixin in iridescent-tetra-expansion-mod
-[09:40:24] [WARN] virtual_gold_durability.js#61: [virtual_gold_durability] FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:virtual_gold_durability.js#41) -- fallback: mixin in iridescent-tetra-expansion-mod
+[20:38:44] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[20:38:44] [INIT] Loaded plugins:
+[20:38:44] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[20:38:44] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[20:38:44] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[20:38:44] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[20:38:44] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[20:38:44] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[20:38:44] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[20:38:44] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[20:38:44] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[20:38:44] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[20:38:44] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[20:38:44] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[20:38:44] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[20:38:46] [ERROR] ! boss_compass_item.js#31: Tried to register event handler 'ServerEvents.recipes' for invalid script type STARTUP! Valid script types: [SERVER]
+[20:38:46] [INFO] Loaded script startup_scripts:boss_compass_item.js in 0.358 s
+[20:38:46] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.01 s
+[20:38:46] [INFO] Loaded script startup_scripts:custom_items.js in 0.022 s
+[20:38:46] [INFO] Loaded script startup_scripts:endgame_items.js in 0.007 s
+[20:38:46] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
+[20:38:46] [INFO] Loaded script startup_scripts:example.js in 0.005 s
+[20:38:46] [INFO] Loaded script startup_scripts:hulk_hammer_durability.js in 0.043 s
+[20:38:46] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
+[20:38:46] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
+[20:38:46] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
+[20:38:46] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.001 s
+[20:38:46] [INFO] magic_weapon_category.js#40: Loaded Java class 'dev.shadowsoffire.apotheosis.adventure.loot.LootCategory'
+[20:38:46] [INFO] magic_weapon_category.js#41: Loaded Java class 'net.minecraft.world.entity.EquipmentSlot'
+[20:38:46] [INFO] magic_weapon_category.js#42: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
+[20:38:46] [INFO] magic_weapon_category.js#100: [magic-weapon] LootCategory.magic_weapon registered (hardcoded 26-ID set, MAINHAND/OFFHAND slots, inserted before SWORD for SwordItem-extending wand precedence)
+[20:38:46] [INFO] Loaded script startup_scripts:magic_weapon_category.js in 0.051 s
+[20:38:46] [INFO] Loaded script startup_scripts:sigil_registry.js in 0.002 s
+[20:38:46] [INFO] Loaded script startup_scripts:terramity_weapon_durability.js in 0.02 s
+[20:38:47] [INFO] Loaded script startup_scripts:virtual_gold_durability.js in 0.003 s
+[20:38:47] [INFO] Loaded 11/11 KubeJS startup scripts in 1.986 s with 1 errors and 0 warnings
+[20:38:47] [INFO] hulk_hammer_durability.js#36: Loaded Java class 'net.minecraft.resources.ResourceLocation'
+[20:38:47] [INFO] hulk_hammer_durability.js#37: Loaded Java class 'net.minecraft.world.item.Item'
+[20:38:47] [WARN] hulk_hammer_durability.js#51: [hulk_hammer] durability override FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:hulk_hammer_durability.js#45) -- fallback: ship a mixin in iridescent-tetra-expansion-mod
+[20:38:47] [WARN] terramity_weapon_durability.js#65: [terramity_weapon_durability] FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:terramity_weapon_durability.js#45) -- fallback: ship a mixin in iridescent-tetra-expansion-mod
+[20:38:47] [WARN] virtual_gold_durability.js#61: [virtual_gold_durability] FAILED: InternalError: Java class "net.minecraft.world.item.Item" has no public instance field or method named "class". (startup_scripts:virtual_gold_durability.js#41) -- fallback: mixin in iridescent-tetra-expansion-mod
