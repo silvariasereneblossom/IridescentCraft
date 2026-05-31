@@ -40,6 +40,31 @@ REM Re-exec is gated on the --post-pull arg so we don't recurse forever.
 REM On the SECOND entry (with --post-pull set), this block is skipped
 REM and control flows straight to :post_pull.
 if /i not "%~1"=="--post-pull" (
+    REM This is the git-checkout install path. If there's no .git at the
+    REM instance root, the operator is on the zip-distribution install --
+    REM there's nothing to pull, so skip the whole git phase cleanly rather
+    REM than letting every git call below fail with "not a repository" noise.
+    REM (sync_client.bat is the hook for that install pattern.)
+    if not exist "!INSTANCE_DIR!\.git" (
+        echo [prism_prelaunch] No .git at instance root -- not a git-checkout install.
+        echo [prism_prelaunch] Skipping git pull; continuing with existing files.
+        call "%~f0" --post-pull
+        endlocal & exit /b 0
+    )
+
+    REM Clear a stale .git\index.lock left by a git operation that was killed
+    REM mid-run (e.g. PrismLauncher / the machine shut down during a prior
+    REM pull). Git refuses EVERY subsequent operation while index.lock exists,
+    REM so without this the pull below fails on every launch until the user
+    REM manually deletes it. We only remove the bare index.lock (cheap, safe
+    REM to recreate); in-progress merge/rebase state is handled by the
+    REM rebase --abort fallback further down.
+    if exist "!INSTANCE_DIR!\.git\index.lock" (
+        echo [prism_prelaunch] WARNING: stale .git\index.lock found -- removing it.
+        echo [prism_prelaunch] ^(A prior git operation was likely interrupted.^)
+        del /f /q "!INSTANCE_DIR!\.git\index.lock" >nul 2>&1
+    )
+
     REM Restore any working-tree-deleted .pw.toml files in mods/.index/
     REM before pulling. PrismLauncher 11's Mod manager (and any similar
     REM packwiz-aware tool) sweeps mods/.index/*.pw.toml and removes
@@ -79,11 +104,14 @@ if /i not "%~1"=="--post-pull" (
     REM Re-execute the bat. cmd.exe re-opens the file from disk, so any
     REM pull-applied update to THIS bat takes effect right now.
     REM
-    REM Propagating exit code through endlocal: errorlevel is process-
-    REM scoped (not part of setlocal scope) so `exit /b` with no arg
-    REM uses the post-call errorlevel.
+    REM Force exit /b 0: PrismLauncher aborts the launch if the pre-launch
+    REM command returns non-zero, and a sync/pull hiccup must never block
+    REM play. Phase 2 already surfaces any problems via echo'd warnings, so
+    REM discarding its exit code hides nothing from the operator. (The old
+    REM bare `exit /b` propagated Phase 2's code; pinning to 0 makes the
+    REM "launch anyway" contract explicit and immune to future Phase-2 edits.)
     call "%~f0" --post-pull
-    endlocal & exit /b
+    endlocal & exit /b 0
 )
 
 REM ===================================================================
@@ -93,6 +121,51 @@ REM upstream takes effect immediately.
 REM ===================================================================
 
 :post_pull
+
+REM ===================================================================
+REM Instance hygiene -- sweep stale state left behind by an interrupted
+REM prior run (PrismLauncher closed mid-sync, machine shut down during a
+REM download, a killed postexit, etc.). All of these are safe to delete:
+REM they're either staging/temp scratch or orphan markers that get
+REM regenerated on demand. Each delete is `if exist`-guarded + 2>nul so a
+REM missing file never spams the log or trips errorlevel. Hygiene failures
+REM are non-fatal by construction; we never block launch on cleanup.
+REM ===================================================================
+echo [prism_prelaunch] instance hygiene -- sweeping stale state...
+
+REM (a) Orphaned self-update staging files. sync_client.bat downloads
+REM launcher-script updates as "<name>.new" and renames them into place on
+REM the NEXT launch. If that finalize step never ran (crash between stage
+REM and swap), the .new files linger forever. They're stale the moment a
+REM real sync lands, so clear them here.
+for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars.ps1) do (
+    if exist "!MC_DIR!\%%F.new" (
+        echo [prism_prelaunch]   removing orphan staging file %%F.new
+        del /f /q "!MC_DIR!\%%F.new" >nul 2>&1
+    )
+)
+
+REM (b) Orphan username temp marker from a killed prism_postexit.bat. It
+REM writes .icraft_user.tmp, reads it back, then deletes it -- a postexit
+REM killed in that window leaves it behind. Harmless but tidy to remove.
+if exist "!MC_DIR!\.icraft_user.tmp" (
+    echo [prism_prelaunch]   removing orphan .icraft_user.tmp
+    del /f /q "!MC_DIR!\.icraft_user.tmp" >nul 2>&1
+)
+
+REM (c) Partial zip-overlay downloads from sync_client.ps1. It extracts the
+REM repo archive under %TEMP%; on a clean run it removes both, but a process
+REM killed mid-download/extract leaves a truncated zip and/or a half-written
+REM extract tree that the next overlay must Expand-Archive over. Clear them
+REM so the next zip-path sync starts from a clean slate.
+if exist "%TEMP%\IridescentCraft-client-sync.zip" (
+    echo [prism_prelaunch]   removing partial sync zip in TEMP
+    del /f /q "%TEMP%\IridescentCraft-client-sync.zip" >nul 2>&1
+)
+if exist "%TEMP%\IridescentCraft-client-sync-extract" (
+    echo [prism_prelaunch]   removing partial sync extract dir in TEMP
+    rd /s /q "%TEMP%\IridescentCraft-client-sync-extract" >nul 2>&1
+)
 
 echo [prism_prelaunch] cleanup stale jars...
 if exist "!MC_DIR!\distribution\client\cleanup_stale_jars.ps1" (
