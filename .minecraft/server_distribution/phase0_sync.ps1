@@ -133,9 +133,21 @@ if ($useDiff) {
         try {
             $targetDir = Split-Path $target -Parent
             if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
-            Invoke-WebRequest -Uri "$rawBase/$path" -OutFile $target -UseBasicParsing -TimeoutSec 30
+            # Crash-safe write: download to a sidecar .icrafttmp first, then
+            # atomically replace the live file once the download is fully on
+            # disk. Invoke-WebRequest -OutFile truncates its target as the
+            # response stream opens, so writing straight to $target would leave
+            # a partial/empty file if the download is interrupted (network drop,
+            # crash, kill) - destroying the only copy. Writing to a temp and
+            # Move-Item -Force'ing into place (a rename on the same volume) means
+            # the existing file is only removed once a complete replacement exists.
+            $tmpTarget = "$target.icrafttmp"
+            Remove-Item $tmpTarget -Force -ErrorAction SilentlyContinue
+            Invoke-WebRequest -Uri "$rawBase/$path" -OutFile $tmpTarget -UseBasicParsing -TimeoutSec 30
+            Move-Item -Path $tmpTarget -Destination $target -Force
             $synced++
         } catch {
+            Remove-Item "$target.icrafttmp" -Force -ErrorAction SilentlyContinue
             Write-Host "    [FAIL] $relPath : $($_.Exception.Message)" -ForegroundColor Red
             $errors++
         }
@@ -192,17 +204,26 @@ try {
             Get-ChildItem $item.FullName -Filter '*.jar' | ForEach-Object {
                 $jarSrc = $_.FullName
                 $jarDst = Join-Path "$dest\mods" $_.Name
-                # Delete-then-copy with retry. AV (Defender) sometimes locks
+                # Crash-safe replace with retry. AV (Defender) sometimes locks
                 # bytecode-patched jars (ars_nouveau, Patchouli) momentarily
                 # during scan. PermissionDenied here was crashing the whole
-                # sync mid-run.
+                # sync mid-run. Copy to a sidecar .icrafttmp then atomically
+                # rename over the live JAR: Copy-Item -Force truncates the
+                # destination as it opens it, so a copy interrupted mid-write
+                # would leave a truncated JAR while the only intact copy is the
+                # extract dir we delete during cleanup. Staging + Move-Item
+                # -Force means the existing JAR survives until a complete
+                # replacement is on disk.
                 $copied = $false
                 for ($attempt = 1; $attempt -le 3 -and -not $copied; $attempt++) {
                     try {
-                        if (Test-Path $jarDst) { Remove-Item $jarDst -Force -ErrorAction SilentlyContinue }
-                        Copy-Item $jarSrc $jarDst -Force -ErrorAction Stop
+                        $jarTmp = "$jarDst.icrafttmp"
+                        Remove-Item $jarTmp -Force -ErrorAction SilentlyContinue
+                        Copy-Item $jarSrc $jarTmp -Force -ErrorAction Stop
+                        Move-Item -Path $jarTmp -Destination $jarDst -Force -ErrorAction Stop
                         $copied = $true
                     } catch {
+                        Remove-Item "$jarDst.icrafttmp" -Force -ErrorAction SilentlyContinue
                         if ($attempt -lt 3) {
                             Start-Sleep -Milliseconds 500
                         } else {
@@ -247,7 +268,15 @@ try {
         Get-ChildItem $paxiSrc -Filter '*.zip' | ForEach-Object {
             $target = Join-Path $paxiDest $_.Name
             if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {
-                Copy-Item $_.FullName $target -Force
+                # Crash-safe replace: stage to a sidecar .icrafttmp then
+                # atomically rename over the live datapack zip. Copy-Item -Force
+                # truncates the destination as it opens it, so an interrupted
+                # copy would leave a truncated zip while the only intact copy is
+                # the extract dir we delete during cleanup.
+                $zipTmp = "$target.icrafttmp"
+                Remove-Item $zipTmp -Force -ErrorAction SilentlyContinue
+                Copy-Item $_.FullName $zipTmp -Force
+                Move-Item -Path $zipTmp -Destination $target -Force
                 Write-Host "    [sync] $($_.Name)" -ForegroundColor Yellow
             }
         }
@@ -261,7 +290,13 @@ try {
         Get-ChildItem $modsSrc -Filter '*.jar' | ForEach-Object {
             $target = Join-Path "$dest\mods" $_.Name
             if ((-not (Test-Path $target)) -or ((Get-Item $target).Length -ne $_.Length)) {
-                Copy-Item $_.FullName $target -Force
+                # Crash-safe replace: stage to a sidecar .icrafttmp then
+                # atomically rename over the live JAR (see the mods/.index
+                # block above for the rationale).
+                $jarTmp = "$target.icrafttmp"
+                Remove-Item $jarTmp -Force -ErrorAction SilentlyContinue
+                Copy-Item $_.FullName $jarTmp -Force
+                Move-Item -Path $jarTmp -Destination $target -Force
                 Write-Host "    [sync] $($_.Name)" -ForegroundColor Yellow
             }
         }

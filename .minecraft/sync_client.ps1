@@ -171,9 +171,22 @@ if ($useDiff) {
         try {
             $targetDir = Split-Path $target -Parent
             if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
-            Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $target -UseBasicParsing -TimeoutSec 30
+            # Crash-safe write: download to a sidecar .icrafttmp first, then
+            # atomically replace the live file once the download is fully on
+            # disk. Invoke-WebRequest -OutFile truncates its target as the
+            # response stream opens, so writing straight to $target would
+            # leave a partial/empty file if the download is interrupted
+            # (network drop, crash, kill) - destroying the only copy. Writing
+            # to a temp and Move-Item -Force'ing into place (a rename on the
+            # same volume) means the existing file is only removed once a
+            # complete replacement exists.
+            $tmpTarget = "$target.icrafttmp"
+            Remove-Item $tmpTarget -Force -ErrorAction SilentlyContinue
+            Invoke-WebRequest -Uri "$rawBase/$($file.filename)" -OutFile $tmpTarget -UseBasicParsing -TimeoutSec 30
+            Move-Item -Path $tmpTarget -Destination $target -Force
             $synced++
         } catch {
+            Remove-Item "$target.icrafttmp" -Force -ErrorAction SilentlyContinue
             Write-Host "[IridescentCraft Sync]   [FAIL] $relPath" -ForegroundColor Red
         }
     }
@@ -236,7 +249,18 @@ if ($useDiff) {
                     }
                 }
                 if ($needsCopy) {
-                    Copy-Item $_.FullName $target -Force
+                    # Crash-safe replace: copy to a sidecar .icrafttmp then
+                    # atomically rename over the live JAR. Copy-Item -Force
+                    # truncates the destination as it opens it, so a copy
+                    # interrupted mid-write (kill, or Defender locking the
+                    # file) would leave a truncated JAR while the only intact
+                    # copy is the extract dir we delete during cleanup. Staging
+                    # + Move-Item -Force means the existing JAR survives intact
+                    # until a complete replacement is on disk.
+                    $jarTmp = "$target.icrafttmp"
+                    Remove-Item $jarTmp -Force -ErrorAction SilentlyContinue
+                    Copy-Item $_.FullName $jarTmp -Force
+                    Move-Item -Path $jarTmp -Destination $target -Force
                     Write-Host "[IridescentCraft Sync]   Custom JAR: $($_.Name) (updated)" -ForegroundColor Yellow
                     $jarCopied++
                 } else {
