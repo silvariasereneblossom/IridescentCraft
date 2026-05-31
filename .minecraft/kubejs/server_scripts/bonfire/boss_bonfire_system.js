@@ -6,8 +6,11 @@
 // the trigger (NOT boss-kill); the waystone exists as a return-to-bonfire
 // teleport convenience for re-fights.
 //
-// MVP scope (2026-05-28):
-//   - One boss only: Twilight Forest Naga, structure twilightforest:naga_courtyard
+// MVP scope (updated 2026-05-30):
+//   - One boss only: Gob, King of Gnomes (Terramity), structure
+//     terramity:court_of_gnomes -- a T1 OVERWORLD boss, so the loop is
+//     testable at the entry tier (the prior MVP used Twilight Naga, which is
+//     T2 and lives in the Twilight dimension -- unreachable at T1).
 //   - Detection via Forge StructureManager.getStructureWithPieceAt(BlockPos)
 //   - Placement via WaystonesAPI.placeWaystone() + setName() + setGlobal(true)
 //     + PlayerWaystoneManager.activateWaystoneForEveryone()
@@ -32,11 +35,11 @@
 // Maps Forge structure ResourceLocation (as string) to bonfire metadata.
 // Each entry shapes the chat broadcast + the waystone display name.
 const BOSS_REGISTRY = {
-    "twilightforest:naga_courtyard": {
-        boss_id: "twilight_naga",
-        display_name: "[Boss] Naga Court Bonfire",
-        chat_boss: "Naga",  // shown in "{player} has lit the {chat_boss} bonfire"
-        tier: 2,
+    "terramity:court_of_gnomes": {
+        boss_id: "terramity_gob",
+        display_name: "[Boss] Gob's Court Bonfire",
+        chat_boss: "Gob, King of Gnomes",  // shown in "{player} has lit the {chat_boss} bonfire"
+        tier: 1,
     },
     // Add more bosses here after MVP proves out -- see boss-catalog.md for
     // the full 106-boss roster.

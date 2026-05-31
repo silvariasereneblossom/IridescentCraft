@@ -45,7 +45,8 @@ $customJars = @(
     'offlineskins-1.20.1-v1.jar',
     'Patchouli-1.20.1-85-FORGE.jar',
     'ars_nouveau-1.20.1-4.12.7-all.jar',
-    'class-artifacts-forge-2.0.5.jar'
+    'class-artifacts-forge-2.0.5.jar',
+    'kubejs_curios_forge_1.20.1-1.0.3.jar'
 )
 
 $modsDir = Join-Path $RepoRoot '.minecraft\mods'

@@ -40,29 +40,22 @@
 // dimensional anchor.
 
 const COMPASS_BOSSES = {
+    // T1 OVERWORLD MVP target -- Gob, King of Gnomes (Terramity).
+    // Structure: terramity:court_of_gnomes (swamp / dark forest). Picked so
+    // the discovery+bonfire loop is testable at the entry tier without
+    // leaving the overworld (Naga is T2 / Twilight dimension).
+    terramity_gob: {
+        display: "Gob, King of Gnomes",
+        tier: 1,
+        dimension: "minecraft:overworld",
+        find_spawn: (player) => findStructureCenter(player, "terramity:court_of_gnomes"),
+    },
+    // Tier-gate demo: a T2 boss a T1 player should NOT see in the menu.
     twilight_naga: {
         display: "Naga",
         tier: 2,
         dimension: "twilightforest:twilight_forest",
-        // Structure-locked: find nearest naga_courtyard
         find_spawn: (player) => findStructureCenter(player, "twilightforest:naga_courtyard"),
-    },
-    // Test entries for tier-gate verification:
-    test_t1: {
-        display: "Test Boss (T1)",
-        tier: 1,
-        dimension: "minecraft:overworld",
-        find_spawn: (player) => ({
-            x: player.blockX + 50, y: player.blockY, z: player.blockZ + 50
-        }),
-    },
-    test_t4: {
-        display: "Test Boss (T4)",
-        tier: 4,
-        dimension: "minecraft:overworld",
-        find_spawn: (player) => ({
-            x: player.blockX + 100, y: player.blockY, z: player.blockZ + 100
-        }),
     },
 }
 
@@ -260,22 +253,31 @@ ItemEvents.rightClicked("kubejs:boss_compass", event => {
 // ---- Custom command handler -----------------------------------------------
 //
 // `/icraft_compass select <boss_id>` -- fired by the clickable chat menu.
+// `/icraft_compass clear`            -- clears the held compass target.
+//
+// Uses Brigadier's StringArgumentType directly for both the arg type and
+// retrieval. The original code referenced a bare `Arguments` (the KubeJS
+// helper must be destructured from the event -- `const { arguments: Arguments }
+// = event`) so registration threw "ReferenceError: Arguments is not defined"
+// and the command never registered -- menu clicks hit an unknown command.
+// `ctx.getArgument(name, "java.lang.String")` was also wrong (2nd arg must be
+// a Class, not a String). Pure Brigadier sidesteps both and is stable across
+// KubeJS builds.
+
+const BrigString = Java.loadClass("com.mojang.brigadier.arguments.StringArgumentType")
 
 ServerEvents.commandRegistry(event => {
-    const { commands, registry } = event
-    const SuggestionProviders = Java.loadClass(
-        "net.minecraft.commands.synchronization.SuggestionProviders"
-    )
+    const { commands } = event
 
     event.register(
         commands.literal("icraft_compass")
             .then(
                 commands.literal("select")
                     .then(
-                        commands.argument("boss_id", Arguments.STRING.create(event))
+                        commands.argument("boss_id", BrigString.word())
                             .executes(ctx => {
                                 const player = ctx.source.playerOrException
-                                const bossId = ctx.getArgument("boss_id", "java.lang.String")
+                                const bossId = BrigString.getString(ctx, "boss_id")
                                 applyTarget(player, bossId)
                                 return 1
                             })

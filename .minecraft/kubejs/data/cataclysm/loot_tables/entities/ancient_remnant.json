@@ -1,0 +1,25 @@
+{
+  "_comment": "icraft #57 override of cataclysm:ancient_remnant. Keeps the thematic vanilla-Cataclysm drops, adds: the REPAIR METAL (ancient_metal_block -> the only source of ancient_metal_ingot, which the remnant-blade Tetra material repairs with), progression (t2_token_fragment + arcane_essence), the Pharaoh's Feast god-apple, and 1-2 rolled ISS gear/relic pieces (rings double as the curio for now).",
+  "pools": [
+    { "name": "bottle", "rolls": 1, "entries": [ { "type": "minecraft:item", "name": "cataclysm:sandstorm_in_a_bottle" } ] },
+    { "name": "skull", "rolls": 1, "entries": [ { "type": "minecraft:item", "name": "cataclysm:remnant_skull" } ] },
+    { "name": "repair_metal", "rolls": 1, "entries": [ { "type": "minecraft:item", "name": "cataclysm:ancient_metal_block", "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 3 } } ] } ] },
+    { "name": "progression", "rolls": 1, "entries": [ { "type": "minecraft:item", "name": "kubejs:t2_token_fragment" } ] },
+    { "name": "essence", "rolls": 1, "entries": [ { "type": "minecraft:item", "name": "irons_spellbooks:arcane_essence", "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2, "max": 5 } } ] } ] },
+    { "name": "feast", "rolls": 1, "entries": [ { "type": "minecraft:item", "name": "kubejs:pharaohs_feast", "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 2 } } ] } ] },
+    { "name": "gear", "rolls": { "type": "minecraft:uniform", "min": 1, "max": 2 }, "bonus_rolls": 0, "entries": [
+      { "type": "minecraft:item", "name": "irons_spellbooks:cooldown_ring", "weight": 8 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:fireward_ring", "weight": 8 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:mana_ring", "weight": 8 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:frostward_ring", "weight": 6 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:ice_staff", "weight": 6 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:blood_staff", "weight": 5 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:boreal_blade", "weight": 5 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:cryomancer_chestplate", "weight": 5 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:electromancer_chestplate", "weight": 5 },
+      { "type": "minecraft:item", "name": "irons_spellbooks:gold_crown", "weight": 2 }
+    ] },
+    { "name": "relic", "rolls": 1, "conditions": [ { "condition": "minecraft:random_chance_with_looting", "chance": 0.4, "looting_multiplier": 0.1 } ], "entries": [ { "type": "minecraft:item", "name": "kubejs:remnant_relic" } ] },
+    { "name": "disc", "rolls": 1, "conditions": [ { "condition": "minecraft:random_chance_with_looting", "chance": 0.1, "looting_multiplier": 0.1 } ], "entries": [ { "type": "minecraft:item", "name": "cataclysm:music_disc_ancient_remnant", "weight": 1 } ] }
+  ]
+}

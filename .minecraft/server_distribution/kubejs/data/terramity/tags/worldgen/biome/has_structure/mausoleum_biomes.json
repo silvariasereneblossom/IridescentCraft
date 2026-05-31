@@ -1,0 +1,8 @@
+{
+  "_comment": "icraft relocation (2026-05-30): Sorceress Circe's Mausoleum moved from overworld taiga to the End (T4). She is a dark/evil sorceress (malediction_bracelets, evil_king_armor drops) -- a desolate End island tomb fits her theme and matches her endgame summon gate, per the location-based tiering pass (#54). Target end_highlands/end_midlands (the solid outer islands where End Cities generate) so it lands on ground, not the void. NOTE: new-chunks-only -- already-generated End chunks won't retroactively contain it.",
+  "replace": true,
+  "values": [
+    "minecraft:end_highlands",
+    "minecraft:end_midlands"
+  ]
+}

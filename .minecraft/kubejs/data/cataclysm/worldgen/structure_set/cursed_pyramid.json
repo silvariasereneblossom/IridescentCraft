@@ -1,0 +1,19 @@
+{
+  "_comment": "icraft override (2026-05-31): cursed_pyramid was spacing 80 / separation 50 -- ~1280 blocks apart, too rare to find reliably (#53/#57). Lowered to 48/28 (~2.8x denser, ~768 blocks apart) so the Ancient Remnant arena is findable. Keeps Cataclysm's custom cataclysm_random_spread placement + salt + (empty) super_exclusion_zone verbatim. Constraint: Cataclysm's CataclysmRandomSpread ctor throws if spacing <= separation, so 48 > 28 holds.",
+  "structures": [
+    {
+      "structure": "cataclysm:cursed_pyramid",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "cataclysm:cataclysm_random_spread",
+    "salt": 9167234589,
+    "spacing": 48,
+    "separation": 28,
+    "super_exclusion_zone": {
+      "chunk_count": 10,
+      "other_set": "#cataclysm:cursed_pyramid_avoid"
+    }
+  }
+}

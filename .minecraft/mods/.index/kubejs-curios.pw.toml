@@ -1,0 +1,16 @@
+filename = 'kubejs_curios_forge_1.20.1-1.0.3.jar'
+name = 'KubeJS Curios'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '43108f80b7776845a9da30c3623a73b5c448aac9'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6686627
+project-id = 1255211

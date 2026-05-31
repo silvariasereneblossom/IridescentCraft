@@ -1,0 +1,14 @@
+{
+  "_comment": "icraft relocation (2026-05-30): Virtue's Prismatic Pond moved from overworld to Deep Aether (T4). Virtue is an angelic/holy boss (archangel_halo, angel_feather drops) -- a heavenly endgame dimension fits her theme AND matches her endgame summon gate (Unholy Lance = hellspec alloy + profanum), so no item rebalance is needed (per #54). Solid Deep Aether land biomes only (cloud excluded). CAVEATS: (1) prismatic_pond is a BURIED structure (step=underground, terrain_adaptation=bury); Deep Aether is floating-island terrain, so verify in-game that it buries cleanly rather than poking into the void -- fallback is a structure-level override to surface placement. (2) new-chunks-only.",
+  "replace": true,
+  "values": [
+    "deep_aether:golden_grove",
+    "deep_aether:golden_heights",
+    "deep_aether:aerglow_forest",
+    "deep_aether:blue_aerglow_forest",
+    "deep_aether:mystic_aerglow_forest",
+    "deep_aether:luminescent_forest",
+    "deep_aether:aerlavender_fields",
+    "deep_aether:yagroot_swamp"
+  ]
+}

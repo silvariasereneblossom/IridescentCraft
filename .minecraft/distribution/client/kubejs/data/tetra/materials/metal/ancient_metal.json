@@ -1,0 +1,36 @@
+{
+  "_comment": "icraft #57: boss-only Tetra material from Cataclysm's Ancient Remnant. HIGH primary / spell power, deliberately LOW durability (750 vs aethersteel's 2500) so the weapon wears down -- and since ancient_metal_ingot only comes from the Ancient Remnant, the ONLY way to repair a remnant-bladed weapon is to refight the boss. Mirrors the aethersteel schema. (For the shipped pack this can move into datapack_sources/icraft_tetra_materials + a jar rebuild; kept in kubejs/data here so it's live for testing.)",
+  "key": "ancient_metal",
+  "category": "metal",
+  "primary": 9.2,
+  "secondary": 3.0,
+  "tertiary": 4.0,
+  "durability": 1200,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 240,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
+  "tints": {
+    "glyph": "c2a14a",
+    "texture": "c2a14a"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "cataclysm:ancient_metal_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "attributes": {
+    "*irons_spellbooks:spell_power": 0.12,
+    "**irons_spellbooks:max_mana": 0.08,
+    "*irons_spellbooks:cooldown_reduction": 0.04
+  }
+}

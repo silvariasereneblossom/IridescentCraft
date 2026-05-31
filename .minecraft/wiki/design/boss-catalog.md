@@ -26,6 +26,12 @@
 
 ## T1 — Overworld (entry tier)
 
+> **⚠ 2026-05-30 audit (source-verified; full-roster pass still pending).** Mid-revision per the **location-based tiering** decision (overworld = T1) + a jar-level re-audit:
+> - **LuMoreBossesAndMobs REMOVED — phantom.** Mod not installed; `macholote` / `gold_mini_golem` don't exist in the live pack (the catalog had footnoted its own uncertainty).
+> - **Brutal Bosses = placeholder.** Today's only *genuine* T1 source (~18 overworld variants, no tier-gates), but it's "vanilla mobs with boss stats" — flagged for replacement with a boss mod that fits the pack's vibe. The jar actually ships ~18 overworld bosses; `pillagerboss` / `vindicatorboss` / `evokerboss` / `vexboss` / `archmageboss` / `guardianboss` / `zombietoxicboss` are **not yet listed below** (deliberately — pending the mod decision).
+> - **Terramity mis-tiered.** Its guidebook makes Gob (boss #1) a *Diamond/Netherite-gear* fight, and every summon item is priced in diamond→endgame mats. Per #54: **Gob** kept T1 with a re-priced *emerald* summon; **Virtue → Deep Aether (T4)** and **Sorceress Circe → The End (T4)** relocated so their endgame gates become correct; `super_sniffer` / `enchanter_merlin` still to resolve.
+> - **No canonical T1 trophy boss** — `milestone_detection.js` curates only T2–T4. T1 is "optional boss-tier content" until the tracker's per-tier boss **tag** is authored (compass reads a curated tag, not auto-detect).
+
 | Mod | Entity ID | Display Name | Tier | Spawn Mechanism | Spawn Location | Notable Drops | Discovery Pain |
 |-----|-----------|--------------|:---:|------------------|----------------|---------------|:--------------:|
 | L_Ender's Cataclysm | `cataclysm:netherite_monstrosity` (Old) | Old Netherite Monstrosity | T1[^t1cata] | structure-locked | n/a (legacy entity) | (legacy) | 1 |
@@ -46,18 +52,16 @@
 | Mutant Monsters | `mutantmonsters:mutant_zombie` | Mutant Zombie | T1-T2 | scripted (lightning + skull spirit) | Overworld surface, summoned via Skull Spirit on zombie corpse | mutant zombie hulk hammer | 4 |
 | Mutant Monsters | `mutantmonsters:mutant_skeleton` | Mutant Skeleton | T1-T2 | scripted (Skull Spirit on skeleton bones) | Overworld surface | mutant skeleton skull/pelvis/limb/rib/shoulder pad | 4 |
 | Mutant Monsters | `mutantmonsters:mutant_creeper` | Mutant Creeper | T1-T2 | biome-conditional-random | Overworld surface (low spawn) | gunpowder, creeper minion egg | 4 |
-| Terramity | `terramity:gob` | Gob, King of Gnomes | T1-T2 | structure-locked | `terramity:court_of_gnomes` — swamp / dark forest / `#forge:is_swamp` | gobs_claymore, gobs_gilded_hat, belt_of_the_gnome_king | 3 |
-| Terramity | `terramity:enchanter_merlin` | Enchanter Merlin | T1-T2 | structure-locked | `terramity:fairy_fountain`, `terramity:sword_shrine` — overworld | wizard staff, fairy summoning items | 3 |
-| Terramity | `terramity:virtue` | Virtue | T1-T2 | structure-locked | `terramity:prismatic_pond` — overworld | archangel_halo, holy items | 3 |
-| Terramity | `terramity:super_sniffer` | Super Sniffer | T1 | structure-locked | `terramity:ancient_outcrop` — desert / hot biomes | super_sniffers_pelt, giant_sniffers_hoof | 3 |
+| Terramity | `terramity:gob` | Gob, King of Gnomes | T1 (kept; summon re-priced to emerald) | structure-locked | `terramity:court_of_gnomes` — swamp / dark forest / `#forge:is_swamp` | gobs_claymore, gobs_gilded_hat, belt_of_the_gnome_king | 3 |
+| Terramity | `terramity:enchanter_merlin` | Enchanter Merlin | T1-T2 (mis-tiered, TBD) | structure-locked | `terramity:fairy_fountain`, `terramity:sword_shrine` — overworld | wizard staff, fairy summoning items | 3 |
+| Terramity | `terramity:virtue` | Virtue | **T4 → Deep Aether** | structure-locked | `terramity:prismatic_pond` — **Deep Aether** (relocated, was overworld) | archangel_halo, holy items | 3 |
+| Terramity | `terramity:super_sniffer` | Super Sniffer | T1 (mis-tiered, TBD) | structure-locked | `terramity:ancient_outcrop` — desert / hot biomes | super_sniffers_pelt, giant_sniffers_hoof | 3 |
 | Terramity | `terramity:ultra_sniffer` | Ultra Sniffer | T2 | scripted (post-Super Sniffer) | summoned by Super Sniffer's Pelt | sniffer_kamehameha | 4 |
 | Terramity | `terramity:gundalf` | Archmage Gundalf | T2 | structure-locked | `terramity:trial_spire` — ocean biomes | gundalfs_hat, guardians_hand | 3 |
 | Terramity | `terramity:trial_guardian` | Trial Guardian | T2 | structure-locked | `terramity:trial_spire` deep boss room | guardian_grimoire, guardians_hand, energized_core | 3 |
-| Terramity | `terramity:sorceress_circe` | Sorceress Circe | T2 | structure-locked | `terramity:mausoleum` — taiga | malediction_bracelets, evil_king_armor pieces | 3 |
-| LuMoreBossesAndMobs[^lmore] | `lu_more_bosses_and_mobs:macholote` | Macholote | T1 | biome-conditional-random | Overworld surface | mod-specific loot | 4 |
-| LuMoreBossesAndMobs[^lmore] | `lu_more_bosses_and_mobs:gold_mini_golem` | Gold Mini Golem | T1 | biome-conditional-random | Overworld surface | gold-themed loot | 4 |
+| Terramity | `terramity:sorceress_circe` | Sorceress Circe | **T4 → The End** | structure-locked | `terramity:mausoleum` — **The End** (relocated, was taiga) | malediction_bracelets, evil_king_armor pieces | 3 |
 
-**T1 subtotal:** 27 entries (15 Brutal Bosses variants spawning across vanilla structures; 7 Terramity overworld bosses; 3 Mutant Monsters; 2 LuMoreBosses; + 1 legacy Cataclysm entity).
+**T1 subtotal (pre-full-audit):** Brutal Bosses (~18 overworld, undercounted above) + 3 Mutant Monsters + Terramity Gob / Super Sniffer / Merlin. LuMoreBosses (phantom ×2) and the legacy Cataclysm entity dropped; Virtue + Circe relocated to T4. Final counts pending the full-roster audit.
 
 ---
 
@@ -236,7 +240,7 @@ About **44% of progression bosses score Discovery Pain ≥4**, meaning a player 
 
 [^t1cata]: `cataclysm:old_netherite_monstrosity` appears in the lang file as a legacy entity ID — it's been replaced by the T3 `cataclysm:netherite_monstrosity`. Listed for completeness but the compass should ignore.
 
-[^lmore]: LuMoreBossesAndMobs and similar mods are referenced in `master-appendix.md §C.12` ("These boss mods are in the modlist but not yet enumerated...") but I couldn't confirm the exact entity IDs by jar inspection. Listed by Boss Checklist ID conventions; if not in the live pack, compass should silently skip them.
+[^lmore]: ~~LuMoreBossesAndMobs~~ — **CONFIRMED NOT INSTALLED (2026-05-30 jar audit).** No `lu_more`/`lumore`/`moreboss` jar in `mods/`; `macholote` / `gold_mini_golem` are not registered entities in the live pack. The two T1 rows have been removed. `master-appendix.md §C.12` still references it aspirationally — clean that up in the full-roster audit.
 
 [^teikoku]: Majestic Menaces jar has `modId="crazybossfights"` per its `mods.toml` (the public mod is called "Majestic Menaces" but ships under that namespace).
 
