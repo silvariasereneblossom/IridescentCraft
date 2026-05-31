@@ -23,17 +23,19 @@ StartupEvents.registry('item', event => {
         })
 
     // "Relic of the Remnant" -- the unique boss charm (curios charm slot).
-    // Worn: +2 hearts max health + 10% spell power, via the kubejs_curios addon
-    // (kubejs_curios_forge_1.20.1-1.0.3, author zhaiji). Verified from the jar:
-    //   - attachCuriosCapability(...) is mixed onto the NORMAL ItemBuilder -- there is
-    //     NO 'curios:trinket' item type (that bogus 2nd arg was the original "Unknown
-    //     type" startup error). Create the item plainly.
-    //   - CuriosJSCapabilityBuilder.create().addAttribute(attr, name, value, op): exact
-    //     sig is (ResourceLocation, String, double, AttributeModifier.Operation); KubeJS
-    //     coerces the string attr -> ResourceLocation and the op string -> Operation.
-    //     Using 'addition' for both (the one op string confirmed in this pack, via
-    //     dna_simple_staves_buffs.js): +0.1 ADDITION on ISS spell_power (base 1.0) = +10%.
-    //   - the 'curios:charm' tag assigns the charm slot (base Curios, data-driven).
+    // 2026-05-31: the kubejs_curios addon's `attachCuriosCapability` builder mixin
+    // does NOT apply in KubeJS 2001.6.5-build.16. BasicItemJS$Builder correctly
+    // extends the mixin's target (dev.latvian.mods.kubejs.item.ItemBuilder), but the
+    // injection silently fails (version-specific addon-mixin fragility) -> the method
+    // is missing at runtime ("Cannot find function attachCuriosCapability"). The
+    // addon's BINDINGS do load (CuriosJSCapabilityBuilder resolves), but the attach
+    // path is unusable and the addon exposes no event-based alternative.
+    //
+    // So: register the relic as a plain item tagged into the 'curios:charm' slot
+    // (base Curios, data-driven -- equips fine, NO addon needed). Worn stats
+    // (+2 hearts, +10% spell power) are TBD via a server-tick handler mirroring the
+    // proven dna_simple_staves_buffs.js pattern (player.modifyAttribute keyed on the
+    // equipped curio). Until that's wired, it equips as a trophy charm.
     // Texture is a placeholder (heart_of_the_sea) -- swap a CC0 gold-amulet icon later.
     event.create('remnant_relic')
         .displayName('Relic of the Remnant')
@@ -43,9 +45,4 @@ StartupEvents.registry('item', event => {
         .maxStackSize(1)
         .tooltip('§7A pulsing heart of ancient sandstone, warm to the touch.')
         .tag('curios:charm')
-        .attachCuriosCapability(
-            CuriosJSCapabilityBuilder.create()
-                .addAttribute('minecraft:generic.max_health', 'd3f1c2a0-57aa-4a2b-9c3d-100000000057', 4, 'addition')
-                .addAttribute('irons_spellbooks:spell_power', 'd3f1c2a0-57aa-4a2b-9c3d-100000000058', 0.1, 'addition')
-        )
 })

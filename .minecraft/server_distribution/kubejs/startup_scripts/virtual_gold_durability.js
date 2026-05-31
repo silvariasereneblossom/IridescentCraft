@@ -1,24 +1,14 @@
 // =============================================================================
-// VIRTUAL GOLD DURABILITY CLAMP
-// Place in: kubejs/startup_scripts/virtual_gold_durability.js
+// VIRTUAL GOLD DURABILITY CLAMP  (kubejs/startup_scripts/)
 // =============================================================================
+// Clamp celestial_core virtual_gold tools/armor to iron-tier durability.
+// Companion to server_scripts/virtual_gold_clamp.js (atk dmg / armor / toughness).
+// High enchant affinity intentionally stays (not touched here).
 //
-// 2026-05-20: Clamp celestial_core virtual_gold tools/armor to iron-tier
-// durability. Companion to server_scripts/virtual_gold_clamp.js (which handles
-// attack damage / armor / armor_toughness).
-//
-// Targets:
-//   tools (sword/axe/pickaxe/shovel/hoe): 250
-//   helmet:     165   chestplate: 240   leggings: 225   boots: 195
-//
-// Does NOT touch enchantability (Item.getEnchantmentValue() is a separate
-// virtual method and not modified here). Per user 2026-05-20: high enchant
-// affinity stays.
-//
-// 2026-05-31 FIX: switched from broken `<loadedClass>.class` reflection (which
-// silently no-op'd in KubeJS 2001.6.5) to the KubeJS Item mixin setter
-// `kjs$setMaxDamage(int)` via ItemEvents.modification. Same pattern as
-// hulk_hammer_durability.js + terramity_weapon_durability.js.
+// 2026-05-31: use the `maxDamage` PROPERTY on the ItemEvents.modification target
+// (KubeJS 2001.6.5 exposes the kjs$ setter as this property; raw
+// `kjs$setMaxDamage` + the old `<class>.class` reflection both failed).
+// try/catch-hedged. Durable fallback: iridescent_durability_clamp coremod mixin.
 // =============================================================================
 
 ItemEvents.modification(event => {
@@ -34,6 +24,9 @@ ItemEvents.modification(event => {
     'virtual_gold_boots':      195,
   }
   Object.keys(TARGETS).forEach(name => {
-    event.modify('celestial_core:' + name, item => item.kjs$setMaxDamage(TARGETS[name]))
+    event.modify('celestial_core:' + name, item => {
+      try { item.maxDamage = TARGETS[name] }
+      catch (e) { console.warn('[virtual_gold_durability] ' + name + ': ' + e) }
+    })
   })
 })

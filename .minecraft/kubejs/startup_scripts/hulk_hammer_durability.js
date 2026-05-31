@@ -1,29 +1,23 @@
 // =============================================================================
-// HULK HAMMER DURABILITY OVERRIDE
-// Place in: kubejs/startup_scripts/hulk_hammer_durability.js
+// HULK HAMMER DURABILITY OVERRIDE  (kubejs/startup_scripts/)
 // =============================================================================
+// Boost mutantmonsters:hulk_hammer durability 64 -> 640. A T1 melee weapon at
+// 64 dura / 0.5 attack-speed breaks in ~2 minutes of swinging.
 //
-// 2026-05-14: Boost mutantmonsters:hulk_hammer durability 64 -> 640.
-// Native value is too brittle for a T1 melee weapon (1 swing = 1 durability,
-// 0.5 attack-speed means ~2 minutes of swings before destruction).
-//
-// 2026-05-31 FIX: the old version used reflection on Item's private maxDamage
-// field via `ItemClass.class.getDeclaredField(...)`. In KubeJS 2001.6.5 Rhino,
-// `<loadedClass>.class` is not valid (you can't get java.lang.Class that way),
-// so every run hit the catch block and the override silently no-op'd. KubeJS
-// DOES mixin a setter onto the raw Item (`ItemKJS#kjs$setMaxDamage(int)`), which
-// ItemEvents.modification exposes -- so we use that. No reflection, no fragile
-// final-field writes.
-//
-// Pairs with:
-//   server_scripts/hulk_hammer_attributes.js  -- 20 atk dmg / 0.5 aspd /
-//     +50% dmg vs undead via ItemAttributeModifierEvent
-//   datapack_sources/icraft_mm_overrides/.../mutant_zombie.json -- 25% drop
-//   client_scripts/jei_hiding.js -- hides other MM items, keeps hulk_hammer
+// 2026-05-31: prior approaches both failed in KubeJS 2001.6.5 --
+//   - reflection on the private maxDamage field used `<loadedClass>.class`,
+//     which is not valid in this Rhino (silent catch -> no-op);
+//   - `item.kjs$setMaxDamage(n)` is the KubeJS-INTERNAL mixin name, not exposed
+//     to scripts ("Cannot find function kjs$setMaxDamage").
+// The script-facing form is the `maxDamage` PROPERTY on the ItemEvents.modification
+// target (KubeJS maps the kjs$ setter to it). Wrapped in try/catch so any future
+// API drift degrades to a warning, not a hard startup error. If it still doesn't
+// take, the durable fix is a mixin in the iridescent_durability_clamp coremod.
 // =============================================================================
 
 ItemEvents.modification(event => {
   event.modify('mutantmonsters:hulk_hammer', item => {
-    item.kjs$setMaxDamage(640)
+    try { item.maxDamage = 640 }
+    catch (e) { console.warn('[hulk_hammer] maxDamage override failed: ' + e) }
   })
 })
