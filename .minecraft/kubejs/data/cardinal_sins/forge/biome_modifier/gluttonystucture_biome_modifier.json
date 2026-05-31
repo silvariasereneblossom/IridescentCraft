@@ -1,0 +1,7 @@
+{
+  "_comment": "icraft #56: relocate gluttonystucture arena ['sunflower_plains', 'plains'] -> #undergarden:is_undergarden for tier-fit. Cardinal Sins escalates (7 sins -> Lucifer -> Drakara) but every arena was overworld, so location-tiering wrongly flattened them to T1. Now: lesser sins -> Undergarden (T2-T3), fierce sins + Drakara -> Nether (T3), Lucifer -> Nether + a T4 gate (milestone TIER_4_BOSSES). Overrides the mod's forge:add_features biome modifier (same datapack path -> last-loaded wins). NOTE raw_generation feature-placed arena: verify it lands cleanly in the new dimension's terrain.",
+  "type": "forge:add_features",
+  "biomes": "#undergarden:is_undergarden",
+  "features": "cardinal_sins:gluttonystucture",
+  "step": "surface_structures"
+}

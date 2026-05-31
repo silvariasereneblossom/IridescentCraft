@@ -76,6 +76,8 @@ const TIER_4_BOSSES = [
   'botania:doppleganger',  // Gaia Guardian
   'cataclysm:ender_guardian',  // Ender Guardian (End boss, T4)
   'cataclysm:ignited_revenant',  // Ignited Revenant (1000 HP, T4)
+  'cardinal_sins:lucifer',  // Lucifer, The Atrocity -- Cardinal Sins finale (Nether arena), a T4 gate (#56)
+  'cardinal_sins:luciferphase_1',  // phase entity -- included in case it is the killable final phase
 ]
 
 // =============================================================================
