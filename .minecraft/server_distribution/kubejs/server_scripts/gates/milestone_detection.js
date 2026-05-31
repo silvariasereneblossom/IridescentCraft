@@ -68,6 +68,15 @@ const TIER_3_BOSSES = [
   'deeperdarker:shattered',
   // Vanilla (Nether)
   'minecraft:wither',
+  // Cardinal Sins -- 7 sins + Drakara, relocated to Nether + Undergarden (both T3); their essences natively gate Lucifer -> T4 (#56)
+  'cardinal_sins:linneausofsloth',
+  'cardinal_sins:sinofgluttony',
+  'cardinal_sins:sinofgreed',
+  'cardinal_sins:sinofenvy',
+  'cardinal_sins:sinoflust',
+  'cardinal_sins:sinofpride',
+  'cardinal_sins:sinofwrath',
+  'cardinal_sins:drakara',
 ]
 
 // ---- TIER 4 BOSS KILLS ----
