@@ -262,6 +262,16 @@ pub fn sync_apply_gui(cfg: &ServerConfig) -> Result<bool> {
     }
 }
 
+/// True when this box can locally rebuild the GUI (cargo on PATH) -- a dev box.
+/// Server/operator boxes have no cargo, so the GUI hides "Rebuild + Push GUI" for
+/// them (#49). Same signal sync_apply_gui routes on; cached since the UI queries
+/// it every frame.
+pub fn can_rebuild_gui() -> bool {
+    use std::sync::OnceLock;
+    static CACHE: OnceLock<bool> = OnceLock::new();
+    *CACHE.get_or_init(|| crate::tools::find_tool("cargo", &[]).is_some())
+}
+
 /// Pull source from the repo, build the GUI in release mode, stage the
 /// resulting binary as `<live>.new`, then apply + relaunch.
 ///

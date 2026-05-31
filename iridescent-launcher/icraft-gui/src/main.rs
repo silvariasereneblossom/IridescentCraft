@@ -638,8 +638,13 @@ impl IcraftApp {
 
         ui.add_space(8.0);
         ui.heading("Sync + install");
+        let can_rebuild = icraft_core::self_update::can_rebuild_gui();
         ui.label(egui::RichText::new(
-            "'Sync' is the one-button update: dev boxes (cargo available) rebuild + push + apply; server boxes pull the latest binary + apply. Use Apply Self-Update / Rebuild + Push GUI directly only when you need to override the auto-routing."
+            if can_rebuild {
+                "'Sync' is the one-button update: dev boxes (cargo available) rebuild + push + apply; server boxes pull the latest binary + apply. Use Apply Self-Update / Rebuild + Push GUI directly only when you need to override the auto-routing."
+            } else {
+                "'Sync' is the one-button update: pulls the latest launcher binary + applies it. Use Apply Self-Update to override."
+            }
         ).small().weak());
         ui.add_space(2.0);
         ui.horizontal_wrapped(|ui| {
@@ -706,7 +711,8 @@ impl IcraftApp {
                     Ok(())
                 });
             }
-            if action_btn(ui, "Rebuild + Push GUI", busy).clicked() {
+            // Dev-only: hidden on boxes without cargo (#49).
+            if can_rebuild && action_btn(ui, "Rebuild + Push GUI", busy).clicked() {
                 // In-process build flow: cargo build the GUI from
                 // ICRAFT_LAUNCHER_SRC (or auto-located source), stage the
                 // result as <running>.new next to current_exe wherever
