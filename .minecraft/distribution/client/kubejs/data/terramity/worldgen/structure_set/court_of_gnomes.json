@@ -1,0 +1,16 @@
+{
+  "_comment": "icraft #53 override: court_of_gnomes (Gob, T1) was spacing 46 / separation 15 in swamp+dark_forest -- the narrowest qualifying biomes of the T1 set. Lowered to 34/14 (~1.83x denser, ~544 blk avg) so Gob is findable when crossing a swamp/dark-forest. minecraft:random_spread, triangular; spacing>separation holds (34>14). structures + salt + spread_type copied verbatim from terramity-0.9.8.",
+  "structures": [
+    {
+      "structure": "terramity:court_of_gnomes",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "spread_type": "triangular",
+    "salt": 57801474,
+    "spacing": 34,
+    "separation": 14
+  }
+}

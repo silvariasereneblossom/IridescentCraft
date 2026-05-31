@@ -1,0 +1,15 @@
+{
+  "_comment": "icraft #53 override: ancient_outcrop (Super Sniffer, T1 desert/hot overworld) was spacing 45 / separation 40 -- near-gridlocked (only ~5-chunk jitter), pathologically rare for a T1 entry boss. Lowered to 40/20: de-gridlocks (jitter 5->20 chunks) + ~1.27x denser (~640 blk avg), comparable to cursed_pyramid's 48/28. minecraft:random_spread; spacing>separation holds (40>20). structures + salt copied verbatim from terramity-0.9.8.",
+  "structures": [
+    {
+      "structure": "terramity:ancient_outcrop",
+      "weight": 1
+    }
+  ],
+  "placement": {
+    "type": "minecraft:random_spread",
+    "salt": 44337822,
+    "spacing": 40,
+    "separation": 20
+  }
+}
