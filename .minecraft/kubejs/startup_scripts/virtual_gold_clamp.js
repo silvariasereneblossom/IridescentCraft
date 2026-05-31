@@ -1,6 +1,17 @@
 // =============================================================================
+// [#60 / 2026-05-31] MOVED from server_scripts/ to startup_scripts/.
+// Registering a raw MinecraftForge.EVENT_BUS listener from a SERVER script re-runs on
+// every reload (world entry, /reload, datapack reload), stacking duplicate listeners
+// whose captured Rhino scope is discarded on the next reload. A stale listener then
+// fails at enterActivationFunction (IllegalStateException: null) the next time an entity
+// recomputes equipment attribute modifiers -> 'Ticking entity' crash. Startup scripts
+// run ONCE and keep their context for the game's lifetime, so the listener registers
+// exactly once with a living scope. Logic below is unchanged.
+// =============================================================================
+
+// =============================================================================
 // VIRTUAL GOLD CLAMP -- celestial_core virtual_gold set tuned to iron-tier
-// Place in: kubejs/server_scripts/virtual_gold_clamp.js
+// Place in: kubejs/startup_scripts/virtual_gold_clamp.js
 // =============================================================================
 //
 // 2026-05-20: Virtual Gold set from celestial_core ships above-tier stats

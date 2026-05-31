@@ -1,7 +1,18 @@
 // =============================================================================
+// [#60 / 2026-05-31] MOVED from server_scripts/ to startup_scripts/.
+// Registering a raw MinecraftForge.EVENT_BUS listener from a SERVER script re-runs on
+// every reload (world entry, /reload, datapack reload), stacking duplicate listeners
+// whose captured Rhino scope is discarded on the next reload. A stale listener then
+// fails at enterActivationFunction (IllegalStateException: null) the next time an entity
+// recomputes equipment attribute modifiers -> 'Ticking entity' crash. Startup scripts
+// run ONCE and keep their context for the game's lifetime, so the listener registers
+// exactly once with a living scope. Logic below is unchanged.
+// =============================================================================
+
+// =============================================================================
 // ICRAFT MAGIC ENCHANTS -- attribute effects for the iridescent_reforging
 // enchant set (icraft:mana_boost / mana_regen / arcane_focus)
-// Place in: kubejs/server_scripts/enchants/icraft_magic_enchants.js
+// Place in: kubejs/startup_scripts/enchants/icraft_magic_enchants.js
 // =============================================================================
 //
 // 2026-05-21: Companion to the Java-side enchant registration in
