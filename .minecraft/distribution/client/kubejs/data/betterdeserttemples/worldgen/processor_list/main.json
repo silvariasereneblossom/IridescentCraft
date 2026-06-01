@@ -7,7 +7,7 @@
         {
           "location_predicate": { "predicate_type": "minecraft:always_true" },
           "input_predicate": {
-            "predicate_type": "minecraft:blockstate",
+            "predicate_type": "minecraft:blockstate_match",
             "block_state": {
               "Name": "minecraft:trapped_chest",
               "Properties": { "facing": "north", "type": "single", "waterlogged": "false" }
@@ -21,7 +21,7 @@
         {
           "location_predicate": { "predicate_type": "minecraft:always_true" },
           "input_predicate": {
-            "predicate_type": "minecraft:blockstate",
+            "predicate_type": "minecraft:blockstate_match",
             "block_state": {
               "Name": "minecraft:trapped_chest",
               "Properties": { "facing": "south", "type": "single", "waterlogged": "false" }
@@ -35,7 +35,7 @@
         {
           "location_predicate": { "predicate_type": "minecraft:always_true" },
           "input_predicate": {
-            "predicate_type": "minecraft:blockstate",
+            "predicate_type": "minecraft:blockstate_match",
             "block_state": {
               "Name": "minecraft:trapped_chest",
               "Properties": { "facing": "east", "type": "single", "waterlogged": "false" }
@@ -49,7 +49,7 @@
         {
           "location_predicate": { "predicate_type": "minecraft:always_true" },
           "input_predicate": {
-            "predicate_type": "minecraft:blockstate",
+            "predicate_type": "minecraft:blockstate_match",
             "block_state": {
               "Name": "minecraft:trapped_chest",
               "Properties": { "facing": "west", "type": "single", "waterlogged": "false" }
