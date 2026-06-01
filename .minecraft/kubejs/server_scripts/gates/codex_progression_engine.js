@@ -46,23 +46,36 @@ const CODEX_TOKENS = {
   3: { item: 'icraft:progression_token_t3', threshold: 2000, grantsStage: 'tier_4' },
 }
 
-// ---- §2 Engineering conversion tables (the COMPLETE conversion set) --------
-// Schema per entry: { tier, value, per, cap }
-//   tier  — which tier's token this material yields (1/2/3)
-//   value — tokens granted per `per` items submitted
-//   per   — items required for `value` tokens (e.g. 1 token per 100 iron → value:1, per:100)
-//   cap   — per-resource LIFETIME cap, in ITEM units (e.g. iron cap 7500 → max 75 tokens)
+// ---- §2 Engineering + Route-D Magic conversion tables (the COMPLETE set) ----
+// Two entry shapes:
 //
-// Item IDs verified against TesterLogs/Item Audit/all_items.tsv (2026-06-01).
+//   FIXED-tier  { tier, value, per, cap }
+//     tier  — which tier's token this material yields (1/2/3)
+//     value — tokens granted per `per` items submitted
+//     per   — items for `value` tokens (e.g. 1 token / 100 → value:1, per:100)
+//     cap   — per-resource LIFETIME cap, in ITEM units (iron-style fixed entries)
+//
+//   CONTEXTUAL  { contextual:true, value, per, capPerTier:{1,2,3} }
+//     Mints tokens for the player's CURRENT transition tier (the lowest tier
+//     whose next stage isn't granted yet — see codexCurrentTier). Uses THAT
+//     tier's cap from capPerTier, tracked per-tier in persistentData (one cap
+//     key per item PER tier). Lets the §2 per-tier bulk-metal caps (iron
+//     7500/15000/30000; copper·gold·redstone 2500/15000/30000) all apply, so
+//     pure-engineering can close T2 + T3, not just T1. value/per are shared
+//     across tiers (the §2 rate is 1/100 at every tier).
+//
+// Item IDs verified against TesterLogs/Item Audit/all_items.tsv +
+// the mod jars' en_us.json registries (2026-06-01).
 // Notes on a few design-table → real-ID resolutions are inline.
 const CODEX_CONVERSIONS = {
 
   // ===== T1 — CREATE — subtotal ≈ 590 (118% of 500) =====
-  // Bulk metals (1 token / 100).
-  'minecraft:iron_ingot':     { tier: 1, value: 1, per: 100, cap: 7500 }, // → 75
-  'minecraft:copper_ingot':   { tier: 1, value: 1, per: 100, cap: 2500 }, // → 25
-  'minecraft:gold_ingot':     { tier: 1, value: 1, per: 100, cap: 2500 }, // → 25
-  'minecraft:redstone':       { tier: 1, value: 1, per: 100, cap: 2500 }, // → 25
+  // Bulk metals — CONTEXTUAL: mint the player's current transition tier's token,
+  // capped per-tier (§2 T1/T2/T3 bulk-metal caps). 1 token / 100 at every tier.
+  'minecraft:iron_ingot':     { contextual: true, value: 1, per: 100, capPerTier: { 1: 7500, 2: 15000, 3: 30000 } }, // T1→75 T2→150 T3→300
+  'minecraft:copper_ingot':   { contextual: true, value: 1, per: 100, capPerTier: { 1: 2500, 2: 15000, 3: 30000 } }, // T1→25 T2→150 T3→300
+  'minecraft:gold_ingot':     { contextual: true, value: 1, per: 100, capPerTier: { 1: 2500, 2: 15000, 3: 30000 } }, // T1→25 T2→150 T3→300
+  'minecraft:redstone':       { contextual: true, value: 1, per: 100, capPerTier: { 1: 2500, 2: 15000, 3: 30000 } }, // T1→25 T2→150 T3→300
   // Intermediate alloys (1 token / 50, cap 500 → 10 each).
   'create:brass_ingot':       { tier: 1, value: 1, per: 50,  cap: 500 },  // → 10
   'create:andesite_alloy':    { tier: 1, value: 1, per: 50,  cap: 500 },  // → 10
@@ -81,16 +94,14 @@ const CODEX_CONVERSIONS = {
   'create:water_wheel':       { tier: 1, value: 10, per: 1, cap: 4 },     // → 40
 
   // ===== T2 — THERMAL — subtotal ≈ 1200 (120% of 1000) =====
-  // DESIGN-vs-IMPLEMENTATION NOTE (bulk metals):
-  //   The §2 T2 + T3 tables re-list gold/iron/copper/redstone at higher caps
-  //   (15000 @ T2, 30000 @ T3). But those are the SAME vanilla item IDs as the
-  //   T1 bulk-metal rows, and a JS object key can map to only one conversion
-  //   entry. Since the pack has no per-tier-distinct iron/gold/etc. item, the
-  //   bulk metals feed the T1 token pool only. T2/T3 Engineering is therefore
-  //   carried by the tier-EXCLUSIVE submissions: invar/electrum @ T2,
-  //   diamond/netherite/biofuel @ T3, plus the tier-exclusive Thermal/Mekanism
-  //   machine blocks. Implication for the "pure-engineering reaches threshold"
-  //   design goal is called out in the build report (a Phase-1 risk/assumption).
+  // BULK METALS at T2/T3: the §2 T2+T3 tables re-list gold/iron/copper/redstone
+  // at higher caps (15000 @ T2, 30000 @ T3). These are the SAME vanilla item IDs
+  // as T1, so they're handled by the CONTEXTUAL bulk-metal entries above (one
+  // cap key per item PER tier) — when a player working T1→T2 submits iron it
+  // mints T2 tokens against the 15000 cap, etc. That restores the §2 ore-base
+  // curve (36%/62%/64%) and lets pure-engineering close T2 + T3 on bulk metals +
+  // the tier-exclusive submissions below (invar/electrum @ T2; diamond/netherite/
+  // biofuel @ T3) + the tier-exclusive Thermal/Mekanism machine blocks.
   'thermal:invar_ingot':      { tier: 2, value: 1, per: 50, cap: 500 },   // → 10  (design "Invar ore")
   'thermal:electrum_ingot':   { tier: 2, value: 1, per: 50, cap: 500 },   // → 10  (design "Electrum ore")
   // High-value Thermal machine blocks.
@@ -120,12 +131,118 @@ const CODEX_CONVERSIONS = {
   'mekanism:energized_smelter':      { tier: 3, value: 40, per: 1, cap: 2 },  // → 80
   'mekanism:basic_energy_cube':      { tier: 3, value: 40, per: 1, cap: 2 },  // → 80  (Energy Cube — Basic)
   'mekanism:alloy_reinforced':       { tier: 3, value: 1, per: 5, cap: 50 },  // → 10  (design "Advanced Alloy"; rate ⚠ OPEN in spec — placeholder 1/5)
+
+  // ===========================================================================
+  // ROUTE D — MAGIC (non-combat cultivation). FIXED-tier: Magic content is
+  // tier-LOCATED (Botania @ T1 / Ars @ T2 / advanced-Botania+Occultism+F&A @ T3),
+  // so each reagent/apparatus mints a fixed tier's token. Feeds the SAME
+  // progression_token_t1/t2/t3 pool (Magic is a non-combat lane, like
+  // Engineering). Reagents = the "ore" (crystallized cultivation output, big
+  // caps); Apparatus = the "machines" (milestone blocks/rituals, small caps,
+  // big values). Spellcasting & combat drops excluded — Gaia Spirit (a boss
+  // drop, botania:gaia_ingot) is DROPPED per the design's non-combat invariant.
+  // All IDs jar+audit confirmed 2026-06-01; design → real-ID notes inline.
+
+  // ----- T1 — BOTANIA — subtotal ≈ 600 -----
+  'botania:manasteel_ingot':   { tier: 1, value: 1, per: 50,  cap: 10000 }, // → 200
+  'botania:mana_pearl':        { tier: 1, value: 1, per: 20,  cap: 2000 },  // → 100
+  // Mystical Petals (any colour) — all 16 share one logical resource + cap pool
+  // is impossible across distinct keys, so each colour carries the full row cap
+  // (design "Mystical Petals (any)" 4000 @ 1/80 → 50). Per-colour cap 4000.
+  'botania:white_petal':       { tier: 1, value: 1, per: 80,  cap: 4000 },  // → 50
+  'botania:orange_petal':      { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:magenta_petal':     { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:light_blue_petal':  { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:yellow_petal':      { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:lime_petal':        { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:pink_petal':        { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:gray_petal':        { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:light_gray_petal':  { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:cyan_petal':        { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:purple_petal':      { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:blue_petal':        { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:brown_petal':       { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:green_petal':       { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:red_petal':         { tier: 1, value: 1, per: 80,  cap: 4000 },
+  'botania:black_petal':       { tier: 1, value: 1, per: 80,  cap: 4000 },
+  // Runic Altar runes — 16 elemental/seasonal/sin runes, design "runes" 16 @ 5 → 80.
+  // Per-rune cap 16 (the design cap is the row total; each rune key carries it).
+  'botania:rune_water':        { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_fire':         { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_earth':        { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_air':          { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_spring':       { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_summer':       { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_autumn':       { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_winter':       { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_mana':         { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_lust':         { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_gluttony':     { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_greed':        { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_sloth':        { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_wrath':        { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_envy':         { tier: 1, value: 5, per: 1, cap: 16 },
+  'botania:rune_pride':        { tier: 1, value: 5, per: 1, cap: 16 },
+  // Apparatus (blocks).
+  'botania:runic_altar':       { tier: 1, value: 20, per: 1, cap: 2 },     // → 40  (Runic Altar)
+  'botania:mana_pool':         { tier: 1, value: 10, per: 1, cap: 4 },     // → 40  (Mana Pool)
+  'botania:mana_spreader':     { tier: 1, value: 10, per: 1, cap: 4 },     // → 40  (Mana Spreaders)
+  'botania:endoflame':         { tier: 1, value: 5,  per: 1, cap: 8 },     // → 40  (Generating flora)
+  'botania:alchemy_catalyst':  { tier: 1, value: 5,  per: 1, cap: 2 },     // → 10  (Alchemy Catalyst)
+
+  // ----- T2 — ARS NOUVEAU — subtotal ≈ 1250 -----
+  'ars_nouveau:source_gem':        { tier: 2, value: 1, per: 50,  cap: 30000 }, // → 600
+  'ars_nouveau:magebloom_fiber':   { tier: 2, value: 1, per: 50,  cap: 4000 },  // → 80
+  'ars_nouveau:sourceberry_bush':  { tier: 2, value: 1, per: 100, cap: 6000 },  // → 60  (Sourceberries — the bush block IS the held berry item)
+  'botania:mana_diamond':          { tier: 2, value: 1, per: 10,  cap: 500 },   // → 50  (Mana Diamond — re-tiered T1→T2, needs a diamond)
+  'ars_nouveau:agronomic_sourcelink':  { tier: 2, value: 30, per: 1, cap: 2 },  // → 60  (Sourcelinks ×3 → 180)
+  'ars_nouveau:alchemical_sourcelink': { tier: 2, value: 30, per: 1, cap: 2 },  // → 60
+  'ars_nouveau:mycelial_sourcelink':   { tier: 2, value: 30, per: 1, cap: 2 },  // → 60
+  'ars_nouveau:source_jar':            { tier: 2, value: 20, per: 1, cap: 4 },  // → 80  (Source Jars)
+  'ars_nouveau:imbuement_chamber':     { tier: 2, value: 20, per: 1, cap: 2 },  // → 40  (Imbuement Chamber / Enchanting Apparatus → 80)
+  'ars_nouveau:enchanting_apparatus':  { tier: 2, value: 20, per: 1, cap: 2 },  // → 40
+  'ars_nouveau:drygmy_stone':          { tier: 2, value: 25, per: 1, cap: 2 },  // → 50  (Drygmy Henge — audit display "Drygmy Henge")
+  'ars_nouveau:ritual_brazier':        { tier: 2, value: 15, per: 1, cap: 2 },  // → 30  (Ritual Brazier; premium Sourcelinks below → +40)
+  'ars_nouveau:vitalic_sourcelink':    { tier: 2, value: 20, per: 1, cap: 2 },  // → 40  (premium Sourcelink)
+  'ars_nouveau:volcanic_sourcelink':   { tier: 2, value: 20, per: 1, cap: 2 },  // → 40  (premium Sourcelink)
+
+  // ----- T3 — advanced BOTANIA + OCCULTISM + F&A — subtotal ≈ 2360 -----
+  'botania:terrasteel_ingot':           { tier: 3, value: 1, per: 4,  cap: 2000 }, // → 500
+  'forbidden_arcanus:arcane_crystal':   { tier: 3, value: 1, per: 10, cap: 4000 }, // → 400
+  'botania:elementium_ingot':           { tier: 3, value: 1, per: 10, cap: 3000 }, // → 300  (Elementium / Spirit-Attuned row → 600)
+  'occultism:spirit_attuned_gem':       { tier: 3, value: 1, per: 5,  cap: 1500 }, // → 300
+  'forbidden_arcanus:deorum_ingot':     { tier: 3, value: 1, per: 10, cap: 1500 }, // → 150  (Deorum / Iesnium row → 250)
+  'occultism:iesnium_ingot':            { tier: 3, value: 1, per: 10, cap: 1000 }, // → 100
+  'occultism:otherworld_essence':       { tier: 3, value: 1, per: 5,  cap: 600 },  // → 120  (Otherworld / Demon's Dream essence)
+  'occultism:demons_dream_essence':     { tier: 3, value: 1, per: 5,  cap: 600 },  // → 120
+  'forbidden_arcanus:hephaestus_forge': { tier: 3, value: 80, per: 1, cap: 1 },    // → 80   (Hephaestus Forge)
+  'botania:terra_plate':                { tier: 3, value: 30, per: 1, cap: 2 },    // → 60   (Terra Plate / Terrestrial Agglomeration Plate)
+  'botania:alfheim_portal':             { tier: 3, value: 20, per: 1, cap: 2 },    // → 40   (Alfheim Portal / Elven Gateway Core)
+  'occultism:miner_djinni_ores':        { tier: 3, value: 40, per: 1, cap: 3 },    // → 120  (Occultism ore-miner spirit lamps — "Ore Miner Djinni")
+  'occultism:storage_controller':       { tier: 3, value: 30, per: 1, cap: 2 },    // → 60   (Dimensional Storage — "Dimensional Storage Actuator")
+  'forbidden_arcanus:eternal_stella':   { tier: 3, value: 25, per: 1, cap: 2 },    // → 50   (Eternal Stella)
+  'forbidden_arcanus:clibano_core':     { tier: 3, value: 20, per: 1, cap: 2 },    // → 40   (Clibano)
+  'botania:conjuration_catalyst':       { tier: 3, value: 20, per: 1, cap: 2 },    // → 40   (Conjuration Catalyst — re-tiered T1→T3, Alfheim chain)
 }
 
 // persistentData key for a resource's lifetime-submitted count (item units).
-// Sanitise the item ID into an NBT-safe key fragment.
-function codexCapKey(itemId) {
-  return 'icraft_codex_sub_' + itemId.replace(/[:\/]/g, '_')
+// Sanitise the item ID into an NBT-safe key fragment. For CONTEXTUAL entries a
+// `tier` suffix is appended so each item tracks an INDEPENDENT lifetime count
+// per tier (iron@T1 cap and iron@T2 cap are separate counters). Fixed entries
+// pass tier=null → bare key, preserving existing persistentData (no migration).
+function codexCapKey(itemId, tier) {
+  const base = 'icraft_codex_sub_' + itemId.replace(/[:\/]/g, '_')
+  return tier ? base + '_t' + tier : base
+}
+
+// The player's CURRENT transition tier = the lowest tier whose unlock stage is
+// not yet granted (no tier_2 → 1; has tier_2 no tier_3 → 2; has tier_3 no
+// tier_4 → 3; has tier_4 → 0 = terminal, contextual metals no longer mint).
+function codexCurrentTier(player) {
+  if (!AStages.playerHasStage('tier_2', player)) return 1
+  if (!AStages.playerHasStage('tier_3', player)) return 2
+  if (!AStages.playerHasStage('tier_4', player)) return 3
+  return 0
 }
 
 // =============================================================================
@@ -143,10 +260,28 @@ function codexSubmit(player) {
   let anyEligible = false
   let anyCapped = false
 
+  // CONTEXTUAL bulk metals mint the player's current transition tier (T1/2/3).
+  // 0 = terminal (tier_4 held): contextual metals are skipped (nothing left to
+  // mint toward), while fixed-tier entries still convert normally.
+  const curTier = codexCurrentTier(player)
+
   // Iterate each conversion entry; sum the matching item across all slots,
   // then consume whole conversion units up to the remaining cap.
   for (const itemId in CODEX_CONVERSIONS) {
     const conv = CODEX_CONVERSIONS[itemId]
+
+    // Resolve the target tier, cap, and per-tier cap key for this entry.
+    let targetTier, cap, capKey
+    if (conv.contextual) {
+      if (curTier === 0) continue            // terminal — contextual metals inert
+      targetTier = curTier
+      cap = conv.capPerTier[targetTier]
+      capKey = codexCapKey(itemId, targetTier)
+    } else {
+      targetTier = conv.tier
+      cap = conv.cap
+      capKey = codexCapKey(itemId)           // bare key (unchanged)
+    }
 
     // Count this item across the whole inventory.
     let available = 0
@@ -157,9 +292,9 @@ function codexSubmit(player) {
     if (available <= 0) continue
     anyEligible = true
 
-    // Remaining cap for this resource.
-    const already = pdata.getInt(codexCapKey(itemId))
-    const remainingCap = conv.cap - already
+    // Remaining cap for this resource (at this tier, for contextual entries).
+    const already = pdata.getInt(capKey)
+    const remainingCap = cap - already
     if (remainingCap <= 0) { anyCapped = true; continue }
 
     // Submittable = min(available, remainingCap). Convert only whole units
@@ -182,12 +317,12 @@ function codexSubmit(player) {
     }
 
     // Bank cap progress + tally tokens.
-    pdata.putInt(codexCapKey(itemId), already + consumed)
-    earned[conv.tier] += tokens
+    pdata.putInt(capKey, already + consumed)
+    earned[targetTier] += tokens
 
     let dispName = itemId
     try { dispName = Item.of(itemId).hoverName.string } catch (_) {}
-    lines.push({ name: dispName, consumed: consumed, tokens: tokens, tier: conv.tier })
+    lines.push({ name: dispName, consumed: consumed, tokens: tokens, tier: targetTier })
   }
 
   // Give the earned tokens + report.
@@ -255,6 +390,13 @@ function codexBalance(player) {
     if (has) line = line.append(Text.green('  ✔ ' + c.grantsStage + ' already unlocked'))
     else if (meets) line = line.append(Text.aqua('  ★ threshold met — advancing!'))
     player.tell(line)
+  }
+  // Which tier bulk metals (iron/copper/gold/redstone) currently mint toward.
+  const curTier = codexCurrentTier(player)
+  if (curTier === 0) {
+    player.tell(Text.gray('  Bulk metals: ').append(Text.green('all tiers cleared (T4) — no longer minting')))
+  } else {
+    player.tell(Text.gray('  Bulk metals mint: ').append(Text.aqua('Tier ' + curTier + ' tokens')).append(Text.gray(' (current transition)')))
   }
   player.tell(Text.gold('═════════════════════'))
 
@@ -383,4 +525,5 @@ ServerEvents.commandRegistry(event => {
 
 console.log('[IridescentCraft] Codex progression engine loaded (/icraft codex submit | balance)')
 console.log('  Thresholds: T1→T2 500 | T2→T3 1000 | T3→T4 2000 (T4 terminal = Ender Dragon)')
-console.log('  Engineering conversion entries: ' + Object.keys(CODEX_CONVERSIONS).length)
+console.log('  Conversion entries (Engineering + Magic): ' + Object.keys(CODEX_CONVERSIONS).length)
+console.log('  Bulk metals are CONTEXTUAL — mint the player\'s current transition tier (per-tier caps)')
