@@ -29,7 +29,7 @@
     }
   ],
   "attributes": {
-    "*irons_spellbooks:nature_spell_power": 0.08,
-    "*irons_spellbooks:spell_power": 0.15
+    "**irons_spellbooks:nature_spell_power": 0.08,
+    "**irons_spellbooks:spell_power": 0.15
   }
 }
