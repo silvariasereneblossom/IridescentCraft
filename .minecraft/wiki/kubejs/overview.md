@@ -62,8 +62,8 @@ Paxi 4.0 Forge loads datapacks from `global_packs/required_data/` as **ZIP files
 | `icraft_botania_overrides.zip` | Botania recipe/config overrides |
 | `iridescent_classes.zip` | Origins class definitions |
 | `iridescent_races.zip` | Origins race definitions |
-| `improvedmobs_datapack.zip` | Improved Mobs configuration — **dormant** (Improved Mobs removed 2026-05-03; zip retained on disk but targets an absent mod) |
-| `champions_datapack.zip` | Champions mob affix configuration — **dormant** (Champions Unofficial removed 2026-04-07; zip retained on disk but targets an absent mod) |
+| `improvedmobs_datapack.zip` | Improved Mobs configuration — **removed** (Improved Mobs dropped 2026-05-03, replaced by the `iridescent_difficulty` mod; source + zips deleted from all distros 2026-06-01) |
+| `champions_datapack.zip` | Champions mob affix configuration — **removed** (Champions Unofficial dropped 2026-04-07, replaced by Majrusz's Progressive Difficulty; source deleted 2026-06-01 — shipped as source only, never built to a loaded zip) |
 
 ### Load Order
 

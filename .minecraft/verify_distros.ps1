@@ -17,7 +17,7 @@ $paxiZips = @(
     "iridescent_codex.zip", "icraft_skills.zip", "icraft_apotheosis_affixes.zip",
     "icraft_botania_overrides.zip", "icraft_tetra_materials.zip", "icraft_tetra_overrides.zip",
     "icraft_aethersteel_overrides.zip", "icraft_progdiff_overrides.zip",
-    "improvedmobs_datapack.zip", "icraft_loot_overrides.zip", "icraft_dungeon_crawl_overrides.zip"
+    "icraft_loot_overrides.zip", "icraft_dungeon_crawl_overrides.zip"
 )
 
 $customJars = @(

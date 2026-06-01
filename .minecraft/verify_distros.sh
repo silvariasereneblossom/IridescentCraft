@@ -24,7 +24,6 @@ PAXI_ZIPS=(
   "icraft_tetra_overrides.zip"
   "icraft_aethersteel_overrides.zip"
   "icraft_progdiff_overrides.zip"
-  "improvedmobs_datapack.zip"
   "icraft_loot_overrides.zip"
   "icraft_dungeon_crawl_overrides.zip"
 )
