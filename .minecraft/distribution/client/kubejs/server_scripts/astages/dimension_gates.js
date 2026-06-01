@@ -38,11 +38,14 @@ AStages.addRestrictionForDimension('modpack/dim_nether', 'tier_3', rl('minecraft
 AStages.addRestrictionForDimension('modpack/dim_abyss', 'tier_3', rl('theabyss:the_abyss'))
 
 // =========================================================================
-// TIER 4 DIMENSIONS — Deep Aether, The End
+// TIER 4 DIMENSIONS — The End
 // Locked until player has tier_4 stage
 // =========================================================================
 
-AStages.addRestrictionForDimension('modpack/dim_deep_aether', 'tier_4', rl('deep_aether:the_aether'))
+// NOTE: Deep Aether (deep_aether) is INSTALLED but registers NO standalone
+// dimension — in 1.20.1-1.1.7 it injects content into aether:the_aether (the
+// base Aether, already gated at tier_2). There is no 'deep_aether:the_aether'
+// dimension to gate, so the former tier_4 line was removed (it silently no-op'd).
 
 // THE END — Major design change: gated to Tier 4
 AStages.addRestrictionForDimension('modpack/dim_end', 'tier_4', rl('minecraft:the_end'))
