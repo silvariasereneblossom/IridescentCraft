@@ -1,4 +1,5 @@
 {
+  "_comment": "icraft override of the cursed_pyramid arena chest loot (Ancient Remnant chamber). The source default seeded raw diamond + diamond_block + enchanted diamond_sword/chestplate, violating the pack's no-diamonds-in-overworld-structures policy -- the archaeology sibling (cataclysm/loot_tables/archaeology/cursed_pyramid.json) already enforces this and was the template. Re-themed the four diamond entries to the same T2->T3 vocabulary: cataclysm:ancient_metal_ingot (repair-line tease), icraft:progression_token_t2, and ISS arcane_essence/rare_ink. NOTE: the ancient_metal weight/count here is a placeholder pending the #58 boss-Tetra repair-economy pass (arena = tease only; bulk repair supply stays behind refighting the Ancient Remnant).",
   "type": "minecraft:chest",
   "pools": [
     {
@@ -9,9 +10,9 @@
         { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 16, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2, "max": 6 } } ] },
         { "type": "minecraft:item", "name": "minecraft:iron_ingot", "weight": 14, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 3, "max": 8 } } ] },
         { "type": "minecraft:item", "name": "minecraft:lapis_lazuli", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4, "max": 12 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 4 } } ] },
+        { "type": "minecraft:item", "name": "cataclysm:ancient_metal_ingot", "weight": 10, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 2 } } ] },
         { "type": "minecraft:item", "name": "minecraft:gold_block", "weight": 5 },
-        { "type": "minecraft:item", "name": "minecraft:diamond_block", "weight": 2 }
+        { "type": "minecraft:item", "name": "icraft:progression_token_t2", "weight": 2 }
       ]
     },
     {
@@ -22,8 +23,8 @@
         { "type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 18, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4, "max": 12 } } ] },
         { "type": "minecraft:item", "name": "minecraft:enchanted_book", "weight": 16, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": { "type": "minecraft:uniform", "min": 20, "max": 39 }, "treasure": true } ] },
         { "type": "minecraft:item", "name": "minecraft:golden_apple", "weight": 12, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 3 } } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond_sword", "weight": 5, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": { "type": "minecraft:uniform", "min": 20, "max": 30 }, "treasure": true } ] },
-        { "type": "minecraft:item", "name": "minecraft:diamond_chestplate", "weight": 4, "functions": [ { "function": "minecraft:enchant_with_levels", "levels": { "type": "minecraft:uniform", "min": 20, "max": 30 }, "treasure": true } ] },
+        { "type": "minecraft:item", "name": "irons_spellbooks:arcane_essence", "weight": 5, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2, "max": 4 } } ] },
+        { "type": "minecraft:item", "name": "irons_spellbooks:rare_ink", "weight": 4 },
         { "type": "minecraft:item", "name": "minecraft:enchanted_golden_apple", "weight": 3 }
       ]
     },
