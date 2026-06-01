@@ -60,6 +60,10 @@
 
   "item.icraft.class_altar": "Class Altar",
 
+  "item.icraft.progression_token_t1": "Codex Token I",
+  "item.icraft.progression_token_t2": "Codex Token II",
+  "item.icraft.progression_token_t3": "Codex Token III",
+
   "power.icraft.origin/witch-of-ink/magic_brush.name": "",
   "power.icraft.origin/witch-of-ink/magic_brush.description": "",
   "power.icraft.origin/witch-of-ink/eraser.name": "",
