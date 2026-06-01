@@ -36,7 +36,7 @@
 
 ## Combat & Scaling
 
-Apotheosis, ScalingMobs, Majrusz's Progressive Difficulty, Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Truly Modular (Archery + Arsenal — Armory replaced by Iridescent Reforging), Iron's Spells, Improved Mobs, JustLevelingFork, Tetra (+Tetracelium compat, mutil library, Iridescent Reforging armor extension), Soul Fire'd
+Apotheosis, `iridescent_difficulty` (bespoke time-based scaling — replaced ScalingMobs / Improved Mobs / Azukaar's), Majrusz's Progressive Difficulty (elite mobs — replaced Champions Unofficial), Progressive Bosses, Cataclysmic Combat, Better Combat, Simply Swords, Too Many Bows, Iron's Spells, JustLevelingFork, Tetra stack (Tetra + `art_of_forging` + `adtetra` — the crafted-weapon/tool system formerly documented as "Truly Modular", which is not in pack) + Iridescent Reforging armor extension (bundled in `iridescent_tetra_expansion`), Soul Fire'd
 
 ## Player Systems
 
@@ -63,7 +63,7 @@ Twilight Forest, Blue Skies, The Aether, The Undergarden, Deeper and Darker, Dee
 
 ## Boss Mods
 
-Cataclysm (+Apotheosis addon), Meet Your Fight, Mutant Monsters, Ultimate Bosses, NovaBosses, Ultris: Boss Expansion, LuMoreBossesAndMobs, Brutal Bosses
+Cataclysm, Meet Your Fight, Mutant Monsters, Ultimate Bosses, Ultris: Boss Expansion, Brutal Bosses, Majestic Menaces, Cardinal Sins (the 7 sins → Lucifer → Drakara ladder; Lucifer is the T3→T4 combat capstone). *(NovaBosses and LuMoreBossesAndMobs are NOT in pack; the "Cataclysm Apotheosis addon" is unverified — no such jar — see #47.)*
 
 ## Food & Farming
 
@@ -101,21 +101,21 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | The Abyss | `theabyss.toml` | `"Spawn Book" = false` |
 | TA The Other Side | `ta_theotherside.toml` | `GuideBook = false` |
 | Celestial Artifacts | `celestial_artifacts-common.toml` | `giveItemsOnStart = false` |
-| Azukaar's Fair Difficulty | config | All stat scaling zeroed (damage, luck, XP multipliers). Behavior features kept. |
+| Azukaar's Fair Difficulty | — | **REMOVED 2026-05-03** (with ScalingMobs / Improved Mobs) — replaced by the bespoke `iridescent_difficulty` mod. |
 | Icarus | recipes | All default wing recipes removed. 5 new T3 recipes (diamond + phantom membrane). |
 | Disenchanting Table | recipe | T1-gated (same pattern as enchanting table — 1 book + 2 gold ingots + 2 Apotheosis gems + 4 deepslate; 2026-05-16) |
 | Table of Experience | recipe | T2-gated (requires 4x `thermal:steel_ingot`) |
 | DarkOrb Orb of Origin | recipe | T2-gated (4x steel + 4x amethyst + heart of the sea) |
 | Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |
 | Terramity | recipes | 22 gun recipes removed, 64 armor pieces removed, gunsmith station removed. |
-| Tetra | datapack (`icraft_tetra_materials`) | 27 modded metal material definitions including Blue Skies, Undergarden, Abyss + F&A metals. Diamond hammer tier. |
+| Tetra | datapack (`icraft_tetra_materials`) | 27 modded metal material definitions including Blue Skies, Undergarden + F&A metals (theabyss-metal entries dormant — standalone mod not in pack). Diamond hammer tier. |
 | Ad Astra | recipes/config | Post-T4 space dimension. T4 gate + recipe gating. BEING IMPLEMENTED. |
 | Mekanism | config/recipes | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal. |
 | Blue Skies | recipes/loot | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2. |
-| The Abyss | recipes/config | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating. Dimension mechanics (darkness, corruption, fear). |
+| Custom Abyss-themed rings | scripts | 8 `kubejs:ring_*` curios as a standalone T3 chain (substitute for the never-shipped standalone Abyss mod's 30 rings); drop sources pending reallocation (#47). Otherside darkness/corruption/fear mechanics fire in Deeper Darker. |
 | Twilight Forest | recipes | Portal activator changed from diamond to T1 boss token. |
-| End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, 9 advancement overrides, 5 End Apotheosis affixes, Void Blossom loot fix, entity ID fixes, Moog's End Structure loot. |
-| Improved Mobs | config | 3 in-game day grace period, equipment/damage caps halved, diamond→iron for mob breaking tools. |
+| End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, End Compass → End Bastion unlock (replaces Eye of Ender), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot. |
+| Mob equipment (`mob_equipment.js`) | scripts | 3-day grace, equipment/damage caps, diamond→iron mob breaking tools. (Was an Improved Mobs config; that mod was removed 2026-05-03 — handler now holds these targets.) |
 | Tectonic | config | vertical_scale 1.155→0.8 (-31%), ridge_scale reduced. |
 | LootJS | scripts | Clutter removal (horse armor, spider eyes), food reduction 70%→90%. |
 | Apotheosis | config | Dimension key prefixes fixed, Overworld Affix Item generation 50%→25%. |
@@ -147,15 +147,18 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | FTB Ranks | Removed (FTB suite cleanup) | 2026-04-08 |
 | FTB Teams | Removed (FTB suite cleanup) | 2026-04-08 |
 | FTB Ultimine | Replaced by LiteMiner + Amber (veinmining) | 2026-04-08 |
+| Truly Modular family (Armory / Arsenal / Archery / `modular-item-api` / Create-compat) | Deprecated by the Tetra stack + Iridescent Reforging; also a spider-jockey buff source | 2026-05-10 |
+| ScalingMobs · Improved Mobs · Azukaar's Fair Difficulty | Replaced by the bespoke time-based `iridescent_difficulty` mod | 2026-05-03 |
 
 ## Custom Mods
 
-The pack ships 9 custom-bundled jars (4 in-house source builds + 2 bytecode-patched + 3 utility), tracked in the **custom-JAR allowlist** so the self-updater doesn't delete them. Highlights:
+The pack ships custom-bundled jars (in-house source builds + bytecode-patched + utility), tracked in the **custom-JAR allowlist** so the self-updater doesn't delete them. Highlights:
 
-- **iridescent_modular_spells-0.2.0.jar** — 15 modular spell books (12 ISS + 3 Ars) with full Tetra workbench integration. Per-book intrinsic stat overlay (BookKind enum) stacks on top of ISS vanilla. 4-slot model (front/back covers + spine + pages) with Tetra-canonical lining improvements on covers. Phase 6F-1 added 7 themed books (dragonskin/druidic/blaze/evoker/necronomicon/villager/rotten); blaze/evoker/necronomicon are guaranteed first-kill drops from ISS bosses. Magic enchants + magic-crit hook from earlier phases remain.
+- **iridescent_tetra_expansion-1.0.0.jar** — bundles two `[[mods]]`: **Iridescent Modular Spells** (15 modular spell books, 12 ISS + 3 Ars, full Tetra workbench integration, BookKind intrinsic overlay, 4-slot model with lining improvements; blaze/evoker/necronomicon are first-kill drops from ISS bosses) **and** **Iridescent Reforging** (Tetra-armor extension). Item IDs keep their `iridescent_modular_spells:` / `iridescent_reforging:` namespaces; the full ID-merge to a single `iridescent_tetra_expansion` namespace is deferred to alpha→beta. Built via `iridescent-tetra-expansion-mod/wsl-build.sh`.
 - **iridescent_origins-1.0.0.jar** — Origins/races/classes (3-prompt selection on first join).
 - **iridescent_biomes-1.0.0.jar** — TerraBlender region for cherry_river_valley + cherry_mountains.
 - **iridescent_codex_data.jar** — Patchouli Codex book (modId `icraft`).
+- **iridescent_difficulty-0.1.0.jar** — bespoke time-based per-dimension mob scaling (replaced ScalingMobs / Improved Mobs / Azukaar's). See [Systems](../systems/overview.md#difficulty-engine--iridescent_difficulty-time-based).
 - **Patchouli + ars_nouveau** — bytecode-patched (require `-noverify` JVM flag).
 
 See [Custom Mods](custom.md) for the full list, build instructions, and architectural notes.

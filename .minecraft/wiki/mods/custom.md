@@ -35,9 +35,11 @@ Patchouli Codex book. Shipped as a **javafml content mod** with a minimal compil
 
 **Build:** `bash build_codex.sh` — compiles + packs + deploys to all 3 distros. Jar filename remains `iridescent_codex_data.jar` so the custom-JAR allowlists don't need updating on rebuild.
 
-### iridescent_modular_spells-0.2.0.jar
+### iridescent_tetra_expansion-1.0.0.jar (Modular Spells + Reforging bundle)
 
-**Added 2026-04-26.** Modular spell book mod spanning ISS + Ars Nouveau ecosystems with full Tetra workbench integration. License-clean reimplementation of CurseForge's TSB (TSB is All Rights Reserved; we mirror its API-driven structure but write our own code/data).
+**Added 2026-04-26 (as `iridescent_modular_spells`); bundled into `iridescent_tetra_expansion-1.0.0.jar` 2026-05-01.** This jar now ships **two `[[mods]]`** from one file — `iridescent_modular_spells` (below) **and** `iridescent_reforging` (the modular-armor extension). Item IDs keep their original namespaces (`iridescent_modular_spells:` / `iridescent_reforging:`); the full mod-ID merge into a single `iridescent_tetra_expansion` namespace is deferred to the alpha→beta cutover (Option C — see `IridescentCraft-internal/dev/tetra-expansion-id-merge-plan.md`). The standalone `iridescent_modular_spells-0.2.0.jar` and `iridescent_reforging` jars are superseded.
+
+**Modular Spells** is a modular spell book mod spanning ISS + Ars Nouveau ecosystems with full Tetra workbench integration. License-clean reimplementation of CurseForge's TSB (TSB is All Rights Reserved; we mirror its API-driven structure but write our own code/data).
 
 **Books (15 modular variants):**
 | Variant | Tier | Inherits from | Slot count | Source |
@@ -91,9 +93,9 @@ Mage power curve is **uncapped by design** — mages weak early, highest peaks a
 
 **Caster starter kits:** Archmage / Battlemage / Void Summoner spawn with the modular variants instead of vanilla ISS/Ars books.
 
-**Source:** `iridescent-modular-spells-mod/src/main/...`
-**Build:** `bash build_mod.sh` (Gradle wrapper; deploys to all 3 distros).
-**Build deps:** ISS, Curios, Ars Nouveau, GeckoLib (transitive — Ars's SpellBook implements GeoItem) — all `compileOnly` via `flatDir libs/`.
+**Source:** `iridescent-tetra-expansion-mod/src/main/...` (the consolidated project; the legacy `iridescent-modular-spells-mod/` + `iridescent-reforging-mod/` trees are superseded).
+**Build:** `bash iridescent-tetra-expansion-mod/wsl-build.sh` (Gradle wrapper; builds the bundled `iridescent_tetra_expansion-1.0.0.jar` and deploys to all 3 distros). The per-mod `build_mod.sh` scripts are stale.
+**Build deps:** ISS, Curios, Ars Nouveau, GeckoLib (transitive — Ars's SpellBook implements GeoItem) + Tetra/Geckolib for the Reforging half — all `compileOnly` via `flatDir libs/`.
 
 ### mek_walkable_cables-1.0.1.jar
 

@@ -118,6 +118,132 @@ After T4 unlock, post-Glacio content is the "endgame after the endgame" — Myth
 
 Per-origin/race/class stat tables and ability descriptions live in `kubejs/data/icraft/` JSON files and the Patchouli codex (categories: Choosing Your Build / Origins Guide / Classes). The pack does not duplicate that data here — the codex is the authoritative reference for character creation choices.
 
+### A.7 Tier unlock options — the token economy
+
+The token economy ([master.md Part III](master.md#part-iii--progression-the-token-economy)). Advance a tier by hitting **either** its **token threshold** *or* its **boss-rush %**. One combined pool, four lanes (Engineering / Magic / Exploration / Combat); each lane reaches the threshold on its own, hybrids mix freely. Source-of-truth design: `IridescentCraft-internal/design/progression-framework.md` (DESIGN LOCKED 2026-05-31). Values are the design; exact item IDs are verified at build.
+
+| Transition | Token threshold | Boss-rush % |
+|---|---:|---:|
+| T1 → T2 | **500** | 80% of T1 bosses |
+| T2 → T3 | **1000** | 90% of T2 bosses |
+| T3 → T4 | **2000** | 100% of T3 bosses (incl. Lucifer) |
+| T4 → post-game | — | **defeat the Ender Dragon** (pack finale) |
+
+Boss-rush denominator = the **full per-tier boss roster** in `kubejs/server_scripts/gates/codex_boss_rush.js` (minibosses excluded). Bulk-metal default rate is **1 token / 100**; each resource/block is **capped**; the tables below are the **complete** conversion set (no universal default, no unlisted long-tail) so each tier's total *is* that lane's ceiling.
+
+#### A.7.1 Engineering lane (material → token)
+
+**T1 — Create — subtotal ≈ 590 (118% of 500)**
+
+| Source | Cap | Rate/Value | Tokens |
+|---|---:|---|---:|
+| Iron Ingots | 7500 | 1/100 | 75 |
+| Copper · Gold · Redstone | 2500 ea | 1/100 | 75 |
+| Brass · Andesite Alloy · Steel | 500 ea | 1/50 | 30 |
+| Crushing Wheel · Steam Engine | 2 ea | 25 | 100 |
+| Mechanical Press · Mixer | 2 ea | 20 | 80 |
+| Mechanical Saw · Drill · Deployer | 2 ea | 15 | 90 |
+| Millstone · Windmill Bearing | 2 ea | 15 | 60 |
+| Mechanical Crafter · Water Wheel | 4 ea | 10 | 80 |
+
+**T2 — Thermal — subtotal ≈ 1200 (120% of 1000)**
+
+| Source | Cap | Rate/Value | Tokens |
+|---|---:|---|---:|
+| Gold · Iron · Copper · Redstone | 15000 ea | 1/100 | 600 |
+| Invar ore · Electrum ore | 500 ea | 1/50 | 20 |
+| Induction Smelter | 2 | 50 | 100 |
+| Pulverizer · Centrifugal Separator | 2 ea | 40 | 160 |
+| Redstone Furnace · Sawmill | 2 ea | 30 | 120 |
+| Magmatic Dynamo · Energy Cell | 2 ea | 25 | 100 |
+| Magma Crucible | 2 | 20 | 40 |
+| Stirling Dynamo | 4 | 15 | 60 |
+
+**T3 — Mekanism — subtotal ≈ 2400 (120% of 2000)**
+
+| Source | Cap | Rate/Value | Tokens |
+|---|---:|---|---:|
+| Gold · Iron · Copper · Redstone | 30000 ea | 1/100 | 1200 |
+| Diamonds | 500 | 1/50 | 10 |
+| Netherite | 500 | 1/25 | 20 |
+| Biofuel | 5000 | 1/100 | 50 |
+| Gas-Burning Generator | 2 | 100 | 200 |
+| Basic Factory | 2 | 80 | 160 |
+| Purification Chamber · Osmium Compressor | 2 ea | 70 | 280 |
+| Enrichment Chamber | 2 | 60 | 120 |
+| Metallurgic Infuser · Crusher | 2 ea | 50 | 200 |
+| Energized Smelter · Energy Cube (Basic) | 2 ea | 40 | 160 |
+
+> Ore-only share rises 36% / 62% / 64% across T1/T2/T3 *by design* (higher tiers unlock ore multiplication + automation). Machines stay the required push *over the line* — ore alone never reaches threshold. **Action item:** tier Mekanism recipes so the tech economy lines up with these gates.
+
+#### A.7.2 Magic lane (cultivation → token)
+
+Draws **only** from the generation/cultivation/ritual side (mana/source farms, infusion altars), never spellcasting — Reagents (capped, "the ore") + Apparatus (low-cap, high-value, "the machines").
+
+**T1 — Botania — subtotal 600**
+
+| Source | Cap | Rate/Value | Tokens |
+|---|---:|---|---:|
+| `manasteel_ingot` | 10000 | 1/50 | 200 |
+| `mana_pearl` | 2000 | 1/20 | 100 |
+| Mystical Petals (any) | 4000 | 1/80 | 50 |
+| Runic Altar runes | 16 | 5 | 80 |
+| Runic Altar / Mana Pool | 2 / 4 | 20 / 10 | 80 |
+| Mana Spreaders | 4 | 10 | 40 |
+| Generating flora (Endoflame…) | 8 | 5 | 40 |
+| Alchemy Catalyst | 2 | 5 | 10 |
+
+**T2 — Ars Nouveau — subtotal 1250**
+
+| Source | Cap | Rate/Value | Tokens |
+|---|---:|---|---:|
+| `source_gem` | 30000 | 1/50 | 600 |
+| `magebloom_fiber` | 4000 | 1/50 | 80 |
+| Sourceberries | 6000 | 1/100 | 60 |
+| `mana_diamond` *(re-tiered from T1)* | 500 | 1/10 | 50 |
+| Sourcelinks (agronomic/alchemical/mycelial) | 2 ea | 30 | 180 |
+| Source Jars | 4 | 20 | 80 |
+| Imbuement Chamber / Enchanting Apparatus | 2 ea | 20 | 80 |
+| Drygmy Henge | 2 | 25 | 50 |
+| Ritual Brazier / premium Sourcelinks | 2 / 2 | 15 / 20 | 70 |
+
+**T3 — advanced Botania + Occultism + F&A — subtotal 2360**
+
+| Source | Cap | Rate/Value | Tokens |
+|---|---:|---|---:|
+| `terrasteel_ingot` | 2000 | 1/4 | 500 |
+| `arcane_crystal` (F&A) | 4000 | 1/10 | 400 |
+| `elementium_ingot` / `spirit_attuned_gem` | 3000 / 1500 | 1/10 / 1/5 | 600 |
+| `deorum_ingot` / `iesnium_ingot` | 1500 / 1000 | 1/10 | 250 |
+| Otherworld / Demon's Dream essence | 600 | 1/5 | 120 |
+| Hephaestus Forge / Terra Plate / Alfheim Portal | 1 / 2 / 2 | 80 / 30 / 20 | 180 |
+| Occultism ore-miner spirit lamps | 3 | 40 | 120 |
+| Dimensional Storage / Eternal Stella / Clibano | 2 ea | 30 / 25 / 20 | 150 |
+| `conjuration_catalyst` *(re-tiered from T1)* | 2 | 20 | 40 |
+
+> Recipe tier-gating fixes baked in: `mana_diamond` → T2, `conjuration_catalyst` → T3, **Gaia Spirit dropped** (a boss drop would force a fight, breaking the non-combat lane). Botania T1 self-bootstraps; the Enchanting Apparatus needs the `diamond → mana_diamond` override (shipped — see §B + master.md Part III).
+
+#### A.7.3 Exploration + Combat lanes (drops + dimensions)
+
+| Source | T1 | T2 | T3 | T4 |
+|---|---:|---:|---:|---:|
+| **Miniboss** kill | 2 | 4 | 6 | 8 |
+| **Boss** — first kill (named-boss token, convert once) | 10 | 15 | 20 | ⚠ TBD |
+| **Boss** — repeat kills | 4 | 8 | 12 | ⚠ TBD |
+| **Non-overworld dimension** (per tier) | n/a (OW) | 20 | 20 | 20 |
+
+- Tokens also found in chests/barrels and occasionally dropped by enemies — higher density in structures + dimensions.
+- **Combat lane = the boss-rush %** (clear 80/90/100% → auto-advance) *plus* boss/miniboss kills feeding the pool. Boss + miniboss kills count as the **Combat** source.
+- **Open (tuning only):** T4 boss-token values; whether "20 per tier in non-overworld dimensions" is per-dimension or total. *(The last open framework item.)*
+
+#### A.7.4 T3 → T4 Lucifer + the End
+
+- **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone.** Non-combat lanes skip him (bank the 2000-token threshold). Both combat routes require him: he is the final T3 boss in the 100% boss-rush, and his unique **Lucifer's Token** is the "pure-except-for-the-fight" submission. (Lucifer is in `TIER_4_BOSSES`; clearing all other T3 bosses unlocks him.)
+- **The End** uses the vanilla stronghold + End-Portal process, but the **Eye of Ender is replaced by an "End Compass"** crafted from **Deep Aether materials**, which directs the player to an **"End Bastion"** (reuses the `boss_compass` waystone system). The End is therefore post-Deep-Aether.
+- **T4 is terminal** — no token gate. The **Ender Dragon** is the pack finale (beat it → win + unlock the Ad Astra post-game).
+
+> **Supply-vs-threshold pacing (rough).** Threshold is always *reachable* (farmable boss repeat-kills guarantee closure). "Do-each-thing-once" supply (~550 / ~900 / ~1450) grows slower (~1.6×/tier) than the threshold curve (2×/tier), so upper tiers — esp. T3 → T4 — may lean on grind. Sensitive to the open Exploration values + the rich T3 Mekanism economy (likely lowballed). Needs a real model to settle.
+
 ---
 
 ## B. Tier-Skip Recipe State
@@ -447,7 +573,7 @@ The 5 boss-drop armor sets (Knight, Unorithe, Ragnarok, Dragon, Death) originall
 
 These boss mods are in the modlist but not yet enumerated in the dedicated `*_drops.js` files. They integrate via dimension-multiplier scaling rather than per-entity LootJS rules.
 
-**Brutal Bosses.** 29+ structure-guarding mini-boss variants of vanilla mobs (Evoker Boss, Skeleton Boss, etc.). Spawn next to loot chests in any structure. Datapack-configurable. Scales naturally with the structure they appear in via ScalingMobs dimension multipliers — no separate Progressive Bosses scaling.
+**Brutal Bosses.** 29+ structure-guarding mini-boss variants of vanilla mobs (Evoker Boss, Skeleton Boss, etc.). Spawn next to loot chests in any structure. Datapack-configurable. Scales naturally with the structure they appear in via the `iridescent_difficulty` dimension multipliers — no separate Progressive Bosses scaling.
 
 | Variant family | Primary spawn | Effective tier |
 |----------------|---------------|:--------------:|
@@ -471,15 +597,9 @@ These boss mods are in the modlist but not yet enumerated in the dedicated `*_dr
 
 > Ultra Mode (the mod's hard-mode difficulty toggle) unlocks per-boss after first kill — functions like Progressive Bosses 5th-kill difficulty.
 
-**LuMoreBossesAndMobs.** Macholote, Terezinossauro, Mini Golems (Gold/Diamond), End Dwellee. Treated as ambient mini-bosses; ScalingMobs handles their scaling.
+**Cardinal Sins.** The **7 sins → Lucifer → Drakara** ladder. Relocated per #56 — lesser sins to the Undergarden (T2–T3), fierce sins + Drakara + Lucifer to the Nether (T3). **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 combat capstone** (in `TIER_4_BOSSES`); see [boss-catalog.md](boss-catalog.md) T3 + [master.md Part X](master.md#part-x--endgame-loops). Loot allocation TBD; integrates via `iridescent_difficulty` scaling.
 
-| Boss | Tier | Notes |
-|------|:---:|-------|
-| Macholote | T1 | Overworld surface |
-| Terezinossauro | T2 | Therizinosaurus Claw Spear unique drop |
-| Gold Mini Golem | T1 | Gold-themed loot |
-| Diamond Mini Golem | T2 | Diamond-themed loot |
-| End Dwellee | T4 | End-exclusive materials |
+> **Removed (2026-06-01 #47 sweep):** the **LuMoreBossesAndMobs** block (Macholote / Terezinossauro / Mini Golems / End Dwellee) — the mod is **not installed** (no `lu_more`/`lumore` jar; `macholote` / `gold_mini_golem` are not registered entities). Its catalog rows + this design block were dropped.
 
 **Majestic Menaces.** Per-boss thematic drops; treated as named encounters (Teikoku Senshi line). T2-T3 placement.
 
@@ -493,7 +613,7 @@ Boss-mod loot tables should be configured in this order during implementation:
 
 1. Brutal Bosses datapacks — override default loot tables; tier 1 → vanilla materials + small XP; tier 4 → netherite scraps + Rare-Epic Apotheosis affix item; never includes Simply Swords uniques.
 2. Ultris — assign Simply Swords uniques + tier-appropriate materials per the table above.
-3. LuMoreBossesAndMobs — verify no drops bypass tier gating.
+3. Cardinal Sins — allocate the sins/Lucifer/Drakara ladder (T3); Lucifer carries the unique **Lucifer's Token** (T3→T4 combat advance). Verify no drops bypass tier gating.
 4. Ultimate Bosses — assign T4 loot + Rift materials.
 5. Cataclysm-Apotheosis integration — *verify source: per #47 cleanup audit, no `cataclysm*apoth*` jar in the live mods folder; integration may be supplied by `cataclysm_ut` or similar. Operator confirmation needed.*
 
@@ -513,7 +633,7 @@ Each class should have 3–4 viable unique options across the full progression �
 
 ### C.14 Counts
 
-**88 entities** with explicit LootJS rules (was 17 pre-Phase-6F; +71 from Phase 6F + audit Phase 4.1). Plus the additional boss mods covered in C.12 that integrate via ScalingMobs without dedicated LootJS files.
+**88 entities** with explicit LootJS rules (was 17 pre-Phase-6F; +71 from Phase 6F + audit Phase 4.1). Plus the additional boss mods covered in C.12 that integrate via `iridescent_difficulty` dimension scaling without dedicated LootJS files.
 
 ---
 
@@ -569,6 +689,8 @@ Boss-source determined gem tier:
 
 ### D.4 Dimension stat multipliers (full)
 
+> **Engine note (2026-05-03 → reconfirmed 2026-06-01).** Per-dimension stat scaling is now owned by the bespoke **time-based `iridescent_difficulty` mod** (`iridescent_difficulty-0.1.0.jar`), which replaced **ScalingMobs / Improved-Mobs-accumulator / Azukaar's** (all removed). Multipliers ramp linearly from a per-tier **start%** to a **cap%** over **capHours** of dimension-loaded time, then freeze; the End uncaps after the Ender Dragon dies. The per-tier start/cap/capHours curve (T1 150→300% / T2 200→350% / T3 300→450% / T4 600→1000%) lives in [Progression Overview](../progression/overview.md#dimensional-progression) + `config/iridescent_difficulty-common.toml`. The table below is the **legacy flat-multiplier reference** kept for the per-dimension *relative* shape and the mob-gear% column; treat the absolute HP/DMG values as indicative, with `iridescent_difficulty`'s time-curve as the live source.
+
 Four stats scale independently per dimension. **Damage scales fastest, HP moderately, Speed and Armor minimally.**
 
 Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
@@ -588,9 +710,9 @@ Base reference: Overworld zombie = 20 HP, 3 damage, 0 armor, 100% speed.
 | End — Dragon's Domain | 4 | 10.0 | 12.0 | 1.20 | 5.0 | 80% netherite + enchanted | Dragon influence |
 | Ad Astra (any planet) | 4 | 5.0-7.0 | 5.0-7.0 | 1.15-1.18 | 3.0-4.0 | 60-75% | Per-planet atmospheric |
 
-Implementation: `kubejs/server_scripts/scaling/mob_scaling_unified.js`.
+Implementation: dimension multipliers via the **`iridescent_difficulty`** mod (time-based, see engine note above); the static **mob-tier HP block** (basic 3× / mid 1.5× / elite 1.25×) remains in `kubejs/server_scripts/scaling/mob_scaling_unified.js` and composes on top.
 
-Per-dimension elite-mob density is now handled by **Majrusz's Progressive Difficulty** (Master-stage scaling) since the 2026-04-07 Champions Unofficial removal. Per-mob affix layering remains via Apotheosis adventure affixes (D.1).
+Per-dimension elite-mob density is handled by **Majrusz's Progressive Difficulty** (Master-stage scaling) since the 2026-04-07 Champions Unofficial removal. (Majrusz's own per-mob *stat* scaling is config-disabled — `iridescent_difficulty` owns dimension stats.) Per-mob affix layering remains via Apotheosis adventure affixes (D.1).
 
 ### D.5 Death durability loss by dimension
 
@@ -728,7 +850,7 @@ These numbers are the design targets — actual gameplay numbers WILL drift via 
 
 ### D.11 Regular mob equipment progression
 
-Mob spawn-with-gear rates per dimension (Improved Mobs config). Independent from Champion gear.
+Design targets for mob spawn-with-gear rates per dimension. Originally an Improved Mobs config; since that mod was removed (2026-05-03), these are the targets the `scaling/mob_equipment.js` handler aims to hold (iron-tier cap). Independent from elite-mob (Majrusz) scaling.
 
 | Dimension | % equipped | Equipment tier | Enchantment level |
 |-----------|-----------:|----------------|------------------:|
@@ -743,13 +865,13 @@ Champion mobs spawn with one tier above the base for their dimension, plus a cha
 
 ### D.12 Implementation notes
 
-These targets drive 6 implementation layers (was 7 — Champions Unofficial layer removed 2026-04-07; replaced by Majrusz Master-stage scaling):
+These targets drive the live difficulty stack (down from the original 7 — the Champions Unofficial layer was removed 2026-04-07, and ScalingMobs / Improved Mobs were retired 2026-05-03 in favor of the bespoke `iridescent_difficulty` mod):
 
-1. **ScalingMobs** — dimension HP / damage / speed / armor multipliers (D.4).
-2. **Majrusz's Progressive Difficulty** — per-dimension elite-mob density via Master-stage scaling (replaces former Champions Unofficial layer).
-3. **Improved Mobs** — per-dimension AI (gear usage, block-breaking, coordination, difficulty escalation).
-4. **Progressive Bosses** — per-kill scaling (D.6).
-5. **KubeJS mob event handlers** — dimension-specific mechanics (Twilight ambush, Undergarden spores, End displacement, Nether soulfire).
+1. **`iridescent_difficulty`** — time-based per-dimension HP / damage / armor multipliers (D.4), ramping to a per-tier cap; the End uncaps after the Ender Dragon. Replaces ScalingMobs + the Improved-Mobs accumulator + Azukaar's.
+2. **`mob_scaling_unified.js` tier-HP block** — static per-category HP (basic 3× / mid 1.5× / elite 1.25×), composed on top of the dimension multiplier.
+3. **Majrusz's Progressive Difficulty** — per-dimension elite-mob density via Master-stage scaling (replaces former Champions Unofficial layer; Majrusz's own stat scaling is config-disabled).
+4. **Progressive Bosses** (+ `boss_progressive.js`) — per-kill boss scaling (D.6).
+5. **KubeJS mob event handlers** — dimension-specific mechanics (Twilight ambush, Undergarden spores, End displacement, Nether soulfire); environmental hazards in `scaling/dimension_mechanics.js`.
 6. **Loot table integration** — elite drops, boss drops, gear scaling per dimension.
 7. **Boss HP overrides** — custom HP via `kubejs/server_scripts/scaling/boss_hp.js` (D.6).
 
@@ -943,10 +1065,9 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | JustLevelingFork | B | Passive level scaling |
 | Better Combat | B | Combat animation/feel |
 | Cataclysmic Combat | B | Enhanced AI |
-| Improved Mobs | B | Behavior + equipment |
-| ScalingMobs | B | Dimension-keyed scaling |
+| `iridescent_difficulty` (custom) | B | Time-based per-dimension HP/damage scaling (replaced ScalingMobs / Improved Mobs / Azukaar's, all removed 2026-05-03) |
+| Majrusz's Progressive Difficulty | B | Elite-mob Master-stage density (replaced Champions Unofficial); stat scaling config-disabled |
 | Progressive Bosses | B | Per-kill boss buffing |
-| Azukaar's Fair Difficulty Overhaul | B | Difficulty tuning |
 | Difficult Caves | B | Cave-specific aggression |
 | Spice of Life: Carrot Edition | B | Food diversity HP bonuses |
 | Hunger Overhaul | B | Faster hunger drain |
@@ -969,7 +1090,7 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | Cataclysm | B | Boss-drop weapons |
 | Iron's Patreon Lib | B | ISS support library |
 | Tetra | B | Modular workbench |
-| Tetra + art_of_forging + adtetra + tetra_re_enlarged | B | Crafted modular weapons + armor + tools (formerly documented as "Truly Modular"; verify naming during #47 followup) |
+| Tetra + art_of_forging + adtetra + tetra_re_enlarged | B | Crafted modular weapons + armor + tools (this is the "Truly Modular" replacement — the Truly Modular family was removed 2026-05-10; #47 resolved) |
 | Apotheosis | B | Affixes / reforging / gem cutting / sigils |
 | Citadel | B | Library mod |
 | Geckolib (in many mods) | B | Animation library |
@@ -1077,7 +1198,7 @@ Validated by `tools/validate_datapack_references.sh`. Each entry is a Paxi datap
 | `icraft_progdiff_overrides` | Progressive Difficulty tuning | Difficulty consistency |
 | `icraft_skills` | Pufferfish's Skills tree definitions | 6 skill trees |
 | `icraft_terramity_overrides` | Terramity gem ore biome injection (sapphire/topaz/iridium/gaianite into Aether/Twilight/BS) | T2 ore distribution |
-| `icraft_tetra_materials` | 27 modded metals + 5 gems for Tetra integration (cataclysm/blue_skies/abyss/F&A metals) | T2-T4 Tetra entries |
+| `icraft_tetra_materials` | 27 modded metals + 5 gems for Tetra integration (cataclysm / blue_skies / Undergarden / F&A metals; any theabyss-metal entries are dormant — mod not in pack) | T2-T4 Tetra entries |
 | `icraft_tetra_overrides` | Tetra material stat tweaks | Balance |
 | `icraft_tower_overrides` | Towers of the Wild spawn frequency | Worldgen tuning |
 | `icraft_worldgen_overrides` | Vanilla iron/copper + modded zinc/nickel/silver/lead distribution | Worldgen base |
@@ -1167,11 +1288,11 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 
 | Script | Role |
 |--------|------|
-| `mob_scaling_unified.js` | Dimension-keyed HP/damage multipliers (Champion-rate logic was Champions Unofficial-dependent; verify whether the script still references that mod's API or has been refactored — see #47) |
+| `mob_scaling_unified.js` | Static mob-tier HP block (basic 3× / mid 1.5× / elite 1.25×) that composes on top of the `iridescent_difficulty` mod's dimension multipliers. (The former Champions-dependent dimension-scaling block was retired when `iridescent_difficulty` took over dimension stats — 2026-05-03.) |
 | `boss_hp.js` | Per-boss HP base values (table in Section D.6) |
 | `boss_progressive.js` | Per-kill boss buffing (Progressive Bosses supplement) |
-| `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Otherside corruption/Abyss-themed mechanics, End multi-zone, Ad Astra atmospheric) |
-| `mob_equipment.js` | Improved Mobs equipment-spawn handler with iron-tier cap |
+| `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Otherside corruption/fear-aura, End multi-zone, Ad Astra atmospheric) |
+| `mob_equipment.js` | Mob equipment-spawn handler with iron-tier cap (was Improved Mobs-paired; Improved Mobs removed 2026-05-03 — verify the script still fires or is now dormant) |
 | `dimension_scaling.js.disabled` / `mob_tier_hp.js.disabled` | Older systems; superseded |
 
 ### I.6 `endgame/`

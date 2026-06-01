@@ -43,7 +43,6 @@ KubeJS 2001.6.5-build.16 for Minecraft 1.20.1 Forge. Primary scripting system fo
 | `skill_effects.js` | 701 | 22 scoreboard-based skill effects (all functional) |
 | `enchant_effects.js` | 503 | 24 custom enchantment effect handlers |
 | `affix_effects.js` | 997 | Complex affix event handlers (65 event-driven effects) |
-| `custom_champion_affixes.js` | 704 | 5 custom Champions affixes + per-dimension spawn scaling |
 | `class_respec.js` | 147 | Class Altar respec system |
 | `equipment_hp_halving.js` | 155 | Glass cannon HP penalty |
 | `astages_restrictions.js` | — | AStages item/dimension gating (expanded derivative gating 2026-03-15) |
@@ -63,8 +62,8 @@ Paxi 4.0 Forge loads datapacks from `global_packs/required_data/` as **ZIP files
 | `icraft_botania_overrides.zip` | Botania recipe/config overrides |
 | `iridescent_classes.zip` | Origins class definitions |
 | `iridescent_races.zip` | Origins race definitions |
-| `improvedmobs_datapack.zip` | Improved Mobs configuration |
-| `champions_datapack.zip` | Champions mob affix configuration |
+| `improvedmobs_datapack.zip` | Improved Mobs configuration — **dormant** (Improved Mobs removed 2026-05-03; zip retained on disk but targets an absent mod) |
+| `champions_datapack.zip` | Champions mob affix configuration — **dormant** (Champions Unofficial removed 2026-04-07; zip retained on disk but targets an absent mod) |
 
 ### Load Order
 

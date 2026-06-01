@@ -7,7 +7,9 @@
 
 ## 1. Design philosophy
 
-The quest tree exists to answer **"what should I do next?"** and to reward players for doing it. It is **NOT a progression gate**. Tier-progression and dimensional access are gated entirely by AStages on the master.md model. A player who completes zero quests must still be able to reach T4 by playing normally; the tree exists to highlight content the player would otherwise miss and to compensate them with bonus rewards for engaging with it.
+The quest tree exists to answer **"what should I do next?"**, to reward players for doing it, **and — as of the 2026-05-31 progression-framework lock — to *be* the progression engine.** Heracles is the Codex's mechanism (Part III of master.md): its item-submission, kill-tracking, and stage-granting run the four-lane **token economy**. Submitting progression tokens toward a tier threshold (500 / 1000 / 2000) and tracking the boss-rush % are how a player advances; reaching either grants the next AStages tier flag.
+
+This **reverses the doc's original premise.** Earlier this section said the tree was "NOT a progression gate" and that AStages gated everything independently — that described the superseded "internal boss-counter" model. Under the locked framework, **Heracles token-submission IS the primary gate path** (the boss-rush % is the other). What remains true: a player is never forced down a *single* lane (four lanes + boss-rush keep it open), and the tree still does double duty as the content index + bonus-reward layer below.
 
 Three constraints drive every quest authored:
 
@@ -104,7 +106,7 @@ Per §1, every reward is chosen on (tier × mod) axes. Reward types in order of 
 
 3. **Codex reading bonuses.** See §2.2. Always small, always thematic to the page.
 
-4. **AStages stage tokens.** Avoid as primary rewards — stage tokens belong to the stage system, not the quest system. Use as occasional CAPSTONE rewards only (e.g., "complete the entire T2 chapter capstone awards 1 minor stage token that nudges T3 prep") if at all.
+4. **Progression tokens (the four-lane economy).** Per the 2026-05-31 framework, *progression tokens* are first-class quest currency — a quest that asks you to submit Engineering/Magic/Exploration/Combat tokens, or that rewards tokens toward the tier threshold, is exactly on-model (Heracles is the token engine; §1). Distinguish these from raw **AStages stage flags**, which are *not* handed out as rewards — the tier flag is granted by the engine when the threshold/boss-rush is met, never gifted directly.
 
 5. **Cosmetic / vanity items.** Reserved for sandbox chapter capstones. A "you beat everything" reward might be a custom hat or banner pattern.
 
@@ -253,7 +255,7 @@ Other corrections from the audit (referenced in §4 above): quest ID = filename;
 
 ## 7. Cross-references
 
-- **master.md §III** — Tier definitions per dimension and per mod
+- **master.md Part III** — the token economy (the engine this tree runs); tier/dimension/mod placement is in Parts II + IV
 - **master-appendix.md §B** — Tier-skip recipe state (reagent costs per dim unlock)
 - **master-appendix.md §C** — Boss → loot mapping (informs reward design)
 - **master-appendix.md §L.2** — 4-archetype armor model (informs gear-progression quests)

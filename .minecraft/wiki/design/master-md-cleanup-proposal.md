@@ -1,5 +1,7 @@
 # Master / Appendix / Wiki — Cleanup Proposal
 
+> **✅ APPLIED (2026-06-01).** This #47 catalogue has now been actioned across the live wiki as part of the wiki fold-back + phantom-mod sweep (`IridescentCraft-internal/audits/wiki-consistency-2026-06-01.md`). The phantom mods below — **theabyss/Abyss/Nosaj, Champions Unofficial, Void Blossom, NovaBosses, LuMoreBosses, Truly Modular, Thermal "Locomotion", Alex's Caves bosses** — were removed or relabelled in `master.md`, `master-appendix.md`, `systems/overview.md`, `mods/overview.md`, `kubejs/overview.md`, `home.md`, and `boss-catalog.md`. **This document is retained as the record of *what* was catalogued + *why*; its quoted "before" snippets are intentionally left as-is** (they document the pre-sweep state). Resolutions chosen: Champions → Majrusz; ScalingMobs/Improved Mobs/Azukaar's → `iridescent_difficulty`; Truly Modular → the Tetra stack (whole family removed from pack); theabyss → the standalone mod is absent (the custom `kubejs:ring_*` substitute stays; TATOS bundles some confined `theabyss:` content); NovaBosses dropped, reserved Simply Swords uniques re-pointed at the in-pack Ultimate Bosses / Ultris / Brutal Bosses.
+
 > **Read-only audit.** Scope per task #47: identify every reference in
 > `master.md`, `master-appendix.md`, `wiki/systems/*.md`, and `wiki/classes/*.md`
 > to a mod, boss, item, dimension, or system that is **not in the live

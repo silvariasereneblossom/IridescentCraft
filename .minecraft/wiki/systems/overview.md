@@ -48,8 +48,8 @@ Each dimension has unique combat mechanics beyond stat scaling:
 - **Deeper and Darker:** Acoustic Aggro, Sculk Resonance, Darkness Empowerment
 - **The Nether:** Infernal Rage, Soulfire Burns (30% bypasses armor), Blaze Swarm
 - **Deep Aether:** Celestial Empowerment, Wind Shear, Radiant Shield
-- **The Abyss:** Oppressive Darkness (reduced visibility + slowness without light source), Corruption (gradual wither in corrupt biomes), Fear Aura (boss proximity debuffs)
-- **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. 9 advancement overrides, 5 End Apotheosis affixes.
+- **Deeper Darker (Otherside):** Oppressive Darkness (reduced visibility + slowness without light source), Corruption (gradual wither buildup), Fear Aura (boss proximity debuffs). These fire in Otherside via `dimension_mechanics.js` as a substitute for the never-shipped Abyss mod.
+- **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. Reached via the Deep-Aether End Compass → End Bastion (replaces the Eye of Ender). 9 advancement overrides, 5 End Apotheosis affixes.
 
 ## Champions System (REMOVED 2026-04-07)
 
@@ -63,7 +63,7 @@ Custom HP multipliers applied via `mob_scaling_unified.js` based on mob category
 |------|-----------|----------|
 | Basic | 3x HP | Zombie (60 HP), Skeleton, Spider, Creeper, Drowned, Husk, Stray, Witch, Slime |
 | Mid-tier | 1.5x HP | Blaze, Wither Skeleton, Piglin Brute, TF/Aether/Blue Skies mobs, dungeon mobs |
-| Champion | 1.25x HP | Stacks on top of other affixes (from Progressive Difficulty) |
+| Elite | 1.25x HP | Stacks on top of other affixes (Majrusz Progressive Difficulty elites) |
 | Boss | 1x HP | Unchanged, custom HP managed via boss_hp.js |
 | Catch-all | 3x HP | Any unlisted hostile mob defaults to basic tier |
 
@@ -131,7 +131,7 @@ After stripping, curated item pools are re-injected at tier-appropriate rates pe
 | T1 | Overworld | 10% | Utility/movement artifacts (snorkel, running shoes, etc.) |
 | T2 | Twilight Forest, Aether, Blue Skies | 12% | Combat/defensive artifacts (power glove, crystal heart, etc.) |
 | T3 | Nether, Undergarden | 14% | Powerful offense artifacts + celestial items |
-| T4 | End, Deeper Darker, Abyss | 16% | Endgame artifacts + relics items |
+| T4 | End, Deeper Darker (Otherside) | 16% | Endgame artifacts + relics items |
 
 **Per-structure theming (2026-05-17).** Marquee structures (high-profile landmarks per [master.md §XIII](../design/master.md#part-xiii--loot-economy)) receive a themed pool layered on top of a reduced dimensional baseline — 70% themed / 30% baseline inside the tier's combined rate. 14 marquees across the 4 tiers. Roster, theme catalog, and per-structure item lists: [master-appendix.md §N](../design/master-appendix.md#n-marquee-structures). ISS spellbooks capped at 2% per chest (starter kit handles onboarding). ISS scrolls remain uncapped.
 
@@ -143,7 +143,7 @@ Ars Nouveau spell books are blank caster tools that require glyphs inscribed at 
 | T1 | Overworld | 18 (Forms: projectile/touch/self + basic effects/augments) | ~12% |
 | T2 | TF, Aether, Blue Skies | 25 (aoe/underfoot + mobility/utility effects) | ~14% |
 | T3 | Nether, Undergarden | 22 (linger + advanced effects: lightning, wall, fangs, blink, etc.) | ~15% |
-| T4 | End, Deeper Darker, Abyss | 12 (summons, rune, wither, dispel, randomize) | ~18% |
+| T4 | End, Deeper Darker (Otherside) | 12 (summons, rune, wither, dispel, randomize) | ~18% |
 
 ### Custom Patched JARs
 The following mods ship as custom bytecode-patched JARs (added to custom JAR allowlist in server scripts):
@@ -176,8 +176,8 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 
 | System | Role | Acquisition |
 |--------|------|-------------|
-| Truly Modular (Arsenal/Archery) | Primary crafted weapons + bows | Crafting with tier materials |
-| Iridescent Reforging | Modular armor (Tetra-extension) | Leather base recipe + Tetra workbench, OR convert specialized armor |
+| Tetra stack (Tetra + `art_of_forging` + `adtetra`) | Primary crafted weapons + tools | Crafting with tier materials at the Tetra workbench (formerly documented as "Truly Modular", which is not in pack) |
+| Iridescent Reforging (in `iridescent_tetra_expansion`) | Modular armor (Tetra-extension) | Leather base recipe + Tetra workbench, OR convert specialized armor |
 | Simply Swords | Unique trophy weapons | Boss drops ONLY (via LootJS) |
 | Iron's Spells | Magic combat | Crafting + loot |
 | Cataclysm | Signature boss weapons | Cataclysm boss drops |
@@ -196,7 +196,7 @@ Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility
 | T1 Relics (movement, utility) | Overworld / Twilight Forest chests | ~0.4% per chest |
 | T2 Relics (combat, immunity) | Blue Skies / Aether chests | ~0.6% per chest |
 | T3 Relics (fire, decay) | Nether / Undergarden chests | ~0.8% per chest |
-| T4 Relics (endgame passives) | End / Deeper Darker / Abyss chests | ~1.0% per chest |
+| T4 Relics (endgame passives) | End / Deeper Darker (Otherside) chests | ~1.0% per chest |
 | Artifact Piece Pouch | T2+ boss kills | 1× from T2 bosses, 2× from T4 bosses |
 | Normal artifacts | Pouch open | 14-way weighted pool, one per pouch |
 | Awakening artifacts | T4 boss direct drops only | 0.7% per awakening × 14 = ~9.3% combined per T4 boss |
@@ -241,13 +241,13 @@ XP is plentiful with many sinks: JustLevelingFork leveling, skill point investme
 
 ## Tetra Modded Materials
 
-27 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals. Includes Blue Skies, Undergarden, Abyss, and Forbidden & Arcanus metals. Diamond hammer tier required for high-tier crafting.
+27 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals. Includes Blue Skies, Undergarden, and Forbidden & Arcanus metals. Diamond hammer tier required for high-tier crafting. *(Any theabyss-metal entries are dormant — that mod is not in pack.)*
 
 | Tier | Materials |
 |------|-----------|
 | T1 | Brass |
 | T2 | Steel, Signalum, Lumium, Manasteel, Steeleaf, Ironwood, Fiery, Knightmetal, Diopside, Charoite, Horizonite |
-| T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium, + Undergarden metals, Abyss metals, F&A metals |
+| T3 | Osmium, Refined Obsidian, Terrasteel, Elementium, Enderium, + Undergarden metals, F&A metals |
 | T4 | Aethersteel |
 
 See [Tetra Materials](tetra-materials.md) for full reference.
@@ -256,9 +256,9 @@ See [Tetra Materials](tetra-materials.md) for full reference.
 
 Serene Seasons adds seasonal crop growth. Crops die in winter unless grown in a greenhouse (glass-enclosed, torch-lit). Documented in a 4-page Patchouli Codex entry.
 
-## Azukaar's Fair Difficulty
+## Azukaar's Fair Difficulty (REMOVED 2026-05-03)
 
-All stat scaling (damage, luck, XP multipliers) zeroed out to avoid conflicts with ScalingMobs. Behavior features retained: hunger nerf, night purge, no-sleep enforcement, respawn distance.
+Removed alongside ScalingMobs / Improved Mobs when the bespoke `iridescent_difficulty` mod took over dimension scaling (see "Difficulty engine" above). Its former stat scaling was already zeroed; the remaining behavior features (hunger nerf, night purge, no-sleep enforcement, respawn distance) are now covered by the dedicated mods that own those mechanics (Hunger Overhaul, Sleep Hunger, etc.).
 
 ## Mekanism Balance
 
@@ -276,23 +276,26 @@ Dusk Arc weapon and Shadow Armor set removed (overpowered for T2). Runic Arc cha
 
 Dragon Exploration Gate: players must explore End islands and complete objectives before the dragon fight becomes available. 9 advancement overrides replace the vanilla End advancement chain. 5 End-specific Apotheosis affixes. Entity ID corrections for End mobs. Moog's End Structure loot tables populated.
 
-## Improved Mobs
+## Difficulty engine — `iridescent_difficulty` (time-based)
 
-Rebalanced for fairer early game. 3 in-game day grace period before mobs gain equipment/abilities. Equipment and damage caps halved from defaults. Mob breaking tools downgraded from diamond to iron tier.
+**As of 2026-05-03, the bespoke `iridescent_difficulty` mod is the dimension-scaling engine.** It replaced **ScalingMobs**, the **Improved Mobs** difficulty accumulator, and **Azukaar's Fair Difficulty Overhaul** (all removed). Per-dimension HP / damage / armor multipliers ramp linearly from a per-tier **start%** to a **cap%** over **capHours** of dimension-loaded time, then freeze; the End uniquely uncaps after the Ender Dragon is killed.
 
-Damage/equipment scaling factors (2026-04-17):
-- `Equipment Addition` = 0.05 (was 0.15) — slower difficulty-scaled equipment chance
-- `Damage Increase Multiplier` = 0.2 (was 0.4) — slower difficulty-scaled damage ramp (cap still 1.5x at max difficulty)
+| Tier | Start % | Cap % | Cap Hours |
+|------|---------|-------|-----------|
+| T1 (Overworld) | 150% | 300% | 100 |
+| T2 (Twilight / Blue Skies / Aether) | 200% | 350% | 100 |
+| T3 (Undergarden / Deeper Darker / Nether) | 300% | 450% | 100 |
+| T4 (Deep Aether / End) | 600% | 1000% | 200 |
 
-## ScalingMobs (time-based scaling)
+- **Scope:** linear on `max_health` / `attack_damage` / `armor`, `sqrt` on `movement_speed`; bosses + tamed + non-MONSTER mobs skipped (configurable exclusion list).
+- **Idle gating:** the per-dimension timer ticks at the `active / total` player ratio in that dimension (idle = no movement/combat for N minutes, or within the spawn radius).
+- **Stacks on top of (not replaced):** ProgressiveBosses + `boss_progressive.js` (boss scaling), the static `mob_scaling_unified.js` tier-HP block (basic 3× / mid 1.5× / elite 1.25×), and Majrusz's content features (treasure bags + spawn variants — Majrusz's own stat scaling is config-disabled).
 
-Daily stat scaling for hostile mobs, layered on top of `mob_scaling_unified.js` per-dimension multipliers.
+Full curve + commands: [`mods/custom.md`](../mods/custom.md#iridescent_difficulty-010jar) and `config/iridescent_difficulty-common.toml`.
 
-- `Damage Scale Rate` = 0.015 per MC day (+1.5%/day)
-- `Max Scaled Damage` = 0.20 cap (never exceeds +20% from time scaling)
-- `Health Scale Rate` = 0.03 per MC day (uncapped)
+## Mob equipment (iron-tier cap)
 
-Cap introduced 2026-04-17 — previously uncapped, runaway by day 20.
+Mobs spawn with gear at dimension-scaled rates (5% Overworld → 80% End), capped at iron-tier breaking tools, via `scaling/mob_equipment.js`. (Originally an Improved Mobs config; that mod was removed 2026-05-03, so the handler now holds these targets directly. See [master-appendix §D.11](../design/master-appendix.md#d11-regular-mob-equipment-progression).)
 
 ## Tectonic Terrain
 

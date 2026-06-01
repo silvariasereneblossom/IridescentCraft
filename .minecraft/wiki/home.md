@@ -1,6 +1,6 @@
 # IridescentCraft Wiki
 
-Living documentation for IridescentCraft, a progression-focused expert-lite Minecraft 1.20.1 Forge modpack with 420+ mods.
+Living documentation for IridescentCraft, a progression-focused expert-lite Minecraft 1.20.1 Forge modpack with 450+ mods.
 
 ---
 
@@ -9,7 +9,7 @@ Living documentation for IridescentCraft, a progression-focused expert-lite Mine
 ### Design
 The canonical design reference for all modpack systems.
 
-- [Master Design Document](design/master.md) — Complete system specifications (Parts I-XXIX)
+- [Master Design Document](design/master.md) — Complete system specifications (Parts I–XVI; Part III = the token economy)
 - [Design Changelog](design/changelog.md) — Tracked changes to design across sessions
 
 ### Progression
@@ -56,12 +56,13 @@ The canonical design reference for all modpack systems.
 | Skill trees (Pufferfish) | Implemented | Datapack + `skill_effects.js` (all effects functional) |
 | Custom enchantments | Implemented | `custom_enchantments.js` + `enchant_effects.js` (24 enchants) |
 | Apotheosis affixes | Implemented | 84 JSON + 65 event-driven affixes |
-| Champions custom affixes | Implemented | 5 custom affixes (Commanding, Draining, Hexing, Leaping, Summoning) + per-dimension spawn scaling |
+| Difficulty engine (`iridescent_difficulty`) | Implemented | Bespoke time-based per-dimension scaling (replaced ScalingMobs / Improved Mobs / Azukaar's, all removed 2026-05-03); Majrusz handles elite-mob density (replaced Champions Unofficial, removed 2026-04-07) |
 | AStages derivative gating | Implemented | Diamond/netherite/End derivatives fully gated + 6 advancement overrides |
 | Origin layer cleanup | Implemented | Vanilla origins:human removed; 3-prompt flow: Origin (13 total) → Race (11 custom) → Class (10 custom) |
 | Class respec | Implemented | `class_respec.js` |
 | Equipment HP halving | Implemented | `equipment_hp_halving.js` |
-| Heracles quest system | In progress | Proof of concept added, replacing FTB Quests |
+| Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat) — Heracles is the engine (token submission + boss-rush tracking); Phase 1 (token items + Engineering conversion + tier-advance) shipped. Supersedes the old internal boss-counter. See [master.md Part III](design/master.md#part-iii--progression-the-token-economy) |
+| Heracles quest tree | In progress | Authoring chapter-by-chapter; the quest engine that runs the token economy (FTB Quests already removed) |
 | Patchouli Codex | Working | 11 categories, 80 entries. Formatted, advancement-gated |
 | Book suppression | Working | `/clear` with NBT matching, 9 mod books suppressed |
 | Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
@@ -70,9 +71,9 @@ The canonical design reference for all modpack systems.
 | Villager trade rework | Implemented | Forge VillagerTradesEvent — books removed, XP trades added |
 | Waystone recipes | Implemented | Boss-drop gated crafting, all variants |
 | Cross-mod recipe audit | Implemented | 30+ tier-breaking recipes blocked across 8 mods |
-| Mod config audit | Implemented | ScalingMobs, Champions, Apotheosis configs aligned to design |
+| Mod config audit | Implemented | Apotheosis configs aligned to design (ScalingMobs + Champions configs done historically; those mods later removed — see Difficulty engine row) |
 | Config review pass | Implemented | Easy Anvils verified, Disenchanting/Table of XP/DarkOrb T2-gated, Azukaar's stat scaling zeroed, Icarus T3-gated, Aethersteel T4, Terramity guns/armor removed |
-| Tetra integration | Implemented | 27 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4, including Blue Skies + Undergarden + Abyss + F&A metals |
+| Tetra integration | Implemented | 27 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4, including Blue Skies + Undergarden + F&A metals (theabyss-metal entries dormant — mod not in pack) |
 | Serene Seasons documentation | Implemented | 4-page Patchouli Codex entry for seasonal farming |
 | Mekanism balance overhaul | Implemented | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal |
 | Food system overhaul | Implemented | Hunger drain 2.5x, seed drops 5%, structure food reduction, spawn protection |
@@ -81,10 +82,10 @@ The canonical design reference for all modpack systems.
 | Blue Skies balance pass | Implemented | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only, 3 materials nerfed to T2 + Tetra integration |
 | Undergarden balance pass | Implemented | Tetra stat overrides for 4 metals (27 materials total) |
 | Aether dimension mechanics | Implemented | Thin air, vertigo, updrafts |
-| Abyss dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura |
-| End overhaul | Implemented | Dragon Exploration Gate, 9 advancement overrides, 5 End Apotheosis affixes, Void Blossom loot fix, entity ID fixes, Moog's End Structure loot |
+| Otherside dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura (fire in Deeper Darker's Otherside as a substitute for the never-shipped Abyss mod) |
+| End overhaul | Implemented | Dragon Exploration Gate, End Compass → End Bastion unlock (replaces Eye of Ender), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot |
 | TF portal activator | Implemented | Changed from diamond to T1 boss token |
-| Abyss overhaul | Implemented | 30 ring recipes removed, 8 custom rings, 7 armor set bonuses, boss drop gating |
+| Custom Abyss-themed curio rings | Implemented | 8 `kubejs:ring_*` curios as a standalone T3 chain (substitute for the never-shipped Abyss mod's 30 rings); drop sources pending reallocation to in-pack T3 bosses (#47) |
 | Server distribution | Implemented | Unified `iridescentserver.bat` (auto-install + launch + crash logging). Strip script, force-skip list, mod channel mismatch tracker (5 mods resolved). |
 | Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. No Mundane, no Human. |
 | Race layer rebalance | Implemented | Elf/Dwarf/Orc/Halfling/Faefolk/Revenant stat adjustments, bug fixes, functional effects |
@@ -92,7 +93,7 @@ The canonical design reference for all modpack systems.
 | Class descriptions update | Implemented | All 10 class descriptions updated to match actual power implementations |
 | Codex expansion | Implemented | "Choosing Your Build" guide, "Origins Guide", updated Champions/Enchantments/Affixes/class entries |
 | Tectonic terrain tuning | Implemented | vertical_scale 1.155→0.8 (-31%), ridge_scale reduced |
-| Improved Mobs rebalance | Implemented | 3-day grace period, caps halved, diamond→iron for mob tools |
+| Improved Mobs rebalance | Superseded | 3-day grace, caps halved, diamond→iron mob tools. Improved Mobs removed 2026-05-03; the iron-tier cap survives in `scaling/mob_equipment.js`. |
 | Early magic access | Implemented | Iron's Spells scrolls + copper spell book in Overworld chests |
 | Walkable Mekanism cables | Implemented | Coremod v1.0.1, LocalVariableTable fix |
 | HDPE/rubber pipeline | Implemented | HDPE Circuit Board, alternative Mekanism recipes, IF latex/rubber rework |
@@ -107,7 +108,7 @@ The canonical design reference for all modpack systems.
 | Relics curation | Implemented | 15 Relics removed, 3 special drops (Ender's Hand, Space Dissector, Shadow Glaive) |
 | Village loot overhaul | Implemented | Gear removed, T1 materials added, food capped at 1 |
 | Mod side labels fixed | Implemented | 30 mods corrected from `side='server'` to `side='both'` (pig rift shard root cause) |
-| Improved Mobs equipment disabled | Implemented | Equipment Chance = 0 |
+| Improved Mobs equipment disabled | Superseded | Equipment Chance = 0 (moot — Improved Mobs removed 2026-05-03; mob gear now via `scaling/mob_equipment.js`) |
 | Loot Integrations removed | Implemented | Redundant mod caused item leakage |
 | Client installer rework | Implemented | Switched to repo zip download for reliable binary handling |
 | Resource pack distribution | Implemented | Resource packs now distributed via Paxi |
