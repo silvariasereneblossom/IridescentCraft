@@ -1,0 +1,42 @@
+{
+  "_comment": "icraft #35 Cataclysm boss-only Tetra material (refight-to-repair) -- T4 / End peak. REPAIR ITEM = cataclysm:gauntlet_of_guard, the signature drop of the Ender Guardian (ruined_citadel, End, T4). Cataclysm gives the Ender Guardian NO native ingot, so the repair binds directly to the unique gauntlet drop -- the PUREST refight-to-repair: one Guardian kill yields one gauntlet, i.e. one repair. FLAG: this consumes a usable gauntlet weapon and is deliberately punishing; the alternative is minting a dedicated ender_guard_plating drop item (see report). Highest stats of the boss-material set, befitting the End tier; LOW durability (1300) keeps the refight loop alive. Tools + armor.",
+  "key": "cm_ender_guard",
+  "category": "metal",
+  "primary": 9.0,
+  "secondary": 3.4,
+  "tertiary": 4.5,
+  "durability": 1300,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 220,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
+  "tints": {
+    "glyph": "2ad6c8",
+    "texture": "2ad6c8"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "cataclysm:gauntlet_of_guard"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "cataclysm"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ender_spell_power": 0.15,
+    "**irons_spellbooks:max_mana": 0.1,
+    "**irons_spellbooks:spell_power": 0.12
+  }
+}

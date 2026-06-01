@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "terramity:court_of_gnomes", "required": false }
+  ]
+}

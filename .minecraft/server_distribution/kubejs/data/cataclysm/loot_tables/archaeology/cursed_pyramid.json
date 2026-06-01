@@ -1,0 +1,62 @@
+{
+  "_comment": "icraft override of cataclysm:archaeology/cursed_pyramid (the brushable 'suspicious sand' loot inside the Ancient Remnant pyramid chamber -- rolled by the 'sus' data markers baked into the cursed_pyramid_*.nbt templates). The Cataclysm default seeded this with minecraft:diamond + tnt + gunpowder, which violates the pack's no-diamonds/no-explosives-in-overworld-structures policy (see project_loot_audit). Re-themed to T2->T3 progression + magic + the Ancient Metal repair line, keeping the archaeology pottery-sherd + Necklace-of-the-Desert flavor. random_sequence preserved so brush results stay deterministic per block.",
+  "type": "minecraft:archaeology",
+  "pools": [
+    {
+      "rolls": 1.0,
+      "bonus_rolls": 0.0,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:archer_pottery_sherd", "weight": 10 },
+        { "type": "minecraft:item", "name": "minecraft:miner_pottery_sherd", "weight": 10 },
+        { "type": "minecraft:item", "name": "minecraft:prize_pottery_sherd", "weight": 10 },
+        { "type": "minecraft:item", "name": "minecraft:skull_pottery_sherd", "weight": 10 },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:emerald",
+          "weight": 10,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 3 } } ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:gold_ingot",
+          "weight": 9,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 4 } } ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:lapis_lazuli",
+          "weight": 8,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 4, "max": 9 } } ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "cataclysm:ancient_metal_ingot",
+          "weight": 8,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 2 } } ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "icraft:progression_token_t2",
+          "weight": 8,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 2 } } ]
+        },
+        {
+          "type": "minecraft:item",
+          "name": "irons_spellbooks:arcane_essence",
+          "weight": 7,
+          "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 3 } } ]
+        },
+        { "type": "minecraft:item", "name": "irons_spellbooks:uncommon_ink", "weight": 6 },
+        {
+          "type": "minecraft:item",
+          "name": "minecraft:enchanted_book",
+          "weight": 5,
+          "functions": [ { "function": "minecraft:enchant_with_levels", "levels": { "type": "minecraft:uniform", "min": 15, "max": 30 }, "treasure": true } ]
+        },
+        { "type": "minecraft:item", "name": "irons_spellbooks:rare_ink", "weight": 3 },
+        { "type": "minecraft:item", "name": "cataclysm:necklace_of_the_desert", "weight": 2 }
+      ]
+    }
+  ],
+  "random_sequence": "cataclysm:archaeology/cursed_pyramid"
+}

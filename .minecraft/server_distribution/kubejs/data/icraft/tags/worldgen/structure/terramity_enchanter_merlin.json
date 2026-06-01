@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "terramity:fairy_fountain", "required": false }
+  ]
+}

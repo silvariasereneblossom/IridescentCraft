@@ -1,0 +1,51 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:compass" },
+    "title": "Two Routes to Ascend",
+    "subtitle": "Tokens, or the boss-rush",
+    "description": [
+      "Each tier offers TWO doors. Take whichever you prefer:",
+      "",
+      "  §e1. The Token Threshold§r - bank enough progression tokens.",
+      "       T1 to T2: §6500§r   |   T2 to T3: §61000§r   |   T3 to T4: §62000§r",
+      "",
+      "  §e2. The Boss-Rush§r - clear a share of the tier's full boss roster.",
+      "       T1 to T2: §c80%§r   |   T2 to T3: §c90%§r   |   T3 to T4: §c100%§r",
+      "",
+      "Either one alone advances you. The Codex tracks both for you.",
+      "",
+      "§7A pure builder, a pure cultivator, a pure explorer, or a pure",
+      "§7fighter can each reach the top on their own. Most players blend.",
+      "",
+      "Submit a single Foundations Token below to prove you understand",
+      "how the pool receives them."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [120, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["codex_root"],
+  "tasks": {
+    "submit_first_token": {
+      "type": "heracles:item",
+      "title": "Submit 1 Foundations Token to the Codex",
+      "item": { "id": "kubejs:tier1_token" },
+      "amount": 1,
+      "collection": "CONSUME"
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/codex_two_routes"
+    },
+    "refund_token": {
+      "type": "heracles:item",
+      "item": { "id": "kubejs:tier1_token", "count": 2 }
+    }
+  }
+}

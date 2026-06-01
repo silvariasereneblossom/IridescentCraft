@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "undergarden:forgotten_vestige", "required": false }
+  ]
+}

@@ -1,0 +1,53 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:netherite_sword" },
+    "title": "Boss-Rush III - The Infernal Gauntlet",
+    "subtitle": "Clear 100% of the Tier 3 roster - Lucifer last",
+    "description": [
+      "The Tier 3 boss-rush demands a COMPLETE clear - and Lucifer is the final",
+      "name on the list. Finishing the full roster auto-advances you to Tier 4.",
+      "",
+      "This is the combat door through the great pinch-point. Clear every T3",
+      "boss except Lucifer and he unlocks; defeat him to seal Tier 4.",
+      "",
+      "Roster drawn from the live milestone Tier 3 boss list (Cataclysm, Meet",
+      "Your Fight, Undergarden, Deeper Darker, the Wither). The composite tracks",
+      "the marquee fights; the real denominator is the full roster.",
+      "",
+      "§7Completing this chain feeds the Lucifer capstone in the Capstones group."
+    ],
+    "groups": {
+      "Combat": { "position": [320, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["com_t2_rush", "reach_tier_3"],
+  "tasks": {
+    "t3_roster": {
+      "type": "heracles:composite",
+      "amount": 4,
+      "tasks": {
+        "kill_harbinger": { "type": "heracles:kill_entity", "title": "The Harbinger", "entity": "cataclysm:the_harbinger", "amount": 1 },
+        "kill_ignis": { "type": "heracles:kill_entity", "title": "Ignis", "entity": "cataclysm:ignis", "amount": 1 },
+        "kill_leviathan": { "type": "heracles:kill_entity", "title": "The Leviathan", "entity": "cataclysm:the_leviathan", "amount": 1 },
+        "kill_forgotten_guardian": { "type": "heracles:kill_entity", "title": "Forgotten Guardian", "entity": "undergarden:forgotten_guardian", "amount": 1 },
+        "kill_stalker": { "type": "heracles:kill_entity", "title": "The Stalker", "entity": "deeperdarker:stalker", "amount": 1 },
+        "kill_wither": { "type": "heracles:kill_entity", "title": "The Wither", "entity": "minecraft:wither", "amount": 1 }
+      }
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/com_t3_rush"
+    },
+    "pool_tokens": {
+      "type": "heracles:item",
+      "title": "Combat tokens (placeholder = Dominion Token)",
+      "item": { "id": "kubejs:tier3_token", "count": 12 }
+    }
+  }
+}

@@ -44,8 +44,13 @@
 // SOURCES: rosters derived from wiki/design/boss-catalog.md (T1/T2/T3 tables) +
 // the Cardinal Sins ladder (design-evolution.md 2026-05-31; entity IDs jar-
 // verified against `Cardinal Sins 1.0.3.jar` assets/cardinal_sins/lang/en_us.json).
-// Build-report notes the boss-catalog ↔ Cardinal Sins reconciliation + the
-// entity IDs that could not be independently confirmed.
+// 2026-06-01: folded in Mowzie's Mobs (T1: frostmaw/ferrous_wroughtnaut/umvuthi/
+// sculptor/naga — all overworld) + Marium's Soulslike Weaponry (T1: draugr_boss/
+// returning_knight/night_shade/moonknight; T3: accursed_lord_boss/chaos_monarch/
+// day_stalker/night_prowler — Nether-anchored). Boss IDs jar-verified against
+// `mowziesmobs-1.8.2.jar` + `soulslike-weaponry-1.4.6-1.20.1-forge.jar`
+// data/forge/tags/entity_type(s)/bosses.json + worldgen/structure dimension targets.
+// Build-report notes the boss-catalog reconciliation + the balance flags.
 // =============================================================================
 
 // ---- Advance thresholds per transition (framework §1 boss-rush column) ------
@@ -110,6 +115,25 @@ const BOSS_RUSH_ROSTERS = {
     'terramity:gob',
     'terramity:enchanter_merlin',
     'terramity:super_sniffer',
+    // Mowzie's Mobs — all 4 boss-tag bosses + Naga mini-boss generate in OVERWORLD
+    // structures/biomes (jar-verified: frostmaw=#forge:is_snowy, wrought_chamber=
+    // underground OW, umvuthi=is_savanna, sculptor=#forge:is_peak, naga=is_beach/
+    // is_mountain). Location law → T1.
+    'mowziesmobs:frostmaw',
+    'mowziesmobs:ferrous_wroughtnaut',
+    'mowziesmobs:umvuthi',
+    'mowziesmobs:sculptor',
+    'mowziesmobs:naga',
+    // Marium's Soulslike Weaponry — early chain (overworld structures/altars). The
+    // Nether-anchored 4 (Decaying King, Chaos Monarch, Day Stalker, Night Prowler)
+    // are in T3 below. Draugr pre-placed in champions_graves (taiga); Moonknight
+    // summoned at cathedral_of_resurrection (hills); Returning Knight + Night Shade
+    // are Old-Moon-Altar / ambush summons. Location law → T1. (HP runs hot for T1 —
+    // see build-report balance flags; difficulty is independent of tier.)
+    'soulsweapons:draugr_boss',
+    'soulsweapons:returning_knight',
+    'soulsweapons:night_shade',
+    'soulsweapons:moonknight',
   ],
 
   // ===== T2 — First-dimensional (Twilight / Aether / Blue Skies) — 90% =====
@@ -213,6 +237,17 @@ const BOSS_RUSH_ROSTERS = {
     'cardinal_sins:sinofwrath',
     'cardinal_sins:drakara',
     'cardinal_sins:lucifer',            // ← Lucifer: T3 100%-clear gate to T4
+    // ----- Marium's Soulslike Weaponry — Nether-anchored endgame (4) -----------
+    // Decaying King (Accursed Lord) is PRE-PLACED in `decaying_kingdom` which
+    // generates in `#minecraft:is_nether` → unambiguous T3. Chaos Monarch (Blackstone
+    // Pedestal, Nether-material-gated) + the Day Stalker / Night Prowler Chaos-Orb
+    // duo finale (gated behind Moonknight + Chaos Monarch + Decaying-King mats) ride
+    // its progression depth → T3. (The early 4 — Draugr/Returning Knight/Night Shade/
+    // Moonknight — are in the T1 roster above.)
+    'soulsweapons:accursed_lord_boss',  // "The Decaying King" — Nether decaying_kingdom
+    'soulsweapons:chaos_monarch',
+    'soulsweapons:day_stalker',
+    'soulsweapons:night_prowler',
   ],
 }
 
@@ -227,6 +262,9 @@ const BOSS_PHASE_ALIASES = {
   'cardinal_sins:sinofenvyphase_1': 'cardinal_sins:sinofenvy',
   'cardinal_sins:sinofpridephase_1':'cardinal_sins:sinofpride',
   'cardinal_sins:sinofwrathphase_1':'cardinal_sins:sinofwrath',
+  // Marium's Soulslike Weaponry — Moonknight 2nd phase ("Harbinger of Moonlight")
+  // is a distinct entity ID; credit the canonical moonknight slot (counts once).
+  'soulsweapons:moonknight_phase_2': 'soulsweapons:moonknight',
 }
 
 // Resolve an entity ID to its canonical roster ID (apply phase aliases).

@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "twilightforest:dark_tower", "required": false }
+  ]
+}

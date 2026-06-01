@@ -44,7 +44,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:naga_scale").limitCount([2, 4])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t2_token_fragment").withChance(40),
             Item.of("kubejs:waystone_core").withChance(5)
         ])
         .addLoot(
@@ -57,7 +56,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:lich_soul").limitCount([1, 3])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t2_token_fragment").withChance(40),
             Item.of("kubejs:basic_reforging_token").withChance(10)
         ])
         .addLoot(
@@ -70,7 +68,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:hydra_fang").limitCount([2, 5])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t2_token_fragment").withChance(30),
             Item.of("kubejs:waystone_core").withChance(10)
         ])
         .addLoot(
@@ -83,8 +80,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:ur_ghast_tear").limitCount([1, 2])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t2_token_fragment").withChance(20),
-            Item.of("kubejs:t3_token_fragment").withChance(10),
             Item.of("kubejs:basic_reforging_token").withChance(15)
         ])
         .addLoot(
@@ -94,34 +89,20 @@ LootJS.modifiers(event => {
     // Knight Phantom — Spectral theme
     event.addEntityLootModifier("twilightforest:knight_phantom")
         .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:enigma").when(c => c.randomChance(0.12))
         )
 
     // Snow Queen — Ice theme
     event.addEntityLootModifier("twilightforest:snow_queen")
         .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:frostfall").when(c => c.randomChance(0.15))
         )
 
-    // Minoshroom — Brute theme (mini-boss tier, lower drop chance)
-    event.addEntityLootModifier("twilightforest:minoshroom")
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.35))
-        )
+    // Minoshroom — Brute theme (mini-boss tier)
+    // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // Alpha Yeti — Frost theme (mini-boss tier)
     event.addEntityLootModifier("twilightforest:alpha_yeti")
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.35))
-        )
         .addLoot(
             LootEntry.of("simplyswords:icewhisper").when(c => c.randomChance(0.10))
         )
@@ -134,9 +115,6 @@ LootJS.modifiers(event => {
 
     // Blue Skies: Summoner — Elemental/summoning theme
     event.addEntityLootModifier("blue_skies:summoner")
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 3])
-        )
         .addWeightedLoot([
             Item.of("kubejs:basic_reforging_token").withChance(10),
             Item.of("kubejs:waystone_core").withChance(5)
@@ -148,26 +126,17 @@ LootJS.modifiers(event => {
     // Blue Skies: Alchemist — Poison/alchemy theme
     event.addEntityLootModifier("blue_skies:alchemist")
         .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 3])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:toxic_longsword").when(c => c.randomChance(0.15))
         )
 
     // Blue Skies: Starlit Crusher — Star/celestial theme
     event.addEntityLootModifier("blue_skies:starlit_crusher")
         .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 3])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:stars_edge").when(c => c.randomChance(0.15))
         )
 
     // Blue Skies: Arachnarch — Spider/web theme
     event.addEntityLootModifier("blue_skies:arachnarch")
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
-        )
         .addLoot(
             LootEntry.of("simplyswords:waxweaver").when(c => c.randomChance(0.12))
         )
@@ -192,9 +161,6 @@ LootJS.modifiers(event => {
 
     // Aether: Slider — Impact/thunder theme
     event.addEntityLootModifier("aether:slider")
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 3])
-        )
         .addWeightedLoot([
             Item.of("kubejs:basic_reforging_token").withChance(10),
             Item.of("kubejs:waystone_core").withChance(5)
@@ -206,17 +172,11 @@ LootJS.modifiers(event => {
     // Aether: Valkyrie Queen — Wind/ascension theme
     event.addEntityLootModifier("aether:valkyrie_queen")
         .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 3])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:caelestis").when(c => c.randomChance(0.15))
         )
 
     // Aether: Sun Spirit — Fire/radiance theme
     event.addEntityLootModifier("aether:sun_spirit")
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 3])
-        )
         .addLoot(
             LootEntry.of("simplyswords:sunfire").when(c => c.randomChance(0.15))
         )
@@ -228,9 +188,6 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     event.addEntityLootModifier("deep_aether:eots_controller")
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 3])
-        )
         .addWeightedLoot([
             Item.of("kubejs:advanced_reforging_token").withChance(15),
             Item.of("kubejs:waystone_core").withChance(10)
@@ -251,7 +208,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:harbinger_eye").limitCount([1, 3])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t3_token_fragment").withChance(30),
             Item.of("kubejs:advanced_reforging_token").withChance(10)
         ])
         .addLoot(
@@ -264,7 +220,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:ignis_core").limitCount([1, 2])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t3_token_fragment").withChance(25),
             Item.of("kubejs:advanced_reforging_token").withChance(15),
             Item.of("kubejs:waystone_core").withChance(10)
         ])
@@ -278,7 +233,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:harbinger_eye").limitCount([1, 2])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t3_token_fragment").withChance(30),
             Item.of("kubejs:advanced_reforging_token").withChance(10)
         ])
         .addLoot(
@@ -288,26 +242,17 @@ LootJS.modifiers(event => {
     // Cataclysm: The Leviathan — Deep sea/abyss theme
     event.addEntityLootModifier("cataclysm:the_leviathan")
         .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 3])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:livyatan").when(c => c.randomChance(0.18))
         )
 
     // Cataclysm: Maledictus — Cursed/dark theme
     event.addEntityLootModifier("cataclysm:maledictus")
         .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:twisted_blade").when(c => c.randomChance(0.15))
         )
 
     // Cataclysm: Ignited Revenant — Fire/undead theme (1000 HP = T4 tier)
     event.addEntityLootModifier("cataclysm:ignited_revenant")
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment").limitCount([2, 4])
-        )
         .addWeightedLoot([
             Item.of("kubejs:ultimate_reforging_token").withChance(15),
             Item.of("kubejs:waystone_core").withChance(10)
@@ -317,11 +262,7 @@ LootJS.modifiers(event => {
         )
 
     // Cataclysm: Ender Golem — Ender/construct theme (mini-boss tier)
-    event.addEntityLootModifier("cataclysm:ender_golem")
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.30))
-        )
+    // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // -----------------------------------------------------------------
     // TIER 3 BOSSES — Undergarden
@@ -331,9 +272,6 @@ LootJS.modifiers(event => {
 
     // Undergarden: Forgotten Guardian — Corruption/ancient theme
     event.addEntityLootModifier("undergarden:forgotten_guardian")
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 3])
-        )
         .addWeightedLoot([
             Item.of("kubejs:advanced_reforging_token").withChance(10),
             Item.of("kubejs:waystone_core").withChance(8)
@@ -343,11 +281,7 @@ LootJS.modifiers(event => {
         )
 
     // Undergarden: Forgotten — Lesser variant
-    event.addEntityLootModifier("undergarden:forgotten")
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.20))
-        )
+    // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // -----------------------------------------------------------------
     // TIER 3 BOSSES — Deeper Darker
@@ -357,33 +291,20 @@ LootJS.modifiers(event => {
     // Deeper Darker: Stalker — Stealth/shadow theme
     event.addEntityLootModifier("deeperdarker:stalker")
         .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:soulstealer").when(c => c.randomChance(0.15))
         )
 
     // Deeper Darker: Shattered — Void/broken theme
     event.addEntityLootModifier("deeperdarker:shattered")
         .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-        )
-        .addLoot(
             LootEntry.of("simplyswords:soulpyre").when(c => c.randomChance(0.15))
         )
 
     // Deeper Darker: Shriek Worm — Horror/sonic theme
-    event.addEntityLootModifier("deeperdarker:shriek_worm")
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-        )
+    // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // Deeper Darker: Sculk Centipede — Eldritch theme
-    event.addEntityLootModifier("deeperdarker:sculk_centipede")
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.25))
-        )
+    // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // -----------------------------------------------------------------
     // TIER 3 BOSSES — Vanilla (Nether-gated)
@@ -395,8 +316,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:wither_bone").limitCount([3, 6])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t3_token_fragment").withChance(20),
-            Item.of("kubejs:t4_token_fragment").withChance(5),
             Item.of("kubejs:advanced_reforging_token").withChance(15)
         ])
         .addLoot(
@@ -429,7 +348,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:dragon_scale").limitCount([4, 8])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t4_token_fragment").withChance(20),
             Item.of("kubejs:ultimate_reforging_token").withChance(15),
             Item.of("kubejs:waystone_core").withChance(10)
         ])
@@ -445,7 +363,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:gaia_spirit_fragment").limitCount([2, 4])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t4_token_fragment").withChance(25),
             Item.of("kubejs:ultimate_reforging_token").withChance(10)
         ])
         .addLoot(
@@ -454,9 +371,6 @@ LootJS.modifiers(event => {
 
     // Cataclysm: Ender Guardian — Ender theme (Tier 4)
     event.addEntityLootModifier("cataclysm:ender_guardian")
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment").limitCount([1, 3])
-        )
         .addWeightedLoot([
             Item.of("kubejs:ultimate_reforging_token").withChance(15),
             Item.of("kubejs:waystone_core").withChance(10)
@@ -467,9 +381,6 @@ LootJS.modifiers(event => {
 
     // Cataclysm: Void Blossom — Void/nature theme (T4 boss)
     event.addEntityLootModifier("cataclysm:void_blossom")
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment").limitCount([2, 4])
-        )
         .addWeightedLoot([
             Item.of("kubejs:ultimate_reforging_token").withChance(15),
             Item.of("kubejs:waystone_core").withChance(15)
@@ -480,9 +391,6 @@ LootJS.modifiers(event => {
 
     // Cataclysm: Ancient Remnant — Ultimate Cataclysm boss
     event.addEntityLootModifier("cataclysm:ancient_remnant")
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment").limitCount([2, 4])
-        )
         .addWeightedLoot([
             Item.of("kubejs:ultimate_reforging_token").withChance(20),
             Item.of("kubejs:waystone_core").withChance(15)
@@ -497,7 +405,6 @@ LootJS.modifiers(event => {
             LootEntry.of("kubejs:void_essence").limitCount([1, 3])
         )
         .addWeightedLoot([
-            Item.of("kubejs:t4_token_fragment").withChance(30),
             Item.of("kubejs:waystone_core").withChance(15)
         ])
         .addLoot(
@@ -505,10 +412,7 @@ LootJS.modifiers(event => {
         )
 
     // Elder Guardian — Ocean temple boss
-    event.addEntityLootModifier("minecraft:elder_guardian")
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
-        )
+    // (legacy token-fragment drop removed; no other drop — modifier dropped)
 
     // Enderman — rare void essence accumulation (END DIMENSION ONLY)
     event.addEntityLootModifier("minecraft:enderman")
@@ -520,153 +424,20 @@ LootJS.modifiers(event => {
 
 
     // =====================================================================
-    // SECTION 2: STRUCTURE/CHEST LOOT — Token Fragment Seeding
-    // Injects tier-appropriate token fragments into structure chests
-    // so exploration provides an alternative progression path.
-    // All loot table paths verified via loot_discovery.js
+    // SECTION 2: STRUCTURE/CHEST LOOT — Token Fragment Seeding [RETIRED]
+    // The legacy fragment chest seeding (kubejs:tN tokens) was removed when the
+    // legacy progression currency was retired in favor of the Iridescent Codex
+    // token economy (icraft:progression_token_t1/t2/t3 — seeded by
+    // loot/codex_exploration_drops.js). Only the non-fragment grant from the
+    // old End-structures block (ultimate_reforging_token) is preserved below;
+    // everything else in this section was pure fragment seeding and is gone.
     // =====================================================================
 
-    // -----------------------------------------------------------------
-    // TIER 1 Structures (Overworld surface) — seed T2 fragments
-    // -----------------------------------------------------------------
-
-    // Vanilla overworld structures
-    event.addLootTableModifier(
-        "minecraft:chests/simple_dungeon",
-        "minecraft:chests/abandoned_mineshaft",
-        "minecraft:chests/village/village_weaponsmith",
-        "minecraft:chests/village/village_toolsmith",
-        "minecraft:chests/village/village_armorer",
-        "minecraft:chests/pillager_outpost",
-        "minecraft:chests/woodland_mansion",
-        "minecraft:chests/desert_pyramid",
-        "minecraft:chests/jungle_temple",
-        "minecraft:chests/igloo_chest",
-        "minecraft:chests/buried_treasure",
-        "minecraft:chests/shipwreck_treasure",
-        "minecraft:chests/shipwreck_map",
-        "minecraft:chests/shipwreck_supply",
-        "minecraft:chests/underwater_ruin_big",
-        "minecraft:chests/underwater_ruin_small",
-        "minecraft:chests/ruined_portal"
-    )
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
-                .when(c => c.randomChance(0.25))
-        )
-
-    // -----------------------------------------------------------------
-    // TIER 2 Structures (Twilight, Blue Skies, Aether) — T2 + T3
-    // -----------------------------------------------------------------
-
-    // Twilight Forest — all 24 verified chest types matched by regex
-    event.addLootTableModifier(/^twilightforest:chests\/.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 3])
-                .when(c => c.randomChance(0.30))
-        )
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.08))
-        )
-
-    // Blue Skies — 5 verified dungeon chest tables
-    event.addLootTableModifier(/^blue_skies:chests\/.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
-                .when(c => c.randomChance(0.25))
-        )
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.05))
-        )
-
-    // Aether — 6 verified dungeon reward chests (bronze/silver/gold)
-    event.addLootTableModifier(/^aether:chests\/.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment").limitCount([1, 2])
-                .when(c => c.randomChance(0.25))
-        )
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.05))
-        )
-
-    // Deep Aether — verified: brass_dungeon, brass_dungeon_reward
-    event.addLootTableModifier(/^deep_aether:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-                .when(c => c.randomChance(0.25))
-        )
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment")
-                .when(c => c.randomChance(0.08))
-        )
-
-    // -----------------------------------------------------------------
-    // TIER 3 Structures (Nether, Undergarden, Deeper Darker)
-    // -----------------------------------------------------------------
-
-    // Nether vanilla structures
-    event.addLootTableModifier(
-        "minecraft:chests/nether_bridge",
-        "minecraft:chests/bastion_treasure",
-        "minecraft:chests/bastion_other",
-        "minecraft:chests/bastion_hoglin_stable",
-        "minecraft:chests/bastion_bridge"
-    )
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-                .when(c => c.randomChance(0.25))
-        )
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment")
-                .when(c => c.randomChance(0.05))
-        )
-
-    // Undergarden structure chests (verified: catacombs)
-    event.addLootTableModifier(/^undergarden:chests\/.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-                .when(c => c.randomChance(0.25))
-        )
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment")
-                .when(c => c.randomChance(0.05))
-        )
-
-    // Deeper Darker — verified: ancient_temple chests
-    event.addLootTableModifier(/^deeperdarker:chests\/.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 3])
-                .when(c => c.randomChance(0.30))
-        )
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment")
-                .when(c => c.randomChance(0.08))
-        )
-
-    // Cataclysm structure chests — verified tables:
-    // soul_forge, burning_arena, sunken_city, cursed_pyramid, ruined_citadel
-    event.addLootTableModifier(/^cataclysm:.*chest.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment").limitCount([1, 2])
-                .when(c => c.randomChance(0.25))
-        )
-
-    // -----------------------------------------------------------------
-    // TIER 4 Structures (End, Deep Aether)
-    // -----------------------------------------------------------------
-
-    // End structures
+    // End structures — Ultimate Reforging Token (preserved; not legacy currency)
     event.addLootTableModifier(
         "minecraft:chests/end_city_treasure",
         "minecraft:chests/ancient_city"        // Ancient City = T3/T4 bridge
     )
-        .addLoot(
-            LootEntry.of("kubejs:t4_token_fragment").limitCount([1, 3])
-                .when(c => c.randomChance(0.35))
-        )
         .addLoot(
             LootEntry.of("kubejs:ultimate_reforging_token")
                 .when(c => c.randomChance(0.08))
@@ -753,10 +524,6 @@ LootJS.modifiers(event => {
     // Tier: Mixed T1-T2 (overworld structures)
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^dungeons_arise:chests\/.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.20))
-        )
         .removeLoot("minecraft:diamond")
         .removeLoot("minecraft:diamond_sword")
         .removeLoot("minecraft:diamond_chestplate")
@@ -771,10 +538,6 @@ LootJS.modifiers(event => {
     // Tier: T1-T2 (overworld dungeons)
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^betterdungeons:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.20))
-        )
         .removeLoot("minecraft:diamond")
         .removeLoot("minecraft:enchanted_book")
 
@@ -784,10 +547,6 @@ LootJS.modifiers(event => {
     // Tier: T2-T3 (late overworld)
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^betterstrongholds:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.15))
-        )
         .removeLoot("minecraft:enchanted_book")
 
     // -----------------------------------------------------------------
@@ -795,10 +554,6 @@ LootJS.modifiers(event => {
     // Tier: T3 (Nether)
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^betterfortresses:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t3_token_fragment")
-                .when(c => c.randomChance(0.20))
-        )
         .removeLoot("minecraft:enchanted_book")
 
     // -----------------------------------------------------------------
@@ -806,32 +561,20 @@ LootJS.modifiers(event => {
     // Tier: T1 (overworld)
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^bettermineshafts:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.15))
-        )
         .removeLoot("minecraft:diamond")
         .removeLoot("minecraft:enchanted_book")
 
     // -----------------------------------------------------------------
     // YUNG's Better Ocean Monuments — verified present
     // Tier: T2 (challenging overworld)
+    // (legacy token-fragment seeding removed; no other modifier — block dropped)
     // -----------------------------------------------------------------
-    event.addLootTableModifier(/^betteroceanmonuments:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.20))
-        )
 
     // -----------------------------------------------------------------
     // Valhelsia Structures — verified present
     // Tier: T1-T2 (overworld structures)
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^valhelsia_structures:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.15))
-        )
         .removeLoot("minecraft:diamond")
         .removeLoot("minecraft:enchanted_book")
 
@@ -840,10 +583,6 @@ LootJS.modifiers(event => {
     // Tier: T1 (villages)
     // -----------------------------------------------------------------
     event.addLootTableModifier(/^ctov:.*/)
-        .addLoot(
-            LootEntry.of("kubejs:t2_token_fragment")
-                .when(c => c.randomChance(0.12))
-        )
         .removeLoot("minecraft:diamond")
 
     // NOTE: The following mods were NOT found in the loaded mod list:

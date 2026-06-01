@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "deep_aether:brass_dungeon", "required": false }
+  ]
+}

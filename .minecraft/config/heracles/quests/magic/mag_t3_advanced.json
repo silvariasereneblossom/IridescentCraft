@@ -1,0 +1,55 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:terrasteel_ingot" },
+    "title": "Cultivation III - The Elder Arts",
+    "subtitle": "Advanced Botania + Occultism + Forbidden & Arcanus",
+    "description": [
+      "Tier 3 Magic blends three traditions: advanced Botania (Terrasteel,",
+      "Elementium, the Alfheim arts), Occultism's spirit-bound industry, and",
+      "the arcane crystals of Forbidden & Arcanus.",
+      "",
+      "Sample submissions from the T3 Magic table:",
+      "  - Terrasteel Ingot - 1 token per 4 (capped at 2000)",
+      "  - Arcane Crystal (F&A) - 1 token per 10",
+      "  - Elementium / Spirit-Attuned Gem - premium rates",
+      "  - Hephaestus Forge, Terra Plate, Alfheim Portal, spirit lamps - milestones",
+      "",
+      "Submit Terrasteel and Arcane Crystals to bank elder tokens."
+    ],
+    "groups": {
+      "Magic": { "position": [320, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["mag_t2_ars", "reach_tier_3"],
+  "tasks": {
+    "submit_terrasteel": {
+      "type": "heracles:item",
+      "title": "Submit 8 Terrasteel Ingots",
+      "item": { "id": "botania:terrasteel_ingot" },
+      "amount": 8,
+      "collection": "CONSUME"
+    },
+    "submit_arcane_crystal": {
+      "type": "heracles:item",
+      "title": "Submit 16 Arcane Crystals",
+      "item": { "id": "forbidden_arcanus:arcane_crystal" },
+      "amount": 16,
+      "collection": "CONSUME"
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/mag_t3_advanced"
+    },
+    "pool_tokens": {
+      "type": "heracles:item",
+      "title": "Magic tokens (placeholder = Dominion Token)",
+      "item": { "id": "kubejs:tier3_token", "count": 5 }
+    }
+  }
+}

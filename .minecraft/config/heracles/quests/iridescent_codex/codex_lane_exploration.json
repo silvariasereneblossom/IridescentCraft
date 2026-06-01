@@ -1,0 +1,44 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:filled_map" },
+    "title": "Lane: Exploration",
+    "subtitle": "Discover your way up",
+    "description": [
+      "The Exploration lane rewards going places and finding things.",
+      "",
+      "  - Slay minibosses and bosses (first kill of a named boss grants a",
+      "    one-time bonus token).",
+      "  - Step into a new non-overworld dimension.",
+      "  - Loot tokens hide in chests, barrels, and the occasional enemy -",
+      "    denser inside structures and other dimensions.",
+      "",
+      "Exploration is always farmable, so the threshold is always reachable;",
+      "the only question is how far you wander.",
+      "",
+      "§7See the Exploration group in this quest book."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [240, 30] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["codex_two_routes"],
+  "tasks": {
+    "see_lane": {
+      "type": "heracles:item",
+      "title": "Hold a map to begin Exploration",
+      "item": { "id": "minecraft:map" },
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/codex_lane_exploration"
+    }
+  }
+}

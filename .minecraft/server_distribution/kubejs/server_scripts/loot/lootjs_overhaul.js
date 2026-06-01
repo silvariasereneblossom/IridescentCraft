@@ -1089,7 +1089,8 @@ LootJS.modifiers(event => {
 
   // --- Universal T1 magic/progression kit (all 12 tables) ---
   var ovdUniversal = event.addLootTableModifier.apply(event, overhauledAllTables)
-  ovdUniversal.addLoot(LootEntry.of('kubejs:tier1_token').limitCount([1, 2]).when(c => c.randomChance(0.50)))
+  // (legacy kubejs:tier1_token grant removed — currency retired; Codex tokens
+  //  seed via loot/codex_exploration_drops.js)
   ovdUniversal.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([1, 2]).when(c => c.randomChance(0.25)))
   ovdUniversal.addLoot(LootEntry.of('irons_spellbooks:common_ink').limitCount([1, 1]).when(c => c.randomChance(0.15)))
   ovdUniversal.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.06)))
@@ -1133,7 +1134,7 @@ LootJS.modifiers(event => {
   ovdMaster.addLoot(LootEntry.of('ars_nouveau:novice_spell_book').when(c => c.randomChance(0.025)))
   ovdMaster.addLoot(LootEntry.of('irons_spellbooks:copper_spell_book').when(c => c.randomChance(0.14)))
   ovdMaster.addLoot(LootEntry.of('ars_nouveau:source_gem').limitCount([2, 4]).when(c => c.randomChance(0.50)))
-  ovdMaster.addLoot(LootEntry.of('kubejs:tier1_token').limitCount([1, 1]).when(c => c.randomChance(0.40))) // extra on top of universal
+  // (legacy kubejs:tier1_token grant removed — currency retired)
 
   // =========================================================================
   // SECTION 4C: YUNG'S BETTER SERIES
@@ -2170,11 +2171,8 @@ LootJS.modifiers(event => {
     // Strip higher-tier spell books that shouldn't appear in starter-area villages
     vSan.removeLoot('ars_nouveau:apprentice_spell_book')
       .removeLoot('ars_nouveau:archmage_spell_book')
-      // Tier tokens: villages are starting areas, not progression structures
-      .removeLoot('kubejs:tier1_token')
-      .removeLoot('kubejs:tier2_token')
-      .removeLoot('kubejs:tier3_token')
-      .removeLoot('kubejs:tier4_token')
+    // (legacy kubejs:tierN_token village strips removed — currency retired,
+    //  tokens are no longer seeded anywhere so the strip is a dead no-op)
     // Defensive: strip T2+ glyphs explicitly. The global off-tier strip at
     // line ~371 uses LootType.CHEST + anyDimension('minecraft:overworld'),
     // which under Lootr's aggressive_mode wrapping doesn't reliably match

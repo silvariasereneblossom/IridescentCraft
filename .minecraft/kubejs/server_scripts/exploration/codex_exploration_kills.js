@@ -28,11 +28,11 @@
 // the same reload-safe shape as milestone_detection.js / iss_boss_first_kill.js.
 //
 // COEXISTENCE: milestone_detection.js still runs its own boss-KILL-COUNTER
-// (icraft_tN_boss_kills) + the legacy kubejs:tN_token_fragment loot seeding in
-// loot_overhaul.js still drops the OLD fragment currency. Those are a SEPARATE
-// parallel system (fragment → auto-consume 1000 → instant tier). This file only
-// touches the NEW icraft:progression_token_tN accumulation currency, so there
-// is no item-ID collision and both economies run side-by-side.
+// (icraft_tN_boss_kills). The legacy kubejs:tN_token_fragment loot seeding (the
+// OLD fragment → auto-consume 1000 → instant tier currency) was RETIRED and its
+// seeding removed from loot_overhaul.js + lootjs_overhaul.js (2026-06-01). This
+// file mints the NEW icraft:progression_token_tN accumulation currency, which is
+// now the sole combat-kill progression-token source.
 //
 // Memory: feedback_rhino_scoping.md — declare top-level consts at module scope
 // (Rhino re-`const` inside a repeatedly-invoked closure throws). All the sets +
@@ -66,6 +66,17 @@ const NAMED_BOSSES_BY_TIER = {
     'terramity:gob',
     'terramity:super_sniffer',
     'terramity:enchanter_merlin',
+    // Mowzie's Mobs — 4 boss-bar bosses, all overworld structures (jar bosses.json).
+    'mowziesmobs:frostmaw',
+    'mowziesmobs:ferrous_wroughtnaut',
+    'mowziesmobs:umvuthi',
+    'mowziesmobs:sculptor',
+    // Marium's Soulslike Weaponry — early-chain boss-bar bosses (overworld
+    // structures/altars). Nether-anchored 4 are in tier 3 below.
+    'soulsweapons:draugr_boss',
+    'soulsweapons:returning_knight',
+    'soulsweapons:night_shade',
+    'soulsweapons:moonknight',
   ],
   2: [
     // === milestone_detection.js TIER_2_BOSSES ===
@@ -117,6 +128,13 @@ const NAMED_BOSSES_BY_TIER = {
     'irons_spellbooks:citadel_keeper',
     'irons_spellbooks:archevoker',
     'ultris_mr:blaze_king',
+    // Marium's Soulslike Weaponry — Nether-anchored endgame bosses (boss-bar).
+    // Decaying King pre-placed in the Nether `decaying_kingdom`; the Chaos
+    // Monarch + Day Stalker/Night Prowler duo ride its progression depth (T3).
+    'soulsweapons:accursed_lord_boss',
+    'soulsweapons:chaos_monarch',
+    'soulsweapons:day_stalker',
+    'soulsweapons:night_prowler',
   ],
   4: [
     // === milestone_detection.js TIER_4_BOSSES ===
@@ -148,6 +166,9 @@ const MINIBOSSES_BY_TIER = {
     'mutantmonsters:mutant_skeleton',
     'mutantmonsters:mutant_creeper',
     'mutantmonsters:mutant_zombie_villager',
+    // Mowzie's Mobs — Naga is the overworld (beach/mountain) mini-boss; NOT in the
+    // jar bosses.json tag (no boss bar) → miniboss, not a named trophy boss.
+    'mowziesmobs:naga',
   ],
   2: [
     'twilightforest:adherent',

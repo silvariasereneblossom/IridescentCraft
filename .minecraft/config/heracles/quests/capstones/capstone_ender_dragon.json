@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:dragon_egg" },
+    "title": "Finale: The Ender Dragon",
+    "subtitle": "Beat the pack - unlock Ad Astra",
+    "description": [
+      "The Ender Dragon is the pack finale. But she will not manifest until you",
+      "have proven yourself in the End: reach the outer islands, find an End City,",
+      "slay Shulkers and Endermen, then summon her with a Dragon Summoning Crystal",
+      "at the central fountain.",
+      "",
+      "Defeat her and the post-game opens: the road to the stars - Ad Astra.",
+      "",
+      "§7This is the terminal gate. There is no token threshold beyond it -",
+      "§7the Dragon IS the win condition."
+    ],
+    "groups": {
+      "Capstones": { "position": [480, 60] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "DEPENDENCIES_VISIBLE",
+    "unlockNotification": true
+  },
+  "dependencies": ["capstone_end_bastion"],
+  "tasks": {
+    "slay_dragon": {
+      "type": "heracles:advancement",
+      "title": "Defeat the Ender Dragon",
+      "advancements": ["minecraft:end/kill_dragon"]
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/capstone_ender_dragon"
+    },
+    "postgame_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/postgame_ad_astra"
+    },
+    "finale_xp": {
+      "type": "heracles:xp",
+      "xptype": "LEVEL",
+      "amount": 50
+    }
+  }
+}

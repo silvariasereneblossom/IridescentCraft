@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "terramity:ancient_outcrop", "required": false }
+  ]
+}

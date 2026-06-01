@@ -1,0 +1,91 @@
+{
+  "_comment": "icraft override of betterdeserttemples:main processor_list (jar default: YungsBetterDesertTemples-1.20-Forge-3.0.3.jar -> data/betterdeserttemples/worldgen/processor_list/main.json). EVERY YUNG temple template-pool element references this single list via \"processors\": \"betterdeserttemples:main\", so it is the one place to inject a structure-wide block swap. WHAT CHANGED: prepended a single minecraft:rule processor that rewrites minecraft:trapped_chest -> minecraft:chest (operator request: temple chests should be NORMAL, not trapped). The 25 original YUNG processors are preserved verbatim and unchanged after it. WHY THIS PRESERVES LOOT: vanilla 1.20.1 RuleProcessor.processBlock (verified against client-1.20.1 RuleProcessor bytecode) constructs the output StructureBlockInfo with ProcessorRule.applyRule(random, blockInfo.nbt()); when a rule has no output_nbt it returns the SOURCE block-entity nbt unchanged -> the chest's LootTable tag (betterdeserttemples:chests/*) survives the swap, so the swapped normal chest still rolls loot. STATE COVERAGE: across all 197 temple .nbt templates, trapped_chest only ever appears as [facing=east,type=single,waterlogged=false]; the 4 facing rules below are exhaustive + future-proof and each maps to the identical normal-chest state so orientation/double-chest pairing is preserved. RELOAD-SAFE: pure datapack JSON, applied on world (re)generation; existing already-generated chests are unaffected (they were placed before this processor existed).",
+  "processors": [
+    {
+      "processor_type": "minecraft:rule",
+      "rules": [
+        {
+          "location_predicate": { "predicate_type": "minecraft:always_true" },
+          "input_predicate": {
+            "predicate_type": "minecraft:blockstate",
+            "block_state": {
+              "Name": "minecraft:trapped_chest",
+              "Properties": { "facing": "north", "type": "single", "waterlogged": "false" }
+            }
+          },
+          "output_state": {
+            "Name": "minecraft:chest",
+            "Properties": { "facing": "north", "type": "single", "waterlogged": "false" }
+          }
+        },
+        {
+          "location_predicate": { "predicate_type": "minecraft:always_true" },
+          "input_predicate": {
+            "predicate_type": "minecraft:blockstate",
+            "block_state": {
+              "Name": "minecraft:trapped_chest",
+              "Properties": { "facing": "south", "type": "single", "waterlogged": "false" }
+            }
+          },
+          "output_state": {
+            "Name": "minecraft:chest",
+            "Properties": { "facing": "south", "type": "single", "waterlogged": "false" }
+          }
+        },
+        {
+          "location_predicate": { "predicate_type": "minecraft:always_true" },
+          "input_predicate": {
+            "predicate_type": "minecraft:blockstate",
+            "block_state": {
+              "Name": "minecraft:trapped_chest",
+              "Properties": { "facing": "east", "type": "single", "waterlogged": "false" }
+            }
+          },
+          "output_state": {
+            "Name": "minecraft:chest",
+            "Properties": { "facing": "east", "type": "single", "waterlogged": "false" }
+          }
+        },
+        {
+          "location_predicate": { "predicate_type": "minecraft:always_true" },
+          "input_predicate": {
+            "predicate_type": "minecraft:blockstate",
+            "block_state": {
+              "Name": "minecraft:trapped_chest",
+              "Properties": { "facing": "west", "type": "single", "waterlogged": "false" }
+            }
+          },
+          "output_state": {
+            "Name": "minecraft:chest",
+            "Properties": { "facing": "west", "type": "single", "waterlogged": "false" }
+          }
+        }
+      ]
+    },
+    { "processor_type": "betterdeserttemples:polished_diorite_processor" },
+    { "processor_type": "betterdeserttemples:diorite_processor" },
+    { "processor_type": "betterdeserttemples:sponge_processor" },
+    { "processor_type": "betterdeserttemples:end_stone_brick_wall_processor" },
+    { "processor_type": "betterdeserttemples:white_stained_glass_processor" },
+    { "processor_type": "betterdeserttemples:lime_banner_processor" },
+    { "processor_type": "betterdeserttemples:red_banner_processor" },
+    { "processor_type": "betterdeserttemples:purpur_pillar_processor" },
+    { "processor_type": "betterdeserttemples:quartz_pillar_processor" },
+    { "processor_type": "betterdeserttemples:acacia_wood_processor" },
+    { "processor_type": "betterdeserttemples:infested_cracked_stone_bricks_processor" },
+    { "processor_type": "betterdeserttemples:bone_block_processor" },
+    { "processor_type": "betterdeserttemples:yellow_wool_processor" },
+    { "processor_type": "betterdeserttemples:yellow_concrete_processor" },
+    { "processor_type": "betterdeserttemples:blue_concrete_processor" },
+    { "processor_type": "betterdeserttemples:gravel_processor" },
+    { "processor_type": "betterdeserttemples:torch_processor" },
+    { "processor_type": "betterdeserttemples:lit_campfire_processor" },
+    { "processor_type": "betterdeserttemples:waterlog_processor" },
+    { "processor_type": "betterdeserttemples:yellow_stained_glass_processor" },
+    { "processor_type": "betterdeserttemples:orange_stained_glass_processor" },
+    { "processor_type": "betterdeserttemples:red_wool_processor" },
+    { "processor_type": "betterdeserttemples:pot_processor" },
+    { "processor_type": "betterdeserttemples:armor_stand_processor" },
+    { "processor_type": "betterdeserttemples:item_frame_processor" }
+  ]
+}

@@ -1,0 +1,42 @@
+{
+  "_comment": "icraft #35 Cataclysm boss-only Tetra material (refight-to-repair). REPAIR ITEM = cataclysm:cursium_ingot, which drops ONLY from Maledictus (cursed_pyramid, T3). Cursium is a cursed-ender themed metal: high primary, deliberately LOW durability (900) so the item wears down -- and since cursium_ingot has no other source, the ONLY way to repair a cursium-built Tetra item is to refight Maledictus. Mirrors the ancient_metal schema (icraft #57). Tools + armor (metal category serves both).",
+  "key": "cm_cursium",
+  "category": "metal",
+  "primary": 8.4,
+  "secondary": 3.4,
+  "tertiary": 4.0,
+  "durability": 900,
+  "integrityCost": 3,
+  "integrityGain": 10,
+  "magicCapacity": 200,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 9,
+  "tints": {
+    "glyph": "6a4a7a",
+    "texture": "6a4a7a"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "cataclysm:cursium_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "cataclysm"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ender_spell_power": 0.12,
+    "**irons_spellbooks:blood_spell_power": 0.08,
+    "**irons_spellbooks:spell_power": 0.1
+  }
+}

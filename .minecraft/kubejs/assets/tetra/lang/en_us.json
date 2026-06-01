@@ -1,0 +1,15 @@
+{
+  "_comment": "icraft #35 Cataclysm boss-only Tetra material display names (refight-to-repair set). tetra.material.<key>.name = full name shown in the workbench material slot; .prefix = the adjective Tetra prepends to the assembled item name (e.g. 'Ignitium Sword'). Without these, Tetra falls back to a raw Title-Cased key ('Cm ignitium').",
+
+  "tetra.material.cm_ignitium.name": "Ignitium",
+  "tetra.material.cm_ignitium.prefix": "Ignitium",
+
+  "tetra.material.cm_cursium.name": "Cursium",
+  "tetra.material.cm_cursium.prefix": "Cursium",
+
+  "tetra.material.cm_witherite.name": "Witherite",
+  "tetra.material.cm_witherite.prefix": "Witherite",
+
+  "tetra.material.cm_ender_guard.name": "Guardian Alloy",
+  "tetra.material.cm_ender_guard.prefix": "Guardian"
+}

@@ -1,0 +1,48 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:diamond_sword" },
+    "title": "Boss-Rush II - The Twilight Gauntlet",
+    "subtitle": "Clear 90% of the Tier 2 roster",
+    "description": [
+      "The Tier 2 boss-rush spans the Twilight Forest, Blue Skies, and Aether",
+      "bosses. Clearing 90% of the roster auto-advances you to Tier 3.",
+      "",
+      "Roster drawn from the live milestone Tier 2 boss list. The composite below",
+      "tracks four of the marquee fights; the real auto-advance denominator is",
+      "the full roster (pending boss-catalog finalization)."
+    ],
+    "groups": {
+      "Combat": { "position": [160, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["com_t1_rush", "reach_tier_2"],
+  "tasks": {
+    "t2_roster": {
+      "type": "heracles:composite",
+      "amount": 4,
+      "tasks": {
+        "kill_naga": { "type": "heracles:kill_entity", "title": "Naga", "entity": "twilightforest:naga", "amount": 1 },
+        "kill_lich": { "type": "heracles:kill_entity", "title": "Lich", "entity": "twilightforest:lich", "amount": 1 },
+        "kill_hydra": { "type": "heracles:kill_entity", "title": "Hydra", "entity": "twilightforest:hydra", "amount": 1 },
+        "kill_ur_ghast": { "type": "heracles:kill_entity", "title": "Ur-Ghast", "entity": "twilightforest:ur_ghast", "amount": 1 },
+        "kill_summoner": { "type": "heracles:kill_entity", "title": "Summoner", "entity": "blue_skies:summoner", "amount": 1 },
+        "kill_slider": { "type": "heracles:kill_entity", "title": "Slider", "entity": "aether:slider", "amount": 1 }
+      }
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/com_t2_rush"
+    },
+    "pool_tokens": {
+      "type": "heracles:item",
+      "title": "Combat tokens (placeholder = Expansion Token)",
+      "item": { "id": "kubejs:tier2_token", "count": 10 }
+    }
+  }
+}

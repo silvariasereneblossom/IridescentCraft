@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "terramity:trial_spire", "required": false }
+  ]
+}

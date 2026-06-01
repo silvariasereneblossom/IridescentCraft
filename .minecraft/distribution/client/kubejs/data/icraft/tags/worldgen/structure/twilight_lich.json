@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "twilightforest:lich_tower", "required": false }
+  ]
+}

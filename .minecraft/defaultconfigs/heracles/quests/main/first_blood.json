@@ -26,9 +26,10 @@
   "dependencies": [],
   "tasks": {
     "kill_hostile": {
-      "type": "heracles:kill_entity",
-      "entity": "minecraft:zombie",
-      "amount": 1
+      "type": "heracles:stat",
+      "title": "Slay a creature",
+      "stat": "minecraft:mob_kills",
+      "target": 1
     }
   },
   "rewards": {

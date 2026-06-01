@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "blue_skies:poison_dungeon", "required": false }
+  ]
+}

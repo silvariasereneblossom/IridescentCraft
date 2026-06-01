@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "twilightforest:knight_stronghold", "required": false }
+  ]
+}

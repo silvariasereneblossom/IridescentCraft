@@ -1,0 +1,51 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "deeperdarker:echo_shard" },
+    "title": "Frontiers III - The Deep Dimensions",
+    "subtitle": "Undergarden, Deeper Darker, the Nether",
+    "description": [
+      "The Tier 3 frontiers run deeper and darker: the Undergarden, the Otherside",
+      "of Deeper Darker, and the Nether itself.",
+      "",
+      "Visiting all three is one of the engine's Tier 3 unlock triggers.",
+      "",
+      "Reach all three below."
+    ],
+    "groups": {
+      "Exploration": { "position": [320, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["exp_t2_boss_tokens", "reach_tier_2"],
+  "tasks": {
+    "enter_nether": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the Nether",
+      "to": "minecraft:the_nether"
+    },
+    "enter_undergarden": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the Undergarden",
+      "to": "undergarden:undergarden"
+    },
+    "enter_otherside": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the Otherside (Deeper Darker)",
+      "to": "deeperdarker:otherside"
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/exp_t3_deep_dimensions"
+    },
+    "pool_tokens": {
+      "type": "heracles:item",
+      "title": "Exploration tokens (placeholder = Dominion Token)",
+      "item": { "id": "kubejs:tier3_token", "count": 6 }
+    }
+  }
+}

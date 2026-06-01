@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "twilightforest:aurora_palace", "required": false }
+  ]
+}

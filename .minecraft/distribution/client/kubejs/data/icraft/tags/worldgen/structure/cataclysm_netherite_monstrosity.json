@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "cataclysm:burning_arena", "required": false }
+  ]
+}

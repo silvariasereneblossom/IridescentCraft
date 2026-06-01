@@ -2,6 +2,15 @@
 
 > **Purpose.** Design spec for the auto-waystone half of Task #46. Captures trigger semantics, placement rules, and per-boss-type threshold detection. Cross-refs: [`boss-catalog.md`](boss-catalog.md) (which bosses), [`waystones-api-audit.md`](waystones-api-audit.md) (what's possible), [`waystone-rename-blocking-options.md`](waystone-rename-blocking-options.md) (Strategy 5 + 1 for the rename-lock).
 
+> **⚑ IMPLEMENTATION STATUS (2026-06-01).** The unified compass + bonfire system is **built** for the **structure-locked** arenas (38 arenas across T1–T4). Files:
+> - `kubejs/server_scripts/bonfire/boss_arena_registry.js` — shared SSOT roster (boss_id → display/tier/dimension/structure/waystone), read by BOTH the compass and the bonfire so they can't drift.
+> - `kubejs/server_scripts/bonfire/boss_compass_handler.js` — the `kubejs:boss_compass` item logic: AStages-tier-gated target menu, structure-locate via the proven `ServerLevel.findNearestMapStructure(TagKey,…)` path, chat direction/distance + a 1 Hz action-bar HUD needle.
+> - `kubejs/server_scripts/bonfire/boss_bonfire_system.js` — auto-places a fixed-name **global** Waystone (`[Boss] <Arena> Bonfire`) the first time any player steps inside an arena piece; `WaystonesAPI.placeWaystone` + `setName` + `setGlobal(true)` + `PlayerWaystoneManager.activeWaystoneForEveryone`; one-shot per (world, boss_id); server-wide first-ignition broadcast.
+> - `kubejs/data/icraft/tags/worldgen/structure/<boss_id>.json` — 38 one-element structure tags powering BOTH the locate (compass) and the in-piece detection (bonfire).
+> - `kubejs/startup_scripts/boss_compass_item.js` — the item registration (unchanged from the MVP).
+>
+> **Detection** uses `StructureManager.getStructureWithPieceAt(pos, tag)` (a per-arena `icraft:<boss_id>` structure tag) rather than the §2.1 worldgen-NBT-marker plan — simpler, needs no per-mod jar surgery, and is precise enough (fires only when the player is on an arena piece). The §6 sentinel-marker milestones (1, 2, 3) are therefore **superseded** by the tag approach; milestone 5 (`placeBossWaystoneIfAbsent`) is **done**; milestone 6 (per-boss `Threshold Position` authoring) remains future polish (current threshold = player's feet on first piece-entry). **Out of scope (no fixed `Structure` to point at / detect on):** biome-random (Brutal/Mutant), summon-item (Meet Your Fight), and the **feature-placed** Cardinal Sins arenas (Lucifer/sins/Drakara are `forge:add_features`, invisible to `findNearestMapStructure`). Those bosses still count for the combat advance route via `codex_boss_rush.js`; they're just not compass/bonfire-eligible. Reload-safe per the #60 lesson (KubeJS events + the `0_tick_master` dispatcher only; zero raw Forge listeners).
+
 ---
 
 ## 1. Player experience

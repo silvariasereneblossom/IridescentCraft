@@ -1,0 +1,55 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:steel_casing" },
+    "title": "Engineering III - Mekanism Factory",
+    "subtitle": "Submit Mekanism-tier machines",
+    "description": [
+      "Tier 3 engineering is Mekanism. Ore multiplication and automation mean the",
+      "bulk-metal caps balloon (30000 each), and the factory blocks are worth a lot.",
+      "",
+      "Sample submissions from the T3 table:",
+      "  - Gas-Burning Generator - 100 each",
+      "  - Basic Factory, Purification Chamber, Osmium Compressor - 70-80 each",
+      "  - Enrichment Chamber, Metallurgic Infuser, Crusher - 50-60 each",
+      "  - Diamonds & Netherite at premium per-unit rates",
+      "",
+      "Submit Steel Casings and an Enrichment Chamber to bank Mekanism tokens.",
+      "The full table reaches ~120% of the 2000-token Tier 4 threshold."
+    ],
+    "groups": {
+      "Engineering": { "position": [320, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["eng_t2_thermal", "reach_tier_3"],
+  "tasks": {
+    "submit_steel_casing": {
+      "type": "heracles:item",
+      "title": "Submit 4 Steel Casings",
+      "item": { "id": "mekanism:steel_casing" },
+      "amount": 4,
+      "collection": "CONSUME"
+    },
+    "submit_enrichment_chamber": {
+      "type": "heracles:item",
+      "title": "Submit 1 Enrichment Chamber",
+      "item": { "id": "mekanism:enrichment_chamber" },
+      "amount": 1,
+      "collection": "CONSUME"
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/eng_t3_mekanism"
+    },
+    "pool_tokens": {
+      "type": "heracles:item",
+      "title": "Engineering tokens (placeholder = Dominion Token)",
+      "item": { "id": "kubejs:tier3_token", "count": 5 }
+    }
+  }
+}

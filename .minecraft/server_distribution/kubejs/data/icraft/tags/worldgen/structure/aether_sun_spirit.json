@@ -1,0 +1,6 @@
+{
+  "replace": false,
+  "values": [
+    { "id": "aether:gold_dungeon", "required": false }
+  ]
+}

@@ -26,10 +26,11 @@
 // barrels too. There is no separate LootType.BARREL — a naturally-placed empty
 // barrel has no loot table and is correctly untouched.
 //
-// COEXISTENCE: the legacy kubejs:tN_token_fragment chest/boss seeding in
-// loot_overhaul.js + lootjs_overhaul.js is a DIFFERENT currency (the old
-// auto-consume-1000 fragment system) and is left untouched — no item-ID
-// collision. This file adds the new accumulation token in parallel.
+// SUPERSEDES: the legacy kubejs:tN_token_fragment chest/boss seeding (the old
+// auto-consume-1000 fragment system) was RETIRED — its seeding was removed from
+// loot_overhaul.js + lootjs_overhaul.js (2026-06-01). This file's
+// icraft:progression_token_tN accumulation token is now the only chest/barrel
+// progression-currency seeding.
 //
 // RELOAD-SAFETY: LootJS.modifiers(...) is the standard reload-safe loot hook
 // used throughout loot/ — reapplied on every /reload, no Forge bus, no item

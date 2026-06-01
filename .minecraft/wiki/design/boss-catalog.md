@@ -60,8 +60,17 @@
 | Terramity | `terramity:gundalf` | Archmage Gundalf | T2 | structure-locked | `terramity:trial_spire` — ocean biomes | gundalfs_hat, guardians_hand | 3 |
 | Terramity | `terramity:trial_guardian` | Trial Guardian | T2 | structure-locked | `terramity:trial_spire` deep boss room | guardian_grimoire, guardians_hand, energized_core | 3 |
 | Terramity | `terramity:sorceress_circe` | Sorceress Circe | **T4 → The End** | structure-locked | `terramity:mausoleum` — **The End** (relocated, was taiga) | malediction_bracelets, evil_king_armor pieces | 3 |
+| Mowzie's Mobs | `mowziesmobs:frostmaw` | Frostmaw | T1 | structure-locked | `mowziesmobs:frostmaw_spawn` — `#forge:is_snowy` overworld (excl. ocean/river/beach/forest/taiga), 25-spacing | ice_crystal, frozen_core, `mowziesmobs:naga_fang_dagger` mats | 2 |
+| Mowzie's Mobs | `mowziesmobs:ferrous_wroughtnaut` | Ferrous Wroughtnaut | T1 | structure-locked | `mowziesmobs:wrought_chamber` — underground overworld (all `has_mowzie_structure` biomes) | wrought_axe (Axe of a Thousand Metals), wrought_helmet | 2 |
+| Mowzie's Mobs | `mowziesmobs:umvuthi` | Umvuthi, the Sunbird | T1 | structure-locked | `mowziesmobs:umvuthana_grove` — `minecraft:is_savanna` overworld | sol_visage mask, sun's blessing, solar beam mats | 2 |
+| Mowzie's Mobs | `mowziesmobs:sculptor` | Tongbi, the Sculptor | T1 | structure-locked + trade-challenge | `mowziesmobs:monastery` — `#forge:is_peak` overworld | sculptor_staff (geomancy), earthrend gauntlet mats | 3 |
+| Mowzie's Mobs | `mowziesmobs:naga` | Naga (mini-boss) | T1 | biome-conditional-random | `minecraft:is_beach` / `minecraft:is_mountain`+`is_hill` overworld | naga_fang (→ naga_fang_dagger), naga scales | 4 |
+| Marium's Soulslike Weaponry | `soulsweapons:draugr_boss` | Old Champion's Remains | T1 | structure-locked + summoned-by-altar | `soulsweapons:champions_graves` — `#minecraft:is_taiga` overworld (boss pre-placed); also Old Moon Altar + Draugr sword | essence_of_eventide, lord_soul, draugr weapon | 2 |
+| Marium's Soulslike Weaponry | `soulsweapons:returning_knight` | Returning Knight | T1 | summoned-by-altar | Old Moon Altar (`soulsweapons:altar_block`, OW iron+moonstone+obsidian) + `#soulsweapons:lost_soul` item | nightfall (undead-army sword), lord_soul | 4 |
+| Marium's Soulslike Weaponry | `soulsweapons:night_shade` | Frenzied Shade | T1 | scripted (emerge/ambush) | summoned/ambush spawn — no fixed structure | shadow-themed drops, soul mats | 4 |
+| Marium's Soulslike Weaponry | `soulsweapons:moonknight` | Fallen Icon → Harbinger of Moonlight | T1 (location) / ⚠ difficulty T2 | summoned-by-altar | `soulsweapons:cathedral_of_resurrection` — `#minecraft:is_hill` overworld; return `essence_of_eventide` to body | essence_of_luminescence, moonlight greatsword (Bluemoon), holy moonlight | 3 |
 
-**T1 subtotal (pre-full-audit):** Brutal Bosses (~18 overworld, undercounted above) + 3 Mutant Monsters + Terramity Gob / Super Sniffer / Merlin. LuMoreBosses (phantom ×2) and the legacy Cataclysm entity dropped; Virtue + Circe relocated to T4. Final counts pending the full-roster audit.
+**T1 subtotal (pre-full-audit):** Brutal Bosses (~18 overworld, undercounted above) + 3 Mutant Monsters + Terramity Gob / Super Sniffer / Merlin + **Mowzie's Mobs ×5 (Frostmaw, Ferrous Wroughtnaut, Umvuthi, Sculptor + Naga mini-boss — all overworld structure/biome spawns)** + **Marium's Soulslike Weaponry ×4 early chain (Draugr, Returning Knight, Night Shade, Moonknight — overworld structures/altars)**. The remaining 4 Soulsweapons bosses (Decaying King, Chaos Monarch, Day Stalker, Night Prowler) are Nether-anchored → T3 (below). LuMoreBosses (phantom ×2) and the legacy Cataclysm entity dropped; Virtue + Circe relocated to T4. Final counts pending the full-roster audit.
 
 ---
 
@@ -141,8 +150,25 @@
 | Ultris | `ultris_mr:sanctum_keeper` | Sanctum Keeper | T3-T4 | structure-locked | Sanctum structure (TBD) | mirrors of the Sanctum Keeper | 3 |
 | Terramity | `terramity:gatmancer` | Gatmancer | T3 | structure-locked | `terramity:infested_laboratory` — overworld | dungeon_effigy, dungeon_sentry items | 3 |
 | Mutant Monsters | `mutantmonsters:mutant_zombie_villager` | Mutant Zombie Villager | T3 | scripted (Skull Spirit on zombie villager) | overworld villages | mutant items | 4 |
+| Cardinal Sins | `cardinal_sins:linneausofsloth` | Linneaus of Sloth | T3 | structure-locked | `slothstructure` → relocated to `#undergarden:is_undergarden` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:sinofgluttony` | Sin of Gluttony | T3 | structure-locked | `gluttonystucture` → relocated to `#undergarden:is_undergarden` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:sinofgreed` | Sin of Greed | T3 | structure-locked | `greedstructure` → relocated to `#undergarden:is_undergarden` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:sinofenvy` | Sin of Envy | T3 | structure-locked | `envystructure` → relocated to `#undergarden:is_undergarden` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:sinoflust` | Sin of Lust | T3 | structure-locked | `luststructuregenerator` → relocated to `#minecraft:is_nether` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:sinofpride` | Sin of Pride | T3 | structure-locked | `pridestructure` → relocated to `#minecraft:is_nether` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:sinofwrath` | Sin of Wrath | T3 | structure-locked | `wrathstructure` → relocated to `#minecraft:is_nether` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:drakara` | Drakara | T3 | structure-locked | `drakarastruc` → relocated to `#minecraft:is_nether` (#56) | sin-themed drops | 3 |
+| Cardinal Sins | `cardinal_sins:lucifer` | **Lucifer** (T3 → T4 combat capstone) | T3 | structure-locked | `luciferstructure` → relocated to `#minecraft:is_nether` (#56) | unique **Lucifer's Token** (T3→T4 combat advance) | 3 |
+| Marium's Soulslike Weaponry | `soulsweapons:accursed_lord_boss` | The Decaying King | T3 | structure-locked + summoned-by-altar | `soulsweapons:decaying_kingdom` — `#minecraft:is_nether` (boss pre-placed); also Blackstone Pedestal + Withered Demon Heart | withered_demon_heart, lord_soul, accursed/darkin mats | 2 |
+| Marium's Soulslike Weaponry | `soulsweapons:chaos_monarch` | Monarch of Chaos | T3 | summoned-by-altar | Blackstone Pedestal (`polished_blackstone_bricks`+ender_pearl+obsidian — Nether-gated) + `soulsweapons:shard_of_uncertainty` (drop) | chaos_crown (→ Chaos Orb), chaos armor mats | 4 |
+| Marium's Soulslike Weaponry | `soulsweapons:day_stalker` | Day Stalker | T3 | summoned-by-item | Chaos Orb summon (duo finale) — needs `essence_of_luminescence` (Moonknight) + `withered_demon_heart` (Decaying King) + `chaos_crown` (Chaos Monarch) | lord_soul_day_stalker, dawnbreaker / sunlight mats | 4 |
+| Marium's Soulslike Weaponry | `soulsweapons:night_prowler` | Night Prowler | T3 | summoned-by-item | Chaos Orb summon (duo finale, paired w/ Day Stalker) | lord_soul_night_prowler, nights_edge / darkmoon mats | 4 |
 
-**T3 subtotal:** 40 entries (9 Cataclysm + 8 Iron's Spellbooks bosses/mobs + 4 Undergarden + 2 Deeper Darker + 7 Stalwart Dungeons + 2 Meet Your Fight + 1 vanilla Wither + 1 Alex's Mobs + 3 Ultris + 1 Terramity + 1 Mutant Monsters).
+> **Marium's Soulslike Weaponry (added 2026-06-01; weapon-centric mod, 8 boss-bar bosses confirmed via `data/forge/tags/entity_types/bosses.json`).** Progression (advancement chain `root → draugr_boss → moonknight → end_of_reigns → chaos_orb → kill_day_night_boss`): **Draugr** (T1 taiga `champions_graves`) → **Moonknight** (T1 hills `cathedral_of_resurrection` summon) → **The Decaying King / Accursed Lord** (T3 — `decaying_kingdom` generates in the **Nether**) → craft **Chaos Orb** → **Day Stalker + Night Prowler** duo finale (T3, gated behind Moonknight + Chaos Monarch + Decaying-King materials). **Returning Knight** + **Night Shade** are side summons (T1). Most bosses are item/altar-summoned (Old Moon Altar `altar_block`, Blackstone Pedestal) — only Draugr (taiga/OW) and the Decaying King (Nether) are *pre-placed* in their structures; the rest spawn wherever summoned, so they're tiered by their **material-gate depth** per the catalog's summon-boss convention (cf. Meet Your Fight / Ultris). HP defaults (jar `BossConfig`): Decaying King 600 · Day Stalker 600 · Moonknight 550 · Returning Knight / Night Prowler 500 · Chaos Monarch 450 · Draugr 300 · Night Shade 150 — all high for their location tier; see build-report balance flags. See `kubejs/server_scripts/gates/codex_boss_rush.js` + `exploration/codex_exploration_kills.js`.
+
+> **Cardinal Sins + Lucifer (added 2026-06-01; the catalog predated this ladder).** The mod escalates **7 sins → Lucifer → Drakara**, originally all overworld-arena bosses; per icraft #56 they were relocated to Undergarden (lesser sins, T2–T3) and the Nether (fierce sins + Drakara + Lucifer, T3) so location-tiering fits. **Lucifer (`cardinal_sins:lucifer`) is the T3 → T4 *combat* capstone** (progression-framework §5): clearing 100% of the T3 boss roster — which includes Lucifer — is the combat route to T4, and `milestone_detection.js` lists Lucifer in `TIER_4_BOSSES` (a single Lucifer kill can also grant `tier_4`). Non-combat lanes (Engineering / Magic banking the 2000-token threshold) skip him entirely. The phase entity `cardinal_sins:luciferphase_1` aliases to the canonical `cardinal_sins:lucifer` via `BOSS_PHASE_ALIASES`. See `kubejs/server_scripts/gates/codex_boss_rush.js`.
+
+**T3 subtotal:** 53 entries (9 Cataclysm + 9 Iron's Spellbooks bosses/mobs + 4 Undergarden + 2 Deeper Darker + 7 Stalwart Dungeons + 2 Meet Your Fight + 1 vanilla Wither + 1 Alex's Mobs + 3 Ultris + 1 Terramity + 1 Mutant Monsters + 9 Cardinal Sins incl. Lucifer + **4 Marium's Soulslike Weaponry: Decaying King / Chaos Monarch / Day Stalker / Night Prowler**).
 
 ---
 
@@ -166,12 +192,12 @@
 | Terramity | `terramity:duskrok` | Duskrok | T4 | biome-conditional-random | nether biomes | mod drops | 4 |
 | Terramity | `terramity:hellrok` | Hellrok | T4 | biome-conditional-random | nether biomes | mod drops | 4 |
 | Ultris | `ultris_mr:shulker_stone` | Shulker Stone | T4 | summoned-by-item | The End — shulker shell crafted item | End-themed unique | 3 |
-| Cataclysm | `cataclysm:void_blossom`[^void_blossom] | Void Blossom | T4 | (NOT a cataclysm entity — `bosses_of_mass_destruction:void_blossom` listed in boss_checklist; BOMD is NOT in this pack) | n/a | n/a | n/a |
-| LuMoreBossesAndMobs[^lmore] | `lu_more_bosses_and_mobs:end_dwellee` | End Dwellee | T4 | biome-conditional-random | The End — outer islands | End-exclusive materials | 4 |
 | Multiplayer Bosses[^mpb] | (enhances vanilla Dragon/Wither/Warden) | (no new entity) | T3-T4 | n/a | enhances existing kill targets | LootBag drops | n/a |
 | Vanilla | `minecraft:warden` | Warden | T4 | structure-locked | Ancient Cities (deep dark biome) | sculk catalyst, echo shard, Mahou attuned_diamond (cross-mod drop) | 2 |
 
-**T4 subtotal:** 16 active entries (Ender Dragon + Warden are vanilla; 3 Cataclysm T4; 1 Botania; 1 Deep Aether; 2 Alex's Mobs; 2 Mutant Monsters; 4 Terramity; 1 Ultris; 1 LuMoreBosses).
+> **Removed phantoms (2026-06-01 #47 sweep).** `cataclysm:void_blossom`[^void_blossom] (the entity belongs to the absent `bosses_of_mass_destruction`, not Cataclysm) and `lu_more_bosses_and_mobs:end_dwellee`[^lmore] (LuMoreBossesAndMobs is not installed) were dropped from the T4 table. The footnotes are retained for the record.
+
+**T4 subtotal:** 14 active entries (Ender Dragon + Warden are vanilla; 3 Cataclysm T4; 1 Botania; 1 Deep Aether; 2 Alex's Mobs; 2 Mutant Monsters; 4 Terramity; 1 Ultris). The Ender Dragon is the **pack finale** — reached via the Deep-Aether **End Compass → End Bastion** (replacing the Eye of Ender), its kill unlocks all post-game + Ad Astra. (Lucifer, the T3→T4 combat capstone, is listed under T3.)
 
 ---
 
@@ -188,7 +214,7 @@
 
 ## Summary
 
-**Total tracked progression bosses: ~106 entries** across 13 mods (counting variants). The `boss_checklist-forge-4.1.0.jar` registry has 167 entries across 57 mods but the in-pack subset is far smaller because most listed mods (Alex's Caves, Mowzie's Mobs, Adventurez, Soulsweapons, Goety, etc.) are not installed. The TIER_2_BOSSES / TIER_3_BOSSES / TIER_4_BOSSES arrays in `kubejs/server_scripts/gates/milestone_detection.js` capture **20 hand-curated "main quest" bosses** — that's the canonical "primary boss line" of the pack. Everything else on this list is "additional boss-tier content" the compass could optionally support.
+**Total tracked progression bosses: ~113 entries** across ~14 mods (counting variants), after the 2026-06-01 pass folded in the Cardinal Sins ladder (+9, incl. Lucifer) and dropped two phantoms (`cataclysm:void_blossom`, LuMoreBosses `end_dwellee`). The `boss_checklist-forge-4.1.0.jar` registry has 167 entries across 57 mods but the in-pack subset is far smaller because most listed mods (Alex's Caves, Mowzie's Mobs, Adventurez, Soulsweapons, Goety, etc.) are not installed. The TIER_2_BOSSES / TIER_3_BOSSES / TIER_4_BOSSES arrays in `kubejs/server_scripts/gates/milestone_detection.js` capture the hand-curated "main quest" bosses; the per-tier boss-rush rosters in `codex_boss_rush.js` are the canonical denominators for the 80 / 90 / 100% advance routes. Everything else on this list is "additional boss-tier content" the compass could optionally support.
 
 ### Rough tier distribution
 
@@ -196,11 +222,11 @@
 |------|-----------:|---------------------------:|
 | T1 | 27 | 11 (mostly biome-random brutal/mutant variants) |
 | T2 | 23 | 9 |
-| T3 | 40 | 17 |
-| T4 | 16 | 10 |
-| **Total** | **106** | **47** |
+| T3 | 49 | 17 |
+| T4 | 14 | 9 |
+| **Total** | **113** | **46** |
 
-About **44% of progression bosses score Discovery Pain ≥4**, meaning a player without an external wiki has no reliable way to find them in-game. This is the compass system's core value proposition.
+About **41% of progression bosses score Discovery Pain ≥4**, meaning a player without an external wiki has no reliable way to find them in-game. This is the compass system's core value proposition.
 
 ### Mods contributing the most "discovery pain" (Discovery Pain ≥4)
 

@@ -1,0 +1,54 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:andesite_alloy" },
+    "title": "Engineering I - The Create Foundry",
+    "subtitle": "Submit Create-tier materials & machines",
+    "description": [
+      "The Tier 1 engineering economy runs on Create. Submit refined metals and",
+      "finished kinetic machines to the Codex; each conversion adds to your pool.",
+      "",
+      "Sample submissions from the T1 conversion table (full table in the Codex):",
+      "  - Iron / Copper / Gold / Redstone - bulk metals, 1 token per 100 (capped)",
+      "  - Brass, Andesite Alloy, Steel - 1 token per 50 (capped)",
+      "  - Mechanical machines (Press, Mixer, Saw, Drill...) - high value each",
+      "",
+      "Submit the materials below to bank your first Engineering tokens.",
+      "Repeat across the table to close on Tier 2 by building alone (~118% of 500)."
+    ],
+    "groups": {
+      "Engineering": { "position": [0, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "IN_PROGRESS"
+  },
+  "dependencies": ["codex_lane_engineering"],
+  "tasks": {
+    "submit_andesite_alloy": {
+      "type": "heracles:item",
+      "title": "Submit 32 Andesite Alloy",
+      "item": { "id": "create:andesite_alloy" },
+      "amount": 32,
+      "collection": "CONSUME"
+    },
+    "submit_iron": {
+      "type": "heracles:item",
+      "title": "Submit 64 Iron Ingots",
+      "item": { "id": "minecraft:iron_ingot" },
+      "amount": 64,
+      "collection": "CONSUME"
+    }
+  },
+  "rewards": {
+    "codex_unlock": {
+      "type": "heracles:command",
+      "command": "advancement grant @s only icraft:quest/eng_t1_create"
+    },
+    "pool_tokens": {
+      "type": "heracles:item",
+      "title": "Engineering tokens (placeholder = Foundations Token)",
+      "item": { "id": "kubejs:tier1_token", "count": 5 }
+    }
+  }
+}

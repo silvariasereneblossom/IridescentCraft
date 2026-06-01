@@ -1,0 +1,42 @@
+{
+  "_comment": "icraft #35 Cataclysm boss-only Tetra material (refight-to-repair). REPAIR ITEM = cataclysm:witherite_ingot. Witherite drops ONLY as cataclysm:witherite_block from The Harbinger (ancient_factory, deep underground, T3-T4); the block unpacks 1->9 into witherite_ingot via Cataclysm's vanilla crafting recipe. Witherite is a wither/decay themed metal: high primary, deliberately LOW durability (1000) so the item wears down -- and since witherite has no other source, the ONLY way to repair a witherite-built Tetra item is to refight The Harbinger. Mirrors the ancient_metal schema (icraft #57). Tools + armor.",
+  "key": "cm_witherite",
+  "category": "metal",
+  "primary": 8.6,
+  "secondary": 3.2,
+  "tertiary": 4.2,
+  "durability": 1000,
+  "integrityCost": 3,
+  "integrityGain": 10,
+  "magicCapacity": 200,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 9,
+  "tints": {
+    "glyph": "3a3a3a",
+    "texture": "3a3a3a"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "cataclysm:witherite_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "cataclysm"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:blood_spell_power": 0.12,
+    "**irons_spellbooks:ender_spell_power": 0.08,
+    "**irons_spellbooks:spell_power": 0.1
+  }
+}
