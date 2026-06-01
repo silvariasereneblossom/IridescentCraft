@@ -48,7 +48,7 @@ Each dimension has unique combat mechanics beyond stat scaling:
 - **Deeper and Darker:** Acoustic Aggro, Sculk Resonance, Darkness Empowerment
 - **The Nether:** Infernal Rage, Soulfire Burns (30% bypasses armor), Blaze Swarm
 - **Deep Aether:** Celestial Empowerment, Wind Shear, Radiant Shield
-- **Deeper Darker (Otherside):** Oppressive Darkness (reduced visibility + slowness without light source), Corruption (gradual wither buildup), Fear Aura (boss proximity debuffs). These fire in Otherside via `dimension_mechanics.js` as a substitute for the never-shipped Abyss mod.
+- **The Abyss (TATOS):** Oppressive Darkness (no held light + low light → mining-fatigue + slowness), Corruption (periodic hunger ticks), Fear Aura (Darkness within 16 blocks of Abyss bosses), Void Whispers (Weakness below Y=20). These fire in `theabyss:the_abyss` via `dimension_mechanics.js`. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
 - **The End:** Void Proximity, Ender Displacement, Void Corruption, Reality Fracture. Dragon Exploration Gate: explore End islands first, fight dragon last. Reached via the Deep-Aether End Compass → End Bastion (replaces the Eye of Ender). 9 advancement overrides, 5 End Apotheosis affixes.
 
 ## Champions System (REMOVED 2026-04-07)
@@ -241,7 +241,7 @@ XP is plentiful with many sinks: JustLevelingFork leveling, skill point investme
 
 ## Tetra Modded Materials
 
-27 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals. Includes Blue Skies, Undergarden, and Forbidden & Arcanus metals. Diamond hammer tier required for high-tier crafting. *(Any theabyss-metal entries are dormant — that mod is not in pack.)*
+27 modded metal material definitions integrated via Paxi datapack (`icraft_tetra_materials`). Enables Tetra tool crafting with modded metals. Includes Blue Skies, Undergarden, Forbidden & Arcanus, and theabyss (TATOS) metals — the 4 theabyss entries (`garnite`, `knight`, `phantom`, `unorithe`, keyed to `theabyss:*_ingot`, diamond tool level) are live since TATOS is in pack. Diamond hammer tier required for high-tier crafting.
 
 | Tier | Materials |
 |------|-----------|
@@ -266,7 +266,7 @@ Generators nerfed across the board to prevent early RF flooding. All machine RF 
 
 ## Custom Abyss-themed Curio System
 
-8 `kubejs:ring_*` curio items shipped as a standalone T3 curio chain — originally designed as a substitute for The Abyss mod's 30-ring system. The Abyss mod is not currently in pack; the rings remain in-pack as a standalone content surface, with drop sources currently pending reallocation to in-pack T3 bosses (see #47 and `master-appendix.md` §C.11).
+8 `kubejs:ring_*` curio items shipped as a curated T3 curio chain replacing theabyss (TATOS)'s 30 stock rings. TATOS is in pack: its stock rings + arcane workbench are stripped in `recipe_audit.js` §K, and the 8 custom rings drop from TATOS structure chests + Abyss bosses via `abyss_boss_loot.js` (effects in `abyss_ring_effects.js`). See `master-appendix.md` §C.11.
 
 ## Blue Skies Balance
 

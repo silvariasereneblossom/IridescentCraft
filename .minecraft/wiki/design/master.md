@@ -250,7 +250,7 @@ A dimension is not a place to grind — it is a content arc. Each dimension has 
 | Undergarden | T3 | Forgotten Guardian / Forgotten / Rotbeast | Hostile underground biome, attrition focus |
 | Deeper Darker | T3 | Sculk-themed | Oppressive darkness, stealth-required |
 | The Nether | T3 | Cataclysm line (Netherite Monstrosity, Ignis, the Harbinger, Maledictus, Ancient Remnant) | Majrusz Master-stage scaling; Wither Skeletons function as mini-bosses |
-| Deeper Darker (Otherside) | T3 | Sculk-themed (extended) | Oppressive darkness mechanic — visibility tuning, slow corruption stat-debuff buildup, scripted fear aura, custom 8-ring `kubejs:ring_*` economy as Otherside-themed content surface (a standalone substitute for the never-shipped Abyss mod) |
+| The Abyss (TATOS) | T3 | Elder / Ice Knight / Nightblade / Soul Guard / The Roka / Guard | `theabyss:the_abyss` (TATOS mod, installed; dim gated T3). Oppressive darkness, corruption, fear aura, void whispers fire here via `dimension_mechanics.js`. Custom 8-ring `kubejs:ring_*` economy replaces theabyss's 30 stock rings (`abyss_boss_loot.js` + `abyss_ring_effects.js`); 7 elemental armor-set bonuses (`abyss_armor_effects.js`). |
 | Deep Aether | T4 | EotS Controller, custom T4 sky-end | Aethersteel chain (15+ items + 2 ore replacements). Its materials craft the **End Compass** that unlocks the End. |
 | The End | T4 | Ender Dragon (the pack finale) + Ender Guardian + Ancient Remnant | Reached via the Deep-Aether **End Compass → End Bastion** (replaces the Eye of Ender); multi-zone scaling; Voidheart Blade Mythic Forge venue; Dragon kill → post-game + Ad Astra |
 | Ad Astra (Moon, Mars, Mercury, Venus, Glacio) | post-game (T4 terminal) | Per-planet | Unlocked by the Ender Dragon kill; 4-tier rocket gate; Glacio is the post-T4 endgame (MekaSuit Mk2 reagent) |
@@ -261,7 +261,8 @@ A dimension is not a place to grind — it is a content arc. Each dimension has 
 Beyond stat multipliers, each dimension has *scripted mechanics* that change how the player interacts with that space:
 
 - **Aether** — thin-air, vertigo, updrafts. Limited oxygen; gentle gravity/glide tuning; updraft columns near floating islands.
-- **Deeper Darker (Otherside)** — oppressive darkness, corruption, fear aura. Visibility tuning, slow corruption stat-debuff buildup, scripted fear aura near specific mob types. Originally scoped as a separate "Abyss" dimension; absent that mod, the mechanics fire in Otherside via `dimension_mechanics.js`.
+- **Deeper Darker (Otherside)** — darkness empowerment + hexing. Sculk-mob night-vision/AI buffs at spawn; 15%-on-hit random debuff (slowness/weakness/mining-fatigue/blindness). Genuine Deeper-Darker flavor, fired via `dimension_mechanics.js`.
+- **The Abyss (TATOS)** — oppressive darkness, corruption, fear aura, void whispers. No held light + low light → mining-fatigue + slowness; periodic hunger ticks (corruption); Darkness near Abyss bosses (fear aura); Weakness below Y=20 (void whispers). Fires in `theabyss:the_abyss` via `dimension_mechanics.js`. (TATOS = "The Abyss: The Other Side"; installed, dim gated T3.)
 - **End** — multi-zone scaling. The dimension is divided into Outer Islands (T4 baseline), Deep End (T4-amplified), and Dragon's Domain (peak). Scaling factor doubles past a certain distance from spawn. Nine advancement overrides shape the End-progression flow.
 - **Ad Astra** — atmospheric pressure + cryogenic damage. Each planet has its own atmosphere; players need oxygen tanks (T4 entry equipment). Glacio adds cryogenic damage on top.
 
@@ -350,7 +351,9 @@ Three principles guide the per-dimension design:
 
 **T3 — The Nether: Relentless Aggression.** Permanent aggro from 20 blocks. 30% of melee damage is fire (bypasses armor; Heatward enchant mitigates). Killing Blazes has a 20% chance to spawn 2 smaller "Ember" adds. Mobs inside Nether Fortresses gain stat bonuses and resist knockback (set-piece encounters). Lava-adjacent mobs regenerate. Improved Mobs runs at maximum aggression: all mobs use found gear, piglins flank in 4–6 hunting parties, hoglins charge toward lava (intentional environmental kills).
 
-**T3 — Deeper Darker (Otherside).** Oppressive darkness mechanic — visibility tuning, slow corruption stat-debuff buildup, scripted fear aura near specific mob types. Sculk-adjacent mob synergies. A custom `kubejs:ring_*` content surface (8 rings + themed loot tables; see master-appendix §C.11) overlays the dimension as a standalone substitute for the never-shipped Abyss mod.
+**T3 — Deeper Darker (Otherside).** Darkness empowerment + hexing. Sculk mobs spawn with night-vision (darkness-empowered AI); 15%-on-hit chance of a random short debuff (slowness/weakness/mining-fatigue/blindness). Sculk-adjacent mob synergies, stealth-required.
+
+**T3 — The Abyss (TATOS).** Oppressive darkness mechanic — no held light + low light applies mining-fatigue + slowness; corruption ticks (periodic hunger); fear aura (Darkness within 16 blocks of Abyss bosses); void whispers (Weakness below Y=20). Fires in `theabyss:the_abyss` via `dimension_mechanics.js`. A custom `kubejs:ring_*` content surface (8 rings + 7 elemental armor sets + themed loot tables; see master-appendix §C.11) replaces theabyss's 30 stock rings. TATOS ("The Abyss: The Other Side") is installed; the dimension is gated T3.
 
 **T4 — Deep Aether: Ascension Trial.** Aerial combat, escalated difficulty, multi-phase mob attack patterns. Celestial Events every 20 minutes give mobs a stat bonus and 50% more loot. Random wind shears push players and projectiles off-course. 20% of mobs spawn with one-hit absorption shields (rewards sustained combat over alpha-strike). Procedural Ascension Towers — each floor adds stats, top floor has a mini-boss. Combo attacks (2–3 hit sequences with increasing damage), telegraphed special attacks (1-second windup), allies heal each other if not interrupted.
 

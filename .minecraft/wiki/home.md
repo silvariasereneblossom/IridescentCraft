@@ -73,7 +73,7 @@ The canonical design reference for all modpack systems.
 | Cross-mod recipe audit | Implemented | 30+ tier-breaking recipes blocked across 8 mods |
 | Mod config audit | Implemented | Apotheosis configs aligned to design (ScalingMobs + Champions configs done historically; those mods later removed — see Difficulty engine row) |
 | Config review pass | Implemented | Easy Anvils verified, Disenchanting/Table of XP/DarkOrb T2-gated, Azukaar's stat scaling zeroed, Icarus T3-gated, Aethersteel T4, Terramity guns/armor removed |
-| Tetra integration | Implemented | 27 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4, including Blue Skies + Undergarden + F&A metals (theabyss-metal entries dormant — mod not in pack) |
+| Tetra integration | Implemented | 27 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4, including Blue Skies + Undergarden + F&A + theabyss (TATOS) metals |
 | Serene Seasons documentation | Implemented | 4-page Patchouli Codex entry for seasonal farming |
 | Mekanism balance overhaul | Implemented | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal |
 | Food system overhaul | Implemented | Hunger drain 2.5x, seed drops 5%, structure food reduction, spawn protection |
@@ -82,10 +82,10 @@ The canonical design reference for all modpack systems.
 | Blue Skies balance pass | Implemented | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only, 3 materials nerfed to T2 + Tetra integration |
 | Undergarden balance pass | Implemented | Tetra stat overrides for 4 metals (27 materials total) |
 | Aether dimension mechanics | Implemented | Thin air, vertigo, updrafts |
-| Otherside dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura (fire in Deeper Darker's Otherside as a substitute for the never-shipped Abyss mod) |
+| The Abyss (TATOS) dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura, void whispers — fire in `theabyss:the_abyss` (TATOS mod, installed; dim gated T3). Deeper Darker's Otherside keeps its own genuine flavor (darkness empowerment + hexing). |
 | End overhaul | Implemented | Dragon Exploration Gate, End Compass → End Bastion unlock (replaces Eye of Ender), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot |
 | TF portal activator | Implemented | Changed from diamond to T1 boss token |
-| Custom Abyss-themed curio rings | Implemented | 8 `kubejs:ring_*` curios as a standalone T3 chain (substitute for the never-shipped Abyss mod's 30 rings); drop sources pending reallocation to in-pack T3 bosses (#47) |
+| Custom Abyss-themed curio rings | Implemented | 8 `kubejs:ring_*` curios as a curated T3 chain replacing theabyss (TATOS)'s 30 stock rings (stock rings + arcane workbench stripped in `recipe_audit.js` §K); drops gated to TATOS structure chests + Abyss bosses via `abyss_boss_loot.js` |
 | Server distribution | Implemented | Unified `iridescentserver.bat` (auto-install + launch + crash logging). Strip script, force-skip list, mod channel mismatch tracker (5 mods resolved). |
 | Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. No Mundane, no Human. |
 | Race layer rebalance | Implemented | Elf/Dwarf/Orc/Halfling/Faefolk/Revenant stat adjustments, bug fixes, functional effects |

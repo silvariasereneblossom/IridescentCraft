@@ -289,7 +289,7 @@ All `event.remove` and `event.shaped` (override) calls across `kubejs/server_scr
 - J.2: 4 Refined Obsidian armor pieces recipes removed.
 - J.3 (audit Phase 8.4, 2026-04-27): `cataclysm:mechanical_fusion_anvil` recipe removed (merged with `void_forge`/`infernal_forge`).
 
-**Section K — Theabyss rings + Arcane Workbench + boss armor** *(DEAD CODE: theabyss mod is not currently in pack; the strip rules below are no-ops against the unloaded namespace. Retained as documentation of intended strip behavior should the mod be re-added; safe to remove if the absence is permanent — see #47)*:
+**Section K — Theabyss rings + Arcane Workbench + boss armor** *(LIVE: theabyss/TATOS is installed, so these strips actively fire. The 30 stock rings + arcane workbench are removed so the 8 custom `kubejs:ring_*` curios are the only ring economy; the 5 boss-armor-set crafting recipes are removed so those sets are boss-drop-only — see §C.11)*:
 - K.1: `event.remove({ mod: 'theabyss', type: 'minecraft:crafting_shaped', output: /theabyss:ring_/ })` (regex bulk strip).
 - K.2: Catch-all `event.remove({ output: /theabyss:ring_/ })` for shapeless/special.
 - K.3: 29-item individual ring removal list (belt-and-suspenders); audit Phase 3.2 fixed `ring_of_ghost` → `ring_of_ghosts` plural drift.
@@ -561,13 +561,13 @@ swords (tier-bonus 7-9.5) weren't outliers and were left alone.
 
 ### C.11 Custom Abyss-themed curio system (`loot/abyss_boss_loot.js`)
 
-The Abyss mod (originally planned T3 dimension) is not currently in pack. The 7 custom `kubejs:ring_*` items below ship as a standalone curio chain replacing the originally-planned theabyss ring economy:
+The Abyss / TATOS (`theabyss`, T3 dimension `theabyss:the_abyss`) is installed. Its 30 stock rings + arcane workbench are stripped (`recipe_audit.js` §K) and replaced by 8 custom `kubejs:ring_*` curios:
 
-`kubejs:ring_of_shadows`, `ring_of_the_phantom`, `ring_of_embers`, `ring_of_frost`, `ring_of_void_sight`, `ring_of_the_knight`, `ring_of_dark_pact`, `ring_of_unorithe` — 8 rings total.
+`kubejs:ring_of_shadows`, `ring_of_the_phantom`, `ring_of_embers`, `ring_of_frost`, `ring_of_void_sight`, `ring_of_the_knight`, `ring_of_dark_pact`, `ring_of_unorithe` — 8 rings total. Effects in `abyss/abyss_ring_effects.js`.
 
-**Drop source reallocation — TBD (per #47 cleanup).** Original sources (Knight boss, Nightblade boss, final Abyss boss, ice_knight, soul_guard, guard) are entities from the absent mod. Pending operator decision on whether to reallocate to in-pack T3 bosses (e.g., Cataclysm Witherite-tier bosses, Twilight Hydra, Aether Sun Spirit) or rip the LootJS hooks entirely.
+**Drop sources (live, `abyss_boss_loot.js`).** Shadows / Phantom / Embers / Frost — `theabyss:chests/*` structure chests (15% each); Void Sight — deep/dungeon/temple/boss chests (10%); Knight — `theabyss:ice_knight` boss (25%); Dark Pact — `theabyss:soul_guard` boss (20%); Unorithe — `theabyss:guard` boss (15%). All sources are live theabyss entities/tables.
 
-The 5 boss-drop armor sets (Knight, Unorithe, Ragnarok, Dragon, Death) originally tied here cannot drop — the source items are from the absent mod and have no in-pack equivalent.
+The 5 boss-drop armor sets (Knight, Unorithe, Ragnarok, Dragon, Death) are boss-drop-only (their crafting recipes are stripped in §K) and drop from `theabyss:ice_knight` / `soul_guard` / `guard` per `abyss_boss_loot.js` §3-5. 7 elemental armor-set bonuses for the in-pack theabyss sets (Garnite, Aberythe, Incorythe, Fusion, Phantom, Glacerythe, Ignisithe) live in `abyss/abyss_armor_effects.js`.
 
 ### C.12 Boss mod integration — additional mods (design notes)
 
@@ -949,7 +949,7 @@ All `kubejs:*` items, ~80 total. Organized by category. Source: `kubejs/startup_
 
 ### E.7 Custom Abyss-themed curio rings
 
-- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe` — 8 custom rings shipped as a standalone curio chain. Originally designed as substitutes for The Abyss mod's 30-ring system; the source mod is not currently shipped, so the rings remain as standalone in-pack content (drop sources TBD per #47 — see C.11).
+- `kubejs:ring_of_shadows`, `kubejs:ring_of_the_phantom`, `kubejs:ring_of_embers`, `kubejs:ring_of_frost`, `kubejs:ring_of_void_sight`, `kubejs:ring_of_the_knight`, `kubejs:ring_of_dark_pact`, `kubejs:ring_of_unorithe` — 8 custom rings. theabyss/TATOS is in pack; its 30 stock rings + arcane workbench are stripped (`recipe_audit.js` §K) and these 8 replace them. Live drop sources (theabyss chests + ice_knight/soul_guard/guard bosses) per C.11.
 
 ### E.8 Misc
 
@@ -1032,7 +1032,8 @@ Per-mod tier placement, side label (per server_distribution `.pw.toml`), custom-
 | Occultism | B | T3 chokepoint (per-item gated, NOT mod-blanket) |
 | L_Ender's Cataclysm | B | T3 nether boss line |
 | Cataclysm UT | B | Cataclysm utility addon |
-| Deeper Darker | B | T3 dimension (Otherside) — hosts the custom Abyss-themed mechanics in lieu of a dedicated Abyss mod |
+| Deeper Darker | B | T3 dimension (Otherside) — genuine sculk/darkness flavor (darkness empowerment + hexing). Distinct from theabyss/TATOS, which has its own T3 dim `theabyss:the_abyss`. |
+| The Abyss / TATOS (`theabyss`, `TATOS 1.0.5_beta.jar`) | B | T3 dimension `theabyss:the_abyss` (gated T3 via `dimension_gates.js`). Oppressive-darkness/corruption/fear-aura/void-whispers mechanics (`dimension_mechanics.js`); 30 stock rings + arcane workbench stripped → 8 custom rings; 7 armor-set bonuses + boss-drop gating; 4 Tetra metals. `tatos_dimension_lock.js` confines theabyss mobs to the 4 TATOS dims. |
 | Mahou Tsukai | B | T4 actually (mod is T4-staged); mahou-related drops at T2-T4 cross-mod |
 | Stalwart Dungeons | B | T3 nether mini-bosses |
 | Mutant Monsters | B | T3 boss-tier mobs |
@@ -1152,7 +1153,7 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 
 **Ore replacements**: 8 ore replacements (diamond/deepslate-diamond/ancient-debris → vanilla; osmium/deepslate-osmium → stone/deepslate; arcane_crystal/deepslate-arcane-crystal → stone/deepslate).
 
-**Dimensions**: `undergarden:undergarden`, `deeperdarker:otherside`, `minecraft:the_nether`.
+**Dimensions**: `undergarden:undergarden`, `deeperdarker:otherside`, `minecraft:the_nether`, `theabyss:the_abyss`.
 
 ### G.3 Tier 4 stage
 
@@ -1198,7 +1199,7 @@ Validated by `tools/validate_datapack_references.sh`. Each entry is a Paxi datap
 | `icraft_progdiff_overrides` | Progressive Difficulty tuning | Difficulty consistency |
 | `icraft_skills` | Pufferfish's Skills tree definitions | 6 skill trees |
 | `icraft_terramity_overrides` | Terramity gem ore biome injection (sapphire/topaz/iridium/gaianite into Aether/Twilight/BS) | T2 ore distribution |
-| `icraft_tetra_materials` | 27 modded metals + 5 gems for Tetra integration (cataclysm / blue_skies / Undergarden / F&A metals; any theabyss-metal entries are dormant — mod not in pack) | T2-T4 Tetra entries |
+| `icraft_tetra_materials` | 27 modded metals + 5 gems for Tetra integration (cataclysm / blue_skies / Undergarden / F&A / theabyss metals; the 4 theabyss entries — garnite / knight / phantom / unorithe — are live, mod in pack) | T2-T4 Tetra entries |
 | `icraft_tetra_overrides` | Tetra material stat tweaks | Balance |
 | `icraft_tower_overrides` | Towers of the Wild spawn frequency | Worldgen tuning |
 | `icraft_worldgen_overrides` | Vanilla iron/copper + modded zinc/nickel/silver/lead distribution | Worldgen base |
@@ -1252,7 +1253,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 
 | Script | Role |
 |--------|------|
-| `recipe_audit.js` | Cross-mod tier-skip blocks (Sections A-N): create:mixing, ars:imbuement, mek:enriching/combining/purifying/injecting, F&A clibano, terramity guns/armor, mek tools, theabyss rings + abyss boss armor *(Section K dead-code — mod not in pack)*, BS dusk_arc / shadow / runic_arc, BS Diopside/Charoite/Horizonite material strip, mech_fusion_anvil. ~67 removals |
+| `recipe_audit.js` | Cross-mod tier-skip blocks (Sections A-N): create:mixing, ars:imbuement, mek:enriching/combining/purifying/injecting, F&A clibano, terramity guns/armor, mek tools, theabyss rings + abyss boss armor *(Section K live — TATOS in pack)*, BS dusk_arc / shadow / runic_arc, BS Diopside/Charoite/Horizonite material strip, mech_fusion_anvil. ~67 removals |
 | `tier_gated_recipes.js` | Re-recipe overrides for tier-gated workstations (Hephaestus Forge T3, Meka-Tool T4, RFTools dim builders T4, etc.) + Section E Simply Swords removal list (43 entries post-audit-Phase-3.1) |
 | `tier_skip.js` | Cross-tier transmutation recipes (the "bend" mechanism) + Rift Keystone recipe + cross-mod dual-paths |
 | `ad_astra_gating.js` | Ad Astra rocket progression (4-tier) + NASA Workbench T4-gate + 4 MekaSuit Mk2 piece recipes at Mythic Forge |
@@ -1291,7 +1292,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | `mob_scaling_unified.js` | Static mob-tier HP block (basic 3× / mid 1.5× / elite 1.25×) that composes on top of the `iridescent_difficulty` mod's dimension multipliers. (The former Champions-dependent dimension-scaling block was retired when `iridescent_difficulty` took over dimension stats — 2026-05-03.) |
 | `boss_hp.js` | Per-boss HP base values (table in Section D.6) |
 | `boss_progressive.js` | Per-kill boss buffing (Progressive Bosses supplement) |
-| `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Otherside corruption/fear-aura, End multi-zone, Ad Astra atmospheric) |
+| `dimension_mechanics.js` | Per-dimension scripted mechanics (Aether thin-air, Otherside darkness-empowerment/hexing, theabyss oppressive-darkness/corruption/fear-aura/void-whispers, End multi-zone, Ad Astra atmospheric) |
 | `mob_equipment.js` | Mob equipment-spawn handler with iron-tier cap (was Improved Mobs-paired; Improved Mobs removed 2026-05-03 — verify the script still fires or is now dormant) |
 | `dimension_scaling.js.disabled` / `mob_tier_hp.js.disabled` | Older systems; superseded |
 
@@ -2131,7 +2132,7 @@ relics:wool_mitten                     relics:shadow_glaive
 artifacts:scarf_of_invisibility
 ```
 
-**T4 Abyssal — orphaned item pool** *(originally targeted at The Abyss marquees structure which is not in pack; per #47, this 14-item curated pool awaits reassignment to a different T4 structure — e.g., Ancient City, End City, or a Cataclysm endgame structure. Items themselves are in pack via the `celestial_artifacts` / `relics` mods)*:
+**T4 Abyssal — orphaned item pool** *(originally targeted at an aspirational **T4** "Abyss marquee" structure that is not in pack; per #47, this 14-item curated pool awaits reassignment to a different T4 structure — e.g., Ancient City, End City, or a Cataclysm endgame structure. Items themselves are in pack via the `celestial_artifacts` / `relics` mods. NB: this is **not** the in-pack T3 theabyss/TATOS dimension — TATOS loot is wired separately via `theabyss:chests/*` + Abyss bosses in `abyss_boss_loot.js`)*:
 
 ```
 celestial_artifacts:abyss_core         celestial_artifacts:abyss_will_badge

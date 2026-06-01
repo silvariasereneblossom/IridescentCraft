@@ -108,11 +108,11 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 | DarkOrb Orb of Origin | recipe | T2-gated (4x steel + 4x amethyst + heart of the sea) |
 | Aethersteel | datapack/config | T4 endgame. Worldgen disabled, 17 items AStages-restricted, ore replacement. |
 | Terramity | recipes | 22 gun recipes removed, 64 armor pieces removed, gunsmith station removed. |
-| Tetra | datapack (`icraft_tetra_materials`) | 27 modded metal material definitions including Blue Skies, Undergarden + F&A metals (theabyss-metal entries dormant — standalone mod not in pack). Diamond hammer tier. |
+| Tetra | datapack (`icraft_tetra_materials`) | 27 modded metal material definitions including Blue Skies, Undergarden, F&A, and theabyss (TATOS) metals (4 live theabyss entries: garnite/knight/phantom/unorithe). Diamond hammer tier. |
 | Ad Astra | recipes/config | Post-T4 space dimension. T4 gate + recipe gating. BEING IMPLEMENTED. |
 | Mekanism | config/recipes | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal. |
 | Blue Skies | recipes/loot | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only. Diopside/Charoite/Horizonite nerfed to T2. |
-| Custom Abyss-themed rings | scripts | 8 `kubejs:ring_*` curios as a standalone T3 chain (substitute for the never-shipped standalone Abyss mod's 30 rings); drop sources pending reallocation (#47). Otherside darkness/corruption/fear mechanics fire in Deeper Darker. |
+| Custom Abyss-themed rings | scripts | 8 `kubejs:ring_*` curios as a curated T3 chain replacing theabyss (TATOS)'s 30 stock rings (stock rings + arcane workbench stripped in `recipe_audit.js` §K); drops from TATOS chests + Abyss bosses (`abyss_boss_loot.js`). Abyss darkness/corruption/fear/void-whispers fire in `theabyss:the_abyss`. |
 | Twilight Forest | recipes | Portal activator changed from diamond to T1 boss token. |
 | End (vanilla + mods) | datapacks/scripts | Dragon Exploration Gate, End Compass → End Bastion unlock (replaces Eye of Ender), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot. |
 | Mob equipment (`mob_equipment.js`) | scripts | 3-day grace, equipment/damage caps, diamond→iron mob breaking tools. (Was an Improved Mobs config; that mod was removed 2026-05-03 — handler now holds these targets.) |
