@@ -865,19 +865,30 @@ LootJS.modifiers(event => {
     .removeLoot('minecraft:diamond')
 
   // --- Better Desert Temples: storage tier (food_storage, storage, pot, wardrobe) ---
+  // OPERATOR EXEMPTION (2026-06-01): desert temples keep their arcane flavor. The
+  // global Section-1B strip wipes @irons_spellbooks from ALL chests; these tiered
+  // re-adds put the ISS essence/ink back into BDT chests specifically (running AFTER
+  // the strip, the same proven pattern as the Ars spell-book re-adds in Section 1B).
   event
     .addLootTableModifier(/betterdeserttemples:.*(?:food_storage|storage|pot|wardrobe)/)
     .removeLoot('minecraft:diamond')
+    .addLoot(LootEntry.of('irons_spellbooks:arcane_essence').limitCount([1, 2]).when(c => c.randomChance(0.30)))
+    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.12)))
 
   // --- Better Desert Temples: mid tier (lab, library, statue, tomb) ---
   event
     .addLootTableModifier(/betterdeserttemples:.*(?:lab|library|statue|tomb(?!_pharaoh))/)
     .removeLoot('minecraft:diamond')
+    .addLoot(LootEntry.of('irons_spellbooks:arcane_essence').limitCount([1, 3]).when(c => c.randomChance(0.40)))
+    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.18)))
+    .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.06)))
 
   // --- Better Desert Temples: pharaoh tier (tomb_pharaoh, pharaoh_hidden) ---
   event
     .addLootTableModifier(/betterdeserttemples:.*pharaoh/)
     .removeLoot('minecraft:diamond')
+    .addLoot(LootEntry.of('irons_spellbooks:arcane_essence').limitCount([2, 4]).when(c => c.randomChance(0.50)))
+    .addLoot(LootEntry.of('irons_spellbooks:rare_ink').when(c => c.randomChance(0.15)))
 
   // [Removed 2026-04-19] Overhauled Structures — mod not installed.
   // [Removed 2026-04-19] Loot Integrations — mod not installed. If either
