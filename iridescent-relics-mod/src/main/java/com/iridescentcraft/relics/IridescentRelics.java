@@ -53,13 +53,13 @@ public class IridescentRelics {
     // curios:<slot> item tag (data/curios/tags/items/<slot>.json). All modded attributes are
     // SOFT deps resolved at runtime. Drops are wired separately (kubejs/.../relic_boss_drops.js).
 
-    // Frostmaw's Frozen Heart -- T1 (mowziesmobs:frostmaw), necklace, RARE. +armor.
+    // Frostmaw's Frozen Heart -- T1 (mowziesmobs:frostmaw), necklace, UNCOMMON. +armor.
     public static final RegistryObject<Item> FROSTMAW_HEART = ITEMS.register("frostmaw_heart",
-        () -> new FrostmawHeartItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant()));
+        () -> new FrostmawHeartItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant()));
 
-    // Ironheart Cog -- T1 (mowziesmobs:ferrous_wroughtnaut), belt, RARE. +armor, +knockback resist.
+    // Ironheart Cog -- T1 (mowziesmobs:ferrous_wroughtnaut), belt, UNCOMMON. +armor, +knockback resist.
     public static final RegistryObject<Item> IRONHEART_COG = ITEMS.register("ironheart_cog",
-        () -> new IronheartCogItem(new Item.Properties().stacksTo(1).rarity(Rarity.RARE).fireResistant()));
+        () -> new IronheartCogItem(new Item.Properties().stacksTo(1).rarity(Rarity.UNCOMMON).fireResistant()));
 
     // Sunfeather Charm -- T2 (aether:sun_spirit), charm, RARE. +max mana (ISS soft dep).
     public static final RegistryObject<Item> SUNFEATHER_CHARM = ITEMS.register("sunfeather_charm",

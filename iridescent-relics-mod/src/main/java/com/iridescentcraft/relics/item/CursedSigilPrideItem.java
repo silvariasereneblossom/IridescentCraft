@@ -58,6 +58,7 @@ public class CursedSigilPrideItem extends RelicItem {
     public RelicData constructDefaultRelicData() {
         return RelicData.builder()
                 .abilities(AbilitiesData.builder()
+                        // BALANCE FLAG (#68): +0.20 spell_power stacks with JLFork MAG (~+16% at MAG 32) + honing L5 (+0.10) -> up to ~+46% combined; the -4 health curse is the counterweight. Operator to confirm the cap by feel.
                         .ability(AbilityData.builder("power")
                                 .stat(StatData.builder("amount")
                                         .initialValue(0.20D, 0.20D)
@@ -83,8 +84,8 @@ public class CursedSigilPrideItem extends RelicItem {
                         .build())
                 .leveling(LevelingData.builder()
                         .initialCost(100)
-                        .maxLevel(10)
-                        .step(100)
+                        .maxLevel(12)
+                        .step(125)
                         .build())
                 .style(StyleData.builder()
                         .tooltip(TooltipData.builder()

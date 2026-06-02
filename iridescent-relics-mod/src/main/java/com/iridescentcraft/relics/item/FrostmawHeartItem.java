@@ -50,7 +50,7 @@ public class FrostmawHeartItem extends RelicItem {
                         .build())
                 .leveling(LevelingData.builder()
                         .initialCost(100)
-                        .maxLevel(10)
+                        .maxLevel(8)
                         .step(100)
                         .build())
                 .style(StyleData.builder()
