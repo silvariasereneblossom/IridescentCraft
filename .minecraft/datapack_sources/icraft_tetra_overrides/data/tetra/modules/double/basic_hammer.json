@@ -304,7 +304,7 @@
                 "blunt_weapon": 1
             },
             "tools": {
-                "hammer_dig": "minecraft:iron"
+                "hammer_dig": "minecraft:netherite"
             },
             "models": [
                 {
@@ -335,7 +335,8 @@
         },
         {
             "materials": [
-                "tetra:metal/diamond"
+                "tetra:gem/diamond",
+                "tetra:gem/diamond_no_t"
             ],
             "key": "basic_hammer/",
             "attributes": {
@@ -394,7 +395,7 @@
                 "blunt_weapon": 1
             },
             "tools": {
-                "hammer_dig": "minecraft:diamond"
+                "hammer_dig": "minecraft:netherite"
             },
             "integrity": -1,
             "extract": {

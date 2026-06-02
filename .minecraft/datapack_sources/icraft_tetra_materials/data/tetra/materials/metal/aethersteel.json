@@ -25,10 +25,16 @@
     ]
   },
   "requiredTools": {
-    "hammer_dig": "minecraft:diamond"
+    "hammer_dig": "minecraft:netherite"
   },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "aethersteel"
+    }
+  ],
   "attributes": {
-    "*irons_spellbooks:spell_power": 0.1,
+    "**irons_spellbooks:spell_power": 0.1,
     "**irons_spellbooks:max_mana": 0.1
   }
 }
