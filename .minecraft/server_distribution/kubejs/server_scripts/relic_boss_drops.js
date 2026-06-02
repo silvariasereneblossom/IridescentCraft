@@ -21,14 +21,12 @@
 // pattern + rationale as server_scripts/strip_anomalous_drops.js. See
 // design/iridescent_relics_plan.md §4.4 and lessons-learned #60.)
 //
-// NOT WIRED HERE (flagged for a bespoke follow-up):
-//   - minecraft:ender_dragon -> iridescent_relics:dragons_eye
-//     The Ender Dragon does NOT emit a normal LivingDropsEvent on death (it
-//     routes XP + the egg via bespoke EnderDragon death logic), so a
-//     LivingDropsEvent injector will not fire for it. The Dragon's Eye relic
-//     ITEM exists and is creative-spawnable / loot-table-addable; its drop needs
-//     a dedicated path (e.g. a DragonDeath-aware handler or a podium/egg-claim
-//     reward), to be authored separately.
+// ENDER DRAGON (Dragon's Eye) is wired SEPARATELY at the bottom of this file via
+// KubeJS EntityEvents.death -- NOT the registerDrops path above. The Ender Dragon
+// emits no normal LivingDropsEvent (bespoke death logic), but EntityEvents.death
+// DOES fire for it (the pack already uses that event in scaling/dimension_mechanics.js).
+// It is reload-safe -- a KubeJS EventGroup handler that unload() clears, NOT a raw
+// Forge-bus listener -- so it does not reintroduce the #60 stale-scope hazard.
 //
 // OWNER REVIEW (design O6): cardinal_sins:lucifer (Cursed Sigil of Pride) is a
 // capstone boss whose only drop today is a progression token. Dropping a lootable
@@ -108,7 +106,33 @@ try {
 
   ForgeEventRegistry_rbd.registerDrops('iridescent_relics.boss_drops', handler)
   console.log('[IridescentCraft] relic_boss_drops loaded (' +
-              Object.keys(RELIC_DROPS).length + ' boss->relic bindings; ender_dragon deferred)')
+              Object.keys(RELIC_DROPS).length + ' LivingDropsEvent bindings + ender_dragon via death event)')
 } catch (e) {
   console.warn('[IridescentCraft] relic_boss_drops bootstrap FAILED: ' + e)
 }
+
+// =============================================================================
+// ENDER DRAGON -> Dragon's Eye (the finale relic). The Dragon emits no
+// LivingDropsEvent, so it is bound here via KubeJS EntityEvents.death (a
+// reload-safe KubeJS EventGroup handler; the pack already uses this event in
+// scaling/dimension_mechanics.js). Guaranteed drop -- the finale relic, and the
+// Dragon is a deliberate, resummonable endgame kill, so no RNG. Spawned via
+// /summon item at the death position.
+// =============================================================================
+EntityEvents.death(function (event) {
+  try {
+    var entity = event.entity
+    if (!entity || String(entity.type) !== 'minecraft:ender_dragon') return
+    var level = entity.level
+    if (level && level.isClientSide && level.isClientSide()) return
+    var server = event.server
+    if (!server && level && level.getServer) server = level.getServer()
+    if (!server) { console.warn('[relic_boss_drops] dragon: no server handle; skipped'); return }
+    var pos = entity.position()
+    server.runCommandSilent('summon minecraft:item ' + pos.x + ' ' + (pos.y + 1.0) + ' ' + pos.z +
+      ' {Item:{id:"iridescent_relics:dragons_eye",Count:1b},PickupDelay:10}')
+    console.log('[relic_boss_drops] ender_dragon -> iridescent_relics:dragons_eye (guaranteed finale)')
+  } catch (e) {
+    console.warn('[relic_boss_drops] dragon death handler error: ' + e)
+  }
+})
