@@ -30,3 +30,17 @@ description='''${mod_description}'''
     versionRange="[5.14,)"
     ordering="AFTER"
     side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="relics"
+    mandatory=true
+    versionRange="[0.8,)"
+    ordering="AFTER"
+    side="BOTH"
+
+[[dependencies.${mod_id}]]
+    modId="octolib"
+    mandatory=true
+    versionRange="[0.5,)"
+    ordering="AFTER"
+    side="BOTH"

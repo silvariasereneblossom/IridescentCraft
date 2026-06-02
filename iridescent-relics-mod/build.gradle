@@ -31,10 +31,18 @@ repositories {
 dependencies {
     minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
 
-    // Curios API -- RelicItem implements top.theillusivec4.curios.api.type.capability.ICurioItem.
+    // Curios API -- the framework RelicItem implements top.theillusivec4.curios.api.type.capability.ICurioItem.
     // compileOnly: Curios is loaded normally at runtime by Forge. flatDir-resolved so
     // fg.deobf can deobfuscate it (otherwise the references won't map).
     compileOnly fg.deobf("blank:curios-forge:5.14.1-1.20.1")
+
+    // Relics framework (sskirillss / Octo-Studios) -- our relics extend
+    // it.hurts.sskirillss.relics.items.relics.base.RelicItem and use its data DSL.
+    // OctoLib is Relics' own hard dependency. Both are staged into libs/ as renamed jars
+    // (the '+' in their real filenames breaks Gradle coordinate parsing) and resolved via
+    // flatDir, same mechanism as curios. compileOnly: loaded at runtime by Forge.
+    compileOnly fg.deobf("blank:relics:${relics_version}")
+    compileOnly fg.deobf("blank:octolib:${octolib_version}")
 }
 
 jar {

@@ -34,17 +34,33 @@ command -v java >/dev/null 2>&1 || { echo "[wsl-build] ERROR: java missing -- su
 
 cd "$MOD_ROOT"
 
-# --- stage the one compileOnly lib (Curios) if libs/ is empty -----------------
+# --- stage the compileOnly libs (Curios + Relics framework + OctoLib) ---------
+# These are deobf-resolved via flatDir libs/. The real filenames carry version/'+'
+# suffixes that break Gradle coordinate parsing, so we copy + rename to stable names
+# (curios-forge.jar / relics.jar / octolib.jar). They live in the instance mods dir;
+# curios additionally has a couple of sibling-mod cache fallbacks.
 mkdir -p libs
-if [ ! -f libs/curios-forge.jar ]; then
+INSTANCE_MODS="/mnt/c/Users/silvariazemaitis/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/mods"
+
+stage_lib() {  # <dest-name> <glob1> [glob2 ...] searched across the cache dirs below
+  local dest="$1"; shift
+  [ -f "libs/$dest" ] && return 0
+  local cache hit pat
   for cache in \
+      "$INSTANCE_MODS" \
       "$REPO_ROOT/iridescent-biomes-mod/tools/.cache/all-mods" \
-      "$REPO_ROOT/iridescent-tetra-expansion-mod/libs" \
-      "/mnt/c/Users/silvariazemaitis/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/mods"; do
-    hit="$(ls "$cache"/curios-forge*.jar 2>/dev/null | head -n1 || true)"
-    if [ -n "$hit" ]; then echo "[wsl-build] stage libs/curios-forge.jar <- $hit"; cp "$hit" libs/curios-forge.jar; break; fi
+      "$REPO_ROOT/iridescent-tetra-expansion-mod/libs"; do
+    for pat in "$@"; do
+      hit="$(ls "$cache"/$pat 2>/dev/null | head -n1 || true)"
+      if [ -n "$hit" ]; then echo "[wsl-build] stage libs/$dest <- $hit"; cp "$hit" "libs/$dest"; return 0; fi
+    done
   done
-fi
+  echo "[wsl-build] ERROR: could not find a source jar for libs/$dest (patterns: $*)"; return 1
+}
+
+stage_lib curios-forge.jar 'curios-forge*.jar'
+stage_lib relics.jar       'relics-*.jar' 'relics*.jar'
+stage_lib octolib.jar      'OctoLib*.jar' 'octolib*.jar'
 
 # --- gradle (CRLF-strip gradlew first; Windows checkout) ----------------------
 if grep -q $'\r' gradlew 2>/dev/null; then
