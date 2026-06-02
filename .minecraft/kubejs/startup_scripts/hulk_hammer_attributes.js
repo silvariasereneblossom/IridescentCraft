@@ -1,12 +1,24 @@
 // =============================================================================
-// [#60 / 2026-05-31] MOVED from server_scripts/ to startup_scripts/.
-// Registering a raw MinecraftForge.EVENT_BUS listener from a SERVER script re-runs on
-// every reload (world entry, /reload, datapack reload), stacking duplicate listeners
-// whose captured Rhino scope is discarded on the next reload. A stale listener then
-// fails at enterActivationFunction (IllegalStateException: null) the next time an entity
-// recomputes equipment attribute modifiers -> 'Ticking entity' crash. Startup scripts
-// run ONCE and keep their context for the game's lifetime, so the listener registers
-// exactly once with a living scope. Logic below is unchanged.
+// [2026-06-01] RELOAD-SAFE: registered via ItemAttributeRegistry, not a raw
+// MinecraftForge.EVENT_BUS listener.
+//
+// History: #60 moved this to startup_scripts/ believing startup contexts live
+// for the game's lifetime. They do NOT survive a CLIENT resource reload -- the
+// Rhino context is disposed, but a raw EVENT_BUS.addListener leaves the JS
+// closure on the Forge bus (KubeJS's ScriptType.unload() only clears its own
+// EventGroup handlers, never arbitrary Forge listeners). The next
+// ItemAttributeModifierEvent -- fired on every getAttributeModifiers query,
+// incl. container tooltip render -- then crashes at enterActivationFunction
+// (IllegalStateException: null) with the dead scope. That is the chest-open
+// render crash.
+//
+// Fix: register the handler in the mod's ItemAttributeRegistry (an
+// @Mod.EventBusSubscriber @SubscribeEvent owned by the mod's classloader,
+// independent of the Rhino context -- the same reload-safe pattern as
+// DamageModifierRegistry). The JS callback is only DATA in a static map keyed
+// by a stable id; re-running the (re)loaded script calls register() with the
+// same id, REPLACING the stale entry, so no disposed scope is ever invoked.
+// Handler body (event API) is unchanged -- the registry passes the raw event.
 // =============================================================================
 
 // =============================================================================
@@ -42,10 +54,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_hh = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var ItemAttributeModifierEvent_hh = Java.loadClass('net.minecraftforge.event.ItemAttributeModifierEvent')
-  var EventPriority_hh = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_hh = Java.loadClass('java.util.function.Consumer')
+  var ItemAttributeRegistry_hh = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var EquipmentSlot_hh = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
   var Attributes_hh = Java.loadClass('net.minecraft.world.entity.ai.attributes.Attributes')
   var AttributeModifier_hh = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
@@ -70,8 +79,7 @@ try {
     return undeadAttr
   }
 
-  var handler = new Consumer_hh({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         if (event.getSlotType() !== EquipmentSlot_hh.MAINHAND) return
         var stack = event.getItemStack()
@@ -101,11 +109,9 @@ try {
       } catch (e) {
         // Fail-soft: never let an attribute query crash item rendering
       }
-    }
-  })
+  }
 
-  MinecraftForge_hh.EVENT_BUS.addListener(EventPriority_hh.NORMAL, false,
-                                          ItemAttributeModifierEvent_hh, handler)
+  ItemAttributeRegistry_hh.register('icraft.hulk_hammer_attributes', handler)
   console.log('[IridescentCraft] hulk_hammer_attributes loaded (20 dmg / 0.5 aspd / +50% vs undead)')
 } catch (e) {
   console.warn('[IridescentCraft] hulk_hammer_attributes bootstrap FAILED: ' + e)

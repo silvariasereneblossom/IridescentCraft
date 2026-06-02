@@ -24,10 +24,7 @@
 // bonus value (visible in tooltip), the LivingHurtEvent applies it.
 
 try {
-  var MinecraftForge_ds = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var LivingHurtEvent = Java.loadClass('net.minecraftforge.event.entity.living.LivingHurtEvent')
-  var EventPriority_ds = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_ds = Java.loadClass('java.util.function.Consumer')
+  var DamageModifierRegistry_ds = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var LivingEntity_ds = Java.loadClass('net.minecraft.world.entity.LivingEntity')
   var MobType_ds = Java.loadClass('net.minecraft.world.entity.MobType')
   var ResourceLocation_ds = Java.loadClass('net.minecraft.resources.ResourceLocation')
@@ -45,8 +42,7 @@ try {
     return damageVsUndeadAttr
   }
 
-  var handler = new Consumer_ds({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         var target = event.getEntity()
         if (!target || !(target instanceof LivingEntity_ds)) return
@@ -75,11 +71,9 @@ try {
       } catch (e) {
         // Fail-soft
       }
-    }
-  })
+  }
 
-  MinecraftForge_ds.EVENT_BUS.addListener(EventPriority_ds.NORMAL, false,
-                                          LivingHurtEvent, handler)
+  DamageModifierRegistry_ds.register('icraft.deathskin_undead_bonus', handler)
   console.log('[IridescentCraft] deathskin_undead_bonus loaded (attribute-driven)')
 } catch (e) {
   console.warn('[IridescentCraft] deathskin_undead_bonus bootstrap FAILED: ' + e)

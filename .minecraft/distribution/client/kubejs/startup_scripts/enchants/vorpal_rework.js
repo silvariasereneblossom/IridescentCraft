@@ -1,12 +1,18 @@
 // =============================================================================
-// [#60 / 2026-05-31] MOVED from server_scripts/ to startup_scripts/.
-// Registering a raw MinecraftForge.EVENT_BUS listener from a SERVER script re-runs on
-// every reload (world entry, /reload, datapack reload), stacking duplicate listeners
-// whose captured Rhino scope is discarded on the next reload. A stale listener then
-// fails at enterActivationFunction (IllegalStateException: null) the next time an entity
-// recomputes equipment attribute modifiers -> 'Ticking entity' crash. Startup scripts
-// run ONCE and keep their context for the game's lifetime, so the listener registers
-// exactly once with a living scope. Logic below is unchanged.
+// [2026-06-01] RELOAD-SAFE: both hooks registered via mod registries, not raw
+// MinecraftForge.EVENT_BUS listeners.
+//   - ItemAttributeModifierEvent (crit_chance/crit_damage add) -> ItemAttributeRegistry
+//   - LivingHurtEvent (decap-on-crit) -> DamageModifierRegistry
+// A raw EVENT_BUS.addListener leaves the JS closure on the Forge bus; KubeJS's
+// ScriptType.unload() can't remove it, so after a context dispose (client
+// resource reload for startup scripts; every /reload for server scripts) the
+// next event fire crashes at enterActivationFunction (IllegalStateException:
+// null) with the dead scope -- for the attribute hook that fires on every
+// getAttributeModifiers query incl. container tooltip render (the chest-open
+// crash). Both registries are @Mod.EventBusSubscriber handlers owned by the
+// mod; the JS callbacks are replaceable DATA keyed by stable ids, so
+// re-registration on reload overwrites the stale entries. Handler bodies are
+// unchanged -- the registries pass the raw events.
 // =============================================================================
 
 // =============================================================================
@@ -44,11 +50,8 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_vrp = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var ItemAttributeModifierEvent_vrp = Java.loadClass('net.minecraftforge.event.ItemAttributeModifierEvent')
-  var LivingHurtEvent_vrp = Java.loadClass('net.minecraftforge.event.entity.living.LivingHurtEvent')
-  var EventPriority_vrp = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_vrp = Java.loadClass('java.util.function.Consumer')
+  var ItemAttributeRegistry_vrp = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
+  var DamageModifierRegistry_vrp = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var EquipmentSlot_vrp = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
   var AttributeModifier_vrp = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
   var ForgeRegistries_vrp = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
@@ -114,8 +117,7 @@ try {
   // Hook 1: ItemAttributeModifierEvent -- add crit_chance + crit_damage
   // when held. Both ADDITION to fit the all-additive crit model.
   // -----------------------------------------------------------------------
-  var attrHandler = new Consumer_vrp({
-    accept: function(event) {
+  var attrHandler = function(event) {
       try {
         if (event.getSlotType() !== EquipmentSlot_vrp.MAINHAND) return
         var stack = event.getItemStack()
@@ -142,10 +144,8 @@ try {
       } catch (e) {
         // Fail-soft
       }
-    }
-  })
-  MinecraftForge_vrp.EVENT_BUS.addListener(EventPriority_vrp.NORMAL, false,
-                                            ItemAttributeModifierEvent_vrp, attrHandler)
+  }
+  ItemAttributeRegistry_vrp.register('icraft.vorpal_rework_attr', attrHandler)
 
   // -----------------------------------------------------------------------
   // Hook 2: LivingHurtEvent -- decapitate on crit.
@@ -155,8 +155,7 @@ try {
   // (via reflection -- it's a boolean field in DamageSource for 1.20.1).
   // If the source is a player crit AND the player's mainhand has vorpal,
   // roll behead.
-  var decapHandler = new Consumer_vrp({
-    accept: function(event) {
+  var decapHandler = function(event) {
       try {
         var source = event.getSource()
         if (source == null) return
@@ -203,10 +202,8 @@ try {
       } catch (e) {
         // Fail-soft
       }
-    }
-  })
-  MinecraftForge_vrp.EVENT_BUS.addListener(EventPriority_vrp.NORMAL, false,
-                                            LivingHurtEvent_vrp, decapHandler)
+  }
+  DamageModifierRegistry_vrp.register('icraft.vorpal_rework_decap', decapHandler)
 
   console.log('[IridescentCraft] vorpal_rework loaded (crit_damage scaling + decap-on-crit)')
 } catch (e) {

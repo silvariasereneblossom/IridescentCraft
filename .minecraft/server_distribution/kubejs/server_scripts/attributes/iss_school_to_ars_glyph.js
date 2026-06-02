@@ -41,10 +41,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_aspg = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var SpellDamageEvent_Pre = Java.loadClass('com.hollingsworth.arsnouveau.api.event.SpellDamageEvent$Pre')
-  var EventPriority_aspg = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_aspg = Java.loadClass('java.util.function.Consumer')
+  var ForgeEventRegistry_aspg = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var ResourceLocation_aspg = Java.loadClass('net.minecraft.resources.ResourceLocation')
   var ForgeRegistries_aspg = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
 
@@ -100,8 +97,7 @@ try {
     return null
   }
 
-  var handler = new Consumer_aspg({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         var source = event.damageSource
         if (!source) return
@@ -142,11 +138,12 @@ try {
       } catch (e) {
         // Fail-soft: never let attribute math crash spell damage
       }
-    }
-  })
+  }
 
-  MinecraftForge_aspg.EVENT_BUS.addListener(EventPriority_aspg.NORMAL, false,
-                                            SpellDamageEvent_Pre, handler)
+  // Reload-safe via the mod's ForgeEventRegistry (@Mod.EventBusSubscriber owned by
+  // the mod, dispatching Ars SpellDamageEvent.Pre) instead of a raw
+  // MinecraftForge.EVENT_BUS listener whose JS closure would crash after a reload.
+  ForgeEventRegistry_aspg.registerSpellDamagePre('icraft.iss_school_to_ars_glyph', handler)
   console.log('[iss_school_to_ars_glyph] loaded (' + resolvedCount +
               ' elemental schools mapped via SpellDamageEvent.Pre)')
 } catch (e) {

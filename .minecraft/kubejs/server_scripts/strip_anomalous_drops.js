@@ -43,10 +43,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_sad = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var LivingDropsEvent_sad = Java.loadClass('net.minecraftforge.event.entity.living.LivingDropsEvent')
-  var EventPriority_sad = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_sad = Java.loadClass('java.util.function.Consumer')
+  var ForgeEventRegistry_sad = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var ForgeRegistries_sad = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
 
   // Mirrors diag_mob_drops.js FLAGGED_DROP_IDS exactly. Any change here
@@ -83,8 +80,7 @@ try {
     } catch (e) { return '' }
   }
 
-  var handler = new Consumer_sad({
-    accept: function (event) {
+  var handler = function (event) {
       try {
         var entity = event.getEntity()
         if (entity == null) return
@@ -121,14 +117,13 @@ try {
       } catch (e) {
         // Fail-soft: never let a strip pass crash a mob death
       }
-    }
-  })
+  }
 
-  // LOWEST priority so any other listener that wants to modify the drops
-  // list (e.g. Apoth affix drop bonuses, scaling-health-style additions)
-  // has already run. We strip last.
-  MinecraftForge_sad.EVENT_BUS.addListener(EventPriority_sad.LOWEST, false,
-                                           LivingDropsEvent_sad, handler)
+  // Reload-safe via the mod's ForgeEventRegistry (@Mod.EventBusSubscriber owned by
+  // the mod) instead of a raw MinecraftForge.EVENT_BUS listener. The registry's
+  // onLivingDrops dispatcher is itself pinned to EventPriority.LOWEST, so this still
+  // strips LAST -- after Apoth affix drop bonuses / scaling-health additions run.
+  ForgeEventRegistry_sad.registerDrops('icraft.strip_anomalous_drops', handler)
   console.log('[IridescentCraft] strip_anomalous_drops loaded (LivingDropsEvent strip layer for ' +
               Object.keys(FLAGGED_DROP_IDS).length + ' flagged item IDs)')
 } catch (e) {

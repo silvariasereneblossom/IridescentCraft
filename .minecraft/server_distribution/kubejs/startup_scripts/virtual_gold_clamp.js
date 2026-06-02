@@ -1,12 +1,15 @@
 // =============================================================================
-// [#60 / 2026-05-31] MOVED from server_scripts/ to startup_scripts/.
-// Registering a raw MinecraftForge.EVENT_BUS listener from a SERVER script re-runs on
-// every reload (world entry, /reload, datapack reload), stacking duplicate listeners
-// whose captured Rhino scope is discarded on the next reload. A stale listener then
-// fails at enterActivationFunction (IllegalStateException: null) the next time an entity
-// recomputes equipment attribute modifiers -> 'Ticking entity' crash. Startup scripts
-// run ONCE and keep their context for the game's lifetime, so the listener registers
-// exactly once with a living scope. Logic below is unchanged.
+// [2026-06-01] RELOAD-SAFE: registered via ItemAttributeRegistry, not a raw
+// MinecraftForge.EVENT_BUS listener. A raw EVENT_BUS.addListener leaves the JS
+// closure on the Forge bus; KubeJS's ScriptType.unload() can't remove it, so
+// after a context dispose (client resource reload for startup scripts; every
+// /reload for server scripts) the next ItemAttributeModifierEvent -- fired on
+// every getAttributeModifiers query incl. container tooltip render -- crashes
+// at enterActivationFunction (IllegalStateException: null) with the dead scope.
+// ItemAttributeRegistry is an @Mod.EventBusSubscriber owned by the mod (like
+// DamageModifierRegistry); the JS callback is replaceable DATA keyed by a
+// stable id, so re-registration on reload overwrites the stale entry. Handler
+// body is unchanged -- the registry passes the raw event.
 // =============================================================================
 
 // =============================================================================
@@ -48,10 +51,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_vg = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var ItemAttributeModifierEvent_vg = Java.loadClass('net.minecraftforge.event.ItemAttributeModifierEvent')
-  var EventPriority_vg = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_vg = Java.loadClass('java.util.function.Consumer')
+  var ItemAttributeRegistry_vg = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var EquipmentSlot_vg = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
   var Attributes_vg = Java.loadClass('net.minecraft.world.entity.ai.attributes.Attributes')
   var AttributeModifier_vg = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
@@ -101,8 +101,7 @@ try {
   for (var k in VG_WEAPONS) { itemIndex += 1; itemIndices[k] = itemIndex }
   for (var k2 in VG_ARMOR)  { itemIndex += 1; itemIndices[k2] = itemIndex }
 
-  var handler = new Consumer_vg({
-    accept: function (event) {
+  var handler = function (event) {
       try {
         var stack = event.getItemStack()
         if (!stack || stack.isEmpty()) return
@@ -151,11 +150,9 @@ try {
       } catch (e) {
         // Fail-soft -- never let an attribute query crash item rendering
       }
-    }
-  })
+  }
 
-  MinecraftForge_vg.EVENT_BUS.addListener(EventPriority_vg.NORMAL, false,
-                                          ItemAttributeModifierEvent_vg, handler)
+  ItemAttributeRegistry_vg.register('icraft.virtual_gold_clamp', handler)
   console.log('[IridescentCraft] virtual_gold_clamp loaded (attribute clamp for ' +
               (Object.keys(VG_WEAPONS).length + Object.keys(VG_ARMOR).length) + ' items)')
 } catch (e) {

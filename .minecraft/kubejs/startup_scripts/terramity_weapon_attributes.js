@@ -1,12 +1,15 @@
 // =============================================================================
-// [#60 / 2026-05-31] MOVED from server_scripts/ to startup_scripts/.
-// Registering a raw MinecraftForge.EVENT_BUS listener from a SERVER script re-runs on
-// every reload (world entry, /reload, datapack reload), stacking duplicate listeners
-// whose captured Rhino scope is discarded on the next reload. A stale listener then
-// fails at enterActivationFunction (IllegalStateException: null) the next time an entity
-// recomputes equipment attribute modifiers -> 'Ticking entity' crash. Startup scripts
-// run ONCE and keep their context for the game's lifetime, so the listener registers
-// exactly once with a living scope. Logic below is unchanged.
+// [2026-06-01] RELOAD-SAFE: registered via ItemAttributeRegistry, not a raw
+// MinecraftForge.EVENT_BUS listener. A raw EVENT_BUS.addListener leaves the JS
+// closure on the Forge bus; KubeJS's ScriptType.unload() can't remove it, so
+// after a context dispose (client resource reload for startup scripts; every
+// /reload for server scripts) the next ItemAttributeModifierEvent -- fired on
+// every getAttributeModifiers query incl. container tooltip render -- crashes
+// at enterActivationFunction (IllegalStateException: null) with the dead scope.
+// ItemAttributeRegistry is an @Mod.EventBusSubscriber owned by the mod (like
+// DamageModifierRegistry); the JS callback is replaceable DATA keyed by a
+// stable id, so re-registration on reload overwrites the stale entry. Handler
+// body is unchanged -- the registry passes the raw event.
 // =============================================================================
 
 // =============================================================================
@@ -35,10 +38,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_tw = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var ItemAttributeModifierEvent_tw = Java.loadClass('net.minecraftforge.event.ItemAttributeModifierEvent')
-  var EventPriority_tw = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_tw = Java.loadClass('java.util.function.Consumer')
+  var ItemAttributeRegistry_tw = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
   var EquipmentSlot_tw = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
   var Attributes_tw = Java.loadClass('net.minecraft.world.entity.ai.attributes.Attributes')
   var AttributeModifier_tw = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
@@ -60,8 +60,7 @@ try {
   var EXODIUM_SPD  = -3.4  // unchanged
   var REVERIUM_SPD = -3.0  // unchanged
 
-  var handler = new Consumer_tw({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         if (event.getSlotType() !== EquipmentSlot_tw.MAINHAND) return
         var stack = event.getItemStack()
@@ -92,11 +91,9 @@ try {
       } catch (e) {
         // Fail-soft: never let an attribute query crash item rendering
       }
-    }
-  })
+  }
 
-  MinecraftForge_tw.EVENT_BUS.addListener(EventPriority_tw.NORMAL, false,
-                                          ItemAttributeModifierEvent_tw, handler)
+  ItemAttributeRegistry_tw.register('icraft.terramity_weapon_attributes', handler)
   console.log('[IridescentCraft] terramity_weapon_attributes loaded (exodium_waraxe + reverium_axe damage clamp)')
 } catch (e) {
   console.warn('[IridescentCraft] terramity_weapon_attributes bootstrap FAILED: ' + e)

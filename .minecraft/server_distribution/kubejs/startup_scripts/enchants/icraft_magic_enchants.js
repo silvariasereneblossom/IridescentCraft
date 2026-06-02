@@ -1,12 +1,18 @@
 // =============================================================================
-// [#60 / 2026-05-31] MOVED from server_scripts/ to startup_scripts/.
-// Registering a raw MinecraftForge.EVENT_BUS listener from a SERVER script re-runs on
-// every reload (world entry, /reload, datapack reload), stacking duplicate listeners
-// whose captured Rhino scope is discarded on the next reload. A stale listener then
-// fails at enterActivationFunction (IllegalStateException: null) the next time an entity
-// recomputes equipment attribute modifiers -> 'Ticking entity' crash. Startup scripts
-// run ONCE and keep their context for the game's lifetime, so the listener registers
-// exactly once with a living scope. Logic below is unchanged.
+// [2026-06-01] RELOAD-SAFE: both hooks registered via mod registries, not raw
+// MinecraftForge.EVENT_BUS listeners.
+//   - ItemAttributeModifierEvent (mana_boost/regen/arcane_focus/vorpal_arcane) -> ItemAttributeRegistry
+//   - LivingHurtEvent (arcane-vorpal decap) -> DamageModifierRegistry
+// A raw EVENT_BUS.addListener leaves the JS closure on the Forge bus; KubeJS's
+// ScriptType.unload() can't remove it, so after a context dispose (client
+// resource reload for startup scripts; every /reload for server scripts) the
+// next event fire crashes at enterActivationFunction (IllegalStateException:
+// null) with the dead scope -- for the attribute hook that fires on every
+// getAttributeModifiers query incl. container tooltip render (the chest-open
+// crash). Both registries are @Mod.EventBusSubscriber handlers owned by the
+// mod; the JS callbacks are replaceable DATA keyed by stable ids, so
+// re-registration on reload overwrites the stale entries. Handler bodies are
+// unchanged -- the registries pass the raw events.
 // =============================================================================
 
 // =============================================================================
@@ -45,11 +51,8 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_ime = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var ItemAttributeModifierEvent_ime = Java.loadClass('net.minecraftforge.event.ItemAttributeModifierEvent')
-  var LivingHurtEvent_ime = Java.loadClass('net.minecraftforge.event.entity.living.LivingHurtEvent')
-  var EventPriority_ime = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_ime = Java.loadClass('java.util.function.Consumer')
+  var ItemAttributeRegistry_ime = Java.loadClass('com.iridescentcraft.reforging.event.ItemAttributeRegistry')
+  var DamageModifierRegistry_ime = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var EquipmentSlot_ime = Java.loadClass('net.minecraft.world.entity.EquipmentSlot')
   var AttributeModifier_ime = Java.loadClass('net.minecraft.world.entity.ai.attributes.AttributeModifier')
   var ForgeRegistries_ime = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
@@ -148,8 +151,7 @@ try {
     'twilightforest:minoshroom': 1
   }
 
-  var handler = new Consumer_ime({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         if (event.getSlotType() !== EquipmentSlot_ime.MAINHAND &&
             event.getSlotType() !== EquipmentSlot_ime.OFFHAND) return
@@ -225,11 +227,9 @@ try {
       } catch (e) {
         // Fail-soft -- never crash an attribute query on enchant lookup failure
       }
-    }
-  })
+  }
 
-  MinecraftForge_ime.EVENT_BUS.addListener(EventPriority_ime.NORMAL, false,
-                                            ItemAttributeModifierEvent_ime, handler)
+  ItemAttributeRegistry_ime.register('icraft.magic_enchants_attr', handler)
 
   // ---------------------------------------------------------------------
   // Arcane Vorpal decap hook
@@ -241,8 +241,7 @@ try {
   // icraft_last_crit_tick when it fires). This listener runs at LOW
   // priority -- after attribute_sync's NORMAL-priority crit roll --
   // so the stamp is fresh by the time we read it.
-  var decapHandler = new Consumer_ime({
-    accept: function(event) {
+  var decapHandler = function(event) {
       try {
         var source = event.getSource()
         if (source == null) return
@@ -274,10 +273,10 @@ try {
       } catch (e) {
         // Fail-soft
       }
-    }
-  })
-  MinecraftForge_ime.EVENT_BUS.addListener(EventPriority_ime.LOW, false,
-                                            LivingHurtEvent_ime, decapHandler)
+  }
+  // LATE phase: runs after attribute_sync's NORMAL crit roll stamps
+  // icraft_last_crit_tick (preserves the old EventPriority.LOW ordering).
+  DamageModifierRegistry_ime.registerLate('icraft.magic_enchants_decap', decapHandler)
 
   console.log('[IridescentCraft] icraft_magic_enchants loaded (mana_boost + mana_regen + arcane_focus stat hooks + arcane_vorpal decap)')
 } catch (e) {

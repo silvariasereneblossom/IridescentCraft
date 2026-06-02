@@ -30,10 +30,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_kb = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var LivingKnockBackEvent = Java.loadClass('net.minecraftforge.event.entity.living.LivingKnockBackEvent')
-  var EventPriority_kb = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_kb = Java.loadClass('java.util.function.Consumer')
+  var ForgeEventRegistry_kb = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var Player_kb = Java.loadClass('net.minecraft.world.entity.player.Player')
 
   // EMERGENCY CAP 2026-05-09: 1.5 -> 0.25 -> 0.5.
@@ -68,8 +65,7 @@ try {
   // renormalizing. Kept at 1.5 -- not part of the emergency tightening.)
   var RATIO_CAP = 1.5
 
-  var handler = new Consumer_kb({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         var victim = event.getEntity()
         if (!(victim instanceof Player_kb)) return
@@ -152,13 +148,13 @@ try {
       } catch (e) {
         console.warn('[knockback_cap] handler threw: ' + e)
       }
-    }
-  })
+  }
 
-  // NORMAL priority -- runs after most affix handlers have computed their
-  // strength multipliers. Cap is the final word.
-  MinecraftForge_kb.EVENT_BUS.addListener(EventPriority_kb.NORMAL, false,
-                                          LivingKnockBackEvent, handler)
+  // Reload-safe via the mod's ForgeEventRegistry (@Mod.EventBusSubscriber owned by
+  // the mod) instead of a raw MinecraftForge.EVENT_BUS listener whose JS closure
+  // would crash after a context dispose. Dispatcher runs at NORMAL priority --
+  // after most affix handlers compute their strength multipliers; cap is final.
+  ForgeEventRegistry_kb.registerKnockBack('icraft.cap_player_knockback', handler)
   console.log('[IridescentCraft] cap_player_knockback loaded (cap=' +
               KNOCKBACK_CAP + ', EMERGENCY -- tighten until jockey diag lands)')
 } catch (e) {

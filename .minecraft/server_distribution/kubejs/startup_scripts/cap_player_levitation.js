@@ -30,10 +30,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_lev = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var MobEffectEventApplicable = Java.loadClass('net.minecraftforge.event.entity.living.MobEffectEvent$Applicable')
-  var EventPriority_lev = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_lev = Java.loadClass('java.util.function.Consumer')
+  var ForgeEventRegistry_lev = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
   var Player_lev = Java.loadClass('net.minecraft.world.entity.player.Player')
 
   // Vanilla max we know of: Shulker Bullet applies amp 1. Some custom
@@ -42,8 +39,7 @@ try {
   // factor of 10. If a real use case for amp >= 6 exists, raise this.
   var MAX_AMP = 5
 
-  var handler = new Consumer_lev({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         var v = event.getEntity()
         if (!(v instanceof Player_lev)) return
@@ -88,13 +84,12 @@ try {
       } catch (e) {
         try { console.warn('[levitation_cap] handler threw: ' + e) } catch (_) {}
       }
-    }
-  })
+  }
 
-  // NORMAL priority -- run after handlers that compute the amp, before
-  // handlers that consume it.
-  MinecraftForge_lev.EVENT_BUS.addListener(EventPriority_lev.NORMAL, false,
-                                           MobEffectEventApplicable, handler)
+  // Reload-safe via the mod's ForgeEventRegistry (@Mod.EventBusSubscriber owned by
+  // the mod) instead of a raw MinecraftForge.EVENT_BUS listener whose JS closure
+  // would crash after a context dispose. Dispatcher runs at NORMAL priority.
+  ForgeEventRegistry_lev.registerEffectApplicable('icraft.cap_player_levitation', handler)
   console.log('[IridescentCraft] cap_player_levitation loaded (max amp=' +
               MAX_AMP + ')')
 } catch (e) {

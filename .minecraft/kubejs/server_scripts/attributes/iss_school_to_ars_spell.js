@@ -42,10 +42,7 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_aspb = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var LivingHurtEvent_aspb = Java.loadClass('net.minecraftforge.event.entity.living.LivingHurtEvent')
-  var EventPriority_aspb = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_aspb = Java.loadClass('java.util.function.Consumer')
+  var DamageModifierRegistry_aspb = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
   var LivingEntity_aspb = Java.loadClass('net.minecraft.world.entity.LivingEntity')
   var Player_aspb = Java.loadClass('net.minecraft.world.entity.player.Player')
   var ResourceLocation_aspb = Java.loadClass('net.minecraft.resources.ResourceLocation')
@@ -76,8 +73,7 @@ try {
     console.warn('[iss_school_to_ars] no ISS attributes resolved; ISS likely absent')
   }
 
-  var handler = new Consumer_aspb({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         var source = event.getSource()
         if (!source) return
@@ -114,11 +110,9 @@ try {
       } catch (e) {
         // Fail-soft: never let attribute math crash damage processing
       }
-    }
-  })
+  }
 
-  MinecraftForge_aspb.EVENT_BUS.addListener(EventPriority_aspb.NORMAL, false,
-                                            LivingHurtEvent_aspb, handler)
+  DamageModifierRegistry_aspb.register('icraft.iss_school_to_ars_spell', handler)
   console.log('[iss_school_to_ars] loaded (' + resolvedCount + ' damage-type mappings)')
 } catch (e) {
   console.warn('[iss_school_to_ars] bootstrap FAILED: ' + e)

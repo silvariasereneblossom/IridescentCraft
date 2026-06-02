@@ -18,15 +18,11 @@
 // =============================================================================
 
 try {
-  var MinecraftForge_xp = Java.loadClass('net.minecraftforge.common.MinecraftForge')
-  var LivingExperienceDropEvent = Java.loadClass('net.minecraftforge.event.entity.living.LivingExperienceDropEvent')
-  var EventPriority_xp = Java.loadClass('net.minecraftforge.eventbus.api.EventPriority')
-  var Consumer_xp = Java.loadClass('java.util.function.Consumer')
+  var ForgeEventRegistry_xp = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
 
   var MULTIPLIER = 10
 
-  var handler = new Consumer_xp({
-    accept: function(event) {
+  var handler = function(event) {
       try {
         var entity = event.getEntity()
         if (!entity) return
@@ -43,11 +39,12 @@ try {
       } catch (e) {
         // Fail-soft: never let XP scaling crash mob death
       }
-    }
-  })
+  }
 
-  MinecraftForge_xp.EVENT_BUS.addListener(EventPriority_xp.NORMAL, false,
-                                          LivingExperienceDropEvent, handler)
+  // Reload-safe: registered via the mod's ForgeEventRegistry (@Mod.EventBusSubscriber
+  // owned by the mod) instead of a raw MinecraftForge.EVENT_BUS listener, whose JS
+  // closure would survive a context dispose on the Forge bus and crash on next fire.
+  ForgeEventRegistry_xp.registerExperienceDrop('icraft.mutant_xp_boost', handler)
   console.log('[IridescentCraft] mutant_xp_boost loaded (' + MULTIPLIER + 'x)')
 } catch (e) {
   console.warn('[IridescentCraft] mutant_xp_boost bootstrap FAILED: ' + e)
