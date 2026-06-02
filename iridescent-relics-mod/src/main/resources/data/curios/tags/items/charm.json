@@ -1,6 +1,7 @@
 {
   "replace": false,
   "values": [
-    "iridescent_relics:remnant_relic"
+    "iridescent_relics:remnant_relic",
+    "iridescent_relics:sunfeather_charm"
   ]
 }
