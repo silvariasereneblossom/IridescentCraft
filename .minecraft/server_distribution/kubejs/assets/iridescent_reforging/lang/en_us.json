@@ -1,0 +1,10 @@
+{
+  "enchantment.iridescent_reforging.mana_boost": "Mana Boost",
+  "enchantment.iridescent_reforging.mana_boost.desc": "Increases maximum mana by +4 per level while held.",
+  "enchantment.iridescent_reforging.mana_regen": "Mana Regen",
+  "enchantment.iridescent_reforging.mana_regen.desc": "Increases mana regeneration by +3%% per level while held.",
+  "enchantment.iridescent_reforging.arcane_focus": "Arcane Focus",
+  "enchantment.iridescent_reforging.arcane_focus.desc": "Increases spell power by +4%% per level while held.",
+  "enchantment.iridescent_reforging.vorpal_arcane": "Arcane Vorpal",
+  "enchantment.iridescent_reforging.vorpal_arcane.desc": "Spell crits gain +3%% crit chance and +5%% crit damage per level, with a 5%% chance per level to decapitate on a critical hit."
+}

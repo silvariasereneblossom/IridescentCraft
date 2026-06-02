@@ -67,12 +67,21 @@ public class MobScalingHandler {
         // or entered a portal already-scaled).
         if (mob.getPersistentData().getBoolean(NBT_FLAG)) return;
 
-        // Hostile mobs only (skip animals, water creatures, ambient, golems)
-        MobCategory cat = mob.getType().getCategory();
-        if (cat != MobCategory.MONSTER) return;
-
         ResourceLocation id = ForgeRegistries.ENTITY_TYPES.getKey(mob.getType());
-        if (id != null && DifficultyConfig.COMMON.excludedEntities.get().contains(id.toString())) return;
+        String idStr = id != null ? id.toString() : null;
+
+        // Hostile mobs only (skip animals, water creatures, ambient, golems).
+        // Exception: a force-include list catches clearly-hostile mobs that
+        // some mods (MCreator packs like Terramity) mis-register under a
+        // non-MONSTER category (MISC/CREATURE), which would otherwise let them
+        // slip past this gate un-scaled. See DifficultyConfig.forceScaleEntities.
+        MobCategory cat = mob.getType().getCategory();
+        if (cat != MobCategory.MONSTER
+                && (idStr == null || !DifficultyConfig.COMMON.forceScaleEntities.get().contains(idStr))) {
+            return;
+        }
+
+        if (idStr != null && DifficultyConfig.COMMON.excludedEntities.get().contains(idStr)) return;
 
         if (!(e.getLevel() instanceof ServerLevel sl)) return;
 

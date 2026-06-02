@@ -1,0 +1,83 @@
+{
+  "_comment": "icraft override of terramity:blocks/trial_spire_chest_loot. The terramity-0.9.8 default seeded this with minecraft:netherite_scrap (weight 2), raw minecraft:diamond (weight 3), and a full enchanted diamond armor set (helmet/chestplate/leggings/boots, weight 1 each). The Trial Spire is the Terramity 3rd-boss (Trial Guardian) dungeon that generates in any OCEAN (#minecraft:is_ocean -- an overworld, sail-to-from-spawn biome; see data/terramity/worldgen/structure/trial_spire.json). Netherite is T4-gated in this pack and diamonds/diamond-gear are barred from overworld structures (no-overworld-diamonds policy, same family enforced on cursed_pyramid: kubejs/data/icraft/loot_tables/chests/cursed_pyramid.json). NOTE: this is a 'minecraft:block' loot table under blocks/, NOT a chests/ table -- so the LootType.CHEST diamond strip in lootjs_overhaul.js + diamond_leak_probe.js do NOT cover it, and netherite was never in the diamond-strip's item set anyway, so both leaked here. Re-themed the 6 banned entries to Trial-Guardian-appropriate T2->T3 rewards (emerald, cataclysm:ancient_metal_ingot repair line, icraft:progression_token_t2, ISS arcane_essence/rare_ink) -- matching the cursed_pyramid vocabulary. Every non-banned entry (spire_key, terramity gems/curios/rings, music sheets, vanilla filler) is preserved verbatim. random_sequence preserved so block-break results stay deterministic.",
+  "type": "minecraft:block",
+  "pools": [
+    {
+      "rolls": { "min": 3, "max": 4 },
+      "entries": [
+        { "type": "minecraft:item", "name": "terramity:spire_key", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:iridium_chunk", "weight": 2, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:iridescent_shard", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:ruby", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:sapphire", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:topaz", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:onyx", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:emerald", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 2, "max": 5 } } ] },
+        { "type": "minecraft:item", "name": "terramity:daemonium", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:quartz", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] }
+      ]
+    },
+    {
+      "rolls": { "min": 5, "max": 6 },
+      "entries": [
+        { "type": "minecraft:item", "name": "terramity:lost_soul", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 2, "max": 4 } } ] },
+        { "type": "minecraft:item", "name": "terramity:fairy_dust", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:dimlite_nugget", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 2 } } ] },
+        { "type": "minecraft:item", "name": "terramity:daemonium_chunk", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 2 } } ] },
+        { "type": "minecraft:item", "name": "terramity:battery", "weight": 2, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:amethyst_shard", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "cataclysm:ancient_metal_ingot", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 2 } } ] },
+        { "type": "minecraft:item", "name": "icraft:progression_token_t2", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 2 } } ] },
+        { "type": "minecraft:item", "name": "irons_spellbooks:arcane_essence", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "type": "minecraft:uniform", "min": 1, "max": 3 } } ] },
+        { "type": "minecraft:item", "name": "irons_spellbooks:rare_ink", "weight": 1 },
+        { "type": "minecraft:item", "name": "icraft:progression_token_t2", "weight": 2, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:book", "weight": 3, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } }, { "function": "minecraft:enchant_with_levels", "treasure": true, "levels": { "min": 5, "max": 5 } } ] }
+      ]
+    },
+    {
+      "rolls": 5,
+      "entries": [
+        { "type": "minecraft:item", "name": "minecraft:bread", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:coal", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:soul_torch", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:experience_bottle", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "terramity:ring_of_rejuvenation_plus", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:warp_whistle", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:rush_ring_plus", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:leap_ring_plus", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:tearstone_ring", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:gravity_gauntlet", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:divergency_gauntlet", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:shinobi_sash", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:sarashi", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:celestial_brew", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:acidic_ampoule", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:stillness_scarf", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:prismatic_scarf", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:anxiety_amulet", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:dimlite_nugget", "weight": 4, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:ancient_stone_mask", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:power_bracelets", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:hurricane_belt", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:anvil_talisman", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:extremely_thick_oil", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:scuba_gear", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:flippers", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] }
+      ]
+    },
+    {
+      "rolls": 1,
+      "entries": [
+        { "type": "minecraft:item", "name": "terramity:music_sheet_of_null", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "minecraft:air", "weight": 22, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] },
+        { "type": "minecraft:item", "name": "terramity:null_scarf", "weight": 1, "functions": [ { "function": "minecraft:set_count", "count": { "min": 1, "max": 1 } } ] }
+      ]
+    }
+  ],
+  "random_sequence": "terramity:blocks/trial_spire_chest_loot"
+}

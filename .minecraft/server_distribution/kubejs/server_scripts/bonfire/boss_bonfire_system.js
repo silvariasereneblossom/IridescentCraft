@@ -6,20 +6,24 @@
 // DISCOVERY is the trigger (not boss-kill); the waystone is a permanent
 // return-to-arena teleport so re-fights are one warp away.
 //
-// SHARED ROSTER: reads global.ICRAFT_BOSS_ARENAS (startup_scripts/
+// SHARED ROSTER: reads global.ICRAFT_BOSS_ARENAS (bonfire/
 // boss_arena_registry.js) — the SAME table the compass uses, so the two halves
-// of #46 can never drift. Every structure-locked arena in that registry gets a
-// bonfire. (Non-structure bosses — biome-random, summon-item, feature-placed
-// Cardinal Sins — have no fixed threshold and are out of scope; see the
-// registry header.)
+// of #46 can never drift. Every structure-located AND block-located arena gets a
+// bonfire. (Summon-only bosses — biome-random, summon-item, and the two
+// Cardinal Sins arenas with no unique block — have no fixed threshold and are
+// out of scope; see the registry header.)
 //
-// DETECTION: StructureManager.getStructureWithPieceAt(BlockPos, TagKey) using
-// the per-arena tag `icraft:<boss_id>` we author in
-//   kubejs/data/icraft/tags/worldgen/structure/<boss_id>.json
-// (the same tags the compass locates with). This returns a valid StructureStart
-// only when the player is INSIDE a piece of that arena — a precise threshold
-// signal that survives structure-piece variants and player skip-paths (TNT-in,
-// bridge-over) better than an entity-join hook, and never fires for /summon.
+// DETECTION — two vectors keyed off meta.locator (see registry header):
+//   • "structure": StructureManager.getStructureWithPieceAt(BlockPos, TagKey)
+//     using the per-arena tag `icraft:<boss_id>` we author in
+//       kubejs/data/icraft/tags/worldgen/structure/<boss_id>.json
+//     (the same tags the compass locates with). Returns a valid StructureStart
+//     only when the player is INSIDE a piece of that arena.
+//   • "block" (#65 feature-placed Cardinal Sins): a bounded lattice scan for the
+//     arena's unique shrine block near the player (scanShrineMap). Fires when the
+//     player is standing in the shrine box.
+// Both are precise thresholds that survive player skip-paths and never fire for
+// a bare /summon away from the arena.
 //
 // PLACEMENT (Waystones 14.1.20 — jar-verified API, see waystones-api-audit.md):
 //   1. WaystonesAPI.placeWaystone(level, pos, WaystoneStyles.DEFAULT) -> Optional<IWaystone>
@@ -59,6 +63,51 @@ const BF_StringTag   = Java.loadClass("net.minecraft.nbt.StringTag")
 
 function arenaTagFor(bossId) {
     return BF_TagKey.create(BF_Registries.STRUCTURE, new BF_ResourceLoc("icraft", bossId))
+}
+
+// ---- Block-signature detection (#65 — feature-placed Cardinal Sins arenas) --
+//
+// Feature-placed arenas have no StructureStart for getStructureWithPieceAt to
+// see (see boss_arena_registry.js header B). Instead we light the bonfire when
+// the player is standing close to the arena's unique shrine block. The threshold
+// is a small box around the player (the player is necessarily INSIDE the arena
+// by the time they're within BONFIRE_BLOCK_RANGE of its shrine), checked on a
+// coarse lattice so it's cheap to run at 1 Hz. Uses the pack's proven
+// `level.getBlock(x,y,z).id` idiom; the local chunks are loaded by definition
+// (the player is standing here).
+const BONFIRE_BLOCK_RANGE = 24   // blocks (±) around the player to look for the shrine
+const BONFIRE_BLOCK_VR    = 24   // vertical (±)
+const BONFIRE_BLOCK_STEP  = 3    // lattice spacing (shrine is multi-block)
+
+function blockIdAtBF(level, x, y, z) {
+    try {
+        const b = level.getBlock(x, y, z)
+        if (b && b.id) return String(b.id)
+    } catch (e) {}
+    return null
+}
+
+// Scan the box around the player ONCE, matching each sampled block against a
+// {signatureBlock -> bossId} map. Returns the matched bossId (first hit), or
+// null. One lattice pass covers all candidate shrines in the dimension, so the
+// four Nether arenas (lust/pride/wrath/lucifer) are all checked together — no
+// dependency on iteration order or on others being lit first.
+function scanShrineMap(player, blockToBoss) {
+    const level = player.level
+    const px = player.blockX, py = player.blockY, pz = player.blockZ
+    const yMin = Math.max(level.getMinBuildHeight ? level.getMinBuildHeight() : -64,
+        py - BONFIRE_BLOCK_VR)
+    const yMax = Math.min(level.getMaxBuildHeight ? level.getMaxBuildHeight() : 320,
+        py + BONFIRE_BLOCK_VR)
+    for (let dx = -BONFIRE_BLOCK_RANGE; dx <= BONFIRE_BLOCK_RANGE; dx += BONFIRE_BLOCK_STEP) {
+        for (let dz = -BONFIRE_BLOCK_RANGE; dz <= BONFIRE_BLOCK_RANGE; dz += BONFIRE_BLOCK_STEP) {
+            for (let y = yMin; y <= yMax; y += BONFIRE_BLOCK_STEP) {
+                const id = blockIdAtBF(level, px + dx, y, pz + dz)
+                if (id && blockToBoss[id]) return blockToBoss[id]
+            }
+        }
+    }
+    return null
 }
 
 // The displayed bonfire name. Design call (boss-bonfire-design.md §7):
@@ -108,7 +157,10 @@ function markBonfireFired(server, bossId) {
 // and skips already-lit arenas with no structure query, so the common case
 // (walking the world) costs one persistentData read + cheap Set lookups.
 
-function detectArenaAtPlayer(player) {
+// `runBlockScan` gates the (expensive) shrine lattice: the cheap structure
+// query runs every call, the lattice only on the throttled ticks (see the tick
+// wrapper). When false, block-arenas are simply not checked this call.
+function detectArenaAtPlayer(player, runBlockScan) {
     const level = player.level
     if (level.isClientSide()) return null
     const arenas = global.ICRAFT_BOSS_ARENAS || {}
@@ -116,11 +168,29 @@ function detectArenaAtPlayer(player) {
     const fired = readFiredSet(server)
     const sm = level.structureManager()
     const pos = player.blockPosition()
+    const hereDim = String(level.dimension().location())
+
+    // Build a {signatureBlock -> bossId} map of every not-yet-lit BLOCK-located
+    // arena in the player's CURRENT dimension. Done alongside the structure pass
+    // so we touch the registry once; the (single) lattice scan runs only after
+    // no structure arena matched AND only on a throttled tick.
+    let blockToBoss = null
 
     for (const bossId in arenas) {
         if (fired.has(bossId)) continue                  // already lit — skip
         const meta = arenas[bossId]
-        if (!meta.structure) continue
+
+        if (meta.locator === "block") {
+            if (runBlockScan && meta.signatureBlock
+                && (!meta.dimension || meta.dimension === hereDim)) {
+                if (!blockToBoss) blockToBoss = {}
+                blockToBoss[meta.signatureBlock] = bossId
+            }
+            continue
+        }
+        if (meta.locator === "summon" || !meta.structure) continue  // no threshold
+
+        // Structure-located (the original #46 path).
         try {
             const tag = arenaTagFor(bossId)
             const start = sm.getStructureWithPieceAt(pos, tag)
@@ -132,6 +202,13 @@ function detectArenaAtPlayer(player) {
             // drift — skip this arena silently (the tick wrapper rate-limits
             // any genuinely repeating error).
         }
+    }
+
+    // No structure arena matched — one lattice pass checks ALL candidate shrines
+    // at once (order-independent; the four Nether arenas are covered together).
+    if (blockToBoss) {
+        const hit = scanShrineMap(player, blockToBoss)
+        if (hit) return { bossId: hit, meta: arenas[hit] }
     }
     return null
 }
@@ -205,11 +282,17 @@ function broadcastBonfire(server, player, meta) {
 // drift can't tight-loop the log.
 
 let bonfire_warn_throttle = 0
+let bonfire_block_phase = 0   // advances once per tick; gates the lattice to 1-in-N
 global.tick_bossBonfire = function (event) {
     const player = event.player
     if (!player || player.level.isClientSide()) return
+    // Run the cheap structure check every tick; the expensive shrine lattice
+    // only every 3rd tick (~3 s). A player can't enter AND leave a boss arena
+    // inside 3 s, so detection stays responsive while the per-tick cost in
+    // Nether/Undergarden (until those arenas are lit) stays low.
+    const runBlockScan = (bonfire_block_phase++ % 3) === 0
     try {
-        const hit = detectArenaAtPlayer(player)
+        const hit = detectArenaAtPlayer(player, runBlockScan)
         if (!hit) return
         placeBonfire(player, hit.bossId, hit.meta)
     } catch (e) {

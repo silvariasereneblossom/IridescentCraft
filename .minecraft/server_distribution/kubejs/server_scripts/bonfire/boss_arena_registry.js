@@ -26,35 +26,64 @@
 //   server_scripts/gates/codex_boss_rush.js (canonical entity IDs + tiers)
 //   wiki/design/boss-bonfire-design.md      (threshold/waystone semantics)
 //
-// SCOPE NOTE — only STRUCTURE-LOCKED arenas are in here. The catalog's
-// biome-random / summon-item / scripted / feature-placed bosses have no fixed
-// `Structure` the vanilla locator can point at:
-//   • Brutal Bosses biome-random variants (Mad Cow, Evil Chicken, ...)   — no structure
-//   • Mutant Monsters (Skull-Spirit summons)                             — no structure
-//   • Meet Your Fight (Calling-Bell summons)                             — no structure
-//   • Cardinal Sins arenas (Lucifer, the 7 sins, Drakara)               — FEATURE-placed
-//        (forge:add_features / raw_generation — NOT in the structure registry,
-//         so findNearestMapStructure can't see them; see #56 relocation)
-//   • Stalwart Dungeons mobs                                            — overlay, no own structure
-//   • Aether Sun Spirit / Valkyrie Queen                               — structure-locked but
-//        also need an in-arena ritual; the structure IS locatable so they ARE listed.
-// These excluded bosses are still tracked by codex_boss_rush.js for the combat
-// advance route; they're simply not compass-targetable. The compass tells the
-// player so (see boss_compass_handler.js "no locator" path) rather than hiding
-// them. Expanding to non-structure discovery vectors is future work (catalog §).
+// SCOPE NOTE — two discovery vectors live here now:
+//
+//   (A) STRUCTURE-LOCKED arenas (the original #46 set). These have a real
+//       worldgen Structure the vanilla locator can point at; they carry a
+//       `structure` field + a one-element structure tag at
+//       data/icraft/tags/worldgen/structure/<boss_id>.json. Compass locates via
+//       findNearestMapStructure(tag); bonfire detects via
+//       getStructureWithPieceAt(tag). (locator defaults to "structure".)
+//
+//   (B) FEATURE-PLACED arenas (#65 — the Cardinal Sins set). The Cardinal Sins
+//       mod (MCreator) ships NO worldgen/structure or structure_set at all — its
+//       arenas are custom Feature types (cardinal_sins:slothstructure, …) that
+//       paste an .nbt template during raw_generation/underground/surface steps
+//       (see kubejs/data/cardinal_sins/forge/biome_modifier/ — the #56
+//       relocation overrides). Nothing lands in the structure registry, so
+//       findNearestMapStructure / getStructureWithPieceAt are blind to them and
+//       /locate returns nothing. We make them findable WITHOUT touching the mod
+//       by discovering them via a unique, persistent block baked into each
+//       arena's template — the per-sin SHRINE block (jar-verified 2026-06-02 by
+//       decompressing each structures/*.nbt palette). Compass scans loaded
+//       chunks for `signatureBlock` and locks the nearest; bonfire lights when
+//       the player is within range of one. These carry `locator: "block"` +
+//       `signatureBlock`, and NO `structure` field (so the structure-tag paths
+//       skip them cleanly). The #56 Nether/Undergarden relocation is untouched.
+//
+// Still NOT compass-targetable (no fixed threshold of any kind):
+//   • Brutal Bosses biome-random variants (Mad Cow, Evil Chicken, ...)   — no anchor
+//   • Mutant Monsters (Skull-Spirit summons)                             — summon-item
+//   • Meet Your Fight (Calling-Bell summons)                             — summon-item
+//   • Stalwart Dungeons mobs                                            — overlay, no own anchor
+// These are still tracked by codex_boss_rush.js for the combat advance route.
+//
+// EXCEPTIONS within the Cardinal Sins set (locator: "summon", no anchor):
+//   • Drakara  — its template (structures/drakarastructure.nbt) holds ONLY the
+//                drakara entity, no shrine/unique block → nothing to scan for.
+//   • Sloth    — its only cardinal_sins block is `malevolichite_shrine`, which
+//                ALSO generates naturally as ore-shrine worldgen → ambiguous.
+//                Marked locator: "summon" too (a block scan would false-hit on
+//                natural malevolichite). The compass surfaces the /summon path.
+//   Both still get a roster entry + the /summon test route in `ritual`.
 //
 // FIELD SHAPE per boss_id:
-//   display    : human label (compass menu + bonfire broadcast)
-//   tier       : 1-4 (AStages gate — see boss_compass_handler.getPlayerTier)
-//   dimension  : the dimension ResourceLocation the arena generates in
-//                (informational + a future cross-dim guard; the locator
-//                 searches the player's current level regardless)
-//   structure  : the worldgen Structure ResourceLocation to locate / detect
-//   waystone   : the fixed bonfire waystone name (gets the "[Boss] " prefix +
-//                " Bonfire" suffix applied by the bonfire system, so store the
-//                bare arena label here)
-//   ritual     : (optional) short note shown after locating, for arenas that
-//                need an in-arena summon step (Aether gold/silver dungeons).
+//   display       : human label (compass menu + bonfire broadcast)
+//   tier          : 1-4 (AStages gate — see boss_compass_handler.getPlayerTier)
+//   dimension     : the dimension ResourceLocation the arena generates in
+//                   (informational + cross-dim guard; structure locator searches
+//                    the player's current level, block locator scans it too)
+//   locator       : "structure" (default if omitted) | "block" | "summon"
+//   structure     : (locator=structure) worldgen Structure RL to locate / detect
+//   signatureBlock: (locator=block) the unique block RL baked into the arena
+//                   template; compass + bonfire scan for it
+//   waystone      : the fixed bonfire waystone name (gets the "[Boss] " prefix +
+//                   " Bonfire" suffix applied by the bonfire system, so store the
+//                   bare arena label here)
+//   summonEntity  : (informational) the canonical boss entity ID, for the
+//                   /summon <id> test path the compass prints on locator=summon
+//   ritual        : (optional) short note shown after locating / on the summon
+//                   path (Aether dungeons; Cardinal Sins summon route).
 // =============================================================================
 
 global.ICRAFT_BOSS_ARENAS = {
@@ -318,6 +347,107 @@ global.ICRAFT_BOSS_ARENAS = {
         waystone: "Infested Laboratory",
     },
 
+    // ----- Cardinal Sins (#65: feature-placed → BLOCK-discovered) ------------
+    // The 7 sins + Drakara are T3; Lucifer is the T3 capstone (100%-clear T3→T4
+    // gate, codex_boss_rush.js). #56 relocated these to Undergarden (lesser sins)
+    // / Nether (fierce sins + Drakara + Lucifer). They have NO worldgen Structure
+    // (MCreator Feature arenas — see header B), so they're located by the unique
+    // SHRINE block in each arena's .nbt template, NOT a structure tag. No
+    // `structure` field here → the structure-tag locate/detect paths skip them.
+    //
+    // Undergarden lesser sins (T2-T3 band → T3 to sit with the rest of the set).
+    cardinal_sins_gluttony: {
+        display: "Bacchus, Sin of Gluttony",
+        tier: 3,
+        dimension: "undergarden:undergarden",
+        locator: "block",
+        signatureBlock: "cardinal_sins:gluttonyshrine",
+        waystone: "Gluttony Shrine",
+        summonEntity: "cardinal_sins:sinofgluttony",
+    },
+    cardinal_sins_greed: {
+        display: "Ebenezer, Sin of Greed",
+        tier: 3,
+        dimension: "undergarden:undergarden",
+        locator: "block",
+        signatureBlock: "cardinal_sins:greedshrine",
+        waystone: "Greed Shrine",
+        summonEntity: "cardinal_sins:sinofgreed",
+    },
+    cardinal_sins_envy: {
+        display: "Odhran, Sin of Envy",
+        tier: 3,
+        dimension: "undergarden:undergarden",
+        locator: "block",
+        signatureBlock: "cardinal_sins:envyshrine",
+        waystone: "Envy Shrine",
+        summonEntity: "cardinal_sins:sinofenvy",
+    },
+    // Sloth is also Undergarden, but its only cardinal_sins block is the
+    // ambiguous malevolichite_shrine (= natural ore-shrine worldgen) → no clean
+    // block to scan for. Summon-route only; see header.
+    cardinal_sins_sloth: {
+        display: "Linneaus, Sin of Sloth",
+        tier: 3,
+        dimension: "undergarden:undergarden",
+        locator: "summon",
+        waystone: "Sloth Shrine",
+        summonEntity: "cardinal_sins:linneausofsloth",
+        ritual: "No unique arena beacon (shares the malevolichite shrine block). "
+            + "Summon with /summon cardinal_sins:linneausofsloth, or explore the Undergarden.",
+    },
+    // Nether fierce sins + Drakara + Lucifer.
+    cardinal_sins_lust: {
+        display: "Freya, Sin of Lust",
+        tier: 3,
+        dimension: "minecraft:the_nether",
+        locator: "block",
+        signatureBlock: "cardinal_sins:lustshrine",
+        waystone: "Lust Shrine",
+        summonEntity: "cardinal_sins:sinoflust",
+    },
+    cardinal_sins_pride: {
+        display: "Leon, Sin of Pride",
+        tier: 3,
+        dimension: "minecraft:the_nether",
+        locator: "block",
+        signatureBlock: "cardinal_sins:pride_shrine",
+        waystone: "Pride Shrine",
+        summonEntity: "cardinal_sins:sinofpride",
+    },
+    cardinal_sins_wrath: {
+        display: "Beowulf, Sin of Wrath",
+        tier: 3,
+        dimension: "minecraft:the_nether",
+        locator: "block",
+        signatureBlock: "cardinal_sins:wrath_shrine",
+        waystone: "Wrath Shrine",
+        summonEntity: "cardinal_sins:sinofwrath",
+    },
+    // Drakara: template holds only the drakara entity (no shrine block) →
+    // nothing to scan for. Summon-route only; see header.
+    cardinal_sins_drakara: {
+        display: "Drakara, Eternal Mourner",
+        tier: 3,
+        dimension: "minecraft:the_nether",
+        locator: "summon",
+        waystone: "Drakara's Roost",
+        summonEntity: "cardinal_sins:drakara",
+        ritual: "Arena has no unique beacon block. "
+            + "Summon with /summon cardinal_sins:drakara, or explore the Nether.",
+    },
+    // Lucifer: the T3 capstone (100%-clear gate to T4). Atrocity shrine is unique.
+    cardinal_sins_lucifer: {
+        display: "Lucifer, The Atrocity",
+        tier: 3,
+        dimension: "minecraft:the_nether",
+        locator: "block",
+        signatureBlock: "cardinal_sins:atrocity_shrine",
+        waystone: "Atrocity Shrine",
+        summonEntity: "cardinal_sins:lucifer",
+        ritual: "T3 capstone — clearing 100% of T3 (Lucifer included) opens Tier 4.",
+    },
+
     // ===== T4 — Endgame (Deep Aether / End / Nether cathedral) ===============
     cataclysm_ender_guardian: {
         display: "Ender Guardian",
@@ -356,8 +486,20 @@ global.ICRAFT_BOSS_ARENAS = {
     },
 }
 
+// Normalize: any arena WITHOUT an explicit `locator` is structure-located (the
+// original #46 default). Done once here so the consumers can switch on
+// meta.locator unconditionally.
+;(function () {
+    for (const id in global.ICRAFT_BOSS_ARENAS) {
+        const meta = global.ICRAFT_BOSS_ARENAS[id]
+        if (!meta.locator) meta.locator = meta.structure ? "structure" : "summon"
+    }
+})()
+
 // Convenience reverse-index: structure ID -> boss_id (the bonfire detector keys
-// off the structure the player is standing in). Built once at load.
+// off the structure the player is standing in). Built once at load. Only
+// structure-located arenas have a `structure`, so block/summon arenas are
+// naturally absent here.
 global.ICRAFT_BOSS_ARENAS_BY_STRUCTURE = (function () {
     const out = {}
     for (const id in global.ICRAFT_BOSS_ARENAS) {
@@ -367,6 +509,16 @@ global.ICRAFT_BOSS_ARENAS_BY_STRUCTURE = (function () {
     return out
 })()
 
-console.log("[iridescent/boss_arenas] registry loaded: "
-    + Object.keys(global.ICRAFT_BOSS_ARENAS).length
-    + " structure-locked boss arenas")
+;(function () {
+    let nStruct = 0, nBlock = 0, nSummon = 0
+    for (const id in global.ICRAFT_BOSS_ARENAS) {
+        const l = global.ICRAFT_BOSS_ARENAS[id].locator
+        if (l === "block") nBlock++
+        else if (l === "summon") nSummon++
+        else nStruct++
+    }
+    console.log("[iridescent/boss_arenas] registry loaded: "
+        + Object.keys(global.ICRAFT_BOSS_ARENAS).length + " boss arenas ("
+        + nStruct + " structure-located, " + nBlock + " block-located, "
+        + nSummon + " summon-only)")
+})()

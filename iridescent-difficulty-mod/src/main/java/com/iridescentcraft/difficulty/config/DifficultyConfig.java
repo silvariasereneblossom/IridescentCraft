@@ -77,6 +77,9 @@ public final class DifficultyConfig {
         // Skip lists
         public final ForgeConfigSpec.ConfigValue<List<? extends String>> excludedEntities;
 
+        // Force-include list (bypass the MobCategory.MONSTER gate)
+        public final ForgeConfigSpec.ConfigValue<List<? extends String>> forceScaleEntities;
+
         // Idle detection (pause timer when no active players in dim)
         public final ForgeConfigSpec.BooleanValue idleDetectionEnabled;
         public final ForgeConfigSpec.DoubleValue idleThresholdMinutes;
@@ -209,6 +212,24 @@ public final class DifficultyConfig {
                         "cataclysm:leviathan",
                         "cataclysm:maledictus",
                         "irons_spellbooks:dead_king_boss"
+                    ),
+                    o -> o instanceof String);
+
+            forceScaleEntities = b.comment(
+                    "Resource IDs of mobs to scale EVEN IF their registered",
+                    "MobCategory is not MONSTER. Some mods (notably MCreator packs",
+                    "like Terramity) register clearly-hostile mobs under MISC/CREATURE,",
+                    "which makes them slip past the MONSTER-category spawn filter and",
+                    "stay un-scaled — e.g. Terramity's trial_spire towers spawn",
+                    "terramity:dungeon_sentry (registered MISC), so half the tower",
+                    "garrison ignored dimension scaling. List such mobs here to force",
+                    "them through. They still get the normal exclude/boss/owned/",
+                    "already-scaled checks; this ONLY relaxes the category gate.",
+                    "The entity must still be a Mob subclass (projectiles/items are",
+                    "skipped regardless).")
+                .defineList("forceScaleEntities",
+                    List.of(
+                        "terramity:dungeon_sentry"
                     ),
                     o -> o instanceof String);
 

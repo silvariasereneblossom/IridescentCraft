@@ -107,6 +107,80 @@ function findStructureCenter(player, bossId) {
     }
 }
 
+// ---- Block-signature lookup (#65 — feature-placed Cardinal Sins arenas) ----
+//
+// Feature-placed arenas have NO worldgen Structure (see boss_arena_registry.js
+// header B), so findNearestMapStructure is blind to them. Instead we scan the
+// LOADED chunks around the player for the arena's unique shrine block
+// (meta.signatureBlock) and return the nearest hit. This is a bounded,
+// best-effort scan — it can only see arenas inside the player's render/loaded
+// radius, so the player generally has to be near the arena (or have visited it)
+// for the lock to take. That's an accepted limitation of block-discovery; the
+// summon-route note + waystone (once lit) cover the long-range case.
+//
+// PERF: we sample on a COARSE lattice (every BLOCK_SCAN_STEP blocks in all three
+// axes) across a BLOCK_SCAN_RADIUS box. The shrine is a multi-block decorative
+// structure (never a lone 1×1), so a step of 4 cannot tunnel through it. Block
+// reads use the pack's proven `level.getBlock(x,y,z).id` idiom (matches
+// skill_effects.js hasNearbyBlock) wrapped in try/catch — KubeJS returns air for
+// unloaded positions rather than force-loading, so the scan is naturally bounded
+// to what's already loaded around the player.
+const BLOCK_SCAN_RADIUS = 96   // blocks horizontally from the player (±)
+const BLOCK_SCAN_VRANGE = 64   // blocks vertically from the player (±)
+const BLOCK_SCAN_STEP   = 4    // lattice spacing (shrine > 4 blocks wide)
+
+function blockIdAt(level, x, y, z) {
+    try {
+        const b = level.getBlock(x, y, z)
+        if (b && b.id) return String(b.id)
+    } catch (e) {}
+    return null
+}
+
+function findBlockCenter(player, bossId) {
+    const meta = (global.ICRAFT_BOSS_ARENAS || {})[bossId]
+    if (!meta || !meta.signatureBlock) return null
+    try {
+        const level = player.level
+        if (level.isClientSide()) return null
+        const target = meta.signatureBlock
+        const px = player.blockX, py = player.blockY, pz = player.blockZ
+
+        // Vertical sweep clamped to the build limits of the current dimension.
+        const yMin = Math.max(level.getMinBuildHeight ? level.getMinBuildHeight() : -64,
+            py - BLOCK_SCAN_VRANGE)
+        const yMax = Math.min(level.getMaxBuildHeight ? level.getMaxBuildHeight() : 320,
+            py + BLOCK_SCAN_VRANGE)
+
+        let best = null, bestD2 = Infinity
+        for (let dx = -BLOCK_SCAN_RADIUS; dx <= BLOCK_SCAN_RADIUS; dx += BLOCK_SCAN_STEP) {
+            const x = px + dx
+            for (let dz = -BLOCK_SCAN_RADIUS; dz <= BLOCK_SCAN_RADIUS; dz += BLOCK_SCAN_STEP) {
+                const z = pz + dz
+                for (let y = yMin; y <= yMax; y += BLOCK_SCAN_STEP) {
+                    if (blockIdAt(level, x, y, z) === target) {
+                        const d2 = dx * dx + (y - py) * (y - py) + dz * dz
+                        if (d2 < bestD2) { bestD2 = d2; best = { x: x, y: y, z: z } }
+                    }
+                }
+            }
+        }
+        return best
+    } catch (e) {
+        console.warn("[boss_compass] findBlockCenter('" + bossId + "') failed: " + e)
+        return null
+    }
+}
+
+// Dispatch to the right locator for an arena. Returns {x,y,z} or null.
+// (locator "summon" never locates — applyTarget handles it before calling.)
+function findArenaCenter(player, bossId) {
+    const meta = (global.ICRAFT_BOSS_ARENAS || {})[bossId]
+    if (!meta) return null
+    if (meta.locator === "block") return findBlockCenter(player, bossId)
+    return findStructureCenter(player, bossId)
+}
+
 // ---- NBT helpers ----------------------------------------------------------
 
 function getCompassTarget(stack) {
@@ -209,13 +283,18 @@ function showTargetMenu(player) {
             player.tell(Text.darkGray("── Tier " + meta.tier + " ──"))
             lastTier = meta.tier
         }
+        const anchor = meta.structure || meta.signatureBlock
+        const verb = meta.locator === "summon" ? "» summon info" : "» track"
+        const hover = meta.locator === "summon"
+            ? Text.gray(meta.display + " — no compass anchor; click for the summon route")
+            : Text.gray("Locate " + meta.display + "'s arena ("
+                + (anchor || "?") + ")")
         const line = Text.white("  [")
             .append(Text.gold(meta.display).bold(true))
             .append(Text.white("] "))
-            .append(Text.gray("» track")
+            .append(Text.gray(verb)
                 .clickRunCommand("/icraft_compass select " + id)
-                .hover(Text.gray("Locate " + meta.display + "'s arena ("
-                    + (meta.structure || "?") + ")")))
+                .hover(hover))
         player.tell(line)
     }
     player.tell(Text.darkGray("Shift-right-click the compass to clear the current target."))
@@ -241,17 +320,54 @@ function applyTarget(player, boss_id) {
         player.tell(Text.red("Hold the Boss Compass in your main hand first."))
         return
     }
-    const spawn = findStructureCenter(player, boss_id)
+
+    // locator: "summon" — no findable anchor (feature-placed arena with no
+    // unique block, e.g. Drakara / Sloth). Surface the summon + explore route
+    // instead of a dead "not found".
+    if (meta.locator === "summon") {
+        player.tell(Text.yellow("⚠ ")
+            .append(Text.gold(meta.display).bold(true))
+            .append(Text.yellow("'s arena can't be tracked by compass (no fixed beacon).")))
+        if (meta.dimension) {
+            player.tell(Text.gray("  Arena generates in ")
+                .append(Text.aqua(meta.dimension))
+                .append(Text.gray(" — explore there, or test-spawn the boss:")))
+        }
+        if (meta.summonEntity) {
+            player.tell(Text.darkAqua("  /summon " + meta.summonEntity)
+                .clickSuggestCommand("/summon " + meta.summonEntity)
+                .hover(Text.gray("Click to put this in your chat box")))
+        }
+        if (meta.ritual) player.tell(Text.darkGray("  " + meta.ritual))
+        return
+    }
+
+    const spawn = findArenaCenter(player, boss_id)
     if (!spawn) {
-        // Structure not found nearby OR not present in this dimension. Give the
+        // Anchor not found nearby OR not present in this dimension. Give the
         // player an actionable hint rather than a dead end.
         const here = currentDimId(player)
+        const anchor = meta.structure || meta.signatureBlock || "arena"
         if (meta.dimension && here && meta.dimension !== here) {
             player.tell(Text.yellow("⚠ " + meta.display + "'s arena (")
-                .append(Text.gold(meta.structure))
+                .append(Text.gold(anchor))
                 .append(Text.yellow(") generates in "))
                 .append(Text.aqua(meta.dimension))
                 .append(Text.yellow(" — travel there, then re-target.")))
+        } else if (meta.locator === "block") {
+            // Block scan only sees loaded chunks, so "not found" usually means
+            // "not close enough yet" rather than "doesn't exist here".
+            player.tell(Text.yellow("⚠ No ")
+                .append(Text.gold(meta.display))
+                .append(Text.yellow(" arena in range. Explore "))
+                .append(Text.aqua(meta.dimension || "the area"))
+                .append(Text.yellow(" — the compass locks on once you're near it.")))
+            if (meta.summonEntity) {
+                player.tell(Text.darkGray("  (test-spawn: ")
+                    .append(Text.darkAqua("/summon " + meta.summonEntity)
+                        .clickSuggestCommand("/summon " + meta.summonEntity))
+                    .append(Text.darkGray(")")))
+            }
         } else {
             player.tell(Text.yellow("⚠ Could not locate " + meta.display
                 + "'s arena within range. Explore further and try again."))
@@ -290,9 +406,10 @@ function reportTarget(player, item, target) {
         .append(Text.aqua(": " + dist + " blocks " + dir + "."))
         .append(Text.darkGray("  (right-click again to refresh / re-locate)")))
     // Offer a quick re-locate if the player has wandered far (structure search
-    // is cheap thanks to async-locator; re-snap to the nearest instance).
-    if (meta) {
-        const fresh = findStructureCenter(player, target.boss_id)
+    // is cheap thanks to async-locator; block scan is bounded to loaded chunks;
+    // re-snap to the nearest instance). Summon-only arenas never re-locate.
+    if (meta && meta.locator !== "summon") {
+        const fresh = findArenaCenter(player, target.boss_id)
         if (fresh) setCompassTarget(item, target.boss_id, meta.dimension || null, fresh)
     }
 }
