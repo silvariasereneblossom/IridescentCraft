@@ -25,7 +25,7 @@
     ]
   },
   "requiredTools": {
-    "hammer_dig": "minecraft:netherite"
+    "hammer_dig": 7
   },
   "attributes": {
     "**irons_spellbooks:spell_power": 0.1,
