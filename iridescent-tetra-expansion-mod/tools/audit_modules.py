@@ -21,7 +21,10 @@ SCHEMATICS_DIR = 'src/main/resources/data/tetra/schematics'
 
 def load_dir(prefix, glob_pattern):
     out = {}
-    for path in sorted(glob.glob(glob_pattern, recursive=True)):
+    # glob returns OS-native separators (backslashes on Windows); normalize to
+    # forward slashes so rel-keys match the '/'-style moduleKeys read from JSON.
+    paths = sorted(p.replace('\\', '/') for p in glob.glob(glob_pattern, recursive=True))
+    for path in paths:
         rel = path[len(prefix):].rsplit('.json', 1)[0]
         try:
             with open(path) as f:
