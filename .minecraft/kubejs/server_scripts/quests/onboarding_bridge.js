@@ -2,17 +2,19 @@
 // kubejs/server_scripts/quests/onboarding_bridge.js
 //
 // Bridges Heracles chapter 0 (Onboarding) tasks of type `heracles:dummy` to
-// real in-world events. Without this script, 5 of the 15 chapter-0 quests
-// (3 codex reads, 1 JLF level milestone, 1 capstone) would never auto-fire.
+// real in-world events. Without this script, 2 of the chapter-0 quests
+// (1 JLF level milestone, 1 capstone) would never auto-fire.
+//
+// 2026-06-03 (#45 read-fix B): the 3 "read a codex page" quests were removed —
+// Patchouli is client-side and the server can't see which page you opened, so
+// those reads were never detectable. The codex beat is now onboarding_first_codex_open
+// ("hold the Iridescent Codex"), which is plain item-detection.
 //
 // Heracles' `heracles:dummy` task type completes via the operator command
 // `/heracles dummy <value>`. This script runs that command server-side on
 // behalf of the player when the corresponding game event happens.
 //
 // Quests bridged here (see .minecraft/config/heracles/quests/onboarding/):
-//   - onboarding_intro_read         dummy value: codex_welcome_intro_read
-//   - onboarding_first_hour_read    dummy value: codex_welcome_first_hour_read
-//   - onboarding_keybinds_read      dummy value: codex_welcome_keybinds_read
 //   - onboarding_first_level        dummy value: jlf_level_5_reached
 //   - onboarding_survivor_capstone  dummy value: onboarding_survivor_capstone_check
 //
@@ -26,15 +28,6 @@
 // =============================================================================
 
 // ---- Tunables --------------------------------------------------------------
-
-// Map of (event-type, marker) -> dummy_value Heracles is listening for.
-// Adding more codex pages or new dummy-driven quests = add a row here.
-const CODEX_PAGE_TO_DUMMY = {
-    // Iridescent Codex Patchouli entry ID -> Heracles dummy value
-    "iridescent_codex:welcome/intro":      "codex_welcome_intro_read",
-    "iridescent_codex:welcome/first_hour": "codex_welcome_first_hour_read",
-    "iridescent_codex:welcome/keybinds":   "codex_welcome_keybinds_read",
-}
 
 // JLF level threshold quests. Keyed by required level, value is dummy.
 const JLF_LEVEL_TO_DUMMY = {
@@ -51,12 +44,9 @@ const CAPSTONE_PREREQS = [
     "onboarding_first_food",
     "onboarding_first_shelter",
     "onboarding_first_codex_open",
-    "onboarding_intro_read",
-    "onboarding_first_hour_read",
     "onboarding_first_kill",
     "onboarding_first_iron",
     "onboarding_first_iron_pick",
-    "onboarding_keybinds_read",
     "onboarding_first_level",
     "onboarding_first_villager_trade",
 ]
@@ -108,34 +98,6 @@ function fireDummyIfNew(player, dummyValue) {
     player.server.runCommandSilent(`heracles dummy ${dummyValue} ${player.username}`)
     return true
 }
-
-// ---- Codex page-open hook --------------------------------------------------
-//
-// Patchouli fires PatchouliAPI events but KubeJS in 1.20.1 doesn't expose
-// them directly as a kjs event. TWO viable interception points:
-//
-//   (1) ClientTickEvent -- read player's currently-open screen, check if it's
-//       PatchouliGuiBook, read the page URL. Client-side only; would need a
-//       network packet back to the server to fire /heracles dummy.
-//
-//   (2) Reskill the codex book's right-click handler to detect "page X was
-//       last opened" via a hook on Patchouli's GuiBook.onClose() and pass
-//       the closing page through a custom packet.
-//
-// Both are non-trivial. For chapter 0 ship, the OPERATOR fires
-//   /heracles dummy <value> <player>
-// on demand via a /trigger or an in-game button. Once chapter 1+ ships and
-// the Patchouli integration is built (deferred follow-up), this script's
-// Patchouli wiring takes over automatically -- the dummy_values are stable.
-//
-// TODO: Patchouli read-detection integration (sub-task of #45 chapter 0 polish).
-// Until then, mark this section as a no-op stub.
-
-PlayerEvents.tick(event => {
-    // No-op placeholder for the Patchouli read-detection hook.
-    // See TODO above. The codex-read quests will require manual /heracles
-    // dummy until the integration ships.
-})
 
 // ---- JLF level milestone hook ---------------------------------------------
 //
@@ -222,5 +184,5 @@ PlayerEvents.tick(event => {
 })
 
 console.log("[iridescent/onboarding_bridge] loaded; bridging " +
-    Object.keys(CODEX_PAGE_TO_DUMMY).length + " codex reads + " +
-    Object.keys(JLF_LEVEL_TO_DUMMY).length + " JLF levels + 1 capstone")
+    Object.keys(JLF_LEVEL_TO_DUMMY).length + " JLF level(s) + 1 capstone " +
+    "(codex page-reads removed 2026-06-03, #45 read-fix B)")

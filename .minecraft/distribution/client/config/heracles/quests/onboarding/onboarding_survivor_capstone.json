@@ -7,7 +7,7 @@
     "title": "Survivor",
     "subtitle": "Onboarding complete",
     "description": [
-      "You've survived the first day, found iron, opened the Codex, and read the essentials.",
+      "You've survived the first day, found iron, and opened the Codex.",
       "",
       "Welcome to IridescentCraft. You're ready for chapter 1."
     ],
@@ -30,12 +30,9 @@
     "onboarding_first_food",
     "onboarding_first_shelter",
     "onboarding_first_codex_open",
-    "onboarding_intro_read",
-    "onboarding_first_hour_read",
     "onboarding_first_kill",
     "onboarding_first_iron",
     "onboarding_first_iron_pick",
-    "onboarding_keybinds_read",
     "onboarding_first_level",
     "onboarding_first_villager_trade"
   ],
@@ -43,7 +40,7 @@
     "complete_all": {
       "type": "heracles:dummy",
       "value": "onboarding_survivor_capstone_check",
-      "description": "Heracles dep-chain check (auto-completes when all 14 prerequisites done)."
+      "description": "Heracles dep-chain check (auto-completes when all 11 prerequisites done)."
     }
   },
   "rewards": {

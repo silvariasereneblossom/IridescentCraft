@@ -1,0 +1,43 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:manasteel_ingot" },
+    "title": "Bank Magic Tokens",
+    "subtitle": "Submit cultivated reagents & apparatus to the Codex",
+    "description": [
+      "The Magic lane converts cultivated reagents and ritual apparatus into",
+      "progression tokens, each capped per material.",
+      "",
+      "Click §dSubmit§r below to bank every eligible Magic material you are",
+      "carrying — Botania, Ars Nouveau, Forbidden Arcanus, and Occultism reagents,",
+      "ingots, runes, and apparatus blocks.",
+      "",
+      "§7Items are consumed only when banked (never before), and only up to each",
+      "§7material's cap — nothing is ever lost. Repeat any time.",
+      "",
+      "§7See /icraft codex balance for progress."
+    ],
+    "groups": { "Magic": { "position": [0, 0] } }
+  },
+  "settings": {
+    "individual_progress": true,
+    "repeatable": true,
+    "autoClaimRewards": true
+  },
+  "dependencies": [],
+  "tasks": {
+    "submit_magic": {
+      "type": "heracles:item",
+      "title": "Submit your Magic materials",
+      "item": "#icraft:codex_magic",
+      "amount": 1,
+      "collection": "MANUAL"
+    }
+  },
+  "rewards": {
+    "bank_tokens": {
+      "type": "heracles:command",
+      "title": "Convert eligible Magic materials into pool tokens",
+      "command": "icraft codex submit magic"
+    }
+  }
+}

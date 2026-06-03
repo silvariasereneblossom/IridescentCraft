@@ -2,21 +2,20 @@
   "display": {
     "icon": {
       "type": "heracles:item",
-      "item": "iridescent_codex:tome_of_iridescence"
+      "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" }
     },
-    "title": "The Iridescent Codex",
-    "subtitle": "Acquire the codex book",
+    "title": "Open the Iridescent Codex",
+    "subtitle": "Your in-game guide to the pack",
     "description": [
-      "The Iridescent Codex is your in-game reference for pack systems.",
+      "The Iridescent Codex is your reference for every pack system — progression,",
+      "the four lanes, dimensions, bosses, and gear.",
       "",
-      "Find or craft a Tome of Iridescence and hold it in your inventory."
+      "You are handed one when you first join. Hold it and right-click to open it,",
+      "then skim the Welcome chapter (Intro, First Hour, Keybinds) before you set out."
     ],
     "groups": {
       "Onboarding": {
-        "position": [
-          1,
-          1
-        ]
+        "position": [1, 1]
       }
     }
   },
@@ -29,9 +28,7 @@
   "tasks": {
     "have_codex": {
       "type": "heracles:item",
-      "item": {
-        "id": "iridescent_codex:tome_of_iridescence"
-      }
+      "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" }
     }
   },
   "rewards": {
