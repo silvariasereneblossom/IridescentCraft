@@ -120,7 +120,7 @@ Per-origin/race/class stat tables and ability descriptions live in `kubejs/data/
 
 ### A.7 Tier unlock options — the token economy
 
-The token economy ([master.md Part III](master.md#part-iii--progression-the-token-economy)). Advance a tier by hitting **either** its **token threshold** *or* its **boss-rush %**. One combined pool, four lanes (Engineering / Magic / Exploration / Combat); each lane reaches the threshold on its own, hybrids mix freely. Source-of-truth design: `IridescentCraft-internal/design/progression-framework.md` (DESIGN LOCKED 2026-05-31). Values are the design; exact item IDs are verified at build.
+The token economy ([master.md Part III](master.md#part-iii--progression-the-token-economy)). Advance a tier by hitting **either** its **token threshold** *or* its **boss-rush %**. One combined pool, four lanes (Engineering / Magic / Exploration / Combat); each lane reaches the threshold on its own, hybrids mix freely. (Design locked 2026-05-31.) Values are the design; exact item IDs are verified at build.
 
 | Transition | Token threshold | Boss-rush % |
 |---|---:|---:|
@@ -321,7 +321,7 @@ All `event.remove` and `event.shaped` (override) calls across `kubejs/server_scr
 
 **Section D — End Portal Recipe T4 gate**.
 
-**Section E — Simply Swords named uniques**: 43-entry recipe-removal list. Audit Phase 3.1 (2026-04-27) refresh — see [audits/simplyswords.md in the private repo](../../../IridescentCraft-internal/audits/simplyswords.md). Categories: 15 T2 boss-allocated + 10 T3 + 6 T4 + 11 unassigned (creative-only) + 1 dormant_relic.
+**Section E — Simply Swords named uniques**: 43-entry recipe-removal list. Audit Phase 3.1 (2026-04-27) refresh. Categories: 15 T2 boss-allocated + 10 T3 + 6 T4 + 11 unassigned (creative-only) + 1 dormant_relic.
 
 **Section F — Apotheosis salvaging** (T1 ungated).
 
@@ -1178,7 +1178,7 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 
 ### G.4 Intentionally NOT mod-gated
 
-Per `astages_restrictions.js` line 187:
+Per `astages_restrictions.js`:
 - `occultism` — has passive items (Demon's Dream essence, otherworld saplings) that fit early game; gated per-item instead.
 - `forbidden_arcanus` — same rationale (Aureal bottles, edelwood); gated per-item.
 

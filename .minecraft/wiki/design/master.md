@@ -195,7 +195,7 @@ Lanes mix freely; the combined pool serves hybrids. It is never *required* — e
 
 > **Ore-base curve is intentional.** Bulk metal contributes a rising share across T1/T2/T3 *by design* — higher tiers unlock ore multiplication (Mekanism 2–5×) + automation, so submission tracks the player's growing production capability. Milestone machines stay the required push *over the line* (ore alone never reaches threshold at any tier).
 
-→ Full conversion tables (per-resource caps + rates) for Engineering and Magic: [Appendix §A.7](master-appendix.md#a7-tier-unlock-options--the-token-economy). Source-of-truth design: `IridescentCraft-internal/design/progression-framework.md`.
+→ Full conversion tables (per-resource caps + rates) for Engineering and Magic: [Appendix §A.7](master-appendix.md#a7-tier-unlock-options--the-token-economy).
 
 ### Tiering prerequisites — recipe overrides (shipped)
 

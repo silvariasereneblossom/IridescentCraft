@@ -127,28 +127,27 @@ Other: CC: Tweaked, Quark, Disenchanting (T2-gated recipe), Enchantment Transfer
 
 ## Removed Mods
 
-| Mod | Reason | Date |
-|-----|--------|------|
-| Rechiseled | SuperMartijn642 Core Lib load order incompatibility | 2026-03-17 |
-| SuperMartijn642's Core Lib | Load order incompatibility (dependency of Rechiseled, Connected Glass, Trash Cans) | 2026-03-17 |
-| SuperMartijn642's Config Lib | Dependency of above | 2026-03-17 |
-| Connected Glass | Depends on SuperMartijn642 libs (removed) | 2026-03-17 |
-| Trash Cans | Depends on SuperMartijn642 libs (removed) | 2026-03-17 |
-| Pretty Rain | Cloth Config incompatibility | 2026-03-17 |
-| Cherry Village | Unregistered worldgen feature crash | 2026-03-19 |
-| Gods & Heroes RPG Classes | Conflicts with icraft class layer, broken origin translations | 2026-03-19 |
-| Tetra Attribute Rebalancing | Delisted from CurseForge, broken by Tetra 6.13.0 mixin changes | 2026-04-05 |
-| Champions Unofficial | Broken rank config, unmaintained, error spam causing server lag | 2026-04-07 |
-| FTB Backups | Replaced by FastBack (git-based backups) | 2026-04-08 |
-| FTB Chunks | Replaced by Open Parties and Claims | 2026-04-08 |
-| FTB Essentials | Removed (FTB suite cleanup) | 2026-04-08 |
-| FTB Library | Removed (FTB suite cleanup, no longer needed) | 2026-04-08 |
-| FTB Quests | Removed (FTB suite cleanup, Heracles used instead) | 2026-04-08 |
-| FTB Ranks | Removed (FTB suite cleanup) | 2026-04-08 |
-| FTB Teams | Removed (FTB suite cleanup) | 2026-04-08 |
-| FTB Ultimine | Replaced by LiteMiner + Amber (veinmining) | 2026-04-08 |
-| Truly Modular family (Armory / Arsenal / Archery / `modular-item-api` / Create-compat) | Deprecated by the Tetra stack + Iridescent Reforging; also a spider-jockey buff source | 2026-05-10 |
-| ScalingMobs · Improved Mobs · Azukaar's Fair Difficulty | Replaced by the bespoke time-based `iridescent_difficulty` mod | 2026-05-03 |
+Mods that were in earlier builds but have since been dropped. Where a mod was replaced, the replacement is noted.
+
+| Mod | Note |
+|-----|------|
+| Rechiseled | Removed — library incompatibility |
+| SuperMartijn642's Core Lib | Removed — incompatibility |
+| SuperMartijn642's Config Lib | Removed — incompatibility |
+| Connected Glass | Removed — dependency removed |
+| Trash Cans | Removed — dependency removed |
+| Pretty Rain | Removed — incompatibility |
+| Cherry Village | Removed — worldgen crash |
+| Gods & Heroes RPG Classes | Removed — conflicted with the class system |
+| Tetra Attribute Rebalancing | Removed — incompatibility |
+| Champions Unofficial | Removed — replaced by Majrusz's Progressive Difficulty |
+| FTB Backups | Removed — replaced by FastBack |
+| FTB Chunks | Removed — replaced by Open Parties and Claims |
+| FTB Essentials / Library / Ranks / Teams | Removed — FTB suite cleanup |
+| FTB Quests | Removed — replaced by Heracles |
+| FTB Ultimine | Removed — replaced by LiteMiner + Amber |
+| Truly Modular family (Armory / Arsenal / Archery / modular-item-api / Create-compat) | Removed — superseded by the Tetra stack + Iridescent Reforging |
+| ScalingMobs · Improved Mobs · Azukaar's Fair Difficulty | Removed — replaced by the bespoke `iridescent_difficulty` mod |
 
 ## Custom Mods
 

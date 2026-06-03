@@ -1,88 +1,38 @@
-# KubeJS & Technical Overview
+# KubeJS & Scripting Overview
 
-KubeJS 2001.6.5-build.16 for Minecraft 1.20.1 Forge. Primary scripting system for all custom gameplay.
+IridescentCraft uses **KubeJS 6.x** (for Minecraft 1.20.1 Forge) as its primary scripting layer. A large share of the pack's bespoke gameplay — the parts that aren't a single off-the-shelf mod — is implemented here, on top of datapacks and a handful of custom Java mods.
 
-## Script Locations
+## What the scripting layer does
 
-| Directory | Purpose | Load Time |
+The KubeJS scripts and virtual datapack drive most of the custom RPG systems:
+
+- **Progression & gating** — tier (AStages) gating of items, recipes, and dimensions; boss-kill tracking and tier unlocks.
+- **Loot** — tier-appropriate loot across chests and structures (via LootJS): artifact/relic tiering, spell-scroll and glyph injection, junk cleanup, and per-dimension scaling.
+- **Combat & mobs** — per-dimension mob stat scaling, mob equipment rules, knockback/velocity caps, and anomaly defenses.
+- **Skills & enchantments** — custom skill-tree effects, custom enchantment effects, and Apotheosis affix handlers.
+- **Classes & origins** — class passives, the Class Altar respec, glass-cannon HP mechanics, and origin progression effects.
+- **Death penalty** — durability loss on death, paired with the inert-on-break system so gear is never destroyed.
+- **Codex delivery** — first-join delivery of the Iridescent Codex guidebook and suppression of other mods' starter books.
+
+For the design intent behind these systems, see the [Master Design Document](../design/master.md) and [Systems Overview](../systems/overview.md).
+
+## Script locations
+
+| Directory | Purpose | Load time |
 |-----------|---------|-----------|
 | `kubejs/server_scripts/` | Server-side logic (events, recipes, loot) | World load |
-| `kubejs/startup_scripts/` | Item/block registration, enchantments | Game startup |
-| `kubejs/client_scripts/` | Tooltips, UI modifications | Client connect |
+| `kubejs/startup_scripts/` | Item/block/enchantment registration | Game startup |
+| `kubejs/client_scripts/` | Tooltips, UI tweaks | Client connect |
 | `kubejs/data/` | Virtual datapack (recipes, tags, loot tables) | Resource reload |
 
-## Event Compatibility (1.20.1 Forge)
+## Datapacks (Paxi)
 
-### Working Events
+Custom data ships two ways: through the KubeJS virtual datapack (`kubejs/data/`) and as **zipped datapacks loaded by Paxi 4.0** (Paxi loads zip files, not folders). Active Paxi datapacks include the Iridescent Codex book, the Pufferfish's Skills trees, custom Apotheosis affixes, Botania overrides, and the Origins race/class definitions.
 
-- `PlayerEvents.loggedIn` — Player joins server
-- `PlayerEvents.inventoryChanged` — Item added/removed from inventory
-- `ServerEvents.recipes` — Recipe modification
-- `ServerEvents.tick` — Server tick (use sparingly)
-- `EntityEvents.spawned` — Entity spawn
-- `EntityEvents.death` — Entity death
-- `LootJS.modifiers` — Loot table modification
-- `ItemEvents.tooltip` — Tooltip modification (**client_scripts only**)
+> **Note:** Patchouli guidebooks (like the Codex) must live in a real datapack — Patchouli can't read book content from the KubeJS virtual datapack — which is why the Codex ships as its own content mod / Paxi datapack rather than from `kubejs/data/`.
 
-### NOT Available (will crash)
+## Related pages
 
-- `PlayerEvents.pickedUpItem` — Does not exist
-- `PlayerEvents.death` — Does not exist
-- `PlayerEvents.changeDimension` — Does not exist
-- `AStagesEvents` — Not a real KubeJS event class
-- `MoreJS` — Not installed
-
-## Implemented Scripts
-
-| Script | Lines | Purpose |
-|--------|-------|---------|
-| `codex_delivery.js` | ~80 | First-join Codex delivery + mod book suppression |
-| `dimension_scaling.js` | — | Per-dimension mob stat multipliers |
-| `death_penalty.js` | — | Durability loss on death |
-| `loot_tables.js` | — | LootJS tier-appropriate loot |
-| `skill_effects.js` | 701 | 22 scoreboard-based skill effects (all functional) |
-| `enchant_effects.js` | 503 | 24 custom enchantment effect handlers |
-| `affix_effects.js` | 997 | Complex affix event handlers (65 event-driven effects) |
-| `class_respec.js` | 147 | Class Altar respec system |
-| `equipment_hp_halving.js` | 155 | Glass cannon HP penalty |
-| `astages_restrictions.js` | — | AStages item/dimension gating (expanded derivative gating 2026-03-15) |
-| `custom_enchantments.js` | 174 | Enchantment registration (startup) |
-
-## Datapack Loading (Paxi)
-
-Paxi 4.0 Forge loads datapacks from `global_packs/required_data/` as **ZIP files only**.
-
-### Active Datapacks
-
-| Datapack | Contents |
-|----------|----------|
-| `iridescent_codex.zip` | Patchouli book data |
-| `icraft_skills.zip` | Pufferfish's Skills tree definitions |
-| `icraft_apotheosis_affixes.zip` | Custom Apotheosis affix JSONs |
-| `icraft_botania_overrides.zip` | Botania recipe/config overrides |
-| `iridescent_classes.zip` | Origins class definitions |
-| `iridescent_races.zip` | Origins race definitions |
-| `improvedmobs_datapack.zip` | Improved Mobs configuration — **removed** (Improved Mobs dropped 2026-05-03, replaced by the `iridescent_difficulty` mod; source + zips deleted from all distros 2026-06-01) |
-| `champions_datapack.zip` | Champions mob affix configuration — **removed** (Champions Unofficial dropped 2026-04-07, replaced by Majrusz's Progressive Difficulty; source deleted 2026-06-01 — shipped as source only, never built to a loaded zip) |
-
-### Load Order
-
-Configured in `config/paxi/datapack_load_order.json`. Names must include `.zip` suffix to match Paxi's internal naming.
-
-### Known Issue: KubeJS Virtual Datapack
-
-`kubejs/data/` serves recipes/tags/loot correctly but Patchouli's `BookContentResourceListenerLoader` cannot see files from it. Patchouli books must be in real datapacks (zip files via Paxi).
-
-## Known KubeJS Errors (as of 2026-03-12)
-
-1. `PlayerEvents.death` — does not exist, use `EntityEvents.death` with player check
-2. `ItemEvents.tooltip` in server_scripts — must be in client_scripts
-3. `AStagesEvents` — not a real class, use command-based approach
-4. `PlayerEvents.changeDimension` — does not exist
-5. `MoreJS` — not installed
-
-## Related Pages
-
-- [Master Design Document](../design/master.md) — Implementation details
-- [Known Issues](../known-issues/tracker.md) — Current bugs
-- [Systems](../systems/overview.md) — What the scripts implement
+- [Master Design Document](../design/master.md) — design intent and implementation details
+- [Systems Overview](../systems/overview.md) — what the scripts implement
+- [Known Issues](../known-issues/tracker.md) — current bugs and recent fixes

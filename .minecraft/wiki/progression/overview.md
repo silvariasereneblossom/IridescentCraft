@@ -33,7 +33,7 @@ Each tier is reachable by a single pure playstyle; hybrids mix freely.
 
 **Engine:** Heracles (the quest mod) does the token submission, kill-tracking, and stage-granting; the Patchouli Codex book is the documentation skin. **Lucifer** is the T3 → T4 combat capstone (non-combat lanes skip him). **The End** unlocks via a Deep-Aether **End Compass → End Bastion** (replacing the Eye of Ender). T4 is terminal — beating the **Ender Dragon** is the pack finale and opens the Ad Astra post-game.
 
-→ Full conversion tables + caps: [master.md Part III](../design/master.md#part-iii--progression-the-token-economy) and `IridescentCraft-internal/design/progression-framework.md`.
+→ Full conversion tables + caps: [master.md Part III](../design/master.md#part-iii--progression-the-token-economy).
 
 ## Dimensional Progression
 

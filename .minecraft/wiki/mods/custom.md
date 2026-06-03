@@ -37,7 +37,7 @@ Patchouli Codex book. Shipped as a **javafml content mod** with a minimal compil
 
 ### iridescent_tetra_expansion-1.0.0.jar (Modular Spells + Reforging bundle)
 
-**Added 2026-04-26 (as `iridescent_modular_spells`); bundled into `iridescent_tetra_expansion-1.0.0.jar` 2026-05-01.** This jar now ships **two `[[mods]]`** from one file — `iridescent_modular_spells` (below) **and** `iridescent_reforging` (the modular-armor extension). Item IDs keep their original namespaces (`iridescent_modular_spells:` / `iridescent_reforging:`); the full mod-ID merge into a single `iridescent_tetra_expansion` namespace is deferred to the alpha→beta cutover (Option C — see `IridescentCraft-internal/dev/tetra-expansion-id-merge-plan.md`). The standalone `iridescent_modular_spells-0.2.0.jar` and `iridescent_reforging` jars are superseded.
+**Added 2026-04-26 (as `iridescent_modular_spells`); bundled into `iridescent_tetra_expansion-1.0.0.jar` 2026-05-01.** This jar now ships **two `[[mods]]`** from one file — `iridescent_modular_spells` (below) **and** `iridescent_reforging` (the modular-armor extension). Item IDs keep their original namespaces (`iridescent_modular_spells:` / `iridescent_reforging:`); the full mod-ID merge into a single `iridescent_tetra_expansion` namespace is deferred to the alpha→beta cutover (Option C). The standalone `iridescent_modular_spells-0.2.0.jar` and `iridescent_reforging` jars are superseded.
 
 **Modular Spells** is a modular spell book mod spanning ISS + Ars Nouveau ecosystems with full Tetra workbench integration. License-clean reimplementation of CurseForge's TSB (TSB is All Rights Reserved; we mirror its API-driven structure but write our own code/data).
 
