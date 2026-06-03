@@ -1,11 +1,11 @@
 {
-  "easyLootEnabled": true,
+  "easyLootEnabled": false,
   "easyLootDropChance": 0.5,
-  "mediumLootEnabled": true,
+  "mediumLootEnabled": false,
   "mediumLootDropChance": 0.4,
-  "hardLootEnabled": true,
+  "hardLootEnabled": false,
   "hardLootDropChance": 0.3,
-  "endgameLootEnabled": true,
+  "endgameLootEnabled": false,
   "endgameLootDropChance": 0.2,
   "emeraldSageXpAmount": 10,
   "emeraldSageCrimsonNexusBlacklist": [

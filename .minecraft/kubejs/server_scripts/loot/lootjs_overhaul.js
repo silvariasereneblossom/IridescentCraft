@@ -643,9 +643,8 @@ LootJS.modifiers(event => {
     'irons_spellbooks:common_ink',
     // moreartifacts T1 — flavor curios (audit Phase 2.1, 2026-04-27)
     'moreartifacts:melody_plushie', 'moreartifacts:lucky_emerald_ring',
-    // too_many_bows T1 — utility bows (audit Phase 2.2, 2026-04-27)
-    'too_many_bows:dark_bow', 'too_many_bows:hunter_bow',
-    'too_many_bows:flame_bow', 'too_many_bows:torchbearer',
+    // too_many_bows bows REMOVED 2026-06-03 — now boss-EXCLUSIVE trophy drops
+    // (unique_itemset_registry.js + boss_unique_drops.js). See zz_unique_chest_strip.js.
     // celestial_artifacts T1 — flavor (re-audit 2026-05-13: angel_desire
     // moved to T3 — pure_nether_star recipe is endgame; bearing_stamen
     // moved here — basic plant material recipe; etchings T1: desire/origin)
@@ -693,12 +692,7 @@ LootJS.modifiers(event => {
     // (audit Phase 2.1, 2026-04-27 — Hero/Ankh → T2 per locked-in mapping)
     'moreartifacts:hero_shield', 'moreartifacts:ankh_shield', 'moreartifacts:ankh_charm',
     'moreartifacts:vanir_mask', 'moreartifacts:tainted_mirror',
-    // too_many_bows T2 — element-themed EPIC bows + RARE artifacts
-    // (audit Phase 2.2, 2026-04-27)
-    'too_many_bows:frostbite', 'too_many_bows:tidal_bow', 'too_many_bows:verdant_viper',
-    'too_many_bows:burnt_relic', 'too_many_bows:sentinels_wrath',
-    'too_many_bows:vitality_weaver', 'too_many_bows:verdant_vigor',
-    'too_many_bows:webstring',
+    // too_many_bows bows REMOVED 2026-06-03 — now boss-EXCLUSIVE trophy drops.
     // celestial_artifacts T2 — green/dark_green/red curios + EPIC defensive
     // (re-audit 2026-05-13: bearing_stamen -> T1)
     'celestial_artifacts:precious_bracelet', 'celestial_artifacts:spirit_necklace',
@@ -737,14 +731,10 @@ LootJS.modifiers(event => {
     'moreartifacts:withered_bezoar', 'moreartifacts:wither_shard',
     'moreartifacts:gilded_scarf', 'moreartifacts:ruby_ring',
     'moreartifacts:mechanical_claw', 'moreartifacts:ice_stone',
-    // too_many_bows T3 — Nether/element-themed EPIC bows + reagents
-    // (audit Phase 2.2, 2026-04-27)
-    'too_many_bows:arcane_bow', 'too_many_bows:ancient_sage_bow',
-    'too_many_bows:auroras_grace', 'too_many_bows:crimson_nexus',
-    'too_many_bows:necro_flame_bow',
+    // too_many_bows T3 — BOWS REMOVED 2026-06-03 (boss-EXCLUSIVE now); the
+    // non-bow reagent + curios are kept (cursed_stone is a thrown item, not a bow):
     'too_many_bows:cursed_stone', 'too_many_bows:soul_fragment',
-    'too_many_bows:radiance', 'too_many_bows:wind_glove',
-    'too_many_bows:stormbound_signet',
+    'too_many_bows:wind_glove', 'too_many_bows:stormbound_signet',
     // celestial_artifacts T3 — corruption + dark_purple + dark_aqua
     // (re-audit 2026-05-13: twisted_brain REMOVED -- design-intent entity-
     //  drop only; soul_box -> T4 endgame; angel_desire/holy_talisman/holy_sword
@@ -795,11 +785,8 @@ LootJS.modifiers(event => {
     'moreartifacts:enderian_eye', 'moreartifacts:shulked_clock',
     'moreartifacts:shulker_heart', 'moreartifacts:true_enderian_scarf',
     'moreartifacts:echo_glove',
-    // too_many_bows T4 — endgame EPIC bows + power_crystal reagent
-    // (audit Phase 2.2, 2026-04-27)
-    'too_many_bows:dragons_breath', 'too_many_bows:astral_bound',
-    'too_many_bows:spectral_whisper', 'too_many_bows:shulker_blast',
-    'too_many_bows:arc_heavens', 'too_many_bows:twin_shadows',
+    // too_many_bows T4 — BOWS REMOVED 2026-06-03 (boss-EXCLUSIVE now); kept the
+    // non-bow reagent + curio:
     'too_many_bows:power_crystal', 'too_many_bows:dead_eyes_pendant',
     // celestial_artifacts T4 — endgame curios
     // (re-audit 2026-05-13: evil_eye -> T3; the_end_dust REMOVED (base
