@@ -1,6 +1,6 @@
 {
   "pack": {
     "pack_format": 15,
-    "description": "IridescentCraft: Restrict Aethersteel worldgen to Deep Aether (T4)"
+    "description": "IridescentCraft: Aethersteel ore removed from Overworld; re-homed to Aether (1x) / Deep Aether (2x) / End (0.5x)"
   }
 }

@@ -1,0 +1,16 @@
+{
+  "type": "forge:add_features",
+  "biomes": [
+    "deep_aether:aerlavender_fields",
+    "deep_aether:aerglow_forest",
+    "deep_aether:mystic_aerglow_forest",
+    "deep_aether:blue_aerglow_forest",
+    "deep_aether:yagroot_swamp",
+    "deep_aether:golden_heights",
+    "deep_aether:golden_grove",
+    "deep_aether:luminescent_forest",
+    "deep_aether:cloud"
+  ],
+  "features": "aethersteel:aether_debris_deep_aether",
+  "step": "underground_ores"
+}

@@ -1,0 +1,11 @@
+{
+  "type": "forge:add_features",
+  "biomes": [
+    "aether:skyroot_meadow",
+    "aether:skyroot_grove",
+    "aether:skyroot_woodland",
+    "aether:skyroot_forest"
+  ],
+  "features": "aethersteel:aether_debris_aether",
+  "step": "underground_ores"
+}
