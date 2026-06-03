@@ -30,12 +30,6 @@ The canonical design reference for all modpack systems.
 ### Known Issues
 - [Issue Tracker](known-issues/tracker.md) — Active bugs, testing needed, resolved
 
-### Dev (internal-only)
-- [Lessons Learned](dev/lessons-learned.md) — Postmortems for stalled/failed implementations. **Not mirrored to public wiki.**
-- [Deployment and Utility Guide](dev/deployment-and-utility-guide.md) — How code reaches client/server, phase0_sync flow, custom-jar allowlist, utility scripts. **Not mirrored to public wiki.**
-- [Code Review 2026-04-23](dev/code-review-2026-04-23.md) — Full-codebase audit findings + 11 remaining followups. **Not mirrored to public wiki.**
-- [Game Mechanics](mechanics/game-mechanics.md) — Implementation deep-dive: which scripts fire, in what order, with what math. Companion to the design doc (intent vs reality). **Not mirrored to public wiki.**
-
 ### Roadmap
 - [Planned Changes](roadmap/planned.md) — Future features, improvements, and technical debt
 
@@ -49,81 +43,55 @@ The canonical design reference for all modpack systems.
 
 | System | Status | Notes |
 |--------|--------|-------|
-| Tier gating (AStages) | Implemented | Scripts in place, needs in-game API verification |
-| Dimension scaling | Implemented | `dimension_scaling.js` |
-| Death penalty | Implemented | `death_penalty.js` |
-| Loot tables (LootJS) | Implemented | `lootjs_overhaul.js` (setCount API fixed) |
-| Skill trees (Pufferfish) | Implemented | Datapack + `skill_effects.js` (all effects functional) |
-| Custom enchantments | Implemented | `custom_enchantments.js` + `enchant_effects.js` (24 enchants) |
-| Apotheosis affixes | Implemented | 84 JSON + 65 event-driven affixes |
-| Difficulty engine (`iridescent_difficulty`) | Implemented | Bespoke time-based per-dimension scaling (replaced ScalingMobs / Improved Mobs / Azukaar's, all removed 2026-05-03); Majrusz handles elite-mob density (replaced Champions Unofficial, removed 2026-04-07) |
-| AStages derivative gating | Implemented | Diamond/netherite/End derivatives fully gated + 6 advancement overrides |
-| Origin layer cleanup | Implemented | Vanilla origins:human removed; 3-prompt flow: Origin (13 total) → Race (11 custom) → Class (10 custom) |
-| Class respec | Implemented | `class_respec.js` |
-| Equipment HP halving | Implemented | `equipment_hp_halving.js` |
-| Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat) — Heracles is the engine (token submission + boss-rush tracking); Phase 1 (token items + Engineering conversion + tier-advance) shipped. Supersedes the old internal boss-counter. See [master.md Part III](design/master.md#part-iii--progression-the-token-economy) |
-| Heracles quest tree | In progress | Authoring chapter-by-chapter; the quest engine that runs the token economy (FTB Quests already removed) |
-| Patchouli Codex | Working | 11 categories, 80 entries. Formatted, advancement-gated |
-| Book suppression | Working | `/clear` with NBT matching, 9 mod books suppressed |
+| Tier gating (AStages) | Implemented | Per-player tier gating for items, dimensions, and recipes |
+| Dimension scaling | Implemented | Mob stats scale per dimension |
+| Death penalty | Implemented | Custom on-death penalty |
+| Loot tables (LootJS) | Implemented | LootJS-driven custom loot tables |
+| Skill trees (Pufferfish) | Implemented | Skill-point investment trees |
+| Custom enchantments | Implemented | 24 custom enchantments |
+| Apotheosis affixes | Implemented | Custom gear affix system |
+| Difficulty engine (`iridescent_difficulty`) | Implemented | Time-based per-dimension mob scaling |
+| AStages derivative gating | Implemented | Diamond, netherite, and End derivatives gated behind progression |
+| Origin layer cleanup | Implemented | 3-prompt flow: Origin (13) → Race (11) → Class (10) |
+| Class respec | Implemented | Respec your class |
+| Equipment HP halving | Implemented | Glass-cannon: equipment max-HP bonuses halved |
+| Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat) |
+| Heracles quest tree | In progress | Quest tree driving the token economy |
+| Patchouli Codex | Working | 11 categories, 80 entries, advancement-gated |
+| Book suppression | Working | Duplicate mod guidebooks suppressed |
 | Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
-| Prestige/Ascension (Part IX) | Implemented | 5 ascension levels, mob scaling, stat bonuses, `!ascend` |
-| Loot table overhaul | Implemented | `lootjs_overhaul.js` — 35+ structure mods, boss drops, tier tokens |
-| Villager trade rework | Implemented | Forge VillagerTradesEvent — books removed, XP trades added |
-| Waystone recipes | Implemented | Boss-drop gated crafting, all variants |
-| Cross-mod recipe audit | Implemented | 30+ tier-breaking recipes blocked across 8 mods |
-| Mod config audit | Implemented | Apotheosis configs aligned to design (ScalingMobs + Champions configs done historically; those mods later removed — see Difficulty engine row) |
-| Config review pass | Implemented | Easy Anvils verified, Disenchanting/Table of XP/DarkOrb T2-gated, Azukaar's stat scaling zeroed, Icarus T3-gated, Aethersteel T4, Terramity guns/armor removed |
-| Tetra integration | Implemented | 27 modded metal materials via Paxi datapack (`icraft_tetra_materials`), T1-T4, including Blue Skies + Undergarden + F&A + theabyss (TATOS) metals |
-| Serene Seasons documentation | Implemented | 4-page Patchouli Codex entry for seasonal farming |
-| Mekanism balance overhaul | Implemented | Generator nerfs, 2x RF costs, Digital Miner recipe change, tool/armor removal |
-| Food system overhaul | Implemented | Hunger drain 2.5x, seed drops 5%, structure food reduction, spawn protection |
+| Prestige/Ascension (Part IX) | Implemented | 5 ascension levels with mob scaling and stat bonuses |
+| Loot table overhaul | Implemented | 35+ structure mods, boss drops, tier tokens |
+| Villager trade rework | Implemented | Books removed, XP trades added |
+| Waystone recipes | Implemented | Boss-drop gated crafting |
+| Cross-mod recipe audit | Implemented | Tier-breaking recipes blocked to preserve progression |
+| Mod config audit | Implemented | Mod balance configs aligned to design |
+| Config review pass | Implemented | Disenchanting, Table of XP, and DarkOrb T2-gated; Icarus T3; Aethersteel T4 |
+| Tetra integration | Implemented | 27 modded metal materials (T1–T4) |
+| Serene Seasons documentation | Implemented | Patchouli Codex entry for seasonal farming |
+| Mekanism balance overhaul | Implemented | Generator nerfs, 2× RF costs, tool/armor removal |
+| Food system overhaul | Implemented | Faster hunger drain, reduced structure food, spawn protection |
 | Farmer's Delight cooking conversion | Implemented | 70 recipes converted to Farmer's Delight cooking |
-| Ad Astra integration | In progress | 5 planets, post-T4 endgame, MekaSuit Mk2, planetary extraction, space enchantments |
-| Blue Skies balance pass | Implemented | Dusk Arc removed, Shadow Armor removed, Runic Arc boss-drop only, 3 materials nerfed to T2 + Tetra integration |
-| Undergarden balance pass | Implemented | Tetra stat overrides for 4 metals (27 materials total) |
+| Ad Astra integration | In progress | 5 planets, post-T4 endgame, planetary extraction, space enchantments |
+| Blue Skies balance pass | Implemented | Materials rebalanced to T2 + Tetra integration |
+| Undergarden balance pass | Implemented | Tetra stat overrides for 4 metals |
 | Aether dimension mechanics | Implemented | Thin air, vertigo, updrafts |
-| The Abyss (TATOS) dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura, void whispers — fire in `theabyss:the_abyss` (TATOS mod, installed; dim gated T3). Deeper Darker's Otherside keeps its own genuine flavor (darkness empowerment + hexing). |
-| End overhaul | Implemented | Dragon Exploration Gate, End Compass → End Bastion unlock (replaces Eye of Ender), 9 advancement overrides, 5 End Apotheosis affixes, entity ID fixes, Moog's End Structure loot |
-| TF portal activator | Implemented | Changed from diamond to T1 boss token |
-| Custom Abyss-themed curio rings | Implemented | 8 `kubejs:ring_*` curios as a curated T3 chain replacing theabyss (TATOS)'s 30 stock rings (stock rings + arcane workbench stripped in `recipe_audit.js` §K); drops gated to TATOS structure chests + Abyss bosses via `abyss_boss_loot.js` |
-| Server distribution | Implemented | Unified `iridescentserver.bat` (auto-install + launch + crash logging). Strip script, force-skip list, mod channel mismatch tracker (5 mods resolved). |
-| Vanilla Origins overhaul | Implemented | No lethal environmental effects, food preferences not restrictions. All 9 origins rebalanced. No Mundane, no Human. |
-| Race layer rebalance | Implemented | Elf/Dwarf/Orc/Halfling/Faefolk/Revenant stat adjustments, bug fixes, functional effects |
-| Origins expansion | Implemented | 4 new races (Demi-God, Ryu, Fallen Angel, Kirin) — 11 races total. 4 custom origins (Witch of Ink, Artificial Construct, Witherborn, Slimebodied) — 13 origins total. |
-| Class descriptions update | Implemented | All 10 class descriptions updated to match actual power implementations |
-| Codex expansion | Implemented | "Choosing Your Build" guide, "Origins Guide", updated Champions/Enchantments/Affixes/class entries |
-| Tectonic terrain tuning | Implemented | vertical_scale 1.155→0.8 (-31%), ridge_scale reduced |
-| Improved Mobs rebalance | Superseded | 3-day grace, caps halved, diamond→iron mob tools. Improved Mobs removed 2026-05-03; the iron-tier cap survives in `scaling/mob_equipment.js`. |
+| The Abyss (TATOS) dimension mechanics | Implemented | Oppressive darkness, corruption, fear aura, void whispers |
+| End overhaul | Implemented | Dragon Exploration Gate, End Bastion unlock, End-themed loot and affixes |
+| TF portal activator | Implemented | Twilight Forest portal activated with a T1 boss token |
+| Custom Abyss-themed curio rings | Implemented | 8 curio rings as a curated T3 chain |
+| Server distribution | Implemented | Dedicated server distribution with a unified launcher |
+| Vanilla Origins overhaul | Implemented | All 9 origins rebalanced; no lethal environmental effects; food preferences, not restrictions |
+| Race layer rebalance | Implemented | Race stat adjustments and functional effects |
+| Origins expansion | Implemented | 4 new races (Demi-God, Ryu, Fallen Angel, Kirin) — 11 total; 4 custom origins (Witch of Ink, Artificial Construct, Witherborn, Slimebodied) — 13 total |
+| Class descriptions update | Implemented | Class descriptions match in-game power |
+| Codex expansion | Implemented | Build guide, Origins guide, and updated entries |
+| Tectonic terrain tuning | Implemented | Flatter vertical terrain |
 | Early magic access | Implemented | Iron's Spells scrolls + copper spell book in Overworld chests |
-| Walkable Mekanism cables | Implemented | Coremod v1.0.1, LocalVariableTable fix |
-| HDPE/rubber pipeline | Implemented | HDPE Circuit Board, alternative Mekanism recipes, IF latex/rubber rework |
-| LootJS clutter/food tuning | Implemented | Horse armor/spider eyes removed, food reduction 70%→90% |
-| Apotheosis affix tuning | Implemented | Dimension key prefixes fixed, Overworld generation 50%→25% |
-| Rechiseled removed | Implemented | SuperMartijn642 Core Lib load order incompatibility |
-| Connected Glass removed | Implemented | Depends on SuperMartijn642 libs |
-| Trash Cans removed | Implemented | Depends on SuperMartijn642 libs |
-| Pretty Rain removed | Implemented | Cloth Config incompatibility |
-| Duplicate origin definitions fixed | Implemented | KubeJS/data had duplicate origin JSONs causing malformed class prompt on server |
-| Codex book suppression fix | Implemented | botania:lexicon misclassified as Patchouli book, caused login timeout on server |
-| Relics curation | Implemented | 15 Relics removed, 3 special drops (Ender's Hand, Space Dissector, Shadow Glaive) |
-| Village loot overhaul | Implemented | Gear removed, T1 materials added, food capped at 1 |
-| Mod side labels fixed | Implemented | 30 mods corrected from `side='server'` to `side='both'` (pig rift shard root cause) |
-| Improved Mobs equipment disabled | Superseded | Equipment Chance = 0 (moot — Improved Mobs removed 2026-05-03; mob gear now via `scaling/mob_equipment.js`) |
-| Loot Integrations removed | Implemented | Redundant mod caused item leakage |
-| Client installer rework | Implemented | Switched to repo zip download for reliable binary handling |
-| Resource pack distribution | Implemented | Resource packs now distributed via Paxi |
-| Datapack source reorganization | Implemented | `global_packs/required_data` moved to `datapack_sources` to prevent double-loading |
-| Epic RPG Class Artifacts integration | Implemented | 14 class-themed artifacts + awakening variants + 25 relics. Drops-only (no crafting). T2/T4 AStages gating. Mod's elite system disabled in favor of Progressive Difficulty |
-
----
-
-## Quick Reference
-
-| Resource | Location |
-|----------|----------|
-| Game Instance | `C:\Users\silvariazemaitis\AppData\Roaming\PrismLauncher\instances\IridescentCraft\minecraft\` |
-| Linux Dev | `/root/IridescentCraft/minecraft/` |
-| GitHub Repo | synced via GitHub Desktop |
-| Design Docs (original) | `designdocs/master_design_document IridescentCraft.docx` |
-| KubeJS Logs | `logs/kubejs/server.log` |
-| Game Logs | `logs/latest.log` |
+| Walkable Mekanism cables | Implemented | Mekanism cables are walkable |
+| HDPE/rubber pipeline | Implemented | HDPE Circuit Board + alternative Mekanism rubber recipes |
+| LootJS clutter/food tuning | Implemented | Clutter loot removed, food drops reduced |
+| Apotheosis affix tuning | Implemented | Overworld affix generation reduced |
+| Relics curation | Implemented | Curated Relics pool; 3 special boss drops: Ender's Hand, Space Dissector, Shadow Glaive |
+| Village loot overhaul | Implemented | Gear removed, T1 materials added, food capped |
+| Epic RPG Class Artifacts integration | Implemented | 14 class artifacts + awakening variants + 25 relics; drops only, T2/T4 gated |

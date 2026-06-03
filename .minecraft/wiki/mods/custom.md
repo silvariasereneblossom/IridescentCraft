@@ -172,5 +172,4 @@ If the jar is content-mostly (assets/data/lang) without compiled changes, jar su
 ## Related
 
 - [Iridescent Modular Spells design doc](../design/iridescent-modular-spells.md)
-- [Game mechanics deep-dive](../mechanics/game-mechanics.md) — internal-only
 - [Mod overview](overview.md)
