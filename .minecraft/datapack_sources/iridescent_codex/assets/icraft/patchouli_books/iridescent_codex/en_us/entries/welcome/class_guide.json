@@ -7,7 +7,7 @@
     {
       "type": "patchouli:text",
       "title": "The 3-Layer System",
-      "text": "Your character has three layers of identity, chosen in order:$(br2)$(bold)1. Origin$() — What species you are. Flavor powers like flight, wall-climbing, or fire immunity. Chosen from Origins++ (148 options).$(br2)$(bold)2. Race$() — What people you belong to. Stat modifiers and thematic traits. 7 options: Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant. $(bold)Permanent.$()$(br2)$(bold)3. Class$() — What you do in combat. 10 options. Respec-able via Class Altar."
+      "text": "Your character has three layers of identity, chosen in order:$(br2)$(bold)1. Origin$() — What species you are. Flavor powers like flight, wall-climbing, or fire immunity. Chosen from 13 origins (9 reworked vanilla + 4 custom).$(br2)$(bold)2. Race$() — What people you belong to. Stat modifiers and thematic traits. 11 options: Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin. $(bold)Permanent.$()$(br2)$(bold)3. Class$() — What you do in combat. 10 options. Respec-able via Class Altar."
     },
     {
       "type": "patchouli:text",

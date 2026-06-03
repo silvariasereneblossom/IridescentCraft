@@ -10,11 +10,11 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Your first mana system. Manasteel is the T1 magic material ceiling. Botania's Orechid has been modified to produce Osmium and Diamond Ore (gated by available mana cost).$(br2)$(bold)Key IridescentCraft interactions:$() Botania mana tools are affected by Faefolk's Nature Magic racial (+15% effectiveness). The Lexica Botania is the in-mod documentation \u2014 read it."
+      "text": "$(bold)Role in the pack:$() Your first mana system. Manasteel is the T1 magic material ceiling. Botania's Orechid is datapack-restricted so it cannot tier-skip: Diamond, Osmium, and Ancient Debris are disabled, so it yields only lower-tier ores.$(br2)$(bold)Key IridescentCraft interactions:$() Botania mana tools are affected by Faefolk's Nature Magic racial (+15% effectiveness). The Lexica Botania is the in-mod documentation \u2014 read it."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack \u2014 crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1\u2013T2 ceiling.$(br2)$(bold)Gaia Guardian:$() Summoned boss, T3 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. Scales progressively."
+      "text": "$(bold)Tier gating:$() Terrasteel and Elementium are T3 materials in this pack \u2014 crafting them requires T3 to be unlocked. Manasteel and Mana Pearl are the T1\u2013T2 ceiling.$(br2)$(bold)Gaia Guardian:$() Summoned Botania capstone, T4 content. Drops Magiblade unique weapon (20%) and Gaia Spirit Fragments. Scales progressively."
     },
     {
       "type": "patchouli:crafting",

@@ -7,12 +7,12 @@
     {
       "type": "patchouli:text",
       "title": "Your Origin",
-      "text": "$(thing)IridescentCraft$() features 11 unique origins, each with distinct powers and tradeoffs. Key principles:$(br2)$(item)No origin blocks any food type$() — dietary traits are preferences, not restrictions.$(br2)$(item)Environmental effects cause discomfort$(), not death.$(br2)$(item)Phantoms never truly die$() — they enter Spectral Collapse instead."
+      "text": "$(thing)IridescentCraft$() features 13 unique origins, each with distinct powers and tradeoffs. Key principles:$(br2)$(item)No origin blocks any food type$() — dietary traits are preferences, not restrictions.$(br2)$(item)Environmental effects cause discomfort$(), not death.$(br2)$(item)Phantoms never truly die$() — they enter Spectral Collapse instead."
     },
     {
       "type": "patchouli:text",
       "title": "Origins (1/3)",
-      "text": "$(bold)Arachnid$() — Scale walls, spin webs. Meat preference.$(br2)$(bold)Avian$() — Sky Affinity grants speed and agility at high altitudes. Plant preference.$(br2)$(bold)Blazeborn$() — Fire/lava immune. Nether Affinity boosts damage. Water slows you.$(br2)$(bold)Enderian$() — Teleport on cooldown. Ender Shift: +15% damage for 10s after teleporting. Water drains strength."
+      "text": "$(bold)Arachnid$() — Scale walls, spin webs. Meat preference.$(br2)$(bold)Avian$() — Sky Affinity grants speed and agility at high altitudes. Plant preference.$(br2)$(bold)Blazeborn$() — Fire/lava immune. Nether Affinity boosts damage. Water slows you.$(br2)$(bold)Enderian$() — Teleport on cooldown. Ender Shift: +15% damage for 10s after teleporting. Water drains strength.$(br2)$(bold)Elytrian$() — Elytra flight + launch ability. The only origin with true flight."
     },
     {
       "type": "patchouli:text",
@@ -22,7 +22,7 @@
     {
       "type": "patchouli:text",
       "title": "Origins (3/3)",
-      "text": "$(bold)Mundane$() — No powers or weaknesses. Let Race and Class define you.$(br2)$(bold)Witch of Ink$() — Pure passive hyperscaler. -20% HP, half food, fire weakness. Boss kills scale your TOTAL damage (melee + magic). 200 kills unlocks Blessing of Penthesilea. $(thing)/icraft witch_status$()$(br2)$(bold)Artificial Construct$() — Iron golem. Eat iron ingots/blocks for food + Regen III. 5-level forge ladder caps at L5 + Iron Apotheosis capstone. $(thing)/icraft construct_status$()"
+      "text": "$(bold)Witch of Ink$() — Passive hyperscaler. -20% HP, half food, fire weakness. Boss kills raise your TOTAL damage (melee + magic); 200 kills unlock Blessing of Penthesilea. $(thing)/icraft witch_status$()$(br2)$(bold)Artificial Construct$() — Iron golem. Eat iron for food + Regen III; a 5-level forge ladder + Iron Apotheosis capstone. $(thing)/icraft construct_status$()$(br2)$(bold)Witherborn$() — Undead DOT melee. Wither-on-hit, with a hunger-based damage tradeoff.$(br2)$(bold)Slimebodied$() — Food-management tank. Bonus food efficiency; satiety grants damage reduction."
     },
     {
       "type": "patchouli:text",

@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Tier 3 bosses are the most varied in the pack. Meet Your Fight superbosses, Cataclysm ultra-bosses, the Cardinal Sins ladder, vanilla Wither and Warden, and the Botania Gaia Guardian all live here. Full diamond gear is the minimum; Terrasteel or Enderium recommended.$(br2)The Cardinal Sins end in $(bold)Lucifer$(), the Tier 3 combat capstone: defeating him — or clearing 100% of the Tier 3 boss rush — opens Tier 4."
+      "text": "Tier 3 bosses are the most varied in the pack. Meet Your Fight superbosses, Cataclysm ultra-bosses, the Cardinal Sins ladder, vanilla Wither and Warden all live here. Full diamond gear is the minimum; Terrasteel or Enderium recommended.$(br2)The Cardinal Sins end in $(bold)Lucifer$(), the Tier 3 combat capstone: defeating him — or clearing 100% of the Tier 3 boss rush — opens Tier 4."
     },
     {
       "type": "patchouli:text",
@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Cataclysm Bosses$()$(br)Netherite Monstrosity, Ignis, The Harbinger, The Leviathan, Maledictus \u2014 5 ultra-bosses in massive Cataclysm structures. Each drops a unique weapon and boss material. The hardest T3 content.$(br2)$(bold)Warden$() (Vanilla)$(br)Deep Dark. Drops: $(l:icraft:bosses/unique_weapons)Stormbringer$(/l) (20%).$(br2)$(bold)Botania Gaia Guardian$() \u2014 Summoned. Drops: $(l:icraft:bosses/unique_weapons)Magiblade$(/l) (20%), Gaia Spirit Fragment. Scales progressively."
+      "text": "$(bold)Cataclysm Bosses$()$(br)Netherite Monstrosity, Ignis, The Harbinger, The Leviathan, Maledictus \u2014 5 ultra-bosses in massive Cataclysm structures. Each drops a unique weapon and boss material. The hardest T3 content.$(br2)$(bold)Warden$() (Vanilla)$(br)Deep Dark. Drops: $(l:icraft:bosses/unique_weapons)Stormbringer$(/l) (20%)."
     }
   ],
   "advancement": "icraft:stage_tier_3"

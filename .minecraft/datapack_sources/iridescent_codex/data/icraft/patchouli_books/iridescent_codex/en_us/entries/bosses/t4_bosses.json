@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Ender Dragon$() \u2014 Drops: $(l:icraft:bosses/unique_weapons)Waking Lichblade$(/l) (25% \u2014 highest in the pack), Dragon Heart, Dragon Scale. Scales progressively.$(br2)$(bold)Ultimate Bosses: Sorcerer$() \u2014 Drops: $(l:icraft:bosses/unique_weapons)Mjolnir$(/l) (20%), tokens.$(br2)$(bold)Ultimate Bosses: Storm$() \u2014 Drops: $(l:icraft:bosses/unique_weapons)Storm's Edge$(/l) (20%), tokens."
+      "text": "$(bold)Ender Dragon$() \u2014 Drops: $(l:icraft:bosses/unique_weapons)Waking Lichblade$(/l) (25% \u2014 highest in the pack), Dragon Heart, Dragon Scale. Scales progressively.$(br2)$(bold)Ultimate Bosses: Sorcerer$() \u2014 Drops: $(l:icraft:bosses/unique_weapons)Mjolnir$(/l) (20%), tokens.$(br2)$(bold)Ultimate Bosses: Storm$() \u2014 Drops: $(l:icraft:bosses/unique_weapons)Storm's Edge$(/l) (20%), tokens.$(br2)$(bold)Botania Gaia Guardian$() \u2014 Summoned Botania capstone. Drops: $(l:icraft:bosses/unique_weapons)Magiblade$(/l) (20%), Gaia Spirit Fragment. Scales progressively."
     },
     {
       "type": "patchouli:text",
