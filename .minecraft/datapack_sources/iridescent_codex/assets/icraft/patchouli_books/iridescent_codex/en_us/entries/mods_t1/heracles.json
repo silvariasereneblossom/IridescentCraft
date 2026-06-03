@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)How it fits:$() Heracles works alongside the Iridescent Codex token economy. The $(bold)Codex$() decides $(italic)when$() you advance a tier (see $(l:icraft:progression/tier_gates)How You Advance$()); the $(bold)quests$() suggest good ways to get there and track your boss-rush progress.$(br2)$(bold)Not a gate:$() you can advance purely through the Codex without touching a quest. Quests are guidance and bonus loot — never mandatory."
+      "text": "$(bold)How it fits:$() Heracles works alongside the Iridescent Codex token economy. The $(bold)Codex$() decides $(italic)when$() you advance a tier (see $(l:icraft:progression/tier_gates)How You Advance$(/l)); the $(bold)quests$() suggest good ways to get there and track your boss-rush progress.$(br2)$(bold)Not a gate:$() you can advance purely through the Codex without touching a quest. Quests are guidance and bonus loot — never mandatory."
     },
     {
       "type": "patchouli:text",

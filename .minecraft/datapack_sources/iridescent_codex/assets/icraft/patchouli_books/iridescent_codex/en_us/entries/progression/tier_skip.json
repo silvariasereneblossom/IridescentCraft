@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Spoils vs. Currency$()$(br2)Two reward types, easy to confuse:$(br2)$(li)$(bold)Progression tokens$() advance your tier (see $(l:icraft:progression/tier_gates)How You Advance$()).$(li)$(bold)Spoils$() — relics, boss materials, Simply Swords uniques, gems — are loot. They make you stronger, but they do $(bold)not$() advance tiers and cannot be spent as tokens.$(br2)Hunt bosses for spoils because the gear is the best in the pack — not because you need them to progress."
+      "text": "$(bold)Spoils vs. Currency$()$(br2)Two reward types, easy to confuse:$(br2)$(li)$(bold)Progression tokens$() advance your tier (see $(l:icraft:progression/tier_gates)How You Advance$(/l)).$(li)$(bold)Spoils$() — relics, boss materials, Simply Swords uniques, gems — are loot. They make you stronger, but they do $(bold)not$() advance tiers and cannot be spent as tokens.$(br2)Hunt bosses for spoils because the gear is the best in the pack — not because you need them to progress."
     },
     {
       "type": "patchouli:text",

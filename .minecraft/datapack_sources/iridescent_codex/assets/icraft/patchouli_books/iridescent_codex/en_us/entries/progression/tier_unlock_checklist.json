@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every tier offers the same two routes (see $(l:icraft:progression/tier_gates)How You Advance$()): bank the $(bold)token threshold$(), or clear the $(bold)boss-rush share$(). This entry lists the targets tier by tier.$(br2)You only need to hit $(bold)one$() of the two. Check your standing any time with $(bold)/icraft codex balance$()."
+      "text": "Every tier offers the same two routes (see $(l:icraft:progression/tier_gates)How You Advance$(/l)): bank the $(bold)token threshold$(), or clear the $(bold)boss-rush share$(). This entry lists the targets tier by tier.$(br2)You only need to hit $(bold)one$() of the two. Check your standing any time with $(bold)/icraft codex balance$()."
     },
     {
       "type": "patchouli:text",
@@ -26,7 +26,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 4 — the finale",
-      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)The post-game (the Ad Astra planets) opens when you defeat the $(t4)Ender Dragon$(). Reaching the End first requires the Deep-Aether $(bold)End Compass$() — see $(l:icraft:progression/dimensions)Dimensional Progression$()."
+      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)The post-game (the Ad Astra planets) opens when you defeat the $(t4)Ender Dragon$(). Reaching the End first requires the Deep-Aether $(bold)End Compass$() — see $(l:icraft:progression/dimensions)Dimensional Progression$(/l)."
     }
   ]
 }

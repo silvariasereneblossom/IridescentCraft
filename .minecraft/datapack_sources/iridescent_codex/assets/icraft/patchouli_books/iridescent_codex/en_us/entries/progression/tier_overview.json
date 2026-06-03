@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "IridescentCraft is structured around four tiers of progression. Each tier unlocks new dimensions, materials, crafting systems, and magic. Tiers are $(bold)per-player$() — each person on a server advances independently.$(br2)You advance by feeding the $(bold)Iridescent Codex$() token economy — see $(l:icraft:progression/tier_gates)How You Advance$(/l). A boss or dimension's tier is set by $(italic)where it lives$(), not how hard it hits."
+      "text": "IridescentCraft is structured around four tiers of progression. Each tier unlocks new dimensions, materials, crafting systems, and magic. Tiers are $(bold)per-player$() — each person on a server advances independently.$(br2)You advance by feeding the $(bold)Iridescent Codex$() token economy — see $(l:icraft:progression/tier_gates)How You Advance$(/l). A boss's tier comes from $(italic)where it generates$(), not how hard it hits."
     },
     {
       "type": "patchouli:text",

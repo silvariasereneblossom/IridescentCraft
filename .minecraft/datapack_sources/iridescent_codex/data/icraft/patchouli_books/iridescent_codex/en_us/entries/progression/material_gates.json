@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Materials Are Tokens$()$(br2)The Engineering and Magic lanes turn your production into progression. Submit it to the Codex (see $(l:icraft:progression/tier_gates)How You Advance$()).$(br2)$(li)$(bold)Engineering:$() bulk metals plus milestone machines — Create at T1, Thermal at T2, Mekanism at T3.$(li)$(bold)Magic:$() cultivation reagents plus apparatus — Botania at T1, Ars Nouveau at T2, advanced rituals at T3.$(br2)Each material is $(bold)capped$(), so a pure builder or cultivator reaches the threshold by working the whole tier's list, not by spamming one resource."
+      "text": "$(bold)Materials Are Tokens$()$(br2)The Engineering and Magic lanes turn your production into progression. Submit it to the Codex (see $(l:icraft:progression/tier_gates)How You Advance$(/l)).$(br2)$(li)$(bold)Engineering:$() bulk metals plus milestone machines — Create at T1, Thermal at T2, Mekanism at T3.$(li)$(bold)Magic:$() cultivation reagents plus apparatus — Botania at T1, Ars Nouveau at T2, advanced rituals at T3.$(br2)Each material is $(bold)capped$(), so a pure builder or cultivator reaches the threshold by working the whole tier's list, not by spamming one resource."
     },
     {
       "type": "patchouli:text",
@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Tier 3 Materials$()$(br2)Diamond (full access) · Terrasteel · Elementium · Enderium · Osmium · Refined Obsidian$(br2)$(bold)Tier 4 Materials$()$(br2)Netherite · Gaia Ingots · Dragon Scales/Hearts · Antimatter · Atomic Alloy$(br2)$(bold)Boss materials$() are unique crafting components dropped by specific bosses. They are $(italic)spoils$() — they power high-end recipes, but they are never progression currency. See $(l:icraft:progression/tier_skip)Spoils Aren't Currency$()."
+      "text": "$(bold)Tier 3 Materials$()$(br2)Diamond (full access) · Terrasteel · Elementium · Enderium · Osmium · Refined Obsidian$(br2)$(bold)Tier 4 Materials$()$(br2)Netherite · Gaia Ingots · Dragon Scales/Hearts · Antimatter · Atomic Alloy$(br2)$(bold)Boss materials$() are unique crafting components dropped by specific bosses. They are $(italic)spoils$() — they power high-end recipes, but they are never progression currency. See $(l:icraft:progression/tier_skip)Spoils Aren't Currency$(/l)."
     }
   ]
 }
