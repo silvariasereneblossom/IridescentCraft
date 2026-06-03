@@ -33,6 +33,18 @@ if not exist "%~dp0.icraft_server" (
     set "SERVER_DIR=%~dp0IridescentCraft Dedicated Server"
     if not exist "!SERVER_DIR!" mkdir "!SERVER_DIR!"
     copy /y "%~f0" "!SERVER_DIR!\iridescentserver.bat" >nul
+    REM Seed the launcher into the run folder from the canonical
+    REM server_distribution copy. CI commits icraft-gui.exe to
+    REM server_distribution\ ONLY; this places it one level down where the
+    REM launcher actually runs, with no second committed copy. Steady-state
+    REM refresh is the GUI's own "Update Launcher"/Sync (pulls that same
+    REM server_distribution\icraft-gui.exe) and Phase -1 sync_from_repo /MIR.
+    REM Mesa OpenGL DLLs are gitignored + fetched per-install
+    REM (fetch-mesa.ps1 -Dest), carried here only if already alongside.
+    if exist "%~dp0icraft-gui.exe"     copy /y "%~dp0icraft-gui.exe"     "!SERVER_DIR!\icraft-gui.exe" >nul
+    if exist "%~dp0icraft.exe"         copy /y "%~dp0icraft.exe"         "!SERVER_DIR!\icraft.exe" >nul
+    if exist "%~dp0opengl32.dll"       copy /y "%~dp0opengl32.dll"       "!SERVER_DIR!\opengl32.dll" >nul
+    if exist "%~dp0libgallium_wgl.dll" copy /y "%~dp0libgallium_wgl.dll" "!SERVER_DIR!\libgallium_wgl.dll" >nul
     echo. > "!SERVER_DIR!\.icraft_server"
     echo [SETUP] Created server directory. Launching from there...
     start "" "!SERVER_DIR!\iridescentserver.bat"

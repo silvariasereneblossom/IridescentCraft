@@ -34,6 +34,12 @@ if [ ! -f "$SCRIPT_DIR/.icraft_server" ]; then
     mkdir -p "$SERVER_DIR"
     cp -f "$0" "$SERVER_DIR/iridescentserver.sh"
     chmod +x "$SERVER_DIR/iridescentserver.sh"
+    # Seed the launcher into the run folder from the canonical
+    # server_distribution copy (parity with the .bat). Linux ships the CLI
+    # (icraft); icraft-gui is Windows-only but carried if present. No second
+    # committed copy -- the canonical binary stays in server_distribution.
+    [ -f "$SCRIPT_DIR/icraft-gui" ] && cp -f "$SCRIPT_DIR/icraft-gui" "$SERVER_DIR/icraft-gui"
+    [ -f "$SCRIPT_DIR/icraft" ]     && cp -f "$SCRIPT_DIR/icraft"     "$SERVER_DIR/icraft"
     touch "$SERVER_DIR/.icraft_server"
     echo "[SETUP] Created server directory: $SERVER_DIR"
     echo "[SETUP] Launching from there..."

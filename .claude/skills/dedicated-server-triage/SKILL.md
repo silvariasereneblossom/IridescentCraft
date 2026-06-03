@@ -29,7 +29,7 @@ The dev repo's `.minecraft\server_distribution\` is the **source**. The live ser
 
 - Repo source: `<repo>\.minecraft\server_distribution\` (call `<repo>` = `C:\Users\silvariazemaitis\IridescentcraftDev\IridescentCraft`).
 - Live runtime (server box, via Z: share): `Z:\Users\silvariazemaitis\Desktop\IridescentCraft Dedicated Server\` (mods at `…\mods`).
-- Launcher: `iridescentserver.bat` / `iridescentserver.sh`; bare Forge launch `run.bat` / `run.sh`. Service: NSSM `IridescentMC`, env flag `ICRAFT_SERVICE_MODE=1`, force flag `iridescentserver.bat /force`.
+- Launcher: `iridescentserver.bat` / `iridescentserver.sh`; bare Forge launch `run.bat` / `run.sh`. Service: NSSM `IridescentMC`, env flag `ICRAFT_SERVICE_MODE=1`, force flag `iridescentserver.bat /force`. Experimental GUI launcher `icraft-gui.exe` runs from the `IridescentCraft Dedicated Server\` runtime subfolder (Mesa OpenGL DLLs alongside on GPU-less VMs); it self-updates via its **Sync** / **Update Launcher** buttons, which pull the canonical `server_distribution\icraft-gui.exe`.
 - Logs: `logs\latest.log`, `logs\debug.log`. Crashes: `crash-reports\crash-*.txt` (Forge). Post-exit snapshot: `crash-<date>_<time>.log`, pushed by `push_crash_logs.bat` to `<repo>\.minecraft\TesterLogs\Server Logs\`.
 - Mod hygiene: `strip_client_mods.bat`/`.sh`, `cleanup_stale_jars.ps1`, `update_mods.ps1`, `client_only_mods.txt`, `custom_jars_manifest.json`.
 - Sync: `sync_from_repo.bat`/`.sh`, `phase0_sync.ps1`, marker `.icraft_last_sha`.
@@ -70,6 +70,7 @@ First answer: **is the service in service mode?** (NSSM `IridescentMC` with `ICR
 - **`side='client'` alone** — does not keep a mod off the server; its `.pw.toml` must be absent from `server_distribution\mods\.index\`.
 - **Reading a stale `latest.log`** — the crash you want is the newest `crash-reports\crash-*.txt`; `latest.log` may have rolled past it.
 - **Bytecode-patched mods** (Patchouli, ars_nouveau) need the launcher's `-noverify` JVM flag — if you hand-roll a launch, keep it.
+- **A rebuilt `icraft-gui.exe` reaching only `server_distribution\`** — the GUI launcher RUNS from the `IridescentCraft Dedicated Server\` runtime subfolder, but CI commits the exe to `server_distribution\icraft-gui.exe` ONLY. It's delivered down into the subfolder by the GUI's own Sync/Update-Launcher (pulls that same canonical copy) + the `iridescentserver.bat` bootstrap seed — do NOT hand-commit a second copy into the subfolder (CI never refreshes it → goes stale, and it misdirects the GUI's own self-update into a nested/stale path).
 
 ## Triage commands (paste-ready, run on the server box)
 
