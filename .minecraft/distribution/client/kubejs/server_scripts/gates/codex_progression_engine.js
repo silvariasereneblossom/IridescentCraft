@@ -225,6 +225,26 @@ const CODEX_CONVERSIONS = {
   'botania:conjuration_catalyst':       { tier: 3, value: 20, per: 1, cap: 2 },    // → 40   (Conjuration Catalyst — re-tiered T1→T3, Alfheim chain)
 }
 
+// ---- Lane classification (Engineering vs Magic material lanes) -------------
+// CODEX_CONVERSIONS carries no explicit lane field — lane is implicit in the
+// item's namespace. Engineering = vanilla bulk metals + Create/Thermal/Mekanism;
+// Magic = Botania / Ars Nouveau / Forbidden Arcanus / Occultism. Used by the
+// Heracles per-lane "Submit" buttons (`/icraft codex submit <lane>`) and the
+// lane item tags below. (Exploration + Combat are NOT material-submission lanes —
+// they mint via kills/dimensions/loot in codex_exploration_kills.js /
+// codex_exploration_drops.js / codex_boss_rush.js, so they have no Submit button.)
+const CODEX_LANES = {
+  engineering: ['minecraft', 'create', 'thermal', 'mekanism', 'mekanismgenerators'],
+  magic:       ['botania', 'ars_nouveau', 'forbidden_arcanus', 'occultism'],
+}
+function codexLaneOf(itemId) {
+  const ns = itemId.split(':')[0]
+  for (const lane in CODEX_LANES) {
+    if (CODEX_LANES[lane].indexOf(ns) !== -1) return lane
+  }
+  return null
+}
+
 // persistentData key for a resource's lifetime-submitted count (item units).
 // Sanitise the item ID into an NBT-safe key fragment. For CONTEXTUAL entries a
 // `tier` suffix is appended so each item tracks an INDEPENDENT lifetime count
@@ -248,7 +268,7 @@ function codexCurrentTier(player) {
 // =============================================================================
 // SUBMIT — scan inventory, convert eligible materials, consume, report.
 // =============================================================================
-function codexSubmit(player) {
+function codexSubmit(player, lane) {
   const pdata = player.persistentData
   const inv = player.inventory
   const size = inv.size
@@ -269,6 +289,11 @@ function codexSubmit(player) {
   // then consume whole conversion units up to the remaining cap.
   for (const itemId in CODEX_CONVERSIONS) {
     const conv = CODEX_CONVERSIONS[itemId]
+
+    // Lane filter — the Heracles per-lane Submit buttons fire `submit <lane>`,
+    // so only that lane's materials convert. Bare `submit` (lane undefined)
+    // converts everything, exactly as before.
+    if (lane && codexLaneOf(itemId) !== lane) continue
 
     // Resolve the target tier, cap, and per-tier cap key for this entry.
     let targetTier, cap, capKey
@@ -345,7 +370,7 @@ function codexSubmit(player) {
     return 0
   }
 
-  player.tell(Text.gold('═══ Codex Submission ═══'))
+  player.tell(Text.gold('═══ Codex Submission' + (lane ? ' — ' + lane.charAt(0).toUpperCase() + lane.slice(1) : '') + ' ═══'))
   lines.forEach(l => {
     player.tell(Text.gray('  ' + l.consumed + '× ').append(Text.white(l.name))
       .append(Text.gray(' → ')).append(Text.aqua('+' + l.tokens + ' T' + l.tier + ' token' + (l.tokens === 1 ? '' : 's'))))
@@ -483,6 +508,20 @@ function codexGrantTier(player, tier, triggerName) {
 // Merges into the existing /icraft literal (despawn, mana_debug, …) — Brigadier
 // unions literals across commandRegistry calls.
 // =============================================================================
+// Shared player-extraction + submit wrapper for the submit command variants.
+function codexCmdSubmit(ctx, lane) {
+  let sp
+  try { sp = ctx.source.getPlayerOrException() } catch (e) {
+    ctx.source.sendFailure(Text.of('Must be run as a player'))
+    return 0
+  }
+  try { return codexSubmit(sp, lane) } catch (e) {
+    console.warn('[Codex] submit' + (lane ? ' ' + lane : '') + ' threw for ' + sp.username + ': ' + e)
+    sp.tell(Text.red('[Codex] submit failed: ' + e))
+    return 0
+  }
+}
+
 ServerEvents.commandRegistry(event => {
   const { commands: Commands } = event
 
@@ -491,18 +530,13 @@ ServerEvents.commandRegistry(event => {
       .then(Commands.literal('codex')
         .then(Commands.literal('submit')
           .requires(src => src.hasPermission(0))
-          .executes(ctx => {
-            let sp
-            try { sp = ctx.source.getPlayerOrException() } catch (e) {
-              ctx.source.sendFailure(Text.of('Must be run as a player'))
-              return 0
-            }
-            try { return codexSubmit(sp) } catch (e) {
-              console.warn('[Codex] submit threw for ' + sp.username + ': ' + e)
-              sp.tell(Text.red('[Codex] submit failed: ' + e))
-              return 0
-            }
-          })
+          .executes(ctx => codexCmdSubmit(ctx, null))
+          .then(Commands.literal('engineering')
+            .requires(src => src.hasPermission(0))
+            .executes(ctx => codexCmdSubmit(ctx, 'engineering')))
+          .then(Commands.literal('magic')
+            .requires(src => src.hasPermission(0))
+            .executes(ctx => codexCmdSubmit(ctx, 'magic')))
         )
         .then(Commands.literal('balance')
           .requires(src => src.hasPermission(0))
@@ -523,7 +557,21 @@ ServerEvents.commandRegistry(event => {
   )
 })
 
-console.log('[IridescentCraft] Codex progression engine loaded (/icraft codex submit | balance)')
+// ---- Lane item tags (for the Heracles per-lane "Submit" buttons) -----------
+// #icraft:codex_engineering / #icraft:codex_magic = every submittable material
+// in that lane, derived from CODEX_CONVERSIONS so the tag can't drift from the
+// conversion table. A Heracles MANUAL "Submit" task gates on these tags so the
+// button lights up whenever the player carries ANY of that lane's materials.
+ServerEvents.tags('item', event => {
+  for (const itemId in CODEX_CONVERSIONS) {
+    const lane = codexLaneOf(itemId)
+    if (lane) {
+      try { event.add('icraft:codex_' + lane, itemId) } catch (e) {}
+    }
+  }
+})
+
+console.log('[IridescentCraft] Codex progression engine loaded (/icraft codex submit [engineering|magic] | balance)')
 console.log('  Thresholds: T1→T2 500 | T2→T3 1000 | T3→T4 2000 (T4 terminal = Ender Dragon)')
 console.log('  Conversion entries (Engineering + Magic): ' + Object.keys(CODEX_CONVERSIONS).length)
 console.log('  Bulk metals are CONTEXTUAL — mint the player\'s current transition tier (per-tier caps)')
