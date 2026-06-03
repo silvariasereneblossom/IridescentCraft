@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/heart_of_the_sea"
+    "layer0": "iridescent_relics:item/frostmaw_heart"
   }
 }

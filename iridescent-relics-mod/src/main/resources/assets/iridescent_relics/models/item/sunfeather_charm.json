@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/feather"
+    "layer0": "iridescent_relics:item/sunfeather_charm"
   }
 }

@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "minecraft:item/netherite_scrap"
+    "layer0": "iridescent_relics:item/cursed_sigil_pride"
   }
 }
