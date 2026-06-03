@@ -46,6 +46,22 @@ const CODEX_TOKENS = {
   3: { item: 'icraft:progression_token_t3', threshold: 2000, grantsStage: 'tier_4' },
 }
 
+// ---- #69 — T4 token→XP exchange RATE (THE single tunable constant) ----------
+// XP POINTS granted per token, per tier. The exchange (/icraft codex exchange)
+// is gated behind the `tier_4` AStages stage, so this is an ENDGAME faucet:
+// surplus + T4-minted tokens convert to vanilla XP, which JLFork Aptitudes spend
+// to level (also enchanting + anvil repairs). See design-evolution 2026-06-03.
+//
+// Tier-scaled (t1 < t2 < t3) so a higher-tier token — minted by harder content —
+// is worth proportionally more XP, preserving token-tier meaning. Ratio 1:2:4.
+//
+// Modeled against the ACTUAL Aptitude level-up cost curve (AptitudeLevelUpSP:
+// leveling an aptitude L→L+1 deducts getExperienceForLevel(L+4) XP points):
+//   one mid level-up (apt 15→16) = 493 XP · one aptitude 0→10 = 1,315 XP ·
+//   0→20 = 6,182 · 0→30 = 18,768 · 0→32 (max) = 22,710 · all 8 maxed = 181,680.
+// ⚠ Operator-ratified rate (#69). Change ONLY these three numbers to retune.
+const CODEX_XP_PER_TOKEN = { 1: 2, 2: 4, 3: 8 }   // #69 operator-ratified 2026-06-03 — "tight" rate (a nudge; 1 stack of t3 ≈ one mid Aptitude level-up)
+
 // ---- §2 Engineering + Route-D Magic conversion tables (the COMPLETE set) ----
 // Two entry shapes:
 //
@@ -504,10 +520,123 @@ function codexGrantTier(player, tier, triggerName) {
 }
 
 // =============================================================================
-// COMMAND REGISTRATION — /icraft codex submit | balance
+// EXCHANGE (#69) — T4-gated: convert banked progression_token_tN → vanilla XP.
+// JLFork Aptitudes level up by SPENDING vanilla XP (AptitudeLevelUpSP), so this
+// gives surplus / T4-minted tokens a universal endgame sink (Aptitudes, plus
+// enchanting + anvil repairs). Inert until the player holds the `tier_4` stage.
+//   /icraft codex exchange <1|2|3> <amount|all>
+// Roman numerals for the per-tier token display name (Codex Token I/II/III).
+// =============================================================================
+const CODEX_TOKEN_ROMAN = ['', 'I', 'II', 'III']
+
+function codexExchange(player, tier, amountArg) {
+  // Endgame gate — the exchange only opens at Tier 4.
+  if (!AStages.playerHasStage('tier_4', player)) {
+    player.tell(Text.gold('[Codex] ').append(Text.gray('The token → XP exchange unlocks at '))
+      .append(Text.yellow('Tier 4')).append(Text.gray('. Keep advancing.')))
+    return 0
+  }
+
+  const conf = CODEX_TOKENS[tier]
+  const rate = CODEX_XP_PER_TOKEN[tier]
+  if (!conf || !rate) { player.tell(Text.red('[Codex] Invalid tier: ' + tier)); return 0 }
+  const tokenId = conf.item
+  const inv = player.inventory
+  const size = inv.size
+
+  // Count held tokens of this tier.
+  let held = 0
+  for (let i = 0; i < size; i++) {
+    const stack = inv.getStackInSlot(i)
+    if (!stack.isEmpty() && stack.id === tokenId) held += stack.count
+  }
+  if (held <= 0) {
+    player.tell(Text.gold('[Codex] ').append(Text.gray('You have no '))
+      .append(Text.aqua('Codex Token ' + CODEX_TOKEN_ROMAN[tier])).append(Text.gray(' to exchange.')))
+    return 0
+  }
+
+  // 'all' → everything held; integer → clamp to what's actually held (no partial loss).
+  const want = (amountArg === 'all') ? held : amountArg
+  if (want <= 0) { player.tell(Text.red('[Codex] Amount must be a positive number (or "all").')); return 0 }
+  const convert = Math.min(want, held)
+
+  // Consume `convert` tokens from the inventory.
+  let toRemove = convert
+  for (let i = 0; i < size && toRemove > 0; i++) {
+    const stack = inv.getStackInSlot(i)
+    if (!stack.isEmpty() && stack.id === tokenId) {
+      const take = Math.min(stack.count, toRemove)
+      stack.count = stack.count - take
+      toRemove -= take
+      if (stack.count <= 0) inv.setStackInSlot(i, Item.empty)
+    }
+  }
+
+  // Grant the XP as POINTS — fills the vanilla XP bar + plays the orb sound, and
+  // is what Aptitude level-ups deduct against. (INT XP-gain perks, if any, scale
+  // this exactly as they would any XP gain — a deliberate INT-build synergy.)
+  const xp = convert * rate
+  player.giveExperiencePoints(xp)
+
+  const remaining = held - convert
+  player.tell(Text.gold('═══ Codex Exchange ═══'))
+  player.tell(Text.gray('  ' + convert + '× ').append(Text.white('Codex Token ' + CODEX_TOKEN_ROMAN[tier]))
+    .append(Text.gray(' → ')).append(Text.green('+' + xp + ' XP')).append(Text.gray(' (' + rate + ' / token)')))
+  if (convert < want) player.tell(Text.gray('  (You only had ' + held + '.)'))
+  player.tell(Text.yellow('  Now at level ').append(Text.aqua('' + player.experienceLevel))
+    .append(Text.gray('  ·  Remaining T' + tier + ' tokens: ')).append(Text.aqua('' + remaining)))
+  player.tell(Text.gold('══════════════════════'))
+  return xp
+}
+
+// Help / status line when `exchange` is run with no tier.
+function codexExchangeHelp(player) {
+  player.tell(Text.gold('═══ Codex Exchange ═══'))
+  if (!AStages.playerHasStage('tier_4', player)) {
+    player.tell(Text.gray('  Unlocks at ').append(Text.yellow('Tier 4')).append(Text.gray(' — converts banked tokens → vanilla XP.')))
+  } else {
+    player.tell(Text.gray('  Convert banked tokens → vanilla XP (Aptitude leveling, enchanting, anvil repairs).'))
+  }
+  player.tell(Text.gray('  Usage: ').append(Text.white('/icraft codex exchange <1|2|3> <amount|all>')))
+  player.tell(Text.gray('  Rates: ')
+    .append(Text.aqua('T1 ' + CODEX_XP_PER_TOKEN[1])).append(Text.gray(' · '))
+    .append(Text.aqua('T2 ' + CODEX_XP_PER_TOKEN[2])).append(Text.gray(' · '))
+    .append(Text.aqua('T3 ' + CODEX_XP_PER_TOKEN[3])).append(Text.gray(' XP per token')))
+  player.tell(Text.gold('══════════════════════'))
+  return 1
+}
+
+// =============================================================================
+// COMMAND REGISTRATION — /icraft codex submit | balance | exchange
 // Merges into the existing /icraft literal (despawn, mana_debug, …) — Brigadier
 // unions literals across commandRegistry calls.
 // =============================================================================
+// IntegerArgumentType for `exchange <tier> <amount>` (same loadClass pattern as
+// icraft_despawn_command.js — stable across mappings).
+const CODEX_IntArg = Java.loadClass('com.mojang.brigadier.arguments.IntegerArgumentType')
+
+// Shared player-extraction wrapper for the exchange command variants.
+function codexCmdExchange(ctx, tier, amount) {
+  let sp
+  try { sp = ctx.source.getPlayerOrException() } catch (e) {
+    ctx.source.sendFailure(Text.of('Must be run as a player')); return 0
+  }
+  try { return (tier === null) ? codexExchangeHelp(sp) : codexExchange(sp, tier, amount) } catch (e) {
+    console.warn('[Codex] exchange' + (tier ? ' ' + tier : '') + ' threw for ' + sp.username + ': ' + e)
+    sp.tell(Text.red('[Codex] exchange failed: ' + e)); return 0
+  }
+}
+
+// Builds the `<tier>` literal branch: `<tier> all` and `<tier> <amount>`.
+function codexExchangeTierBranch(Commands, tier) {
+  return Commands.literal('' + tier)
+    .requires(src => src.hasPermission(0))
+    .then(Commands.literal('all')
+      .executes(ctx => codexCmdExchange(ctx, tier, 'all')))
+    .then(Commands.argument('amount', CODEX_IntArg.integer(1))
+      .executes(ctx => codexCmdExchange(ctx, tier, CODEX_IntArg.getInteger(ctx, 'amount'))))
+}
 // Shared player-extraction + submit wrapper for the submit command variants.
 function codexCmdSubmit(ctx, lane) {
   let sp
@@ -553,6 +682,13 @@ ServerEvents.commandRegistry(event => {
             }
           })
         )
+        .then(Commands.literal('exchange')   // #69 — T4-gated token → XP faucet
+          .requires(src => src.hasPermission(0))
+          .executes(ctx => codexCmdExchange(ctx, null, null))   // bare `exchange` → help/status
+          .then(codexExchangeTierBranch(Commands, 1))
+          .then(codexExchangeTierBranch(Commands, 2))
+          .then(codexExchangeTierBranch(Commands, 3))
+        )
       )
   )
 })
@@ -571,7 +707,8 @@ ServerEvents.tags('item', event => {
   }
 })
 
-console.log('[IridescentCraft] Codex progression engine loaded (/icraft codex submit [engineering|magic] | balance)')
+console.log('[IridescentCraft] Codex progression engine loaded (/icraft codex submit [engineering|magic] | balance | exchange)')
 console.log('  Thresholds: T1→T2 500 | T2→T3 1000 | T3→T4 2000 (T4 terminal = Ender Dragon)')
 console.log('  Conversion entries (Engineering + Magic): ' + Object.keys(CODEX_CONVERSIONS).length)
 console.log('  Bulk metals are CONTEXTUAL — mint the player\'s current transition tier (per-tier caps)')
+console.log('  #69 token→XP exchange (T4-gated): ' + CODEX_XP_PER_TOKEN[1] + '/' + CODEX_XP_PER_TOKEN[2] + '/' + CODEX_XP_PER_TOKEN[3] + ' XP per T1/T2/T3 token')

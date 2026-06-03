@@ -1,0 +1,27 @@
+{
+  "name": "The Token Exchange",
+  "icon": "icraft:progression_token_t3",
+  "category": "icraft:progression",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "Tier 4 is the top of the ladder — there is no token threshold beyond it. So at Tier 4 the Codex opens a new use for your $(bold)progression tokens$(): convert them straight into $(bold)vanilla experience$().$(br2)Every banked token — the overshoot you never spent advancing, and everything Tier 4 content keeps minting — becomes XP you can pour into Aptitudes, the enchanting table, or anvil repairs."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How to Exchange",
+      "text": "Run $(bold)/icraft codex exchange <tier> <amount>$().$(br2)$(li)$(bold)tier$() — $(bold)1$(), $(bold)2$(), or $(bold)3$() (which token to spend).$(li)$(bold)amount$() — a number, or $(bold)all$() to convert every token of that tier.$(br2)Example: $(bold)/icraft codex exchange 3 all$() cashes in all your Codex Token III at once. The XP lands on your bar immediately.$(br2)$(note)Locked until Tier 4 — before then the command simply tells you so.$()"
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Rate",
+      "text": "Higher-tier tokens come from harder content, so they are worth more XP:$(br2)$(li)$(t1)Codex Token I$() — $(bold)2 XP$() each.$(li)$(t2)Codex Token II$() — $(bold)4 XP$() each.$(li)$(t3)Codex Token III$() — $(bold)8 XP$() each.$(br2)Tokens are a bonus accelerant on top of the XP you already earn. $(bold)Intelligence$()'s XP-gain skills make every exchange go further."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What the XP Buys",
+      "text": "$(li)$(bold)Aptitudes$() — every Aptitude level-up spends vanilla XP. The exchange is the endgame faucet that funds your final levels.$(li)$(bold)Enchanting$() — fuel the enchanting table.$(li)$(bold)Repairs$() — combine and mend gear on the anvil.$(br2)See $(l:icraft:progression/tier_gates)How You Advance$(/l) for where tokens come from in the first place."
+    }
+  ]
+}
