@@ -8,16 +8,18 @@ REM   "$INST_MC_DIR/prism_prelaunch.bat"
 REM
 REM Two-phase self-relaunch design:
 REM
-REM   Phase 1 (top of file): git pull only. Then `call SELF --post-pull`
-REM     and exit. cmd.exe re-opens the bat on every `call`, so the inner
-REM     invocation reads whatever bat content is on disk after the pull.
-REM     This means an update to this bat itself takes effect on the SAME
-REM     launch, not the next one (subject to NTFS + FILE_SHARE_DELETE
-REM     semantics for the in-place replacement, which Git for Windows
-REM     and cmd.exe both honour).
+REM   Phase 1 (top of file): FORCE-SYNC only (git fetch + reset --hard
+REM     origin/main -- NOT git pull; see the rationale block below). Then
+REM     `call SELF --post-pull` and exit. cmd.exe re-opens the bat on every
+REM     `call`, so the inner invocation reads whatever bat content is on disk
+REM     after the sync. This means an update to this bat itself takes effect
+REM     on the SAME launch, not the next one (subject to NTFS +
+REM     FILE_SHARE_DELETE semantics for the in-place replacement, which Git
+REM     for Windows and cmd.exe both honour).
 REM
-REM   Phase 2 (after :post_pull label): cleanup + download_mods + wire.
-REM     These run from the just-pulled bat content -- new hooks, new
+REM   Phase 2 (after :post_pull label): reconcile index + cleanup +
+REM     download_mods + wire.
+REM     These run from the just-synced bat content -- new hooks, new
 REM     defaults, new arg lists all in effect.
 REM
 REM Result: when we add a new pre-launch step upstream, the operator's
@@ -34,7 +36,7 @@ set "MC_DIR=%~dp0"
 if "!MC_DIR:~-1!"=="\" set "MC_DIR=!MC_DIR:~0,-1!"
 set "INSTANCE_DIR=!MC_DIR!\.."
 
-REM --- Phase 1: pull, then re-exec into Phase 2 ---
+REM --- Phase 1: force-sync, then re-exec into Phase 2 ---
 REM
 REM Re-exec is gated on the --post-pull arg so we don't recurse forever.
 REM On the SECOND entry (with --post-pull set), this block is skipped
@@ -47,65 +49,66 @@ if /i not "%~1"=="--post-pull" (
     REM (sync_client.bat is the hook for that install pattern.)
     if not exist "!INSTANCE_DIR!\.git" (
         echo [prism_prelaunch] No .git at instance root -- not a git-checkout install.
-        echo [prism_prelaunch] Skipping git pull; continuing with existing files.
+        echo [prism_prelaunch] Skipping git force-sync; continuing with existing files.
         call "%~f0" --post-pull
         endlocal & exit /b 0
     )
 
     REM Clear a stale .git\index.lock left by a git operation that was killed
     REM mid-run (e.g. PrismLauncher / the machine shut down during a prior
-    REM pull). Git refuses EVERY subsequent operation while index.lock exists,
-    REM so without this the pull below fails on every launch until the user
-    REM manually deletes it. We only remove the bare index.lock (cheap, safe
-    REM to recreate); in-progress merge/rebase state is handled by the
-    REM rebase --abort fallback further down.
+    REM sync). Git refuses EVERY subsequent operation while index.lock exists,
+    REM so without this the fetch/reset below fails on every launch until the
+    REM user manually deletes it. We only remove the bare index.lock (cheap,
+    REM safe to recreate); any in-progress merge state is discarded by the
+    REM `reset --hard origin/main` below.
     if exist "!INSTANCE_DIR!\.git\index.lock" (
         echo [prism_prelaunch] WARNING: stale .git\index.lock found -- removing it.
         echo [prism_prelaunch] ^(A prior git operation was likely interrupted.^)
         del /f /q "!INSTANCE_DIR!\.git\index.lock" >nul 2>&1
     )
 
-    REM Restore any working-tree-deleted .pw.toml files in mods/.index/
-    REM before pulling. PrismLauncher 11's Mod manager (and any similar
-    REM packwiz-aware tool) sweeps mods/.index/*.pw.toml and removes
-    REM entries whose matching jar isn't on disk yet. Without restoring
-    REM them, `git pull --ff-only` succeeds ("up to date") but leaves
-    REM the deletions in place -- download_mods.ps1 then can't see the
-    REM tomls and never fetches the jars. Infinite loop.
+    REM ----------------------------------------------------------------------
+    REM FORCE-SYNC to origin/main -- NOT `git pull`.
     REM
-    REM `git restore` only undoes working-tree deletions of files still
-    REM tracked in HEAD; intentional removals (via `git rm` + commit)
-    REM are recorded in the index and unaffected. Safe to run every
-    REM launch.
-    echo [prism_prelaunch] restore deleted .pw.toml index entries...
-    git -C "!INSTANCE_DIR!" restore -- .minecraft/mods/.index/ 2>nul
-
-    echo [prism_prelaunch] git pull...
-    git -C "!INSTANCE_DIR!" pull --ff-only
+    REM This instance is a PURE CONSUMER of pushed origin/main. A plain
+    REM `git pull --ff-only` dies on ANY local divergence and then leaves the
+    REM tree SILENTLY STALE -- which is exactly how this instance drifted 120
+    REM commits behind: a stray local commit (402c9625) made every ff-only
+    REM pull fail, the rebase --autostash fallback couldn't absorb it either,
+    REM so the working tree froze at an old HEAD for weeks while every launch
+    REM cheerfully reported "continuing." A stale tree keeps mods origin has
+    REM since REMOVED: a dropped both-sides mod (Marium's Soulslike) stayed
+    REM installed -> client/server registry mismatch (soulsweapons:ghostly
+    REM "Registry Object not present") -> NPE -> DC on join. (Same pull-stale
+    REM class as task #43, which recurred precisely because `pull` can stick.)
+    REM
+    REM `git fetch` + `git reset --hard origin/main` can NEVER get stuck: it
+    REM unconditionally DISCARDS local commits and tracked-file edits and
+    REM mirrors pushed HEAD every launch. The player's worlds are SAFE --
+    REM saves/, logs/, configs and other runtime state are git-ignored or
+    REM untracked, and `reset --hard` only rewrites TRACKED files. A
+    REM removed-in-origin tracked file (a dropped mod's .pw.toml) is deleted
+    REM from the working tree by the reset -- exactly what we want. Untracked
+    REM leftovers (e.g. an overlaid stale .pw.toml) survive the reset and are
+    REM purged by the Phase 2 index reconcile + cleanup pass.
+    echo [prism_prelaunch] git fetch origin...
+    git -C "!INSTANCE_DIR!" fetch origin --prune
     if errorlevel 1 (
-        REM ff-only fails when local main has commits ahead of origin -- the
-        REM classic divergence pattern is unpushed TesterLogs commits stacked
-        REM up from a prior failed postexit push. Try rebase fallback so the
-        REM next postexit can push the accumulated stack. autostash protects
-        REM unrelated working-tree edits. If THIS also fails (real conflict
-        REM with origin), abort cleanly and continue with the existing tree.
-        echo [prism_prelaunch] ff-only failed; trying rebase fallback to absorb upstream...
-        git -C "!INSTANCE_DIR!" pull --rebase --autostash
+        echo [prism_prelaunch] WARNING: git fetch failed ^(offline?^) -- continuing with current tree.
+    ) else (
+        echo [prism_prelaunch] force-sync: reset --hard origin/main ^(discard local divergence^)...
+        git -C "!INSTANCE_DIR!" reset --hard origin/main
         if errorlevel 1 (
-            echo [prism_prelaunch] WARNING: rebase fallback also failed -- aborting.
-            git -C "!INSTANCE_DIR!" rebase --abort >nul 2>&1
-            echo [prism_prelaunch] Continuing with current working tree.
-            echo [prism_prelaunch] If logs keep failing to mirror, check:
-            echo [prism_prelaunch]   cd /d "!INSTANCE_DIR!" ^&^& git status
+            echo [prism_prelaunch] WARNING: reset --hard failed -- continuing with current tree.
         ) else (
-            echo [prism_prelaunch] rebase fallback succeeded; tree is now aligned with origin
+            echo [prism_prelaunch] instance now mirrors origin/main.
         )
     )
     REM Re-execute the bat. cmd.exe re-opens the file from disk, so any
-    REM pull-applied update to THIS bat takes effect right now.
+    REM sync-applied update to THIS bat takes effect right now.
     REM
     REM Force exit /b 0: PrismLauncher aborts the launch if the pre-launch
-    REM command returns non-zero, and a sync/pull hiccup must never block
+    REM command returns non-zero, and a sync hiccup must never block
     REM play. Phase 2 already surfaces any problems via echo'd warnings, so
     REM discarding its exit code hides nothing from the operator. (The old
     REM bare `exit /b` propagated Phase 2's code; pinning to 0 makes the
@@ -115,8 +118,8 @@ if /i not "%~1"=="--post-pull" (
 )
 
 REM ===================================================================
-REM Phase 2 -- post-pull hooks. Everything below runs from the bat
-REM content as it exists on disk AFTER the pull. Adding new hooks
+REM Phase 2 -- post-sync hooks. Everything below runs from the bat
+REM content as it exists on disk AFTER the force-sync. Adding new hooks
 REM upstream takes effect immediately.
 REM ===================================================================
 
@@ -165,6 +168,20 @@ if exist "%TEMP%\IridescentCraft-client-sync.zip" (
 if exist "%TEMP%\IridescentCraft-client-sync-extract" (
     echo [prism_prelaunch]   removing partial sync extract dir in TEMP
     rd /s /q "%TEMP%\IridescentCraft-client-sync-extract" >nul 2>&1
+)
+
+REM Reconcile mods\.index against the canonical sources BEFORE cleanup, so a
+REM .pw.toml that origin removed cannot survive as an untracked leftover and
+REM fool cleanup_stale_jars into KEEPING the removed jar (cleanup builds its
+REM "expected" set from mods\.index\*.pw.toml). `reset --hard` already fixed
+REM the TRACKED index; this purges UNTRACKED stale tomls while preserving the
+REM client-only overlay (fancymenu/konkrete/melody/fastback -- present only in
+REM distribution\client\mods\.index, never in origin's main index).
+echo [prism_prelaunch] reconcile mods\.index ^(origin main + client-only overlay^)...
+if exist "!MC_DIR!\distribution\client\reconcile_client_index.ps1" (
+    powershell -ExecutionPolicy Bypass -File "!MC_DIR!\distribution\client\reconcile_client_index.ps1" -McDir "!MC_DIR!" -InstanceDir "!INSTANCE_DIR!"
+) else (
+    echo [prism_prelaunch] reconcile_client_index.ps1 not found at distribution/client/, skipping
 )
 
 echo [prism_prelaunch] cleanup stale jars...
