@@ -1,0 +1,41 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T4). REPAIR ITEM = terramity:chthonic_crystal. Thunker: guaranteed chthonic_crystal 1-2 (thunker-exclusive).",
+  "key": "tm_thunker",
+  "category": "gem",
+  "primary": 9.0,
+  "secondary": 3.4,
+  "tertiary": 4.5,
+  "durability": 1320,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 220,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
+  "tints": {
+    "glyph": "ffd24d",
+    "texture": "ffd24d"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "terramity:chthonic_crystal"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "terramity"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:lightning_spell_power": 0.15,
+    "**irons_spellbooks:lightning_magic_resist": 0.1,
+    "**irons_spellbooks:spell_power": 0.12
+  }
+}

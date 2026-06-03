@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:ventium_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/bs_alchemist"
+}

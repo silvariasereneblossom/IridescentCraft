@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mowziesmobs:naga_fang"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "heavy_boot_sole/bm_mnaga"
+}

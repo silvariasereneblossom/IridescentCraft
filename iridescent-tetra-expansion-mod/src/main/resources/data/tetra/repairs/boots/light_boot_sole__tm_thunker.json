@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:chthonic_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/tm_thunker"
+}

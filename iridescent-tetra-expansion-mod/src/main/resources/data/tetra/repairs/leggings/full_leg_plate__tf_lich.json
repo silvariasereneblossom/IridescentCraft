@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:lich_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/tf_lich"
+}

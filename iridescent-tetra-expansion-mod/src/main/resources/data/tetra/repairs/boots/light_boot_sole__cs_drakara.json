@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cardinal_sins:dragongreatsword"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/cs_drakara"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:occult_fabric"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/tm_gatmancer"
+}

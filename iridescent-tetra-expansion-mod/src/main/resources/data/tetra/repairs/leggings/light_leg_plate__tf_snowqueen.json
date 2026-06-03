@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:snow_queen_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/tf_snowqueen"
+}

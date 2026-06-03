@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:spider_webbing"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/bs_arachnarch"
+}

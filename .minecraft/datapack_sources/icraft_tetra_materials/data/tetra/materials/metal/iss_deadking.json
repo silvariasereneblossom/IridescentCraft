@@ -1,0 +1,42 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T3). REPAIR ITEM = irons_spellbooks:blood_staff. Dead King: blood_staff @50% -> floor (arcane_essence is shared/generic).",
+  "key": "iss_deadking",
+  "category": "metal",
+  "primary": 8.3,
+  "secondary": 3.6,
+  "tertiary": 3.8,
+  "durability": 920,
+  "integrityCost": 3,
+  "integrityGain": 10,
+  "magicCapacity": 200,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 9,
+  "tints": {
+    "glyph": "6b0f1a",
+    "texture": "6b0f1a"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "irons_spellbooks:blood_staff"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "irons_spellbooks"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:blood_spell_power": 0.12,
+    "**irons_spellbooks:blood_magic_resist": 0.08,
+    "**irons_spellbooks:spell_power": 0.1
+  }
+}

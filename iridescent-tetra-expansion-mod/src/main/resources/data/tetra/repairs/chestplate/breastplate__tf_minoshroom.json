@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:minoshroom_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/tf_minoshroom"
+}

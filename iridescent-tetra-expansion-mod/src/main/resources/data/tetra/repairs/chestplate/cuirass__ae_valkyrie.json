@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:victory_medal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/ae_valkyrie"
+}

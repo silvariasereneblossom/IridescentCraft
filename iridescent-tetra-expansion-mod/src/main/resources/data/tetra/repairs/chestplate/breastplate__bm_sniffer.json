@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:gaianite_cluster"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/bm_sniffer"
+}

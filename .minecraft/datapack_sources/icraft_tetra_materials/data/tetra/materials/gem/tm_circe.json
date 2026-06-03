@@ -1,0 +1,41 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T4). REPAIR ITEM = terramity:malediction_bracelets. Sorceress Circe: code-driven; malediction_bracelets (also a Gundalf drop) -> floor on Circe. FLAGGED.",
+  "key": "tm_circe",
+  "category": "gem",
+  "primary": 9.0,
+  "secondary": 3.4,
+  "tertiary": 4.5,
+  "durability": 1320,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 220,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
+  "tints": {
+    "glyph": "5d3a9b",
+    "texture": "5d3a9b"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "terramity:malediction_bracelets"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "terramity"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ender_spell_power": 0.15,
+    "**irons_spellbooks:ender_magic_resist": 0.1,
+    "**irons_spellbooks:spell_power": 0.12
+  }
+}

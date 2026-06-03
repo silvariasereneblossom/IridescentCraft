@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:malediction_bracelets"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/tm_circe"
+}

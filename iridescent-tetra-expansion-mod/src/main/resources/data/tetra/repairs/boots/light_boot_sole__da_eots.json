@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:squall_plate"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/da_eots"
+}

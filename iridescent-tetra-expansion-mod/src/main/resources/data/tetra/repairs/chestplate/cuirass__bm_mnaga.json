@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mowziesmobs:naga_fang"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/bm_mnaga"
+}

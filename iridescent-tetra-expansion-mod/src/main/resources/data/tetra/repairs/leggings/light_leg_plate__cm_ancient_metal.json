@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ancient_metal_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/cm_ancient_metal"
+}

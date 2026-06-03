@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:witherite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "heavy_boot_sole/cm_witherite"
+}

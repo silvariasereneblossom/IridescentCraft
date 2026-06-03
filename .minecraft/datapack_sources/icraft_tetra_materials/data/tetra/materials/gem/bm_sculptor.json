@@ -1,0 +1,38 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T1). REPAIR ITEM = mowziesmobs:sculptor_staff. Tongbi/Sculptor: 1-of-5 gear; LootJS floor guarantees the staff.",
+  "key": "bm_sculptor",
+  "category": "gem",
+  "primary": 5.5,
+  "secondary": 3.2,
+  "tertiary": 3.2,
+  "durability": 360,
+  "integrityCost": 2,
+  "integrityGain": 6,
+  "magicCapacity": 120,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 6,
+  "tints": {
+    "glyph": "9c7a4d",
+    "texture": "9c7a4d"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "mowziesmobs:sculptor_staff"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mowziesmobs"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:nature_spell_power": 0.1,
+    "**irons_spellbooks:nature_magic_resist": 0.06,
+    "**irons_spellbooks:spell_power": 0.08
+  }
+}

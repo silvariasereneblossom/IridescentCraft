@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ancient_metal_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/cm_ancient_metal"
+}

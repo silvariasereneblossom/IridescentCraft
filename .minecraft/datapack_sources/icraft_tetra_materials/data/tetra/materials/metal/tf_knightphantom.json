@@ -1,0 +1,39 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = twilightforest:knightmetal_ring. Knight Phantom: empty (code-driven) table; floor the knightmetal_ring.",
+  "key": "tf_knightphantom",
+  "category": "metal",
+  "primary": 6.6,
+  "secondary": 3.4,
+  "tertiary": 3.6,
+  "durability": 540,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "b0c4de",
+    "texture": "b0c4de"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "twilightforest:knightmetal_ring"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "twilightforest"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:lightning_spell_power": 0.12,
+    "**irons_spellbooks:lightning_magic_resist": 0.07,
+    "**irons_spellbooks:spell_power": 0.09
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:lich_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/tf_lich"
+}

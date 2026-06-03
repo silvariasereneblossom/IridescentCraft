@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:snow_queen_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/tf_snowqueen"
+}

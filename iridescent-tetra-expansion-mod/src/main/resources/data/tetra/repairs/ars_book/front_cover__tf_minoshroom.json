@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:minoshroom_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/tf_minoshroom"
+}

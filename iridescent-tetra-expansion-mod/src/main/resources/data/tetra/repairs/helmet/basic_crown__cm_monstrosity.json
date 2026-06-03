@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:lava_power_cell"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/cm_monstrosity"
+}

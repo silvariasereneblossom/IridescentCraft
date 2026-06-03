@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:lich_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/tf_lich"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:carved_stone"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/ae_slider"
+}

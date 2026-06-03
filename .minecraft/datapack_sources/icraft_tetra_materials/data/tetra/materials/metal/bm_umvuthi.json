@@ -1,0 +1,39 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T1). REPAIR ITEM = mowziesmobs:sol_visage. Umvuthi: guaranteed sol_visage mask (sole material-ish drop).",
+  "key": "bm_umvuthi",
+  "category": "metal",
+  "primary": 5.5,
+  "secondary": 3.2,
+  "tertiary": 3.2,
+  "durability": 360,
+  "integrityCost": 2,
+  "integrityGain": 6,
+  "magicCapacity": 120,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 6,
+  "tints": {
+    "glyph": "ffd966",
+    "texture": "ffd966"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "mowziesmobs:sol_visage"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mowziesmobs"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:holy_spell_power": 0.1,
+    "**irons_spellbooks:holy_magic_resist": 0.06,
+    "**irons_spellbooks:spell_power": 0.08
+  }
+}

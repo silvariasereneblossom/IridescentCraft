@@ -1,0 +1,36 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T4). REPAIR ITEM = minecraft:echo_shard. Warden: drops only sculk_catalyst natively; floor echo_shard on warden kill.",
+  "key": "vn_warden",
+  "category": "metal",
+  "primary": 9.0,
+  "secondary": 3.4,
+  "tertiary": 4.5,
+  "durability": 1320,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 220,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
+  "tints": {
+    "glyph": "1b9e8f",
+    "texture": "1b9e8f"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "minecraft:echo_shard"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "attributes": {
+    "**irons_spellbooks:ender_spell_power": 0.15,
+    "**irons_spellbooks:ender_magic_resist": 0.1,
+    "**irons_spellbooks:spell_power": 0.12
+  }
+}

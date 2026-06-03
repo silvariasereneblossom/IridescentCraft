@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:falsite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/bs_starlit"
+}

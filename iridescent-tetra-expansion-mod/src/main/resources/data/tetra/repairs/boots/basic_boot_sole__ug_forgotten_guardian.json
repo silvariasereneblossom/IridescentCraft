@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "undergarden:forgotten_nugget"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/ug_forgotten_guardian"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:echo_shard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/vn_warden"
+}

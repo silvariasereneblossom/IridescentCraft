@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:occult_fabric"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/tm_gatmancer"
+}

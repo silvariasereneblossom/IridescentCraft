@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:knightmetal_ring"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "scaled_chest/tf_knightphantom"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:fiery_blood"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/tf_hydra"
+}

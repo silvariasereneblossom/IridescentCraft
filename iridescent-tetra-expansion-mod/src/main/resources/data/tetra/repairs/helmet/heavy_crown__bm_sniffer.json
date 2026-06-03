@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:gaianite_cluster"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/bm_sniffer"
+}

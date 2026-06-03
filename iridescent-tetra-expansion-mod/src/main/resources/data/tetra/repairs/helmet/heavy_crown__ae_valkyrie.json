@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:victory_medal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/ae_valkyrie"
+}

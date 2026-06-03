@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:gaianite_cluster"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/bm_sniffer"
+}

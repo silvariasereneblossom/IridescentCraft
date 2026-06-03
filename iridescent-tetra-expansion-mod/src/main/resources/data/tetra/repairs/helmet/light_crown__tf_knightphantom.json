@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:knightmetal_ring"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/tf_knightphantom"
+}

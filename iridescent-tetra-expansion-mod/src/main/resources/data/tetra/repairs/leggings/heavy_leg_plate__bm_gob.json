@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:gobs_gilded_hat_helmet"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/bm_gob"
+}

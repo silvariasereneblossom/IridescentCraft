@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:fiery_tears"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/tf_urghast"
+}

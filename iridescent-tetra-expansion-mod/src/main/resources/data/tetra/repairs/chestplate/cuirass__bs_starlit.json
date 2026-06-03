@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:falsite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/bs_starlit"
+}

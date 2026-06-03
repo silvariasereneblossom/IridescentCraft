@@ -1,0 +1,39 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = blue_skies:falsite_ingot. Starlit Crusher: falsite_ingot via loot-bag bonus pool.",
+  "key": "bs_starlit",
+  "category": "metal",
+  "primary": 6.6,
+  "secondary": 3.4,
+  "tertiary": 3.6,
+  "durability": 540,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "5c6bc0",
+    "texture": "5c6bc0"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "blue_skies:falsite_ingot"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "blue_skies"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ender_spell_power": 0.12,
+    "**irons_spellbooks:ender_magic_resist": 0.07,
+    "**irons_spellbooks:spell_power": 0.09
+  }
+}

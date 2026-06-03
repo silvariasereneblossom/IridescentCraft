@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:chthonic_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/tm_thunker"
+}

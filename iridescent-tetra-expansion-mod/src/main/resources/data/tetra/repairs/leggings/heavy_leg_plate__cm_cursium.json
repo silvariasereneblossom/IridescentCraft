@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:cursium_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/cm_cursium"
+}

@@ -1,0 +1,38 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T1). REPAIR ITEM = mowziesmobs:ice_crystal. Frostmaw: native ice_crystal (boss carried).",
+  "key": "bm_frostmaw",
+  "category": "gem",
+  "primary": 5.5,
+  "secondary": 3.2,
+  "tertiary": 3.2,
+  "durability": 360,
+  "integrityCost": 2,
+  "integrityGain": 6,
+  "magicCapacity": 120,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 6,
+  "tints": {
+    "glyph": "7ad6e8",
+    "texture": "7ad6e8"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "mowziesmobs:ice_crystal"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "mowziesmobs"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ice_spell_power": 0.1,
+    "**irons_spellbooks:ice_magic_resist": 0.06,
+    "**irons_spellbooks:spell_power": 0.08
+  }
+}

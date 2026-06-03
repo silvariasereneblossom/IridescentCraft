@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:falsite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/bs_starlit"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:ventium_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/bs_alchemist"
+}

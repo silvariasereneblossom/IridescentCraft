@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:witherite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/cm_witherite"
+}

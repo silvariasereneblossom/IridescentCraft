@@ -1,0 +1,39 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T1). REPAIR ITEM = terramity:gobs_gilded_hat_helmet. Gob: only boss-unique drops are 1-of-3 gear; LootJS floor guarantees the gilded hat.",
+  "key": "bm_gob",
+  "category": "metal",
+  "primary": 5.5,
+  "secondary": 3.2,
+  "tertiary": 3.2,
+  "durability": 360,
+  "integrityCost": 2,
+  "integrityGain": 6,
+  "magicCapacity": 120,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 6,
+  "tints": {
+    "glyph": "d4af37",
+    "texture": "d4af37"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "terramity:gobs_gilded_hat_helmet"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "terramity"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:holy_spell_power": 0.1,
+    "**irons_spellbooks:holy_magic_resist": 0.06,
+    "**irons_spellbooks:spell_power": 0.08
+  }
+}

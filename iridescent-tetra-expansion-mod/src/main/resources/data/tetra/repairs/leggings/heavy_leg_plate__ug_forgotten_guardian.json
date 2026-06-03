@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "undergarden:forgotten_nugget"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/ug_forgotten_guardian"
+}

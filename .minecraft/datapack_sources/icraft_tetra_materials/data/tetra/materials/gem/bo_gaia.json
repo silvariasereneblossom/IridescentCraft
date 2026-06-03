@@ -1,0 +1,41 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T4). REPAIR ITEM = botania:life_essence. Guardian of Gaia: guaranteed life_essence 6 (NOT gaia_ingot, which is crafted).",
+  "key": "bo_gaia",
+  "category": "gem",
+  "primary": 9.0,
+  "secondary": 3.4,
+  "tertiary": 4.5,
+  "durability": 1320,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 220,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
+  "tints": {
+    "glyph": "7fffd4",
+    "texture": "7fffd4"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "botania:life_essence"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "botania"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:holy_spell_power": 0.15,
+    "**irons_spellbooks:holy_magic_resist": 0.1,
+    "**irons_spellbooks:spell_power": 0.12
+  }
+}

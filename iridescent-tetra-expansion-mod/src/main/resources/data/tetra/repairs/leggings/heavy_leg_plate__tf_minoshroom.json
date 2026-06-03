@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:minoshroom_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/tf_minoshroom"
+}

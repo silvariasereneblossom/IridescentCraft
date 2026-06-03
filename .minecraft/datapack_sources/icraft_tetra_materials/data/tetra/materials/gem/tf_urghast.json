@@ -1,0 +1,38 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = twilightforest:fiery_tears. Ur-Ghast: guaranteed fiery_tears (proposed ur_ghast_tear does not exist).",
+  "key": "tf_urghast",
+  "category": "gem",
+  "primary": 6.6,
+  "secondary": 3.4,
+  "tertiary": 3.6,
+  "durability": 540,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "e8743b",
+    "texture": "e8743b"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "twilightforest:fiery_tears"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "twilightforest"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:fire_spell_power": 0.12,
+    "**irons_spellbooks:fire_magic_resist": 0.07,
+    "**irons_spellbooks:spell_power": 0.09
+  }
+}

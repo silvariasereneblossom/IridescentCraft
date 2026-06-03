@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:witherite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/cm_witherite"
+}

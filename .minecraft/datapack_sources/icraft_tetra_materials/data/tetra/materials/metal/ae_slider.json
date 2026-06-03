@@ -1,0 +1,39 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = aether:carved_stone. Slider: guaranteed carved_stone 7-9 (key is needed for the dungeon).",
+  "key": "ae_slider",
+  "category": "metal",
+  "primary": 6.6,
+  "secondary": 3.4,
+  "tertiary": 3.6,
+  "durability": 540,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "a97142",
+    "texture": "a97142"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "aether:carved_stone"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "aether"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:eldritch_spell_power": 0.12,
+    "**irons_spellbooks:eldritch_magic_resist": 0.07,
+    "**irons_spellbooks:spell_power": 0.09
+  }
+}

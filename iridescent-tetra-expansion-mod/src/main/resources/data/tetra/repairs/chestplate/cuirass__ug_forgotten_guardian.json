@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "undergarden:forgotten_nugget"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/ug_forgotten_guardian"
+}

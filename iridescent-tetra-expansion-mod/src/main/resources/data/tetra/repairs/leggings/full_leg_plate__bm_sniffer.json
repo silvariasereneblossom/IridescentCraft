@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:gaianite_cluster"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/bm_sniffer"
+}

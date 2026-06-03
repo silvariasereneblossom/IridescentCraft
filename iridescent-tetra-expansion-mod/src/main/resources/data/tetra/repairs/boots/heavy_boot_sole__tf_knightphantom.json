@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:knightmetal_ring"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "heavy_boot_sole/tf_knightphantom"
+}

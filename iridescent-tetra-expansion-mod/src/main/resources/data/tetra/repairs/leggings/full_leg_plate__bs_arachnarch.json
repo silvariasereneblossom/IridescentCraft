@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:spider_webbing"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/bs_arachnarch"
+}

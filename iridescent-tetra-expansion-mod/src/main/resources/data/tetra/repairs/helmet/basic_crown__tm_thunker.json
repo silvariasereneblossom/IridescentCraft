@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:chthonic_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/tm_thunker"
+}

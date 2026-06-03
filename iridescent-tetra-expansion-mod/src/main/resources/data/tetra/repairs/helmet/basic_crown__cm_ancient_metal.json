@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ancient_metal_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/cm_ancient_metal"
+}

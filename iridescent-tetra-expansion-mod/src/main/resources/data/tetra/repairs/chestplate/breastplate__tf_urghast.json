@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:fiery_tears"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/tf_urghast"
+}

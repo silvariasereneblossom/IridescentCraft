@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:abyssal_egg"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/cm_leviathan"
+}

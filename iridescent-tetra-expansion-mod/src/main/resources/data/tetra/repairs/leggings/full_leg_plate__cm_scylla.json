@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:lacrima"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/cm_scylla"
+}

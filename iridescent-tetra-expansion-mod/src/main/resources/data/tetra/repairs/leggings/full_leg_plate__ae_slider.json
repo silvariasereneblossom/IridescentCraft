@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:carved_stone"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "full_leg_plate/ae_slider"
+}

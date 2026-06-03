@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:gauntlet_of_guard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/cm_ender_guard"
+}

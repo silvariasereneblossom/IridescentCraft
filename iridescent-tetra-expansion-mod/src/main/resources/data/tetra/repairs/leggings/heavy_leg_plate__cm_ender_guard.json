@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:gauntlet_of_guard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/cm_ender_guard"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:angel_feather"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/tm_virtue"
+}

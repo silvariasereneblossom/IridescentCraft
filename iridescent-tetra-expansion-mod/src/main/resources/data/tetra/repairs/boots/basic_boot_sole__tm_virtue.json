@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:angel_feather"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/tm_virtue"
+}

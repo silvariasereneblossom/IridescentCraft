@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:falsite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "basic_crown/bs_starlit"
+}

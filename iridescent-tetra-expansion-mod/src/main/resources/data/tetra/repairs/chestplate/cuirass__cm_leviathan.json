@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:abyssal_egg"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/cm_leviathan"
+}

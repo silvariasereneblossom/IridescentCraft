@@ -1,0 +1,42 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T3). REPAIR ITEM = cataclysm:abyssal_egg. The Leviathan: guaranteed abyssal_egg (also baby-summon -- same tradeoff as the gauntlet).",
+  "key": "cm_leviathan",
+  "category": "metal",
+  "primary": 8.3,
+  "secondary": 3.6,
+  "tertiary": 3.8,
+  "durability": 920,
+  "integrityCost": 3,
+  "integrityGain": 10,
+  "magicCapacity": 200,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 9,
+  "tints": {
+    "glyph": "1b6ca8",
+    "texture": "1b6ca8"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "cataclysm:abyssal_egg"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "cataclysm"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ice_spell_power": 0.12,
+    "**irons_spellbooks:ice_magic_resist": 0.08,
+    "**irons_spellbooks:spell_power": 0.1
+  }
+}

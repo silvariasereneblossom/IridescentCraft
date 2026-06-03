@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:gauntlet_of_guard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/cm_ender_guard"
+}

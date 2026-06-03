@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:victory_medal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/ae_valkyrie"
+}

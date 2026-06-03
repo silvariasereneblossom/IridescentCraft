@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "undergarden:forgotten_nugget"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/ug_forgotten_guardian"
+}

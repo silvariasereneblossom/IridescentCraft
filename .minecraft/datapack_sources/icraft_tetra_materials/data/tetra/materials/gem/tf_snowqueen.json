@@ -1,0 +1,38 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = twilightforest:snow_queen_trophy. Snow Queen: no clean material; guaranteed snow_queen_trophy.",
+  "key": "tf_snowqueen",
+  "category": "gem",
+  "primary": 6.6,
+  "secondary": 3.4,
+  "tertiary": 3.6,
+  "durability": 540,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "a0e7f0",
+    "texture": "a0e7f0"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "twilightforest:snow_queen_trophy"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "twilightforest"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ice_spell_power": 0.12,
+    "**irons_spellbooks:ice_magic_resist": 0.07,
+    "**irons_spellbooks:spell_power": 0.09
+  }
+}

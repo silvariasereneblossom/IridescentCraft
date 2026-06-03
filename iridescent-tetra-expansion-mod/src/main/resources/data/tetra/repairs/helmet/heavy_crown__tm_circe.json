@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:malediction_bracelets"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/tm_circe"
+}

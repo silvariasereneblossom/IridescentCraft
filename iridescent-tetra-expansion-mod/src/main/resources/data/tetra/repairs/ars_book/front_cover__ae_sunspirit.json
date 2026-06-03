@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:sun_altar"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/ae_sunspirit"
+}

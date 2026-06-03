@@ -1,0 +1,38 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = twilightforest:lich_trophy. Lich: no clean material; guaranteed lich_trophy is the boss-unique binding.",
+  "key": "tf_lich",
+  "category": "gem",
+  "primary": 6.6,
+  "secondary": 3.4,
+  "tertiary": 3.6,
+  "durability": 540,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "9b59b6",
+    "texture": "9b59b6"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "twilightforest:lich_trophy"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "twilightforest"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ender_spell_power": 0.12,
+    "**irons_spellbooks:ender_magic_resist": 0.07,
+    "**irons_spellbooks:spell_power": 0.09
+  }
+}

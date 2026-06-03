@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:echo_shard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/vn_warden"
+}

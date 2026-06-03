@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:gauntlet_of_guard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/cm_ender_guard"
+}

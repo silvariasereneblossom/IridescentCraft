@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:carved_stone"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "heavy_crown/ae_slider"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:spider_webbing"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "basic_boot_sole/bs_arachnarch"
+}

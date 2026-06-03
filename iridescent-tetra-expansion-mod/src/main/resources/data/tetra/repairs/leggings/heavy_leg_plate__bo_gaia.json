@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:life_essence"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "heavy_leg_plate/bo_gaia"
+}

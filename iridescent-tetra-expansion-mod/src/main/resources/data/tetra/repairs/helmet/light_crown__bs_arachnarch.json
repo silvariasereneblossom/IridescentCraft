@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:spider_webbing"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "light_crown/bs_arachnarch"
+}

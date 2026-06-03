@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:squall_plate"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/da_eots"
+}

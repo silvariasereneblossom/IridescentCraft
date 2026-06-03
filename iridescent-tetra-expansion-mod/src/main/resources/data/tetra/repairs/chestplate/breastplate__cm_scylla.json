@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:lacrima"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/cm_scylla"
+}

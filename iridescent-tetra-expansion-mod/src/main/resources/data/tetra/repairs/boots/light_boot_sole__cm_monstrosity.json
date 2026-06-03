@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:lava_power_cell"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/cm_monstrosity"
+}

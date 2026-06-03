@@ -1,0 +1,38 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T2). REPAIR ITEM = blue_skies:soul_fragment. Summoner: soul_fragment via loot-bag (data-driven).",
+  "key": "bs_summoner",
+  "category": "gem",
+  "primary": 6.6,
+  "secondary": 3.4,
+  "tertiary": 3.6,
+  "durability": 540,
+  "integrityCost": 2,
+  "integrityGain": 7,
+  "magicCapacity": 145,
+  "toolLevel": "minecraft:iron",
+  "toolEfficiency": 7,
+  "tints": {
+    "glyph": "7e57c2",
+    "texture": "7e57c2"
+  },
+  "textures": [
+    "shiny",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "blue_skies:soul_fragment"
+    ]
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "blue_skies"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:ender_spell_power": 0.12,
+    "**irons_spellbooks:ender_magic_resist": 0.07,
+    "**irons_spellbooks:spell_power": 0.09
+  }
+}

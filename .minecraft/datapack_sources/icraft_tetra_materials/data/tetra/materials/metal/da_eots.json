@@ -1,0 +1,42 @@
+{
+  "_comment": "icraft #58 boss-only Tetra material (refight-to-repair, T4). REPAIR ITEM = deep_aether:squall_plate. Eye of the Storm: squall_plate not in a loot table -> LootJS floor (stratus_ingot already taken).",
+  "key": "da_eots",
+  "category": "metal",
+  "primary": 9.0,
+  "secondary": 3.4,
+  "tertiary": 4.5,
+  "durability": 1320,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 220,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 10,
+  "tints": {
+    "glyph": "5dade2",
+    "texture": "5dade2"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "deep_aether:squall_plate"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "conditions": [
+    {
+      "type": "forge:mod_loaded",
+      "modid": "deep_aether"
+    }
+  ],
+  "attributes": {
+    "**irons_spellbooks:lightning_spell_power": 0.15,
+    "**irons_spellbooks:lightning_magic_resist": 0.1,
+    "**irons_spellbooks:spell_power": 0.12
+  }
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:squall_plate"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "cuirass/da_eots"
+}
