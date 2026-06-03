@@ -77,6 +77,9 @@ MATERIAL_ITEM_MAP = {
     'netherite':    (['minecraft:netherite_ingot'],     1, HAMMER_DIAMOND),
     # tetranomicon-extended metals
     'aethersteel':  (['aethersteel:aethersteel_ingot'], 2, HAMMER_IRON),
+    # Deep Aether netherite-sidegrade metal (#66) — jar material, not in the
+    # icraft_tetra_materials datapack auto-load, so hardcoded here.
+    'stratus':      (['deep_aether:stratus_ingot'],     1, HAMMER_DIAMOND),
     'charoite':     (['blue_skies:charoite_ingot'],     2, HAMMER_IRON),
     'diopside':     (['blue_skies:diopside_gem'],       2, HAMMER_IRON),
     'elementium':   (['botania:elementium_ingot'],      2, HAMMER_IRON),

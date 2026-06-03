@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-06-02T11:50:20Z",
+    "generated_at":  "2026-06-02T21:44:58Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -16,8 +16,8 @@
                                                      "size":  8854
                                                  },
                  "iridescent_tetra_expansion-1.0.0.jar":  {
-                                                              "sha256":  "422ec757d6dea7aa33a6c96043853829ae2977e7b4814406d38122ec66cbe00b",
-                                                              "size":  1129310
+                                                              "sha256":  "08870060ca94caeed720a7d58a2d63905696a4a18835755ae9af31cda4f53891",
+                                                              "size":  1130587
                                                           },
                  "iridescent_durability_clamp-0.1.0.jar":  {
                                                                "sha256":  "f39c1eeb0b53daa1fab3da3980a6542a8d26fd5ba2993c2934ff4aa19999f0ae",

@@ -1,0 +1,34 @@
+{
+  "key": "stratus",
+  "category": "metal",
+  "primary": 8.4,
+  "secondary": 3.5,
+  "tertiary": 4.5,
+  "durability": 1300,
+  "integrityCost": 4,
+  "integrityGain": 11,
+  "magicCapacity": 150,
+  "toolLevel": "minecraft:netherite",
+  "toolEfficiency": 12,
+  "tints": {
+    "glyph": "a7c7e7",
+    "texture": "a7c7e7"
+  },
+  "textures": [
+    "shiny",
+    "heavy",
+    "metal"
+  ],
+  "material": {
+    "items": [
+      "deep_aether:stratus_ingot"
+    ]
+  },
+  "requiredTools": {
+    "hammer_dig": "minecraft:diamond"
+  },
+  "attributes": {
+    "**irons_spellbooks:spell_power": 0.08,
+    "**irons_spellbooks:mana_regen": 0.08
+  }
+}
