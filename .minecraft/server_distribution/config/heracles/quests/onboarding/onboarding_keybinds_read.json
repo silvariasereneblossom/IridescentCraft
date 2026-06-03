@@ -1,0 +1,50 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "iridescent_codex:tome_of_iridescence"
+    },
+    "title": "Read: Keybinds",
+    "subtitle": "Codex's Keybinds reference",
+    "description": [
+      "Lots of mods, lots of new keys. The Codex's Keybinds page is the quick reference.",
+      "",
+      "Open the Welcome > Keybinds codex entry."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          3,
+          2
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_hour_read"
+  ],
+  "tasks": {
+    "read_keybinds": {
+      "type": "heracles:dummy",
+      "value": "codex_welcome_keybinds_read",
+      "description": "Open the Welcome > Keybinds codex page."
+    }
+  },
+  "rewards": {
+    "bonus_pearl": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:ender_pearl",
+        "count": 1
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 200
+    }
+  }
+}

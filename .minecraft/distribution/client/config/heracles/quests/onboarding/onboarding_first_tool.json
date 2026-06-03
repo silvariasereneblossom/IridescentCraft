@@ -1,0 +1,51 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:wooden_pickaxe"
+    },
+    "title": "Hand-Held Tools",
+    "subtitle": "Craft a wooden pickaxe",
+    "description": [
+      "A pickaxe lets you break stone.",
+      "",
+      "Open your inventory (E), arrange 3 planks across the top and 2 sticks down the middle of the crafting grid."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          1,
+          0
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_log"
+  ],
+  "tasks": {
+    "have_pick": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:wooden_pickaxe"
+      }
+    }
+  },
+  "rewards": {
+    "starter_sticks": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:stick",
+        "count": 8
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 75
+    }
+  }
+}

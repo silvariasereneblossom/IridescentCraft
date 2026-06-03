@@ -1,0 +1,50 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "iridescent_codex:tome_of_iridescence"
+    },
+    "title": "Read: Welcome",
+    "subtitle": "Open the codex's Intro page",
+    "description": [
+      "The Codex's Intro section explains why this pack exists.",
+      "",
+      "Open it from your hotbar and read the Welcome > Intro entry."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          2,
+          1
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_first_codex_open"
+  ],
+  "tasks": {
+    "read_intro": {
+      "type": "heracles:dummy",
+      "value": "codex_welcome_intro_read",
+      "description": "Open the Welcome > Intro codex page (fires when you read it)."
+    }
+  },
+  "rewards": {
+    "bonus_source": {
+      "type": "heracles:item",
+      "item": {
+        "id": "ars_nouveau:source_gem",
+        "count": 8
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 100
+    }
+  }
+}

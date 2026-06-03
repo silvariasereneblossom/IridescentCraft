@@ -1,0 +1,57 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "iridescent_codex:tome_of_iridescence"
+    },
+    "title": "Read: First Hour",
+    "subtitle": "Codex's First Hour guide",
+    "description": [
+      "The First Hour guide walks you through your first session.",
+      "",
+      "Open the Welcome > First Hour codex entry."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          3,
+          1
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [
+    "onboarding_intro_read"
+  ],
+  "tasks": {
+    "read_first_hour": {
+      "type": "heracles:dummy",
+      "value": "codex_welcome_first_hour_read",
+      "description": "Open the Welcome > First Hour codex page."
+    }
+  },
+  "rewards": {
+    "bonus_source": {
+      "type": "heracles:item",
+      "item": {
+        "id": "ars_nouveau:source_gem",
+        "count": 16
+      }
+    },
+    "bonus_planks": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:oak_planks",
+        "count": 8
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 150
+    }
+  }
+}

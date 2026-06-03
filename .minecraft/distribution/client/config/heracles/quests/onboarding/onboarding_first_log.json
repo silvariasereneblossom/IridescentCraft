@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:oak_log"
+    },
+    "title": "Crack the Bark",
+    "subtitle": "Mine your first log",
+    "description": [
+      "Every adventure starts with a tree.",
+      "",
+      "Punch any log type to chop it down."
+    ],
+    "groups": {
+      "Onboarding": {
+        "position": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true
+  },
+  "dependencies": [],
+  "tasks": {
+    "mine_log": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:oak_logs"
+      }
+    }
+  },
+  "rewards": {
+    "starter_planks": {
+      "type": "heracles:item",
+      "item": {
+        "id": "minecraft:oak_planks",
+        "count": 4
+      }
+    },
+    "xp_burst": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 50
+    }
+  }
+}
