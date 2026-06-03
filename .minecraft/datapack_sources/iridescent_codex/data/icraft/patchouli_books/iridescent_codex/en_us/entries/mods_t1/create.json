@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Your first automation engine. Brass production is the T1 ceiling material. Mixing recipes allow transmutation of T1 materials into small quantities of T2 materials at an intentionally poor ratio.$(br2)$(bold)Key IridescentCraft interactions:$() Brass is a required material throughout T1. Mechanical Crafters automate token fragment collection. The Deployer can automate enchanting table interactions."
+      "text": "$(bold)Role in the pack:$() Your first automation engine, and the heart of the Tier 1 $(bold)Engineering$() lane. Brass is the T1 ceiling material, and Create machines are what you submit to the Codex to bank Tier 1 tokens.$(br2)$(bold)Key IridescentCraft interactions:$() Brass is a required material throughout T1. Mechanical Crafters automate the bulk crafting you feed into Codex submissions. The Deployer can automate enchanting table interactions."
     },
     {
       "type": "patchouli:text",

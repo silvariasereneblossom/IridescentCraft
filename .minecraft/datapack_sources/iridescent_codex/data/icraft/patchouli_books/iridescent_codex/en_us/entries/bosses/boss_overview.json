@@ -19,7 +19,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Token Drops$()$(br2)All bosses drop tier tokens \u2014 the number increases with boss tier and difficulty:$(br2)$(li)T1 bosses: 1\u20132 tier tokens$(li)T2 bosses: 1\u20133 tier tokens$(li)T3 bosses: 2\u20134 tier tokens$(li)T4 bosses: 4\u20136 tier tokens$(br2)Boss materials are unique crafting components dropped alongside tokens. They are used in endgame recipes and waystone construction."
+      "text": "$(bold)Bosses & Progression$()$(br2)Boss kills feed the $(bold)Combat$() lane of the Codex token economy \u2014 every kill banks progression tokens, more at higher tiers. They also count toward the $(bold)boss rush$(): clear $(t2)80%$()/$(t3)90%$()/$(t4)100%$() of a tier's bosses to advance without banking tokens at all.$(br2)Boss $(italic)materials$() drop alongside, but they are spoils for crafting \u2014 not progression currency."
     }
   ]
 }

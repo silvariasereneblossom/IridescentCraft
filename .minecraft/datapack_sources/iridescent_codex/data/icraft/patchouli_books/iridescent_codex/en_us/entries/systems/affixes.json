@@ -16,7 +16,7 @@
     {
       "type": "patchouli:text",
       "title": "Reforging",
-      "text": "$(thing)Apotheosis$()'s Reforging Station allows replacing an item's affixes with newly-rolled ones. $(thing)IridescentCraft$() adds three reforge token tiers that control the minimum affix quality:$(br2)$(bold)Basic Reforging Token$() — minimum Uncommon$(br)$(bold)Advanced Reforging Token$() — minimum Rare$(br)$(bold)Ultimate Reforging Token$() — minimum Epic$(br2)Tokens are crafted from boss materials. See $(l:icraft:loot/token_system)Tier Tokens$(/l) for recipes."
+      "text": "$(thing)Apotheosis$()'s Reforging Station allows replacing an item's affixes with newly-rolled ones. $(thing)IridescentCraft$() adds three reforge token tiers that control the minimum affix quality:$(br2)$(bold)Basic Reforging Token$() — minimum Uncommon$(br)$(bold)Advanced Reforging Token$() — minimum Rare$(br)$(bold)Ultimate Reforging Token$() — minimum Epic$(br2)These reforging tokens are crafted from boss materials at the reforging stations. They are separate from progression tokens — see $(l:icraft:loot/token_system)Progression Tokens$(/l)."
     },
     {
       "type": "patchouli:text",

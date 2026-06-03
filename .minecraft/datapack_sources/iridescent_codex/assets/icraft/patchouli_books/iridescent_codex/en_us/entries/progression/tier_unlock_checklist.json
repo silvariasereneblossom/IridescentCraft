@@ -1,42 +1,32 @@
 {
-  "name": "Tier Unlock Checklist",
-  "icon": "kubejs:tier3_token",
+  "name": "Tier Targets & the Boss Rush",
+  "icon": "icraft:progression_token_t3",
   "category": "icraft:progression",
   "sortnum": 4,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Every tier unlocks via $(bold)any one$() of multiple milestones. The system watches in the background and grants the tier the moment you cross a threshold — even without opening the quest book.$(br2)This entry lists the actual triggers per tier. Each is independent: you only need one path complete.$(br2)To check your current tier in-game: open the FTB Quests screen, or use $(bold)/astages list$()."
+      "text": "Every tier offers the same two routes (see $(l:icraft:progression/tier_gates)How You Advance$()): bank the $(bold)token threshold$(), or clear the $(bold)boss-rush share$(). This entry lists the targets tier by tier.$(br2)You only need to hit $(bold)one$() of the two. Check your standing any time with $(bold)/icraft codex balance$()."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 2 — Boss kills (any one)",
-      "text": "$(bold)Twilight Forest:$()$(br)Naga · Lich · Hydra · Ur-Ghast · Knight Phantom · Snow Queen · Minoshroom$(br2)$(bold)Blue Skies:$()$(br)Summoner · Alchemist · Starlit Crusher · Arachnarch$(br2)$(bold)The Aether:$()$(br)Slider · Valkyrie Queen · Sun Spirit$(br2)Or: kill 10 Tier 2 bosses cumulatively across multiple visits."
+      "title": "Tier 1 → Tier 2",
+      "text": "$(li)$(bold)Tokens:$() bank $(t2)500$().$(li)$(bold)Boss Rush:$() clear $(t2)80%$() of the Tier 1 bosses (the Overworld roster).$(br2)Earn however you like — build Create machines, cultivate Botania mana, loot structures, or hunt Overworld bosses. Every lane feeds the same pool."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 2 — Other paths",
-      "text": "$(bold)Crafting milestone:$() craft a Thermal Series $(italic)machine_frame$().$(br2)$(bold)Dimension visit milestone:$() enter Twilight Forest, Blue Skies, and the Aether at least once each.$(br2)$(bold)Quest path:$() complete any one chapter of the Tier 2 quest book (Grinding, Magic, Combat, Exploration, or Engineering).$(br2)$(italic)Quest-book paths additionally grant skill points + loot boxes; milestone paths grant tier access only.$()"
+      "title": "Tier 2 → Tier 3",
+      "text": "$(li)$(bold)Tokens:$() bank $(t3)1000$().$(li)$(bold)Boss Rush:$() clear $(t3)90%$() of the Tier 2 bosses — the Twilight Forest, Aether, and Blue Skies rosters.$(br2)Thermal machines, Ars Nouveau reagents, dimension loot, or dimensional bosses all count toward it."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 3 — Boss kills (any one)",
-      "text": "$(bold)Cataclysm:$()$(br)Netherite Monstrosity · Ignis · The Harbinger · The Leviathan · Maledictus · Ancient Remnant · Baby Leviathan$(br2)$(bold)Other:$() Wither · Forgotten Guardian (Undergarden) · Stalker / Shattered (Deeper & Darker) · Dame Fortuna / Rosalyne (Meet Your Fight)$(br2)Or: kill 10 Tier 3 bosses cumulatively."
+      "title": "Tier 3 → Tier 4",
+      "text": "$(li)$(bold)Tokens:$() bank $(t4)2000$().$(li)$(bold)Boss Rush:$() clear $(t4)100%$() of the Tier 3 bosses — Nether, Undergarden, Deeper Dark, and the Abyss — finishing with $(bold)Lucifer$().$(br2)$(warn)The combat pinch:$() the boss-rush route to T4 ends at Lucifer, the combat capstone. A combat-averse player simply banks 2000 tokens instead and never has to fight him."
     },
     {
       "type": "patchouli:text",
-      "title": "Tier 3 — Other paths",
-      "text": "$(bold)Crafting milestone:$() craft a $(italic)mekanism:steel_casing$().$(br2)$(bold)Dimension visit milestone:$() enter the Nether, Undergarden, and Deeper & Darker.$(br2)$(bold)Quest path:$() complete any one Tier 3 chapter.$(br2)$(warn)Note:$() the Nether is gated behind Tier 3, not Tier 1. You need Tier 3 access to light a Nether portal."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Tier 4 — Boss kills (any one)",
-      "text": "$(bold)Endgame:$()$(br)Ender Dragon · Gaia Guardian (Botania) · Ender Guardian (Cataclysm End boss) · Ignited Revenant (Cataclysm 1000 HP boss)$(br2)Or: kill 10 Tier 4 bosses cumulatively.$(br2)$(bold)Crafting milestone:$() craft a $(italic)mekanism:ultimate_control_circuit$()."
-    },
-    {
-      "type": "patchouli:text",
-      "title": "Backup safety net",
-      "text": "$(bold)tier_1$() is granted automatically on first join. If you ever lose it (creative-mode switching, world transfers), it re-grants periodically.$(br2)$(bold)Creative mode$() bypasses tier gates entirely for the duration. Returning to survival re-applies your saved tier set.$(br2)For admin overrides: $(bold)/astages add <player> tier_X$() forces a stage; $(bold)/astages remove <player> tier_X$() revokes."
+      "title": "Tier 4 — the finale",
+      "text": "Tier 4 has $(bold)no token gate$() — it is the top of the ladder.$(br2)The post-game (the Ad Astra planets) opens when you defeat the $(t4)Ender Dragon$(). Reaching the End first requires the Deep-Aether $(bold)End Compass$() — see $(l:icraft:progression/dimensions)Dimensional Progression$()."
     }
   ]
 }

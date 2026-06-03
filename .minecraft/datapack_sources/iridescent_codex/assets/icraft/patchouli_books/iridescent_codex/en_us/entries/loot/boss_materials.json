@@ -6,7 +6,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Boss materials are unique crafting components dropped only by specific bosses. They are used in:$(br2)$(li)Waystone construction (expensive by design)$(li)Class Altar construction$(li)Tier 4 advanced recipes$(li)Mythic infusion (endgame)$(br2)Unlike tokens, boss materials are $(italic)not$() interchangeable between bosses. Each boss's material has specific uses."
+      "text": "Boss materials are unique crafting components dropped only by specific bosses. They are used in:$(br2)$(li)Waystone construction (expensive by design)$(li)Class Altar construction$(li)Tier 4 advanced recipes$(li)Mythic infusion (endgame)$(br2)Unlike progression tokens, boss materials are $(italic)spoils$() — not currency — and are not interchangeable between bosses. Each boss's material has specific uses."
     },
     {
       "type": "patchouli:text",

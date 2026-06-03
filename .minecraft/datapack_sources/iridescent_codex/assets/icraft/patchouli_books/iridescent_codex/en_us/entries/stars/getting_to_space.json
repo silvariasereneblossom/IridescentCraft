@@ -6,11 +6,11 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(bold)Space exploration is the final frontier.$()$(br2)To reach space, you need three things: a $(bold)Rocket Workbench$(), a $(bold)rocket$(), and $(bold)fuel$(). None of these are cheap \u2014 space is endgame content that requires established T4 infrastructure."
+      "text": "$(bold)Space exploration is the final frontier.$()$(br2)The Ad Astra planets are the $(bold)post-game$(): they open only after you defeat the $(t4)Ender Dragon$(), the pack's finale. From there you need three things: a $(bold)Rocket Workbench$(), a $(bold)rocket$(), and $(bold)fuel$() \u2014 none of them cheap, all built on established Tier 4 infrastructure."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Rocket Workbench$()$(br)The gateway item. Crafted from Netherite, Mekanism Steel Casings, and a T4 progression token. Without this station, no rockets can be built.$(br2)$(bold)Fuel Refining$()$(br)Ad Astra fuel requires RF-powered refining. You will need $(italic)significant$() power infrastructure \u2014 a coal generator will not cut it. Bring your Mekanism Fusion Reactor or Thermal Dynamos."
+      "text": "$(bold)Rocket Workbench$()$(br)The gateway item. Crafted from Netherite, Mekanism Steel Casings, and a Reality Progression Token (a Tier 4 crafting token). Without this station, no rockets can be built.$(br2)$(bold)Fuel Refining$()$(br)Ad Astra fuel requires RF-powered refining. You will need $(italic)significant$() power infrastructure \u2014 a coal generator will not cut it. Bring your Mekanism Fusion Reactor or Thermal Dynamos."
     },
     {
       "type": "patchouli:text",

@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Role in the pack:$() Twilight Forest is the most content-dense T2 dimension. Seven bosses with unique weapons, a full progression path through the forest, and some of the best T2 loot tables.$(br2)$(bold)Boss order:$() The forest has an internal progression. You cannot reach late zones without defeating earlier bosses. Follow the magic map or FTB Quests for the intended order."
+      "text": "$(bold)Role in the pack:$() Twilight Forest is the most content-dense T2 dimension. Seven bosses with unique weapons, a full progression path through the forest, and some of the best T2 loot tables.$(br2)$(bold)Boss order:$() The forest has an internal progression. You cannot reach late zones without defeating earlier bosses. Follow the magic map for the intended order."
     },
     {
       "type": "patchouli:text",

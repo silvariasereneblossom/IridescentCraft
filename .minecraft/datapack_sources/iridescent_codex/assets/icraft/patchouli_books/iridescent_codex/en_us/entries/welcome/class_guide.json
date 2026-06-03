@@ -32,7 +32,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier Progression Basics",
-      "text": "$(bold)T1 tokens$() drop from dungeon chests and early boss kills. Use them to unlock $(t2)Tier 2$() content.$(br2)$(bold)Boss kills advance tiers.$() Each tier has required bosses that must be defeated to progress.$(br2)$(bold)Explore before you fight.$() Dungeons have valuable loot, spell scrolls, and tokens. You don't need to rush boss fights — gear up first.$(br2)$(bold)Check your FTB Quests book$() for specific progression requirements and rewards at each tier."
+      "text": "$(bold)Progression tokens$() come from four lanes — building, magic, exploring, and combat — all feeding one pool. Bank enough to advance a tier.$(br2)$(bold)Two routes:$() reach a tier's token threshold, $(italic)or$() clear its boss-rush share. Either one works.$(br2)$(bold)Explore before you fight.$() Dungeons have loot, spell scrolls, and tokens. You don't need to rush bosses — gear up first.$(br2)See the $(bold)Progression$() chapter for the full token economy."
     }
   ]
 }

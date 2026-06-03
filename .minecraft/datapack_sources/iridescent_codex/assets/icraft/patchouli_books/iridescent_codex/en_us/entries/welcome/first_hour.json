@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Useful Tips$()$(br2)$(li)$(bold)Don't rush enchanting.$() Apotheosis reworks enchanting completely. Better bookshelves unlock better enchants \u2014 no need to rush a Tier 1 setup.$(li)$(bold)Don't expect diamonds in chests.$() They've been removed from all Overworld structure loot. Diamonds are a Tier 2 material \u2014 you'll earn them, not find them.$(li)$(bold)Explore structures for tokens.$() Tier 1 token fragments drop from Overworld dungeon chests. Collect 5 for a full token to unlock the next tier."
+      "text": "$(bold)Useful Tips$()$(br2)$(li)$(bold)Don't rush enchanting.$() Apotheosis reworks enchanting completely. Better bookshelves unlock better enchants \u2014 no need to rush a Tier 1 setup.$(li)$(bold)Don't expect diamonds in chests.$() They've been removed from all Overworld structure loot. Diamonds are a Tier 3 material \u2014 you'll earn them, not find them.$(li)$(bold)Explore for progression tokens.$() Looting structures, entering new dimensions, and boss kills all earn Codex tokens toward the next tier. Bank them with $(bold)/icraft codex submit$()."
     },
     {
       "type": "patchouli:text",

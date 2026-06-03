@@ -7,7 +7,7 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "The skill system ($(bold)Pufferfish's Skills$()) provides six skill trees with deep investment paths. Skill points are earned through FTB Quests \u2014 completing quest paths rewards points, not combat.$(br2)$(bold)Opening the skill menu:$() Default key $(bold)K$().$(br2)$(bold)Respeccing:$() 5 XP levels per point refunded. Full respec is possible but expensive."
+      "text": "The skill system ($(bold)Pufferfish's Skills$()) provides six skill trees with deep investment paths. Skill points are earned by completing quests in the Heracles quest book \u2014 not by grinding combat or XP.$(br2)$(bold)Opening the skill menu:$() Default key $(bold)K$().$(br2)$(bold)Respeccing:$() 5 XP levels per point refunded. Full respec is possible but expensive."
     },
     {
       "type": "patchouli:text",

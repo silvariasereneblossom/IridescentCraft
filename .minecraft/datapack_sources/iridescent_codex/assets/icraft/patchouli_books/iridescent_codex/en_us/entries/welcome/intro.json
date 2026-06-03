@@ -18,7 +18,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)First Steps$()$(br2)$(li)Open your FTB Quests book (key: $(k:key.inventory)) \u2014 it is your primary progression tracker.$(li)Select a Race when prompted (or open Origins menu).$(li)Select a Class via the Class selection screen.$(li)Open your Skills menu (default key: $(bold)K$()).$(li)Find a waystone \u2014 they are your fast travel network.$(br2)The quest book rewards skill points. This Codex explains what those points do."
+      "text": "$(bold)First Steps$()$(br2)$(li)Select a Race when prompted (or open the Origins menu), then a Class.$(li)Open your Skills menu (default key: $(bold)K$()).$(li)Open the Heracles quest book \u2014 it guides you and tracks your progress.$(li)Find a waystone \u2014 they are your fast travel network.$(br2)Advancement runs on the Iridescent Codex token economy \u2014 the Progression chapter explains it."
     }
   ]
 }

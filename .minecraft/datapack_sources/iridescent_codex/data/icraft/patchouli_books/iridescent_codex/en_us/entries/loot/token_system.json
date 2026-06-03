@@ -1,20 +1,20 @@
 {
-  "name": "Tier Tokens",
-  "icon": "kubejs:tier1_token",
+  "name": "Progression Tokens",
+  "icon": "icraft:progression_token_t1",
   "category": "icraft:loot",
   "sortnum": 0,
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "Tier tokens are the primary currency of the progression system. They are used in tier-gated crafting recipes and as quest rewards for gate quests.$(br2)$(bold)Four token tiers:$() Tier 1 (iron-colored) \u00b7 Tier 2 (steel-blue) \u00b7 Tier 3 (amethyst) \u00b7 Tier 4 (gold)$(br2)$(bold)Token fragments$() drop from structure chests. Collect $(bold)5 fragments$() to craft a full token."
+      "text": "Progression tokens are the Iridescent Codex's currency for advancing tiers. There are three: $(bold)Codex Token I, II, and III$() — one for each tier transition.$(br2)You earn them through the four lanes — Engineering, Magic, Exploration, Combat — and bank them toward a threshold. Full details: $(l:icraft:progression/tier_gates)How You Advance$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Where Tokens Come From$()$(br2)$(li)$(bold)Structure chests$() \u2014 fragments and full tokens in dungeon loot$(li)$(bold)Boss kills$() \u2014 1\u20134 tokens depending on tier and boss$(li)$(bold)Quest rewards$() \u2014 gate quests grant 3\u20135 full tokens$(li)$(bold)Transmutation recipes$() \u2014 8 lower-tier tokens \u2192 1 higher-tier token$(br2)Tokens are $(italic)not$() required to advance tiers \u2014 completing a quest path does that automatically. Tokens are for crafting."
+      "text": "$(bold)Earning & Banking$()$(br2)Submit eligible materials, reagents, and loot with $(bold)/icraft codex submit$() — the Codex converts them into the token for your current tier. Boss kills, dimension entry, and chest finds grant tokens too.$(br2)$(bold)Thresholds:$() $(t2)500$() → Tier 2 · $(t3)1000$() → Tier 3 · $(t4)2000$() → Tier 4. Check progress with $(bold)/icraft codex balance$()."
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)What Tokens Buy$()$(br2)Tier tokens are consumed in recipes for:$(br2)$(li)Tier-gated crafting stations (e.g. Apotheosis Gem Cutting Table requires T2 tokens)$(li)Waystone construction$(li)Class Altar construction$(li)Reforging tokens (basic, advanced, ultimate)$(li)Advanced cross-mod alloy recipes$(br2)They are not currency \u2014 they are a crafting material. You will not accumulate excess if you play actively."
+      "text": "$(bold)Not to Be Confused With…$()$(br2)$(li)$(bold)Spoils$() (relics, boss materials, uniques) are loot, not currency — see $(l:icraft:progression/tier_skip)Spoils Aren't Currency$().$(li)$(bold)Reforging tokens$() (Basic / Advanced / Ultimate) are a separate Apotheosis item crafted from boss materials; they reroll affixes, not tiers.$(br2)Progression tokens do exactly one thing: move you up a tier."
     }
   ]
 }
