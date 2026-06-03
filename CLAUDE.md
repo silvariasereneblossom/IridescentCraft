@@ -29,3 +29,7 @@ Read for context; update after your commits, then push the internal repo:
 ## Layout & testing
 - 3 distros: `.minecraft\mods` · `.minecraft\server_distribution\` · `.minecraft\distribution\client\`. `sync-distros.ps1` mirrors **only** `kubejs/{startup,server}_scripts` — NOT mods/datapacks (those are committed per-distro).
 - The operator runs in-game tests. When handing one off, give **paste-ready** `/give` `/summon` `/locate structure` `/tp` commands with **real IDs** looked up from the scripts/datapacks (don't guess); flag cosmetic-only breakage (e.g. a missing lang key) so they know the behavior still validates.
+
+## Wiki
+- Pages live under `.minecraft\wiki\` (a mapped subset → the public GitHub Wiki). **Public wiki = player-facing summaries; detailed dev info (script paths, line numbers, root-cause forensics, internal cleanup/deny-list patterns, local paths) stays in the private internal repo.**
+- The public wiki **auto-syncs via the `sync-wiki.yml` GitHub Action** on push to `main` (runs `sync-wiki.py`, which also does pack→flat link conversion). **Do NOT manually push the `IridescentCraft.wiki` clone** — it's redundant and produces broken wiki links. Just push the modpack repo; the Action syncs the wiki.
