@@ -73,6 +73,9 @@ call :delete "*supermartijn642*"
 call :delete "*connectedglass*"
 call :delete "*trashcans*"
 
+REM --- Removed (dedicated-server ClientLevel dist cascade; bundled Fabric-port ranged_weapon_api breaks dist-cleaning) ---
+call :delete "*soulslike-weaponry*"
+
 REM --- Client-side-only mods (side='client' in metadata) ---
 call :delete "*auudio*"
 call :delete "*BetterAdvancements*"

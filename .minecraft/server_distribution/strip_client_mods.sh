@@ -78,6 +78,9 @@ delete_mod "*CherryVillage*"
 delete_mod "*rechiseled*"
 delete_mod "*supermartijn642*"
 
+# --- Removed (dedicated-server ClientLevel dist cascade; bundled Fabric-port ranged_weapon_api breaks dist-cleaning) ---
+delete_mod "*soulslike-weaponry*"
+
 # --- Client-side-only mods (side='client' in metadata) ---
 delete_mod "*auudio*"
 delete_mod "*BetterAdvancements*"
