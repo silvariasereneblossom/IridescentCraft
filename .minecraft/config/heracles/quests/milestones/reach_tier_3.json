@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "undergarden:froststeel_ingot" },
+    "title": "Ascension II - Reach Tier 3",
+    "subtitle": "1000 tokens, or 90% of the T2 boss-rush",
+    "description": [
+      "The second ascension. The Codex opens Tier 3 - the Nether, the deep",
+      "dimensions (Undergarden, Deeper Darker), and Mekanism-tier engineering.",
+      "",
+      "Completes when the Codex engine grants you the Tier 3 stage.",
+      "",
+      "§7From here the road forks: Tier 3 to Tier 4 is the great pinch-point.",
+      "§7Combat lanes must face Lucifer; the peaceful lanes can build or",
+      "§7cultivate past him."
+    ],
+    "groups": {
+      "Tier Milestones": { "position": [160, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "unlockNotification": true
+  },
+  "dependencies": ["reach_tier_2"],
+  "tasks": {
+    "engine_grants_t3": {
+      "type": "heracles:advancement",
+      "title": "Be granted the Tier 3 stage by the Codex",
+      "advancements": ["icraft:stage_tier_3"]
+    }
+  },
+  "rewards": {
+    "cloggrum": {
+      "type": "heracles:item",
+      "title": "Undergarden cloggrum",
+      "item": { "id": "undergarden:cloggrum_ingot", "count": 4 }
+    },
+    "froststeel": {
+      "type": "heracles:item",
+      "title": "Froststeel ingots",
+      "item": { "id": "undergarden:froststeel_ingot", "count": 2 }
+    },
+    "tier_xp": {
+      "type": "heracles:xp",
+      "xptype": "LEVEL",
+      "amount": 15
+    }
+  }
+}

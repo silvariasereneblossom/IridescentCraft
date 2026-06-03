@@ -1,0 +1,52 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "twilightforest:naga_trophy" },
+    "title": "Frontiers II - Hunt the Twilight Bosses",
+    "subtitle": "First kills pay the biggest tokens",
+    "description": [
+      "Each Tier 2 boss's FIRST kill grants a one-time bonus worth a large",
+      "chunk of the pool (15 each at T2); repeat kills grant a smaller amount,",
+      "so the lane stays farmable. All minted automatically on the kill.",
+      "",
+      "Slay the gatekeepers of the Twilight Forest. A single boss kill is also",
+      "one of the engine's Tier 2 unlock triggers - the hunter advances on the",
+      "kill alone.",
+      "",
+      "§7Track the full per-tier roster with §e/icraft codex bosses§7."
+    ],
+    "groups": {
+      "Exploration": { "position": [160, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["exp_t2_dimensions"],
+  "tasks": {
+    "kill_naga": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat the Naga",
+      "entity": "twilightforest:naga",
+      "amount": 1
+    },
+    "kill_lich": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat the Lich",
+      "entity": "twilightforest:lich",
+      "amount": 1
+    }
+  },
+  "rewards": {
+    "naga_scales": {
+      "type": "heracles:item",
+      "title": "Naga scales",
+      "item": { "id": "twilightforest:naga_scale", "count": 6 }
+    },
+    "fiery": {
+      "type": "heracles:item",
+      "title": "Fiery ingot",
+      "item": { "id": "twilightforest:fiery_ingot", "count": 2 }
+    }
+  }
+}

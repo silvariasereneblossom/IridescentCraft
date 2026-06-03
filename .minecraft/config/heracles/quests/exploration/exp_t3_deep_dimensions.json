@@ -1,0 +1,58 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "deeperdarker:reinforced_echo_shard" },
+    "title": "Frontiers III - The Deep Dimensions",
+    "subtitle": "Undergarden, Deeper Darker, the Nether",
+    "description": [
+      "The Tier 3 frontiers run deeper and darker: the Undergarden, the",
+      "Otherside of Deeper Darker, and the Nether itself. Each first arrival",
+      "banks 20 Exploration tokens automatically.",
+      "",
+      "Visiting all three is one of the engine's Tier 3 unlock triggers.",
+      "",
+      "Reach all three below."
+    ],
+    "groups": {
+      "Exploration": { "position": [320, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["exp_t2_boss_tokens", "reach_tier_2"],
+  "tasks": {
+    "enter_nether": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the Nether",
+      "to": "minecraft:the_nether"
+    },
+    "enter_undergarden": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the Undergarden",
+      "to": "undergarden:undergarden"
+    },
+    "enter_otherside": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the Otherside (Deeper Darker)",
+      "to": "deeperdarker:otherside"
+    }
+  },
+  "rewards": {
+    "cloggrum": {
+      "type": "heracles:item",
+      "title": "Undergarden cloggrum",
+      "item": { "id": "undergarden:cloggrum_ingot", "count": 4 }
+    },
+    "utherium": {
+      "type": "heracles:item",
+      "title": "Utherium crystal",
+      "item": { "id": "undergarden:utherium_crystal", "count": 2 }
+    },
+    "soul_dust": {
+      "type": "heracles:item",
+      "title": "Sculk soul dust",
+      "item": { "id": "deeperdarker:soul_dust", "count": 4 }
+    }
+  }
+}

@@ -1,0 +1,48 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" } },
+    "title": "The Iridescent Codex",
+    "subtitle": "One pool. Four lanes. Your path.",
+    "description": [
+      "Welcome, adventurer. The Iridescent Codex is your guide to power.",
+      "",
+      "Your progress is measured in a SINGLE COMBINED POOL of progression",
+      "tokens. You fill it however you like, drawing from any of four lanes:",
+      "",
+      "  §bEngineering§r  - submit refined materials & machines",
+      "  §dMagic§r        - submit cultivated reagents & rituals",
+      "  §6Exploration§r  - slay bosses, visit dimensions, find loot",
+      "  §cCombat§r       - clear the boss-rush roster",
+      "",
+      "Reach a tier threshold and you ascend. Mix lanes freely - the pool",
+      "never cares WHICH lane the tokens came from.",
+      "",
+      "Right-click the Codex to read the full doctrine, then pick a lane.",
+      "Check your standing any time with §e/icraft codex balance§r."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [0, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "IN_PROGRESS"
+  },
+  "dependencies": [],
+  "tasks": {
+    "open_codex": {
+      "type": "heracles:item",
+      "title": "Hold the Iridescent Codex",
+      "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" },
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "insight": {
+      "type": "heracles:item",
+      "title": "A measure of insight",
+      "item": { "id": "minecraft:experience_bottle", "count": 6 }
+    }
+  }
+}

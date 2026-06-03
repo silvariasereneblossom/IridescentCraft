@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:filled_map" },
+    "title": "Lane: Exploration",
+    "subtitle": "Discover your way up",
+    "description": [
+      "The Exploration lane rewards going places and finding things - and it",
+      "needs no Submit button. Tokens mint §aAUTOMATICALLY§r as you play:",
+      "",
+      "  - Slay minibosses and bosses (a named boss's FIRST kill pays a",
+      "    one-time bonus; repeat kills still pay).",
+      "  - Step into a new non-overworld dimension (a one-time bonus each).",
+      "  - Loot tokens hide in chests, barrels, and the occasional enemy -",
+      "    denser inside structures and other dimensions.",
+      "",
+      "Exploration is always farmable, so the threshold is always reachable.",
+      "",
+      "§7Follow the §6Exploration§7 group for the frontier checklist."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [240, 30] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["codex_two_routes"],
+  "tasks": {
+    "see_lane": {
+      "type": "heracles:item",
+      "title": "Hold a map to begin Exploration",
+      "item": "minecraft:map",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  }
+}

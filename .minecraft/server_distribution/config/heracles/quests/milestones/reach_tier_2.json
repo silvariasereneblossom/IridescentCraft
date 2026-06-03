@@ -1,0 +1,50 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "aether:zanite_gemstone" },
+    "title": "Ascension I - Reach Tier 2",
+    "subtitle": "500 tokens, or 80% of the T1 boss-rush",
+    "description": [
+      "The first ascension. However you got here - banked tokens or boss-rush -",
+      "the Codex recognizes your growth and opens Tier 2.",
+      "",
+      "This quest completes the moment the Codex engine grants you the Tier 2",
+      "stage. You do NOT submit anything here; the milestone tracks the",
+      "engine's decision.",
+      "",
+      "Tier 2 unlocks the mid-tier dimensions (Twilight Forest, Blue Skies,",
+      "the Aether) and Thermal-tier engineering."
+    ],
+    "groups": {
+      "Tier Milestones": { "position": [0, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "unlockNotification": true
+  },
+  "dependencies": ["codex_two_routes"],
+  "tasks": {
+    "engine_grants_t2": {
+      "type": "heracles:advancement",
+      "title": "Be granted the Tier 2 stage by the Codex",
+      "advancements": ["icraft:stage_tier_2"]
+    }
+  },
+  "rewards": {
+    "zanite": {
+      "type": "heracles:item",
+      "title": "Aether zanite",
+      "item": { "id": "aether:zanite_gemstone", "count": 4 }
+    },
+    "ironwood": {
+      "type": "heracles:item",
+      "title": "Twilight ironwood",
+      "item": { "id": "twilightforest:ironwood_ingot", "count": 4 }
+    },
+    "tier_xp": {
+      "type": "heracles:xp",
+      "xptype": "LEVEL",
+      "amount": 10
+    }
+  }
+}

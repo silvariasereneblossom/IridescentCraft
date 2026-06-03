@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:compass" },
+    "title": "Two Routes to Ascend",
+    "subtitle": "Tokens, or the boss-rush",
+    "description": [
+      "Each tier offers TWO doors. Take whichever you prefer:",
+      "",
+      "  §e1. The Token Threshold§r - bank enough progression tokens.",
+      "       T1 to T2: §6500§r   |   T2 to T3: §61000§r   |   T3 to T4: §62000§r",
+      "",
+      "  §e2. The Boss-Rush§r - clear a share of the tier's full boss roster.",
+      "       T1 to T2: §c80%§r   |   T2 to T3: §c90%§r   |   T3 to T4: §c100%§r",
+      "",
+      "Either one alone advances you. The Codex tracks both.",
+      "",
+      "§7You earn tokens by clicking §eSubmit§7 in the Engineering and Magic",
+      "§7groups, and AUTOMATICALLY by exploring and fighting - kills, first",
+      "§7dimension entries, and loot all mint tokens with no submit needed.",
+      "",
+      "§7A pure builder, cultivator, explorer, or fighter can each reach the",
+      "§7top alone. Most players blend. Run §e/icraft codex balance§7 any time."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [120, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["codex_root"],
+  "tasks": {
+    "study_routes": {
+      "type": "heracles:item",
+      "title": "Study the two routes in the Codex",
+      "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" },
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "insight": {
+      "type": "heracles:item",
+      "title": "A measure of insight",
+      "item": { "id": "minecraft:experience_bottle", "count": 4 }
+    }
+  }
+}

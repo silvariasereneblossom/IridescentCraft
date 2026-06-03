@@ -1,0 +1,49 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "deep_aether:skyjade" },
+    "title": "Frontiers IV - The Final Frontiers",
+    "subtitle": "The Deep Aether and the End",
+    "description": [
+      "The last frontiers. The Deep Aether is Tier 4's first dimension - work",
+      "it to forge the End Compass that opens the way to the End itself.",
+      "",
+      "Each first arrival still banks an Exploration bonus (Tier 4 content",
+      "mints the highest pool token - there is no separate T4 token; the",
+      "Ender Dragon is the finale, not a threshold).",
+      "",
+      "§7Reach both below. The Abyss, if you find it, pays a bonus too."
+    ],
+    "groups": {
+      "Exploration": { "position": [480, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["exp_t3_deep_dimensions", "reach_tier_3"],
+  "tasks": {
+    "enter_deep_aether": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the Deep Aether",
+      "to": "deep_aether:the_aether"
+    },
+    "enter_end": {
+      "type": "heracles:changed_dimension",
+      "title": "Reach the End",
+      "to": "minecraft:the_end"
+    }
+  },
+  "rewards": {
+    "skyjade": {
+      "type": "heracles:item",
+      "title": "Deep Aether skyjade",
+      "item": { "id": "deep_aether:skyjade", "count": 4 }
+    },
+    "stratus": {
+      "type": "heracles:item",
+      "title": "Stratus ingot",
+      "item": { "id": "deep_aether:stratus_ingot", "count": 2 }
+    }
+  }
+}

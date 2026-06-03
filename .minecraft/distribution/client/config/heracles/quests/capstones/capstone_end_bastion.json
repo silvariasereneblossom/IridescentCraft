@@ -1,0 +1,45 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:end_portal_frame" },
+    "title": "Capstone: The End Bastion",
+    "subtitle": "Follow the compass, open the End",
+    "description": [
+      "The End Compass leads you to the End Bastion. From there, the vanilla",
+      "process resumes: locate the stronghold, fill the portal frames, and",
+      "step through to the End.",
+      "",
+      "Reaching the End is the threshold of the endgame.",
+      "",
+      "§7The End Bastion structure is still being built; this capstone tracks",
+      "§7stepping into the End. Inside, the Dragon will not manifest until you",
+      "§7have explored the outer islands and proven yourself - see the finale."
+    ],
+    "groups": {
+      "Capstones": { "position": [320, 60] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "DEPENDENCIES_VISIBLE"
+  },
+  "dependencies": ["capstone_end_compass"],
+  "tasks": {
+    "enter_the_end": {
+      "type": "heracles:changed_dimension",
+      "title": "Step into the End",
+      "to": "minecraft:the_end"
+    }
+  },
+  "rewards": {
+    "ender_pearls": {
+      "type": "heracles:item",
+      "title": "Ender pearls (for the Summoning Crystal)",
+      "item": { "id": "minecraft:ender_pearl", "count": 8 }
+    },
+    "bastion_xp": {
+      "type": "heracles:xp",
+      "xptype": "LEVEL",
+      "amount": 8
+    }
+  }
+}

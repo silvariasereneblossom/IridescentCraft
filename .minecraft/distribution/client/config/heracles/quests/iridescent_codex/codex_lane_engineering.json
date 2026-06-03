@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:cogwheel" },
+    "title": "Lane: Engineering",
+    "subtitle": "Build your way up",
+    "description": [
+      "The Engineering lane converts refined materials and finished machines",
+      "into progression tokens.",
+      "",
+      "Bulk metals convert at a modest rate and are §ecapped§r per material -",
+      "the real weight comes from high-value machine blocks (Create at T1,",
+      "Thermal at T2, Mekanism at T3).",
+      "",
+      "§7Go to the §bEngineering§7 group in this quest book and click",
+      "§eSubmit§7 to bank every eligible material you are carrying - safely,",
+      "lossless, and never over a cap. Repeat any time."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [240, -90] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["codex_two_routes"],
+  "tasks": {
+    "see_lane": {
+      "type": "heracles:item",
+      "title": "Acquire any iron ingot to begin Engineering",
+      "item": "minecraft:iron_ingot",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  }
+}

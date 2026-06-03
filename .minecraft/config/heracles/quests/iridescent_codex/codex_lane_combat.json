@@ -1,0 +1,38 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:netherite_sword" },
+    "title": "Lane: Combat",
+    "subtitle": "Fight your way up",
+    "description": [
+      "The Combat lane is the boss-rush, and it too needs no Submit button.",
+      "Clear a share of EVERY boss in the tier and you §aauto-advance§r:",
+      "",
+      "  T1 to T2: §c80%§r of T1 bosses",
+      "  T2 to T3: §c90%§r of T2 bosses",
+      "  T3 to T4: §c100%§r of T3 bosses (Lucifer is the final gate)",
+      "",
+      "Every boss and miniboss kill ALSO feeds the combined token pool, so a",
+      "fighter who doesn't want the full clear can still bank their way up.",
+      "",
+      "§7Track your roster progress with §e/icraft codex bosses§7, and follow",
+      "the §cCombat§7 group for the marquee fights."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [240, 90] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["codex_two_routes"],
+  "tasks": {
+    "first_boss_intent": {
+      "type": "heracles:item",
+      "title": "Hold a sword to begin Combat",
+      "item": "#minecraft:swords",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  }
+}

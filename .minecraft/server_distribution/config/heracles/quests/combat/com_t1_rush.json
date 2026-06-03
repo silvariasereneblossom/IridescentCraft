@@ -1,0 +1,74 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:iron_sword" },
+    "title": "Boss-Rush I - The Overworld Gauntlet",
+    "subtitle": "Clear the Tier 1 roster",
+    "description": [
+      "The Tier 1 boss-rush. Clearing 80% of the full T1 boss roster",
+      "auto-advances you to Tier 2 - no tokens needed. Their kills also feed",
+      "the pool.",
+      "",
+      "The composite below tracks a few of the marquee overworld fights; the",
+      "real 80%-of-roster auto-advance is enforced by the engine across every",
+      "T1 boss. See the full count with §e/icraft codex bosses§r."
+    ],
+    "groups": {
+      "Combat": { "position": [0, 0] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "IN_PROGRESS"
+  },
+  "dependencies": ["codex_lane_combat"],
+  "tasks": {
+    "t1_roster": {
+      "type": "heracles:composite",
+      "amount": 3,
+      "tasks": {
+        "kill_wroughtnaut": {
+          "type": "heracles:kill_entity",
+          "title": "Defeat the Ferrous Wroughtnaut",
+          "entity": "mowziesmobs:ferrous_wroughtnaut",
+          "amount": 1
+        },
+        "kill_frostmaw": {
+          "type": "heracles:kill_entity",
+          "title": "Defeat a Frostmaw",
+          "entity": "mowziesmobs:frostmaw",
+          "amount": 1
+        },
+        "kill_umvuthi": {
+          "type": "heracles:kill_entity",
+          "title": "Defeat Umvuthi",
+          "entity": "mowziesmobs:umvuthi",
+          "amount": 1
+        },
+        "kill_gob": {
+          "type": "heracles:kill_entity",
+          "title": "Defeat Gob",
+          "entity": "terramity:gob",
+          "amount": 1
+        },
+        "kill_mutant_zombie": {
+          "type": "heracles:kill_entity",
+          "title": "Defeat a Mutant Zombie",
+          "entity": "mutantmonsters:mutant_zombie",
+          "amount": 1
+        }
+      }
+    }
+  },
+  "rewards": {
+    "combat_apples": {
+      "type": "heracles:item",
+      "title": "Golden apples",
+      "item": { "id": "minecraft:golden_apple", "count": 3 }
+    },
+    "insight": {
+      "type": "heracles:item",
+      "title": "Battle insight",
+      "item": { "id": "minecraft:experience_bottle", "count": 6 }
+    }
+  }
+}

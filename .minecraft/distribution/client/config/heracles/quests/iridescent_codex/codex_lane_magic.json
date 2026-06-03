@@ -1,0 +1,37 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:manasteel_ingot" },
+    "title": "Lane: Magic",
+    "subtitle": "Cultivate your way up",
+    "description": [
+      "The Magic lane mirrors Engineering, but draws ONLY from the peaceful",
+      "side of the arcane arts: mana farms, source generation, and rituals.",
+      "Never spellcasting - this is the cultivator's road.",
+      "",
+      "Crystallized reagents (manasteel, source gems, terrasteel...) are the",
+      "'ore'; altars, apparatus, and rituals are the 'machines'. Tiered:",
+      "Botania at T1, Ars Nouveau at T2, advanced Botania + Occultism +",
+      "Forbidden & Arcanus at T3.",
+      "",
+      "§7Go to the §dMagic§7 group in this quest book and click §eSubmit§7",
+      "to bank every eligible reagent you are carrying."
+    ],
+    "groups": {
+      "Iridescent Codex": { "position": [240, -30] }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": ["codex_two_routes"],
+  "tasks": {
+    "see_lane": {
+      "type": "heracles:item",
+      "title": "Acquire a Manasteel Ingot to begin Magic",
+      "item": "botania:manasteel_ingot",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  }
+}
