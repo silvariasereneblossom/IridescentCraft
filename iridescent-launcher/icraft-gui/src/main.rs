@@ -190,6 +190,16 @@ struct IcraftApp {
     /// fresh "serve" task to bring the server back up. Cleared on
     /// pickup so a second cycle requires another button press.
     pending_restart: bool,
+    /// Wall-clock of the last *successful* remote-HEAD fetch, stamped by
+    /// the background thread. Drives the "(stale)" badge state: a remote
+    /// SHA we haven't re-confirmed recently must NOT render green
+    /// "(in sync)" -- it may be masking a push made while we sat idle,
+    /// offline, or rate-limited.
+    remote_fetched_at: Arc<Mutex<Option<Instant>>>,
+    /// Last time we kicked a remote-HEAD refresh (any path). Gates the
+    /// idle poll so the remote side re-checks on its own cadence instead
+    /// of only on task start/finish + manual Refresh.
+    last_remote_poll: Option<Instant>,
 }
 
 #[derive(Default, Clone)]
@@ -199,6 +209,17 @@ struct InstallStatus {
     mod_count: usize,
     last_sha: Option<String>,
 }
+
+/// How often the GUI re-checks GitHub's HEAD SHA on its own. ~20 req/hour,
+/// safely under the 60/hour unauthenticated api.github.com limit. (The
+/// 2026-05-18 change removed a 3 s / 1200-per-hour poll; this restores a
+/// rate-safe cadence so a push surfaces as "(behind)" without a manual
+/// Refresh, instead of the remote side only refreshing on task events.)
+const REMOTE_POLL_INTERVAL: Duration = Duration::from_secs(180);
+/// A remote-HEAD reading older than this is shown amber "(stale -- Refresh)"
+/// rather than green "(in sync)", so a stale value that happens to equal the
+/// deployed SHA can't masquerade as confirmed-current.
+const REMOTE_STALE_AFTER: Duration = Duration::from_secs(300);
 
 impl IcraftApp {
     fn new(cc: &eframe::CreationContext<'_>) -> Self {
@@ -232,9 +253,11 @@ impl IcraftApp {
             remote_fetching: Arc::new(AtomicBool::new(false)),
             last_status_refresh: None,
             pending_restart: false,
+            remote_fetched_at: Arc::new(Mutex::new(None)),
+            last_remote_poll: None,
         };
         app.refresh_status();
-        app.refresh_remote_sha();
+        app.kick_remote_refresh();
         app
     }
 
@@ -248,6 +271,7 @@ impl IcraftApp {
             return;
         }
         let slot = Arc::clone(&self.remote_sha);
+        let stamp = Arc::clone(&self.remote_fetched_at);
         let busy = Arc::clone(&self.remote_fetching);
         std::thread::spawn(move || {
             // Hardcoded for now -- the alpha repo. If we ever ship
@@ -260,11 +284,25 @@ impl IcraftApp {
                 "main",
             );
             match r {
-                Ok(sha) => { *slot.lock().unwrap() = Some(sha); }
+                Ok(sha) => {
+                    *slot.lock().unwrap() = Some(sha);
+                    // Stamp the SUCCESS time so the badge can tell a freshly
+                    // confirmed reading from a stale value left over from
+                    // before a push / a failed fetch.
+                    *stamp.lock().unwrap() = Some(Instant::now());
+                }
                 Err(e) => log::warn!("[github] HEAD fetch failed: {e}"),
             }
             busy.store(false, Ordering::Release);
         });
+    }
+
+    /// Kick a remote-HEAD refresh AND reset the idle-poll clock, so the
+    /// periodic poll counts from the most recent refresh of any kind
+    /// (task start/finish, manual Refresh, or the idle poll itself).
+    fn kick_remote_refresh(&mut self) {
+        self.refresh_remote_sha();
+        self.last_remote_poll = Some(Instant::now());
     }
 
     fn refresh_status(&mut self) {
@@ -353,7 +391,7 @@ impl eframe::App for IcraftApp {
                 self.running_task = None;
                 self.last_status_refresh = None;
                 self.refresh_status();
-                self.refresh_remote_sha();
+                self.kick_remote_refresh();
                 // If a Cycle was queued while this task ran (typically
                 // the previous task was a Serve that we just stopped),
                 // boot a fresh serve now that the slot is free.
@@ -416,6 +454,19 @@ impl eframe::App for IcraftApp {
             ctx.request_repaint_after(Duration::from_millis(400));
         }
 
+        // Idle/periodic remote re-check so "Repo HEAD" stays honest without a
+        // manual Refresh: a push made while the GUI sits idle surfaces as
+        // "(behind)" on its own. Gated to REMOTE_POLL_INTERVAL (rate-safe),
+        // and a repaint is scheduled on the same cadence so this still fires
+        // when the GUI is otherwise asleep (no task, no fetch in flight).
+        let poll_now = Instant::now();
+        let poll_due = self.last_remote_poll
+            .map_or(true, |t| poll_now.duration_since(t) >= REMOTE_POLL_INTERVAL);
+        if poll_due && !self.remote_fetching.load(Ordering::Relaxed) {
+            self.kick_remote_refresh();
+        }
+        ctx.request_repaint_after(REMOTE_POLL_INTERVAL);
+
         egui::TopBottomPanel::top("hdr").show(ctx, |ui| {
             ui.add_space(6.0);
             draw_colored_title(ui);
@@ -475,7 +526,7 @@ impl IcraftApp {
             }
             if ui.button("Refresh").clicked() {
                 self.refresh_status();
-                self.refresh_remote_sha();
+                self.kick_remote_refresh();
             }
         });
     }
@@ -509,17 +560,31 @@ impl IcraftApp {
             //                            know to click Apply Self-Update
             //   - fetch hasn't landed -> grey "(checking...)"
             let remote = self.remote_sha.lock().unwrap().clone();
+            let fetched_at = *self.remote_fetched_at.lock().unwrap();
             let fetching = self.remote_fetching.load(Ordering::Relaxed);
+            // A remote reading older than REMOTE_STALE_AFTER (rate-limited,
+            // offline, or mid-long-task) is NOT trustworthy as "in sync" -- it
+            // may equal the deployed SHA only because we haven't re-checked
+            // since before a push. Show it amber "(stale -- Refresh)" instead.
+            let stale = fetched_at.map_or(true, |t| t.elapsed() >= REMOTE_STALE_AFTER);
             match remote.as_deref() {
                 Some(rsha) => {
                     let short = rsha.chars().take(7).collect::<String>();
                     let in_sync = self.status.last_sha.as_deref() == Some(rsha);
-                    let value = if in_sync {
-                        format!("{short} (in sync)")
+                    if !in_sync {
+                        // A newer commit than what's deployed -- always flag it.
+                        badge(ui, "Repo HEAD", false, &format!("{short} (behind)"));
+                    } else if stale {
+                        // Deployed SHA matches the LAST-KNOWN remote, but that
+                        // reading is old -- don't claim green "in sync"; nudge a
+                        // Refresh. Amber is reserved for "probably fine, unconfirmed".
+                        ui.label(egui::RichText::new("Repo HEAD:").strong());
+                        ui.label(egui::RichText::new(format!("{short} (stale -- Refresh)"))
+                            .color(egui::Color32::from_rgb(220, 170, 60)));
+                        ui.separator();
                     } else {
-                        format!("{short} (behind)")
-                    };
-                    badge(ui, "Repo HEAD", in_sync, &value);
+                        badge(ui, "Repo HEAD", true, &format!("{short} (in sync)"));
+                    }
                 }
                 None if fetching => {
                     ui.label(egui::RichText::new("Repo HEAD:").strong());
