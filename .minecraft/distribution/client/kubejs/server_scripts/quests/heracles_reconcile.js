@@ -3,134 +3,136 @@
 //
 // HERACLES STATE RECONCILIATION — "skip quests you already earned."
 //
-// THE PROBLEM: Heracles evaluates tasks on EVENTS, not on existing state —
-// `heracles:advancement` completes when the advancement is newly GRANTED,
-// `heracles:item` AUTOMATIC ticks on an inventory-CHANGE, kills fire on the
-// death EVENT. A character that earned those things BEFORE Heracles (or before
-// a given quest) existed has already fired every event, so the quest never
-// ticks. Result: existing characters are permanently stuck at the start of the
-// chain and would have to re-roll to use the quest system at all.
+// THE PROBLEM: Heracles evaluates tasks on EVENTS, not on existing state. A
+// character that earned an advancement / tier / kill BEFORE Heracles (or before
+// a quest existed) already fired every event, so the quest never ticks and the
+// chain is stuck — existing characters would have to re-roll.
 //
-// THE FIX: on login (+ one delayed re-pass), for each quest below, check whether
-// the player's CURRENT persistent state already satisfies its real-world
-// condition; if so, force-complete it with `/heracles complete <quest> <player>`
-// (OP command — runCommandSilent runs as the server). Conditions are read from
-// the authoritative ledgers the game already keeps:
-//   • vanilla ADVANCEMENTS  (story/mine_stone, end/kill_dragon, ...)   via /execute if entity
-//   • AStages TIER stages   (tier_2/3/4)                               via AStages.playerHasStage
-//   • the codex delivery flag icraft_codex_given                       (codex_delivery.js)
-//   • the codex engine's first-kill / dimension-entry flags            (codex_exploration_kills.js)
-//   • plain inventory possession                                       via /clear <item> 0 (count, no-remove)
+// THE FIX (two mechanisms, belt-and-suspenders):
+//   1. `/heracles complete <quest> <player>` — Heracles' own force-complete
+//      (CompleteCommand -> QuestsProgress.completeQuest). Primary path.
+//   2. If (1) doesn't report success AND the quest is advancement-gated, RE-FIRE
+//      the advancement: `/advancement revoke` then `/advancement grant`. The
+//      grant flows through Heracles' advancement hook (the PlayerAdvancement
+//      mixin) exactly as if the player just earned it — so Heracles completes the
+//      matching `heracles:advancement` task via its OWN pipeline (correct
+//      dependency cascade + client sync). This is the "test the achievement
+//      against the Heracles stack as a listener" path.
 //
-// A new character meets NONE of these → nothing is reconciled → it plays the
-// chain normally. So this is safe to run for everyone, every login.
+// Conditions are read from the ledgers the game already keeps: vanilla
+// advancements (`execute if entity`), AStages tier stages, the codex delivery
+// flag, the engine's first-kill/dimension flags, and inventory possession.
 //
-// IDEMPOTENT: each (player, quest) is reconciled at most once (a persistent
-// guard flag icraft_recon_<quest>). Quests already complete via the normal
-// event path are detected (player.persistentData.heracles.quests.<id>.complete,
-// same read the onboarding bridge uses) and skipped without re-completing, so
-// rewards are never re-issued. `/heracles complete` only marks the quest done;
-// the player still claims rewards manually.
+// A new character meets NONE of these -> nothing reconciles -> plays normally.
+// Idempotent: each (player, quest) is reconciled at most once (icraft_recon_<id>
+// guard); quests already complete the normal way are detected and skipped.
 //
-// RELOAD-SAFETY: registers ONLY PlayerEvents.loggedIn + one global server tick
-// (no item creation, no Forge bus listener) — the reload-safe shape per the
-// #60 durability-clamp lesson.
+// TRIGGERS: PlayerEvents.loggedIn + a ~5s re-pass + the on-demand OP command
+//   /icraft_reconcile          — run a pass now, print a per-quest report
+//   /icraft_reconcile reset    — clear this player's guards, then run fresh
+// (the command exists so you can test WITHOUT relogging, and SEE what happened.)
 //
-// Cross-refs: onboarding_bridge.js (dummy/JLF/capstone bridge — complementary),
-// codex_delivery.js (icraft_codex_given), exploration/codex_exploration_kills.js
-// (icraft_codex_firstkill_* / icraft_codex_dimentry_* flags),
-// gates/codex_progression_engine.js (AStages tier stages).
+// RELOAD-SAFETY: PlayerEvents.loggedIn + one master-dispatched server tick +
+// ServerEvents.commandRegistry. No item creation, no Forge bus listener.
 // =============================================================================
 
-// ---- condition probes (all defensive; never throw out) ---------------------
-
-// Vanilla advancement check via the proven `execute if entity <name>[...]`
-// pattern (codex_delivery.js origindump uses the same shape). Returns 1/0.
+// ---- condition probes (all defensive) -------------------------------------
 function reconHasAdv(player, advId) {
   try {
     return player.server.runCommandSilent(
       'execute if entity ' + player.username + '[advancements={' + advId + '=true}]') > 0
   } catch (e) { return false }
 }
-
-// AStages tier stage (tier_2 / tier_3 / tier_4).
 function reconHasStage(player, stage) {
   try { return AStages.playerHasStage(stage, player) } catch (e) { return false }
 }
-
-// A flat persistentData boolean flag (codex delivery / engine kill+dim flags).
 function reconHasFlag(player, key) {
   try { return player.persistentData.getBoolean(key) } catch (e) { return false }
 }
-
-// Inventory possession without removal: `/clear <player> <item|#tag> 0` returns
-// the matching count (vanilla test mode). codex_delivery.js uses this idiom.
 function reconHasItem(player, itemPredicate) {
   try {
-    return player.server.runCommandSilent(
-      'clear ' + player.username + ' ' + itemPredicate + ' 0') > 0
+    return player.server.runCommandSilent('clear ' + player.username + ' ' + itemPredicate + ' 0') > 0
   } catch (e) { return false }
 }
 
-// ---- reconciliation table (deps-first order) -------------------------------
-// q   = quest ID (= filename); met(player) = "already satisfied?" predicate.
-const RECONCILE = [
-  // === Onboarding (vanilla-advancement gated; item/no-adv beats use the
-  // nearest advancement that PROVES the beat was passed) ===
-  { q: 'onboarding_first_log',            met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },     // wood -> wooden pick -> stone
-  { q: 'onboarding_first_tool',           met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },     // needed a pickaxe
-  { q: 'onboarding_first_stone',          met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },
-  { q: 'onboarding_first_food',           met: p => reconHasAdv(p, 'minecraft:story/smelt_iron') },     // no "ate once" adv -> established proxy
-  { q: 'onboarding_first_shelter',        met: p => reconHasAdv(p, 'minecraft:adventure/sleep_in_bed') },
-  { q: 'onboarding_first_kill',           met: p => reconHasAdv(p, 'minecraft:adventure/kill_a_mob') },
-  { q: 'onboarding_first_iron',           met: p => reconHasAdv(p, 'minecraft:story/smelt_iron') },
-  { q: 'onboarding_first_iron_pick',      met: p => reconHasAdv(p, 'minecraft:story/iron_tools') },
-  { q: 'onboarding_first_villager_trade', met: p => reconHasAdv(p, 'minecraft:adventure/trade') },
-  // onboarding_first_level -> handled by onboarding_bridge.js (JLF level poll).
-  // onboarding_survivor_capstone -> cascades via onboarding_bridge once the
-  // prereqs above show complete (it polls heracles.quests).
+// Re-fire an advancement THROUGH Heracles' listener: revoke (so the grant isn't
+// a no-op) then grant. The grant re-runs every `heracles:advancement` task that
+// watches it. Returns true if both commands ran.
+function reconRefireAdv(player, advId) {
+  try {
+    player.server.runCommandSilent('advancement revoke ' + player.username + ' only ' + advId)
+    player.server.runCommandSilent('advancement grant ' + player.username + ' only ' + advId)
+    return true
+  } catch (e) {
+    console.warn('[heracles_reconcile] refire failed for ' + advId + '/' + player.username + ': ' + e)
+    return false
+  }
+}
 
-  // === Iridescent Codex intro (you have / were handed the codex) ===
+// Force-complete via Heracles' own command. Returns the command result int
+// (>=1 = Heracles accepted it).
+function reconComplete(player, quest) {
+  try { return player.server.runCommandSilent('heracles complete ' + quest + ' ' + player.username) }
+  catch (e) {
+    console.warn('[heracles_reconcile] complete threw for ' + quest + '/' + player.username + ': ' + e)
+    return 0
+  }
+}
+
+// ---- reconciliation table (deps-first) ------------------------------------
+// q = quest ID; met(player) = "already satisfied?"; adv = advancement(s) to
+// re-fire through Heracles when force-complete doesn't take (advancement-gated
+// quests only). Item/flag-gated quests omit adv (force-complete only).
+const RECONCILE = [
+  // === Onboarding ===
+  { q: 'onboarding_first_log',            adv: ['minecraft:story/mine_stone'],     met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },
+  { q: 'onboarding_first_tool',           adv: ['minecraft:story/mine_stone'],     met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },
+  { q: 'onboarding_first_stone',          adv: ['minecraft:story/mine_stone'],     met: p => reconHasAdv(p, 'minecraft:story/mine_stone') },
+  { q: 'onboarding_first_food',           adv: ['minecraft:story/smelt_iron'],     met: p => reconHasAdv(p, 'minecraft:story/smelt_iron') },
+  { q: 'onboarding_first_shelter',        adv: ['minecraft:adventure/sleep_in_bed'], met: p => reconHasAdv(p, 'minecraft:adventure/sleep_in_bed') },
+  { q: 'onboarding_first_kill',           adv: ['minecraft:adventure/kill_a_mob'], met: p => reconHasAdv(p, 'minecraft:adventure/kill_a_mob') },
+  { q: 'onboarding_first_iron',           adv: ['minecraft:story/smelt_iron'],     met: p => reconHasAdv(p, 'minecraft:story/smelt_iron') },
+  { q: 'onboarding_first_iron_pick',      adv: ['minecraft:story/iron_tools'],     met: p => reconHasAdv(p, 'minecraft:story/iron_tools') },
+  { q: 'onboarding_first_villager_trade', adv: ['minecraft:adventure/trade'],      met: p => reconHasAdv(p, 'minecraft:adventure/trade') },
+
+  // === Iridescent Codex intro (have the codex) ===
   { q: 'onboarding_first_codex_open', met: p => reconHasFlag(p, 'icraft_codex_given') || reconHasItem(p, 'patchouli:guide_book{"patchouli:book":"icraft:iridescent_codex"}') },
   { q: 'codex_root',        met: p => reconHasFlag(p, 'icraft_codex_given') || reconHasItem(p, 'patchouli:guide_book{"patchouli:book":"icraft:iridescent_codex"}') },
   { q: 'codex_two_routes',  met: p => reconHasFlag(p, 'icraft_codex_given') || reconHasItem(p, 'patchouli:guide_book{"patchouli:book":"icraft:iridescent_codex"}') },
-  // Lane signposts: "hold the lane's starter item" — only fires if actually held.
   { q: 'codex_lane_engineering', met: p => reconHasItem(p, 'minecraft:iron_ingot') },
   { q: 'codex_lane_magic',       met: p => reconHasItem(p, 'botania:manasteel_ingot') },
   { q: 'codex_lane_exploration', met: p => reconHasItem(p, 'minecraft:map') || reconHasItem(p, 'minecraft:filled_map') },
   { q: 'codex_lane_combat',      met: p => reconHasItem(p, '#minecraft:swords') },
 
-  // === Tier Milestones (you already hold the AStages tier stage) ===
-  { q: 'reach_tier_2', met: p => reconHasStage(p, 'tier_2') },
-  { q: 'reach_tier_3', met: p => reconHasStage(p, 'tier_3') },
-  { q: 'reach_tier_4', met: p => reconHasStage(p, 'tier_4') },
+  // === Tier Milestones (have the stage; re-fire the stage advancement) ===
+  { q: 'reach_tier_2', adv: ['icraft:stage_tier_2'], met: p => reconHasStage(p, 'tier_2') },
+  { q: 'reach_tier_3', adv: ['icraft:stage_tier_3'], met: p => reconHasStage(p, 'tier_3') },
+  { q: 'reach_tier_4', adv: ['icraft:stage_tier_4'], met: p => reconHasStage(p, 'tier_4') },
 
-  // === Exploration dimension trackers (engine dim-entry flags; only exist for
-  // post-engine arrivals — pre-engine explorers just re-visit, harmless) ===
+  // === Exploration dimension trackers (engine dim-entry flags) ===
   { q: 'exp_t2_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_twilight') && reconHasFlag(p, 'icraft_codex_dimentry_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_everbright') || reconHasFlag(p, 'icraft_codex_dimentry_everdawn')) },
   { q: 'exp_t3_deep_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_nether') && reconHasFlag(p, 'icraft_codex_dimentry_undergarden') && reconHasFlag(p, 'icraft_codex_dimentry_deeperdarker') },
   { q: 'exp_t4_final_frontiers', met: p => reconHasFlag(p, 'icraft_codex_dimentry_deep_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end')) },
 
   // === Capstones ===
   { q: 'capstone_lucifer',     met: p => reconHasFlag(p, 'icraft_codex_firstkill_cardinal_sins_lucifer') },
-  { q: 'capstone_end_compass', met: p => reconHasFlag(p, 'icraft_codex_dimentry_deep_aether') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
-  { q: 'capstone_end_bastion', met: p => reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
-  { q: 'capstone_ender_dragon', met: p => reconHasAdv(p, 'minecraft:end/kill_dragon') },
+  { q: 'capstone_end_compass', adv: ['minecraft:end/kill_dragon'], met: p => reconHasFlag(p, 'icraft_codex_dimentry_deep_aether') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
+  { q: 'capstone_end_bastion', adv: ['minecraft:story/enter_the_end'], met: p => reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
+  { q: 'capstone_ender_dragon', adv: ['minecraft:end/kill_dragon'], met: p => reconHasAdv(p, 'minecraft:end/kill_dragon') },
 
-  // === Main (vanilla MC) progression — advancement-gated, reliably reconciled ===
-  { q: 'main_diamonds',         met: p => reconHasAdv(p, 'minecraft:story/mine_diamond') },
-  { q: 'main_enchant',          met: p => reconHasAdv(p, 'minecraft:story/enchant_item') },
-  { q: 'main_diamond_armor',    met: p => reconHasAdv(p, 'minecraft:story/shiny_gear') },
-  { q: 'main_enter_nether',     met: p => reconHasAdv(p, 'minecraft:story/enter_the_nether') },
-  { q: 'main_fortress',         met: p => reconHasAdv(p, 'minecraft:nether/find_fortress') },
-  { q: 'main_blaze_rods',       met: p => reconHasAdv(p, 'minecraft:nether/obtain_blaze_rod') },
-  { q: 'main_brewing',          met: p => reconHasAdv(p, 'minecraft:nether/brew_potion') },
-  { q: 'main_netherite',        met: p => reconHasAdv(p, 'minecraft:nether/obtain_ancient_debris') },
-  { q: 'main_stronghold',       met: p => reconHasAdv(p, 'minecraft:story/follow_ender_eye') },
-  { q: 'main_journey_capstone', met: p => reconHasAdv(p, 'minecraft:nether/obtain_ancient_debris') },
+  // === Main (vanilla MC) progression — advancement-gated ===
+  { q: 'main_diamonds',         adv: ['minecraft:story/mine_diamond'],         met: p => reconHasAdv(p, 'minecraft:story/mine_diamond') },
+  { q: 'main_enchant',          adv: ['minecraft:story/enchant_item'],         met: p => reconHasAdv(p, 'minecraft:story/enchant_item') },
+  { q: 'main_diamond_armor',    adv: ['minecraft:story/shiny_gear'],           met: p => reconHasAdv(p, 'minecraft:story/shiny_gear') },
+  { q: 'main_enter_nether',     adv: ['minecraft:story/enter_the_nether'],     met: p => reconHasAdv(p, 'minecraft:story/enter_the_nether') },
+  { q: 'main_fortress',         adv: ['minecraft:nether/find_fortress'],       met: p => reconHasAdv(p, 'minecraft:nether/find_fortress') },
+  { q: 'main_blaze_rods',       adv: ['minecraft:nether/obtain_blaze_rod'],    met: p => reconHasAdv(p, 'minecraft:nether/obtain_blaze_rod') },
+  { q: 'main_brewing',          adv: ['minecraft:nether/brew_potion'],         met: p => reconHasAdv(p, 'minecraft:nether/brew_potion') },
+  { q: 'main_netherite',        adv: ['minecraft:nether/obtain_ancient_debris'], met: p => reconHasAdv(p, 'minecraft:nether/obtain_ancient_debris') },
+  { q: 'main_stronghold',       adv: ['minecraft:story/follow_ender_eye'],     met: p => reconHasAdv(p, 'minecraft:story/follow_ender_eye') },
+  { q: 'main_journey_capstone', adv: ['minecraft:nether/obtain_ancient_debris'], met: p => reconHasAdv(p, 'minecraft:nether/obtain_ancient_debris') },
 
-  // === Overworld Foundations (T1 mods) — inventory best-effort (held items only;
-  // placed-block quests like Mana Pool / Press / Workbench just re-complete on craft) ===
+  // === Overworld Foundations (T1 mods) — inventory best-effort (held items) ===
   { q: 'ovf_iss_spellbook', met: p => reconHasItem(p, 'irons_spellbooks:iron_spell_book') },
   { q: 'ovf_apotheosis_gem', met: p => reconHasItem(p, 'apotheosis:gem') },
   { q: 'ovf_alexsmobs',     met: p => reconHasItem(p, 'alexsmobs:animal_dictionary') },
@@ -139,16 +141,12 @@ const RECONCILE = [
 
 // ---- idempotency -----------------------------------------------------------
 function reconGuardKey(quest) { return 'icraft_recon_' + quest }
-
-function reconIsGuarded(player, quest) {
-  try { return player.persistentData.getBoolean(reconGuardKey(quest)) } catch (e) { return false }
-}
-function reconMarkGuarded(player, quest) {
-  try { player.persistentData.putBoolean(reconGuardKey(quest), true) } catch (e) {}
+function reconIsGuarded(player, quest) { try { return player.persistentData.getBoolean(reconGuardKey(quest)) } catch (e) { return false } }
+function reconMarkGuarded(player, quest) { try { player.persistentData.putBoolean(reconGuardKey(quest), true) } catch (e) {} }
+function reconClearGuards(player) {
+  try { for (const e of RECONCILE) player.persistentData.putBoolean(reconGuardKey(e.q), false) } catch (err) {}
 }
 
-// Already complete via the normal Heracles event path? (same read the
-// onboarding bridge uses — player.persistentData.heracles.quests.<id>.complete)
 function reconHeraclesComplete(player, quest) {
   try {
     const pd = player.persistentData
@@ -162,48 +160,47 @@ function reconHeraclesComplete(player, quest) {
   } catch (e) { return false }
 }
 
-function reconComplete(player, quest) {
-  try { player.server.runCommandSilent('heracles complete ' + quest + ' ' + player.username) } catch (e) {
-    console.warn('[heracles_reconcile] complete failed for ' + quest + '/' + player.username + ': ' + e)
-  }
-}
-
-// ---- one reconciliation pass -----------------------------------------------
-function reconcileAll(player) {
-  if (!player || player.level.isClientSide()) return
+// ---- one reconciliation pass; returns [[quest, outcome], ...] --------------
+function reconcileAll(player, verbose) {
+  const report = []
+  if (!player || player.level.isClientSide()) return report
   let did = 0
   for (let i = 0; i < RECONCILE.length; i++) {
     const e = RECONCILE[i]
-    if (reconIsGuarded(player, e.q)) continue            // already handled this char
-    if (reconHeraclesComplete(player, e.q)) {            // finished the normal way -> just guard
-      reconMarkGuarded(player, e.q)
-      continue
-    }
+    if (reconIsGuarded(player, e.q)) { if (verbose) report.push([e.q, 'already-synced']); continue }
+    if (reconHeraclesComplete(player, e.q)) { reconMarkGuarded(player, e.q); if (verbose) report.push([e.q, 'already-done']); continue }
+
     let ok = false
     try { ok = !!e.met(player) } catch (err) { ok = false }
-    if (ok) {
-      reconComplete(player, e.q)
-      reconMarkGuarded(player, e.q)
-      did++
+    if (!ok) { if (verbose) report.push([e.q, 'not-yet']); continue }
+
+    // Condition met -> complete. Primary: Heracles' force-complete.
+    let ret = reconComplete(player, e.q)
+    let outcome = 'completed'
+    // Fallback: if Heracles didn't accept it, re-fire the advancement through
+    // its own listener, then complete again.
+    if ((!ret || ret < 1) && e.adv) {
+      for (let a = 0; a < e.adv.length; a++) reconRefireAdv(player, e.adv[a])
+      ret = reconComplete(player, e.q)
+      outcome = 're-fired'
     }
+    reconMarkGuarded(player, e.q)
+    did++
+    report.push([e.q, outcome + (ret >= 1 ? '' : '?')])
   }
   if (did > 0) {
     player.tell(Text.gold('[Quests] ').append(Text.gray(
       'Synced ' + did + ' quest' + (did === 1 ? '' : 's') + ' you had already earned — claim their rewards in the book.')))
-    console.log('[heracles_reconcile] reconciled ' + did + ' quest(s) for ' + player.username)
+    console.log('[heracles_reconcile] reconciled ' + did + ' quest(s) for ' + player.username +
+      ': ' + report.filter(r => !/already|not-yet/.test(r[1])).map(r => r[0]).join(', '))
   }
+  return report
 }
 
-// ---- triggers: login + one delayed re-pass ---------------------------------
-// Immediate pass on login catches advancements / AStages / engine flags (all
-// available at loggedIn). The delayed pass (~5s) catches the codex delivery
-// flag, which codex_delivery.js sets in its OWN loggedIn handler (order between
-// the two handlers isn't guaranteed), plus any late-loading capability data.
+// ---- triggers --------------------------------------------------------------
 PlayerEvents.loggedIn(event => {
-  try { reconcileAll(event.player) } catch (e) {
-    console.warn('[heracles_reconcile] login pass threw: ' + e)
-  }
-  try { event.player.persistentData.putInt('icraft_recon_recheck_ticks', 100) } catch (e) {}  // ~5s
+  try { reconcileAll(event.player, false) } catch (e) { console.warn('[heracles_reconcile] login pass threw: ' + e) }
+  try { event.player.persistentData.putInt('icraft_recon_recheck_ticks', 100) } catch (e) {}
 })
 
 global.tick_heraclesReconcileRecheck = function(event) {
@@ -214,13 +211,39 @@ global.tick_heraclesReconcileRecheck = function(event) {
     left -= 20
     try { player.persistentData.putInt('icraft_recon_recheck_ticks', Math.max(0, left)) } catch (e) {}
     if (left <= 0) {
-      try { reconcileAll(player) } catch (e) {
-        console.warn('[heracles_reconcile] recheck pass threw for ' + player.username + ': ' + e)
-      }
+      try { reconcileAll(player, false) } catch (e) { console.warn('[heracles_reconcile] recheck threw for ' + player.username + ': ' + e) }
     }
   })
 }
 global.registerServerTick('tick_heraclesReconcileRecheck', 20, 9)
 
+// ---- on-demand command: /icraft_reconcile [reset] --------------------------
+ServerEvents.commandRegistry(event => {
+  const { commands } = event
+  function run(ctx, doReset) {
+    let sp
+    try { sp = ctx.source.getPlayerOrException() } catch (e) { ctx.source.sendFailure(Text.of('Must be run as a player')); return 0 }
+    if (doReset) reconClearGuards(sp)
+    let report
+    try { report = reconcileAll(sp, true) } catch (e) { sp.tell(Text.red('[Reconcile] threw: ' + e)); return 0 }
+    sp.tell(Text.gold('═══ Reconcile' + (doReset ? ' (reset)' : '') + ' — ' + report.length + ' quests ═══'))
+    let acted = 0
+    report.forEach(function(r) {
+      const done = /completed|re-fired|already-done|already-synced/.test(r[1])
+      if (/completed|re-fired/.test(r[1])) acted++
+      const colour = /completed|re-fired/.test(r[1]) ? Text.green : (done ? Text.gray : Text.darkGray)
+      sp.tell(colour('  ' + r[0] + ' → ' + r[1]))
+    })
+    sp.tell(Text.gold('═══ acted on ' + acted + ' this run ═══'))
+    return 1
+  }
+  event.register(
+    commands.literal('icraft_reconcile')
+      .requires(src => src.hasPermission(2))
+      .executes(ctx => run(ctx, false))
+      .then(commands.literal('reset').executes(ctx => run(ctx, true)))
+  )
+})
+
 console.log('[heracles_reconcile] loaded — ' + RECONCILE.length +
-  ' quests reconcile from existing advancements / tiers / codex flags on login')
+  ' quests reconcile from existing advancements / tiers / flags (login + /icraft_reconcile)')
