@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:rotten_flesh" },
+    "title": "Cull the Undead",
+    "subtitle": "Slay 30 Zombies",
+    "description": [
+      "The night belongs to the dead. Thin their ranks.",
+      "",
+      "§7Better Combat and the difficulty-scaling mods make even basic mobs",
+      "§7worth respecting as the tiers climb."
+    ],
+    "groups": { "Combat": { "position": [0, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_zombies": { "type": "heracles:kill_entity", "title": "Slay Zombies", "entity": "minecraft:zombie", "amount": 30 }
+  },
+  "rewards": {
+    "apples": { "type": "heracles:item", "item": { "id": "minecraft:golden_apple", "count": 2 } }
+  }
+}

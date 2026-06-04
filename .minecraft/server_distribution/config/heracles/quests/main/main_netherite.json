@@ -13,7 +13,7 @@
     "groups": { "Main": { "position": [600, 100] } }
   },
   "settings": { "individual_progress": true },
-  "dependencies": ["main_blaze_rods"],
+  "dependencies": ["main_blaze_rods", "reach_tier_4"],
   "tasks": {
     "ancient_debris": {
       "type": "heracles:advancement",

@@ -17,7 +17,7 @@
       "§7Lucifer himself is the §cCapstones§7 group's finale."
     ],
     "groups": {
-      "Combat": { "position": [320, 0] }
+      "Boss Rush": { "position": [320, 0] }
     }
   },
   "settings": {

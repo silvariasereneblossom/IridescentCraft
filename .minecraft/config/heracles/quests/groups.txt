@@ -5,6 +5,7 @@ Engineering
 Magic
 Exploration
 Combat
+Boss Rush
 Tier Milestones
 Capstones
 Overworld Foundations

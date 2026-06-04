@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:diamond_axe" },
+    "title": "Veteran Hunter",
+    "subtitle": "Master the Overworld's threats",
+    "description": [
+      "You've culled the common dead and felled your first boss. Prove it's no",
+      "fluke — put down a veteran's tally of the Overworld's worst.",
+      "",
+      "Then take the fight upward: the §cBoss Rush§r awaits, and every tier has",
+      "its own roster to break."
+    ],
+    "groups": { "Combat": { "position": [180, 200] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "DEPENDENCIES_VISIBLE", "unlockNotification": true },
+  "dependencies": ["com_first_boss"],
+  "tasks": {
+    "veteran": {
+      "type": "heracles:composite",
+      "amount": 4,
+      "tasks": {
+        "zombies": { "type": "heracles:kill_entity", "title": "Slay 50 Zombies", "entity": "minecraft:zombie", "amount": 50 },
+        "skeletons": { "type": "heracles:kill_entity", "title": "Slay 50 Skeletons", "entity": "minecraft:skeleton", "amount": 50 },
+        "spiders": { "type": "heracles:kill_entity", "title": "Slay 30 Spiders", "entity": "minecraft:spider", "amount": 30 },
+        "creepers": { "type": "heracles:kill_entity", "title": "Slay 25 Creepers", "entity": "minecraft:creeper", "amount": 25 }
+      }
+    }
+  },
+  "rewards": {
+    "notch_apple": { "type": "heracles:item", "title": "A hero's reward", "item": { "id": "minecraft:enchanted_golden_apple", "count": 1 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 10 }
+  }
+}

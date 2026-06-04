@@ -1,0 +1,22 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:gunpowder" },
+    "title": "That's a Nice Hole",
+    "subtitle": "Slay 15 Creepers",
+    "description": [
+      "Hssss. Put them down before they put a crater in your base.",
+      "",
+      "§7Gunpowder fuels TNT, fireworks, and a few mod recipes you'll want later."
+    ],
+    "groups": { "Combat": { "position": [360, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_creepers": { "type": "heracles:kill_entity", "title": "Slay Creepers", "entity": "minecraft:creeper", "amount": 15 }
+  },
+  "rewards": {
+    "powder": { "type": "heracles:item", "item": { "id": "minecraft:gunpowder", "count": 8 } },
+    "tnt": { "type": "heracles:item", "item": { "id": "minecraft:tnt", "count": 2 } }
+  }
+}

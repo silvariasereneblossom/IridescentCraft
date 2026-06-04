@@ -1,0 +1,21 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:bone" },
+    "title": "Bonebreaker",
+    "subtitle": "Slay 30 Skeletons",
+    "description": [
+      "Skeletons pick you apart at range. Close the distance and break them.",
+      "",
+      "§7Their bows and arrows are worth collecting for your own."
+    ],
+    "groups": { "Combat": { "position": [120, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_skeletons": { "type": "heracles:kill_entity", "title": "Slay Skeletons", "entity": "minecraft:skeleton", "amount": 30 }
+  },
+  "rewards": {
+    "arrows": { "type": "heracles:item", "item": { "id": "minecraft:arrow", "count": 64 } }
+  }
+}

@@ -14,8 +14,9 @@
       "Every boss and miniboss kill ALSO feeds the combined token pool, so a",
       "fighter who doesn't want the full clear can still bank their way up.",
       "",
-      "§7Track your roster progress with §e/icraft codex bosses§7, and follow",
-      "the §cCombat§7 group for the marquee fights."
+      "§7Track your roster progress with §e/icraft codex bosses§7. Follow the",
+      "§cBoss Rush§7 group for the marquee fights, and the §cCombat§7 group for",
+      "hunts, minibosses, and first-boss kills."
     ],
     "groups": {
       "Iridescent Codex": { "position": [240, 90] }

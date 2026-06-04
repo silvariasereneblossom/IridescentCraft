@@ -39,8 +39,11 @@
 // ---- condition probes (all defensive) -------------------------------------
 function reconHasAdv(player, advId) {
   try {
+    // NOTE: selector args [...] are only valid on @-selectors, NOT a bare name.
+    // `@a[name=<user>,advancements={...}]` is the correct form (the bare-name
+    // form `<user>[...]` is a parse error that spams the log + always fails).
     return player.server.runCommandSilent(
-      'execute if entity ' + player.username + '[advancements={' + advId + '=true}]') > 0
+      'execute if entity @a[name=' + player.username + ',advancements={' + advId + '=true}]') > 0
   } catch (e) { return false }
 }
 function reconHasStage(player, stage) {
@@ -137,6 +140,14 @@ const RECONCILE = [
   { q: 'ovf_apotheosis_gem', met: p => reconHasItem(p, 'apotheosis:gem') },
   { q: 'ovf_alexsmobs',     met: p => reconHasItem(p, 'alexsmobs:animal_dictionary') },
   { q: 'ovf_create_brass',  met: p => reconHasItem(p, 'create:brass_ingot') },
+
+  // === Combat — first-boss via the engine's one-time first-kill flags (named
+  // bosses only; minibosses + kill-N quests don't store a count, so re-complete) ===
+  { q: 'com_first_boss', met: p =>
+      reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_ferrous_wroughtnaut') ||
+      reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_frostmaw') ||
+      reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_umvuthi') ||
+      reconHasFlag(p, 'icraft_codex_firstkill_terramity_gob') },
 ]
 
 // ---- idempotency -----------------------------------------------------------

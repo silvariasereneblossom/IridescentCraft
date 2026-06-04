@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:iron_sword" },
+    "title": "Bigger They Come",
+    "subtitle": "Slay your first miniboss",
+    "description": [
+      "Beyond the common mobs lurk minibosses — high-HP elites that hit hard and",
+      "drop better. The Mutant Monsters are the Overworld's first.",
+      "",
+      "Slay a Mutant Zombie, Skeleton, or Creeper. §7Every miniboss kill also",
+      "§7feeds your Exploration token pool."
+    ],
+    "groups": { "Combat": { "position": [60, 100] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_miniboss": {
+      "type": "heracles:composite",
+      "amount": 1,
+      "tasks": {
+        "mutant_zombie": { "type": "heracles:kill_entity", "title": "Mutant Zombie", "entity": "mutantmonsters:mutant_zombie", "amount": 1 },
+        "mutant_skeleton": { "type": "heracles:kill_entity", "title": "Mutant Skeleton", "entity": "mutantmonsters:mutant_skeleton", "amount": 1 },
+        "mutant_creeper": { "type": "heracles:kill_entity", "title": "Mutant Creeper", "entity": "mutantmonsters:mutant_creeper", "amount": 1 }
+      }
+    }
+  },
+  "rewards": {
+    "apple": { "type": "heracles:item", "item": { "id": "minecraft:golden_apple", "count": 2 } },
+    "diamond": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 1 } }
+  }
+}

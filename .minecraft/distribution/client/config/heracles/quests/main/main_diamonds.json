@@ -13,7 +13,7 @@
     "groups": { "Main": { "position": [0, 100] } }
   },
   "settings": { "individual_progress": true, "unlockNotification": true },
-  "dependencies": ["onboarding_survivor_capstone"],
+  "dependencies": ["reach_tier_3"],
   "tasks": {
     "mine_diamond": {
       "type": "heracles:advancement",

@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:string" },
+    "title": "Webcutter",
+    "subtitle": "Slay 20 Spiders",
+    "description": [
+      "Spiders swarm and climb. Cut them down before they surround you.",
+      "",
+      "§7String and spider eyes feed bows, fishing rods, and brewing."
+    ],
+    "groups": { "Combat": { "position": [240, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_spiders": {
+      "type": "heracles:kill_entity",
+      "title": "Slay Spiders",
+      "entity": "minecraft:spider",
+      "amount": 20
+    }
+  },
+  "rewards": {
+    "string": { "type": "heracles:item", "item": { "id": "minecraft:string", "count": 16 } },
+    "eyes": { "type": "heracles:item", "item": { "id": "minecraft:fermented_spider_eye", "count": 2 } }
+  }
+}

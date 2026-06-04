@@ -13,7 +13,7 @@
       "T1 boss. See the full count with §e/icraft codex bosses§r."
     ],
     "groups": {
-      "Combat": { "position": [0, 0] }
+      "Boss Rush": { "position": [0, 0] }
     }
   },
   "settings": {

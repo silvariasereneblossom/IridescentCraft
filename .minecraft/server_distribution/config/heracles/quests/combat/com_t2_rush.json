@@ -12,7 +12,7 @@
       "§e/icraft codex bosses§r."
     ],
     "groups": {
-      "Combat": { "position": [160, 0] }
+      "Boss Rush": { "position": [160, 0] }
     }
   },
   "settings": {

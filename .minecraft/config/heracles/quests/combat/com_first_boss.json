@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:diamond_sword" },
+    "title": "Giant Slayer",
+    "subtitle": "Defeat your first boss",
+    "description": [
+      "A true boss — a boss bar, a real fight, a real reward. The Overworld's",
+      "Tier 1 bosses come from Mowzie's Mobs and Terramity.",
+      "",
+      "Fell the Ferrous Wroughtnaut, a Frostmaw, Umvuthi, or Gob. §7A boss's",
+      "first kill grants a one-time Exploration bonus, and counts toward the",
+      "§cBoss Rush§7."
+    ],
+    "groups": { "Combat": { "position": [300, 100] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["com_first_miniboss"],
+  "tasks": {
+    "kill_boss": {
+      "type": "heracles:composite",
+      "amount": 1,
+      "tasks": {
+        "wroughtnaut": { "type": "heracles:kill_entity", "title": "Ferrous Wroughtnaut", "entity": "mowziesmobs:ferrous_wroughtnaut", "amount": 1 },
+        "frostmaw": { "type": "heracles:kill_entity", "title": "Frostmaw", "entity": "mowziesmobs:frostmaw", "amount": 1 },
+        "umvuthi": { "type": "heracles:kill_entity", "title": "Umvuthi", "entity": "mowziesmobs:umvuthi", "amount": 1 },
+        "gob": { "type": "heracles:kill_entity", "title": "Gob", "entity": "terramity:gob", "amount": 1 }
+      }
+    }
+  },
+  "rewards": {
+    "diamonds": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 2 } },
+    "apples": { "type": "heracles:item", "item": { "id": "minecraft:golden_apple", "count": 3 } }
+  }
+}
