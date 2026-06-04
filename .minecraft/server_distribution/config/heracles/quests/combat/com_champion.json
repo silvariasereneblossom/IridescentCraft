@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:golden_helmet" },
+    "title": "Cut Down a Champion",
+    "subtitle": "Slay an Apotheosis champion",
+    "description": [
+      "Champions are affixed elites — tougher, faster, deadlier versions of common",
+      "mobs, marked by their affixes and bonus loot.",
+      "",
+      "Find one and prove you're the stronger. §7(Any Apotheosis champion counts.)"
+    ],
+    "groups": { "Combat": { "position": [480, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_champion": {
+      "type": "heracles:dummy",
+      "value": "killed_champion",
+      "description": "Slay an Apotheosis champion (detected on kill)."
+    }
+  },
+  "rewards": {
+    "dust": { "type": "heracles:item", "item": { "id": "apotheosis:gem_dust", "count": 3 } }
+  }
+}

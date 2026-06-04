@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:wither_skeleton_skull" },
+    "title": "Affixed and Dangerous",
+    "subtitle": "Slay your first Apotheosis boss",
+    "description": [
+      "Apotheosis spawns rare §5bosses§r — affixed elite mobs with a boss bar, a",
+      "name, and a fistful of deadly affixes. They drop gear, gems, and rare loot.",
+      "",
+      "Hunt one down and put it in the ground. §7(Any affixed Apotheosis boss",
+      "counts — they appear more often in dungeons and the deeper dimensions.)"
+    ],
+    "groups": { "Combat": { "position": [420, 100] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["com_first_miniboss"],
+  "tasks": {
+    "kill_apoth_boss": {
+      "type": "heracles:dummy",
+      "value": "killed_apoth_boss",
+      "description": "Slay an Apotheosis boss (detected on kill)."
+    }
+  },
+  "rewards": {
+    "gem": { "type": "heracles:item", "title": "Spoils of the affixed", "item": { "id": "apotheosis:gem", "count": 1 } },
+    "apples": { "type": "heracles:item", "item": { "id": "minecraft:golden_apple", "count": 2 } }
+  }
+}

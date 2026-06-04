@@ -148,6 +148,8 @@ const RECONCILE = [
       reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_frostmaw') ||
       reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_umvuthi') ||
       reconHasFlag(p, 'icraft_codex_firstkill_terramity_gob') },
+  { q: 'com_apotheosis_boss', met: p => reconHasFlag(p, 'icraft_killed_apoth_boss') },
+  { q: 'com_champion',        met: p => reconHasFlag(p, 'icraft_killed_champion') },
 ]
 
 // ---- idempotency -----------------------------------------------------------
