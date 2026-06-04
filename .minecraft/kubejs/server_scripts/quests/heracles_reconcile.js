@@ -139,6 +139,17 @@ const RECONCILE = [
   { q: 'main_stronghold',       adv: ['minecraft:story/follow_ender_eye'],     met: p => reconHasAdv(p, 'minecraft:story/follow_ender_eye') },
   { q: 'main_journey_capstone', adv: ['minecraft:nether/obtain_ancient_debris'], met: p => reconHasAdv(p, 'minecraft:nether/obtain_ancient_debris') },
 
+  // === Main — basic-survival front (vanilla husbandry/adventure advancements) ===
+  { q: 'main_farming', adv: ['minecraft:husbandry/plant_seed'],      met: p => reconHasAdv(p, 'minecraft:husbandry/plant_seed') },
+  { q: 'main_animals', adv: ['minecraft:husbandry/breed_an_animal'], met: p => reconHasAdv(p, 'minecraft:husbandry/breed_an_animal') },
+  { q: 'main_tame',    adv: ['minecraft:husbandry/tame_an_animal'],  met: p => reconHasAdv(p, 'minecraft:husbandry/tame_an_animal') },
+  { q: 'main_fishing', adv: ['minecraft:husbandry/fishy_business'],  met: p => reconHasAdv(p, 'minecraft:husbandry/fishy_business') },
+  { q: 'main_archery', adv: ['minecraft:adventure/shoot_arrow'],     met: p => reconHasAdv(p, 'minecraft:adventure/shoot_arrow') },
+  { q: 'main_settler', met: p =>
+      reconHasAdv(p, 'minecraft:husbandry/plant_seed') && reconHasAdv(p, 'minecraft:husbandry/breed_an_animal') &&
+      reconHasAdv(p, 'minecraft:husbandry/tame_an_animal') && reconHasAdv(p, 'minecraft:husbandry/fishy_business') &&
+      reconHasAdv(p, 'minecraft:adventure/shoot_arrow') },
+
   // === Overworld Foundations (T1 mods) — inventory best-effort (held items) ===
   { q: 'ovf_iss_spellbook', met: p => reconHasItem(p, 'irons_spellbooks:iron_spell_book') },
   { q: 'ovf_apotheosis_gem', met: p => reconHasItem(p, 'apotheosis:gem') },

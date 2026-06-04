@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:fishing_rod" },
+    "title": "Fishy Business",
+    "subtitle": "Catch a fish",
+    "description": [
+      "Craft a fishing rod and reel in a catch. Calm, reliable food — and the",
+      "occasional enchanted-book or treasure surprise.",
+      "",
+      "§7A patient angler never starves."
+    ],
+    "groups": { "Main": { "position": [360, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "fish": {
+      "type": "heracles:advancement",
+      "title": "Catch a fish with a fishing rod",
+      "advancements": ["minecraft:husbandry/fishy_business"]
+    }
+  },
+  "rewards": {
+    "cod": { "type": "heracles:item", "item": { "id": "minecraft:cooked_cod", "count": 6 } },
+    "string": { "type": "heracles:item", "item": { "id": "minecraft:string", "count": 8 } }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:bone" },
+    "title": "Best Friends Forever",
+    "subtitle": "Tame an animal",
+    "description": [
+      "A tamed wolf, cat, or horse is a loyal companion — and a wolf pack is real",
+      "muscle in a fight.",
+      "",
+      "§7Bones for wolves, fish for cats, patience (and apples) for horses."
+    ],
+    "groups": { "Main": { "position": [240, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "tame": {
+      "type": "heracles:advancement",
+      "title": "Tame an animal",
+      "advancements": ["minecraft:husbandry/tame_an_animal"]
+    }
+  },
+  "rewards": {
+    "bones": { "type": "heracles:item", "item": { "id": "minecraft:bone", "count": 16 } }
+  }
+}

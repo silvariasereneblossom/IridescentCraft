@@ -28,7 +28,7 @@
   "tasks": {
     "have_codex": {
       "type": "heracles:item",
-      "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" }
+      "item": "patchouli:guide_book"
     }
   },
   "rewards": {

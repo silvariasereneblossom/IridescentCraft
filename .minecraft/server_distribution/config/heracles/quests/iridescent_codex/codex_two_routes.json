@@ -34,7 +34,7 @@
     "study_routes": {
       "type": "heracles:item",
       "title": "Study the two routes in the Codex",
-      "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" },
+      "item": "patchouli:guide_book",
       "amount": 1,
       "collection": "AUTOMATIC"
     }

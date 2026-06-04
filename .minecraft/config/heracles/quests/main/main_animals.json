@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:wheat_seeds" },
+    "title": "The Birds and the Bees",
+    "subtitle": "Breed a pair of animals",
+    "description": [
+      "Lead two of the same animal together and feed them to breed. A renewable",
+      "herd means renewable food, wool, and leather.",
+      "",
+      "§7Cows, sheep, pigs, chickens — pick your livestock."
+    ],
+    "groups": { "Main": { "position": [120, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "breed": {
+      "type": "heracles:advancement",
+      "title": "Breed two animals",
+      "advancements": ["minecraft:husbandry/breed_an_animal"]
+    }
+  },
+  "rewards": {
+    "leads": { "type": "heracles:item", "item": { "id": "minecraft:lead", "count": 2 } },
+    "wheat": { "type": "heracles:item", "item": { "id": "minecraft:wheat", "count": 16 } }
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:wheat" },
+    "title": "A Seedy Place",
+    "subtitle": "Plant your first crop",
+    "description": [
+      "A steady food supply beats scavenging. Till some dirt, plant seeds, and",
+      "start a farm.",
+      "",
+      "§7Hunger management matters more as the tiers ramp up the danger."
+    ],
+    "groups": { "Main": { "position": [0, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "plant_seed": {
+      "type": "heracles:advancement",
+      "title": "Plant a seed and watch it grow",
+      "advancements": ["minecraft:husbandry/plant_seed"]
+    }
+  },
+  "rewards": {
+    "bonemeal": { "type": "heracles:item", "item": { "id": "minecraft:bone_meal", "count": 8 } },
+    "bread": { "type": "heracles:item", "item": { "id": "minecraft:bread", "count": 4 } }
+  }
+}

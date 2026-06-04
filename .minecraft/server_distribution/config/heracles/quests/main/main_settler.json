@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:hay_block" },
+    "title": "Settling In",
+    "subtitle": "Master the basics of survival",
+    "description": [
+      "Farming, livestock, a companion, a fishing hole, a bow on your back — you've",
+      "got a homestead and the skills to keep it.",
+      "",
+      "From here the road climbs: earn your way to Tier 3 and the deeper vanilla",
+      "milestones (diamonds, the Nether) open up. See the gated quests below."
+    ],
+    "groups": { "Main": { "position": [600, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS", "unlockNotification": true },
+  "dependencies": ["main_farming", "main_animals", "main_tame", "main_fishing", "main_archery"],
+  "tasks": {
+    "basics": {
+      "type": "heracles:composite",
+      "amount": 5,
+      "tasks": {
+        "farm": { "type": "heracles:advancement", "title": "Plant a crop", "advancements": ["minecraft:husbandry/plant_seed"] },
+        "breed": { "type": "heracles:advancement", "title": "Breed animals", "advancements": ["minecraft:husbandry/breed_an_animal"] },
+        "tame": { "type": "heracles:advancement", "title": "Tame an animal", "advancements": ["minecraft:husbandry/tame_an_animal"] },
+        "fish": { "type": "heracles:advancement", "title": "Catch a fish", "advancements": ["minecraft:husbandry/fishy_business"] },
+        "shoot": { "type": "heracles:advancement", "title": "Shoot a bow", "advancements": ["minecraft:adventure/shoot_arrow"] }
+      }
+    }
+  },
+  "rewards": {
+    "nametag": { "type": "heracles:item", "item": { "id": "minecraft:name_tag", "count": 1 } },
+    "saddle": { "type": "heracles:item", "item": { "id": "minecraft:saddle", "count": 1 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 5 }
+  }
+}

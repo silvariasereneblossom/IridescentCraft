@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:bow" },
+    "title": "Take Aim",
+    "subtitle": "Shoot something with a bow",
+    "description": [
+      "Craft a bow and some arrows, and land a shot. Ranged options keep you alive",
+      "against the things you don't want to melee.",
+      "",
+      "§7Skeletons donate the bows and arrows to get you started."
+    ],
+    "groups": { "Main": { "position": [480, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "shoot": {
+      "type": "heracles:advancement",
+      "title": "Shoot something with an arrow",
+      "advancements": ["minecraft:adventure/shoot_arrow"]
+    }
+  },
+  "rewards": {
+    "bow": { "type": "heracles:item", "item": { "id": "minecraft:bow", "count": 1 } },
+    "arrows": { "type": "heracles:item", "item": { "id": "minecraft:arrow", "count": 32 } }
+  }
+}

@@ -33,7 +33,7 @@
     "open_codex": {
       "type": "heracles:item",
       "title": "Hold the Iridescent Codex",
-      "item": { "id": "patchouli:guide_book", "nbt": "{\"patchouli:book\":\"icraft:iridescent_codex\"}" },
+      "item": "patchouli:guide_book",
       "amount": 1,
       "collection": "AUTOMATIC"
     }
