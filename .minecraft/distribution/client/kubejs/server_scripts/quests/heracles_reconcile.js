@@ -27,10 +27,14 @@
 // Idempotent: each (player, quest) is reconciled at most once (icraft_recon_<id>
 // guard); quests already complete the normal way are detected and skipped.
 //
-// TRIGGERS: PlayerEvents.loggedIn + a ~5s re-pass + the on-demand OP command
-//   /icraft_reconcile          — run a pass now, print a per-quest report
-//   /icraft_reconcile reset    — clear this player's guards, then run fresh
-// (the command exists so you can test WITHOUT relogging, and SEE what happened.)
+// TRIGGERS (all automatic; the command is just for diagnosis/forcing):
+//   • PlayerEvents.loggedIn        — immediate pass on join
+//   • ~5s post-login re-pass       — catches late-loading capability/flag data
+//   • periodic pass every 30s      — diffs every online player continuously, so it
+//                                     works with NO relog (e.g. after a /reload) and
+//                                     auto-completes as you progress mid-session
+//   • /icraft_reconcile [reset]    — OP, on-demand: run now + print a per-quest
+//                                     report (test without relogging, SEE what ran)
 //
 // RELOAD-SAFETY: PlayerEvents.loggedIn + one master-dispatched server tick +
 // ServerEvents.commandRegistry. No item creation, no Forge bus listener.
@@ -230,6 +234,21 @@ global.tick_heraclesReconcileRecheck = function(event) {
 }
 global.registerServerTick('tick_heraclesReconcileRecheck', 20, 9)
 
+// Periodic AUTO-pass: diff every online player against the quest table on a
+// relaxed cadence (every 30s). This is what makes reconciliation automatic with
+// NO relog and NO command — it catches a /reload (login won't re-fire for an
+// already-online player) and mid-session progress (e.g. you just hit Tier 3).
+// Cheap once a character is caught up: guarded entries are skipped before any
+// command runs, so a fully-reconciled player costs ~45 NBT reads and nothing more.
+global.tick_heraclesReconcilePeriodic = function(event) {
+  event.server.players.forEach(function(player) {
+    try { reconcileAll(player, false) } catch (e) {
+      console.warn('[heracles_reconcile] periodic pass threw for ' + player.username + ': ' + e)
+    }
+  })
+}
+global.registerServerTick('tick_heraclesReconcilePeriodic', 600, 13)
+
 // ---- on-demand command: /icraft_reconcile [reset] --------------------------
 ServerEvents.commandRegistry(event => {
   const { commands } = event
@@ -259,4 +278,4 @@ ServerEvents.commandRegistry(event => {
 })
 
 console.log('[heracles_reconcile] loaded — ' + RECONCILE.length +
-  ' quests reconcile from existing advancements / tiers / flags (login + /icraft_reconcile)')
+  ' quests auto-reconcile from existing advancements / tiers / flags (login + 30s periodic + /icraft_reconcile)')
