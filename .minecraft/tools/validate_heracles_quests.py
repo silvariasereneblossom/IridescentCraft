@@ -102,7 +102,13 @@ def validate_tasks(f, tasks, ctx="tasks"):
         if ttype == "heracles:xp" and "xptype" in t:
             err(f, f"{ctx}.{key} XP TASK uses reward-casing 'xptype'; task field is 'xpType'")
         if ttype == "heracles:item":
-            check_item_token(f, f"{ctx}.{key} task", t.get("item"))
+            itm = t.get("item")
+            if isinstance(itm, dict):
+                err(f, f"{ctx}.{key} (heracles:item) 'item' is an OBJECT -> a TASK item is a "
+                       f"RegistryValue (ID string or #tag), NOT an ItemStack. An object item (esp. one "
+                       f"with an 'nbt' string) fails the codec -> task silently dropped -> quest renders "
+                       f"NaN%. Use a string item + (if needed) a separate 'nbt' field.")
+            check_item_token(f, f"{ctx}.{key} task", itm)
         if ttype == "heracles:composite":
             validate_tasks(f, t.get("tasks", {}), f"{ctx}.{key}.tasks")
 
