@@ -256,38 +256,43 @@ function exploreGiveTokens(player, tier, amount, label) {
 // KILL HANDLER — minibosses pay every kill; named bosses pay a one-time
 // first-kill bonus then a repeat-kill value thereafter.
 // =============================================================================
+// RHINO-SAFETY: this closure fires on every kill, so it uses `var` (NOT const/
+// let — KubeJS's Rhino throws "redeclaration of var" on a const/let in a
+// repeatedly-invoked closure; the triple `amt` made it certain). Module-scope
+// consts above are fine — they're declared once.
 EntityEvents.death(event => {
   try {
-    const entity = event.entity
-    const source = event.source
+    var entity = event.entity
+    var source = event.source
     if (!entity || !source || !source.player) return
-    const player = source.player
-    const entityId = String(entity.type)
+    var player = source.player
+    var entityId = String(entity.type)
 
     // --- NAMED boss? (one-time first-kill bonus, then repeat value) ---
-    const namedTier = NAMED_BOSS_TIER[entityId]
+    var namedTier = NAMED_BOSS_TIER[entityId]
     if (namedTier !== undefined) {
-      const pdata = player.persistentData
-      const fkKey = exploreFirstKillKey(entityId)
-      const bossName = entity.name ? entity.name.string : entityId
+      var pdata = player.persistentData
+      var fkKey = exploreFirstKillKey(entityId)
+      var bossName = entity.name ? entity.name.string : entityId
+      var amt
       if (!pdata.getBoolean(fkKey)) {
         pdata.putBoolean(fkKey, true)
-        const amt = EXPLORE_BOSS_FIRST_TOKENS[namedTier]
+        amt = EXPLORE_BOSS_FIRST_TOKENS[namedTier]
         exploreGiveTokens(player, namedTier, amt, bossName + ' (first kill!)')
         player.server.runCommandSilent('playsound minecraft:ui.toast.challenge_complete player ' + player.username + ' ~ ~ ~ 0.5')
       } else {
-        const amt = EXPLORE_BOSS_REPEAT_TOKENS[namedTier]
+        amt = EXPLORE_BOSS_REPEAT_TOKENS[namedTier]
         exploreGiveTokens(player, namedTier, amt, bossName)
       }
       return // a named boss is never also scored as a miniboss
     }
 
     // --- MINIBOSS? (every kill pays the flat tier value) ---
-    const miniTier = MINIBOSS_TIER[entityId]
+    var miniTier = MINIBOSS_TIER[entityId]
     if (miniTier !== undefined) {
-      const amt = EXPLORE_MINIBOSS_TOKENS[miniTier]
-      const name = entity.name ? entity.name.string : entityId
-      exploreGiveTokens(player, miniTier, amt, name)
+      var miniAmt = EXPLORE_MINIBOSS_TOKENS[miniTier]
+      var name = entity.name ? entity.name.string : entityId
+      exploreGiveTokens(player, miniTier, miniAmt, name)
       return
     }
   } catch (e) {
@@ -326,14 +331,16 @@ const EXPLORE_DIMENSIONS = {
 
 global.tick_codexDimEntryBonus = (event) => {
   try {
-    const player = event.player
+    // `var` (not const/let): this poll fires repeatedly — Rhino throws
+    // "redeclaration of var player" on a const/let in a re-invoked closure.
+    var player = event.player
     if (!player || player.creative || player.spectator) return
-    const dim = String(player.level.dimension)
-    const entry = EXPLORE_DIMENSIONS[dim]
+    var dim = String(player.level.dimension)
+    var entry = EXPLORE_DIMENSIONS[dim]
     if (!entry) return
 
-    const pdata = player.persistentData
-    const flagKey = 'icraft_codex_dimentry_' + entry.key
+    var pdata = player.persistentData
+    var flagKey = 'icraft_codex_dimentry_' + entry.key
     if (pdata.getBoolean(flagKey)) return // already claimed this dimension
     pdata.putBoolean(flagKey, true)
 

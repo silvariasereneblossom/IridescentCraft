@@ -11,36 +11,38 @@
 // already uses (proven): an Apotheosis boss carries `apoth.boss == "true"`, and
 // an Apotheosis champion (affixed elite) carries a `champion` tag.
 //
-// RELOAD-SAFE: a single EntityEvents.death listener. No item creation, no Forge
-// bus, no global tick.
+// RHINO-SAFETY: the death handler fires every kill, so it uses `var` (NOT
+// const/let — KubeJS's Rhino throws "redeclaration of var" on a const/let in a
+// repeatedly-invoked closure) and a SINGLE catch var. NBT getters (getString /
+// contains) return ""/false on a missing key — they don't throw — so no nested
+// try/catch is needed (multiple catch(e) in one function was the redeclaration
+// trigger). RELOAD-SAFE: one EntityEvents.death listener; no item reg / Forge bus.
 // =============================================================================
 
 EntityEvents.death(event => {
   try {
-    const source = event.source
-    if (!source || !source.player) return
-    const player = source.player
-    const entity = event.entity
-    if (!entity || !entity.nbt) return
-    const pd = player.persistentData
+    var src = event.source
+    if (!src || !src.player) return
+    var killer = src.player
+    var victim = event.entity
+    if (!victim) return
+    var nbt = victim.nbt
+    if (!nbt) return
+    var pd = killer.persistentData
 
     // --- Apotheosis boss (apoth.boss == "true") ---
-    let isApothBoss = false
-    try { isApothBoss = entity.nbt.getString('apoth.boss') === 'true' } catch (e) {}
-    if (isApothBoss) {
+    if (nbt.getString('apoth.boss') === 'true') {
       pd.putBoolean('icraft_killed_apoth_boss', true)
-      player.server.runCommandSilent('heracles dummy killed_apoth_boss ' + player.username)
+      killer.server.runCommandSilent('heracles dummy killed_apoth_boss ' + killer.username)
     }
 
     // --- Apotheosis champion (affixed elite; carries a `champion` tag) ---
-    let isChampion = false
-    try { isChampion = entity.nbt.contains('champion') } catch (e) {}
-    if (isChampion) {
+    if (nbt.contains('champion')) {
       pd.putBoolean('icraft_killed_champion', true)
-      player.server.runCommandSilent('heracles dummy killed_champion ' + player.username)
+      killer.server.runCommandSilent('heracles dummy killed_champion ' + killer.username)
     }
-  } catch (e) {
-    console.warn('[combat_kill_signals] death handler threw: ' + e)
+  } catch (err) {
+    console.warn('[combat_kill_signals] death handler threw: ' + err)
   }
 })
 
