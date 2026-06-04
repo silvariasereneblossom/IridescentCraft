@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:netherite_block" },
+    "title": "The Long Road",
+    "subtitle": "Master the Overworld & Nether",
+    "description": [
+      "Diamonds, enchanting, the Nether, brewing, netherite, the Stronghold — the",
+      "whole vanilla backbone, conquered.",
+      "",
+      "What remains is the endgame: open the End via the Deep-Aether End Compass,",
+      "then face the Ender Dragon. Follow the §cCapstones§r group to the finale."
+    ],
+    "groups": { "Main": { "position": [840, 100] } }
+  },
+  "settings": { "individual_progress": true, "unlockNotification": true },
+  "dependencies": ["main_netherite", "main_brewing", "main_stronghold"],
+  "tasks": {
+    "master": {
+      "type": "heracles:advancement",
+      "title": "Obtain Ancient Debris (the last milestone)",
+      "advancements": ["minecraft:nether/obtain_ancient_debris"]
+    }
+  },
+  "rewards": {
+    "trophy": { "type": "heracles:item", "title": "Spoils of the road", "item": { "id": "minecraft:netherite_ingot", "count": 1 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 15 }
+  }
+}

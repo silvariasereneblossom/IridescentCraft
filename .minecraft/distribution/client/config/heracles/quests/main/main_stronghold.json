@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:ender_eye" },
+    "title": "Eye Spy",
+    "subtitle": "Find a Stronghold",
+    "description": [
+      "Craft eyes of ender from blaze powder and ender pearls, throw them, and",
+      "follow them to a Stronghold and its dormant End Portal.",
+      "",
+      "§7But the Eye of Ender alone won't open the End here — that takes a",
+      "§7Deep-Aether §6End Compass§r. See the Capstones when you reach Tier 4."
+    ],
+    "groups": { "Main": { "position": [720, 100] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_blaze_rods"],
+  "tasks": {
+    "find_stronghold": {
+      "type": "heracles:advancement",
+      "title": "Enter a Stronghold (follow an Eye of Ender)",
+      "advancements": ["minecraft:story/follow_ender_eye"]
+    }
+  },
+  "rewards": {
+    "pearls": { "type": "heracles:item", "item": { "id": "minecraft:ender_pearl", "count": 6 } },
+    "eyes": { "type": "heracles:item", "item": { "id": "minecraft:ender_eye", "count": 2 } }
+  }
+}

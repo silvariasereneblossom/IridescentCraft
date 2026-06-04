@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:enchanting_table" },
+    "title": "Words of Power",
+    "subtitle": "Enchant an item",
+    "description": [
+      "Build an enchanting table (it takes diamonds), surround it with bookshelves,",
+      "and enchant your first piece of gear.",
+      "",
+      "§7Apotheosis overhauls enchanting here — expect deeper enchants and the",
+      "§7affix system on your gear as you climb the tiers."
+    ],
+    "groups": { "Main": { "position": [120, 100] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_diamonds"],
+  "tasks": {
+    "enchant_item": {
+      "type": "heracles:advancement",
+      "title": "Enchant an item at an enchanting table",
+      "advancements": ["minecraft:story/enchant_item"]
+    }
+  },
+  "rewards": {
+    "lapis": { "type": "heracles:item", "title": "Enchanting fuel", "item": { "id": "minecraft:lapis_lazuli", "count": 16 } },
+    "xp": { "type": "heracles:item", "item": { "id": "minecraft:experience_bottle", "count": 8 } }
+  }
+}

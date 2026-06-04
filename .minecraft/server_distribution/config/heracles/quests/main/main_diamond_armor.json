@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:diamond_chestplate" },
+    "title": "Diamond in the Rough",
+    "subtitle": "Wear a full set of diamond armor",
+    "description": [
+      "Suit up. A full set of diamond armor is the baseline for surviving the",
+      "mid-tiers — though the modular Tetra and Iridescent armor systems will",
+      "soon outclass it.",
+      "",
+      "§7Mind the death penalty: gear goes inert rather than vanishing."
+    ],
+    "groups": { "Main": { "position": [120, 160] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_diamonds"],
+  "tasks": {
+    "diamond_gear": {
+      "type": "heracles:advancement",
+      "title": "Wear a full diamond armor set",
+      "advancements": ["minecraft:story/shiny_gear"]
+    }
+  },
+  "rewards": {
+    "diamond": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 2 } }
+  }
+}

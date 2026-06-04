@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:brass_ingot" },
+    "title": "Create: The Brass Age",
+    "subtitle": "Produce Brass",
+    "description": [
+      "Brass unlocks Create's advanced tier — Mechanical Arms, Deployers, the",
+      "Mechanical Crafter array. Smelt zinc + copper in a heated mixer (the Blaze",
+      "Burner is pre-fuelled to Tier 1 here) to pour your first brass.",
+      "",
+      "§7Andesite Alloy and brass are bread-and-butter Engineering tokens."
+    ],
+    "groups": { "Overworld Foundations": { "position": [160, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_create_press"],
+  "tasks": {
+    "have_brass": {
+      "type": "heracles:item",
+      "title": "Acquire a Brass Ingot",
+      "item": "create:brass_ingot",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 12 } }
+  }
+}

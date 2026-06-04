@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:obsidian" },
+    "title": "Into the Inferno",
+    "subtitle": "Enter the Nether",
+    "description": [
+      "The Nether is §9Tier 3§r content here — it stays sealed until you've earned",
+      "the Tier 3 stage. Once it opens, light a portal and step through.",
+      "",
+      "§7Beware: the Nether runs hot, and the deeper tiers raise the danger."
+    ],
+    "groups": { "Main": { "position": [240, 100] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_enchant"],
+  "tasks": {
+    "enter_nether": {
+      "type": "heracles:advancement",
+      "title": "Enter the Nether",
+      "advancements": ["minecraft:story/enter_the_nether"]
+    }
+  },
+  "rewards": {
+    "fireproofing": { "type": "heracles:item", "title": "For the heat", "item": { "id": "minecraft:golden_carrot", "count": 6 } }
+  }
+}

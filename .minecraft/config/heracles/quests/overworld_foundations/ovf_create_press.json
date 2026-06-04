@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:mechanical_press" },
+    "title": "Create: First Machine",
+    "subtitle": "Build a Mechanical Press",
+    "description": [
+      "Create is the Tier 1 engineering backbone. Set up a water wheel or hand",
+      "crank for rotational power, then build a §bMechanical Press§r — the gateway",
+      "to plates, Precision Mechanisms, and the whole brass half of the mod.",
+      "",
+      "§7Create machine blocks are your richest Engineering submissions early on."
+    ],
+    "groups": { "Overworld Foundations": { "position": [0, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_press": {
+      "type": "heracles:item",
+      "title": "Acquire a Mechanical Press",
+      "item": "create:mechanical_press",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "mechanism": { "type": "heracles:item", "title": "Precision Mechanisms", "item": { "id": "create:precision_mechanism", "count": 2 } },
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 8 } }
+  }
+}

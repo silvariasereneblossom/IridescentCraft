@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "alexsmobs:animal_dictionary" },
+    "title": "Alex's Mobs: The Naturalist",
+    "subtitle": "Craft an Animal Dictionary",
+    "description": [
+      "Alex's Mobs fills the world with creatures worth hunting, taming, and",
+      "harvesting. Craft an §2Animal Dictionary§r to track them, then go collect",
+      "from the wildlife around you.",
+      "",
+      "§7Many of their drops feed crafting and combat economies across the tiers."
+    ],
+    "groups": { "Overworld Foundations": { "position": [480, 40] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_dict": {
+      "type": "heracles:item",
+      "title": "Acquire an Animal Dictionary",
+      "item": "alexsmobs:animal_dictionary",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "blood": { "type": "heracles:item", "title": "Blood sacs", "item": { "id": "alexsmobs:blood_sac", "count": 2 } }
+  }
+}

@@ -1,4 +1,5 @@
 Onboarding
+Main
 Iridescent Codex
 Engineering
 Magic
@@ -6,4 +7,4 @@ Exploration
 Combat
 Tier Milestones
 Capstones
-Main
+Overworld Foundations

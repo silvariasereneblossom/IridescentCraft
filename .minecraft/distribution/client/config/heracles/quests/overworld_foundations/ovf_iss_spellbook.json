@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "irons_spellbooks:iron_spell_book" },
+    "title": "Iron's Spellbooks: First Cast",
+    "subtitle": "Acquire a spell book",
+    "description": [
+      "The arcane combat arts begin with a spell book. Craft or find an §6Iron",
+      "Spell Book§r, inscribe a spell with ink and a scroll, and cast your first.",
+      "",
+      "§7Caster classes start with a modular book; the modular Tetra-style books",
+      "§7let you slot cover and page materials to grow spell power."
+    ],
+    "groups": { "Overworld Foundations": { "position": [160, 80] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_book": {
+      "type": "heracles:item",
+      "title": "Acquire an Iron Spell Book",
+      "item": "irons_spellbooks:iron_spell_book",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "ink": { "type": "heracles:item", "title": "Common ink", "item": { "id": "irons_spellbooks:common_ink", "count": 6 } }
+  }
+}

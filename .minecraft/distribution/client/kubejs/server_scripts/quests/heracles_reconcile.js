@@ -116,6 +116,25 @@ const RECONCILE = [
   { q: 'capstone_end_compass', met: p => reconHasFlag(p, 'icraft_codex_dimentry_deep_aether') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
   { q: 'capstone_end_bastion', met: p => reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end') || reconHasAdv(p, 'minecraft:end/kill_dragon') },
   { q: 'capstone_ender_dragon', met: p => reconHasAdv(p, 'minecraft:end/kill_dragon') },
+
+  // === Main (vanilla MC) progression — advancement-gated, reliably reconciled ===
+  { q: 'main_diamonds',         met: p => reconHasAdv(p, 'minecraft:story/mine_diamond') },
+  { q: 'main_enchant',          met: p => reconHasAdv(p, 'minecraft:story/enchant_item') },
+  { q: 'main_diamond_armor',    met: p => reconHasAdv(p, 'minecraft:story/shiny_gear') },
+  { q: 'main_enter_nether',     met: p => reconHasAdv(p, 'minecraft:story/enter_the_nether') },
+  { q: 'main_fortress',         met: p => reconHasAdv(p, 'minecraft:nether/find_fortress') },
+  { q: 'main_blaze_rods',       met: p => reconHasAdv(p, 'minecraft:nether/obtain_blaze_rod') },
+  { q: 'main_brewing',          met: p => reconHasAdv(p, 'minecraft:nether/brew_potion') },
+  { q: 'main_netherite',        met: p => reconHasAdv(p, 'minecraft:nether/obtain_ancient_debris') },
+  { q: 'main_stronghold',       met: p => reconHasAdv(p, 'minecraft:story/follow_ender_eye') },
+  { q: 'main_journey_capstone', met: p => reconHasAdv(p, 'minecraft:nether/obtain_ancient_debris') },
+
+  // === Overworld Foundations (T1 mods) — inventory best-effort (held items only;
+  // placed-block quests like Mana Pool / Press / Workbench just re-complete on craft) ===
+  { q: 'ovf_iss_spellbook', met: p => reconHasItem(p, 'irons_spellbooks:iron_spell_book') },
+  { q: 'ovf_apotheosis_gem', met: p => reconHasItem(p, 'apotheosis:gem') },
+  { q: 'ovf_alexsmobs',     met: p => reconHasItem(p, 'alexsmobs:animal_dictionary') },
+  { q: 'ovf_create_brass',  met: p => reconHasItem(p, 'create:brass_ingot') },
 ]
 
 // ---- idempotency -----------------------------------------------------------

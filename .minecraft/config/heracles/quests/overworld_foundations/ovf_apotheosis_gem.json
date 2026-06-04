@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "apotheosis:gem" },
+    "title": "Apotheosis: Socketed Power",
+    "subtitle": "Acquire a Gem",
+    "description": [
+      "Apotheosis overhauls enchanting and adds the affix + gem-socket system.",
+      "Find a §dGem§r, cut it at a Salvaging/Reforging table, and socket it into",
+      "gear with an open slot for a permanent bonus.",
+      "",
+      "§7Affixed and socketed gear is how you push past the tiers' rising danger."
+    ],
+    "groups": { "Overworld Foundations": { "position": [320, 80] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_gem": {
+      "type": "heracles:item",
+      "title": "Acquire an Apotheosis Gem",
+      "item": "apotheosis:gem",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "dust": { "type": "heracles:item", "title": "Gem dust", "item": { "id": "apotheosis:gem_dust", "count": 4 } }
+  }
+}

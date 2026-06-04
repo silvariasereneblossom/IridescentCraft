@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:brewing_stand" },
+    "title": "The Alchemist's Bench",
+    "subtitle": "Brew a potion",
+    "description": [
+      "Set up a brewing stand and brew your first potion. Fire Resistance alone is",
+      "worth the trip — and the higher tiers will test your potion stock hard.",
+      "",
+      "§7The pack's deeper magic mods go far beyond vanilla brewing, but this is",
+      "§7where every alchemist starts."
+    ],
+    "groups": { "Main": { "position": [480, 160] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_blaze_rods"],
+  "tasks": {
+    "brew_potion": {
+      "type": "heracles:advancement",
+      "title": "Brew a potion",
+      "advancements": ["minecraft:nether/brew_potion"]
+    }
+  },
+  "rewards": {
+    "glowstone": { "type": "heracles:item", "item": { "id": "minecraft:glowstone_dust", "count": 8 } },
+    "carrots": { "type": "heracles:item", "item": { "id": "minecraft:golden_carrot", "count": 4 } }
+  }
+}

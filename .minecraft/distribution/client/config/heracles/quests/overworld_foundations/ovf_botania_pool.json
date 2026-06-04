@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:mana_pool" },
+    "title": "Botania: First Mana",
+    "subtitle": "Set up a Mana Pool",
+    "description": [
+      "Botania is the Tier 1 magic backbone — and the peaceful Magic lane's first",
+      "stop. Plant mystical flowers, build a §aMana Pool§r and a Mana Spreader,",
+      "and feed it with a generating flower to make your first mana.",
+      "",
+      "§7Manasteel, runes, and apparatus are your early Magic submissions."
+    ],
+    "groups": { "Overworld Foundations": { "position": [0, 80] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_pool": {
+      "type": "heracles:item",
+      "title": "Acquire a Mana Pool",
+      "item": "botania:mana_pool",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "manasteel": { "type": "heracles:item", "item": { "id": "botania:manasteel_ingot", "count": 4 } },
+    "tablet": { "type": "heracles:item", "title": "Mana storage", "item": { "id": "botania:mana_tablet", "count": 1 } }
+  }
+}

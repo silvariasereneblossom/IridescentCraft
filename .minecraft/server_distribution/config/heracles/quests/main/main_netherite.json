@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:netherite_ingot" },
+    "title": "Debris of the Ancients",
+    "subtitle": "Mine Ancient Debris",
+    "description": [
+      "Ancient Debris hides deep in the Nether (Y 8-22, blast-mining territory).",
+      "Smelt it to scrap, alloy it with gold, and you have netherite — the peak of",
+      "vanilla gear and a §6Tier 4§r material.",
+      "",
+      "§7Netherite is also a high-value Engineering submission. See the Codex."
+    ],
+    "groups": { "Main": { "position": [600, 100] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_blaze_rods"],
+  "tasks": {
+    "ancient_debris": {
+      "type": "heracles:advancement",
+      "title": "Obtain Ancient Debris",
+      "advancements": ["minecraft:nether/obtain_ancient_debris"]
+    }
+  },
+  "rewards": {
+    "scrap": { "type": "heracles:item", "title": "A head start", "item": { "id": "minecraft:netherite_scrap", "count": 2 } }
+  }
+}

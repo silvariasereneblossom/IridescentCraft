@@ -1,0 +1,28 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:diamond" },
+    "title": "A Diamond in the Rough",
+    "subtitle": "Mine your first diamonds",
+    "description": [
+      "The classic milestone — but in IridescentCraft, diamonds are a §9Tier 3§r",
+      "material. They are held back from early worldgen and chests on purpose.",
+      "",
+      "Once you've earned your way to Tier 3, dig deep (Y -59 to -50 is richest)",
+      "and bring home your first diamonds."
+    ],
+    "groups": { "Main": { "position": [0, 100] } }
+  },
+  "settings": { "individual_progress": true, "unlockNotification": true },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "mine_diamond": {
+      "type": "heracles:advancement",
+      "title": "Mine a diamond",
+      "advancements": ["minecraft:story/mine_diamond"]
+    }
+  },
+  "rewards": {
+    "diamonds": { "type": "heracles:item", "title": "A few to start", "item": { "id": "minecraft:diamond", "count": 3 } },
+    "insight": { "type": "heracles:item", "item": { "id": "minecraft:experience_bottle", "count": 6 } }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:blaze_rod" },
+    "title": "Where There's Smoke",
+    "subtitle": "Collect a Blaze Rod",
+    "description": [
+      "Blazes guard the fortress. Their rods are brewing fuel and the path to eyes",
+      "of ender — and Create's Blaze Burner runs on a captured blaze.",
+      "",
+      "Bring one down and take its rod."
+    ],
+    "groups": { "Main": { "position": [480, 100] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_fortress"],
+  "tasks": {
+    "blaze_rod": {
+      "type": "heracles:advancement",
+      "title": "Obtain a Blaze Rod",
+      "advancements": ["minecraft:nether/obtain_blaze_rod"]
+    }
+  },
+  "rewards": {
+    "powder": { "type": "heracles:item", "item": { "id": "minecraft:blaze_powder", "count": 6 } }
+  }
+}

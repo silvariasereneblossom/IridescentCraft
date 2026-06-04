@@ -1,0 +1,26 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:nether_bricks" },
+    "title": "Bastions of Brick",
+    "subtitle": "Find a Nether Fortress",
+    "description": [
+      "Nether Fortresses hold blazes, wither skeletons, and nether wart — the keys",
+      "to brewing and to the Wither itself.",
+      "",
+      "Find one and stake your claim."
+    ],
+    "groups": { "Main": { "position": [360, 100] } }
+  },
+  "settings": { "individual_progress": true },
+  "dependencies": ["main_enter_nether"],
+  "tasks": {
+    "find_fortress": {
+      "type": "heracles:advancement",
+      "title": "Locate a Nether Fortress",
+      "advancements": ["minecraft:nether/find_fortress"]
+    }
+  },
+  "rewards": {
+    "wart": { "type": "heracles:item", "title": "A brewing starter", "item": { "id": "minecraft:nether_wart", "count": 8 } }
+  }
+}
