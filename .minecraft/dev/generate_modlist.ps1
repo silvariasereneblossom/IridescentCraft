@@ -6,7 +6,8 @@
 # Sources of truth (in this order of precedence for side classification):
 #   1. .minecraft/mods/.index/*.pw.toml  -- packwiz-managed mods (most)
 #   2. .minecraft/server_distribution/client_only_mods.txt  -- strip list
-#   3. cleanup_stale_jars.ps1's $customJars  -- custom-bundled jars not in packwiz
+#   3. custom_jars_manifest.json  -- custom-bundled jars not in packwiz (the
+#      single source of truth; same registry cleanup_stale_jars.ps1 keeps by)
 #
 # Side resolution:
 #   - "client" if .pw.toml side='client' OR filename in client_only_mods.txt
@@ -29,7 +30,7 @@ $ErrorActionPreference = 'Stop'
 $mcRoot       = Join-Path $RepoRoot '.minecraft'
 $indexDir     = Join-Path $mcRoot   'mods\.index'
 $clientStrip  = Join-Path $mcRoot   'server_distribution\client_only_mods.txt'
-$customJarsPs = Join-Path $mcRoot   'server_distribution\cleanup_stale_jars.ps1'
+$manifestPath = Join-Path $mcRoot   'custom_jars_manifest.json'
 $wikiOut      = Join-Path $mcRoot   'wiki\Mod-List.md'
 
 if (-not (Test-Path $indexDir)) {
@@ -49,16 +50,18 @@ if (Test-Path $clientStrip) {
     }
 }
 
-# ---- Parse customJars allowlist out of cleanup_stale_jars.ps1 ----
-# We grep for the $customJars = @(...) block and pull out filenames.
+# ---- Custom-jar list: read from custom_jars_manifest.json (single source of truth) ----
+# The manifest is the authoritative custom-jar registry (regen_custom_jars_manifest.ps1)
+# and what cleanup_stale_jars.ps1 keeps by. Reading it here (instead of re-parsing the
+# $customJars PowerShell literal) keeps the wiki in lockstep and avoids the old
+# one-jar-per-regex-line trap that silently dropped jars sharing a source line.
 $customJars = @()
-if (Test-Path $customJarsPs) {
-    $raw = Get-Content $customJarsPs -Raw
-    if ($raw -match '\$customJars\s*=\s*@\(([^)]+)\)') {
-        $body = $matches[1]
-        $body -split "`n" | ForEach-Object {
-            if ($_ -match "'([^']+\.jar)'") { $customJars += $matches[1] }
-        }
+if (Test-Path $manifestPath) {
+    try {
+        $mf = Get-Content $manifestPath -Raw | ConvertFrom-Json
+        if ($mf.jars) { $customJars = @($mf.jars.PSObject.Properties.Name) }
+    } catch {
+        Write-Warning "[modlist] failed to parse $manifestPath : $($_.Exception.Message)"
     }
 }
 
@@ -85,8 +88,13 @@ Get-ChildItem "$indexDir\*.pw.toml" -ErrorAction SilentlyContinue | ForEach-Obje
     }
 }
 
-# ---- Add customJars as 'both' (they're always installed on both sides) ----
+# ---- Add custom jars (manifest) as 'both', skipping any already listed via a
+#      packwiz .pw.toml marker (that entry carries a better display name and avoids
+#      the double-listing / inflated count for customs that have both). ----
+$seenFilenames = [System.Collections.Generic.HashSet[string]]::new([StringComparer]::OrdinalIgnoreCase)
+foreach ($m in $mods) { [void]$seenFilenames.Add($m.Filename) }
 foreach ($c in $customJars) {
+    if ($seenFilenames.Contains($c)) { continue }   # already listed via its .pw.toml
     # Strip extension + dashes/underscores for a display name
     $display = ($c -replace '\.jar$', '') -replace '[-_]', ' '
     $mods += [PSCustomObject]@{

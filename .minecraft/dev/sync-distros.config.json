@@ -2,7 +2,9 @@
   "_comment": "Config for sync-distros.ps1. WATCHED paths are walked under .minecraft/ and compared across server_distribution/ and distribution/client/. EXCLUDE_PATTERNS are wildcard patterns (PowerShell -like syntax) applied to the forward-slash relative path. Tune these as the project evolves; the pre-push hook reads this file at run time.",
   "WATCHED": [
     "kubejs/startup_scripts",
-    "kubejs/server_scripts"
+    "kubejs/server_scripts",
+    "cleanup_stale_jars.ps1",
+    "custom_jars_manifest.json"
   ],
   "EXCLUDE_PATTERNS": [
     "*/.cache/*",
@@ -17,6 +19,8 @@
     "the_rule": "Per CLAUDE.md 'Distribution Sync': all changes to kubejs, configs, datapacks, or lang files must be mirrored to all three distros (main, server_distribution, distribution/client). In practice this script enforces a conservative subset (server_scripts + startup_scripts) where divergence is almost always a real bug; the rest is left to manual discipline or other tools.",
     "kubejs/server_scripts": "WATCHED. Authoritative source is main; distros mirror. As of the post-cutover audit, server_distribution had 140 files vs main's 139 (one orphan) -- ground-truth which to keep before installing the hook.",
     "kubejs/startup_scripts": "WATCHED. Authoritative source is main; distros mirror.",
+    "cleanup_stale_jars.ps1": "WATCHED (single file). The shared mod-hygiene script MUST be byte-identical across main + the two distros; it had silently diverged (server copy missing iridescent_relics in its allowlist) -> #70. Authoritative source is the main copy; distros mirror. NOTE: the server-runtime SEED copy at server_distribution/'IridescentCraft Dedicated Server'/ is outside this distro-root model -> keep in parity by hand (Layer 2.5 manifest-keep makes any residual drift non-fatal).",
+    "custom_jars_manifest.json": "WATCHED (single file). The SHA-256 manifest is the single source of truth for custom-jar identity AND (as of #70) the cleanup keep-decision. regen_custom_jars_manifest.ps1 writes all three identically; this gate verifies they stayed identical so a half-applied regen can't ship.",
     "kubejs/client_scripts": "NOT WATCHED. server_distribution strips client_scripts that touch client-only classes (per CLAUDE.md Server Mod Compatibility Audit). distribution/client should mirror main but a single-direction-mirror check would need a per-distro WATCHED system this script doesn't yet support.",
     "kubejs/libraries": "EXCLUDED. KubeJS-generated IDE autocomplete stubs; never present in distros.",
     "kubejs/assets": "NOT WATCHED. Language files and resourcepack assets vary across distros legitimately (resourcepack-side rendering vs server-side translation tables).",

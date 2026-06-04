@@ -61,6 +61,17 @@ function Get-FileHashOrNull {
     return $null
 }
 
+# Enumerate the files to compare under a WATCHED entry. Supports BOTH a directory
+# (recurse) AND a single file. NOTE: a plain `Get-ChildItem -Path <file> -Recurse`
+# mis-globs - it treats the leaf as a recursive name filter and returns EVERY
+# same-named file in the tree - so single-file entries MUST be handled explicitly.
+function Get-FilesUnder {
+    param([string]$Root)
+    if (Test-Path -LiteralPath $Root -PathType Leaf)      { return @(Get-Item -LiteralPath $Root) }
+    if (Test-Path -LiteralPath $Root -PathType Container) { return @(Get-ChildItem -LiteralPath $Root -Recurse -File) }
+    return @()
+}
+
 $mismatches = New-Object System.Collections.Generic.List[object]
 
 foreach ($w in $Watched) {
@@ -71,7 +82,7 @@ foreach ($w in $Watched) {
     }
 
     # Forward pass: every file under main must exist with same hash in each distro
-    foreach ($mainFile in Get-ChildItem -Path $mainRoot -Recurse -File) {
+    foreach ($mainFile in (Get-FilesUnder $mainRoot)) {
         $rel = $mainFile.FullName.Substring($Main.Length + 1)
         # Normalise path separators so EXCLUDE_PATTERNS (written with /) match
         $relForwardSlash = $rel -replace '\\', '/'
@@ -96,7 +107,7 @@ foreach ($w in $Watched) {
     foreach ($d in $Distros) {
         $distroRoot = Join-Path $d $w
         if (-not (Test-Path $distroRoot)) { continue }
-        foreach ($distroFile in Get-ChildItem -Path $distroRoot -Recurse -File) {
+        foreach ($distroFile in (Get-FilesUnder $distroRoot)) {
             $rel = $distroFile.FullName.Substring($d.Length + 1)
             $relForwardSlash = $rel -replace '\\', '/'
             if (Test-Excluded $relForwardSlash) { continue }
