@@ -368,6 +368,14 @@ global.tick_codexOriginDump = function(event) {
       // 2026-04-21 bugfix: was `const LAYER_IDS` inside the try; Rhino
       // re-enters the block each tick and throws "redeclaration of var
       // LAYER_IDS". Switched to `var`, which re-assigns cleanly.
+      // 2026-06-04 bugfix: the probe ALWAYS returned 0 ("<none matched>")
+      // and spammed parse errors because it built `execute if entity
+      // <username>[nbt=...]` — selector args `[...]` only attach to
+      // @-selectors (@s/@a/@p/@e/@r), never a bare player name, so the
+      // command never parsed. The NBT matcher was fine all along; the
+      // grammar was wrong. Fixed to `@a[name=<username>,nbt=...]`. Same
+      // class of bug fixed in quests/heracles_reconcile.js (commit b909c2e).
+      // (codex_detectMagicClass's Route-0 player.nbt read is unaffected.)
       var LAYER_IDS = ['origins:class', 'origins:race', 'origins:origin']
       var matched = []
       // 2026-04-21: was `function probe(fullId) {...}` as a block-scoped
@@ -380,8 +388,8 @@ global.tick_codexOriginDump = function(event) {
         for (var li = 0; li < LAYER_IDS.length; li++) {
           try {
             var r = player.server.runCommandSilent(
-              'execute if entity ' + player.username +
-              '[nbt={ForgeCaps:{"origins:origins":{Origins:{"' + LAYER_IDS[li] + '":"' + fullId + '"}}}}]'
+              'execute if entity @a[name=' + player.username +
+              ',nbt={ForgeCaps:{"origins:origins":{Origins:{"' + LAYER_IDS[li] + '":"' + fullId + '"}}}}]'
             )
             if (r > 0) {
               matched.push(fullId + ' (' + LAYER_IDS[li] + ')')
