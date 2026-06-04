@@ -27,9 +27,7 @@
   "tasks": {
     "mine_log": {
       "type": "heracles:item",
-      "item": {
-        "id": "minecraft:oak_logs"
-      }
+      "item": "#minecraft:logs"
     }
   },
   "rewards": {

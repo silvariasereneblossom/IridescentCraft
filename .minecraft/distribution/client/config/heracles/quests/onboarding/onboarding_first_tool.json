@@ -29,9 +29,7 @@
   "tasks": {
     "have_pick": {
       "type": "heracles:item",
-      "item": {
-        "id": "minecraft:wooden_pickaxe"
-      }
+      "item": "minecraft:wooden_pickaxe"
     }
   },
   "rewards": {
