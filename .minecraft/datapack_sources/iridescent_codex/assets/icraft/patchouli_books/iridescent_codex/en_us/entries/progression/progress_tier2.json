@@ -1,0 +1,18 @@
+{
+  "name": "Reached: Tier 2 - Expansion",
+  "icon": "aether:zanite_gemstone",
+  "category": "icraft:progression",
+  "sortnum": 7,
+  "advancement": "icraft:stage_tier_2",
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(bold)Tier 2 reached.$() The mid-tier frontiers open to you.$(br2)$(li)$(bold)Dimensions:$() the Twilight Forest, The Aether, Blue Skies.$(li)$(bold)Tech:$() the Thermal Series, basic Industrial Foregoing.$(li)$(bold)Magic:$() Ars Nouveau.$(li)$(bold)Gear:$() Steel, Manasteel, Steeleaf, Fiery - and the first Simply Swords uniques, from Twilight bosses."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "What's Next",
+      "text": "Toward $(t3)Tier 3$(): bank $(t3)1000$() tokens, or clear $(t3)90%$() of the Tier 2 bosses.$(br2)Track it with $(l:icraft:progression/check_your_standing)Check Your Standing$(/l). $(note)Diamonds are still a Tier 3 material - not yet in worldgen or chests.$()"
+    }
+  ]
+}
