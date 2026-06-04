@@ -1,0 +1,11 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "ingredients": [
+    { "item": "minecraft:compass" },
+    { "item": "minecraft:gold_ingot" },
+    { "item": "ars_nouveau:source_gem" }
+  ],
+  "result": {
+    "item": "iridescent_grand_compass:grand_compass"
+  }
+}

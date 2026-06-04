@@ -1,0 +1,76 @@
+plugins {
+    id 'eclipse'
+    id 'idea'
+    id 'net.minecraftforge.gradle' version '[6.0.16,6.2)'
+    id 'org.spongepowered.mixin' version '0.7.+'
+}
+
+version = mod_version
+group = mod_group
+archivesBaseName = mod_id
+
+java.toolchain.languageVersion = JavaLanguageVersion.of(17)
+compileJava { options.encoding = 'UTF-8' }
+javadoc { options.encoding = 'UTF-8' }
+
+minecraft {
+    mappings channel: mapping_channel, version: mapping_version
+    runs {
+        // No dev runs — verification is in-pack (cross-mod GUI integration).
+    }
+}
+
+// Register the mixin config so the AP produces a refmap and our @Inject targets
+// in explorerscompass/naturescompass remap correctly at build time.
+mixin {
+    add sourceSets.main, "${mod_id}.refmap.json"
+    config "${mod_id}.mixins.json"
+}
+
+repositories {
+    mavenCentral()
+    // libs/ is git-ignored; wsl-build.sh stages the two compass jars (renamed to
+    // stable names) so fg.deobf can resolve + deobfuscate their references.
+    flatDir {
+        dirs "$projectDir/libs"
+    }
+}
+
+dependencies {
+    minecraft "net.minecraftforge:forge:${minecraft_version}-${forge_version}"
+
+    // Mixin annotation processor (Forge ships MixinExtras at runtime).
+    annotationProcessor 'org.spongepowered:mixin:0.8.5:processor'
+
+    // Explorer's Compass + Nature's Compass — we call their public use()/search
+    // methods and mixin their ItemUtils.getHeldItem. compileOnly: both are loaded
+    // normally by Forge at runtime. flatDir-resolved so fg.deobf maps their refs.
+    compileOnly fg.deobf("blank:explorerscompass:${explorerscompass_version}")
+    compileOnly fg.deobf("blank:naturescompass:${naturescompass_version}")
+}
+
+jar {
+    manifest {
+        attributes([
+            "Specification-Title": mod_id,
+            "Specification-Vendor": mod_authors,
+            "Specification-Version": "1",
+            "Implementation-Title": mod_id,
+            "Implementation-Version": mod_version,
+            "Implementation-Vendor": mod_authors,
+            "Implementation-Timestamp": new Date().format("yyyy-MM-dd'T'HH:mm:ssZ"),
+            "MixinConfigs": "${mod_id}.mixins.json"
+        ])
+    }
+    finalizedBy 'reobfJar'
+}
+
+processResources {
+    duplicatesStrategy = DuplicatesStrategy.EXCLUDE
+    inputs.property "version", mod_version
+    filesMatching(['META-INF/mods.toml', 'pack.mcmeta']) {
+        expand 'version': mod_version, 'mod_id': mod_id, 'mod_name': mod_name,
+               'mod_description': mod_description, 'mod_authors': mod_authors,
+               'minecraft_version': minecraft_version, 'forge_version': forge_version
+    }
+}

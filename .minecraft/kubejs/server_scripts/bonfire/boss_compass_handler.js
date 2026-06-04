@@ -58,6 +58,27 @@ function getPlayerTier(player) {
     }
 }
 
+// ---- Grand Compass bridge (#70) -------------------------------------------
+// The unified iridescent_grand_compass:grand_compass drives this boss finder
+// while it is in Boss mode (its NBT GrandMode == 0). Accept it everywhere the
+// dedicated kubejs:boss_compass is accepted (menu, target-select, HUD).
+const BC_GRAND = "iridescent_grand_compass:grand_compass"
+function bcIsBossFinder(item) {
+    if (!item) return false
+    if (item.id === "kubejs:boss_compass") return true
+    if (item.id === BC_GRAND) {
+        try { return (item.nbt ? item.nbt.getInt("GrandMode") : 0) === 0 } catch (e) { return true }
+    }
+    return false
+}
+function bcHeldFinder(player) {
+    let it = player.mainHandItem
+    if (bcIsBossFinder(it)) return it
+    it = player.offhandItem
+    if (bcIsBossFinder(it)) return it
+    return null
+}
+
 // ---- Structure-center lookup ----------------------------------------------
 //
 // Locates the nearest instance of a boss arena's structure and returns its
@@ -315,9 +336,9 @@ function applyTarget(player, boss_id) {
             + "; you are Tier " + tier + ". Advance first."))
         return
     }
-    const compass = player.mainHandItem
-    if (!compass || compass.id !== "kubejs:boss_compass") {
-        player.tell(Text.red("Hold the Boss Compass in your main hand first."))
+    const compass = bcHeldFinder(player)
+    if (!compass) {
+        player.tell(Text.red("Hold the Boss Compass (or a Grand Compass in Boss mode) first."))
         return
     }
 
@@ -447,11 +468,8 @@ ItemEvents.rightClicked("kubejs:boss_compass", event => {
 global.tick_bossCompassHud = function (event) {
     const player = event.player
     if (!player || player.level.isClientSide()) return
-    let item = player.mainHandItem
-    if (!item || item.id !== "kubejs:boss_compass") {
-        item = player.offhandItem
-        if (!item || item.id !== "kubejs:boss_compass") return
-    }
+    let item = bcHeldFinder(player)
+    if (!item) return
     const target = getCompassTarget(item)
     if (!target || !target.pos) return
 
@@ -494,6 +512,14 @@ ServerEvents.commandRegistry(event => {
 
     event.register(
         commands.literal("icraft_compass")
+            .then(
+                commands.literal("menu")
+                    .executes(ctx => {
+                        const player = ctx.source.playerOrException
+                        showTargetMenu(player)
+                        return 1
+                    })
+            )
             .then(
                 commands.literal("select")
                     .then(

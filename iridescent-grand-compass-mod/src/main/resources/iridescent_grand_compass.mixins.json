@@ -1,0 +1,16 @@
+{
+  "required": false,
+  "minVersion": "0.8",
+  "package": "com.iridescentcraft.grandcompass.mixin",
+  "compatibilityLevel": "JAVA_17",
+  "refmap": "iridescent_grand_compass.refmap.json",
+  "mixins": [
+    "ExplorersItemUtilsMixin",
+    "NaturesItemUtilsMixin"
+  ],
+  "client": [],
+  "server": [],
+  "injectors": {
+    "defaultRequire": 0
+  }
+}

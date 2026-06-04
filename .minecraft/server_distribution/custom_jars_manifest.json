@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-06-03T20:50:53Z",
+    "generated_at":  "2026-06-03T22:52:37Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -27,6 +27,10 @@
                                                          "sha256":  "cbd0873a31c9f37aa916968477f65f97296f473b82728b8febc496261cb8a44c",
                                                          "size":  31836
                                                      },
+                 "iridescent_grand_compass-1.0.0.jar":  {
+                                                            "sha256":  "3fabe345ed41c84f2b541a509fbb7a97e62dd2542024676003c92790a7f2053f",
+                                                            "size":  16079
+                                                        },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
                                                                  "sha256":  "5fdbbdb754dbf7b363a16842b259a20ab124db1f2076beb81d9307227613754c",
                                                                  "size":  482232

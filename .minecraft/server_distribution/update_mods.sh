@@ -45,7 +45,7 @@ fi
 FORCE_SKIP="embeddium|oculus|immediatelyfast|rubidium-extra|kubejsoffline|light-overlay|equipment-compare|chat_heads|BetterAnimations|transmog|probejs|irons_spells_js|gh_classes|cherryvillage|rechiseled|supermartijn642|connectedglass|trashcans|ftbbackups|ftbchunks|ftbessentials|ftblibrary|ftbquests|ftbranks|ftbteams|ftbultimine|mca-social"
 
 # Custom JARs that aren't in TOMLs
-CUSTOM_JARS="iridescent_codex_data.jar|iridescent_origins-1.0.0.jar|iridescent_biomes-1.0.0.jar|iridescent_tetra_expansion-1.0.0.jar|iridescent_durability_clamp-0.1.0.jar|iridescent_difficulty-0.1.0.jar|justlevelingfork-1.2.1-iridescent.1.jar|mek_walkable_cables-1.0.1.jar|offlineskins-1.20.1-v1.jar|zeta_racefix-1.0.0.jar|Patchouli-1.20.1-85-FORGE.jar|ars_nouveau-1.20.1-4.12.7-all.jar"
+CUSTOM_JARS="iridescent_codex_data.jar|iridescent_origins-1.0.0.jar|iridescent_biomes-1.0.0.jar|iridescent_tetra_expansion-1.0.0.jar|iridescent_durability_clamp-0.1.0.jar|iridescent_difficulty-0.1.0.jar|iridescent_grand_compass-1.0.0.jar|justlevelingfork-1.2.1-iridescent.1.jar|mek_walkable_cables-1.0.1.jar|offlineskins-1.20.1-v1.jar|zeta_racefix-1.0.0.jar|Patchouli-1.20.1-85-FORGE.jar|ars_nouveau-1.20.1-4.12.7-all.jar"
 
 # ── Phase 1: Build expected mod map ──
 echo "  [1/3] Reading mod index..."
