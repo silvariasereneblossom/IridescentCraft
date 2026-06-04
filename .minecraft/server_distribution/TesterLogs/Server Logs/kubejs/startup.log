@@ -1,65 +1,65 @@
-[16:29:08] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
-[16:29:08] [INIT] Loaded plugins:
-[16:29:08] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
-[16:29:08] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
-[16:29:08] [INIT] - pie.ilikepiefoo.AdditionsPlugin
-[16:29:08] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
-[16:29:08] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
-[16:29:08] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
-[16:29:08] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
-[16:29:08] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
-[16:29:08] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
-[16:29:08] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
-[16:29:08] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
-[16:29:08] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
-[16:29:08] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
-[16:29:10] [INFO] Loaded script startup_scripts:boss_compass_item.js in 0.344 s
-[16:29:10] [INFO] cap_player_knockback.js#33: Loaded Java class 'com.iridescentcraft.reforging.event.ForgeEventRegistry'
-[16:29:10] [INFO] cap_player_knockback.js#34: Loaded Java class 'net.minecraft.world.entity.player.Player'
-[16:29:10] [INFO] cap_player_knockback.js#158: [IridescentCraft] cap_player_knockback loaded (cap=0.5, EMERGENCY -- tighten until jockey diag lands)
-[16:29:10] [INFO] Loaded script startup_scripts:cap_player_knockback.js in 0.176 s
-[16:29:10] [INFO] cap_player_levitation.js#93: [IridescentCraft] cap_player_levitation loaded (max amp=5)
-[16:29:10] [INFO] Loaded script startup_scripts:cap_player_levitation.js in 0.006 s
-[16:29:10] [INFO] codex_progression_tokens.js#65: [IridescentCraft] Codex progression tokens registered (t1/t2/t3)
-[16:29:10] [INFO] Loaded script startup_scripts:codex_progression_tokens.js in 0.009 s
-[16:29:10] [INFO] Loaded script startup_scripts:cursed_pyramid_items.js in 0.001 s
-[16:29:10] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.007 s
-[16:29:10] [INFO] Loaded script startup_scripts:custom_items.js in 0.009 s
-[16:29:10] [INFO] deathskin_undead_bonus.js#27: Loaded Java class 'com.iridescentcraft.reforging.event.DamageModifierRegistry'
-[16:29:10] [INFO] deathskin_undead_bonus.js#28: Loaded Java class 'net.minecraft.world.entity.LivingEntity'
-[16:29:10] [INFO] deathskin_undead_bonus.js#29: Loaded Java class 'net.minecraft.world.entity.MobType'
-[16:29:10] [INFO] deathskin_undead_bonus.js#30: Loaded Java class 'net.minecraft.resources.ResourceLocation'
-[16:29:10] [INFO] deathskin_undead_bonus.js#31: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
-[16:29:10] [INFO] deathskin_undead_bonus.js#77: [IridescentCraft] deathskin_undead_bonus loaded (attribute-driven)
-[16:29:10] [INFO] Loaded script startup_scripts:deathskin_undead_bonus.js in 0.017 s
-[16:29:10] [INFO] enchants/icraft_magic_enchants.js#54: Loaded Java class 'com.iridescentcraft.reforging.event.ItemAttributeRegistry'
-[16:29:10] [INFO] enchants/icraft_magic_enchants.js#56: Loaded Java class 'net.minecraft.world.entity.EquipmentSlot'
-[16:29:10] [INFO] enchants/icraft_magic_enchants.js#57: Loaded Java class 'net.minecraft.world.entity.ai.attributes.AttributeModifier'
-[16:29:10] [INFO] enchants/icraft_magic_enchants.js#60: Loaded Java class 'java.util.UUID'
-[16:29:11] [INFO] enchants/icraft_magic_enchants.js#61: Loaded Java class 'net.minecraft.world.item.enchantment.EnchantmentHelper'
-[16:29:11] [INFO] enchants/icraft_magic_enchants.js#281: [IridescentCraft] icraft_magic_enchants loaded (mana_boost + mana_regen + arcane_focus stat hooks + arcane_vorpal decap)
-[16:29:11] [INFO] Loaded script startup_scripts:enchants/icraft_magic_enchants.js in 0.041 s
-[16:29:11] [INFO] enchants/vorpal_rework.js#208: [IridescentCraft] vorpal_rework loaded (crit_damage scaling + decap-on-crit)
-[16:29:11] [INFO] Loaded script startup_scripts:enchants/vorpal_rework.js in 0.007 s
-[16:29:11] [INFO] Loaded script startup_scripts:endgame_items.js in 0.007 s
-[16:29:11] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
-[16:29:11] [INFO] Loaded script startup_scripts:example.js in 0.002 s
-[16:29:11] [INFO] hulk_hammer_attributes.js#59: Loaded Java class 'net.minecraft.world.entity.ai.attributes.Attributes'
-[16:29:11] [INFO] hulk_hammer_attributes.js#115: [IridescentCraft] hulk_hammer_attributes loaded (20 dmg / 0.5 aspd / +50% vs undead)
-[16:29:11] [INFO] Loaded script startup_scripts:hulk_hammer_attributes.js in 0.004 s
-[16:29:11] [INFO] Loaded script startup_scripts:hulk_hammer_durability.js in 0.0 s
-[16:29:11] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
-[16:29:11] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
-[16:29:11] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
-[16:29:11] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.001 s
-[16:29:11] [INFO] magic_weapon_category.js#40: Loaded Java class 'dev.shadowsoffire.apotheosis.adventure.loot.LootCategory'
-[16:29:11] [INFO] magic_weapon_category.js#100: [magic-weapon] LootCategory.magic_weapon registered (hardcoded 26-ID set, MAINHAND/OFFHAND slots, inserted before SWORD for SwordItem-extending wand precedence)
-[16:29:11] [INFO] Loaded script startup_scripts:magic_weapon_category.js in 0.234 s
-[16:29:11] [INFO] Loaded script startup_scripts:sigil_registry.js in 0.002 s
-[16:29:11] [INFO] terramity_weapon_attributes.js#97: [IridescentCraft] terramity_weapon_attributes loaded (exodium_waraxe + reverium_axe damage clamp)
-[16:29:11] [INFO] Loaded script startup_scripts:terramity_weapon_attributes.js in 0.002 s
-[16:29:11] [INFO] Loaded script startup_scripts:terramity_weapon_durability.js in 0.001 s
-[16:29:11] [INFO] virtual_gold_clamp.js#156: [IridescentCraft] virtual_gold_clamp loaded (attribute clamp for 9 items)
-[16:29:11] [INFO] Loaded script startup_scripts:virtual_gold_clamp.js in 0.057 s
-[16:29:11] [INFO] Loaded script startup_scripts:virtual_gold_durability.js in 0.011 s
-[16:29:11] [INFO] Loaded 21/21 KubeJS startup scripts in 2.53 s with 0 errors and 0 warnings
+[20:04:38] [INIT] KubeJS 2001.6.5-build.16; MC 2001 forge
+[20:04:38] [INIT] Loaded plugins:
+[20:04:38] [INIT] - dev.latvian.mods.kubejs.forge.BuiltinKubeJSForgePlugin
+[20:04:38] [INIT] - com.sunekaer.sdrp.integration.kubejs.SDRPKubeJSIntegration
+[20:04:38] [INIT] - pie.ilikepiefoo.AdditionsPlugin
+[20:04:38] [INIT] - pie.ilikepiefoo.compat.jei.JEIKubeJSPlugin
+[20:04:38] [INIT] - com.prunoideae.KubeJSBotaniaPlugin
+[20:04:38] [INIT] - dev.mayaqq.createestrogen.compat.kubejs.CreateEstrogenKubeJSPlugin
+[20:04:38] [INIT] - dev.latvian.mods.kubejs.thermal.KubeJSThermalPlugin
+[20:04:38] [INIT] - com.bobvarioa.kubejsarsnouveau.KubeJSArsNouveauPlugin
+[20:04:38] [INIT] - com.tom.createores.kubejs.KubeJSExcavation
+[20:04:38] [INIT] - com.alessandro.astages.integration.kubejs.AStageKubeJSPlugin
+[20:04:38] [INIT] - qinomed.kubejsdelight.KubeJSDelightPlugin
+[20:04:38] [INIT] - com.almostreliable.lootjs.kube.LootJSPlugin
+[20:04:38] [INIT] - com.blakebr0.cucumber.compat.kubejs.CucumberKubeJSPlugin
+[20:04:40] [INFO] Loaded script startup_scripts:boss_compass_item.js in 0.337 s
+[20:04:40] [INFO] cap_player_knockback.js#33: Loaded Java class 'com.iridescentcraft.reforging.event.ForgeEventRegistry'
+[20:04:40] [INFO] cap_player_knockback.js#34: Loaded Java class 'net.minecraft.world.entity.player.Player'
+[20:04:40] [INFO] cap_player_knockback.js#158: [IridescentCraft] cap_player_knockback loaded (cap=0.5, EMERGENCY -- tighten until jockey diag lands)
+[20:04:40] [INFO] Loaded script startup_scripts:cap_player_knockback.js in 0.179 s
+[20:04:40] [INFO] cap_player_levitation.js#93: [IridescentCraft] cap_player_levitation loaded (max amp=5)
+[20:04:40] [INFO] Loaded script startup_scripts:cap_player_levitation.js in 0.006 s
+[20:04:41] [INFO] codex_progression_tokens.js#65: [IridescentCraft] Codex progression tokens registered (t1/t2/t3)
+[20:04:41] [INFO] Loaded script startup_scripts:codex_progression_tokens.js in 0.009 s
+[20:04:41] [INFO] Loaded script startup_scripts:cursed_pyramid_items.js in 0.0 s
+[20:04:41] [INFO] Loaded script startup_scripts:custom_enchantments.js in 0.005 s
+[20:04:41] [INFO] Loaded script startup_scripts:custom_items.js in 0.013 s
+[20:04:41] [INFO] deathskin_undead_bonus.js#27: Loaded Java class 'com.iridescentcraft.reforging.event.DamageModifierRegistry'
+[20:04:41] [INFO] deathskin_undead_bonus.js#28: Loaded Java class 'net.minecraft.world.entity.LivingEntity'
+[20:04:41] [INFO] deathskin_undead_bonus.js#29: Loaded Java class 'net.minecraft.world.entity.MobType'
+[20:04:41] [INFO] deathskin_undead_bonus.js#30: Loaded Java class 'net.minecraft.resources.ResourceLocation'
+[20:04:41] [INFO] deathskin_undead_bonus.js#31: Loaded Java class 'net.minecraftforge.registries.ForgeRegistries'
+[20:04:41] [INFO] deathskin_undead_bonus.js#77: [IridescentCraft] deathskin_undead_bonus loaded (attribute-driven)
+[20:04:41] [INFO] Loaded script startup_scripts:deathskin_undead_bonus.js in 0.019 s
+[20:04:41] [INFO] enchants/icraft_magic_enchants.js#54: Loaded Java class 'com.iridescentcraft.reforging.event.ItemAttributeRegistry'
+[20:04:41] [INFO] enchants/icraft_magic_enchants.js#56: Loaded Java class 'net.minecraft.world.entity.EquipmentSlot'
+[20:04:41] [INFO] enchants/icraft_magic_enchants.js#57: Loaded Java class 'net.minecraft.world.entity.ai.attributes.AttributeModifier'
+[20:04:41] [INFO] enchants/icraft_magic_enchants.js#60: Loaded Java class 'java.util.UUID'
+[20:04:41] [INFO] enchants/icraft_magic_enchants.js#61: Loaded Java class 'net.minecraft.world.item.enchantment.EnchantmentHelper'
+[20:04:41] [INFO] enchants/icraft_magic_enchants.js#281: [IridescentCraft] icraft_magic_enchants loaded (mana_boost + mana_regen + arcane_focus stat hooks + arcane_vorpal decap)
+[20:04:41] [INFO] Loaded script startup_scripts:enchants/icraft_magic_enchants.js in 0.05 s
+[20:04:41] [INFO] enchants/vorpal_rework.js#208: [IridescentCraft] vorpal_rework loaded (crit_damage scaling + decap-on-crit)
+[20:04:41] [INFO] Loaded script startup_scripts:enchants/vorpal_rework.js in 0.007 s
+[20:04:41] [INFO] Loaded script startup_scripts:endgame_items.js in 0.006 s
+[20:04:41] [INFO] example.js#5: Hello, World! (Loaded startup scripts)
+[20:04:41] [INFO] Loaded script startup_scripts:example.js in 0.001 s
+[20:04:41] [INFO] hulk_hammer_attributes.js#59: Loaded Java class 'net.minecraft.world.entity.ai.attributes.Attributes'
+[20:04:41] [INFO] hulk_hammer_attributes.js#115: [IridescentCraft] hulk_hammer_attributes loaded (20 dmg / 0.5 aspd / +50% vs undead)
+[20:04:41] [INFO] Loaded script startup_scripts:hulk_hammer_attributes.js in 0.004 s
+[20:04:41] [INFO] Loaded script startup_scripts:hulk_hammer_durability.js in 0.001 s
+[20:04:41] [INFO] iridescent_codex.js#19: [IridescentCraft] Iridescent Codex startup placeholder loaded
+[20:04:41] [INFO] iridescent_codex.js#20:   - Book ID: icraft:iridescent_codex
+[20:04:41] [INFO] iridescent_codex.js#21:   - Delivery handled by: kubejs/server_scripts/codex_delivery.js
+[20:04:41] [INFO] Loaded script startup_scripts:iridescent_codex.js in 0.001 s
+[20:04:41] [INFO] magic_weapon_category.js#40: Loaded Java class 'dev.shadowsoffire.apotheosis.adventure.loot.LootCategory'
+[20:04:41] [INFO] magic_weapon_category.js#100: [magic-weapon] LootCategory.magic_weapon registered (hardcoded 26-ID set, MAINHAND/OFFHAND slots, inserted before SWORD for SwordItem-extending wand precedence)
+[20:04:41] [INFO] Loaded script startup_scripts:magic_weapon_category.js in 0.047 s
+[20:04:41] [INFO] Loaded script startup_scripts:sigil_registry.js in 0.002 s
+[20:04:41] [INFO] terramity_weapon_attributes.js#97: [IridescentCraft] terramity_weapon_attributes loaded (exodium_waraxe + reverium_axe damage clamp)
+[20:04:41] [INFO] Loaded script startup_scripts:terramity_weapon_attributes.js in 0.003 s
+[20:04:41] [INFO] Loaded script startup_scripts:terramity_weapon_durability.js in 0.001 s
+[20:04:41] [INFO] virtual_gold_clamp.js#156: [IridescentCraft] virtual_gold_clamp loaded (attribute clamp for 9 items)
+[20:04:41] [INFO] Loaded script startup_scripts:virtual_gold_clamp.js in 0.022 s
+[20:04:41] [INFO] Loaded script startup_scripts:virtual_gold_durability.js in 0.001 s
+[20:04:41] [INFO] Loaded 21/21 KubeJS startup scripts in 2.22 s with 0 errors and 0 warnings
