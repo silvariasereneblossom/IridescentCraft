@@ -255,7 +255,8 @@ PlayerEvents.inventoryChanged(event => {
     let name = display.getString('Name')
     if (!name) return
 
-    const mythicNames = [
+    // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked handler.
+    var mythicNames = [
         'Voidheart Blade',
         'Oblivion Aegis',
         'Riftwalker Boots',

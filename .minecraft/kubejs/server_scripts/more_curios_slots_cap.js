@@ -43,9 +43,9 @@ ICRAFT_SLOTS.forEach(function(slot) {
 
   ItemEvents.firstRightClicked(itemId, event => {
     try {
-      const player = event.player
+      var player = event.player
       if (!player || player.level.isClientSide) return  // CI-ignore: Level.isClientSide is a public final boolean field, not a method
-      const current = player.persistentData.getInt(flagKey)
+      var current = player.persistentData.getInt(flagKey)
       if (current >= cap) {
         event.cancel()
         player.tell(

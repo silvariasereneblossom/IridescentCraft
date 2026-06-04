@@ -30,15 +30,16 @@
 LootJS.modifiers(event => {
 
   // tease(chestTable, materialItem, itemChance, tierToken, tokenChance)
-  const tease = (table, item, chance, token, tchance) => {
-    const m = event.addLootTableModifier(table)
+  // RHINO-SAFETY: var (not const) — closure-local in a LootJS.modifiers callback.
+  var tease = (table, item, chance, token, tchance) => {
+    var m = event.addLootTableModifier(table)
     m.addLoot(LootEntry.of(item).when(c => c.randomChance(chance)))
     if (token) m.addLoot(LootEntry.of(token).when(c => c.randomChance(tchance)))
   }
 
-  const T1 = 'icraft:progression_token_t1'
-  const T2 = 'icraft:progression_token_t2'
-  const T3 = 'icraft:progression_token_t3'
+  var T1 = 'icraft:progression_token_t1'
+  var T2 = 'icraft:progression_token_t2'
+  var T3 = 'icraft:progression_token_t3'
 
   // ---- T1 ----
   // bm_sniffer (Super Sniffer) -> gaianite_cluster

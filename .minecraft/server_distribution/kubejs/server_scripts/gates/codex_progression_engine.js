@@ -699,8 +699,12 @@ ServerEvents.commandRegistry(event => {
 // conversion table. A Heracles MANUAL "Submit" task gates on these tags so the
 // button lights up whenever the player carries ANY of that lane's materials.
 ServerEvents.tags('item', event => {
-  for (const itemId in CODEX_CONVERSIONS) {
-    const lane = codexLaneOf(itemId)
+  // RHINO-SAFETY: `var` (NOT const/let) — ServerEvents.tags re-fires on every tag
+  // rebuild; a closure-local const/let throws "redeclaration of var" on the 2nd
+  // invocation (boot-level, not just /reload), which silently broke the per-lane
+  // Submit buttons. See dev/lessons-learned.md.
+  for (var itemId in CODEX_CONVERSIONS) {
+    var lane = codexLaneOf(itemId)
     if (lane) {
       try { event.add('icraft:codex_' + lane, itemId) } catch (e) {}
     }

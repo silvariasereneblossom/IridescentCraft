@@ -438,7 +438,7 @@ function reportTarget(player, item, target) {
 // ---- Right-click handler --------------------------------------------------
 
 ItemEvents.rightClicked("kubejs:boss_compass", event => {
-    const { player, item } = event
+    var { player, item } = event
     if (player.level.isClientSide()) return
 
     if (player.crouching) {
@@ -447,7 +447,7 @@ ItemEvents.rightClicked("kubejs:boss_compass", event => {
         return
     }
 
-    const target = getCompassTarget(item)
+    var target = getCompassTarget(item)
     if (target && target.pos) {
         reportTarget(player, item, target)
         return
@@ -466,23 +466,24 @@ ItemEvents.rightClicked("kubejs:boss_compass", event => {
 // costs one shared PlayerEvents.tick, not a second event-bus subscription.
 
 global.tick_bossCompassHud = function (event) {
-    const player = event.player
+    // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked tick.
+    var player = event.player
     if (!player || player.level.isClientSide()) return
     let item = bcHeldFinder(player)
     if (!item) return
-    const target = getCompassTarget(item)
+    var target = getCompassTarget(item)
     if (!target || !target.pos) return
 
-    const arenas = global.ICRAFT_BOSS_ARENAS || {}
-    const meta = arenas[target.boss_id]
-    const label = meta ? meta.display : target.boss_id
+    var arenas = global.ICRAFT_BOSS_ARENAS || {}
+    var meta = arenas[target.boss_id]
+    var label = meta ? meta.display : target.boss_id
 
     let msg
     if (!inTargetDimension(player, target)) {
         msg = Text.yellow("✦ " + label + " — in " + target.dim)
     } else {
-        const dist = getDistance(player, target.pos)
-        const arrow = getCompassArrow(player, target.pos)
+        var dist = getDistance(player, target.pos)
+        var arrow = getCompassArrow(player, target.pos)
         msg = Text.gold(arrow + " ").append(Text.aqua(label))
             .append(Text.gray(" — " + dist + "m"))
     }

@@ -209,7 +209,7 @@ function codex_playerHasCodex(player) {
 // ── First-Join Delivery ───────────────────────────────────────────────────────
 
 PlayerEvents.loggedIn(event => {
-  const player = event.player
+  var player = event.player
   let flagSet = player.persistentData.getBoolean(CODEX_FLAG)
   let hasBook = flagSet ? codex_playerHasCodex(player) : false
 
@@ -439,13 +439,13 @@ global.registerServerTick('tick_codexOriginDump', 20, 11)
 // next tick (on Server thread) and does the real work.
 PlayerEvents.chat(event => {
   try {
-    const msg = (event.message || '').trim().toLowerCase()
+    var msg = (event.message || '').trim().toLowerCase()
     // 2026-04-21 diag: tester typed `!origindump` and got nothing in the log,
     // nor was the message canceled (it broadcast to chat). Log every IC-command
     // candidate at entry so we can confirm the handler fires at all.
     if (msg.startsWith('!')) console.log('[codex/chat] received candidate: ' + msg)
     if (!msg.startsWith('!')) return
-    const player = event.player
+    var player = event.player
 
     if (msg === '!codex') {
       player.persistentData.putBoolean('icraft_chat_pending_codex', true)

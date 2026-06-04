@@ -100,7 +100,7 @@ EntityEvents.death(event => {
     return
   }
 
-  const dimId = (function () {
+  var dimId = (function () {
     try { return String(player.level.dimension().location()) } catch (_) {}
     try { return String(player.level.dimension) } catch (_) {}
     try { return String(player.level.dimension.toString()) } catch (_) {}
@@ -120,7 +120,7 @@ EntityEvents.death(event => {
 
     // Check Soulbound level on THIS item
     let soulboundLevel = 0
-    const enchants = stack.enchantments
+    var enchants = stack.enchantments
     if (enchants) {
       // EnchantmentHelper style check
       enchants.forEach((id, lvl) => {
@@ -132,10 +132,10 @@ EntityEvents.death(event => {
 
     // Also check via NBT if enchantments are stored differently
     if (soulboundLevel === 0 && stack.nbt) {
-      const enchList = stack.nbt.getList('Enchantments', 10)  // 10 = compound tag
+      var enchList = stack.nbt.getList('Enchantments', 10)  // 10 = compound tag
       if (enchList) {
         for (let i = 0; i < enchList.size(); i++) {
-          const ench = enchList.getCompound(i)
+          var ench = enchList.getCompound(i)
           if (ench.getString('id') === SOULBOUND_ENCHANT) {
             soulboundLevel = ench.getShort('lvl')
             break
@@ -378,7 +378,7 @@ function checkAndMarkBroken(stack) {
 }
 
 global.tick_deathPenaltyBrokenCheck = (event) => {
-  const player = event.player
+  var player = event.player
   ARMOR_SLOTS.forEach(slot => {
     let item = player.getEquipment(slot)
     if (checkAndMarkBroken(item)) {
@@ -536,7 +536,7 @@ function isGenuinelyInert(stack) {
 
 // Prevent broken tools from mining
 BlockEvents.broken(event => {
-  const heldItem = event.player.mainHandItem
+  var heldItem = event.player.mainHandItem
   if (isGenuinelyInert(heldItem)) {
     event.cancel()
     event.player.tell(Text.gray('Your tool is broken and cannot mine. Repair it at an anvil.'))
@@ -567,7 +567,7 @@ BlockEvents.broken(event => {
 
 // Prevent broken items from being used (right-click actions)
 ItemEvents.rightClicked(event => {
-  const stack = event.item
+  var stack = event.item
   if (isGenuinelyInert(stack)) {
     event.cancel()
     event.player.tell(Text.gray('This item is broken. Repair it at an anvil.'))
@@ -584,7 +584,7 @@ ItemEvents.rightClicked(event => {
 // Check repaired items periodically — if an item has the broken tag but
 // durability > 0, it was repaired. Remove the tag.
 PlayerEvents.inventoryChanged(event => {
-  const stack = event.item
+  var stack = event.item
   if (!stack.isEmpty() && stack.nbt && stack.nbt.getBoolean(BROKEN_TAG) && stack.isDamageableItem()) {
     // Small repair buffer — once damageValue dips at least 5 below the
     // pin point (maxDamage - INERT_THRESHOLD), the player has visibly

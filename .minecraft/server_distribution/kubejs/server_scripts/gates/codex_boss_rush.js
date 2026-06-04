@@ -396,13 +396,15 @@ function brGrantTier(player, tier, triggerName) {
 // we loop all tiers defensively (cheap; indexOf on small arrays).
 // =============================================================================
 EntityEvents.death(event => {
-  const source = event.source
+  // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked death
+  // handler; the in-loop consts below also re-declare per tier iteration.
+  var source = event.source
   if (!source || !source.player) return   // only player kills
-  const player = source.player
+  var player = source.player
 
   let entityId
   try { entityId = event.entity.type.toString() } catch (e) { return }
-  const canonId = brCanonical(entityId)
+  var canonId = brCanonical(entityId)
 
   for (let tier = 1; tier <= 3; tier++) {
     // Skip tiers the player has already advanced past (cleared-count is moot once
@@ -410,12 +412,12 @@ EntityEvents.death(event => {
     // only if not yet granted, to avoid pointless NBT writes after advancement).
     if (AStages.playerHasStage(BOSS_RUSH_TIERS[tier].grantsStage, player)) continue
 
-    const newCount = brRecordKill(player, tier, canonId)
+    var newCount = brRecordKill(player, tier, canonId)
     if (newCount < 0) continue   // not a roster boss for this tier, or duplicate
 
-    const total = BOSS_RUSH_ROSTERS[tier].length
-    const need = brNeeded(tier)
-    const pctTxt = Math.round(BOSS_RUSH_TIERS[tier].pct * 100)
+    var total = BOSS_RUSH_ROSTERS[tier].length
+    var need = brNeeded(tier)
+    var pctTxt = Math.round(BOSS_RUSH_TIERS[tier].pct * 100)
 
     if (newCount >= need) {
       brCheckAdvance(player, tier)

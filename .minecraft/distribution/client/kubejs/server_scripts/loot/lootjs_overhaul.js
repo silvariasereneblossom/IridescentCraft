@@ -537,7 +537,7 @@ LootJS.modifiers(event => {
   // Arrays are exhaustive per AN's config — any future AN update adding
   // glyphs will need manual re-sync.
 
-  const glyphT1 = [
+  var glyphT1 = [
     'ars_nouveau:glyph_amplify', 'ars_nouveau:glyph_bounce', 'ars_nouveau:glyph_break',
     'ars_nouveau:glyph_craft', 'ars_nouveau:glyph_cut', 'ars_nouveau:glyph_delay',
     'ars_nouveau:glyph_dispel', 'ars_nouveau:glyph_evaporate', 'ars_nouveau:glyph_fell',
@@ -551,7 +551,7 @@ LootJS.modifiers(event => {
     'ars_nouveau:glyph_summon_steed', 'ars_nouveau:glyph_summon_wolves', 'ars_nouveau:glyph_toss',
     'ars_nouveau:glyph_touch', 'ars_nouveau:glyph_underfoot'
   ]
-  const glyphT1PerItem = 0.12 / glyphT1.length  // ~12% combined
+  var glyphT1PerItem = 0.12 / glyphT1.length  // ~12% combined
   var glyphModT1 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
@@ -559,7 +559,7 @@ LootJS.modifiers(event => {
     glyphModT1.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT1PerItem)))
   })
 
-  const glyphT2 = [
+  var glyphT2 = [
     'ars_nouveau:glyph_accelerate', 'ars_nouveau:glyph_animate_block', 'ars_nouveau:glyph_aoe',
     'ars_nouveau:glyph_cold_snap', 'ars_nouveau:glyph_conjure_water', 'ars_nouveau:glyph_crush',
     'ars_nouveau:glyph_dampen', 'ars_nouveau:glyph_decelerate', 'ars_nouveau:glyph_duration_down',
@@ -571,7 +571,7 @@ LootJS.modifiers(event => {
     'ars_nouveau:glyph_sense_magic', 'ars_nouveau:glyph_slowfall', 'ars_nouveau:glyph_smelt',
     'ars_nouveau:glyph_wind_shear'
   ]
-  const glyphT2PerItem = 0.14 / glyphT2.length  // ~14% combined
+  var glyphT2PerItem = 0.14 / glyphT2.length  // ~14% combined
   var glyphModT2 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
@@ -580,14 +580,14 @@ LootJS.modifiers(event => {
     glyphModT2.addLoot(LootEntry.of(g).when(c => c.randomChance(glyphT2PerItem)))
   })
 
-  const glyphT3 = [
+  var glyphT3 = [
     'ars_nouveau:glyph_blink', 'ars_nouveau:glyph_fangs', 'ars_nouveau:glyph_glide',
     'ars_nouveau:glyph_hex', 'ars_nouveau:glyph_intangible', 'ars_nouveau:glyph_lightning',
     'ars_nouveau:glyph_linger', 'ars_nouveau:glyph_orbit', 'ars_nouveau:glyph_split',
     'ars_nouveau:glyph_summon_decoy', 'ars_nouveau:glyph_summon_undead', 'ars_nouveau:glyph_summon_vex',
     'ars_nouveau:glyph_wall', 'ars_nouveau:glyph_wither'
   ]
-  const glyphT3PerItem = 0.15 / glyphT3.length  // ~15% combined
+  var glyphT3PerItem = 0.15 / glyphT3.length  // ~15% combined
   var glyphModT3 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
@@ -599,8 +599,8 @@ LootJS.modifiers(event => {
   // but they pull from AN T3 (the highest tier AN defines). Kept the
   // glyphT4 variable as an alias of glyphT3 so downstream `.concat(glyphT4)`
   // calls continue to work unchanged.
-  const glyphT4 = glyphT3
-  const glyphT4PerItem = 0.18 / glyphT4.length  // ~18% combined (now for AN T3 glyphs at End/DD/Abyss rate)
+  var glyphT4 = glyphT3
+  var glyphT4PerItem = 0.18 / glyphT4.length  // ~18% combined (now for AN T3 glyphs at End/DD/Abyss rate)
   var glyphModT4 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
@@ -612,15 +612,15 @@ LootJS.modifiers(event => {
   // Runs AFTER glyph add modifiers on a separate event chain. LootJS's
   // persistent-filter quirk catches re-adds in the same chain, but independent
   // modifiers seem to evaluate cleanly against each other.
-  const _glyphStripOW = event.addLootTypeModifier(LootType.CHEST).anyDimension('minecraft:overworld')
+  var _glyphStripOW = event.addLootTypeModifier(LootType.CHEST).anyDimension('minecraft:overworld')
   glyphT2.concat(glyphT3, glyphT4).forEach(g => { _glyphStripOW.removeLoot(g) })
 
-  const _glyphStripT2 = event.addLootTypeModifier(LootType.CHEST)
+  var _glyphStripT2 = event.addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
       'deep_aether:the_aether', 'blue_skies:everbright', 'blue_skies:everdawn')
   glyphT3.concat(glyphT4).forEach(g => { _glyphStripT2.removeLoot(g) })
 
-  const _glyphStripT3 = event.addLootTypeModifier(LootType.CHEST)
+  var _glyphStripT3 = event.addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
   glyphT4.forEach(g => { _glyphStripT3.removeLoot(g) })
 
@@ -634,7 +634,7 @@ LootJS.modifiers(event => {
 
   // --- T1 Pool (~10% combined) — Overworld ---
   // Utility/movement artifacts + starter magic items. Safe, non-combat.
-  const artifactT1Pool = [
+  var artifactT1Pool = [
     'artifacts:snorkel', 'artifacts:anglers_hat', 'artifacts:superstitious_hat',
     'artifacts:lucky_scarf', 'artifacts:cloud_in_a_bottle',     'artifacts:running_shoes', 'artifacts:umbrella', 'artifacts:flippers',
     'artifacts:snowshoes', 'artifacts:bunny_hoppers', 'artifacts:digging_claws',
@@ -675,7 +675,7 @@ LootJS.modifiers(event => {
 
   // --- T2 Pool (~12% combined) — Twilight Forest, Aether, Blue Skies ---
   // Combat + defensive artifacts + mid-tier magic.
-  const artifactT2Pool = [
+  var artifactT2Pool = [
     'artifacts:power_glove', 'artifacts:feral_claws', 'artifacts:pickaxe_heater',
     'artifacts:cross_necklace', 'artifacts:panic_necklace', 'artifacts:antidote_vessel',
     'artifacts:crystal_heart', 'artifacts:obsidian_skull',
@@ -704,7 +704,7 @@ LootJS.modifiers(event => {
     // etchings T2: truth (raiders), life (high-HP mobs)
     'celestial_artifacts:truth_etching', 'celestial_artifacts:life_etching'
   ]
-  const artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
+  var artifactT2PerItem = 0.12 / artifactT2Pool.length  // 12% combined
   var modT2 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('twilightforest:twilight_forest', 'aether:the_aether',
@@ -715,7 +715,7 @@ LootJS.modifiers(event => {
 
   // --- T3 Pool (~14% combined) — Nether, Undergarden ---
   // Strong artifacts + some relics + advanced magic.
-  const artifactT3Pool = [
+  var artifactT3Pool = [
     'artifacts:night_vision_goggles', 'artifacts:drama_mask',
     'artifacts:universal_attractor', 'artifacts:charm_of_sinking',
     'relics:ice_skates', 'relics:rage_glove', 'relics:hunter_belt',
@@ -756,7 +756,7 @@ LootJS.modifiers(event => {
     // flight_ring deliberately NOT in T3 -- per 2026-05-13 design call,
     // it lives only in End+ as an extremely-rare standalone entry.
   ]
-  const artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
+  var artifactT3PerItem = 0.14 / artifactT3Pool.length  // 14% combined
   var modT3 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_nether', 'undergarden:undergarden')
@@ -766,7 +766,7 @@ LootJS.modifiers(event => {
 
   // --- T4 Pool (~16% combined) — End, Deeper Darker, Abyss ---
   // Endgame artifacts + powerful relics.
-  const artifactT4Pool = [
+  var artifactT4Pool = [
     'relics:enders_hand', 'relics:space_dissector', 'relics:shadow_glaive',
     'relics:elytra_booster', 'relics:magic_mirror', 'relics:holy_locket',
     'relics:arrow_quiver', 'relics:wool_mitten',
@@ -798,7 +798,7 @@ LootJS.modifiers(event => {
     // etchings T4: nihility (abyss-damage), chaotic (explosion-damage)
     'celestial_artifacts:nihility_etching', 'celestial_artifacts:chaotic_etching'
   ]
-  const artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
+  var artifactT4PerItem = 0.16 / artifactT4Pool.length  // 16% combined
   var modT4 = event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:the_end', 'deeperdarker:otherside', 'theabyss:the_abyss')
@@ -1265,7 +1265,7 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // Non-village vanilla overworld chests: remove diamonds + add T1 token chance
-  const vanillaOverworldChests = [
+  var vanillaOverworldChests = [
     'minecraft:chests/simple_dungeon',
     'minecraft:chests/abandoned_mineshaft',
     'minecraft:chests/buried_treasure',
@@ -1290,7 +1290,7 @@ LootJS.modifiers(event => {
 
   // Village smith chests: remove diamonds, add 20% artifact chance per chest
   // Villages are starting areas — artifacts provide exciting early finds
-  const vanillaVillageSmithChests = [
+  var vanillaVillageSmithChests = [
     'minecraft:chests/village/village_toolsmith',
     'minecraft:chests/village/village_weaponsmith',
     'minecraft:chests/village/village_armorer'
@@ -1342,7 +1342,7 @@ LootJS.modifiers(event => {
   // Villages are T1 starting areas — tools help new players, magic provides
   // early caster gear, affixes are exciting rare finds.
   // =========================================================================
-  const villageHouseChests = [
+  var villageHouseChests = [
     'minecraft:chests/village/village_plains_house',
     'minecraft:chests/village/village_desert_house',
     'minecraft:chests/village/village_savanna_house',
@@ -1521,7 +1521,7 @@ LootJS.modifiers(event => {
   // bootstrap iron access -- it's to supplement frequent repairs as
   // gear chips during exploration. Per tester directive 2026-04-26.
 
-  const T1_IRON_BASELINE_CHESTS = [
+  var T1_IRON_BASELINE_CHESTS = [
     'minecraft:chests/simple_dungeon',
     'minecraft:chests/abandoned_mineshaft',
     'minecraft:chests/jungle_temple',
@@ -1797,7 +1797,7 @@ LootJS.modifiers(event => {
   // --- Non-meat food items to reduce by 90% (keep 10% chance) ---
   // Uses removeLoot + addLoot with 10% random chance per food.
   // This effectively removes ~90% of these foods from Overworld structure chests.
-  const reducedFoods = [
+  var reducedFoods = [
     'minecraft:bread',
     'minecraft:apple',
     'minecraft:golden_apple',
@@ -1836,7 +1836,7 @@ LootJS.modifiers(event => {
   })
 
   // --- Remove unstackable food entirely (space cloggy in early chests) ---
-  const unstackableFoods = [
+  var unstackableFoods = [
     'minecraft:beetroot_soup',
     'minecraft:mushroom_stew',
     'minecraft:suspicious_stew',
@@ -1912,7 +1912,7 @@ LootJS.modifiers(event => {
   // Note: post-alpha, if Blue Skies moves to T1 (see roadmap/planned.md),
   // remove this whole block -- gatekeeper houses become legitimate T1
   // discovery loot at that point.
-  const gatekeeperHouseChests = [
+  var gatekeeperHouseChests = [
     'blue_skies:chests/gatekeeper_house/plains',
     'blue_skies:chests/gatekeeper_house/mountain',
     'blue_skies:chests/gatekeeper_house/snowy',
@@ -2026,7 +2026,7 @@ LootJS.modifiers(event => {
   // here, but we can remove obvious tier-breaking items.
   // =========================================================================
 
-  const villageChests = [
+  var villageChests = [
     'minecraft:chests/village/village_weaponsmith',
     'minecraft:chests/village/village_toolsmith',
     'minecraft:chests/village/village_armorer',
@@ -2123,7 +2123,7 @@ LootJS.modifiers(event => {
   // observed double-accessory stacking. Cloud still spawns everywhere else
   // in the Overworld via the T1 broadcast; villages now get only these 11
   // items that are unique to the village pool.
-  const villageArtifactPool = [
+  var villageArtifactPool = [
     'artifacts:power_glove',
     'artifacts:feral_claws',
     'artifacts:cross_necklace',
@@ -2136,12 +2136,12 @@ LootJS.modifiers(event => {
     'artifacts:universal_attractor',
     'artifacts:pickaxe_heater'
   ]
-  const villageArtifactPerItemChance = 0.10 / villageArtifactPool.length  // ~10% combined — matches overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19)
+  var villageArtifactPerItemChance = 0.10 / villageArtifactPool.length  // ~10% combined — matches overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19)
 
   // Modded village chest patterns — CTOV, VillagesAndPillages, etc. generate
   // their own custom villages whose loot tables aren't in the vanilla list.
   // Regex match catches any chest path containing "village" under these mods.
-  const moddedVillagePatterns = [
+  var moddedVillagePatterns = [
     /^ctov:chests\//,
     /^villagesandpillages:.+/,
     /^repurposed_structures:chests\/villages\//,
@@ -2260,7 +2260,7 @@ LootJS.modifiers(event => {
   // matching the intended target. This is the same pattern the enchanted
   // book adds at lines 181-222 use reliably (those consistently fire at
   // 7.5%/10%/12.5%/15% per tester reports).
-  const villageArtifactPerItem = 0.01
+  var villageArtifactPerItem = 0.01
   villageChests.forEach(function(table) {
     var vMod = event.addLootTableModifier(table)
     villageArtifactPool.forEach(function(id) {
@@ -2303,7 +2303,7 @@ LootJS.modifiers(event => {
   // from their richer 3-pool setup, non-houses (smith/butcher/tannery/etc.)
   // get magic materials from here. Air slot gives ~40% of chests NO
   // magic material (most chests have some magic material ~60%).
-  const villageQoLPool = [
+  var villageQoLPool = [
     Item.of('minecraft:air').withChance(40),
     Item.of('irons_spellbooks:common_ink').withChance(30),
     Item.of('ars_nouveau:source_gem').withChance(15),
@@ -2649,7 +2649,7 @@ LootJS.modifiers(event => {
   // =========================================================================
 
   // Village chests: low chance for basic (white/green) gear
-  const villageChestPatterns = [
+  var villageChestPatterns = [
     /minecraft:chests\/village\/.*/,
     /^villagesandpillages:.+/,
     /ctov:.*chests.*/
@@ -2714,7 +2714,7 @@ LootJS.modifiers(event => {
     .addLoot(LootEntry.of('rpgseteffects:fragment_core').when(c => c.randomChance(0.04)))
 
   // T1 Overworld chest relics (utility-focused — movement, minor passives)
-  const t1Relics = [
+  var t1Relics = [
     'rpgseteffects:featherfall_relic',
     'rpgseteffects:swift_boots_relic',
     'rpgseteffects:swift_strike_relic',
@@ -2731,7 +2731,7 @@ LootJS.modifiers(event => {
   })
 
   // T2 chest relics (combat + resistance — Blue Skies / Aether)
-  const t2Relics = [
+  var t2Relics = [
     'rpgseteffects:brutal_fist_relic',
     'rpgseteffects:lethal_crit_relic',
     'rpgseteffects:vampiric_relic',
@@ -2750,7 +2750,7 @@ LootJS.modifiers(event => {
   })
 
   // T3 Nether/Undergarden relics (fire, decay, advanced utility)
-  const t3Relics = [
+  var t3Relics = [
     'rpgseteffects:fire_immunity_relic',
     'rpgseteffects:magma_walker_relic',
     'rpgseteffects:frost_walker_relic',
@@ -2767,7 +2767,7 @@ LootJS.modifiers(event => {
   })
 
   // T4 End/Deeper Darker/Abyss relics (endgame — strongest passives)
-  const t4Relics = [
+  var t4Relics = [
     'rpgseteffects:wither_immunity_relic',
     'rpgseteffects:beastheart_relic',
     'rpgseteffects:malicebrand_relic',
@@ -2788,7 +2788,7 @@ LootJS.modifiers(event => {
   // artifact_piece_pouch.json to contain ONLY the 14 normal artifacts —
   // awakening variants are never in pouches, they drop directly from T4
   // bosses only. This keeps awakenings out of T2 loot entirely.
-  const t2BossPouchDrops = [
+  var t2BossPouchDrops = [
     'twilightforest:entities/naga',
     'twilightforest:entities/lich',
     'twilightforest:entities/hydra',
@@ -2807,14 +2807,14 @@ LootJS.modifiers(event => {
   // PLUS direct awakening rolls — 0.7% per awakening per boss, 14 awakenings
   // = ~9.3% combined any-awakening chance per T4 boss kill. Half of what a
   // pouch-embedded-awakening model would have given, per user tuning.
-  const t4BossTables = [
+  var t4BossTables = [
     'minecraft:entities/ender_dragon',
     'cataclysm:entities/ender_guardian',
     'cataclysm:entities/harbinger',
     'deeperdarker:entities/shattered',
     'alexscaves:entities/watcher'
   ]
-  const awakeningPool = [
+  var awakeningPool = [
     'rpgseteffects:altharion_awakening_artifact',
     'rpgseteffects:blade_dancer_awakening_artifact',
     'rpgseteffects:blood_fury_awakening_artifact',
@@ -2831,7 +2831,7 @@ LootJS.modifiers(event => {
     'rpgseteffects:wolfheart_awakening_artifact'
   ]
   t4BossTables.forEach(table => {
-    const modifier = event.addLootTableModifier(table)
+    var modifier = event.addLootTableModifier(table)
     modifier.addLoot(LootEntry.of('rpgseteffects:artifact_piece_pouch').limitCount([2, 2]))
     awakeningPool.forEach(awakening => {
       modifier.addLoot(LootEntry.of(awakening).when(c => c.randomChance(0.007)))

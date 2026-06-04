@@ -81,7 +81,7 @@ for (var __itemId in HANDHELD_BUFFS) {
 }
 
 global.tick_dna_simple_staves_buffs = function (event) {
-  const server = event.server
+  var server = event.server
   server.players.forEach(function (player) {
     if (player.spectator) return
     let held = ''
@@ -92,7 +92,7 @@ global.tick_dna_simple_staves_buffs = function (event) {
     }
     MOD_SLOTS.forEach(function (slot) {
       try {
-        const active = (held === slot.itemId)
+        var active = (held === slot.itemId)
         player.modifyAttribute(slot.attr, slot.name, active ? slot.amount : 0, slot.op)
       } catch (e) {
         // Attribute unregistered (mod missing) or transient state — skip

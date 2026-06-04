@@ -24,10 +24,11 @@
 // (NOT a tier grant; the framework handles the Dragon as the T4 finale).
 // -----------------------------------------------------------------------------
 EntityEvents.death(event => {
-  const source = event.source
+  // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked death handler.
+  var source = event.source
   if (!source || !source.player) return
   if (event.entity.type.toString() !== 'minecraft:ender_dragon') return
-  const player = source.player
+  var player = source.player
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/kill_dragon`)
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/dragon_egg`)
   player.server.runCommandSilent(`advancement grant ${player.username} only minecraft:end/respawn_dragon`)
@@ -92,7 +93,8 @@ AStageEvents.added(event => {
   }
 
   // Patchouli: grant icraft:stage_tierN up to the current tier (tier_1 has no gate).
-  const advTiers = ['tier_2', 'tier_3', 'tier_4']
+  // RHINO-SAFETY: var (not const) — closure-local in the AStageEvents.added handler.
+  var advTiers = ['tier_2', 'tier_3', 'tier_4']
   let advIdx = advTiers.indexOf(stageName)
   if (advIdx >= 0) {
     advTiers.slice(0, advIdx + 1).forEach(t => {

@@ -14,13 +14,16 @@
 // =============================================================================
 
 LootJS.modifiers(event => {
-  const items = global.ICRAFT_UNIQUE_ITEMS
-  const chance = global.ICRAFT_UNIQUE_DROP_CHANCE || 0.15
+  // RHINO-SAFETY: `var` (NOT const/let) — this LootJS callback re-fires on every
+  // loot rebuild; a closure-local const/let throws "redeclaration of var" on the
+  // 2nd invocation (boot-level, not just /reload). See dev/lessons-learned.md.
+  var items = global.ICRAFT_UNIQUE_ITEMS
+  var chance = global.ICRAFT_UNIQUE_DROP_CHANCE || 0.15
   if (!items) { console.warn('[boss_unique_drops] registry global missing — no drops added'); return }
 
-  let n = 0
-  for (const id in items) {
-    const meta = items[id]
+  var n = 0
+  for (var id in items) {
+    var meta = items[id]
     if (!meta || !meta.addDrop || !meta.boss) continue
     event.addEntityLootModifier(meta.boss)
       .addLoot(LootEntry.of(id).when(c => c.randomChance(chance)))

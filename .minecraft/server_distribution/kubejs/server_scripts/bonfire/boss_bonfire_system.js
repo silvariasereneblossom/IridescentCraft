@@ -284,15 +284,16 @@ function broadcastBonfire(server, player, meta) {
 let bonfire_warn_throttle = 0
 let bonfire_block_phase = 0   // advances once per tick; gates the lattice to 1-in-N
 global.tick_bossBonfire = function (event) {
-    const player = event.player
+    // RHINO-SAFETY: var (not const) — closure-local in a repeatedly-invoked tick.
+    var player = event.player
     if (!player || player.level.isClientSide()) return
     // Run the cheap structure check every tick; the expensive shrine lattice
     // only every 3rd tick (~3 s). A player can't enter AND leave a boss arena
     // inside 3 s, so detection stays responsive while the per-tick cost in
     // Nether/Undergarden (until those arenas are lit) stays low.
-    const runBlockScan = (bonfire_block_phase++ % 3) === 0
+    var runBlockScan = (bonfire_block_phase++ % 3) === 0
     try {
-        const hit = detectArenaAtPlayer(player, runBlockScan)
+        var hit = detectArenaAtPlayer(player, runBlockScan)
         if (!hit) return
         placeBonfire(player, hit.bossId, hit.meta)
     } catch (e) {

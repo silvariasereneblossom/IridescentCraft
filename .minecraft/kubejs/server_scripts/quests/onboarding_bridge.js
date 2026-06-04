@@ -111,17 +111,18 @@ let jlf_tick_counter = 0
 PlayerEvents.tick(event => {
     jlf_tick_counter++
     if (jlf_tick_counter % 20 !== 0) return  // 20 ticks = 1 second
-    const player = event.player
+    var player = event.player
     if (player.level.isClientSide()) return
 
     // JLF level is exposed via the JustLevelingFork data tag. Read defensively:
     // if the field is missing (player hasn't installed JLF yet, edge case)
     // we silently skip rather than crash.
+    // RHINO-SAFETY: var (not const/let) for closure-locals in this per-tick handler.
     let jlfLevel = 0
     try {
-        const pd = player.persistentData
+        var pd = player.persistentData
         if (pd.contains("PlayerPersisted")) {
-            const persisted = pd.getCompound("PlayerPersisted")
+            var persisted = pd.getCompound("PlayerPersisted")
             if (persisted.contains("PlayerLevel")) {
                 jlfLevel = persisted.getInt("PlayerLevel")
             }
@@ -131,7 +132,7 @@ PlayerEvents.tick(event => {
         return
     }
 
-    for (const [threshold, dummyValue] of Object.entries(JLF_LEVEL_TO_DUMMY)) {
+    for (var [threshold, dummyValue] of Object.entries(JLF_LEVEL_TO_DUMMY)) {
         if (jlfLevel >= parseInt(threshold)) {
             fireDummyIfNew(player, dummyValue)
         }
@@ -152,22 +153,22 @@ PlayerEvents.tick(event => {
 
 PlayerEvents.tick(event => {
     if (jlf_tick_counter % 20 !== 0) return  // ride the JLF tick rhythm
-    const player = event.player
+    var player = event.player
     if (player.level.isClientSide()) return
 
-    const fired = getFiredSet(player)
+    var fired = getFiredSet(player)
     if (fired.has(CAPSTONE_DUMMY)) return  // already done
 
     let allComplete = true
     try {
-        const pd = player.persistentData
+        var pd = player.persistentData
         if (!pd.contains("heracles")) return
-        const heracles = pd.getCompound("heracles")
+        var heracles = pd.getCompound("heracles")
         if (!heracles.contains("quests")) return
-        const quests = heracles.getCompound("quests")
-        for (const prereq of CAPSTONE_PREREQS) {
+        var quests = heracles.getCompound("quests")
+        for (var prereq of CAPSTONE_PREREQS) {
             if (!quests.contains(prereq)) { allComplete = false; break }
-            const q = quests.getCompound(prereq)
+            var q = quests.getCompound(prereq)
             // QuestProgress.complete is a boolean tag.
             if (!q.contains("complete") || !q.getBoolean("complete")) {
                 allComplete = false

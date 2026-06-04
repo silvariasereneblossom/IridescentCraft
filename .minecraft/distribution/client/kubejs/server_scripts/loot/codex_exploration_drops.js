@@ -40,9 +40,10 @@
 LootJS.modifiers(event => {
 
   // Token item per tier (T4 dims fold to the t3 token).
-  const TOK_T1 = 'icraft:progression_token_t1'
-  const TOK_T2 = 'icraft:progression_token_t2'
-  const TOK_T3 = 'icraft:progression_token_t3'
+  // RHINO-SAFETY: var (not const) — closure-local in a LootJS.modifiers callback.
+  var TOK_T1 = 'icraft:progression_token_t1'
+  var TOK_T2 = 'icraft:progression_token_t2'
+  var TOK_T3 = 'icraft:progression_token_t3'
 
   // ===========================================================================
   // T1 — OVERWORLD — dungeon/structure chests ONLY (not villages/settlements).

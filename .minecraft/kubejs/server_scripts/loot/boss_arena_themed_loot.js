@@ -64,14 +64,15 @@
 
 LootJS.modifiers(event => {
 
-  const T3 = 'icraft:progression_token_t3'
+  // RHINO-SAFETY: var (not const) — closure-local in a LootJS.modifiers callback.
+  var T3 = 'icraft:progression_token_t3'
 
   // ===========================================================================
   // BANNED-ITEM SCRUB — overworld arena tables only (policy: no diamond / gear /
   // gunpowder reward in OVERWORLD structures; Nether/own-dim tables are exempt).
   // ===========================================================================
 
-  const DIAMONDS = [
+  var DIAMONDS = [
     'minecraft:diamond', 'minecraft:diamond_block',
     'minecraft:diamond_sword', 'minecraft:diamond_pickaxe', 'minecraft:diamond_axe',
     'minecraft:diamond_shovel', 'minecraft:diamond_hoe',
@@ -79,8 +80,8 @@ LootJS.modifiers(event => {
     'minecraft:diamond_leggings', 'minecraft:diamond_boots',
     'minecraft:diamond_horse_armor',
   ]
-  const scrubDiamonds = mod => {
-    const m = event.addLootTableModifier(mod)
+  var scrubDiamonds = mod => {
+    var m = event.addLootTableModifier(mod)
     DIAMONDS.forEach(d => m.removeLoot(d))
     return m
   }
