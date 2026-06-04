@@ -320,8 +320,7 @@ StartupEvents.registry('item', event => {
         .maxStackSize(1)
         .rarity('rare')
         .glow(true)
-        .textureJson({ layer0: 'minecraft:item/compass' })
-        .color(0, 0x5599FF)
+        .textureJson({ layer0: 'kubejs:item/compass_of_return' })
 
     // =========================================================================
     // DRAGON SUMMONING CRYSTAL (End exploration gate item)
