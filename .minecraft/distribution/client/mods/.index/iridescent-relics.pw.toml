@@ -1,0 +1,9 @@
+filename = 'iridescent_relics-1.0.0.jar'
+name = 'Iridescent Relics'
+side = 'both'
+
+[download]
+hash = ''
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
