@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-06-04T20:07:50Z",
+    "generated_at":  "2026-06-04T20:19:38Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -32,8 +32,8 @@
                                                             "size":  16091
                                                         },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
-                                                                 "sha256":  "5fdbbdb754dbf7b363a16842b259a20ab124db1f2076beb81d9307227613754c",
-                                                                 "size":  482232
+                                                                 "sha256":  "a568236fd3d3cfe98df4b319e58e972817a4924b67678a8e53baadfb94fdf3ca",
+                                                                 "size":  483891
                                                              },
                  "mek_walkable_cables-1.0.1.jar":  {
                                                        "sha256":  "e90d65edd5a3cdfeec4a551147f034b36841a58101369f1fb8a4a29b8b3c495c",

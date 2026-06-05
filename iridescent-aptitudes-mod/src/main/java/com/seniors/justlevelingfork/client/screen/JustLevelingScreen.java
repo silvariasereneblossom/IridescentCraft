@@ -430,9 +430,14 @@ public class JustLevelingScreen extends Screen {
 
         matrixStack.blit(HandlerResources.SKILL_PAGE[this.selectedPage], x + 153, y + 14, 177 + j, 1, 6, 6);
 
-        boolean canLevelUpAptitude = (client.player.isCreative()
-                || Utils.getExperienceForLevel(AptitudeLevelUpSP.requiredExperienceLevels(aptitudeLevel)) <= Utils.getPlayerXP(client.player)
-                || AptitudeLevelUpSP.requiredExperienceLevels(aptitudeLevel) <= client.player.experienceLevel);
+        // #76: cost scales with the CUMULATIVE aptitude level (sum across all
+        // aptitudes) and is denominated in vanilla LEVELS. Mirror the server's
+        // requiredExperienceLevels(cumulative) check exactly so the button +
+        // tooltip can't desync from AptitudeLevelUpSP.handle().
+        int cumulativeLevel = capability.getGlobalLevel();
+        int costLevels = AptitudeLevelUpSP.requiredExperienceLevels(cumulativeLevel);
+        boolean canLevelUpAptitude = client.player.isCreative()
+                || costLevels <= client.player.experienceLevel;
 
         if (Utils.checkMouse(x + 149, y + 10, mouseX, mouseY, 14, 14)) {
             if (AptitudeCapability.get(client.player).getGlobalLevel() >= HandlerCommonConfig.HANDLER.instance().playersMaxGlobalLevel) {
@@ -443,8 +448,8 @@ public class JustLevelingScreen extends Screen {
                         mouseY);
             } else if (aptitudeLevel < HandlerCommonConfig.HANDLER.instance().aptitudeMaxLevel) {
                 ChatFormatting color = canLevelUpAptitude ? ChatFormatting.GREEN : ChatFormatting.RED;
-                Utils.drawToolTip(matrixStack, Component.translatable("tooltip.aptitude.level_up", Component.literal(String.valueOf(AptitudeLevelUpSP.requiredExperienceLevels(aptitudeLevel))).withStyle(color),
-                        Component.literal(String.valueOf(AptitudeLevelUpSP.requiredPoints(aptitudeLevel))).withStyle(color),
+                Utils.drawToolTip(matrixStack, Component.translatable("tooltip.aptitude.level_up", Component.literal(String.valueOf(costLevels)).withStyle(color),
+                        Component.literal(String.valueOf(AptitudeLevelUpSP.requiredPoints(cumulativeLevel))).withStyle(color),
                         Component.translatable(aptitude.getKey()).withStyle(color)).withStyle(ChatFormatting.GRAY), mouseX, mouseY);
                 this.tick = this.maxTick - 5;
                 if (canLevelUpAptitude) {

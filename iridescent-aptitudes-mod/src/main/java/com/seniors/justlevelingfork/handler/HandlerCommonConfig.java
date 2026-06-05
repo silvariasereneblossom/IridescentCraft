@@ -47,6 +47,41 @@ public class HandlerCommonConfig {
     @AutoGen(category = "common", group = "general")
     @IntField(min = 1, max = 1000)
     public int aptitudeFirstCostLevel = 5;
+
+    // ─── Iridescent fork (#76): cumulative-level cost curve ────────────────────
+    // Leveling an aptitude costs VANILLA LEVELS that scale with the player's
+    // CUMULATIVE aptitude level (sum across all aptitudes). The cumulative range
+    // is bracketed into "trees" of `aptitudeCostTreeSize` levels; each successive
+    // tree's TOTAL level budget multiplies by `aptitudeCostDoubling` from a base
+    // of `aptitudeCostBaseLevels` (tree 1=500, 2=1000, … 8=64,000). Within a tree
+    // the per-level cost ramps linearly (see rampShape) and sums to that budget.
+    // With Linear-Experience (#77, static 75 XP/level) a level reads as 75 XP.
+    // NOTE: aptitudeFirstCostLevel above is no longer used by the curve.
+    @SerialEntry(comment = "Aptitude cost: vanilla-level budget for the first 'tree' (cumulative-level bracket). Tree N total = base * doubling^(N-1).")
+    @AutoGen(category = "common", group = "general")
+    @IntField(min = 1, max = 1000000)
+    public int aptitudeCostBaseLevels = 500;
+
+    @SerialEntry(comment = "Aptitude cost: multiplier applied to each successive tree's total budget (2 = doubles every tree).")
+    @AutoGen(category = "common", group = "general")
+    @FloatField(min = 1.0f, max = 16.0f)
+    public float aptitudeCostDoubling = 2.0f;
+
+    @SerialEntry(comment = "Aptitude cost: cumulative aptitude levels per 'tree' bracket.")
+    @AutoGen(category = "common", group = "general")
+    @IntField(min = 1, max = 1000)
+    public int aptitudeCostTreeSize = 30;
+
+    @SerialEntry(comment = "Aptitude cost: within-tree linear ramp steepness. 0 = flat (every level in a tree costs the same), 1 = steep (first level ~free, last ~2x the tree average). The per-level cost still sums to the tree budget at any value.")
+    @AutoGen(category = "common", group = "general")
+    @FloatField(min = 0.0f, max = 1.0f)
+    public float aptitudeCostRampShape = 0.5f;
+
+    @SerialEntry(comment = "Aptitude cost: XP-per-vanilla-level used ONLY for the tooltip's informational '(N xp)' figure. Match Linear-Experience's staticModeXpNeeded (#77 = 75). The actual charge is in vanilla levels, so this does not affect balance.")
+    @AutoGen(category = "common", group = "general")
+    @IntField(min = 1, max = 100000)
+    public int aptitudeCostXpPerLevel = 75;
+
     @SerialEntry(comment = "Show potions overlay over skills")
     @AutoGen(category = "common", group = "general")
     @Boolean(formatter = Boolean.Formatter.ON_OFF)
