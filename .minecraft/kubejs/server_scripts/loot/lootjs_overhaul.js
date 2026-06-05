@@ -2076,11 +2076,12 @@ LootJS.modifiers(event => {
       .removeLoot('minecraft:name_tag')
       .removeLoot('minecraft:spider_eye')
       .removeLoot('minecraft:poisonous_potato')
-      // 2026-04-21: per-table blank enchanted book strip. The global
-      // LootType.CHEST predicate-based strip at Section 1 handles most
-      // cases, but belt-and-suspenders on villages specifically.
-      .removeLoot(ItemFilter.custom(blankEnchantedBookFilter))
-      // Wood + stone that the global strip missed
+      // The per-table blank-enchanted-book strip was retired 2026-05-17 (its
+      // NBT-regex ItemFilter never matched Forge 1.20.1's real NBT — see the
+      // Section-1 note at the top of this file). A dangling
+      // blankEnchantedBookFilter reference survived that cleanup and threw a
+      // ReferenceError on this modifier every load; removed 2026-06-05.
+      // Wood + stone
       .removeLoot('#minecraft:logs')
       .removeLoot('#minecraft:planks')
       .removeLoot('minecraft:stone')

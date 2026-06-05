@@ -29,6 +29,7 @@ try {
   var liteminerState = {}
 
   BlockEvents.broken(function(event) {
+    var shouldCancel = false
     try {
       var player = event.player
       if (!player) return
@@ -50,7 +51,7 @@ try {
         var foodLevel = 20
         try { foodLevel = player.foodData.foodLevel } catch (e) {}
         if (foodLevel < HUNGER_THRESHOLD) {
-          event.cancel()
+          shouldCancel = true
           // Notify (rate-limited)
           if ((now - st.lastNotifyTick) >= NOTIFY_COOLDOWN_TICKS) {
             try {
@@ -67,6 +68,11 @@ try {
     } catch (e) {
       console.warn('[liteminer_hunger_gate] handler threw: ' + e)
     }
+    // event.cancel() unwinds by THROWING KubeJS' EventExit; it must reach the
+    // dispatcher to take effect. Calling it inside the try above let the broad
+    // catch swallow EventExit — logging a spurious "handler threw" on every
+    // gated break (53x/session) AND eating the cancel. Cancel outside the try.
+    if (shouldCancel) event.cancel()
   })
 
   // Cleanup state on disconnect

@@ -606,15 +606,20 @@ PlayerEvents.inventoryChanged(event => {
 // triggers the per-item repair handler. The sweep covers every slot once
 // at login, the per-action isGenuinelyInert() helper handles the rest.
 PlayerEvents.loggedIn(event => {
-  let player = event.player
+  var player = event.player
   if (!player) return
-  let cleared = 0
-  let inv = player.inventory
-  for (let i = 0; i < inv.size(); i++) {
-    let stack = inv.getStackInSlot(i)
+  var cleared = 0
+  var inv = player.inventory
+  // player.inventory has no size() — it was throwing "Cannot find function size"
+  // every login, so this sweep never ran. getContainerSize()+getStackInSlot() is
+  // the established working idiom (spell_book_transfer / strip_infinity_ham).
+  // var-only avoids Rhino's block-scope redeclaration bug on re-login now that
+  // the loop body actually executes.
+  for (var i = 0; i < inv.getContainerSize(); i++) {
+    var stack = inv.getStackInSlot(i)
     if (stack.isEmpty() || !stack.nbt || !stack.isDamageableItem()) continue
     if (!stack.nbt.getBoolean(BROKEN_TAG)) continue
-    let inertPin = stack.maxDamage - INERT_THRESHOLD
+    var inertPin = stack.maxDamage - INERT_THRESHOLD
     if (stack.damageValue < inertPin) {
       stack.nbt.remove(BROKEN_TAG)
       cleared += 1

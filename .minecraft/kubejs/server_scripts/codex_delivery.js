@@ -285,8 +285,16 @@ global.tick_codexStarterCheck = function(event) {
     try {
       let granted = codex_tryGrantStarter(player)
       if (granted) {
-        // Stop polling after success
+        // Stop polling after a fresh grant.
         player.persistentData.putInt('icraft_starter_poll_ticks', 0)
+      } else {
+        // Already granted for the detected class? Nothing left to poll for — stop,
+        // otherwise this re-runs every 5s for the full 3min window and spams
+        // "already true — skipping grant" on every login of an established char.
+        let cls = codex_detectMagicClass(player)
+        if (cls && player.persistentData.getBoolean(MAGIC_FLAG_PREFIX + cls)) {
+          player.persistentData.putInt('icraft_starter_poll_ticks', 0)
+        }
       }
       // Log occasional trace — once every 30s so the log isn't spammed.
       // 2026-04-21: also dump the raw Origins compound so we can see if/when

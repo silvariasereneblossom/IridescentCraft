@@ -190,31 +190,36 @@ function reconHeraclesComplete(player, quest) {
 
 // ---- one reconciliation pass; returns [[quest, outcome], ...] --------------
 function reconcileAll(player, verbose) {
-  const report = []
+  // NOTE: var-only, no let/const. Rhino (KubeJS' JS engine) throws
+  // "redeclaration of var e" at the loop-scoped const on RE-INVOCATION of a
+  // function — and reconcileAll runs on a 30s periodic pass. var is
+  // function-scoped/hoisted so it sidesteps the buggy block-scope path; the
+  // loop var is also renamed e->entry to avoid clashing with catch(e) params.
+  var report = []
   if (!player || player.level.isClientSide()) return report
-  let did = 0
-  for (let i = 0; i < RECONCILE.length; i++) {
-    const e = RECONCILE[i]
-    if (reconIsGuarded(player, e.q)) { if (verbose) report.push([e.q, 'already-synced']); continue }
-    if (reconHeraclesComplete(player, e.q)) { reconMarkGuarded(player, e.q); if (verbose) report.push([e.q, 'already-done']); continue }
+  var did = 0
+  for (var i = 0; i < RECONCILE.length; i++) {
+    var entry = RECONCILE[i]
+    if (reconIsGuarded(player, entry.q)) { if (verbose) report.push([entry.q, 'already-synced']); continue }
+    if (reconHeraclesComplete(player, entry.q)) { reconMarkGuarded(player, entry.q); if (verbose) report.push([entry.q, 'already-done']); continue }
 
-    let ok = false
-    try { ok = !!e.met(player) } catch (err) { ok = false }
-    if (!ok) { if (verbose) report.push([e.q, 'not-yet']); continue }
+    var ok = false
+    try { ok = !!entry.met(player) } catch (err) { ok = false }
+    if (!ok) { if (verbose) report.push([entry.q, 'not-yet']); continue }
 
     // Condition met -> complete. Primary: Heracles' force-complete.
-    let ret = reconComplete(player, e.q)
-    let outcome = 'completed'
+    var ret = reconComplete(player, entry.q)
+    var outcome = 'completed'
     // Fallback: if Heracles didn't accept it, re-fire the advancement through
     // its own listener, then complete again.
-    if ((!ret || ret < 1) && e.adv) {
-      for (let a = 0; a < e.adv.length; a++) reconRefireAdv(player, e.adv[a])
-      ret = reconComplete(player, e.q)
+    if ((!ret || ret < 1) && entry.adv) {
+      for (var a = 0; a < entry.adv.length; a++) reconRefireAdv(player, entry.adv[a])
+      ret = reconComplete(player, entry.q)
       outcome = 're-fired'
     }
-    reconMarkGuarded(player, e.q)
+    reconMarkGuarded(player, entry.q)
     did++
-    report.push([e.q, outcome + (ret >= 1 ? '' : '?')])
+    report.push([entry.q, outcome + (ret >= 1 ? '' : '?')])
   }
   if (did > 0) {
     player.tell(Text.gold('[Quests] ').append(Text.gray(
