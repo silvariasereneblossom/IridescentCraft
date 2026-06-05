@@ -1,7 +1,7 @@
 {
   "type": "apotheosis:attribute",
   "attribute": "icraft:spell_power",
-  "operation": "MULTIPLY_BASE",
+  "operation": "ADDITION",
   "values": {
     "common": {
       "min": 0.05,

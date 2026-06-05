@@ -109,6 +109,11 @@ PlayerEvents.loggedIn(function(event) {
     if (entity instanceof PlayerClass_as) {
       var dodgeChance = getAttr(entity, 'dodge_chance', 0)
       dodgeChance += getAttrCore(entity, 'attributecore:dodge_chance', 0)
+      // 2026-06-05: bridge the real icraft:dodge_chance Forge attribute (gear/
+      // affix source, e.g. the icraft_evasive armor affix). getAttributeValue
+      // includes affix MODIFIERS; base is 0 so unmodified players add nothing
+      // (no double-count with the persistentData layer above).
+      try { dodgeChance += entity.getAttributeValue('icraft:dodge_chance') } catch (e) {}
       if (dodgeChance > 0 && Math.random() < dodgeChance) {
         event.setCanceled(true)
         entity.tell(Text.gray('[Dodge] Attack evaded!'))
@@ -158,6 +163,17 @@ PlayerEvents.loggedIn(function(event) {
       } catch (e) {
         // attribute may not be registered on this player; fail soft
       }
+
+      // 2026-06-05: bridge the real icraft:spell_power / icraft:lifesteal Forge
+      // attributes (gear/affix source: icraft_arcane + icraft_vampiric_weapon
+      // weapon affixes). getAttributeValue includes affix MODIFIERS; both bases
+      // are 0 so unmodified players add nothing -- spellPower stays at its 1.0
+      // persistentData baseline (a multiplier) and lifesteal at 0, no
+      // double-count with the persistentData (class/book/skill) layer.
+      try {
+        spellPower += attacker.getAttributeValue('icraft:spell_power')
+        lifesteal  += attacker.getAttributeValue('icraft:lifesteal')
+      } catch (e) {}
 
       // -- Armor Penetration --
       if (armorPen > 0 && entity.isLiving()) {
