@@ -1,72 +1,161 @@
 #!/usr/bin/env python3
-"""Generate the 16x16 gold Grand Compass item texture (pure stdlib, no Pillow).
+"""Generate the bespoke 16x16 Grand Compass item texture (pure stdlib, no Pillow).
 
-A gold beveled ring, a dark bronze face, and a red(N)/white(S) needle. Writes
-RGBA PNG via zlib+struct. Run: python3 gen_texture.py
+Char-grid authored sprite (same approach as the relics roster's
+gen_relic_textures.py): a beveled GOLD ring, a dark bronze face with an
+upper-left sheen, a red(N)/white(S) diamond needle and a bright gold pivot. A
+1px dark outline is added automatically around the silhouette. RGBA PNG written
+via zlib+struct.
+
+Run from anywhere:  python3 tools/gen_texture.py
 """
-import zlib, struct, math, os
+import os
+import struct
+import zlib
+from collections import deque
 
-W = H = 16
-CX = CY = 7.5
+HERE = os.path.dirname(os.path.abspath(__file__))
+MOD_ROOT = os.path.dirname(HERE)
+TEX = os.path.join(MOD_ROOT, "src", "main", "resources", "assets",
+                   "iridescent_grand_compass", "textures", "item",
+                   "grand_compass.png")
 
-# palette (R,G,B,A)
-CLEAR   = (0, 0, 0, 0)
-GOLD_HI = (255, 224, 130, 255)
-GOLD    = (224, 170, 60, 255)
-GOLD_LO = (150, 110, 35, 255)
-FACE    = (58, 46, 26, 255)
-FACE_HI = (78, 62, 36, 255)
-RED     = (200, 50, 45, 255)
-WHITE   = (235, 235, 230, 255)
-PIVOT   = (255, 224, 130, 255)
+SIZE = 16
+TRANSPARENT = (0, 0, 0, 0)
 
 
-def px(x, y):
-    dx, dy = x - CX, y - CY
-    d = math.hypot(dx, dy)
-    if d > 7.6:
-        return CLEAR
-    # outer ring (beveled: hi top-left, lo bottom-right)
-    if d >= 5.8:
-        if d >= 7.0:
-            return GOLD_LO if (dx + dy) > 0 else GOLD
-        return GOLD_HI if (dx + dy) < 0 else GOLD
-    # needle: 2px-wide vertical bar through the centre, tapering
-    if x in (7, 8) and 2.5 <= y <= 12.5:
-        return RED if y < 7.5 else WHITE
-    # a thin flanking diamond near the centre for a needle look
-    if x in (6, 9) and 5.5 <= y <= 9.5:
-        return RED if y < 7.5 else WHITE
-    # pivot
-    if d < 1.3:
-        return PIVOT
-    # face
-    return FACE_HI if (dx + dy) < 0 else FACE
+# --------------------------------------------------------------------------- #
+# minimal RGBA PNG writer
+# --------------------------------------------------------------------------- #
+def write_png(path, pixels):
+    """pixels: rows of (r,g,b,a) tuples (any rectangular size)."""
+    h = len(pixels)
+    w = len(pixels[0])
+    raw = bytearray()
+    for row in pixels:
+        raw.append(0)  # filter type 0 (none)
+        for (r, g, b, a) in row:
+            raw += bytes((r, g, b, a))
+
+    def chunk(typ, data):
+        body = typ + data
+        return (struct.pack(">I", len(data)) + body +
+                struct.pack(">I", zlib.crc32(body) & 0xffffffff))
+
+    os.makedirs(os.path.dirname(path), exist_ok=True)
+    with open(path, "wb") as f:
+        f.write(b"\x89PNG\r\n\x1a\n")
+        f.write(chunk(b"IHDR", struct.pack(">IIBBBBB", w, h, 8, 6, 0, 0, 0)))
+        f.write(chunk(b"IDAT", zlib.compress(bytes(raw), 9)))
+        f.write(chunk(b"IEND", b""))
+
+
+# --------------------------------------------------------------------------- #
+# sprite rendering (grid -> pixels, with auto exterior outline)
+# --------------------------------------------------------------------------- #
+def render(grid, palette):
+    g = [row.ljust(SIZE, ".")[:SIZE] for row in grid]
+    while len(g) < SIZE:
+        g.append("." * SIZE)
+    px = [[TRANSPARENT for _ in range(SIZE)] for _ in range(SIZE)]
+    filled = [[False] * SIZE for _ in range(SIZE)]
+    for y in range(SIZE):
+        for x in range(SIZE):
+            ch = g[y][x]
+            if ch in (".", " "):
+                continue
+            px[y][x] = palette[ch]
+            filled[y][x] = True
+    # exterior flood fill (4-conn from the border) so enclosed holes stay clean
+    outside = [[False] * SIZE for _ in range(SIZE)]
+    dq = deque()
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if (x in (0, SIZE - 1) or y in (0, SIZE - 1)) and not filled[y][x] \
+                    and not outside[y][x]:
+                outside[y][x] = True
+                dq.append((y, x))
+    while dq:
+        y, x = dq.popleft()
+        for dy, dx in ((-1, 0), (1, 0), (0, -1), (0, 1)):
+            ny, nx = y + dy, x + dx
+            if 0 <= ny < SIZE and 0 <= nx < SIZE and not filled[ny][nx] \
+                    and not outside[ny][nx]:
+                outside[ny][nx] = True
+                dq.append((ny, nx))
+    # auto outline: an EXTERIOR transparent pixel 8-adjacent to fill -> outline
+    outline = palette["O"]
+    for y in range(SIZE):
+        for x in range(SIZE):
+            if filled[y][x] or not outside[y][x]:
+                continue
+            touch = any(
+                0 <= y + dy < SIZE and 0 <= x + dx < SIZE and filled[y + dy][x + dx]
+                for dy in (-1, 0, 1) for dx in (-1, 0, 1) if (dy or dx))
+            if touch:
+                px[y][x] = outline
+    return px
+
+
+# --------------------------------------------------------------------------- #
+# the Grand Compass -- ornate gold dial, red/white diamond needle
+# chars: O outline, L gold-light, B gold-mid, D gold-dark, F face, f face-sheen,
+#        R red needle (N), W white needle (S), P bright pivot
+# --------------------------------------------------------------------------- #
+GRID = [
+    "......LLLL......",
+    "....LLLLBBDD....",
+    "...LLLBBBBDDD...",
+    "..LLBBFRRFBBDD..",
+    "..LLBfFRRFFBDD..",
+    ".LLBfFRRRRFFBDD.",
+    ".LBffFRRRRFFFBD.",
+    ".LBfFFRPPRFFFBD.",
+    ".LBFFFWPPWFFFBD.",
+    ".LBFFFWWWWFFFBD.",
+    ".LLBFFWWWWFFBDD.",
+    "..LBFFFWWFFBDD..",
+    "..LLBBFWWFBBDD..",
+    "...BBBBBDDDDD...",
+    "....BBDDDDDD....",
+    "......DDDD......",
+]
+
+PALETTE = {
+    "O": (54, 34, 14, 255),     # dark brown outline
+    "L": (255, 236, 150, 255),  # gold highlight
+    "B": (228, 176, 66, 255),   # gold mid
+    "D": (158, 116, 40, 255),   # gold shadow
+    "F": (44, 34, 22, 255),     # bronze face
+    "f": (70, 56, 34, 255),     # face sheen (upper-left)
+    "R": (210, 54, 46, 255),    # north needle (red)
+    "W": (240, 240, 234, 255),  # south needle (white)
+    "P": (255, 244, 176, 255),  # pivot
+}
+
+
+def preview(px, scale=16):
+    """Write a scaled, checker-backed PNG to TEMP for visual review."""
+    import tempfile
+    ck1, ck2 = (90, 92, 98, 255), (120, 122, 128, 255)
+    out = [[None] * (SIZE * scale) for _ in range(SIZE * scale)]
+    for yy in range(SIZE * scale):
+        for xx in range(SIZE * scale):
+            r, g, b, a = px[yy // scale][xx // scale]
+            if a > 0:
+                out[yy][xx] = (r, g, b, 255)
+            else:
+                out[yy][xx] = ck1 if ((xx // scale) + (yy // scale)) % 2 == 0 else ck2
+    p = os.path.join(tempfile.gettempdir(), "grand_compass_preview.png")
+    write_png(p, out)
+    return p
 
 
 def main():
-    raw = bytearray()
-    for y in range(H):
-        raw.append(0)  # filter type 0
-        for x in range(W):
-            raw.extend(px(x, y))
-
-    def chunk(tag, data):
-        return (struct.pack(">I", len(data)) + tag + data +
-                struct.pack(">I", zlib.crc32(tag + data) & 0xffffffff))
-
-    png = (b"\x89PNG\r\n\x1a\n"
-           + chunk(b"IHDR", struct.pack(">IIBBBBB", W, H, 8, 6, 0, 0, 0))
-           + chunk(b"IDAT", zlib.compress(bytes(raw), 9))
-           + chunk(b"IEND", b""))
-
-    out = os.path.join(os.path.dirname(__file__), "..",
-                       "src", "main", "resources", "assets",
-                       "iridescent_grand_compass", "textures", "item", "grand_compass.png")
-    out = os.path.abspath(out)
-    with open(out, "wb") as f:
-        f.write(png)
-    print("wrote", out, "(" + str(len(png)) + " bytes)")
+    px = render(GRID, PALETTE)
+    write_png(TEX, px)
+    print("wrote", TEX)
+    print("preview", preview(px))
 
 
 if __name__ == "__main__":
