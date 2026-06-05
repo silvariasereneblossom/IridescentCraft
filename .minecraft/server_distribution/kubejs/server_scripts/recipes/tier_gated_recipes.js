@@ -352,16 +352,18 @@ ServerEvents.recipes(event => {
   // overworld; redstone + iron are standard early-game. Identical
   // recipe for both sigils -- the differentiator is the destroys-vs-
   // returns behavior which is hardcoded in Apoth, not in the recipe.
-  // Withdrawal is the "expensive" option (keeps gem); Removal is the
-  // "cheap" option (destroys gem). At T1 we want them both reachable;
-  // the in-game cost differentiator becomes "do I have a spare gem to
-  // burn" rather than "do I have blaze_rod access yet."
+  // Withdrawal is the "expensive" option (keeps gem). The intended "cheap,
+  // destroys-gem" Removal variant has NO backing item in this pack's Apotheosis
+  // — `apotheosis:sigil_of_removal` is unregistered, so its recipe resolved to an
+  // empty result and threw "ItemStack 'result' can't be empty!" on every recipe
+  // reload. Disabled 2026-06-05 (dead code, never craftable). A cheap-destroy
+  // removal path would need a real item — design gap, tracked in the docket.
   // Output count = 1 (was 4 canonical; T1 amethyst cost is much lower
   // than T3 blaze_rod, so 1-per-craft keeps per-removal effort similar).
-  event.remove({ id: 'apotheosis:sigil_of_removal' })
-  event.shaped('apotheosis:sigil_of_removal', ['ARA','RIR','ARA'], {
-    A:'minecraft:amethyst_shard', R:'minecraft:redstone', I:'minecraft:iron_ingot'
-  }).id('icraft:sigil_of_removal_t1')
+  // event.remove({ id: 'apotheosis:sigil_of_removal' })
+  // event.shaped('apotheosis:sigil_of_removal', ['ARA','RIR','ARA'], {
+  //   A:'minecraft:amethyst_shard', R:'minecraft:redstone', I:'minecraft:iron_ingot'
+  // }).id('icraft:sigil_of_removal_t1')
 
   event.remove({ id: 'apotheosis:sigil_of_withdrawal' })
   event.shaped('apotheosis:sigil_of_withdrawal', ['ARA','RIR','ARA'], {
