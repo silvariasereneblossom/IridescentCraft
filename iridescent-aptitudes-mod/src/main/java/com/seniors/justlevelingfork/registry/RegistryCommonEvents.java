@@ -364,7 +364,13 @@ public class RegistryCommonEvents {
                 serverPlayer.setHealth(serverPlayer.getMaxHealth());
 
             new RegistryEffects.addEffect(serverPlayer, RegistrySkills.CAT_EYES != null && RegistrySkills.CAT_EYES.get().isEnabled(player), MobEffects.NIGHT_VISION).add(210);
-            new RegistryEffects.addEffect(serverPlayer, RegistrySkills.DIAMOND_SKIN != null && RegistrySkills.DIAMOND_SKIN.get().isEnabled(player), MobEffects.DAMAGE_RESISTANCE).add(210, (int) (RegistrySkills.DIAMOND_SKIN.get().getValue()[0] - 1.0D));
+            // IridescentCraft #76 fix: DIAMOND_SKIN is a retired skill (RegistrySkills.DIAMOND_SKIN = null). The
+            // `!= null &&` guard only protected the boolean arg; the .add() amplifier `.get()` ran unconditionally
+            // -> NPE every player PRE-tick. neruina caught it, but the aborted player tick broke item/XP pickup.
+            // Guard the whole effect like the ONE_HANDED/DIAMOND_SKIN attribute blocks above (355-360).
+            if (RegistrySkills.DIAMOND_SKIN != null) {
+                new RegistryEffects.addEffect(serverPlayer, RegistrySkills.DIAMOND_SKIN.get().isEnabled(player), MobEffects.DAMAGE_RESISTANCE).add(210, (int) (RegistrySkills.DIAMOND_SKIN.get().getValue()[0] - 1.0D));
+            }
         }
 
     }
