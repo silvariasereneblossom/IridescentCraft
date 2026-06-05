@@ -55,9 +55,10 @@ public class ExpDisplayHandler {
         while (accuratedExp >= requiredExpAccurated) {
             // 升级
             accuratedExp -= requiredExpAccurated;
-            /*if(currentLevel == 0){
-                player.experienceLevel++;
-            }*/
+            // IridescentCraft patch (#77): upstream shipped this level-up increment commented out,
+            // which froze leveling (XP was intercepted + zeroed but experienceLevel never rose).
+            // Increment unconditionally so consumed accurated-exp converts into real vanilla levels.
+            player.experienceLevel++;
 
             // 更新存储的精确经验值
             long finalAccuratedExp = accuratedExp;

@@ -208,7 +208,7 @@ Installed on both client and server -- the bulk of the pack.
 - **Library ferret** -- `libraryferret-forge-1.20.1-4.0.0.jar` [(modrinth)](https://modrinth.com/mod/DOB2l4oJ)
 - **LibX** -- `LibX-1.20.1-5.0.14.jar` [(modrinth)](https://modrinth.com/mod/qEH6GYul)
 - **Light Overlay (Rift/Forge/Fabric)** -- `light-overlay-8.0.0-forge.jar`
-- **Linear Experience** -- `linearxp-1.0.0.jar`
+- **Linear Experience** -- `linearxp-1.0.0-iridescent.1.jar`
 - **LionfishAPI** -- `lionfishapi-2.4-Fix.jar`
 - **Liteminer** -- `liteminer-forge-1.20.1-1.0.0+1.20.1.jar` [(modrinth)](https://modrinth.com/mod/VTnHoofC)
 - **Lithostitched** -- `lithostitched-forge-1.20.1-1.4.11.jar` [(modrinth)](https://modrinth.com/mod/XaDC71GB)

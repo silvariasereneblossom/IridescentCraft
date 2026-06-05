@@ -25,7 +25,7 @@ set -euo pipefail
 
 MOD_ROOT="$(cd "$(dirname "$0")" && pwd)"
 REPO_ROOT="$(dirname "$MOD_ROOT")"
-JAR_NAME="linearxp-1.0.0.jar"
+JAR_NAME="linearxp-1.0.0-iridescent.1.jar"
 
 DEPLOY=1; CLEAN=0
 for arg in "$@"; do
