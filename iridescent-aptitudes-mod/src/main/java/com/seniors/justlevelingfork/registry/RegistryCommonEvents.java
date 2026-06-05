@@ -538,8 +538,11 @@ public class RegistryCommonEvents {
 
             entity = event.getProjectile().getOwner();
             if (entity instanceof ServerPlayer serverPlayer) {
-                if (event.getRayTraceResult().getType() == HitResult.Type.ENTITY)
-                    (new RegistryEffects.addEffect(serverPlayer, (RegistrySkills.QUICK_REPOSITION != null && RegistrySkills.QUICK_REPOSITION.get().isEnabled(serverPlayer)), MobEffects.MOVEMENT_SPEED)).add((int) (10.0D + 20.0D * RegistrySkills.QUICK_REPOSITION.get().getValue()[1]), (int) (RegistrySkills.QUICK_REPOSITION.get().getValue()[0] - 1.0D));
+                // IridescentCraft #76: QUICK_REPOSITION is retired (null). The addEffect boolean short-circuited,
+                // but the .add() amplifier/duration args deref'd .get() UNCONDITIONALLY -> NPE on arrow-hits-entity
+                // (same partial-guard class as the DIAMOND_SKIN per-tick fix). Guard the whole effect.
+                if (RegistrySkills.QUICK_REPOSITION != null && event.getRayTraceResult().getType() == HitResult.Type.ENTITY)
+                    (new RegistryEffects.addEffect(serverPlayer, RegistrySkills.QUICK_REPOSITION.get().isEnabled(serverPlayer), MobEffects.MOVEMENT_SPEED)).add((int) (10.0D + 20.0D * RegistrySkills.QUICK_REPOSITION.get().getValue()[1]), (int) (RegistrySkills.QUICK_REPOSITION.get().getValue()[0] - 1.0D));
             }
         }
     }

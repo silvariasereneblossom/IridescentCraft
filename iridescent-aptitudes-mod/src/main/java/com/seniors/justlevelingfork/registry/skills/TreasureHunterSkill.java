@@ -17,6 +17,9 @@ import java.util.List;
 
 public class TreasureHunterSkill {
     public static ItemStack drop() {
+        // IridescentCraft #76: TREASURE_HUNTER is retired (null). The only caller (onPlayerBreakBlock) already
+        // guards this, but guard here too so the unconditional .get() below can't NPE if a future caller forgets.
+        if (RegistrySkills.TREASURE_HUNTER == null) return null;
         int randomizer = (int) Math.floor(Math.random() * RegistrySkills.TREASURE_HUNTER.get().getValue()[0]);
         ItemStack stack = null;
         for (int i = 0; i < getItems().size(); i++) {

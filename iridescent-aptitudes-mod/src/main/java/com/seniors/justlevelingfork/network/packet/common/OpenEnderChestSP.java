@@ -23,7 +23,10 @@ public class OpenEnderChestSP {
         context.enqueueWork(() -> {
             ServerPlayer player = context.getSender();
 
-            if (player != null) {
+            // IridescentCraft #76: WORMHOLE_STORAGE is retired (RegistrySkills.WORMHOLE_STORAGE = null). The menu
+            // title deref'd .get() under only a player!=null guard -> server NPE if this packet ever arrives while
+            // the skill is disabled (the ender-chest-from-inventory feature is gone). No-op when the skill is null.
+            if (player != null && RegistrySkills.WORMHOLE_STORAGE != null) {
                 PlayerEnderChestContainer enderChest = player.getEnderChestInventory();
                 SimpleMenuProvider enderChestContainer = new SimpleMenuProvider((id, pl, b) -> ChestMenu.threeRows(id, pl, enderChest), Component.translatable(RegistrySkills.WORMHOLE_STORAGE.get().getKey()));
                 player.openMenu(enderChestContainer);
