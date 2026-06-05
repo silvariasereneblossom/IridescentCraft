@@ -515,4 +515,113 @@ public class HandlerCommonConfig {
     @SerialEntry(comment = "Required level to unlock skill")
     @IntField(min = 1)
     public int limitBreakerRequiredLevel = 32;
+
+    // ═══ Iridescent fork (#76): full 5-tier migration of the remaining 6 aptitudes ═══
+    // STR/CON/DEX/DEF/BLD/LCK are migrated off the upstream natives onto the design's
+    // 5/10/15/20/30 ladder, matching INT + MAG. These are UI-only nodes — gameplay fires
+    // from kubejs/server_scripts/skills/justleveling_skills.js keyed off aptitude level.
+    // The upstream *RequiredLevel knobs above are now vestigial (their skills are
+    // hard-disabled in RegistrySkills regardless of config).
+
+    // STR — Strength
+    @SerialEntry(comment = "STR 5 — Might: +1.5 attack damage, +5% max HP")
+    @IntField(min = -1)
+    public int mightRequiredLevel = 5;
+    @SerialEntry(comment = "STR 10 — Brutal Slash: +10% melee damage, ~10% armor pen")
+    @IntField(min = -1)
+    public int brutalSlashRequiredLevel = 10;
+    @SerialEntry(comment = "STR 15 — Cleave: first strike of combat +20% (5s reset)")
+    @IntField(min = -1)
+    public int cleaveRequiredLevel = 15;
+    @SerialEntry(comment = "STR 20 — Hemorrhage: Wither I for 4s on melee hit")
+    @IntField(min = -1)
+    public int hemorrhageRequiredLevel = 20;
+    @SerialEntry(comment = "STR 30 — True Strength: execute non-boss mobs <=5% HP")
+    @IntField(min = -1)
+    public int trueStrengthRequiredLevel = 30;
+
+    // CON — Constitution
+    @SerialEntry(comment = "CON 5 — Tough Hide: +2 max HP")
+    @IntField(min = -1)
+    public int toughHideRequiredLevel = 5;
+    @SerialEntry(comment = "CON 10 — Hearty Meals: Regen I when well-fed (food >= 18)")
+    @IntField(min = -1)
+    public int heartyMealsRequiredLevel = 10;
+    @SerialEntry(comment = "CON 15 — Steady Breath: extended underwater breath + slower hunger")
+    @IntField(min = -1)
+    public int steadyBreathRequiredLevel = 15;
+    @SerialEntry(comment = "CON 20 — Overflow: Absorption at full HP")
+    @IntField(min = -1)
+    public int overflowRequiredLevel = 20;
+    @SerialEntry(comment = "CON 30 — Iron Stomach: periodic Saturation slows hunger")
+    @IntField(min = -1)
+    public int ironStomachRequiredLevel = 30;
+
+    // DEX — Dexterity
+    @SerialEntry(comment = "DEX 5 — Light Step: +5% movement speed")
+    @IntField(min = -1)
+    public int lightStepRequiredLevel = 5;
+    @SerialEntry(comment = "DEX 10 — Fleet of Foot: +15% movement speed")
+    @IntField(min = -1)
+    public int fleetOfFootRequiredLevel = 10;
+    @SerialEntry(comment = "DEX 15 — Deadeye: +10% arrow damage")
+    @IntField(min = -1)
+    public int deadeyeRequiredLevel = 15;
+    @SerialEntry(comment = "DEX 20 — Rapid Fire: +15% bow draw speed")
+    @IntField(min = -1)
+    public int rapidFireRequiredLevel = 20;
+    @SerialEntry(comment = "DEX 30 — Excitement: Speed III + Haste II for 10s on kill")
+    @IntField(min = -1)
+    public int excitementRequiredLevel = 30;
+
+    // DEF — Defense
+    @SerialEntry(comment = "DEF 5 — Padded Frame: +1 armor, +1 toughness")
+    @IntField(min = -1)
+    public int paddedFrameRequiredLevel = 5;
+    @SerialEntry(comment = "DEF 10 — Second Wind: Regen III at <30% HP (60s CD)")
+    @IntField(min = -1)
+    public int secondWindRequiredLevel = 10;
+    @SerialEntry(comment = "DEF 15 — Bulwark: +25% knockback resistance")
+    @IntField(min = -1)
+    public int bulwarkRequiredLevel = 15;
+    @SerialEntry(comment = "DEF 20 — Turtle Shield: +4 toughness when not blocking")
+    @IntField(min = -1)
+    public int turtleShieldDefRequiredLevel = 20;
+    @SerialEntry(comment = "DEF 30 — Lion Heart: DR scales with missing HP (up to 30%)")
+    @IntField(min = -1)
+    public int lionHeartDefRequiredLevel = 30;
+
+    // BLD — Building
+    @SerialEntry(comment = "BLD 5 — Steady Hand: +0.5 block reach")
+    @IntField(min = -1)
+    public int steadyHandRequiredLevel = 5;
+    @SerialEntry(comment = "BLD 10 — Quarryman: +5% block break speed")
+    @IntField(min = -1)
+    public int quarrymanRequiredLevel = 10;
+    @SerialEntry(comment = "BLD 15 — Thrifty Hands: 5% chance to refund placed block")
+    @IntField(min = -1)
+    public int thriftyHandsRequiredLevel = 15;
+    @SerialEntry(comment = "BLD 20 — Resourceful: 8% chance to refund crafting material")
+    @IntField(min = -1)
+    public int resourcefulRequiredLevel = 20;
+    @SerialEntry(comment = "BLD 30 — Master Craftsman: +12% craft refund (stacks to ~20%)")
+    @IntField(min = -1)
+    public int masterCraftsmanRequiredLevel = 30;
+
+    // LCK — Luck
+    @SerialEntry(comment = "LCK 5 — Lucky Charm: +1 Luck")
+    @IntField(min = -1)
+    public int luckyCharmRequiredLevel = 5;
+    @SerialEntry(comment = "LCK 10 — Lucky Strike: 20% chance for 120% damage")
+    @IntField(min = -1)
+    public int luckyStrikeRequiredLevel = 10;
+    @SerialEntry(comment = "LCK 15 — Fortune's Favor: +1 Luck and bonus ore drops")
+    @IntField(min = -1)
+    public int fortunesFavorRequiredLevel = 15;
+    @SerialEntry(comment = "LCK 20 — Treasure Sense: 5% double-roll mob loot on kill")
+    @IntField(min = -1)
+    public int treasureSenseRequiredLevel = 20;
+    @SerialEntry(comment = "LCK 30 — Motherlode: 0.5% chance for 5x mining drops")
+    @IntField(min = -1)
+    public int motherlodeRequiredLevel = 30;
 }

@@ -25,72 +25,102 @@ public class RegistrySkills {
     public static final DeferredRegister<Skill> SKILLS = DeferredRegister.create(SKILLS_KEY, JustLevelingFork.MOD_ID);
     public static final Supplier<IForgeRegistry<Skill>> SKILLS_REGISTRY = SKILLS.makeRegistry(() -> new RegistryBuilder<Skill>().disableSaving());
 
-    public static final RegistryObject<Skill> ONE_HANDED = HandlerCommonConfig.HANDLER.instance().oneHandedRequiredLevel < 0 ? null : SKILLS.register("one_handed", () -> register("one_handed", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().oneHandedRequiredLevel, HandlerResources.ONE_HANDED_SKILL, new Value(ValueType.AMPLIFIER, HandlerCommonConfig.HANDLER.instance().oneHandedAmplifier)));
+    // ═══ Iridescent fork (#76): upstream natives REMOVED across all 8 aptitudes ═══════
+    // Every upstream JLFork skill is hard-disabled (null). Their Java effect code in
+    // RegistryCommonEvents + the mixins (and the TreasureHunterSkill / ConvergenceSkill
+    // helpers) is null-guarded at every call site, so nulling here both pulls them from
+    // the aptitude UI AND stops their effects — which otherwise DOUBLE-DIPPED with the
+    // kubejs design effects (e.g. a STR player got native One Handed/Fighting Spirit/
+    // Berserker on top of kubejs Might/Brutal Slash/Cleave/Hemorrhage/True Strength).
+    //
+    // All gameplay now lives in kubejs/server_scripts/skills/justleveling_skills.js keyed
+    // off aptitude level; the registrations below this block exist purely to render the
+    // 5/10/15/20/30 UI nodes. The fields are kept (not deleted) because the effect code
+    // and mixins still reference them by name — they just resolve to null now.
+    public static final RegistryObject<Skill> ONE_HANDED = null;
+    public static final RegistryObject<Skill> FIGHTING_SPIRIT = null;
+    public static final RegistryObject<Skill> BERSERKER = null;
+    public static final RegistryObject<Skill> ATHLETICS = null;
+    public static final RegistryObject<Skill> TURTLE_SHIELD = null;
+    public static final RegistryObject<Skill> LION_HEART = null;
+    public static final RegistryObject<Skill> QUICK_REPOSITION = null;
+    public static final RegistryObject<Skill> STEALTH_MASTERY = null;
+    public static final RegistryObject<Skill> CAT_EYES = null;
+    public static final RegistryObject<Skill> SNOW_WALKER = null;
+    public static final RegistryObject<Skill> COUNTER_ATTACK = null;
+    public static final RegistryObject<Skill> DIAMOND_SKIN = null;
+    public static final RegistryObject<Skill> SCHOLAR = null;
+    public static final RegistryObject<Skill> HAGGLER = null;
+    public static final RegistryObject<Skill> ALCHEMY_MANIPULATION = null;
+    public static final RegistryObject<Skill> OBSIDIAN_SMASHER = null;
+    public static final RegistryObject<Skill> TREASURE_HUNTER = null;
+    public static final RegistryObject<Skill> CONVERGENCE = null;
+    public static final RegistryObject<Skill> SAFE_PORT = null;
+    public static final RegistryObject<Skill> LIFE_EATER = null;
+    public static final RegistryObject<Skill> WORMHOLE_STORAGE = null;
+    public static final RegistryObject<Skill> CRITICAL_ROLL = null;
+    public static final RegistryObject<Skill> LUCKY_DROP = null;
+    public static final RegistryObject<Skill> LIMIT_BREAKER = null;
 
-    public static final RegistryObject<Skill> FIGHTING_SPIRIT = HandlerCommonConfig.HANDLER.instance().fightingSpiritRequiredLevel < 0 ? null : SKILLS.register("fighting_spirit", () -> register("fighting_spirit", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().fightingSpiritRequiredLevel, HandlerResources.FIGHTING_SPIRIT_SKILL, new Value(ValueType.BOOST, HandlerCommonConfig.HANDLER.instance().fightingSpiritBoost), new Value(ValueType.DURATION, HandlerCommonConfig.HANDLER.instance().fightingSpiritDuration)));
+    // ═══ Design 5-tier nodes — effects fire from kubejs by aptitude level ═════════════
+    // UI-only registrations (no config Value args). Textures reuse each aptitude's three
+    // upstream skill icons (cosmetic; unique 5-per-aptitude art is a future polish pass).
 
-    public static final RegistryObject<Skill> BERSERKER = HandlerCommonConfig.HANDLER.instance().berserkerRequiredLevel < 0 ? null : SKILLS.register("berserker", () -> register("berserker", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().berserkerRequiredLevel, HandlerResources.BERSERKER_SKILL, new Value(ValueType.PERCENT, HandlerCommonConfig.HANDLER.instance().berserkerPercent)));
+    // ─── STR — Strength ───
+    public static final RegistryObject<Skill> MIGHT = HandlerCommonConfig.HANDLER.instance().mightRequiredLevel < 0 ? null : SKILLS.register("might", () -> register("might", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().mightRequiredLevel, HandlerResources.ONE_HANDED_SKILL));
+    public static final RegistryObject<Skill> BRUTAL_SLASH = HandlerCommonConfig.HANDLER.instance().brutalSlashRequiredLevel < 0 ? null : SKILLS.register("brutal_slash", () -> register("brutal_slash", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().brutalSlashRequiredLevel, HandlerResources.FIGHTING_SPIRIT_SKILL));
+    public static final RegistryObject<Skill> CLEAVE = HandlerCommonConfig.HANDLER.instance().cleaveRequiredLevel < 0 ? null : SKILLS.register("cleave", () -> register("cleave", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().cleaveRequiredLevel, HandlerResources.BERSERKER_SKILL));
+    public static final RegistryObject<Skill> HEMORRHAGE = HandlerCommonConfig.HANDLER.instance().hemorrhageRequiredLevel < 0 ? null : SKILLS.register("hemorrhage", () -> register("hemorrhage", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().hemorrhageRequiredLevel, HandlerResources.FIGHTING_SPIRIT_SKILL));
+    public static final RegistryObject<Skill> TRUE_STRENGTH = HandlerCommonConfig.HANDLER.instance().trueStrengthRequiredLevel < 0 ? null : SKILLS.register("true_strength", () -> register("true_strength", RegistryAptitudes.STRENGTH.get(), HandlerCommonConfig.HANDLER.instance().trueStrengthRequiredLevel, HandlerResources.BERSERKER_SKILL));
 
-    public static final RegistryObject<Skill> ATHLETICS = HandlerCommonConfig.HANDLER.instance().athleticsRequiredLevel < 0 ? null : SKILLS.register("athletics", () -> register("athletics", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().athleticsRequiredLevel, HandlerResources.ATHLETICS_SKILL, new Value(ValueType.MODIFIER, HandlerCommonConfig.HANDLER.instance().athleticsModifier)));
+    // ─── CON — Constitution ───
+    public static final RegistryObject<Skill> TOUGH_HIDE = HandlerCommonConfig.HANDLER.instance().toughHideRequiredLevel < 0 ? null : SKILLS.register("tough_hide", () -> register("tough_hide", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().toughHideRequiredLevel, HandlerResources.ATHLETICS_SKILL));
+    public static final RegistryObject<Skill> HEARTY_MEALS = HandlerCommonConfig.HANDLER.instance().heartyMealsRequiredLevel < 0 ? null : SKILLS.register("hearty_meals", () -> register("hearty_meals", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().heartyMealsRequiredLevel, HandlerResources.ATHLETICS_SKILL));
+    public static final RegistryObject<Skill> STEADY_BREATH = HandlerCommonConfig.HANDLER.instance().steadyBreathRequiredLevel < 0 ? null : SKILLS.register("steady_breath", () -> register("steady_breath", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().steadyBreathRequiredLevel, HandlerResources.TURTLE_SHIELD_SKILL));
+    public static final RegistryObject<Skill> OVERFLOW = HandlerCommonConfig.HANDLER.instance().overflowRequiredLevel < 0 ? null : SKILLS.register("overflow", () -> register("overflow", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().overflowRequiredLevel, HandlerResources.TURTLE_SHIELD_SKILL));
+    public static final RegistryObject<Skill> IRON_STOMACH = HandlerCommonConfig.HANDLER.instance().ironStomachRequiredLevel < 0 ? null : SKILLS.register("iron_stomach", () -> register("iron_stomach", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().ironStomachRequiredLevel, HandlerResources.LION_HEART_SKILL));
 
-    public static final RegistryObject<Skill> TURTLE_SHIELD = HandlerCommonConfig.HANDLER.instance().turtleShieldRequiredLevel < 0 ? null : SKILLS.register("turtle_shield", () -> register("turtle_shield", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().turtleShieldRequiredLevel, HandlerResources.TURTLE_SHIELD_SKILL));
+    // ─── DEX — Dexterity ───
+    public static final RegistryObject<Skill> LIGHT_STEP = HandlerCommonConfig.HANDLER.instance().lightStepRequiredLevel < 0 ? null : SKILLS.register("light_step", () -> register("light_step", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().lightStepRequiredLevel, HandlerResources.QUICK_REPOSITION_SKILL));
+    public static final RegistryObject<Skill> FLEET_OF_FOOT = HandlerCommonConfig.HANDLER.instance().fleetOfFootRequiredLevel < 0 ? null : SKILLS.register("fleet_of_foot", () -> register("fleet_of_foot", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().fleetOfFootRequiredLevel, HandlerResources.QUICK_REPOSITION_SKILL));
+    public static final RegistryObject<Skill> DEADEYE = HandlerCommonConfig.HANDLER.instance().deadeyeRequiredLevel < 0 ? null : SKILLS.register("deadeye", () -> register("deadeye", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().deadeyeRequiredLevel, HandlerResources.STEALTH_MASTERY_SKILL));
+    public static final RegistryObject<Skill> RAPID_FIRE = HandlerCommonConfig.HANDLER.instance().rapidFireRequiredLevel < 0 ? null : SKILLS.register("rapid_fire", () -> register("rapid_fire", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().rapidFireRequiredLevel, HandlerResources.STEALTH_MASTERY_SKILL));
+    public static final RegistryObject<Skill> EXCITEMENT = HandlerCommonConfig.HANDLER.instance().excitementRequiredLevel < 0 ? null : SKILLS.register("excitement", () -> register("excitement", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().excitementRequiredLevel, HandlerResources.CAT_EYES_SKILL));
 
-    public static final RegistryObject<Skill> LION_HEART = HandlerCommonConfig.HANDLER.instance().lionHeartRequiredLevel < 0 ? null : SKILLS.register("lion_heart", () -> register("lion_heart", RegistryAptitudes.CONSTITUTION.get(), HandlerCommonConfig.HANDLER.instance().lionHeartRequiredLevel, HandlerResources.LION_HEART_SKILL, new Value(ValueType.PERCENT, HandlerCommonConfig.HANDLER.instance().lionHeartPercent)));
+    // ─── DEF — Defense ───
+    public static final RegistryObject<Skill> PADDED_FRAME = HandlerCommonConfig.HANDLER.instance().paddedFrameRequiredLevel < 0 ? null : SKILLS.register("padded_frame", () -> register("padded_frame", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().paddedFrameRequiredLevel, HandlerResources.DIAMOND_SKIN_SKILL));
+    public static final RegistryObject<Skill> SECOND_WIND = HandlerCommonConfig.HANDLER.instance().secondWindRequiredLevel < 0 ? null : SKILLS.register("second_wind", () -> register("second_wind", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().secondWindRequiredLevel, HandlerResources.COUNTER_ATTACK_SKILL));
+    public static final RegistryObject<Skill> BULWARK = HandlerCommonConfig.HANDLER.instance().bulwarkRequiredLevel < 0 ? null : SKILLS.register("bulwark", () -> register("bulwark", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().bulwarkRequiredLevel, HandlerResources.DIAMOND_SKIN_SKILL));
+    public static final RegistryObject<Skill> TURTLE_SHIELD_DEF = HandlerCommonConfig.HANDLER.instance().turtleShieldDefRequiredLevel < 0 ? null : SKILLS.register("turtle_shield_def", () -> register("turtle_shield_def", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().turtleShieldDefRequiredLevel, HandlerResources.SNOW_WALKER_SKILL));
+    public static final RegistryObject<Skill> LION_HEART_DEF = HandlerCommonConfig.HANDLER.instance().lionHeartDefRequiredLevel < 0 ? null : SKILLS.register("lion_heart_def", () -> register("lion_heart_def", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().lionHeartDefRequiredLevel, HandlerResources.COUNTER_ATTACK_SKILL));
 
-    public static final RegistryObject<Skill> QUICK_REPOSITION = HandlerCommonConfig.HANDLER.instance().quickRepositionRequiredLevel < 0 ? null : SKILLS.register("quick_reposition", () -> register("quick_reposition", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().quickRepositionRequiredLevel, HandlerResources.QUICK_REPOSITION_SKILL, new Value(ValueType.BOOST, HandlerCommonConfig.HANDLER.instance().quickRepositionBoost), new Value(ValueType.DURATION, HandlerCommonConfig.HANDLER.instance().quickRepositionDuration)));
+    // ─── INT — Intelligence (already migrated in #76) ───
+    public static final RegistryObject<Skill> CURIOUS = HandlerCommonConfig.HANDLER.instance().curiousRequiredLevel < 0 ? null : SKILLS.register("curious", () -> register("curious", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().curiousRequiredLevel, HandlerResources.SCHOLAR_SKILL));
+    public static final RegistryObject<Skill> ARCANE_EFFICIENCY = HandlerCommonConfig.HANDLER.instance().arcaneEfficiencyRequiredLevel < 0 ? null : SKILLS.register("arcane_efficiency", () -> register("arcane_efficiency", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().arcaneEfficiencyRequiredLevel, HandlerResources.SCHOLAR_SKILL));
+    public static final RegistryObject<Skill> INSIGHT = HandlerCommonConfig.HANDLER.instance().insightRequiredLevel < 0 ? null : SKILLS.register("insight", () -> register("insight", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().insightRequiredLevel, HandlerResources.HAGGLER_SKILL));
+    public static final RegistryObject<Skill> MATERIALS_SCIENCE = HandlerCommonConfig.HANDLER.instance().materialsScienceRequiredLevel < 0 ? null : SKILLS.register("materials_science", () -> register("materials_science", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().materialsScienceRequiredLevel, HandlerResources.HAGGLER_SKILL));
+    public static final RegistryObject<Skill> ENLIGHTENMENT = HandlerCommonConfig.HANDLER.instance().enlightenmentRequiredLevel < 0 ? null : SKILLS.register("enlightenment", () -> register("enlightenment", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().enlightenmentRequiredLevel, HandlerResources.ALCHEMY_MANIPULATION_SKILL));
 
-    public static final RegistryObject<Skill> STEALTH_MASTERY = HandlerCommonConfig.HANDLER.instance().stealthMasteryRequiredLevel < 0 ? null : SKILLS.register("stealth_mastery", () -> register("stealth_mastery", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().stealthMasteryRequiredLevel, HandlerResources.STEALTH_MASTERY_SKILL, new Value(ValueType.PERCENT, HandlerCommonConfig.HANDLER.instance().stealthMasteryUnSneakPercent), new Value(ValueType.PERCENT, HandlerCommonConfig.HANDLER.instance().stealthMasterySneakPercent), new Value(ValueType.MODIFIER, HandlerCommonConfig.HANDLER.instance().stealthMasteryModifier)));
+    // ─── BLD — Building ───
+    public static final RegistryObject<Skill> STEADY_HAND = HandlerCommonConfig.HANDLER.instance().steadyHandRequiredLevel < 0 ? null : SKILLS.register("steady_hand", () -> register("steady_hand", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().steadyHandRequiredLevel, HandlerResources.TREASURE_HUNTER_SKILL));
+    public static final RegistryObject<Skill> QUARRYMAN = HandlerCommonConfig.HANDLER.instance().quarrymanRequiredLevel < 0 ? null : SKILLS.register("quarryman", () -> register("quarryman", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().quarrymanRequiredLevel, HandlerResources.OBSIDIAN_SMASHER_SKILL));
+    public static final RegistryObject<Skill> THRIFTY_HANDS = HandlerCommonConfig.HANDLER.instance().thriftyHandsRequiredLevel < 0 ? null : SKILLS.register("thrifty_hands", () -> register("thrifty_hands", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().thriftyHandsRequiredLevel, HandlerResources.CONVERGENCE_SKILL));
+    public static final RegistryObject<Skill> RESOURCEFUL = HandlerCommonConfig.HANDLER.instance().resourcefulRequiredLevel < 0 ? null : SKILLS.register("resourceful", () -> register("resourceful", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().resourcefulRequiredLevel, HandlerResources.CONVERGENCE_SKILL));
+    public static final RegistryObject<Skill> MASTER_CRAFTSMAN = HandlerCommonConfig.HANDLER.instance().masterCraftsmanRequiredLevel < 0 ? null : SKILLS.register("master_craftsman", () -> register("master_craftsman", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().masterCraftsmanRequiredLevel, HandlerResources.OBSIDIAN_SMASHER_SKILL));
 
-    public static final RegistryObject<Skill> CAT_EYES = HandlerCommonConfig.HANDLER.instance().catEyesRequiredLevel < 0 ? null : SKILLS.register("cat_eyes", () -> register("cat_eyes", RegistryAptitudes.DEXTERITY.get(), HandlerCommonConfig.HANDLER.instance().catEyesRequiredLevel, HandlerResources.CAT_EYES_SKILL));
-
-    public static final RegistryObject<Skill> SNOW_WALKER = HandlerCommonConfig.HANDLER.instance().snowWalkerRequiredLevel < 0 ? null : SKILLS.register("snow_walker", () -> register("snow_walker", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().snowWalkerRequiredLevel, HandlerResources.SNOW_WALKER_SKILL));
-
-    public static final RegistryObject<Skill> COUNTER_ATTACK = HandlerCommonConfig.HANDLER.instance().counterattackRequiredLevel < 0 ? null : SKILLS.register("counter_attack", () -> register("counter_attack", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().counterattackRequiredLevel, HandlerResources.COUNTER_ATTACK_SKILL, new Value(ValueType.DURATION, HandlerCommonConfig.HANDLER.instance().counterAttackDuration), new Value(ValueType.PERCENT, HandlerCommonConfig.HANDLER.instance().counterAttackPercent)));
-
-    public static final RegistryObject<Skill> DIAMOND_SKIN = HandlerCommonConfig.HANDLER.instance().diamondSkinRequiredLevel < 0 ? null : SKILLS.register("diamond_skin", () -> register("diamond_skin", RegistryAptitudes.DEFENSE.get(), HandlerCommonConfig.HANDLER.instance().diamondSkinRequiredLevel, HandlerResources.DIAMOND_SKIN_SKILL, new Value(ValueType.BOOST, HandlerCommonConfig.HANDLER.instance().diamondSkinBoost), new Value(ValueType.AMPLIFIER, HandlerCommonConfig.HANDLER.instance().diamondSkinSneakAmplifier)));
-
-    public static final RegistryObject<Skill> SCHOLAR = HandlerCommonConfig.HANDLER.instance().scholarRequiredLevel < 0 ? null : SKILLS.register("scholar", () -> register("scholar", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().scholarRequiredLevel, HandlerResources.SCHOLAR_SKILL));
-
-    public static final RegistryObject<Skill> HAGGLER = HandlerCommonConfig.HANDLER.instance().hagglerRequiredLevel < 0 ? null : SKILLS.register("haggler", () -> register("haggler", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().hagglerRequiredLevel, HandlerResources.HAGGLER_SKILL, new Value(ValueType.PERCENT, HandlerCommonConfig.HANDLER.instance().hagglerPercent)));
-
-    public static final RegistryObject<Skill> ALCHEMY_MANIPULATION = HandlerCommonConfig.HANDLER.instance().alchemyManipulationRequiredLevel < 0 ? null : SKILLS.register("alchemy_manipulation", () -> register("alchemy_manipulation", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().alchemyManipulationRequiredLevel, HandlerResources.ALCHEMY_MANIPULATION_SKILL, new Value(ValueType.AMPLIFIER, HandlerCommonConfig.HANDLER.instance().alchemyManipulationAmplifier)));
-
-    public static final RegistryObject<Skill> OBSIDIAN_SMASHER = HandlerCommonConfig.HANDLER.instance().obsidianSmasherRequiredLevel < 0 ? null : SKILLS.register("obsidian_smasher", () -> register("obsidian_smasher", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().obsidianSmasherRequiredLevel, HandlerResources.OBSIDIAN_SMASHER_SKILL, new Value(ValueType.MODIFIER, HandlerCommonConfig.HANDLER.instance().obsidianSmasherModifier)));
-
-    public static final RegistryObject<Skill> TREASURE_HUNTER = HandlerCommonConfig.HANDLER.instance().treasureHunterRequiredLevel < 0 ? null : SKILLS.register("treasure_hunter", () -> register("treasure_hunter", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().treasureHunterRequiredLevel, HandlerResources.TREASURE_HUNTER_SKILL, new Value(ValueType.PROBABILITY, HandlerCommonConfig.HANDLER.instance().treasureHunterProbability)));
-
-    public static final RegistryObject<Skill> CONVERGENCE = HandlerCommonConfig.HANDLER.instance().convergenceRequiredLevel < 0 ? null : SKILLS.register("convergence", () -> register("convergence", RegistryAptitudes.BUILDING.get(), HandlerCommonConfig.HANDLER.instance().convergenceRequiredLevel, HandlerResources.CONVERGENCE_SKILL, new Value(ValueType.PROBABILITY, HandlerCommonConfig.HANDLER.instance().convergenceProbability)));
-
-    public static final RegistryObject<Skill> SAFE_PORT = HandlerCommonConfig.HANDLER.instance().safePortRequiredLevel < 0 ? null : SKILLS.register("safe_port", () -> register("safe_port", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().safePortRequiredLevel, HandlerResources.SAFE_PORT_SKILL));
-
-    public static final RegistryObject<Skill> LIFE_EATER = HandlerCommonConfig.HANDLER.instance().lifeEaterRequiredLevel < 0 ? null : SKILLS.register("life_eater", () -> register("life_eater", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().lifeEaterRequiredLevel, HandlerResources.LIFE_EATER_SKILL, new Value(ValueType.AMPLIFIER, HandlerCommonConfig.HANDLER.instance().lifeEaterModifier)));
-
-    public static final RegistryObject<Skill> WORMHOLE_STORAGE = HandlerCommonConfig.HANDLER.instance().wornholeStorageRequiredLevel < 0 ? null : SKILLS.register("wormhole_storage", () -> register("wormhole_storage", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().wornholeStorageRequiredLevel, HandlerResources.WORMHOLE_STORAGE_SKILL));
-
-    public static final RegistryObject<Skill> CRITICAL_ROLL = HandlerCommonConfig.HANDLER.instance().criticalRollRequiredLevel < 0 ? null : SKILLS.register("critical_roll", () -> register("critical_roll", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().criticalRollRequiredLevel, HandlerResources.CRITICAL_ROLL_SKILL, new Value(ValueType.MODIFIER, HandlerCommonConfig.HANDLER.instance().criticalRoll6Modifier), new Value(ValueType.PROBABILITY, HandlerCommonConfig.HANDLER.instance().criticalRoll1Probability)));
-
-    public static final RegistryObject<Skill> LUCKY_DROP =  HandlerCommonConfig.HANDLER.instance().luckyDropRequiredLevel < 0 ? null : SKILLS.register("lucky_drop", () -> register("lucky_drop", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().luckyDropRequiredLevel, HandlerResources.LUCKY_DROP_SKILL, new Value(ValueType.PROBABILITY, HandlerCommonConfig.HANDLER.instance().luckyDropProbability), new Value(ValueType.MODIFIER, HandlerCommonConfig.HANDLER.instance().luckyDropModifier)));
-
-    public static final RegistryObject<Skill> LIMIT_BREAKER = HandlerCommonConfig.HANDLER.instance().limitBreakerRequiredLevel < 0 ? null : SKILLS.register("limit_breaker", () -> register("limit_breaker", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().limitBreakerRequiredLevel, HandlerResources.LIMIT_BREAKER_SKILL, new Value(ValueType.PROBABILITY, HandlerCommonConfig.HANDLER.instance().limitBreakerProbability), new Value(ValueType.AMPLIFIER, HandlerCommonConfig.HANDLER.instance().limitBreakerAmplifier)));
-
-    // ─── Iridescent fork: design-aligned MAG line at 5/10/15/20/30 ────────────
-    // Effects fire from kubejs/server_scripts/skills/justleveling_skills.js
-    // based on aptitude level alone; these registrations exist to surface the
-    // skills in the JLFork UI at the design-spec slots. Textures reuse the
-    // deprecated natives' assets (safe_port/life_eater/wormhole_storage) so
-    // we don't ship blank skill icons.
+    // ─── MAG — Magic (already migrated in #76) ───
     public static final RegistryObject<Skill> MANA_SPARK = HandlerCommonConfig.HANDLER.instance().manaSparkRequiredLevel < 0 ? null : SKILLS.register("mana_spark", () -> register("mana_spark", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().manaSparkRequiredLevel, HandlerResources.SAFE_PORT_SKILL));
     public static final RegistryObject<Skill> CONSERVATION_OF_MAGIC = HandlerCommonConfig.HANDLER.instance().conservationOfMagicRequiredLevel < 0 ? null : SKILLS.register("conservation_of_magic", () -> register("conservation_of_magic", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().conservationOfMagicRequiredLevel, HandlerResources.SAFE_PORT_SKILL));
     public static final RegistryObject<Skill> MANA_BLAZE = HandlerCommonConfig.HANDLER.instance().manaBlazeRequiredLevel < 0 ? null : SKILLS.register("mana_blaze", () -> register("mana_blaze", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().manaBlazeRequiredLevel, HandlerResources.LIFE_EATER_SKILL));
     public static final RegistryObject<Skill> MYSTIC_WARD = HandlerCommonConfig.HANDLER.instance().mysticWardRequiredLevel < 0 ? null : SKILLS.register("mystic_ward", () -> register("mystic_ward", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().mysticWardRequiredLevel, HandlerResources.LIFE_EATER_SKILL));
     public static final RegistryObject<Skill> MANA_INFERNO = HandlerCommonConfig.HANDLER.instance().manaInfernoRequiredLevel < 0 ? null : SKILLS.register("mana_inferno", () -> register("mana_inferno", RegistryAptitudes.MAGIC.get(), HandlerCommonConfig.HANDLER.instance().manaInfernoRequiredLevel, HandlerResources.WORMHOLE_STORAGE_SKILL));
 
-    // ─── Iridescent fork: design-aligned INT line at 5/10/15/20/30 ────────────
-    public static final RegistryObject<Skill> CURIOUS = HandlerCommonConfig.HANDLER.instance().curiousRequiredLevel < 0 ? null : SKILLS.register("curious", () -> register("curious", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().curiousRequiredLevel, HandlerResources.SCHOLAR_SKILL));
-    public static final RegistryObject<Skill> ARCANE_EFFICIENCY = HandlerCommonConfig.HANDLER.instance().arcaneEfficiencyRequiredLevel < 0 ? null : SKILLS.register("arcane_efficiency", () -> register("arcane_efficiency", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().arcaneEfficiencyRequiredLevel, HandlerResources.SCHOLAR_SKILL));
-    public static final RegistryObject<Skill> INSIGHT = HandlerCommonConfig.HANDLER.instance().insightRequiredLevel < 0 ? null : SKILLS.register("insight", () -> register("insight", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().insightRequiredLevel, HandlerResources.HAGGLER_SKILL));
-    public static final RegistryObject<Skill> MATERIALS_SCIENCE = HandlerCommonConfig.HANDLER.instance().materialsScienceRequiredLevel < 0 ? null : SKILLS.register("materials_science", () -> register("materials_science", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().materialsScienceRequiredLevel, HandlerResources.HAGGLER_SKILL));
-    public static final RegistryObject<Skill> ENLIGHTENMENT = HandlerCommonConfig.HANDLER.instance().enlightenmentRequiredLevel < 0 ? null : SKILLS.register("enlightenment", () -> register("enlightenment", RegistryAptitudes.INTELLIGENCE.get(), HandlerCommonConfig.HANDLER.instance().enlightenmentRequiredLevel, HandlerResources.ALCHEMY_MANIPULATION_SKILL));
+    // ─── LCK — Luck ───
+    public static final RegistryObject<Skill> LUCKY_CHARM = HandlerCommonConfig.HANDLER.instance().luckyCharmRequiredLevel < 0 ? null : SKILLS.register("lucky_charm", () -> register("lucky_charm", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().luckyCharmRequiredLevel, HandlerResources.LUCKY_DROP_SKILL));
+    public static final RegistryObject<Skill> LUCKY_STRIKE = HandlerCommonConfig.HANDLER.instance().luckyStrikeRequiredLevel < 0 ? null : SKILLS.register("lucky_strike", () -> register("lucky_strike", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().luckyStrikeRequiredLevel, HandlerResources.CRITICAL_ROLL_SKILL));
+    public static final RegistryObject<Skill> FORTUNES_FAVOR = HandlerCommonConfig.HANDLER.instance().fortunesFavorRequiredLevel < 0 ? null : SKILLS.register("fortunes_favor", () -> register("fortunes_favor", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().fortunesFavorRequiredLevel, HandlerResources.LUCKY_DROP_SKILL));
+    public static final RegistryObject<Skill> TREASURE_SENSE = HandlerCommonConfig.HANDLER.instance().treasureSenseRequiredLevel < 0 ? null : SKILLS.register("treasure_sense", () -> register("treasure_sense", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().treasureSenseRequiredLevel, HandlerResources.LIMIT_BREAKER_SKILL));
+    public static final RegistryObject<Skill> MOTHERLODE = HandlerCommonConfig.HANDLER.instance().motherlodeRequiredLevel < 0 ? null : SKILLS.register("motherlode", () -> register("motherlode", RegistryAptitudes.LUCK.get(), HandlerCommonConfig.HANDLER.instance().motherlodeRequiredLevel, HandlerResources.LIMIT_BREAKER_SKILL));
 
     private static Skill register(String name, Aptitude aptitude, int requiredLvl, ResourceLocation texture, Value... configValues) {
         ResourceLocation key = new ResourceLocation(JustLevelingFork.MOD_ID, name);
@@ -105,5 +135,3 @@ public class RegistrySkills {
         return SKILLS_REGISTRY.get().getValues().stream().collect(Collectors.toMap(Skill::getName, Skill::get)).get(skillName);
     }
 }
-
-

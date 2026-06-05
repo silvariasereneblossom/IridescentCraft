@@ -244,6 +244,14 @@ global.tick_justlevelingSkills = (event) => {
         'icraft_lucky_charm', luck, 'addition')
     } catch (e) {}
 
+    // ── Fortune's Favor (LCK >= 15): +1 luck (stacks with Lucky Charm) ──
+    // The ore-mining bonus half ships in the BlockEvents.broken handler below.
+    try {
+      let ffLuck = (apt.lck >= 15) ? 1 : 0
+      player.modifyAttribute('minecraft:generic.luck',
+        'icraft_fortunes_favor_luck', ffLuck, 'addition')
+    } catch (e) {}
+
     // ── Quarryman (BLD >= 10): +5% block break speed ──
     // 2026-05-10: was minecraft:player.block_break_speed (1.21 attribute, doesn't exist
     // on 1.20.1 — silent NPE swallowed by catch but spammed debug.log every tick).
@@ -716,6 +724,19 @@ PlayerEvents.inventoryChanged(event => {
         }
       } catch (e) {}
     }
+
+    // ── Lucky Strike (LCK >= 10): 20% chance to deal 120% damage on a melee hit ──
+    if (apt.lck >= 10) {
+      try {
+        if (Math.random() < 0.20) {
+          event.amount *= 1.20
+          let pos = target.blockPosition()
+          server.runCommandSilent(
+            `particle minecraft:crit ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.3 0.3 0.4 8 force`
+          )
+        }
+      } catch (e) {}
+    }
   }
 
   // ── Excitement kill tracking (DEX >= 30): buff on kill ──
@@ -887,6 +908,38 @@ BlockEvents.broken(event => {
       `particle minecraft:totem_of_undying ${pos.x} ${pos.y + 1} ${pos.z} 0.5 0.5 0.5 0.2 24 force`
     )
     try { player.tell('§6[Motherlode] §lJACKPOT! §r§6×5 drops!') } catch (e3) {}
+  } catch (e) {}
+})
+
+// ── Fortune's Favor (LCK >= 15): bonus drops when mining ore ──
+// Re-rolls an ore block's loot table once at ~30% chance — a Fortune-I-like
+// average bonus. Ore detection is a heuristic: the block id contains "ore" or is
+// ancient_debris. Loot table id pattern: <modid>:blocks/<path>; if it doesn't
+// exist the command silently no-ops. Independent of Motherlode (LCK 30).
+// FLAG: ore heuristic + 30% rate are a first pass — tune per playtest.
+BlockEvents.broken(event => {
+  try {
+    let player = event.player
+    if (!player || player.creative || player.spectator) return
+    let server = player.server
+    let apt = getCachedAptitudes(server, player)
+    if (apt.lck < 15) return
+    let blockId = String(event.block.id || '')
+    if (!blockId || blockId.indexOf(':') < 0) return
+    let isOre = (blockId.indexOf('ore') >= 0) || (blockId.indexOf('ancient_debris') >= 0)
+    if (!isOre) return
+    if (Math.random() >= 0.30) return
+    let parts = blockId.split(':')
+    let lootTable = parts[0] + ':blocks/' + parts[1]
+    let pos = event.block.pos
+    server.runCommandSilent(
+      `loot spawn ${pos.x} ${pos.y + 0.5} ${pos.z} loot ${lootTable}`
+    )
+    try {
+      server.runCommandSilent(
+        `particle minecraft:happy_villager ${pos.x} ${pos.y + 1} ${pos.z} 0.3 0.3 0.3 0.1 6 force`
+      )
+    } catch (e2) {}
   } catch (e) {}
 })
 
