@@ -46,7 +46,8 @@ $customJars = @(
     'Patchouli-1.20.1-85-FORGE.jar',
     'ars_nouveau-1.20.1-4.12.7-all.jar',
     'class-artifacts-forge-2.0.5.jar',
-    'iridescent_relics-1.0.0.jar'
+    'iridescent_relics-1.0.0.jar',
+    'linearxp-1.0.0.jar'
 )
 
 $modsDir = Join-Path $RepoRoot '.minecraft\mods'

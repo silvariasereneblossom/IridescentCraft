@@ -1,0 +1,9 @@
+filename = 'linearxp-1.0.0.jar'
+name = 'Linear Experience'
+side = 'both'
+
+[download]
+hash = ''
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''

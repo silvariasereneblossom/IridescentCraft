@@ -1,0 +1,28 @@
+#Linear Experience (linearxp) - IridescentCraft.
+#STATIC mode: every vanilla level costs a flat staticModeXpNeeded raw XP, making
+#"N vanilla levels" a clean linear XP measure (foundation for the #76 aptitude rework).
+#(Forge normalizes comments/formatting on first load; keys + values are authoritative.)
+
+[general]
+	#Whether to enable the XP-calculation modifier
+	enableXpCalculationModifier = true
+	#XP calculation mode: LINEAR / STATIC / FORMULA
+	calculateMode = "STATIC"
+
+["mode settings"]
+
+	["mode settings".linear]
+		#Range: 1 ~ 10000
+		linearBaseXp = 100
+		#Range: 1 ~ 10000
+		LinearXpAddition = 1
+
+	["mode settings".static]
+		#Fixed raw XP required per level
+		#Range: 1 ~ 10000
+		staticModeXpNeeded = 75
+
+	["mode settings".formula]
+		formula = "base+((level*level)*10)"
+		#Range: 1 ~ 10000
+		formulaBaseXp = 100
