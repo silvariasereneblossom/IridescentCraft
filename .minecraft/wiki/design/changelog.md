@@ -30,6 +30,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **Waystone Cores re-specced** — now a consistent uncommon (20%) drop across all twelve bosses, instead of guaranteed-or-coinflip.
 - **Meat drops doubled** — all base meat from the standard animals (pig, cow, mooshroom, chicken, sheep, rabbit, cod, salmon, hoglin) now drops at twice the base rate, raw and cooked, with Looting stacking on top — food and cooking are central to the pack and the economy now reflects it.
 - **Last pig-loot straggler fixed** — one more misspelled mob id (an ant "queen" that's actually a caste, not an entity) was quietly feeding Nature Runes to pigs; re-homed to the real ant at a much lower rate.
+- **Mage curios join the village pool** — six caster-oriented curios (mana, cooldown, and cast-time rings, a concentration amulet, a mana-regen amulet, and a spell-discount ring) now roll in village chests alongside the martial set. Total village curio supply is unchanged — the pool redistributes, with mage items now about a third of artifact rolls.
 - **Engineering questline** — a new 14-quest Heracles line walks the whole engineering lane: Create ore-doubling at Tier 1, Thermal infrastructure at Tier 2, the Mekanism 5x chain at Tier 3, fusion and your first antimatter at Tier 4 — with Codex token rewards and a matching "Engineering Lane" Codex chapter. Also fixed: the MekaSuit Mk2 recipes referenced a nonexistent ingot id and were silently uncraftable.
 
 ## May 2026 — Modular gear, unified magic, and the bespoke difficulty engine
