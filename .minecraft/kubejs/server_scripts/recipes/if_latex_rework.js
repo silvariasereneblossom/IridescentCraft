@@ -21,37 +21,32 @@ ServerEvents.recipes(event => {
   // Any log can be crushed/processed into latex — bulk processing replaces
   // the slow Tree Fluid Extractor drip system.
 
-  // Create Mixing: 4 logs + water → latex bucket
+  // Create Mixing: 4 logs + water → latex (heated)
   // (Mixing basin with water simulates the extraction process at scale)
-  // 2026-04-21: Create's mixing constructor in this build rejects our
-  // 2-arg call ("Constructor for create:mixing with 2 arguments not found").
-  // Wrapped in try/catch so the rest of the latex pipeline (crushing +
-  // crucible + HDPE conversion) still registers. Re-audit Create's KubeJS
-  // bindings later to find the correct signature for this version.
-  try {
-    event.recipes.create.mixing(
-      Fluid.of('industrialforegoing:latex', 250),
-      [
-        '#minecraft:logs',
-        '#minecraft:logs',
-        '#minecraft:logs',
-        '#minecraft:logs',
-        Fluid.of('minecraft:water', 500)
-      ]
-    ).heated().id('icraft:logs_to_latex_mixing')
-  } catch (e) {
-    console.warn('[latex-rework] Create mixing recipe registration failed (known issue, crushing + crucible still active): ' + e)
-  }
+  // 2026-06-06: Create 6.0.8 rewrote its recipe system; the legacy 2-arg
+  // fluent builder no longer matches a constructor. Ported to event.custom
+  // JSON (version-stable) — schema verified against create's own
+  // data/create/recipes/*.json.
+  event.custom({
+    type: 'create:mixing',
+    heatRequirement: 'heated',
+    ingredients: [
+      { tag: 'minecraft:logs' },
+      { tag: 'minecraft:logs' },
+      { tag: 'minecraft:logs' },
+      { tag: 'minecraft:logs' },
+      { amount: 500, fluid: 'minecraft:water' }
+    ],
+    results: [{ amount: 250, fluid: 'industrialforegoing:latex' }]
+  }).id('icraft:logs_to_latex_mixing')
 
   // Create Crushing: 1 log → small amount of latex
-  // 2026-04-22: same 2-arg constructor rejection as mixing; wrapped.
-  try {
-    event.recipes.create.crushing([
-      Fluid.of('industrialforegoing:latex', 50)
-    ], '#minecraft:logs').processingTime(200).id('icraft:log_crush_to_latex')
-  } catch (e) {
-    console.warn('[latex-rework] Create crushing recipe registration failed (known issue): ' + e)
-  }
+  event.custom({
+    type: 'create:crushing',
+    ingredients: [{ tag: 'minecraft:logs' }],
+    results: [{ amount: 50, fluid: 'industrialforegoing:latex' }],
+    processingTime: 200
+  }).id('icraft:log_crush_to_latex')
 
   // Thermal Crucible: logs → latex fluid
   try {
@@ -72,19 +67,19 @@ ServerEvents.recipes(event => {
 
   // HDPE Sheet → 9 Dry Rubber (shapeless)
   event.shapeless(
-    Item.of('industrialforegoing:dry_rubber', 9),
+    Item.of('industrialforegoing:dryrubber', 9),
     ['mekanism:hdpe_sheet']
   ).id('icraft:hdpe_sheet_to_dry_rubber')
 
   // HDPE Pellet → 3 Dry Rubber (shapeless — pellet is less processed)
   event.shapeless(
-    Item.of('industrialforegoing:dry_rubber', 3),
+    Item.of('industrialforegoing:dryrubber', 3),
     ['mekanism:hdpe_pellet']
   ).id('icraft:hdpe_pellet_to_dry_rubber')
 
   // HDPE Rod → 6 Dry Rubber (shapeless — between pellet and sheet)
   event.shapeless(
-    Item.of('industrialforegoing:dry_rubber', 6),
+    Item.of('industrialforegoing:dryrubber', 6),
     ['mekanism:hdpe_rod']
   ).id('icraft:hdpe_rod_to_dry_rubber')
 
@@ -95,15 +90,16 @@ ServerEvents.recipes(event => {
   // (the Latex Processing Unit is still faster and more efficient)
 
   event.smelting(
-    Item.of('industrialforegoing:dry_rubber', 4),
+    Item.of('industrialforegoing:dryrubber', 4),
     'industrialforegoing:latex_bucket'
   ).id('icraft:smelt_latex_to_rubber')
 
   // Create Compacting: latex fluid → dry rubber
-  event.recipes.create.compacting(
-    Item.of('industrialforegoing:dry_rubber', 3),
-    [Fluid.of('industrialforegoing:latex', 250)]
-  ).id('icraft:compact_latex_to_rubber')
+  event.custom({
+    type: 'create:compacting',
+    ingredients: [{ amount: 250, fluid: 'industrialforegoing:latex' }],
+    results: [{ item: 'industrialforegoing:dryrubber', count: 3 }]
+  }).id('icraft:compact_latex_to_rubber')
 
 
   // =========================================================================
@@ -132,7 +128,7 @@ ServerEvents.recipes(event => {
   // instead of standard control circuits. Not replacing — adding alternatives.
 
   // Alternative Fission Reactor Casing: HDPE circuit replaces control circuit
-  event.shaped('mekanism:fission_reactor_casing', [
+  event.shaped('mekanismgenerators:fission_reactor_casing', [
     'SCS',
     'CLC',
     'SCS'
@@ -143,34 +139,37 @@ ServerEvents.recipes(event => {
   }).id('icraft:fission_casing_hdpe')
 
   // Alternative Fission Reactor Logic Adapter
-  event.shaped('mekanism:fission_reactor_logic_adapter', [
+  event.shaped('mekanismgenerators:fission_reactor_logic_adapter', [
     ' C ',
     'CFC',
     ' C '
   ], {
     C: 'kubejs:hdpe_circuit_board',
-    F: 'mekanism:fission_reactor_casing'
+    F: 'mekanismgenerators:fission_reactor_casing'
   }).id('icraft:fission_logic_hdpe')
 
   // Alternative Fusion Reactor Frame: HDPE circuit path
-  event.shaped('mekanism:fusion_reactor_frame', [
+  event.shaped('mekanismgenerators:fusion_reactor_frame', [
     'SCS',
     'CAC',
     'SCS'
   ], {
-    S: 'mekanism:alloy_ultimate',
+    // PROVISIONAL tier choice: 'mekanism:alloy_ultimate' never existed (tiers are
+    // infused/reinforced/atomic). Structural slot = reinforced under the atomic core;
+    // re-tier if the design intent was full-atomic.
+    S: 'mekanism:alloy_reinforced',
     C: 'kubejs:hdpe_circuit_board',
     A: 'mekanism:alloy_atomic'
   }).id('icraft:fusion_frame_hdpe')
 
   // Alternative Fusion Reactor Logic Adapter
-  event.shaped('mekanism:fusion_reactor_logic_adapter', [
+  event.shaped('mekanismgenerators:fusion_reactor_logic_adapter', [
     ' C ',
     'CFC',
     ' C '
   ], {
     C: 'kubejs:hdpe_circuit_board',
-    F: 'mekanism:fusion_reactor_frame'
+    F: 'mekanismgenerators:fusion_reactor_frame'
   }).id('icraft:fusion_logic_hdpe')
 
   // Alternative Enrichment Chamber: HDPE circuit path (cheaper T3 entry)

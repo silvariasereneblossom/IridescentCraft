@@ -68,10 +68,10 @@ try {
       // Resolve the dimension this spawn happened in.
       var dimId = null
       try {
-        dimId = String(entity.level.dimension().location())
+        dimId = String(entity.level.dimension)
       } catch (e) {}
       if (!dimId) {
-        try { dimId = String(entity.getLevel().dimension().location()) } catch (e) {}
+        try { dimId = String(entity.getLevel().dimension) } catch (e) {}
       }
       if (!dimId) return
 

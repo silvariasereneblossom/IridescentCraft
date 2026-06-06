@@ -168,7 +168,7 @@ function detectArenaAtPlayer(player, runBlockScan) {
     const fired = readFiredSet(server)
     const sm = level.structureManager()
     const pos = player.blockPosition()
-    const hereDim = String(level.dimension().location())
+    const hereDim = String(level.dimension)
 
     // Build a {signatureBlock -> bossId} map of every not-yet-lit BLOCK-located
     // arena in the player's CURRENT dimension. Done alongside the structure pass
