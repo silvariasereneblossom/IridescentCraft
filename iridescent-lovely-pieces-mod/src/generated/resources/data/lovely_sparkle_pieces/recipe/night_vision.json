@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:black_dye"
+    },
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "G": {
+      "item": "minecraft:spyglass"
+    },
+    "L": {
+      "item": "minecraft:glowstone"
+    },
+    "R": {
+      "item": "minecraft:comparator"
+    }
+  },
+  "pattern": [
+    "CLC",
+    "GRG",
+    "B B"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:night_vision"
+  }
+}

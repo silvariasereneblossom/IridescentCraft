@@ -1,0 +1,19 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lovely_sparkle_pieces:magnetic_ring"
+    },
+    {
+      "item": "minecraft:diamond"
+    },
+    {
+      "item": "lovely_sparkle_pieces:polymerization"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:super_magnetic_ring"
+  }
+}

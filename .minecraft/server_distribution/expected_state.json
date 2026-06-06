@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "734d5ac4d",
+  "generated_from": "3856ed832",
   "roots": [
     "kubejs",
     "config",
@@ -7922,6 +7922,10 @@
     "mods/.index/iridescent-grand-compass.pw.toml": {
       "sha256": "e352c2ebe9261368a287038eff3c47364479e8ddd9d09aca5848a430ec26d395",
       "size": 177
+    },
+    "mods/.index/iridescent-lovely-pieces.pw.toml": {
+      "sha256": "f72943782ff355d1db3189c0a8329bb210d1b9a49d6f872d914a34574f7e87e5",
+      "size": 189
     },
     "mods/.index/iridescent-origins.pw.toml": {
       "sha256": "d00ecec6fa2b28cef756c9cd038a996a3505d211522e8288c272125dd609257e",

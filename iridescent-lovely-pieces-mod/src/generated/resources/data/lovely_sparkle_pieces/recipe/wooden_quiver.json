@@ -1,0 +1,28 @@
+{
+  "type": "minecraft:crafting_shapeless",
+  "category": "misc",
+  "ingredients": [
+    {
+      "item": "lovely_sparkle_pieces:leather_quiver"
+    },
+    {
+      "item": "minecraft:bow"
+    },
+    {
+      "item": "minecraft:oak_log"
+    },
+    {
+      "item": "minecraft:blaze_powder"
+    },
+    {
+      "item": "minecraft:gold_ingot"
+    },
+    {
+      "item": "lovely_sparkle_pieces:polymerization"
+    }
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:wood_grain_quiver"
+  }
+}

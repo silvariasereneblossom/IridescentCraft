@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_rod"
+    },
+    "F": {
+      "item": "lovely_sparkle_pieces:polymerization"
+    },
+    "N": {
+      "item": "minecraft:netherite_ingot"
+    }
+  },
+  "pattern": [
+    "BNB",
+    "NFN",
+    "BNB"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:superpolymerization"
+  }
+}

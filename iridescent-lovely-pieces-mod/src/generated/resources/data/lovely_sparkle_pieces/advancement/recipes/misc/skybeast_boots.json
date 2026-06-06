@@ -1,0 +1,32 @@
+{
+  "parent": "minecraft:recipes/root",
+  "criteria": {
+    "has_lovely_sparkle_pieces:jumping_footwear": {
+      "conditions": {
+        "items": [
+          {
+            "items": "lovely_sparkle_pieces:jumping_footwear"
+          }
+        ]
+      },
+      "trigger": "minecraft:inventory_changed"
+    },
+    "has_the_recipe": {
+      "conditions": {
+        "recipe": "lovely_sparkle_pieces:skybeast_boots"
+      },
+      "trigger": "minecraft:recipe_unlocked"
+    }
+  },
+  "requirements": [
+    [
+      "has_the_recipe",
+      "has_lovely_sparkle_pieces:jumping_footwear"
+    ]
+  ],
+  "rewards": {
+    "recipes": [
+      "lovely_sparkle_pieces:skybeast_boots"
+    ]
+  }
+}

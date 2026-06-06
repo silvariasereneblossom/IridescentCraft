@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "C": {
+      "item": "minecraft:copper_ingot"
+    },
+    "G": {
+      "item": "minecraft:glass_pane"
+    },
+    "L": {
+      "item": "minecraft:light_weighted_pressure_plate"
+    }
+  },
+  "pattern": [
+    "GCG",
+    " L ",
+    "GCG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:binoculars"
+  }
+}

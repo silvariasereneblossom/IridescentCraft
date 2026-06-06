@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:golden_apple"
+    },
+    "D": {
+      "item": "minecraft:glowstone_dust"
+    },
+    "G": {
+      "item": "minecraft:redstone"
+    },
+    "L": {
+      "item": "minecraft:lapis_lazuli"
+    },
+    "R": {
+      "item": "lovely_sparkle_pieces:global_positioning_system"
+    }
+  },
+  "pattern": [
+    " R ",
+    "GLG",
+    "ADA"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:pda"
+  }
+}

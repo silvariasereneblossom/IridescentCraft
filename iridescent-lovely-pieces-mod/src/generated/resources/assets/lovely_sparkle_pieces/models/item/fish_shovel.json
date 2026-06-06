@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/handheld",
+  "textures": {
+    "layer0": "lovely_sparkle_pieces:item/fish_shovel"
+  }
+}

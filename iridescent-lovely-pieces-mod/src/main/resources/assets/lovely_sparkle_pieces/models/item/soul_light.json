@@ -1,0 +1,6 @@
+{
+  "parent": "lovely_sparkle_pieces:block/soul_light",
+  "textures": {
+    "0": "lovely_sparkle_pieces:block/soul_light"
+  }
+}

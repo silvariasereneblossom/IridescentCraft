@@ -1,0 +1,6 @@
+{
+  "item.fishing_treasure.open": {
+    "sounds":["lovely_sparkle_pieces:items/open_fishing_treasure"] ,
+    "subtitle": "subtitles.lovely_sparkle_pieces.fishing_treasure.open"
+  }
+}

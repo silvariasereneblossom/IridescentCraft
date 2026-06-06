@@ -7,6 +7,7 @@ mods/*.jar
 !mods/iridescent_tetra_expansion-*.jar
 !mods/iridescent_durability_clamp-*.jar
 !mods/justlevelingfork-*-iridescent.*.jar
+!mods/lovely_sparkle_pieces-*-iridescent.*.jar
 !mods/mek_walkable_cables-*.jar
 !mods/zeta_racefix-*.jar
 !mods/Patchouli-*.jar
@@ -22,6 +23,7 @@ mods/*.jar
 !server_distribution/mods/iridescent_tetra_expansion-*.jar
 !server_distribution/mods/iridescent_durability_clamp-*.jar
 !server_distribution/mods/justlevelingfork-*-iridescent.*.jar
+!server_distribution/mods/lovely_sparkle_pieces-*-iridescent.*.jar
 !server_distribution/mods/mek_walkable_cables-*.jar
 !server_distribution/mods/zeta_racefix-*.jar
 !server_distribution/mods/Patchouli-*.jar
@@ -35,6 +37,7 @@ mods/*.jar
 !distribution/client/mods/iridescent_tetra_expansion-*.jar
 !distribution/client/mods/iridescent_durability_clamp-*.jar
 !distribution/client/mods/justlevelingfork-*-iridescent.*.jar
+!distribution/client/mods/lovely_sparkle_pieces-*-iridescent.*.jar
 !distribution/client/mods/mek_walkable_cables-*.jar
 !distribution/client/mods/zeta_racefix-*.jar
 !distribution/client/mods/Patchouli-*.jar

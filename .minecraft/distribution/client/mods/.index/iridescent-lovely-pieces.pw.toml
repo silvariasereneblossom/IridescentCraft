@@ -1,0 +1,9 @@
+filename = 'lovely_sparkle_pieces-0.1.0.0-iridescent.1.jar'
+name = 'Iridescent Lovely Pieces'
+side = 'both'
+
+[download]
+hash = ''
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''

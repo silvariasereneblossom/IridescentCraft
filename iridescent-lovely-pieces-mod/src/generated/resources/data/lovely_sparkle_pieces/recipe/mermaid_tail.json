@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "H": {
+      "item": "minecraft:heart_of_the_sea"
+    },
+    "K": {
+      "item": "minecraft:dried_kelp"
+    },
+    "L": {
+      "item": "minecraft:sea_lantern"
+    }
+  },
+  "pattern": [
+    " K ",
+    "GLG",
+    " H "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:mermaid_tail"
+  }
+}

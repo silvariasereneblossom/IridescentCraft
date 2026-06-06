@@ -99,7 +99,8 @@ $customJars = @(
     'ars_nouveau-1.20.1-4.12.7-all.jar',
     'class-artifacts-forge-2.0.5.jar',
     'iridescent_relics-1.0.0.jar',
-    'linearxp-1.0.0-iridescent.1.jar'
+    'linearxp-1.0.0-iridescent.1.jar',
+    'lovely_sparkle_pieces-0.1.0.0-iridescent.1.jar'
 )
 
 # --- Load manifest (optional) for layer 2 hash verification + layer 2.5 keep ---

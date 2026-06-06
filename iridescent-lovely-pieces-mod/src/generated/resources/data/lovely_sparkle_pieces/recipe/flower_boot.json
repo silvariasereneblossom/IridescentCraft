@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "F": {
+      "item": "minecraft:dandelion"
+    },
+    "G": {
+      "item": "lovely_sparkle_pieces:straw_sandals"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    }
+  },
+  "pattern": [
+    " F ",
+    "LGL",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:flower_boot"
+  }
+}

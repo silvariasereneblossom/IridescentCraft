@@ -1,0 +1,21 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:iron_ingot"
+    },
+    "B": {
+      "item": "minecraft:gold_ingot"
+    }
+  },
+  "pattern": [
+    " A ",
+    "A A",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:magnetic_ring"
+  }
+}

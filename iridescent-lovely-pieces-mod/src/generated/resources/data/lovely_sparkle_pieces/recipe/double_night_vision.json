@@ -1,0 +1,33 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "G": {
+      "item": "minecraft:glowstone"
+    },
+    "L": {
+      "item": "minecraft:lightning_rod"
+    },
+    "N": {
+      "item": "minecraft:gold_ingot"
+    },
+    "P": {
+      "item": "minecraft:phantom_membrane"
+    },
+    "S": {
+      "item": "minecraft:sculk_sensor"
+    },
+    "V": {
+      "item": "minecraft:spyglass"
+    }
+  },
+  "pattern": [
+    "GVG",
+    "SLS",
+    "NPN"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:double_night_vision"
+  }
+}

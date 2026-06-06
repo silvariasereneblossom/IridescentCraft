@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:gold_ingot"
+    },
+    "B": {
+      "item": "minecraft:yellow_dye"
+    },
+    "C": {
+      "item": "minecraft:lightning_rod"
+    },
+    "D": {
+      "item": "minecraft:leather_helmet"
+    }
+  },
+  "pattern": [
+    "ABA",
+    " C ",
+    " D "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:yellow_headscarf"
+  }
+}

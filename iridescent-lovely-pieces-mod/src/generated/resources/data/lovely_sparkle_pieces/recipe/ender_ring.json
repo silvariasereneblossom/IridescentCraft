@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "A": {
+      "item": "minecraft:obsidian"
+    },
+    "B": {
+      "item": "minecraft:ender_eye"
+    },
+    "C": {
+      "item": "minecraft:ender_pearl"
+    }
+  },
+  "pattern": [
+    " A ",
+    "ACA",
+    " B "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:ender_ring"
+  }
+}

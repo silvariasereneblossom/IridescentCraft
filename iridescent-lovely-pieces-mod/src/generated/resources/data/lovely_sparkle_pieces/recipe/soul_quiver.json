@@ -1,0 +1,30 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "lovely_sparkle_pieces:wood_grain_quiver"
+    },
+    "F": {
+      "item": "minecraft:ender_eye"
+    },
+    "L": {
+      "item": "minecraft:leather"
+    },
+    "P": {
+      "item": "lovely_sparkle_pieces:polymerization"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "pattern": [
+    "SFS",
+    "LBL",
+    "SPS"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:soul_quiver"
+  }
+}

@@ -1,0 +1,27 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "D": {
+      "item": "minecraft:diamond"
+    },
+    "E": {
+      "item": "minecraft:emerald"
+    },
+    "G": {
+      "item": "minecraft:gold_ingot"
+    },
+    "P": {
+      "item": "minecraft:glass_bottle"
+    }
+  },
+  "pattern": [
+    "GDG",
+    "PEP",
+    "GDG"
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:gamblers_corsage"
+  }
+}

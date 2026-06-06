@@ -1,0 +1,23 @@
+{
+  "entities": ["player"],
+  "slots": [
+    "ring",
+    "legendarycurios",
+    "unlegendarycurios",
+    "head",
+    "boot",
+    "necklace",
+    "back",
+    "belt",
+    "body",
+    "bracelet",
+    "charm",
+    "set_source",
+    "set_diverse",
+    "set_unity",
+    "set_threshold",
+    "set_final",
+    "glasses",
+    "hipornament"
+  ]
+}

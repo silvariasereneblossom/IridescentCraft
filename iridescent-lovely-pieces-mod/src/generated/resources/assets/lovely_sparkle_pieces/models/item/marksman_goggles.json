@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:item/generated",
+  "textures": {
+    "layer0": "lovely_sparkle_pieces:item/marksman_goggles"
+  }
+}

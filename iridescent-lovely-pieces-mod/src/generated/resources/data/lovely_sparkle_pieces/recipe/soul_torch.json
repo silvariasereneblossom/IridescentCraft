@@ -1,0 +1,24 @@
+{
+  "type": "minecraft:crafting_shaped",
+  "category": "misc",
+  "key": {
+    "B": {
+      "item": "minecraft:blaze_powder"
+    },
+    "L": {
+      "item": "minecraft:stick"
+    },
+    "S": {
+      "item": "minecraft:soul_sand"
+    }
+  },
+  "pattern": [
+    " S ",
+    " B ",
+    " L "
+  ],
+  "result": {
+    "count": 1,
+    "id": "lovely_sparkle_pieces:soul_torch"
+  }
+}
