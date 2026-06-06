@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "3a3742747",
+  "generated_from": "bfcfec450",
   "roots": [
     "kubejs",
     "config",
@@ -6736,8 +6736,8 @@
       "size": 34819
     },
     "kubejs/server_scripts/loot/lootjs_overhaul.js": {
-      "sha256": "f0bac926cfe88fce028135c1e1fdeda950ddcc84b14ebfa9679c3334d2e5b881",
-      "size": 149604
+      "sha256": "d6f934a0bf94b5fc187121d0e3f6bdb344c6d57ba86745648abc52a6ae2586e6",
+      "size": 150262
     },
     "kubejs/server_scripts/loot/mahou_synergy_drops.js": {
       "sha256": "10e637f08bc0da62a856f4d1322fbda0f9bf2af4391376a8ee27f469517749f9",

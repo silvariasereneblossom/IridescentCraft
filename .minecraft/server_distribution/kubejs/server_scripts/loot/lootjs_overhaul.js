@@ -2135,7 +2135,18 @@ LootJS.modifiers(event => {
     'artifacts:night_vision_goggles',
     'artifacts:drama_mask',
     'artifacts:universal_attractor',
-    'artifacts:pickaxe_heater'
+    'artifacts:pickaxe_heater',
+    // [2026-06-06] mage slate (operator directive): the pool skewed martial/utility.
+    // ISS/Ars namespaces bypass the nonCuratedArtifactFilter strips by design and
+    // ship their own lang. All verified ungated at T1 (appendix A.1 blesses ISS+Ars
+    // mage entry). Pool auto-normalizes (0.10/length) so combined village artifact
+    // supply stays ~10% - these redistribute, not inflate (mage ~35% of rolls).
+    'irons_spellbooks:mana_ring',
+    'irons_spellbooks:cooldown_ring',
+    'irons_spellbooks:cast_time_ring',
+    'irons_spellbooks:concentration_amulet',
+    'ars_nouveau:amulet_of_mana_regen',
+    'ars_nouveau:ring_of_lesser_discount'
   ]
   var villageArtifactPerItemChance = 0.10 / villageArtifactPool.length  // ~10% combined — matches overall T1 artifact rate (2026-04-20, was 15% since 2026-04-19)
 
