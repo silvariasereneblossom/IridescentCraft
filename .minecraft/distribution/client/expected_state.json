@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "729158d7e",
+  "generated_from": "3a3742747",
   "roots": [
     "kubejs",
     "config",
@@ -6652,8 +6652,8 @@
       "size": 3721
     },
     "kubejs/server_scripts/loot/0_entity_id_validator.js": {
-      "sha256": "183590bed714c63ec5807e8a79371ef70de04ddc8d739466ca922cf4060f680a",
-      "size": 5383
+      "sha256": "8983c11502c49ce9d56293fcd259472c1d6391521064f05a36e2f32cec75befa",
+      "size": 5377
     },
     "kubejs/server_scripts/loot/DEPRECATED_loot_overhaul.txt": {
       "sha256": "6373f15fccf0296e896e59e8052f9f90f543ca0ceb2873cf145038304f75c078",
@@ -6664,8 +6664,8 @@
       "size": 6754
     },
     "kubejs/server_scripts/loot/alexsmobs_drops.js": {
-      "sha256": "7235008c0d40fbe28161ca54524f92576a3520d9f1eda5bc99bb693150aeee8a",
-      "size": 7039
+      "sha256": "e9d8c3151cb8452f0175748a3987780d3bc5cbeb1b5480ead1c941915edeb4f5",
+      "size": 7351
     },
     "kubejs/server_scripts/loot/blue_skies_drops.js": {
       "sha256": "ac78fad174e7368216587e57c8d5acb67a8a742966932f8306a9686e292cc005",
@@ -6738,6 +6738,10 @@
     "kubejs/server_scripts/loot/majrusz_skeleton_punch_strip.js": {
       "sha256": "30e3e7bc5dac6f7703fd02b06c7ede6b8c737e52be73a2d10ee5d1793679f635",
       "size": 4085
+    },
+    "kubejs/server_scripts/loot/meat_drop_doubling.js": {
+      "sha256": "77550b0aa96cdd5cbe395c8decd9cdaf9154045082ccfceec118172e70d6f6b6",
+      "size": 2125
     },
     "kubejs/server_scripts/loot/planetary_loot.js": {
       "sha256": "301e7c1284549f408691d43ecd4740e535fa34560885894628b3496481c85723",

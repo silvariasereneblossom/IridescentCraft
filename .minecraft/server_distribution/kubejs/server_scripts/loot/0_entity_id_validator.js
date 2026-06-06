@@ -39,7 +39,7 @@ ServerEvents.loaded(function (event) {
     'alexsmobs:hammerhead_shark',
     'alexsmobs:komodo_dragon',
     'alexsmobs:laviathan',
-    'alexsmobs:leafcutter_ant_queen',
+    'alexsmobs:leafcutter_ant',
     'alexsmobs:mimicube',
     'alexsmobs:murmur',
     'alexsmobs:snow_leopard',

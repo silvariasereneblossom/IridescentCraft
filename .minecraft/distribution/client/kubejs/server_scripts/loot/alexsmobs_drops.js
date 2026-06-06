@@ -136,9 +136,13 @@ LootJS.modifiers(event => {
 
   // ---- Leafcutter Ant Queen — jungle T2 mini-boss ----
   event
-    .addEntityLootModifier('alexsmobs:leafcutter_ant_queen')
-    .addLoot(LootEntry.of('irons_spellbooks:nature_rune').when(c => c.randomChance(0.30)))
-    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.20)))
+    // [2026-06-06] was 'leafcutter_ant_queen' - NOT an entity in pinned alexsmobs
+    // (queen is a caste of leafcutter_ant) -> unresolvable id defaulted to PIG
+    // (the Nature Rune pig leak). Re-homed to the real ant at sharply reduced
+    // rates (common mob vs rare queen kill) - PROVISIONAL, tune or remove.
+    .addEntityLootModifier('alexsmobs:leafcutter_ant')
+    .addLoot(LootEntry.of('irons_spellbooks:nature_rune').when(c => c.randomChance(0.03)))
+    .addLoot(LootEntry.of('irons_spellbooks:uncommon_ink').when(c => c.randomChance(0.02)))
 
   // ---- Cachalot Whale — deep ocean T2 ----
   event
