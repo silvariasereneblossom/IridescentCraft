@@ -38,6 +38,15 @@ public class ExpHandler {
 
             ExpDisplayHandler.updatePlayerExpBar(event.getEntity());
 
+            // IridescentCraft patch (#91): vanilla only resyncs XP to the client when
+            // ServerPlayer.totalExperience changes (lastSentExp dirty-check in tick()).
+            // This mod routes gains through the capability and zeroes the vanilla
+            // amount, so totalExperience never moved and the client bar stayed
+            // FROZEN forever ("XP is not being collected"). Mirror the intercepted
+            // amount into totalExperience: keeps the vanilla total-earned stat
+            // meaningful AND trips the resync packet on every pickup.
+            player.totalExperience += originalAmount;
+
             LinearXp.LOGGER.debug("增加后 - 精确经验: {}, 实际经验: {}",
                     currentAccurated, actualExp);
 

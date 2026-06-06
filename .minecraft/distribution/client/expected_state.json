@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "1e45c8f12",
+  "generated_from": "729158d7e",
   "roots": [
     "kubejs",
     "config",
@@ -7002,6 +7002,10 @@
     "kubejs/server_scripts/spawn_protection.js": {
       "sha256": "a61a1ac7ae82885231d6fb6ee9f0fa412129dc80017f6d41212525b2b25646bb",
       "size": 3121
+    },
+    "kubejs/server_scripts/spawn_village_protection.js": {
+      "sha256": "9fb152c8780937e02bdd29a57bfd45dc5d8f2f057aeefb92aaa712cc52005f5c",
+      "size": 3167
     },
     "kubejs/server_scripts/strip_anomalous_drops.js": {
       "sha256": "df1a1ae868ae3aa684250a6d48106d5b9ceb9e0d7442a11b24de723581f16ca2",

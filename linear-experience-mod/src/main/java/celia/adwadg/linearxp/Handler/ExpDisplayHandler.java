@@ -52,6 +52,7 @@ public class ExpDisplayHandler {
         // 计算当前等级升级所需的精确经验值（原版值乘以1000）
         long requiredExpAccurated = ExperienceCalculator.calculateAccuratedExperience(currentLevel);
 
+        boolean leveled = false; // IridescentCraft patch (#91): see resync note below
         while (accuratedExp >= requiredExpAccurated) {
             // 升级
             accuratedExp -= requiredExpAccurated;
@@ -71,6 +72,13 @@ public class ExpDisplayHandler {
 
             /*LinearXp.LOGGER.debug("玩家升级! 新等级: {}, 剩余精确经验: {}, 显示经验: {}",
                     player.experienceLevel, accuratedExp, accuratedExp / 1000L);*/
+            leveled = true;
+        }
+        if (leveled) {
+            // IridescentCraft patch (#91): level-ups reached via the 10-tick path
+            // (capability credited outside an XpChange, e.g. backport credits) also
+            // need the client resync; nudge totalExperience to trip the dirty-check.
+            player.totalExperience += 1;
         }
     }
     private static void updateExperienceBar(Player player, long accuratedExp, int currentLevel) {
