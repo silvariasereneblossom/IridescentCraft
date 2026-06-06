@@ -38,9 +38,19 @@ public class IridescentBiomes {
     private void commonSetup(final FMLCommonSetupEvent event) {
         // Region registration must run on the main thread — enqueueWork handles it.
         event.enqueueWork(() -> {
+            // WI1-4 Cherry-River-Valley-DOWN-very-slightly (worldgen-rebalance
+            // 2026-05-26): region weight 8 -> 7. PROVISIONAL. Smallest single
+            // integer step (~12.5% share reduction) reads as "very slightly,
+            // still high overall." This region carries BOTH cherry biomes, so
+            // it also nudges cherry_mountains down slightly -- aligned with the
+            // spec's "mountain biomes DOWN in count." Note: plains-UP raising
+            // vanilla TB weight (terrablender.toml 9->16) already dilutes the
+            // cherry share independently; this jar step is the additional
+            // intentional cherry-specific trim. stock=8.
+            // needs-custom-jar-release (do NOT build in research session).
             Regions.register(new IridescentCherryRegion(
                     new ResourceLocation(MODID, "cherry_region"),
-                    8
+                    7
             ));
         });
     }

@@ -14,5 +14,9 @@ general = {}
 	nether_region_size = 2
 	#The weighting of vanilla biome regions in the overworld.
 	#Range: 0-2147483647
-	vanilla_overworld_region_weight = 9
+	# WI1-1 plains-UP (worldgen-rebalance 2026-05-26): 9 -> 16. PROVISIONAL.
+	# Vanilla owns plains; raising vanilla TB region share is the only no-jar
+	# lever for plains-UP. Vanilla share ~24% -> ~36%, BoP ~54% -> ~48%,
+	# iridescent_biomes ~22% -> ~19% (also dilutes cherry slightly). stock=9.
+	vanilla_overworld_region_weight = 16
 

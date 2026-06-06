@@ -34,9 +34,6 @@ A conflict between Aetheric Tetranomicon and the pack's modular armor/spell book
 ### MekaSuit has no base armor stats — **Mitigated**
 Mekanism's end-game MekaSuit has no innate armor values by design (its protection comes entirely from installed modules). The MekaSuit Mk2 upgrade (June 2026 rebuild) now adds true base armor/toughness/knockback-resistance on top of the module system, so the pinnacle suit composes with dimension-based difficulty scaling. The un-upgraded base suit remains module-only, matching Mekanism's design.
 
-### Apotheosis tower chests can under-fill — **Open**
-Some Apotheosis tower chests may roll light (e.g. gold only) due to a loot-table load-order quirk.
-
 ### Some near-spawn chests generate as vanilla, not Lootr — **Open (mechanism confirmed)**
 A few chests can generate as ordinary shared chests instead of per-player Lootr chests. Root cause confirmed (June 2026 audit): Lootr only converts loot containers placed during world generation — chests placed afterward by command/function-driven content (e.g. Ultris structures place theirs via `setblock` with a LootTable) are structurally invisible to it, as are modded chest blocks outside the `forge:chests/wooden`/`trapped` tags (the config's additional-conversion lists are empty). A full per-source census is scoped as follow-up work.
 
@@ -93,6 +90,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - Two silently-dead datapacks revived (the stone-tag fixer and the infinite-ham blocker) — both were rejected for a packaging error and are loading again.
 - A LootJS strip rule that referenced a non-existent item id no longer errors.
 - Enchanted books no longer spawn blank — they now roll real enchantments scaled by dimension tier.
+- Tome Tower (Apotheosis) chests no longer under-fill — the same pack-wide book-strip bug was zeroing their enchanted books (it was never a load-order quirk, despite the original guess); chests now also carry guaranteed Arcane Essence (2-4) and an occasional spell scroll.
 - "None" / blank spell scrolls in chests now always come with a random spell inscribed.
 - Village chests cleaned up: no more double beds, no junk-flooding, artifacts at sane rates, weapons/iron bars/beds appear as intended.
 - Ars Nouveau glyphs and spell materials added to tiered chest loot so spell books are usable from Tier 1.

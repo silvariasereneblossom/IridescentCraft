@@ -44,6 +44,7 @@ DATAPACKS = [
     "icraft_apotheosis_affixes",
     "icraft_loot_overrides",
     "icraft_iss_gem_buffs",
+    "icraft_tower_overrides",
 ]
 
 DISTRO_ROOTS = [
