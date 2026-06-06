@@ -91,7 +91,7 @@ LootJS.modifiers(event => {
 
   // ---- Frostmoth — cold T3 ----
   event
-    .addEntityLootModifier('alexsmobs:frostmoth')
+    .addEntityLootModifier('alexsmobs:froststalker')  // was 'frostmoth' (no such entity -> pig) 2026-06-06
     .addLoot(LootEntry.of('irons_spellbooks:ice_rune').when(c => c.randomChance(0.10)))
 
   // ---- Cosmaw — sky T3 ----

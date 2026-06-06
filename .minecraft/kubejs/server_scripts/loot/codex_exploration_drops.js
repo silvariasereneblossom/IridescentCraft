@@ -169,7 +169,7 @@ LootJS.modifiers(event => {
      'twilightforest:skeleton_druid', 'twilightforest:swarm_spider',
      'twilightforest:redcap', 'twilightforest:kobold',
      'aether:cockatrice', 'aether:zephyr',
-     'blue_skies:spitfire', 'blue_skies:diamondback'],
+     'blue_skies:venom_spider', 'blue_skies:nested_spider'],  // were spitfire/diamondback (no such entities -> pig) 2026-06-06
     TOK_T2, 0.04,
     ['twilightforest:twilight_forest', 'aether:the_aether',
      'blue_skies:everbright', 'blue_skies:everdawn'])
@@ -187,7 +187,7 @@ LootJS.modifiers(event => {
   // T4 dimensions (t3 token — terminal tier) — End / Deep Aether / Abyss.
   seedMobDrops(
     ['minecraft:enderman', 'minecraft:shulker', 'minecraft:endermite',
-     'deep_aether:tempest', 'deep_aether:skyhunter'],
+     'deep_aether:venomite'],  // were tempest/skyhunter (no such entities -> pig) 2026-06-06
     TOK_T3, 0.05,
     ['deep_aether:the_aether', 'minecraft:the_end', 'theabyss:the_abyss'])
 

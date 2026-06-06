@@ -46,9 +46,11 @@ LootJS.modifiers(event => {
     .addEntityLootModifier('twilightforest:minoshroom')
     .addLoot(LootEntry.of('twilightforest:zombie_scepter').when(c => c.randomChance(0.25)))
 
-  // ── ISS Graybeard Staff — Wandering Magician (T2 wizard mob, old-mage theme) ──
+  // ── ISS Graybeard Staff — re-homed to Archevoker (T2/T3 caster). The
+  // 'wandering_magician' is armor-only in installed ISS (no entity); the
+  // unresolvable id silently defaulted this drop onto pigs (2026-06-06). ──
   event
-    .addEntityLootModifier('irons_spellbooks:wandering_magician')
+    .addEntityLootModifier('irons_spellbooks:archevoker')
     .addLoot(LootEntry.of('irons_spellbooks:graybeard_staff').when(c => c.randomChance(0.20)))
 
   // ── ISS Hither-Thither Wand — Archevoker (T2 teleport-mage themed) ──

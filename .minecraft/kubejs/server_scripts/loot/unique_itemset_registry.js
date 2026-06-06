@@ -126,7 +126,7 @@ global.ICRAFT_UNIQUE_ITEMS = {
   'too_many_bows:arcane_bow':      { tier: 3, kind: 'bow', boss: 'irons_spellbooks:archevoker',     addDrop: true },
   'too_many_bows:necro_flame_bow': { tier: 3, kind: 'bow', boss: 'irons_spellbooks:dead_king',      addDrop: true },
   'too_many_bows:solar_bow':       { tier: 3, kind: 'bow', boss: 'irons_spellbooks:fire_boss',      addDrop: true },
-  'too_many_bows:radiance':        { tier: 3, kind: 'bow', boss: 'irons_spellbooks:magehunter',     addDrop: true },
+  'too_many_bows:radiance':        { tier: 3, kind: 'bow', boss: 'aether:valkyrie_queen',           addDrop: true },  // was item-id 'irons_spellbooks:magehunter' -> silently pig (2026-06-06)
   'too_many_bows:ancient_sage_bow':{ tier: 3, kind: 'bow', boss: 'undergarden:forgotten_guardian',  addDrop: true },
   'too_many_bows:dusk_reaper':     { tier: 3, kind: 'bow', boss: 'deeperdarker:stalker',            addDrop: true },
   'too_many_bows:crimson_nexus':   { tier: 3, kind: 'bow', boss: 'cataclysm:the_harbinger',         addDrop: true },

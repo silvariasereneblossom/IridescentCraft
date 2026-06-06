@@ -379,15 +379,11 @@ LootJS.modifiers(event => {
             LootEntry.of("simplyswords:arcanethyst").when(c => c.randomChance(0.18))
         )
 
-    // Cataclysm: Void Blossom — Void/nature theme (T4 boss)
-    event.addEntityLootModifier("cataclysm:void_blossom")
-        .addWeightedLoot([
-            Item.of("kubejs:ultimate_reforging_token").withChance(15),
-            Item.of("kubejs:waystone_core").withChance(15)
-        ])
-        .addLoot(
-            LootEntry.of("simplyswords:watching_warglaive").when(c => c.randomChance(0.18))
-        )
+    // [REMOVED 2026-06-06] Cataclysm: Void Blossom - WRONG MOD: void_blossom is a
+    // Bosses of Mass Destruction entity (not installed). The unresolvable id
+    // silently defaulted to minecraft:pig (DefaultedRegistry) - THE primary
+    // ultimate_reforging_token/waystone_core pig leak. Re-home the pool onto a
+    // real T4 boss if these drops are wanted (operator call).
 
     // Cataclysm: Ancient Remnant — Ultimate Cataclysm boss
     event.addEntityLootModifier("cataclysm:ancient_remnant")

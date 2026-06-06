@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "263e2e346",
+  "generated_from": "bf45a4657",
   "roots": [
     "kubejs",
     "config",
@@ -6655,6 +6655,10 @@
       "sha256": "0bd65987cd26c5ba284fac6f7b94bddd1a0faa4e579798a2eec217524d49107a",
       "size": 3721
     },
+    "kubejs/server_scripts/loot/0_entity_id_validator.js": {
+      "sha256": "183590bed714c63ec5807e8a79371ef70de04ddc8d739466ca922cf4060f680a",
+      "size": 5383
+    },
     "kubejs/server_scripts/loot/DEPRECATED_loot_overhaul.txt": {
       "sha256": "6373f15fccf0296e896e59e8052f9f90f543ca0ceb2873cf145038304f75c078",
       "size": 397
@@ -6664,8 +6668,8 @@
       "size": 6754
     },
     "kubejs/server_scripts/loot/alexsmobs_drops.js": {
-      "sha256": "e8a602a41ff0e311caa76302d7e69a8f376480e43a4d78f398f70d01e4d8d51a",
-      "size": 6981
+      "sha256": "7235008c0d40fbe28161ca54524f92576a3520d9f1eda5bc99bb693150aeee8a",
+      "size": 7039
     },
     "kubejs/server_scripts/loot/blue_skies_drops.js": {
       "sha256": "ac78fad174e7368216587e57c8d5acb67a8a742966932f8306a9686e292cc005",
@@ -6680,8 +6684,8 @@
       "size": 11078
     },
     "kubejs/server_scripts/loot/boss_refight_repair_floors.js": {
-      "sha256": "7814a58859f89fb9601c326c59d9d7a5188e947153fd6bc358abc9c385d9fe76",
-      "size": 4902
+      "sha256": "66d0c12b0387e978cc3199a0985f2ddcffd108027afac1fccc28b4880e02724f",
+      "size": 5059
     },
     "kubejs/server_scripts/loot/boss_unique_drops.js": {
       "sha256": "70586633f3b173bfa93da27830a660badbc9a3c401f0610f25eba52e45031cc4",
@@ -6692,8 +6696,8 @@
       "size": 6084
     },
     "kubejs/server_scripts/loot/codex_exploration_drops.js": {
-      "sha256": "280dfe604a894de98900c62a6e72652f11cec0af46bb628aba335cda252930e6",
-      "size": 9316
+      "sha256": "c9e6feb67981c69189b4f5160e4757867e1b7d28dcd5f4a81247730f999d4d9c",
+      "size": 9429
     },
     "kubejs/server_scripts/loot/crop_seed_reduction.js": {
       "sha256": "dda1ebbd61fdc39bcd871524715bb6190511f9e1dc85a1bda1df606e32d3e9c9",
@@ -6724,8 +6728,8 @@
       "size": 27062
     },
     "kubejs/server_scripts/loot/loot_overhaul.js": {
-      "sha256": "26ca01c0624ba5c4a638d8c00cda900385c3f0cae990d9e8726ad941783c4c99",
-      "size": 32302
+      "sha256": "ae5dcd688ff18f05f3bdd5d6a38135a8b65afb4616e651ff3022ff6251eaac2d",
+      "size": 32274
     },
     "kubejs/server_scripts/loot/lootjs_overhaul.js": {
       "sha256": "f0bac926cfe88fce028135c1e1fdeda950ddcc84b14ebfa9679c3334d2e5b881",
@@ -6744,8 +6748,8 @@
       "size": 4119
     },
     "kubejs/server_scripts/loot/staff_wand_drops.js": {
-      "sha256": "9541843f34179f14299a86d854a8c1334a12eab6aa48f0c2215ce38370c4c771",
-      "size": 7483
+      "sha256": "c9957b8d1c1e787de48cdb9b39caf1329f72ce511a7c4c093477f9ef6e9df9dc",
+      "size": 7615
     },
     "kubejs/server_scripts/loot/stalwart_dungeons_drops.js": {
       "sha256": "64fc5364bea1cf19b10b4bee4402c3625785415c181d0210ac3ddf4f281dab20",
@@ -6768,8 +6772,8 @@
       "size": 3850
     },
     "kubejs/server_scripts/loot/unique_itemset_registry.js": {
-      "sha256": "70be1bf11fe51bc56a9ad589414588c23dc3bcf21699707257b1de9d0a180a11",
-      "size": 13300
+      "sha256": "adf69899190fd3c7a451bd1b86986127b0ae7ae5f5067439cc108b53477364fc",
+      "size": 13375
     },
     "kubejs/server_scripts/loot/unique_tier_buff.js": {
       "sha256": "2d4ce6d49c1a841cc51852d8a706e12532bf2d69d778b334ad793fc3829c2896",

@@ -52,9 +52,11 @@ LootJS.modifiers(event => {
   // iss_citadel: keeper_flamberge is a ~40% drop -> floor it.
   event.addEntityLootModifier('irons_spellbooks:citadel_keeper')
     .addLoot(LootEntry.of('irons_spellbooks:keeper_flamberge'))
-  // iss_magehunter: code-driven (no data table); the magehunter weapon is the
-  // signature drop (iss_boss_drops gives it @30%) -> floor it to guarantee repair.
-  event.addEntityLootModifier('irons_spellbooks:magehunter')
+  // iss_magehunter: 'irons_spellbooks:magehunter' is an ITEM id, not an entity -
+  // an unresolvable id in addEntityLootModifier silently DEFAULTS TO minecraft:pig
+  // (ENTITY_TYPE is a DefaultedRegistry). Re-homed 2026-06-06 onto the weapon's
+  // actual dropper (valkyrie_queen, iss_boss_drops @30%) to guarantee repair.
+  event.addEntityLootModifier('aether:valkyrie_queen')
     .addLoot(LootEntry.of('irons_spellbooks:magehunter'))
 
   // ---- T4 ----
