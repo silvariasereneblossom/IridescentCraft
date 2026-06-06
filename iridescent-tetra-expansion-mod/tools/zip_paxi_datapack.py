@@ -42,6 +42,8 @@ REPO_ROOT = _SCRIPT_DIR.parent.parent
 DATAPACKS = [
     "icraft_tetra_materials",
     "icraft_apotheosis_affixes",
+    "icraft_loot_overrides",
+    "icraft_iss_gem_buffs",
 ]
 
 DISTRO_ROOTS = [
