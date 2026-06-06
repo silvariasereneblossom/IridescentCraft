@@ -1888,7 +1888,7 @@ LootJS.modifiers(event => {
     .removeLoot('blue_skies:falsite_ingot')
     .removeLoot('blue_skies:horizonite_ingot')
     .removeLoot('blue_skies:charoite')
-    .removeLoot('blue_skies:diopside')
+    .removeLoot('blue_skies:diopside_gem')
 
   // Blue Skies gatekeeper houses spawn in overworld plains/mountain/snowy
   // biomes (the lore entry-point to Blue Skies dimensions). Their barrels
@@ -1928,7 +1928,7 @@ LootJS.modifiers(event => {
     mod.removeLoot('blue_skies:falsite_ingot')
     mod.removeLoot('blue_skies:horizonite_ingot')
     mod.removeLoot('blue_skies:charoite')
-    mod.removeLoot('blue_skies:diopside')
+    mod.removeLoot('blue_skies:diopside_gem')
     // Apotheosis GLM injects uncut/dead gems here -- strip the whole
     // namespace from gatekeeper barrels (legitimate gems still flow into
     // villages + dungeons via curated paths elsewhere).
@@ -2703,16 +2703,20 @@ LootJS.modifiers(event => {
   //
   // Re-add drops via LootJS with controlled rates + tier gating:
   //   - Fragment Core: 4% from any hostile mob death (basic resource)
+  //     ** moved to server_scripts/loot/fragment_core_drops.js (monster-gated
+  //        EntityEvents.death; the LootType.ENTITY add here leaked onto passive
+  //        mobs because LootType filters by param-set, not MobCategory) **
   //   - Standalone Relics: spread across dimension chests by tier
   //   - Artifact Piece Pouch: T2+ boss drops only
   //   - Awakening artifacts: T4 boss drops only (AStages-gated for pickup too)
   // =========================================================================
 
-  // Fragment Core: minor drop from any mob kill (replaces crafting path)
-  // LootJS doesn't support @monster entity tag — use LootType.ENTITY instead
-  event
-    .addLootTypeModifier(LootType.ENTITY)
-    .addLoot(LootEntry.of('rpgseteffects:fragment_core').when(c => c.randomChance(0.04)))
+  // Fragment Core: minor drop from any HOSTILE mob death (replaces crafting
+  // path). RELOCATED out of LootJS: addLootTypeModifier(LootType.ENTITY)
+  // filters tables by their LootContextParamSet (the shared ENTITY param set),
+  // NOT by MobCategory/Monster, so it injected fragment_core into EVERY
+  // entities/* table including pigs/cows/sheep (4% passive-mob leak). The
+  // monster-gated reimplementation lives in fragment_core_drops.js.
 
   // T1 Overworld chest relics (utility-focused — movement, minor passives)
   var t1Relics = [

@@ -15,6 +15,32 @@
 // (vanilla bosses).
 // =============================================================================
 
+// Equipment/scaling blacklist (#icraft:equipment_blacklist entity_types tag):
+// Terramity beam/bomb/ring "projectile" mobs are PathfinderMob registered as
+// MobCategory.MONSTER, so entity.monster is true and they would get tier-HP
+// scaled (bloating these one-shot effect entities). Skip them via the same
+// curated tag the equipment gate uses. Resolve the TagKey once via the proven
+// Java.loadClass pattern (sunlight_smite.js:42-53). (Fix A2 / PROJ-1.)
+var MOB_SCALE_BLACKLIST_TAG = null
+try {
+  var ResourceLocation_ms = Java.loadClass('net.minecraft.resources.ResourceLocation')
+  var TagKey_ms = Java.loadClass('net.minecraft.tags.TagKey')
+  var Registries_ms = Java.loadClass('net.minecraft.core.registries.Registries')
+  MOB_SCALE_BLACKLIST_TAG = TagKey_ms.create(Registries_ms.ENTITY_TYPE,
+    new ResourceLocation_ms('icraft', 'equipment_blacklist'))
+} catch (e) {
+  console.warn('[mob_scaling_unified] equipment_blacklist TagKey init FAILED: ' + e)
+}
+
+function isMobScaleBlacklisted(entity) {
+  if (!MOB_SCALE_BLACKLIST_TAG) return false
+  try {
+    return entity.getType().is(MOB_SCALE_BLACKLIST_TAG)
+  } catch (e) {
+    return false
+  }
+}
+
 EntityEvents.spawned(event => {
   try {
     let entity = event.entity
@@ -54,6 +80,13 @@ EntityEvents.spawned(event => {
     // Only scale hostile mobs (skip passives, NPCs)
     let isHostile = entity.monster || isHostileMod(type)
     if (!isHostile) {
+      entity.persistentData.putBoolean('icraft_scaled', true)
+      return
+    }
+
+    // Skip category-MONSTER projectile/beam/ring entities (Terramity etc.) so
+    // their one-shot effect entities don't get tier-HP bloated. (A2 / PROJ-1.)
+    if (isMobScaleBlacklisted(entity)) {
       entity.persistentData.putBoolean('icraft_scaled', true)
       return
     }

@@ -62,10 +62,45 @@ function isIronsSpellbooksMob(resId) {
   return String(resId || '').indexOf('irons_spellbooks:') === 0
 }
 
+// =============================================================================
+// EQUIPMENT BLACKLIST (#icraft:equipment_blacklist entity_types tag)
+// -----------------------------------------------------------------------------
+// entity.monster is TRUE for ANY EntityType registered with MobCategory.MONSTER
+// (it resolves to !category.isFriendly()), NOT only classes that extend Monster.
+// Terramity beam/bomb/ring "projectile" entities are PathfinderMob registered
+// as MONSTER, so they pass `if (!entity.monster) return` and get equipped --
+// then leak iron/leather gear via death drops. A curated denylist tag is the
+// lowest-risk fix (data-driven, no per-id script logic). Resolve the TagKey
+// once via the proven Java.loadClass pattern from sunlight_smite.js:42-53 and
+// test entity.getType().is(tag) at spawn. (Leak vector PROJ-1/PROJ-2; fix A2.)
+// =============================================================================
+var MOB_EQUIP_BLACKLIST_TAG = null
+try {
+  var ResourceLocation_me = Java.loadClass('net.minecraft.resources.ResourceLocation')
+  var TagKey_me = Java.loadClass('net.minecraft.tags.TagKey')
+  var Registries_me = Java.loadClass('net.minecraft.core.registries.Registries')
+  MOB_EQUIP_BLACKLIST_TAG = TagKey_me.create(Registries_me.ENTITY_TYPE,
+    new ResourceLocation_me('icraft', 'equipment_blacklist'))
+} catch (e) {
+  console.warn('[mob_equipment] equipment_blacklist TagKey init FAILED: ' + e)
+}
+
+function isMobEquipBlacklisted(entity) {
+  if (!MOB_EQUIP_BLACKLIST_TAG) return false
+  try {
+    return entity.getType().is(MOB_EQUIP_BLACKLIST_TAG)
+  } catch (e) {
+    return false
+  }
+}
+
 EntityEvents.spawned(event => {
   let entity = event.entity
   if (!entity || !entity.living || entity.player) return
   if (!entity.monster) return
+  // Skip category-MONSTER projectile/beam/ring entities (Terramity etc.) that
+  // would otherwise be equipped and leak gear via death drops. (A2 / PROJ-1.)
+  if (isMobEquipBlacklisted(entity)) return
   // Centralized ISS-mob skip + bail log via 0_iss_guard.js. The local
   // BROKEN_ENTITIES + isIronsSpellbooksMob checks below remain as a
   // fallback in case the guard script ever fails to load first.
@@ -230,6 +265,7 @@ function equipMob(entity, config) {
       enchantItem(weaponItem, config.enchantLevel)
     }
     entity.setItemSlot('mainhand', weaponItem)
+    zeroDropChance(entity, 'mainhand')
 
     // Armor — full set or random pieces
     let fullSet = rng() < config.fullSetChance
@@ -238,21 +274,25 @@ function equipMob(entity, config) {
       let h = Item.of(pick(config.helmets))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(h, config.enchantLevel)
       entity.setItemSlot('head', h)
+      zeroDropChance(entity, 'head')
     }
     if (fullSet || rng() < 0.5) {
       let c = Item.of(pick(config.chests))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(c, config.enchantLevel)
       entity.setItemSlot('chest', c)
+      zeroDropChance(entity, 'chest')
     }
     if (fullSet || rng() < 0.4) {
       let l = Item.of(pick(config.legs))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(l, config.enchantLevel)
       entity.setItemSlot('legs', l)
+      zeroDropChance(entity, 'legs')
     }
     if (fullSet || rng() < 0.4) {
       let b = Item.of(pick(config.boots))
       if (config.enchantLevel > 0 && rng() < 0.3) enchantItem(b, config.enchantLevel)
       entity.setItemSlot('feet', b)
+      zeroDropChance(entity, 'feet')
     }
   } catch(e) {
     // Silently fail if API methods don't match — prevents tick spam
@@ -285,4 +325,16 @@ function hasExistingGear(entity) {
 
 function pick(arr) {
   return arr[Math.floor(Math.random() * arr.length)]
+}
+
+// Zero the drop chance for an equipment slot so script-equipped gear never
+// drops on death. Without this, every setItemSlot'd piece drops at the vanilla
+// ~8.5%/slot default, flooding the economy with iron/leather/diamond gear.
+// (A4a / ULTRIS-1 part B.) setItemSlot(slot, item) already works with a string
+// slot in this file, so setDropChance(slot, 0) uses the same EquipmentSlot
+// string coercion; guarded so a binding mismatch can never crash equipMob.
+function zeroDropChance(entity, slot) {
+  try {
+    entity.setDropChance(slot, 0.0)
+  } catch (e) {}
 }

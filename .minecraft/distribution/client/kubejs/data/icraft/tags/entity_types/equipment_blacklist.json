@@ -1,0 +1,19 @@
+{
+  "replace": false,
+  "values": [
+    {"id": "terramity:spirit_bomb", "required": false},
+    {"id": "terramity:holy_beam", "required": false},
+    {"id": "terramity:unholy_beam", "required": false},
+    {"id": "terramity:galick_gun", "required": false},
+    {"id": "terramity:final_kamehameha", "required": false},
+    {"id": "terramity:guided_energy_blast_projectile", "required": false},
+    {"id": "terramity:antimatter_bomb_entity", "required": false},
+    {"id": "terramity:macro_black_hole_bomb_entity", "required": false},
+    {"id": "terramity:black_hole_bomb_entity", "required": false},
+    {"id": "terramity:crystal_heart_ring", "required": false},
+    {"id": "terramity:gaias_grace_ring", "required": false},
+    {"id": "terramity:shadowflame_ring", "required": false},
+    {"id": "terramity:sniffer_kamehameha", "required": false},
+    {"id": "stalwart_dungeons:spore_projectile", "required": false}
+  ]
+}
