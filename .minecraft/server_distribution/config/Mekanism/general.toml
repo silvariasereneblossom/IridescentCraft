@@ -90,7 +90,8 @@
 	#Radiation Settings
 	[general.radiation]
 		#Enable worldwide radiation effects. Don't be a downer and disable this.
-		radiationEnabled = true
+		#IridescentCraft: disabled (locked decision R1-OVERTURNED, 2026-06-06). Radiation is unfun and semi-permanently ruins bases. Meltdown EXPLOSION damage is a separate concern (see generators.toml meltdownsEnabled) - radiate() calls are self-gated on this flag, but the meltdown explosion tick (RadiationManager.tickServerWorld) ALSO early-returns when this is false, so with radiation off a meltdown queues but never fires unless meltdownsEnabled is also handled.
+		radiationEnabled = false
 		#The radius of chunks checked when running radiation calculations. The algorithm is efficient, but don't abuse it by making this crazy high.
 		#Range: 1 ~ 100
 		chunkCheckRadius = 5

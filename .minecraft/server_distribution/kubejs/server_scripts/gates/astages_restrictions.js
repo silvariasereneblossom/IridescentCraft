@@ -310,7 +310,46 @@ ServerEvents.loaded(event => {
   stageItems('tier_4', [
     // 2026-04-28 Phase 6G: modular wrapper is tier-free (see T2 block comment).
     'mekanism:digital_miner',
-    'mekanism:fusion_reactor_controller',
+    // 2026-06-06 (locked decision C): namespace fix -- the fusion reactor
+    // controller is mekanismgenerators:, NOT mekanism:. The old
+    // 'mekanism:fusion_reactor_controller' pin resolved to air/empty (Item.of
+    // of a non-existent id) and gated nothing. Corrected + the rest of the
+    // fusion frame/port/logic-adapter + laser focus chain added below.
+    'mekanismgenerators:fusion_reactor_controller',
+    'mekanismgenerators:fusion_reactor_frame',
+    'mekanismgenerators:fusion_reactor_port',
+    'mekanismgenerators:fusion_reactor_logic_adapter',
+    'mekanismgenerators:laser_focus_matrix',
+    'mekanismgenerators:hohlraum',
+    // SPS chain + antimatter handling (locked decision C). Facility blocks +
+    // the supercharged coil (SPS multiblock component) + the antimatter pellet
+    // (the SPS endgame product). Polonium/plutonium pellets stay UNGATED as
+    // intermediate reaction-chain materials per Axis H.
+    'mekanism:sps_casing',
+    'mekanism:sps_port',
+    'mekanism:supercharged_coil',
+    'mekanism:pellet_antimatter',
+    // Ultimate-tier facilities (locked decision C: gate FACILITY/machine items,
+    // not intermediates; "gate machines not containers" when unsure). The 9
+    // ultimate factories + ultimate energy cube + induction matrix cell/provider
+    // + the ultimate tier installer (the tool that upgrades machines to ultimate
+    // tier). Ultimate bin/fluid tank/chemical tank are CONTAINERS -> left
+    // ungated. Ultimate cables/pipes/tubes/transporters/conductors are transport
+    // infrastructure -> left ungated (Axis H). ultimate_control_circuit is an
+    // intermediate but stays T4-pinned per its prior decision.
+    'mekanism:ultimate_tier_installer',
+    'mekanism:ultimate_smelting_factory',
+    'mekanism:ultimate_enriching_factory',
+    'mekanism:ultimate_crushing_factory',
+    'mekanism:ultimate_compressing_factory',
+    'mekanism:ultimate_combining_factory',
+    'mekanism:ultimate_purifying_factory',
+    'mekanism:ultimate_injecting_factory',
+    'mekanism:ultimate_infusing_factory',
+    'mekanism:ultimate_sawing_factory',
+    'mekanism:ultimate_energy_cube',
+    'mekanism:ultimate_induction_cell',
+    'mekanism:ultimate_induction_provider',
     'mekanism:mekasuit_helmet', 'mekanism:mekasuit_bodyarmor',
     'mekanism:mekasuit_pants', 'mekanism:mekasuit_boots',
     'mekanism:meka_tool',
@@ -459,5 +498,5 @@ ServerEvents.loaded(event => {
   console.log('[IridescentCraft] AStages native restrictions registered')
   console.log('  Tier 2: 6 mods + 17 items + 4 dimensions')
   console.log('  Tier 3: 9 mods + 36 items + 5 ores + 4 dimensions')
-  console.log('  Tier 4: 5 mods + 94 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts)')
+  console.log('  Tier 4: 5 mods + 133 items + 2 ores + 7 dimensions (incl. 5 Ad Astra planets + 14 Awakening artifacts + Mekanism fusion/SPS/antimatter/ultimate-facility pins, locked decision C 2026-06-06)')
 })

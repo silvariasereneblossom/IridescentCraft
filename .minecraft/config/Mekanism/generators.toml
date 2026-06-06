@@ -2,7 +2,8 @@
 #Mekanism Generators Config. This config is synced between server and client.
 [generators]
 	#Affects the Injection Rate, Max Temp, and Ignition Temp.
-	energyPerFusionFuel = "10000000"
+	#IridescentCraft: x1.5 from Mekanism default 10000000 (locked decision B, 2026-06-06). Fusion output reward bump.
+	energyPerFusionFuel = "15000000"
 	#Peak output for the Solar Generator. Note: It can go higher than this value in some extreme environments.
 	solarGeneration = "50"
 	#Peak output for the Advanced Solar Generator. Note: It can go higher than this value in some extreme environments.
@@ -110,7 +111,8 @@
 	#Fission Reactor Settings
 	[generators.fission_reactor]
 		#Amount of energy created (in heat) from each whole mB of fission fuel.
-		energyPerFissionFuel = "1200000"
+		#IridescentCraft: x1.25 from the prior ERA-1 value 1200000 (locked decision B, 2026-06-06). Fission output reward bump. (Stock Mekanism default was 1000000.)
+		energyPerFissionFuel = "1500000"
 		#The heat capacity added to a Fission Reactor by a single casing block. Increase to require more energy to raise the reactor temperature.
 		#Range: 1.0 ~ 1000000.0
 		casingHeatCapacity = 1000.0
@@ -118,7 +120,11 @@
 		#Range: 1.0 ~ 1.7976931348623157E308
 		surfaceAreaTarget = 2.8
 		#Whether catastrophic meltdowns can occur from Fission Reactors. If disabled instead of melting down the reactor will turn off and not be able to be turned back on until the damage level decreases.
-		meltdownsEnabled = true
+		#IridescentCraft 2026-06-06: false to complete the radiation-off posture. With radiationEnabled=false the meltdown
+		#explosion path is ALSO radiation-gated (RadiationManager.tickServerWorld early-returns), so meltdowns would queue
+		#forever as inert no-ops. false takes the radiation-INDEPENDENT branch: overdamaged reactor force-disables until
+		#cooled = dangerous-but-recoverable, the locked design intent.
+		meltdownsEnabled = false
 		#The radius of the explosion that occurs from a meltdown.
 		#Range: 1.0 ~ 500.0
 		meltdownRadius = 8.0
