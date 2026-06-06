@@ -315,6 +315,57 @@ function getNearbyHostiles(entity, radius) {
     target.setSecondsOnFire(3)
   }
 
+  // ── Igniting: mark target with timed FIRE VULNERABILITY (IGN- rework) ──
+  // Reworked 2026-06-06 from the old buggy carrier that GRANTED the target
+  // minecraft:fire_resistance (helped the enemy). The carrier is now a thin
+  // attack_damage attribute (igniting.json, Skyshatter precedent); the real
+  // payoff is this proc: on hit, stamp the target with an expiry tick +
+  // a vuln pct, and while the stamp is live the target takes +pct% from any
+  // fire-type damage source (amplified in the icraft.affixes.fire_vuln
+  // handler below). Per-rarity values read from the rolled rarity if the
+  // affix_data NBT exposes it, else a safe mid-tier default. PROVISIONAL --
+  // tune after operator fire-damage delta test.
+  // Match on the affix ID "igniting" (hasAffix scans the affix_data NBT,
+  // which stores the id apotheosis:igniting) -- robust to the lang rename
+  // from "Ignition" to "Scorching" since the display name is no longer the
+  // match key.
+  if (hasAffix(weapon, "igniting")) {
+    // [vulnPct, durationTicks] per rarity tier. Curve mirrors the corpus
+    // mob_effect duration ramp (40->160t) + a modest, escalating amplify.
+    var IGN_VULN = {
+      common:   [0.15,  60],
+      uncommon: [0.20,  80],
+      rare:     [0.25, 100],
+      epic:     [0.30, 120],
+      mythic:   [0.40, 140],
+      ancient:  [0.50, 160],
+    }
+    // Detect rolled rarity from affix_data NBT (Apotheosis serializes the
+    // tier name into the compound). Substring scan, highest tier wins.
+    var ignTier = 'rare' // safe mid-tier fallback
+    try {
+      var ad = weapon.nbt && weapon.nbt.contains('affix_data')
+        ? String(weapon.nbt.getCompound('affix_data').toString()).toLowerCase()
+        : ''
+      var tiers = ['ancient','mythic','epic','rare','uncommon','common']
+      for (var ti = 0; ti < tiers.length; ti++) {
+        if (ad.indexOf(tiers[ti]) >= 0) { ignTier = tiers[ti]; break }
+      }
+    } catch (e) {}
+    var ignVals = IGN_VULN[ignTier] || IGN_VULN.rare
+    var ignPct = ignVals[0]
+    var ignDur = ignVals[1]
+    var ignNow = target.level.gameTime
+    target.persistentData.putLong('icraft_fire_vuln_until', ignNow + ignDur)
+    target.persistentData.putFloat('icraft_fire_vuln_pct', ignPct)
+    // Visual feedback: small server-side flame burst (matches the
+    // spawnParticles precedent used by Skyshatter above).
+    try {
+      target.level.spawnParticles('minecraft:flame', true,
+        target.x, target.y + 0.8, target.z, 8, 0.25, 0.4, 0.25, 0.02)
+    } catch (e) {}
+  }
+
   // ── Permafrost: Attacks build up freeze (5 hits = 2s freeze) ──
   if (hasAffix(weapon, "Permafrost")) {
     let freezeStacks = target.persistentData.getInt('icraft_permafrost') + 1
@@ -519,6 +570,49 @@ function getNearbyHostiles(entity, radius) {
       player.persistentData.putLong('icraft_starfall_cd', player.level.gameTime)
     }
   }
+    })
+  })()// ==========================================================================
+// ███ FIRE-VULNERABILITY DAMAGE AMPLIFY (Igniting mark) ███
+// ==========================================================================
+// Companion to the Igniting on-hit proc above. Runs for EVERY LivingHurtEvent
+// (no player filter on attacker OR victim) because fire damage on a marked
+// target most often comes from fire/lava/on-fire ticks and fire-tagged spells,
+// NOT directly from the wielder's swing. When a marked target takes fire-type
+// damage and the mark is still live, amplify event.amount by the stored pct.
+// Fire-type classification reuses the exact srcType.includes('fire'|'lava')
+// test used by the Ignis Core defensive branch, plus the target's own
+// on-fire flag so on-fire DoT ticks count.
+  ;(function(){
+    var DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
+    DR.register('icraft.affixes.fire_vuln', function(event) {
+      var victim = event.entity
+      if (!victim || !victim.living) return
+      var pdata = victim.persistentData
+      if (!pdata.contains('icraft_fire_vuln_until')) return
+      var until = pdata.getLong('icraft_fire_vuln_until')
+      var now = victim.level.gameTime
+      if (now > until) {
+        // Mark expired -- clean up the stamps so we stop checking.
+        pdata.remove('icraft_fire_vuln_until')
+        pdata.remove('icraft_fire_vuln_pct')
+        return
+      }
+      // Classify fire-type damage. Mirrors the Ignis Core srcType test;
+      // also count the victim's on-fire DoT ticks.
+      var srcType = event.source && event.source.type ? String(event.source.type) : ''
+      var isFire = (srcType.indexOf('fire') >= 0 || srcType.indexOf('lava') >= 0 ||
+                    srcType.indexOf('hot_floor') >= 0 || srcType.indexOf('in_fire') >= 0 ||
+                    srcType.indexOf('on_fire') >= 0)
+      if (!isFire) {
+        // Catch on-fire DoT ticks whose source type string may not include
+        // 'fire' on all mappings: if the victim is burning, treat the tick as
+        // fire too. Uses the corpus-confirmed remainingFireTicks getter
+        // (sunlight_smite.js / abyss_armor_effects.js precedent).
+        try { if (victim.remainingFireTicks > 0) isFire = true } catch (e) {}
+      }
+      if (!isFire) return
+      var pct = pdata.getFloat('icraft_fire_vuln_pct')
+      if (pct > 0) event.amount = event.amount * (1 + pct)
     })
   })()// ==========================================================================
 // ███ ON-KILL AFFIX EFFECTS ███

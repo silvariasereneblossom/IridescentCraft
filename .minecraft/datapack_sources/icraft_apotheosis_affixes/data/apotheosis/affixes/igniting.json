@@ -1,31 +1,38 @@
 {
-  "type": "apotheosis:mob_effect",
-  "mob_effect": "minecraft:fire_resistance",
-  "target": "attack_target",
+  "_comment": "IGN-: reworked 2026-06-06 from a mob_effect carrier that granted the ATTACK_TARGET minecraft:fire_resistance (a BUFF that helped the enemy -- wrong-way bug) to a thin-carrier + script-proc affix following the Skyshatter precedent. The carrier is now a small flat attack_damage bonus (thematic 'burning edge'); the REAL payoff is the on-hit fire-VULNERABILITY mark applied in kubejs/server_scripts/affixes/affix_effects.js (Igniting branch), which makes the target take +X% fire-type damage for a timed window. Per-rarity vuln pct + duration live in the script (IGN_VULN table) keyed by the carrier's rarity tier -- the apotheosis:attribute schema can't carry arbitrary vuln values. Carrier attack values kept moderate so the proc is the draw. Provisional values; tune after operator delta test.",
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.attack_damage",
+  "operation": "ADDITION",
   "values": {
     "common": {
-      "duration": { "min": 40, "steps": 3, "step": 10 },
-      "amplifier": 0
+      "min": 0.5,
+      "steps": 3,
+      "step": 0.25
     },
     "uncommon": {
-      "duration": { "min": 60, "steps": 3, "step": 10 },
-      "amplifier": 0
+      "min": 1.0,
+      "steps": 3,
+      "step": 0.25
     },
     "rare": {
-      "duration": { "min": 80, "steps": 4, "step": 10 },
-      "amplifier": 0
+      "min": 1.5,
+      "steps": 4,
+      "step": 0.25
     },
     "epic": {
-      "duration": { "min": 100, "steps": 3, "step": 20 },
-      "amplifier": 0
+      "min": 2.0,
+      "steps": 3,
+      "step": 0.5
     },
     "mythic": {
-      "duration": { "min": 120, "steps": 3, "step": 20 },
-      "amplifier": 0
+      "min": 2.5,
+      "steps": 3,
+      "step": 0.5
     },
     "ancient": {
-      "duration": { "min": 160, "steps": 4, "step": 20 },
-      "amplifier": 0
+      "min": 3.0,
+      "steps": 4,
+      "step": 0.5
     }
   },
   "types": [
