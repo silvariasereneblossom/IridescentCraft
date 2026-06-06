@@ -3,15 +3,10 @@
   "values": [
     "theabyss:haunted_skeleton",
     "theabyss:ice_skeleton",
-    "theabyss:abyssbadskelletion",
     "theabyss:infected_zombie",
     "theabyss:shattered_zombie",
     "theabyss:mud_zombie",
     "theabyss:infected_phantom",
-    "theabyss:abysszombie",
-    "theabyss:abysssoulzombie",
-    "theabyss:exomzombie",
-    "theabyss:liromzombie",
 
     "occultism:possessed_skeleton",
     "occultism:possessed_endermite",
@@ -43,7 +38,6 @@
 
     "mutantmonsters:mutant_skeleton",
     "mutantmonsters:mutant_zombie",
-    "mutantmonsters:mutant_zombie_villager",
 
     "netherskeletons:basalt_skeleton",
     "netherskeletons:charred_skeleton",
@@ -69,7 +63,6 @@
     "enemyexpansion:vampflyer",
     "enemyexpansion:vampire",
 
-    "azukaarsfairdifficultyoverhaul:raised_zombie",
     "cataclysm:ignited_revenant",
 
     "ad_astra:zombified_mogler",
