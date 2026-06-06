@@ -673,7 +673,7 @@ tokens for reroll operations:
 
 - **Basic reroll** at simple_reforging_table: Tier 2 boss `basic_reforging_token` required.
 - **Advanced reroll** at reforging_table: Tier 3 boss `advanced_reforging_token` + expensive materials.
-- **Ultimate reroll** at augmenting_table: Tier 4 boss `ultimate_reforging_token` + Gaia ingots. (Antimatter wiring into the reroll is an OPEN design call - docket #85; the token is loot-only and no reroll recipe exists in code as of 2026-06-06.)
+- **Ultimate reroll** at augmenting_table: Tier 4 boss `ultimate_reforging_token` + Gaia ingots. (Antimatter wiring into the reroll is TABLED LONG-TERM - operator decision 2026-06-06; the token is loot-only and no reroll recipe exists in code.)
 
 Rationale: previous workstation gating was belt-and-suspenders. Three caps
 already constrain affix/gem progression (dimensional rarity clamp + boss-drop
@@ -1609,7 +1609,7 @@ the **tokens** are the actual gate.
 |------|-------------|----------|
 | **Basic** | T2 progression token | Reroll affixes (random outcome) |
 | **Advanced** | T3 token + expensive materials | Reroll with weighted odds toward desired type |
-| **Ultimate** | T4 token + Gaia ingots (antimatter wiring = open call, docket #85) | Reroll with guaranteed minimum rarity |
+| **Ultimate** | T4 token + Gaia ingots (antimatter reroll wiring tabled long-term) | Reroll with guaranteed minimum rarity |
 
 Reroll operations at three Apotheosis workstations (Reforging Table → Advanced
 → Augmenting Table). Tokens drop from tier-appropriate bosses. All three
