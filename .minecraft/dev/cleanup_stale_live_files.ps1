@@ -37,9 +37,9 @@ $staleFiles = @(
   'config\paxi\datapacks\infinity_ham_blocker.zip',          # 2. dead datapack
   'config\paxi\datapacks\regular.json',                       # 2. inert loose json
   'config\improvedmobs-common.toml',                          # 3. dead config
-  'mods\packetfixer-3.3.1-1.18-1.20.4-merged.jar',            # 4. removed mod jar
-  'mods\.index\packet-fixer.pw.toml',                         # 4. removed index entry
-  'config\packetfixer.properties',                            # 4. removed config
+  # (4. packetfixer entries REMOVED from this list 2026-06-06: the mod was RESTORED
+  #  to the pack - its stringSize/nbtMaxSize patches are load-bearing; vanilla's
+  #  32767 readUtf cap broke client joins without it. Do NOT delete packetfixer.)
   'kubejs\server_scripts\recipes\tier_skip.js',               # 5. deleted script (still executing)
   'kubejs\server_scripts\loot\diamond_leak_probe.js',         # 5. retired diagnostic
   'kubejs\assets\justlevelingfork\lang\en_us.json',           # 6. retired lang overlay

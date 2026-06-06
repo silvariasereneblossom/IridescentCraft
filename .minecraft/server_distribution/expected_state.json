@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "2ce403d3f",
+  "generated_from": "370022d27",
   "roots": [
     "kubejs",
     "config",
@@ -3958,6 +3958,10 @@
     "config/overloadedarmorbar-client.toml": {
       "sha256": "042e52e60a89b409e482ede263bc8a9dc7b374ac9cca4c5a04d0ad4cabd86e7e",
       "size": 262
+    },
+    "config/packetfixer.properties": {
+      "sha256": "58c4f92b462062814f43675ffcd8761ce3dc3bf29e0f3bfd1b7b3550f9eadd5d",
+      "size": 472
     },
     "config/pamhc2crops.toml": {
       "sha256": "5df5493ec11adc200d8bdd5cf0ef3d84e86236661b44410f7e9a4fbe475a738f",
@@ -8342,6 +8346,10 @@
     "mods/.index/overworld-quartz.pw.toml": {
       "sha256": "c3e2c33b2a9c1d75148628b5d390a9a719a47145546fb49a258a2343d3f553fe",
       "size": 565
+    },
+    "mods/.index/packet-fixer.pw.toml": {
+      "sha256": "ae55d0b9a49a85356ed0e369bda83339eeed61feae751890f3629b0904eb0a83",
+      "size": 760
     },
     "mods/.index/pams-harvestcraft-2-crops.pw.toml": {
       "sha256": "723f83efb4fe4dda8598a72f6b325750119af107151b745b1ff7c4f0dd2d0708",
