@@ -46,7 +46,7 @@ from pathlib import Path
 ROOT = Path(__file__).resolve().parents[1]
 CACHE = ROOT / "tools" / ".cache"
 CACHE.mkdir(exist_ok=True)
-OUR_BIOMES_DIR = ROOT / "src/main/resources/data/icraft/worldgen/biome"
+OUR_BIOMES_DIR = ROOT / "src/main/resources/data/iridescent_biomes/worldgen/biome"
 PACK_INDEX = ROOT.parent / ".minecraft" / "mods" / ".index"
 
 # Pinned versions matching pack's current deps. Bump when you update MC or BoP.
@@ -294,7 +294,7 @@ def load_biomes() -> dict[str, list[list[str]]]:
                 biomes[f"{ns}:{p.stem}"] = json.load(f).get("features", [])
     for p in sorted(OUR_BIOMES_DIR.glob("*.json")):
         with p.open() as f:
-            biomes["icraft:" + p.stem] = json.load(f).get("features", [])
+            biomes["iridescent_biomes:" + p.stem] = json.load(f).get("features", [])
     return biomes
 
 

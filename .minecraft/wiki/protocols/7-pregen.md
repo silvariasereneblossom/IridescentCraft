@@ -6,7 +6,7 @@ Pre-generation now auto-triggers on first world load via `kubejs/server_scripts/
 
 - **dimension:** `minecraft:overworld`
 - **center:** 0, 0
-- **radius:** 1500 blocks (~37,500 chunks)
+- **radius:** 2500 blocks (~104,000 chunks; the canonical value - reconciled 2026-06-06, the doc previously said 1500)
 
 `config/chunky/config.json` has `continueOnRestart: true`, so interrupted pre-gens resume automatically on the next launch. `chunky-player-pause` pauses the task while any player is online, so it's safe to leave running — it'll chip away at the background whenever the server is idle.
 
@@ -19,7 +19,7 @@ Before opening a fresh world to testers, or whenever a new spawn region is estab
 ## Mods involved
 
 - **Chunky** — does the pre-generation
-- **chunky-player-pause** — automatically pauses pre-gen when any player is online, so this is safe to leave running
+- **Pause-on-join is script-managed** (auto_chunky.js) as of 2026-06-06 - the chunky-player-pause jar shipped an empty stub plus a datapack function that never parsed on our Chunky version; the mod is inert and optional to remove
 
 ## Commands (run from server console or as op)
 
@@ -28,11 +28,11 @@ Pick the spawn coordinates as the center, then:
 ```
 /chunky world minecraft:overworld
 /chunky center 0 0
-/chunky radius 1500
+/chunky radius 2500
 /chunky start
 ```
 
-`radius 1500` covers a 3000-block diameter region (~37,500 chunks). For a small alpha test this is enough; bump the radius if you expect testers to range further.
+`radius 2500` covers a 5000-block diameter region (~104,000 chunks) - a long offline pregen; drop to 1500 (~37,500 chunks) if you need the world open sooner.
 
 To monitor: `/chunky status`. To stop early: `/chunky cancel`.
 
