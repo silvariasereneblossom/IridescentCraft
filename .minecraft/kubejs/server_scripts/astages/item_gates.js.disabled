@@ -1,4 +1,15 @@
 // =============================================================================
+// RE-DISABLED 2026-06-06: superseded by gates/astages_restrictions.js (whose
+// header explicitly says it REPLACES this file). #63 (0edfd9bbc) re-enabled
+// these legacy scripts in error; the fresh world's tier_1 players then hit the
+// mod-blanket gates this file imposes (thermal, ars_nouveau, occultism,
+// forbidden_arcanus, endportalrecipe) - all of which CONTRADICT the canonical
+// per-item design (master-appendix G.1-G.4; G.4 names occultism + forbidden
+// as intentionally NOT mod-gated). Every other gate here is a duplicate.
+// Symptoms fixed by re-disabling: Ars Novice Spellbook pickup-blocked,
+// Thermal seeds/plants gated. Do not re-enable without reading appendix G.
+// =============================================================================
+// =============================================================================
 // ITEM GATES — Priority 2
 // Restricts tier-inappropriate items from being used/equipped
 // Server script (reloadable with /reload)

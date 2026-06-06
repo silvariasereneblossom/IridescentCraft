@@ -41,6 +41,23 @@ $staleFiles = @(
   #  to the pack - its stringSize/nbtMaxSize patches are load-bearing; vanilla's
   #  32767 readUtf cap broke client joins without it. Do NOT delete packetfixer.)
   'kubejs\server_scripts\recipes\tier_skip.js',               # 5. deleted script (still executing)
+  # 8. legacy AStages gate scripts (re-disabled 2026-06-06 - the live ACTIVE copies
+  #    re-imposed mod-blanket gating: Ars novice book + Thermal seeds blocked)
+  'kubejs\server_scripts\astages\item_gates.js',
+  'kubejs\server_scripts\astages\dimension_gates.js',
+  'kubejs\server_scripts\astages\ore_gates.js',
+  'kubejs\server_scripts\astages\recipe_gates.js',
+  # 9. moved-to-startup strands (boot-log diff 2026-06-06: live loads these from
+  #    server_scripts where the repo no longer ships them)
+  'kubejs\server_scripts\cap_player_knockback.js',
+  'kubejs\server_scripts\cap_player_levitation.js',
+  'kubejs\server_scripts\deathskin_undead_bonus.js',
+  'kubejs\server_scripts\hulk_hammer_attributes.js',
+  'kubejs\server_scripts\terramity_weapon_attributes.js',
+  'kubejs\server_scripts\virtual_gold_clamp.js',
+  'kubejs\server_scripts\enchants\icraft_magic_enchants.js',
+  'kubejs\server_scripts\enchants\vorpal_rework.js',
+  'kubejs\server_scripts\tags\transmuted_tags.js',
   'kubejs\server_scripts\loot\diamond_leak_probe.js',         # 5. retired diagnostic
   'kubejs\assets\justlevelingfork\lang\en_us.json',           # 6. retired lang overlay
   'config\linearxpforge-common.toml'                          # 6. orphan config

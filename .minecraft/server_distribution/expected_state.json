@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "370022d27",
+  "generated_from": "263e2e346",
   "roots": [
     "kubejs",
     "config",
@@ -6462,22 +6462,6 @@
     "kubejs/server_scripts/armor_weight.js": {
       "sha256": "605a05a8ab46f43f21cc880a94529cd9aa1305b7a1e64a7fcd780c8f09f42981",
       "size": 10441
-    },
-    "kubejs/server_scripts/astages/dimension_gates.js": {
-      "sha256": "959d2c158bb1ca0e70110da42fe670dd2de5d1bbf8982459cd4a52cde8edc6f6",
-      "size": 2644
-    },
-    "kubejs/server_scripts/astages/item_gates.js": {
-      "sha256": "720dda0d72ee3155fb98a29506a45c54929be928c9153c4e1f318148ef32c56d",
-      "size": 4912
-    },
-    "kubejs/server_scripts/astages/ore_gates.js": {
-      "sha256": "d3a11b8f2d36b2678b4d15dd54589968a9ffdacbc51f8bf17f3a5cdf7ecc4334",
-      "size": 3373
-    },
-    "kubejs/server_scripts/astages/recipe_gates.js": {
-      "sha256": "e08459887068cf44262b6d4ae08926d4ba6ff89c99e1231faa3fa4d9d3ed54c9",
-      "size": 2987
     },
     "kubejs/server_scripts/attributes/attribute_commands.js": {
       "sha256": "b9562c888ef22afb4af24240d83933f48b5256451a2a992463a2cf4fcf409ca0",
