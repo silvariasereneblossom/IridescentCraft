@@ -126,12 +126,23 @@ $ep = Get-ExecutionPolicy
 Write-Host ("[INFO] ExecutionPolicy={0} (not load-bearing - hooks use -ExecutionPolicy Bypass -File) [FRESH-08]" -f $ep)
 
 # ---- 7. .icraft markers + Phase-2 scripts (CHAIN-03/CHAIN-06) ----
-$sentinel = Join-Path $mc '.icraft_sync_failed'
-if(Test-Path $sentinel){
-  $sd = ((Get-Content $sentinel -Raw) -replace "`r`n",' ')
-  Result 'no .icraft_sync_failed sentinel' $false ("present: {0}" -f $sd) 'CHAIN-03'
+# Hardened scripts write .icraft_sync_status.json ({"ok":true/false,...}); pre-hardening
+# builds wrote .icraft_sync_failed. Check the new sentinel first, then the legacy one.
+$statusFile = Join-Path $mc '.icraft_sync_status.json'
+if(Test-Path $statusFile){
+  $sd = ((Get-Content $statusFile -Raw) -replace "`r`n",' ')
+  if($sd -match '"ok"\s*:\s*true'){
+    Result 'last sync reported ok (.icraft_sync_status.json)' $true $sd ''
+  }else{
+    Result 'last sync reported ok (.icraft_sync_status.json)' $false ("status: {0}" -f $sd) 'CHAIN-03'
+  }
 }else{
-  Write-Host '[INFO] .icraft_sync_failed sentinel: not present (or hardening not yet deployed)'
+  Write-Host '[INFO] .icraft_sync_status.json: not present (hardening not yet deployed or hook never ran)'
+}
+$legacySentinel = Join-Path $mc '.icraft_sync_failed'
+if(Test-Path $legacySentinel){
+  $sd = ((Get-Content $legacySentinel -Raw) -replace "`r`n",' ')
+  Result 'no legacy .icraft_sync_failed sentinel' $false ("present: {0}" -f $sd) 'CHAIN-03'
 }
 $lastSha = Join-Path $mc '.icraft_last_sha'
 if(Test-Path $lastSha){ Write-Host ("[INFO] .icraft_last_sha = {0}" -f ((Get-Content $lastSha -Raw).Trim())) }

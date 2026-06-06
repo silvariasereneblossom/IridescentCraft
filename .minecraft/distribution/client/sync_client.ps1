@@ -4,7 +4,7 @@
 # Keeps the local instance's configs/kubejs/datapacks/mods in sync with the
 # GitHub main branch via a SHA-based check. Designed to run as PrismLauncher's
 # per-instance pre-launch command. Mirrors server_distribution/phase0_sync.ps1
-# behavior — same diff-vs-full-zip strategy, same error-gated SHA marker,
+# behavior -- same diff-vs-full-zip strategy, same error-gated SHA marker,
 # same self-update staging.
 #
 # Behavior:
@@ -25,7 +25,7 @@
 #
 # Network failure handling: short timeouts on both the API call and zip
 # download. On any failure, prints a warning and exits 0 so PrismLauncher
-# still launches Minecraft — "continuing with existing files" is always
+# still launches Minecraft -- "continuing with existing files" is always
 # safer than blocking play.
 #
 # Self-update: sync_client.ps1, sync_client.bat, download_mods.ps1, and
@@ -38,7 +38,7 @@
 # re-sync. Useful when the SHA marker is out of sync with disk state.
 #
 # Install as pre-launch command in PrismLauncher:
-#   Instance → Settings → Custom Commands → Pre-launch command:
+#   Instance -> Settings -> Custom Commands -> Pre-launch command:
 #   "%INST_MC_DIR%\sync_client.bat"            (preferred; finalizes .new files)
 #   powershell -ExecutionPolicy Bypass -File "$INST_MC_DIR/sync_client.ps1"
 # =============================================================================
@@ -49,6 +49,27 @@ param(
 
 $ErrorActionPreference = "Continue"
 [Net.ServicePointManager]::SecurityProtocol = [Net.SecurityProtocolType]::Tls12
+
+# -- H7: fail-visible sync sentinel --
+# This zip/unauth path historically fails OPEN (exit 0) on every error, so a
+# failed sync is indistinguishable from a successful one -- the same silence
+# that hid weeks of stale launches on the git path. Mirror prism_prelaunch.bat's
+# sentinel: write .icraft_sync_status.json so the diagnostic (and any in-game
+# surface) can SEE that a launch did not update. Same schema/filename as the
+# git path so a single reader covers both install patterns. Crucially we only
+# write a FAIL sentinel on an actual failure, not on the "API says up to date"
+# fast path (which is a success). Never throws -- a sentinel write must not be
+# the thing that blocks a launch.
+function Write-SyncSentinel {
+    param([bool]$Ok, [string]$Reason, [int]$Behind, [string]$McDir)
+    if (-not $McDir) { return }
+    try {
+        $ts = (Get-Date).ToString('yyyy-MM-dd HH:mm:ss')
+        $obj = [ordered]@{ ok = $Ok; reason = $Reason; behind = $Behind; ts = $ts }
+        $json = $obj | ConvertTo-Json -Compress
+        Set-Content -Path (Join-Path $McDir '.icraft_sync_status.json') -Value $json -Encoding ASCII -ErrorAction SilentlyContinue
+    } catch { }
+}
 
 # -- Step 1: Locate the instance .minecraft directory --
 $instanceMC = $null
@@ -108,11 +129,14 @@ try {
 } catch {
     Write-Host "[IridescentCraft Sync] GitHub API unreachable: $($_.Exception.Message)" -ForegroundColor Yellow
     Write-Host "[IridescentCraft Sync] Continuing with existing files..." -ForegroundColor Yellow
+    # H7: API call FAILED (vs. "no newer commit") -> record fail-visible. We
+    # cannot know how far behind we are without the API, so report behind=0.
+    Write-SyncSentinel -Ok $false -Reason 'fetch-failed' -Behind 0 -McDir $instanceMC
     exit 0
 }
 
 # SHA match = no network sync needed, but we STILL want to run the local
-# cleanup/download/instance.cfg passes below — testers can manually drop
+# cleanup/download/instance.cfg passes below -- testers can manually drop
 # stale jars into mods/, or have legacy jars from older pack versions
 # that need pruning. Skipping cleanup on the fast path lets stale jars
 # accumulate indefinitely while the repo is steady.
@@ -120,6 +144,9 @@ $skipNetworkSync = $false
 if ($remoteSha -eq $localSha) {
     Write-Host "[IridescentCraft Sync] Up to date (commit $($remoteSha.Substring(0,7))) - running local cleanup pass." -ForegroundColor Green
     $skipNetworkSync = $true
+    # API reachable AND already current = a genuine success: clear any stale
+    # fail sentinel from a prior offline/failed launch.
+    Write-SyncSentinel -Ok $true -Reason '' -Behind 0 -McDir $instanceMC
 }
 
 if (-not $skipNetworkSync) {
@@ -137,7 +164,7 @@ if ($localSha -and $localSha.Length -eq 40) {
         $compareUrl = "https://api.github.com/repos/$owner/$repo/compare/${localSha}...${remoteSha}"
         $compare = Invoke-RestMethod -Uri $compareUrl -Headers @{ 'User-Agent' = 'IridescentCraft-Client-Sync' } -TimeoutSec 30
         # GitHub's compare API caps the .files array at 300. If we're AT the
-        # cap, the response is silently truncated — we MUST fall back to full
+        # cap, the response is silently truncated -- we MUST fall back to full
         # zip or we'll silently miss files (mirrors the server's same guard).
         if ($compare.files -and $compare.files.Count -gt 0 -and $compare.files.Count -lt 300) {
             $useDiff = $true
@@ -249,11 +276,15 @@ if ($useDiff) {
     # Only persist the SHA marker if EVERY file downloaded successfully.
     # Leaving it unchanged on partial failure forces the next run to retry
     # the same diff (or fall back to full-zip if >= 300 files). Server
-    # parity — see phase0_sync.ps1 for the same guard.
+    # parity -- see phase0_sync.ps1 for the same guard.
     if ($errors -eq 0) {
         Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
+        # All changed files landed = success: clear any stale fail sentinel.
+        Write-SyncSentinel -Ok $true -Reason '' -Behind 0 -McDir $instanceMC
     } else {
         Write-Host "[IridescentCraft Sync] $errors file(s) failed to download - NOT writing SHA marker. Next launch will retry." -ForegroundColor Yellow
+        # H7: partial download = the tree did NOT fully update -> fail-visible.
+        Write-SyncSentinel -Ok $false -Reason 'sync-failed' -Behind 0 -McDir $instanceMC
     }
     $mirrorList += "$synced file(s) synced"
     if ($removed -gt 0) { $mirrorList += "$removed removed" }
@@ -293,7 +324,7 @@ if ($useDiff) {
             }
         }
 
-        # Custom mod JARs — 3-attempt retry because Windows Defender often
+        # Custom mod JARs -- 3-attempt retry because Windows Defender often
         # locks bytecode-patched JARs (Patchouli, Ars Nouveau) momentarily
         # during scan, which causes a single Copy-Item to fail unpredictably.
         # Server parity (phase0_sync.ps1 has the same retry block).
@@ -351,7 +382,7 @@ if ($useDiff) {
 
     # Self-update files staged from distribution/client/ as <name>.new at
     # the instance root. The .bat wrapper finalizes them on the NEXT
-    # launch before invoking this script — same pattern as the server's
+    # launch before invoking this script -- same pattern as the server's
     # phase0_sync.ps1 + iridescentserver.bat.
     $srcClientDir = Join-Path $srcRoot '.minecraft\distribution\client'
     if (Test-Path $srcClientDir) {
@@ -371,7 +402,7 @@ if ($useDiff) {
 
     # Selective top-level files: pack.png/icon.png always overlay (these are
     # pack identity, not user state). optionsshaders.txt seeds only when the
-    # player doesn't already have one — so first launch auto-enables our
+    # player doesn't already have one -- so first launch auto-enables our
     # default shader, but the player's later choices are preserved.
     foreach ($topFile in @('pack.png', 'icon.png')) {
         $srcFile = Join-Path $src $topFile
@@ -396,12 +427,17 @@ if ($useDiff) {
     Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
 
     Write-Host "[IridescentCraft Sync] Overlay complete." -ForegroundColor Green
+    # Full overlay applied + SHA written = success: clear any fail sentinel.
+    Write-SyncSentinel -Ok $true -Reason '' -Behind 0 -McDir $instanceMC
     } catch {
         Write-Host "[IridescentCraft Sync] Overlay failed: $($_.Exception.Message)" -ForegroundColor Yellow
         Write-Host "[IridescentCraft Sync] Continuing with existing files (cleanup will still run)." -ForegroundColor Yellow
         Remove-Item $zipFile -Force -ErrorAction SilentlyContinue
         Remove-Item $extractDir -Recurse -Force -ErrorAction SilentlyContinue
-        # Don't exit — fall through so cleanup_stale_jars + download_mods
+        # H7: overlay actually FAILED (download/extract/copy threw) -> the tree
+        # did not update. Record fail-visible; behind-count is unknown here.
+        Write-SyncSentinel -Ok $false -Reason 'sync-failed' -Behind 0 -McDir $instanceMC
+        # Don't exit -- fall through so cleanup_stale_jars + download_mods
         # still run on partial state.
     }
 }

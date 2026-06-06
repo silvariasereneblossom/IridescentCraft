@@ -35,6 +35,13 @@ setlocal enabledelayedexpansion
 set "MC_DIR=%~dp0"
 if "!MC_DIR:~-1!"=="\" set "MC_DIR=!MC_DIR:~0,-1!"
 set "INSTANCE_DIR=!MC_DIR!\.."
+set "SENTINEL=!MC_DIR!\.icraft_sync_status.json"
+
+REM H1: never let a missing credential hang the launch on a TTY-less prompt.
+REM With GIT_TERMINAL_PROMPT=0 an auth failure on a private repo fails FAST
+REM (errorlevel 1, caught below) instead of blocking forever waiting for input
+REM that can never arrive in the pre-launch context. No effect when auth works.
+set "GIT_TERMINAL_PROMPT=0"
 
 REM --- Phase 1: force-sync, then re-exec into Phase 2 ---
 REM
@@ -50,6 +57,20 @@ if /i not "%~1"=="--post-pull" (
     if not exist "!INSTANCE_DIR!\.git" (
         echo [prism_prelaunch] No .git at instance root -- not a git-checkout install.
         echo [prism_prelaunch] Skipping git force-sync; continuing with existing files.
+        call "%~f0" --post-pull
+        endlocal & exit /b 0
+    )
+
+    REM H2/F2: git itself must be on PATH for any of the calls below to work.
+    REM A fresh Windows box with git installed user-only (or Prism started
+    REM before the post-install PATH refresh) has no git for the launch process;
+    REM every git call would "fail open" and launch stale with no signal. Probe
+    REM once, record git-missing in the sentinel, and skip the git phase.
+    git --version >nul 2>&1
+    if errorlevel 1 (
+        echo [prism_prelaunch] WARNING: git not found on PATH -- cannot sync.
+        echo [prism_prelaunch] Tell Silvaria: install Git for Windows ^(machine-wide^) and restart PrismLauncher.
+        call :write_fail git-missing 0
         call "%~f0" --post-pull
         endlocal & exit /b 0
     )
@@ -94,14 +115,29 @@ if /i not "%~1"=="--post-pull" (
     echo [prism_prelaunch] git fetch origin...
     git -C "!INSTANCE_DIR!" fetch origin --prune
     if errorlevel 1 (
-        echo [prism_prelaunch] WARNING: git fetch failed ^(offline?^) -- continuing with current tree.
+        echo [prism_prelaunch] WARNING: git fetch failed ^(offline/auth?^) -- continuing with current tree.
+        echo [prism_prelaunch] If this persists, pushes are NOT arriving. Tell Silvaria.
+        REM F2: fetch failed -> record a fail sentinel so the next in-game login
+        REM (and the diagnostic) can SEE that this launch did not update. We do
+        REM not know the true behind-count when fetch fails, so report 0.
+        call :write_fail fetch-failed 0
     ) else (
+        REM How far is the local tree behind pushed HEAD, as of this fetch?
+        REM Done in a subroutine (not inline) to keep this if/else from nesting
+        REM a third level of parens + set /p redirection, which is fragile.
+        call :get_behind
+        echo [prism_prelaunch] behind origin/main by !BEHIND! commit^(s^) before sync.
         echo [prism_prelaunch] force-sync: reset --hard origin/main ^(discard local divergence^)...
         git -C "!INSTANCE_DIR!" reset --hard origin/main
         if errorlevel 1 (
             echo [prism_prelaunch] WARNING: reset --hard failed -- continuing with current tree.
+            echo [prism_prelaunch] Pushes are NOT arriving. Tell Silvaria.
+            REM F2: fetch worked but reset failed -> still behind by BEHIND.
+            call :write_fail behind !BEHIND!
         ) else (
             echo [prism_prelaunch] instance now mirrors origin/main.
+            REM F2: success -> clear any stale fail sentinel from a prior launch.
+            call :write_ok !BEHIND!
         )
     )
     REM Re-execute the bat. cmd.exe re-opens the file from disk, so any
@@ -214,4 +250,45 @@ REM Always exit 0 -- a download failure shouldn't block launch (operator
 REM may be intentionally offline / running solo). Warnings emitted above
 REM are surfaced in PrismLauncher's pre-launch log.
 endlocal
+exit /b 0
+
+REM ===================================================================
+REM Sentinel writers (H2/F2). Reached ONLY via `call :write_fail` /
+REM `call :write_ok` from Phase 1; the `exit /b 0` above guarantees we
+REM never fall through into them. `call :label` does NOT start a new
+REM scope, so the enclosing setlocal/enabledelayedexpansion is still in
+REM effect and !SENTINEL! resolves. We deliberately do NOT use a nested
+REM setlocal here (nested-setlocal-in-if is a known cmd trap).
+REM
+REM The sentinel is a one-line JSON object the in-game/diagnostic layer
+REM reads. JSON needs { } " : -- all literal-safe in cmd echo. We keep
+REM the line free of > < | & ^ % so no escaping/redirection trap fires.
+REM Args:  %1 = reason (fetch-failed|behind|git-missing)   %2 = behind count
+REM ===================================================================
+REM Sets BEHIND to the commit count HEAD..origin/main (0 on any uncertainty).
+REM Captured via a temp file rather than `for /f` to dodge for-loop quoting
+REM traps; the count is a bare integer so no special-char handling is needed.
+:get_behind
+set "BEHIND=0"
+git -C "!INSTANCE_DIR!" rev-list --count HEAD..origin/main > "!MC_DIR!\.icraft_behind.tmp" 2>nul
+if exist "!MC_DIR!\.icraft_behind.tmp" set /p BEHIND=<"!MC_DIR!\.icraft_behind.tmp"
+del /f /q "!MC_DIR!\.icraft_behind.tmp" >nul 2>&1
+if "!BEHIND!"=="" set "BEHIND=0"
+exit /b 0
+
+:write_fail
+set "TS=!DATE! !TIME!"
+set "FBEHIND=%~2"
+if "!FBEHIND!"=="" set "FBEHIND=0"
+REM Redirection FIRST (>"file" echo ...) so no trailing char before > can be
+REM mis-parsed as a stream number (the classic `...1>` redirection trap).
+>"!SENTINEL!" echo {"ok":false,"reason":"%~1","behind":!FBEHIND!,"ts":"!TS!"}
+exit /b 0
+
+REM Arg:  %1 = behind count (the value seen before the successful reset)
+:write_ok
+set "TS=!DATE! !TIME!"
+set "OKBEHIND=%~1"
+if "!OKBEHIND!"=="" set "OKBEHIND=0"
+>"!SENTINEL!" echo {"ok":true,"reason":"","behind":!OKBEHIND!,"ts":"!TS!"}
 exit /b 0

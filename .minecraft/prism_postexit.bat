@@ -30,8 +30,10 @@ REM local-only commit, the next postexit absorbs upstream commits and
 REM re-pushes the stack -- no manual recovery needed. Prelaunch keeps its
 REM `git pull --ff-only` so it never silently rewrites user edits.
 REM
-REM Set automatically by kubejs/client_scripts/auto_fix_prism_prelaunch.js on
-REM first login; no manual config needed.
+REM Wired automatically by distribution/client/wire_instance_cfg.ps1, which is
+REM invoked from prism_prelaunch.bat Phase 2 (the kubejs auto_fix that used to
+REM do this was deleted in 642399e8). First-run wiring is a one-time manual
+REM step -- see container-backup/windows-migration.md.
 REM ============================================================================
 
 setlocal enabledelayedexpansion
@@ -44,7 +46,7 @@ if not exist "%MC_DIR%\logs\latest.log" (
     exit /b 0
 )
 
-REM ── Username extraction ─────────────────────────────────────────────────────
+REM -- Username extraction -----------------------------------------------------
 REM ModLauncher logs `--username, <name>` in args[] on line 1 of latest.log.
 REM Write the captured name to a temp file then read it back; this avoids the
 REM bat for-loop quoting traps with embedded PowerShell single-quotes.
@@ -76,7 +78,7 @@ if exist "%MC_DIR%\crash-reports" (
     powershell -NoProfile -Command "$session = (Get-Item '%MC_DIR%\logs\latest.log' -ErrorAction SilentlyContinue).CreationTime; if ($session) { Get-ChildItem '%MC_DIR%\crash-reports\*.txt' -ErrorAction SilentlyContinue | Where-Object { $_.LastWriteTime -ge $session } | Copy-Item -Destination '%DEST%\crash-reports\' -Force -ErrorAction SilentlyContinue }"
 )
 
-REM ── git add + commit + rebase + push ────────────────────────────────────────
+REM -- git add + commit + rebase + push ----------------------------------------
 REM Add the entire TesterLogs/ tree, not just %USERNAME%/, so server logs
 REM that landed via push_crash_logs.bat (Z: mirror) ride along on this push.
 REM Errors are NOT silenced -- they were prior to 2026-05-12 and that masked

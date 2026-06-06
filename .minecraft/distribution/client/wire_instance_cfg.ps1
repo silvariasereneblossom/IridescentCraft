@@ -1,24 +1,32 @@
 # =============================================================================
 # wire_instance_cfg.ps1
 # =============================================================================
-# Spawned from kubejs/client_scripts/auto_fix_prism_prelaunch.js on first
-# in-world login. Rewrites PrismLauncher's instance.cfg to point at our
-# pre-launch + post-exit hooks:
+# Invoked from Phase 2 of prism_prelaunch.bat (the kubejs auto_fix that used to
+# spawn this was DELETED in 642399e8 -- KubeJS' Rhino class filter now blocks
+# java.io.File AND java.lang.ProcessBuilder, so that delegation path is dead).
+# The bat already runs every launch with full process privileges (no class
+# filter) BEFORE the JVM starts, so it is the right place to self-heal the
+# instance.cfg wiring. This script keeps PrismLauncher's instance.cfg pointed
+# at our pre-launch + post-exit hooks:
 #
-#   PreLaunchCommand  -> .minecraft/prism_prelaunch.bat (git pull + cleanup)
+#   OverrideCommands  -> true   (gate: without it Prism IGNORES the commands)
+#   PreLaunchCommand  -> .minecraft/prism_prelaunch.bat (force-sync + cleanup)
 #   PostExitCommand   -> .minecraft/prism_postexit.bat  (TesterLogs auto-push)
 #
-# This lives outside KubeJS because KubeJS' Rhino class filter blocks
-# java.io.File / java.nio.file.Files (security default), so the auto_fix
-# script can't read/write instance.cfg directly. ProcessBuilder IS allowed,
-# so we delegate filesystem work to PowerShell.
+# NOTE: this self-heals on the SECOND+ launch only -- it can't fix the
+# first-run chicken-and-egg, because the bat that runs it must ALREADY be
+# wired as PreLaunchCommand for Prism to call it. The one-time manual wiring
+# step is documented in container-backup/windows-migration.md.
 #
-# Rules (mirror what auto_fix_prism_prelaunch.js used to enforce inline):
-#   - PreLaunchCommand: rewrite ONLY if it matches the legacy bare
-#     `git pull --ff-only` pattern. Custom values are left alone.
+# Rules:
+#   - OverrideCommands: assert =true (flip false->true; add if missing). A
+#     false value silently disables the very PreLaunchCommand we write.
+#   - PreLaunchCommand: rewrite ONLY the two known stale seeds -- the legacy
+#     bare `git pull --ff-only` and the zip-path `sync_client.bat` -- up to
+#     prism_prelaunch.bat. Any other custom value is left alone.
 #   - PostExitCommand: only set if missing or present-but-empty. Never
 #     overwrites a tester's custom value.
-#   - Skip silently when both are already wired (no spam on every login).
+#   - Skip silently when everything is already wired (no spam on every login).
 #
 # Memory: feedback_powershell_traps.md (em-dash in strings -> CP1252 parse-bomb)
 # =============================================================================
@@ -38,23 +46,51 @@ if (-not (Test-Path $instanceCfg)) {
 
 $cfg = Get-Content -Path $instanceCfg -Raw -Encoding UTF8
 
-$hasPrelaunch = $cfg -match 'prism_prelaunch\.bat'
-$hasPostexit  = $cfg -match 'prism_postexit\.bat'
+$hasPrelaunch       = $cfg -match 'prism_prelaunch\.bat'
+$hasPostexit        = $cfg -match 'prism_postexit\.bat'
+$overrideCommandsOk = $cfg -match '(?m)^OverrideCommands=true'
 
-# Both already wired? Skip silently.
-if ($hasPrelaunch -and $hasPostexit) {
+# Everything already wired? Skip silently (no log spam on every launch).
+if ($hasPrelaunch -and $hasPostexit -and $overrideCommandsOk) {
     exit 0
 }
 
 $changed = $false
 
+# ---- OverrideCommands ------------------------------------------------------
+# The gate that makes PrismLauncher actually honor PreLaunchCommand /
+# PostExitCommand. A False (or absent) value silently disables BOTH, so the
+# bat we wire below would never run. Flip false->true; add under [General]
+# if the key is missing entirely. Anchored (?m)^ so we never touch a
+# substring elsewhere.
+if (-not $overrideCommandsOk) {
+    if ($cfg -match '(?m)^OverrideCommands=false') {
+        $cfg = $cfg -replace '(?m)^OverrideCommands=false', 'OverrideCommands=true'
+        $changed = $true
+        Write-Host "[wire_cfg] Flipped OverrideCommands=false -> true (was disabling the pre/post hooks)"
+    } elseif ($cfg -notmatch '(?m)^OverrideCommands=') {
+        $cfg = $cfg -replace '(\[General\])', "`$1`nOverrideCommands=true"
+        $changed = $true
+        Write-Host "[wire_cfg] Added missing OverrideCommands=true"
+    }
+}
+
 # ---- PreLaunchCommand ------------------------------------------------------
+# Upgrade the two known stale seeds to prism_prelaunch.bat:
+#   (a) legacy bare `git pull --ff-only`  -- wedge-prone, never self-upgraded
+#   (b) zip-path `sync_client.bat`        -- wrong path for a git clone
+# Any other custom PreLaunchCommand value is left untouched.
 if (-not $hasPrelaunch) {
-    $prePattern = '(?m)^PreLaunchCommand=.*\bgit\b.*\bpull\b.*--ff-only.*$'
-    if ($cfg -match $prePattern) {
-        $cfg = $cfg -replace $prePattern, 'PreLaunchCommand="$INST_MC_DIR/prism_prelaunch.bat"'
+    $preLegacy = '(?m)^PreLaunchCommand=.*\bgit\b.*\bpull\b.*--ff-only.*$'
+    $preZip    = '(?m)^PreLaunchCommand=.*sync_client\.bat.*$'
+    if ($cfg -match $preLegacy) {
+        $cfg = $cfg -replace $preLegacy, 'PreLaunchCommand="$INST_MC_DIR/prism_prelaunch.bat"'
         $changed = $true
         Write-Host "[wire_cfg] Rewrote PreLaunchCommand: legacy git-pull-only -> prism_prelaunch.bat"
+    } elseif ($cfg -match $preZip) {
+        $cfg = $cfg -replace $preZip, 'PreLaunchCommand="$INST_MC_DIR/prism_prelaunch.bat"'
+        $changed = $true
+        Write-Host "[wire_cfg] Rewrote PreLaunchCommand: sync_client.bat -> prism_prelaunch.bat"
     }
     # Other custom commands left alone.
 }
