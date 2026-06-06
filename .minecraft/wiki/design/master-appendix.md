@@ -1169,6 +1169,7 @@ Direct dump from `kubejs/server_scripts/gates/astages_restrictions.js` as of 202
 - Aethersteel T4 (15+ items): `aethersteel_ingot`, `aethersteel_block`, `aethersteel_nugget`, `aethersteel_scrap`, `aether_debris`, full tool set (sword/pick/axe/shovel/hoe/shears/knife), 4-piece armor, `aethersteel_upgrade_smithing_template`.
 - rpgseteffects awakening: 14 awakening artifacts.
 - Mekanism T4 specific (11 items): `digital_miner`, `fusion_reactor_controller`, 4 MekaSuit pieces, `meka_tool`, 4 QIO pieces, `ultimate_control_circuit`, `antiprotonic_nucleosynthesizer`, `atomic_alloy`.
+- Mekanism rebalance pins (2026-06-06, locked decision C): fusion chain (`mekanismgenerators:fusion_reactor_controller` [namespace fix — old `mekanism:` pin was dead], `fusion_reactor_frame`, `fusion_reactor_port`, `fusion_reactor_logic_adapter`, `laser_focus_matrix`, `hohlraum`), SPS/antimatter (`sps_casing`, `sps_port`, `supercharged_coil`, `pellet_antimatter`), ultimate-tier facilities (`ultimate_tier_installer`, 9 ultimate factories, `ultimate_energy_cube`, `ultimate_induction_cell`, `ultimate_induction_provider`). Intermediates (alloys, circuits, HDPE) deliberately ungated per Axis H. Note: `atomic_alloy` pin above is a latent dead id (`mekanism:alloy_atomic` is the real id) and is intentionally left dead — gating it would violate Axis H.
 - art_of_forging T4 (audit Phase 2.3): `demonic_axe`, `demonic_blade`, `demonic_flail`, `enigmatic_construct`.
 - cataclysm T4 (audit Phase 8.4): `mechanical_fusion_anvil`.
 
