@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:pressurized_reaction_chamber" },
+    "title": "T3: Biofuel & Ethylene",
+    "subtitle": "Grow your own power",
+    "description": [
+      "The Mekanism 5x chain is hungry. The scalable T3 power answer is §bethylene§r:",
+      "feed §bBio Fuel§r (from farmed crops via a Crusher) plus water and hydrogen",
+      "into a §bPressurized Reaction Chamber§r to brew ethylene, then burn it in a",
+      "§bGas-Burning Generator§r.",
+      "",
+      "Build a §bPressurized Reaction Chamber§r to complete this beat. Automated",
+      "farming is effectively required to keep the loop fed - that is by design.",
+      "",
+      "§7Gas-Burning Generator §e100§7 tokens - the single richest T3 submission."
+    ],
+    "groups": { "Engineering": { "position": [320, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_orechain"],
+  "tasks": {
+    "have_prc": {
+      "type": "heracles:item",
+      "title": "Acquire a Pressurized Reaction Chamber",
+      "item": "mekanism:pressurized_reaction_chamber",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "biofuel": { "type": "heracles:item", "item": { "id": "mekanism:bio_fuel", "count": 32 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 300 }
+  }
+}

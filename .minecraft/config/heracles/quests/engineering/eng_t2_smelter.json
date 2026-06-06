@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:machine_smelter" },
+    "title": "T2: Triple Your Ore",
+    "subtitle": "Build a Thermal Induction Smelter",
+    "description": [
+      "Tier 2 raises the ceiling from 2x to §b3x§r ore. The §bThermal Induction",
+      "Smelter§r (with a Pulverizer feeding it) is the mid-tier ore tier - alloys",
+      "like Invar and Electrum come from here.",
+      "",
+      "Build an §bInduction Smelter§r to complete this beat. Pair it with a",
+      "§bPulverizer§r for the full 3x chain.",
+      "",
+      "§7Thermal machine blocks are your richest T2 submissions: Induction Smelter",
+      "§e50§7, Pulverizer §e40§7 tokens each."
+    ],
+    "groups": { "Engineering": { "position": [0, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_bank", "reach_tier_2"],
+  "tasks": {
+    "have_smelter": {
+      "type": "heracles:item",
+      "title": "Acquire a Thermal Induction Smelter",
+      "item": "thermal:machine_smelter",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "invar": { "type": "heracles:item", "item": { "id": "thermal:invar_ingot", "count": 8 } },
+    "electrum": { "type": "heracles:item", "item": { "id": "thermal:electrum_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 200 }
+  }
+}

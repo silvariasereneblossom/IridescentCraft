@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:crushing_wheel" },
+    "title": "T1: Ore Doubling",
+    "subtitle": "Build a Crushing Wheel pair",
+    "description": [
+      "The first engineering payoff is §bore doubling§r. A pair of §bCrushing",
+      "Wheels§r turns one ore into two crushed nuggets' worth of ingot - the 2x",
+      "step that anchors the whole Tier 1 economy.",
+      "",
+      "Set up rotational power (water wheel or hand crank), then build a Crushing",
+      "Wheel. You need two facing each other to actually crush, but having one in",
+      "hand is enough to complete this beat.",
+      "",
+      "§7A Crushing Wheel banks §e25§7 Engineering tokens each (cap 2). Cross-link:",
+      "§7see §eCreate: The Brass Age§7 in Overworld Foundations for brass."
+    ],
+    "groups": { "Engineering": { "position": [160, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_intro"],
+  "tasks": {
+    "have_crushing_wheel": {
+      "type": "heracles:item",
+      "title": "Acquire a Crushing Wheel",
+      "item": "create:crushing_wheel",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 12 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 150 }
+  }
+}

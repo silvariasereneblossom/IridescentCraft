@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanismgenerators:fission_reactor_casing" },
+    "title": "T4: First Reactor",
+    "subtitle": "Build a Fission Reactor",
+    "description": [
+      "Tier 4 opens the apex power chain. The §bFission Reactor§r is the first step:",
+      "it burns Fissile Fuel for massive heat and RF, and its Spent Nuclear Waste",
+      "is the start of the polonium -> antimatter road.",
+      "",
+      "Assemble §bFission Reactor Casing§r (with ports and a logic adapter) into a",
+      "reactor multiblock. Holding a casing block completes this beat.",
+      "",
+      "§7Handle fission carefully - a melted reactor is catastrophic. The waste",
+      "feeds the SPS chain two beats from now."
+    ],
+    "groups": { "Engineering": { "position": [0, 640] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_bank", "reach_tier_4"],
+  "tasks": {
+    "have_fission_casing": {
+      "type": "heracles:item",
+      "title": "Acquire a Fission Reactor Casing",
+      "item": "mekanismgenerators:fission_reactor_casing",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "xp_burst": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 10 }
+  }
+}

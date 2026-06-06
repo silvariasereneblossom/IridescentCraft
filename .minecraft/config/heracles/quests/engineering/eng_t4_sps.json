@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:pellet_antimatter" },
+    "title": "T4: Make Antimatter",
+    "subtitle": "Build the SPS, produce your first pellet",
+    "description": [
+      "The §bSupercharged Particle Accelerator (SPS)§r is the apex of the",
+      "Engineering lane: feed it polonium pellets and the colossal RF your fusion",
+      "reactor makes, and it produces §bAntimatter Pellets§r - the rarest",
+      "engineering output in the pack.",
+      "",
+      "Build the SPS multiblock (§bSPS Casing§r, §bSPS Port§r, §bSupercharged",
+      "Coil§r) and run it until you hold your first §bAntimatter Pellet§r.",
+      "",
+      "§7The SPS is the largest sustained energy draw you can build - it is the",
+      "RF-hyperscaling sink the whole tech tree was climbing toward."
+    ],
+    "groups": { "Engineering": { "position": [320, 640] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t4_fusion"],
+  "tasks": {
+    "have_antimatter": {
+      "type": "heracles:item",
+      "title": "Produce an Antimatter Pellet",
+      "item": "mekanism:pellet_antimatter",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "xp_burst": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 20 }
+  }
+}

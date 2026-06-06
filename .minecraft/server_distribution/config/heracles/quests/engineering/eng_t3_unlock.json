@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanism:ingot_osmium" },
+    "title": "T3: Mekanism Unlocked",
+    "subtitle": "Osmium renders, the apex tech opens",
+    "description": [
+      "Reaching Tier 3 lifts the Mekanism gate. Osmium now generates and renders,",
+      "and the full Mekanism machine roster becomes craftable.",
+      "",
+      "This beat completes the moment the Codex grants you the Tier 3 stage - it",
+      "rides the same milestone as §eAscension II§r. From here the §b5x ore chain§r",
+      "is yours to build.",
+      "",
+      "§7Mekanism is the Tier 3 engineering backbone and the richest token source",
+      "in the lane. Next: the 5x ore chain itself."
+    ],
+    "groups": { "Engineering": { "position": [0, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_bank", "reach_tier_3"],
+  "tasks": {
+    "engine_grants_t3": {
+      "type": "heracles:advancement",
+      "title": "Be granted the Tier 3 stage by the Codex",
+      "advancements": ["icraft:stage_tier_3"]
+    }
+  },
+  "rewards": {
+    "osmium": { "type": "heracles:item", "item": { "id": "mekanism:ingot_osmium", "count": 8 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 300 }
+  }
+}

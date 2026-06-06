@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mekanismgenerators:fusion_reactor_controller" },
+    "title": "T4: The Fusion Reactor",
+    "subtitle": "The capstone power project",
+    "description": [
+      "The §bFusion Reactor§r is the Tier 4 power capstone - enormous, sustained RF",
+      "that comfortably runs a late-game factory and, crucially, the §bSPS§r.",
+      "",
+      "Build the reactor frame around a §bFusion Reactor Controller§r and ignite it",
+      "with a Hohlraum of D-T fuel. Holding the controller completes this beat.",
+      "",
+      "§7This is the single biggest RF source in the pack. You build it because the",
+      "next beat - antimatter - needs the draw only fusion can sustain."
+    ],
+    "groups": { "Engineering": { "position": [160, 640] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t4_fission"],
+  "tasks": {
+    "have_fusion_controller": {
+      "type": "heracles:item",
+      "title": "Acquire a Fusion Reactor Controller",
+      "item": "mekanismgenerators:fusion_reactor_controller",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "xp_burst": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 15 }
+  }
+}

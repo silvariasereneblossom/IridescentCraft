@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "icraft:progression_token_t1" },
+    "title": "T1: Bank Your First Tokens",
+    "subtitle": "Submit Create metals & machines",
+    "description": [
+      "Now turn that machine into progress. Carry your spare brass, andesite alloy,",
+      "and any duplicate Create machine blocks to the Codex and §eSubmit§r them",
+      "(see the §eBank Engineering Tokens§r quest in this group).",
+      "",
+      "Machine blocks mint big: a Crushing Wheel is §e25§7 tokens, a Mechanical",
+      "Press §e20§7. Bulk metals mint a Tier 1 token per 100, capped.",
+      "",
+      "§7Goal: hold a §eCodex Token I§7 - proof you banked your first Engineering",
+      "tokens. Bank §f500§7 total to ascend to Tier 2."
+    ],
+    "groups": { "Engineering": { "position": [320, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t1_crushing"],
+  "tasks": {
+    "have_t1_token": {
+      "type": "heracles:item",
+      "title": "Bank at least one Codex Token I",
+      "item": "icraft:progression_token_t1",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "tokens": { "type": "heracles:item", "title": "Codex Tokens I (PROVISIONAL: amount per draft)", "item": { "id": "icraft:progression_token_t1", "count": 25 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 150 }
+  }
+}

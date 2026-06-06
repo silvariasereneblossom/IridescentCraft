@@ -1,0 +1,17 @@
+{
+  "name": "T2: Infrastructure (Thermal)",
+  "icon": "thermal:machine_smelter",
+  "category": "icraft:engineering",
+  "sortnum": 2,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(t2)Tier 2$() raises the ceiling from 2x to $(bold)3x$() ore. The $(bold)Thermal Series$() Induction Smelter and Pulverizer are the mid-tier ore tier, producing alloys like Invar and Electrum.$(br2)Tier 2 also introduces real $(bold)power$(): a Stirling or Magmatic Dynamo feeds a Redstone Flux Cell - the grid every later tier draws on."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Banking T2 tokens",
+      "text": "Thermal machine blocks are the richest T2 submissions: $(bold)Induction Smelter$() $(t2)50$(), $(bold)Pulverizer$() $(t2)40$() tokens each. Invar and Electrum mint per 50.$(br2)Bank $(t2)1000$() total to reach $(t3)Tier 3$(), where Mekanism unlocks. Full writeup: $(l:icraft:mods_t2/thermal)Thermal Series$(/l)."
+    }
+  ]
+}

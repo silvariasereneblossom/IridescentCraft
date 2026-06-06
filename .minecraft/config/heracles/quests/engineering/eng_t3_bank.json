@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "icraft:progression_token_t3" },
+    "title": "T3: Bank Mekanism Tokens",
+    "subtitle": "Submit your Tier 3 machines",
+    "description": [
+      "Submit your spare Mekanism machine blocks at the Codex (§eBank Engineering",
+      "Tokens§r in this group). This is the densest token tier in the lane.",
+      "",
+      "Gas-Burning Generator §e100§7, Basic Smelting Factory §e80§7, Purification",
+      "Chamber §e70§7, Enrichment Chamber §e60§7 tokens each.",
+      "",
+      "§7Goal: hold a §eCodex Token III§7. Bank §f2000§7 total to ascend to Tier 4 -",
+      "fusion, fission, and antimatter."
+    ],
+    "groups": { "Engineering": { "position": [480, 480] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t3_ethylene"],
+  "tasks": {
+    "have_t3_token": {
+      "type": "heracles:item",
+      "title": "Bank at least one Codex Token III",
+      "item": "icraft:progression_token_t3",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "tokens": { "type": "heracles:item", "title": "Codex Tokens III (PROVISIONAL: amount per draft)", "item": { "id": "icraft:progression_token_t3", "count": 50 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 400 }
+  }
+}

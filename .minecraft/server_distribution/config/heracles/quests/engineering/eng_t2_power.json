@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "thermal:dynamo_stirling" },
+    "title": "T2: Stand Up Power",
+    "subtitle": "A dynamo and somewhere to store it",
+    "description": [
+      "Machines past Tier 1 run on §bRedstone Flux§r. Build a generator and a",
+      "buffer so your smelting line never starves.",
+      "",
+      "Build a §bStirling§r or §bMagmatic Dynamo§r for power, and a §bRedstone",
+      "Flux Cell§r to bank it. Having a dynamo in hand completes this beat.",
+      "",
+      "§7Power infrastructure is the backbone of every later tier - the Mekanism",
+      "5x chain and the T4 reactors all draw from a grid you start building here."
+    ],
+    "groups": { "Engineering": { "position": [160, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_smelter"],
+  "tasks": {
+    "have_dynamo": {
+      "type": "heracles:item",
+      "title": "Acquire a Stirling Dynamo",
+      "item": "thermal:dynamo_stirling",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "cell": { "type": "heracles:item", "item": { "id": "thermal:energy_cell", "count": 1 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 200 }
+  }
+}

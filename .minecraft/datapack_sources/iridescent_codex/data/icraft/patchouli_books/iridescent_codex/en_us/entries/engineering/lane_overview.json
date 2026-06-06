@@ -1,0 +1,22 @@
+{
+  "name": "Engineering: The On-Ramp",
+  "icon": "minecraft:crafting_table",
+  "category": "icraft:engineering",
+  "sortnum": 0,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "You do not have to fight your way up. The $(bold)Engineering$() lane lets you ascend by $(bold)building$(): refine ore, stamp metal, stand up machines, and bank the result as Codex tokens.$(br2)This is the reading companion to the in-game $(bold)Engineering$() questline - open it with $(bold)/icraft_quests open Engineering$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The four rungs",
+      "text": "$(li)$(t1)Tier 1$() - ore $(bold)doubling$() (Create).$(li)$(t2)Tier 2$() - ore $(bold)tripling$() + power (Thermal).$(li)$(t3)Tier 3$() - the $(bold)5x$() chain (Mekanism).$(li)$(t4)Tier 4$() - fusion, fission, $(bold)antimatter$().$(br2)Each rung mints tokens toward the next tier. See $(l:icraft:progression/tier_unlock_checklist)Tier Targets$(/l)."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "How tokens work",
+      "text": "Carry refined metals and finished machine blocks to the Codex and $(bold)Submit$() them - machine blocks mint big, bulk metals mint per-stack up to a cap, nothing is ever lost.$(br2)Check your standing any time with $(bold)/icraft codex balance$(). At $(t4)Tier 4$() surplus tokens convert to XP - see $(l:icraft:progression/token_exchange)The Token Exchange$(/l)."
+    }
+  ]
+}

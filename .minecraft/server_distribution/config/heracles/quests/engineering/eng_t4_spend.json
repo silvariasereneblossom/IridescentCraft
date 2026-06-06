@@ -1,0 +1,40 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "kubejs:mythic_catalyst_5" },
+    "title": "T4: Spend the Antimatter",
+    "subtitle": "Turn the apex output into apex gear",
+    "description": [
+      "You built the apex reactor - now spend what it makes. Antimatter is the",
+      "hard reagent behind the pack's top-tier crafts: the §bMythic Catalyst V§r",
+      "(combat endgame) and the §bMekaSuit Mk2§r upgrade (tech-armor endgame).",
+      "",
+      "Craft a §bMythic Catalyst V§r to complete this beat and close the loop:",
+      "engineering's apex output feeding the pack's apex gear.",
+      "",
+      "§7PROVISIONAL: this beat assumes the antimatter sinks (draft HALF 1, S1/S5)",
+      "§7are live - antimatter wired into Mythic Catalyst IV/V and the Mk2 recipes.",
+      "§7Sequence HALF 1 before relying on this beat in-game."
+    ],
+    "groups": { "Engineering": { "position": [480, 640] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t4_sps"],
+  "tasks": {
+    "have_catalyst_5": {
+      "type": "heracles:item",
+      "title": "Craft a Mythic Catalyst V",
+      "item": "kubejs:mythic_catalyst_5",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "tokens": { "type": "heracles:item", "title": "Codex Tokens III (PROVISIONAL: T4 XP faucet, amount per draft)", "item": { "id": "icraft:progression_token_t3", "count": 100 } },
+    "capstone_broadcast": {
+      "type": "heracles:command",
+      "title": "Glory",
+      "command": "tellraw @a [{\"text\":\"[Iridescent] \",\"color\":\"light_purple\"},{\"selector\":\"@s\",\"color\":\"aqua\"},{\"text\":\" has mastered the Engineering lane - from ore doubling to antimatter.\",\"color\":\"gold\"}]"
+    },
+    "xp_burst": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 25 }
+  }
+}

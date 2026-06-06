@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:crafting_table" },
+    "title": "Engineering Exists",
+    "subtitle": "The build-your-way-up lane, step 1",
+    "description": [
+      "You do not have to fight your way up. The §bEngineering§r lane lets you",
+      "ascend by building: refine ore, stamp metal, stand up machines, and bank",
+      "the result as Codex progression tokens.",
+      "",
+      "Step 1 is just this: have a crafting table and some redstone, then open the",
+      "§bEngineering§r group of this book and read the §eBank Engineering Tokens§r",
+      "quest. Every machine you build from here mints tokens toward the next tier.",
+      "",
+      "§7Check your standing any time with §e/icraft codex balance§7."
+    ],
+    "groups": { "Engineering": { "position": [0, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_first_codex_open"],
+  "tasks": {
+    "have_redstone": {
+      "type": "heracles:item",
+      "title": "Acquire redstone dust",
+      "item": "minecraft:redstone",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "starter_iron": { "type": "heracles:item", "item": { "id": "minecraft:iron_ingot", "count": 4 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 100 }
+  }
+}

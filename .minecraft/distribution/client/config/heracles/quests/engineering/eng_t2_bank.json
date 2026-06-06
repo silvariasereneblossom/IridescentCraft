@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "icraft:progression_token_t2" },
+    "title": "T2: Bank Thermal Tokens",
+    "subtitle": "Submit your Tier 2 machines",
+    "description": [
+      "Submit your spare Thermal machine blocks and mid-tier alloys at the Codex",
+      "(§eBank Engineering Tokens§r in this group).",
+      "",
+      "Induction Smelter §e50§7, Pulverizer §e40§7 tokens each; Invar and Electrum",
+      "mint Tier 2 tokens per 50, capped.",
+      "",
+      "§7Goal: hold a §eCodex Token II§7. Bank §f1000§7 total to ascend to Tier 3,",
+      "where Mekanism unlocks."
+    ],
+    "groups": { "Engineering": { "position": [320, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["eng_t2_power"],
+  "tasks": {
+    "have_t2_token": {
+      "type": "heracles:item",
+      "title": "Bank at least one Codex Token II",
+      "item": "icraft:progression_token_t2",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "tokens": { "type": "heracles:item", "title": "Codex Tokens II (PROVISIONAL: amount per draft)", "item": { "id": "icraft:progression_token_t2", "count": 40 } },
+    "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 250 }
+  }
+}
