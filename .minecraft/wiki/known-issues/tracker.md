@@ -22,9 +22,6 @@ A small number of vanilla spiders can appear with a permanent Regeneration effec
 ### Spider–skeleton jockeys spawn more often than vanilla — **Open (design decision pending)**
 A difficulty-mod setting makes spider-with-skeleton-rider jockeys more common than vanilla's ~1%. Whether to dial this back toward "rare encounter" is a pending design call.
 
-### Rare high-tier drops from vanilla spiders — **Mitigated**
-Vanilla spiders were occasionally dropping high-tier items (diamond, ender eye). Those drops are now stripped from spider/entity loot, so the symptom is gone; the exact injecting mod hasn't been pinned down yet, and diagnostics remain armed.
-
 ### Some skeleton archers hit with excessive knockback — **Mitigated**
 Elite skeleton spawns could carry Punch-enchanted bows and launch players. Punch is now stripped from those spawns. Awaiting in-game confirmation that it's fully gone.
 
@@ -49,6 +46,9 @@ Reforged variants of Botania (Manaweave / Manasteel / Terrasteel / Elementium) a
 ### Structure loot is migrating to themed pools — **In progress**
 Marquee structures are moving to per-structure themed loot pools (70% themed / 30% baseline). A few structures are on partial coverage until their loot-table IDs are verified.
 
+### Tester pack-sync / log push may fail silently if shared credentials lapse — **Investigating**
+The launcher updates the pack and pushes tester logs over a shared access token. If that token expires or is missing, the update/push can fail without an obvious symptom — and previously the game would launch on a stale pack with no warning. The launcher is now fail-visible (it surfaces an in-game warning and writes a marker when a sync didn't complete), and the operator is verifying the credential state.
+
 ### Ad Astra (space dimensions) — **In progress**
 The post-Tier-4 Ad Astra planets (Moon, Mars, Mercury, Venus, Glacio) are still being implemented: recipe gating, dimension scaling, loot, and space enchantments are in flight. The `planetary_loot` system has a known low-priority error that will clear once this work lands.
 
@@ -57,7 +57,12 @@ About 72 custom items (progression tokens, boss materials, rings, end-game items
 
 ### Minor, non-gameplay-affecting
 - **Fast Leaf Decay** occasionally logs a harmless error while clearing leaves. Non-fatal, intermittent.
-- **Industrial Foregoing latex rework** logs an occasional non-fatal recipe error. No gameplay impact.
+
+### Some log lines at boot are expected noise — **Known limitation**
+A cluster of harmless log messages appears at server start and is safe to ignore: cross-mod compatibility shims (MCA, the Connector/Architectury registrar), benign mixin "conflict — skipping" lines from a few mods that optimize the same code path (Saturn, ModernFix + BadOptimizations, Citadel), and client-only mixin messages that have no effect on a dedicated server. The server boots clean to "Done" with these present.
+
+### A small set of mods aren't statically mixin-scanned — **Known limitation**
+About 95 of the pack's mods are pulled in by CurseForge metadata (no direct download URL in the index), so the offline compatibility scanner can't read them and they're excluded from the static mixin-conflict audit. They still load and run normally in-game; they're simply not covered by the automated conflict check.
 
 ---
 
@@ -84,12 +89,15 @@ Implemented features awaiting confirmation on a live world:
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
 
 **Loot & chests**
+- Stray high-tier drops traced and fixed at the source: passive animals no longer drop boss-fragment cores, hostile-mob projectile/beam entities are no longer equipped or scaled, and script-equipped mob gear no longer drops on death. (The diamond/ender-eye-on-spiders symptom was part of this and is resolved — it was intended modded entity loot, not a mystery injector.)
+- Two silently-dead datapacks revived (the stone-tag fixer and the infinite-ham blocker) — both were rejected for a packaging error and are loading again.
+- A LootJS strip rule that referenced a non-existent item id no longer errors.
 - Enchanted books no longer spawn blank — they now roll real enchantments scaled by dimension tier.
 - "None" / blank spell scrolls in chests now always come with a random spell inscribed.
 - Village chests cleaned up: no more double beds, no junk-flooding, artifacts at sane rates, weapons/iron bars/beds appear as intended.
 - Ars Nouveau glyphs and spell materials added to tiered chest loot so spell books are usable from Tier 1.
 - Modded loot modifiers (grass seeds, Farmer's Delight scavenging, Aether drops) restored after a config change had silently suppressed them.
-- Apotheosis gems no longer roll with broken/empty bonuses; elemental gems fixed and rebalanced.
+- Apotheosis gems no longer roll with broken/empty bonuses; elemental gems fixed and rebalanced; two gems disabled by a duplicate-slot conflict (Guardian, Intelligent) now load, and the magic-weapon affix pool no longer resolves to empty.
 - Epic Dungeons, towers, and ocean structures retuned to tier-appropriate loot.
 - Lootr chest-conversion mode retuned so village/structure chests convert reliably.
 
@@ -124,9 +132,11 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - Custom cherry biomes now spawn.
 
 **Mods & server**
-- FTB suite, Champions Unofficial, Truly Modular, and the old scaling mods removed and replaced (see [Mod Overview](../mods/overview.md#removed-mods)).
+- FTB suite, Champions Unofficial, Truly Modular, PacketFixer, and the old scaling mods removed and replaced (see [Mod Overview](../mods/overview.md#removed-mods)).
 - Several client-only mods that crashed the dedicated server identified and handled.
 - Tester-sync drift (stale or mismatched custom jars) now caught automatically by the launcher's cleanup pass.
+- The launcher no longer launches silently stale when a pack update fails — it now surfaces an in-game warning and writes a sync marker; a new-machine setup guide documents the correct install layout.
+- A periodic janitor sweeps up stray marker items left behind by the boss-wave randomizer.
 
 ---
 

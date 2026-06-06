@@ -6,6 +6,18 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## June 2026 — Loot-leak audit, dead-pack revival, and sync hardening
+
+- **Stray loot fixed at the source** — three separate mechanisms were leaking high-tier items onto things that shouldn't carry them. Passive animals no longer drop boss-fragment cores, hostile-mob projectile/beam entities no longer get equipped with gear or scaled, and script-equipped mob gear no longer drops on death. The over-broad death-loot rule was replaced with a properly monster-gated handler.
+- **Two dead datapacks revived** — the stone-tag fixer and the infinite-ham blocker were silently rejected for a packaging error (missing/misplaced pack manifest); both are now loading and doing their jobs again.
+- **Affix and gem repairs** — several Apotheosis status-effect affixes had a malformed value shape and never loaded; two custom gems (Guardian, Intelligent) were fully disabled by a duplicate-slot conflict; the magic-weapon affix pool resolved to empty because a shadowing override dropped the relevant weapon types. All repaired.
+- **Broken tag and ID cleanup** — a sweep of armor/entity/biome tags and a handful of loot/recipe scripts fixed dozens of references to renamed, mistyped, or uninstalled-mod items so they stop erroring at load.
+- **Script error fixes** — the boss-bonfire tick error, several Create/Industrial-Foregoing recipe failures, and a non-existent loot id were corrected.
+- **PacketFixer removed** — a redundant networking mod was dropped.
+- **Ash blacklist** — common passive mobs are now excluded from a Supplementaries ash interaction via a tag override (the config flag for it was a dead toggle).
+- **Stranded-item janitor** — a periodic cleanup sweeps up stray marker items left behind by the boss-wave randomizer.
+- **Sync made fail-visible** — the launcher no longer launches silently stale on a failed update; an in-game warning surfaces if the pack didn't sync, and a new-machine setup guide documents the correct install layout.
+
 ## May 2026 — Modular gear, unified magic, and the bespoke difficulty engine
 
 - **Iridescent Tetra Expansion** — the modular-armor (Iridescent Reforging) and modular-spell-book (Iridescent Modular Spells) systems were bundled into a single custom mod, with full honing progression for armor, wands, and spell books.
