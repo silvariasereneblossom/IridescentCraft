@@ -63,7 +63,7 @@ ServerEvents.recipes(event => {
     'SFS'
   ], {
     N: 'minecraft:netherite_ingot',
-    A: 'kubejs:aethersteel_ingot',
+    A: 'aethersteel:aethersteel_ingot',
     M: 'ad_astra:moon_stone',
     S: 'ad_astra:steel_plate',
     F: 'ad_astra:engine_frame'
@@ -79,7 +79,7 @@ ServerEvents.recipes(event => {
     'AMA',
     'SFS'
   ], {
-    A: 'kubejs:aethersteel_ingot',
+    A: 'aethersteel:aethersteel_ingot',
     M: 'ad_astra:mars_stone',
     S: 'ad_astra:steel_plate',
     F: 'ad_astra:engine_frame'
@@ -97,7 +97,7 @@ ServerEvents.recipes(event => {
     'SFS'
   ], {
     P: 'kubejs:primordial_essence',
-    A: 'kubejs:aethersteel_ingot',
+    A: 'aethersteel:aethersteel_ingot',
     V: 'ad_astra:venus_stone',
     S: 'ad_astra:steel_plate',
     F: 'ad_astra:engine_frame'
@@ -105,6 +105,16 @@ ServerEvents.recipes(event => {
 
 
   // ═══ SECTION G: MekaSuit Mk2 — Ultimate Armor (IN-PLACE UPGRADE) ═══
+  // [S85-S5 2026-06-06] Antimatter sink: the single ad_astra:glacio_stone reagent
+  // in each of the 4 Mk2 upgrade recipes is swapped for mekanism:pellet_antimatter
+  // (the `G` key), making the engineering apex output (an SPS antimatter run) a
+  // HARD gate on the engineering apex armor. Pattern + modifyResult/buildMk2 NBT
+  // stamping are UNCHANGED — only the `G` ingredient mapping changed.
+  // (mekanism:pellet_antimatter confirmed present in all_items.tsv.)
+  //   FLAG for lane B / operator: this PULLS the Mk2 toward pure-tech and
+  //   slightly weakens the Axis-E "engineering terminus re-enters the forge
+  //   fantasy" framing (glacio was a forge-vocabulary reagent). See draft S5's
+  //   "Contrasting position." Recorded, not re-litigated here.
   // [2026-06-06 MK2B redesign] Approved architecture (operator 2026-06-06):
   // The Mk2 is the REAL mekanism:mekasuit_* piece carrying an icraft Mk2 NBT
   // marker, NOT a separate kubejs: shell item. The recipe consumes the player's
@@ -198,8 +208,8 @@ ServerEvents.recipes(event => {
     'AHA',
     'P P'
   ], {
-    A: 'kubejs:aethersteel_ingot',
-    G: 'ad_astra:glacio_stone',
+    A: 'aethersteel:aethersteel_ingot',
+    G: 'mekanism:pellet_antimatter',   // [S85-S5] was ad_astra:glacio_stone
     H: 'mekanism:mekasuit_helmet',
     P: 'kubejs:primordial_essence'
   }).id('icraft:mekasuit_mk2_helmet').modifyResult(function (grid, result) {
@@ -212,8 +222,8 @@ ServerEvents.recipes(event => {
     'ACA',
     'P P'
   ], {
-    A: 'kubejs:aethersteel_ingot',
-    G: 'ad_astra:glacio_stone',
+    A: 'aethersteel:aethersteel_ingot',
+    G: 'mekanism:pellet_antimatter',   // [S85-S5] was ad_astra:glacio_stone
     C: 'mekanism:mekasuit_bodyarmor',
     P: 'kubejs:primordial_essence'
   }).id('icraft:mekasuit_mk2_chestplate').modifyResult(function (grid, result) {
@@ -226,8 +236,8 @@ ServerEvents.recipes(event => {
     'ALA',
     'P P'
   ], {
-    A: 'kubejs:aethersteel_ingot',
-    G: 'ad_astra:glacio_stone',
+    A: 'aethersteel:aethersteel_ingot',
+    G: 'mekanism:pellet_antimatter',   // [S85-S5] was ad_astra:glacio_stone
     L: 'mekanism:mekasuit_pants',
     P: 'kubejs:primordial_essence'
   }).id('icraft:mekasuit_mk2_leggings').modifyResult(function (grid, result) {
@@ -240,8 +250,8 @@ ServerEvents.recipes(event => {
     'ABA',
     'P P'
   ], {
-    A: 'kubejs:aethersteel_ingot',
-    G: 'ad_astra:glacio_stone',
+    A: 'aethersteel:aethersteel_ingot',
+    G: 'mekanism:pellet_antimatter',   // [S85-S5] was ad_astra:glacio_stone
     B: 'mekanism:mekasuit_boots',
     P: 'kubejs:primordial_essence'
   }).id('icraft:mekasuit_mk2_boots').modifyResult(function (grid, result) {

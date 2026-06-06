@@ -117,25 +117,36 @@ ServerEvents.recipes(event => {
         E: 'kubejs:primordial_essence'
     }).id('icraft:mythic_catalyst_3')
 
-    // --- Mythic Catalyst IV: Shards + Fragments + 2 Essences ---
+    // --- Mythic Catalyst IV: Shards + Fragments + 2 Essences + 1 Antimatter ---
+    // [S85-S1 2026-06-06] Antimatter wired in as the apex reagent (closes the
+    // Codex doc gap: mods_t4/mekanism_advanced.json promises antimatter is
+    // "required for several Mythic infusion recipes"). 1 pellet per IV craft.
+    // (mekanism:pellet_antimatter confirmed present in all_items.tsv.)
     event.shaped('kubejs:mythic_catalyst_4', [
-        'SES',
+        'SAS',
         'FMF',
         'SES'
     ], {
         S: 'kubejs:icraft_rift_shard',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge',
-        E: 'kubejs:primordial_essence'
+        E: 'kubejs:primordial_essence',
+        A: 'mekanism:pellet_antimatter'
     }).id('icraft:mythic_catalyst_4')
 
-    // --- Mythic Catalyst V: Shards + Fragments + Essences + 1 Rift Core ---
+    // --- Mythic Catalyst V: Shards + Fragments + Essences + Rift Core + Antimatter ---
+    // [S85-S1 2026-06-06] Antimatter wired in as the apex reagent per the draft's
+    // verbatim sketch (top row SAS). Closes the Codex doc gap and makes the
+    // engineering apex (antimatter / SPS run) a hard gate on the combat/mythic
+    // apex catalyst. 1 pellet per V craft.
+    // (mekanism:pellet_antimatter confirmed present in all_items.tsv.)
     event.shaped('kubejs:mythic_catalyst_5', [
-        'SES',
+        'SAS',
         'FMF',
         'ECE'
     ], {
         S: 'kubejs:icraft_rift_shard',
+        A: 'mekanism:pellet_antimatter',
         F: 'kubejs:void_fragment',
         M: 'kubejs:mythic_forge',
         E: 'kubejs:primordial_essence',

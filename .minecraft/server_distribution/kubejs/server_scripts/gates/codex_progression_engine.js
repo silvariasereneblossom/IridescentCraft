@@ -147,6 +147,14 @@ const CODEX_CONVERSIONS = {
   'mekanism:energized_smelter':      { tier: 3, value: 40, per: 1, cap: 2 },  // → 80
   'mekanism:basic_energy_cube':      { tier: 3, value: 40, per: 1, cap: 2 },  // → 80  (Energy Cube — Basic)
   'mekanism:alloy_reinforced':       { tier: 3, value: 1, per: 5, cap: 50 },  // → 10  (design "Advanced Alloy"; rate ⚠ OPEN in spec — placeholder 1/5)
+  // [S85-S4 2026-06-06] Antimatter as the apex engineering submission (the
+  // builder-only sink so the SPS is worth running without combat/mythic gear).
+  // Premium rate + small lifetime cap: 20 pellets → 1000 T3 tokens → 8000 XP
+  // via the T4 exchange. mekanism is already in CODEX_LANES.engineering, so this
+  // auto-joins the #icraft:codex_engineering tag (tags loop derives from this
+  // table) — no separate tag line needed. (id confirmed in all_items.tsv.)
+  // ⚠ value/cap are draft-provisional (draft S4 proposed rate); flagged for tuning.
+  'mekanism:pellet_antimatter':      { tier: 3, value: 50, per: 1, cap: 20 },  // → 1000 over the lifetime cap (apex engineering submission)
 
   // ===========================================================================
   // ROUTE D — MAGIC (non-combat cultivation). FIXED-tier: Magic content is
