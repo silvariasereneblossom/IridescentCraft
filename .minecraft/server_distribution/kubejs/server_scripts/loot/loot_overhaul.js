@@ -43,9 +43,9 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:naga_scale").limitCount([2, 4])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:waystone_core").withChance(5)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [waystone_core@5] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:tempest").when(c => c.randomChance(0.15))
         )
@@ -67,9 +67,9 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:hydra_fang").limitCount([2, 5])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:waystone_core").withChance(10)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [waystone_core@10] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:emberblade").when(c => c.randomChance(0.15))
         )
@@ -115,10 +115,10 @@ LootJS.modifiers(event => {
 
     // Blue Skies: Summoner — Elemental/summoning theme
     event.addEntityLootModifier("blue_skies:summoner")
-        .addWeightedLoot([
-            Item.of("kubejs:basic_reforging_token").withChance(10),
-            Item.of("kubejs:waystone_core").withChance(5)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [basic_reforging_token@10, waystone_core@5] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.67)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:hiveheart").when(c => c.randomChance(0.15))
         )
@@ -161,10 +161,10 @@ LootJS.modifiers(event => {
 
     // Aether: Slider — Impact/thunder theme
     event.addEntityLootModifier("aether:slider")
-        .addWeightedLoot([
-            Item.of("kubejs:basic_reforging_token").withChance(10),
-            Item.of("kubejs:waystone_core").withChance(5)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [basic_reforging_token@10, waystone_core@5] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:basic_reforging_token").when(c => c.randomChance(0.67)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:thunderbrand").when(c => c.randomChance(0.15))
         )
@@ -188,10 +188,10 @@ LootJS.modifiers(event => {
     // -----------------------------------------------------------------
 
     event.addEntityLootModifier("deep_aether:eots_controller")
-        .addWeightedLoot([
-            Item.of("kubejs:advanced_reforging_token").withChance(15),
-            Item.of("kubejs:waystone_core").withChance(10)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [advanced_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.6)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:flamewind").when(c => c.randomChance(0.18))
         )
@@ -219,10 +219,10 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:ignis_core").limitCount([1, 2])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:advanced_reforging_token").withChance(15),
-            Item.of("kubejs:waystone_core").withChance(10)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [advanced_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.6)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:molten_edge").when(c => c.randomChance(0.20))
         )
@@ -253,10 +253,10 @@ LootJS.modifiers(event => {
 
     // Cataclysm: Ignited Revenant — Fire/undead theme (1000 HP = T4 tier)
     event.addEntityLootModifier("cataclysm:ignited_revenant")
-        .addWeightedLoot([
-            Item.of("kubejs:ultimate_reforging_token").withChance(15),
-            Item.of("kubejs:waystone_core").withChance(10)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [ultimate_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.6)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:emberlash").when(c => c.randomChance(0.15))
         )
@@ -272,10 +272,10 @@ LootJS.modifiers(event => {
 
     // Undergarden: Forgotten Guardian — Corruption/ancient theme
     event.addEntityLootModifier("undergarden:forgotten_guardian")
-        .addWeightedLoot([
-            Item.of("kubejs:advanced_reforging_token").withChance(10),
-            Item.of("kubejs:waystone_core").withChance(8)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [advanced_reforging_token@10, waystone_core@8] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:advanced_reforging_token").when(c => c.randomChance(0.56)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:bramblethorn").when(c => c.randomChance(0.18))
         )
@@ -347,10 +347,10 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:dragon_scale").limitCount([4, 8])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:ultimate_reforging_token").withChance(15),
-            Item.of("kubejs:waystone_core").withChance(10)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [ultimate_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.6)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:waking_lichblade").when(c => c.randomChance(0.25))
         )
@@ -371,10 +371,10 @@ LootJS.modifiers(event => {
 
     // Cataclysm: Ender Guardian — Ender theme (Tier 4)
     event.addEntityLootModifier("cataclysm:ender_guardian")
-        .addWeightedLoot([
-            Item.of("kubejs:ultimate_reforging_token").withChance(15),
-            Item.of("kubejs:waystone_core").withChance(10)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [ultimate_reforging_token@15, waystone_core@10] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.6)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:arcanethyst").when(c => c.randomChance(0.18))
         )
@@ -387,10 +387,10 @@ LootJS.modifiers(event => {
 
     // Cataclysm: Ancient Remnant — Ultimate Cataclysm boss
     event.addEntityLootModifier("cataclysm:ancient_remnant")
-        .addWeightedLoot([
-            Item.of("kubejs:ultimate_reforging_token").withChance(20),
-            Item.of("kubejs:waystone_core").withChance(15)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [ultimate_reforging_token@20, waystone_core@15] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:ultimate_reforging_token").when(c => c.randomChance(0.57)))
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:awakened_lichblade").when(c => c.randomChance(0.15))
         )
@@ -400,9 +400,9 @@ LootJS.modifiers(event => {
         .addLoot(
             LootEntry.of("kubejs:void_essence").limitCount([1, 3])
         )
-        .addWeightedLoot([
-            Item.of("kubejs:waystone_core").withChance(15)
-        ])
+        // [2026-06-06] waystone_core re-specced to UNCOMMON boss drop (flat 20%);
+        // was pick-one weighted pool [waystone_core@15] - paired token rates preserved (tabled).
+        .addLoot(LootEntry.of("kubejs:waystone_core").when(c => c.randomChance(0.20)))
         .addLoot(
             LootEntry.of("simplyswords:stormbringer").when(c => c.randomChance(0.20))
         )

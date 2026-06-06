@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "bf45a4657",
+  "generated_from": "1e45c8f12",
   "roots": [
     "kubejs",
     "config",
@@ -6547,6 +6547,10 @@
       "sha256": "abe8196d8eaa1aca96b204efc180765e576af31705287265f32f6b30807039b0",
       "size": 14924
     },
+    "kubejs/server_scripts/diag_passive_damage.js": {
+      "sha256": "0cd05e83c0cd135976506393b48fff44bc4e4f14ca09a4eac4cdd4e87e89b49d",
+      "size": 2706
+    },
     "kubejs/server_scripts/disable_zombie_door_break.js": {
       "sha256": "9ad7f9e09c1a61614a9cc718e9733ba595ed14b353cd25f1c0bfe9ff991307fa",
       "size": 5394
@@ -6720,8 +6724,8 @@
       "size": 27062
     },
     "kubejs/server_scripts/loot/loot_overhaul.js": {
-      "sha256": "ae5dcd688ff18f05f3bdd5d6a38135a8b65afb4616e651ff3022ff6251eaac2d",
-      "size": 32274
+      "sha256": "832f9a2d8373dc580503ebe7ae83033bd9e0af027ed9ce24d17c668c5b7cd8e8",
+      "size": 34819
     },
     "kubejs/server_scripts/loot/lootjs_overhaul.js": {
       "sha256": "f0bac926cfe88fce028135c1e1fdeda950ddcc84b14ebfa9679c3334d2e5b881",
