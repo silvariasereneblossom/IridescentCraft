@@ -5,96 +5,38 @@
   "dimensions": [],
   "bonuses": [
     {
-      "type": "apotheosis:attribute",
+      "type": "apotheosis:multi_attribute",
+      "desc": "bonus.apotheosis:multi_attr.desc.and",
       "gem_class": {
         "key": "anything",
-        "types": [
-          "helmet",
-          "chestplate",
-          "leggings",
-          "boots"
-        ]
+        "types": ["helmet", "chestplate", "leggings", "boots"]
       },
-      "attribute": "irons_spellbooks:max_mana",
-      "operation": "ADDITION",
-      "values": {
-        "common": {
-          "min": 5,
-          "steps": 10,
-          "step": 1
+      "modifiers": [
+        {
+          "attribute": "irons_spellbooks:max_mana",
+          "operation": "ADDITION",
+          "values": {
+            "common": 10,
+            "uncommon": 22,
+            "rare": 40,
+            "epic": 65,
+            "mythic": 100,
+            "ancient": 150
+          }
         },
-        "uncommon": {
-          "min": 15,
-          "steps": 15,
-          "step": 1
-        },
-        "rare": {
-          "min": 30,
-          "steps": 20,
-          "step": 1
-        },
-        "epic": {
-          "min": 50,
-          "steps": 30,
-          "step": 1
-        },
-        "mythic": {
-          "min": 80,
-          "steps": 40,
-          "step": 1
-        },
-        "ancient": {
-          "min": 120,
-          "steps": 61,
-          "step": 1
+        {
+          "attribute": "irons_spellbooks:mana_regen",
+          "operation": "MULTIPLY_BASE",
+          "values": {
+            "common": 0.045,
+            "uncommon": 0.08,
+            "rare": 0.105,
+            "epic": 0.155,
+            "mythic": 0.21,
+            "ancient": 0.275
+          }
         }
-      }
-    },
-    {
-      "type": "apotheosis:attribute",
-      "gem_class": {
-        "key": "anything",
-        "types": [
-          "helmet",
-          "chestplate",
-          "leggings",
-          "boots"
-        ]
-      },
-      "attribute": "irons_spellbooks:mana_regen",
-      "operation": "MULTIPLY_BASE",
-      "values": {
-        "common": {
-          "min": 0.03,
-          "steps": 3,
-          "step": 0.01
-        },
-        "uncommon": {
-          "min": 0.06,
-          "steps": 4,
-          "step": 0.01
-        },
-        "rare": {
-          "min": 0.08,
-          "steps": 5,
-          "step": 0.01
-        },
-        "epic": {
-          "min": 0.13,
-          "steps": 5,
-          "step": 0.01
-        },
-        "mythic": {
-          "min": 0.18,
-          "steps": 6,
-          "step": 0.01
-        },
-        "ancient": {
-          "min": 0.24,
-          "steps": 7,
-          "step": 0.01
-        }
-      }
+      ]
     }
   ]
 }

@@ -8,9 +8,8 @@
     {
       "type": "apotheosis:attribute",
       "gem_class": {
-        "key": "core_armor",
+        "key": "leggings",
         "types": [
-          "chestplate",
           "leggings"
         ]
       },

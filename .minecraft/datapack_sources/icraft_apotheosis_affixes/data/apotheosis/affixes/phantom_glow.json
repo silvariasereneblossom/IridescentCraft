@@ -4,34 +4,28 @@
   "target": "attack_target",
   "values": {
     "common": {
-      "min": 0.21,
-      "steps": 2,
-      "step": 0.01
+      "duration": { "min": 60, "steps": 4, "step": 20 },
+      "amplifier": 0
     },
     "uncommon": {
-      "min": 0.3,
-      "steps": 8,
-      "step": 0.01
+      "duration": { "min": 100, "steps": 4, "step": 20 },
+      "amplifier": 0
     },
     "rare": {
-      "min": 0.39,
-      "steps": 2,
-      "step": 0.01
+      "duration": { "min": 140, "steps": 4, "step": 20 },
+      "amplifier": 0
     },
     "epic": {
-      "min": 0.48,
-      "steps": 3,
-      "step": 0.01
+      "duration": { "min": 180, "steps": 3, "step": 40 },
+      "amplifier": 0
     },
     "mythic": {
-      "min": 0.57,
-      "steps": 3,
-      "step": 0.01
+      "duration": { "min": 220, "steps": 3, "step": 40 },
+      "amplifier": 0
     },
     "ancient": {
-      "min": 0.66,
-      "steps": 4,
-      "step": 0.01
+      "duration": { "min": 280, "steps": 4, "step": 40 },
+      "amplifier": 0
     }
   },
   "types": [

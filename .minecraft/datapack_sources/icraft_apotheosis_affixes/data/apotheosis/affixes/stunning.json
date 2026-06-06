@@ -2,37 +2,30 @@
   "type": "apotheosis:mob_effect",
   "mob_effect": "minecraft:slowness",
   "target": "attack_target",
-  "amplifier": 2,
   "values": {
     "common": {
-      "min": 0.01,
-      "steps": 2,
-      "step": 0.01
+      "duration": { "min": 20, "steps": 2, "step": 5 },
+      "amplifier": 2
     },
     "uncommon": {
-      "min": 0.01,
-      "steps": 2,
-      "step": 0.01
+      "duration": { "min": 25, "steps": 2, "step": 5 },
+      "amplifier": 2
     },
     "rare": {
-      "min": 0.03,
-      "steps": 2,
-      "step": 0.01
+      "duration": { "min": 30, "steps": 3, "step": 5 },
+      "amplifier": 2
     },
     "epic": {
-      "min": 0.05,
-      "steps": 2,
-      "step": 0.01
+      "duration": { "min": 35, "steps": 3, "step": 5 },
+      "amplifier": 3
     },
     "mythic": {
-      "min": 0.07,
-      "steps": 1,
-      "step": 0.01
+      "duration": { "min": 40, "steps": 3, "step": 5 },
+      "amplifier": 3
     },
     "ancient": {
-      "min": 0.09,
-      "steps": 4,
-      "step": 0.01
+      "duration": { "min": 50, "steps": 4, "step": 5 },
+      "amplifier": 4
     }
   },
   "types": [
