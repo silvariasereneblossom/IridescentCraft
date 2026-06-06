@@ -340,11 +340,11 @@ Plus the Rift Keystone recipe: 8 `kubejs:icraft_rift_shard` + 4 `kubejs:void_fra
 
 - NASA Workbench: netherite + Mekanism Steel Casing + ad_astra:steel_block + reality_progression_token_t4.
 - Tier 1 Rocket → Moon: netherite + thermal:enderium_ingot + ad_astra:steel_plate + ad_astra:engine_frame.
-- Tier 2 Rocket → Mars: + kubejs:aethersteel_ingot + ad_astra:moon_stone.
-- Tier 3 Rocket → Venus/Mercury: + 2x aethersteel + ad_astra:mars_stone.
+- Tier 2 Rocket → Mars: + aethersteel:aethersteel_ingot + ad_astra:moon_stone.
+- Tier 3 Rocket → Venus/Mercury: + 2x aethersteel:aethersteel_ingot + ad_astra:mars_stone.
 - Tier 4 Rocket → Glacio: + kubejs:primordial_essence + ad_astra:venus_stone (most expensive single craft in the pack).
 - 4 Jet Suit pieces removed (MekaSuit replaces).
-- 4 MekaSuit Mk2 pieces (helmet/chestplate/leggings/boots) at Mythic Forge: aethersteel + glacio_stone + base MekaSuit piece + primordial_essence each.
+- 4 MekaSuit Mk2 in-place upgrade recipes (helmet/chestplate/leggings/boots; SECTION G) at Mythic Forge: aethersteel:aethersteel_ingot + mekanism:pellet_antimatter (apex reagent — swapped from ad_astra:glacio_stone in the 2026-06-06 antimatter-sink pass) + the player's existing `mekanism:mekasuit_*` piece + primordial_essence each. (The dead `kubejs:aethersteel_ingot` id was corrected to `aethersteel:aethersteel_ingot` x7 on 2026-06-06 — the recipes were uncraftable.)
 
 ### B.5 `recipes/refined_storage_dualpath.js` — dual-path RS recipes
 
@@ -658,7 +658,9 @@ Per-dimension floor (min rarity) keeps natural floors for higher tiers: Nether
 mob drops floor at Rare, Deep Aether floors at Rare, End floors at Epic — no
 "junk Common rolls in T4" pollution.
 
-Configured in `config/apotheosis/affixes/` + `config/apotheosis/adventure.cfg` with per-dimension tier inference. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`).
+Single-sourced 2026-06-06: the JSON affix definitions now ship **only** via the `icraft_apotheosis_affixes` Paxi datapack zip (the 83-file `kubejs/data/.../affixes/` shadow tree was retired across all 3 distros). Per-dimension tier inference is still configured in `config/apotheosis/adventure.cfg`. Total: 84 JSON affixes + 65 event-driven affixes (`affixes/affix_effects.js`) — the count is unchanged by the single-sourcing (it relocated definitions, it did not add or remove any). The same 2026-06-06 pass fixed 9 `mob_effect`-carrier affix schemas to per-rarity duration/amplifier.
+
+> **Scorching (ex-Igniting).** The fire affix was reworked 2026-06-06: its old `mob_effect` carrier granted the *attack target* fire_resistance (a wrong-way buff that helped the enemy). It is now a thin `attack_damage` carrier whose real payoff is an on-hit fire-**vulnerability** mark (15–50% by rarity, provisional) applied through `DamageModifierRegistry` in `affix_effects.js`. The player-facing name was renamed **Igniting → Scorching** in lang; the affix JSON file is still `igniting.json` (the id was kept to preserve in-world stacks).
 
 ### D.2 Reforging gates
 
@@ -924,7 +926,7 @@ All `kubejs:*` items, ~80 total. Organized by category. Source: `kubejs/startup_
 
 ### E.4 Mythic uniques (Mythic Forge crafted)
 
-- **MekaSuit Mk2** — the Mythic Forge upgrade is an **in-place** transform of the real `mekanism:mekasuit_*` piece (no separate `kubejs:` shell item; the prior `kubejs:mekasuit_mk2_*` shells were retired 2026-06-06). The upgrade consumes the player's existing MekaSuit piece + Aethersteel + Glacio Stone + Primordial Essence and returns the **same** Mekanism piece with its NBT preserved (installed modules, stored energy, enchantments, affixes all survive) plus an `icraft_mekasuit_mk2` marker and a pinnacle display name/lore. A runtime stat layer keyed on the marker adds a provisional pinnacle band over native MekaSuit (additive only, no native nerf).
+- **MekaSuit Mk2** — the Mythic Forge upgrade is an **in-place**, **per-piece** transform of the real `mekanism:mekasuit_*` piece (no separate `kubejs:` shell item; the prior `kubejs:mekasuit_mk2_*` shells were retired 2026-06-06). Each piece is upgraded individually, consuming that one MekaSuit piece + Aethersteel + an Antimatter Pellet (`mekanism:pellet_antimatter`, the apex reagent — swapped from Glacio Stone in the 2026-06-06 antimatter-sink pass) + Primordial Essence, and returns the **same** Mekanism piece with its NBT preserved (installed modules, stored energy, enchantments, affixes all survive) plus an `icraft_mekasuit_mk2` marker and a pinnacle display name/lore. A runtime stat layer keyed on the marker (`startup_scripts/mekasuit_mk2_stats.js`) adds a provisional pinnacle band over native MekaSuit (additive only, no native nerf).
 - Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown — these are renamed-with-NBT Mythic Forge outputs based on existing items (Awakened Lichblade / netherite armor) rather than fully-custom items. Recognized via NBT display.Name match in `endgame/rift_mechanics.js`.
 
 ### E.5 Cross-mod alt-recipe outputs
@@ -1195,17 +1197,17 @@ Validated by `tools/validate_datapack_references.sh`. Each entry is a Paxi datap
 | `icraft_apotheosis_affixes` | Custom Apotheosis affix definitions | 84 JSON affixes ship here |
 | `icraft_botania_overrides` | Orechid weight overrides — diamond/deepslate-diamond/ancient-debris/osmium/deepslate-osmium set to 0 | Tier-skip prevention |
 | `icraft_dungeon_crawl_overrides` | Dungeon Crawl tier alignment | Loot tier consistency |
-| `icraft_loot_overrides` | Global loot table overrides | Misc loot tuning |
+| `icraft_loot_overrides` | Global loot table overrides (incl. the Supplementaries ash_blacklist excluding passive mobs from ash drops — the mod's own config toggle is dead code) | Misc loot tuning |
 | `icraft_occultism_overrides` | **Audit Phase 1 (2026-04-27).** 8 miner-recipe overrides: diamond/emerald/arcane_crystal/osmium/nether_quartz/nether_gold/xpetrified_ore restricted from `ores` tag (any miner) to `deeps` tag (T3+ Afrit/Marid). dimensional_shard_ore restricted to `master` (T4 Marid only). | P0 fix |
 | `icraft_progdiff_overrides` | Progressive Difficulty tuning | Difficulty consistency |
 | `icraft_skills` | Pufferfish's Skills tree definitions | 6 skill trees |
 | `icraft_terramity_overrides` | Terramity gem ore biome injection (sapphire/topaz/iridium/gaianite into Aether/Twilight/BS) | T2 ore distribution |
 | `icraft_tetra_materials` | 27 modded metals + 5 gems for Tetra integration (cataclysm / blue_skies / Undergarden / F&A / theabyss metals; the 4 theabyss entries — garnite / knight / phantom / unorithe — are live, mod in pack) | T2-T4 Tetra entries |
 | `icraft_tetra_overrides` | Tetra material stat tweaks | Balance |
-| `icraft_tower_overrides` | Towers of the Wild spawn frequency | Worldgen tuning |
+| `icraft_tower_overrides` | Towers of the Wild + Apotheosis tome-tower spawn frequency (post-2026-06-06 worldgen rebalance: TOTW `regular` spacing 28 / separation 20; Apoth `tower_main`/`tower_leaf`/`tower_sand`/`tower_spruce` spacing 24 / separation 14–16) | Worldgen tuning |
 | `icraft_worldgen_overrides` | Vanilla iron/copper + modded zinc/nickel/silver/lead distribution | Worldgen base |
 
-Plus 3rd-party datapacks loaded via Paxi without modification: `ScalingHealth_NoCrystalDrops_AllVanilla`, `Towers_Of_The_Wild_Reworked` + `_v4.2.1_Waystone`, `fix_stone_tags`, `infinity_ham_blocker`, `keepinventory_datapack`.
+Plus 3rd-party datapacks loaded via Paxi without modification: `ScalingHealth_NoCrystalDrops_AllVanilla`, `Towers_Of_The_Wild_Reworked` + `_v4.2.1_Waystone`, `fix_stone_tags` (revived 2026-06-06), `keepinventory_datapack`. (`infinity_ham_blocker` was deleted 2026-06-06 — the Infinity Ham kill-switch now lives in config + JEI hide + a strip script, not a datapack.)
 
 ---
 
@@ -1239,6 +1241,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | `sunlight_smite.js` | Sunlight damage to specific mobs (vampire-themed ?) |
 | `tatos_dimension_lock.js` | Dimension entry lock helper (per-dimension stage check) |
 | `tetra_terramity_perks.js` | Server-tick perk hook for Tetra-Terramity integration |
+| `ultris_randomizer_janitor.js` | Janitor sweep for stranded Ultris RNG-paper marker items (`{UltrisRandomizerItem:1}` paper that the datapack's same-tick read-then-kill missed under load), preventing them from leaking into the player loot stream |
 | `validate_recipe_removals.js` | **Audit Phase 3.3.** Server-start validator: scans REMOVAL_TARGETS list against the live item registry; logs warnings for stale IDs |
 | `villager_trades.js.disabled` | Villager trade rework (currently disabled — incorporated elsewhere) |
 
@@ -1260,6 +1263,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | `ad_astra_gating.js` | Ad Astra rocket progression (4-tier) + NASA Workbench T4-gate + 4 MekaSuit Mk2 piece recipes at Mythic Forge |
 | `cooking_conversion.js` | 70 vanilla-recipe → Farmer's Delight cooking conversion |
 | `if_latex_rework.js` | HDPE / IF latex alternative pipeline |
+| `mek_biofuel_squeeze.js` | Biofuel production squeeze: all 101 stock `mekanism:crushing` → `mekanism:bio_fuel` recipes re-issued at `ceil(N / SQUEEZE_FACTOR)` (factor 4, provisional), floored at 1, so ethylene generation scales with automated farming |
 | `planetary_extraction.js` | Create Crushing Wheel recipes for planet stones → unique elements |
 | `refined_storage_dualpath.js` | Tech-path / Magic-path RS recipes + hybrid bonus |
 | `waystone_recipes.js` | Boss-drop-gated Waystone crafting at all tiers |
@@ -1280,6 +1284,7 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | `mahou_synergy_drops.js` | 14 cross-mod Mahou reagent injections |
 | `dimensional_boss_drops.js` | 11 cross-dimensional bosses (Aether, Deep Aether, Undergarden, Mutant Monsters, Warden) |
 | `terramity_boss_drops.js` | **Audit Phase 4.1.** 7 non-gun terramity EPIC weapons allocated to themed bosses |
+| `fragment_core_drops.js` | Monster-gated `EntityEvents.death` handler dropping the rpgseteffects Fragment Core at 4% from hostile mobs only (`!entity.monster` skip; Ultris-excluded). Relocated from `lootjs_overhaul.js` §8.5 because LootJS `LootType.ENTITY` matched every entity loot table (passive animals included), leaking the drop onto pigs |
 | `abyss_boss_loot.js` | 7 custom replacement rings (4 chest + 3 boss) + 5 boss-drop armor sets |
 | `crop_seed_reduction.js` | Crop seed drop reduction (anti-spam) |
 | `planetary_loot.js` | Ad Astra planetary chest loot tuning |
@@ -1353,14 +1358,16 @@ One-line summary per file in `kubejs/server_scripts/` and `kubejs/startup_script
 | Script | Role |
 |--------|------|
 | `custom_items.js` | ~50 kubejs:* item registrations (progression tokens, boss materials, intermediate alloys, custom Abyss-themed rings — see E.7) |
-| `endgame_items.js` | ~30 endgame kubejs:* registrations (rift_shard, void_fragment, primordial_essence, mythic_forge, mythic_catalysts, MekaSuit Mk2 4-piece, planetary materials) |
+| `endgame_items.js` | ~30 endgame kubejs:* registrations (rift_shard, void_fragment, primordial_essence, mythic_forge, mythic_catalysts, planetary materials). The former `kubejs:mekasuit_mk2_*` shell items were retired 2026-06-06 — Mk2 is now an in-place upgrade of the real `mekanism:mekasuit_*` piece (see E.4) |
+| `mekasuit_mk2_stats.js` | **Startup.** Additive pinnacle stat layer for MekaSuit Mk2 via `ItemAttributeRegistry`, applied only to a worn `mekanism:mekasuit_*` piece carrying the `icraft_mekasuit_mk2: 1b` NBT marker. Provisional +2 armor / +1 toughness / +0.05 knockback resistance per piece; never removes a native attribute |
 | `custom_enchantments.js` | 24 custom enchantment registrations |
 | `iridescent_codex.js` | Patchouli codex setup helpers |
+| `mekasuit_mk2_tooltip.js` *(client_scripts/)* | Marker-keyed tooltip: per-id `addAdvanced` line on `mekanism:mekasuit_*` stacks carrying the `icraft_mekasuit_mk2` NBT marker, independent of the recipe-set display Name/Lore |
 
 ### I.11 Counts
 
-- **~70 active server scripts** across all subdirectories.
-- **5 startup scripts** (custom_items, endgame_items, custom_enchantments, iridescent_codex, example).
+- **~72 active server scripts** across all subdirectories (net +2 on 2026-06-06: +fragment_core_drops, +ultris_randomizer_janitor, +mek_biofuel_squeeze, −diamond_leak_probe deleted).
+- **6 startup scripts** (custom_items, endgame_items, custom_enchantments, iridescent_codex, mekasuit_mk2_stats, example). Plus the new `mekasuit_mk2_tooltip.js` in `client_scripts/`.
 - **~12 disabled scripts** preserved for reference (`*.disabled`).
 - **1 migration script** (rift_shard_rename, audit Phase 2.2).
 - **2 validator scripts**: `validate_recipe_removals.js` (server-side) + `tools/validate_datapack_references.sh` (dev-time, outside server_scripts).

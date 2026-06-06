@@ -75,7 +75,7 @@ Implemented features awaiting confirmation on a live world:
 - Iron's Spells loot tiering (spell books / inks by dimension tier)
 - Simply Swords unique Abyss weapons
 - Apotheosis affix coverage
-- Mekanism balance changes (generator nerfs, 2× RF costs, Digital Miner recipe)
+- Mekanism balance changes (2.5x machine RF costs, ERA-4 fusion/fission output buffs, reactor force-shutdown, Digital Miner recipe + T4 gate)
 - Food-system overhaul (hunger drain, seed drops, structure-food reduction)
 - Farmer's Delight cooking conversions
 

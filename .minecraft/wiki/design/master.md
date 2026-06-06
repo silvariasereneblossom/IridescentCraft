@@ -605,15 +605,17 @@ T3 stage opens the major tech jump:
 
 ### Tier 4 — Mekanism (advanced) + RFTools Dimensions + Ad Astra
 
-T4 stage opens **Mekanism advanced** (Digital Miner, Fusion Reactor Controller, MekaTool, MekaSuit + 4 pieces, Antiprotonic Nucleosynthesizer, atomic_alloy, SPS — eleven specific items individually staged) and **RFTools Dimensions** (Dimension Builder, Dimension Editor, dimensional_shard_ore at T4 master only).
+T4 stage opens **Mekanism advanced** (Digital Miner, Fusion Reactor Controller, MekaTool, MekaSuit + 4 pieces, Antiprotonic Nucleosynthesizer, atomic_alloy, SPS — the advanced chain individually staged) and **RFTools Dimensions** (Dimension Builder, Dimension Editor, dimensional_shard_ore at T4 master only).
+
+> **The advanced-power bargain.** Mekanism's machine energy costs are deliberately raised at the top end, so the *answer* to that cost is the reward chain itself: fusion and the SPS-to-antimatter run are the rich, rewarding power sources that make advanced Mekanism worth building — and antimatter doubles as the apex reagent that ties the tech endgame into the Mythic chain. Radiation and reactor meltdowns are **force-disabled** — the stance is dangerous-but-recoverable: top-tier reactors stay a build-and-tune challenge, not a save-erasing catastrophe.
 
 **Ad Astra** opens here too. The NASA Workbench requires the T4 reality progression token + Mekanism Steel Casing + netherite ingots. The 4-tier rocket progression gates each planet behind a tier-progression — the T4 Glacio rocket needs primordial_essence. Jet Suit recipes are stripped; MekaSuit fills that niche.
 
 ### MekaSuit Mk2 — the endgame chain
 
-The pack's tech-endgame chain is **base MekaSuit (T4 entry-armor) → MekaSuit Mk2 (post-T4 ascension target)** via the Mythic Forge. Mk2 consumes all four base MekaSuit pieces + Aethersteel Ingot + Glacio Stone + Primordial Essence.
+The pack's tech-endgame chain is **base MekaSuit (T4 entry-armor) → MekaSuit Mk2 (post-T4 ascension target)** via the Mythic Forge. Mk2 is a **per-piece in-place upgrade** — each MekaSuit piece is transformed individually, consuming that piece plus endgame reagents (Aethersteel, an Antimatter Pellet, Primordial Essence) and returning the same piece, upgraded.
 
-> **Design intent.** This converts the natural Ad Astra "you've reached the last planet" moment into a tangible reward.
+> **Design intent.** This converts the natural Ad Astra "you've reached the last planet" moment into a tangible reward. Crucially, the upgrade is non-destructive: it preserves the piece's installed modules, stored energy, and enchantments, so the player keeps everything they invested in the base MekaSuit rather than rebuilding from scratch.
 
 ### Planetary economy
 
@@ -743,7 +745,7 @@ Compendium tracking captures every Rift-shard pickup, Rift Keystone craft, Rift 
 
 The Mythic Forge is the **uniques-crafting endgame**. Crafted from Iridescent Rift Shard + Mekanism Teleportation Core + Crying Obsidian + Steel Casing + Netherite, it serves as the workbench for six endgame products:
 
-1. **Mythic Catalysts I–V** — escalating power tokens used as "apply this Mythic effect to gear" reagents.
+1. **Mythic Catalysts I–V** — escalating power tokens used as "apply this Mythic effect to gear" reagents. The top two tiers (IV–V) require an **Antimatter Pellet** apex reagent, making the engineering endgame (the SPS-to-antimatter run) a hard gate on the highest Mythic catalysts — one of several deliberate antimatter sinks, alongside the per-piece MekaSuit Mk2 upgrade and a Codex pellet-to-token exchange (capped) that lets a pure tech player convert antimatter into progression tokens.
 2. **Mythic Reforge Token** — Apotheosis-style gear-modifier reset (3 Primordial Essences).
 3. **Voidheart Blade** (sword) — base: `simplyswords:awakened_lichblade` (Ancient Remnant T4 drop). On-kill damage stacking.
 4. **Oblivion Aegis** (chestplate) — base: netherite chestplate. Death-delay protection.

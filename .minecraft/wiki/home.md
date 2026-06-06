@@ -57,6 +57,7 @@ The canonical design reference for all modpack systems.
 | Equipment HP halving | Implemented | Glass-cannon: equipment max-HP bonuses halved |
 | Progression: token economy (Codex/Heracles) | In progress | Four-lane token economy (Engineering / Magic / Exploration / Combat) |
 | Heracles quest tree | In progress | Quest tree driving the token economy |
+| Engineering questline | Implemented | 14-quest Heracles engineering line (intro through T4 fusion/antimatter capstone) plus an Engineering Lane Codex category with 5 entries |
 | Patchouli Codex | Working | 11 categories, 80 entries, advancement-gated |
 | Book suppression | Working | Duplicate mod guidebooks suppressed |
 | Endgame loops (Part VIII) | Implemented | Rift Shards, Mythic Forge, 12 endgame items, boss drops |
@@ -69,7 +70,7 @@ The canonical design reference for all modpack systems.
 | Config review pass | Implemented | Disenchanting, Table of XP, and DarkOrb T2-gated; Icarus T3; Aethersteel T4 |
 | Tetra integration | Implemented | 27 modded metal materials (T1–T4) |
 | Serene Seasons documentation | Implemented | Patchouli Codex entry for seasonal farming |
-| Mekanism balance overhaul | Implemented | Generator nerfs, 2× RF costs, tool/armor removal |
+| Mekanism balance overhaul | Implemented | Generator nerfs, 2× RF costs, tool/armor removal; ERA-4 pass buffs fusion/fission output, disables radiation + meltdowns (force-shutdown), and T4-pins the fusion/antimatter/Digital-Miner/ultimate facilities |
 | Food system overhaul | Implemented | Faster hunger drain, reduced structure food, spawn protection |
 | Farmer's Delight cooking conversion | Implemented | 70 recipes converted to Farmer's Delight cooking |
 | Ad Astra integration | In progress | 5 planets, post-T4 endgame, planetary extraction, space enchantments |

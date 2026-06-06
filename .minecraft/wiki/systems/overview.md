@@ -159,9 +159,11 @@ The following mods ship as custom bytecode-patched JARs (added to custom JAR all
 
 ## Apotheosis Affixes
 
-~95 total designed, 149 implemented (84 JSON datapacks + 65 event-driven).
+~95 total designed, 149 implemented (84 JSON datapacks + 65 event-driven). The JSON affix definitions are single-sourced from one custom datapack — an earlier duplicate copy living alongside the scripts was removed in the 2026-06-06 cleanup, so there is now exactly one home for each affix.
 
 Categories: Generic Power, Weapon (Offensive/Utility), Armor (Defensive/Mobility/Utility), Shield, Dimensional, Boss-Themed, Tier-Gated.
+
+**Scorching (formerly Ignition).** The fire-themed weapon affix was reworked on 2026-06-06: instead of accidentally buffing the target, it now adds a small attack-damage bump and marks whatever it hits with a timed fire vulnerability, so follow-up fire damage lands harder. The amount scales with rarity (provisionally 15-50%). The display name changed from "Ignition" to "Scorching"; the affix is the same one under the hood.
 
 ### Affix Rates by Tier
 
@@ -262,7 +264,9 @@ Removed alongside ScalingMobs / Improved Mobs when the bespoke `iridescent_diffi
 
 ## Mekanism Balance
 
-Generators nerfed across the board to prevent early RF flooding. All machine RF costs doubled (2x). Digital Miner recipe requires higher-tier materials. Mekanism tool and armor recipes removed (MekaTool/MekaSuit remain T4-only via existing gating).
+All machine RF costs raised to 2.5x stock (the demand-side lever; generator outputs stay stock - and as of ERA 4, fusion/fission outputs are buffed so reactors carry the late-game load). Digital Miner recipe requires higher-tier materials. Mekanism tool and armor recipes removed (MekaTool/MekaSuit remain T4-only via existing gating).
+
+**ERA 4 endgame rebalance (2026-06-06).** With machine costs raised, the late-game reactors are now the intended answer: fusion output is buffed x1.5 (energy-per-fusion-fuel up to 15M) and fission output x1.25 (energy-per-fission-fuel up to 1.5M), so building a real reactor pays off. Radiation is disabled and meltdowns are disabled — an over-damaged fission reactor force-shuts-down instead of exploding or irradiating your base, making fission a dangerous-but-recoverable build rather than a base-ending mistake. The fusion chain, SPS/antimatter, the Digital Miner, and the ultimate-tier facilities are now pinned behind the T4 stage, while the intermediate machines that lead up to them stay open so the ramp still feels continuous.
 
 ## Custom Abyss-themed Curio System
 
@@ -299,7 +303,7 @@ Mobs spawn with gear at dimension-scaled rates (5% Overworld → 80% End), cappe
 
 ## Tectonic Terrain
 
-Tectonic worldgen tuned for flatter terrain: vertical_scale reduced from 1.155 to 0.8 (-31% height reduction), ridge_scale reduced. Mountains are still present but less extreme.
+Tectonic worldgen tuned for much lower, flatter terrain: vertical_scale reduced from 1.155 to 0.38, with ultrasmooth enabled and a flat_terrain_skew of 0.65 pulling generation toward flatter ground, plus reduced ridge_scale. Mountains are still present but far less extreme (worldgen rebalance 2026-06-06).
 
 ## Walkable Mekanism Cables
 

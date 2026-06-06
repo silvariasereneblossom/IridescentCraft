@@ -13,23 +13,23 @@ PrismLauncher supports per-instance pre-launch commands under **Settings → Cus
 
 ## Two modes
 
-### Mode A — Dev / first-party (git pull)
+### Mode A — Dev / first-party (force-sync to `origin/main`)
 
-If your PrismLauncher instance *is* the git repo (GitHub Desktop keeps it synced), the simplest pre-launch command is:
-
-```
-git -C "$INST_DIR" pull --ff-only
-```
-
-Windows form:
+If your PrismLauncher instance *is* the git repo (GitHub Desktop keeps it synced), set the pre-launch command to the bundled hook:
 
 ```
-git -C "%INST_DIR%" pull --ff-only
+"$INST_MC_DIR/prism_prelaunch.bat"
 ```
 
-Pros: instant, no custom scripts, git handles everything including mod JAR tracking if they're in the repo.
+This hook **force-syncs** the instance to pushed `origin/main` (fetch + hard reset), not a plain `git pull`. A force-sync is used deliberately: a stray local commit or edit can make `git pull --ff-only` fail on every launch and then leave the instance **silently stale** for weeks, still carrying mods that `origin` has since removed (a registry mismatch that disconnects you on join). The hard reset can never get stuck — it discards any local divergence and mirrors pushed HEAD every launch.
 
-Cons: requires the instance to be a git clone (which is the case for the Silvaria dev setup via GitHub Desktop). If git is not on PATH, this fails.
+Your worlds are safe: saves, logs, options, and other runtime state are untracked, so the reset never touches them. After syncing, the hook also reconciles the mod index, cleans up stale JARs, downloads any new ones, and re-wires the instance (see *Self-healing wiring* below).
+
+Pros: instant, no manual updater, picks up an update to the hook itself on the same launch.
+
+Cons: requires the instance to be a git clone (the case for the Silvaria dev setup via GitHub Desktop) with git on PATH. If git is not on PATH, the launch records a "git-missing" status and warns rather than syncing (see *Failure handling*).
+
+> The legacy bare `git -C "$INST_DIR" pull --ff-only` command is **superseded** — it is the exact wedge-prone seed that caused silent staleness. Instances still wired to it (or to the zip-path `sync_client.bat`) are auto-upgraded to `prism_prelaunch.bat` on the next launch by the self-healing wiring step.
 
 ### Mode B — Tester / distribution (SHA-check sync script)
 
@@ -41,6 +41,8 @@ For testers using `distribution/client/install.ps1` — their instance is **not*
 4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and invokes `download_mods.ps1` for any new JARs (that script skips existing JARs by filename)
 
 **Install location:** `install.ps1` already copies `sync_client.ps1` and `sync_client.bat` into `$INST_MC_DIR` during initial install. Users set the pre-launch command once.
+
+Like Mode A, the zip-path sync now records a sync status that the diagnostic and the in-game warning can read, so a failed update is **visible** rather than silent (see *Failure handling*).
 
 **PrismLauncher pre-launch command (Windows):**
 
@@ -56,18 +58,43 @@ Or via the bat wrapper:
 
 ## Failure handling
 
-Both the API call and the zip download have short timeouts (10s / 60s). On **any** network failure the script prints a yellow warning and exits 0 so Minecraft still launches — "continuing with existing files" is always safer than blocking play. The pre-launch command will never gate a session on a network hiccup.
+A sync hiccup never blocks play — the launch always proceeds even if the update couldn't be applied. But "launch anyway" used to mean "launch *silently* stale," which is how an instance can drift far behind without anyone noticing. The pre-launch hook is now **fail-visible**:
+
+- It records the result of every launch's sync to a small status file in the instance (a per-launch sentinel, not committed to the repo). A successful sync clears it; a failure records *why* (offline/auth, git not on PATH, or sync blocked) and how far behind the instance is.
+- Failures also print an on-screen warning ("pushes are NOT arriving — tell Silvaria") in the pre-launch log, and an in-game warning surfaces so a stale launch is obvious from inside the game rather than passing silently.
+- Auth problems **fail fast**: the hook never hangs waiting for a credential prompt that can't be answered in the pre-launch context — it fails immediately, records the reason, and launches.
+
+This **supersedes** the old behavior where the script simply exited 0 with at most a yellow console line. "Continuing with existing files" is still the safe default on a network hiccup, but a failed sync is now recorded and surfaced, not swallowed.
+
+For a full read-only check of a machine's sync setup, run `dev/diagnose_sync.ps1` — it reads the recorded sync status and reports a PASS/FAIL for each link in the chain (git on PATH, instance is a clone, launcher wiring, remote/auth). It changes nothing; it only diagnoses. Use it when an instance looks out of date.
 
 ## Verifying it works
 
-After setting the pre-launch command, launch the instance once. You should see console output (PrismLauncher shows it in the launch log or a popup depending on settings):
+After setting the pre-launch command, launch the instance once. PrismLauncher shows the output in the launch log (or a popup, depending on settings).
+
+**Mode A (force-sync):** you should see the `[prism_prelaunch]` steps — fetch, the behind-count before sync, the hard reset, then the post-sync index reconcile, stale-JAR cleanup, mod downloads, and the wiring check:
+
+```
+[prism_prelaunch] git fetch origin...
+[prism_prelaunch] behind origin/main by 0 commit(s) before sync.
+[prism_prelaunch] force-sync: reset --hard origin/main ...
+[prism_prelaunch] instance now mirrors origin/main.
+[prism_prelaunch] reconcile mods\.index ...
+[prism_prelaunch] cleanup stale jars...
+[prism_prelaunch] download missing packwiz jars...
+[prism_prelaunch] wire instance.cfg (PreLaunch + PostExit hooks)...
+```
+
+A non-zero behind-count followed by "instance now mirrors origin/main" means the update landed this launch. A warning that pushes are NOT arriving means the sync failed and the launch is running on existing files — check the recorded status with `dev/diagnose_sync.ps1`.
+
+**Mode B (zip overlay):** you should see the `[IridescentCraft Sync]` lines instead:
 
 ```
 [IridescentCraft Sync] Instance: C:\...\IridescentCraft\.minecraft
 [IridescentCraft Sync] Up to date (commit abc1234).
 ```
 
-Or if there are actual changes:
+Or, when there are changes:
 
 ```
 [IridescentCraft Sync] New commit: xyz9876 (was abc1234). Downloading...
@@ -79,7 +106,7 @@ Or if there are actual changes:
 
 ## What it does NOT sync
 
-Deliberately excluded (preserved from the instance):
+These are preserved from the instance regardless of mode. In Mode B the overlay deliberately skips them; in Mode A they survive the hard reset because they're untracked or git-ignored, so the reset only rewrites tracked pack files and never your runtime state.
 
 - `world/` — save data
 - `logs/`, `crash-reports/` — runtime output
@@ -92,8 +119,18 @@ Deliberately excluded (preserved from the instance):
 
 ## When to use which mode
 
-- **Silvaria's own dev instance:** Mode A (git pull). Fastest and the git history gives you rollback if something goes wrong
+- **Silvaria's own dev instance:** Mode A (force-sync to `origin/main` via `prism_prelaunch.bat`). Fast, and the git history gives you rollback if something goes wrong
 - **Tester instances:** Mode B (sync_client.ps1). Handles the zip-download path cleanly, no git required
+
+## Self-healing wiring
+
+PrismLauncher only honors a pre-launch command when the instance's launcher settings are wired correctly — and those settings can drift (a manual edit, an import, a launcher upgrade) and silently disable syncing. To make that self-correcting, the pre-launch hook re-checks and repairs the instance's launcher wiring on every launch:
+
+- Asserts the launcher's "override commands" gate is on — without it, the pre-launch and post-exit commands are ignored entirely.
+- Upgrades the two known stale pre-launch seeds (the legacy bare `git pull --ff-only` and the zip-path `sync_client.bat`) to `prism_prelaunch.bat`. Any other custom command is left alone.
+- Uses the launcher's bundled portable Java instead of a hardcoded Java path, so the instance still launches after Java is moved or reinstalled, or when copied to a new machine.
+
+This heals on the **second and later** launches only — the very first launch still needs the one-time manual wiring (the hook can't run until it's wired as the pre-launch command). That one-time setup is documented in the new-machine setup guide.
 
 ## Bytecode-patched JARs — re-apply after mod updates
 

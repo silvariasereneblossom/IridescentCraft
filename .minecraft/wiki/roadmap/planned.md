@@ -77,10 +77,11 @@ current T2 Blue Skies feels vs the T1 version before committing.
 - Long-term: Modrinth publication replaces this entirely
 - Consider: pre-built instance zip as GitHub release asset for interim
 
-### Custom Item Artwork (72 items)
+### Custom Item Artwork (71 items)
 - All custom items use tinted vanilla placeholder textures
-- Need proper 16x16 pixel art for: progression tokens, boss materials, alloys, rings, endgame items, MekaSuit Mk2, planetary elements, Compass of Return
+- Need proper 16x16 pixel art for: progression tokens, boss materials, alloys, rings, endgame items, planetary elements, Compass of Return
 - Location: `assets/kubejs/textures/item/` as 16x16 PNGs
+- (MekaSuit Mk2 dropped from this list 2026-06-06 — it is now an in-place NBT marker on the real MekaSuit piece, not a separate placeholder-textured item)
 
 ### Tier-gated Sophisticated Backpacks mob-backpack loot
 - **Status:** Idea parked 2026-04-24. Currently disabled via `defaultconfigs/sophisticatedbackpacks-server.toml` (`chance = 0.0`, `addLoot = false`).
@@ -112,7 +113,6 @@ current T2 Blue Skies feels vs the T1 version before committing.
 ### Ad Astra Endgame Completion
 - 5 planets as post-T4 content
 - Remaining: recipe gating, dimension scaling, loot tables, space enchantments
-- MekaSuit Mk2 recipes
 
 ### Config Hot-Reload System
 - Allow config/kubejs changes without full server restart
@@ -151,3 +151,4 @@ Items move here when implemented. See [Design Changelog](../design/changelog.md)
 - ~~Tier loot fix (Nether = T3)~~ → Corrected in lootjs_overhaul.js
 - ~~Iron's Spells loot tiering~~ → Spell books + inks scale T1-T4
 - ~~OfflineSkins~~ → Client-only mod for offline-mode servers
+- ~~MekaSuit Mk2 recipes~~ → Implemented 2026-06-06 as an in-place Mythic Forge upgrade of the real MekaSuit pieces (NBT preserved); the dead ingredient ID that had left them uncraftable was fixed at the same time
