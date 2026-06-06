@@ -10,6 +10,15 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 
 ## Open / In-progress
 
+### Curio affix lane is brand new — **Provisional (feel pass pending)**
+Curios can now roll Apotheosis affixes and gem sockets (new this window). All 14 curio
+affix magnitudes and the per-gem curio bonuses are first-pass numbers, deliberately
+conservative (about half armor-piece scale) because players stack many curio slots.
+Expect tuning. If a curio shows a missing-name affix (raw `affix.apotheosis:...` text)
+or a gem stops working entirely, report it immediately — those are loader-level
+failures, not balance issues.
+
+
 ### Server can lag (low TPS) under heavy load — **Mitigated**
 Under a full server with many players and active mobs, tick rate could drop and feel laggy to the lowest-ping player. Mitigated by raising the server heap and disabling some per-spawn diagnostic logging. Full resolution waits on a server-host RAM bump.
 

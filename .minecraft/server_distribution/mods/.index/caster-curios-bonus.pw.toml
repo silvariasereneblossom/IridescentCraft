@@ -1,0 +1,16 @@
+filename = 'CasterCuriosBonus-1.20.1-1.1.0.jar'
+name = 'Caster Curios Bonus'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '3027bbd522ca3e7526a037f176a2485566e110b9'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 7809358
+project-id = 1384597

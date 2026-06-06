@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "bfcfec450",
+  "generated_from": "734d5ac4d",
   "roots": [
     "kubejs",
     "config",
@@ -1008,8 +1008,8 @@
       "size": 87
     },
     "config/apotheosis/adventure.cfg": {
-      "sha256": "932a1ca5ca489af80dfe6017642564700b5972d964119f5188105450ba217790",
-      "size": 12179
+      "sha256": "aba978d0acb7fcbdb26372f20910d1e0e8892a344150d2b8d24c94054658a9d7",
+      "size": 11496
     },
     "config/apotheosis/apotheosis.cfg": {
       "sha256": "5e9f9f1022e1707ed6b1930508384572fe42c659e331bfa8fe2e84f6aa2fb246",
@@ -4000,8 +4000,8 @@
       "size": 4122
     },
     "config/paxi/datapacks/icraft_apotheosis_affixes.zip": {
-      "sha256": "d815f49e6e80878ecb45caee019301eee1c390cb9ebe3856f766635b67e708bb",
-      "size": 39469
+      "sha256": "cac6f4ac7612620b45f274ee0a340c462305cdb15b67275c4c5ed9c62a2629b0",
+      "size": 51874
     },
     "config/paxi/datapacks/icraft_botania_overrides.zip": {
       "sha256": "1d48ef45f9cefd8689814f4096631dd66523a8e3f7ed8947300166483d727638",
@@ -4016,16 +4016,16 @@
       "size": 1348
     },
     "config/paxi/datapacks/icraft_iss_gem_buffs.zip": {
-      "sha256": "0f86ba98199ce249ed40da286f53497979e7d2c52e14efc5fa570e81927cf076",
-      "size": 7934
+      "sha256": "8c0c6309347e758ca7197987e652c41658934eb9c719fe5cd9750da03f9e64b9",
+      "size": 9971
     },
     "config/paxi/datapacks/icraft_iss_overrides.zip": {
       "sha256": "afe9bf2c6fdd05eab4264945d0f945ce916082abb431ad58a4ee042a56682053",
       "size": 1271
     },
     "config/paxi/datapacks/icraft_loot_overrides.zip": {
-      "sha256": "7c4c6871ea123cce683fe27c59fded19bb8eabf54f0952342ba6bea725c9cfd3",
-      "size": 620794
+      "sha256": "75b267b06f32b37cd7bf5715c3ccb6bd89c8bc8c5bb1f58f71787226369252bb",
+      "size": 666697
     },
     "config/paxi/datapacks/icraft_mm_overrides.zip": {
       "sha256": "565f1641f1d3f67d7e90a1c86701300904a80eddffcdeb19249b47f79c67cc25",
@@ -5532,8 +5532,8 @@
       "size": 1203
     },
     "kubejs/assets/apotheosis/lang/en_us.json": {
-      "sha256": "893e223391b521e00ad792009deb65a12aa7ef296a71b31c93034e0422ad6ab0",
-      "size": 26459
+      "sha256": "cb03a12ad77a6d54a8912c225c7637dc0408ffa123944d0ce496fc53f0220819",
+      "size": 30654
     },
     "kubejs/assets/dna/lang/en_us.json": {
       "sha256": "e3a6a72acfb05359da05e9ea25843eada2c269c3ec0f6c791b9ad4fed6ac5294",
@@ -7239,6 +7239,10 @@
       "sha256": "8f6069345cbf4a15e56a23b00aaa95ee1da768d9eaf4a5b476ad6080476fad9b",
       "size": 403
     },
+    "mods/.index/apothic-curios.pw.toml": {
+      "sha256": "b8353689096fa1c1bae2fc359b8d392ff48a040678641f4b2711e146058cd659",
+      "size": 385
+    },
     "mods/.index/appleskin.pw.toml": {
       "sha256": "e7fa1069b3f96fd4b28cfb6b5e256225f17465d47aff81b6a92c6a8660b135c9",
       "size": 561
@@ -7422,6 +7426,10 @@
     "mods/.index/cardinal-sins.pw.toml": {
       "sha256": "7e4810a22f772b81d1dfae1b8a3fd6a247a8fdbfbb82c2e594f3684719d91467",
       "size": 380
+    },
+    "mods/.index/caster-curios-bonus.pw.toml": {
+      "sha256": "8205efe37cc798c07d3ab23cdf5b84a9a88af5c29fab8dc5e7dcb99d37988787",
+      "size": 394
     },
     "mods/.index/cataclysm-apotheosis-addon.pw.toml": {
       "sha256": "0b60ae5ec2dac76f9a31d2744ca5f1855b64a0e7ec16dc8bde0ea49c5555dcef",

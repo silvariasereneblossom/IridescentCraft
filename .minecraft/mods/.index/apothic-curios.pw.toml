@@ -1,0 +1,16 @@
+filename = 'ApothicCurios-1.20.1-1.0.3e.jar'
+name = 'Apothic Curios'
+side = 'both'
+x-prismlauncher-loaders = [ 'forge' ]
+x-prismlauncher-mc-versions = [ '1.20.1' ]
+x-prismlauncher-release-type = 'release'
+
+[download]
+hash = '77427f10fdce834ce1f54492556f7a10c2f41a03'
+hash-format = 'sha1'
+mode = 'metadata:curseforge'
+url = ''
+
+[update.curseforge]
+file-id = 6624706
+project-id = 950712
