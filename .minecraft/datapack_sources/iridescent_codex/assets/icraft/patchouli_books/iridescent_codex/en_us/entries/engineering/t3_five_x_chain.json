@@ -1,0 +1,22 @@
+{
+  "name": "T3: The 5x Chain (Mekanism)",
+  "icon": "mekanism:enrichment_chamber",
+  "category": "icraft:engineering",
+  "sortnum": 3,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "$(t3)Tier 3$() unlocks $(bold)Mekanism$() - osmium renders and the apex machine roster opens. The keystone reward is $(bold)5x ore$(): the four-stage chain $(bold)Enrichment -> Purification -> Injection -> Crystallization$() turns one ore into five ingots' worth of output."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Feeding the chain",
+      "text": "The 5x chain is power-hungry. The scalable T3 answer is $(bold)ethylene$(): farmed crops -> Bio Fuel -> a Pressurized Reaction Chamber -> a Gas-Burning Generator. Automated farming is effectively required - that is by design."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Banking T3 tokens",
+      "text": "Mekanism is the densest token tier: $(bold)Gas-Burning Generator$() $(t3)100$(), Basic Smelting Factory $(t3)80$(), Purification Chamber $(t3)70$(), Enrichment Chamber $(t3)60$() each.$(br2)Bank $(t3)2000$() total to reach $(t4)Tier 4$(). Full writeup: $(l:icraft:mods_t3/mekanism)Mekanism$(/l)."
+    }
+  ]
+}

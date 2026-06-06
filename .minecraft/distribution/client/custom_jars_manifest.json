@@ -1,67 +1,67 @@
 {
-    "generated_at":  "2026-06-05T10:33:08Z",
-    "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
-    "algorithm":  "SHA-256",
-    "jars":  {
-                 "iridescent_codex_data.jar":  {
-                                                   "sha256":  "f0b5c3021fdb16557054cf8853b32c2c57ba85ee464f690bd7f55fc370f1c434",
-                                                   "size":  259983
-                                               },
-                 "iridescent_origins-1.0.0.jar":  {
-                                                      "sha256":  "35d739c1b8077451d95f5598cb7eee7206306ebb113f9e1a00596d51af09d42b",
-                                                      "size":  96223
-                                                  },
-                 "iridescent_biomes-1.0.0.jar":  {
-                                                     "sha256":  "b4ed38ff823feac96ffb45dd40711c80e14470a9505bc52b253431c5c605da64",
-                                                     "size":  8854
-                                                 },
-                 "iridescent_tetra_expansion-1.0.0.jar":  {
-                                                              "sha256":  "e41a25805d2bd6f89e87bc1c0e526fb8eb05aea8eb28a878e1c18c3ac3cca032",
-                                                              "size":  1363620
-                                                          },
-                 "iridescent_durability_clamp-0.1.0.jar":  {
-                                                               "sha256":  "f39c1eeb0b53daa1fab3da3980a6542a8d26fd5ba2993c2934ff4aa19999f0ae",
-                                                               "size":  9498
-                                                           },
-                 "iridescent_difficulty-0.1.0.jar":  {
-                                                         "sha256":  "cbd0873a31c9f37aa916968477f65f97296f473b82728b8febc496261cb8a44c",
-                                                         "size":  31836
-                                                     },
-                 "iridescent_grand_compass-1.0.0.jar":  {
-                                                            "sha256":  "a20d1037290c5b238f8a495148c1ef7872662ddec51b7ba99ed0783fc9fb8159",
-                                                            "size":  16091
-                                                        },
-                 "justlevelingfork-1.2.1-iridescent.1.jar":  {
-                                                                 "sha256":  "f0b9e84bc849db0070994f8e4e938b14c54ac75fbc6fe91fbc40fea475b81936",
-                                                                 "size":  486761
-                                                             },
-                 "mek_walkable_cables-1.0.1.jar":  {
-                                                       "sha256":  "e90d65edd5a3cdfeec4a551147f034b36841a58101369f1fb8a4a29b8b3c495c",
-                                                       "size":  1585
-                                                   },
-                 "offlineskins-1.20.1-v1.jar":  {
-                                                    "sha256":  "ac4eb2a373b83a0383cd89e5dbb763f61776415ccb6371ec168365a8ea1bcddf",
-                                                    "size":  93967
-                                                },
-                 "Patchouli-1.20.1-85-FORGE.jar":  {
-                                                       "sha256":  "1e418398159c72c50340726c565c496354ab72697d9139191a66beea731f8c22",
-                                                       "size":  642743
-                                                   },
-                 "ars_nouveau-1.20.1-4.12.7-all.jar":  {
-                                                           "sha256":  "74b3c60a3afb130811e6780c5db9cfc80811578b3df9cf1b14d04b018dabb51a",
-                                                           "size":  12339183
-                                                       },
-                 "class-artifacts-forge-2.0.5.jar":  {
-                                                         "sha256":  "a182eae8398d91bac29872fe5522f6ac093793c2bc9aad598212d8ff55be8de2",
-                                                         "size":  514154
-                                                     },
-                 "iridescent_relics-1.0.0.jar":  {
-                                                     "sha256":  "0eb4603308ac6d4e979ee7f0bfa42c1ea594f5511a10149f9c69570f67ad4a63",
-                                                     "size":  39191
-                                                 },
-                 "linearxp-1.0.0-iridescent.1.jar":  {
-                                                         "sha256":  "ce6b75a0ae44d82118e3edb406ecf32518ef2a3436151574adcf19fb471668ad",
-                                                         "size":  186285
-                                                     }
-             }
+  "generated_at": "2026-06-06T03:56:52Z",
+  "generated_by": "regen_custom_jars_manifest.ps1 on  by ",
+  "algorithm": "SHA-256",
+  "jars": {
+    "iridescent_codex_data.jar": {
+      "sha256": "c0ab3a7a5c0a97e43e760b4652a6610ce90d88570f87afae6ac631e92852b1fb",
+      "size": 269107
+    },
+    "iridescent_origins-1.0.0.jar": {
+      "sha256": "35d739c1b8077451d95f5598cb7eee7206306ebb113f9e1a00596d51af09d42b",
+      "size": 96223
+    },
+    "iridescent_biomes-1.0.0.jar": {
+      "sha256": "b4ed38ff823feac96ffb45dd40711c80e14470a9505bc52b253431c5c605da64",
+      "size": 8854
+    },
+    "iridescent_tetra_expansion-1.0.0.jar": {
+      "sha256": "e41a25805d2bd6f89e87bc1c0e526fb8eb05aea8eb28a878e1c18c3ac3cca032",
+      "size": 1363620
+    },
+    "iridescent_durability_clamp-0.1.0.jar": {
+      "sha256": "f39c1eeb0b53daa1fab3da3980a6542a8d26fd5ba2993c2934ff4aa19999f0ae",
+      "size": 9498
+    },
+    "iridescent_difficulty-0.1.0.jar": {
+      "sha256": "cbd0873a31c9f37aa916968477f65f97296f473b82728b8febc496261cb8a44c",
+      "size": 31836
+    },
+    "iridescent_grand_compass-1.0.0.jar": {
+      "sha256": "a20d1037290c5b238f8a495148c1ef7872662ddec51b7ba99ed0783fc9fb8159",
+      "size": 16091
+    },
+    "justlevelingfork-1.2.1-iridescent.1.jar": {
+      "sha256": "f0b9e84bc849db0070994f8e4e938b14c54ac75fbc6fe91fbc40fea475b81936",
+      "size": 486761
+    },
+    "mek_walkable_cables-1.0.1.jar": {
+      "sha256": "e90d65edd5a3cdfeec4a551147f034b36841a58101369f1fb8a4a29b8b3c495c",
+      "size": 1585
+    },
+    "offlineskins-1.20.1-v1.jar": {
+      "sha256": "ac4eb2a373b83a0383cd89e5dbb763f61776415ccb6371ec168365a8ea1bcddf",
+      "size": 93967
+    },
+    "Patchouli-1.20.1-85-FORGE.jar": {
+      "sha256": "1e418398159c72c50340726c565c496354ab72697d9139191a66beea731f8c22",
+      "size": 642743
+    },
+    "ars_nouveau-1.20.1-4.12.7-all.jar": {
+      "sha256": "74b3c60a3afb130811e6780c5db9cfc80811578b3df9cf1b14d04b018dabb51a",
+      "size": 12339183
+    },
+    "class-artifacts-forge-2.0.5.jar": {
+      "sha256": "a182eae8398d91bac29872fe5522f6ac093793c2bc9aad598212d8ff55be8de2",
+      "size": 514154
+    },
+    "iridescent_relics-1.0.0.jar": {
+      "sha256": "0eb4603308ac6d4e979ee7f0bfa42c1ea594f5511a10149f9c69570f67ad4a63",
+      "size": 39191
+    },
+    "linearxp-1.0.0-iridescent.1.jar": {
+      "sha256": "ce6b75a0ae44d82118e3edb406ecf32518ef2a3436151574adcf19fb471668ad",
+      "size": 186285
+    }
+  }
 }
