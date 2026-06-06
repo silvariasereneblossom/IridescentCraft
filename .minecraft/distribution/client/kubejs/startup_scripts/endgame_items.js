@@ -161,54 +161,20 @@ StartupEvents.registry('item', event => {
         .color(0, 0xDD55FF)
 
     // =========================================================================
-    // MekaSuit Mk2 — Ultimate Armor Set (Ad Astra Integration)
-    // The convergence of tech and magic — MekaSuit + Aethersteel + Glacio + Rift
-    // CAN receive Apotheosis affixes, custom enchantments, and socket gems
+    // MekaSuit Mk2 — RETIRED SHELL ITEMS [2026-06-06 MK2B]
+    // The 4 kubejs:mekasuit_mk2_* shell items were RETIRED on 2026-06-06 per the
+    // operator-approved Mk2 redesign. The Mk2 is now the REAL mekanism:mekasuit_*
+    // piece carrying an icraft NBT marker (icraft_mekasuit_mk2:1b), so native
+    // modules/energy/enchants/affixes all survive the upgrade. There is no longer
+    // a separate shell item.
+    //   - In-place upgrade recipe: kubejs/server_scripts/recipes/ad_astra_gating.js
+    //       SECTION G  (event.shaped(... mekanism piece ...).modifyResult(...))
+    //   - Pinnacle stat layer:    kubejs/startup_scripts/mekasuit_mk2_stats.js
+    //       (ItemAttributeRegistry, gated on the item + NBT marker)
+    //   - Tooltip:                kubejs/client_scripts/mekasuit_mk2_tooltip.js
+    // Scoping note: both alpha testers are mage-only with zero Mekanism NBT, so
+    // no live inventory owned a shell item -- safe to remove outright.
     // =========================================================================
-
-    event.create('kubejs:mekasuit_mk2_helmet')
-        .displayName('MekaSuit Mk2 Helmet')
-        .tooltip('§5The ultimate protective headgear')
-        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
-        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
-        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
-        .maxStackSize(1)
-        .rarity('epic')
-        .textureJson({ layer0: 'minecraft:item/netherite_helmet' })
-        .color(0, 0x4488FF)
-
-    event.create('kubejs:mekasuit_mk2_chestplate')
-        .displayName('MekaSuit Mk2 Chestplate')
-        .tooltip('§5The ultimate protective chestpiece')
-        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
-        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
-        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
-        .maxStackSize(1)
-        .rarity('epic')
-        .textureJson({ layer0: 'minecraft:item/netherite_chestplate' })
-        .color(0, 0x4488FF)
-
-    event.create('kubejs:mekasuit_mk2_leggings')
-        .displayName('MekaSuit Mk2 Leggings')
-        .tooltip('§5The ultimate protective leg armor')
-        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
-        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
-        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
-        .maxStackSize(1)
-        .rarity('epic')
-        .textureJson({ layer0: 'minecraft:item/netherite_leggings' })
-        .color(0, 0x4488FF)
-
-    event.create('kubejs:mekasuit_mk2_boots')
-        .displayName('MekaSuit Mk2 Boots')
-        .tooltip('§5The ultimate protective footwear')
-        .tooltip('§7Combines MekaSuit technology with Aethersteel reinforcement')
-        .tooltip('§aAccepts Apotheosis affixes, enchantments, and socket gems')
-        .tooltip('§8Crafted from MekaSuit + Aethersteel + Glacio materials + Primordial Essence')
-        .maxStackSize(1)
-        .rarity('epic')
-        .textureJson({ layer0: 'minecraft:item/netherite_boots' })
-        .color(0, 0x4488FF)
 
     // =========================================================================
     // PLANETARY EXTRACTED ELEMENTS

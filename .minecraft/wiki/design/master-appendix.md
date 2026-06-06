@@ -924,7 +924,7 @@ All `kubejs:*` items, ~80 total. Organized by category. Source: `kubejs/startup_
 
 ### E.4 Mythic uniques (Mythic Forge crafted)
 
-- `kubejs:mekasuit_mk2_helmet`, `kubejs:mekasuit_mk2_chestplate`, `kubejs:mekasuit_mk2_leggings`, `kubejs:mekasuit_mk2_boots` — MekaSuit Mk2 4-piece set (consume base MekaSuit + Aethersteel + Glacio Stone + Primordial Essence).
+- **MekaSuit Mk2** — the Mythic Forge upgrade is an **in-place** transform of the real `mekanism:mekasuit_*` piece (no separate `kubejs:` shell item; the prior `kubejs:mekasuit_mk2_*` shells were retired 2026-06-06). The upgrade consumes the player's existing MekaSuit piece + Aethersteel + Glacio Stone + Primordial Essence and returns the **same** Mekanism piece with its NBT preserved (installed modules, stored energy, enchantments, affixes all survive) plus an `icraft_mekasuit_mk2` marker and a pinnacle display name/lore. A runtime stat layer keyed on the marker adds a provisional pinnacle band over native MekaSuit (additive only, no native nerf).
 - Voidheart Blade, Oblivion Aegis, Riftwalker Boots, Oblivion Crown — these are renamed-with-NBT Mythic Forge outputs based on existing items (Awakened Lichblade / netherite armor) rather than fully-custom items. Recognized via NBT display.Name match in `endgame/rift_mechanics.js`.
 
 ### E.5 Cross-mod alt-recipe outputs
