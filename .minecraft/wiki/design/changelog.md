@@ -13,7 +13,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **Affix and gem repairs** — several Apotheosis status-effect affixes had a malformed value shape and never loaded; two custom gems (Guardian, Intelligent) were fully disabled by a duplicate-slot conflict; the magic-weapon affix pool resolved to empty because a shadowing override dropped the relevant weapon types. All repaired.
 - **Broken tag and ID cleanup** — a sweep of armor/entity/biome tags and a handful of loot/recipe scripts fixed dozens of references to renamed, mistyped, or uninstalled-mod items so they stop erroring at load.
 - **Script error fixes** — the boss-bonfire tick error, several Create/Industrial-Foregoing recipe failures, and a non-existent loot id were corrected.
-- **PacketFixer removed** — a redundant networking mod was dropped.
+- **PacketFixer removed, then restored same-day** — it looked redundant alongside Connectivity, but its string-length patch turned out to be load-bearing (without it, large server payloads broke client logins with a vanilla 32k string cap). Back in the pack; the harmless overlap warnings with Connectivity return with it.
 - **Ash blacklist** — common passive mobs are now excluded from a Supplementaries ash interaction via a tag override (the config flag for it was a dead toggle).
 - **Stranded-item janitor** — a periodic cleanup sweeps up stray marker items left behind by the boss-wave randomizer.
 - **Sync made fail-visible** — the launcher no longer launches silently stale on a failed update; an in-game warning surfaces if the pack didn't sync, and a new-machine setup guide documents the correct install layout.

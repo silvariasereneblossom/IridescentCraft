@@ -152,7 +152,6 @@ Mods that were in earlier builds but have since been dropped. Where a mod was re
 | FTB Ultimine | Removed — replaced by LiteMiner + Amber |
 | Truly Modular family (Armory / Arsenal / Archery / modular-item-api / Create-compat) | Removed — superseded by the Tetra stack + Iridescent Reforging |
 | ScalingMobs · Improved Mobs · Azukaar's Fair Difficulty | Removed — replaced by the bespoke `iridescent_difficulty` mod |
-| PacketFixer | Removed — redundant networking (Connectivity owns net packet limits) |
 
 ## Custom Mods
 
