@@ -31,14 +31,14 @@ A few EnemyExpansion mob attacks set player velocity directly, bypassing normal 
 ### Aetheric Tetranomicon compatibility edge case — **Mitigated**
 A conflict between Aetheric Tetranomicon and the pack's modular armor/spell books is handled defensively — no crashes. In a rare case, some add-on durability effects are skipped on affected items.
 
-### MekaSuit has no base armor stats — **Open**
-Mekanism's end-game MekaSuit has no innate armor values (its protection comes entirely from installed modules), so it doesn't yet compose with the pack's dimension-based difficulty scaling. Parked for a later fix.
+### MekaSuit has no base armor stats — **Mitigated**
+Mekanism's end-game MekaSuit has no innate armor values by design (its protection comes entirely from installed modules). The MekaSuit Mk2 upgrade (June 2026 rebuild) now adds true base armor/toughness/knockback-resistance on top of the module system, so the pinnacle suit composes with dimension-based difficulty scaling. The un-upgraded base suit remains module-only, matching Mekanism's design.
 
 ### Apotheosis tower chests can under-fill — **Open**
 Some Apotheosis tower chests may roll light (e.g. gold only) due to a loot-table load-order quirk.
 
-### Some near-spawn chests generate as vanilla, not Lootr — **Open**
-A few chests near spawn can generate as ordinary shared chests instead of per-player Lootr chests. Conversion mode has been tuned to reduce this; some structures with unusual chest placement may still slip through.
+### Some near-spawn chests generate as vanilla, not Lootr — **Open (mechanism confirmed)**
+A few chests can generate as ordinary shared chests instead of per-player Lootr chests. Root cause confirmed (June 2026 audit): Lootr only converts loot containers placed during world generation — chests placed afterward by command/function-driven content (e.g. Ultris structures place theirs via `setblock` with a LootTable) are structurally invisible to it, as are modded chest blocks outside the `forge:chests/wooden`/`trapped` tags (the config's additional-conversion lists are empty). A full per-source census is scoped as follow-up work.
 
 ### Reforged Botania / Cataclysm armors render approximately — **Known limitation**
 Reforged variants of Botania (Manaweave / Manasteel / Terrasteel / Elementium) and Cataclysm (Ignitium) armors render on the vanilla armor model. Their color and material identity are preserved, but proportions differ slightly from the source mod's custom model. Intentional; revisited only if feedback calls for it.

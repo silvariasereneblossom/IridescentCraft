@@ -17,6 +17,8 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 - **Ash blacklist** — common passive mobs are now excluded from a Supplementaries ash interaction via a tag override (the config flag for it was a dead toggle).
 - **Stranded-item janitor** — a periodic cleanup sweeps up stray marker items left behind by the boss-wave randomizer.
 - **Sync made fail-visible** — the launcher no longer launches silently stale on a failed update; an in-game warning surfaces if the pack didn't sync, and a new-machine setup guide documents the correct install layout.
+- **Scorching (formerly Ignition) affix reworked** — it was accidentally granting the *target* fire resistance; it now marks struck enemies with a timed fire vulnerability that amplifies all fire damage they take, scaling with affix rarity.
+- **MekaSuit Mk2 rebuilt** — the Mk2 is now a true in-place upgrade of the real MekaSuit: installed modules, stored energy, enchantments, and affixes all survive the craft, and the upgraded suit carries bonus base armor on top of the full module ecosystem. (The old version was a non-functional placeholder that destroyed installed modules — if you crafted one, ask an admin for a replacement.)
 
 ## May 2026 — Modular gear, unified magic, and the bespoke difficulty engine
 
