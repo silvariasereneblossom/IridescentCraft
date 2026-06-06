@@ -935,3 +935,19 @@ Using last one encountered.
 [10:26:44] [INFO] death_penalty.js#83: [death-event] fired entity.type=minecraft:spider entity.player=false event.player=false
 [10:26:44] [INFO] death_penalty.js#99: [death-event] no player resolved -- skipping
 [10:27:36] [WARN] bonfire/boss_bonfire_system.js#302: [bonfire] tick threw: TypeError: Cannot call property dimension in object ServerLevel[world]. It is not a function, it is "object". (suppressing next 59; counter 781)
+[22:49:29] [INFO] codex_delivery.js#228: [codex] silvieserene already has the book, skipping delivery
+[22:49:29] [INFO] codex_delivery.js#245: [codex] loggedIn fired for silvieserene, sweep + starter-poll armed (3min), auto-origindump armed (~20s)
+[22:49:30] [INFO] origins/magic_class_starter.js#111: [magic-starter] Login hook armed for silvieserene
+[22:49:41] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:49:47] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:49:50] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:49:51] [INFO] origins/magic_class_starter.js#125: [magic-starter] Login check for silvieserene: detected=archmage
+[22:49:53] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:49:55] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:49:56] [INFO] codex_delivery.js#164: [codex/starter] tryGrantStarter: detected=archmage for silvieserene
+[22:49:56] [INFO] codex_delivery.js#168: [codex/starter] tryGrantStarter: flag icraft_magic_starter_archmage already true for silvieserene — skipping grant
+[22:49:58] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:50:02] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:50:04] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:50:05] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
+[22:50:07] [INFO] codex_delivery.js#696: [IridescentCraft] Sweep ran for silvieserene — no books found
