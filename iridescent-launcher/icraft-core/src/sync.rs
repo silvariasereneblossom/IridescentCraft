@@ -24,6 +24,7 @@
 //!      dir (special-case mods/.index, self-update files, datapacks).
 
 use anyhow::{anyhow, Context, Result};
+use std::collections::BTreeMap;
 use std::fs;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
@@ -313,11 +314,354 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
     log::info!("[sync] mirroring {} -> {}", src.display(), cfg.server_dir.display());
     mirror_distro(&src, &cfg.server_dir)?;
 
+    // Expected-state deletion/repair pass: runs AFTER the non-deleting overlay
+    // and BEFORE the extract dir is removed (repairs source from `src`). Closes
+    // the strand-on-delete gap (repo deletions left orphaned files on disk after
+    // a full-zip overlay forever -- the diff path already handles `removed`).
+    // Mirrors phase0_sync.ps1 `Invoke-ExpectedStatePass`; dry-run by default in
+    // this first shipped version (flip EXPECTED_STATE_DRY / ICRAFT_EXPECTED_STATE_DRY=0
+    // to go live). Soft-fails: never aborts the sync.
+    expected_state_pass(&cfg.server_dir, Some(&src), "[sync] ");
+
     write_sha(&cfg.last_sha(), remote_sha)?;
     let _ = fs::remove_file(&zip_path);
     let _ = fs::remove_dir_all(&extract_dir);
     log::info!("[sync] full sync to {}", short_sha(remote_sha));
     Ok(())
+}
+
+// =============================================================================
+// Phase 0 — expected-state deletion/repair pass (full-zip overlay closer)
+// =============================================================================
+//
+// The full-zip overlay above (`mirror_distro`) is NON-DELETING: it copies
+// new/changed files over the live install but never removes files the repo
+// dropped. Repo deletions therefore strand on consumers forever (the 8 stale
+// affixes that aborted the live magic_weapon pool; packetfixer/tier_skip/probe;
+// censused 2026-06-06). The DIFF path already handles status==removed; this pass
+// closes the same gap for the full-zip path, using `expected_state.json` --
+// generated from the repo tree over the managed roots -- as the single source of
+// truth for what should exist.
+//
+// Mirrors `Invoke-ExpectedStatePass` in phase0_sync.ps1 (same log wording so
+// operator greps work across the PS1 + Rust legs). Behavior after a full-zip
+// overlay, per managed roots (kubejs/, config/, mods/.index/):
+//   - on disk but NOT in manifest             -> DELETE (respecting volatile dirs)
+//   - in manifest, hash MISMATCH, not volatile -> REPAIR from the extract copy
+//                                                 (mismatch after overlay means a
+//                                                 local write-protect/lock failure)
+//   - in manifest, MISSING on disk            -> REPAIR (copy from extract), log
+//   - in manifest, hash MISMATCH, volatile     -> KEEP LOCAL (mod rewrites this
+//                                                 config at runtime)
+//
+// FAIL-KEEP: manifest missing/unparseable/empty -> delete NOTHING, warn loudly.
+// DRY-RUN: defaults to dry-run in this first shipped version (report-only). Going
+// live = flip EXPECTED_STATE_DRY to false (or set ICRAFT_EXPECTED_STATE_DRY=0),
+// AFTER the operator compares the report to the 2026-06-06 census.
+
+/// Dry-run default for this first shipped version. Going live = flip to `false`
+/// (or pass `ICRAFT_EXPECTED_STATE_DRY=0` in the environment). Mirrors
+/// `$ExpectedStateDryRun = $true` in phase0_sync.ps1.
+const EXPECTED_STATE_DRY: bool = true;
+
+/// Volatile runtime DIRS under managed roots: present only at runtime on a
+/// consumer, never authored in the repo (so never in the manifest). The delete
+/// pass MUST NOT touch them even though they are absent from the manifest. Keep
+/// in lockstep with `$ExpectedStateVolatileDirs` in phase0_sync.ps1 and
+/// `$VolatileDirs` in generate_expected_state.ps1.
+const EXPECTED_STATE_VOLATILE_DIRS: &[&str] =
+    &["kubejs/exported", "kubejs/logs", "kubejs/libraries", "kubejs/.cache"];
+
+/// Any path segment equal to this is treated as a volatile dir (mirrors
+/// `$ExpectedStateCacheDirName` in phase0_sync.ps1).
+const EXPECTED_STATE_CACHE_DIR: &str = ".cache";
+
+/// Manifest filename, sat at each distro root (here: `cfg.server_dir`).
+const EXPECTED_STATE_FILE: &str = "expected_state.json";
+
+#[derive(serde::Deserialize)]
+struct ExpectedState {
+    // version / generated_from are provenance only; deserialized so a malformed
+    // shape is caught, but not otherwise consumed by the pass.
+    #[allow(dead_code)]
+    version: Option<u32>,
+    #[allow(dead_code)]
+    generated_from: Option<String>,
+    roots: Option<Vec<String>>,
+    files: Option<BTreeMap<String, ExpectedEntry>>,
+}
+
+#[derive(serde::Deserialize)]
+struct ExpectedEntry {
+    sha256: String,
+    #[allow(dead_code)]
+    size: Option<u64>,
+    /// LIST but keep-local on hash mismatch (mod rewrites the config at runtime).
+    /// serde defaults a missing key to false.
+    #[serde(default)]
+    volatile: bool,
+}
+
+/// True if `rel` (forward-slash relpath) is inside a volatile runtime dir.
+fn is_volatile_dir(rel: &str) -> bool {
+    for v in EXPECTED_STATE_VOLATILE_DIRS {
+        if rel == *v || rel.starts_with(&format!("{v}/")) {
+            return true;
+        }
+    }
+    rel.split('/').any(|seg| seg == EXPECTED_STATE_CACHE_DIR)
+}
+
+/// Resolve dry-run: in-script default, overridable by ICRAFT_EXPECTED_STATE_DRY
+/// (0 = live, 1 = dry). Mirrors the PS1 env override semantics.
+fn expected_state_dry() -> bool {
+    match std::env::var("ICRAFT_EXPECTED_STATE_DRY").ok().as_deref() {
+        Some("1") => true,
+        Some("0") => false,
+        _ => EXPECTED_STATE_DRY,
+    }
+}
+
+/// Post-overlay deletion/repair pass against `<dest_root>/expected_state.json`.
+///
+/// `dest_root` is the live distro root on disk (deletions/repairs land here, and
+/// where the manifest is read from). `extract_src` is the freshly-extracted
+/// distro root used as the repair source (`None` if it's already gone -> repairs
+/// are reported as fetch-needed). `log_prefix` matches the PS1 `$LogPrefix`.
+///
+/// Soft-fails throughout (FAIL-KEEP): any problem -> log + delete nothing. Never
+/// returns an error; the caller's sync must not abort because of this pass.
+fn expected_state_pass(dest_root: &Path, extract_src: Option<&Path>, log_prefix: &str) {
+    let dry = expected_state_dry();
+    if dry {
+        log::info!(
+            "{}[expected-state] DRY-RUN mode (report-only). To go live: flip EXPECTED_STATE_DRY=false in sync.rs (or ICRAFT_EXPECTED_STATE_DRY=0).",
+            log_prefix
+        );
+    } else {
+        log::info!(
+            "{}[expected-state] LIVE mode (deletions/repairs WILL be applied).",
+            log_prefix
+        );
+    }
+
+    let manifest_path = dest_root.join(EXPECTED_STATE_FILE);
+    if !manifest_path.exists() {
+        log::warn!(
+            "{}[expected-state] manifest missing - skipping deletion pass",
+            log_prefix
+        );
+        return;
+    }
+
+    let raw = match fs::read_to_string(&manifest_path) {
+        Ok(s) => s,
+        Err(e) => {
+            log::warn!(
+                "{}[expected-state] manifest unparseable ({}) - skipping deletion pass",
+                log_prefix, e
+            );
+            return;
+        }
+    };
+    if raw.trim().is_empty() {
+        log::warn!(
+            "{}[expected-state] manifest unparseable (empty manifest) - skipping deletion pass",
+            log_prefix
+        );
+        return;
+    }
+    let manifest: ExpectedState = match serde_json::from_str(&raw) {
+        Ok(m) => m,
+        Err(e) => {
+            log::warn!(
+                "{}[expected-state] manifest unparseable ({}) - skipping deletion pass",
+                log_prefix, e
+            );
+            return;
+        }
+    };
+
+    let files = manifest.files.unwrap_or_default();
+    let roots = manifest.roots.unwrap_or_default();
+    if files.is_empty() || roots.is_empty() {
+        log::warn!(
+            "{}[expected-state] manifest empty/malformed (no files/roots) - skipping deletion pass",
+            log_prefix
+        );
+        return;
+    }
+
+    // -- Pass 1: walk the live managed roots; find on-disk files NOT in manifest --
+    let mut to_delete: Vec<String> = Vec::new();
+    for root in &roots {
+        // `root` may contain a forward slash (mods/.index); join segment-wise so
+        // it works on Windows (the consumer's actual target).
+        let root_path = join_rel(dest_root, root);
+        if !root_path.exists() {
+            continue;
+        }
+        let mut on_disk: Vec<String> = Vec::new();
+        if let Err(e) = collect_rel_files(&root_path, dest_root, &mut on_disk) {
+            // A walk error means we can't be sure what's on disk -> FAIL-KEEP for
+            // this root rather than risk a wrong delete set.
+            log::warn!(
+                "{}[expected-state] walk failed under {} ({}) - skipping this root",
+                log_prefix, root, e
+            );
+            continue;
+        }
+        for rel in on_disk {
+            if is_volatile_dir(&rel) {
+                continue; // never delete runtime dirs
+            }
+            if !files.contains_key(&rel) {
+                to_delete.push(rel);
+            }
+        }
+    }
+
+    // -- Pass 2: walk the manifest; find missing-on-disk + hash-mismatch --
+    let mut to_repair: Vec<String> = Vec::new();
+    let mut kept_volatile = 0usize;
+    for (rel, entry) in &files {
+        let target = join_rel(dest_root, rel);
+        if !target.exists() {
+            to_repair.push(rel.clone());
+            continue;
+        }
+        let local_hash = match sha256_file(&target) {
+            Ok(h) => h,
+            Err(e) => {
+                // Can't hash -> treat as needing repair rather than silently
+                // trusting a possibly-corrupt file.
+                log::warn!("{}[expected-state]   hash failed {}: {}", log_prefix, rel, e);
+                to_repair.push(rel.clone());
+                continue;
+            }
+        };
+        if local_hash != entry.sha256.to_lowercase() {
+            if entry.volatile {
+                // Mod rewrites this config in place at runtime - the divergence is
+                // expected. KEEP the local copy; do NOT overwrite from the zip.
+                kept_volatile += 1;
+            } else {
+                to_repair.push(rel.clone());
+            }
+        }
+    }
+
+    // -- Apply deletions --
+    for rel in &to_delete {
+        let target = join_rel(dest_root, rel);
+        if dry {
+            log::info!("{}[expected-state]   would-delete {}", log_prefix, rel);
+        } else if let Err(e) = fs::remove_file(&target) {
+            log::warn!("{}[expected-state]   [FAIL] delete {}: {}", log_prefix, rel, e);
+        } else {
+            log::info!("{}[expected-state]   deleted {}", log_prefix, rel);
+        }
+    }
+
+    // -- Apply repairs (source from the just-extracted copy) --
+    let mut fetch_needed = 0usize;
+    for rel in &to_repair {
+        let target = join_rel(dest_root, rel);
+        let src_file = extract_src.map(|s| join_rel(s, rel));
+        if dry {
+            log::info!("{}[expected-state]   would-repair {}", log_prefix, rel);
+        } else if let Some(src_file) = src_file.filter(|p| p.exists()) {
+            let ok = ensure_parent(&target).is_ok() && fs::copy(&src_file, &target).is_ok();
+            if ok {
+                log::info!("{}[expected-state]   repaired {}", log_prefix, rel);
+            } else {
+                log::warn!("{}[expected-state]   [FAIL] repair {}", log_prefix, rel);
+            }
+        } else {
+            fetch_needed += 1;
+            log::warn!(
+                "{}[expected-state]   fetch-needed {} (not in extract; re-run sync)",
+                log_prefix, rel
+            );
+        }
+    }
+
+    // Summary line: wording matched to phase0_sync.ps1 so cross-leg greps work.
+    let (verb, verb2) = if dry {
+        ("would-delete", "would-repair")
+    } else {
+        ("deleted", "repaired")
+    };
+    let mut summary = format!(
+        "{}expected-state: {} {}, {} {}",
+        log_prefix, verb, to_delete.len(), verb2, to_repair.len()
+    );
+    if kept_volatile > 0 {
+        summary.push_str(&format!(", kept-volatile {kept_volatile}"));
+    }
+    if fetch_needed > 0 {
+        summary.push_str(&format!(", fetch-needed {fetch_needed}"));
+    }
+    log::info!("{}", summary);
+}
+
+/// Join a forward-slash relpath onto a base path, one segment at a time so it
+/// resolves correctly on Windows (where the consumer actually runs). Mirrors the
+/// PS1 `$rel -replace '/', '\'` + Join-Path.
+fn join_rel(base: &Path, rel: &str) -> PathBuf {
+    let mut p = base.to_path_buf();
+    for seg in rel.split('/') {
+        if !seg.is_empty() {
+            p.push(seg);
+        }
+    }
+    p
+}
+
+/// Recursively collect files under `dir`, pushing each one's path RELATIVE TO
+/// `base` (forward-slash separated, matching manifest relpaths). Hand-rolled
+/// recursion (no walkdir dep) consistent with `mirror_recursive`.
+fn collect_rel_files(dir: &Path, base: &Path, out: &mut Vec<String>) -> std::io::Result<()> {
+    for e in fs::read_dir(dir)? {
+        let e = e?;
+        let path = e.path();
+        let ft = e.file_type()?;
+        if ft.is_dir() {
+            collect_rel_files(&path, base, out)?;
+        } else if ft.is_file() {
+            if let Ok(rel) = path.strip_prefix(base) {
+                // Normalise to forward slashes (manifest keys use '/').
+                let rel_str = rel.to_string_lossy().replace('\\', "/");
+                out.push(rel_str);
+            }
+        }
+    }
+    Ok(())
+}
+
+/// Lowercase hex SHA-256 of a file, streamed in 8 KiB chunks. Matches the
+/// manifest's digest format (and PS1 `Get-FileHash -Algorithm SHA256` lowered).
+/// Note: this is the cryptographic hash for manifest verification -- distinct
+/// from `hash_file()` (a cheap non-crypto DefaultHasher used for the
+/// self-update files_differ check).
+fn sha256_file(p: &Path) -> std::io::Result<String> {
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    let mut f = fs::File::open(p)?;
+    let mut buf = [0u8; 8192];
+    loop {
+        let n = f.read(&mut buf)?;
+        if n == 0 {
+            break;
+        }
+        hasher.update(&buf[..n]);
+    }
+    let digest = hasher.finalize();
+    let mut hex = String::with_capacity(digest.len() * 2);
+    for b in digest {
+        hex.push_str(&format!("{b:02x}"));
+    }
+    Ok(hex)
 }
 
 /// Mirror the zip's `server_distribution/` into the install dir. Three

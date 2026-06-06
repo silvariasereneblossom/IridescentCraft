@@ -15,6 +15,13 @@ ureq.workspace = true
 zip.workspace = true
 toml.workspace = true
 base64 = "0.22"
+# expected_state.json consumer (Phase 0 full-zip deletion pass): the
+# manifest stores per-file sha256, so the post-overlay repair check needs
+# a real SHA-256. icraft-core's pre-existing hash_file() is only a
+# non-cryptographic DefaultHasher (u64) for cheap "did this file change"
+# diffs and CANNOT verify against the manifest's hex digests. sha2 is the
+# de-facto RustCrypto SHA-256; pure-Rust, no C deps.
+sha2 = "0.10"
 
 # Win32 console mode (disable QuickEdit at startup) + watchdog soft-kick
 # (write \r\n to child stdin before the hard kill). Pulled in only on

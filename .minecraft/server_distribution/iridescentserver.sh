@@ -73,6 +73,179 @@ RED='\033[0;31m'
 YELLOW='\033[1;33m'
 NC='\033[0m'
 
+# ===================================================================
+# Expected-state deletion/repair pass (.sh mirror of the shared logic
+# in phase0_sync.ps1 / sync_client.ps1's Invoke-ExpectedStatePass).
+# ===================================================================
+# The full-zip overlay above (Phase 0) is NON-DELETING: cp -rf copies
+# new/changed files over the live tree but never removes a file that
+# was deleted in the repo, so repo deletions strand here forever
+# (proven 2026-06-06: 8 stale affixes aborted the live magic_weapon
+# pool; packetfixer/tier_skip/probe lived on). This pass closes that
+# gap using expected_state.json (single source of authority for what
+# should exist under the MANAGED ROOTS kubejs/ config/ mods/.index/).
+#
+# Runs AFTER the overlay and BEFORE the extract dir is removed
+# (repairs source from the just-extracted copy).
+#   - on disk under a managed root but NOT in manifest    -> DELETE
+#   - in manifest but missing on disk                     -> repair from extract
+#   - in manifest, hash mismatch, not volatile            -> repair from extract
+#   - in manifest, hash mismatch, "volatile":true         -> KEEP LOCAL
+#
+# FAIL-KEEP: manifest missing/unparseable/empty OR python3 absent
+# -> delete NOTHING, warn loudly.
+# DRY-RUN: defaults to dry-run in this first shipped version. Going
+# live = set EXPECTED_STATE_DRY=0 in this script (or env
+# ICRAFT_EXPECTED_STATE_DRY=0), AFTER comparing the report to the
+# 2026-06-06 census.
+#
+# JSON parse: python3 (jq may not exist on server hosts; the schema
+# has nested + optional 'volatile' flags that are fragile in pure
+# bash). Hashing: python3's hashlib (no dependency on sha256sum).
+EXPECTED_STATE_DRY=1   # 1 = report-only (default). 0 = apply deletions/repairs.
+
+run_expected_state_pass() {
+    # $1 = DEST_ROOT (live distro root)   $2 = EXTRACT_SRC (repair source)
+    local dest_root="$1"
+    local extract_src="$2"
+
+    local dry="$EXPECTED_STATE_DRY"
+    [ "$ICRAFT_EXPECTED_STATE_DRY" = "1" ] && dry=1
+    [ "$ICRAFT_EXPECTED_STATE_DRY" = "0" ] && dry=0
+
+    if ! command -v python3 &> /dev/null; then
+        echo -e "  ${YELLOW}[expected-state] python3 not found - skipping deletion pass${NC}"
+        return 0
+    fi
+    if [ ! -f "$dest_root/expected_state.json" ]; then
+        echo -e "  ${YELLOW}[expected-state] manifest missing - skipping deletion pass${NC}"
+        return 0
+    fi
+
+    if [ "$dry" = "1" ]; then
+        echo -e "  ${YELLOW}[expected-state] DRY-RUN mode (report-only). Go live: set EXPECTED_STATE_DRY=0 in iridescentserver.sh (or ICRAFT_EXPECTED_STATE_DRY=0).${NC}"
+    else
+        echo -e "  ${YELLOW}[expected-state] LIVE mode (deletions/repairs WILL be applied).${NC}"
+    fi
+
+    ICRAFT_ES_DEST="$dest_root" ICRAFT_ES_SRC="$extract_src" ICRAFT_ES_DRY="$dry" python3 - <<'PYEOF'
+import hashlib, json, os, shutil, sys
+
+dest = os.environ["ICRAFT_ES_DEST"]
+src = os.environ.get("ICRAFT_ES_SRC", "")
+dry = os.environ.get("ICRAFT_ES_DRY", "1") == "1"
+
+mpath = os.path.join(dest, "expected_state.json")
+try:
+    with open(mpath, "r", encoding="utf-8") as f:
+        raw = f.read()
+    if not raw.strip():
+        raise ValueError("empty manifest")
+    manifest = json.loads(raw)
+except Exception as e:
+    print("  [expected-state] manifest unparseable (%s) - skipping deletion pass" % e)
+    sys.exit(0)
+
+files = manifest.get("files")
+roots = manifest.get("roots")
+if not files or not roots:
+    print("  [expected-state] manifest empty/malformed (no files/roots) - skipping deletion pass")
+    sys.exit(0)
+
+# Volatile runtime dirs under managed roots: present only at runtime, never in
+# the manifest. The delete pass must NOT touch them. Keep in lockstep with
+# generate_expected_state.ps1 $VolatileDirs + the .ps1 consumers.
+VOLATILE_DIRS = ["kubejs/exported", "kubejs/logs", "kubejs/libraries", "kubejs/.cache"]
+CACHE_DIR_NAME = ".cache"
+
+def is_volatile_dir(rel):
+    for v in VOLATILE_DIRS:
+        if rel == v or rel.startswith(v + "/"):
+            return True
+    if CACHE_DIR_NAME in rel.split("/"):
+        return True
+    return False
+
+def sha256_of(path):
+    h = hashlib.sha256()
+    with open(path, "rb") as fh:
+        for chunk in iter(lambda: fh.read(65536), b""):
+            h.update(chunk)
+    return h.hexdigest().lower()
+
+expected = files  # dict relpath -> {sha256,size[,volatile]}
+
+to_delete = []
+to_repair = []
+kept_volatile = 0
+fetch_needed = 0
+
+# Pass 1: on-disk files under managed roots not in the manifest -> delete.
+for root in roots:
+    root_path = os.path.join(dest, root.replace("/", os.sep))
+    if not os.path.isdir(root_path):
+        continue
+    for dirpath, dirnames, filenames in os.walk(root_path):
+        for fn in filenames:
+            full = os.path.join(dirpath, fn)
+            rel = os.path.relpath(full, dest).replace(os.sep, "/")
+            if is_volatile_dir(rel):
+                continue
+            if rel not in expected:
+                to_delete.append(rel)
+
+# Pass 2: manifest entries missing on disk or hash-mismatched.
+for rel, entry in expected.items():
+    target = os.path.join(dest, rel.replace("/", os.sep))
+    is_vol = bool(entry.get("volatile", False))
+    if not os.path.isfile(target):
+        to_repair.append(rel)
+        continue
+    local = sha256_of(target)
+    if local != str(entry.get("sha256", "")).lower():
+        if is_vol:
+            kept_volatile += 1
+        else:
+            to_repair.append(rel)
+
+# Apply deletions.
+for rel in to_delete:
+    target = os.path.join(dest, rel.replace("/", os.sep))
+    if dry:
+        print("  [expected-state]   would-delete %s" % rel)
+    else:
+        try:
+            os.remove(target)
+            print("  [expected-state]   deleted %s" % rel)
+        except OSError as e:
+            print("  [expected-state]   delete-failed %s (%s)" % (rel, e))
+
+# Apply repairs (source from the just-extracted copy).
+for rel in to_repair:
+    target = os.path.join(dest, rel.replace("/", os.sep))
+    srcfile = os.path.join(src, rel.replace("/", os.sep)) if src else ""
+    if dry:
+        print("  [expected-state]   would-repair %s" % rel)
+    else:
+        if srcfile and os.path.isfile(srcfile):
+            os.makedirs(os.path.dirname(target), exist_ok=True)
+            shutil.copy2(srcfile, target)
+            print("  [expected-state]   repaired %s" % rel)
+        else:
+            fetch_needed += 1
+            print("  [expected-state]   fetch-needed %s (not in extract; re-run sync)" % rel)
+
+verb = "would-delete" if dry else "deleted"
+verb2 = "would-repair" if dry else "repaired"
+summary = "  expected-state: %s %d, %s %d" % (verb, len(to_delete), verb2, len(to_repair))
+if kept_volatile:
+    summary += ", kept-volatile %d" % kept_volatile
+if fetch_needed:
+    summary += ", fetch-needed %d" % fetch_needed
+print(summary)
+PYEOF
+}
+
 echo ""
 echo -e "${TF_BLUE}  ==========================================${RESET}"
 echo -e "${TF_PINK}  IridescentCraft Server${RESET}"
@@ -232,6 +405,11 @@ else
                 fi
             done
         fi
+
+        # Expected-state deletion/repair pass: runs AFTER the non-deleting
+        # overlay and BEFORE the extract dir is removed (repairs source from
+        # $SRC). Closes the strand-on-delete gap. Dry-run by default.
+        run_expected_state_pass "$SCRIPT_DIR" "$SRC"
 
         echo -n "$REMOTE_SHA" > "$SHA_FILE"
         rm -f "$ZIP_FILE"

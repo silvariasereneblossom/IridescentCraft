@@ -71,6 +71,201 @@ function Write-SyncSentinel {
     } catch { }
 }
 
+# =============================================================================
+# Expected-state deletion/repair pass (shared logic; pasted verbatim from
+# server_distribution/phase0_sync.ps1 - kept self-contained per distro root,
+# NOT dot-sourced).
+# =============================================================================
+# The full-zip overlay below is NON-DELETING: it copies new/changed files over
+# the live tree but never removes a file that was deleted in the repo. So repo
+# deletions strand on consumers forever (proven 2026-06-06: 8 stale affixes
+# aborted the live magic_weapon pool; packetfixer/tier_skip/probe lived on).
+# This pass closes that gap using expected_state.json as the single source of
+# authority for what SHOULD exist under the MANAGED ROOTS (kubejs, config,
+# mods/.index). It runs AFTER the overlay and BEFORE the extract dir is removed
+# (repairs source from the just-extracted copy).
+#
+# Behavior (post-overlay):
+#   - on disk under a managed root but NOT in the manifest    -> DELETE
+#   - in the manifest but MISSING on disk                     -> repair (copy
+#                                                                from extract)
+#   - in the manifest, hash MISMATCH, not volatile            -> repair
+#                                                                (overwrite from
+#                                                                extract; a
+#                                                                mismatch right
+#                                                                after an overlay
+#                                                                means a local
+#                                                                write failure /
+#                                                                lock - log it)
+#   - in the manifest, hash MISMATCH, "volatile":true         -> KEEP LOCAL (the
+#                                                                mod rewrites this
+#                                                                config at runtime)
+#
+# FAIL-KEEP: manifest missing/unparseable/empty -> delete NOTHING, warn loudly.
+# DRY-RUN: defaults to dry-run in this first shipped version (report-only). Flip
+# $ExpectedStateDryRun to $false (or set env ICRAFT_EXPECTED_STATE_DRY=0) to go
+# live, AFTER the operator compares the report to the 2026-06-06 census.
+#
+# PS 5.1 compatible: no ternary, no null-coalescing; ConvertFrom-Json iterated
+# via .PSObject.Properties (no -AsHashtable). Get-FileHash is 5.1-OK.
+# =============================================================================
+
+# DRY-RUN default for this first shipped version. Going live = flip to $false
+# (or pass ICRAFT_EXPECTED_STATE_DRY=0 in the environment).
+$ExpectedStateDryRun = $true
+
+# Volatile runtime DIRS under managed roots: present only at runtime on a
+# consumer, never authored in the repo (so never in the manifest). The delete
+# pass MUST NOT touch them even though they are absent from the manifest. Keep
+# in lockstep with $VolatileDirs in generate_expected_state.ps1.
+$ExpectedStateVolatileDirs = @('kubejs/exported', 'kubejs/logs', 'kubejs/libraries', 'kubejs/.cache')
+$ExpectedStateCacheDirName = '.cache'
+
+function Invoke-ExpectedStatePass {
+    param(
+        [string]$DestRoot,    # live distro root on disk (deletions/repairs land here)
+        [string]$ExtractSrc,  # freshly-extracted distro root (repair source); '' if gone
+        [string]$LogPrefix    # prepended to every log line
+    )
+
+    # Honor ICRAFT_EXPECTED_STATE_DRY=1 in addition to the in-script default.
+    $dry = $ExpectedStateDryRun
+    if ($env:ICRAFT_EXPECTED_STATE_DRY -eq '1') { $dry = $true }
+    if ($env:ICRAFT_EXPECTED_STATE_DRY -eq '0') { $dry = $false }
+
+    if ($dry) {
+        Write-Host "$LogPrefix [expected-state] DRY-RUN mode (report-only). To go live: set `$ExpectedStateDryRun=`$false in this script (or ICRAFT_EXPECTED_STATE_DRY=0)." -ForegroundColor Yellow
+    } else {
+        Write-Host "$LogPrefix [expected-state] LIVE mode (deletions/repairs WILL be applied)." -ForegroundColor Yellow
+    }
+
+    $manifestPath = Join-Path $DestRoot 'expected_state.json'
+    if (-not (Test-Path $manifestPath)) {
+        Write-Host "$LogPrefix [expected-state] manifest missing - skipping deletion pass" -ForegroundColor Yellow
+        return
+    }
+
+    $manifest = $null
+    try {
+        $raw = Get-Content -Raw $manifestPath
+        if (-not $raw -or $raw.Trim().Length -eq 0) { throw 'empty manifest' }
+        $manifest = $raw | ConvertFrom-Json
+    } catch {
+        Write-Host "$LogPrefix [expected-state] manifest unparseable ($($_.Exception.Message)) - skipping deletion pass" -ForegroundColor Yellow
+        return
+    }
+    if (-not $manifest -or -not $manifest.files -or -not $manifest.roots) {
+        Write-Host "$LogPrefix [expected-state] manifest empty/malformed (no files/roots) - skipping deletion pass" -ForegroundColor Yellow
+        return
+    }
+
+    # Build a lookup of expected relpaths -> entry. ConvertFrom-Json gives a
+    # PSCustomObject; iterate .PSObject.Properties (5.1 has no -AsHashtable).
+    $expected = @{}
+    foreach ($prop in $manifest.files.PSObject.Properties) {
+        $expected[$prop.Name] = $prop.Value
+    }
+
+    $managedRoots = @()
+    foreach ($r in $manifest.roots) { $managedRoots += [string]$r }
+
+    $isVolatileDir = {
+        param([string]$rel)
+        foreach ($v in $ExpectedStateVolatileDirs) {
+            if ($rel -eq $v -or $rel.StartsWith("$v/")) { return $true }
+        }
+        foreach ($seg in ($rel -split '/')) {
+            if ($seg -eq $ExpectedStateCacheDirName) { return $true }
+        }
+        return $false
+    }
+
+    $toDelete = New-Object System.Collections.Generic.List[string]
+    $toRepair = New-Object System.Collections.Generic.List[string]
+    $keptVolatile = 0
+    $fetchNeeded = 0
+
+    # -- Pass 1: walk the live managed roots, find on-disk files NOT in manifest --
+    foreach ($root in $managedRoots) {
+        $rootFsRel = $root -replace '/', '\'
+        $rootPath = Join-Path $DestRoot $rootFsRel
+        if (-not (Test-Path $rootPath)) { continue }
+        $base = (Resolve-Path $DestRoot).Path
+        Get-ChildItem -LiteralPath $rootPath -Recurse -File -Force -ErrorAction SilentlyContinue | ForEach-Object {
+            $rel = $_.FullName.Substring($base.Length + 1) -replace '\\', '/'
+            if (& $isVolatileDir $rel) { return }       # never delete runtime dirs
+            if (-not $expected.ContainsKey($rel)) {
+                $toDelete.Add($rel) | Out-Null
+            }
+        }
+    }
+
+    # -- Pass 2: walk the manifest, find missing-on-disk + hash-mismatch --
+    foreach ($rel in $expected.Keys) {
+        $entry = $expected[$rel]
+        $relFs = $rel -replace '/', '\'
+        $target = Join-Path $DestRoot $relFs
+        $isVol = $false
+        if ($entry.PSObject.Properties.Name -contains 'volatile') { $isVol = [bool]$entry.volatile }
+
+        if (-not (Test-Path $target)) {
+            $toRepair.Add($rel) | Out-Null
+            continue
+        }
+        $localHash = (Get-FileHash -LiteralPath $target -Algorithm SHA256).Hash.ToLower()
+        if ($localHash -ne ([string]$entry.sha256).ToLower()) {
+            if ($isVol) {
+                # Mod rewrites this config in place at runtime - the divergence is
+                # expected. KEEP the local copy; do NOT overwrite from the zip.
+                $keptVolatile++
+            } else {
+                $toRepair.Add($rel) | Out-Null
+            }
+        }
+    }
+
+    # -- Apply deletions --
+    foreach ($rel in $toDelete) {
+        $relFs = $rel -replace '/', '\'
+        $target = Join-Path $DestRoot $relFs
+        if ($dry) {
+            Write-Host "$LogPrefix [expected-state]   would-delete $rel" -ForegroundColor DarkYellow
+        } else {
+            Remove-Item -LiteralPath $target -Force -ErrorAction SilentlyContinue
+            Write-Host "$LogPrefix [expected-state]   deleted $rel" -ForegroundColor Yellow
+        }
+    }
+
+    # -- Apply repairs (source from the just-extracted copy) --
+    foreach ($rel in $toRepair) {
+        $relFs = $rel -replace '/', '\'
+        $target = Join-Path $DestRoot $relFs
+        $srcFile = ''
+        if ($ExtractSrc) { $srcFile = Join-Path $ExtractSrc $relFs }
+        if ($dry) {
+            Write-Host "$LogPrefix [expected-state]   would-repair $rel" -ForegroundColor DarkYellow
+        } else {
+            if ($srcFile -and (Test-Path $srcFile)) {
+                $targetDir = Split-Path $target -Parent
+                if (-not (Test-Path $targetDir)) { New-Item -ItemType Directory -Path $targetDir -Force | Out-Null }
+                Copy-Item -LiteralPath $srcFile -Destination $target -Force -ErrorAction SilentlyContinue
+                Write-Host "$LogPrefix [expected-state]   repaired $rel" -ForegroundColor Yellow
+            } else {
+                $fetchNeeded++
+                Write-Host "$LogPrefix [expected-state]   fetch-needed $rel (not in extract; re-run sync)" -ForegroundColor Red
+            }
+        }
+    }
+
+    $verb = 'deleted'
+    $verb2 = 'repaired'
+    if ($dry) { $verb = 'would-delete'; $verb2 = 'would-repair' }
+    $summary = "$LogPrefix expected-state: ${verb} $($toDelete.Count), ${verb2} $($toRepair.Count)"
+    if ($keptVolatile -gt 0) { $summary += ", kept-volatile $keptVolatile" }
+    if ($fetchNeeded -gt 0) { $summary += ", fetch-needed $fetchNeeded" }
+    Write-Host $summary -ForegroundColor Green
+}
+
 # -- Step 1: Locate the instance .minecraft directory --
 $instanceMC = $null
 
@@ -417,7 +612,25 @@ if ($useDiff) {
         $mirrorList += 'optionsshaders.txt (seed)'
     }
 
+    # Overlay the expected-state manifest from the repo's distribution/client/
+    # root to the instance root so the deletion/repair pass (and future launches)
+    # can find it at $instanceMC\expected_state.json. The manifest's relpaths are
+    # relative to the distro root and resolve identically under $instanceMC.
+    if ($srcClientDir) {
+        $manifestSrc = Join-Path $srcClientDir 'expected_state.json'
+        if (Test-Path $manifestSrc) {
+            Copy-Item -Path $manifestSrc -Destination (Join-Path $instanceMC 'expected_state.json') -Force
+            $mirrorList += 'expected_state.json'
+        }
+    }
+
     Write-Host "[IridescentCraft Sync] Overlaid: $($mirrorList -join ', ')" -ForegroundColor DarkGray
+
+    # Expected-state deletion/repair pass: runs AFTER the non-deleting overlay
+    # and BEFORE the extract dir is removed (repairs source from $src, the
+    # extracted .minecraft, under which config/ kubejs/ mods/.index/ all resolve).
+    # Closes the strand-on-delete gap. Dry-run by default in this first version.
+    Invoke-ExpectedStatePass -DestRoot $instanceMC -ExtractSrc $src -LogPrefix '[IridescentCraft Sync]'
 
     # Write new SHA
     Set-Content -Path $shaFile -Value $remoteSha -NoNewline -Encoding ASCII
