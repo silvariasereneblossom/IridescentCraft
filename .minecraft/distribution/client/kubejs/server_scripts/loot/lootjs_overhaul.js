@@ -2181,6 +2181,14 @@ LootJS.modifiers(event => {
     // Strip higher-tier spell books that shouldn't appear in starter-area villages
     vSan.removeLoot('ars_nouveau:apprentice_spell_book')
       .removeLoot('ars_nouveau:archmage_spell_book')
+    // [2026-06-07] ALL ISS spellbooks out of villages (operator directive -
+    // class starter kits cover mage entry). The T1 Overworld broadcast
+    // (copper 3% / iron 1%, Section 2 dimension ladder) reaches village
+    // chests and the global off-tier strip is unreliable under Lootr
+    // wrapping (see glyph note below) -> per-table strip, the safe pattern.
+    // Safe to strip now that the Section 6B QoL pool no longer re-adds books.
+    vSan.removeLoot('irons_spellbooks:copper_spell_book')
+      .removeLoot('irons_spellbooks:iron_spell_book')
     // (legacy kubejs:tierN_token village strips removed — currency retired,
     //  tokens are no longer seeded anywhere so the strip is a dead no-op)
     // Defensive: strip T2+ glyphs explicitly. The global off-tier strip at
@@ -2191,9 +2199,16 @@ LootJS.modifiers(event => {
   })
 
   // Same T2+ glyph guard for modded village patterns (CTOV, VnP, etc.)
+  // [2026-06-07] fix-the-five: this loop never carried the spellbook strips
+  // the vanilla-table loop had - modded-pattern village chests could roll
+  // apprentice/archmage (and now copper/iron) from the dimension broadcasts.
   moddedVillagePatterns.forEach(function(pattern) {
     var vSanMod = event.addLootTableModifier(pattern)
     glyphT2.concat(glyphT3, glyphT4).forEach(function(g) { vSanMod.removeLoot(g) })
+    vSanMod.removeLoot('ars_nouveau:apprentice_spell_book')
+      .removeLoot('ars_nouveau:archmage_spell_book')
+      .removeLoot('irons_spellbooks:copper_spell_book')
+      .removeLoot('irons_spellbooks:iron_spell_book')
   })
 
   // --- Predicate catch-all: strip any artifact that isn't from the village pool ---
