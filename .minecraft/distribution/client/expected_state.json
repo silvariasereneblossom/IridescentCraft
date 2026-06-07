@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "37a5ad8e2",
+  "generated_from": "c747dea37",
   "roots": [
     "kubejs",
     "config",
@@ -3966,10 +3966,6 @@
     "config/paxi/datapacks/Towers_Of_The_Wild_Reworked_v4.2.1_Waystone.zip": {
       "sha256": "c1c5461f28a038bb0c647d4a7c16a7ae11f4fa44543a41628a2d20df519dc0e3",
       "size": 1401060
-    },
-    "config/paxi/datapacks/fix_stone_tags.zip": {
-      "sha256": "6ab627b884a7564780be4375a95f45831026bbd971f469c42236c5f0c78b35db",
-      "size": 1262
     },
     "config/paxi/datapacks/icraft_aethersteel_overrides.zip": {
       "sha256": "4447ddbe406c1528c83fe8ad2cd51c8d587b10584860d3e6a071b8eeb09a33fb",
