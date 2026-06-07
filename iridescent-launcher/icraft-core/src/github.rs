@@ -74,9 +74,36 @@ fn maybe_auth(req: ureq::Request) -> ureq::Request {
     }
 }
 
+/// GET with dead-token resilience (2026-06-07, docket #97).
+///
+/// A configured-but-revoked token is WORSE than no token: GitHub answers
+/// 401 (or 403 for some revocation states) and the request hard-fails,
+/// even though the same request would succeed anonymously. The shared
+/// embedded PAT died 2026-06-06 and every box still carrying it in
+/// GITHUB_TOKEN/GH_TOKEN lost head-fetch entirely ("HEAD fetch FAILED").
+///
+/// Behavior: authenticated attempt first; on 401/403 WITH a token
+/// configured, log loudly and retry the same URL anonymously (60/hr IP
+/// bucket - fine for our call volume per the 2026-05-18 fix). All other
+/// errors propagate unchanged.
+fn get_with_fallback(url: &str) -> std::result::Result<ureq::Response, ureq::Error> {
+    let authed = auth_token().is_some();
+    match maybe_auth(agent().get(url)).call() {
+        Err(ureq::Error::Status(code, resp)) if authed && (code == 401 || code == 403) => {
+            log::warn!(
+                "[github] HTTP {code} with a configured token (revoked/expired PAT?) -- \
+                 retrying unauthenticated. Rotate or unset GITHUB_TOKEN/GH_TOKEN on this box."
+            );
+            drop(resp);
+            agent().get(url).call()
+        }
+        other => other,
+    }
+}
+
 pub fn head_sha(owner: &str, repo: &str, branch: &str) -> Result<String> {
     let url = format!("https://api.github.com/repos/{owner}/{repo}/commits/{branch}");
-    let resp = maybe_auth(agent().get(&url)).call()
+    let resp = get_with_fallback(&url)
         .with_context(|| format!("GET {url}"))?;
     let commit: Commit = resp.into_json().context("parsing /commits response")?;
     Ok(commit.sha)
@@ -84,7 +111,7 @@ pub fn head_sha(owner: &str, repo: &str, branch: &str) -> Result<String> {
 
 pub fn compare(owner: &str, repo: &str, base: &str, head: &str) -> Result<Compare> {
     let url = format!("https://api.github.com/repos/{owner}/{repo}/compare/{base}...{head}");
-    let resp = maybe_auth(agent().get(&url)).call()
+    let resp = get_with_fallback(&url)
         .with_context(|| format!("GET {url}"))?;
     let compare: Compare = resp.into_json().context("parsing /compare response")?;
     Ok(compare)
@@ -96,7 +123,7 @@ pub fn compare(owner: &str, repo: &str, base: &str, head: &str) -> Result<Compar
 /// auth header anyway (harmless if not needed).
 pub fn fetch_raw(owner: &str, repo: &str, sha: &str, path: &str) -> Result<Vec<u8>> {
     let url = format!("https://raw.githubusercontent.com/{owner}/{repo}/{sha}/{path}");
-    let resp = maybe_auth(agent().get(&url)).call()
+    let resp = get_with_fallback(&url)
         .with_context(|| format!("GET {url}"))?;
     let mut body = Vec::new();
     resp.into_reader().read_to_end(&mut body)
@@ -109,10 +136,18 @@ pub fn fetch_raw(owner: &str, repo: &str, sha: &str, path: &str) -> Result<Vec<u
 /// streaming write.
 pub fn fetch_zip<W: std::io::Write>(owner: &str, repo: &str, branch: &str, sink: &mut W) -> Result<()> {
     let url = format!("https://github.com/{owner}/{repo}/archive/refs/heads/{branch}.zip");
-    let resp = maybe_auth(agent().get(&url))
-        .timeout(Duration::from_secs(300))   // 5 min for the big download
-        .call()
-        .with_context(|| format!("GET {url}"))?;
+    // Same dead-token fallback as get_with_fallback, inlined for the
+    // custom long timeout (see that fn's doc; github.com archive downloads
+    // don't need auth on a public repo at all).
+    let build = || agent().get(&url).timeout(Duration::from_secs(300));
+    let resp = match maybe_auth(build()).call() {
+        Err(ureq::Error::Status(code, _)) if auth_token().is_some() && (code == 401 || code == 403) => {
+            log::warn!("[github] HTTP {code} on zip fetch with a configured token -- retrying unauthenticated.");
+            build().call()
+        }
+        other => other,
+    }
+    .with_context(|| format!("GET {url}"))?;
     std::io::copy(&mut resp.into_reader(), sink)
         .context("streaming zip body")?;
     Ok(())
