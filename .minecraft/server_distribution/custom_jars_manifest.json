@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-06T23:50:50Z",
+  "generated_at": "2026-06-07T00:15:05Z",
   "generated_by": "regen_custom_jars_manifest.ps1 on  by ",
   "algorithm": "SHA-256",
   "jars": {
@@ -63,9 +63,9 @@
       "sha256": "3b8f3bd74c378ec42cdafe6e7b50144999dde8ff0019a0e04ce56567b9c0a487",
       "size": 186369
     },
-    "lovely_sparkle_pieces-0.1.0.0-iridescent.1.jar": {
-      "sha256": "6d177647bd4928e74013a2046e572cc5aa69f581230171d5ec9378aa4e843a9f",
-      "size": 705035
+    "lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar": {
+      "sha256": "49aaf98b6e855115dfb4db1e1ba89617d50ab5c1cca8c9fdf7bbbdec44ded7f4",
+      "size": 618662
     }
   }
 }

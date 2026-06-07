@@ -22,7 +22,6 @@ public class ModItemModelProvider extends ItemModelProvider{
         basicItem(ModCurios.CRIT_RING.get());
         basicItem(ModCurios.MEMORY_RING.get());
         basicItem(ModCurios.NIGHT_OWL_RING.get());
-        basicItem(ModCurios.FPS_EYE.get());
         basicItem(ModCurios.CAT_BOOT.get());
         basicItem(ModCurios.GOAT_BOOT.get());
         basicItem(ModCurios.RABBIT_BOOT.get());

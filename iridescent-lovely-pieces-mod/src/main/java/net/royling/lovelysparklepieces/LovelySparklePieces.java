@@ -15,8 +15,6 @@ import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.event.lifecycle.FMLClientSetupEvent;
 import net.minecraftforge.fml.event.lifecycle.FMLCommonSetupEvent;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
-import net.royling.lovelysparklepieces.ClientEvent.Particle.DamageNumberParticle;
-import net.royling.lovelysparklepieces.ClientEvent.Particle.ModParticles;
 import net.royling.lovelysparklepieces.ModAttributes.ModAttribute;
 import net.royling.lovelysparklepieces.ModBlock.ModBlocks;
 import net.royling.lovelysparklepieces.ModCommand.ModCommands;
@@ -26,7 +24,6 @@ import net.royling.lovelysparklepieces.ModEffect.ModMobEffects;
 import net.royling.lovelysparklepieces.ModEntity.Butterfly.SoulButterflyRenderer;
 import net.royling.lovelysparklepieces.ModEntity.ModEntities;
 import net.royling.lovelysparklepieces.ModEvents.Gamblers.GamblersEvents;
-import net.royling.lovelysparklepieces.ModEvents.HeartSystem;
 import net.royling.lovelysparklepieces.ModEvents.Legendarys.BCEvents;
 import net.royling.lovelysparklepieces.ModEvents.Legendarys.BowHandler;
 import net.royling.lovelysparklepieces.ModEvents.Legendarys.NewbieUmbrellaEvent;
@@ -77,7 +74,6 @@ public class LovelySparklePieces {
         ModCreative.CREATIVE_MODE_TABS.register(modEventBus);
         ModAttribute.ATTRIBUTES.register(modEventBus);
         ModEntities.ENTITIES.register(modEventBus);
-        ModParticles.register(modEventBus);
         ModMobEffects.MOB_EFFECTS.register(modEventBus);
         ModSounds.SOUNDS.register(modEventBus);
 
@@ -94,7 +90,6 @@ public class LovelySparklePieces {
         MinecraftForge.EVENT_BUS.register(SteelBoot.class);
         MinecraftForge.EVENT_BUS.register(DoubleJumpEvent.class);
         MinecraftForge.EVENT_BUS.register(LavaDefance.class);
-        MinecraftForge.EVENT_BUS.register(HeartSystem.class);
         MinecraftForge.EVENT_BUS.register(NewbieUmbrellaEvent.class);
         MinecraftForge.EVENT_BUS.register(AutoSmeltHandler.class);
     }
@@ -111,11 +106,6 @@ public class LovelySparklePieces {
         EntityRenderers.register(ModEntities.BUTTERFLY.get(), SoulButterflyRenderer::new);
         
         event.enqueueWork(() -> {
-            // 注册粒子
-            Minecraft.getInstance().particleEngine.register(
-                ModParticles.DAMAGE_NUMBER_PARTICLE.get(), 
-                new DamageNumberParticle.Provider()
-            );
             // 注册 Curios 渲染器
             CuriosRendererRegistry.register(ModCurios.MAGMA_AMULET.get(), MagmaAmuletRender::new);
         });

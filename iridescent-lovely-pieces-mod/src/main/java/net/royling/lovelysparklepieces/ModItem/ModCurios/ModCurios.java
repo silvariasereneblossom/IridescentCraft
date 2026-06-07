@@ -47,8 +47,7 @@ public class ModCurios {
             ()->new EcoRingItem(new Item.Properties()));
 
     //head
-    public static final RegistryObject<Item> FPS_EYE = ITEMS.register("fps_eye",
-            ()->new FPSEyeItem(new Item.Properties()));
+    // IRIDESCENT: fps_eye DELETED (client-FPS-scaled damage: non-deterministic, hardware-biased)
     public static final RegistryObject<Item> BLACKSTONE_HEART = ITEMS.register("blackstone_heart",
             ()->new BlackstoneHeart(new Item.Properties()));
     public static final RegistryObject<Item> NIGHT_VISION = ITEMS.register("night_vision",

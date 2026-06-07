@@ -14,7 +14,6 @@ import net.minecraftforge.event.TickEvent;
 import net.royling.lovelysparklepieces.network.NetworkHandler;
 import net.royling.lovelysparklepieces.network.DoubleJumpPacket;
 import net.royling.lovelysparklepieces.network.OpenChestPacket;
-import net.royling.lovelysparklepieces.network.PlayerFpsPacket;
 import net.royling.lovelysparklepieces.LovelySparklePieces;
 import net.royling.lovelysparklepieces.ModItem.ModUsingItem.Binoculars;
 import net.royling.lovelysparklepieces.ModItem.ModUsingItem.ModItems;
@@ -46,9 +45,6 @@ public class ModClientEvents {
             }
             Minecraft mc = Minecraft.getInstance();
             if (mc.player == null || mc.getConnection() == null) return;
-            long fps = Math.max(1, mc.getFps());
-            double maxMemoryGB = Runtime.getRuntime().maxMemory() / 1024.0 / 1024 / 1024;
-            NetworkHandler.sendToServer(new PlayerFpsPacket(fps, maxMemoryGB));
             initDelay = 0;
             // 原望远镜灵敏度逻辑
             Player player = mc.player;

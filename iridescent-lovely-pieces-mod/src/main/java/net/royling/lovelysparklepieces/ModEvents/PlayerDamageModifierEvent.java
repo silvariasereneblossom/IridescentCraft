@@ -25,7 +25,6 @@ import net.minecraftforge.event.entity.living.LivingEvent;
 import net.minecraftforge.event.entity.player.ItemTooltipEvent;
 import net.minecraftforge.event.TickEvent;
 import net.royling.lovelysparklepieces.network.NetworkHandler;
-import net.royling.lovelysparklepieces.network.DamageParticlePacket;
 import net.royling.lovelysparklepieces.network.PlayerSoulPacket;
 import net.royling.lovelysparklepieces.ModAttributes.ModAttribute;
 import net.royling.lovelysparklepieces.ModConfigs.LSPConfig;
@@ -180,31 +179,6 @@ public class PlayerDamageModifierEvent {
             } else {
                 // 没有暴击，仅使用增伤后数值
                 event.setAmount((float) baseDamage);
-            }
-
-            if (LSPConfig.IS_DAMAGE_NUM.get())
-            {
-                // 如果是服务端玩家，发送伤害粒子包用于客户端显示
-                if (player instanceof ServerPlayer serverPlayer) {
-                    // 获取目标位置
-                    Vec3 pos = event.getEntity().position();
-                    // 根据伤害类型标签映射到对应的展示名称
-                    String damageType = DAMAGE_TYPE_MAP.entrySet().stream()
-                            .filter(entry -> event.getSource().is(entry.getKey()))
-                            .map(Map.Entry::getValue)
-                            .findFirst()
-                            .orElse("attack");
-                    String damagetype = getDamageTypeString(event.getSource());
-                    // 发送自定义粒子数据包
-                    NetworkHandler.sendToPlayer(new DamageParticlePacket(
-                            damagetype,
-                            event.getAmount(),
-                            pos.x,
-                            pos.y + event.getEntity().getBbHeight(),
-                            pos.z,
-                            magnification
-                    ), serverPlayer);
-                }
             }
         }
     }

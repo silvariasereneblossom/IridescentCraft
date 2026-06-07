@@ -154,13 +154,7 @@ public class HUBRender {
                         10,time_y,0xFFFFFF,true
                 );
         }
-        if(ModCurios.hasCurio(player,ModCurios.PDA.get())) {
-            guiGraphics.drawString(
-                    minecraft.font,
-                    Component.literal(String.valueOf("❤\uFE0F" + player.getPersistentData().getInt("lsp_heart_state"))),
-                    10, window.getGuiScaledHeight() / 2 + 30, 0xFFFFFF, true
-            );
-        }
+        // IRIDESCENT: PDA heartrate line removed with HeartSystem (gimmick strip)
         if(ModCurios.hasCurio(player,ModCurios.SPEEDOMETER.get())||ModCurios.hasCurio(player,ModCurios.GPS.get())||ModCurios.hasCurio(player,ModCurios.PDA.get())){
             int time_y = window.getGuiScaledHeight()/2 + 10;
             lastSpeed = calculateHorizontalSpeed(player);

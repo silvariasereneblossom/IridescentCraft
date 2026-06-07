@@ -26,7 +26,6 @@ public class ModCreative {
                 output.accept(ModCurios.INFERNO_RING.get().getDefaultInstance());
                 output.accept(ModCurios.ECO_RING.get().getDefaultInstance());
                 //首饰
-                output.accept(ModCurios.FPS_EYE.get().getDefaultInstance());
                 output.accept(ModCurios.BLACKSTONE_HEART.get().getDefaultInstance());
                 output.accept(ModCurios.NIGHT_VISION.get().getDefaultInstance());
                 output.accept(ModCurios.DOUBLE_NIGHT_VISION.get().getDefaultInstance());

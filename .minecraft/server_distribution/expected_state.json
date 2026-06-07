@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "3856ed832",
+  "generated_from": "ddb1109e6",
   "roots": [
     "kubejs",
     "config",
@@ -6739,6 +6739,10 @@
       "sha256": "d6f934a0bf94b5fc187121d0e3f6bdb344c6d57ba86745648abc52a6ae2586e6",
       "size": 150262
     },
+    "kubejs/server_scripts/loot/lovely_pieces_loot.js": {
+      "sha256": "09d4ac6441c3b1b0caa21d89994acec3465254c91722d19e92d1603392491320",
+      "size": 10877
+    },
     "kubejs/server_scripts/loot/mahou_synergy_drops.js": {
       "sha256": "10e637f08bc0da62a856f4d1322fbda0f9bf2af4391376a8ee27f469517749f9",
       "size": 4886
@@ -7924,7 +7928,7 @@
       "size": 177
     },
     "mods/.index/iridescent-lovely-pieces.pw.toml": {
-      "sha256": "f72943782ff355d1db3189c0a8329bb210d1b9a49d6f872d914a34574f7e87e5",
+      "sha256": "b42512c2189583442993fd164c9471ba9929cd2ec8820cead1b01d997497b405",
       "size": 189
     },
     "mods/.index/iridescent-origins.pw.toml": {

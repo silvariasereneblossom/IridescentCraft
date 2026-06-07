@@ -25,14 +25,10 @@ public class NetworkHandler {
     public static void register() {
         // 注册所有数据包
         // 服务器到客户端
-        INSTANCE.registerMessage(id(), DamageParticlePacket.class, DamageParticlePacket::toBytes, 
-            DamageParticlePacket::new, DamageParticlePacket::handle);
         INSTANCE.registerMessage(id(), PlayerSoulPacket.class, PlayerSoulPacket::toBytes,
             PlayerSoulPacket::new, PlayerSoulPacket::handle);
         INSTANCE.registerMessage(id(), PlayerChipPacket.class, PlayerChipPacket::toBytes,
             PlayerChipPacket::new, PlayerChipPacket::handle);
-        INSTANCE.registerMessage(id(), PlayerHeartPacket.class, PlayerHeartPacket::toBytes,
-            PlayerHeartPacket::new, PlayerHeartPacket::handle);
         INSTANCE.registerMessage(id(), PlayerUsingItemDataPacket.class, PlayerUsingItemDataPacket::toBytes,
             PlayerUsingItemDataPacket::new, PlayerUsingItemDataPacket::handle);
         INSTANCE.registerMessage(id(), PlayerTemperaturePacket.class, PlayerTemperaturePacket::toBytes,
@@ -45,8 +41,6 @@ public class NetworkHandler {
             OpenChestPacket::new, OpenChestPacket::handle);
         INSTANCE.registerMessage(id(), DoubleJumpPacket.class, DoubleJumpPacket::toBytes,
             DoubleJumpPacket::new, DoubleJumpPacket::handle);
-        INSTANCE.registerMessage(id(), PlayerFpsPacket.class, PlayerFpsPacket::toBytes,
-            PlayerFpsPacket::new, PlayerFpsPacket::handle);
     }
 
     public static <MSG> void sendToPlayer(MSG message, ServerPlayer player) {

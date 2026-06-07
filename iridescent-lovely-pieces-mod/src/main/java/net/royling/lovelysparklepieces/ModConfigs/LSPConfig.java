@@ -12,7 +12,6 @@ public class LSPConfig {
     public static final ForgeConfigSpec.DoubleValue MAGNET_RADIUS;
     public static final ForgeConfigSpec.DoubleValue STRONG_MAGNET_RADIUS;
     public static final ForgeConfigSpec.ConfigValue<List<? extends String>> INSULT_MESSAGES;
-    public static final ForgeConfigSpec.BooleanValue IS_DAMAGE_NUM;
     public static final ForgeConfigSpec.BooleanValue IS_START_ITEM;
     static{
         BUILDER.push("PiecesSettings");
@@ -54,11 +53,6 @@ public class LSPConfig {
                         o -> o instanceof String);
         BUILDER.pop();
         BUILDER.push("Function");
-
-        IS_DAMAGE_NUM=BUILDER
-                .comment("是否启用伤害数值？")
-                .comment("Is Damage Number?")
-                .define("boolean damage number",true);
 
         IS_START_ITEM=BUILDER
                 .comment("是否启用开局物品？")

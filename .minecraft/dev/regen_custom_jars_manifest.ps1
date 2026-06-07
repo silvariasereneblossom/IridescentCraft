@@ -48,7 +48,7 @@ $customJars = @(
     'class-artifacts-forge-2.0.5.jar',
     'iridescent_relics-1.0.0.jar',
     'linearxp-1.0.0-iridescent.1.jar',
-    'lovely_sparkle_pieces-0.1.0.0-iridescent.1.jar'
+    'lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar'
 )
 
 $modsDir = Join-Path $RepoRoot '.minecraft\mods'
