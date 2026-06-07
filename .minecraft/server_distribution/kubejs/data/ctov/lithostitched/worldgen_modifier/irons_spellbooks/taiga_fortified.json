@@ -1,0 +1,29 @@
+{
+  "type": "lithostitched:add_template_pool_elements",
+  "predicate": {
+    "type": "lithostitched:all_of",
+    "predicates": [
+      {
+        "type": "lithostitched:mod_loaded",
+        "mod_id": "irons_spellbooks"
+      }
+    ]
+  },
+  "template_pools": "ctov:village/taiga_fortified/house",
+  "elements": [
+    {
+      "weight": 12,
+      "element": {
+        "element_type": "lithostitched:limited",
+        "delegate": {
+          "element_type": "minecraft:single_pool_element",
+          "projection": "rigid",
+          "processors": "ctov:village/taiga/house",
+          "location": "ctov:village/taiga_fortified/jobsite/priest_tower"
+        },
+        "limit": 1
+      }
+    }
+  ],
+  "_icraft": "OVERRIDE of CTOV 3.4.14 jar file: ISS priest tower weight 5->12 (docket #96, 2026-06-07). Limit 1/village unchanged. Regenerate from jar on CTOV updates."
+}
