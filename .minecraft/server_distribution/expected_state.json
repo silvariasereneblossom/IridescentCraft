@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "7bbd1bf11",
+  "generated_from": "4b2d5caa0",
   "roots": [
     "kubejs",
     "config",
@@ -5532,8 +5532,8 @@
       "size": 1203
     },
     "kubejs/assets/apotheosis/lang/en_us.json": {
-      "sha256": "cb03a12ad77a6d54a8912c225c7637dc0408ffa123944d0ce496fc53f0220819",
-      "size": 30654
+      "sha256": "8612cddff48b608eea1ea2134d049023bf825e963f0ddbe6bf1914b8a1d92db5",
+      "size": 32245
     },
     "kubejs/assets/dna/lang/en_us.json": {
       "sha256": "e3a6a72acfb05359da05e9ea25843eada2c269c3ec0f6c791b9ad4fed6ac5294",

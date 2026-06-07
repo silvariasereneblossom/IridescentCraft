@@ -2315,12 +2315,15 @@ LootJS.modifiers(event => {
   // from their richer 3-pool setup, non-houses (smith/butcher/tannery/etc.)
   // get magic materials from here. Air slot gives ~40% of chests NO
   // magic material (most chests have some magic material ~60%).
+  // [2026-06-07] spellbooks REMOVED from the pool (operator directive):
+  // copper (10/97 ~ 10.3%/chest) + novice (2/97) made spellbooks near-certain
+  // per village, and the class starter kits already cover mage entry. Air
+  // weight 40->52 holds ink/source-gem at their previous effective rates
+  // (30.9% / 15.5%) instead of silently inflating them (pick-one weights).
   var villageQoLPool = [
-    Item.of('minecraft:air').withChance(40),
+    Item.of('minecraft:air').withChance(52),
     Item.of('irons_spellbooks:common_ink').withChance(30),
-    Item.of('ars_nouveau:source_gem').withChance(15),
-    Item.of('irons_spellbooks:copper_spell_book').withChance(10),
-    Item.of('ars_nouveau:novice_spell_book').withChance(2)
+    Item.of('ars_nouveau:source_gem').withChance(15)
   ]
 
   villageChests.forEach(function(table) {
