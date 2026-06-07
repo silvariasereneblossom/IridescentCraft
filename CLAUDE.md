@@ -25,6 +25,8 @@ Read for context; update after your commits, then push the internal repo:
 - `planning\current-state.md` — live resume note. **Update after every commit and on "checkpoint."**
 - `design\design-evolution.md` — design *decisions* (newest-first: Decision / Rationale / What changed / Status).
 - `dev\lessons-learned.md` (Tetra work → `lessons-learned-Tetra.md`) — failures/fixes after lesson-worthy work (done by hand — no API auto-capture).
+- `dev\failure-modes.md` — the canonical trap catalog (silent-failure ledger). **Consult before forming any bug theory; add a row after every burned hand, same session.**
+- `dev\onboarding-first-week.md` — contributor syllabus + graduated starter tasks with ship checklists.
 
 ## Layout & testing
 - 3 distros: `.minecraft\mods` · `.minecraft\server_distribution\` · `.minecraft\distribution\client\`. `sync-distros.ps1` mirrors `kubejs/{startup,server}_scripts`, `kubejs/assets`, `kubejs/data`, `config/paxi/datapacks`, the cleanup script (incl. the server-runtime seed copy), and gates manifest parity — mod configs and mods/ remain per-distro (configs legitimately differ; mods are packwiz/custom-jar managed).
