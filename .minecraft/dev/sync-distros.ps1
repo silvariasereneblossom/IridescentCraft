@@ -43,6 +43,8 @@ if (-not (Test-Path $ConfigPath)) {
 $Config = Get-Content -Raw $ConfigPath | ConvertFrom-Json
 $Watched = $Config.WATCHED
 $ExcludePatterns = $Config.EXCLUDE_PATTERNS
+$ExtraMirrors = @()
+if ($Config.PSObject.Properties.Name -contains 'EXTRA_MIRRORS') { $ExtraMirrors = $Config.EXTRA_MIRRORS }
 
 function Test-Excluded {
     param([string]$Rel)
@@ -118,6 +120,27 @@ foreach ($w in $Watched) {
                 }) | Out-Null
             }
         }
+    }
+}
+
+# -----------------------------------------------------------------------------
+# EXTRA_MIRRORS: explicit (source -> target) file pairs outside the distro-root
+# model (e.g. the dedicated-server runtime SEED copy of cleanup_stale_jars.ps1,
+# #74a). Source is main-relative; target is .minecraft-relative.
+# -----------------------------------------------------------------------------
+foreach ($pair in $ExtraMirrors) {
+    $srcPath = Join-Path $Main $pair.source
+    $dstPath = Join-Path $Main $pair.target
+    if (-not (Test-Path $srcPath)) {
+        Write-Host "[sync-distros] skip extra-mirror: source missing: $($pair.source)"
+        continue
+    }
+    $srcHash = (Get-FileHash $srcPath -Algorithm SHA256).Hash
+    $dstHash = Get-FileHashOrNull $dstPath
+    if ($null -eq $dstHash -or $dstHash -ne $srcHash) {
+        $mismatches.Add([pscustomobject]@{
+            Kind = 'SEED'; Distro = (Split-Path $dstPath -Parent); Rel = $pair.target; Source = $srcPath; Target = $dstPath
+        }) | Out-Null
     }
 }
 
@@ -201,6 +224,13 @@ foreach ($m in $mismatches) {
             $dst = Join-Path $m.Distro $m.Rel
             Copy-Item $m.Source $dst -Force
             Write-Host "  fix DIVERGED: $($m.Rel) -> $(Split-Path $m.Distro -Leaf)"
+            $fixedCount++
+        }
+        'SEED' {
+            $dstParent = Split-Path $m.Target -Parent
+            if (-not (Test-Path $dstParent)) { New-Item -ItemType Directory -Force -Path $dstParent | Out-Null }
+            Copy-Item $m.Source $m.Target -Force
+            Write-Host "  fix SEED:     $($m.Rel)"
             $fixedCount++
         }
         'ORPHAN' {

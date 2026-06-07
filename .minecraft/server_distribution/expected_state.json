@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "ddb1109e6",
+  "generated_from": "a227c4ab8",
   "roots": [
     "kubejs",
     "config",
@@ -5572,8 +5572,8 @@
       "size": 367
     },
     "kubejs/assets/tetra/lang/en_us.json": {
-      "sha256": "34022dcec4f41b8c208e5d2a9428eaf3390be6710273643341cd7226a22f7b80",
-      "size": 6077
+      "sha256": "2a08ae2ae06314a5379962b2b14618e3b94144858299b3bf2b01424df98dc1cb",
+      "size": 10903
     },
     "kubejs/client_scripts/armor_weight_tooltip.js": {
       "sha256": "10777cfbd8645b714a7a026b3fe25920996b13b90879d10bfe96c5d7ee241098",

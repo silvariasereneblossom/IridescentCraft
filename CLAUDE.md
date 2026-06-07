@@ -27,7 +27,7 @@ Read for context; update after your commits, then push the internal repo:
 - `dev\lessons-learned.md` (Tetra work → `lessons-learned-Tetra.md`) — failures/fixes after lesson-worthy work (done by hand — no API auto-capture).
 
 ## Layout & testing
-- 3 distros: `.minecraft\mods` · `.minecraft\server_distribution\` · `.minecraft\distribution\client\`. `sync-distros.ps1` mirrors **only** `kubejs/{startup,server}_scripts` — NOT mods/datapacks (those are committed per-distro).
+- 3 distros: `.minecraft\mods` · `.minecraft\server_distribution\` · `.minecraft\distribution\client\`. `sync-distros.ps1` mirrors `kubejs/{startup,server}_scripts`, `kubejs/assets`, `kubejs/data`, `config/paxi/datapacks`, the cleanup script (incl. the server-runtime seed copy), and gates manifest parity — mod configs and mods/ remain per-distro (configs legitimately differ; mods are packwiz/custom-jar managed).
 - The operator runs in-game tests. When handing one off, give **paste-ready** `/give` `/summon` `/locate structure` `/tp` commands with **real IDs** looked up from the scripts/datapacks (don't guess); flag cosmetic-only breakage (e.g. a missing lang key) so they know the behavior still validates.
 
 ## Wiki

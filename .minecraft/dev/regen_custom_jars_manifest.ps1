@@ -32,24 +32,22 @@ param(
 
 $ErrorActionPreference = 'Stop'
 
-# Keep this list in sync with cleanup_stale_jars.ps1's $customJars
-$customJars = @(
-    'iridescent_codex_data.jar',
-    'iridescent_origins-1.0.0.jar',
-    'iridescent_biomes-1.0.0.jar',
-    'iridescent_tetra_expansion-1.0.0.jar',
-    'iridescent_durability_clamp-0.1.0.jar',
-    'iridescent_difficulty-0.1.0.jar','iridescent_grand_compass-1.0.0.jar',
-    'justlevelingfork-1.2.1-iridescent.1.jar',
-    'mek_walkable_cables-1.0.1.jar',
-    'offlineskins-1.20.1-v1.jar',
-    'Patchouli-1.20.1-85-FORGE.jar',
-    'ars_nouveau-1.20.1-4.12.7-all.jar',
-    'class-artifacts-forge-2.0.5.jar',
-    'iridescent_relics-1.0.0.jar',
-    'linearxp-1.0.0-iridescent.1.jar',
-    'lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar'
-)
+# Custom-jar discovery is GIT-DERIVED (2026-06-07): a jar is custom IFF git
+# will commit it (mods/*.jar is gitignored except the negated customs). This
+# kills the hardcoded-filename lockstep -- version bumps self-track. NOTE:
+# `git add` a brand-new jar (or rely on the gitignore negation making it
+# untracked-unignored, which is also picked up) BEFORE running this script.
+# cleanup_stale_jars.ps1's $customJars literal stays as the manifest-missing
+# fallback only (manifest-as-keep is the primary mechanism, #70).
+$tracked   = & git -C $RepoRoot ls-files '.minecraft/mods/*.jar'
+$untracked = & git -C $RepoRoot ls-files --others --exclude-standard '.minecraft/mods/*.jar'
+$customJars = @($tracked) + @($untracked) |
+    Where-Object { $_ } | ForEach-Object { Split-Path $_ -Leaf } | Sort-Object -Unique
+if (-not $customJars -or $customJars.Count -eq 0) {
+    Write-Host "ERROR: git-derived custom jar list is EMPTY - refusing to write an empty manifest." -ForegroundColor Red
+    exit 1
+}
+Write-Host "[regen] git-derived custom jar list: $($customJars.Count) jar(s)"
 
 $modsDir = Join-Path $RepoRoot '.minecraft\mods'
 if (-not (Test-Path $modsDir)) {

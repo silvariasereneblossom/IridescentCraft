@@ -4,7 +4,10 @@
     "kubejs/startup_scripts",
     "kubejs/server_scripts",
     "cleanup_stale_jars.ps1",
-    "custom_jars_manifest.json"
+    "custom_jars_manifest.json",
+    "kubejs/assets",
+    "kubejs/data",
+    "config/paxi/datapacks"
   ],
   "EXCLUDE_PATTERNS": [
     "*/.cache/*",
@@ -19,15 +22,24 @@
     "the_rule": "Per CLAUDE.md 'Distribution Sync': all changes to kubejs, configs, datapacks, or lang files must be mirrored to all three distros (main, server_distribution, distribution/client). In practice this script enforces a conservative subset (server_scripts + startup_scripts) where divergence is almost always a real bug; the rest is left to manual discipline or other tools.",
     "kubejs/server_scripts": "WATCHED. Authoritative source is main; distros mirror. As of the post-cutover audit, server_distribution had 140 files vs main's 139 (one orphan) -- ground-truth which to keep before installing the hook.",
     "kubejs/startup_scripts": "WATCHED. Authoritative source is main; distros mirror.",
-    "cleanup_stale_jars.ps1": "WATCHED (single file). The shared mod-hygiene script MUST be byte-identical across main + the two distros; it had silently diverged (server copy missing iridescent_relics in its allowlist) -> #70. Authoritative source is the main copy; distros mirror. NOTE: the server-runtime SEED copy at server_distribution/'IridescentCraft Dedicated Server'/ is outside this distro-root model -> keep in parity by hand (Layer 2.5 manifest-keep makes any residual drift non-fatal).",
+    "cleanup_stale_jars.ps1": "WATCHED (single file). The shared mod-hygiene script MUST be byte-identical across main + the two distros; it had silently diverged (server copy missing iridescent_relics in its allowlist) -> #70. Authoritative source is the main copy; distros mirror. NOTE: the server-runtime SEED copy at server_distribution/'IridescentCraft Dedicated Server'/ is outside this distro-root model -> now auto-mirrored via EXTRA_MIRRORS (2026-06-07); Layer 2.5 manifest-keep remains the non-fatal backstop.",
     "custom_jars_manifest.json": "WATCHED (single file). The SHA-256 manifest is the single source of truth for custom-jar identity AND (as of #70) the cleanup keep-decision. regen_custom_jars_manifest.ps1 writes all three identically; this gate verifies they stayed identical so a half-applied regen can't ship.",
     "kubejs/client_scripts": "NOT WATCHED. server_distribution strips client_scripts that touch client-only classes (per CLAUDE.md Server Mod Compatibility Audit). distribution/client should mirror main but a single-direction-mirror check would need a per-distro WATCHED system this script doesn't yet support.",
     "kubejs/libraries": "EXCLUDED. KubeJS-generated IDE autocomplete stubs; never present in distros.",
-    "kubejs/assets": "NOT WATCHED. Language files and resourcepack assets vary across distros legitimately (resourcepack-side rendering vs server-side translation tables).",
+    "kubejs/assets": "WATCHED (since 2026-06-07). The old 'varies legitimately' note was documenting DRIFT as design: audit found stale tetra lang (June 1 vs June 3) + a theabyss lang dir that never left main -> raw workbench IDs on tester screens. Client renders from ITS kubejs/assets, so distribution/client staleness is player-visible. Authoritative source is main; distros mirror.",
     "kubejs/config": "NOT WATCHED. KubeJS-internal config files (probe-settings.json, etc) vary per environment.",
     "datapack_sources": "NOT WATCHED. Build SOURCES for custom datapack jars (iridescent_codex_data.jar etc). Distros ship the BUILT jar in mods/, not the source tree. Only present in main.",
-    "config": "NOT WATCHED. Mod configs frequently differ across server vs client (memory tuning, render distance, etc).",
+    "config": "NOT WATCHED (whole tree). Mod configs legitimately differ server vs client. The paxi/datapacks subtree is watched separately (see its note).",
     "mods": "NOT WATCHED. packwiz manages these; custom jars need the verify_distros.sh|.bat|.ps1 helper per deployment-and-utility-guide.md, not this script.",
-    "kubejs/server_scripts/validate_recipe_removals.js": "EXCLUDED. Dev-only validator (master-appendix.md §126: 'run at server start as a sanity check for stale IDs'); intentionally not deployed to the distributions."
-  }
+    "kubejs/server_scripts/validate_recipe_removals.js": "EXCLUDED. Dev-only validator (master-appendix.md \u00a7126: 'run at server start as a sanity check for stale IDs'); intentionally not deployed to the distributions.",
+    "kubejs/data": "WATCHED (since 2026-06-07). Verified byte-identical x3 at adoption; datapack-style server data must not drift.",
+    "config/paxi/datapacks": "WATCHED (since 2026-06-07). Paxi zips were always supposed to be identical x3 (manual-copy rule); verified identical at adoption. Rebuild zips into main, run -Fix to propagate."
+  },
+  "EXTRA_MIRRORS": [
+    {
+      "source": "cleanup_stale_jars.ps1",
+      "target": "server_distribution/IridescentCraft Dedicated Server/cleanup_stale_jars.ps1",
+      "_why": "#74a: the server-runtime SEED copy sits outside the distro-root model; this pair-mirror closes the last by-hand parity loop"
+    }
+  ]
 }

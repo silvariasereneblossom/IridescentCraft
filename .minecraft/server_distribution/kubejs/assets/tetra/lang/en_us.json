@@ -1,165 +1,207 @@
 {
   "_comment": "icraft #35 Tetra material display names. tetra.material.<key>.name = full name shown in the workbench material slot; .prefix = the adjective Tetra prepends to the assembled item name (e.g. 'Ignitium Sword'). Without these, Tetra falls back to a raw Title-Cased key (e.g. 'Dd warden', 'Fa tyr', 'Undergarden cloggrum'). Covers the icraft_tetra_materials datapack set. Vanilla Tetra builtins (iron/gold/diamond/netherite) are intentionally omitted -- they are replace:false stat overlays that already inherit Tetra's own lang. Keys grouped by source datapack category.",
-
   "_comment_boss": "Cataclysm boss-only materials (refight-to-repair set).",
   "tetra.material.cm_ignitium.name": "Ignitium",
   "tetra.material.cm_ignitium.prefix": "Ignitium",
-
   "tetra.material.cm_cursium.name": "Cursium",
   "tetra.material.cm_cursium.prefix": "Cursium",
-
   "tetra.material.cm_witherite.name": "Witherite",
   "tetra.material.cm_witherite.prefix": "Witherite",
-
   "tetra.material.cm_ender_guard.name": "Guardian Alloy",
   "tetra.material.cm_ender_guard.prefix": "Guardian",
-
   "_comment_gem": "Gem-category materials (Terramity, Blue Skies, Deeper Darker, Aether, The Undergarden).",
   "tetra.material.onyx.name": "Onyx",
   "tetra.material.onyx.prefix": "Onyx",
-
   "tetra.material.ruby.name": "Ruby",
   "tetra.material.ruby.prefix": "Ruby",
-
   "tetra.material.sapphire.name": "Sapphire",
   "tetra.material.sapphire.prefix": "Sapphire",
-
   "tetra.material.topaz.name": "Topaz",
   "tetra.material.topaz.prefix": "Topaz",
-
   "tetra.material.bs_pyrope.name": "Pyrope",
   "tetra.material.bs_pyrope.prefix": "Pyrope",
-
   "tetra.material.dd_resonarium.name": "Resonarium",
   "tetra.material.dd_resonarium.prefix": "Resonarium",
-
   "tetra.material.aether_neptune.name": "Neptune",
   "tetra.material.aether_neptune.prefix": "Neptune",
-
   "tetra.material.undergarden_utherium.name": "Utherium",
   "tetra.material.undergarden_utherium.prefix": "Utherium",
-
   "tetra.material.diamond_no_t.name": "Diamond",
   "tetra.material.diamond_no_t.prefix": "Diamond",
-
   "_comment_metal": "Metal-category materials.",
   "tetra.material.aethersteel.name": "Aethersteel",
   "tetra.material.aethersteel.prefix": "Aethersteel",
-
   "tetra.material.brass.name": "Brass",
   "tetra.material.brass.prefix": "Brass",
-
   "tetra.material.steel.name": "Steel",
   "tetra.material.steel.prefix": "Steel",
-
   "tetra.material.osmium.name": "Osmium",
   "tetra.material.osmium.prefix": "Osmium",
-
   "tetra.material.refined_obsidian.name": "Refined Obsidian",
   "tetra.material.refined_obsidian.prefix": "Refined Obsidian",
-
   "tetra.material.enderium.name": "Enderium",
   "tetra.material.enderium.prefix": "Enderium",
-
   "tetra.material.lumium.name": "Lumium",
   "tetra.material.lumium.prefix": "Lumium",
-
   "tetra.material.signalum.name": "Signalum",
   "tetra.material.signalum.prefix": "Signalum",
-
   "tetra.material.elementium.name": "Elementium",
   "tetra.material.elementium.prefix": "Elementium",
-
   "tetra.material.manasteel.name": "Manasteel",
   "tetra.material.manasteel.prefix": "Manasteel",
-
   "tetra.material.terrasteel.name": "Terrasteel",
   "tetra.material.terrasteel.prefix": "Terrasteel",
-
   "tetra.material.iridium.name": "Iridium",
   "tetra.material.iridium.prefix": "Iridium",
-
   "tetra.material.dimlite.name": "Dimlite",
   "tetra.material.dimlite.prefix": "Dimlite",
-
   "tetra.material.charoite.name": "Charoite",
   "tetra.material.charoite.prefix": "Charoite",
-
   "tetra.material.diopside.name": "Diopside",
   "tetra.material.diopside.prefix": "Diopside",
-
   "tetra.material.horizonite.name": "Horizonite",
   "tetra.material.horizonite.prefix": "Horizonite",
-
   "tetra.material.garnite.name": "Garnite",
   "tetra.material.garnite.prefix": "Garnite",
-
   "tetra.material.knight.name": "Knight",
   "tetra.material.knight.prefix": "Knight",
-
   "tetra.material.phantom.name": "Phantom",
   "tetra.material.phantom.prefix": "Phantom",
-
   "tetra.material.unorithe.name": "Unorithe",
   "tetra.material.unorithe.prefix": "Unorithe",
-
   "tetra.material.fiery.name": "Fiery",
   "tetra.material.fiery.prefix": "Fiery",
-
   "tetra.material.ironwood.name": "Ironwood",
   "tetra.material.ironwood.prefix": "Ironwood",
-
   "tetra.material.knightmetal.name": "Knightmetal",
   "tetra.material.knightmetal.prefix": "Knightmetal",
-
   "tetra.material.steeleaf.name": "Steeleaf",
   "tetra.material.steeleaf.prefix": "Steeleaf",
-
   "tetra.material.deorum.name": "Deorum",
   "tetra.material.deorum.prefix": "Deorum",
-
   "tetra.material.fa_tyr.name": "Tyr",
   "tetra.material.fa_tyr.prefix": "Tyr",
-
   "tetra.material.fa_mortem.name": "Mortem",
   "tetra.material.fa_mortem.prefix": "Mortem",
-
   "tetra.material.fa_draco_arcanus.name": "Draco Arcanus",
   "tetra.material.fa_draco_arcanus.prefix": "Draco Arcanus",
-
   "tetra.material.aether_obsidian.name": "Obsidian",
   "tetra.material.aether_obsidian.prefix": "Obsidian",
-
   "tetra.material.dd_warden.name": "Warden Plate",
   "tetra.material.dd_warden.prefix": "Warden",
-
   "tetra.material.undergarden_cloggrum.name": "Cloggrum",
   "tetra.material.undergarden_cloggrum.prefix": "Cloggrum",
-
   "tetra.material.undergarden_froststeel.name": "Froststeel",
   "tetra.material.undergarden_froststeel.prefix": "Froststeel",
-
   "tetra.material.undergarden_forgotten_metal.name": "Forgotten Metal",
   "tetra.material.undergarden_forgotten_metal.prefix": "Forgotten",
-
   "_comment_bone": "Bone-category materials.",
   "tetra.material.tf_naga.name": "Naga Scale",
   "tetra.material.tf_naga.prefix": "Naga",
-
   "_comment_fibre": "Fibre-category materials.",
   "tetra.material.paper.name": "Paper",
   "tetra.material.paper.prefix": "Paper",
-
   "_comment_skin": "Skin / hide materials.",
   "tetra.material.deathskin.name": "Deathskin",
   "tetra.material.deathskin.prefix": "Deathskin",
-
   "tetra.material.rotten_leather.name": "Rotten Leather",
   "tetra.material.rotten_leather.prefix": "Rotten",
-
   "tetra.material.tf_arctic.name": "Arctic Fur",
   "tetra.material.tf_arctic.prefix": "Arctic",
-
   "tetra.material.tf_yeti.name": "Yeti Fur",
-  "tetra.material.tf_yeti.prefix": "Yeti"
+  "tetra.material.tf_yeti.prefix": "Yeti",
+  "tetra.material.bm_gob.name": "Gilded Gnome Brass",
+  "tetra.material.bm_gob.prefix": "Gilded",
+  "tetra.material.bm_frostmaw.name": "Frostmaw Crystal",
+  "tetra.material.bm_frostmaw.prefix": "Glacial",
+  "tetra.material.bm_wroughtnaut.name": "Thousand-Metal Iron",
+  "tetra.material.bm_wroughtnaut.prefix": "Wrought",
+  "tetra.material.bm_umvuthi.name": "Solar Visage Gold",
+  "tetra.material.bm_umvuthi.prefix": "Solar",
+  "tetra.material.bm_sculptor.name": "Geomancy Stone",
+  "tetra.material.bm_sculptor.prefix": "Geomancer",
+  "tetra.material.bm_mnaga.name": "Mowzie Venom Fang",
+  "tetra.material.bm_mnaga.prefix": "Venom",
+  "tetra.material.bm_sniffer.name": "Gaian Cluster",
+  "tetra.material.bm_sniffer.prefix": "Gaian",
+  "tetra.material.tf_lich.name": "Necrotwilight",
+  "tetra.material.tf_lich.prefix": "Lich",
+  "tetra.material.tf_hydra.name": "Hydra Ember",
+  "tetra.material.tf_hydra.prefix": "Ember",
+  "tetra.material.tf_urghast.name": "Ghast Tearfire",
+  "tetra.material.tf_urghast.prefix": "Tearfire",
+  "tetra.material.tf_knightphantom.name": "Spectral Knightmetal",
+  "tetra.material.tf_knightphantom.prefix": "Spectral",
+  "tetra.material.tf_snowqueen.name": "Aurora Ice",
+  "tetra.material.tf_snowqueen.prefix": "Aurora",
+  "tetra.material.tf_minoshroom.name": "Labyrinth Bronze",
+  "tetra.material.tf_minoshroom.prefix": "Labyrinth",
+  "tetra.material.ae_slider.name": "Bronze Slider",
+  "tetra.material.ae_slider.prefix": "Slider",
+  "tetra.material.ae_valkyrie.name": "Valkyrie Silver",
+  "tetra.material.ae_valkyrie.prefix": "Valkyrie",
+  "tetra.material.ae_sunspirit.name": "Solar Aether",
+  "tetra.material.ae_sunspirit.prefix": "Sunspirit",
+  "tetra.material.bs_summoner.name": "Everbright Soul",
+  "tetra.material.bs_summoner.prefix": "Soulbright",
+  "tetra.material.bs_alchemist.name": "Everdawn Ventium",
+  "tetra.material.bs_alchemist.prefix": "Ventium",
+  "tetra.material.bs_starlit.name": "Starlit Falsite",
+  "tetra.material.bs_starlit.prefix": "Starlit",
+  "tetra.material.bs_arachnarch.name": "Silkfang",
+  "tetra.material.bs_arachnarch.prefix": "Silkfang",
+  "tetra.material.cm_monstrosity.name": "Monstrous Netherite",
+  "tetra.material.cm_monstrosity.prefix": "Monstrous",
+  "tetra.material.cm_leviathan.name": "Abyssal Steel",
+  "tetra.material.cm_leviathan.prefix": "Abyssal",
+  "tetra.material.cm_scylla.name": "Frost Lacrima",
+  "tetra.material.cm_scylla.prefix": "Lacrima",
+  "tetra.material.iss_deadking.name": "Bloodbone Darkin",
+  "tetra.material.iss_deadking.prefix": "Bloodbone",
+  "tetra.material.iss_tyros.name": "Flamebearer Cinder",
+  "tetra.material.iss_tyros.prefix": "Flamebearer",
+  "tetra.material.iss_citadel.name": "Citadel Steel",
+  "tetra.material.iss_citadel.prefix": "Citadel",
+  "tetra.material.iss_archevoker.name": "Arcane Evoker",
+  "tetra.material.iss_archevoker.prefix": "Evoker",
+  "tetra.material.iss_magehunter.name": "Magehunter Alloy",
+  "tetra.material.iss_magehunter.prefix": "Magehunter",
+  "tetra.material.ug_forgotten_guardian.name": "Forgotten Metal",
+  "tetra.material.ug_forgotten_guardian.prefix": "Forgotten",
+  "tetra.material.dd_stalker.name": "Sculk Soul",
+  "tetra.material.dd_stalker.prefix": "Sculk",
+  "tetra.material.tm_gatmancer.name": "Dungeon Occult",
+  "tetra.material.tm_gatmancer.prefix": "Occult",
+  "tetra.material.cs_pride.name": "Pride Essence",
+  "tetra.material.cs_pride.prefix": "Pride",
+  "tetra.material.cs_wrath.name": "Wrath Essence",
+  "tetra.material.cs_wrath.prefix": "Wrath",
+  "tetra.material.cs_greed.name": "Greed Essence",
+  "tetra.material.cs_greed.prefix": "Greed",
+  "tetra.material.cs_envy.name": "Envy Essence",
+  "tetra.material.cs_envy.prefix": "Envy",
+  "tetra.material.cs_lust.name": "Lust Essence",
+  "tetra.material.cs_lust.prefix": "Lust",
+  "tetra.material.cs_gluttony.name": "Gluttony Essence",
+  "tetra.material.cs_gluttony.prefix": "Gluttony",
+  "tetra.material.cs_sloth.name": "Sloth Essence",
+  "tetra.material.cs_sloth.prefix": "Sloth",
+  "tetra.material.cs_drakara.name": "Draconic Sin",
+  "tetra.material.cs_drakara.prefix": "Drakara",
+  "tetra.material.cm_ancient_metal.name": "Ancient Desert Metal",
+  "tetra.material.cm_ancient_metal.prefix": "Ancient",
+  "tetra.material.bo_gaia.name": "Gaia Spirit",
+  "tetra.material.bo_gaia.prefix": "Gaia",
+  "tetra.material.da_eots.name": "Storm Sky",
+  "tetra.material.da_eots.prefix": "Storm",
+  "tetra.material.tm_virtue.name": "Archangel Light",
+  "tetra.material.tm_virtue.prefix": "Archangel",
+  "tetra.material.tm_circe.name": "Malediction",
+  "tetra.material.tm_circe.prefix": "Circe",
+  "tetra.material.tm_thunker.name": "Chthonic Crystal",
+  "tetra.material.tm_thunker.prefix": "Chthonic",
+  "tetra.material.vn_dragon.name": "Ender Dragon",
+  "tetra.material.vn_dragon.prefix": "Dragon",
+  "tetra.material.vn_warden.name": "Sculk Echo",
+  "tetra.material.vn_warden.prefix": "Echo"
 }
