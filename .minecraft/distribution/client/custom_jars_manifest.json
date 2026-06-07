@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-07T00:29:03Z",
+  "generated_at": "2026-06-07T06:14:21Z",
   "generated_by": "regen_custom_jars_manifest.ps1 on  by ",
   "algorithm": "SHA-256",
   "jars": {
@@ -12,8 +12,8 @@
       "size": 514154
     },
     "iridescent_biomes-1.0.0.jar": {
-      "sha256": "052719135190e5c2dce26ac21f9ecc00283cd32dd3c8e2fb8478d2ceeadac836",
-      "size": 8867
+      "sha256": "15f16b51f222531a5b08645d561a3d04faf80ef7226eb2dfa657b32d6a20c269",
+      "size": 8941
     },
     "iridescent_codex_data.jar": {
       "sha256": "c0ab3a7a5c0a97e43e760b4652a6610ce90d88570f87afae6ac631e92852b1fb",
