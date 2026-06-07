@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "c747dea37",
+  "generated_from": "70b9bbd1e",
   "roots": [
     "kubejs",
     "config",
@@ -6670,6 +6670,10 @@
     "kubejs/server_scripts/fix_empty_display_name.js": {
       "sha256": "ca83c3afefa33a053e965fcc63c204ee02fbbed532826f19ef9660687904cc37",
       "size": 3242
+    },
+    "kubejs/server_scripts/fix_stone_tags.js": {
+      "sha256": "fcb8b8349fef23cf458d061b9554807a5f0befa2d6954273b876b84e23664ae3",
+      "size": 2176
     },
     "kubejs/server_scripts/food/hunger_management.js": {
       "sha256": "b7e88e8706cb59f7b166891483cc6dcfb7c335c50ffe8de887de21252560038e",

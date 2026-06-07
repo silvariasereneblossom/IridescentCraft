@@ -11,32 +11,39 @@
 // explicit load-order entry), so it stopped applying.
 //
 // This script is the load-order-IMMUNE replacement: KubeJS ServerEvents.tags
-// runs AFTER all datapack + jar tag merging, so adding stone here is
-// authoritative no matter what any mod or datapack did first. Mirrors the
-// datapack's exact intent so balance is unchanged:
-//   - mineable/pickaxe : stone is breakable by a pickaxe (the actual unblock)
-//   - needs_stone_tool : stone requires >= stone-tier pickaxe to DROP
-//     (deliberate pack gate, preserved from the datapack).
+// runs AFTER all datapack + jar tag merging, so it is authoritative no matter
+// what any mod or datapack did first.
 //
-// Scope intentionally narrow (minecraft:stone only) to exactly match the
-// datapack it replaces -- if other blocks turn up unmineable, widen the
-// MINEABLE / NEEDS_STONE arrays rather than blanket-restoring the tag.
+// CORRECT vanilla behavior (the target): stone is in mineable/pickaxe and in
+// NO needs_*_tool tag, so a WOODEN pickaxe breaks it and drops cobblestone.
+// The retired datapack (and the first version of this script) wrongly ALSO
+// added stone to needs_stone_tool, gating it to a stone-tier pickaxe -- which
+// soft-locks progression (you need cobble to craft a stone pickaxe, but a
+// stone pickaxe to get cobble). That entry was a misconception, not intent.
 //
-// The Paxi datapack is retired in the same commit (its zip removed) so two
-// mechanisms don't fight; this script is the single source of truth.
+// So we both ADD stone back to mineable/pickaxe (the unblock) AND REMOVE it
+// from every harvest-gate tier (defensive: whichever mod broke it may have
+// shoved stone into a needs_*_tool tag too). Result: wood-or-better mines
+// stone -> cobblestone, exactly like vanilla, immune to load order.
+//
+// Scope narrow (minecraft:stone only) to match the original problem report;
+// widen MINEABLE if other blocks turn up unmineable.
+//
+// The Paxi datapack is retired (its zip removed) so two mechanisms don't fight.
 // =============================================================================
 
 ServerEvents.tags("block", event => {
   var MINEABLE = ['minecraft:stone']
-  var NEEDS_STONE = ['minecraft:stone']
+  var NEEDS_GATES = ['minecraft:needs_stone_tool',
+                     'minecraft:needs_iron_tool',
+                     'minecraft:needs_diamond_tool']
 
   MINEABLE.forEach(function (id) {
     event.add('minecraft:mineable/pickaxe', id)
-  })
-  NEEDS_STONE.forEach(function (id) {
-    event.add('minecraft:needs_stone_tool', id)
+    // Strip from every harvest gate -> wood pickaxe drops cobblestone (vanilla).
+    NEEDS_GATES.forEach(function (gate) { event.remove(gate, id) })
   })
 
-  console.log('[stone-tag-fix] restored ' + MINEABLE.length
-    + ' block(s) to mineable/pickaxe (+ needs_stone_tool) post-merge')
+  console.log('[stone-tag-fix] ' + MINEABLE.length
+    + ' block(s) -> mineable/pickaxe, cleared from needs_*_tool (wood-mineable, post-merge)')
 })
