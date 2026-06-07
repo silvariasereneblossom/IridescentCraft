@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "0017c7413",
+  "generated_from": "7bbd1bf11",
   "roots": [
     "kubejs",
     "config",
@@ -5851,6 +5851,90 @@
       "sha256": "12e0d78953cf9564812ef70b2455a68f3cead0ebb98f28262cced0fc50ed0d92",
       "size": 808
     },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/beach.json": {
+      "sha256": "61f3da2e91bf4b9f41a2d4227aefefcb6a1dc75a54589649004b797f221cb8e4",
+      "size": 844
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/christmas.json": {
+      "sha256": "e260e7dfc00a5f0fe03f8629f0da772bcb48cc1aef4f86002b0c860c0fd4a450",
+      "size": 856
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/dark_forest.json": {
+      "sha256": "9b33d335ed9db29e90d0af95e989464ee6f821bd2380408c014ef0bcf2bcce4c",
+      "size": 858
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/desert.json": {
+      "sha256": "996573bf7a4e5b27946ee20c6c462566013e47f49000654c53ee4603dd6facd3",
+      "size": 847
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/desert_oasis.json": {
+      "sha256": "e9545d6618d4ba4fff1d121ceece92f5908a620a557b0e9e237c29cac8638a87",
+      "size": 859
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/jungle.json": {
+      "sha256": "4551e4c700d1106b3c46726c091c57efef196ee32e690218c76741b73412cdd9",
+      "size": 847
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/jungle_tree.json": {
+      "sha256": "3d2fb88ea83d52b637a8d08af4150b87c672bbd89a75cb8383e0cb4f71ff6f39",
+      "size": 862
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/mesa.json": {
+      "sha256": "ef945924315bfd48f1936b6aac7682bd6bdc4c1d4b765f0b0e1e3b781e78a55b",
+      "size": 841
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/mesa_fortified.json": {
+      "sha256": "668f2d707abe90c9b79cf240119df59cb00af900b9a957b74e60368382b8822a",
+      "size": 871
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/mountain.json": {
+      "sha256": "b549d60fcd3a52fb198b4b6fcd64953ba0fe57bc1eb6461e15eb939c997aa32d",
+      "size": 853
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/mountain_alpine.json": {
+      "sha256": "014b3ba501f0087f472b2197fabed1258977485a709a940f69ecf5ce42ee4abd",
+      "size": 867
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/mushroom.json": {
+      "sha256": "b277e014eddb02b9b1f9ab02b40fe84890c94ff30f4720b9e9a83bcf86fdd2a3",
+      "size": 857
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/plains.json": {
+      "sha256": "704a9add695933a08398191df798a7eb5be4bb68a29dbd4b52c4c5448494cdd6",
+      "size": 847
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/plains_fortified.json": {
+      "sha256": "40ace074377e3d786c1a7de0a493c9676295383ad4f8fdff9fc0ce619976e9cb",
+      "size": 867
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/savanna.json": {
+      "sha256": "305c0e9f5b410d598b0656c5ae9e367beaba6fbc6e83d00a4177b1743745a414",
+      "size": 857
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/savanna_na.json": {
+      "sha256": "6c99867897a76e0a6d8a6492dc24be2d433d2cd6e77495f6512f15381cf99d02",
+      "size": 857
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/snowy.json": {
+      "sha256": "4a0a343517f727654b50304d40fcdd631efad9c3f18e6cdba369f28aa237ea71",
+      "size": 861
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/swamp.json": {
+      "sha256": "8adafd9f5f6dfedde9b92572e77e15eb79ac0deb85dbe683586d82d51d8fe469",
+      "size": 844
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/swamp_fortified.json": {
+      "sha256": "fc3bb788558d7a6538972cd730ee1e75baf4e0681859581dd9f3d3443d798e89",
+      "size": 864
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/taiga.json": {
+      "sha256": "18e1b55d1bb5aa3339359ee8ed3ea3f8ff314be265a54ccb7b9d1b7eef7821c4",
+      "size": 844
+    },
+    "kubejs/data/ctov/lithostitched/worldgen_modifier/irons_spellbooks/taiga_fortified.json": {
+      "sha256": "307b3057b535918eea30b6f79e17dfe751d34179519d48f99200190cef6f8888",
+      "size": 864
+    },
     "kubejs/data/dna/advancements/amethyst_powder_unlock.json": {
       "sha256": "9fd5a5fe7c121c881b99f648e1f5f87e846863defacae8a71ada5921e296045e",
       "size": 54
@@ -7006,6 +7090,10 @@
     "kubejs/server_scripts/skills/skill_effects.js": {
       "sha256": "c51f1bc315c2e84ad7f144fd28c378b683da4ce3260bbcea72d637588f2d1b5d",
       "size": 35893
+    },
+    "kubejs/server_scripts/spawn_priest_tower.js": {
+      "sha256": "be5b1079afbbd9ecda8803b6c9de65f35ca8d4268b881d47b312242144d52ebf",
+      "size": 5915
     },
     "kubejs/server_scripts/spawn_protection.js": {
       "sha256": "a61a1ac7ae82885231d6fb6ee9f0fa412129dc80017f6d41212525b2b25646bb",
