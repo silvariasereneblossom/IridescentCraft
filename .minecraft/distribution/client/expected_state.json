@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "9a5a19a13",
+  "generated_from": "0b387a65a",
   "roots": [
     "kubejs",
     "config",
@@ -5526,6 +5526,10 @@
     "kubejs/assets/icraft/lang/en_us.json": {
       "sha256": "43fd9296f162585e80900f85e0811cac634ff7535255385a7e8bb42050a21d02",
       "size": 11428
+    },
+    "kubejs/assets/iridescent_modular_spells/lang/en_us.json": {
+      "sha256": "6d831a503e53a1fa99bfff3984f76cd2dfc5da2b2ffcecf7f72cb35186ffe4fd",
+      "size": 511
     },
     "kubejs/assets/iridescent_reforging/lang/en_us.json": {
       "sha256": "e7cf63bd1eb0b79b54252109c226a8f4e174f36d34b237a59a723a9df201bc3a",

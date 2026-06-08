@@ -2753,7 +2753,6 @@ LootJS.modifiers(event => {
     'rpgseteffects:swift_boots_relic',
     'rpgseteffects:swift_strike_relic',
     'rpgseteffects:multi_jump_relic',
-    'rpgseteffects:builders_flight_charm',
     'rpgseteffects:specter_lens',
     'rpgseteffects:deadly_luck_relic'
   ]
@@ -2785,6 +2784,7 @@ LootJS.modifiers(event => {
 
   // T3 Nether/Undergarden relics (fire, decay, advanced utility)
   var t3Relics = [
+    'rpgseteffects:builders_flight_charm', // [2026-06-08] moved from T1 (operator: creative-flight basebuilding utility reads as a T3 effect, not starter loot)
     'rpgseteffects:fire_immunity_relic',
     'rpgseteffects:magma_walker_relic',
     'rpgseteffects:frost_walker_relic',
