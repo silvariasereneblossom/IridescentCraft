@@ -8,21 +8,56 @@
 // HUNGER_THRESHOLD mid-chain or starts a chain hungry, the next break gets
 // cancelled and the chain stops.
 //
-// Detection: BlockEvents.broken fires once per block in a Liteminer chain,
-// in quick succession (≤2 ticks apart in practice). Track per-player
-// last-break-tick. If the previous break was within CHAIN_WINDOW_TICKS,
-// treat this as a chain continuation and apply the food gate. Single
-// manual mines (>3s between breaks) are unaffected.
+// [2026-06-08 REFINEMENT — operator report] The old gate used ONLY a timing
+// heuristic (≤8 ticks between breaks = "chain"), with no check on WHAT broke.
+// That made it fire on hand-clearing instant-break blocks (grass, leaves,
+// flowers) — which break faster than the window — while potentially MISSING
+// real ore/stone veins, because Liteminer's `harvest_time_per_block_modifier
+// = 2.0` makes hard blocks break SLOWER than the 8-tick window. Backwards.
 //
-// Threshold: 6 / 20 hunger — same as Sleep Hunger's gate (hunger needed
-// for sleep). "If you can't sleep, you can't vein."
+// Fix: gate only blocks worth vein-mining (a VALUE allowlist: ores, logs,
+// bulk stone). Two payoffs at once — (1) low-leverage clearage (grass/dirt/
+// leaves) is NEVER gated regardless of speed; (2) hard blocks are exactly
+// where the timing heuristic is RELIABLE (you can't hand-break stone in <8
+// ticks, a vein can), so we widen the window slightly to catch the 2x-slowed
+// hard-block chains the old value would miss. A break is gated only when it
+// is BOTH a rapid chain continuation AND a vein-worthy block AND the player
+// is hungry — so a single manual ore swing while starving is still allowed.
+//
+// Threshold: 6 / 20 hunger — same as Sleep Hunger's gate. "If you can't
+// sleep, you can't vein."  isVeinTarget fail-OPEN on any tag error (a missed
+// modded ore just veinmines without the food cost — safe direction; never
+// blocks clearage).
 //
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks).
 // =============================================================================
 
 const HUNGER_THRESHOLD     = 6   // hard floor — below this, chains cancel
-const CHAIN_WINDOW_TICKS   = 8   // ≤8 ticks (0.4s) between breaks = chain
+const CHAIN_WINDOW_TICKS   = 12  // widened from 8: 2x harvest modifier slows
+                                 // hard-block veins; safe now that soft
+                                 // clearage is filtered by isVeinTarget()
 const NOTIFY_COOLDOWN_TICKS = 100 // 5s between "too hungry" chat messages
+
+// Vein-worthy block tags — the gate ONLY applies to these. Everything else
+// (grass, leaves, flowers, crops, dirt, sand, gravel, netherrack, snow...)
+// is low-leverage clearage and is never gated. Ores + logs + bulk stone are
+// what Liteminer is actually used to chain at scale.
+const VEIN_TARGET_TAGS = [
+  'forge:ores',
+  'minecraft:logs',                 // (logs_that_burn is a subset)
+  'minecraft:base_stone_overworld', // stone, granite, diorite, andesite, tuff, deepslate
+  'minecraft:base_stone_nether',    // netherrack, basalt, blackstone
+  'forge:stone'
+]
+
+var isVeinTarget = function(block) {
+  try {
+    for (var i = 0; i < VEIN_TARGET_TAGS.length; i++) {
+      if (block.hasTag(VEIN_TARGET_TAGS[i])) return true
+    }
+  } catch (e) { /* tag lookup failed -> fail open (not a target) */ }
+  return false
+}
 
 try {
   // username -> { lastBreakTick, lastNotifyTick }
@@ -43,11 +78,15 @@ try {
       var sincePrev = now - st.lastBreakTick
       var inChain = (st.lastBreakTick > 0) && (sincePrev <= CHAIN_WINDOW_TICKS)
 
-      // Update last break tick before any cancellation logic
+      // Update last break tick before any cancellation logic. We advance it
+      // on EVERY break (even clearage) so a grass-then-ore sequence doesn't
+      // falsely read the ore as a chain start; the gate decision itself is
+      // still scoped to vein targets below.
       st.lastBreakTick = now
 
-      if (inChain) {
-        // Chain continuation — gate by hunger
+      // Only gate vein-worthy blocks — low-leverage clearage is exempt.
+      if (inChain && isVeinTarget(event.block)) {
+        // Chain continuation on a real vein target — gate by hunger
         var foodLevel = 20
         try { foodLevel = player.foodData.foodLevel } catch (e) {}
         if (foodLevel < HUNGER_THRESHOLD) {
