@@ -1,0 +1,6 @@
+{
+  "enchantment.iridescent_modular_spells.magic_crit_chance.desc": "Increases magic critical hit chance by +5%% per level while held.",
+  "enchantment.iridescent_modular_spells.magic_crit_damage.desc": "Increases magic critical hit damage by +25%% per level while held.",
+  "enchantment.iridescent_modular_spells.mana_capacity.desc": "Increases maximum mana by +5%% per level while held.",
+  "enchantment.iridescent_modular_spells.mana_flow.desc": "Increases mana regeneration by +5%% per level while held."
+}

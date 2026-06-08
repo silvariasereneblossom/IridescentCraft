@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "4cd92f8a5",
+  "generated_from": "9a5a19a13",
   "roots": [
     "kubejs",
     "config",
@@ -6732,8 +6732,8 @@
       "size": 3969
     },
     "kubejs/server_scripts/liteminer_hunger_gate.js": {
-      "sha256": "0bd65987cd26c5ba284fac6f7b94bddd1a0faa4e579798a2eec217524d49107a",
-      "size": 3721
+      "sha256": "b6b911002bd387df202d2eb08c6a4aab537235c247ad703b82ecd8c38fcc37ca",
+      "size": 5904
     },
     "kubejs/server_scripts/loot/0_entity_id_validator.js": {
       "sha256": "8983c11502c49ce9d56293fcd259472c1d6391521064f05a36e2f32cec75befa",
