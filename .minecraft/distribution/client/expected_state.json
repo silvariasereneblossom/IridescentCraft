@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "0b387a65a",
+  "generated_from": "ec570a851",
   "roots": [
     "kubejs",
     "config",
@@ -6816,8 +6816,8 @@
       "size": 34819
     },
     "kubejs/server_scripts/loot/lootjs_overhaul.js": {
-      "sha256": "9ac32182b7355f193fc3f5aa2932f3252380c78560fbda6044b98fcae280e56a",
-      "size": 151526
+      "sha256": "87abcce17c317ae926ce5a47f2e47d3c5ba306d7d847a610efd98a96c5fb7c02",
+      "size": 151644
     },
     "kubejs/server_scripts/loot/lovely_pieces_loot.js": {
       "sha256": "09d4ac6441c3b1b0caa21d89994acec3465254c91722d19e92d1603392491320",

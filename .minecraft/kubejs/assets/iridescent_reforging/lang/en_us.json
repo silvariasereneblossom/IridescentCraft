@@ -6,5 +6,8 @@
   "enchantment.iridescent_reforging.arcane_focus": "Arcane Focus",
   "enchantment.iridescent_reforging.arcane_focus.desc": "Increases spell power by +4%% per level while held.",
   "enchantment.iridescent_reforging.vorpal_arcane": "Arcane Vorpal",
-  "enchantment.iridescent_reforging.vorpal_arcane.desc": "Spell crits gain +3%% crit chance and +5%% crit damage per level, with a 5%% chance per level to decapitate on a critical hit."
+  "enchantment.iridescent_reforging.vorpal_arcane.desc": "Spell crits gain +3%% crit chance and +5%% crit damage per level, with a 5%% chance per level to decapitate on a critical hit.",
+  "enchantment.iridescent_reforging.spell_echo.desc": "On cast, 5%% chance per level for the spell to cost no mana, on a short internal cooldown.",
+  "enchantment.iridescent_reforging.mana_siphon.desc": "On spell hit, returns 5%% of the spell damage dealt as mana per level (capped per second).",
+  "enchantment.iridescent_reforging.resonance.desc": "Increases the duration of beneficial potion effects you gain by +50%% per level while held."
 }
