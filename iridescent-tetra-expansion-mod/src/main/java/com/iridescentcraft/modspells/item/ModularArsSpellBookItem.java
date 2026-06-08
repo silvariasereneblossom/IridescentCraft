@@ -338,6 +338,20 @@ public class ModularArsSpellBookItem extends SpellBook implements IModularItem {
         appendArsMagicStatsTooltip(stack, tooltip);
     }
 
+    // [2026-06-08] Hide the redundant vanilla raw-decimal attribute modifier
+    // section (see ModularSpellBookItem.inventoryTick for the rationale): our
+    // percent-formatted Ars magic-stats section already shows every stat.
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, net.minecraft.world.entity.Entity entity,
+                              int slotId, boolean isSelected) {
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+        if (level != null && !level.isClientSide) {
+            var tag = stack.getOrCreateTag();
+            int flags = tag.getInt("HideFlags");
+            if ((flags & 2) == 0) tag.putInt("HideFlags", flags | 2);
+        }
+    }
+
     /** Per-stack SpellTier resolved from the ars_book/core variant key
      *  suffix. Shared between {@code appendHoverText} (tooltip) and the
      *  client-side {@code IcraftArsSpellBookRenderer} (3D bone toggle).

@@ -295,6 +295,26 @@ public class ModularSpellBookItem extends SpellBook implements IModularItem {
         appendMagicStatsTooltip(stack, tooltip);
     }
 
+    // [2026-06-08] Hide the vanilla "When in Main Hand: +0.05 ..." attribute
+    // modifier section. This book exposes its Tetra modifiers via
+    // getAttributeModifiers (for APPLICATION), but it extends ISS SpellBook
+    // (not Tetra's ModularItem base), so it never inherits Tetra's
+    // vanilla-modifier hiding -> vanilla rendered those modifiers as RAW
+    // decimals, duplicating (and contradicting) our percent-formatted "Magic
+    // Stats" section. HideFlags bit 2 (MODIFIERS) suppresses only that section;
+    // application is unaffected (it reads getAttributeModifiers regardless).
+    // Idempotent: writes NBT once, then the bit-check short-circuits.
+    @Override
+    public void inventoryTick(ItemStack stack, Level level, net.minecraft.world.entity.Entity entity,
+                              int slotId, boolean isSelected) {
+        super.inventoryTick(stack, level, entity, slotId, isSelected);
+        if (level != null && !level.isClientSide) {
+            var tag = stack.getOrCreateTag();
+            int flags = tag.getInt("HideFlags");
+            if ((flags & 2) == 0) tag.putInt("HideFlags", flags | 2);
+        }
+    }
+
     /**
      * Display name preservation - return the source ISS spell book's name when
      * the core module's variant key encodes the original item path. Mirrors
