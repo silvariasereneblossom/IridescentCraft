@@ -218,6 +218,41 @@ def generate_front_cover_variant(book_kind, mat):
     }
 
 
+def generate_pages_variant(book_kind, mat):
+    """Generate pages variant. ISS-only (ars_book has no pages slot); SKIN
+    materials only (the hand-authored paper + leather defaults are preserved
+    via EXISTING_KEYS / append-merge). cast_time_reduction scaled by the
+    material's magicCapacity, with a uniform minor magic + integrity
+    contribution matching the existing leather pages entry. Added 2026-06-08:
+    the pages module was the one book slot omitted from this loop, so non-
+    leather skins (deathskin, rotten_leather, tf_*) could be SELECTED in the
+    schematic but had no variant to extract -> silently didn't apply."""
+    if book_kind != "iss_book":
+        return None  # ars_book has no pages module
+    cat = mat["__category__"]
+    if cat != "skin":
+        return None  # pages takes fibre+skin; fibre = paper only (hand-authored)
+    name = mat["key"]
+    magic_cap = int(mat.get("magicCapacity", 60))
+    ctr = round(magic_cap / 10000, 4)  # ~0.008-0.011, near the 0.01 leather baseline
+    return {
+        "materials": [f"tetra:{cat}/{name}"],
+        "key": "pages/",  # wildcard trailing slash; see armor variant comment
+        "extract": {
+            "tertiaryAttributes": {"**irons_spellbooks:cast_time_reduction": ctr},
+            "integrity": 0.5,
+            "glyph": {
+                "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+                "textureX": 16,
+                "textureY": 0,
+            },
+            "availableTextures": [""],
+            "models": [],
+            "magicCapacity": 0.5,
+        },
+    }
+
+
 def generate_back_cover_variant(book_kind, mat):
     """Generate back_cover variant. Accepts skin and metal. Max mana scaled."""
     cat = mat["__category__"]
@@ -320,6 +355,7 @@ def main():
             ("spine", generate_spine_variant),
             ("front_cover", generate_front_cover_variant),
             ("back_cover", generate_back_cover_variant),
+            ("pages", generate_pages_variant),
         ]:
             path = MODULE_DIR / book / f"{part}.json"
             if not path.exists():

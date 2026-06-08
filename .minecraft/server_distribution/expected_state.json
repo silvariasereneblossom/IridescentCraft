@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "ec570a851",
+  "generated_from": "5c6b7c7fa",
   "roots": [
     "kubejs",
     "config",
@@ -5544,8 +5544,8 @@
       "size": 511
     },
     "kubejs/assets/iridescent_reforging/lang/en_us.json": {
-      "sha256": "e7cf63bd1eb0b79b54252109c226a8f4e174f36d34b237a59a723a9df201bc3a",
-      "size": 786
+      "sha256": "a466631c19e6285760b0d60f694c09f4ee81ca4c6288a9e9b6bab6e96ea52070",
+      "size": 1230
     },
     "kubejs/assets/kubejs/lang/en_us.json": {
       "sha256": "56a58bd77f5f5458a96d90551154b3c13d6d1c8b5d28e156ead4639695fff976",
