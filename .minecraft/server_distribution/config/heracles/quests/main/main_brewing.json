@@ -10,9 +10,9 @@
       "§7The pack's deeper magic mods go far beyond vanilla brewing, but this is",
       "§7where every alchemist starts."
     ],
-    "groups": { "Main": { "position": [480, 160] } }
+    "groups": { "The Frontier": { "position": [800, 0] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_blaze_rods"],
   "tasks": {
     "brew_potion": {

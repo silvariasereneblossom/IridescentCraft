@@ -10,9 +10,9 @@
       "§7Apotheosis overhauls enchanting here — expect deeper enchants and the",
       "§7affix system on your gear as you climb the tiers."
     ],
-    "groups": { "Main": { "position": [120, 100] } }
+    "groups": { "The Frontier": { "position": [160, 120] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_diamonds"],
   "tasks": {
     "enchant_item": {

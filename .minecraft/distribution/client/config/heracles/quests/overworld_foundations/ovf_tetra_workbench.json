@@ -1,12 +1,12 @@
 {
   "display": {
-    "icon": { "type": "heracles:item", "item": "tetra:basic_workbench" },
-    "title": "Tetra: The Workbench",
-    "subtitle": "Build a Tetra Workbench",
+    "icon": { "type": "heracles:item", "item": "tetra:hammer_base" },
+    "title": "Tetra: The Forge Hammer",
+    "subtitle": "Acquire a Tetra Hammer",
     "description": [
-      "Tetra is the pack's modular-gear system, running across every tier. Build a",
-      "§eWorkbench§r and forge your first modular tool — then hone and re-forge it",
-      "as you find better materials and boss drops.",
+      "Tetra is the pack's modular-gear system, running across every tier. The",
+      "§eForge Hammer§r is your key into it — right-click a crafting table with the",
+      "hammer to raise a Tetra Workbench, then forge and hone your modular tools.",
       "",
       "§7Modular Tetra gear and the Iridescent armor/spell-book systems are the",
       "§7long game of deep specialization."
@@ -18,8 +18,8 @@
   "tasks": {
     "have_workbench": {
       "type": "heracles:item",
-      "title": "Acquire a Tetra Workbench",
-      "item": "tetra:basic_workbench",
+      "title": "Acquire a Forge Hammer",
+      "item": "tetra:hammer_base",
       "amount": 1,
       "collection": "AUTOMATIC"
     }

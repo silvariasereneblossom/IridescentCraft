@@ -9,9 +9,9 @@
       "",
       "Bring one down and take its rod."
     ],
-    "groups": { "Main": { "position": [480, 100] } }
+    "groups": { "The Frontier": { "position": [640, 120] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_fortress"],
   "tasks": {
     "blaze_rod": {

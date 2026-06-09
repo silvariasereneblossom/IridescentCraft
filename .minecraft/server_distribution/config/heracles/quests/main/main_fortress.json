@@ -9,9 +9,9 @@
       "",
       "Find one and stake your claim."
     ],
-    "groups": { "Main": { "position": [360, 100] } }
+    "groups": { "The Frontier": { "position": [480, 120] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_enter_nether"],
   "tasks": {
     "find_fortress": {

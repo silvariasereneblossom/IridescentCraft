@@ -10,9 +10,9 @@
       "",
       "§7Mind the death penalty: gear goes inert rather than vanishing."
     ],
-    "groups": { "Main": { "position": [120, 160] } }
+    "groups": { "The Frontier": { "position": [160, 40] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_diamonds"],
   "tasks": {
     "diamond_gear": {

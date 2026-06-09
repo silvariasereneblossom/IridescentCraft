@@ -1,0 +1,34 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "iridescent_grand_compass:grand_compass" },
+    "title": "The Navigator",
+    "subtitle": "Gather every compass",
+    "description": [
+      "Iridescent gives you four ways to never be lost. Gather them all: the",
+      "§bExplorer's Compass§r (find any structure), the §bNature's Compass§r (find",
+      "any biome), the §bBoss Compass§r (track boss arenas), and the unified",
+      "§bGrand Compass§r.",
+      "",
+      "§7All four are craftable around Tier 1 — the Grand and Boss compasses just",
+      "§7need a source gem. Reward: a burst of experience."
+    ],
+    "groups": { "Exploration": { "position": [0, 240] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "all_compasses": {
+      "type": "heracles:composite",
+      "amount": 4,
+      "tasks": {
+        "explorers": { "type": "heracles:item", "title": "Explorer's Compass", "item": "explorerscompass:explorerscompass", "amount": 1, "collection": "AUTOMATIC" },
+        "natures": { "type": "heracles:item", "title": "Nature's Compass", "item": "naturescompass:naturescompass", "amount": 1, "collection": "AUTOMATIC" },
+        "boss": { "type": "heracles:item", "title": "Boss Compass", "item": "kubejs:boss_compass", "amount": 1, "collection": "AUTOMATIC" },
+        "grand": { "type": "heracles:item", "title": "Grand Compass", "item": "iridescent_grand_compass:grand_compass", "amount": 1, "collection": "AUTOMATIC" }
+      }
+    }
+  },
+  "rewards": {
+    "xp": { "type": "heracles:xp", "title": "A navigator's reward", "xptype": "POINTS", "amount": 100 }
+  }
+}

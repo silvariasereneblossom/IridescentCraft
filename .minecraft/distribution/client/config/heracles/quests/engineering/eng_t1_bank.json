@@ -1,4 +1,5 @@
 {
+  "_builder_note": "Reward token count (25) is provisional pending the token-economy draft. (docket #45)",
   "display": {
     "icon": { "type": "heracles:item", "item": "icraft:progression_token_t1" },
     "title": "T1: Bank Your First Tokens",
@@ -28,7 +29,7 @@
     }
   },
   "rewards": {
-    "tokens": { "type": "heracles:item", "title": "Codex Tokens I (PROVISIONAL: amount per draft)", "item": { "id": "icraft:progression_token_t1", "count": 25 } },
+    "tokens": { "type": "heracles:item", "title": "Codex Tokens I", "item": { "id": "icraft:progression_token_t1", "count": 25 } },
     "xp_burst": { "type": "heracles:xp", "xptype": "POINTS", "amount": 150 }
   }
 }

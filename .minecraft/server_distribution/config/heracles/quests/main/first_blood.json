@@ -1,4 +1,5 @@
 {
+  "_builder_note": "Removed reward 'codex_unlock' (advancement grant icraft:quest/first_blood). That advancement is a minecraft:impossible marker shipped in iridescent_origins-1.0.0.jar but NOTHING reads it (no codex gate, no kubejs flag), so the grant did nothing player-visible; the Combatant's Companion codex entry is craftable, not advancement-gated. Re-add the grant plus a reader if first_blood is ever wired to unlock codex content. (docket #45)",
   "display": {
     "icon": {
       "type": "heracles:item",
@@ -11,7 +12,7 @@
       "",
       "Every adventurer starts somewhere. Find a monster and put it down.",
       "",
-      "Reward: The Codex will unlock your Combat Guide."
+      "§7Tip: craft the Combatant's Companion from the Codex for a combat primer."
     ],
     "groups": {
       "Main": {
@@ -33,10 +34,6 @@
     }
   },
   "rewards": {
-    "codex_unlock": {
-      "type": "heracles:command",
-      "command": "advancement grant @s only icraft:quest/first_blood"
-    },
     "xp_reward": {
       "type": "heracles:xp",
       "amount": 50

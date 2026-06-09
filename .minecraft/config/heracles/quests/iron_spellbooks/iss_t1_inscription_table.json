@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "irons_spellbooks:inscription_table" },
+    "title": "Iron's Spellbooks: The Inscription Table",
+    "subtitle": "Build an Inscription Table",
+    "description": [
+      "The §6Inscription Table§r is where ink, scroll, and spell meet. Raise one to",
+      "start turning raw essence into castable magic."
+    ],
+    "groups": { "Iron's Spellbooks": { "position": [320, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_table": {
+      "type": "heracles:item",
+      "title": "Acquire an Inscription Table",
+      "item": "irons_spellbooks:inscription_table",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "essence": { "type": "heracles:item", "title": "Arcane Essence", "item": { "id": "irons_spellbooks:arcane_essence", "count": 3 } },
+    "xp": { "type": "heracles:xp", "xptype": "POINTS", "amount": 50 }
+  }
+}

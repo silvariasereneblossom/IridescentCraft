@@ -10,9 +10,9 @@
       "What remains is the endgame: open the End via the Deep-Aether End Compass,",
       "then face the Ender Dragon. Follow the §cCapstones§r group to the finale."
     ],
-    "groups": { "Main": { "position": [840, 100] } }
+    "groups": { "The Frontier": { "position": [980, 120] } }
   },
-  "settings": { "individual_progress": true, "unlockNotification": true },
+  "settings": { "individual_progress": true, "unlockNotification": true, "hidden": "LOCKED" },
   "dependencies": ["main_netherite", "main_brewing", "main_stronghold"],
   "tasks": {
     "master": {

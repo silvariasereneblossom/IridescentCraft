@@ -1,4 +1,5 @@
 {
+  "_builder_note": "PROVISIONAL: this beat assumes the antimatter sinks (draft HALF 1, S1/S5) are live — antimatter wired into Mythic Catalyst IV/V and the Mk2 recipes. Sequence HALF 1 before relying on this beat in-game. Reward token count provisional per draft. (docket #45)",
   "display": {
     "icon": { "type": "heracles:item", "item": "kubejs:mythic_catalyst_5" },
     "title": "T4: Spend the Antimatter",
@@ -9,11 +10,7 @@
       "(combat endgame) and the §bMekaSuit Mk2§r upgrade (tech-armor endgame).",
       "",
       "Craft a §bMythic Catalyst V§r to complete this beat and close the loop:",
-      "engineering's apex output feeding the pack's apex gear.",
-      "",
-      "§7PROVISIONAL: this beat assumes the antimatter sinks (draft HALF 1, S1/S5)",
-      "§7are live - antimatter wired into Mythic Catalyst IV/V and the Mk2 recipes.",
-      "§7Sequence HALF 1 before relying on this beat in-game."
+      "engineering's apex output feeding the pack's apex gear."
     ],
     "groups": { "Engineering": { "position": [480, 640] } }
   },
@@ -29,7 +26,7 @@
     }
   },
   "rewards": {
-    "tokens": { "type": "heracles:item", "title": "Codex Tokens III (PROVISIONAL: T4 XP faucet, amount per draft)", "item": { "id": "icraft:progression_token_t3", "count": 100 } },
+    "tokens": { "type": "heracles:item", "title": "Codex Tokens III", "item": { "id": "icraft:progression_token_t3", "count": 100 } },
     "capstone_broadcast": {
       "type": "heracles:command",
       "title": "Glory",

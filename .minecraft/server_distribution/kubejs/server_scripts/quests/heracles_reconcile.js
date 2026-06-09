@@ -120,6 +120,10 @@ const RECONCILE = [
   { q: 'exp_t2_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_twilight') && reconHasFlag(p, 'icraft_codex_dimentry_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_everbright') || reconHasFlag(p, 'icraft_codex_dimentry_everdawn')) },
   { q: 'exp_t3_deep_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_nether') && reconHasFlag(p, 'icraft_codex_dimentry_undergarden') && reconHasFlag(p, 'icraft_codex_dimentry_deeperdarker') },
   { q: 'exp_t4_final_frontiers', met: p => reconHasFlag(p, 'icraft_codex_dimentry_deep_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_the_end') || reconHasAdv(p, 'minecraft:story/enter_the_end')) },
+  // Navigator: hold all four compasses (composite amount:4 = AND). (#45)
+  { q: 'exp_navigator', met: p =>
+      reconHasItem(p, 'explorerscompass:explorerscompass') && reconHasItem(p, 'naturescompass:naturescompass') &&
+      reconHasItem(p, 'kubejs:boss_compass') && reconHasItem(p, 'iridescent_grand_compass:grand_compass') },
 
   // === Capstones ===
   { q: 'capstone_lucifer',     met: p => reconHasFlag(p, 'icraft_codex_firstkill_cardinal_sins_lucifer') },
@@ -152,9 +156,35 @@ const RECONCILE = [
 
   // === Overworld Foundations (T1 mods) — inventory best-effort (held items) ===
   { q: 'ovf_iss_spellbook', met: p => reconHasItem(p, 'irons_spellbooks:iron_spell_book') },
-  { q: 'ovf_apotheosis_gem', met: p => reconHasItem(p, 'apotheosis:gem') },
+  { q: 'ovf_apotheosis_gem', met: p => reconHasItem(p, 'apotheosis:sigil_of_socketing') },
+  { q: 'ovf_tetra_workbench', met: p => reconHasItem(p, 'tetra:hammer_base') },
   { q: 'ovf_alexsmobs',     met: p => reconHasItem(p, 'alexsmobs:animal_dictionary') },
   { q: 'ovf_create_brass',  met: p => reconHasItem(p, 'create:brass_ingot') },
+
+  // === Iron's Spellbooks (ISS questline, T1-T3) — inventory possession (#45) ===
+  { q: 'iss_t1_first_book',        met: p => reconHasItem(p, 'irons_spellbooks:copper_spell_book') },
+  { q: 'iss_t1_common_ink',        met: p => reconHasItem(p, 'irons_spellbooks:common_ink') },
+  { q: 'iss_t1_inscription_table', met: p => reconHasItem(p, 'irons_spellbooks:inscription_table') },
+  { q: 'iss_t1_scroll',            met: p => reconHasItem(p, 'irons_spellbooks:scroll') },
+  { q: 'iss_t1_arcane_ingot',      met: p => reconHasItem(p, 'irons_spellbooks:arcane_ingot') },
+  { q: 'iss_t1_staff',             met: p => reconHasItem(p, 'irons_spellbooks:graybeard_staff') },
+  { q: 'iss_t2_gold_book',         met: p => reconHasItem(p, 'irons_spellbooks:gold_spell_book') },
+  { q: 'iss_t2_arcane_anvil',      met: p => reconHasItem(p, 'irons_spellbooks:arcane_anvil') },
+  { q: 'iss_t2_rune',              met: p => reconHasItem(p, 'irons_spellbooks:fire_rune') },
+  { q: 'iss_t2_rare_ink',          met: p => reconHasItem(p, 'irons_spellbooks:rare_ink') },
+  { q: 'iss_t2_scroll_forge',      met: p => reconHasItem(p, 'irons_spellbooks:scroll_forge') },
+  { q: 'iss_t2_upgrade_orb',       met: p => reconHasItem(p, 'irons_spellbooks:upgrade_orb') },
+  { q: 'iss_t3_netherite_book',    met: p => reconHasItem(p, 'irons_spellbooks:netherite_spell_book') },
+  { q: 'iss_t3_mithril_ingot',     met: p => reconHasItem(p, 'irons_spellbooks:mithril_ingot') },
+  { q: 'iss_t3_pedestal',          met: p => reconHasItem(p, 'irons_spellbooks:pedestal') },
+  { q: 'iss_t3_advanced_rune',     met: p => reconHasItem(p, 'irons_spellbooks:holy_rune') },
+  { q: 'iss_t3_legendary_ink',     met: p => reconHasItem(p, 'irons_spellbooks:legendary_ink') },
+  // Arcane Master capstone: composite 3-of-4 (mirrors the quest's amount:3).
+  { q: 'iss_t3_arcane_master',     met: p =>
+      ((reconHasItem(p, 'irons_spellbooks:netherite_spell_book') ? 1 : 0) +
+       (reconHasItem(p, 'irons_spellbooks:mithril_ingot') ? 1 : 0) +
+       (reconHasItem(p, 'irons_spellbooks:pyrium_ingot') ? 1 : 0) +
+       (reconHasItem(p, 'irons_spellbooks:divine_pearl') ? 1 : 0)) >= 3 },
 
   // === Combat — first-boss via the engine's one-time first-kill flags (named
   // bosses only; minibosses + kill-N quests don't store a count, so re-complete) ===

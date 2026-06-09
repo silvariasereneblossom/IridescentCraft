@@ -1,12 +1,12 @@
 {
   "display": {
-    "icon": { "type": "heracles:item", "item": "apotheosis:gem" },
-    "title": "Apotheosis: Socketed Power",
-    "subtitle": "Acquire a Gem",
+    "icon": { "type": "heracles:item", "item": "apotheosis:sigil_of_socketing" },
+    "title": "Apotheosis: Socket Your Gear",
+    "subtitle": "Craft a Sigil of Socketing",
     "description": [
       "Apotheosis overhauls enchanting and adds the affix + gem-socket system.",
-      "Find a §dGem§r, cut it at a Salvaging/Reforging table, and socket it into",
-      "gear with an open slot for a permanent bonus.",
+      "The §dSigil of Socketing§r is the craftable tool that opens a gem socket on a",
+      "piece of gear — then drop a cut gem into that socket for a permanent bonus.",
       "",
       "§7Affixed and socketed gear is how you push past the tiers' rising danger."
     ],
@@ -17,8 +17,8 @@
   "tasks": {
     "have_gem": {
       "type": "heracles:item",
-      "title": "Acquire an Apotheosis Gem",
-      "item": "apotheosis:gem",
+      "title": "Craft a Sigil of Socketing",
+      "item": "apotheosis:sigil_of_socketing",
       "amount": 1,
       "collection": "AUTOMATIC"
     }

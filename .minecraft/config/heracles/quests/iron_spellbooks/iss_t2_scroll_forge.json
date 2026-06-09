@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "irons_spellbooks:scroll_forge" },
+    "title": "Iron's Spellbooks: The Scroll Forge",
+    "subtitle": "Build a Scroll Forge",
+    "description": [
+      "The §6Scroll Forge§r mass-binds scrolls so you never run dry mid-fight —",
+      "a caster's artillery line."
+    ],
+    "groups": { "Iron's Spellbooks": { "position": [640, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["reach_tier_2"],
+  "tasks": {
+    "have_forge": {
+      "type": "heracles:item",
+      "title": "Acquire a Scroll Forge",
+      "item": "irons_spellbooks:scroll_forge",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "ingot": { "type": "heracles:item", "title": "Arcane Ingots", "item": { "id": "irons_spellbooks:arcane_ingot", "count": 2 } },
+    "xp": { "type": "heracles:xp", "xptype": "POINTS", "amount": 100 }
+  }
+}

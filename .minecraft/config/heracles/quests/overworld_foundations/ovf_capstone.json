@@ -23,8 +23,8 @@
         "create": { "type": "heracles:item", "title": "Create: Mechanical Press", "item": "create:mechanical_press", "amount": 1, "collection": "AUTOMATIC" },
         "botania": { "type": "heracles:item", "title": "Botania: Mana Pool", "item": "botania:mana_pool", "amount": 1, "collection": "AUTOMATIC" },
         "iss": { "type": "heracles:item", "title": "Iron's Spellbooks: Spell Book", "item": "irons_spellbooks:iron_spell_book", "amount": 1, "collection": "AUTOMATIC" },
-        "tetra": { "type": "heracles:item", "title": "Tetra: Workbench", "item": "tetra:basic_workbench", "amount": 1, "collection": "AUTOMATIC" },
-        "apotheosis": { "type": "heracles:item", "title": "Apotheosis: Gem", "item": "apotheosis:gem", "amount": 1, "collection": "AUTOMATIC" },
+        "tetra": { "type": "heracles:item", "title": "Tetra: Forge Hammer", "item": "tetra:hammer_base", "amount": 1, "collection": "AUTOMATIC" },
+        "apotheosis": { "type": "heracles:item", "title": "Apotheosis: Sigil of Socketing", "item": "apotheosis:sigil_of_socketing", "amount": 1, "collection": "AUTOMATIC" },
         "alexsmobs": { "type": "heracles:item", "title": "Alex's Mobs: Animal Dictionary", "item": "alexsmobs:animal_dictionary", "amount": 1, "collection": "AUTOMATIC" }
       }
     }

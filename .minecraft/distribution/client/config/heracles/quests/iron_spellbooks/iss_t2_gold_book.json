@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "irons_spellbooks:gold_spell_book" },
+    "title": "Iron's Spellbooks: The Apprentice's Book",
+    "subtitle": "Acquire a Gold Spell Book",
+    "description": [
+      "With Tier 2 mastery, step up to the §6Gold Spell Book§r — more spell slots",
+      "and room to grow into a real spellcaster."
+    ],
+    "groups": { "Iron's Spellbooks": { "position": [0, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["reach_tier_2"],
+  "tasks": {
+    "have_book": {
+      "type": "heracles:item",
+      "title": "Acquire a Gold Spell Book",
+      "item": "irons_spellbooks:gold_spell_book",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "ingot": { "type": "heracles:item", "title": "Arcane Ingots", "item": { "id": "irons_spellbooks:arcane_ingot", "count": 2 } },
+    "xp": { "type": "heracles:xp", "xptype": "POINTS", "amount": 100 }
+  }
+}

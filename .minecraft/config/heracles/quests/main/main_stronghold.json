@@ -10,9 +10,9 @@
       "§7But the Eye of Ender alone won't open the End here — that takes a",
       "§7Deep-Aether §6End Compass§r. See the Capstones when you reach Tier 4."
     ],
-    "groups": { "Main": { "position": [720, 100] } }
+    "groups": { "The Frontier": { "position": [800, 120] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_blaze_rods"],
   "tasks": {
     "find_stronghold": {

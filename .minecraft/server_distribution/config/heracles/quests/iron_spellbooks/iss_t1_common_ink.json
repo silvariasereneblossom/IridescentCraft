@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "irons_spellbooks:common_ink" },
+    "title": "Iron's Spellbooks: Common Ink",
+    "subtitle": "Brew Common Ink",
+    "description": [
+      "Spells are written in arcane ink. Grind §dArcane Essence§r into §6Common",
+      "Ink§r — the first medium every inscription needs."
+    ],
+    "groups": { "Iron's Spellbooks": { "position": [160, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_ink": {
+      "type": "heracles:item",
+      "title": "Acquire Common Ink",
+      "item": "irons_spellbooks:common_ink",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "essence": { "type": "heracles:item", "title": "Arcane Essence", "item": { "id": "irons_spellbooks:arcane_essence", "count": 3 } },
+    "xp": { "type": "heracles:xp", "xptype": "POINTS", "amount": 50 }
+  }
+}

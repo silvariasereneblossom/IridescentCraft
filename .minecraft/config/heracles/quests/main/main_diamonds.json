@@ -10,9 +10,9 @@
       "Once you've earned your way to Tier 3, dig deep (Y -59 to -50 is richest)",
       "and bring home your first diamonds."
     ],
-    "groups": { "Main": { "position": [0, 100] } }
+    "groups": { "The Frontier": { "position": [0, 120] } }
   },
-  "settings": { "individual_progress": true, "unlockNotification": true },
+  "settings": { "individual_progress": true, "unlockNotification": true, "hidden": "LOCKED" },
   "dependencies": ["reach_tier_3"],
   "tasks": {
     "mine_diamond": {

@@ -1,0 +1,27 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "irons_spellbooks:arcane_ingot" },
+    "title": "Iron's Spellbooks: Arcane Ingot",
+    "subtitle": "Refine an Arcane Ingot",
+    "description": [
+      "Condense Arcane Essence into an §6Arcane Ingot§r — the structural metal",
+      "behind anvils, forges, and the mid-tier caster gear to come."
+    ],
+    "groups": { "Iron's Spellbooks": { "position": [640, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_ingot": {
+      "type": "heracles:item",
+      "title": "Acquire an Arcane Ingot",
+      "item": "irons_spellbooks:arcane_ingot",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "essence": { "type": "heracles:item", "title": "Arcane Essence", "item": { "id": "irons_spellbooks:arcane_essence", "count": 3 } },
+    "xp": { "type": "heracles:xp", "xptype": "POINTS", "amount": 50 }
+  }
+}

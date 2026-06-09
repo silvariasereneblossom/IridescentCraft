@@ -9,9 +9,9 @@
       "",
       "§7Beware: the Nether runs hot, and the deeper tiers raise the danger."
     ],
-    "groups": { "Main": { "position": [240, 100] } }
+    "groups": { "The Frontier": { "position": [320, 120] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_enchant"],
   "tasks": {
     "enter_nether": {

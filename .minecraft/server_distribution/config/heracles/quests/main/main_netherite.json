@@ -10,9 +10,9 @@
       "",
       "§7Netherite is also a high-value Engineering submission. See the Codex."
     ],
-    "groups": { "Main": { "position": [600, 100] } }
+    "groups": { "The Frontier": { "position": [800, 240] } }
   },
-  "settings": { "individual_progress": true },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["main_blaze_rods", "reach_tier_4"],
   "tasks": {
     "ancient_debris": {
