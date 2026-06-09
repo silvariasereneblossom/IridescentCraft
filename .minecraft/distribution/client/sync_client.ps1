@@ -690,11 +690,28 @@ if (Test-Path $downloadScript) {
     if ((Test-Path $indexDir) -and (Test-Path $modsDir)) {
         Write-Host "[IridescentCraft Sync] Checking for new mod JARs..." -ForegroundColor Cyan
         try {
-            & $downloadScript -IndexDir $indexDir -ModsDir $modsDir 2>&1 | Where-Object {
+            # 2026-06-09 FIX: run download_mods to COMPLETION, then display.
+            # The old form piped the LIVE run into `Select-Object -First 50`,
+            # which terminates the pipeline -- and download_mods with it --
+            # once 50 lines pass, stranding every mod past the cutoff. On a
+            # large/fresh sync this silently dropped dependency libs (a tester
+            # lost cupboard/cataclysm/celestial_core/integrated_api -> 7
+            # mod-load errors). Capture to a var so it finishes; tail for display.
+            $dlOut = & $downloadScript -IndexDir $indexDir -ModsDir $modsDir 2>&1
+            $dlExit = $LASTEXITCODE
+            $dlOut | Where-Object {
                 $_ -match 'Downloaded|Failed|^\s*\[' -or $_ -match '^\s{2}\S'
-            } | Select-Object -First 50
+            } | Select-Object -Last 60 | ForEach-Object { Write-Host $_ }
+            # download_mods.ps1 exits non-zero if ANY jar failed. Make that
+            # fail-VISIBLE (it was swallowed as "non-fatal" before, so a tester
+            # got a crash-on-load while the sync still reported success).
+            if ($null -ne $dlExit -and $dlExit -ne 0) {
+                Write-Host "[IridescentCraft Sync] Mod download reported failures (exit $dlExit) -- dependency JARs may be missing. Re-launch to retry." -ForegroundColor Red
+                Write-SyncSentinel -Ok $false -Reason 'mod-download-failed' -Behind 0 -McDir $instanceMC
+            }
         } catch {
-            Write-Host "[IridescentCraft Sync] Mod download step failed (non-fatal): $($_.Exception.Message)" -ForegroundColor Yellow
+            Write-Host "[IridescentCraft Sync] Mod download step threw: $($_.Exception.Message)" -ForegroundColor Red
+            Write-SyncSentinel -Ok $false -Reason 'mod-download-error' -Behind 0 -McDir $instanceMC
         }
     }
 }
