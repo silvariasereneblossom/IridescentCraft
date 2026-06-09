@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Banking Materials",
-      "text": "$(bold)/icraft codex submit$() converts the eligible materials you carry into tokens — capped per material, lossless.$(br2)$(li)$(bold)submit engineering$() — Create / Thermal / Mekanism metals and machines.$(li)$(bold)submit magic$() — Botania / Ars / Occultism reagents and apparatus.$(br2)Or click $(bold)Submit$() in the Engineering and Magic quest groups — same cap-safe banking, one click. Exploration and Combat need no submit; they mint as you play."
+      "text": "$(bold)/icraft codex submit$() converts the eligible materials you carry into tokens — capped per material, lossless.$(br2)$(li)$(bold)submit engineering$() — Create / Thermal / Mekanism metals and machines.$(li)$(bold)submit magic$() — Botania / Ars / Occultism reagents and apparatus.$(br2)Or click $(bold)Submit$() in the Engineering and Magic Crafting quest groups — same cap-safe banking, one click. Exploration and Combat need no submit; they mint as you play."
     }
   ]
 }
