@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "terramity:topaz" },
+    "title": "Terramity: The Super Sniffer",
+    "subtitle": "Down the giant beast",
+    "description": [
+      "The §6Super Sniffer§r is an enormous Terramity boss-beast that roams its own",
+      "structure. Slow but punishing, it rewards patience and a solid set of",
+      "Tier 1 gear.",
+      "",
+      "§7Another overworld trophy on the road toward the dimensional tiers."
+    ],
+    "groups": { "Overworld Foundations": { "position": [320, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_sniffer": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat the Super Sniffer",
+      "entity": "terramity:super_sniffer",
+      "amount": 1
+    }
+  },
+  "rewards": {
+    "topaz": { "type": "heracles:item", "title": "Boss jewels", "item": { "id": "terramity:topaz", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 4 }
+  }
+}

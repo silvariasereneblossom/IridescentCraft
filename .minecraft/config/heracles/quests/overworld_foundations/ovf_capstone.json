@@ -2,36 +2,42 @@
   "display": {
     "icon": { "type": "heracles:item", "item": "minecraft:crafting_table" },
     "title": "Foundations Laid",
-    "subtitle": "Touch four Tier 1 systems",
+    "subtitle": "Master six Tier 1 systems",
     "description": [
-      "Engineering, magic, modular gear, affixes, the wider wildlife — get hands-on",
-      "with at least four of the Tier 1 mod systems and you've laid your",
-      "foundations.",
+      "Engineering, magic, modular gear, affixes, the arsenal, the waystone network,",
+      "the wider wildlife, and the overworld's hidden bosses — get hands-on with at",
+      "least §esix§r of the Tier 1 systems and you've laid your foundations.",
       "",
       "From here the chapters climb: Twilight & the mid-tier, the deep dimensions,",
       "and the endgame. (More mod chapters are on the way.)"
     ],
-    "groups": { "Overworld Foundations": { "position": [640, 40] } }
+    "groups": { "Overworld Foundations": { "position": [800, 200] } }
   },
   "settings": { "individual_progress": true, "hidden": "DEPENDENCIES_VISIBLE", "unlockNotification": true },
   "dependencies": ["onboarding_survivor_capstone"],
   "tasks": {
-    "touch_four": {
+    "touch_six": {
       "type": "heracles:composite",
-      "amount": 4,
+      "amount": 6,
       "tasks": {
         "create": { "type": "heracles:item", "title": "Create: Mechanical Press", "item": "create:mechanical_press", "amount": 1, "collection": "AUTOMATIC" },
         "botania": { "type": "heracles:item", "title": "Botania: Mana Pool", "item": "botania:mana_pool", "amount": 1, "collection": "AUTOMATIC" },
         "iss": { "type": "heracles:item", "title": "Iron's Spellbooks: Spell Book", "item": "irons_spellbooks:iron_spell_book", "amount": 1, "collection": "AUTOMATIC" },
         "tetra": { "type": "heracles:item", "title": "Tetra: Forge Hammer", "item": "tetra:hammer_base", "amount": 1, "collection": "AUTOMATIC" },
         "apotheosis": { "type": "heracles:item", "title": "Apotheosis: Sigil of Socketing", "item": "apotheosis:sigil_of_socketing", "amount": 1, "collection": "AUTOMATIC" },
-        "alexsmobs": { "type": "heracles:item", "title": "Alex's Mobs: Animal Dictionary", "item": "alexsmobs:animal_dictionary", "amount": 1, "collection": "AUTOMATIC" }
+        "alexsmobs": { "type": "heracles:item", "title": "Alex's Mobs: Animal Dictionary", "item": "alexsmobs:animal_dictionary", "amount": 1, "collection": "AUTOMATIC" },
+        "simplyswords": { "type": "heracles:item", "title": "Simply Swords: Iron Rapier", "item": "simplyswords:iron_rapier", "amount": 1, "collection": "AUTOMATIC" },
+        "waystones": { "type": "heracles:item", "title": "Waystones: Waystone", "item": "waystones:waystone", "amount": 1, "collection": "AUTOMATIC" },
+        "terramity": { "type": "heracles:item", "title": "Terramity: Sapphire", "item": "terramity:sapphire", "amount": 1, "collection": "AUTOMATIC" },
+        "boss": { "type": "heracles:kill_entity", "title": "Slay a Tier 1 boss (Ferrous Wroughtnaut)", "entity": "mowziesmobs:ferrous_wroughtnaut", "amount": 1 }
       }
     }
   },
   "rewards": {
-    "create_kit": { "type": "heracles:item", "item": { "id": "create:precision_mechanism", "count": 2 } },
-    "magic_kit": { "type": "heracles:item", "item": { "id": "botania:manasteel_ingot", "count": 4 } },
-    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 8 }
+    "create_kit": { "type": "heracles:item", "title": "Engineering core", "item": { "id": "create:precision_mechanism", "count": 2 } },
+    "magic_kit": { "type": "heracles:item", "title": "Magic stock", "item": { "id": "botania:manasteel_ingot", "count": 6 } },
+    "gear_kit": { "type": "heracles:item", "title": "Gear stock", "item": { "id": "minecraft:diamond", "count": 3 } },
+    "affix_kit": { "type": "heracles:item", "title": "Socket fuel", "item": { "id": "apotheosis:gem_dust", "count": 4 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 10 }
   }
 }

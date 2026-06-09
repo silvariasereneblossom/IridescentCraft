@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "apotheosis:gem" },
+    "title": "Apotheosis: Cut a Gem",
+    "subtitle": "Find a gem to socket",
+    "description": [
+      "A Sigil of Socketing opens the slot — but you still need something to put in",
+      "it. §dGems§r drop from mobs and chests across the world, each carrying a bonus",
+      "that scales with its rarity. Slot one into socketed gear for a permanent edge.",
+      "",
+      "§7Gems plus affixes are how T1 gear keeps pace with the rising danger."
+    ],
+    "groups": { "Overworld Foundations": { "position": [480, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_apotheosis_gem"],
+  "tasks": {
+    "have_gem": {
+      "type": "heracles:item",
+      "title": "Acquire a Gem",
+      "item": "apotheosis:gem",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "dust": { "type": "heracles:item", "title": "Gem dust", "item": { "id": "apotheosis:gem_dust", "count": 4 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 2 }
+  }
+}

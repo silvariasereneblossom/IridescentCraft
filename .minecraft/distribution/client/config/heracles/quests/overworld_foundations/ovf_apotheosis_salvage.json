@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "apotheosis:salvaging_table" },
+    "title": "Apotheosis: The Salvaging Table",
+    "subtitle": "Break gear down for parts",
+    "description": [
+      "Not every affixed drop is worth keeping. The §dSalvaging Table§r breaks unwanted",
+      "magic gear back into §7materials§r and §dgem dust§r — the reagents that fund",
+      "rerolling and upgrading the gear you do want.",
+      "",
+      "§7Salvage keeps the affix economy flowing instead of clogging your chests."
+    ],
+    "groups": { "Overworld Foundations": { "position": [640, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_apotheosis_gem"],
+  "tasks": {
+    "have_table": {
+      "type": "heracles:item",
+      "title": "Acquire a Salvaging Table",
+      "item": "apotheosis:salvaging_table",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "material": { "type": "heracles:item", "title": "Crafting reagent", "item": { "id": "apotheosis:common_material", "count": 4 } },
+    "dust": { "type": "heracles:item", "item": { "id": "apotheosis:gem_dust", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 2 }
+  }
+}

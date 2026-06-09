@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "alexsmobs:lobster_tail" },
+    "title": "Alex's Mobs: Harvest the Wild",
+    "subtitle": "Gather creature drops",
+    "description": [
+      "The Animal Dictionary points the way; now go put it to use. Hunt the coasts",
+      "and waters for §2Lobster Tails§r — one of the many drops Alex's creatures give",
+      "up for food, brewing, and crafting.",
+      "",
+      "§7Every biome hides creatures whose drops feed the tiers above."
+    ],
+    "groups": { "Overworld Foundations": { "position": [640, 240] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_alexsmobs"],
+  "tasks": {
+    "gather_tails": {
+      "type": "heracles:item",
+      "title": "Collect Lobster Tails",
+      "item": "alexsmobs:lobster_tail",
+      "amount": 3,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "blood": { "type": "heracles:item", "title": "Blood sacs", "item": { "id": "alexsmobs:blood_sac", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 2 }
+  }
+}

@@ -115,6 +115,9 @@ const RECONCILE = [
   { q: 'reach_tier_2', adv: ['icraft:stage_tier_2'], met: p => reconHasStage(p, 'tier_2') },
   { q: 'reach_tier_3', adv: ['icraft:stage_tier_3'], met: p => reconHasStage(p, 'tier_3') },
   { q: 'reach_tier_4', adv: ['icraft:stage_tier_4'], met: p => reconHasStage(p, 'tier_4') },
+  // Engineering lane T3 unlock rides the same stage as reach_tier_3 but had no
+  // row — strands existing T3 characters on the Mekanism-unlock beat (#45 sweep).
+  { q: 'eng_t3_unlock', adv: ['icraft:stage_tier_3'], met: p => reconHasStage(p, 'tier_3') },
 
   // === Exploration dimension trackers (engine dim-entry flags) ===
   { q: 'exp_t2_dimensions', met: p => reconHasFlag(p, 'icraft_codex_dimentry_twilight') && reconHasFlag(p, 'icraft_codex_dimentry_aether') && (reconHasFlag(p, 'icraft_codex_dimentry_everbright') || reconHasFlag(p, 'icraft_codex_dimentry_everdawn')) },
@@ -160,6 +163,49 @@ const RECONCILE = [
   { q: 'ovf_tetra_workbench', met: p => reconHasItem(p, 'tetra:hammer_base') },
   { q: 'ovf_alexsmobs',     met: p => reconHasItem(p, 'alexsmobs:animal_dictionary') },
   { q: 'ovf_create_brass',  met: p => reconHasItem(p, 'create:brass_ingot') },
+
+  // === Overworld Foundations — Chapter 1 expansion (#45, ~30 quests) ===========
+  // Held-item beats: inventory best-effort (same as the rows above). Placed-block
+  // beats (mixer/apothecary/flora/runic_altar/salvage/waystone) are intentionally
+  // omitted — a built-then-placed block isn't in inventory, so `clear` can't see it
+  // (the same reason ovf_create_press / ovf_botania_pool carry no row); the
+  // AUTOMATIC item task self-completes on the next inventory change instead.
+  { q: 'ovf_create_precision',      met: p => reconHasItem(p, 'create:precision_mechanism') },
+  { q: 'ovf_create_andesite',       met: p => reconHasItem(p, 'create:andesite_alloy') },
+  { q: 'ovf_botania_manasteel',     met: p => reconHasItem(p, 'botania:manasteel_ingot') },
+  { q: 'ovf_tetra_forge',           met: p => reconHasItem(p, 'tetra:modular_sword') },
+  { q: 'ovf_apotheosis_socket_gem', met: p => reconHasItem(p, 'apotheosis:gem') },
+  { q: 'ovf_alexsmobs_harvest',     met: p => reconHasItem(p, 'alexsmobs:lobster_tail') },
+  { q: 'ovf_terramity_gems',        met: p => reconHasItem(p, 'terramity:sapphire') },
+  { q: 'ovf_simplyswords', met: p =>
+      reconHasItem(p, 'simplyswords:iron_longsword') || reconHasItem(p, 'simplyswords:iron_katana') ||
+      reconHasItem(p, 'simplyswords:iron_rapier')    || reconHasItem(p, 'simplyswords:iron_claymore') ||
+      reconHasItem(p, 'simplyswords:iron_spear')     || reconHasItem(p, 'simplyswords:iron_glaive') },
+  // Named T1 boss kills — the exploration-kills engine sets a one-time first-kill
+  // flag per named boss (icraft_codex_firstkill_<id with :,/ -> _>). Force-complete
+  // only (kills aren't advancement-gated). Mutant/Brutal composites have NO flag
+  // (minibosses pay every kill) and self-heal on a respawn, so they carry no row.
+  { q: 'ovf_terramity_gob',      met: p => reconHasFlag(p, 'icraft_codex_firstkill_terramity_gob') },
+  { q: 'ovf_terramity_sniffer',  met: p => reconHasFlag(p, 'icraft_codex_firstkill_terramity_super_sniffer') },
+  { q: 'ovf_mowzie_wroughtnaut', met: p => reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_ferrous_wroughtnaut') },
+  { q: 'ovf_mowzie_frostmaw',    met: p => reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_frostmaw') },
+  { q: 'ovf_mowzie_umvuthi',     met: p => reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_umvuthi') },
+  { q: 'ovf_mowzie_sculptor',    met: p => reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_sculptor') },
+  // Chapter capstone — composite 6-of-10 (mirrors the quest's amount:6). Count held
+  // beats + the boss first-kill flag; never force-completes below 6 (blocks in the
+  // set undercount, which is safe — it only ever completes a genuine 6+). Pattern
+  // mirrors iss_t3_arcane_master's count reconcile.
+  { q: 'ovf_capstone', met: p =>
+      ((reconHasItem(p, 'create:mechanical_press') ? 1 : 0) +
+       (reconHasItem(p, 'botania:mana_pool') ? 1 : 0) +
+       (reconHasItem(p, 'irons_spellbooks:iron_spell_book') ? 1 : 0) +
+       (reconHasItem(p, 'tetra:hammer_base') ? 1 : 0) +
+       (reconHasItem(p, 'apotheosis:sigil_of_socketing') ? 1 : 0) +
+       (reconHasItem(p, 'alexsmobs:animal_dictionary') ? 1 : 0) +
+       (reconHasItem(p, 'simplyswords:iron_rapier') ? 1 : 0) +
+       (reconHasItem(p, 'waystones:waystone') ? 1 : 0) +
+       (reconHasItem(p, 'terramity:sapphire') ? 1 : 0) +
+       (reconHasFlag(p, 'icraft_codex_firstkill_mowziesmobs_ferrous_wroughtnaut') ? 1 : 0)) >= 6 },
 
   // === Iron's Spellbooks (ISS questline, T1-T3) — inventory possession (#45) ===
   { q: 'iss_t1_first_book',        met: p => reconHasItem(p, 'irons_spellbooks:copper_spell_book') },

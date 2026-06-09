@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:precision_mechanism" },
+    "title": "Create: Precision Mechanism",
+    "subtitle": "Forge an automation core",
+    "description": [
+      "The §bPrecision Mechanism§r is Create's automation keystone — cogs, a golden",
+      "sheet, and an iron nugget, assembled in a press chain. Every Mechanical Arm,",
+      "Deployer, and Crafter needs one.",
+      "",
+      "§7Building one proves your Create line can make its own brain."
+    ],
+    "groups": { "Overworld Foundations": { "position": [640, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_create_press"],
+  "tasks": {
+    "have_mechanism": {
+      "type": "heracles:item",
+      "title": "Acquire a Precision Mechanism",
+      "item": "create:precision_mechanism",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "brass": { "type": "heracles:item", "item": { "id": "create:brass_ingot", "count": 8 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 3 }
+  }
+}

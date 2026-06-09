@@ -1,0 +1,35 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "simplyswords:iron_rapier" },
+    "title": "Simply Swords: Pick Your Blade",
+    "subtitle": "Forge a new weapon style",
+    "description": [
+      "Simply Swords adds a whole armoury of weapon styles — rapiers, katanas,",
+      "claymores, spears, glaives and more, each with its own reach and feel under",
+      "Better Combat's movesets. Forge an iron-tier blade and find your style.",
+      "",
+      "§7Later, unique runic weapons grow with you; this is where the arsenal opens."
+    ],
+    "groups": { "Overworld Foundations": { "position": [160, 240] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "any_blade": {
+      "type": "heracles:composite",
+      "amount": 1,
+      "tasks": {
+        "longsword": { "type": "heracles:item", "title": "Iron Longsword", "item": "simplyswords:iron_longsword", "amount": 1, "collection": "AUTOMATIC" },
+        "katana": { "type": "heracles:item", "title": "Iron Katana", "item": "simplyswords:iron_katana", "amount": 1, "collection": "AUTOMATIC" },
+        "rapier": { "type": "heracles:item", "title": "Iron Rapier", "item": "simplyswords:iron_rapier", "amount": 1, "collection": "AUTOMATIC" },
+        "claymore": { "type": "heracles:item", "title": "Iron Claymore", "item": "simplyswords:iron_claymore", "amount": 1, "collection": "AUTOMATIC" },
+        "spear": { "type": "heracles:item", "title": "Iron Spear", "item": "simplyswords:iron_spear", "amount": 1, "collection": "AUTOMATIC" },
+        "glaive": { "type": "heracles:item", "title": "Iron Glaive", "item": "simplyswords:iron_glaive", "amount": 1, "collection": "AUTOMATIC" }
+      }
+    }
+  },
+  "rewards": {
+    "iron": { "type": "heracles:item", "title": "Forging stock", "item": { "id": "minecraft:iron_ingot", "count": 10 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 3 }
+  }
+}

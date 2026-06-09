@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:chiseled_stone_bricks" },
+    "title": "Mowzie's Mobs: The Sculptor",
+    "subtitle": "Outlast the stone shaper",
+    "description": [
+      "Atop a remote peak waits the §8Sculptor§r, an ancient being who tests",
+      "challengers across a gauntlet of stone trials before the duel itself. Pass his",
+      "trials, then defeat him to claim mastery of the peak.",
+      "",
+      "§7The most demanding of the Tier 1 overworld bosses — patience and footwork win."
+    ],
+    "groups": { "Overworld Foundations": { "position": [160, 400] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_sculptor": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat the Sculptor",
+      "entity": "mowziesmobs:sculptor",
+      "amount": 1
+    }
+  },
+  "rewards": {
+    "stone": { "type": "heracles:item", "title": "Carved spoils", "item": { "id": "minecraft:chiseled_stone_bricks", "count": 16 } },
+    "diamond": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 3 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 6 }
+  }
+}

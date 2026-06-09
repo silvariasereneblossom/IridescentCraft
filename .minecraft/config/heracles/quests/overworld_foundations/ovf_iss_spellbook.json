@@ -10,7 +10,7 @@
       "§7Caster classes start with a modular book; the modular Tetra-style books",
       "§7let you slot cover and page materials to grow spell power."
     ],
-    "groups": { "Overworld Foundations": { "position": [160, 80] } }
+    "groups": { "Overworld Foundations": { "position": [0, 240] } }
   },
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],

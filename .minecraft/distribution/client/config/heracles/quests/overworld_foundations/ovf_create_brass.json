@@ -10,7 +10,7 @@
       "",
       "§7Andesite Alloy and brass are bread-and-butter Engineering tokens."
     ],
-    "groups": { "Overworld Foundations": { "position": [160, 0] } }
+    "groups": { "Overworld Foundations": { "position": [320, 0] } }
   },
   "settings": { "individual_progress": true, "hidden": "LOCKED" },
   "dependencies": ["ovf_create_press"],

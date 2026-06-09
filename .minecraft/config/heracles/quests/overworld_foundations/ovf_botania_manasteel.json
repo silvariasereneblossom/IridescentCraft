@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:manasteel_ingot" },
+    "title": "Botania: The Manasteel Age",
+    "subtitle": "Smelt mana into metal",
+    "description": [
+      "Drop iron into a charged §aMana Pool§r and it transmutes into §bManasteel§r —",
+      "Botania's first magical metal, the stock for tools, armour, and the apparatus",
+      "that follows. Build a working stock of it.",
+      "",
+      "§7Manasteel is the Magic lane's iron: the foundation everything else is built on."
+    ],
+    "groups": { "Overworld Foundations": { "position": [640, 80] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_botania_pool"],
+  "tasks": {
+    "gather_manasteel": {
+      "type": "heracles:item",
+      "title": "Collect Manasteel Ingots",
+      "item": "botania:manasteel_ingot",
+      "amount": 8,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "tablet": { "type": "heracles:item", "title": "Mana storage", "item": { "id": "botania:mana_tablet", "count": 1 } },
+    "living": { "type": "heracles:item", "item": { "id": "botania:livingwood", "count": 8 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 3 }
+  }
+}

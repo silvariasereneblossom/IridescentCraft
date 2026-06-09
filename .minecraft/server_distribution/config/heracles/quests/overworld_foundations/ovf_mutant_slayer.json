@@ -1,0 +1,33 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "mutantmonsters:hulk_hammer" },
+    "title": "Mutant Monsters: Hold the Line",
+    "subtitle": "Slay a mutant horror",
+    "description": [
+      "Lightning and dark magic warp the night's usual mobs into §cMutants§r — a",
+      "Mutant Zombie that buries you, a Mutant Skeleton that flings its own bones, a",
+      "Mutant Creeper that detonates a crater. Put one down.",
+      "",
+      "§7These miniboss horrors drop parts for some of the pack's nastier early gear."
+    ],
+    "groups": { "Overworld Foundations": { "position": [320, 400] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_any_mutant": {
+      "type": "heracles:composite",
+      "amount": 1,
+      "tasks": {
+        "zombie": { "type": "heracles:kill_entity", "title": "Mutant Zombie", "entity": "mutantmonsters:mutant_zombie", "amount": 1 },
+        "skeleton": { "type": "heracles:kill_entity", "title": "Mutant Skeleton", "entity": "mutantmonsters:mutant_skeleton", "amount": 1 },
+        "creeper": { "type": "heracles:kill_entity", "title": "Mutant Creeper", "entity": "mutantmonsters:mutant_creeper", "amount": 1 }
+      }
+    }
+  },
+  "rewards": {
+    "shard": { "type": "heracles:item", "title": "Mutant essence", "item": { "id": "mutantmonsters:creeper_shard", "count": 1 } },
+    "diamond": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 4 }
+  }
+}

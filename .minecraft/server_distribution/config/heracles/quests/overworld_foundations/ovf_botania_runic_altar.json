@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:runic_altar" },
+    "title": "Botania: The Runic Altar",
+    "subtitle": "Craft your first runes",
+    "description": [
+      "The §aRunic Altar§r is Botania's mana-powered crafting station. Feed it",
+      "manasteel and reagents and it inscribes §druns§r — the elemental keys to",
+      "advanced flowers, apparatus, and the road toward Terrasteel.",
+      "",
+      "§7Runes are the deep currency of the Magic lane's mid-game."
+    ],
+    "groups": { "Overworld Foundations": { "position": [480, 80] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_botania_pool"],
+  "tasks": {
+    "have_altar": {
+      "type": "heracles:item",
+      "title": "Acquire a Runic Altar",
+      "item": "botania:runic_altar",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "manasteel": { "type": "heracles:item", "item": { "id": "botania:manasteel_ingot", "count": 4 } },
+    "tablet": { "type": "heracles:item", "title": "Mana storage", "item": { "id": "botania:mana_tablet", "count": 1 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 3 }
+  }
+}

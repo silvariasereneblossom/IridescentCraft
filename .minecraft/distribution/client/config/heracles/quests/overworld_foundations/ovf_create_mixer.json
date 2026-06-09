@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:mechanical_mixer" },
+    "title": "Create: The Mechanical Mixer",
+    "subtitle": "Automate alloying",
+    "description": [
+      "The §bMechanical Mixer§r takes the brass age further — it combines ingredients",
+      "over a Basin to brew alloys and compounds at speed, the heart of any serious",
+      "Create line. Pair it with a Blaze Burner for heated mixing.",
+      "",
+      "§7Mixers, presses, and basins are the engine room of the Engineering lane."
+    ],
+    "groups": { "Overworld Foundations": { "position": [480, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_create_brass"],
+  "tasks": {
+    "have_mixer": {
+      "type": "heracles:item",
+      "title": "Acquire a Mechanical Mixer",
+      "item": "create:mechanical_mixer",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "alloy": { "type": "heracles:item", "item": { "id": "create:andesite_alloy", "count": 12 } },
+    "mechanism": { "type": "heracles:item", "title": "Automation core", "item": { "id": "create:precision_mechanism", "count": 1 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 3 }
+  }
+}

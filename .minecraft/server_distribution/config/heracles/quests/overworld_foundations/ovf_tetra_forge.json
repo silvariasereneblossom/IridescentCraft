@@ -1,0 +1,32 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "tetra:modular_sword" },
+    "title": "Tetra: Forge a Modular Blade",
+    "subtitle": "Hammer out your first weapon",
+    "description": [
+      "At the Tetra Workbench, slot a hilt and a blade to forge a §emodular sword§r —",
+      "your first piece of truly modular gear. Then take the §6Forge Hammer§r to it:",
+      "§ehoning§r repairs and improves a module's integrity as you use it.",
+      "",
+      "§7Forging and honing are the long game of deep specialization — every tier",
+      "§7adds better materials to slot into this same frame."
+    ],
+    "groups": { "Overworld Foundations": { "position": [160, 160] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_tetra_workbench"],
+  "tasks": {
+    "have_modular": {
+      "type": "heracles:item",
+      "title": "Forge a Modular Sword",
+      "item": "tetra:modular_sword",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "iron": { "type": "heracles:item", "title": "Forging stock", "item": { "id": "minecraft:iron_ingot", "count": 12 } },
+    "diamond": { "type": "heracles:item", "title": "Honing material", "item": { "id": "minecraft:diamond", "count": 1 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 3 }
+  }
+}

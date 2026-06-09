@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:iron_block" },
+    "title": "Mowzie's Mobs: Ferrous Wroughtnaut",
+    "subtitle": "Break the iron sentinel",
+    "description": [
+      "Deep in an underground chamber sleeps the §7Ferrous Wroughtnaut§r — a silent",
+      "iron knight with a colossal axe. It blocks while it winds up; learn its",
+      "rhythm, dodge the swing, and punish the recovery.",
+      "",
+      "§7The classic first Mowzie's duel — a real test of your Tier 1 loadout."
+    ],
+    "groups": { "Overworld Foundations": { "position": [480, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_wroughtnaut": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat the Ferrous Wroughtnaut",
+      "entity": "mowziesmobs:ferrous_wroughtnaut",
+      "amount": 1
+    }
+  },
+  "rewards": {
+    "iron": { "type": "heracles:item", "title": "Sundered iron", "item": { "id": "minecraft:iron_block", "count": 3 } },
+    "diamond": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 5 }
+  }
+}

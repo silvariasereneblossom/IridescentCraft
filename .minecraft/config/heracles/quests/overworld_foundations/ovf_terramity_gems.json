@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "terramity:sapphire" },
+    "title": "Terramity: Buried Gems",
+    "subtitle": "Mine the overworld jewels",
+    "description": [
+      "Terramity salts the overworld stone with new gems. Dig for §9Sapphire§r — found",
+      "in sapphire ore deep underground — the first of a gem ladder that climbs all",
+      "the way to cosmic alloys in the tiers ahead.",
+      "",
+      "§7These jewels craft Terramity's early gear and feed its deeper recipes."
+    ],
+    "groups": { "Overworld Foundations": { "position": [0, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "gather_sapphire": {
+      "type": "heracles:item",
+      "title": "Collect Sapphires",
+      "item": "terramity:sapphire",
+      "amount": 4,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "topaz": { "type": "heracles:item", "title": "A second jewel", "item": { "id": "terramity:topaz", "count": 3 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 3 }
+  }
+}

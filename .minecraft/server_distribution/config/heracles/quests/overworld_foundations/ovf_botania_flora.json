@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:endoflame" },
+    "title": "Botania: First Generating Flora",
+    "subtitle": "Grow an Endoflame",
+    "description": [
+      "Mana doesn't appear on its own — a §agenerating flower§r makes it. The",
+      "§6Endoflame§r is the classic first choice: set it beside burnable fuel and it",
+      "pours mana into a nearby Spreader and Pool.",
+      "",
+      "§7Generating flora are the renewable heart of every Botania mana economy."
+    ],
+    "groups": { "Overworld Foundations": { "position": [320, 80] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "LOCKED" },
+  "dependencies": ["ovf_botania_pool"],
+  "tasks": {
+    "have_flora": {
+      "type": "heracles:item",
+      "title": "Acquire an Endoflame",
+      "item": "botania:endoflame",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "manasteel": { "type": "heracles:item", "item": { "id": "botania:manasteel_ingot", "count": 3 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 2 }
+  }
+}

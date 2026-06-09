@@ -10,7 +10,7 @@
       "",
       "§7Create machine blocks are your richest Engineering submissions early on."
     ],
-    "groups": { "Overworld Foundations": { "position": [0, 0] } }
+    "groups": { "Overworld Foundations": { "position": [160, 0] } }
   },
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],

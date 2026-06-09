@@ -11,7 +11,7 @@
       "§7Modular Tetra gear and the Iridescent armor/spell-book systems are the",
       "§7long game of deep specialization."
     ],
-    "groups": { "Overworld Foundations": { "position": [320, 0] } }
+    "groups": { "Overworld Foundations": { "position": [0, 160] } }
   },
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],

@@ -1,0 +1,31 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "waystones:waystone" },
+    "title": "Waystones: Mark the Map",
+    "subtitle": "Raise your first Waystone",
+    "description": [
+      "The world is big and getting bigger. Craft and place a §eWaystone§r, then",
+      "right-click to bind it — from then on you can warp back to it from any other",
+      "Waystone, or with a Warp Scroll from anywhere.",
+      "",
+      "§7A network of Waystones is the backbone of the Exploration lane's reach."
+    ],
+    "groups": { "Overworld Foundations": { "position": [320, 240] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_waystone": {
+      "type": "heracles:item",
+      "title": "Acquire a Waystone",
+      "item": "waystones:waystone",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "scrolls": { "type": "heracles:item", "title": "Warp Scrolls", "item": { "id": "waystones:warp_scroll", "count": 4 } },
+    "dust": { "type": "heracles:item", "item": { "id": "waystones:warp_dust", "count": 6 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 2 }
+  }
+}

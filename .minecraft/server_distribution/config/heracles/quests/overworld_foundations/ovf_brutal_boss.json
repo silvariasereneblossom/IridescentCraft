@@ -1,0 +1,36 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:iron_sword" },
+    "title": "Brutal Bosses: Claim a Dungeon",
+    "subtitle": "Slay a structure's champion",
+    "description": [
+      "Some overworld structures are guarded by a §cBrutal Boss§r — an oversized,",
+      "named champion standing between you and the loot. Clear the room, break the",
+      "guardian, and take the prize.",
+      "",
+      "§7Every dungeon you claim sharpens you for the dimensional tiers to come."
+    ],
+    "groups": { "Overworld Foundations": { "position": [480, 400] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_any_brutal": {
+      "type": "heracles:composite",
+      "amount": 1,
+      "tasks": {
+        "zombie": { "type": "heracles:kill_entity", "title": "Zombie Champion", "entity": "brutalbosses:zombieboss", "amount": 1 },
+        "skeleton": { "type": "heracles:kill_entity", "title": "Skeleton Champion", "entity": "brutalbosses:skeletonshieldboss", "amount": 1 },
+        "husk": { "type": "heracles:kill_entity", "title": "Husk Champion", "entity": "brutalbosses:huskboss", "amount": 1 },
+        "stray": { "type": "heracles:kill_entity", "title": "Stray Champion", "entity": "brutalbosses:strayboss", "amount": 1 },
+        "drowned": { "type": "heracles:kill_entity", "title": "Drowned Champion", "entity": "brutalbosses:drownedboss", "amount": 1 },
+        "spider": { "type": "heracles:kill_entity", "title": "Cave Spider Champion", "entity": "brutalbosses:cavespiderboss", "amount": 1 }
+      }
+    }
+  },
+  "rewards": {
+    "diamond": { "type": "heracles:item", "title": "Dungeon spoils", "item": { "id": "minecraft:diamond", "count": 3 } },
+    "dust": { "type": "heracles:item", "item": { "id": "apotheosis:gem_dust", "count": 3 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 4 }
+  }
+}

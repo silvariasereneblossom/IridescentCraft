@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:gold_block" },
+    "title": "Mowzie's Mobs: Umvuthi",
+    "subtitle": "Topple the sun priest",
+    "description": [
+      "On the savanna stands the shrine of §6Umvuthi§r, the radiant harpy-priest who",
+      "calls down solar fury and summons his feathered hunters. Close the gap, break",
+      "his guard, and end the ritual.",
+      "",
+      "§7A frantic Tier 1 boss fight of light, feathers, and fire."
+    ],
+    "groups": { "Overworld Foundations": { "position": [0, 400] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_umvuthi": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat Umvuthi",
+      "entity": "mowziesmobs:umvuthi",
+      "amount": 1
+    }
+  },
+  "rewards": {
+    "gold": { "type": "heracles:item", "title": "Sun-priest's gold", "item": { "id": "minecraft:gold_block", "count": 4 } },
+    "diamond": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 5 }
+  }
+}

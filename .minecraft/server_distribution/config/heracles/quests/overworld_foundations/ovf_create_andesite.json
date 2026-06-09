@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "create:andesite_alloy" },
+    "title": "Create: Andesite Alloy",
+    "subtitle": "Stockpile the starter metal",
+    "description": [
+      "Before the brass age comes andesite. Mix andesite with iron or zinc nuggets",
+      "to forge §7Andesite Alloy§r — the bread-and-butter material behind every",
+      "early Create machine, shaft, and cogwheel.",
+      "",
+      "§7Collect a working stock; it's also a rich early Engineering submission."
+    ],
+    "groups": { "Overworld Foundations": { "position": [0, 0] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "gather_alloy": {
+      "type": "heracles:item",
+      "title": "Collect Andesite Alloy",
+      "item": "create:andesite_alloy",
+      "amount": 16,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "cogs": { "type": "heracles:item", "title": "Power-transfer parts", "item": { "id": "create:cogwheel", "count": 6 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 2 }
+  }
+}

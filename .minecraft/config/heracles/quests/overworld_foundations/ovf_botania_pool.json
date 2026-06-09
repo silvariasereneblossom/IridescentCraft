@@ -10,7 +10,7 @@
       "",
       "§7Manasteel, runes, and apparatus are your early Magic submissions."
     ],
-    "groups": { "Overworld Foundations": { "position": [0, 80] } }
+    "groups": { "Overworld Foundations": { "position": [160, 80] } }
   },
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],

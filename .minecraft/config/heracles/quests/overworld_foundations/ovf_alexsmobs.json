@@ -10,7 +10,7 @@
       "",
       "§7Many of their drops feed crafting and combat economies across the tiers."
     ],
-    "groups": { "Overworld Foundations": { "position": [480, 40] } }
+    "groups": { "Overworld Foundations": { "position": [480, 240] } }
   },
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],

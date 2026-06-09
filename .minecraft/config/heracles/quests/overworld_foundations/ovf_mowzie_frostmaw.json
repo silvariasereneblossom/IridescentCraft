@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "minecraft:blue_ice" },
+    "title": "Mowzie's Mobs: Frostmaw",
+    "subtitle": "Wake and slay the ice beast",
+    "description": [
+      "High in the snowy peaks sleeps §bFrostmaw§r, a great frost beast guarding a",
+      "frozen lair. Strike the icicle it clutches to rouse it, then weather its",
+      "roars and swipes until it falls.",
+      "",
+      "§7A frigid Tier 1 hunt — bring fire resistance to the cold and warmth to the heart."
+    ],
+    "groups": { "Overworld Foundations": { "position": [640, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_frostmaw": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat Frostmaw",
+      "entity": "mowziesmobs:frostmaw",
+      "amount": 1
+    }
+  },
+  "rewards": {
+    "ice": { "type": "heracles:item", "title": "Frozen spoils", "item": { "id": "minecraft:blue_ice", "count": 6 } },
+    "diamond": { "type": "heracles:item", "item": { "id": "minecraft:diamond", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 5 }
+  }
+}

@@ -1,0 +1,29 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "terramity:ruby" },
+    "title": "Terramity: Slay the Gob",
+    "subtitle": "Defeat the overworld brute",
+    "description": [
+      "The §cGob§r is Terramity's first true boss — a hulking overworld brute holed up",
+      "in its structure. Bring a forged blade and some socketed gear; it hits hard",
+      "for a Tier 1 fight.",
+      "",
+      "§7Felling it proves your starter loadout is ready for what the tiers bring."
+    ],
+    "groups": { "Overworld Foundations": { "position": [160, 320] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "kill_gob": {
+      "type": "heracles:kill_entity",
+      "title": "Defeat the Gob",
+      "entity": "terramity:gob",
+      "amount": 1
+    }
+  },
+  "rewards": {
+    "ruby": { "type": "heracles:item", "title": "Boss jewels", "item": { "id": "terramity:ruby", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 4 }
+  }
+}

@@ -10,7 +10,7 @@
       "",
       "§7Affixed and socketed gear is how you push past the tiers' rising danger."
     ],
-    "groups": { "Overworld Foundations": { "position": [320, 80] } }
+    "groups": { "Overworld Foundations": { "position": [320, 160] } }
   },
   "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
   "dependencies": ["onboarding_survivor_capstone"],

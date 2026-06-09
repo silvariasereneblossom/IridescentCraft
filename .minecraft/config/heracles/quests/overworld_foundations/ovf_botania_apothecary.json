@@ -1,0 +1,30 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "botania:apothecary_default" },
+    "title": "Botania: The Petal Apothecary",
+    "subtitle": "Build the first flower station",
+    "description": [
+      "Every Botania journey starts at the §aPetal Apothecary§r. Fill it with water,",
+      "toss in mystical flower petals, and craft the generating and functional",
+      "flowers that power the whole mod.",
+      "",
+      "§7This is the true door into the Magic lane — before mana, come the flowers."
+    ],
+    "groups": { "Overworld Foundations": { "position": [0, 80] } }
+  },
+  "settings": { "individual_progress": true, "hidden": "IN_PROGRESS" },
+  "dependencies": ["onboarding_survivor_capstone"],
+  "tasks": {
+    "have_apothecary": {
+      "type": "heracles:item",
+      "title": "Acquire a Petal Apothecary",
+      "item": "botania:apothecary_default",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "manasteel": { "type": "heracles:item", "item": { "id": "botania:manasteel_ingot", "count": 2 } },
+    "levels": { "type": "heracles:xp", "xptype": "LEVEL", "amount": 2 }
+  }
+}
