@@ -713,6 +713,36 @@ if (Test-Path $downloadScript) {
             Write-Host "[IridescentCraft Sync] Mod download step threw: $($_.Exception.Message)" -ForegroundColor Red
             Write-SyncSentinel -Ok $false -Reason 'mod-download-error' -Behind 0 -McDir $instanceMC
         }
+
+        # -- 2026-06-09 COMPLETENESS GATE (systemic net for the recurring
+        #    "Mod X requires Y / not installed" tester crash class) --
+        # Ground-truth check: every .pw.toml in the index must have its jar on
+        # disk. This is INDEPENDENT of download_mods' own report, so it catches
+        # ANY cause of a missing jar -- truncated download, swallowed failure,
+        # cleanup over-prune, corrupt filename -- and surfaces it as a clear,
+        # named, pre-launch signal instead of a cryptic Forge dependency crash.
+        # The client index is side-filtered (0 server-only entries), so a
+        # missing filename is a genuine gap. download_mods runs every launch,
+        # so a flagged gap auto-retries on the next launch.
+        $missing = @()
+        Get-ChildItem -LiteralPath $indexDir -Filter '*.pw.toml' -File -ErrorAction SilentlyContinue | ForEach-Object {
+            # Match BOTH quote styles: packwiz uses double-quotes when the
+            # filename itself contains an apostrophe (e.g. "Alex's Mobs..."),
+            # single-quotes otherwise. A single-quote-only regex silently
+            # skipped such entries -> a blind spot in the very gate meant to
+            # catch missing jars.
+            $m = Select-String -LiteralPath $_.FullName -Pattern '^filename\s*=\s*["''](.+)["'']' -ErrorAction SilentlyContinue | Select-Object -First 1
+            if ($m) {
+                $jar = $m.Matches[0].Groups[1].Value
+                if ($jar -and -not (Test-Path -LiteralPath (Join-Path $modsDir $jar))) { $missing += $jar }
+            }
+        }
+        if ($missing.Count -gt 0) {
+            Write-Host "[IridescentCraft Sync] INCOMPLETE MOD SET: $($missing.Count) indexed jar(s) missing from mods/ -- the game WILL crash on load. Re-launch to retry the download; if it persists, tell an admin." -ForegroundColor Red
+            $missing | Select-Object -First 15 | ForEach-Object { Write-Host "    missing: $_" -ForegroundColor Red }
+            if ($missing.Count -gt 15) { Write-Host "    ... and $($missing.Count - 15) more (see .icraft_sync_status.json)" -ForegroundColor Red }
+            Write-SyncSentinel -Ok $false -Reason "incomplete-modset:$($missing.Count)" -Behind 0 -McDir $instanceMC
+        }
     }
 }
 
