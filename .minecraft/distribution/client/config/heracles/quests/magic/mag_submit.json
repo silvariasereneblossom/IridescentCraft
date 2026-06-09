@@ -16,7 +16,7 @@
       "",
       "§7See /icraft codex balance for progress."
     ],
-    "groups": { "Magic": { "position": [0, 0] } }
+    "groups": { "Magic Crafting": { "position": [0, 0] } }
   },
   "settings": {
     "individual_progress": true,
