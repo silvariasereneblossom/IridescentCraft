@@ -177,7 +177,7 @@ Installed on both client and server -- the bulk of the pack.
 - **iridescent difficulty 0.1.0** -- `iridescent_difficulty-0.1.0.jar`
 - **iridescent durability clamp 0.1.0** -- `iridescent_durability_clamp-0.1.0.jar`
 - **Iridescent Grand Compass** -- `iridescent_grand_compass-1.0.0.jar`
-- **Iridescent Lovely Pieces** -- `lovely_sparkle_pieces-0.1.0.0-iridescent.1.jar`
+- **Iridescent Lovely Pieces** -- `lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar`
 - **Iridescent Relics** -- `iridescent_relics-1.0.0.jar`
 - **iridescent tetra expansion 1.0.0** -- `iridescent_tetra_expansion-1.0.0.jar`
 - **IridescentCraft Origins** -- `iridescent_origins-1.0.0.jar`
