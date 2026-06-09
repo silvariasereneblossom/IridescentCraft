@@ -399,10 +399,6 @@
   "count": 1,
   "sample": "[06Jun2026 00:34:00.776] [modloading-worker-0/WARN] [AttributeFix/]: Attribute ID 'undead_revamp2:returnvauleundead' does not belong to a known attribute. This entry will be ignored."
  },
- "Bad attribute id:minecraft:generic.jump_strength in:brutalbosses:rabbitboss": {
-  "count": 1,
-  "sample": "[06Jun2026 00:34:56.201] [main/ERROR] [com.brutalbosses.BrutalBosses/]: Bad attribute id:minecraft:generic.jump_strength in:brutalbosses:rabbitboss"
- },
  "Can't keep up! Is the server overloaded? Running 108978ms or <bignum> ticks behind": {
   "count": 1,
   "sample": "[06Jun2026 00:39:51.180] [Server thread/WARN] [net.minecraft.server.MinecraftServer/]: Can't keep up! Is the server overloaded? Running 108978ms or 2179 ticks behind"
@@ -715,10 +711,6 @@
   "count": 1,
   "sample": "[06Jun2026 00:38:49.273] [Worker-Main-9/WARN] [net.minecraft.world.level.levelgen.heightproviders.UniformHeight/]: Empty height range: [0 absolute--16 absolute]"
  },
- "Empty item ingredient: {\"tag\":\"forge:sandstone/venus_sandstone\"}": {
-  "count": 1,
-  "sample": "[06Jun2026 00:38:01.288] [Server thread/ERROR] [mekanism.common.Mekanism/]: Empty item ingredient: {\"tag\":\"forge:sandstone/venus_sandstone\"}"
- },
  "Enchantment minecraft:blast_protection has min/max power <n>/<n> at level <n>, making this level unobtainable.": {
   "count": 2,
   "sample": "[06Jun2026 00:33:57.764] [modloading-worker-0/WARN] [Apotheosis : Enchantment/]: Enchantment minecraft:blast_protection has min/max power 213/200 at level 10, making this level unobtainable."
@@ -1010,10 +1002,6 @@
  "Ignoring unknown attribute 'obscure_api:regeneration'": {
   "count": 4,
   "sample": "[06Jun2026 00:41:34.554] [Worker-Main-8/WARN] [net.minecraft.world.entity.ai.attributes.AttributeMap/]: Ignoring unknown attribute 'obscure_api:regeneration'"
- },
- "Incomplete recipe detected: mekanism:crushing/venus_sandstone_to_venus_sand": {
-  "count": 1,
-  "sample": "[06Jun2026 00:38:01.288] [Server thread/ERROR] [mekanism.common.Mekanism/]: Incomplete recipe detected: mekanism:crushing/venus_sandstone_to_venus_sand"
  },
  "Incorrect key <key> was corrected": {
   "count": 1711,

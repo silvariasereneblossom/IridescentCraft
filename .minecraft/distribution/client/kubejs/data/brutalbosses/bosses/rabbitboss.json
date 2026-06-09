@@ -1,0 +1,53 @@
+{
+  "entity": "minecraft:rabbit",
+  "name": "Kip the Swift",
+  "visualscale": 3.7,
+  "experience": 400,
+  "effects": {
+    "minecraft:resistance": 1
+  },
+  "attributes": {
+    "generic.max_health": 60,
+    "generic.follow_range": 50,
+    "generic.knockback_resistance": 1,
+    "generic.movement_speed": 0.8
+  },
+  "customattributes": {
+    "attack_speed": 0.7
+  },
+  "gear": {
+  },
+  "ai-goals": {
+    "brutalbosses:charge": {},
+    "brutalbosses:aftercombatregen": {
+      "amount": 3
+    },
+    "minecraft:target": {},
+    "brutalbosses:whirlwind": {
+      "knockup": true
+    },
+    "brutalbosses:chasetarget": {},
+    "brutalbosses:meleehit": {
+      "damage": 8,
+      "potiononhit": "minecraft:weakness",
+      "potionduration": 40,
+      "potionlevel": 2
+    }
+  },
+  "spawnatchest": {
+    "minecraft:chests/simple_dungeon": 1,
+    "minecraft:chests/ruined_portal": 1,
+    "dungeoncrawl:chests/stage_3": 1,
+    "philipsruins:chests/desert_pyramid_loot": 1,
+    "dungeons_enhanced:chests/monster_maze/treasure": 1,
+    "ctov:chests/village/village_farm": 1,
+    "medieval_buildings:chests/town_inside": 1,
+    "medieval_buildings:chests/medium_shack_house": 1,
+    "mostructures:bunny_skeleton": 1,
+    "mostructures:bunny_spider": 1,
+    "repurposed_structures:chests/cities/overworld": 1,
+    "repurposed_structures:chests/villages/warped_tannery": 2,
+    "structory_towers:top/forager_top": 1,
+    "valhelsia_structures:chests/desert_house": 1
+  }
+}
