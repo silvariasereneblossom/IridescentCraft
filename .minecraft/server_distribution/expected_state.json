@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "e7e584dcd",
+  "generated_from": "948580d37",
   "roots": [
     "kubejs",
     "config",
@@ -7058,6 +7058,10 @@
     "kubejs/server_scripts/magic_crit_hook.js": {
       "sha256": "9cb4e11db9d2f859918f9beeaafc234920a8a6ee54f4e04b278b2c149d07b0b0",
       "size": 5380
+    },
+    "kubejs/server_scripts/megatorch_damage.js": {
+      "sha256": "13d1ae9bfed15578122b6a1f05164a9e0c634a68a1f3d8c18c8c84175c2af5e4",
+      "size": 4192
     },
     "kubejs/server_scripts/mobgriefing_default.js": {
       "sha256": "9656bf072eae6bd37ecf9401ab0f4e9d7c875d965d8ebb5de8e0733f19a2d926",
