@@ -6,9 +6,13 @@
 # Prereqs (one-time): sudo apt install -y openjdk-17-jdk
 #
 # Usage (from WSL bash):
-#   ./wsl-build.sh             # build + deploy jar to the 3 repo distros
-#   ./wsl-build.sh --no-deploy # build only (jar at build/libs/)
-#   ./wsl-build.sh --clean     # ./gradlew clean first
+#   ./wsl-build.sh                # build + deploy jar to the 3 repo distros
+#   ./wsl-build.sh --distros-only # same (alias; this mod has no Z: live target)
+#   ./wsl-build.sh --no-deploy    # build only (jar at build/libs/)
+#   ./wsl-build.sh --clean        # ./gradlew clean first
+# Flags mirror iridescent-tetra-expansion's wsl-build.sh so muscle-memory
+# carries across mods (a tetra flag passed here used to abort with "unknown
+# arg" before the build, which reads as a no-op if the error is filtered out).
 # =============================================================================
 set -euo pipefail
 
@@ -19,8 +23,10 @@ JAR_NAME="iridescent_grand_compass-1.0.0.jar"
 DEPLOY=1; CLEAN=0
 for arg in "$@"; do
   case "$arg" in
-    --no-deploy) DEPLOY=0 ;;
-    --clean)     CLEAN=1 ;;
+    --no-deploy)    DEPLOY=0 ;;
+    --distros-only) DEPLOY=1 ;;   # alias: only deploy target here is the 3 distros
+    --clean)        CLEAN=1 ;;
+    -h|--help)      sed -n '/^#/p' "$0" | head -20; exit 0 ;;
     *) echo "[wsl-build] unknown arg: $arg"; exit 2 ;;
   esac
 done
