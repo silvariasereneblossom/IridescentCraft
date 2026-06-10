@@ -93,10 +93,26 @@ public final class SpellbookHoneHandler {
         if (stack.isEmpty()) return;
         if (!itemClass.isInstance(stack.getItem())) return;
         try {
-            ((IModularItem) stack.getItem()).tickProgression(player, stack, amount);
+            ((IModularItem) stack.getItem()).tickProgression(player, stack, amount + attunementBonus(stack));
         } catch (Throwable t) {
             // Tetra's tickProgression no-ops if module progression is
             // disabled; any other throw should not crash the cast path.
+        }
+    }
+
+    /**
+     * Hone-rate accelerator: +1 progress per level of the Attunement enchant
+     * ({@link com.iridescentcraft.reforging.enchant.IcraftEnchantments#ATTUNEMENT})
+     * carried on the stack. Stacks additively on the base amount, so a max
+     * (L3) Attunement quadruples honing speed (1 base + 3). Defensive: returns
+     * 0 if the enchant isn't resolvable yet (pre-registration) or the read throws.
+     */
+    private static int attunementBonus(ItemStack stack) {
+        try {
+            return net.minecraft.world.item.enchantment.EnchantmentHelper.getItemEnchantmentLevel(
+                    com.iridescentcraft.reforging.enchant.IcraftEnchantments.ATTUNEMENT.get(), stack);
+        } catch (Throwable t) {
+            return 0;
         }
     }
 }

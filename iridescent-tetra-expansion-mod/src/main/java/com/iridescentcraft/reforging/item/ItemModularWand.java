@@ -115,7 +115,10 @@ public class ItemModularWand extends Item implements IModularItem {
     @Override public Cache<String, EffectData> getEffectDataCache() { return effectCache; }
     @Override public Cache<String, ItemProperties> getPropertyCache() { return propertyCache; }
 
-    @Override public int     getHoneBase(ItemStack stack)              { return 450; }
+    // Hone base reduced 25% (450 -> 338) 2026-06-10 so wand tier (derived from
+    // honed count) advances at a less punishing cadence. Hone-rate enchants
+    // (read in SpellbookHoneHandler) stack on top of this floor.
+    @Override public int     getHoneBase(ItemStack stack)              { return 338; }
     @Override public int     getHoneIntegrityMultiplier(ItemStack stack) { return 200; }
     @Override public boolean canGainHoneProgress(ItemStack stack)       { return true; }
 

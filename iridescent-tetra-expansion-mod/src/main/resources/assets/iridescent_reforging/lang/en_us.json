@@ -4,6 +4,8 @@
   "attribute.icraft.spell_power": "Spell Power",
   "attribute.iridescent_reforging.damage_vs_undead": "Damage vs Undead",
   "enchantment.iridescent_reforging.arcane_focus": "Arcane Focus",
+  "enchantment.iridescent_reforging.attunement": "Attunement",
+  "enchantment.iridescent_reforging.attunement.desc": "The implement attunes to your magic, learning from every spell you cast: it gains Tetra honing far faster. +1 honing progress per cast, per level (so a tier-III Attunement quadruples your honing speed). Only matters on items that hone -- modular wands and Ars tomes.",
   "enchantment.iridescent_reforging.mana_boost": "Mana Boost",
   "enchantment.iridescent_reforging.mana_regen": "Mana Regen",
   "enchantment.iridescent_reforging.mana_siphon": "Mana Siphon",

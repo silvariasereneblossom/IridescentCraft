@@ -94,9 +94,21 @@ public final class IcraftEnchantments {
                     MAGIC_WEAPON_CATEGORY.get(), EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND)
                     .maxLevel(5).cost(20, 30));
 
+    /** Honing accelerator. Unlike the other seven, its effect is read on the
+     *  JAVA side ({@code SpellbookHoneHandler}), NOT KubeJS: each level adds
+     *  +1 Tetra hone progress per spell cast on the held modular item, on top
+     *  of the +1 base (L3 = 4x honing speed). Lands on every #icraft:magic_weapon
+     *  member, but only bites on items that actually hone (modular wands, Ars
+     *  tomes). */
+    public static final RegistryObject<Enchantment> ATTUNEMENT = ENCHANTMENTS.register(
+            "attunement",
+            () -> new SimpleScalingEnchantment(Enchantment.Rarity.UNCOMMON,
+                    MAGIC_WEAPON_CATEGORY.get(), EquipmentSlot.MAINHAND, EquipmentSlot.OFFHAND)
+                    .maxLevel(3).cost(12, 15));
+
     public static void register(IEventBus modBus) {
         ENCHANTMENTS.register(modBus);
-        IridescentReforging.LOGGER.info("[IcraftEnchantments] registered 7 magic-weapon enchants");
+        IridescentReforging.LOGGER.info("[IcraftEnchantments] registered 8 magic-weapon enchants");
     }
 
     private IcraftEnchantments() {}
