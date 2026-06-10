@@ -1,0 +1,9 @@
+filename = 'mek_walkable_cables-1.0.1.jar'
+name = 'Walkable Mekanism Cables'
+side = 'client'
+
+[download]
+hash = 'e90d65edd5a3cdfeec4a551147f034b36841a58101369f1fb8a4a29b8b3c495c'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/mods/mek_walkable_cables-1.0.1.jar'

@@ -1,9 +1,9 @@
 filename = 'linearxp-1.0.0-iridescent.1.jar'
-name = 'Linear Experience'
+name = 'Linear Experience (Iridescent)'
 side = 'both'
 
 [download]
-hash = ''
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '3b8f3bd74c378ec42cdafe6e7b50144999dde8ff0019a0e04ce56567b9c0a487'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/linearxp-1.0.0-iridescent.1.jar'

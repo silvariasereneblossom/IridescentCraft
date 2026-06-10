@@ -104,4 +104,22 @@ foreach ($t in $targets) {
 
 Write-Host ""
 Write-Host "Manifest regen complete. $($manifest.jars.Count) jars hashed across 3 distros." -ForegroundColor Green
-Write-Host "Commit the manifest changes + any rebuilt jars + push."
+
+# --- refresh custom-jar packwiz markers (url + sha256) so download_mods /
+#     packwiz / PrismLauncher-"Update" can actually FETCH our custom jars
+#     instead of leaving un-fetchable empty-url markers (the recurring
+#     "client is missing iridescent_* mods" failure). Idempotent; recomputes
+#     sha from disk, so it MUST run after a content rebuild. ---
+Write-Host ""
+Write-Host "Refreshing custom-jar packwiz markers (url + sha256)..." -ForegroundColor Cyan
+$markerScript = Join-Path $PSScriptRoot 'sync_custom_jar_markers.py'
+$py = Get-Command python3 -ErrorAction SilentlyContinue
+if (-not $py) { $py = Get-Command python -ErrorAction SilentlyContinue }
+if ($py -and (Test-Path $markerScript)) {
+    & $py.Source $markerScript
+} else {
+    Write-Host "  WARN: python not found or sync_custom_jar_markers.py missing -- run it manually" -ForegroundColor Yellow
+}
+
+Write-Host ""
+Write-Host "Commit: manifest + markers (mods/.index) + expected_state + any rebuilt jars, then push." -ForegroundColor Green

@@ -1,0 +1,9 @@
+filename = 'iridescent_biomes-1.0.0.jar'
+name = 'Iridescent Biomes'
+side = 'both'
+
+[download]
+hash = '15f16b51f222531a5b08645d561a3d04faf80ef7226eb2dfa657b32d6a20c269'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/iridescent_biomes-1.0.0.jar'

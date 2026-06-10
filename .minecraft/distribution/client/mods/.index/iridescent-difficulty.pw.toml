@@ -1,0 +1,9 @@
+filename = 'iridescent_difficulty-0.1.0.jar'
+name = 'Iridescent Difficulty'
+side = 'both'
+
+[download]
+hash = 'cbd0873a31c9f37aa916968477f65f97296f473b82728b8febc496261cb8a44c'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/distribution/client/mods/iridescent_difficulty-0.1.0.jar'

@@ -1,0 +1,9 @@
+filename = 'iridescent_durability_clamp-0.1.0.jar'
+name = 'Iridescent Durability Clamp'
+side = 'both'
+
+[download]
+hash = 'f39c1eeb0b53daa1fab3da3980a6542a8d26fd5ba2993c2934ff4aa19999f0ae'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/mods/iridescent_durability_clamp-0.1.0.jar'

@@ -1,9 +1,9 @@
 filename = 'iridescent_origins-1.0.0.jar'
-name = 'IridescentCraft Origins'
+name = 'Iridescent Origins'
 side = 'both'
 
 [download]
-hash = ''
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '35d739c1b8077451d95f5598cb7eee7206306ebb113f9e1a00596d51af09d42b'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/iridescent_origins-1.0.0.jar'

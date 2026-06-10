@@ -3,7 +3,7 @@ name = 'Iridescent Lovely Pieces'
 side = 'both'
 
 [download]
-hash = ''
-hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+hash = '49aaf98b6e855115dfb4db1e1ba89617d50ab5c1cca8c9fdf7bbbdec44ded7f4'
+hash-format = 'sha256'
+mode = 'url'
+url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/lovely_sparkle_pieces-0.1.0.0-iridescent.2.jar'
