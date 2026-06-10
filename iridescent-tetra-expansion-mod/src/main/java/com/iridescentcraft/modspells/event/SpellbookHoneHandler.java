@@ -4,6 +4,7 @@ import com.hollingsworth.arsnouveau.api.event.SpellCastEvent;
 import com.iridescentcraft.modspells.IridescentModularSpells;
 import com.iridescentcraft.modspells.item.ModularArsSpellBookItem;
 import com.iridescentcraft.modspells.item.ModularSpellBookItem;
+import com.iridescentcraft.reforging.item.ItemModularWand;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
 import net.minecraft.world.entity.LivingEntity;
 import net.minecraft.world.entity.player.Player;
@@ -27,6 +28,13 @@ import se.mickelus.tetra.items.modular.IModularItem;
  *      -> +1 tick per held modular spellbook of either kind. Floor for
  *      non-combat play.
  *
+ * The modular wand ({@link ItemModularWand}) is school-agnostic: it is a
+ * main-hand caster stat-stick that boosts whatever spell the holder casts,
+ * so it honed on EITHER cast event AND the passive floor ("honing from use
+ * of spells of any kind"). Its tier is derived from honed count
+ * (ItemModularWand.computeTier), so this handler is its sole progression
+ * driver -- without it the wand never advances past tier I.
+ *
  * Slot scope: mainhand + offhand only. Curios slots not iterated to avoid a
  * hard dep on the Curios API at this layer; passive ticks while held cover
  * non-cast progression.
@@ -48,6 +56,7 @@ public final class SpellbookHoneHandler {
         Player player = event.getEntity();
         if (player == null || player.level().isClientSide) return;
         progressHeld(player, ModularSpellBookItem.class, 1);
+        progressHeld(player, ItemModularWand.class, 1);
     }
 
     @SubscribeEvent
@@ -56,6 +65,7 @@ public final class SpellbookHoneHandler {
         if (!(caster instanceof Player player)) return;
         if (player.level().isClientSide) return;
         progressHeld(player, ModularArsSpellBookItem.class, 1);
+        progressHeld(player, ItemModularWand.class, 1);
     }
 
     @SubscribeEvent
@@ -66,6 +76,7 @@ public final class SpellbookHoneHandler {
         if (player.tickCount % PASSIVE_TICK_INTERVAL != 0) return;
         progressHeld(player, ModularSpellBookItem.class, 1);
         progressHeld(player, ModularArsSpellBookItem.class, 1);
+        progressHeld(player, ItemModularWand.class, 1);
     }
 
     /**
