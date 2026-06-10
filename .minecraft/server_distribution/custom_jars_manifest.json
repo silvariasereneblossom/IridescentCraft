@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-10T04:41:03Z",
+  "generated_at": "2026-06-10T05:43:34Z",
   "generated_by": "regen_custom_jars_manifest.ps1 on  by ",
   "algorithm": "SHA-256",
   "jars": {
@@ -28,8 +28,8 @@
       "size": 9498
     },
     "iridescent_grand_compass-1.0.0.jar": {
-      "sha256": "a20d1037290c5b238f8a495148c1ef7872662ddec51b7ba99ed0783fc9fb8159",
-      "size": 16091
+      "sha256": "c39af549229d1e27ab8ad4807dcb22062afcbcae291fb729c3cffc355000f1f3",
+      "size": 21687
     },
     "iridescent_origins-1.0.0.jar": {
       "sha256": "35d739c1b8077451d95f5598cb7eee7206306ebb113f9e1a00596d51af09d42b",

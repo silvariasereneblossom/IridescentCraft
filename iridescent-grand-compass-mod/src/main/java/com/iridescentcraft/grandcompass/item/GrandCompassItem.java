@@ -63,19 +63,32 @@ public class GrandCompassItem extends Item {
             if (mode == MODE_STRUCTURES) {
                 Item ec = com.chaosthedude.explorerscompass.ExplorersCompass.explorersCompass;
                 if (ec != null) {
-                    return ec.use(level, player, hand); // opens Explorer's GUI with OUR stack
+                    if (level.isClientSide()) {
+                        // Open Explorer's real Screen with a synthesized Explorer's stack.
+                        net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(
+                            net.minecraftforge.api.distmarker.Dist.CLIENT,
+                            () -> () -> com.iridescentcraft.grandcompass.client.GrandCompassGui.openStructures(level, player));
+                    } else {
+                        // Server: their use() just sends the structure SyncPacket (no cast).
+                        ec.use(level, player, hand);
+                    }
                 }
             } else if (mode == MODE_BIOMES) {
                 Item nc = com.chaosthedude.naturescompass.NaturesCompass.naturesCompass;
                 if (nc != null) {
-                    return nc.use(level, player, hand); // opens Nature's GUI with OUR stack
+                    if (level.isClientSide()) {
+                        net.minecraftforge.fml.DistExecutor.unsafeRunWhenOn(
+                            net.minecraftforge.api.distmarker.Dist.CLIENT,
+                            () -> () -> com.iridescentcraft.grandcompass.client.GrandCompassGui.openBiomes(level, player));
+                    } else {
+                        nc.use(level, player, hand); // server: sends the biome SyncPacket (no cast)
+                    }
                 }
             } else { // MODE_BOSSES — reuse the KubeJS boss-arena menu
                 if (!level.isClientSide() && player instanceof ServerPlayer sp) {
                     sp.server.getCommands().performPrefixedCommand(
                         sp.createCommandSourceStack().withSuppressedOutput(), "icraft_compass menu");
                 }
-                return InteractionResultHolder.sidedSuccess(stack, level.isClientSide());
             }
         } catch (Throwable t) {
             if (!level.isClientSide()) {

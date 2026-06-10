@@ -5,8 +5,8 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "iridescent_grand_compass.refmap.json",
   "mixins": [
-    "ExplorersItemUtilsMixin",
-    "NaturesItemUtilsMixin"
+    "ExplorersSearchMixin",
+    "NaturesSearchMixin"
   ],
   "client": [],
   "server": [],

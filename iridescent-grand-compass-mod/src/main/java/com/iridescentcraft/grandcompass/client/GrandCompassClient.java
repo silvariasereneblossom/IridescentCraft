@@ -1,9 +1,8 @@
 package com.iridescentcraft.grandcompass.client;
 
-import com.chaosthedude.explorerscompass.ExplorersCompass;
-import com.chaosthedude.naturescompass.NaturesCompass;
 import com.iridescentcraft.grandcompass.GrandCompass;
 import com.iridescentcraft.grandcompass.item.GrandCompassItem;
+import com.iridescentcraft.grandcompass.search.GrandCompassSearch;
 import net.minecraft.client.Minecraft;
 import net.minecraft.network.chat.Component;
 import net.minecraft.world.entity.player.Player;
@@ -40,20 +39,18 @@ public final class GrandCompassClient {
         if (stack == null) return;
 
         try {
+            // The search-packet mixins write the located target onto our own NBT
+            // (independent of the two mods' item-gated state), so the HUD reads
+            // ours directly. Boss mode's needle is the KubeJS boss-compass tick.
             int mode = GrandCompassItem.getMode(stack);
-            if (mode == GrandCompassItem.MODE_STRUCTURES) {
-                var ec = ExplorersCompass.explorersCompass;
-                if (ec != null && ec.getState(stack) == com.chaosthedude.explorerscompass.util.CompassState.FOUND) {
-                    showHeading(mc, ec.getFoundStructureX(stack), ec.getFoundStructureZ(stack));
-                }
-            } else if (mode == GrandCompassItem.MODE_BIOMES) {
-                var nc = NaturesCompass.naturesCompass;
-                if (nc != null && nc.getState(stack) == com.chaosthedude.naturescompass.util.CompassState.FOUND) {
-                    showHeading(mc, nc.getFoundBiomeX(stack), nc.getFoundBiomeZ(stack));
-                }
+            if ((mode == GrandCompassItem.MODE_STRUCTURES || mode == GrandCompassItem.MODE_BIOMES)
+                    && stack.getTag() != null
+                    && stack.getTag().getBoolean(GrandCompassSearch.FOUND)) {
+                showHeading(mc, stack.getTag().getInt(GrandCompassSearch.FOUND_X),
+                        stack.getTag().getInt(GrandCompassSearch.FOUND_Z));
             }
         } catch (Throwable ignored) {
-            // fail-safe: if a mod's API shifts, just skip the HUD line.
+            // fail-safe: if anything shifts, just skip the HUD line.
         }
     }
 
