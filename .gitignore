@@ -67,6 +67,7 @@ valhelsia/
 when_dungeons/
 yungs_*/
 *.jar
+!iridescent-tetra-expansion-mod/gradle/wrapper/gradle-wrapper.jar
 !minecraft/**/*.jar
 # Patched third-party jars shipped alongside the downloaded originals.
 # The earlier 'mods/*.jar + !mods/xxx.jar' block only matches

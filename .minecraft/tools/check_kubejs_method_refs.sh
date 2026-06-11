@@ -27,6 +27,10 @@
 #   - Anything inside block comments (handled by stripping)
 #   - Any line with `// CI-ignore` marker -- escape hatch for true positives
 #     where the property is a known KubeJS-extension getter
+#   - The feature-detect-then-call idiom `obj.method && obj.method()` -- here
+#     the bare ref IS immediately guarded + called (it's a real null/existence
+#     check, NOT a boolean misuse), so it's exempt. Only a bare ref that ISN'T
+#     immediately `&&`'d with its own call stays flagged.
 #
 # Usage:
 #   ./check_kubejs_method_refs.sh          # scan default kubejs paths
@@ -71,6 +75,7 @@ found=$(
   | grep -vE '^[^:]+:[0-9]+:[[:space:]]*//' \
   | grep -vE '^[^:]+:[0-9]+:[[:space:]]*\*' \
   | grep -vE 'CI-ignore' \
+  | grep -vP '(\b[A-Za-z_][A-Za-z0-9_]*\.(?:is|has|can)[A-Z][a-zA-Z]+)\s*&&\s*\1\s*\(' \
   || true
 )
 
