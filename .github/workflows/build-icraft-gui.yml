@@ -134,7 +134,27 @@ jobs:
               # Push to the branch the workflow ran on. For workflow_dispatch
               # runs that's typically main; for push triggers it's the source
               # branch. github.ref_name resolves to the unqualified branch name.
-              git push origin HEAD:${{ github.ref_name }}
+              #
+              # Race-safe: the stamp-head-sha workflow (and any other push) can
+              # move main during the ~5min build, so a plain push loses a
+              # non-fast-forward race (this exact step failed that way on run
+              # 27376581024). The binary commit and the stamp commit touch
+              # disjoint paths, so pull --rebase replays the binary commit
+              # cleanly. Retry to ride out back-to-back stamps.
+              $branch = "${{ github.ref_name }}"
+              $pushed = $false
+              for ($i = 1; $i -le 5; $i++) {
+                  git push origin HEAD:$branch
+                  if ($LASTEXITCODE -eq 0) { $pushed = $true; break }
+                  Write-Host "Push attempt $i lost the race; rebasing on origin/$branch and retrying..."
+                  git fetch origin $branch
+                  git rebase "origin/$branch"
+                  if ($LASTEXITCODE -ne 0) {
+                      git rebase --abort
+                      throw "Rebase onto origin/$branch failed (unexpected conflict on the binary commit)."
+                  }
+              }
+              if (-not $pushed) { throw "Failed to push rebuilt binary after 5 attempts." }
               Write-Host "Committed + pushed updated icraft-gui.exe."
           } else {
               Write-Host "No change to icraft-gui.exe -- binary is byte-identical to repo copy. Nothing to commit."
