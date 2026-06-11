@@ -1,0 +1,42 @@
+# Publishes the current main HEAD commit SHA to a flat file (.icraft_head_sha)
+# so the icraft launcher + clients can read "what's the latest commit?" from
+# the raw.githubusercontent CDN instead of spending an api.github.com request
+# (60/hr-per-IP unauth bucket -> intermittent sync skips behind shared IPs).
+# See icraft-core/src/github.rs::head_sha_cdn.
+#
+# Loop guard: paths-ignore the stamp file itself (and log-only pushes) so the
+# stamp commit never re-triggers this workflow, and log mirrors don't churn it.
+name: Stamp HEAD SHA
+
+on:
+  push:
+    branches: [main]
+    paths-ignore:
+      - '.icraft_head_sha'
+      - '**/logs/**'
+      - 'TesterLogs/**'
+
+permissions:
+  contents: write
+
+concurrency:
+  group: stamp-head-sha
+  cancel-in-progress: true
+
+jobs:
+  stamp:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Write + commit HEAD SHA
+        run: |
+          printf '%s' "${{ github.sha }}" > .icraft_head_sha
+          if git diff --quiet -- .icraft_head_sha; then
+            echo "HEAD SHA already current; nothing to stamp."
+            exit 0
+          fi
+          git config user.name  'github-actions[bot]'
+          git config user.email '41898282+github-actions[bot]@users.noreply.github.com'
+          git add .icraft_head_sha
+          git commit -m "stamp HEAD ${GITHUB_SHA:0:7} [skip ci]"
+          git push

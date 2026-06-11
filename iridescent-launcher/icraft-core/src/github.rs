@@ -109,6 +109,41 @@ pub fn head_sha(owner: &str, repo: &str, branch: &str) -> Result<String> {
     Ok(commit.sha)
 }
 
+/// HEAD SHA WITHOUT spending an api.github.com request.
+///
+/// 2026-06-11: the per-launch + per-180s-badge-poll `head_sha` calls were
+/// draining the unauth 60/hr-per-IP API bucket (worse behind CGNAT/shared
+/// IP), so `z_mirror_or_zip` would intermittently hard-skip the sync ("pulls
+/// new files inconsistently"). Instead we read a CI-stamped `.icraft_head_sha`
+/// file from the raw CDN (`raw.githubusercontent.com`, not the 60/hr-capped
+/// API). The `stamp-head-sha` Action writes the commit SHA on every content
+/// push to main, so this tracks HEAD with a ~30s CI lag.
+///
+/// Robust degradation: two CDN attempts (transient-blip tolerant), then fall
+/// back to the rate-limited API `head_sha` if the stamp file is missing
+/// (fresh repo before the Action ran) or malformed. So worst case = the old
+/// behavior, never worse.
+pub fn head_sha_cdn(owner: &str, repo: &str, branch: &str) -> Result<String> {
+    for attempt in 0..2u8 {
+        match fetch_raw(owner, repo, branch, ".icraft_head_sha") {
+            Ok(bytes) => {
+                let sha = String::from_utf8_lossy(&bytes).trim().to_string();
+                if sha.len() == 40 && sha.chars().all(|c| c.is_ascii_hexdigit()) {
+                    return Ok(sha);
+                }
+                log::warn!("[github] .icraft_head_sha from CDN malformed ('{sha}') -- falling back to API");
+                break;
+            }
+            Err(_) if attempt == 0 => continue, // transient blip: retry once
+            Err(e) => {
+                log::warn!("[github] CDN head fetch failed ({e:#}) -- falling back to API");
+                break;
+            }
+        }
+    }
+    head_sha(owner, repo, branch)
+}
+
 pub fn compare(owner: &str, repo: &str, base: &str, head: &str) -> Result<Compare> {
     let url = format!("https://api.github.com/repos/{owner}/{repo}/compare/{base}...{head}");
     let resp = get_with_fallback(&url)

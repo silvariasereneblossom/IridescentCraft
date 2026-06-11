@@ -115,7 +115,7 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
     // banner so it scrolls past distinctively. The function still returns
     // Ok so existing callers (serve() Phase 0) keep their soft-fail
     // semantics; only the log noise level changes.
-    let remote_sha = match github::head_sha(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, GITHUB_REPO_BRANCH) {
+    let remote_sha = match github::head_sha_cdn(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, GITHUB_REPO_BRANCH) {
         Ok(s) => s,
         Err(e) => {
             log::error!("[sync] !!! GitHub API HEAD fetch FAILED: {e:#}");

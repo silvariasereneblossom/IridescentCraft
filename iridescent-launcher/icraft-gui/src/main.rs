@@ -278,7 +278,7 @@ impl IcraftApp {
             // forks, switch to reading `git config remote.origin.url`
             // out of the working tree. For now this matches what
             // pull_repo_binary_apply_gui assumes.
-            let r = icraft_core::github::head_sha(
+            let r = icraft_core::github::head_sha_cdn(
                 "silvariasereneblossom",
                 "IridescentCraft",
                 "main",
