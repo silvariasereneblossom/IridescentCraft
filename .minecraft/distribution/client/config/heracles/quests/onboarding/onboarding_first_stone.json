@@ -14,7 +14,7 @@
     "groups": {
       "Onboarding": {
         "position": [
-          2,
+          320,
           0
         ]
       }
@@ -29,7 +29,9 @@
   "tasks": {
     "mine_stone": {
       "type": "heracles:advancement",
-      "advancements": ["minecraft:story/mine_stone"]
+      "advancements": [
+        "minecraft:story/mine_stone"
+      ]
     }
   },
   "rewards": {

@@ -1,0 +1,53 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "irons_spellbooks:netherite_spell_book"
+    },
+    "title": "Iron's Spellbooks: The Ancient Codex",
+    "subtitle": "Acquire a Netherite Spell Book",
+    "description": [
+      "The \u00a76Netherite Spell Book\u00a7r \u2014 the Ancient Codex \u2014 is the apex tome, forged",
+      "from netherite to carry a master's full repertoire of spells."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          0,
+          480
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "reach_tier_3"
+  ],
+  "tasks": {
+    "have_book": {
+      "type": "heracles:item",
+      "title": "Acquire a Netherite Spell Book",
+      "item": "irons_spellbooks:netherite_spell_book",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "mithril": {
+      "type": "heracles:item",
+      "title": "Mithril Ingot",
+      "item": {
+        "id": "irons_spellbooks:mithril_ingot",
+        "count": 1
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 150
+    }
+  }
+}

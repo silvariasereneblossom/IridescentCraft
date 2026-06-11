@@ -14,8 +14,8 @@
     "groups": {
       "Onboarding": {
         "position": [
-          1,
-          2
+          160,
+          320
         ]
       }
     }
@@ -29,7 +29,9 @@
   "tasks": {
     "smelt_iron": {
       "type": "heracles:advancement",
-      "advancements": ["minecraft:story/smelt_iron"]
+      "advancements": [
+        "minecraft:story/smelt_iron"
+      ]
     }
   },
   "rewards": {

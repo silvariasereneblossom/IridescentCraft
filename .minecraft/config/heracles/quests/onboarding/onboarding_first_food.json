@@ -14,7 +14,7 @@
     "groups": {
       "Onboarding": {
         "position": [
-          3,
+          480,
           0
         ]
       }
@@ -31,12 +31,30 @@
       "type": "heracles:composite",
       "amount": 1,
       "tasks": {
-        "eat_bread":    { "type": "heracles:item_use", "item": "minecraft:bread" },
-        "eat_apple":    { "type": "heracles:item_use", "item": "minecraft:apple" },
-        "eat_beef":     { "type": "heracles:item_use", "item": "minecraft:cooked_beef" },
-        "eat_porkchop": { "type": "heracles:item_use", "item": "minecraft:cooked_porkchop" },
-        "eat_chicken":  { "type": "heracles:item_use", "item": "minecraft:cooked_chicken" },
-        "eat_carrot":   { "type": "heracles:item_use", "item": "minecraft:carrot" }
+        "eat_bread": {
+          "type": "heracles:item_use",
+          "item": "minecraft:bread"
+        },
+        "eat_apple": {
+          "type": "heracles:item_use",
+          "item": "minecraft:apple"
+        },
+        "eat_beef": {
+          "type": "heracles:item_use",
+          "item": "minecraft:cooked_beef"
+        },
+        "eat_porkchop": {
+          "type": "heracles:item_use",
+          "item": "minecraft:cooked_porkchop"
+        },
+        "eat_chicken": {
+          "type": "heracles:item_use",
+          "item": "minecraft:cooked_chicken"
+        },
+        "eat_carrot": {
+          "type": "heracles:item_use",
+          "item": "minecraft:carrot"
+        }
       }
     }
   },

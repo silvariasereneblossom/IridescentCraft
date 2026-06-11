@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "ca3cf6dd9",
+  "generated_from": "aaf1b7565",
   "roots": [
     "kubejs",
     "config",
@@ -3156,8 +3156,8 @@
       "size": 1511
     },
     "config/heracles/quests/groups.txt": {
-      "sha256": "1f92fb42fa69dc721c551700ac8f1ba26ffaf63b2355b46361c110c39a271618",
-      "size": 184
+      "sha256": "c90d26651860be47ce2cd26c0817382c24e6964ac4405c8318b35350a0ba7b1a",
+      "size": 166
     },
     "config/heracles/quests/iridescent_codex/codex_lane_combat.json": {
       "sha256": "5865c78ca471a9bede6c3f73b66146ab2c1a90c677f08f3f52d1e1384913f404",
@@ -3182,78 +3182,6 @@
     "config/heracles/quests/iridescent_codex/codex_two_routes.json": {
       "sha256": "94d6e0de07237a4fad5d480e3239bc051cd05b442b4da0787429ea86435598a6",
       "size": 1708
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t1_arcane_ingot.json": {
-      "sha256": "0d0e2444ea1e431ddff73300b44854074f9b3f14ea6ad8f5307c63c76ab2cd8f",
-      "size": 1001
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t1_common_ink.json": {
-      "sha256": "4700a77d3f0ccf38ea3dc39ac0ad7b31122f52a92cb19fa36ce28dfcb87283e8",
-      "size": 973
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t1_first_book.json": {
-      "sha256": "633acf532f7ff4d5cde9177ac9078b4c2fecb33e06bc33c69a5e4a47f1ac73eb",
-      "size": 1040
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t1_inscription_table.json": {
-      "sha256": "c96e0f33bf6b8b7619b4627ea1d2e1a86f6673ed462ec82d91e052dfe1c1bd33",
-      "size": 1018
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t1_scroll.json": {
-      "sha256": "4102caf422e6767bff0962d0554adc7d6c7d3a4bb50272ae7e9d3772745be2c3",
-      "size": 993
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t1_staff.json": {
-      "sha256": "81ca0381b3928ac646f76e8658e1248c3779adb625b5a09a3ca0941e3b4e096a",
-      "size": 1001
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t2_arcane_anvil.json": {
-      "sha256": "6cc1013c069b6ccf17c87ded15710d22f25017bb3d752966481012b35642a3b3",
-      "size": 969
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t2_gold_book.json": {
-      "sha256": "28daa613b672b1ac619400c6837578e1d168366922368552162a83dd036ceea9",
-      "size": 984
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t2_rare_ink.json": {
-      "sha256": "e8922165911b7ef5e29dfa0c1b81dc06ba5083d038a2f5ef0dfbebe891d7878d",
-      "size": 923
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t2_rune.json": {
-      "sha256": "723ea5ad2815b7e560583020dcf9d6f31dbbe991bfc49534cfd2c68ac341428c",
-      "size": 947
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t2_scroll_forge.json": {
-      "sha256": "be63239a121f7a8fd9caf6f0d32c2691c087704230522d4d3fc7c69e60b027c1",
-      "size": 951
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t2_upgrade_orb.json": {
-      "sha256": "3d1df3ef8bed6e6fa528df326708f5be4f05212dc8d4b5608e5c2f489f9c9cbf",
-      "size": 956
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t3_advanced_rune.json": {
-      "sha256": "638bbb96263542e1b798acac17ba2847b38db64994cf31e9c4dbc315c81ebc96",
-      "size": 939
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t3_arcane_master.json": {
-      "sha256": "05276bea7c8d2699904f6080d8366083b47ad09d8918a9225b87854c48d326c7",
-      "size": 1839
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t3_legendary_ink.json": {
-      "sha256": "cd5cfd59569fa757103e4c0c1507d9d3303acc601eb141d300957f836984c529",
-      "size": 949
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t3_mithril_ingot.json": {
-      "sha256": "3ec1e1e935c1277b85565ad8e86b6dac9ab3351c2fe44937703d6d4f7a3999ad",
-      "size": 973
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t3_netherite_book.json": {
-      "sha256": "ac9f1d4cc423303a13e104460849d379778f639cc445d776d75c3c765c24fefa",
-      "size": 1026
-    },
-    "config/heracles/quests/iron_spellbooks/iss_t3_pedestal.json": {
-      "sha256": "bf46969016c0507ef2aa7dc3dba3108a30f67c275d4317009b794b5f43032c82",
-      "size": 950
     },
     "config/heracles/quests/magic/mag_submit.json": {
       "sha256": "3c6cd04e1a564eea77ddf9b399e6d65d483a8045f1e538e9737ba6047f83ccca",
@@ -3340,52 +3268,52 @@
       "size": 1337
     },
     "config/heracles/quests/onboarding/onboarding_first_codex_open.json": {
-      "sha256": "60295a103a07ba9a20af4e90a0e1dec1682ac889e63bc3ed9c9f478098eb609d",
-      "size": 1190
+      "sha256": "fe9a55cf604aea414f46385e83601b3440de73cef9fd6f53a524d73016ea3e66",
+      "size": 1248
     },
     "config/heracles/quests/onboarding/onboarding_first_food.json": {
-      "sha256": "9f2188c3746c63cc4e06fe75f25c402196e7d0219dd75fa89c0485a9b3995380",
-      "size": 1470
+      "sha256": "b45ffc37bfc207de1537c65b036a631a3c79f0ceacdb3ac5034c7e4f8bd4ff8c",
+      "size": 1626
     },
     "config/heracles/quests/onboarding/onboarding_first_iron.json": {
-      "sha256": "a73f67f14577e040eee95c20451c070eaed7502da8f5b53c243a33a17d8aad31",
-      "size": 966
+      "sha256": "a526983cbd194f7a9d774e38e7a8d4063e6fc755a4262e782b8d99206b1dcdf1",
+      "size": 985
     },
     "config/heracles/quests/onboarding/onboarding_first_iron_pick.json": {
-      "sha256": "0873871873432120f87d8d5ee37ebceabd49cbd20a02ff5e643277c43fc72a4e",
-      "size": 983
+      "sha256": "d8cf60c06f214e0a316f333f3ea572107712f9ee6afc1e1abfab6d03cb422836",
+      "size": 1002
     },
     "config/heracles/quests/onboarding/onboarding_first_kill.json": {
-      "sha256": "47f2abbc32c9c8a9e220a33938fcde43154f6125e54c14ffd0e7822e51d1ac7e",
-      "size": 929
+      "sha256": "52e565d869c5e76b72eda43e2f819067d23b9bc125308c9b4ccf309cc45e78f4",
+      "size": 946
     },
     "config/heracles/quests/onboarding/onboarding_first_level.json": {
-      "sha256": "1762b783a686c24287172922b466cbd4aa868a03ed0c417d6ef0a0ed4a739c1d",
-      "size": 1064
+      "sha256": "c321d4092741d36c0db072e95bab9aac322f1020b2a2d81e0656d3fb295f3839",
+      "size": 1067
     },
     "config/heracles/quests/onboarding/onboarding_first_log.json": {
-      "sha256": "ab0790ec20cd57df0ae8c09f82e5884b83c65f53642e3288d91b00393a3f63c4",
-      "size": 856
+      "sha256": "071ceeafc9f55edf48782096bbb63e01c2f9a918435d049148ffed86c64fce31",
+      "size": 855
     },
     "config/heracles/quests/onboarding/onboarding_first_shelter.json": {
-      "sha256": "bd50f14937b93ed95ec6130a239fcf67005a48a64af485af32aa404e4f7fc52f",
-      "size": 958
+      "sha256": "12997be12c9b9f5e507c72a60e8d5b7ba5a5eadd3429bdc9942a36ca9254ab98",
+      "size": 975
     },
     "config/heracles/quests/onboarding/onboarding_first_stone.json": {
-      "sha256": "4f57eaa9d25c14f29cf027d6bcebdd41fe876e9a57b8f1bf88837b5549702b5a",
-      "size": 952
+      "sha256": "cf3f80ad8598a17e5a04744067eded5a0d92c8dce87c4643d4f43bae4fe90aaa",
+      "size": 969
     },
     "config/heracles/quests/onboarding/onboarding_first_tool.json": {
-      "sha256": "2c1dc2752320312bfe9324ad9720fb31b76b8008291160c6875fcc8f1f04713e",
-      "size": 970
+      "sha256": "d9f736d34b55c53f82455bf4f1372521d750b92ebbfa0a8bf9e656b4c9dbad11",
+      "size": 971
     },
     "config/heracles/quests/onboarding/onboarding_first_villager_trade.json": {
-      "sha256": "2ffb48742b098f01e7ed106eb5167dd645ff6d599958e99dbf8689753c6bddf5",
-      "size": 963
+      "sha256": "def76df1998b89b9a63bef6fa7ef1439f6697c4b2550e748b81fa252aa402273",
+      "size": 982
     },
     "config/heracles/quests/onboarding/onboarding_survivor_capstone.json": {
-      "sha256": "389832a470bc3b0413a2fd89f018569ffb1ec5817195748713d3e7b066a8f25d",
-      "size": 1609
+      "sha256": "127f1a851ab649851cdaecd1b0be893aee1ffcd943123db9cadb8c016b61620c",
+      "size": 1612
     },
     "config/heracles/quests/overworld_foundations/ovf_alexsmobs.json": {
       "sha256": "489a62cccd14a05c7f3c895fb4891dd7cb15886cbd8e82074f7be637d9100ff9",
@@ -3507,37 +3435,101 @@
       "sha256": "db9d9d2092a5a4f0dcef66352974d6356316568eb95e3b1f51b5a7994d0c7d7c",
       "size": 1235
     },
-    "config/heracles/quests/practical_magic/pm_ars_book.json": {
-      "sha256": "5e069f02c5df94860043eb69689ba484cfba809d5f2fc5ff20bc40079098ff02",
-      "size": 1341
+    "config/heracles/quests/practical_magic/iss_t1_arcane_ingot.json": {
+      "sha256": "6b46d6462f41b83f9a622323ca58c23e040921345a17b8041f4538a955f7b3c2",
+      "size": 1165
     },
-    "config/heracles/quests/practical_magic/pm_ars_notebook.json": {
-      "sha256": "3ad94b79718ccd64187c17da5c62aa0fce138b12b06d58090c481afbc7ff1e46",
-      "size": 1178
+    "config/heracles/quests/practical_magic/iss_t1_common_ink.json": {
+      "sha256": "fd7f09d6b89d74607797de8319bc23a5e1c8d1b6fde5b298f33584cbd3453cf2",
+      "size": 1145
     },
-    "config/heracles/quests/practical_magic/pm_capstone.json": {
-      "sha256": "3bfcb7baf7761ba66f24e3b824eea1db240ce1541e71d7b35b2bef33c1e74449",
-      "size": 1662
+    "config/heracles/quests/practical_magic/iss_t1_first_book.json": {
+      "sha256": "23e6c06e6e184231a5849f4818b9fef596b945054975a16b85023b5d6718b514",
+      "size": 1349
     },
-    "config/heracles/quests/practical_magic/pm_intro.json": {
-      "sha256": "ec8204150a9dc9ea78236756f5358592c1aaa82201adb34189fd6ef59ed4e811",
-      "size": 1201
+    "config/heracles/quests/practical_magic/iss_t1_inscription_table.json": {
+      "sha256": "99cb052f5bcff6a56fc53456069aefb1171e843c53064af51db465a0b392407f",
+      "size": 1179
     },
-    "config/heracles/quests/practical_magic/pm_iss_book.json": {
-      "sha256": "486baefff0047f82c12f4d2729094c778246795e215999bd2a66b790cbef216a",
-      "size": 1557
+    "config/heracles/quests/practical_magic/iss_t1_scroll.json": {
+      "sha256": "b5c8639378c69ba36f2dc7ef4976b36334e4465eaefdea7e2f4194f00e1cfceb",
+      "size": 1299
     },
-    "config/heracles/quests/practical_magic/pm_iss_scroll.json": {
-      "sha256": "6d17017ea1a8d083bf721b8cf1d7091384de9b9a18ad394d9a8f4c6319a7ef9b",
-      "size": 1503
+    "config/heracles/quests/practical_magic/iss_t1_staff.json": {
+      "sha256": "2c154e55888cd5e61ed89a77d2e61fc430d49d087365a265755b1d6187b0316c",
+      "size": 1162
     },
-    "config/heracles/quests/practical_magic/pm_wand_craft.json": {
-      "sha256": "d35b56b80b2c11e010531268794460c076eefe5e71e2e2dde509d2d2d16e5008",
+    "config/heracles/quests/practical_magic/iss_t2_arcane_anvil.json": {
+      "sha256": "67f1be66490f72f7a47a8813af91793810bac38e57569c91c751a18f315f4555",
+      "size": 1128
+    },
+    "config/heracles/quests/practical_magic/iss_t2_gold_book.json": {
+      "sha256": "05a1720b9f80740ec93e18c79b57e7095db49bbc2c3ed786c64a6fc806a78f22",
+      "size": 1146
+    },
+    "config/heracles/quests/practical_magic/iss_t2_rare_ink.json": {
+      "sha256": "3422077753362f69d4349a28629b86ea3583ce5fa9c5506ecb2b6d48890f8137",
+      "size": 1082
+    },
+    "config/heracles/quests/practical_magic/iss_t2_rune.json": {
+      "sha256": "8221490b26ad7150b4abc12136dd891e9f1265011b0460a9ec152ac546d0e38b",
+      "size": 1106
+    },
+    "config/heracles/quests/practical_magic/iss_t2_scroll_forge.json": {
+      "sha256": "91f932eed07aaa3d16e63cf662a5d9522df97ac433e80ae59ae22f21730fc633",
+      "size": 1113
+    },
+    "config/heracles/quests/practical_magic/iss_t2_upgrade_orb.json": {
+      "sha256": "146a979524b8de67002f80a7530214309fbb41f489bee87f01525b9741925133",
+      "size": 1115
+    },
+    "config/heracles/quests/practical_magic/iss_t3_advanced_rune.json": {
+      "sha256": "f82509c2c498360da13627272d3b48a928e34d970fe8f76b94c4ab2b386d751c",
       "size": 1098
     },
+    "config/heracles/quests/practical_magic/iss_t3_arcane_master.json": {
+      "sha256": "a26d69ed8e112bcd9d056506475ba2b8c5047e586ec2d6817402037baef592df",
+      "size": 2276
+    },
+    "config/heracles/quests/practical_magic/iss_t3_legendary_ink.json": {
+      "sha256": "036810cdfd18e451e7001eb3894ea2f63bc01932d3ca56e2b2a5fc47e0978417",
+      "size": 1108
+    },
+    "config/heracles/quests/practical_magic/iss_t3_mithril_ingot.json": {
+      "sha256": "0ccfca8d57577fb7ced656c7026e607466553be5cfce0edf94bb6b862eb58c82",
+      "size": 1132
+    },
+    "config/heracles/quests/practical_magic/iss_t3_netherite_book.json": {
+      "sha256": "aac48c293eaa650f1e87661ffd99daf715a17f24c5b6129d2c3e20cf4b7e71d0",
+      "size": 1191
+    },
+    "config/heracles/quests/practical_magic/iss_t3_pedestal.json": {
+      "sha256": "e067ef476dd47818291a253a5b32442afc0138d83019ad34d2ae7e6e0a13eb4c",
+      "size": 1112
+    },
+    "config/heracles/quests/practical_magic/pm_ars_book.json": {
+      "sha256": "e58be0749d2cdb00cc1728ced6328a3ba90acd64b661b59631d1255dc5862561",
+      "size": 1345
+    },
+    "config/heracles/quests/practical_magic/pm_ars_notebook.json": {
+      "sha256": "fcab35140fb55d3d0cd5393ab52e0f9ae52a96aa54184bec13d89c87922997b7",
+      "size": 1182
+    },
+    "config/heracles/quests/practical_magic/pm_capstone.json": {
+      "sha256": "16138c698d8a4c72c5e5e5fe5eb99c683b1c82bf09d2bec0b7fda5ccfa9bbc3b",
+      "size": 1673
+    },
+    "config/heracles/quests/practical_magic/pm_intro.json": {
+      "sha256": "3ae5ae2787fe8751be8d1aee8756501d114609aacefe2282cca1d6fd1ca0f44e",
+      "size": 1203
+    },
+    "config/heracles/quests/practical_magic/pm_wand_craft.json": {
+      "sha256": "5937b2f80aab8b9cf43d1651a8a5cc2ac113dd9fac915ec64ce1b46d985e79e9",
+      "size": 1103
+    },
     "config/heracles/quests/practical_magic/pm_wand_reforge.json": {
-      "sha256": "acc9678f944729f279dd609799a0017f2db4e9a87f85b2941dd34cd8178a92ad",
-      "size": 1279
+      "sha256": "6b26097c1cd31c4d468555904f4b2b85ce2da8a0f980269e9b24fd03b249acf2",
+      "size": 1284
     },
     "config/highlighter-common.toml": {
       "sha256": "8614f826a3ed39e7fc4f8aca74bce23fc95ffba8031e7d5e406ebb115d2b757d",
@@ -7172,8 +7164,8 @@
       "size": 2269
     },
     "kubejs/server_scripts/quests/heracles_reconcile.js": {
-      "sha256": "2fd4c26937f4c5c43511a0b32103dd124a74c95e8fd13669724ba5f97b4289f7",
-      "size": 25170
+      "sha256": "245e4e8d404eeaecae8edad087c7d9f8984445a27ccab7ff622e3deb82d0b9df",
+      "size": 27867
     },
     "kubejs/server_scripts/quests/onboarding_bridge.js": {
       "sha256": "728445f081d8d5477c64fddeb3e6c38c5c4209820d9f4143bc4b9219af8fa1ae",

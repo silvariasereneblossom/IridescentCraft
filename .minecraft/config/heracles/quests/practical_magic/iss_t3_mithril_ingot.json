@@ -1,0 +1,53 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "irons_spellbooks:mithril_ingot"
+    },
+    "title": "Iron's Spellbooks: Mithril",
+    "subtitle": "Smelt a Mithril Ingot",
+    "description": [
+      "\u00a76Mithril\u00a7r is the high-arcane metal, mined deep and smelted true. It",
+      "anchors the strongest caster weapons, armor, and weaves."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          160,
+          480
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "reach_tier_3"
+  ],
+  "tasks": {
+    "have_mithril": {
+      "type": "heracles:item",
+      "title": "Acquire a Mithril Ingot",
+      "item": "irons_spellbooks:mithril_ingot",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "pyrium": {
+      "type": "heracles:item",
+      "title": "Pyrium Ingot",
+      "item": {
+        "id": "irons_spellbooks:pyrium_ingot",
+        "count": 1
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 150
+    }
+  }
+}

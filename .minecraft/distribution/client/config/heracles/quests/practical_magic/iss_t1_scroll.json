@@ -1,0 +1,58 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "irons_spellbooks:scroll"
+    },
+    "title": "Iron's Spellbooks: First Scroll",
+    "subtitle": "Inscribe a Spell Scroll",
+    "description": [
+      "Spend ink at the Inscription Table to bind a spell into a \u00a76Scroll\u00a7r. A",
+      "scroll casts its spell once \u2014 your first taste of arcane power."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          480,
+          160
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "onboarding_survivor_capstone"
+  ],
+  "tasks": {
+    "have_scroll": {
+      "type": "heracles:item",
+      "title": "Acquire a Spell Scroll",
+      "item": "irons_spellbooks:scroll",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "essence": {
+      "type": "heracles:item",
+      "title": "Arcane Essence",
+      "item": {
+        "id": "irons_spellbooks:arcane_essence",
+        "count": 6
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 50
+    },
+    "scroll": {
+      "type": "heracles:loottable",
+      "title": "Random Spell Scroll",
+      "loot_table": "icraft:magic/scroll_t1"
+    }
+  }
+}

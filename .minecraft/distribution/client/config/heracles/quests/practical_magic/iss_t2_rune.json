@@ -1,0 +1,53 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "irons_spellbooks:fire_rune"
+    },
+    "title": "Iron's Spellbooks: First Rune",
+    "subtitle": "Forge a Rune",
+    "description": [
+      "Runes socket permanent power into your gear. Carve a \u00a76Fire Rune\u00a7r and",
+      "etch it onto a book or weapon at the Arcane Anvil."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          320,
+          320
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "reach_tier_2"
+  ],
+  "tasks": {
+    "have_rune": {
+      "type": "heracles:item",
+      "title": "Acquire a Fire Rune",
+      "item": "irons_spellbooks:fire_rune",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "ingot": {
+      "type": "heracles:item",
+      "title": "Arcane Ingots",
+      "item": {
+        "id": "irons_spellbooks:arcane_ingot",
+        "count": 2
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 100
+    }
+  }
+}

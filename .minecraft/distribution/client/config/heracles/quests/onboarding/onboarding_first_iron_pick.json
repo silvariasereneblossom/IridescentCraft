@@ -14,8 +14,8 @@
     "groups": {
       "Onboarding": {
         "position": [
-          2,
-          2
+          320,
+          320
         ]
       }
     }
@@ -29,7 +29,9 @@
   "tasks": {
     "have_iron_pick": {
       "type": "heracles:advancement",
-      "advancements": ["minecraft:story/iron_tools"]
+      "advancements": [
+        "minecraft:story/iron_tools"
+      ]
     }
   },
   "rewards": {

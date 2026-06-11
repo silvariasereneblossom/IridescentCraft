@@ -16,8 +16,8 @@
     "groups": {
       "Practical Magic": {
         "position": [
-          0,
-          3
+          1040,
+          480
         ]
       }
     }
@@ -27,7 +27,7 @@
     "hidden": "LOCKED"
   },
   "dependencies": [
-    "pm_iss_book",
+    "iss_t1_first_book",
     "pm_ars_notebook",
     "pm_wand_craft"
   ],

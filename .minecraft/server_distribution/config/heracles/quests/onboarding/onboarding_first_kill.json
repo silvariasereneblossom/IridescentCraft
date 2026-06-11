@@ -15,7 +15,7 @@
       "Onboarding": {
         "position": [
           0,
-          2
+          320
         ]
       }
     }
@@ -29,7 +29,9 @@
   "tasks": {
     "kill_hostile": {
       "type": "heracles:advancement",
-      "advancements": ["minecraft:adventure/kill_a_mob"]
+      "advancements": [
+        "minecraft:adventure/kill_a_mob"
+      ]
     }
   },
   "rewards": {

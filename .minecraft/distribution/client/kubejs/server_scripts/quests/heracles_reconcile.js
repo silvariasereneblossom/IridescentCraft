@@ -240,9 +240,6 @@ const RECONCILE = [
       reconHasItem(p, 'minecraft:book') || reconHasItem(p, 'minecraft:bookshelf') ||
       reconHasItem(p, '#curios:spellbook') || reconHasItem(p, 'ars_nouveau:worn_notebook') ||
       reconHasItem(p, 'simple_staves:woodenwand') || reconHasItem(p, 'iridescent_reforging:reforged_wand') },
-  { q: 'pm_iss_book', met: p =>
-      reconHasItem(p, '#curios:spellbook') || reconHasItem(p, 'irons_spellbooks:copper_spell_book') ||
-      reconHasItem(p, 'irons_spellbooks:gold_spell_book') || reconHasItem(p, 'irons_spellbooks:netherite_spell_book') },
   { q: 'pm_ars_notebook', met: p =>
       reconHasItem(p, 'ars_nouveau:worn_notebook') || reconHasItem(p, 'ars_nouveau:novice_spell_book') ||
       reconHasItem(p, 'ars_nouveau:apprentice_spell_book') || reconHasItem(p, 'ars_nouveau:archmage_spell_book') },
@@ -250,8 +247,6 @@ const RECONCILE = [
       reconHasItem(p, 'simple_staves:woodenwand') || reconHasItem(p, 'iridescent_reforging:reforged_wand') ||
       reconHasItem(p, 'simple_staves:iron_wand') || reconHasItem(p, 'simple_staves:diamond_wand') ||
       reconHasItem(p, 'simple_staves:netherite_wand') },
-  { q: 'pm_iss_scroll', met: p =>
-      reconHasItem(p, 'irons_spellbooks:scroll') || reconHasItem(p, '#curios:spellbook') },
   { q: 'pm_ars_book', met: p =>
       reconHasItem(p, 'ars_nouveau:novice_spell_book') || reconHasItem(p, 'ars_nouveau:apprentice_spell_book') ||
       reconHasItem(p, 'ars_nouveau:archmage_spell_book') },

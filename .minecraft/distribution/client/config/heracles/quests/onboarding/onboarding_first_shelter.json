@@ -15,7 +15,7 @@
       "Onboarding": {
         "position": [
           0,
-          1
+          160
         ]
       }
     }
@@ -29,7 +29,9 @@
   "tasks": {
     "sleep": {
       "type": "heracles:advancement",
-      "advancements": ["minecraft:adventure/sleep_in_bed"]
+      "advancements": [
+        "minecraft:adventure/sleep_in_bed"
+      ]
     }
   },
   "rewards": {
