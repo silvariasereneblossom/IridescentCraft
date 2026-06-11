@@ -21,7 +21,7 @@
     }
   },
   "rewards": {
-    "essence": { "type": "heracles:item", "title": "Arcane Essence", "item": { "id": "irons_spellbooks:arcane_essence", "count": 3 } },
+    "essence": { "type": "heracles:item", "title": "Arcane Essence", "item": { "id": "irons_spellbooks:arcane_essence", "count": 6 } },
     "xp": { "type": "heracles:xp", "xptype": "POINTS", "amount": 50 }
   }
 }
