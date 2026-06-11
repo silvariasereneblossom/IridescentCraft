@@ -1,7 +1,17 @@
 package com.iridescentcraft.reforging.item;
 
+import com.iridescentcraft.reforging.replacement.SpecializedReplacementDefinition;
+import com.iridescentcraft.reforging.replacement.SpecializedReplacementRegistry;
 import net.minecraft.nbt.CompoundTag;
+import net.minecraft.resources.ResourceLocation;
+import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.entity.ai.attributes.Attribute;
+import net.minecraft.world.entity.ai.attributes.AttributeModifier;
+import net.minecraft.world.entity.ai.attributes.Attributes;
+import net.minecraft.world.item.ArmorItem;
+import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
+import net.minecraftforge.registries.ForgeRegistries;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -163,6 +173,12 @@ public final class StackNbtMigrator {
                 changed = true;
             }
         }
+        // Source-armor carryover backfill (2026-06-11): pre-2026-05-30
+        // conversions never captured the source set's armor, so they fall
+        // back to module-only armor and the ROBE/LIGHT/etc. weight-class
+        // carryover never fires. Re-derive it from the skin.
+        changed |= backfillSourceArmor(stack, tag);
+
         // Sentinel bumped to v4 with the Mage archetype rename
         // (robe/circlet -> vestment_*). Existing stacks marked v1/v2/v3 still
         // get scanned at next tick.
@@ -170,6 +186,65 @@ public final class StackNbtMigrator {
             tag.putInt(MIGRATION_TAG, 4);
         }
         return changed;
+    }
+
+    /**
+     * Backfill {@code icraft_source_armor} / {@code icraft_source_toughness}
+     * onto a converted ItemModularArmor stack that predates the source-armor
+     * capture ({@link com.iridescentcraft.reforging.replacement.SpecializedReplacementHook}).
+     * Without these, {@code InheritedAttributeHandler} has nothing to carry
+     * forward, so the piece keeps only its (tiny) module armor — e.g. a robe
+     * reforged from an 8-armor set reads ~0.5 instead of ~half.
+     *
+     * <p>The original source item is gone, but the converted stack still
+     * carries its {@code Skin} id. We reverse-map skin + slot -> source item
+     * via {@link SpecializedReplacementRegistry}, read that item's vanilla
+     * armor/toughness ADDITION (same as the hook does at conversion time),
+     * and stamp the raw values. {@code InheritedAttributeHandler} then applies
+     * the weight-class fraction (ROBE 50% / LIGHT 65% / ...).
+     *
+     * <p>One-shot: guarded by {@code icraft_source_armor_checked} so it doesn't
+     * re-resolve every tick (and is a no-op once {@code icraft_source_armor}
+     * exists, incl. on freshly-converted or back-compat {@code icraft_baseline_armor} stacks).
+     */
+    private static boolean backfillSourceArmor(ItemStack stack, CompoundTag tag) {
+        if (tag.contains("icraft_source_armor") || tag.contains("icraft_baseline_armor")) return false;
+        if (tag.getBoolean("icraft_source_armor_checked")) return false;
+        if (!(stack.getItem() instanceof ItemModularArmor armor)) return false;
+
+        tag.putBoolean("icraft_source_armor_checked", true);  // attempt once regardless of outcome
+        String skinId = ItemModularArmorClient.readSkinId(stack);
+        if (skinId == null) return true;  // crafted-from-scratch modular armor has no source — leave it
+
+        EquipmentSlot slot = armor.getEquipmentSlot();
+        Item sourceItem = null;
+        for (SpecializedReplacementDefinition def : SpecializedReplacementRegistry.get().all()) {
+            if (!skinId.equals(def.skinId())) continue;
+            ResourceLocation rl = ResourceLocation.tryParse(def.sourceItem());
+            if (rl == null) continue;
+            Item it = ForgeRegistries.ITEMS.getValue(rl);
+            if (it instanceof ArmorItem ai && ai.getEquipmentSlot() == slot) {
+                sourceItem = it;
+                break;
+            }
+        }
+        if (sourceItem == null) return true;  // skin not in the registry (mod removed?) — give up cleanly
+
+        double armorAdd = 0.0, toughAdd = 0.0;
+        try {
+            ItemStack src = new ItemStack(sourceItem);
+            for (Map.Entry<Attribute, AttributeModifier> e : src.getAttributeModifiers(slot).entries()) {
+                AttributeModifier m = e.getValue();
+                if (m.getOperation() != AttributeModifier.Operation.ADDITION) continue;
+                if (e.getKey() == Attributes.ARMOR) armorAdd += m.getAmount();
+                else if (e.getKey() == Attributes.ARMOR_TOUGHNESS) toughAdd += m.getAmount();
+            }
+        } catch (Exception e) {
+            return true;
+        }
+        if (armorAdd > 0) tag.putDouble("icraft_source_armor", armorAdd);
+        if (toughAdd > 0) tag.putDouble("icraft_source_toughness", toughAdd);
+        return true;
     }
 
     /**

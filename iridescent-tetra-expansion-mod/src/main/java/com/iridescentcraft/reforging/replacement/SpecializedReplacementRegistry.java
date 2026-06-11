@@ -35,4 +35,11 @@ public final class SpecializedReplacementRegistry {
     public Optional<SpecializedReplacementDefinition> getForSourceItem(ResourceLocation sourceItem) {
         return Optional.ofNullable(bySourceItem.get(sourceItem));
     }
+
+    /** All loaded definitions — used by StackNbtMigrator to reverse-look-up
+     *  a source item from a converted stack's skin id (for the source-armor
+     *  carryover backfill on pre-2026-05-30 conversions). */
+    public java.util.Collection<SpecializedReplacementDefinition> all() {
+        return bySourceItem.values();
+    }
 }
