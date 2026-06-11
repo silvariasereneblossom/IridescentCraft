@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "aaf1b7565",
+  "generated_from": "3bc7b80db",
   "roots": [
     "kubejs",
     "config",
@@ -7164,8 +7164,8 @@
       "size": 2269
     },
     "kubejs/server_scripts/quests/heracles_reconcile.js": {
-      "sha256": "245e4e8d404eeaecae8edad087c7d9f8984445a27ccab7ff622e3deb82d0b9df",
-      "size": 27867
+      "sha256": "2fb93edf85d0fab1de09070738020d1924a7b8018c2391eff17645c9e60a151f",
+      "size": 27485
     },
     "kubejs/server_scripts/quests/onboarding_bridge.js": {
       "sha256": "728445f081d8d5477c64fddeb3e6c38c5c4209820d9f4143bc4b9219af8fa1ae",
@@ -8252,7 +8252,7 @@
       "size": 353
     },
     "mods/.index/iridescent-tetra-expansion.pw.toml": {
-      "sha256": "41285188f84579ebb74292c9eece715519cb191fc6534a7a93c3a8b4b9fc2c8e",
+      "sha256": "e36fa6805ebd910e9d95fe29f61449eb50466e74e51d8f7af08438fa8182a1b8",
       "size": 380
     },
     "mods/.index/iron-furnaces.pw.toml": {
