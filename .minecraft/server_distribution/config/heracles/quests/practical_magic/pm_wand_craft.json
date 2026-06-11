@@ -1,0 +1,55 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": {
+        "type": "heracles:item",
+        "item": "simple_staves:woodenwand"
+      }
+    },
+    "title": "A Simple Wand",
+    "subtitle": "Craft a Wooden Wand",
+    "description": [
+      "The third road is the \u00a7ewand\u00a7r. Craft a Wooden Wand to start \u2014 here's iron for the next tier up."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          2,
+          1
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "pm_intro"
+  ],
+  "tasks": {
+    "task": {
+      "type": "heracles:item",
+      "title": "Acquire a Wooden Wand",
+      "item": "simple_staves:woodenwand",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "iron": {
+      "type": "heracles:item",
+      "title": "Iron Ingot",
+      "item": {
+        "id": "minecraft:iron_ingot",
+        "count": 3
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 50
+    }
+  }
+}

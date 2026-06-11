@@ -1,0 +1,69 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": {
+        "type": "heracles:item",
+        "item": "irons_spellbooks:copper_spell_book"
+      }
+    },
+    "title": "A Caster's Journal",
+    "subtitle": "Bind a Copper Spell Book",
+    "description": [
+      "The Iron's Spellbooks path runs on \u00a76spell books\u00a7r and \u00a7dArcane Essence\u00a7r. Bind a",
+      "Copper Spell Book, then dive into the \u00a76Iron's Spellbooks\u00a7r quest line for the rest."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          -2,
+          1
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "pm_intro"
+  ],
+  "tasks": {
+    "task": {
+      "type": "heracles:item",
+      "title": "Acquire a Copper Spell Book",
+      "item": "irons_spellbooks:copper_spell_book",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "ink": {
+      "type": "heracles:item",
+      "title": "Common Ink",
+      "item": {
+        "id": "irons_spellbooks:common_ink",
+        "count": 4
+      }
+    },
+    "essence": {
+      "type": "heracles:item",
+      "title": "Arcane Essence",
+      "item": {
+        "id": "irons_spellbooks:arcane_essence",
+        "count": 6
+      }
+    },
+    "scroll": {
+      "type": "heracles:loottable",
+      "title": "Random Spell Scroll",
+      "loot_table": "icraft:magic/scroll_t1"
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 60
+    }
+  }
+}

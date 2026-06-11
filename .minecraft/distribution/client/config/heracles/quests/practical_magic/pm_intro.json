@@ -1,0 +1,51 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": "minecraft:book"
+    },
+    "title": "Practical Magic",
+    "subtitle": "Begin the caster's path",
+    "description": [
+      "Three roads open to a would-be mage: the \u00a76spell books\u00a7r of the Iron's Spellbooks,",
+      "the \u00a7bsource\u00a7r of Ars Nouveau, and the \u00a7emodular wands\u00a7r of the reforging table.",
+      "Pick up a Book to begin \u2014 a random scroll will get you casting straight away."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          0,
+          0
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "onboarding_survivor_capstone"
+  ],
+  "tasks": {
+    "task": {
+      "type": "heracles:item",
+      "title": "Acquire a Book",
+      "item": "minecraft:book",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "scroll": {
+      "type": "heracles:loottable",
+      "title": "Random Spell Scroll",
+      "loot_table": "icraft:magic/scroll_t1"
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 50
+    }
+  }
+}

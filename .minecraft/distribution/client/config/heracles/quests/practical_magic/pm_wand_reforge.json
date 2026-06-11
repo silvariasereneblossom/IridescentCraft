@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": {
+        "type": "heracles:item",
+        "item": "iridescent_reforging:reforged_wand"
+      }
+    },
+    "title": "Reforge & Attune",
+    "subtitle": "Reforge your wand at the Tetra workbench",
+    "description": [
+      "Drop your wand on a \u00a76Tetra workbench\u00a7r to get a modular Reforged Wand \u2014 it gains",
+      "tiers as it hones with every spell. Apply the \u00a7dAttunement\u00a7r enchant (enchanting table) to hone far faster."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          2,
+          2
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "pm_wand_craft"
+  ],
+  "tasks": {
+    "task": {
+      "type": "heracles:item",
+      "title": "Acquire a Reforged Wand",
+      "item": "iridescent_reforging:reforged_wand",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "essence": {
+      "type": "heracles:item",
+      "title": "Arcane Essence",
+      "item": {
+        "id": "irons_spellbooks:arcane_essence",
+        "count": 6
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 60
+    }
+  }
+}

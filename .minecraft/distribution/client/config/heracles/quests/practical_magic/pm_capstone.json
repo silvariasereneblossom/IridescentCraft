@@ -1,0 +1,76 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": {
+        "type": "heracles:item",
+        "item": "irons_spellbooks:arcane_essence"
+      }
+    },
+    "title": "Practical Mage",
+    "subtitle": "Walk all three roads",
+    "description": [
+      "You've touched spell book, source and wand. Place a Bookshelf as your study,",
+      "and take a mage's stipend to pick the path that calls to you."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          0,
+          3
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "pm_iss_book",
+    "pm_ars_notebook",
+    "pm_wand_craft"
+  ],
+  "tasks": {
+    "task": {
+      "type": "heracles:item",
+      "title": "Place / acquire a Bookshelf",
+      "item": "minecraft:bookshelf",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "essence": {
+      "type": "heracles:item",
+      "title": "Arcane Essence",
+      "item": {
+        "id": "irons_spellbooks:arcane_essence",
+        "count": 8
+      }
+    },
+    "source": {
+      "type": "heracles:item",
+      "title": "Source Gem",
+      "item": {
+        "id": "ars_nouveau:source_gem",
+        "count": 8
+      }
+    },
+    "scroll1": {
+      "type": "heracles:loottable",
+      "title": "Random Spell Scroll",
+      "loot_table": "icraft:magic/scroll_t1"
+    },
+    "scroll2": {
+      "type": "heracles:loottable",
+      "title": "Random Spell Scroll",
+      "loot_table": "icraft:magic/scroll_t1"
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 100
+    }
+  }
+}

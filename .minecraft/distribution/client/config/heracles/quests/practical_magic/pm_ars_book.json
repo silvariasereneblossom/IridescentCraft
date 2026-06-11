@@ -1,0 +1,64 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": {
+        "type": "heracles:item",
+        "item": "ars_nouveau:novice_spell_book"
+      }
+    },
+    "title": "Apprentice Caster",
+    "subtitle": "Bind a Novice Spell Book",
+    "description": [
+      "A Novice Spell Book lets you inscribe Form + Effect glyphs into real spells.",
+      "Spell Parchment copies a spell out to share or store."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          0,
+          2
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "pm_ars_notebook"
+  ],
+  "tasks": {
+    "task": {
+      "type": "heracles:item",
+      "title": "Acquire a Novice Spell Book",
+      "item": "ars_nouveau:novice_spell_book",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "source": {
+      "type": "heracles:item",
+      "title": "Source Gem",
+      "item": {
+        "id": "ars_nouveau:source_gem",
+        "count": 8
+      }
+    },
+    "parchment": {
+      "type": "heracles:item",
+      "title": "Spell Parchment",
+      "item": {
+        "id": "ars_nouveau:spell_parchment",
+        "count": 2
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 60
+    }
+  }
+}

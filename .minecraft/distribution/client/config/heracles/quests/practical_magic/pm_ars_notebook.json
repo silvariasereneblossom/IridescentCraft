@@ -1,0 +1,56 @@
+{
+  "display": {
+    "icon": {
+      "type": "heracles:item",
+      "item": {
+        "type": "heracles:item",
+        "item": "ars_nouveau:worn_notebook"
+      }
+    },
+    "title": "The Worn Notebook",
+    "subtitle": "Acquire a Worn Notebook",
+    "description": [
+      "Ars Nouveau speaks in \u00a7bSource\u00a7r. The Worn Notebook is your guide to every glyph,",
+      "ritual and machine \u2014 start here. Some Source Gems will get you going."
+    ],
+    "groups": {
+      "Practical Magic": {
+        "position": [
+          0,
+          1
+        ]
+      }
+    }
+  },
+  "settings": {
+    "individual_progress": true,
+    "hidden": "LOCKED"
+  },
+  "dependencies": [
+    "pm_intro"
+  ],
+  "tasks": {
+    "task": {
+      "type": "heracles:item",
+      "title": "Acquire a Worn Notebook",
+      "item": "ars_nouveau:worn_notebook",
+      "amount": 1,
+      "collection": "AUTOMATIC"
+    }
+  },
+  "rewards": {
+    "source": {
+      "type": "heracles:item",
+      "title": "Source Gem",
+      "item": {
+        "id": "ars_nouveau:source_gem",
+        "count": 8
+      }
+    },
+    "xp": {
+      "type": "heracles:xp",
+      "xptype": "POINTS",
+      "amount": 50
+    }
+  }
+}
