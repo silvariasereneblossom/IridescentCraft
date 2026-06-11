@@ -76,22 +76,17 @@ jobs:
           restore-keys: |
             gradle-${{ runner.os }}-
 
-      - name: Stage compile-time libs
+      - name: Fetch compile-time libs
         run: |
-          mkdir -p libs
-          # When libs/ is committed (binary blobs), this step is a no-op +
-          # ls listing for transparency. When libs/ is NOT committed, this
-          # is where we'd fetch from a private mirror; failing here is
-          # informative.
-          if [ -f libs/tetra.jar ] && [ -f libs/irons_spellbooks.jar ]; then
-            echo "libs/ is populated, skipping fetch."
-            ls -lh libs/
-          else
-            echo "::warning::libs/ is not populated. Build will likely fail."
-            echo "Expected jars: tetra, mutil, irons_spellbooks, curios-forge, ars_nouveau, geckolib-forge"
-            echo "Either commit libs/ to the repo or wire up a fetch step here."
-            ls -la libs/ || true
-          fi
+          # libs/ holds third-party compileOnly mod jars (Tetra, ISS, Curios,
+          # Ars, Geckolib, Apothic Attributes, CoFH Core, mutil). They are NOT
+          # vendored into this public repo (redistribution terms); instead they
+          # are pulled from their authors' official CDNs, pinned by immutable
+          # per-version URL + sha256 in tools/ci_libs.json. The script fails
+          # loud on any download/checksum miss so the build never proceeds with
+          # a missing or tampered dependency.
+          python3 tools/fetch_ci_libs.py
+          ls -lh libs/
 
       - name: Run data preprocessors
         run: |

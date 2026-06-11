@@ -1,0 +1,50 @@
+[
+  {
+    "name": "tetra-1.20.1-6.12.0.jar",
+    "url": "https://cdn.modrinth.com/data/YP9DjOvN/versions/XYHIbaNN/tetra-1.20.1-6.12.0.jar",
+    "sha256": "797ec75788fa776f6e7716f5d9baecc6890a305032c680d49c4a6e869663e11c",
+    "size": 3981699
+  },
+  {
+    "name": "mutil-1.20.1-6.3.0.jar",
+    "url": "https://cdn.modrinth.com/data/HWHl8Evb/versions/ls59E7KT/mutil-1.20.1-6.3.0.jar",
+    "sha256": "a027af93336e820e95072f3d9d913497e3883f7fa487f1381e42023fcd2ec3c8",
+    "size": 100449
+  },
+  {
+    "name": "irons_spellbooks-1.20.1-3.15.5.1.jar",
+    "url": "https://cdn.modrinth.com/data/s4OWxYQQ/versions/jvt8eUvx/irons_spellbooks-1.20.1-3.15.5.1.jar",
+    "sha256": "339f7e14c970ac99ae397c7cd4a7b7bad12a448a90065e4385b41b52c3a8edc6",
+    "size": 15187252
+  },
+  {
+    "name": "curios-forge-5.14.1-1.20.1.jar",
+    "url": "https://cdn.modrinth.com/data/vvuO3ImH/versions/IPQlZkz1/curios-forge-5.14.1%2B1.20.1.jar",
+    "sha256": "1e817919a35b37cf30524aaec73f0ca5130452f23f168f844854df282eb8e51f",
+    "size": 398066
+  },
+  {
+    "name": "ars_nouveau-1.20.1-4.12.7-all.jar",
+    "url": "https://cdn.modrinth.com/data/TKB6INcv/versions/Hw2aD01e/ars_nouveau-1.20.1-4.12.7-all.jar",
+    "sha256": "1f1debc282a0c379c1141f2840ea294eede6f6b544c589663f40bbe17b59a1af",
+    "size": 12430237
+  },
+  {
+    "name": "geckolib-forge-1.20.1-4.8.3.jar",
+    "url": "https://cdn.modrinth.com/data/8BmcQJ2H/versions/HVdLnQMI/geckolib-forge-1.20.1-4.8.3.jar",
+    "sha256": "477d5d014d6641522cd0deb93c66aefff755760259970c4c255fadb3d88ff702",
+    "size": 1039047
+  },
+  {
+    "name": "ApothicAttributes-1.20.1-1.3.7.jar",
+    "url": "https://mediafilez.forgecdn.net/files/5634/71/ApothicAttributes-1.20.1-1.3.7.jar",
+    "sha256": "68487b11c0d4e2f67a85f2b04bf65e99ac15294f2923f4391f83e9542293187a",
+    "size": 227511
+  },
+  {
+    "name": "cofh_core-1.20.1-11.0.2.56.jar",
+    "url": "https://cdn.modrinth.com/data/OWSRM4vD/versions/kglS53Hd/cofh_core-1.20.1-11.0.2.56.jar",
+    "sha256": "d7cd3ec8083e294e17cb50fe607b416c1dc83ce885e53ba3995d86e028f790e0",
+    "size": 1509649
+  }
+]
