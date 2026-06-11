@@ -124,7 +124,7 @@ Copy-Item -Force $srcGallium $galliumDll
 $ogSize = [math]::Round((Get-Item $openglDll).Length / 1KB, 0)
 $gSize  = [math]::Round((Get-Item $galliumDll).Length / 1MB, 1)
 Write-Host ""
-Write-Host "[fetch-mesa] Done. Mesa $Version DLLs at $Dest:"
+Write-Host "[fetch-mesa] Done. Mesa $Version DLLs at ${Dest}:"
 Write-Host "[fetch-mesa]   opengl32.dll        ${ogSize} KB"
 Write-Host "[fetch-mesa]   libgallium_wgl.dll  ${gSize} MB"
 Write-Host ""
