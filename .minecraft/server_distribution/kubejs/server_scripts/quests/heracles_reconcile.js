@@ -232,6 +232,40 @@ const RECONCILE = [
        (reconHasItem(p, 'irons_spellbooks:pyrium_ingot') ? 1 : 0) +
        (reconHasItem(p, 'irons_spellbooks:divine_pearl') ? 1 : 0)) >= 3 },
 
+  // === Practical Magic (shared caster on-ramp) — held-item best-effort, FORGIVING
+  // (entry item OR a more-advanced equivalent), so a veteran who's already past the
+  // copper book / wooden wand auto-completes instead of being asked to re-craft.
+  // Deps-first: intro -> branch entries -> secondaries -> capstone.
+  { q: 'pm_intro', met: p =>
+      reconHasItem(p, 'minecraft:book') || reconHasItem(p, 'minecraft:bookshelf') ||
+      reconHasItem(p, '#curios:spellbook') || reconHasItem(p, 'ars_nouveau:worn_notebook') ||
+      reconHasItem(p, 'simple_staves:woodenwand') || reconHasItem(p, 'iridescent_reforging:reforged_wand') },
+  { q: 'pm_iss_book', met: p =>
+      reconHasItem(p, '#curios:spellbook') || reconHasItem(p, 'irons_spellbooks:copper_spell_book') ||
+      reconHasItem(p, 'irons_spellbooks:gold_spell_book') || reconHasItem(p, 'irons_spellbooks:netherite_spell_book') },
+  { q: 'pm_ars_notebook', met: p =>
+      reconHasItem(p, 'ars_nouveau:worn_notebook') || reconHasItem(p, 'ars_nouveau:novice_spell_book') ||
+      reconHasItem(p, 'ars_nouveau:apprentice_spell_book') || reconHasItem(p, 'ars_nouveau:archmage_spell_book') },
+  { q: 'pm_wand_craft', met: p =>
+      reconHasItem(p, 'simple_staves:woodenwand') || reconHasItem(p, 'iridescent_reforging:reforged_wand') ||
+      reconHasItem(p, 'simple_staves:iron_wand') || reconHasItem(p, 'simple_staves:diamond_wand') ||
+      reconHasItem(p, 'simple_staves:netherite_wand') },
+  { q: 'pm_iss_scroll', met: p =>
+      reconHasItem(p, 'irons_spellbooks:scroll') || reconHasItem(p, '#curios:spellbook') },
+  { q: 'pm_ars_book', met: p =>
+      reconHasItem(p, 'ars_nouveau:novice_spell_book') || reconHasItem(p, 'ars_nouveau:apprentice_spell_book') ||
+      reconHasItem(p, 'ars_nouveau:archmage_spell_book') },
+  { q: 'pm_wand_reforge', met: p => reconHasItem(p, 'iridescent_reforging:reforged_wand') },
+  // Capstone: all three branch entries already satisfied.
+  { q: 'pm_capstone', met: p =>
+      (reconHasItem(p, '#curios:spellbook') || reconHasItem(p, 'irons_spellbooks:copper_spell_book') ||
+       reconHasItem(p, 'irons_spellbooks:gold_spell_book') || reconHasItem(p, 'irons_spellbooks:netherite_spell_book')) &&
+      (reconHasItem(p, 'ars_nouveau:worn_notebook') || reconHasItem(p, 'ars_nouveau:novice_spell_book') ||
+       reconHasItem(p, 'ars_nouveau:apprentice_spell_book') || reconHasItem(p, 'ars_nouveau:archmage_spell_book')) &&
+      (reconHasItem(p, 'simple_staves:woodenwand') || reconHasItem(p, 'iridescent_reforging:reforged_wand') ||
+       reconHasItem(p, 'simple_staves:iron_wand') || reconHasItem(p, 'simple_staves:diamond_wand') ||
+       reconHasItem(p, 'simple_staves:netherite_wand')) },
+
   // === Combat — first-boss via the engine's one-time first-kill flags (named
   // bosses only; minibosses + kill-N quests don't store a count, so re-complete) ===
   { q: 'com_first_boss', met: p =>

@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "948580d37",
+  "generated_from": "ca3cf6dd9",
   "roots": [
     "kubejs",
     "config",
@@ -3156,8 +3156,8 @@
       "size": 1511
     },
     "config/heracles/quests/groups.txt": {
-      "sha256": "c546575ba4a91e44304c1704e41a3e5684bb1a991c5849a6825bb6b01203e7f6",
-      "size": 168
+      "sha256": "1f92fb42fa69dc721c551700ac8f1ba26ffaf63b2355b46361c110c39a271618",
+      "size": 184
     },
     "config/heracles/quests/iridescent_codex/codex_lane_combat.json": {
       "sha256": "5865c78ca471a9bede6c3f73b66146ab2c1a90c677f08f3f52d1e1384913f404",
@@ -3184,27 +3184,27 @@
       "size": 1708
     },
     "config/heracles/quests/iron_spellbooks/iss_t1_arcane_ingot.json": {
-      "sha256": "f82f46a9c171bd5667de2495e79bdd777d7e270d3c8a424e6b6b8c20175888cd",
+      "sha256": "0d0e2444ea1e431ddff73300b44854074f9b3f14ea6ad8f5307c63c76ab2cd8f",
       "size": 1001
     },
     "config/heracles/quests/iron_spellbooks/iss_t1_common_ink.json": {
-      "sha256": "69740dac26a79446d90f5c67d572614d5f1beec5f6d89df1aa721b69479a907d",
+      "sha256": "4700a77d3f0ccf38ea3dc39ac0ad7b31122f52a92cb19fa36ce28dfcb87283e8",
       "size": 973
     },
     "config/heracles/quests/iron_spellbooks/iss_t1_first_book.json": {
-      "sha256": "808f2fe1b57e7d8763da5112ba68f2a95c5ac8c4cd17e42235f84c4820a168b6",
+      "sha256": "633acf532f7ff4d5cde9177ac9078b4c2fecb33e06bc33c69a5e4a47f1ac73eb",
       "size": 1040
     },
     "config/heracles/quests/iron_spellbooks/iss_t1_inscription_table.json": {
-      "sha256": "24560553174d8b6b5223ce588495cc9987fc6406a5f1c662b69a405ce259c6e8",
+      "sha256": "c96e0f33bf6b8b7619b4627ea1d2e1a86f6673ed462ec82d91e052dfe1c1bd33",
       "size": 1018
     },
     "config/heracles/quests/iron_spellbooks/iss_t1_scroll.json": {
-      "sha256": "d4a9e08aa5c066fc46f312f18e508ccdafe39897ab4bde6b24cdfd0b7193c90d",
+      "sha256": "4102caf422e6767bff0962d0554adc7d6c7d3a4bb50272ae7e9d3772745be2c3",
       "size": 993
     },
     "config/heracles/quests/iron_spellbooks/iss_t1_staff.json": {
-      "sha256": "b9bcd048c7d721a89c16a83eb07a155b086c06fe4d9e2f4e1fbb32e4dc2296cf",
+      "sha256": "81ca0381b3928ac646f76e8658e1248c3779adb625b5a09a3ca0941e3b4e096a",
       "size": 1001
     },
     "config/heracles/quests/iron_spellbooks/iss_t2_arcane_anvil.json": {
@@ -3506,6 +3506,38 @@
     "config/heracles/quests/overworld_foundations/ovf_waystones.json": {
       "sha256": "db9d9d2092a5a4f0dcef66352974d6356316568eb95e3b1f51b5a7994d0c7d7c",
       "size": 1235
+    },
+    "config/heracles/quests/practical_magic/pm_ars_book.json": {
+      "sha256": "5e069f02c5df94860043eb69689ba484cfba809d5f2fc5ff20bc40079098ff02",
+      "size": 1341
+    },
+    "config/heracles/quests/practical_magic/pm_ars_notebook.json": {
+      "sha256": "3ad94b79718ccd64187c17da5c62aa0fce138b12b06d58090c481afbc7ff1e46",
+      "size": 1178
+    },
+    "config/heracles/quests/practical_magic/pm_capstone.json": {
+      "sha256": "3bfcb7baf7761ba66f24e3b824eea1db240ce1541e71d7b35b2bef33c1e74449",
+      "size": 1662
+    },
+    "config/heracles/quests/practical_magic/pm_intro.json": {
+      "sha256": "ec8204150a9dc9ea78236756f5358592c1aaa82201adb34189fd6ef59ed4e811",
+      "size": 1201
+    },
+    "config/heracles/quests/practical_magic/pm_iss_book.json": {
+      "sha256": "486baefff0047f82c12f4d2729094c778246795e215999bd2a66b790cbef216a",
+      "size": 1557
+    },
+    "config/heracles/quests/practical_magic/pm_iss_scroll.json": {
+      "sha256": "6d17017ea1a8d083bf721b8cf1d7091384de9b9a18ad394d9a8f4c6319a7ef9b",
+      "size": 1503
+    },
+    "config/heracles/quests/practical_magic/pm_wand_craft.json": {
+      "sha256": "d35b56b80b2c11e010531268794460c076eefe5e71e2e2dde509d2d2d16e5008",
+      "size": 1098
+    },
+    "config/heracles/quests/practical_magic/pm_wand_reforge.json": {
+      "sha256": "acc9678f944729f279dd609799a0017f2db4e9a87f85b2941dd34cd8178a92ad",
+      "size": 1279
     },
     "config/highlighter-common.toml": {
       "sha256": "8614f826a3ed39e7fc4f8aca74bce23fc95ffba8031e7d5e406ebb115d2b757d",
@@ -6786,6 +6818,10 @@
     "kubejs/server_scripts/diag_empty_display_name.js": {
       "sha256": "b41ee3af8d7d881d3ccb5eab403be1f5932d53e03167e910d77252108da7f13f",
       "size": 3983
+    },
+    "kubejs/server_scripts/diag_levitation_arrow.js": {
+      "sha256": "5e2adfaab27c76fe206cc7eb2e4dc791171dca6cd62c64d2c09f1316e7fbe498",
+      "size": 4556
     },
     "kubejs/server_scripts/diag_magic_weapon.js": {
       "sha256": "c90e47f026dd732b851c89d39fb4044d26f0792d8b1ad9b54f4f739760784e3c",
