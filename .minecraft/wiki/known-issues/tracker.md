@@ -95,6 +95,7 @@ Implemented features awaiting confirmation on a live world:
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
 
 **Armor & classes**
+- **Armor sets now actually stack.** A modifier-identity collision meant only ONE equipped reforged armor piece ever counted toward your armor -- a set whose tooltips sum to 11 gave roughly one piece's worth. Each slot's contribution is now counted separately; your equipped total should match the sum of your tooltips (before class/weight percentages).
 - Caster/ranger armor no longer wiped by class penalties: the flat -4/-3 armor maluses (Archmage/Ranger, plus the Elf toughness malus) are now percentages of your final armor, so robe builds keep their carried-over armor. The "robes read 0.5 armor" symptom is resolved.
 - Glass-cannon equipment-HP halving corrected: it was only removing about a third of equipment HP (design says half) and could stick after unequipping; both fixed.
 - New: `/icraft armormods` dumps every live armor/toughness modifier on you, for precise bug reports.
