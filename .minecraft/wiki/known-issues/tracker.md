@@ -94,6 +94,12 @@ Implemented features awaiting confirmation on a live world:
 
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
 
+**Farming**
+- Right-click/hoe-harvesting carrots or potatoes no longer yields nothing. The auto-replant consumes one of the crop as its replant cost, and the reduced-yield tuning had left exactly one to consume. Both crops now drop enough that every harvest method nets the same yield. (Wheat and beetroot were never affected.)
+
+**Workbench (reforged gear)**
+- 166 selectable materials that silently did nothing in the workbench now work: newer materials (boss metals, Aether alloys, wools, fibres, hides) were selectable in armor/wand/spellbook schematics but had no module data behind them, so the craft no-opped. All now have variants with stats scaled from their material grade, plus repair definitions.
+
 **Armor & classes**
 - **Armor sets now actually stack.** A modifier-identity collision meant only ONE equipped reforged armor piece ever counted toward your armor -- a set whose tooltips sum to 11 gave roughly one piece's worth. Each slot's contribution is now counted separately; your equipped total should match the sum of your tooltips (before class/weight percentages).
 - Caster/ranger armor no longer wiped by class penalties: the flat -4/-3 armor maluses (Archmage/Ranger, plus the Elf toughness malus) are now percentages of your final armor, so robe builds keep their carried-over armor. The "robes read 0.5 armor" symptom is resolved.
