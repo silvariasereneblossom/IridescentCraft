@@ -1,48 +1,61 @@
 // =============================================================================
-// DIAG: !armormods — dump every LIVE modifier on the armor attributes
+// DIAG: /icraft armormods — dump every LIVE modifier on the armor attributes
 // =============================================================================
-// Investigation 2026-06-11: a flat -4 generic.armor ADDITION modifier on
-// silvieserene survives a full unequip, and /data get (saved NBT) shows only
-// the justlevelingfork passive at 0.0 — so the -4 is TRANSIENT, re-applied at
-// runtime by something. Static analysis cleared every flat-armor source in
-// the pack (faefolk + witch_of_ink are toughness-only, armor_weight.js is
-// multiply_base-only, gems/affixes/set bonuses are positive-only, JLFork's
-// passive math is configValue/maxLevels*level with all-positive configs).
+// Born from the 2026-06-11 armor investigation: a flat -4 generic.armor on
+// silvieserene turned out to be the Archmage glass_frame Origins power
+// (Apoli renders modifiers without a "name" field as "Unnamed
+// EntityAttributeModifier", and /data get only shows PERSISTED modifiers,
+// so neither surface identified the author). This command reads the live
+// AttributeInstance — transient modifiers included (curios, Apoli powers,
+// script-applied) — WITH names + UUIDs, so the next hunt starts here
+// instead of at static analysis.
 //
-// /data only shows PERSISTED modifiers; this command reads the live
-// AttributeInstance, which includes transient ones (curios, Apoli powers,
-// script-applied) WITH their names + UUIDs — the name identifies the author.
-//
-// Usage (any player, in chat):  !armormods
-// Remove after the armor investigation closes.
+// Kept as a permanent diagnostic alongside /icraft mana_debug.
+// Usage (any player): /icraft armormods
 // =============================================================================
 
-PlayerEvents.chat(function(event) {
-  if (event.message.trim().toLowerCase() !== '!armormods') return
-  event.cancel()
-  var player = event.player
-
-  var targets = ['minecraft:generic.armor', 'minecraft:generic.armor_toughness']
-  targets.forEach(function(id) {
+try {
+  var armormods_dump = function(sp, id) {
     try {
-      var inst = player.getAttribute(id)
+      var inst = sp.getAttribute(id)
       if (!inst) {
-        player.tell('[armormods] no attribute instance for ' + id)
+        sp.tell('§7[armormods] no attribute instance for ' + id)
         return
       }
-      player.tell('[armormods] == ' + id + '  base=' + inst.getBaseValue() + '  final=' + inst.getValue())
-      var mods = inst.getModifiers()
+      sp.tell('§6[armormods] == ' + id + '§r  base=' + inst.getBaseValue() + '  final=§a' + inst.getValue())
       var count = 0
-      mods.forEach(function(m) {
+      inst.getModifiers().forEach(function(m) {
         count++
-        player.tell('[armormods]   name="' + m.getName() + '"  amount=' + m.getAmount() + '  op=' + m.getOperation() + '  uuid=' + m.getId())
+        sp.tell('§7[armormods]   name="§f' + m.getName() + '§7"  amount=§f' + m.getAmount()
+          + '§7  op=§f' + m.getOperation() + '§7  uuid=§8' + m.getId())
       })
-      if (count === 0) player.tell('[armormods]   (no modifiers)')
+      if (count === 0) sp.tell('§7[armormods]   (no modifiers)')
     } catch (e) {
-      player.tell('[armormods] error reading ' + id + ': ' + e)
+      sp.tell('§c[armormods] error reading ' + id + ': ' + e)
     }
-  })
-  player.tell('[armormods] done — paste these lines back to the dev session.')
-})
+  }
 
-console.log('[IridescentCraft] diag_armor_modifiers loaded — !armormods chat command (temporary diagnostic)')
+  ServerEvents.commandRegistry(function(event) {
+    var Commands = event.commands
+
+    event.register(
+      Commands.literal('icraft')
+        .then(Commands.literal('armormods')
+          .executes(function(ctx) {
+            var sp
+            try { sp = ctx.source.getPlayerOrException() } catch (e) {
+              ctx.source.sendFailure(Text.of('Must be run as a player'))
+              return 0
+            }
+            armormods_dump(sp, 'minecraft:generic.armor')
+            armormods_dump(sp, 'minecraft:generic.armor_toughness')
+            return 1
+          })
+        )
+    )
+  })
+
+  console.log('[IridescentCraft] /icraft armormods command registered')
+} catch (e) {
+  console.warn('[IridescentCraft] diag_armor_modifiers bootstrap FAILED: ' + e)
+}

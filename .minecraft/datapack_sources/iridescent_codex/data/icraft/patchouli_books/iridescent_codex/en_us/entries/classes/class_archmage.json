@@ -6,12 +6,12 @@
   "pages": [
     {
       "type": "patchouli:text",
-      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp. Weak early, devastating late.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)1.5x base$() (150 from default 100)$(br)$(bold)Armor Penalty:$() -4 armor, -2 toughness"
+      "text": "$(italic)The pinnacle of arcane power, fragile as glass and twice as sharp. Weak early, devastating late.$()$(br2)HP Modifier: -20%  |  Equipment HP: $(bold)Halved$() (glass cannon)$(br)Mana Pool: $(item)1.5x base$() (150 from default 100)$(br)$(bold)Armor Penalty:$() -20% armor & toughness (final value)"
     },
     {
       "type": "patchouli:text",
       "title": "Passive Abilities",
-      "text": "$(bold)Arcane Supremacy$() — $(item)+50% Spell Power$(). Highest in the game. Applies to Iron's Spells and Ars Nouveau. Surfaced as ISS Spell Power via the magic-damage sync handler.$(br2)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling Spell Power amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()$(br2)$(bold)Expanded Pool$() — Mana pool $(item)1.5x base$() (shared across all three magic classes). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -4 armor, -2 toughness, halved equipment HP."
+      "text": "$(bold)Arcane Supremacy$() — $(item)+50% Spell Power$(). Highest in the game. Applies to Iron's Spells and Ars Nouveau. Surfaced as ISS Spell Power via the magic-damage sync handler.$(br2)$(bold)Mana Attunement$() — $(warn)-25% melee$() + tier-scaling Spell Power amp:$(br)  T1: +0% | T2: +5% | T3: +10% | T4: $(item)+15%$()$(br2)$(bold)Expanded Pool$() — Mana pool $(item)1.5x base$() (shared across all three magic classes). Sustained barrages without going dry.$(br2)$(bold)Glass Frame$() — -20% armor & toughness (scales with your final value -- can never zero a robe build), halved equipment HP."
     },
     {
       "type": "patchouli:text",

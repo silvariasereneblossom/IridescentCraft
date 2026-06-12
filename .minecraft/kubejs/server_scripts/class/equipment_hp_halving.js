@@ -26,6 +26,25 @@ const GLASS_CANNON_CLASSES = new Set([
   'icraft:void_summoner'
 ])
 
+// Read the player's Origins class id ("icraft:archmage" etc, or '') via
+// direct player.nbt read. The execute-if NBT-matcher does NOT recurse the
+// origins compound correctly in this Forge build (see codex_delivery.js
+// Route 0 forensics) -- the direct path is the proven-working one.
+// Prefixed eqhh_ because KubeJS server scripts share one global scope.
+function eqhh_getOriginClass(player) {
+  try {
+    var nbt = player.nbt
+    if (!nbt) return ''
+    var fc = nbt.ForgeCaps
+    if (!fc) return ''
+    var oo = fc.get ? fc.get('origins:origins') : null
+    if (!oo) return ''
+    var origins = oo.get ? oo.get('Origins') : null
+    if (!origins || !origins.getString) return ''
+    return String(origins.getString('origins:class') || '')
+  } catch (e) { return '' }
+}
+
 global.tick_equipmentHpHalving = (event) => {
   event.server.players.forEach(player => {
     if (player.spectator || player.creative) return
@@ -42,13 +61,33 @@ global.tick_equipmentHpHalving = (event) => {
       }
     } catch(e) {}
 
+    // Always zero our modifier BEFORE measuring. Two bugs lived here
+    // (fixed 2026-06-12):
+    //  1. Feedback loop: maxHealth was read with our previous penalty
+    //     still applied, so the penalty fed back into its own input and
+    //     converged to -1/3 of equipment HP instead of the designed -1/2
+    //     (fixed point of p = -(E + p)/2 is p = -E/3).
+    //  2. Stale penalty: the modifier was only written when equipmentHP > 0,
+    //     so taking gear off (or losing the glass-cannon flag outside the
+    //     -1 trigger path) left the last penalty applied forever.
+    try {
+      player.modifyAttribute(
+        'minecraft:generic.max_health',
+        'icraft_equip_hp_halving',
+        0,
+        'addition'
+      )
+    } catch(e) {}
+
     if (!isGlassCannon) return
 
-    let baseHP = 16 // Default for ranger/archmage
-    // TODO: Check specific class for void summoner (18 base)
+    // Class base HP after the Origins class power's HP modifier:
+    // Ranger/Archmage -20% -> 16, Void Summoner -10% -> 18.
+    let baseHP = (eqhh_getOriginClass(player) === 'icraft:void_summoner') ? 18 : 16
 
-    let currentMax = player.maxHealth
-    let equipmentHP = currentMax - baseHP
+    // Penalty-free read now that our modifier is zeroed (the attribute
+    // recomputes lazily on read).
+    let equipmentHP = player.maxHealth - baseHP
     if (equipmentHP > 0) {
       let penalty = -(equipmentHP * 0.5)
       player.modifyAttribute(

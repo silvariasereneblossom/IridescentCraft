@@ -5,8 +5,8 @@
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor",
-      "operation": "addition",
-      "value": -3.0
+      "operation": "multiply_total",
+      "value": -0.15
     }
   ]
 }

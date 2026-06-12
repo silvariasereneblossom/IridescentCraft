@@ -1,12 +1,12 @@
 {
   "type": "origins:attribute",
   "name": "Fragile Frame",
-  "description": "-1 armor toughness.",
+  "description": "-10% armor toughness.",
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor_toughness",
-      "operation": "addition",
-      "value": -1.0
+      "operation": "multiply_total",
+      "value": -0.1
     }
   ]
 }

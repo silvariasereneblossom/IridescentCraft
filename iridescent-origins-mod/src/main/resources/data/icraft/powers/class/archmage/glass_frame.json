@@ -5,13 +5,13 @@
   "modifiers": [
     {
       "attribute": "minecraft:generic.armor",
-      "operation": "addition",
-      "value": -4.0
+      "operation": "multiply_total",
+      "value": -0.2
     },
     {
       "attribute": "minecraft:generic.armor_toughness",
-      "operation": "addition",
-      "value": -2.0
+      "operation": "multiply_total",
+      "value": -0.2
     }
   ]
 }

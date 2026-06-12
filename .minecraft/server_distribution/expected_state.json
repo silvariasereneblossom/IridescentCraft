@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "3bc7b80db",
+  "generated_from": "a0564cc1f",
   "roots": [
     "kubejs",
     "config",
@@ -6811,6 +6811,10 @@
       "sha256": "86de88d15701ec6326002478a0cd4b6a6b282f7ec968b5f565b508dccf0d0616",
       "size": 28705
     },
+    "kubejs/server_scripts/diag_armor_modifiers.js": {
+      "sha256": "a35b0b97755a59d734292f724b95f8692db9c58e6331ea2b6f30d3e588a1ce24",
+      "size": 2317
+    },
     "kubejs/server_scripts/diag_blank_book_trace.js": {
       "sha256": "1102a9866f83831dc44bffd7d4311996dd529e7f4912ea3551214e3b7271ec1b",
       "size": 2180
@@ -8224,7 +8228,7 @@
       "size": 353
     },
     "mods/.index/iridescent-codex.pw.toml": {
-      "sha256": "19eebfecebe155bc46ea5657f86409e101732f19075d9b653ab4f89359feabdd",
+      "sha256": "1c8d0c330e45a4cfd354cb17c2570f2dc5e0ca6b2aba99df8caecee38f324b61",
       "size": 348
     },
     "mods/.index/iridescent-difficulty.pw.toml": {
@@ -8244,7 +8248,7 @@
       "size": 398
     },
     "mods/.index/iridescent-origins.pw.toml": {
-      "sha256": "f178e6106e884591de128faeecd07c161b133b6dbed17bdc892d3ec5b5015f52",
+      "sha256": "4554d6f4881a265e4d4d78588019e775ddf805d169469ddde6bd11f2970492c2",
       "size": 356
     },
     "mods/.index/iridescent-relics.pw.toml": {
