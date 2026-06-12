@@ -53,11 +53,24 @@ import java.util.UUID;
         bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class InheritedAttributeHandler {
 
-    /** Deterministic UUID seeds so vanilla de-dupes our modifiers
+    /** Deterministic PER-SLOT UUID seeds so vanilla de-dupes our modifiers
      *  across query calls. Different from the inherited-modifier UUIDs
-     *  (which are copied from the source). */
-    private static final UUID BASELINE_ARMOR_UUID    = UUID.fromString("a1c9e204-0000-0000-0000-000000000001");
-    private static final UUID BASELINE_TOUGH_UUID    = UUID.fromString("a1c9e204-0000-0000-0000-000000000002");
+     *  (which are copied from the source).
+     *
+     *  Per-slot matters: a single constant UUID across all four armor
+     *  slots collides on the player's AttributeInstance — vanilla's equip
+     *  flow is remove-then-add by UUID, so the second converted piece's
+     *  carryover silently REPLACED the first instead of stacking (same
+     *  collision family as the Tetra fixIdentifiers issue fixed in
+     *  ItemModularArmor.slotScopeIdentifiers). Indexed by
+     *  EquipmentSlot.ordinal(): FEET=2, LEGS=3, CHEST=4, HEAD=5. */
+    private static UUID baselineArmorUuid(EquipmentSlot slot) {
+        return UUID.fromString(String.format("a1c9e204-0000-0000-%04x-000000000001", slot.ordinal() + 1));
+    }
+
+    private static UUID baselineToughUuid(EquipmentSlot slot) {
+        return UUID.fromString(String.format("a1c9e204-0000-0000-%04x-000000000002", slot.ordinal() + 1));
+    }
 
     @SubscribeEvent
     public static void onItemAttribute(ItemAttributeModifierEvent event) {
@@ -129,7 +142,7 @@ public final class InheritedAttributeHandler {
                 double carried = tag.getDouble("icraft_source_armor") * pct;
                 if (carried > 0) {
                     event.addModifier(Attributes.ARMOR, new AttributeModifier(
-                            BASELINE_ARMOR_UUID, "icraft_baseline_armor",
+                            baselineArmorUuid(eventSlot), "icraft_baseline_armor",
                             carried, AttributeModifier.Operation.ADDITION));
                 }
             } else if (tag.contains("icraft_baseline_armor", Tag.TAG_DOUBLE)
@@ -137,7 +150,7 @@ public final class InheritedAttributeHandler {
                 double legacy = tag.getDouble("icraft_baseline_armor");
                 if (legacy > 0) {
                     event.addModifier(Attributes.ARMOR, new AttributeModifier(
-                            BASELINE_ARMOR_UUID, "icraft_baseline_armor",
+                            baselineArmorUuid(eventSlot), "icraft_baseline_armor",
                             legacy, AttributeModifier.Operation.ADDITION));
                 }
             }
@@ -148,7 +161,7 @@ public final class InheritedAttributeHandler {
                 double carried = tag.getDouble("icraft_source_toughness") * pct;
                 if (carried > 0) {
                     event.addModifier(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(
-                            BASELINE_TOUGH_UUID, "icraft_baseline_toughness",
+                            baselineToughUuid(eventSlot), "icraft_baseline_toughness",
                             carried, AttributeModifier.Operation.ADDITION));
                 }
             } else if (tag.contains("icraft_baseline_toughness", Tag.TAG_DOUBLE)
@@ -156,7 +169,7 @@ public final class InheritedAttributeHandler {
                 double legacy = tag.getDouble("icraft_baseline_toughness");
                 if (legacy > 0) {
                     event.addModifier(Attributes.ARMOR_TOUGHNESS, new AttributeModifier(
-                            BASELINE_TOUGH_UUID, "icraft_baseline_toughness",
+                            baselineToughUuid(eventSlot), "icraft_baseline_toughness",
                             legacy, AttributeModifier.Operation.ADDITION));
                 }
             }

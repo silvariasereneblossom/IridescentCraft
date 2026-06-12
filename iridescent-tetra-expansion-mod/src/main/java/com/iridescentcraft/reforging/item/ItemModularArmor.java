@@ -358,7 +358,39 @@ public class ItemModularArmor extends ArmorItem implements IModularItem, GeoItem
             skin.ifPresent(def -> combined.putAll(def.baseAttributes()));
         }
 
-        return combined;
+        // (3) CRITICAL: re-scope every modifier UUID to this slot. Tetra's
+        // AttributeHelper.fixIdentifiers collapses modifiers to ONE global
+        // UUID per (attribute, operation) — keyed by nothing else. Fine for
+        // Tetra upstream (handhelds: one item, one slot, collisions
+        // impossible), but armor queries this pipeline for FOUR slots at
+        // once. Vanilla's equip flow is remove-then-add by UUID, so without
+        // re-scoping, each equipped piece silently REPLACES the previous
+        // piece's armor modifier and only one piece of a set ever counts
+        // ("set sums 11 in tooltips, player reads ~4"). Tooltips render
+        // per-item and never collide, which is what made this invisible.
+        //
+        // The remap is deterministic per (slot, attribute, operation,
+        // original id), so repeat queries return identical UUIDs and
+        // vanilla's unequip-removal matches what equip added. Equipment
+        // modifiers are transient (never written to player NBT), so
+        // cross-session stability is not required.
+        return slotScopeIdentifiers(slot, combined);
+    }
+
+    private static Multimap<Attribute, AttributeModifier> slotScopeIdentifiers(
+            EquipmentSlot slot, Multimap<Attribute, AttributeModifier> modifiers) {
+        Multimap<Attribute, AttributeModifier> scoped = HashMultimap.create();
+        modifiers.forEach((attribute, modifier) -> {
+            String key = "icraft_slot_scope:" + slot.getName()
+                    + ":" + net.minecraftforge.registries.ForgeRegistries.ATTRIBUTES.getKey(attribute)
+                    + ":" + modifier.getOperation().ordinal()
+                    + ":" + modifier.getId();
+            java.util.UUID scopedId = java.util.UUID.nameUUIDFromBytes(
+                    key.getBytes(java.nio.charset.StandardCharsets.UTF_8));
+            scoped.put(attribute, new AttributeModifier(
+                    scopedId, modifier.getName(), modifier.getAmount(), modifier.getOperation()));
+        });
+        return scoped;
     }
 
     // ── Client-side renderer dispatch (phase 6) ────────────────────────
