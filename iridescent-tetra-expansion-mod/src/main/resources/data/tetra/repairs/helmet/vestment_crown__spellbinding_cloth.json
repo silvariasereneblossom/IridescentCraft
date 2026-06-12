@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:spell_cloth"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "vestment_crown/spellbinding_cloth"
+}

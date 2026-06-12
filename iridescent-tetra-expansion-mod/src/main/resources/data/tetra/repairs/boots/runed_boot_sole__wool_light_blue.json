@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:light_blue_wool"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "runed_boot_sole/wool_light_blue"
+}

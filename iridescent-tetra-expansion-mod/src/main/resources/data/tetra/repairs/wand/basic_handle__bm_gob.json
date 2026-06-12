@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:gobs_gilded_hat_helmet"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/bm_gob"
+}

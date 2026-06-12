@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:diamond"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/diamond_no_t"
+}

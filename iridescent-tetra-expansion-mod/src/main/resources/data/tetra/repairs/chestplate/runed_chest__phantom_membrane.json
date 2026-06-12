@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:phantom_membrane"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "runed_chest/phantom_membrane"
+}

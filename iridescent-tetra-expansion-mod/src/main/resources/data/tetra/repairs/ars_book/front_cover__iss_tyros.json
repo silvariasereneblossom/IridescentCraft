@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "irons_spellbooks:cinder_essence"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/iss_tyros"
+}

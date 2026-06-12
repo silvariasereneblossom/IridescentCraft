@@ -1390,6 +1390,336 @@
         "models": [],
         "magicCapacity": 7
       }
+    },
+    {
+      "materials": [
+        "tetra:fibre/dragon_sinew"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0084
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/paper"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.009
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/phantom_membrane"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0084
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/string"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.009
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/twisting_vine"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.009
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/vine"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.0086
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 3
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/weeping_vine"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.011
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/arcane_ingot"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.015
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**ars_nouveau:ars_nouveau.perk.mana_regen": 0.015
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/deathskin"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0089
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.01
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0144
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0111
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0111
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "spine/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0122
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

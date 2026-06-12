@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:naga_scale"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/tf_naga"
+}

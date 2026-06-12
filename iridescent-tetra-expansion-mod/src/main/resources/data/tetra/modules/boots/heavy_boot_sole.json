@@ -2500,6 +2500,138 @@
         "models": [],
         "magicCapacity": 18
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "heavy_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.9408
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "heavy_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "heavy_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.037
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "heavy_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "heavy_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2957
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "heavy_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3203
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

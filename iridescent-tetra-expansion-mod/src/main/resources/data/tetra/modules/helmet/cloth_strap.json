@@ -372,6 +372,1892 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:fabric/arcane_cloth"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/manaweave"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/spellbinding_cloth"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_black"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_blue"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_brown"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_cyan"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_gray"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_green"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_blue"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_gray"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_lime"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_magenta"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_orange"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_pink"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_purple"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_red"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_yellow"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_slider"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_sunspirit"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_valkyrie"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_gob"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_umvuthi"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_wroughtnaut"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/brass"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 1.8
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_alchemist"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_starlit"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.08
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ancient_metal"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.6
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_cursium"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.36
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ender_guard"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.6
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.28
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_leviathan"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_monstrosity"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_witherite"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.44
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cs_drakara"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/da_eots"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.6
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.48
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/deorum"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dimlite"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.08
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.48
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/enderium"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.72
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.56
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.08
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/garnite"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iridium"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.6
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.0
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_citadel"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_deadking"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_magehunter"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knight"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.6
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.24
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/lumium"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 1.92
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.08
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/osmium"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/phantom"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.4
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/refined_obsidian"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.8
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/signalum"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.0
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steel"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.12
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.36
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.6
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_hydra"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_knightphantom"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_minoshroom"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.64
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ug_forgotten_guardian"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_forgotten_metal"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.72
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.32
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/unorithe"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.8
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/vn_warden"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 3.6
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.0
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 0.24
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.0
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 1.92
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "cloth_strap/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 2.08
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

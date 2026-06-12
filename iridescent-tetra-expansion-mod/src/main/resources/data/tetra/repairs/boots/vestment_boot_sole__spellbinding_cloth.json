@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:spell_cloth"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "vestment_boot_sole/spellbinding_cloth"
+}

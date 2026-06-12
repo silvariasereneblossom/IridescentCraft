@@ -861,6 +861,468 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:fabric/manaweave"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/spellbinding_cloth"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_black"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_blue"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_brown"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_cyan"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_gray"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_green"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_blue"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_gray"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_lime"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_magenta"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_orange"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_pink"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_purple"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_red"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_yellow"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.195
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.324
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0389
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "padded_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.324
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

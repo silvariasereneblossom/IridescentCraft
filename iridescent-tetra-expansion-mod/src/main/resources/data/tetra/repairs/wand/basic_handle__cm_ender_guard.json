@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:gauntlet_of_guard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/cm_ender_guard"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:twisting_vines"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/twisting_vine"
+}

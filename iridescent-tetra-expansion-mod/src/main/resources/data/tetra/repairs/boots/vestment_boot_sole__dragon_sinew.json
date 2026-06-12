@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "tetra:dragon_sinew"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "vestment_boot_sole/dragon_sinew"
+}

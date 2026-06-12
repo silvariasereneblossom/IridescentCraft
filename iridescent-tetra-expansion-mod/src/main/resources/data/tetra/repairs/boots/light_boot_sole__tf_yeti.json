@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:alpha_fur"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "light_boot_sole/tf_yeti"
+}

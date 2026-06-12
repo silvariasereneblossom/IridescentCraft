@@ -359,6 +359,1282 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_slider"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_sunspirit"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_valkyrie"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.34
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_gob"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_umvuthi"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_wroughtnaut"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/brass"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.18
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_alchemist"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_starlit"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ancient_metal"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.36
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_cursium"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.336
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ender_guard"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.36
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.328
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_leviathan"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_monstrosity"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_witherite"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.344
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cs_drakara"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/da_eots"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.36
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.248
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/deorum"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.24
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dimlite"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.248
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/enderium"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.272
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.256
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/garnite"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iridium"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.26
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_citadel"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_deadking"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_magehunter"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knight"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.26
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.224
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/lumium"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.192
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/osmium"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.24
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/phantom"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.24
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/refined_obsidian"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.28
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/signalum"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steel"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.212
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.336
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.26
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_hydra"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_knightphantom"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_minoshroom"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ug_forgotten_guardian"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_forgotten_metal"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.272
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/unorithe"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.28
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/vn_warden"
+      ],
+      "key": "reinforced_greaves/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.36
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

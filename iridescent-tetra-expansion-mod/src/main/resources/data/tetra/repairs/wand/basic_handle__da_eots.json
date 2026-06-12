@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:squall_plate"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/da_eots"
+}

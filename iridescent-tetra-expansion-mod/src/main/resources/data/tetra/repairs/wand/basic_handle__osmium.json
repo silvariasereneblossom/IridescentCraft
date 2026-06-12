@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mekanism:ingot_osmium"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/osmium"
+}

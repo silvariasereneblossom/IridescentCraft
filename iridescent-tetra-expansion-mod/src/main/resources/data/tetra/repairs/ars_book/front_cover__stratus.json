@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:stratus_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/stratus"
+}

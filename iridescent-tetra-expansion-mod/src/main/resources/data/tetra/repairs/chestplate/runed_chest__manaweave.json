@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:manaweave_cloth"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "runed_chest/manaweave"
+}

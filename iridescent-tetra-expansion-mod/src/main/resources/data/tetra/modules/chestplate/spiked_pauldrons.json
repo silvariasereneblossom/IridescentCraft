@@ -359,6 +359,2156 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:gem/aether_neptune"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1941,
+          "minecraft:generic.armor_toughness": 0.1733
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/amethyst"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1867,
+          "minecraft:generic.armor_toughness": 0.1667
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_frostmaw"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_mnaga"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_sculptor"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_sniffer"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bo_gaia"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.336,
+          "minecraft:generic.armor_toughness": 0.3
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bs_arachnarch"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2464,
+          "minecraft:generic.armor_toughness": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bs_pyrope"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1867,
+          "minecraft:generic.armor_toughness": 0.1667
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bs_summoner"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2464,
+          "minecraft:generic.armor_toughness": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cm_scylla"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_envy"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_gluttony"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_greed"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_lust"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_pride"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_sloth"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_wrath"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/dd_resonarium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2016,
+          "minecraft:generic.armor_toughness": 0.18
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/dd_stalker"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond_no_t"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2016,
+          "minecraft:generic.armor_toughness": 0.18
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diopside"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1867,
+          "minecraft:generic.armor_toughness": 0.1667
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/emerald"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/iss_archevoker"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/iss_tyros"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/onyx"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.28,
+          "minecraft:generic.armor_toughness": 0.25
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/ruby"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/sapphire"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tf_lich"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2464,
+          "minecraft:generic.armor_toughness": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tf_snowqueen"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2464,
+          "minecraft:generic.armor_toughness": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tf_urghast"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2464,
+          "minecraft:generic.armor_toughness": 0.22
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_circe"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.336,
+          "minecraft:generic.armor_toughness": 0.3
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_gatmancer"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.3099,
+          "minecraft:generic.armor_toughness": 0.2767
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_thunker"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.336,
+          "minecraft:generic.armor_toughness": 0.3
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_virtue"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.336,
+          "minecraft:generic.armor_toughness": 0.3
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/topaz"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2053,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/undergarden_utherium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2315,
+          "minecraft:generic.armor_toughness": 0.2067
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/vn_dragon"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.336,
+          "minecraft:generic.armor_toughness": 0.3
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_slider"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_sunspirit"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_valkyrie"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1856
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.272
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_gob"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_umvuthi"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_wroughtnaut"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/brass"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.144
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_alchemist"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_starlit"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ancient_metal"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_cursium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2688
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ender_guard"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2624
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_leviathan"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_monstrosity"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_witherite"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2752
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cs_drakara"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/da_eots"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1984
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/deorum"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.192
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dimlite"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1984
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/enderium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2048
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1856
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/garnite"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iridium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.16
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_citadel"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_deadking"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_magehunter"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knight"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1792
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/lumium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1536
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/osmium"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.192
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/phantom"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.192
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/refined_obsidian"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.224
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/signalum"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.16
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steel"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1696
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2688
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_hydra"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_knightphantom"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_minoshroom"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ug_forgotten_guardian"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_forgotten_metal"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2176
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1856
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/unorithe"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.224
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/vn_warden"
+      ],
+      "key": "spiked_pauldrons/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

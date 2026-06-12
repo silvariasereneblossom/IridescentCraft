@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:lime_wool"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "runed_leg_plate/wool_lime"
+}

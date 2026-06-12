@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:arctic_fur"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/tf_arctic"
+}

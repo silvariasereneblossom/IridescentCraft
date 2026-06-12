@@ -2613,6 +2613,97 @@
         "models": [],
         "magicCapacity": 18
       }
+    },
+    {
+      "materials": [
+        "tetra:gem/amethyst"
+      ],
+      "key": "breastplate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 5.405,
+          "minecraft:generic.armor_toughness": 0.4167
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diopside"
+      ],
+      "key": "breastplate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 5.405,
+          "minecraft:generic.armor_toughness": 0.4167
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/emerald"
+      ],
+      "key": "breastplate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 5.9455,
+          "minecraft:generic.armor_toughness": 0.4583
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "breastplate/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 8.1732
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
     }
   ]
 }

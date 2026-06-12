@@ -375,6 +375,1340 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_slider"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_sunspirit"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_valkyrie"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1856,
+          "minecraft:generic.attack_speed": -0.0232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.272,
+          "minecraft:generic.attack_speed": -0.034
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_gob"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176,
+          "minecraft:generic.attack_speed": -0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_umvuthi"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176,
+          "minecraft:generic.attack_speed": -0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_wroughtnaut"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176,
+          "minecraft:generic.attack_speed": -0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/brass"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.144,
+          "minecraft:generic.attack_speed": -0.018
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_alchemist"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_starlit"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664,
+          "minecraft:generic.attack_speed": -0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ancient_metal"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288,
+          "minecraft:generic.attack_speed": -0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_cursium"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2688,
+          "minecraft:generic.attack_speed": -0.0336
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ender_guard"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288,
+          "minecraft:generic.attack_speed": -0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2624,
+          "minecraft:generic.attack_speed": -0.0328
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_leviathan"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656,
+          "minecraft:generic.attack_speed": -0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_monstrosity"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656,
+          "minecraft:generic.attack_speed": -0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_witherite"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2752,
+          "minecraft:generic.attack_speed": -0.0344
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cs_drakara"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656,
+          "minecraft:generic.attack_speed": -0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/da_eots"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288,
+          "minecraft:generic.attack_speed": -0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1984,
+          "minecraft:generic.attack_speed": -0.0248
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/deorum"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.192,
+          "minecraft:generic.attack_speed": -0.024
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dimlite"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664,
+          "minecraft:generic.attack_speed": -0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1984,
+          "minecraft:generic.attack_speed": -0.0248
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/enderium"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2176,
+          "minecraft:generic.attack_speed": -0.0272
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2048,
+          "minecraft:generic.attack_speed": -0.0256
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664,
+          "minecraft:generic.attack_speed": -0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1856,
+          "minecraft:generic.attack_speed": -0.0232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/garnite"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176,
+          "minecraft:generic.attack_speed": -0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176,
+          "minecraft:generic.attack_speed": -0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iridium"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208,
+          "minecraft:generic.attack_speed": -0.026
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.16,
+          "minecraft:generic.attack_speed": -0.02
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_citadel"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656,
+          "minecraft:generic.attack_speed": -0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_deadking"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656,
+          "minecraft:generic.attack_speed": -0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_magehunter"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656,
+          "minecraft:generic.attack_speed": -0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knight"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208,
+          "minecraft:generic.attack_speed": -0.026
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1792,
+          "minecraft:generic.attack_speed": -0.0224
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/lumium"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1536,
+          "minecraft:generic.attack_speed": -0.0192
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1664,
+          "minecraft:generic.attack_speed": -0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/osmium"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.192,
+          "minecraft:generic.attack_speed": -0.024
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/phantom"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.192,
+          "minecraft:generic.attack_speed": -0.024
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/refined_obsidian"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.224,
+          "minecraft:generic.attack_speed": -0.028
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/signalum"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.16,
+          "minecraft:generic.attack_speed": -0.02
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steel"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176,
+          "minecraft:generic.attack_speed": -0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1696,
+          "minecraft:generic.attack_speed": -0.0212
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2688,
+          "minecraft:generic.attack_speed": -0.0336
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.208,
+          "minecraft:generic.attack_speed": -0.026
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_hydra"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_knightphantom"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_minoshroom"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2112,
+          "minecraft:generic.attack_speed": -0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ug_forgotten_guardian"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2656,
+          "minecraft:generic.attack_speed": -0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.176,
+          "minecraft:generic.attack_speed": -0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_forgotten_metal"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2176,
+          "minecraft:generic.attack_speed": -0.0272
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1856,
+          "minecraft:generic.attack_speed": -0.0232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/unorithe"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.224,
+          "minecraft:generic.attack_speed": -0.028
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/vn_warden"
+      ],
+      "key": "full_visor/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.288,
+          "minecraft:generic.attack_speed": -0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

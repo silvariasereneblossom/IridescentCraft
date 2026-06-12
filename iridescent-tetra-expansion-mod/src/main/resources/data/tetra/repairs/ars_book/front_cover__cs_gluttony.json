@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cardinal_sins:essenceofgluttony"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/cs_gluttony"
+}

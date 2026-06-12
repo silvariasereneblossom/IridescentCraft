@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "irons_spellbooks:keeper_flamberge"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/iss_citadel"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:vine"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/vine"
+}

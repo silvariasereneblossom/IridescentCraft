@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:black_wool"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/wool_black"
+}

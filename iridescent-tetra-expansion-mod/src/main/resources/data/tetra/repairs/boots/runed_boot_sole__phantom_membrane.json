@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:phantom_membrane"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "runed_boot_sole/phantom_membrane"
+}

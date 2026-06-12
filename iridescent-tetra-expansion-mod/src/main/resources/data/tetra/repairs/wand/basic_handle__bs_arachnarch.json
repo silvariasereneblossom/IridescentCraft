@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:spider_webbing"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/bs_arachnarch"
+}

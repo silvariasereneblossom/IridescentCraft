@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:soul_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/dd_stalker"
+}

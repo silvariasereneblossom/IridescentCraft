@@ -374,6 +374,558 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:fabric/arcane_cloth"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/manaweave"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/spellbinding_cloth"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_black"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_blue"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_brown"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_cyan"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_gray"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_green"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_blue"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_gray"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_lime"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_magenta"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_orange"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_pink"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_purple"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_red"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_yellow"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.04,
+          "minecraft:generic.knockback_resistance": 0.008
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.11,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0132,
+          "minecraft:generic.knockback_resistance": 0.0048
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.11,
+          "minecraft:generic.knockback_resistance": 0.04
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1056,
+          "minecraft:generic.knockback_resistance": 0.0384
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "chainmail_lining/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1144,
+          "minecraft:generic.knockback_resistance": 0.0416
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

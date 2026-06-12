@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:ruby"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/ruby"
+}

@@ -335,6 +335,731 @@
         "models": [],
         "magicCapacity": 1.0
       }
+    },
+    {
+      "materials": [
+        "tetra:fabric/manaweave"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/spellbinding_cloth"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_black"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_blue"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_brown"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_cyan"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_gray"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_green"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_blue"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_light_gray"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_lime"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_magenta"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_orange"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_pink"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_purple"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_red"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fabric/wool_yellow"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.2,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/dragon_sinew"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.08,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/paper"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.08,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/phantom_membrane"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.096,
+          "irons_spellbooks:max_mana": 60.0,
+          "**irons_spellbooks:spell_power": 0.015,
+          "**irons_spellbooks:mana_regen": 0.06
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/twisting_vine"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.12,
+          "irons_spellbooks:max_mana": 75.0,
+          "**irons_spellbooks:spell_power": 0.0188,
+          "**irons_spellbooks:mana_regen": 0.075
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/vine"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.048,
+          "irons_spellbooks:max_mana": 30.0,
+          "**irons_spellbooks:spell_power": 0.0075,
+          "**irons_spellbooks:mana_regen": 0.03
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/weeping_vine"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.064,
+          "irons_spellbooks:max_mana": 40.0,
+          "**irons_spellbooks:spell_power": 0.01,
+          "**irons_spellbooks:mana_regen": 0.04
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.11,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0132,
+          "irons_spellbooks:max_mana": 6.0,
+          "**irons_spellbooks:spell_power": 0.0015,
+          "**irons_spellbooks:mana_regen": 0.006
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.11,
+          "irons_spellbooks:max_mana": 50.0,
+          "**irons_spellbooks:spell_power": 0.0125,
+          "**irons_spellbooks:mana_regen": 0.05
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1056,
+          "irons_spellbooks:max_mana": 48.0,
+          "**irons_spellbooks:spell_power": 0.012,
+          "**irons_spellbooks:mana_regen": 0.048
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "vestment_crown/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1144,
+          "irons_spellbooks:max_mana": 52.0,
+          "**irons_spellbooks:spell_power": 0.013,
+          "**irons_spellbooks:mana_regen": 0.052
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

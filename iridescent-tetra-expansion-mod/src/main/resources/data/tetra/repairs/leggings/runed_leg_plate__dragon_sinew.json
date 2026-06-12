@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "tetra:dragon_sinew"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "runed_leg_plate/dragon_sinew"
+}

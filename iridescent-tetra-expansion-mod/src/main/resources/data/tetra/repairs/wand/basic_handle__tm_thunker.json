@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:chthonic_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/tm_thunker"
+}

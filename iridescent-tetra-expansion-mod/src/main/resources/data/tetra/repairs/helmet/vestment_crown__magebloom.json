@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "ars_nouveau:magebloom_fiber"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "vestment_crown/magebloom"
+}

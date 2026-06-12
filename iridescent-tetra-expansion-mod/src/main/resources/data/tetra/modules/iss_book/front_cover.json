@@ -1505,6 +1505,974 @@
         "models": [],
         "magicCapacity": 9
       }
+    },
+    {
+      "materials": [
+        "tetra:bone/bone"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0054
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:bone/tf_naga"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0053
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 4
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/aether_neptune"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0223
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/amethyst"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0111
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_frostmaw"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0185
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_mnaga"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0185
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_sculptor"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0185
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bm_sniffer"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0185
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bo_gaia"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0338
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bs_arachnarch"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0223
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bs_pyrope"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0223
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/bs_summoner"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0223
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cm_scylla"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_envy"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_gluttony"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_greed"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_lust"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_pride"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_sloth"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/cs_wrath"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/dd_resonarium"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0254
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/dd_stalker"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diamond_no_t"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.02
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diopside"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0138
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/emerald"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0111
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/iss_archevoker"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/iss_tyros"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/onyx"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0254
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/ruby"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0192
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/sapphire"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0192
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tf_lich"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0223
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tf_snowqueen"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0223
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tf_urghast"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0223
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_circe"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0338
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_gatmancer"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0308
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_thunker"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0338
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/tm_virtue"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0338
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/topaz"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0192
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/undergarden_utherium"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0215
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/vn_dragon"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0338
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/arcane_ingot"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0075
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0075
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 5
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.005
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "front_cover/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:spell_power": 0.0072
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

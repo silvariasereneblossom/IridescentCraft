@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "irons_spellbooks:arcane_essence"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/iss_archevoker"
+}

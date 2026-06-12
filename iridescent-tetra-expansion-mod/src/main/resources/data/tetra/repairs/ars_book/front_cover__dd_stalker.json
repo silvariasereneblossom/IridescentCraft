@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:soul_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/dd_stalker"
+}

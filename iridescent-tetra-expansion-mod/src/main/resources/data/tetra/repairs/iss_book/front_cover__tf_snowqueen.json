@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:snow_queen_trophy"
+    ],
+    "count": 2
+  },
+  "moduleKey": "iss_book/front_cover",
+  "moduleVariant": "front_cover/tf_snowqueen"
+}

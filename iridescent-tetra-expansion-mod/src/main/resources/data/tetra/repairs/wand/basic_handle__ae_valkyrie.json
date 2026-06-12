@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:victory_medal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/ae_valkyrie"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:manaweave_cloth"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "runed_boot_sole/manaweave"
+}

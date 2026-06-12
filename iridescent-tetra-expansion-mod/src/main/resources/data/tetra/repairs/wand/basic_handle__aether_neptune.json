@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "aether:zanite_gemstone"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/aether_neptune"
+}

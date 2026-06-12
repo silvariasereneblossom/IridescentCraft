@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "tetra:dragon_sinew"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/dragon_sinew"
+}

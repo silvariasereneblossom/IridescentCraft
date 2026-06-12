@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:abyssal_egg"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/cm_leviathan"
+}

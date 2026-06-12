@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mowziesmobs:sol_visage"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/bm_umvuthi"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:angel_feather"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/tm_virtue"
+}

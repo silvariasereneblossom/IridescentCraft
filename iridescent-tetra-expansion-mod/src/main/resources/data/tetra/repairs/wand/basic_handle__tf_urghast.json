@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:fiery_tears"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/tf_urghast"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:phantom_membrane"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/phantom_membrane"
+}

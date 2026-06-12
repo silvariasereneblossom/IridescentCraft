@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:occult_fabric"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/tm_gatmancer"
+}

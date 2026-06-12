@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:terrasteel_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/terrasteel"
+}

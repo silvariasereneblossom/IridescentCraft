@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:flint"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/flint"
+}

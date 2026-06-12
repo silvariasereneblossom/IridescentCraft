@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:purple_wool"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "runed_chest/wool_purple"
+}

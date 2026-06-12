@@ -385,6 +385,1398 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_slider"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_sunspirit"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ae_valkyrie"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aether_obsidian"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.28,
+          "**irons_spellbooks:spell_power": 0.0232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/aethersteel"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.6,
+          "**irons_spellbooks:spell_power": 0.034
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_gob"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.8,
+          "**irons_spellbooks:spell_power": 0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_umvuthi"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.8,
+          "**irons_spellbooks:spell_power": 0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bm_wroughtnaut"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.8,
+          "**irons_spellbooks:spell_power": 0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/brass"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 7.2,
+          "**irons_spellbooks:spell_power": 0.018
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_alchemist"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/bs_starlit"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/charoite"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.32,
+          "**irons_spellbooks:spell_power": 0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ancient_metal"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 14.4,
+          "**irons_spellbooks:spell_power": 0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_cursium"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.44,
+          "**irons_spellbooks:spell_power": 0.0336
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ender_guard"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 14.4,
+          "**irons_spellbooks:spell_power": 0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_ignitium"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.12,
+          "**irons_spellbooks:spell_power": 0.0328
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_leviathan"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.28,
+          "**irons_spellbooks:spell_power": 0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_monstrosity"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.28,
+          "**irons_spellbooks:spell_power": 0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cm_witherite"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.76,
+          "**irons_spellbooks:spell_power": 0.0344
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/cs_drakara"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.28,
+          "**irons_spellbooks:spell_power": 0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/da_eots"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 14.4,
+          "**irons_spellbooks:spell_power": 0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dd_warden"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.92,
+          "**irons_spellbooks:spell_power": 0.0248
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/deorum"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.6,
+          "**irons_spellbooks:spell_power": 0.024
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/dimlite"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.32,
+          "**irons_spellbooks:spell_power": 0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/elementium"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.92,
+          "**irons_spellbooks:spell_power": 0.0248
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/enderium"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.88,
+          "**irons_spellbooks:spell_power": 0.0272
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_draco_arcanus"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.24,
+          "**irons_spellbooks:spell_power": 0.0256
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_mortem"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.32,
+          "**irons_spellbooks:spell_power": 0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fa_tyr"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/fiery"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.28,
+          "**irons_spellbooks:spell_power": 0.0232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/garnite"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.8,
+          "**irons_spellbooks:spell_power": 0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/horizonite"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.8,
+          "**irons_spellbooks:spell_power": 0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iridium"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.4,
+          "**irons_spellbooks:spell_power": 0.026
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ironwood"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.0,
+          "**irons_spellbooks:spell_power": 0.02
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_citadel"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.28,
+          "**irons_spellbooks:spell_power": 0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_deadking"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.28,
+          "**irons_spellbooks:spell_power": 0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/iss_magehunter"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.28,
+          "**irons_spellbooks:spell_power": 0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knight"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.4,
+          "**irons_spellbooks:spell_power": 0.026
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/knightmetal"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.96,
+          "**irons_spellbooks:spell_power": 0.0224
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/lumium"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 7.68,
+          "**irons_spellbooks:spell_power": 0.0192
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/manasteel"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.32,
+          "**irons_spellbooks:spell_power": 0.0208
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/osmium"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.6,
+          "**irons_spellbooks:spell_power": 0.024
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/phantom"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.6,
+          "**irons_spellbooks:spell_power": 0.024
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/refined_obsidian"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 11.2,
+          "**irons_spellbooks:spell_power": 0.028
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/signalum"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.0,
+          "**irons_spellbooks:spell_power": 0.02
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steel"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.8,
+          "**irons_spellbooks:spell_power": 0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/steeleaf"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.48,
+          "**irons_spellbooks:spell_power": 0.0212
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.44,
+          "**irons_spellbooks:spell_power": 0.0336
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/terrasteel"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.4,
+          "**irons_spellbooks:spell_power": 0.026
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_hydra"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_knightphantom"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/tf_minoshroom"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.56,
+          "**irons_spellbooks:spell_power": 0.0264
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/ug_forgotten_guardian"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 13.28,
+          "**irons_spellbooks:spell_power": 0.0332
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_cloggrum"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 8.8,
+          "**irons_spellbooks:spell_power": 0.022
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_forgotten_metal"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 10.88,
+          "**irons_spellbooks:spell_power": 0.0272
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/undergarden_froststeel"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 9.28,
+          "**irons_spellbooks:spell_power": 0.0232
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/unorithe"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 11.2,
+          "**irons_spellbooks:spell_power": 0.028
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/vn_warden"
+      ],
+      "key": "goggles/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0,
+          "irons_spellbooks:max_mana": 14.4,
+          "**irons_spellbooks:spell_power": 0.036
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }

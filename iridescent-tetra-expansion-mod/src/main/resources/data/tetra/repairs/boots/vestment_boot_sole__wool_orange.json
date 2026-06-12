@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:orange_wool"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "vestment_boot_sole/wool_orange"
+}

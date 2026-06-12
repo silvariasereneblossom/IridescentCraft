@@ -13,10 +13,61 @@ Returns 0 on clean, non-zero with issue summary on findings.
 import json
 import glob
 import sys
+import os
+import zipfile
 from collections import defaultdict
 
 MODULES_DIR = 'src/main/resources/data/tetra/modules'
 SCHEMATICS_DIR = 'src/main/resources/data/tetra/schematics'
+
+# The three material homes (see skill tetra-module-wiring). Material refs in
+# schematics/variants are "tetra:<category>/<key>" built from each material
+# JSON's `category` + `key` FIELDS (not its file path -- wool lives at
+# fabric/wool/wool.json).
+MATERIAL_DIRS = [
+    'src/main/resources/data/tetra/materials',
+    '../.minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials',
+]
+TETRA_JAR_GLOB = 'libs/tetra-*.jar'
+
+
+def load_material_registry():
+    """Full material refs ("tetra:metal/iron") from mod src + the
+    icraft_tetra_materials datapack + the Tetra jar's builtins."""
+    refs = set()
+
+    def add_json(payload):
+        try:
+            d = json.loads(payload)
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return
+        cat, key = d.get('category'), d.get('key')
+        if cat and key:
+            refs.add(f'tetra:{cat}/{key}')
+
+    for base in MATERIAL_DIRS:
+        for path in glob.glob(f'{base}/**/*.json', recursive=True):
+            try:
+                with open(path, 'rb') as f:
+                    add_json(f.read())
+            except IOError:
+                pass
+
+    jars = sorted(glob.glob(TETRA_JAR_GLOB))
+    if jars:
+        with zipfile.ZipFile(jars[-1]) as z:
+            for name in z.namelist():
+                if name.startswith('data/tetra/materials/') and name.endswith('.json'):
+                    add_json(z.read(name))
+    return refs
+
+
+def material_covered(entry, concrete_set):
+    """A schematic `materials` entry covers either a category prefix
+    (trailing slash -- Tetra matches by startswith) or one concrete ref."""
+    if entry.endswith('/'):
+        return any(m.startswith(entry) for m in concrete_set)
+    return entry in concrete_set
 
 
 def load_dir(prefix, glob_pattern):
@@ -54,7 +105,13 @@ def main():
             if mk and mk not in modules:
                 issues['missing_module'].append(f'{sch_path} -> {mk}')
 
-    # CHECK 2: schematic's materials are not all in any variant of target module
+    # CHECK 2: every material a schematic makes SELECTABLE must have a module
+    # variant to extract, or the selection silently no-ops in the workbench
+    # (the deathskin-pages bug class, 7b25df073). Schematic entries are
+    # category prefixes ("tetra:skin/") or concrete refs; prefixes are
+    # expanded against the real material registry so PER-MATERIAL gaps are
+    # caught, not just empty categories.
+    registry = load_material_registry()
     for sch_path, sch in schematics.items():
         for oc in sch.get('outcomes', []):
             mk = oc.get('moduleKey')
@@ -63,30 +120,57 @@ def main():
                 continue
             mod = modules[mk]
             variant_mats = {m for v in mod.get('variants', []) for m in v.get('materials', [])}
-            missing = sch_mats - variant_mats
-            if missing:
-                issues['schematic_mat_not_in_module'].append(
-                    f'{sch_path} accepts {missing} but {mk} has no variant for them'
-                )
+            for entry in sorted(sch_mats):
+                if entry.endswith('/'):
+                    members = {m for m in registry if m.startswith(entry)}
+                    if not members:
+                        issues['schematic_category_empty'].append(
+                            f'{sch_path}: category {entry} matches no registered material'
+                        )
+                        continue
+                    gaps = sorted(
+                        m for m in members
+                        if m not in variant_mats
+                        and not any(vm.endswith('/') and m.startswith(vm) for vm in variant_mats)
+                    )
+                    if gaps:
+                        issues['selectable_material_no_variant'].append(
+                            f'{sch_path} -> {mk}: {len(gaps)} selectable material(s) with no variant: '
+                            + ', '.join(gaps[:6]) + (' ...' if len(gaps) > 6 else '')
+                        )
+                elif entry not in variant_mats and not any(
+                        vm.endswith('/') and entry.startswith(vm) for vm in variant_mats):
+                    issues['selectable_material_no_variant'].append(
+                        f'{sch_path} -> {mk}: concrete material {entry} has no variant'
+                    )
 
-    # CHECK 3: BASE variant accepts materials no schematic allows
-    # (the "Emerald robe" fail pattern - base falls through to a material the
-    # restrictive schematic wouldn't pick.)
+    # CHECK 3 (soft): variants whose materials no schematic can reach -- dead
+    # data. Generalizes the old "Emerald robe" base-variant check to the
+    # per-material-variant data model (every combine-pattern key ends in '/',
+    # so "the base variant" is no longer a single identifiable entry), with
+    # prefix-aware matching against the schematic union.
     for mod_key, mod in modules.items():
-        base_v = next((v for v in mod.get('variants', []) if v.get('key', '').endswith('/')), None)
-        if not base_v:
-            continue
-        base_mats = set(base_v.get('materials', []))
         relevant = sch_by_module.get(mod_key, [])
         if not relevant:
             continue
         sch_union = set()
         for _, m in relevant:
             sch_union |= m
-        extra = base_mats - sch_union
-        if extra and sch_union:
-            issues['base_accepts_unschematized'].append(
-                f'{mod_key}: base variant accepts {extra} but schematics only allow {sch_union}'
+        if not sch_union:
+            continue
+        dead = set()
+        for v in mod.get('variants', []):
+            for vm in v.get('materials', []):
+                reachable = any(
+                    (s.endswith('/') and vm.startswith(s)) or s == vm
+                    for s in sch_union
+                )
+                if not reachable:
+                    dead.add(vm)
+        if dead:
+            issues['unreachable_variant_soft'].append(
+                f'{mod_key}: {len(dead)} variant material(s) no schematic reaches: '
+                + ', '.join(sorted(dead)[:6]) + (' ...' if len(dead) > 6 else '')
             )
 
     # CHECK 4: variant suffix doesn't match any of variant's materials
@@ -164,13 +248,18 @@ def main():
         print(f'Clean. Scanned {len(modules)} modules + {len(schematics)} schematics.')
         return 0
 
+    SOFT = {'unreachable_variant_soft', 'schematic_category_empty'}
+    hard_hit = False
     for cat, items in issues.items():
-        print(f'\n=== {cat} ({len(items)}) ===')
+        tag = ' [soft]' if cat in SOFT else ''
+        if cat not in SOFT:
+            hard_hit = True
+        print(f'\n=== {cat} ({len(items)}){tag} ===')
         for it in items[:25]:
             print(f'  {it}')
         if len(items) > 25:
             print(f'  ... +{len(items) - 25} more')
-    return 1
+    return 1 if hard_hit else 0
 
 
 if __name__ == '__main__':

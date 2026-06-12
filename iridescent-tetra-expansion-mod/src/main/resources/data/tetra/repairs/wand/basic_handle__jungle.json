@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:jungle_planks"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/jungle"
+}

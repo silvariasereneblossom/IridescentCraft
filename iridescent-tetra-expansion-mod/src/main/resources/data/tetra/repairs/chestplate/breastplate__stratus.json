@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:stratus_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "breastplate/stratus"
+}

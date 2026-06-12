@@ -136,6 +136,184 @@
         "models": [],
         "magicCapacity": 0.5
       }
+    },
+    {
+      "materials": [
+        "tetra:fibre/dragon_sinew"
+      ],
+      "key": "pages/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0093
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/phantom_membrane"
+      ],
+      "key": "pages/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0093
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/string"
+      ],
+      "key": "pages/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.01
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/twisting_vine"
+      ],
+      "key": "pages/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.01
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/vine"
+      ],
+      "key": "pages/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0096
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:fibre/weeping_vine"
+      ],
+      "key": "pages/",
+      "extract": {
+        "primaryAttributes": {
+          "**irons_spellbooks:mana_regen": 0.0122
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "pages/",
+      "extract": {
+        "tertiaryAttributes": {
+          "**irons_spellbooks:cast_time_reduction": 0.01
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 16,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1,
+        "primaryAttributes": {}
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "pages/",
+      "extract": {
+        "tertiaryAttributes": {
+          "**irons_spellbooks:cast_time_reduction": 0.01
+        },
+        "integrity": 0.5,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 16,
+          "textureY": 0
+        },
+        "availableTextures": [
+          ""
+        ],
+        "models": [],
+        "magicCapacity": 1,
+        "primaryAttributes": {}
+      }
     }
   ]
 }

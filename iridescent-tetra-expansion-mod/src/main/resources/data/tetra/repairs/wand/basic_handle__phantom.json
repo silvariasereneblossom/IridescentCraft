@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "theabyss:phantom_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/phantom"
+}

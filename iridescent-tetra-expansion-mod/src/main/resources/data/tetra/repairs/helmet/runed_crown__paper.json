@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:paper"
+    ],
+    "count": 4
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/paper"
+}

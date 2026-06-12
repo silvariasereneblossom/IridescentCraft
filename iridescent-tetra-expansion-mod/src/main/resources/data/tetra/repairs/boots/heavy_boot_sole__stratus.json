@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:stratus_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "heavy_boot_sole/stratus"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:elementium_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/elementium"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:vine"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "runed_boot_sole/vine"
+}

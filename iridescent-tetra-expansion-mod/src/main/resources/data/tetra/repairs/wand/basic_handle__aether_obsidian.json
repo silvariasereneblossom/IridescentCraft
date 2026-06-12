@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:obsidian"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/aether_obsidian"
+}

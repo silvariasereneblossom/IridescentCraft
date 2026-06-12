@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:amethyst_shard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/amethyst"
+}

@@ -2572,6 +2572,101 @@
         "models": [],
         "magicCapacity": 18
       }
+    },
+    {
+      "materials": [
+        "tetra:gem/amethyst"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.8667,
+          "minecraft:generic.knockback_resistance": 0.0333,
+          "minecraft:generic.armor_toughness": 0.1667
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/diopside"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 1.8667,
+          "minecraft:generic.knockback_resistance": 0.0333,
+          "minecraft:generic.armor_toughness": 0.1667
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:gem/emerald"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.0533,
+          "minecraft:generic.knockback_resistance": 0.0367,
+          "minecraft:generic.armor_toughness": 0.1833
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "cuirass/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 2.688,
+          "minecraft:generic.knockback_resistance": 0.0672
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
     }
   ]
 }

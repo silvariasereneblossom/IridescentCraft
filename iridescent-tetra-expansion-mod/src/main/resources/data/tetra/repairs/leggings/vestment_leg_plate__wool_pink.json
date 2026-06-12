@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:pink_wool"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/wool_pink"
+}

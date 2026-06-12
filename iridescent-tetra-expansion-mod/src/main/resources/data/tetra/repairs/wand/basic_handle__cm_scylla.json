@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:lacrima"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/cm_scylla"
+}

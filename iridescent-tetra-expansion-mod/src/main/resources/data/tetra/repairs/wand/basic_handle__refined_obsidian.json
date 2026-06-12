@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mekanism:ingot_refined_obsidian"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/refined_obsidian"
+}

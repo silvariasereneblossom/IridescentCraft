@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:dragon_breath"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/vn_dragon"
+}

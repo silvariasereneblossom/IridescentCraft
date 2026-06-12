@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:rotten_leather"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "vestment_crown/rotten_leather"
+}

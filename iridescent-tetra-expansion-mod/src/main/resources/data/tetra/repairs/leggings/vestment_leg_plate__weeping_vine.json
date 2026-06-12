@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:weeping_vines"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/weeping_vine"
+}

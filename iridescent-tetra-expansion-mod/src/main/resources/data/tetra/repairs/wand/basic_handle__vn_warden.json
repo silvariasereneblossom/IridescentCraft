@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:echo_shard"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/vn_warden"
+}

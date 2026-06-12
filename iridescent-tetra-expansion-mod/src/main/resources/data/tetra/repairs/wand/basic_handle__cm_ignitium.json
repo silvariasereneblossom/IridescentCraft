@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:ignitium_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/cm_ignitium"
+}

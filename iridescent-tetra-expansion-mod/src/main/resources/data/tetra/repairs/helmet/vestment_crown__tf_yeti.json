@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:alpha_fur"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "vestment_crown/tf_yeti"
+}

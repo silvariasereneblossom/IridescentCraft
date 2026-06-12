@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:life_essence"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/bo_gaia"
+}

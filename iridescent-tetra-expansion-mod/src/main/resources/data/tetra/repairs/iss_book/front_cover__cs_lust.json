@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cardinal_sins:essenceoflust"
+    ],
+    "count": 2
+  },
+  "moduleKey": "iss_book/front_cover",
+  "moduleVariant": "front_cover/cs_lust"
+}

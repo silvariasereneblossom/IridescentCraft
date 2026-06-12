@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:rabbit_hide"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "vestment_boot_sole/hide"
+}

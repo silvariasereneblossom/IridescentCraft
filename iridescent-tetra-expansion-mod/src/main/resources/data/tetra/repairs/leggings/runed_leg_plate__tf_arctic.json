@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:arctic_fur"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "runed_leg_plate/tf_arctic"
+}

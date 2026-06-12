@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:malediction_bracelets"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/tm_circe"
+}

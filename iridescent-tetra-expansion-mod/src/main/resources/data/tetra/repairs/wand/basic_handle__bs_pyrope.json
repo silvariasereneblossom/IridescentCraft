@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:pyrope_gem"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/bs_pyrope"
+}

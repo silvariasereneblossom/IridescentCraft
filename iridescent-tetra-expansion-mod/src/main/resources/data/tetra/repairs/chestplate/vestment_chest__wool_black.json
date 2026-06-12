@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:black_wool"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "vestment_chest/wool_black"
+}

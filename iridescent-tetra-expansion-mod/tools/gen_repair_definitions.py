@@ -190,6 +190,59 @@ def load_modded_materials():
             MATERIAL_ITEM_MAP[key] = (items, 2, tools)
 
 
+def load_remaining_materials():
+    """Catch-all fallback for every material home the two loaders above do
+    not cover: ALL categories of the icraft_tetra_materials datapack (they
+    only read metal/gem), the mod's own data/tetra/materials tree, and the
+    Tetra jar's builtin materials (wools, woods, stones, vines, bone...).
+    Derives the repair item from the material JSON's own `material` field
+    (`items` list, or `tag` -- emit_repair handles both shapes), count 2,
+    tier-derived hammer. Hand-tuned MATERIAL_ITEM_MAP entries always win.
+    This kills the standing UNMAPPED MATERIALS failure mode: any material a
+    schematic can select now auto-flows a repair definition."""
+    import glob as _glob
+    import zipfile as _zipfile
+
+    def add_payload(payload):
+        try:
+            d = json.loads(payload)
+        except (json.JSONDecodeError, UnicodeDecodeError):
+            return
+        key = d.get('key')
+        m = d.get('material', {})
+        if not key or key in MATERIAL_ITEM_MAP:
+            return
+        if m.get('items'):
+            src = m['items']
+        elif m.get('tag'):
+            src = {'tag': m['tag']}
+        else:
+            return
+        tool_lvl = str(d.get('toolLevel', '')).lower()
+        tools = HAMMER_DIAMOND if 'netherite' in tool_lvl else HAMMER_IRON
+        MATERIAL_ITEM_MAP[key] = (src, 2, tools)
+
+    homes = [
+        os.path.join(ROOT, 'src/main/resources/data/tetra/materials'),
+        os.path.normpath(os.path.join(
+            ROOT, '..', '.minecraft', 'datapack_sources',
+            'icraft_tetra_materials', 'data', 'tetra', 'materials')),
+    ]
+    for base in homes:
+        for path in _glob.glob(os.path.join(base, '**', '*.json'), recursive=True):
+            try:
+                with open(path, 'rb') as f:
+                    add_payload(f.read())
+            except IOError:
+                pass
+    jars = sorted(_glob.glob(os.path.join(ROOT, 'libs', 'tetra-*.jar')))
+    if jars:
+        with _zipfile.ZipFile(jars[-1]) as z:
+            for name in z.namelist():
+                if name.startswith('data/tetra/materials/') and name.endswith('.json'):
+                    add_payload(z.read(name))
+
+
 def is_major_module(d):
     return d.get('type') == 'tetra:basic_major_module'
 
@@ -218,8 +271,12 @@ def emit_repair(slot, archetype, material, items, count, tools, variant_key):
     out_dir = os.path.join(REPAIRS_DIR, slot)
     os.makedirs(out_dir, exist_ok=True)
     fname = f'{archetype}__{material}.json'
+    if isinstance(items, dict) and 'tag' in items:
+        material_obj = {'tag': items['tag'], 'count': count}
+    else:
+        material_obj = {'items': items, 'count': count}
     out = {
-        'material':      {'items': items, 'count': count},
+        'material':      material_obj,
         'moduleKey':     archetype_to_module_key(slot, archetype),
         'moduleVariant': variant_key,
     }
@@ -240,6 +297,7 @@ _MODULE_SLOT_MAP = {}
 def regenerate():
     load_themed_materials()
     load_modded_materials()
+    load_remaining_materials()
     if os.path.isdir(REPAIRS_DIR):
         shutil.rmtree(REPAIRS_DIR)
     os.makedirs(REPAIRS_DIR, exist_ok=True)

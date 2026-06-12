@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:twisting_vines"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "vestment_chest/twisting_vine"
+}

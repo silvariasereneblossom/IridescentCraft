@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:soul_fragment"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/bs_summoner"
+}

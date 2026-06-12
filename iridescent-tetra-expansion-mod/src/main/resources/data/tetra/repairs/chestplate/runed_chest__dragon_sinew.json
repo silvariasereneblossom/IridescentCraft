@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "tetra:dragon_sinew"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "runed_chest/dragon_sinew"
+}

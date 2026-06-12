@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:alpha_fur"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/tf_yeti"
+}

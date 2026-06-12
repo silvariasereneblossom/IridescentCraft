@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:cursium_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/cm_cursium"
+}

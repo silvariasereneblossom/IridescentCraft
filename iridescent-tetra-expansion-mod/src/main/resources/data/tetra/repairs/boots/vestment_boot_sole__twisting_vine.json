@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:twisting_vines"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "vestment_boot_sole/twisting_vine"
+}

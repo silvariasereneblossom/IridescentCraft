@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:spell_cloth"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/spellbinding_cloth"
+}

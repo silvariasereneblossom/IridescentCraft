@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "twilightforest:alpha_fur"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "vestment_chest/tf_yeti"
+}

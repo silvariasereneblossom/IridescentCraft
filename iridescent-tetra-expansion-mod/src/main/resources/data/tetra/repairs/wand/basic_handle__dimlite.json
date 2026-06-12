@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:dimlite_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/dimlite"
+}

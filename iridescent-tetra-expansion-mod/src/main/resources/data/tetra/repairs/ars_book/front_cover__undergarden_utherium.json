@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "undergarden:utherium_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/undergarden_utherium"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:dragon_breath"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/vn_dragon"
+}

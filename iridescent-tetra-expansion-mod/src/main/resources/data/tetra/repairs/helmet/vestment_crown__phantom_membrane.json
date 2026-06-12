@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:phantom_membrane"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "vestment_crown/phantom_membrane"
+}

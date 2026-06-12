@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deep_aether:stratus_ingot"
+    ],
+    "count": 1
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "light_leg_plate/stratus"
+}

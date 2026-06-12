@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "ars_nouveau:magebloom_fiber"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/magebloom"
+}

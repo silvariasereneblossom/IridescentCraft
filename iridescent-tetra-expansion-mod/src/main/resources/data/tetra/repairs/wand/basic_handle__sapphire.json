@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:sapphire"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/sapphire"
+}

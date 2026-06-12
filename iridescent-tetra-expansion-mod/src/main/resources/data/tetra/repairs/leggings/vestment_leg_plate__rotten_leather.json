@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:rotten_leather"
+    ],
+    "count": 2
+  },
+  "moduleKey": "leggings/leg_plate",
+  "moduleVariant": "vestment_leg_plate/rotten_leather"
+}

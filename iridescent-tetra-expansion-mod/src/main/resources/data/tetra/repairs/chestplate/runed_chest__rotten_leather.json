@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:rotten_leather"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "runed_chest/rotten_leather"
+}

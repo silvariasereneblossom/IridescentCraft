@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:vine"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/vine"
+}

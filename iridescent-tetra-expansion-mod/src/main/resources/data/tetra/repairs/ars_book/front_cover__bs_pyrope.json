@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "blue_skies:pyrope_gem"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/bs_pyrope"
+}

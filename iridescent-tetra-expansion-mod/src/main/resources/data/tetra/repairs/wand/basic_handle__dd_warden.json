@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "deeperdarker:reinforced_echo_shard"
+    ],
+    "count": 1
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/dd_warden"
+}

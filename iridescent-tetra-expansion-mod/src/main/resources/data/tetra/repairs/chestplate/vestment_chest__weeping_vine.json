@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:weeping_vines"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "vestment_chest/weeping_vine"
+}

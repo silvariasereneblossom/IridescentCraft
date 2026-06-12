@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:acacia_planks"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/acacia"
+}

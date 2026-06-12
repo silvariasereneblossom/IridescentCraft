@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:weeping_vines"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "runed_boot_sole/weeping_vine"
+}

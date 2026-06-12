@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:life_essence"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/bo_gaia"
+}

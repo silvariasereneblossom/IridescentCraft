@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:sapphire"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/sapphire"
+}

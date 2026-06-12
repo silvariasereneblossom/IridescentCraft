@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cataclysm:lava_power_cell"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/cm_monstrosity"
+}

@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "botania:manaweave_cloth"
+    ],
+    "count": 2
+  },
+  "moduleKey": "helmet/crown",
+  "moduleVariant": "runed_crown/manaweave"
+}

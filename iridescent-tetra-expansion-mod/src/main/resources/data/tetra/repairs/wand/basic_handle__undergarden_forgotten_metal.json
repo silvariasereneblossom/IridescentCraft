@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "undergarden:forgotten_ingot"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/undergarden_forgotten_metal"
+}

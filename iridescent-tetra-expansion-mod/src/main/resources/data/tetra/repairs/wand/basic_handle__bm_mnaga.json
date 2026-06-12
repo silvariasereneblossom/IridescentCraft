@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mowziesmobs:naga_fang"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/bm_mnaga"
+}

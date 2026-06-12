@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "minecraft:rabbit_hide"
+    ],
+    "count": 2
+  },
+  "moduleKey": "chestplate/chest_plate",
+  "moduleVariant": "vestment_chest/hide"
+}

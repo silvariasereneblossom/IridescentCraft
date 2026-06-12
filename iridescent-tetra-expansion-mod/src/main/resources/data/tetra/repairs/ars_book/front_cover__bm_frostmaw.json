@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "mowziesmobs:ice_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/bm_frostmaw"
+}

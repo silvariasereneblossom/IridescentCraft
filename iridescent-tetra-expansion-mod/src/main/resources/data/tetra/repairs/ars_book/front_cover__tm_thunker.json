@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "terramity:chthonic_crystal"
+    ],
+    "count": 2
+  },
+  "moduleKey": "ars_book/front_cover",
+  "moduleVariant": "front_cover/tm_thunker"
+}

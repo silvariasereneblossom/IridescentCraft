@@ -1,0 +1,8 @@
+{
+  "material": {
+    "tag": "forge:blackstone",
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/blackstone"
+}

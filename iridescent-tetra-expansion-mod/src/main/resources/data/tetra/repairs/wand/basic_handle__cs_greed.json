@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "cardinal_sins:essenceofgreed"
+    ],
+    "count": 2
+  },
+  "moduleKey": "wand/handle",
+  "moduleVariant": "basic_handle/cs_greed"
+}

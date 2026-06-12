@@ -1,0 +1,10 @@
+{
+  "material": {
+    "items": [
+      "forbidden_arcanus:rotten_leather"
+    ],
+    "count": 2
+  },
+  "moduleKey": "boots/boot_sole",
+  "moduleVariant": "runed_boot_sole/rotten_leather"
+}

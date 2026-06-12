@@ -2609,6 +2609,144 @@
         "models": [],
         "magicCapacity": 18
       }
+    },
+    {
+      "materials": [
+        "tetra:metal/stratus"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.4032,
+          "forge:step_height_addition": 0.336
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 2
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/hide"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.132,
+          "forge:step_height_addition": 0.2
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/magebloom"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.0158,
+          "forge:step_height_addition": 0.024
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/rotten_leather"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.132,
+          "forge:step_height_addition": 0.2
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_arctic"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1267,
+          "forge:step_height_addition": 0.192
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
+    },
+    {
+      "materials": [
+        "tetra:skin/tf_yeti"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.1373,
+          "forge:step_height_addition": 0.208
+        },
+        "integrity": 1.0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 1
+      }
     }
   ]
 }
