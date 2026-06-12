@@ -94,6 +94,11 @@ Implemented features awaiting confirmation on a live world:
 
 A condensed list of fixes, newest first. Full details are in the [Design Changelog](../design/changelog.md).
 
+**Armor & classes**
+- Caster/ranger armor no longer wiped by class penalties: the flat -4/-3 armor maluses (Archmage/Ranger, plus the Elf toughness malus) are now percentages of your final armor, so robe builds keep their carried-over armor. The "robes read 0.5 armor" symptom is resolved.
+- Glass-cannon equipment-HP halving corrected: it was only removing about a third of equipment HP (design says half) and could stick after unequipping; both fixed.
+- New: `/icraft armormods` dumps every live armor/toughness modifier on you, for precise bug reports.
+
 **Loot & chests**
 - Stray high-tier drops traced and fixed at the source: passive animals no longer drop boss-fragment cores, hostile-mob projectile/beam entities are no longer equipped or scaled, and script-equipped mob gear no longer drops on death. (The diamond/ender-eye-on-spiders symptom was part of this and is resolved — it was intended modded entity loot, not a mystery injector.)
 - Two silently-dead datapacks revived (the stone-tag fixer and the infinite-ham blocker) — both were rejected for a packaging error and are loading again.

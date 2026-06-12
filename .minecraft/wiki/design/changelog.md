@@ -6,6 +6,12 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## June 2026 — Glass-cannon armor maluses now scale instead of wiping robe builds
+
+- **Class/race armor penalties converted from flat to percentage** — the Archmage's armor malus was a flat -4 armor / -2 toughness, authored when a typical kit carried ~20 vanilla armor (about -20%). Against today's Tetra robe builds (4-8 armor total) the same flat number erased the entire armor value — the "my robes read 0.5 armor" report. Archmage is now -20% armor & toughness, Ranger -15% armor, and the Elf race's frailty -10% toughness, all applied to your final armor so the penalty scales with what you actually wear and can never zero a build. Codex class pages updated to match.
+- **Glass-cannon equipment-HP halving now actually halves** — a feedback loop in the penalty calculation meant Ranger/Archmage/Void Summoner equipment HP was only being reduced by about a third instead of the designed half, and the penalty could stick around after removing gear. Both fixed; Void Summoners are also now measured against their correct base HP.
+- **New diagnostic: `/icraft armormods`** — any player can dump every live modifier on their armor and toughness (including ones items and powers apply invisibly) to help report armor oddities precisely.
+
 ## June 2026 — Loot-leak audit, dead-pack revival, and sync hardening
 
 - **Stray loot fixed at the source** — three separate mechanisms were leaking high-tier items onto things that shouldn't carry them. Passive animals no longer drop boss-fragment cores, hostile-mob projectile/beam entities no longer get equipped with gear or scaled, and script-equipped mob gear no longer drops on death. The over-broad death-loot rule was replaced with a properly monster-gated handler.
