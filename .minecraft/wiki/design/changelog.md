@@ -8,6 +8,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ## June 2026 — Glass-cannon armor maluses now scale instead of wiping robe builds
 
+- **Workbench labels completed** — 407 missing translation entries filled; honing schematics now show themed names (Flow, Potency, Bulwark, ...) with tier numerals instead of raw IDs, and wand parts/material categories are properly labeled.
 - **Carrot/potato harvest yield fixed** — right-click (hoe) harvesting consumed the crop's own replant cost out of a reduced drop pool, netting zero; drops re-tuned so every harvest method nets the designed yield.
 - **166 dead workbench material choices now work** — newer materials (boss metals, Aether alloys, wools, fibres, hides) were selectable in reforged armor/wand/spellbook schematics but silently did nothing; all now have real stats (scaled from material grade) and repair recipes. Numbers are first-pass conservative — expect tuning.
 - **Armor sets were only counting one piece — fixed** — a modifier-identity collision in the modular-armor pipeline meant every equipped reforged piece silently replaced the previous one's armor contribution, so a full set gave roughly one piece's worth (tooltips, which render per-item, always looked right). Each slot now counts separately; equipped armor matches your tooltip sum before percentages.

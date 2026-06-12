@@ -98,6 +98,7 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - Right-click/hoe-harvesting carrots or potatoes no longer yields nothing. The auto-replant consumes one of the crop as its replant cost, and the reduced-yield tuning had left exactly one to consume. Both crops now drop enough that every harvest method nets the same yield. (Wheat and beetroot were never affected.)
 
 **Workbench (reforged gear)**
+- Raw translation IDs in the workbench are gone: 407 missing labels filled across honing schematics (every armor class-hone, wand line, and spellbook hone now has a proper name like "Potency III" instead of a raw key), wand part labels, and material category headers.
 - 166 selectable materials that silently did nothing in the workbench now work: newer materials (boss metals, Aether alloys, wools, fibres, hides) were selectable in armor/wand/spellbook schematics but had no module data behind them, so the craft no-opped. All now have variants with stats scaled from their material grade, plus repair definitions.
 
 **Armor & classes**
