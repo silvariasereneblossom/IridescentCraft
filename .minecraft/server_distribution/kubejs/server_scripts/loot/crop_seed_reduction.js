@@ -36,25 +36,33 @@ LootJS.modifiers(event => {
     )
 
   // =========================================================================
-  // POTATOES: Normally drops 2-5 potatoes (used for replanting).
-  // Reduce extra drops — keep 1 guaranteed, 5% chance of a second.
-  // This limits replanting stock without removing the harvest entirely.
+  // POTATOES / CARROTS: self-seeded crops -- the replant "seed" IS the crop.
+  // Design net yield: 1 guaranteed + 5% extra per harvest.
+  //
+  // We guarantee TWO, not one, because Quark's Simple Harvest (right-click /
+  // hoe harvest, also used by villagers) eats one of the crop's own item from
+  // the drops as the replant cost (SimpleHarvestModule.harvestAndReplant:
+  // stack.shrink(1) on the block's asItem). With only 1 guaranteed, a
+  // right-click harvest netted ZERO 95% of the time (2026-06-12 report).
+  // Both harvest modes now net the same: right-click -> 2 drops - 1 replant
+  // cost = 1; manual break -> 2 drops - 1 replanted by hand = 1.
+  // Wheat/beetroot are unaffected: their seed is a separate item, and Quark
+  // only eats a seed when one happens to drop (5%), never the product.
   // =========================================================================
   event
     .addBlockLootModifier('minecraft:potatoes')
     .removeLoot('minecraft:potato')
+    .addLoot(LootEntry.of('minecraft:potato'))
     .addLoot(LootEntry.of('minecraft:potato'))
     .addLoot(
       LootEntry.of('minecraft:potato')
         .when(c => c.randomChance(0.05))
     )
 
-  // =========================================================================
-  // CARROTS: Same pattern as potatoes — 1 guaranteed, 5% chance of extra.
-  // =========================================================================
   event
     .addBlockLootModifier('minecraft:carrots')
     .removeLoot('minecraft:carrot')
+    .addLoot(LootEntry.of('minecraft:carrot'))
     .addLoot(LootEntry.of('minecraft:carrot'))
     .addLoot(
       LootEntry.of('minecraft:carrot')
@@ -102,7 +110,7 @@ LootJS.modifiers(event => {
 
   console.log('[IridescentCraft] Crop seed reduction loaded')
   console.log('  - Wheat/beetroot seeds: 5% drop chance')
-  console.log('  - Potato/carrot replanting stock: 1 + 5% extra')
+  console.log('  - Potato/carrot: 2 guaranteed (1 is the Quark replant cost) + 5% extra')
   console.log('  - Melon/pumpkin stem seeds: 5% drop chance')
   console.log('  - Grass seed drops: UNCHANGED (discovery mechanism)')
 })

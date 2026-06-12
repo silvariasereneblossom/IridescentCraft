@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "a0564cc1f",
+  "generated_from": "dc462270e",
   "roots": [
     "kubejs",
     "config",
@@ -6788,8 +6788,8 @@
       "size": 12985
     },
     "kubejs/server_scripts/class/equipment_hp_halving.js": {
-      "sha256": "dfd0b06954a9dca2dbf6d5d15e56c17252e4d2bcfa667a9c21b840fa6fa5cbd7",
-      "size": 4189
+      "sha256": "921e976e34079af3407df204559af7e37950577d5458b468efff10e26c28fec5",
+      "size": 5903
     },
     "kubejs/server_scripts/cleanup/strip_truly_modular_items.js": {
       "sha256": "2f18c5d3cb017c3f13d21948ea228263d12f6c02437ccce69fc9cc69794ff6df",
@@ -6812,8 +6812,8 @@
       "size": 28705
     },
     "kubejs/server_scripts/diag_armor_modifiers.js": {
-      "sha256": "a35b0b97755a59d734292f724b95f8692db9c58e6331ea2b6f30d3e588a1ce24",
-      "size": 2317
+      "sha256": "7978ba42ab6f86339d4137394041322367c87801f215b2e37653f6da0b25d453",
+      "size": 2480
     },
     "kubejs/server_scripts/diag_blank_book_trace.js": {
       "sha256": "1102a9866f83831dc44bffd7d4311996dd529e7f4912ea3551214e3b7271ec1b",
@@ -8256,7 +8256,7 @@
       "size": 353
     },
     "mods/.index/iridescent-tetra-expansion.pw.toml": {
-      "sha256": "2bbdd5e07343d93f599bf4c654dfae9f9624aedb15917a7ac88a5c14573e121f",
+      "sha256": "72507ebbb4f073dc99dc67c3aded2086b120f2ec1fae2ae3929f3ac90dffc599",
       "size": 380
     },
     "mods/.index/iron-furnaces.pw.toml": {
