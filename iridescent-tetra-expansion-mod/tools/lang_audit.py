@@ -38,12 +38,23 @@ from pathlib import Path
 from collections import defaultdict
 
 MOD_ROOT = Path(__file__).resolve().parent.parent
-LANG = MOD_ROOT / "src/main/resources/assets/iridescent_reforging/lang/en_us.json"
+# The game merges every namespace's lang file, so the audit must too --
+# auditing only the reforging home false-flags keys that legitimately live
+# in the modspells or tetra-namespace homes (156 of the 2026-06-12 "563").
+LANG_FILES = [
+    MOD_ROOT / "src/main/resources/assets/iridescent_reforging/lang/en_us.json",
+    MOD_ROOT / "src/main/resources/assets/iridescent_modular_spells/lang/en_us.json",
+    MOD_ROOT / "src/main/resources/assets/tetra/lang/en_us.json",
+]
 DATA_TETRA = MOD_ROOT / "src/main/resources/data/tetra"
 
 def load_lang():
-    with open(LANG) as f:
-        return json.load(f)
+    merged = {}
+    for path in LANG_FILES:
+        if path.exists():
+            with open(path) as f:
+                merged.update(json.load(f))
+    return merged
 
 def audit_modules(lang):
     """Modules contribute slot meta + per-variant keys."""
