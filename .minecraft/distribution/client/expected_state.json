@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "0dbd8fe44",
+  "generated_from": "240d94bfc",
   "roots": [
     "kubejs",
     "config",
@@ -7156,8 +7156,8 @@
       "size": 5440
     },
     "kubejs/server_scripts/player_t1_damage_softener.js": {
-      "sha256": "aff4e00a3b9ce0a30100edfe4da2b344a4d1247b213b68bb842e9b369155e939",
-      "size": 3284
+      "sha256": "86e512622524f2d7a3d22c1ec4eeae3bf159320cc20e9a819dbd72e6c5e8c733",
+      "size": 3582
     },
     "kubejs/server_scripts/pregen/auto_chunky.js": {
       "sha256": "3dd98e65d098f575cab0b2df81fd18da13f9353883dce29630978a2f0790edae",

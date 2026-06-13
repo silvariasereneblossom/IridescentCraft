@@ -1,89 +1,98 @@
 // =============================================================================
-// TEMPORARY DIAGNOSTIC (#104) -- name the source of the spider-jockey launch arrow
+// TEMPORARY DIAGNOSTIC #104 (v2 -- STACK TRACE) -- name the SOURCE of the
+// amp-50 levitation "launch" (the skeleton-kb / skyward-launch bug).
+// (filename is legacy "arrow"; v1 PROVED it is NOT an arrow -- see below.)
 // =============================================================================
-// The amp-50 Levitation (+ Nausea) "launch" is on the ARROW (operator), but every
-// data-side suspect is ruled out: Apotheosis `shulkers` affix is disabled AND caps
-// at amp~3; affix_effects.js is player-gated; the death potion is chest-loot only.
-// So the source is a modded mob/projectile only an in-game capture can name.
+// v1 (arrow-correlation, replaced by this) captured in the live server log:
+//     levitation amp=50 dur=10t on enemyexpansion:direwolf  proj=UNKNOWN
+//   => NOT a projectile/arrow; a DIRECT/melee/aura/area effect, and it hit a
+//      non-player mob (indiscriminate source).
+// A full decompile sweep (EnemyExpansion, Majrusz lib+difficulty, Apotheosis,
+// + 14 more jars + the whole config/datapack/script tree, 2026-06-13) then
+// PROVED amp-50 levitation is hardcoded NOWHERE:
+//   - EnemyExpansion: zero vanilla-LEVITATION refs (its launches are velocity).
+//   - Majrusz: levitation amplifier hard-clamped to 0..10; amp-50 impossible.
+//   - no `new MobEffectInstance(LEVITATION, *, 50)` anywhere; no config amp 50.
+// => the amplifier is COMPUTED AT RUNTIME -- almost certainly an UNCLAMPED
+//    incrementing reapply (re-adds levitation every few ticks at amp+1, which
+//    also explains dur=10t: it refreshes faster than it expires while climbing).
 //
-// Two correlated handlers (fires even though cap_player_levitation BLOCKS the
-// effect -- this is a separate listener):
-//   (1) on hurt-by-projectile-from-a-NON-player -> stash {projectileType,
-//       shooterType, gameTime} on the victim (global map by uuid).
-//   (2) on Levitation effect application (any amp) -> if the victim has a FRESH
-//       (<=20t) stashed projectile hit, LOG amp + projectile id + shooter id.
-//       "proj=UNKNOWN" => not an arrow (direct melee/aura effect instead).
-//
-// => the log line names the mod (proj=somemod:xxx) or confirms a vanilla tipped
-//    arrow (proj=minecraft:arrow shooter=minecraft:skeleton). REMOVE THIS FILE
-//    after one capture. Deduped per (amp,proj,shooter).
+// v2 instrument: MobEffectEvent.Applicable fires synchronously INSIDE
+// LivingEntity.addEffect, so the Java stack at that moment names the class that
+// called addEffect -- the injector. On any levitation with amplifier >= 10
+// (normal levitation is 0-3; Majrusz caps at 10; so >=10 is unambiguously the
+// bug), dump the top stack frames. Deduped by (amp, top-frames signature) so it
+// logs each distinct source ONCE. The culprit's mod package will be in the trace
+// (e.g. some_mod.entity.FooMob.tick / AreaEffectCloud.tick / a spell cast / a
+// KubeJS script frame). REMOVE THIS FILE after one capture.
 //
 // Memory: feedback_rhino_scoping (var fns in IIFE), feedback_kubejs_event_scope
-// (server-side Forge events), feedback_changelog_mandatory (temporary -> #104).
+// (server-side Forge events), feedback_jar_audit (static exhausted -> instrument).
 // =============================================================================
 
 ;(function () {
-  var DR, ForgeEventRegistry, EntityType, PlayerClass
+  var ForgeEventRegistry, ThreadClass
   try {
-    DR = Java.loadClass('com.iridescentcraft.reforging.event.DamageModifierRegistry')
     ForgeEventRegistry = Java.loadClass('com.iridescentcraft.reforging.event.ForgeEventRegistry')
-    EntityType = Java.loadClass('net.minecraft.world.entity.EntityType')
-    PlayerClass = Java.loadClass('net.minecraft.world.entity.player.Player')
+    ThreadClass = Java.loadClass('java.lang.Thread')
   } catch (e) {
-    console.error('[diag-lev-arrow] init failed: ' + e); return
+    console.error('[diag-lev-src] init failed: ' + e); return
   }
 
-  if (!global._diagLevHits) global._diagLevHits = {}
-  if (!global._diagLevSeen) global._diagLevSeen = {}
+  if (!global._diagLevSrcSeen) global._diagLevSrcSeen = {}
 
   var typeId = function (e) {
-    try { return String(EntityType.getKey(e.getType())) }
-    catch (_) { try { return String(e.type) } catch (__) { return '?' } }
-  }
-  var gameTime = function (e) {
-    try { return e.level().getGameTime() } catch (_) { try { return e.level.gameTime } catch (__) { return 0 } }
-  }
-  var uuidOf = function (e) {
-    try { return String(e.getUUID()) } catch (_) { try { return String(e.uuid) } catch (__) { return null } }
+    try { return String(e.getType().builtInRegistryHolder().key().location()) }
+    catch (_) { try { return String(e.getType()) } catch (__) { return '?' } }
   }
 
-  // (1) stash the last non-player projectile hit on each victim
-  DR.registerLate('icraft.diag_lev_stash', function (event) {
-    try {
-      var src = event.source; if (!src) return
-      var direct = src.directEntity; if (!direct) return
-      var shooter = src.entity
-      if (shooter && (shooter instanceof PlayerClass)) return
-      var victim = event.entity; if (!victim) return
-      var id = uuidOf(victim); if (!id) return
-      global._diagLevHits[id] = {
-        proj: typeId(direct),
-        shooter: shooter ? typeId(shooter) : 'none',
-        time: gameTime(victim)
-      }
-    } catch (e) {}
-  })
+  // Frames we don't care about (the plumbing between addEffect and our handler).
+  var isNoise = function (cn) {
+    return cn.indexOf('java.') === 0 ||
+           cn.indexOf('jdk.') === 0 ||
+           cn.indexOf('sun.') === 0 ||
+           cn.indexOf('net.minecraftforge.eventbus') === 0 ||
+           cn.indexOf('com.iridescentcraft.reforging.event.ForgeEventRegistry') === 0 ||
+           cn.indexOf('diag_levitation') >= 0 ||
+           cn.indexOf('dev.latvian.mods') === 0   // KubeJS/Rhino dispatch internals
+  }
 
-  // (2) on levitation application, log the correlated projectile + shooter
-  ForgeEventRegistry.registerEffectApplicable('icraft.diag_lev_log', function (event) {
+  ForgeEventRegistry.registerEffectApplicable('icraft.diag_lev_src', function (event) {
     try {
       var inst = event.getEffectInstance(); if (!inst) return
       var eff = inst.getEffect(); if (!eff) return
       if (String(eff.getDescriptionId ? eff.getDescriptionId() : eff) !== 'effect.minecraft.levitation') return
-      var v = event.getEntity(); if (!v) return
-      var id = uuidOf(v)
-      var hit = id ? global._diagLevHits[id] : null
       var amp = 0; try { amp = inst.getAmplifier() } catch (_) {}
+      if (amp < 10) return  // ignore normal levitation; >=10 is the bug
+
+      var v = event.getEntity()
       var dur = 0; try { dur = inst.getDuration() } catch (_) {}
-      var fresh = hit && (gameTime(v) - hit.time) <= 20
-      var info = fresh ? ('proj=' + hit.proj + ' shooter=' + hit.shooter)
-                       : 'proj=UNKNOWN (no recent projectile hit -> direct melee/aura effect, NOT an arrow)'
-      var key = 'lev|' + amp + '|' + (fresh ? hit.proj + '|' + hit.shooter : 'noproj')
-      if (global._diagLevSeen[key]) return
-      global._diagLevSeen[key] = true
-      console.warn('[DIAG-LEV] levitation amp=' + amp + ' dur=' + dur + 't on ' + typeId(v) + ' <- ' + info)
-    } catch (e) { console.warn('[DIAG-LEV] log threw: ' + e) }
+
+      // Capture the call stack: the frame that called addEffect is the injector.
+      var frames = ThreadClass.currentThread().getStackTrace()
+      var shown = []
+      var sig = ''
+      for (var i = 0; i < frames.length && shown.length < 22; i++) {
+        var cn = String(frames[i].getClassName())
+        if (isNoise(cn)) continue
+        var line = cn + '.' + String(frames[i].getMethodName()) +
+                   '(' + String(frames[i].getFileName()) + ':' + frames[i].getLineNumber() + ')'
+        shown.push(line)
+        if (sig.length < 240) sig += cn + '.' + String(frames[i].getMethodName()) + '|'
+      }
+
+      var key = 'amp' + amp + '|' + sig
+      if (global._diagLevSrcSeen[key]) return
+      global._diagLevSrcSeen[key] = true
+
+      console.warn('[DIAG-LEV-SRC] ===== levitation amp=' + amp + ' dur=' + dur +
+                   't on ' + (v ? typeId(v) : '?') + ' -- INJECTOR STACK: =====')
+      for (var j = 0; j < shown.length; j++) {
+        console.warn('[DIAG-LEV-SRC]   #' + j + '  ' + shown[j])
+      }
+      console.warn('[DIAG-LEV-SRC] ===== end stack (paste these lines back) =====')
+    } catch (e) { console.warn('[DIAG-LEV-SRC] threw: ' + e) }
   })
 
-  console.log('[diag-lev-arrow] armed (TEMPORARY #104 -- remove after one capture)')
+  console.log('[diag-lev-src] armed (TEMPORARY #104 v2 -- stack-trace on levitation amp>=10; remove after one capture)')
 })()
