@@ -31,8 +31,11 @@ A small number of vanilla spiders can appear with a permanent Regeneration effec
 ### Spider–skeleton jockeys spawn more often than vanilla — **Open (design decision pending)**
 A difficulty-mod setting makes spider-with-skeleton-rider jockeys more common than vanilla's ~1%. Whether to dial this back toward "rare encounter" is a pending design call.
 
+### Entities launched skyward by a high-amplitude Levitation effect — **Investigating**
+The "skyward launch" (seen on players and now on mobs too, e.g. a direwolf) is a **Levitation effect at amplifier ~50** applied for a fraction of a second — not a knockback and not a tipped arrow. In-game capture confirmed it is a *direct/area* effect, not a projectile. A full decompile sweep ruled out the obvious suspects: it is **not** EnemyExpansion (its launches are velocity-based, no Levitation effect), **not** Majrusz (its Levitation is amplifier-capped at 10), and there is **no** amplifier-50 Levitation defined in any config, datapack, or mod jar. So the amplitude is being built up at runtime (most likely an un-capped effect that re-applies and climbs). A stack-trace diagnostic is armed to name the exact source on the next occurrence.
+
 ### Some skeleton archers hit with excessive knockback — **Mitigated**
-Elite skeleton spawns could carry Punch-enchanted bows and launch players. Punch is now stripped from those spawns. Awaiting in-game confirmation that it's fully gone.
+Elite skeleton spawns could carry Punch-enchanted bows and launch players. Punch is now stripped from those spawns. (The dramatic *skyward* launches were a separate Levitation issue — see above.)
 
 ### Some EnemyExpansion mobs could launch the player — **Mitigated**
 A few EnemyExpansion mob attacks set player velocity directly, bypassing normal knockback limits. A multi-layer velocity/knockback cap now contains it; no further reports.
