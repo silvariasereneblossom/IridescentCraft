@@ -8,6 +8,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ## June 2026 — Glass-cannon armor maluses now scale instead of wiping robe builds
 
+- **Class/race progressions actually apply now** — a command-syntax mismatch had silently disabled most attribute-based class and race bonuses since they were written (Witch of Ink defense ladder, Berserker Trance, Orc Bloodlust, Wanderer bonuses, Slimebodied DR, the whole Artificial Construct ladder, and the caster mana-regen/cooldown sync). All ported to a working mechanism; damage-side effects were never affected.
 - **Workbench labels completed** — 407 missing translation entries filled; honing schematics now show themed names (Flow, Potency, Bulwark, ...) with tier numerals instead of raw IDs, and wand parts/material categories are properly labeled.
 - **Carrot/potato harvest yield fixed** — right-click (hoe) harvesting consumed the crop's own replant cost out of a reduced drop pool, netting zero; drops re-tuned so every harvest method nets the designed yield.
 - **166 dead workbench material choices now work** — newer materials (boss metals, Aether alloys, wools, fibres, hides) were selectable in reforged armor/wand/spellbook schematics but silently did nothing; all now have real stats (scaled from material grade) and repair recipes. Numbers are first-pass conservative — expect tuning.
