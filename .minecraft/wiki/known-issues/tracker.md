@@ -101,6 +101,9 @@ A condensed list of fixes, newest first. Full details are in the [Design Changel
 - Raw translation IDs in the workbench are gone: 407 missing labels filled across honing schematics (every armor class-hone, wand line, and spellbook hone now has a proper name like "Potency III" instead of a raw key), wand part labels, and material category headers.
 - 166 selectable materials that silently did nothing in the workbench now work: newer materials (boss metals, Aether alloys, wools, fibres, hides) were selectable in armor/wand/spellbook schematics but had no module data behind them, so the craft no-opped. All now have variants with stats scaled from their material grade, plus repair definitions.
 
+**Difficulty**
+- Mobs now deal +30% damage at every dimension tier (damage-only; their health/armor/speed are unchanged). A deliberate threat increase to match restored class/race power -- expect to take noticeably more damage, especially before gearing up. Tunable in `config/iridescent_difficulty-common.toml` (`damageMultiplierPct` per tier).
+
 **Armor & classes**
 - Class and race stat progressions that never applied now do: Witch of Ink toughness ladder + Penthesilea HP, Berserker Trance, Orc Bloodlust, Wanderer travel-speed and Adaptable bonuses, Slimebodied damage reduction, Witherborn weakness, the entire Artificial Construct ladder + capstone, and the mana-regen/cooldown sync into Iron's Spellbooks. (A command-syntax mismatch made all of them silent no-ops; offense-side effects living in the mod jar were unaffected.) Relog or trigger the effect once to see it apply -- check with /icraft armormods.
 - **Armor sets now actually stack.** A modifier-identity collision meant only ONE equipped reforged armor piece ever counted toward your armor -- a set whose tooltips sum to 11 gave roughly one piece's worth. Each slot's contribution is now counted separately; your equipped total should match the sum of your tooltips (before class/weight percentages).

@@ -8,6 +8,7 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ## June 2026 — Glass-cannon armor maluses now scale instead of wiping robe builds
 
+- **Incoming damage raised +30% at every tier** — a new damage-only knob in the difficulty mod makes mobs hit 30% harder across all four tiers (and at every point on the time curve), while their health, armor, and speed are unchanged. Preemptive re-threat to match the class/race power that the progression fix above restored.
 - **Class/race progressions actually apply now** — a command-syntax mismatch had silently disabled most attribute-based class and race bonuses since they were written (Witch of Ink defense ladder, Berserker Trance, Orc Bloodlust, Wanderer bonuses, Slimebodied DR, the whole Artificial Construct ladder, and the caster mana-regen/cooldown sync). All ported to a working mechanism; damage-side effects were never affected.
 - **Workbench labels completed** — 407 missing translation entries filled; honing schematics now show themed names (Flow, Potency, Bulwark, ...) with tier numerals instead of raw IDs, and wand parts/material categories are properly labeled.
 - **Carrot/potato harvest yield fixed** — right-click (hoe) harvesting consumed the crop's own replant cost out of a reduced drop pool, netting zero; drops re-tuned so every harvest method nets the designed yield.
