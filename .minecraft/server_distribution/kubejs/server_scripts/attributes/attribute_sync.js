@@ -317,31 +317,21 @@ global.tick_attributeSync = function(event) {
   var name = player.username
 
   // Sync mana_regen to ISB mana regen attribute if available
+  // modifyAttribute, not /attribute commands (old 1.21-syntax commands never
+  // parsed on 1.20.1 -- this sync was a silent no-op). Always apply the
+  // computed value: 0 clears when the stat returns to baseline.
   var manaRegen = getAttr(player, 'mana_regen', 1.0)
-  if (manaRegen != 1.0) {
-    var manaBonus = manaRegen - 1.0
-    try {
-      player.server.runCommandSilent(
-        'attribute ' + name + ' irons_spellbooks:mana_regen modifier remove icraft:mana_regen_sync'
-      )
-      player.server.runCommandSilent(
-        'attribute ' + name + ' irons_spellbooks:mana_regen modifier add icraft:mana_regen_sync ' + manaBonus + ' multiply_base'
-      )
-    } catch (e) {}
-  }
+  try {
+    player.modifyAttribute('irons_spellbooks:mana_regen',
+      'icraft_mana_regen_sync', manaRegen - 1.0, 'multiply_base')
+  } catch (e) {}
 
   // Sync cooldown_reduction to ISB cooldown attribute if available
   var cdr = getAttr(player, 'cooldown_reduction', 0)
-  if (cdr > 0) {
-    try {
-      player.server.runCommandSilent(
-        'attribute ' + name + ' irons_spellbooks:cooldown_reduction modifier remove icraft:cdr_sync'
-      )
-      player.server.runCommandSilent(
-        'attribute ' + name + ' irons_spellbooks:cooldown_reduction modifier add icraft:cdr_sync ' + cdr + ' addition'
-      )
-    } catch (e) {}
-  }
+  try {
+    player.modifyAttribute('irons_spellbooks:cooldown_reduction',
+      'icraft_cdr_sync', cdr > 0 ? cdr : 0, 'addition')
+  } catch (e) {}
 }
 global.registerPlayerTick('tick_attributeSync', 100, 25)
 

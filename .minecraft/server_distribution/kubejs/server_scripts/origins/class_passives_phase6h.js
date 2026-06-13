@@ -51,8 +51,8 @@ try {
           // Combat ended
           data.putLong('icraft_berserker_combatStartTick', 0)
           if (traceActive) {
-            player.server.runCommandSilent('attribute ' + name + ' minecraft:generic.attack_damage modifier remove icraft:berserker_trance')
-            player.server.runCommandSilent('attribute ' + name + ' minecraft:generic.armor modifier remove icraft:berserker_trance')
+            player.modifyAttribute('minecraft:generic.attack_damage', 'icraft_berserker_trance', 0, 'multiply_base')
+            player.modifyAttribute('minecraft:generic.armor', 'icraft_berserker_trance', 0, 'addition')
             data.putInt('icraft_berserker_tranceActive', 0)
           }
           return
@@ -66,9 +66,10 @@ try {
 
         var combatDuration = now - combatStart
         if (combatDuration >= 200 && !traceActive) {  // 10s
-          // Activate trance
-          player.server.runCommandSilent('attribute ' + name + ' minecraft:generic.attack_damage modifier add icraft:berserker_trance 0.05 multiply_base')
-          player.server.runCommandSilent('attribute ' + name + ' minecraft:generic.armor modifier add icraft:berserker_trance 1 add_value')
+          // Activate trance (modifyAttribute -- old /attribute commands were
+          // 1.21 syntax and never parsed on 1.20.1)
+          player.modifyAttribute('minecraft:generic.attack_damage', 'icraft_berserker_trance', 0.05, 'multiply_base')
+          player.modifyAttribute('minecraft:generic.armor', 'icraft_berserker_trance', 1, 'addition')
           data.putInt('icraft_berserker_tranceActive', 1)
         }
       })
@@ -86,7 +87,7 @@ try {
         var bonusActive = data.getInt('icraft_wanderer_adaptActive') === 1
 
         if (tick >= bonusUntil && bonusActive) {
-          player.server.runCommandSilent('attribute ' + name + ' minecraft:generic.attack_damage modifier remove icraft:wanderer_adapt')
+          player.modifyAttribute('minecraft:generic.attack_damage', 'icraft_wanderer_adapt', 0, 'multiply_base')
           data.putInt('icraft_wanderer_adaptActive', 0)
         }
       })
@@ -174,7 +175,7 @@ try {
           // Activate / refresh adaptable
           data.putLong('icraft_wanderer_adaptUntil', now + 600) // 30s
           if (data.getInt('icraft_wanderer_adaptActive') !== 1) {
-            server.runCommandSilent('attribute ' + name + ' minecraft:generic.attack_damage modifier add icraft:wanderer_adapt 0.10 multiply_base')
+            attacker.modifyAttribute('minecraft:generic.attack_damage', 'icraft_wanderer_adapt', 0.10, 'multiply_base')
             data.putInt('icraft_wanderer_adaptActive', 1)
           }
         }

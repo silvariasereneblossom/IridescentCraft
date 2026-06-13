@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "dc462270e",
+  "generated_from": "e76d57d7e",
   "roots": [
     "kubejs",
     "config",
@@ -6988,8 +6988,8 @@
       "size": 9429
     },
     "kubejs/server_scripts/loot/crop_seed_reduction.js": {
-      "sha256": "dda1ebbd61fdc39bcd871524715bb6190511f9e1dc85a1bda1df606e32d3e9c9",
-      "size": 4251
+      "sha256": "350765681780c35e333171abc5ad7f25aab7eb944697220c9f37b9fe21c550ab",
+      "size": 4737
     },
     "kubejs/server_scripts/loot/dimensional_boss_drops.js": {
       "sha256": "ff7df8e0cf9f1dc8b4b1ddfaa41f66cf2229e50a0fb4e5d3b048e1dbfbf63e7c",
@@ -8256,7 +8256,7 @@
       "size": 353
     },
     "mods/.index/iridescent-tetra-expansion.pw.toml": {
-      "sha256": "c55e30ac7f1eae8f977d5e25000b325afb9e784163f76b1c11965bef3f42734f",
+      "sha256": "f29dcaa583ac2c8df416edaa2d22d997cf22dabf435ff485d88cc5cda716e98e",
       "size": 380
     },
     "mods/.index/iron-furnaces.pw.toml": {

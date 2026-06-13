@@ -126,28 +126,20 @@ EntityEvents.death(event => {
 function applyWitchToughness(player) {
   let data = player.persistentData
   let count = data.getInt('icraft_witch_ink_counter') || 0
-  let name = player.username
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.armor_toughness modifier remove icraft:witch_ink_toughness`)
-  if (count > 0) {
-    // +0.1 ADD_VALUE per counter (cap +20 at 200). The prior version
-    // applied 0.001 per counter (cap +0.2), which was effectively
-    // invisible -- documented intent and wiki entry called for +0.1.
-    let toughness = count * 0.1
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.armor_toughness modifier add icraft:witch_ink_toughness ${toughness} add_value`
-    )
-  }
+  // KubeJS modifyAttribute, NOT /attribute commands: the prior version used
+  // 1.21 command syntax (single id, add_value op) which 1.20.1's command
+  // parser rejects -- runCommandSilent swallowed the error, so this modifier
+  // NEVER applied (confirmed in-game 2026-06-13 via /icraft armormods).
+  // +0.1 addition per counter, cap +20 at 200.
+  player.modifyAttribute('minecraft:generic.armor_toughness',
+    'icraft_witch_ink_toughness', count * 0.1, 'addition')
 }
 
 function applyPenthesileaHP(player) {
   let data = player.persistentData
-  let name = player.username
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.max_health modifier remove icraft:witch_penthesilea_hp`)
-  if (data.getBoolean('icraft_witch_penthesilea')) {
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.max_health modifier add icraft:witch_penthesilea_hp 0.15 multiply_base`
-    )
-  }
+  let hp = data.getBoolean('icraft_witch_penthesilea') ? 0.15 : 0
+  player.modifyAttribute('minecraft:generic.max_health',
+    'icraft_witch_penthesilea_hp', hp, 'multiply_base')
 }
 
 // ── Penthesilea permanent buffs (renewed every 2 minutes) ────────────────
@@ -175,6 +167,6 @@ PlayerEvents.loggedIn(event => {
 console.log('[IridescentCraft] Witch of Ink progression loaded')
 console.log('  - Boss kill counter (Apotheosis/Champions +1, dimensional +10, cap 200)')
 console.log('  - LivingHurtEvent: +0.1% total damage per counter (cap +20% at 200)')
-console.log('  - Toughness: +0.001 ADD_VALUE per counter (cap +0.2 at 200)')
+console.log('  - Toughness: +0.1 addition per counter (cap +20 at 200)')
 console.log('  - Penthesilea (at 200): +10% additive damage, +15% SP-to-AD conv,')
 console.log('    +15% HP, permanent Haste I + Resistance I + Fire Resist + Regen I')

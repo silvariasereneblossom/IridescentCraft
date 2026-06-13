@@ -79,6 +79,34 @@ found=$(
   || true
 )
 
+# ── Check 2: command-applied attribute modifiers ─────────────────────────
+# /attribute <target> <attr> modifier add takes UUID + NAME on 1.20.1, and
+# the ops are add|multiply|multiply_base. Scripts written with 1.21 syntax
+# (single resource-location id, add_value op) PARSE-FAIL, and
+# runCommandSilent swallows the error -- 37 such sites silently no-opped
+# class/race progression for months (found 2026-06-13 via the Witch of Ink
+# toughness report). Use player.modifyAttribute(...) instead; execute-if
+# NBT probes (no "modifier") remain fine.
+attr_cmds=$(
+  grep -rnE "runCommandSilent\(.*attribute .* modifier (add|remove)" "${EXISTING_DIRS[@]}" 2>/dev/null \
+  | grep -vE '^[^:]+:[0-9]+:[[:space:]]*(//|\*)' \
+  | grep -vE 'CI-ignore' \
+  || true
+)
+
+if [ -n "$attr_cmds" ]; then
+  echo "ERROR: command-applied attribute modifier found in KubeJS scripts."
+  echo ""
+  echo "On 1.20.1, /attribute modifier add needs UUID + NAME and ops"
+  echo "add|multiply|multiply_base -- the 1.21 single-id/add_value form"
+  echo "parse-fails and runCommandSilent SWALLOWS the error (silent no-op)."
+  echo "Use player.modifyAttribute(attr, name, value, op) instead."
+  echo ""
+  echo "Offending lines:"
+  echo "$attr_cmds"
+  exit 1
+fi
+
 if [ -z "$found" ]; then
   echo "OK: no bare method-ref traps in KubeJS scripts."
   echo "Scanned: ${EXISTING_DIRS[*]}"

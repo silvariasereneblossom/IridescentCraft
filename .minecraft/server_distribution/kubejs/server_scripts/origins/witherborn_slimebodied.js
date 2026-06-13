@@ -50,14 +50,9 @@ global.tick_witherbornSlimebodied = (event) => {
       // Scale: 0% penalty at food 20, -50% at food 0
       let hungerPenalty = Math.max(0, (20 - foodLevel) / 20) * -0.50
 
-      player.server.runCommandSilent(
-        `attribute ${name} minecraft:generic.attack_damage modifier remove icraft:witherborn_weakness`
-      )
-      if (hungerPenalty < -0.01) {
-        player.server.runCommandSilent(
-          `attribute ${name} minecraft:generic.attack_damage modifier add icraft:witherborn_weakness ${hungerPenalty} multiply_base`
-        )
-      }
+      // ported to modifyAttribute (old /attribute = unparseable 1.21 syntax)
+      player.modifyAttribute('minecraft:generic.attack_damage',
+        'icraft_witherborn_weakness', hungerPenalty < -0.01 ? hungerPenalty : 0, 'multiply_base')
     }
 
     // ── SLIMEBODIED: satiety-based damage reduction ──
@@ -76,17 +71,11 @@ global.tick_witherbornSlimebodied = (event) => {
 
       // Apply as Resistance effect (approximate)
       // Resistance I = 20%, so we scale between 0 and Resistance I
-      player.server.runCommandSilent(
-        `attribute ${name} minecraft:generic.armor modifier remove icraft:slime_dr`
-      )
-      if (drLevel > 0.05) {
-        // Use armor as DR proxy — add flat armor based on satiety
-        // 25% DR ≈ +8 armor points at typical damage values
-        let armorBonus = drLevel * 32  // up to +8 armor
-        player.server.runCommandSilent(
-          `attribute ${name} minecraft:generic.armor modifier add icraft:slime_dr ${armorBonus} add_value`
-        )
-      }
+      // slime_dr ported to modifyAttribute below
+      // Use armor as DR proxy — add flat armor based on satiety
+      // 25% DR ≈ +8 armor points at typical damage values
+      player.modifyAttribute('minecraft:generic.armor',
+        'icraft_slime_dr', drLevel > 0.05 ? drLevel * 32 : 0, 'addition')
 
       // Slow metabolism: reduce hunger drain
       // The origins:exhaust power handles base drain, but we also

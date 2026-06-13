@@ -163,12 +163,9 @@ global.tick_classPassives = (event) => {
         let speedBonus = count * 0.025
         let xpBonus = count * 0.05
 
-        player.server.runCommandSilent(
-          `attribute ${name} minecraft:generic.movement_speed modifier remove icraft:wanderer_travel_speed`
-        )
-        player.server.runCommandSilent(
-          `attribute ${name} minecraft:generic.movement_speed modifier add icraft:wanderer_travel_speed ${speedBonus} multiply_base`
-        )
+        // modifyAttribute, not /attribute (1.21 syntax never parsed on 1.20.1)
+        player.modifyAttribute('minecraft:generic.movement_speed',
+          'icraft_wanderer_travel_speed', speedBonus, 'multiply_base')
 
         try {
           player.modifyAttribute('puffish_attributes:experience',
@@ -214,9 +211,8 @@ global.tick_classPassives = (event) => {
       // T1=0%, T2=5%, T3=10%, T4=15%
       let magicBonus = Math.max(0, (tier - 1) * 0.05)
 
-      player.server.runCommandSilent(
-        `attribute ${name} minecraft:generic.attack_damage modifier remove icraft:archmage_attunement`
-      )
+      // (legacy attack_damage cleanup removed -- the old /attribute command
+      // never parsed on 1.20.1, so no such modifier ever existed)
 
       if (magicBonus > 0) {
         // Apply to all magic damage channels
@@ -248,14 +244,8 @@ global.tick_classPassives = (event) => {
         // Scale: 0% at food 20, +20% at food 0
         let hungerBonus = Math.max(0, (20 - foodLevel) / 20) * 0.20
 
-        player.server.runCommandSilent(
-          `attribute ${name} minecraft:generic.attack_damage modifier remove icraft:orc_bloodlust`
-        )
-        if (hungerBonus > 0.01) {
-          player.server.runCommandSilent(
-            `attribute ${name} minecraft:generic.attack_damage modifier add icraft:orc_bloodlust ${hungerBonus} multiply_base`
-          )
-        }
+        player.modifyAttribute('minecraft:generic.attack_damage',
+          'icraft_orc_bloodlust', hungerBonus > 0.01 ? hungerBonus : 0, 'multiply_base')
       } catch (e) {}
     })
   }

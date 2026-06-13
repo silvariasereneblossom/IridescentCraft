@@ -152,46 +152,25 @@ function applyConstructBonuses(player) {
 
   let name = player.username
 
-  // Remove old modifiers
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.max_health modifier remove icraft:construct_hp`)
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.attack_damage modifier remove icraft:construct_damage`)
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.armor_toughness modifier remove icraft:construct_toughness`)
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.armor modifier remove icraft:construct_armor`)
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.max_health modifier remove icraft:construct_apotheosis_hp`)
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.attack_damage modifier remove icraft:construct_apotheosis_ad`)
-  player.server.runCommandSilent(`attribute ${name} minecraft:generic.armor_toughness modifier remove icraft:construct_apotheosis_tough`)
-
-  if (bonus > 0) {
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.max_health modifier add icraft:construct_hp ${bonus} multiply_base`
-    )
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.attack_damage modifier add icraft:construct_damage ${bonus} multiply_base`
-    )
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.armor_toughness modifier add icraft:construct_toughness ${bonus * 4} add_value`
-    )
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.armor modifier add icraft:construct_armor ${bonus * 4} add_value`
-    )
-  }
+  // modifyAttribute, not /attribute commands: the old commands used 1.21
+  // syntax (single id, add_value op) which 1.20.1 rejects -- they NEVER
+  // applied. Calling with the computed value (0 clears) replaces in place.
+  player.modifyAttribute('minecraft:generic.max_health', 'icraft_construct_hp', bonus, 'multiply_base')
+  player.modifyAttribute('minecraft:generic.attack_damage', 'icraft_construct_damage', bonus, 'multiply_base')
+  player.modifyAttribute('minecraft:generic.armor_toughness', 'icraft_construct_toughness', bonus * 4, 'addition')
+  player.modifyAttribute('minecraft:generic.armor', 'icraft_construct_armor', bonus * 4, 'addition')
 
   // Capstone (Iron Apotheosis at L5): +25% HP + AD MULTIPLY_BASE,
   // +1.0 armor_toughness ADD_VALUE. Stacks ADDITIVELY with the ladder
   // bonus for MULTIPLY_BASE attrs (so L5 + capstone HP = +35% + +25% = +60%
   // multiply_base on a single attribute). For toughness it's a flat
   // additional +1 on top of the L5 +1.4.
-  if (hasApotheosis) {
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.max_health modifier add icraft:construct_apotheosis_hp ${CAPSTONE_HP_BONUS} multiply_base`
-    )
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.attack_damage modifier add icraft:construct_apotheosis_ad ${CAPSTONE_AD_BONUS} multiply_base`
-    )
-    player.server.runCommandSilent(
-      `attribute ${name} minecraft:generic.armor_toughness modifier add icraft:construct_apotheosis_tough ${CAPSTONE_TOUGHNESS_BONUS} add_value`
-    )
-  }
+  player.modifyAttribute('minecraft:generic.max_health',
+    'icraft_construct_apotheosis_hp', hasApotheosis ? CAPSTONE_HP_BONUS : 0, 'multiply_base')
+  player.modifyAttribute('minecraft:generic.attack_damage',
+    'icraft_construct_apotheosis_ad', hasApotheosis ? CAPSTONE_AD_BONUS : 0, 'multiply_base')
+  player.modifyAttribute('minecraft:generic.armor_toughness',
+    'icraft_construct_apotheosis_tough', hasApotheosis ? CAPSTONE_TOUGHNESS_BONUS : 0, 'addition')
 }
 
 // Refresh bonuses on login
