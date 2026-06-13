@@ -1,31 +1,33 @@
 // =============================================================================
-// T1 PLAYER DAMAGE SOFTENER -- 30% incoming damage reduction at tier_1 only
+// T1 PLAYER DAMAGE SOFTENER -- 15% incoming damage reduction at tier_1 only
 // =============================================================================
-// 2026-04-26 user directive: "I get 1-2 shot with WoI/Faefolk/Archmage at T1.
-// Aim for 2-3 shot early." Compounding -HP origins (Witch of Ink frail +
-// Faefolk fragile + Archmage glass cannon) leave the player at ~10-13 HP.
-// A geared overworld zombie or affixed skeleton can output 5-8 dmg per
-// hit, which 1-2 shots that pool.
+// 2026-04-26 origin: "I get 1-2 shot with WoI/Faefolk/Archmage at T1. Aim for
+// 2-3 shot early." Compounding -HP origins (Witch of Ink frail + Faefolk
+// fragile + Archmage glass cannon) leave the player at ~10-13 HP.
+//
+// 2026-06-13 RETUNE 30% -> 15% (operator: "T1 early *should* be punishing for
+// mage starts"). The same-day +30% per-tier incoming-damage bump
+// (iridescent_difficulty damageMultiplierPct=130) now carries the "punishing
+// T1" intent that the softener was inverting. Mages are back-loaded glass
+// cannons by design (feedback_mage_power_curve) -- early fragility is the
+// price of the uncapped late ceiling, NOT a bug to pad. The softener is kept
+// only as a THIN anti-true-1-shot margin for the ~10 HP origin stacks, not as
+// a comfort cushion. Net early-T1 incoming for a glass mage:
+//   1.5 (curve) x 1.30 (dmg bump) x 0.85 (this) ~= 1.66x vanilla -> ~3 shot.
+// (Was 1.37x/~3-4 shot at 0.70; removing entirely would be 1.95x/~2-3 shot.)
 //
 // Levers in play:
-//   1. ImprovedMobs Equipment Chance reduced 0.30 -> 0.15 (fewer gear-stacked mobs)
-//   2. THIS SCRIPT: -30% incoming damage while player has tier_1 stage AND
-//      NOT tier_2 stage (i.e. they haven't progressed past the overworld yet).
-//      Once they reach Twilight Forest / Aether / Blue Skies (T2 dims), the
-//      softener stops applying -- they're expected to have better gear.
+//   1. ImprovedMobs Equipment Chance 0.30 -> 0.15 (fewer gear-stacked mobs)
+//   2. THIS SCRIPT: -15% incoming damage while player has tier_1 stage AND
+//      NOT tier_2 stage (haven't left the overworld). Once they reach a T2
+//      dim the softener stops -- they're expected to have better gear.
 //
-// Cap reasoning: 30% reduction means a 7-dmg hit becomes ~5, turning a 2-shot
-// into a 3-shot. Doesn't trivialize T1 (still meaningful threat), just gives
-// breathing room for low-HP mage starts.
-//
-// Implementation: EntityEvents.hurt at NORMAL priority. Check if entity is
-// player + tier_1 stage + NOT tier_2. If so, multiply event.damage by 0.7.
-//
+// Implementation: DamageModifierRegistry (Forge LivingHurtEvent setAmount).
 // Memory: feedback_rhino_scoping.md (var X = function() {} inside try blocks).
 // =============================================================================
 
 try {
-  var SOFTENER_MULTIPLIER = 0.7  // 30% damage reduction
+  var SOFTENER_MULTIPLIER = 0.85  // 15% damage reduction (was 0.70; retuned 2026-06-13)
   // 2026-05-15: migrated to DamageModifierRegistry. EntityEvents.hurt's
   // KubeJS wrapper has no settable damage; the raw Forge LivingHurtEvent
   // dispatched through DR has setAmount.
@@ -61,7 +63,7 @@ try {
     } catch (_) {}
   })
 
-  console.log('[IridescentCraft] player_t1_damage_softener loaded (-30% incoming damage at tier_1 only)')
+  console.log('[IridescentCraft] player_t1_damage_softener loaded (-15% incoming damage at tier_1 only)')
 } catch (e) {
   console.warn('[IridescentCraft] player_t1_damage_softener bootstrap FAILED: ' + e)
 }

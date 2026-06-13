@@ -1,6 +1,6 @@
 {
   "version": 1,
-  "generated_from": "e76d57d7e",
+  "generated_from": "0dbd8fe44",
   "roots": [
     "kubejs",
     "config",
@@ -3596,8 +3596,8 @@
       "size": 5297
     },
     "config/iridescent_difficulty-common.toml": {
-      "sha256": "31ace75d12d622654b759fcd892032dff45fbc7c23fe86d65d8028dc195f461b",
-      "size": 5609
+      "sha256": "f1de6d2bb18bb63e6efef5e4ac5e6566d21fd72f226f190fa7b5300cf9580cfe",
+      "size": 6409
     },
     "config/ironfurnaces-client.toml": {
       "sha256": "da5307a9495f5fda0f4d73fe57f099dea993a3687d4182c28fea8663ada36fe8",
@@ -6736,8 +6736,8 @@
       "size": 7068
     },
     "kubejs/server_scripts/attributes/attribute_sync.js": {
-      "sha256": "239f0758dc9542cf1cf28b19f0733d0b20a0ae09ba1afafea96f56a903fba469",
-      "size": 15517
+      "sha256": "361a45be88aef642f64e772a4c781be50456fa05a747f0f523b941f2d993df60",
+      "size": 15251
     },
     "kubejs/server_scripts/attributes/class_attribute_bonuses.js": {
       "sha256": "67d20eeaf5a3a82e30a497ba23589a2670bf1f75947e4d9bc8614df5f957fd22",
@@ -7104,8 +7104,8 @@
       "size": 2337
     },
     "kubejs/server_scripts/origins/artificial_construct_progression.js": {
-      "sha256": "7163e995083488a9a12d790e62b05a496e3efd4326beea87954277487e60858a",
-      "size": 9019
+      "sha256": "729650175da08ab395483c756cbf9f1c60e5c55bac3e7e0ec6b1cfdbdd8d3d8d",
+      "size": 7997
     },
     "kubejs/server_scripts/origins/battlemage_arcane_cleave.js": {
       "sha256": "d0b1ed4f6e5c1dc83122e7e6a22b7beed397b668093af713e20265f52461b0d8",
@@ -7116,12 +7116,12 @@
       "size": 2671
     },
     "kubejs/server_scripts/origins/class_passives.js": {
-      "sha256": "627bd1860a371dcca16e7220f957c3f387cec8dd7695169da6694105bb9c674e",
-      "size": 12059
+      "sha256": "79378cde7c0f43d335325e462f464d8a8d5f020bc999809b89621924f1540458",
+      "size": 11712
     },
     "kubejs/server_scripts/origins/class_passives_phase6h.js": {
-      "sha256": "347fae4d34636ad35643d3e02cc9a58330e28cb7634937210fb397dc6df04df1",
-      "size": 9919
+      "sha256": "8cc52b62697c353a424e0314cff2ea414d5c4d2823e4103a5225ff2fb3d31320",
+      "size": 9841
     },
     "kubejs/server_scripts/origins/magic_class_starter.js": {
       "sha256": "c17c238093d29ae98104493bfb5d2f2d42bead083394c8fb63acff0b31f83a9d",
@@ -7148,12 +7148,12 @@
       "size": 4861
     },
     "kubejs/server_scripts/origins/witch_of_ink_progression.js": {
-      "sha256": "2d2128228d921fa96c73ec7be0e5f8c24fd62b0fe50cb375c1340ba2713d80b3",
-      "size": 8510
+      "sha256": "ac99c292f5359306dd7d88217b92e32f3a62db058504b6a9f0ef0cca646db5d2",
+      "size": 8199
     },
     "kubejs/server_scripts/origins/witherborn_slimebodied.js": {
-      "sha256": "6e013bfe16a8c27ebe1e596315fac4ba71eae096f29f8eaf7880be123e1fc6be",
-      "size": 5779
+      "sha256": "8ec39e5a73c96b129ca850305482ad0f9d8ba1fc34a84549a0896fafe2b258ce",
+      "size": 5440
     },
     "kubejs/server_scripts/player_t1_damage_softener.js": {
       "sha256": "aff4e00a3b9ce0a30100edfe4da2b344a4d1247b213b68bb842e9b369155e939",
@@ -8232,7 +8232,7 @@
       "size": 348
     },
     "mods/.index/iridescent-difficulty.pw.toml": {
-      "sha256": "fb608be858499d30fe5816077d03ae2dd6dc2900ed4a8b563681fc46e738d271",
+      "sha256": "57b70de956e34ab036520131caeda24067ae645eea9de3c6a0297cc783c4588d",
       "size": 365
     },
     "mods/.index/iridescent-durability-clamp.pw.toml": {
