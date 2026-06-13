@@ -32,6 +32,10 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 100.0
+		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
+		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Range: 50.0 ~ 10000.0
+		damageMultiplierPct = 130.0
 
 	#T2 — Twilight Forest, Blue Skies, The Aether.
 	[tiers.t2]
@@ -44,6 +48,10 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 100.0
+		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
+		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Range: 50.0 ~ 10000.0
+		damageMultiplierPct = 130.0
 
 	#T3 — Undergarden, Deeper Darker, Nether, The Abyss.
 	[tiers.t3]
@@ -56,6 +64,10 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 100.0
+		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
+		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Range: 50.0 ~ 10000.0
+		damageMultiplierPct = 130.0
 
 	#T4 — Deep Aether, The End. Hard regardless. End uncaps after Ender Dragon kill.
 	[tiers.t4]
@@ -68,6 +80,10 @@
 		#Hours of dimension-loaded time to reach cap from start.
 		#Range: 0.1 ~ 10000.0
 		capHours = 200.0
+		#Extra multiplier applied ONLY to attack_damage, on top of the start/cap
+		#curve (health/armor/speed unaffected). 130 = +30% incoming damage.
+		#Range: 50.0 ~ 10000.0
+		damageMultiplierPct = 130.0
 
 #Dimension → tier mapping. Anything not listed defaults to t1.
 #Resource locations (mod:dimension_id). Source: wiki/progression/overview.md.

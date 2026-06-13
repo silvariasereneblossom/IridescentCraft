@@ -71,4 +71,20 @@ public final class DifficultyScaling {
         // Defensive lower bound: never go below start% even with weird config
         return Math.max(mult, start);
     }
+
+    /**
+     * Damage-specific multiplier for the dimension: the base curve multiplier
+     * times the tier's {@code damageMultiplierPct} (applied to attack_damage
+     * ONLY — health/armor/speed use {@link #getCurrentMultiplier}). At the
+     * default 100% this equals the base curve; at 130% mobs hit +30% harder
+     * than the curve alone. Multiplicative, so the +30% holds at every point
+     * on the time curve.
+     */
+    public static double getDamageMultiplier(ServerLevel level) {
+        double base = getCurrentMultiplier(level);
+        if (!DifficultyConfig.COMMON.enabled.get()) return base; // already 1.0
+        Tier tier = getTier(level.dimension().location());
+        double dmgFactor = getCurve(tier).damageMultiplierPct.get() / 100.0;
+        return base * dmgFactor;
+    }
 }

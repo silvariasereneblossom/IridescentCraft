@@ -1,5 +1,5 @@
 {
-  "generated_at": "2026-06-12T06:46:24Z",
+  "generated_at": "2026-06-13T02:44:02Z",
   "generated_by": "regen_custom_jars_manifest.ps1 on  by ",
   "algorithm": "SHA-256",
   "jars": {
@@ -20,8 +20,8 @@
       "size": 269203
     },
     "iridescent_difficulty-0.1.0.jar": {
-      "sha256": "cbd0873a31c9f37aa916968477f65f97296f473b82728b8febc496261cb8a44c",
-      "size": 31836
+      "sha256": "ef34f86dfe199d2fd81946f3a0dfd8f33356124e2affae7dd84c073a56ff5fb6",
+      "size": 32321
     },
     "iridescent_durability_clamp-0.1.0.jar": {
       "sha256": "f39c1eeb0b53daa1fab3da3980a6542a8d26fd5ba2993c2934ff4aa19999f0ae",

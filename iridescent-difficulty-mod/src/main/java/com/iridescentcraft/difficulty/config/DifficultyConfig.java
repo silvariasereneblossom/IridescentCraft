@@ -33,7 +33,7 @@ import java.util.List;
  * mult = clamp(start + (cap - start) * (t / capHours), start, cap)
  *        // unless uncap flag set + ender dragon killed -> no upper bound
  * mob.max_health *= mult
- * mob.attack_damage *= mult
+ * mob.attack_damage *= mult * (damageMultiplierPct/100)  // damage-only knob
  * mob.armor *= mult
  * mob.movement_speed *= sqrt(mult)   // milder so a 6x HP mob isn't 6x speed
  * </pre>
@@ -278,6 +278,7 @@ public final class DifficultyConfig {
         public final ForgeConfigSpec.DoubleValue start;
         public final ForgeConfigSpec.DoubleValue cap;
         public final ForgeConfigSpec.DoubleValue capHours;
+        public final ForgeConfigSpec.DoubleValue damageMultiplierPct;
 
         TierCurve(ForgeConfigSpec.Builder b, double defStart, double defCap, double defHours) {
             start = b.comment("Starting multiplier % (100 = 1.0x vanilla)")
@@ -286,6 +287,20 @@ public final class DifficultyConfig {
                 .defineInRange("capPct", defCap, 50.0, 10000.0);
             capHours = b.comment("Hours of dimension-loaded time to reach cap from start.")
                 .defineInRange("capHours", defHours, 0.1, 10000.0);
+            // Damage-only multiplier APPLIED ON TOP of the start/cap curve, to
+            // attack_damage ONLY (health/armor/speed keep the plain curve). Lets
+            // incoming damage be tuned independently of mob tankiness. 100 =
+            // identity (damage tracks the curve like the other stats); 130 =
+            // mobs hit +30% harder than the curve alone (operator directive
+            // 2026-06-13: "preemptively increase incoming damage by 30% at each
+            // tier"). Multiplicative: effective dmg mult = curveMult * (pct/100).
+            // Code default is 100 (identity/backward-safe); the live +30% value
+            // is set per-tier in the distro configs.
+            damageMultiplierPct = b.comment(
+                    "Extra multiplier applied ONLY to attack_damage, on top of the",
+                    "start/cap curve (health/armor/speed are unaffected). 100 = damage",
+                    "tracks the curve; 130 = +30% incoming damage over the curve.")
+                .defineInRange("damageMultiplierPct", 100.0, 50.0, 10000.0);
         }
     }
 }

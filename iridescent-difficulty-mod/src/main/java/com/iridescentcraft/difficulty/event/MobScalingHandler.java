@@ -86,35 +86,51 @@ public class MobScalingHandler {
         if (!(e.getLevel() instanceof ServerLevel sl)) return;
 
         double mult = DifficultyScaling.getCurrentMultiplier(sl);
-        if (mult <= 1.0) return; // no-op when dim multiplier is at vanilla
+        // Damage gets its own multiplier (curve × per-tier damageMultiplierPct).
+        // At the default 100% it equals `mult`; at 130% it's +30% over the curve.
+        double dmgMult = DifficultyScaling.getDamageMultiplier(sl);
+        // No-op only when EVERY stat would be at/under vanilla. Damage can be
+        // the sole reason to scale (e.g. a tier tuned to 100% curve but 130%
+        // damage), so gate on the max of the two.
+        if (mult <= 1.0 && dmgMult <= 1.0) return;
 
-        applyScaling(mob, mult);
+        applyScaling(mob, mult, dmgMult);
         mob.getPersistentData().putBoolean(NBT_FLAG, true);
 
         if (IridescentDifficulty.LOGGER.isDebugEnabled()) {
             IridescentDifficulty.LOGGER.debug(
-                "[icraft-diff] scaled {} in {} by {}x (hp {} -> {})",
+                "[icraft-diff] scaled {} in {} by {}x (dmg {}x) (hp {} -> {})",
                 id, sl.dimension().location(), String.format("%.2f", mult),
-                String.format("%.1f", mob.getMaxHealth() / mult),
+                String.format("%.2f", dmgMult),
+                String.format("%.1f", mob.getMaxHealth() / Math.max(mult, 1.0)),
                 String.format("%.1f", mob.getMaxHealth())
             );
         }
     }
 
-    private static void applyScaling(LivingEntity entity, double mult) {
-        if (DifficultyConfig.COMMON.scaleHealth.get()) {
+    private static void applyScaling(LivingEntity entity, double mult, double dmgMult) {
+        boolean scaledHealth = false;
+        if (DifficultyConfig.COMMON.scaleHealth.get() && mult > 1.0) {
             applyMultiplyBase(entity, Attributes.MAX_HEALTH, HP_UUID, mult, "icraft_diff_hp");
-            entity.setHealth(entity.getMaxHealth()); // top off to new max
+            scaledHealth = true;
         }
-        if (DifficultyConfig.COMMON.scaleDamage.get()) {
-            applyMultiplyBase(entity, Attributes.ATTACK_DAMAGE, DMG_UUID, mult, "icraft_diff_dmg");
+        if (DifficultyConfig.COMMON.scaleDamage.get() && dmgMult > 1.0) {
+            applyMultiplyBase(entity, Attributes.ATTACK_DAMAGE, DMG_UUID, dmgMult, "icraft_diff_dmg");
         }
-        if (DifficultyConfig.COMMON.scaleArmor.get()) {
+        if (DifficultyConfig.COMMON.scaleArmor.get() && mult > 1.0) {
             applyMultiplyBase(entity, Attributes.ARMOR, ARMOR_UUID, mult, "icraft_diff_armor");
         }
-        if (DifficultyConfig.COMMON.scaleSpeed.get()) {
+        if (DifficultyConfig.COMMON.scaleSpeed.get() && mult > 1.0) {
             // sqrt — a 6× HP mob is not also 6× speed (that'd be unfair).
             applyMultiplyBase(entity, Attributes.MOVEMENT_SPEED, SPEED_UUID, Math.sqrt(mult), "icraft_diff_speed");
+        }
+        // Top off to the (possibly new) max. Only needed when HP actually
+        // scaled — but run it whenever HP scaling raised the ceiling so the
+        // freshly-spawned mob isn't left below its new max. (Kept out of the
+        // HP block so the invariant "a scaled mob spawns at full HP" doesn't
+        // depend on block ordering — see the damage-only path, mult==1.0.)
+        if (scaledHealth) {
+            entity.setHealth(entity.getMaxHealth());
         }
     }
 
