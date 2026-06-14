@@ -21,7 +21,7 @@
     {
       "type": "patchouli:text",
       "title": "Tier 3, 4, Crucible & Mythic",
-      "text": "$(bold)Tier 3 Box:$() T3 tokens, flawless/perfect gems, Cataclysm boss materials, Epic affix token, Refined Storage pattern$(br2)$(bold)Tier 4 Box:$() T4 tokens, perfect gems, end-tier boss materials, Legendary affix token$(br2)$(bold)Crucible Box:$() Mixed high-tier materials + guaranteed unique weapon(rift-sourced)$(br2)$(bold)Mythic Box:$() Rift Shards, endgame materials, chance at Mythic I\u2013II infusion component"
+      "text": "$(bold)Tier 3 Box:$() T3 tokens, flawless/perfect gems, Cataclysm boss materials, Epic affix token, Refined Storage pattern$(br2)$(bold)Tier 4 Box:$() T4 tokens, perfect gems, end-tier boss materials, Legendary affix token$(br2)$(bold)Crucible Box:$() Mixed high-tier materials + guaranteed unique weapon (rift-sourced)$(br2)$(bold)Mythic Box:$() Rift Shards, endgame materials, chance at Mythic I\u2013II infusion component"
     }
   ]
 }

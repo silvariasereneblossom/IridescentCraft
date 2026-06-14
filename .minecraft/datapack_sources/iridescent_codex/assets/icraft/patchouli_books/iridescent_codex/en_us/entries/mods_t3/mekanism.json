@@ -14,7 +14,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)T4 upgrade:$() MekaTool, Mekasuit, QIO Network, Fusion Reactor, and Antimatter production are T4 content. Planning your T3 infrastructure for T4 upgrades is a good use of T3 time.$(br2)$(bold)Artificer synergy:$() Efficient Engineering boosts all Mekanism factory speeds. T3 Artificer is the fastest path to T4."
+      "text": "$(bold)T4 upgrade:$() MekaTool, MekaSuit, QIO Network, Fusion Reactor, and Antimatter production are T4 content. Planning your T3 infrastructure for T4 upgrades is a good use of T3 time.$(br2)$(bold)Artificer synergy:$() Efficient Engineering boosts all Mekanism factory speeds. T3 Artificer is the fastest path to T4."
     },
     {
       "type": "patchouli:text",

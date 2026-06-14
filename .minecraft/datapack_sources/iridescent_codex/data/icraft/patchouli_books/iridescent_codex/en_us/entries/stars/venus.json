@@ -10,7 +10,7 @@
     },
     {
       "type": "patchouli:text",
-      "text": "$(bold)Environmental Hazards$()$(br)\u2022 $(bold)Acid rain$() deals continuous damage \u2014 no escape on the surface$(br)\u2022 $(bold)Crushing pressure$() reduces movement speed significantly$(br)\u2022 Acid-resistant mobs gain Resistance and Strength$(br2)Venus is designed to be short, intense expeditions. Get in, mine what you need, get out. Extended stays will drain your resources rapidly."
+      "text": "$(bold)Environmental Hazards$()$(br)\u2022 $(bold)Acid rain$() deals continuous damage \u2014 no escape on the surface$(br)\u2022 $(bold)Crushing pressure$() reduces movement speed significantly$(br)\u2022 Acid-resistant mobs gain Resistance and Strength$(br2)Venus is designed for short, intense expeditions. Get in, mine what you need, get out. Extended stays will drain your resources rapidly."
     },
     {
       "type": "patchouli:text",

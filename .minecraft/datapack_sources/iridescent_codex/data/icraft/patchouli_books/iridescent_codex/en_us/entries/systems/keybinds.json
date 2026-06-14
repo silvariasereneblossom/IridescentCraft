@@ -31,7 +31,7 @@
     {
       "type": "patchouli:text",
       "title": "Context-scoped overlaps (left alone)",
-      "text": "Some keys still appear on more than one ability $(italic)but only ever fire one at a time$() because the games is in different states:$(br2)$(bold)JEI keybinds$() — only fire when the JEI overlay is up$(br)$(bold)Journeymap fullscreen keys$() — only inside the map UI$(br)$(bold)Jade$() (numpad 0–5) — only when looking at a block with the Jade tooltip$(br)$(bold)Crafting Tweaks$() ($(bold)Tab$()) — only inside crafting screens$(br)$(bold)Trash Slot$() ($(bold)T$()) — only inside inventory$(br2)These look like collisions in the controls menu but won't fight each other in actual play."
+      "text": "Some keys still appear on more than one ability $(italic)but only ever fire one at a time$() because the game is in different states:$(br2)$(bold)JEI keybinds$() — only fire when the JEI overlay is up$(br)$(bold)Journeymap fullscreen keys$() — only inside the map UI$(br)$(bold)Jade$() (numpad 0–5) — only when looking at a block with the Jade tooltip$(br)$(bold)Crafting Tweaks$() ($(bold)Tab$()) — only inside crafting screens$(br)$(bold)Trash Slot$() ($(bold)T$()) — only inside inventory$(br2)These look like collisions in the controls menu but won't fight each other in actual play."
     },
     {
       "type": "patchouli:text",
