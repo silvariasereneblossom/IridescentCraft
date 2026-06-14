@@ -464,6 +464,33 @@ LootJS.modifiers(event => {
   // Village sanitization (Section 6) has its own strip but this catches
   // everything else — dimension chests, structure chests, etc.
   // =========================================================================
+  // 2026-06-14 SCROLL-ECONOMY FIX (#45/ISS). The blanket `.removeLoot('@irons_spellbooks')`
+  // below was a TAG strip — and per the LootJS persistent-filter rule (documented in
+  // Section 6 ~line 2167, and the @artifacts NOTE just below) a namespace/tag strip on a
+  // LootType.CHEST modifier installs a PERSISTENT filter that silently eats EVERY
+  // same-namespace item — including ones present in base tables AND ones re-added later in
+  // the same pass. Because `irons_spellbooks:scroll` lives in that namespace and is NEVER
+  // re-added globally, the strip nuked scrolls pack-wide:
+  //   • the base-table village-house scroll (~4.9%, wt2/41) → testers "never" saw it
+  //   • the marquee scroll adds (tome_tower / stronghold @ 10%, etc., line ~2601) → "well under 10%"
+  //   • ISS's own append_loot GLM scrolls (stronghold library 3-5, treasure compat ~89%,
+  //     generic 75%) → treasure scrolls "very rare"
+  // Scrolls are a documented PRIMARY mage-progression vector (TIER_SCROLL_RATE, marquee
+  // scroll:true), so they must be exempt. Replace the namespace strip with a predicate that
+  // strips all ISS items EXCEPT the scroll — preserving the original curation (loose
+  // spellbooks / runes / inks still cleared from generic chests, then re-added tiered) while
+  // letting scrolls flow at their intended rates. (@ars_nouveau / @moreartifacts below are the
+  // same footgun for those economies — left as-is pending a separate balance review.)
+  var stripISSExceptScroll = function(stack) {
+    try {
+      if (!stack || stack.isEmpty()) return false
+      var id = String(stack.id || '')
+      if (!id) { try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {} }
+      if (!id) return false
+      if (id.indexOf('irons_spellbooks:') !== 0) return false
+      return id !== 'irons_spellbooks:scroll'
+    } catch (e) { return false }
+  }
   event
     .addLootTypeModifier(LootType.CHEST)
     // NOTE: Do NOT use removeLoot('@artifacts') here — LootJS applies it as a
@@ -471,7 +498,7 @@ LootJS.modifiers(event => {
     // Artifact mod injection is controlled via GLM whitelist (replace:true) instead.
     // Village-specific sanitization handles village chests separately.
     .removeLoot('@ars_nouveau')
-    .removeLoot('@irons_spellbooks')
+    .removeLoot(ItemFilter.custom(stripISSExceptScroll))  // was '@irons_spellbooks' — scrolls now exempt (see note above)
     .removeLoot('@moreartifacts')
     // Saplings are useless clutter in chests — trees are everywhere. Uses
     // the Forge common tag which aggregates vanilla + BoP + Aether + BlueSkies.
