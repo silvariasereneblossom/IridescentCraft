@@ -4,6 +4,7 @@ import com.iridescentcraft.relics.item.CursedSigilPrideItem;
 import com.iridescentcraft.relics.item.DragonsEyeItem;
 import com.iridescentcraft.relics.item.FrostmawHeartItem;
 import com.iridescentcraft.relics.item.IronheartCogItem;
+import com.iridescentcraft.relics.block.RelicBrokerStandBlock;
 import com.iridescentcraft.relics.item.LeviathansPearlItem;
 import com.iridescentcraft.relics.item.PhylacteryShardItem;
 import com.iridescentcraft.relics.item.RelicEssenceItem;
@@ -11,10 +12,14 @@ import com.iridescentcraft.relics.item.RemnantRelicItem;
 import com.iridescentcraft.relics.item.SunfeatherCharmItem;
 import net.minecraft.core.registries.Registries;
 import net.minecraft.network.chat.Component;
+import net.minecraft.world.item.BlockItem;
 import net.minecraft.world.item.CreativeModeTab;
 import net.minecraft.world.item.Item;
 import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.Rarity;
+import net.minecraft.world.level.block.Block;
+import net.minecraft.world.level.block.SoundType;
+import net.minecraft.world.level.block.state.BlockBehaviour;
 import net.minecraftforge.eventbus.api.IEventBus;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.fml.javafmlmod.FMLJavaModLoadingContext;
@@ -39,6 +44,8 @@ public class IridescentRelics {
 
     public static final DeferredRegister<Item> ITEMS =
         DeferredRegister.create(ForgeRegistries.ITEMS, MODID);
+    public static final DeferredRegister<Block> BLOCKS =
+        DeferredRegister.create(ForgeRegistries.BLOCKS, MODID);
     public static final DeferredRegister<CreativeModeTab> TABS =
         DeferredRegister.create(Registries.CREATIVE_MODE_TAB, MODID);
 
@@ -90,6 +97,30 @@ public class IridescentRelics {
     public static final RegistryObject<Item> RELIC_ESSENCE = ITEMS.register("relic_essence",
         () -> new RelicEssenceItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
 
+    // Relic Essence Block -- 9 essence compressed (the emerald-block parallel). Storage +
+    // the substantial-cost ingredient for the T2 Broker recipe (a crafting grid can only
+    // hold 9 loose essence, so the block is how a recipe can charge dozens). Faintly glows.
+    public static final RegistryObject<Block> RELIC_ESSENCE_BLOCK = BLOCKS.register("relic_essence_block",
+        () -> new Block(BlockBehaviour.Properties.of()
+            .strength(5.0F, 6.0F)
+            .sound(SoundType.AMETHYST)
+            .lightLevel(state -> 8)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Item> RELIC_ESSENCE_BLOCK_ITEM = ITEMS.register("relic_essence_block",
+        () -> new BlockItem(RELIC_ESSENCE_BLOCK.get(), new Item.Properties()));
+
+    // ===== Economy: the Relic Broker Stand block =====
+    // Physical anchor for the Relic Broker trade GUI. Right-click handling + the catalog
+    // live in KubeJS (economy/relic_broker.js -> RelicBroker.open); the block is just a
+    // placeable/craftable station (T2-gated recipe). Pickaxe-mineable, drops itself.
+    public static final RegistryObject<Block> RELIC_BROKER_STAND = BLOCKS.register("relic_broker_stand",
+        () -> new RelicBrokerStandBlock(BlockBehaviour.Properties.of()
+            .strength(3.0F, 6.0F)
+            .sound(SoundType.STONE)
+            .requiresCorrectToolForDrops()));
+    public static final RegistryObject<Item> RELIC_BROKER_STAND_ITEM = ITEMS.register("relic_broker_stand",
+        () -> new BlockItem(RELIC_BROKER_STAND.get(), new Item.Properties()));
+
     // ===== Creative tab =====
     public static final RegistryObject<CreativeModeTab> RELICS_TAB = TABS.register("relics",
         () -> CreativeModeTab.builder()
@@ -100,6 +131,7 @@ public class IridescentRelics {
 
     public IridescentRelics() {
         IEventBus modBus = FMLJavaModLoadingContext.get().getModEventBus();
+        BLOCKS.register(modBus);
         ITEMS.register(modBus);
         TABS.register(modBus);
     }

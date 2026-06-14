@@ -1,0 +1,6 @@
+{
+  "parent": "minecraft:block/cube_all",
+  "textures": {
+    "all": "iridescent_relics:block/relic_essence_block"
+  }
+}

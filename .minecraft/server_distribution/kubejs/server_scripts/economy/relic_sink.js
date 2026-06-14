@@ -154,6 +154,12 @@ function relicSinkCap(itemId) {
     ? RELIC_SINK_CAP_OVERRIDE[itemId] : RELIC_SINK_CAP_DEFAULT
 }
 
+// Shared with the Relic Broker (Phase B1) buy trades -- the SAME conversion table, one
+// source of truth (operator decision 1). `global` persists across server_scripts and
+// reloads; the Broker reads it at runtime (its handler fires after all scripts load, so
+// load order between this file and relic_broker.js does not matter).
+global.icraftRelicEssenceValue = relicEssenceValue
+
 // persistentData key for a relic's lifetime-submitted count (item units).
 function relicCapKey(itemId) {
   return 'icraft_relicsink_' + itemId.replace(/[:\/]/g, '_')

@@ -3,7 +3,7 @@ name = 'Iridescent Relics'
 side = 'both'
 
 [download]
-hash = 'd5510027b412560da8915a07b5426273675f6628efc91e9f1918dce6dc0cecea'
+hash = '476758ba5c704c80c967b86db5613e26a261bc62c84364daa6fa4725a67b2f4a'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/mods/iridescent_relics-1.0.0.jar'

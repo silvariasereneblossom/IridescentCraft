@@ -4,6 +4,9 @@
   "item.iridescent_relics.relic_essence": "Relic Essence",
   "item.iridescent_relics.relic_essence.tooltip": "Crystallized residue of spent relics. The Relic Broker's coin.",
 
+  "block.iridescent_relics.relic_broker_stand": "Relic Broker Stand",
+  "block.iridescent_relics.relic_essence_block": "Block of Relic Essence",
+
   "item.iridescent_relics.remnant_relic": "Relic of the Remnant",
   "item.iridescent_relics.remnant_relic.tooltip": "A pulsing heart of ancient sandstone, warm to the touch.",
   "tooltip.relics.remnant_relic.ability.health": "Ancient Vitality",
