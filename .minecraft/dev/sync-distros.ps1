@@ -173,8 +173,27 @@ if (-not (Test-Path $GeneratorPath)) {
     }
 }
 
-if ($mismatches.Count -eq 0 -and -not $expectedStateStale) {
-    Write-Host "[sync-distros] OK - all three distros in sync across $($Watched -join ', '); expected_state manifests fresh."
+# =============================================================================
+# Custom-jar deployment consistency gate
+# -----------------------------------------------------------------------------
+# Every force-committed custom jar (custom_jars_manifest.json) must be byte-
+# identical to the manifest SHA across the distros it belongs in (side-aware),
+# plus our packwiz markers. Catches a half-deployed rebuild / stale distro copy
+# / stale marker BEFORE the push ships it - a divergence that otherwise only
+# surfaces consumer-side on the next sync, or never if an instance never
+# re-syncs (the 2026-06-14 stale-codex-jar incident). verify-custom-jars.ps1
+# owns the logic; -Fix re-copies the canonical jar to diverging/missing copies.
+$CustomJarScript = Join-Path $ScriptDir 'verify-custom-jars.ps1'
+$customJarBad = $false
+if (-not (Test-Path $CustomJarScript)) {
+    Write-Host "[sync-distros] WARN: verify-custom-jars.ps1 not found - skipping custom-jar gate." -ForegroundColor Yellow
+} else {
+    if ($Fix) { & $CustomJarScript -Fix } else { & $CustomJarScript -Check }
+    if ($LASTEXITCODE -ne 0) { $customJarBad = $true }
+}
+
+if ($mismatches.Count -eq 0 -and -not $expectedStateStale -and -not $customJarBad) {
+    Write-Host "[sync-distros] OK - all three distros in sync across $($Watched -join ', '); expected_state + custom jars consistent."
     exit 0
 }
 
@@ -202,8 +221,15 @@ if (-not $Fix) {
 }
 
 if ($mismatches.Count -eq 0) {
-    # -Fix was requested but the only issue was a stale manifest (now regenerated).
-    Write-Host "[sync-distros] OK - distros in sync; expected_state manifests regenerated."
+    # -Fix was requested but there were no watched-path mismatches to copy.
+    # expected_state was regenerated above and the custom-jar gate (-Fix) already
+    # re-copied any diverging jars. If the custom-jar gate still fails it needs
+    # regen_custom_jars_manifest.ps1 (manifest/marker), which -Fix does not do.
+    if ($customJarBad) {
+        Write-Host "[sync-distros] custom-jar gate still failing - run regen_custom_jars_manifest.ps1, then re-run." -ForegroundColor Red
+        exit 1
+    }
+    Write-Host "[sync-distros] OK - distros in sync; expected_state regenerated; custom jars consistent."
     exit 0
 }
 
@@ -249,5 +275,9 @@ Write-Host ""
 Write-Host "[sync-distros] fixed $fixedCount; skipped $skippedOrphans orphan(s)."
 if ($skippedOrphans -gt 0) {
     Write-Host "[sync-distros] re-run with -DeleteOrphans to remove orphan(s)."
+}
+if ($customJarBad) {
+    Write-Host "[sync-distros] custom-jar gate still failing - run regen_custom_jars_manifest.ps1, then re-run." -ForegroundColor Red
+    exit 1
 }
 exit 0
