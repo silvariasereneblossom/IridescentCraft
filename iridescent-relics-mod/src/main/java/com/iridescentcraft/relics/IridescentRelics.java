@@ -6,6 +6,7 @@ import com.iridescentcraft.relics.item.FrostmawHeartItem;
 import com.iridescentcraft.relics.item.IronheartCogItem;
 import com.iridescentcraft.relics.item.LeviathansPearlItem;
 import com.iridescentcraft.relics.item.PhylacteryShardItem;
+import com.iridescentcraft.relics.item.RelicEssenceItem;
 import com.iridescentcraft.relics.item.RemnantRelicItem;
 import com.iridescentcraft.relics.item.SunfeatherCharmItem;
 import net.minecraft.core.registries.Registries;
@@ -80,6 +81,14 @@ public class IridescentRelics {
     // Dragon's Eye -- T4 finale (minecraft:ender_dragon), back, EPIC. +max health, +crit chance/damage (attributeslib soft dep).
     public static final RegistryObject<Item> DRAGONS_EYE = ITEMS.register("dragons_eye",
         () -> new DragonsEyeItem(new Item.Properties().stacksTo(1).rarity(Rarity.EPIC).fireResistant()));
+
+    // ===== Economy: relic surplus-sink currency =====
+    // Relic Essence -- distilled from surplus relics/curios (KubeJS submit-sweep +
+    // Relic Broker buy trades, SAME data-driven table in economy/relic_sink.js) and
+    // spent at the Broker's tier-gated catalog. Plain stackable currency (NOT a worn
+    // relic); stacks like emeralds (the S18 convenience-currency parallel).
+    public static final RegistryObject<Item> RELIC_ESSENCE = ITEMS.register("relic_essence",
+        () -> new RelicEssenceItem(new Item.Properties().rarity(Rarity.UNCOMMON)));
 
     // ===== Creative tab =====
     public static final RegistryObject<CreativeModeTab> RELICS_TAB = TABS.register("relics",
