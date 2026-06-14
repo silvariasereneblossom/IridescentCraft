@@ -1,0 +1,27 @@
+{
+  "name": "The Relic Economy",
+  "icon": "iridescent_relics:relic_essence",
+  "category": "icraft:loot",
+  "sortnum": 6,
+  "pages": [
+    {
+      "type": "patchouli:text",
+      "text": "A duplicate relic is the worst kind of loot — a visible reward worth nothing. The Relic Economy fixes that: surplus relics and curios distil into $(bold)Relic Essence$(), a currency you spend at the $(bold)Relic Broker$().$(br2)$(note)Relic Essence is NOT a progression token — it buys goods from the Broker, it never advances a tier. See $(l:icraft:loot/token_system)Progression Tokens$(/l) for the difference."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Banking Surplus",
+      "text": "Carry your spare relics & curios and run $(bold)/icraft relics submit$() — it previews the haul, then $(bold)submit confirm$() banks it into essence. Or click $(bold)Submit$() in the $(bold)Bank Relic Surplus$() quest (Iridescent Codex group) for one-click banking.$(br2)Eligible: the seven artifact/curio mods plus boss-signature relics. $(bold)Boss relics are worth far more$() than common artifacts. Worn relics are never touched — only your backpack.$(br2)Check your balance with $(bold)/icraft relics balance$()."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "The Relic Broker",
+      "text": "Spend essence at a $(bold)Relic Broker Stand$() — right-click it to open the trade screen. The catalog grows with your tier ($(t2)II$() → $(t3)III$() → $(t4)IV$()):$(br2)$(li)$(bold)Enchant books$() — utility early, chase enchants later.$(li)$(bold)Materials$() — gem dust, arcane essence, Tetra & boss mats.$(li)$(bold)Spell scrolls$() — a random bound spell.$(li)$(bold)Convenience$() — bought with emeralds, not essence.$(br2)The Broker also $(bold)BUYS$() your boss relics back for essence."
+    },
+    {
+      "type": "patchouli:text",
+      "title": "Stock & Limits",
+      "text": "The Broker's rotating materials & scrolls $(bold)reroll each day$() — check back for new stock. Purchases are capped at about $(bold)ten per day$(); selling relics back is unlimited.$(br2)There is a Broker at the spawn safe-haven, and once you reach $(t2)Tier 2$() you can craft your own $(bold)Relic Broker Stand$() from a stack of essence — bank, distil, and trade without the trip home."
+    }
+  ]
+}

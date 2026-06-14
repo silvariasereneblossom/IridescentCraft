@@ -1,0 +1,46 @@
+{
+  "display": {
+    "icon": { "type": "heracles:item", "item": "iridescent_relics:relic_essence" },
+    "title": "Bank Relic Surplus",
+    "subtitle": "Distil duplicate relics & curios into Relic Essence",
+    "description": [
+      "Surplus relics and curios — duplicate artifacts, spare boss relics, loot",
+      "you will never wear — have a sink: distil them into §bRelic Essence§r,",
+      "the Relic Broker's currency.",
+      "",
+      "Click §bSubmit§r below to bank every eligible relic & curio you are",
+      "carrying into essence — the seven artifact/curio mods plus boss-signature",
+      "relics. Boss relics are worth far more than common artifacts.",
+      "",
+      "§c§lWarning:§r this consumes EVERY sinkable relic in your backpack (worn",
+      "relics are safe). To preview the haul first, type §e/icraft relics submit§r",
+      "instead — it lists what would convert and waits for a confirm.",
+      "",
+      "§7Spend essence at the §rRelic Broker Stand§7 (craftable at Tier 2).",
+      "§7Check your balance with /icraft relics balance."
+    ],
+    "groups": { "Iridescent Codex": { "position": [0, 240] } }
+  },
+  "settings": {
+    "individual_progress": true,
+    "repeatable": true,
+    "autoClaimRewards": true
+  },
+  "dependencies": [],
+  "tasks": {
+    "carry_relics": {
+      "type": "heracles:item",
+      "title": "Carry surplus relics or curios",
+      "item": "#icraft:relic_sinkable",
+      "amount": 1,
+      "collection": "MANUAL"
+    }
+  },
+  "rewards": {
+    "bank_essence": {
+      "type": "heracles:command",
+      "title": "Convert eligible relics into Relic Essence",
+      "command": "icraft relics submit confirm"
+    }
+  }
+}
