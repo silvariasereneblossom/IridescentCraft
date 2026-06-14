@@ -17,15 +17,25 @@ import net.minecraft.world.item.trading.MerchantOffers;
  */
 public final class RelicBroker {
 
+    /** persistentData key for the player's trades-used-today count (B2 ~10/day cap).
+     *  SHARED with KubeJS economy/relic_broker.js, which resets it on a new world day. */
+    public static final String TRADES_KEY = "icraft_broker_trades";
+
     private RelicBroker() {
+    }
+
+    /** Uncapped open (B1 compatibility). */
+    public static void open(Player player, MerchantOffers offers, Component title) {
+        open(player, offers, title, 0);
     }
 
     /**
      * Open the Broker trade GUI for {@code player} with the supplied {@code offers}.
-     * Server-side only; silently no-ops off-thread/empty. {@code title} is the GUI header
-     * (falls back to "Relic Broker").
+     * Server-side only; silently no-ops off-thread/empty. {@code title} falls back to
+     * "Relic Broker". {@code dailyCap} (&gt;0) caps trades/day via the Merchant's notifyTrade;
+     * a same-day reopen after the cap was hit pre-locks the catalog.
      */
-    public static void open(Player player, MerchantOffers offers, Component title) {
+    public static void open(Player player, MerchantOffers offers, Component title, int dailyCap) {
         if (!(player instanceof ServerPlayer serverPlayer)) {
             return;
         }
@@ -34,8 +44,11 @@ public final class RelicBroker {
                     Component.literal("The Relic Broker has nothing for you right now."), true);
             return;
         }
-        RelicBrokerMerchant merchant = new RelicBrokerMerchant(offers);
+        RelicBrokerMerchant merchant = new RelicBrokerMerchant(offers, dailyCap);
         merchant.setTradingPlayer(serverPlayer);
+        if (dailyCap > 0 && serverPlayer.getPersistentData().getInt(TRADES_KEY) >= dailyCap) {
+            merchant.lockAllOffers();
+        }
         // Merchant's default openTradingScreen opens a MerchantMenu and sends the offers.
         merchant.openTradingScreen(serverPlayer,
                 (title != null) ? title : Component.literal("Relic Broker"), 1);

@@ -1,6 +1,8 @@
 package com.iridescentcraft.relics.broker;
 
+import com.iridescentcraft.relics.IridescentRelics;
 import javax.annotation.Nullable;
+import net.minecraft.network.chat.Component;
 import net.minecraft.sounds.SoundEvent;
 import net.minecraft.sounds.SoundEvents;
 import net.minecraft.world.entity.player.Player;
@@ -28,9 +30,24 @@ public class RelicBrokerMerchant implements Merchant {
     @Nullable
     private Player tradingPlayer;
     private MerchantOffers offers;
+    /** B2 daily purchase cap (~10/day); 0 = uncapped. The count lives in the player's
+     *  persistentData under {@link RelicBroker#TRADES_KEY}; KubeJS resets it on a new world
+     *  day (at open), this class only increments + locks. */
+    private final int dailyCap;
 
-    public RelicBrokerMerchant(MerchantOffers offers) {
+    public RelicBrokerMerchant(MerchantOffers offers, int dailyCap) {
         this.offers = (offers != null) ? offers : new MerchantOffers();
+        this.dailyCap = Math.max(0, dailyCap);
+    }
+
+    /** Mark every offer out of stock (greys them out). Vanilla MerchantOffer has no public
+     *  setter, so increment uses to maxUses. */
+    void lockAllOffers() {
+        for (MerchantOffer offer : this.offers) {
+            while (!offer.isOutOfStock()) {
+                offer.increaseUses();
+            }
+        }
     }
 
     @Override
@@ -57,8 +74,23 @@ public class RelicBrokerMerchant implements Merchant {
     @Override
     public void notifyTrade(MerchantOffer offer) {
         // Vanilla AbstractVillager increments uses here (NOT in the result slot), which is
-        // what makes maxUses / out-of-stock work. Mirror that. (B2 daily-cap hook goes here.)
+        // what makes maxUses / out-of-stock work. Mirror that.
         offer.increaseUses();
+
+        // B2 ~10/day cap: count this trade in persistentData; at the cap, lock the whole
+        // catalog (so the player can't trade more today) and tell them once. Selling relics
+        // BACK to the Broker (result = essence) is an uncapped sink, so it does NOT count.
+        boolean isBuyback = offer.getResult().is(IridescentRelics.RELIC_ESSENCE.get());
+        if (this.dailyCap > 0 && this.tradingPlayer != null && !isBuyback) {
+            int count = this.tradingPlayer.getPersistentData().getInt(RelicBroker.TRADES_KEY) + 1;
+            this.tradingPlayer.getPersistentData().putInt(RelicBroker.TRADES_KEY, count);
+            if (count >= this.dailyCap) {
+                lockAllOffers();
+                this.tradingPlayer.displayClientMessage(Component.literal(
+                        "§e[Relic Broker]§7 You've used all " + this.dailyCap
+                                + " of today's trades. The Broker restocks at dawn."), false);
+            }
+        }
     }
 
     @Override

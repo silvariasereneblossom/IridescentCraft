@@ -28,6 +28,17 @@ const $MerchantOffer = Java.loadClass('net.minecraft.world.item.trading.Merchant
 const BROKER_BLOCK = 'iridescent_relics:relic_broker_stand'
 const ESSENCE = 'iridescent_relics:relic_essence'
 
+// ---- B2: daily cap + rotation -------------------------------------------------
+// ~10 purchases/day (operator decision 5). Enforced jar-side in the Merchant's
+// notifyTrade (the only place individual Broker trades are observable); THIS file
+// resets the counter on a new world day (at open) + shows the player their budget.
+// Selling relics back to the Broker is an UNCAPPED sink (does not count).
+const BROKER_DAILY_CAP = 10
+// Rotating goods (materials + scrolls) show in daily groups: an item with rot:g
+// shows on days where (worldDay % BROKER_ROT_GROUPS) === g. Enchant books,
+// convenience, and buy-relics always show. PROVISIONAL.
+const BROKER_ROT_GROUPS = 2
+
 // ---- Catalog: tier-gated enchant BOOKS (cost in Relic Essence) ---------------
 // astages tier unlocks which rows show (T1 utility -> T3 chase -> T4 exclusives
 // that are normally untradeable). Levels kept vanilla-valid for v1; Apotheosis
@@ -67,12 +78,12 @@ const BROKER_ENCHANTS = [
 // a Warden boss material (kubejs:void_essence) at steep prices; gem dust; arcane
 // essence; ISS scrolls are a separate family below.
 const BROKER_MATERIALS = [
-  { tier: 1, id: 'apotheosis:gem_dust',            count: 4, cost: 25,  stock: 8 },
-  { tier: 1, id: 'irons_spellbooks:arcane_essence', count: 8, cost: 30, stock: 8 },
-  { tier: 2, id: 'tetra:geode',                    count: 2, cost: 60,  stock: 4 },
-  { tier: 2, id: 'tetra:metal_scrap',              count: 4, cost: 40,  stock: 6 },
-  { tier: 3, id: 'tetra:dragon_sinew',             count: 1, cost: 150, stock: 2 }, // boss-tier Tetra mat
-  { tier: 3, id: 'kubejs:void_essence',            count: 1, cost: 200, stock: 2 }, // Warden boss material
+  { tier: 1, id: 'apotheosis:gem_dust',             count: 4, cost: 25,  stock: 8, rot: 0 },
+  { tier: 1, id: 'irons_spellbooks:arcane_essence', count: 8, cost: 30,  stock: 8, rot: 1 },
+  { tier: 2, id: 'tetra:geode',                     count: 2, cost: 60,  stock: 4, rot: 0 },
+  { tier: 2, id: 'tetra:metal_scrap',               count: 4, cost: 40,  stock: 6, rot: 1 },
+  { tier: 3, id: 'tetra:dragon_sinew',              count: 1, cost: 150, stock: 2, rot: 0 }, // boss-tier Tetra mat
+  { tier: 3, id: 'kubejs:void_essence',             count: 1, cost: 200, stock: 2, rot: 1 }, // Warden boss material
 ]
 
 // ---- Catalog: ISS spell scrolls (cost in Relic Essence) ----------------------
@@ -80,8 +91,8 @@ const BROKER_MATERIALS = [
 // it enters the player's inventory (server_scripts/randomize_blank_scrolls.js), so
 // selling the blank scroll == selling a random spell scroll. {tier,count,cost,stock}.
 const BROKER_SCROLLS = [
-  { tier: 1, count: 1, cost: 70,  stock: 4 },
-  { tier: 2, count: 2, cost: 120, stock: 3 },
+  { tier: 1, count: 1, cost: 70,  stock: 4, rot: 0 },
+  { tier: 2, count: 2, cost: 120, stock: 3, rot: 1 },
 ]
 
 // ---- Catalog: convenience goods (cost in EMERALDS, S18 doctrine) -------------
@@ -128,25 +139,38 @@ function brokerOffer(costStack, resultStack, maxUses) {
   return new $MerchantOffer(costStack, resultStack, maxUses, 0, 0.0)
 }
 
-// Build the player's tier-filtered MerchantOffers.
-function brokerBuildOffers(player) {
+// World-day number (overworld), the daily rotation + cap-reset key.
+function brokerDay(server) {
+  return Math.floor(Number(server.overworld().getDayTime()) / 24000)
+}
+
+// Show predicate: tier-gated, and rotating goods (rot defined) only on their day group.
+function brokerShows(entry, tier, day) {
+  if (entry.tier > tier) return false
+  if (typeof entry.rot === 'number' && (day % BROKER_ROT_GROUPS) !== (entry.rot % BROKER_ROT_GROUPS)) return false
+  return true
+}
+
+// Build the player's tier-filtered, daily-rotated MerchantOffers.
+function brokerBuildOffers(player, day) {
   const tier = brokerPlayerTier(player)
   const offers = new $MerchantOffers()
 
   BROKER_ENCHANTS.forEach(e => {
-    if (e.tier <= tier) offers.add(brokerOffer(brokerEssence(e.cost), brokerEnchBook(e.ench, e.lvl), e.stock))
+    if (brokerShows(e, tier, day)) offers.add(brokerOffer(brokerEssence(e.cost), brokerEnchBook(e.ench, e.lvl), e.stock))
   })
   BROKER_MATERIALS.forEach(m => {
-    if (m.tier <= tier) offers.add(brokerOffer(brokerEssence(m.cost), Item.of(m.id, m.count), m.stock))
+    if (brokerShows(m, tier, day)) offers.add(brokerOffer(brokerEssence(m.cost), Item.of(m.id, m.count), m.stock))
   })
   BROKER_SCROLLS.forEach(s => {
-    if (s.tier <= tier) offers.add(brokerOffer(brokerEssence(s.cost), Item.of('irons_spellbooks:scroll', s.count), s.stock))
+    if (brokerShows(s, tier, day)) offers.add(brokerOffer(brokerEssence(s.cost), Item.of('irons_spellbooks:scroll', s.count), s.stock))
   })
   BROKER_CONVENIENCE.forEach(c => {
-    if (c.tier <= tier) offers.add(brokerOffer(Item.of('minecraft:emerald', c.emerald), Item.of(c.id, c.count), c.stock))
+    if (brokerShows(c, tier, day)) offers.add(brokerOffer(Item.of('minecraft:emerald', c.emerald), Item.of(c.id, c.count), c.stock))
   })
 
-  // Buy-relics: relic -> essence, priced by the shared Phase-A table.
+  // Buy-relics: relic -> essence, priced by the shared Phase-A table. Always shown,
+  // UNCAPPED (a sink) -- the jar's notifyTrade does not count buy-backs.
   const valueOf = global.icraftRelicEssenceValue
   if (typeof valueOf === 'function') {
     BROKER_BUYS.forEach(id => {
@@ -169,13 +193,43 @@ BlockEvents.rightClicked(event => {
   if (!player) return
   event.cancel()
   try {
-    const offers = brokerBuildOffers(player)
-    $RelicBroker.open(player, offers, null) // null title -> jar default "Relic Broker"
+    const day = brokerDay(player.server)
+    const pd = player.persistentData
+    // Daily reset of the purchase counter (the jar's notifyTrade increments the same key).
+    if (pd.getLong('icraft_broker_day') !== day) {
+      pd.putLong('icraft_broker_day', day)
+      pd.putInt('icraft_broker_trades', 0)
+    }
+    const remaining = Math.max(0, BROKER_DAILY_CAP - pd.getInt('icraft_broker_trades'))
+    player.tell(Text.gold('[Relic Broker] ').append(Text.gray('Purchases left today: '))
+      .append(remaining > 0
+        ? Text.aqua(remaining + '/' + BROKER_DAILY_CAP)
+        : Text.red('0/' + BROKER_DAILY_CAP + ' — restocks at dawn')))
+    const offers = brokerBuildOffers(player, day)
+    $RelicBroker.open(player, offers, null, BROKER_DAILY_CAP) // null title -> jar default "Relic Broker"
   } catch (e) {
     console.warn('[RelicBroker] open failed for ' + player.username + ': ' + e)
     player.tell(Text.red('[Relic Broker] failed to open: ' + e))
   }
 })
+
+// ---- B2: daily restock broadcast (via the 0_tick_master registry) -------------
+// Detects the world-day rollover and announces a restock once (new rotating stock
+// + everyone's daily purchase budget refreshed). global.* persists across /reload,
+// so a restart re-seeds the day silently (no spurious broadcast).
+global.icraftBrokerRestockTick = function (event) {
+  try {
+    const server = event.server
+    if (!server) return
+    const day = brokerDay(server)
+    if (global.icraftBrokerLastDay === undefined) { global.icraftBrokerLastDay = day; return }
+    if (day !== global.icraftBrokerLastDay) {
+      global.icraftBrokerLastDay = day
+      server.tell(Text.gold('☼ The Relic Broker has restocked — new rotating stock, and your daily trades are refreshed.'))
+    }
+  } catch (e) {}
+}
+global.registerServerTick('icraftBrokerRestockTick', 200, 13)
 
 // ---- Recipes: essence block <-> 9 essence, + the T2 Relic Broker Stand --------
 ServerEvents.recipes(event => {
