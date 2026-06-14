@@ -129,8 +129,10 @@ function brokerPlayerTier(player) {
 function brokerEssence(n) { return Item.of(ESSENCE, n) }
 
 function brokerEnchBook(ench, lvl) {
+  // lvl carries the 's' short suffix -- vanilla StoredEnchantments expects a ShortTag
+  // (matches the proven loot/planetary_loot.js pattern; a bare int can read as blank).
   return Item.of('minecraft:enchanted_book',
-    '{StoredEnchantments:[{id:"' + ench + '",lvl:' + lvl + '}]}')
+    '{StoredEnchantments:[{id:"' + ench + '",lvl:' + lvl + 's}]}')
 }
 
 // MerchantOffer(costA, result, maxUses, xp=0, priceMultiplier=0) -- single cost,
@@ -196,7 +198,9 @@ BlockEvents.rightClicked(event => {
     const day = brokerDay(player.server)
     const pd = player.persistentData
     // Daily reset of the purchase counter (the jar's notifyTrade increments the same key).
-    if (pd.getLong('icraft_broker_day') !== day) {
+    // Number() the Java long -- Rhino won't coerce `long !== number`, which would (wrongly)
+    // make the reset fire on EVERY open.
+    if (Number(pd.getLong('icraft_broker_day')) !== day) {
       pd.putLong('icraft_broker_day', day)
       pd.putInt('icraft_broker_trades', 0)
     }
