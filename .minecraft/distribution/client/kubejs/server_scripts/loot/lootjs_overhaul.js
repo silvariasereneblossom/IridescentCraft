@@ -52,9 +52,11 @@ LootJS.modifiers(event => {
   // SECTION 1: ENCHANTED BOOK REBALANCE
   // =========================================================================
   // Layer tier-scaled enchanted books on top of vanilla loot-table generation.
-  // We do NOT strip vanilla books first — `removeLoot('minecraft:enchanted_book')`
-  // creates a persistent filter in LootJS 2.x that catches our re-adds in the
-  // same evaluation pass, producing blank/unenchanted books (confirmed 2026-04-18).
+  // We do NOT strip vanilla books first and re-add — we just layer on top. (The
+  // 2026-04-18 "blank/unenchanted book" symptom was real but was NOT a "persistent
+  // filter"; see the LootJS removal-mechanic note in Section 1B — removal is
+  // one-shot in-place in registration order. Layering on top sidesteps any
+  // strip/re-add ordering issue entirely.)
   //
   // Tier re-add rates (layered on top of vanilla's ~5-10%):
   //   Overworld: 7.5%
@@ -464,23 +466,48 @@ LootJS.modifiers(event => {
   // Village sanitization (Section 6) has its own strip but this catches
   // everything else — dimension chests, structure chests, etc.
   // =========================================================================
-  // 2026-06-14 SCROLL-ECONOMY FIX (#45/ISS). The blanket `.removeLoot('@irons_spellbooks')`
-  // below was a TAG strip — and per the LootJS persistent-filter rule (documented in
-  // Section 6 ~line 2167, and the @artifacts NOTE just below) a namespace/tag strip on a
-  // LootType.CHEST modifier installs a PERSISTENT filter that silently eats EVERY
-  // same-namespace item — including ones present in base tables AND ones re-added later in
-  // the same pass. Because `irons_spellbooks:scroll` lives in that namespace and is NEVER
-  // re-added globally, the strip nuked scrolls pack-wide:
+  // ───────────────────────────────────────────────────────────────────────
+  // LootJS 2.13.1 REMOVAL MECHANIC — canonical note (verified 2026-06-14 by
+  // decompiling the live jar with CFR). READ THIS before reasoning about ANY
+  // strip/re-add interaction in this file.
+  //
+  //   `removeLoot(filter)` is a ONE-SHOT, in-place `loot.removeIf(predicate)`
+  //   run AT THE POSITION it sits in registration order. Every modifier in the
+  //   pack mutates ONE shared loot list, applied in REGISTRATION ORDER (= source
+  //   order within a script; scripts apply in load order, so a later-loading file
+  //   like zz_unique_chest_strip.js runs last). There is NO persistent/deferred
+  //   filter retained across actions or across modifiers, and a #tag / @namespace
+  //   filter behaves EXACTLY like a single item id (just a broader predicate).
+  //
+  //   => A strip can only remove items ALREADY in the list when it runs; it CANNOT
+  //      reach forward to items added later. So "does strip X eat add Y?" reduces
+  //      entirely to ORDER: a strip eats an add ONLY if the strip is registered
+  //      AFTER the add for an overlapping table. The older comments in this file
+  //      blaming a "persistent filter" were misdiagnoses — the real variables are
+  //      registration order and (under Lootr) which tables a modifier matches.
+  //      Live proof in this same file: the gatekeeper-house `@artifacts` strip
+  //      (~line 1965) is registered AFTER the T2 artifact pool (~line 735), so it
+  //      DOES strip those artifacts there — intended, and pure registration order.
+  // ───────────────────────────────────────────────────────────────────────
+  // 2026-06-14 SCROLL-ECONOMY FIX (#45/ISS), re-explained per the mechanic above.
+  // This `.removeLoot('@irons_spellbooks')` runs BEFORE every ISS re-add, so it
+  // only ever stripped ISS items present in BASE tables — it did NOT eat our tiered
+  // re-adds (registered later, they survive). Its real effect was removing
+  // base-table scrolls pack-wide:
   //   • the base-table village-house scroll (~4.9%, wt2/41) → testers "never" saw it
-  //   • the marquee scroll adds (tome_tower / stronghold @ 10%, etc., line ~2601) → "well under 10%"
-  //   • ISS's own append_loot GLM scrolls (stronghold library 3-5, treasure compat ~89%,
-  //     generic 75%) → treasure scrolls "very rare"
-  // Scrolls are a documented PRIMARY mage-progression vector (TIER_SCROLL_RATE, marquee
-  // scroll:true), so they must be exempt. Replace the namespace strip with a predicate that
-  // strips all ISS items EXCEPT the scroll — preserving the original curation (loose
-  // spellbooks / runes / inks still cleared from generic chests, then re-added tiered) while
-  // letting scrolls flow at their intended rates. (@ars_nouveau / @moreartifacts below are the
-  // same footgun for those economies — left as-is pending a separate balance review.)
+  //   • ISS's own append_loot GLM scrolls (stronghold library 3-5, treasure compat
+  //     ~89%, generic 75%) → treasure scrolls "very rare"
+  // (The marquee scroll adds at ~line 2601 are registered AFTER this strip and were
+  // NEVER eaten by it; that "well under 10%" symptom has another cause — variance /
+  // the randomize_spell roll / Lootr — not this line.)
+  // Scrolls are a documented PRIMARY mage-progression vector (TIER_SCROLL_RATE,
+  // marquee scroll:true), so base-table scrolls should flow. Replace the namespace
+  // strip with a predicate that strips all ISS items EXCEPT the scroll — preserving
+  // the original curation (loose spellbooks / runes / inks still cleared from base
+  // tables, then re-added tiered) while letting base-table scrolls through.
+  // NOTE: @ars_nouveau / @moreartifacts below are NOT this footgun — they also run
+  // BEFORE their re-adds, so they only clear base-table items (their intended job)
+  // and the curated tiered re-adds survive. (Investigated & confirmed 2026-06-14.)
   var stripISSExceptScroll = function(stack) {
     try {
       if (!stack || stack.isEmpty()) return false
@@ -493,9 +520,11 @@ LootJS.modifiers(event => {
   }
   event
     .addLootTypeModifier(LootType.CHEST)
-    // NOTE: Do NOT use removeLoot('@artifacts') here — LootJS applies it as a
-    // persistent filter that also strips our own tiered re-additions (same namespace).
-    // Artifact mod injection is controlled via GLM whitelist (replace:true) instead.
+    // NOTE: we don't `removeLoot('@artifacts')` here — but NOT for the old
+    // "persistent filter" reason (per the mechanic note above, a strip here would
+    // run BEFORE our tiered re-adds and would not eat them). The base Artifacts mod
+    // governs its own injection via a GLM whitelist (replace:true), so that GLM is
+    // the control surface; a blanket LootJS strip here is just unnecessary.
     // Village-specific sanitization handles village chests separately.
     .removeLoot('@ars_nouveau')
     .removeLoot(ItemFilter.custom(stripISSExceptScroll))  // was '@irons_spellbooks' — scrolls now exempt (see note above)
@@ -636,9 +665,12 @@ LootJS.modifiers(event => {
   })
 
   // --- Off-tier glyph strips (keep T2+ glyphs out of T1, T3+ out of T2, etc.) ---
-  // Runs AFTER glyph add modifiers on a separate event chain. LootJS's
-  // persistent-filter quirk catches re-adds in the same chain, but independent
-  // modifiers seem to evaluate cleanly against each other.
+  // Registered AFTER the glyph-add modifiers, so per the mechanic note (Section 1B)
+  // they run later on the shared list and cleanly remove off-tier glyphs that
+  // earlier modifiers (or base tables) placed. (This is the site that disproves the
+  // old "persistent filter" comments — there is no persistent filter; it's just
+  // registration order. Caveat: these global LootType.CHEST strips can still miss
+  // village contexts under Lootr, which is why Section 6 re-strips per-table.)
   var _glyphStripOW = event.addLootTypeModifier(LootType.CHEST).anyDimension('minecraft:overworld')
   glyphT2.concat(glyphT3, glyphT4).forEach(g => { _glyphStripOW.removeLoot(g) })
 
@@ -1326,12 +1358,12 @@ LootJS.modifiers(event => {
   // Artifacts mod handles artifact injection into village chests natively via GLM
   // We only handle material/gear adjustments here.
   //
-  // 2026-04-19: DO NOT strip iron gear here. removeLoot(specific_item) has
-  // persistent-filter behavior that eats later addLoot/addWeightedLoot calls
-  // for the same item id in the same evaluation pass — the village-weaponsmith
-  // weighted pool at line ~1316 was being silently stripped, which is why
-  // testers "rarely saw weapons." Let vanilla village smith tables drop iron
-  // gear naturally and add our curated layer on top.
+  // 2026-04-19: DO NOT strip iron gear here. Per the mechanic note (Section 1B),
+  // removeLoot is one-shot in-place in registration order — so a strip that lands
+  // AFTER an add (here, after the same-pass weaponsmith adds) silently removes it,
+  // which is why testers "rarely saw weapons." (It's ordering, not a "persistent
+  // filter.") Simplest safe pattern: don't strip what we re-add — let vanilla smith
+  // tables drop iron naturally and layer our curated adds on top.
   vanillaVillageSmithChests.forEach(table => {
     let modifier = event
       .addLootTableModifier(table)
@@ -1429,10 +1461,12 @@ LootJS.modifiers(event => {
   })
 
   // --- Village house clutter strip ---
-  // Vanilla village house tables drop a lot of low-value filler (feather
-  // spam, excess wheat seeds). Don't strip items that our later pools
-  // re-add — per the persistent-filter rule, that would eat those re-adds too.
-  // Limit to items we're confident we don't want anywhere.
+  // Vanilla village house tables drop a lot of low-value filler (feather spam,
+  // excess wheat seeds). Per the mechanic note (Section 1B): this strip removes
+  // whatever is in the list when it runs — so it WOULD eat any item an EARLIER-
+  // registered modifier added (e.g. the T1 broadcast above), while items re-added
+  // by LATER sections survive it. To stay safe regardless of order, limit this to
+  // filler we're confident we never want anywhere.
   //
   // Keep meat (porkchop, chicken): it IS food and T1 players need early
   // calories. Only strip non-food filler. (2026-04-20 tester preference.)
@@ -2192,13 +2226,15 @@ LootJS.modifiers(event => {
   // the dedicated village pool above. Also strip mod leakage.
   //
   // 2026-04-20: removed @ars_nouveau / @irons_spellbooks / @moreartifacts
-  // tag-based catch-alls. Per the LootJS persistent-filter rule, those tag
-  // strips were silently eating every same-namespace item re-added later in
-  // the same pass — including T1 glyphs from SECTION 2's global Overworld
-  // adds, and the novice_spell_book / source_gem / copper_spell_book /
-  // common_ink re-adds in SECTION 6B. Only keep strips for items we
-  // explicitly don't want in villages (higher-tier spell books, tier tokens,
-  // T2+ glyphs).
+  // tag-based catch-alls from village sanitization. Per the mechanic note
+  // (Section 1B): this village block is registered AFTER the global Overworld
+  // glyph / spell-book re-adds (Section 1B area), so those broad tag strips ran
+  // later on the shared list and DID eat the T1 glyphs / novice_spell_book /
+  // source_gem / common_ink those earlier modifiers had added to village chests.
+  // (It's registration order, not a "persistent filter" — and note Section 6B's
+  // own re-adds are registered AFTER this block and were never affected.) Keep
+  // only targeted strips for things we explicitly don't want in villages
+  // (higher-tier spell books, tier tokens, T2+ glyphs).
   villageChests.forEach(function(table) {
     var vSan = event.addLootTableModifier(table)
     // Remove ALL T1 global-pool items (handled by village artifact pool instead)
