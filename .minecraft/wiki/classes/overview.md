@@ -8,7 +8,7 @@ Four layered character systems define player builds, with the first three presen
 |--------|-------|------|-------------|
 | Origins (vanilla + icraft) | Origin | Flavor powers — unique abilities and tradeoffs (13 origins, no Human) | Character creation prompt 1 |
 | Origins (icraft) | Race | 11 custom races — stat modifiers and thematic flavor | Character creation prompt 2 |
-| Iridescent Classes (icraft) | Class | 10 combat roles — playstyle, HP tier, glass cannon | Character creation prompt 3 |
+| Iridescent Classes (icraft) | Class | 13 combat roles — playstyle, HP tier, glass cannon | Character creation prompt 3 |
 | Pufferfish's Skills (+ AStages bridge) | — | Skill Points — stat investment trees | Earned through progression |
 | JustLevelingFork | — | Passive stat scaling via XP leveling | Always active |
 
@@ -17,11 +17,11 @@ Four layered character systems define player builds, with the first three presen
 On first join, players choose in order:
 1. **Origin** (13 origins, no Human) — Flavor powers (e.g., Arachnid wall climbing, Blazeborn fire immunity, Merling underwater breathing, Witch of Ink passive hyperscaling, Artificial Construct iron eating, Witherborn DOT melee, Slimebodied food tank)
 2. **Race** (11 custom) — IridescentCraft race with stat bonuses/penalties (Human, Elf, Dwarf, Orc, Halfling, Faefolk, Revenant, Demi-God, Ryu, Fallen Angel, Kirin)
-3. **Class** (10 custom) — Combat role (Berserker, Samurai, Battlemage, etc.)
+3. **Class** (13 custom) — Combat role (Berserker, Samurai, Battlemage, the Trinity mages, etc.)
 
 Origins layer provides flavor powers, Race layer provides stat bonuses/penalties, and Class layer provides combat role. The vanilla `origins:human` has been removed to avoid overlap with the custom Human race.
 
-## 10 Classes
+## 13 Classes
 
 | Class | Role | HP Tier | Equipment HP |
 |-------|------|---------|-------------|
@@ -35,6 +35,21 @@ Origins layer provides flavor powers, Race layer provides stat bonuses/penalties
 | Archmage | Offensive Caster | Low (-20%) | **Halved** (glass cannon) |
 | Artificer | Crafter/Non-Combat | Standard | Full |
 | Void Summoner | Summoner/Necromancer | Low (-10%) | **Halved** (glass cannon) |
+| Elemental (Stormcaller) | Magic specialist — fire/ice/lightning burst | Low (-20%) | **Halved** (glass cannon) |
+| Blessed (Hierophant) | Magic specialist — holy/nature/evocation sustain/support | High (+10%) | Full |
+| Corrupted (Hollow) | Magic specialist — blood/ender/eldritch attrition/lifesteal | Low (-10%) | Full |
+
+### Trinity Mages (added 2026-06-14, Phase 1a)
+
+Three **magic specialists** that invert the Archmage's generalist bargain: each is exceptional in **three** Iron's Spellbooks schools and weak in the other six (depth over breadth). They form a rock-paper-scissors triangle, and each out-damages the Archmage *within* its triad while falling behind across the other schools.
+
+| Mage | Schools (+80% spell power each) | Role | HP | Strong vs / Weak vs |
+|------|--------------------------------|------|----|---------------------|
+| Elemental | fire · ice · lightning | Burst/AoE artillery, glass cannon | Low (-20%, halved) | beats Blessed / loses to Corrupted |
+| Blessed | holy · nature · evocation | Sustain/support, anti-undead | High (+10%) | beats Corrupted / loses to Elemental |
+| Corrupted | blood · ender · eldritch | DoT/lifesteal attrition | Low (-10%) | beats Elemental / loses to Blessed |
+
+Each also carries generic `spell_power 1.40` plus per-mage identity stats (Elemental: crit; Blessed: healing + magic resist; Corrupted: lifesteal + cooldown + armor-pen), a 2× mana pool, edge resistances in its winning matchup, and a vulnerability in its losing one — backed by Iron's Spellbooks per-school `*_spell_power` / `*_magic_resist` attributes. **Phase 1a (live):** selectable, triad spell power, resists, HP tier, mana, themed starter kit. **Phase 1b (planned):** signature active abilities, the offensive half of the triangle, optional intra-triad sub-specialization, and a fix so Ars Nouveau elemental spells respect the resistance triangle.
 
 ### Class Details (updated 2026-03-19)
 

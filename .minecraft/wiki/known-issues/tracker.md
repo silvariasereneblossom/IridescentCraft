@@ -10,6 +10,9 @@ This page keeps the short version: a symptom, a status, and a one-line resolutio
 
 ## Open / In-progress
 
+### Trinity mage classes (Elemental / Blessed / Corrupted) — **Needs verification**
+The three new specialist mage classes shipped (Phase 1a): selectable, with their three-school spell-power bonus, edge resistances, HP tiers, 2× mana pools, and themed starter kits. Awaiting in-game confirmation that (a) each is selectable and shows the right HP/stats, (b) casting an on-triad Iron's Spellbooks spell deals the intended ~+80% bump, and (c) the resistance triangle actually applies in PvP (a 2-player smoke test). Their signature active abilities and the offensive side of the rock-paper-scissors triangle are intentionally **Deferred** to a Phase 1b follow-up.
+
 ### Curio affix lane is brand new — **Provisional (feel pass pending)**
 Curios can now roll Apotheosis affixes and gem sockets (new this window). All 14 curio
 affix magnitudes and the per-gem curio bonuses are first-pass numbers, deliberately

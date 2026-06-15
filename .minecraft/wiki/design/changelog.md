@@ -6,6 +6,14 @@ For where systems stand today, see the [Master Design Document](master.md) and t
 
 ---
 
+## June 2026 — Three new specialist mage classes: the Trinity casters
+
+- **Elemental, Blessed, and Corrupted** join the class roster as magic *specialists* — the counterpart to the Archmage's generalist. Where the Archmage is decent at every school of magic, each Trinity mage is exceptional at **three** related schools and brings little to the rest (depth over breadth):
+  - **Elemental (Stormcaller)** — fire, ice, lightning. The glass-cannon artillery mage: highest burst, lowest survivability.
+  - **Blessed (Hierophant)** — holy, nature, evocation. The sustain/support crusader: hardier, the best healing, strong against undead and the Corrupted.
+  - **Corrupted (Hollow)** — blood, ender, eldritch. The attrition drain-mage: sustains through lifesteal, resists the elements, vulnerable to holy.
+- The three form a **rock-paper-scissors triangle** through their resistances (Blessed beats Corrupted beats Elemental beats Blessed), and each beats the Archmage *within* its three schools while falling behind across the other six. Each starts with a themed spell kit. *(First phase — their signature active abilities and the offensive side of the triangle arrive in a follow-up.)*
+
 ## June 2026 — Glass-cannon armor maluses now scale instead of wiping robe builds
 
 - **T1 damage softener trimmed -30% -> -15%** — early Overworld is meant to be punishing for the low-HP mage origin stacks (glass cannons earn their late-game ceiling by being fragile early); the +30% damage bump now carries that intent, so the softener is reduced to a thin anti-one-shot margin rather than a comfort cushion.
