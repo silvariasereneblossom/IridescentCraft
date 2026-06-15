@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "37363d7c",
+    "generated_from":  "b677887b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3163,6 +3163,10 @@
                                                                                         "sha256":  "94d6e0de07237a4fad5d480e3239bc051cd05b442b4da0787429ea86435598a6",
                                                                                         "size":  1708
                                                                                     },
+                  "config/heracles/quests/iridescent_codex/relic_submit.json":  {
+                                                                                    "sha256":  "734fac4059e70c9947b7c3847d786f6d1dfaa9278538d5251fd0e931560e5ac6",
+                                                                                    "size":  1695
+                                                                                },
                   "config/heracles/quests/magic/mag_submit.json":  {
                                                                        "sha256":  "3c6cd04e1a564eea77ddf9b399e6d65d483a8045f1e538e9737ba6047f83ccca",
                                                                        "size":  1404
@@ -6847,9 +6851,13 @@
                                                                              "sha256":  "693755a88e23ff6ff9db90adc24495e1ed091a783362703f1c023e69d373f244",
                                                                              "size":  5507
                                                                          },
+                  "kubejs/server_scripts/economy/relic_broker.js":  {
+                                                                        "sha256":  "f11f2ffd3ab5711b4ad0e12de097f8d44492b40566cf0c2e762767c14aac99fe",
+                                                                        "size":  13942
+                                                                    },
                   "kubejs/server_scripts/economy/relic_sink.js":  {
-                                                                      "sha256":  "ab2375695ffb2f164179d69ea6b844504ff9dc0e2303bc978b83ebb1bcdfe1bc",
-                                                                      "size":  18274
+                                                                      "sha256":  "5eb33a5efb7047ec64b4b9b8108b9f2c5fcbe21d3cb7aacecf6e4acb700bb38c",
+                                                                      "size":  18659
                                                                   },
                   "kubejs/server_scripts/enchantments/enchant_effects.js":  {
                                                                                 "sha256":  "3b382bb916fa112e9c9a26dce5a6f03e737e7349c5e152e643530043b9279884",
@@ -6976,12 +6984,12 @@
                                                                          "size":  2624
                                                                      },
                   "kubejs/server_scripts/loot/boss_arena_material_tease.js":  {
-                                                                                  "sha256":  "9910bc17c0868f8433d345e15388db492dd80323bda92820795488809ba9b160",
-                                                                                  "size":  4713
+                                                                                  "sha256":  "ba4d01fdfe8fb1cf51f92024e16d0bbf7f56937a3e84b9eea7b635707b109baf",
+                                                                                  "size":  5139
                                                                               },
                   "kubejs/server_scripts/loot/boss_arena_themed_loot.js":  {
-                                                                               "sha256":  "a7321c5819c88a7a5defdeefc7c0116c668b466338aa179937f3bca6b9febf16",
-                                                                               "size":  11078
+                                                                               "sha256":  "8b91778872cb7ff103761a8d0a07d3693c8ea51e7419355aa19a726d64ced4e6",
+                                                                               "size":  2759
                                                                            },
                   "kubejs/server_scripts/loot/boss_refight_repair_floors.js":  {
                                                                                    "sha256":  "66d0c12b0387e978cc3199a0985f2ddcffd108027afac1fccc28b4880e02724f",
@@ -7032,8 +7040,8 @@
                                                                       "size":  34819
                                                                   },
                   "kubejs/server_scripts/loot/lootjs_overhaul.js":  {
-                                                                        "sha256":  "ad37b5ac6dc8bc11d492b066383a9583885be6007e332ed6acdf4841715e467e",
-                                                                        "size":  153650
+                                                                        "sha256":  "f7aec474c0f6fbda2f08434bdb8eca6e92b62c58742e8eff91084a82952bf905",
+                                                                        "size":  157762
                                                                     },
                   "kubejs/server_scripts/loot/lovely_pieces_loot.js":  {
                                                                            "sha256":  "09d4ac6441c3b1b0caa21d89994acec3465254c91722d19e92d1603392491320",
@@ -7087,6 +7095,10 @@
                                                                          "sha256":  "2d4ce6d49c1a841cc51852d8a706e12532bf2d69d778b334ad793fc3829c2896",
                                                                          "size":  4107
                                                                      },
+                  "kubejs/server_scripts/loot/zz_iss_arena_enrichment.js":  {
+                                                                                "sha256":  "58f187b01ecfeb3c1f1259d2ffa3a3ab80ed280c9f688cc1797fbf9e60d3268b",
+                                                                                "size":  6256
+                                                                            },
                   "kubejs/server_scripts/loot/zz_unique_chest_strip.js":  {
                                                                               "sha256":  "6178164e4eece2132b88e383fd84de3981c7af5c4f172b9ecfe189fda06f1317",
                                                                               "size":  1445
@@ -7255,6 +7267,10 @@
                                                                             "sha256":  "022344e950aa38e24c24b72199662756235bee1d9ca8847f3b9ed853dea2a406",
                                                                             "size":  7878
                                                                         },
+                  "kubejs/server_scripts/regen_control.js":  {
+                                                                 "sha256":  "a27dd115d3e797cc15f95be8b022b0fbf54f8d8d4e372fe02ea949ae4f203d69",
+                                                                 "size":  2804
+                                                             },
                   "kubejs/server_scripts/registry_verify.js.disabled":  {
                                                                             "sha256":  "c5d613594e0fc97986460b7a01546d87bf64e2348524b1568a95b63e23b8544d",
                                                                             "size":  5883
@@ -8228,7 +8244,7 @@
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-codex.pw.toml":  {
-                                                               "sha256":  "683f47bb3b33cdfe5a9c922916c5dc06b2cd5f5bffa02fc708a889c2e134b12f",
+                                                               "sha256":  "cb6efd5b13ef0c3114aae18e7aeb20e8093be76d2cd07ff39415f2e89b95dff9",
                                                                "size":  348
                                                            },
                   "mods/.index/iridescent-difficulty.pw.toml":  {
@@ -8252,7 +8268,7 @@
                                                                  "size":  356
                                                              },
                   "mods/.index/iridescent-relics.pw.toml":  {
-                                                                "sha256":  "68c3aca1cdff9a78bad3fc4f399d824658c9397f1c80011082f109555e04e8de",
+                                                                "sha256":  "e77453972f4d4ed75475ae58d9811b2b7c148a3dffc908c32dff8b4e8eef9848",
                                                                 "size":  353
                                                             },
                   "mods/.index/iridescent-tetra-expansion.pw.toml":  {

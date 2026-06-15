@@ -1919,11 +1919,28 @@ LootJS.modifiers(event => {
   // --- Remove modded foods from structure chests (Overworld only) ---
   // Pam's HarvestCraft and Farmer's Delight foods should be player-crafted.
   // Uses KubeJS @mod filter to match all items from these namespaces.
+  // 2026-06-14: this @farmersdelight strip is registered AFTER VILLAGE_SEED_BOOST
+  // (~L1511), which adds the 4 FD village-farming seeds to village chests. LootJS
+  // removeLoot is a one-shot removeIf in registration order, so this (later) strip
+  // was EATING those earlier-added seeds — villages lost their intended FD-dominant
+  // seed economy. Strip FD FOODS (player-crafted by design) but EXEMPT the 4 village
+  // seeds so they survive. (FD foods in villages stay stripped — intended.)
+  var stripFDExceptVillageSeeds = function(stack) {
+    try {
+      if (!stack || stack.isEmpty()) return false
+      var id = String(stack.id || '')
+      if (!id) { try { id = String(stack.getItem().builtInRegistryHolder().key().location()) } catch (e) {} }
+      if (id.indexOf('farmersdelight:') !== 0) return false
+      if (id === 'farmersdelight:cabbage_seeds' || id === 'farmersdelight:tomato_seeds' ||
+          id === 'farmersdelight:onion' || id === 'farmersdelight:rice') return false
+      return true
+    } catch (e) { return false }
+  }
   event
     .addLootTypeModifier(LootType.CHEST)
     .anyDimension('minecraft:overworld')
     .removeLoot('@pamhc')
-    .removeLoot('@farmersdelight')
+    .removeLoot(ItemFilter.custom(stripFDExceptVillageSeeds))  // was '@farmersdelight' — exempt the 4 FD village seeds (see note)
     .removeLoot('@farmersrespite')
     .removeLoot('@brewinandchewin')
     .removeLoot('@collectorsreap')

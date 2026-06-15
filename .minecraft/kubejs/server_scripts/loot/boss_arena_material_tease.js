@@ -62,10 +62,15 @@ LootJS.modifiers(event => {
   tease('cataclysm:chests/acropolis_treasure', 'cataclysm:lava_power_cell', 0.10, T3, 0.05)
   // cm_scylla (Scylla) -> lacrima
   tease('cataclysm:chests/frosted_prison_treasure', 'cataclysm:lacrima', 0.12, T3, 0.05)
-  // iss_tyros (Echo of Tyros) -> cinder_essence
-  tease('irons_spellbooks:chests/pyromancer_tower/pyromancer_supplies', 'irons_spellbooks:cinder_essence', 0.10, T3, 0.05)
-  // iss_archevoker (Archevoker) -> arcane_essence
-  tease('irons_spellbooks:chests/evoker_fort', 'irons_spellbooks:arcane_essence', 0.10, T3, 0.05)
+  // iss_tyros / iss_archevoker: the ISS material tease (cinder_essence / arcane_essence) was MOVED
+  // to zz_iss_arena_enrichment.js on 2026-06-14 — those irons_spellbooks: items are eaten by
+  // lootjs_overhaul's LootType.CHEST ISS strip when added here (this file loads BEFORE lootjs_overhaul,
+  // and removeLoot is a one-shot removeIf in load order). The T3 token (icraft ns, never stripped)
+  // stays so the two arenas keep their progression token.
+  event.addLootTableModifier('irons_spellbooks:chests/pyromancer_tower/pyromancer_supplies')
+    .addLoot(LootEntry.of(T3).when(c => c.randomChance(0.05)))
+  event.addLootTableModifier('irons_spellbooks:chests/evoker_fort')
+    .addLoot(LootEntry.of(T3).when(c => c.randomChance(0.05)))
   // dd_stalker (Stalker) -> soul_crystal
   tease('deeperdarker:chests/ancient_temple_storage', 'deeperdarker:soul_crystal', 0.10, T3, 0.05)
   // tm_gatmancer (Gatmancer) -> occult_fabric
