@@ -1,0 +1,12 @@
+{
+  "type": "origins:attribute",
+  "name": "icraft.power.class.corrupted.hp_modifier.name",
+  "description": "icraft.power.class.corrupted.hp_modifier.description",
+  "modifiers": [
+    {
+      "attribute": "minecraft:generic.max_health",
+      "operation": "multiply_base",
+      "value": -0.1
+    }
+  ]
+}

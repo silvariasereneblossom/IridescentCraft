@@ -58,9 +58,32 @@ const MAGIC_STARTER_KITS = {
     { scroll: 'irons_spellbooks:summon_vex',      level: 1 },
     { item: 'irons_spellbooks:common_ink',       count: 1 },
     { item: 'minecraft:ender_pearl',             count: 1 }
+  ],
+  // ── Trinity mages (Phase 1a, 2026-06-14). Each gets two on-triad starter
+  //    scrolls (ids confirmed against the live ISS registry) + catalyst + ink.
+  elemental: [
+    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+    { scroll: 'irons_spellbooks:firebolt',        level: 1 },
+    { scroll: 'irons_spellbooks:cone_of_cold',    level: 1 },
+    { item: 'ars_nouveau:source_gem',            count: 5 },
+    { item: 'irons_spellbooks:common_ink',       count: 2 }
+  ],
+  blessed: [
+    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+    { scroll: 'irons_spellbooks:heal',            level: 1 },
+    { scroll: 'irons_spellbooks:wisp',            level: 1 },
+    { item: 'ars_nouveau:source_gem',            count: 4 },
+    { item: 'irons_spellbooks:common_ink',       count: 2 }
+  ],
+  corrupted: [
+    { item: 'iridescent_modular_spells:modular_copper_spell_book', count: 1 },
+    { scroll: 'irons_spellbooks:ray_of_siphoning', level: 1 },
+    { scroll: 'irons_spellbooks:eldritch_blast',   level: 1 },
+    { item: 'minecraft:ender_pearl',             count: 2 },
+    { item: 'irons_spellbooks:common_ink',       count: 2 }
   ]
 }
-const MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner']
+const MAGIC_CLASSES = ['archmage', 'battlemage', 'void_summoner', 'elemental', 'blessed', 'corrupted']
 const MAGIC_FLAG_PREFIX = 'icraft_magic_starter_'
 
 function codex_detectMagicClass(player) {

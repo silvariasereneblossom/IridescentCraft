@@ -1,0 +1,27 @@
+{
+  "type": "origins:attribute",
+  "name": "icraft.power.class.corrupted.school_affinity.name",
+  "description": "icraft.power.class.corrupted.school_affinity.description",
+  "modifiers": [
+    {
+      "attribute": "irons_spellbooks:fire_magic_resist",
+      "operation": "addition",
+      "value": 0.3
+    },
+    {
+      "attribute": "irons_spellbooks:ice_magic_resist",
+      "operation": "addition",
+      "value": 0.3
+    },
+    {
+      "attribute": "irons_spellbooks:lightning_magic_resist",
+      "operation": "addition",
+      "value": 0.3
+    },
+    {
+      "attribute": "irons_spellbooks:holy_magic_resist",
+      "operation": "addition",
+      "value": -0.3
+    }
+  ]
+}

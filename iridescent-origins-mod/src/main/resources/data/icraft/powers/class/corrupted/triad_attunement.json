@@ -1,0 +1,22 @@
+{
+  "type": "origins:attribute",
+  "name": "icraft.power.class.corrupted.triad_attunement.name",
+  "description": "icraft.power.class.corrupted.triad_attunement.description",
+  "modifiers": [
+    {
+      "attribute": "irons_spellbooks:blood_spell_power",
+      "operation": "multiply_base",
+      "value": 0.8
+    },
+    {
+      "attribute": "irons_spellbooks:ender_spell_power",
+      "operation": "multiply_base",
+      "value": 0.8
+    },
+    {
+      "attribute": "irons_spellbooks:eldritch_spell_power",
+      "operation": "multiply_base",
+      "value": 0.8
+    }
+  ]
+}

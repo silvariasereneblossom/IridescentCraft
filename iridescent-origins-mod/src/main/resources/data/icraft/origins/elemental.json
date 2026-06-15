@@ -1,0 +1,16 @@
+{
+  "powers": [
+    "icraft:class/elemental/hp_modifier",
+    "icraft:class/elemental/triad_attunement",
+    "icraft:class/elemental/school_affinity",
+    "icraft:class/elemental/mana_pool",
+    "icraft:class/elemental/glass_cannon_tag"
+  ],
+  "icon": {
+    "item": "minecraft:blaze_powder"
+  },
+  "order": 10,
+  "impact": 3,
+  "name": "icraft.origin.elemental.name",
+  "description": "icraft.origin.elemental.description"
+}

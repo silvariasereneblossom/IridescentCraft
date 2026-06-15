@@ -300,5 +300,39 @@
   "icraft.power.race.ryu.meat_preference.description": "Non-meat foods provide 50% less nourishment.",
   "icraft.power.race.ryu.meat_preference.name": "Draconic Diet",
   "icraft.power.race.ryu.slow_fall.description": "Broken wings grant slow fall rather than true flight.",
-  "icraft.power.race.ryu.slow_fall.name": "Broken Wings"
+  "icraft.power.race.ryu.slow_fall.name": "Broken Wings",
+
+  "icraft.origin.elemental.name": "Elemental (Stormcaller)",
+  "icraft.origin.elemental.description": "A triad specialist of fire, ice, and lightning — the glass-cannon artillery mage. +80% spell power in all three elemental schools, and nothing in the other six. Shrugs off holy and nature magic; vulnerable to blood. Lowest HP of any caster and equipment HP halved: the squishiest, highest-burst mage in the pack. Out-damages the Archmage on its three schools; far weaker than the Archmage everywhere else.",
+  "icraft.origin.blessed.name": "Blessed (Hierophant)",
+  "icraft.origin.blessed.description": "A triad specialist of holy, nature, and evocation — the sustain/support crusader. +80% spell power in all three blessed schools. Strong blood and ender resistance lets it outlast the Corrupted; vulnerable to fire. Hardier than other casters (+10% HP, no equipment halving) with the best healing identity in the pack. Out-heals and out-lasts the Archmage on its schools; weaker raw burst elsewhere.",
+  "icraft.origin.corrupted.name": "Corrupted (Hollow)",
+  "icraft.origin.corrupted.description": "A triad specialist of blood, ender, and eldritch — the attrition drain-controller. +80% spell power in all three corrupted schools, plus lifesteal sustain. Resists the elemental triad (fire/ice/lightning) to survive the alpha strike, then drains it back; vulnerable to holy. Sustains through what it takes from others. Out-attritions the Archmage on its schools; loses to a Blessed mage's smite.",
+
+  "icraft.power.class.elemental.hp_modifier.name": "Stormcaller Vitality",
+  "icraft.power.class.elemental.hp_modifier.description": "Significantly reduced max HP (-20%). Equipment HP halved.",
+  "icraft.power.class.elemental.triad_attunement.name": "Elemental Triad",
+  "icraft.power.class.elemental.triad_attunement.description": "+80% fire, ice, and lightning spell power. Nothing for the other six schools.",
+  "icraft.power.class.elemental.school_affinity.name": "Storm Ward",
+  "icraft.power.class.elemental.school_affinity.description": "+30% holy resist, +20% nature resist. -25% blood resist (vulnerable to the Corrupted).",
+  "icraft.power.class.elemental.mana_pool.name": "Stormcaller's Reservoir",
+  "icraft.power.class.elemental.mana_pool.description": "Mana pool runs at 2x baseline (+100% max mana on both ISS and Ars Nouveau).",
+
+  "icraft.power.class.blessed.hp_modifier.name": "Hierophant Vitality",
+  "icraft.power.class.blessed.hp_modifier.description": "Increased max HP (+10%). Hardier than other casters.",
+  "icraft.power.class.blessed.triad_attunement.name": "Blessed Triad",
+  "icraft.power.class.blessed.triad_attunement.description": "+80% holy, nature, and evocation spell power. Nothing for the other six schools.",
+  "icraft.power.class.blessed.school_affinity.name": "Sanctified Ward",
+  "icraft.power.class.blessed.school_affinity.description": "+35% blood resist, +25% ender resist (smite the Corrupted). -20% fire resist (vulnerable to the Elemental).",
+  "icraft.power.class.blessed.mana_pool.name": "Hierophant's Reservoir",
+  "icraft.power.class.blessed.mana_pool.description": "Mana pool runs at 2x baseline (+100% max mana on both ISS and Ars Nouveau).",
+
+  "icraft.power.class.corrupted.hp_modifier.name": "Hollow Vitality",
+  "icraft.power.class.corrupted.hp_modifier.description": "Reduced max HP (-10%). Sustained through lifesteal, not bulk.",
+  "icraft.power.class.corrupted.triad_attunement.name": "Corrupted Triad",
+  "icraft.power.class.corrupted.triad_attunement.description": "+80% blood, ender, and eldritch spell power. Nothing for the other six schools.",
+  "icraft.power.class.corrupted.school_affinity.name": "Voidward",
+  "icraft.power.class.corrupted.school_affinity.description": "+30% fire, ice, and lightning resist (survive the Elemental's burst, then drain it). -30% holy resist (vulnerable to the Blessed).",
+  "icraft.power.class.corrupted.mana_pool.name": "Hollow Reservoir",
+  "icraft.power.class.corrupted.mana_pool.description": "Mana pool runs at 2x baseline (+100% max mana on both ISS and Ars Nouveau)."
 }

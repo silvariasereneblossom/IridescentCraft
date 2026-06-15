@@ -1,0 +1,17 @@
+{
+  "type": "origins:attribute",
+  "name": "icraft.power.class.elemental.mana_pool.name",
+  "description": "icraft.power.class.elemental.mana_pool.description",
+  "modifiers": [
+    {
+      "attribute": "irons_spellbooks:max_mana",
+      "operation": "multiply_base",
+      "value": 1.0
+    },
+    {
+      "attribute": "ars_nouveau:ars_nouveau.perk.max_mana",
+      "operation": "multiply_base",
+      "value": 1.0
+    }
+  ]
+}

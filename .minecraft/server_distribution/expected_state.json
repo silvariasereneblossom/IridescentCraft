@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "b677887b",
+    "generated_from":  "d668a92b",
     "roots":  [
                   "kubejs",
                   "config",
@@ -6752,8 +6752,8 @@
                                                                              "size":  15251
                                                                          },
                   "kubejs/server_scripts/attributes/class_attribute_bonuses.js":  {
-                                                                                      "sha256":  "bbddab45b2d0cd6d281a4b9b1617e79fa589a0798cf46f0c39a2f89b0829f1e8",
-                                                                                      "size":  4078
+                                                                                      "sha256":  "672bcb43ff41bafeb9097df5e3a635b1f53ce31703e1ecd75d6da63c7f503cef",
+                                                                                      "size":  5342
                                                                                   },
                   "kubejs/server_scripts/attributes/iss_school_to_ars_glyph.js":  {
                                                                                       "sha256":  "91dc1a9d9e432a967094622de7271d87eea8371eb5c4acb1ab8c7ccf965e4bde",
@@ -6792,16 +6792,16 @@
                                                                       "size":  13265
                                                                   },
                   "kubejs/server_scripts/class/equipment_hp_halving.js":  {
-                                                                              "sha256":  "921e976e34079af3407df204559af7e37950577d5458b468efff10e26c28fec5",
-                                                                              "size":  5903
+                                                                              "sha256":  "428c94b1e308358f9aabf3d566c22382ceaf6798ad8c0d4731500ffa9a3a078a",
+                                                                              "size":  5925
                                                                           },
                   "kubejs/server_scripts/cleanup/strip_truly_modular_items.js":  {
                                                                                      "sha256":  "d0a5a41042fb16e68822cbe03b835d9e2db37fd116512e73de887184a47dc8c9",
                                                                                      "size":  3460
                                                                                  },
                   "kubejs/server_scripts/codex_delivery.js":  {
-                                                                  "sha256":  "7a14af85043564931ce661ac5823882d6a89306d362955936a2d7f83391b636b",
-                                                                  "size":  34220
+                                                                  "sha256":  "526ee09773e1aa88eb81c43732ce5a9e68898317e358775e2a0bd53948bb00d0",
+                                                                  "size":  35450
                                                               },
                   "kubejs/server_scripts/compat/class_artifacts_recipes.js":  {
                                                                                   "sha256":  "917f84b17c843abc3c7d3feda7423fd8e71dff3f9de674f21249f0f38458189c",
@@ -7140,8 +7140,8 @@
                                                                                   "size":  2744
                                                                               },
                   "kubejs/server_scripts/origins/class_passives.js":  {
-                                                                          "sha256":  "79378cde7c0f43d335325e462f464d8a8d5f020bc999809b89621924f1540458",
-                                                                          "size":  11712
+                                                                          "sha256":  "6e43526646bbc438211b12d2a59ef62c4ed6e903266fab047e9fab9b3073d5db",
+                                                                          "size":  11753
                                                                       },
                   "kubejs/server_scripts/origins/class_passives_phase6h.js":  {
                                                                                   "sha256":  "8cc52b62697c353a424e0314cff2ea414d5c4d2823e4103a5225ff2fb3d31320",
@@ -8264,7 +8264,7 @@
                                                                        "size":  398
                                                                    },
                   "mods/.index/iridescent-origins.pw.toml":  {
-                                                                 "sha256":  "4554d6f4881a265e4d4d78588019e775ddf805d169469ddde6bd11f2970492c2",
+                                                                 "sha256":  "bc63b47bb9108fda2ddee71c417fafe3bd3cf07411db58ed4519c2544854f006",
                                                                  "size":  356
                                                              },
                   "mods/.index/iridescent-relics.pw.toml":  {

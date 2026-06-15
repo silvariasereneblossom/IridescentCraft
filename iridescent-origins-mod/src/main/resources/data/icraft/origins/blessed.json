@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:class/blessed/hp_modifier",
+    "icraft:class/blessed/triad_attunement",
+    "icraft:class/blessed/school_affinity",
+    "icraft:class/blessed/mana_pool"
+  ],
+  "icon": {
+    "item": "minecraft:glistering_melon_slice"
+  },
+  "order": 11,
+  "impact": 3,
+  "name": "icraft.origin.blessed.name",
+  "description": "icraft.origin.blessed.description"
+}

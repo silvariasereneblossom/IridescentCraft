@@ -12,7 +12,10 @@
     "icraft:ranger",
     "icraft:archmage",
     "icraft:artificer",
-    "icraft:void_summoner"
+    "icraft:void_summoner",
+    "icraft:elemental",
+    "icraft:blessed",
+    "icraft:corrupted"
   ],
   "name": "Class",
   "gui_title": {

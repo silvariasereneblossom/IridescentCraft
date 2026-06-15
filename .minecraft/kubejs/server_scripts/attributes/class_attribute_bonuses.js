@@ -60,6 +60,29 @@ var CLASS_ATTRIBUTES = {
   'void_summoner': {
     'lifesteal':    0.08,
     'spell_power':  1.10
+  },
+  // ── Trinity mages (Phase 1a, 2026-06-14). spell_power is school-blind, so it
+  //    stays at/below the design's 1.40 and the per-school edge lives in the ISS
+  //    <school>_spell_power powers (triad_attunement.json). Mages get NO puffish
+  //    magic_damage (that flat-on-everything stat is the Archmage's identity).
+  'elemental': {
+    'spell_power':  1.40,
+    'crit_chance':  0.12,
+    'crit_damage':  1.7,
+    'mana_regen':   1.1
+  },
+  'blessed': {
+    'spell_power':       1.40,
+    'magic_resistance':  0.18,
+    'healing_received':  1.30,
+    'mana_regen':        1.2
+  },
+  'corrupted': {
+    'spell_power':        1.40,
+    'magic_resistance':   0.10,
+    'lifesteal':          0.15,
+    'cooldown_reduction': 0.08,
+    'armor_penetration':  0.10
   }
 }
 
@@ -124,3 +147,6 @@ console.log('  Vanguard: dodge_chance +8%')
 console.log('  Wanderer: xp_multiplier +15%')
 console.log('  Artificer: cooldown_reduction +10%')
 console.log('  Void Summoner: lifesteal +8%, spell_power +10%')
+console.log('  Elemental: spell_power +40%, crit_chance +12%, crit_damage 1.7, mana_regen +10% (+80% fire/ice/lightning via ISS powers)')
+console.log('  Blessed: spell_power +40%, magic_resistance +18%, healing_received +30%, mana_regen +20% (+80% holy/nature/evocation via ISS powers)')
+console.log('  Corrupted: spell_power +40%, magic_resistance +10%, lifesteal +15%, cooldown_reduction +8%, armor_penetration +10% (+80% blood/ender/eldritch via ISS powers)')

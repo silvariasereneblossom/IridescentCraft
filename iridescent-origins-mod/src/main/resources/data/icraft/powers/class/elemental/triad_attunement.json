@@ -1,0 +1,22 @@
+{
+  "type": "origins:attribute",
+  "name": "icraft.power.class.elemental.triad_attunement.name",
+  "description": "icraft.power.class.elemental.triad_attunement.description",
+  "modifiers": [
+    {
+      "attribute": "irons_spellbooks:fire_spell_power",
+      "operation": "multiply_base",
+      "value": 0.8
+    },
+    {
+      "attribute": "irons_spellbooks:ice_spell_power",
+      "operation": "multiply_base",
+      "value": 0.8
+    },
+    {
+      "attribute": "irons_spellbooks:lightning_spell_power",
+      "operation": "multiply_base",
+      "value": 0.8
+    }
+  ]
+}

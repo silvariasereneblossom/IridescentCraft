@@ -1,0 +1,22 @@
+{
+  "type": "origins:attribute",
+  "name": "icraft.power.class.blessed.school_affinity.name",
+  "description": "icraft.power.class.blessed.school_affinity.description",
+  "modifiers": [
+    {
+      "attribute": "irons_spellbooks:blood_magic_resist",
+      "operation": "addition",
+      "value": 0.35
+    },
+    {
+      "attribute": "irons_spellbooks:ender_magic_resist",
+      "operation": "addition",
+      "value": 0.25
+    },
+    {
+      "attribute": "irons_spellbooks:fire_magic_resist",
+      "operation": "addition",
+      "value": -0.2
+    }
+  ]
+}

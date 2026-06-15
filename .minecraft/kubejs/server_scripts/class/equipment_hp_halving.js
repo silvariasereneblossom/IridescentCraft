@@ -23,7 +23,8 @@
 const GLASS_CANNON_CLASSES = new Set([
   'icraft:ranger',
   'icraft:archmage',
-  'icraft:void_summoner'
+  'icraft:void_summoner',
+  'icraft:elemental'
 ])
 
 // Read the player's Origins class id ("icraft:archmage" etc, or '') via

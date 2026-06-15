@@ -3,7 +3,7 @@ name = 'Iridescent Origins'
 side = 'both'
 
 [download]
-hash = '6f592fda8b71ab97ed91257bbb7cd9cd081f31a9e0740e917dcfd074f6712394'
+hash = '8900491bc9b4e107d7b4d302ff9ab7182cd00a30651202ae17826fb9690008a4'
 hash-format = 'sha256'
 mode = 'url'
 url = 'https://raw.githubusercontent.com/silvariasereneblossom/IridescentCraft/main/.minecraft/server_distribution/mods/iridescent_origins-1.0.0.jar'

@@ -1,0 +1,15 @@
+{
+  "powers": [
+    "icraft:class/corrupted/hp_modifier",
+    "icraft:class/corrupted/triad_attunement",
+    "icraft:class/corrupted/school_affinity",
+    "icraft:class/corrupted/mana_pool"
+  ],
+  "icon": {
+    "item": "minecraft:wither_skeleton_skull"
+  },
+  "order": 12,
+  "impact": 3,
+  "name": "icraft.origin.corrupted.name",
+  "description": "icraft.origin.corrupted.description"
+}

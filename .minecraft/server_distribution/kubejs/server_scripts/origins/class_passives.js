@@ -23,7 +23,8 @@ function getClass(player) {
 
 function refreshClassCache(server) {
   let classes = ['berserker', 'samurai', 'battlemage', 'wanderer', 'paladin',
-    'vanguard', 'ranger', 'archmage', 'artificer', 'void_summoner']
+    'vanguard', 'ranger', 'archmage', 'artificer', 'void_summoner',
+    'elemental', 'blessed', 'corrupted']
   server.players.forEach(p => {
     classCache[p.username] = null
     for (let c of classes) {
