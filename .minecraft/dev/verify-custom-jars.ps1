@@ -26,6 +26,8 @@
 #   pwsh .minecraft\dev\verify-custom-jars.ps1            # report; exit 1 on any issue
 #   pwsh .minecraft\dev\verify-custom-jars.ps1 -Check     # alias of default (for the gate)
 #   pwsh .minecraft\dev\verify-custom-jars.ps1 -Fix       # re-copy canonical jar to diverging/missing distro copies
+#   pwsh .minecraft\dev\verify-custom-jars.ps1 -Instance "<PrismLauncher>\instances\IridescentCraft" [-Fix]
+#                                                          # verify/replace a deployed INSTANCE's custom jars vs the repo canonical
 #
 # Exit codes: 0 = all consistent (or -Fix fully resolved); 1 = issues remain.
 # Windows PowerShell 5.1 compatible (no ternary / ?. ), runs under pwsh 7 too.
@@ -34,7 +36,8 @@
 [CmdletBinding()]
 param(
     [switch]$Fix,
-    [switch]$Check  # accepted for symmetry with the other gates; default already reports
+    [switch]$Check,  # accepted for symmetry with the other gates; default already reports
+    [string]$Instance  # verify/fix a deployed INSTANCE's mods/ vs the repo canonical instead of the 3 distros
 )
 
 $ErrorActionPreference = 'Stop'
@@ -79,6 +82,85 @@ if (Test-Path $mainIndex) {
 
 $manifest = Get-Content -Raw $ManifestPath | ConvertFrom-Json
 $jarNames = @($manifest.jars.PSObject.Properties.Name)
+
+# =============================================================================
+# -Instance mode: verify (and -Fix) a deployed PrismLauncher INSTANCE's custom
+# jars against this repo's canonical (committed jars + manifest). Catches an
+# off-git / stale jar in an instance WITHOUT a full relaunch. Pass the instance
+# root OR its .minecraft; -Fix copies the repo's canonical jar over a stale/
+# missing one (atomic temp+move). Server-only jars are skipped (a client
+# instance is not expected to carry them).
+# =============================================================================
+if ($Instance) {
+    $instMc = $null
+    if (Test-Path (Join-Path $Instance '.minecraft\mods')) { $instMc = (Resolve-Path (Join-Path $Instance '.minecraft')).Path }
+    elseif (Test-Path (Join-Path $Instance 'mods'))        { $instMc = (Resolve-Path $Instance).Path }
+    if (-not $instMc) {
+        Write-Error "[verify-custom-jars] no mods/ found under -Instance '$Instance' (pass the instance root or its .minecraft)."
+        exit 2
+    }
+    $instMods = Join-Path $instMc 'mods'
+    Write-Host "[verify-custom-jars] -Instance target: $instMc  (canonical = this repo)" -ForegroundColor DarkGray
+
+    $instStale = New-Object System.Collections.Generic.List[object]
+    foreach ($jar in $jarNames) {
+        $side = 'both'
+        if ($sideOf.ContainsKey($jar)) { $side = $sideOf[$jar] }
+        if ($side -eq 'server') { continue }   # server-only jar not expected in a client instance
+
+        $manSha  = ([string]$manifest.jars.$jar.sha256).ToLower()
+        $repoJar = Join-Path (Join-Path $Mc 'mods') $jar
+        $instJar = Join-Path $instMods $jar
+        $instSha = Get-ShaOrNull $instJar
+        if ($null -eq $instSha) {
+            $instStale.Add([pscustomobject]@{ Kind='MISSING'; Jar=$jar; ManSha=$manSha; Src=$repoJar; Dst=$instJar }) | Out-Null
+        } elseif ($instSha -ne $manSha) {
+            $instStale.Add([pscustomobject]@{ Kind='STALE';   Jar=$jar; ManSha=$manSha; Src=$repoJar; Dst=$instJar }) | Out-Null
+        }
+    }
+
+    if ($instStale.Count -eq 0) {
+        Write-Host "[verify-custom-jars] OK - the instance's custom jars all match the repo canonical." -ForegroundColor Green
+        exit 0
+    }
+    Write-Host ""
+    Write-Host "[verify-custom-jars] $($instStale.Count) instance jar(s) off-git / out of date vs the repo:" -ForegroundColor Yellow
+    $instStale | Format-Table Kind, Jar -AutoSize | Out-String | Write-Host
+
+    if (-not $Fix) {
+        Write-Host "[verify-custom-jars] Re-run with -Fix to copy the repo's canonical jar(s) into the instance." -ForegroundColor Yellow
+        exit 1
+    }
+    $fixed = 0; $failed = 0
+    foreach ($s in $instStale) {
+        $srcSha = Get-ShaOrNull $s.Src
+        if ($null -eq $srcSha) {
+            Write-Host "  [skip] $($s.Jar): repo canonical jar missing - rebuild it in the repo first." -ForegroundColor Yellow
+            $failed++; continue
+        }
+        if ($srcSha -ne $s.ManSha) {
+            Write-Host "  [skip] $($s.Jar): repo jar != manifest - run regen_custom_jars_manifest.ps1 / rebuild first." -ForegroundColor Yellow
+            $failed++; continue
+        }
+        try {
+            $parent = Split-Path $s.Dst -Parent
+            if (-not (Test-Path $parent)) { New-Item -ItemType Directory -Force -Path $parent | Out-Null }
+            $tmp = "$($s.Dst).icrafttmp"
+            Remove-Item $tmp -Force -ErrorAction SilentlyContinue
+            Copy-Item -LiteralPath $s.Src -Destination $tmp -Force
+            Move-Item -LiteralPath $tmp -Destination $s.Dst -Force
+            Write-Host "  fix $($s.Kind): $($s.Jar)" -ForegroundColor Green
+            $fixed++
+        } catch {
+            Write-Host "  [FAIL] $($s.Jar): $($_.Exception.Message)" -ForegroundColor Red
+            $failed++
+        }
+    }
+    Write-Host ""
+    Write-Host "[verify-custom-jars] instance fix: $fixed replaced, $failed unresolved." -ForegroundColor Cyan
+    if ($failed -gt 0) { exit 1 }
+    exit 0
+}
 
 $copyIssues   = New-Object System.Collections.Generic.List[object]   # fixable: distro jar MISSING/DIVERGED
 $manifestStale = New-Object System.Collections.Generic.List[string]  # main jar != manifest -> regen
