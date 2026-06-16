@@ -45,6 +45,10 @@ DATAPACKS = [
     "icraft_loot_overrides",
     "icraft_iss_gem_buffs",
     "icraft_tower_overrides",
+    # added 2026-06-16: previously had NO builder (hand-maintained) -> its source
+    # silently drifted from the loaded zip (an aethersteel hammer-ladder edit sat
+    # undeployed 2026-06-02..06-16). Now packed from source like the rest.
+    "icraft_tetra_overrides",
 ]
 
 DISTRO_ROOTS = [
