@@ -66,6 +66,17 @@ structory_towers/
 valhelsia/
 when_dungeons/
 yungs_*/
+
+# ...but those bare mod-id ignores (for extracted-jar loot-audit artifacts) ALSO
+# match the hand-authored Paxi loot-override SOURCES that legitimately reuse the
+# same mod-id dir names under datapack_sources/. Re-include just those override
+# subtrees so a packed-but-untracked drift can't silently drop them on a rebuild
+# (fix 2026-06-15: 112 such files lived only in icraft_loot_overrides.zip).
+!.minecraft/datapack_sources/icraft_loot_overrides/data/dungeons_plus/
+!.minecraft/datapack_sources/icraft_loot_overrides/data/explorify/
+!.minecraft/datapack_sources/icraft_loot_overrides/data/structory/
+!.minecraft/datapack_sources/icraft_loot_overrides/data/structory_towers/
+
 *.jar
 !iridescent-tetra-expansion-mod/gradle/wrapper/gradle-wrapper.jar
 !minecraft/**/*.jar
