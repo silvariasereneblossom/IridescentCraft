@@ -1,6 +1,6 @@
 {
     "version":  1,
-    "generated_from":  "d668a92b",
+    "generated_from":  "f0f691bf",
     "roots":  [
                   "kubejs",
                   "config",
@@ -3663,6 +3663,10 @@
                                                                                                  "sha256":  "03fab2da23573b10dbc008758f5f4ec7069cb5c324f416b6755ccb1dd118639e",
                                                                                                  "size":  364
                                                                                              },
+                  "config/irons_spellbooks_spell_config/irons_spellbooks/angel_wing.json":  {
+                                                                                                "sha256":  "ab0b82273e1b3f9bff567e1bfff5a4850ce7fe4f52d6ed06beec3f7c1402aa5e",
+                                                                                                "size":  358
+                                                                                            },
                   "config/irons_spellbooks_spell_config/irons_spellbooks/ball_lightning.json":  {
                                                                                                     "sha256":  "3a996c451116261537a78cde644b8111fbd81867e70f596af4fddcfe77201723",
                                                                                                     "size":  367
@@ -4212,8 +4216,8 @@
                                                                          "size":  1271
                                                                      },
                   "config/paxi/datapacks/icraft_loot_overrides.zip":  {
-                                                                          "sha256":  "75b267b06f32b37cd7bf5715c3ccb6bd89c8bc8c5bb1f58f71787226369252bb",
-                                                                          "size":  666697
+                                                                          "sha256":  "3c64a546566602107462518d7f6430f3ace6fd7b1b9c5d6db8072ad8dd0326c4",
+                                                                          "size":  667302
                                                                       },
                   "config/paxi/datapacks/icraft_mm_overrides.zip":  {
                                                                         "sha256":  "565f1641f1d3f67d7e90a1c86701300904a80eddffcdeb19249b47f79c67cc25",
@@ -7103,6 +7107,10 @@
                                                                               "sha256":  "6178164e4eece2132b88e383fd84de3981c7af5c4f172b9ecfe189fda06f1317",
                                                                               "size":  1445
                                                                           },
+                  "kubejs/server_scripts/loot/zzz_iss_scroll_tier_clamp.js":  {
+                                                                                  "sha256":  "a83a2a334763b2cd47cf9bc54401e4c51dd134fa76d5048bb85048fa9f016730",
+                                                                                  "size":  5552
+                                                                              },
                   "kubejs/server_scripts/magic_crit_hook.js":  {
                                                                    "sha256":  "2a611841313a83abad0e419fc1086ef780b2e0a693e080c55b4d26b7e8ac7312",
                                                                    "size":  5496
