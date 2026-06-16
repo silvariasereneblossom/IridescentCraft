@@ -151,6 +151,37 @@
         "mythic": 0.9,
         "ancient": 1.3
       }
+    },
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "curio",
+        "types": [
+          "curios:ring",
+          "curios:necklace",
+          "curios:charm",
+          "curios:belt",
+          "curios:back",
+          "curios:body",
+          "curios:bracelet",
+          "curios:curio",
+          "curios:spellstone",
+          "curios:head",
+          "curios:hands",
+          "curios:feet",
+          "curios:spellbook"
+        ]
+      },
+      "attribute": "irons_spellbooks:nature_spell_power",
+      "operation": "MULTIPLY_TOTAL",
+      "values": {
+        "common": 0.05,
+        "uncommon": 0.08,
+        "rare": 0.12,
+        "epic": 0.18,
+        "mythic": 0.27,
+        "ancient": 0.4
+      }
     }
   ]
 }

@@ -84,7 +84,7 @@
     },
     {
       "_comment": "Mystic Ward-flavor magic damage reduction. Restricted to chestplate (not core_armor) to enforce 'non-stacking, single instance' intent: gem is unique:true so only 1 per chestplate, and the bonus only fires on the chestplate slot, so max 1 instance applies even if the player socketed Guardian into multiple armor pieces. Half of Mystic Ward's 5-20% scaling = 2.5-10% across rarities. Added 2026-05-19 in place of the prior eldritch_spell_power magic_weapon bonus (which moved to Tyrannical for better thematic fit).",
-    "type": "apotheosis:damage_reduction",
+      "type": "apotheosis:damage_reduction",
       "gem_class": {
         "key": "chestplate",
         "types": [
@@ -98,7 +98,38 @@
         "rare": 0.06,
         "epic": 0.075,
         "mythic": 0.09,
-        "ancient": 0.10
+        "ancient": 0.1
+      }
+    },
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "curio",
+        "types": [
+          "curios:ring",
+          "curios:necklace",
+          "curios:charm",
+          "curios:belt",
+          "curios:back",
+          "curios:body",
+          "curios:bracelet",
+          "curios:curio",
+          "curios:spellstone",
+          "curios:head",
+          "curios:hands",
+          "curios:feet",
+          "curios:spellbook"
+        ]
+      },
+      "attribute": "minecraft:generic.armor",
+      "operation": "ADDITION",
+      "values": {
+        "common": 0.5,
+        "uncommon": 1.0,
+        "rare": 1.5,
+        "epic": 2.0,
+        "mythic": 3.0,
+        "ancient": 4.0
       }
     }
   ]
