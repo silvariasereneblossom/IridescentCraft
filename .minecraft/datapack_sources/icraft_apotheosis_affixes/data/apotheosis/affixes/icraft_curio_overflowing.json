@@ -1,0 +1,42 @@
+{
+  "type": "apotheosis:attribute",
+  "attribute": "irons_spellbooks:max_mana",
+  "operation": "ADDITION",
+  "values": {
+    "common": {
+      "min": 10,
+      "steps": 2,
+      "step": 5
+    },
+    "uncommon": {
+      "min": 15,
+      "steps": 2,
+      "step": 5
+    },
+    "rare": {
+      "min": 20,
+      "steps": 2,
+      "step": 5
+    },
+    "epic": {
+      "min": 30,
+      "steps": 2,
+      "step": 5
+    },
+    "mythic": {
+      "min": 40,
+      "steps": 2,
+      "step": 5
+    },
+    "ancient": {
+      "min": 60,
+      "steps": 2,
+      "step": 5
+    }
+  },
+  "types": [
+    "curios:spellbook",
+    "curios:spellstone",
+    "curios:ring"
+  ]
+}

@@ -1,0 +1,43 @@
+{
+  "type": "apotheosis:attribute",
+  "attribute": "minecraft:generic.max_health",
+  "operation": "ADDITION",
+  "values": {
+    "common": {
+      "min": 1.0,
+      "steps": 2,
+      "step": 0.5
+    },
+    "uncommon": {
+      "min": 1.5,
+      "steps": 2,
+      "step": 0.5
+    },
+    "rare": {
+      "min": 2.0,
+      "steps": 2,
+      "step": 0.5
+    },
+    "epic": {
+      "min": 3.0,
+      "steps": 2,
+      "step": 0.5
+    },
+    "mythic": {
+      "min": 4.0,
+      "steps": 2,
+      "step": 0.5
+    },
+    "ancient": {
+      "min": 6.0,
+      "steps": 2,
+      "step": 0.5
+    }
+  },
+  "types": [
+    "curios:necklace",
+    "curios:body",
+    "curios:back",
+    "curios:head"
+  ]
+}

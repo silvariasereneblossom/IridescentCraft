@@ -251,7 +251,7 @@
         {
           "type": "puffish_skills:attribute",
           "data": {
-            "attribute": "attributeslib:life_steal",
+            "attribute": "apothic_attributes:life_steal",
             "value": 0.01,
             "operation": "addition"
           }
@@ -308,7 +308,7 @@
         {
           "type": "puffish_skills:attribute",
           "data": {
-            "attribute": "attributeslib:life_steal",
+            "attribute": "apothic_attributes:life_steal",
             "value": 0.02,
             "operation": "addition"
           }
@@ -384,7 +384,7 @@
         {
           "type": "puffish_skills:attribute",
           "data": {
-            "attribute": "attributeslib:life_steal",
+            "attribute": "apothic_attributes:life_steal",
             "value": 0.02,
             "operation": "addition"
           }
@@ -411,7 +411,7 @@
         {
           "type": "puffish_skills:attribute",
           "data": {
-            "attribute": "attributeslib:life_steal",
+            "attribute": "apothic_attributes:life_steal",
             "value": 0.05,
             "operation": "addition"
           }
@@ -506,7 +506,7 @@
         {
           "type": "puffish_skills:attribute",
           "data": {
-            "attribute": "attributeslib:crit_damage",
+            "attribute": "apothic_attributes:crit_damage",
             "value": 0.08,
             "operation": "addition"
           }
@@ -582,7 +582,7 @@
         {
           "type": "puffish_skills:attribute",
           "data": {
-            "attribute": "attributeslib:crit_damage",
+            "attribute": "apothic_attributes:crit_damage",
             "value": 0.12,
             "operation": "addition"
           }
@@ -609,7 +609,7 @@
         {
           "type": "puffish_skills:attribute",
           "data": {
-            "attribute": "attributeslib:crit_damage",
+            "attribute": "apothic_attributes:crit_damage",
             "value": 0.2,
             "operation": "addition"
           }

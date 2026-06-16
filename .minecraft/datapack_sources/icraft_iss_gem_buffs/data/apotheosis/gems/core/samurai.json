@@ -122,6 +122,37 @@
         "mythic": 0.22,
         "ancient": 0.25
       }
+    },
+    {
+      "type": "apotheosis:attribute",
+      "gem_class": {
+        "key": "curio",
+        "types": [
+          "curios:ring",
+          "curios:necklace",
+          "curios:charm",
+          "curios:belt",
+          "curios:back",
+          "curios:body",
+          "curios:bracelet",
+          "curios:curio",
+          "curios:spellstone",
+          "curios:head",
+          "curios:hands",
+          "curios:feet",
+          "curios:spellbook"
+        ]
+      },
+      "attribute": "attributeslib:crit_chance",
+      "operation": "ADDITION",
+      "values": {
+        "common": 0.01,
+        "uncommon": 0.015,
+        "rare": 0.02,
+        "epic": 0.03,
+        "mythic": 0.04,
+        "ancient": 0.06
+      }
     }
   ]
 }
