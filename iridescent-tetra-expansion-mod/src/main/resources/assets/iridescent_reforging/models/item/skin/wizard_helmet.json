@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "irons_spellbooks:item/wizard_helmet"
+    "layer0": "irons_spellbooks:item/wizard_helmet_hood"
   }
 }

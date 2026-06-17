@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "blue_skies:item/aquite_helmet"
+    "layer0": "blue_skies:item/armor/aquite_helmet"
   }
 }

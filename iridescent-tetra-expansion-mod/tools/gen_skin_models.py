@@ -27,6 +27,34 @@ import sys
 from glob import glob
 
 
+# Cross-mod inventory-icon texture resolution. The naive `<ns>:item/<item>` guess
+# is WRONG for mods that nest armor icons under textures/item/armor/, and for two
+# Iron's Spellbooks items whose texture basename differs from the item id. A wrong
+# path renders the magenta/black missing-texture in the workbench + inventory.
+# Verified 2026-06-17 against the live instance jars (aether, blue_skies,
+# forbidden_arcanus, irons_spellbooks 3.15.5.1). See tools/_xmod_icon_audit.py.
+_ARMOR_SUBDIR_NS = {'aether', 'blue_skies', 'forbidden_arcanus'}
+_ICON_TEXTURE_OVERRIDE = {
+    # ISS item `wizard_helmet` is the hood by default (its own model uses
+    # item/wizard_helmet_hood with an override to _hat); there is no bare
+    # `wizard_helmet.png`.
+    'irons_spellbooks:wizard_helmet': 'irons_spellbooks:item/wizard_helmet_hood',
+    # ISS tarnished crown ships as `tarnished_crown.png`, not `tarnished_helmet`.
+    'irons_spellbooks:tarnished_helmet': 'irons_spellbooks:item/tarnished_crown',
+}
+
+
+def icon_texture_for(source_item):
+    """Resolve a skin's `source_item` to the source mod's real inventory-icon
+    texture ResourceLocation."""
+    if source_item in _ICON_TEXTURE_OVERRIDE:
+        return _ICON_TEXTURE_OVERRIDE[source_item]
+    ns, path = source_item.split(':', 1)
+    if ns in _ARMOR_SUBDIR_NS:
+        return f'{ns}:item/armor/{path}'
+    return f'{ns}:item/{path}'
+
+
 def main():
     repo_root = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
     skin_dir = os.path.join(repo_root, 'src/main/resources/data/iridescent_reforging/iridescent_reforging_skins')
@@ -88,7 +116,7 @@ def main():
         model = {
             'parent': 'item/generated',
             'textures': {
-                'layer0': f'{ns}:item/{path}'
+                'layer0': icon_texture_for(source)
             }
         }
         with open(out_file, 'w') as f:

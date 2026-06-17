@@ -8,18 +8,51 @@ import json, os, sys, zipfile
 from pathlib import Path
 from collections import defaultdict
 
-MOD_ROOT = Path("/root/IridescentCraft/iridescent-reforging-mod")
+# MOD_ROOT is derived from this file's location (tools/ -> mod root) so the
+# audit follows the resources wherever the iridescent_reforging namespace lives
+# (it now ships inside iridescent-tetra-expansion-mod, NOT the old sibling
+# iridescent-reforging-mod). A hardcoded absolute path silently scanned 0 files
+# off the build box -- a false-clean, the exact silent-failure this tool exists
+# to prevent.
+MOD_ROOT = Path(__file__).resolve().parent.parent
 SKINS = MOD_ROOT / "src/main/resources/data/iridescent_reforging/iridescent_reforging_skins"
 MODULES = MOD_ROOT / "src/main/resources/data/tetra/modules"
-JAR_CACHE = Path("/root/IridescentCraft/iridescent-biomes-mod/tools/.cache/all-mods")
+SKIN_MODELS = MOD_ROOT / "src/main/resources/assets/iridescent_reforging/models/item"
 OWN_ASSETS = MOD_ROOT / "src/main/resources/assets/iridescent_reforging"
+
+
+def jar_dirs():
+    """Candidate dirs holding the source-mod jars, newest convention first.
+    Override with ICRAFT_MOD_JARS=<dir>. Falls back to the WSL build cache and
+    the live PrismLauncher instance so the audit runs on the build box AND on a
+    contributor's Windows machine."""
+    cands = []
+    env = os.environ.get("ICRAFT_MOD_JARS")
+    if env:
+        cands.append(Path(env))
+    cands.append(Path("/root/IridescentCraft/iridescent-biomes-mod/tools/.cache/all-mods"))
+    appdata = os.environ.get("APPDATA")
+    if appdata:
+        cands.append(Path(appdata) / "PrismLauncher/instances/IridescentCraft/.minecraft/mods")
+    home = Path(os.path.expanduser("~"))
+    cands.append(home / "AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/mods")
+    return [d for d in cands if d.is_dir() and any(d.glob("*.jar"))]
+
 
 JAR_CONTENT_INDEX = {}
 
 def index_jars():
-    """Map each (namespace, sub_path_under_assets) to the jar that contains it."""
-    print(f"Indexing {len(list(JAR_CACHE.glob('*.jar')))} jars...", file=sys.stderr)
-    for jp in JAR_CACHE.glob("*.jar"):
+    """Map each assets/.../*.png to the jar that contains it (first source dir
+    that has jars)."""
+    dirs = jar_dirs()
+    if not dirs:
+        print("WARNING: no source-mod jar dir found (set ICRAFT_MOD_JARS); "
+              "cross-mod textures cannot be verified.", file=sys.stderr)
+        return
+    src = dirs[0]
+    jars = list(src.glob("*.jar"))
+    print(f"Indexing {len(jars)} jars from {src} ...", file=sys.stderr)
+    for jp in jars:
         try:
             with zipfile.ZipFile(jp) as zf:
                 for name in zf.namelist():
@@ -148,6 +181,33 @@ def audit_module_material_textures():
                 gaps.append((vk, "actual_runtime_path", assumed, ap))
     return gaps, ok_count
 
+def audit_skin_inventory_icons():
+    """HARD check: each generated per-skin item model (models/item/skin/*.json)
+    points layer0 at the source mod's inventory texture. A wrong ResourceLocation
+    renders the magenta/black missing-texture in the workbench + inventory slot
+    (the Wizard-hood class, 2026-06-17). This is what gen_skin_models.py emits, so
+    it is the regression guard for that generator."""
+    gaps = []
+    ok_count = 0
+    skin_dir = SKIN_MODELS / "skin"
+    for jf in sorted(skin_dir.glob("*.json")):
+        with open(jf) as f:
+            d = json.load(f)
+        tex = d.get("textures", {}).get("layer0")
+        if not tex:
+            continue
+        # Item-model texture refs are short-form ("ns:item/foo"), so the asset
+        # path is assets/<ns>/textures/<sub>.png -- NOT resource_to_path's
+        # assets/<ns>/<sub> (that form is for skin-def texture_layer values,
+        # which already carry the textures/ prefix + .png suffix).
+        ns, sub = tex.split(":", 1) if ":" in tex else ("minecraft", tex)
+        ap = f"assets/{ns}/textures/{sub}.png"
+        if file_exists(ap):
+            ok_count += 1
+        else:
+            gaps.append((jf.stem, "skin_icon", tex, ap))
+    return gaps, ok_count
+
 def main():
     index_jars()
     print(f"\nIndexed {len(JAR_CONTENT_INDEX)} png entries across cached jars.\n")
@@ -183,13 +243,23 @@ def main():
         for mat, vks in sorted(by_mat.items()):
             print(f"  {mat:30s} → {len(vks)} variant(s) miss minecraft texture")
 
+    print("\n" + "=" * 72)
+    print("SKIN INVENTORY ICONS — models/item/skin/*.json layer0")
+    print("=" * 72)
+    icon_gaps, icon_ok = audit_skin_inventory_icons()
+    print(f"\nOK: {icon_ok}, GAPS: {len(icon_gaps)}")
+    for fn, _, tex, ap in icon_gaps:
+        print(f"  {fn:34s} -> {tex}  (looked for {ap})")
+
     print("\nSUMMARY")
     print(f"  Skin def gaps:        {len(skin_gaps)}  (soft — Geckolib intercepts before getArmorTexture)")
     print(f"  Module derived gaps:  {len(mod_gaps)}  (HARD — these render as the missing-texture checkerboard)")
-    # Hard-fail only on module gaps. Skin gaps surfaced today are all
-    # intercepted by IssRendererFactories at runtime, so failing the build
-    # on them would block legitimate ships. Track them as data hygiene.
-    return 1 if mod_gaps else 0
+    print(f"  Skin icon gaps:       {len(icon_gaps)}  (HARD — magenta in workbench + inventory slot)")
+    # Hard-fail on module-derived gaps AND skin inventory-icon gaps. Skin DEF
+    # gaps (worn-armor layer) are intercepted by IssRendererFactories /
+    # Geckolib at runtime, so failing the build on them would block legitimate
+    # ships -- tracked as data hygiene only.
+    return 1 if (mod_gaps or icon_gaps) else 0
 
 if __name__ == "__main__":
     sys.exit(main())

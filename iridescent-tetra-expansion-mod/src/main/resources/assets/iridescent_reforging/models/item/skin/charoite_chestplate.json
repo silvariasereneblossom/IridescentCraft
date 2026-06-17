@@ -1,6 +1,6 @@
 {
   "parent": "item/generated",
   "textures": {
-    "layer0": "blue_skies:item/charoite_chestplate"
+    "layer0": "blue_skies:item/armor/charoite_chestplate"
   }
 }
