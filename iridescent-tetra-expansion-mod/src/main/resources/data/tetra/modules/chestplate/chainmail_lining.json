@@ -446,7 +446,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool"
+        "tetra:fabric/wool/wool"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -469,7 +469,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_black"
+        "tetra:fabric/wool/wool_black"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -492,7 +492,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_blue"
+        "tetra:fabric/wool/wool_blue"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -515,7 +515,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_brown"
+        "tetra:fabric/wool/wool_brown"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -538,7 +538,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_cyan"
+        "tetra:fabric/wool/wool_cyan"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -561,7 +561,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_gray"
+        "tetra:fabric/wool/wool_gray"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -584,7 +584,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_green"
+        "tetra:fabric/wool/wool_green"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -607,7 +607,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_light_blue"
+        "tetra:fabric/wool/wool_light_blue"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -630,7 +630,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_light_gray"
+        "tetra:fabric/wool/wool_light_gray"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -653,7 +653,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_lime"
+        "tetra:fabric/wool/wool_lime"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -676,7 +676,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_magenta"
+        "tetra:fabric/wool/wool_magenta"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -699,7 +699,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_orange"
+        "tetra:fabric/wool/wool_orange"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -722,7 +722,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_pink"
+        "tetra:fabric/wool/wool_pink"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -745,7 +745,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_purple"
+        "tetra:fabric/wool/wool_purple"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -768,7 +768,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_red"
+        "tetra:fabric/wool/wool_red"
       ],
       "key": "chainmail_lining/",
       "extract": {
@@ -791,7 +791,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_yellow"
+        "tetra:fabric/wool/wool_yellow"
       ],
       "key": "chainmail_lining/",
       "extract": {

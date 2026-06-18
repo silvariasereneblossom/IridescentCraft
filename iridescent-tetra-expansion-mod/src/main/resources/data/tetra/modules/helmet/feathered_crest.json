@@ -428,7 +428,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool"
+        "tetra:fabric/wool/wool"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -450,7 +450,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_black"
+        "tetra:fabric/wool/wool_black"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -472,7 +472,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_blue"
+        "tetra:fabric/wool/wool_blue"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -494,7 +494,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_brown"
+        "tetra:fabric/wool/wool_brown"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -516,7 +516,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_cyan"
+        "tetra:fabric/wool/wool_cyan"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -538,7 +538,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_gray"
+        "tetra:fabric/wool/wool_gray"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -560,7 +560,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_green"
+        "tetra:fabric/wool/wool_green"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -582,7 +582,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_light_blue"
+        "tetra:fabric/wool/wool_light_blue"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -604,7 +604,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_light_gray"
+        "tetra:fabric/wool/wool_light_gray"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -626,7 +626,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_lime"
+        "tetra:fabric/wool/wool_lime"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -648,7 +648,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_magenta"
+        "tetra:fabric/wool/wool_magenta"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -670,7 +670,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_orange"
+        "tetra:fabric/wool/wool_orange"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -692,7 +692,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_pink"
+        "tetra:fabric/wool/wool_pink"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -714,7 +714,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_purple"
+        "tetra:fabric/wool/wool_purple"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -736,7 +736,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_red"
+        "tetra:fabric/wool/wool_red"
       ],
       "key": "feathered_crest/",
       "extract": {
@@ -758,7 +758,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_yellow"
+        "tetra:fabric/wool/wool_yellow"
       ],
       "key": "feathered_crest/",
       "extract": {

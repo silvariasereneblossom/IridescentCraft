@@ -50,33 +50,35 @@ def _find_tetra_jar():
 
 
 def load_material_registry():
-    """Full material refs ("tetra:metal/iron") from mod src + the
-    icraft_tetra_materials datapack + the Tetra jar's builtins."""
+    """Material refs keyed by FILE-PATH resource location, mod src + the
+    icraft_tetra_materials datapack + the Tetra jar's builtins.
+
+    CRITICAL: Tetra resolves a variant/schematic `materials` ref by its FILE
+    PATH (resource location), NOT the material JSON's category+key fields. A ref
+    that doesn't match a material file silently falls through to the default
+    material (reference_tetra_internals.md sec.4; the 320-case "silent
+    fallthrough"). So `fabric/wool/wool.json` is `tetra:fabric/wool/wool` (NOT
+    `tetra:fabric/wool` from its category+key), and `metal/diopside.json` is
+    `tetra:metal/diopside` (its category is gem but the FOLDER governs the ref).
+    Building the registry from category/key was the exact bug that made this
+    audit bless 532 fallthrough refs as valid."""
     refs = set()
 
-    def add_json(payload):
-        try:
-            d = json.loads(payload)
-        except (json.JSONDecodeError, UnicodeDecodeError):
-            return
-        cat, key = d.get('category'), d.get('key')
-        if cat and key:
-            refs.add(f'tetra:{cat}/{key}')
+    def add_path(rel):  # rel = path under materials/, sans .json
+        refs.add('tetra:' + rel.replace(os.sep, '/'))
 
     for base in MATERIAL_DIRS:
         for path in glob.glob(f'{base}/**/*.json', recursive=True):
-            try:
-                with open(path, 'rb') as f:
-                    add_json(f.read())
-            except IOError:
-                pass
+            norm = path.replace(os.sep, '/')
+            if '/materials/' in norm:
+                add_path(norm.split('/materials/', 1)[1][:-5])
 
     jar = _find_tetra_jar()
     if jar:
         with zipfile.ZipFile(jar) as z:
             for name in z.namelist():
                 if name.startswith('data/tetra/materials/') and name.endswith('.json'):
-                    add_json(z.read(name))
+                    add_path(name.split('materials/', 1)[1][:-5])
     else:
         print('WARN: Tetra jar not found (libs/tetra*.jar) — builtin materials '
               '(wool, etc.) absent from registry; CHECK 2 coverage is partial.')

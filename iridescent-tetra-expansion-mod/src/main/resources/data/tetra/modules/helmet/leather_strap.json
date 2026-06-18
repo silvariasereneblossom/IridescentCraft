@@ -863,7 +863,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool"
+        "tetra:fabric/wool/wool"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -885,7 +885,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_black"
+        "tetra:fabric/wool/wool_black"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -907,7 +907,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_blue"
+        "tetra:fabric/wool/wool_blue"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -929,7 +929,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_brown"
+        "tetra:fabric/wool/wool_brown"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -951,7 +951,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_cyan"
+        "tetra:fabric/wool/wool_cyan"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -973,7 +973,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_gray"
+        "tetra:fabric/wool/wool_gray"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -995,7 +995,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_green"
+        "tetra:fabric/wool/wool_green"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1017,7 +1017,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_light_blue"
+        "tetra:fabric/wool/wool_light_blue"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1039,7 +1039,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_light_gray"
+        "tetra:fabric/wool/wool_light_gray"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1061,7 +1061,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_lime"
+        "tetra:fabric/wool/wool_lime"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1083,7 +1083,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_magenta"
+        "tetra:fabric/wool/wool_magenta"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1105,7 +1105,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_orange"
+        "tetra:fabric/wool/wool_orange"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1127,7 +1127,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_pink"
+        "tetra:fabric/wool/wool_pink"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1149,7 +1149,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_purple"
+        "tetra:fabric/wool/wool_purple"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1171,7 +1171,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_red"
+        "tetra:fabric/wool/wool_red"
       ],
       "key": "leather_strap/",
       "extract": {
@@ -1193,7 +1193,7 @@
     },
     {
       "materials": [
-        "tetra:fabric/wool_yellow"
+        "tetra:fabric/wool/wool_yellow"
       ],
       "key": "leather_strap/",
       "extract": {
