@@ -53,36 +53,61 @@ MATERIAL_DIRS = [
     MOD_ROOT / 'src/main/resources/data/tetra/materials',
     REPO_ROOT / '.minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials',
 ]
-TETRA_JAR_GLOB = str(MOD_ROOT / 'libs/tetra-*.jar')
+# Tetra stages the builtins jar as libs/tetra.jar (NOT tetra-<ver>.jar), so the
+# old 'libs/tetra-*.jar' glob silently matched nothing -> the jar builtins
+# (wool + colored wools at fabric/wool/*, etc.) were absent from the registry.
+# Match both shapes, exactly as audit_modules.py does.
+TETRA_JAR_GLOB = str(MOD_ROOT / 'libs/tetra*.jar')
 
 BOOK_FAMILIES = {'iss_book', 'ars_book'}
 
 
 def load_material_registry():
-    """ref ("tetra:metal/iron") -> material dict, from the three homes.
-    Load order: tetra jar builtins, then mod src, then the datapack
-    (mirrors datapack-over-mod override order; later wins)."""
+    """ref (FILE-PATH resource location, e.g. "tetra:fabric/wool/wool") ->
+    material dict, from the three homes (tetra jar builtins, mod src, the
+    icraft_tetra_materials datapack).
+
+    CRITICAL: Tetra resolves a variant/schematic `materials` ref by the
+    material's FILE PATH ("tetra:<dir-under-materials>/<filename>", subfolder
+    included), NOT by "tetra:<category>/<key>". A ref that matches no material
+    file silently falls through to the default material -- e.g. wool lives at
+    fabric/wool/wool.json so its ref is "tetra:fabric/wool/wool", not the
+    "tetra:fabric/wool" its category+key would give (the 2026-06-18 wool no-op).
+    Keying this registry by category+key is exactly what made the gap-filler
+    emit those dead refs, so build it from the on-disk path the same way
+    audit_modules.load_material_registry does -- then this generator and that
+    audit's CHECK 2b agree on the ref of every material. See
+    IridescentCraft-internal/dev/reference_tetra_internals.md sec.4.
+
+    Load order: tetra jar builtins, then mod src, then the datapack (later wins,
+    mirroring datapack-over-mod override)."""
     registry = {}
 
-    def add(payload):
+    def add(ref, payload):
         try:
-            d = json.loads(payload)
+            registry[ref] = json.loads(payload)
         except (json.JSONDecodeError, UnicodeDecodeError):
-            return
-        cat, key = d.get('category'), d.get('key')
-        if cat and key:
-            registry[f'tetra:{cat}/{key}'] = d
+            pass
 
     jars = sorted(glob.glob(TETRA_JAR_GLOB))
     if jars:
         with zipfile.ZipFile(jars[-1]) as z:
             for name in z.namelist():
                 if name.startswith('data/tetra/materials/') and name.endswith('.json'):
-                    add(z.read(name))
+                    rel = name.split('materials/', 1)[1][:-len('.json')]
+                    add(f'tetra:{rel}', z.read(name))
+    else:
+        print('WARN: Tetra jar not found (libs/tetra*.jar) -- builtin materials '
+              '(wool, etc.) absent; fabric/builtin gaps cannot be filled.')
     for base in MATERIAL_DIRS:
         for path in glob.glob(f'{base}/**/*.json', recursive=True):
+            norm = str(path).replace('\\', '/')
+            if '/materials/' not in norm:
+                continue
+            rel = norm.split('/materials/', 1)[1][:-len('.json')]
             try:
-                add(open(path, 'rb').read())
+                with open(path, 'rb') as f:
+                    add(f'tetra:{rel}', f.read())
             except IOError:
                 pass
     return registry

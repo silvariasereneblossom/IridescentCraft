@@ -2581,11 +2581,10 @@
       "key": "cuirass/",
       "extract": {
         "primaryAttributes": {
-          "minecraft:generic.armor": 1.8667,
-          "minecraft:generic.knockback_resistance": 0.0333,
-          "minecraft:generic.armor_toughness": 0.1667
+          "minecraft:generic.armor": 1.6,
+          "minecraft:generic.knockback_resistance": 0.04
         },
-        "integrity": 1.0,
+        "integrity": 0,
         "glyph": {
           "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
           "textureX": 0,
@@ -2595,7 +2594,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 1
+        "magicCapacity": 8
       }
     },
     {

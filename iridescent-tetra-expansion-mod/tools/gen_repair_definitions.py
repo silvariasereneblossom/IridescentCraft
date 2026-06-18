@@ -235,7 +235,12 @@ def load_remaining_materials():
                     add_payload(f.read())
             except IOError:
                 pass
-    jars = sorted(_glob.glob(os.path.join(ROOT, 'libs', 'tetra-*.jar')))
+    # wsl-build.sh stages the builtins jar as libs/tetra.jar (NOT tetra-<ver>),
+    # so the old 'tetra-*.jar' glob matched nothing -> the jar builtins (wool +
+    # colored wools, woods, bone, vines...) were never mapped here, leaving them
+    # UNMAPPED and tripping the sys.exit(1) below despite this loader's whole
+    # purpose. Match both shapes, as audit_modules.py / gen_fill_variant_gaps.py do.
+    jars = sorted(_glob.glob(os.path.join(ROOT, 'libs', 'tetra*.jar')))
     if jars:
         with _zipfile.ZipFile(jars[-1]) as z:
             for name in z.namelist():

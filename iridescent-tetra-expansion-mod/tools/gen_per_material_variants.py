@@ -31,7 +31,7 @@ Existing vanilla 6 entries (default-metal/leather/iron/gold/diamond/
 netherite) preserved untouched in the metallic archetypes; existing wildcard
 entries preserved in the book modules. New per-material entries appended.
 """
-import json, os, sys
+import json, sys
 from pathlib import Path
 
 # 2026-05-28: REPO_ROOT now auto-detects from this script's location so the
@@ -78,15 +78,30 @@ def load_base_armor(archetype_path):
 
 
 def load_materials():
+    """Modded materials from the icraft_tetra_materials datapack, keyed by
+    (top-level category folder, material key). Each dict records `__ref__`: its
+    FILE-PATH resource location, "tetra:<path-under-materials>/<filename>",
+    carrying any per-material subfolder (e.g. fabric/wool/).
+
+    CRITICAL: Tetra resolves a variant's `materials` ref by this FILE PATH, NOT
+    by "tetra:<category>/<key>". A ref that matches no material file silently
+    falls through to the default material (the 2026-06-18 wool no-op). Build the
+    ref from the on-disk path the same way audit_modules.load_material_registry
+    does; never reconstruct it from the category+key fields. See
+    IridescentCraft-internal/dev/reference_tetra_internals.md sec.4.
+
+    rglob (not flat listdir) so a material in a subfolder is found and its ref
+    keeps the subfolder segment."""
     out = {}
     for cat in ("metal", "gem", "skin"):
         cat_dir = MAT_DIR / cat
         if not cat_dir.is_dir(): continue
-        for fn in sorted(os.listdir(cat_dir)):
-            if not fn.endswith(".json"): continue
-            with open(cat_dir / fn) as f:
+        for path in sorted(cat_dir.rglob("*.json")):
+            with open(path) as f:
                 d = json.load(f)
+            rel = path.relative_to(MAT_DIR).as_posix()[:-len(".json")]
             d["__category__"] = cat
+            d["__ref__"] = f"tetra:{rel}"
             out[(cat, d["key"])] = d
     return out
 
@@ -116,7 +131,6 @@ def armor_extras_for(mat, base_extras, base_kb):
 def generate_armor_variant(archetype, mat, base_armor):
     """Generate one variant entry for (archetype, material)."""
     cat = mat["__category__"]
-    name = mat["key"]
     primary = float(mat.get("primary", 5.0))
     magic_cap = int(mat.get("magicCapacity", 60))
 
@@ -134,7 +148,7 @@ def generate_armor_variant(archetype, mat, base_armor):
     primary_attrs.update(extras)
 
     return {
-        "materials": [f"tetra:{cat}/{name}"],
+        "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
         # Wildcard trailing-slash key per lesson 2026-05-12: this is the variant
         # KEY (concatenated at runtime by MaterialVariantData.combine() with
         # material.key to produce e.g. "basic_crown/iron"). Suffixing material
@@ -181,7 +195,6 @@ def generate_spine_variant(book_kind, mat):
     """Generate one spine variant entry for a metal."""
     cat = mat["__category__"]
     if cat != "metal": return None  # spines are metal-only
-    name = mat["key"]
     magic_cap = int(mat.get("magicCapacity", 60))
 
     cdr = round(magic_cap / 10000, 4)
@@ -191,7 +204,7 @@ def generate_spine_variant(book_kind, mat):
                 else "**ars_nouveau:ars_nouveau.perk.mana_regen")
 
     return {
-        "materials": [f"tetra:{cat}/{name}"],
+        "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
         "key": "spine/",  # wildcard trailing slash; see armor variant comment
         "extract": _book_extract({attr_key: cdr}, sp_magic),
     }
@@ -202,7 +215,6 @@ def generate_front_cover_variant(book_kind, mat):
     Spell power scaled by material's magicCapacity."""
     cat = mat["__category__"]
     if cat not in ("skin", "metal"): return None
-    name = mat["key"]
     magic_cap = int(mat.get("magicCapacity", 60))
 
     sp = round(magic_cap / 20000, 4)
@@ -212,7 +224,7 @@ def generate_front_cover_variant(book_kind, mat):
                 else "**ars_nouveau:ars_nouveau.perk.spell_damage")
 
     return {
-        "materials": [f"tetra:{cat}/{name}"],
+        "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
         "key": "front_cover/",  # wildcard trailing slash; see armor variant comment
         "extract": _book_extract({attr_key: sp}, extra_magic),
     }
@@ -232,11 +244,10 @@ def generate_pages_variant(book_kind, mat):
     cat = mat["__category__"]
     if cat != "skin":
         return None  # pages takes fibre+skin; fibre = paper only (hand-authored)
-    name = mat["key"]
     magic_cap = int(mat.get("magicCapacity", 60))
     ctr = round(magic_cap / 10000, 4)  # ~0.008-0.011, near the 0.01 leather baseline
     return {
-        "materials": [f"tetra:{cat}/{name}"],
+        "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
         "key": "pages/",  # wildcard trailing slash; see armor variant comment
         "extract": {
             "tertiaryAttributes": {"**irons_spellbooks:cast_time_reduction": ctr},
@@ -257,7 +268,6 @@ def generate_back_cover_variant(book_kind, mat):
     """Generate back_cover variant. Accepts skin and metal. Max mana scaled."""
     cat = mat["__category__"]
     if cat not in ("skin", "metal"): return None
-    name = mat["key"]
     magic_cap = int(mat.get("magicCapacity", 60))
 
     mana = max(3, round(magic_cap / 20))
@@ -268,7 +278,7 @@ def generate_back_cover_variant(book_kind, mat):
     extract = _book_extract({attr_key: mana}, max(2, round(magic_cap / 40)), integrity=1)
 
     return {
-        "materials": [f"tetra:{cat}/{name}"],
+        "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
         "key": "back_cover/",  # wildcard trailing slash; see armor variant comment
         "extract": extract,
     }

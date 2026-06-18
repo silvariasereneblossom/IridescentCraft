@@ -2724,6 +2724,29 @@
         "models": [],
         "magicCapacity": 1
       }
+    },
+    {
+      "materials": [
+        "tetra:gem/diopside"
+      ],
+      "key": "light_boot_sole/",
+      "extract": {
+        "primaryAttributes": {
+          "minecraft:generic.armor": 0.24,
+          "forge:step_height_addition": 0.2
+        },
+        "integrity": 0,
+        "glyph": {
+          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
+          "textureX": 0,
+          "textureY": 0
+        },
+        "availableTextures": [
+          "default"
+        ],
+        "models": [],
+        "magicCapacity": 8
+      }
     }
   ]
 }
