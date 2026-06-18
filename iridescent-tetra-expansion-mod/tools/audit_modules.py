@@ -28,7 +28,25 @@ MATERIAL_DIRS = [
     'src/main/resources/data/tetra/materials',
     '../.minecraft/datapack_sources/icraft_tetra_materials/data/tetra/materials',
 ]
-TETRA_JAR_GLOB = 'libs/tetra-*.jar'
+# The Tetra jar holds the BUILTIN materials (wool + colored wools, etc.). It is
+# staged by wsl-build.sh as libs/tetra.jar (NOT tetra-<ver>.jar), so a
+# 'libs/tetra-*.jar' glob silently matched nothing -> builtins absent from the
+# registry -> CHECK 2 could not see that e.g. tetra:fabric/wool was selectable,
+# and the invalid tetra:fabric/wool/wool refs went unflagged. Match both shapes,
+# and fall back to the live instance jar so the audit works off the build box.
+TETRA_JAR_GLOBS = ['libs/tetra*.jar']
+TETRA_JAR_FALLBACK = os.path.expanduser(
+    '~/AppData/Roaming/PrismLauncher/instances/IridescentCraft/.minecraft/mods'
+)
+
+
+def _find_tetra_jar():
+    for g in TETRA_JAR_GLOBS:
+        hits = sorted(glob.glob(g))
+        if hits:
+            return hits[-1]
+    hits = sorted(glob.glob(os.path.join(TETRA_JAR_FALLBACK, 'tetra-*.jar')))
+    return hits[-1] if hits else None
 
 
 def load_material_registry():
@@ -53,12 +71,15 @@ def load_material_registry():
             except IOError:
                 pass
 
-    jars = sorted(glob.glob(TETRA_JAR_GLOB))
-    if jars:
-        with zipfile.ZipFile(jars[-1]) as z:
+    jar = _find_tetra_jar()
+    if jar:
+        with zipfile.ZipFile(jar) as z:
             for name in z.namelist():
                 if name.startswith('data/tetra/materials/') and name.endswith('.json'):
                     add_json(z.read(name))
+    else:
+        print('WARN: Tetra jar not found (libs/tetra*.jar) — builtin materials '
+              '(wool, etc.) absent from registry; CHECK 2 coverage is partial.')
     return refs
 
 
@@ -143,6 +164,29 @@ def main():
                     issues['selectable_material_no_variant'].append(
                         f'{sch_path} -> {mk}: concrete material {entry} has no variant'
                     )
+
+    # CHECK 2b: variant references a material that does NOT exist in the
+    # registry (mod + datapack + tetra builtins). This is the tetra:fabric/
+    # wool/wool class -- a ref built from the file PATH (fabric/wool/wool.json)
+    # instead of the material's category+key (fabric + wool = tetra:fabric/wool).
+    # Before the 06-12 fill added the canonical tetra:fabric/wool variant, these
+    # dead refs were a module's ONLY wool variant, so inserting wool fell through
+    # to a random material (magenta). Skip when the registry is empty of builtins
+    # (jar not found) to avoid false positives on legitimate external materials.
+    # Guard: only run when the registry actually loaded the tetra builtins
+    # (else every wool ref false-flags). Every tetra: material in THIS pack lives
+    # in one of the three loaded homes, so any concrete tetra: ref absent from the
+    # registry is genuinely dead. Non-tetra namespaces (other mods) are skipped.
+    if any(m.startswith('tetra:fabric/') for m in registry):
+        for mod_key, mod in modules.items():
+            for v in mod.get('variants', []):
+                for m in v.get('materials', []):
+                    if m.endswith('/') or not m.startswith('tetra:'):
+                        continue
+                    if m not in registry:
+                        issues['variant_material_not_in_registry'].append(
+                            f'{mod_key} variant "{v.get("key", "?")}": {m} (no such material)'
+                        )
 
     # CHECK 3 (soft): variants whose materials no schematic can reach -- dead
     # data. Generalizes the old "Emerald robe" base-variant check to the

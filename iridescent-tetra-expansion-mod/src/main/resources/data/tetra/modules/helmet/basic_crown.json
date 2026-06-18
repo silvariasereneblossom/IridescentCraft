@@ -414,28 +414,6 @@
     },
     {
       "materials": [
-        "tetra:metal/diopside"
-      ],
-      "key": "basic_crown/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 1.429
-        },
-        "integrity": 0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 8
-      }
-    },
-    {
-      "materials": [
         "tetra:metal/elementium"
       ],
       "key": "basic_crown/",
@@ -1342,28 +1320,6 @@
         ],
         "models": [],
         "magicCapacity": 17
-      }
-    },
-    {
-      "materials": [
-        "tetra:fabric/wool/wool"
-      ],
-      "key": "basic_crown/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.429
-        },
-        "integrity": 1.0,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 1.0
       }
     },
     {

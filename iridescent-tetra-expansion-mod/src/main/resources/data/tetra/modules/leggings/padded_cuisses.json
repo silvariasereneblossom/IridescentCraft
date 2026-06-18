@@ -638,28 +638,6 @@
     },
     {
       "materials": [
-        "tetra:metal/diopside"
-      ],
-      "key": "padded_cuisses/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.555
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 0.5
-      }
-    },
-    {
-      "materials": [
         "tetra:gem/diamond_no_t"
       ],
       "key": "padded_cuisses/",
@@ -737,29 +715,6 @@
           "minecraft:generic.armor": 0.889,
           "minecraft:generic.armor_toughness": 1.25,
           "minecraft:generic.knockback_resistance": 0.1
-        },
-        "integrity": 0.5,
-        "glyph": {
-          "textureLocation": "iridescent_modular_spells:textures/gui/glyphs.png",
-          "textureX": 0,
-          "textureY": 0
-        },
-        "availableTextures": [
-          "default"
-        ],
-        "models": [],
-        "magicCapacity": 0.5
-      }
-    },
-    {
-      "materials": [
-        "tetra:fabric/wool/wool"
-      ],
-      "key": "padded_cuisses/",
-      "extract": {
-        "primaryAttributes": {
-          "minecraft:generic.armor": 0.133,
-          "irons_spellbooks:max_mana": 5
         },
         "integrity": 0.5,
         "glyph": {
