@@ -153,6 +153,7 @@ fn dispatch(cmd: &Cmd, cfg: &ServerConfig) -> anyhow::Result<u8> {
                 headless: false,
                 watchdog: build_watchdog(*boot_timeout, *idle_timeout),
                 pipe_output: false, // CLI inherits stdio for plain Forge output
+                apply_self_update: true, // CLI re-execs `icraft serve` cleanly
             })?;
             // Truncate i32 -> u8 for ExitCode. Common server exit codes
             // (0, 1, 130, 137, 143) all fit; anything larger gets clamped.

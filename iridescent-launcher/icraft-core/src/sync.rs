@@ -28,11 +28,61 @@ use std::collections::BTreeMap;
 use std::fs;
 use std::io::{Read, Write};
 use std::path::{Path, PathBuf};
+use std::sync::Mutex;
+use std::time::Duration;
 // std::process::Command/Stdio dropped along with the bat-shell-out
 // path in z_mirror_or_zip; sync now stays in-Rust via ureq.
 
 use crate::config::{ServerConfig, GITHUB_REPO_BRANCH, GITHUB_REPO_NAME, GITHUB_REPO_OWNER, REPO_SERVER_PATH};
 use crate::github;
+
+// =============================================================================
+// Visible sync status — surfaced as a GUI badge so a fail-open / stale-launch
+// can't hide in scrolling log output (the operator complaint: "Cycle doesn't
+// sync consistently"). Mirrors run::ServerState; the GUI reads sync_status()
+// each frame and colours the badge red on the not-ok states.
+// =============================================================================
+
+#[derive(Debug, Clone, Copy, PartialEq, Eq)]
+pub enum SyncStatus {
+    /// No sync attempted yet this session.
+    Idle,
+    /// A sync is in flight (HEAD fetch / diff / download).
+    Checking,
+    /// Marker already == remote HEAD; on-disk git content current. (The
+    /// independent-of-SHA verifies — jar hash + expected-state — still run.)
+    Current,
+    /// A diff or full-zip sync applied changes and advanced the marker.
+    Updated,
+    /// GitHub API HEAD fetch failed after retries — proceeding with the files
+    /// currently on disk as an explicit, LOUD last resort (NOT silent success).
+    ApiUnreachable,
+    /// A sync ran but some files failed to write (marker NOT advanced; next run
+    /// retries).
+    PartialFailure,
+}
+
+static SYNC_STATUS: Mutex<SyncStatus> = Mutex::new(SyncStatus::Idle);
+
+/// Current visible sync status (read by the GUI badge).
+pub fn sync_status() -> SyncStatus {
+    *SYNC_STATUS.lock().unwrap()
+}
+
+fn set_sync_status(s: SyncStatus) {
+    let mut g = SYNC_STATUS.lock().unwrap();
+    if *g != s {
+        log::info!("[sync] *** sync status: {:?} -> {:?} ***", *g, s);
+        *g = s;
+    }
+}
+
+/// HEAD-fetch retry schedule for the fail-loud path (item: don't fail open).
+/// Sleeps BETWEEN attempts, so N entries = N+1 total tries. Short + bounded:
+/// the common transient cause is the unauth 60/hr bucket momentarily drained,
+/// which a few seconds' backoff can ride out without stalling a Cycle for long.
+const HEAD_FETCH_BACKOFF: &[Duration] =
+    &[Duration::from_secs(2), Duration::from_secs(4)];
 
 const EXCLUDED_DIRS: &[&str] = &["world", "logs", "crash-reports", "backups", "libraries", ".cache"];
 const SELF_UPDATE_FILES: &[&str] = &[
@@ -89,6 +139,7 @@ pub fn z_mirror_or_zip(cfg: &ServerConfig) -> Result<()> {
 // =============================================================================
 
 pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
+    set_sync_status(SyncStatus::Checking);
     if force {
         let sha_file = cfg.last_sha();
         if sha_file.exists() {
@@ -99,36 +150,43 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
 
     let local_sha = read_local_sha(&cfg.last_sha());
 
-    // Remote HEAD; failure here is non-fatal (offline / API down) — we
-    // continue with whatever the install already has.
+    // Remote HEAD. A failure here used to immediately `return Ok(())` —
+    // fail-OPEN: the server launched on whatever stale files were on disk with
+    // no visible signal, and the badge could even keep claiming "(in sync)"
+    // against a marker that no longer matched origin. That is exactly the
+    // inconsistency the operator hit.
     //
-    // 2026-05-18 fix: the soft-fail used to be just two warn lines, which
-    // are easy to miss in scrolling launcher output. When sync silently
-    // skips, the server starts with stale files on disk, and the user has
-    // no visible signal that the new commits they expected to deploy didn't
-    // actually deploy. Most common cause: GitHub unauth rate limit (60/hr
-    // per IP) drained by the pre-b3961cac dashboard polling. The token
-    // path (GITHUB_TOKEN env var, see github.rs auth_token()) raises the
-    // limit to 5000/hr; setting it is the durable fix.
-    //
-    // Make the silent-skip visible by escalating to error + an obvious
-    // banner so it scrolls past distinctively. The function still returns
-    // Ok so existing callers (serve() Phase 0) keep their soft-fail
-    // semantics; only the log noise level changes.
-    let remote_sha = match github::head_sha_cdn(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, GITHUB_REPO_BRANCH) {
+    // Don't fail open silently. RETRY with a short backoff first (the
+    // head_sha_cdn helper already does CDN x2 -> API, and the API client
+    // already retries unauthenticated on a revoked-token 401/403; this outer
+    // loop rides out a momentarily-drained 60/hr unauth bucket). Only after the
+    // retries are exhausted do we proceed-stale — and then LOUDLY, with a
+    // visible ApiUnreachable badge state, not a silent Ok. Setting
+    // GITHUB_TOKEN lifts the limit to 5000/hr and is the durable fix.
+    let remote_sha = match head_sha_with_retry() {
         Ok(s) => s,
         Err(e) => {
-            log::error!("[sync] !!! GitHub API HEAD fetch FAILED: {e:#}");
-            log::error!("[sync] !!! Sync SKIPPED -- server will start with files currently on disk.");
+            set_sync_status(SyncStatus::ApiUnreachable);
+            log::error!("[sync] !!! GitHub HEAD fetch FAILED after retries: {e:#}");
+            log::error!("[sync] !!! PROCEEDING STALE (last resort) -- server will start with the files currently on disk.");
+            log::error!("[sync] !!! These may NOT match origin/main. The 'Repo HEAD' badge is now unverifiable.");
             log::error!("[sync] !!! Most common cause: GitHub unauth rate limit (60/hr per IP).");
-            log::error!("[sync] !!! Set GITHUB_TOKEN env var to lift the limit to 5000/hr.");
-            log::error!("[sync] !!! Until then: wait ~1 hour for the bucket to reset before retrying.");
+            log::error!("[sync] !!! Set GITHUB_TOKEN env var to lift the limit to 5000/hr, then Cycle again.");
+            // Soft-return so serve()'s later phases (jar hash-verify,
+            // expected-state) still run against on-disk state; the badge +
+            // error banner carry the warning.
             return Ok(());
         }
     };
 
     if local_sha.as_deref() == Some(remote_sha.as_str()) {
         log::info!("[sync] up to date (commit {})", short_sha(&remote_sha));
+        set_sync_status(SyncStatus::Current);
+        // Item 1a: the custom-jar manifest verify drifts INDEPENDENTLY of the
+        // git SHA (a rebuilt same-filename jar that didn't deploy), so run it
+        // even on the marker short-circuit — repairing in place before launch
+        // instead of blind-trusting "up to date".
+        verify_custom_jars(cfg, &remote_sha);
         return Ok(());
     }
 
@@ -160,7 +218,7 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
         None => false,
     };
 
-    if use_diff {
+    let result = if use_diff {
         let cmp = diff_result.unwrap();
         diff_sync(cfg, &cmp.files, &remote_sha, &local_sha)
     } else {
@@ -168,7 +226,130 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
             log::info!("[sync] first run — downloading full repository zip");
         }
         full_zip_sync(cfg, &remote_sha)
+    };
+    // Item 1a: verify customs against the manifest after the content sync too —
+    // catches out-of-band drift the commit-diff wouldn't have re-listed.
+    verify_custom_jars(cfg, &remote_sha);
+    result
+}
+
+/// Verify deployed custom jars against `custom_jars_manifest.json` and RE-FETCH,
+/// IN PLACE, any that are present but content-drifted from the manifest's
+/// SHA-256 — pulling the canonical bytes from GitHub raw @ `remote_sha`.
+///
+/// This is the heart of the "manifest-aware custom-jar check that runs even when
+/// the marker == HEAD" (item 1a). The registry-desync bug is a rebuilt
+/// SAME-FILENAME jar whose content drifted (e.g.
+/// `iridescent_tetra_expansion-1.0.0.jar` gaining new item registrations while
+/// keeping its `1.0.0` string). github_diff's marker short-circuit never noticed
+/// it — the SHA matched, so it returned. Now we hash every deployed manifest jar
+/// each sync and repair drift BEFORE the server launches, so one Cycle brings a
+/// drifted install fully current (the verify-server.ps1 "STALE" finding).
+///
+/// Scope: PRESENT-but-drifted only. A manifest jar that is ABSENT is left alone
+/// — the manifest is a 3-distro SUPERSET that also lists client-only jars
+/// (`mek_walkable_cables`, `offlineskins`) which are legitimately not on a
+/// server, and the normal diff/full sync handles genuine server-jar adds.
+/// Soft-fails per jar (logs); `mods::cleanup_stale_jars` is the offline backstop
+/// when a re-fetch isn't possible (it removes the drifted copy + clears the
+/// marker so the next online sync re-adds).
+fn verify_custom_jars(cfg: &ServerConfig, remote_sha: &str) {
+    let manifest = crate::mods::load_custom_jar_hashes(&cfg.custom_jars_manifest());
+    if manifest.is_empty() {
+        return;
     }
+    let mods_dir = cfg.mods_dir();
+    let prefix = REPO_SERVER_PATH.trim_end_matches('/');
+    let mut ok = 0usize;
+    let mut repaired = 0usize;
+    let mut failed = 0usize;
+
+    for (name, expected) in &manifest {
+        let target = mods_dir.join(name);
+        if !target.exists() {
+            continue; // absent -> maybe client-only superset entry; leave to sync
+        }
+        match sha256_file(&target) {
+            Ok(h) if &h == expected => {
+                ok += 1;
+                continue;
+            }
+            Ok(_) => { /* drifted -> repair below */ }
+            Err(e) => {
+                log::warn!("[sync] custom-jar verify: can't hash {name}: {e} (skipping)");
+                continue;
+            }
+        }
+
+        let repo_path = format!("{prefix}/mods/{name}");
+        log::warn!(
+            "[sync] custom jar {name}: content drift vs manifest -- re-fetching in place @ {}",
+            short_sha(remote_sha)
+        );
+        match github::fetch_raw(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, remote_sha, &repo_path) {
+            Ok(body) => {
+                // Guard: only commit bytes that actually match the manifest, so
+                // a truncated/wrong response can't swap one bad jar for another.
+                let got = sha256_bytes(&body);
+                if &got != expected {
+                    failed += 1;
+                    log::error!(
+                        "[sync] custom jar {name}: re-fetched bytes ({}..) still != manifest ({}..) -- left as-is",
+                        &got[..got.len().min(16)], &expected[..expected.len().min(16)]
+                    );
+                    continue;
+                }
+                // delete-then-write to dodge intermittent AV locks on patched jars.
+                let _ = fs::remove_file(&target);
+                match fs::write(&target, &body) {
+                    Ok(()) => {
+                        repaired += 1;
+                        log::info!("[sync] custom jar {name}: repaired in place ({} bytes)", body.len());
+                    }
+                    Err(e) => {
+                        failed += 1;
+                        log::error!("[sync] custom jar {name}: write failed: {e}");
+                    }
+                }
+            }
+            Err(e) => {
+                failed += 1;
+                log::error!(
+                    "[sync] custom jar {name}: re-fetch failed: {e:#} (cleanup_stale_jars will remove the drifted copy as a backstop)"
+                );
+            }
+        }
+    }
+
+    if repaired > 0 || failed > 0 {
+        log::info!("[sync] custom-jar verify: ok={ok} repaired={repaired} failed={failed}");
+    } else {
+        log::debug!("[sync] custom-jar verify: all {ok} present jar(s) match manifest");
+    }
+}
+
+/// Fetch remote HEAD with a bounded backoff (see [`HEAD_FETCH_BACKOFF`]). The
+/// underlying `head_sha_cdn` already degrades CDN -> API and retries a revoked
+/// token anonymously; this outer loop rides out a transient rate-limit/offline
+/// blip so a single hiccup doesn't drop the whole Cycle to proceed-stale.
+fn head_sha_with_retry() -> Result<String> {
+    let mut last_err = None;
+    for attempt in 0..=HEAD_FETCH_BACKOFF.len() {
+        match github::head_sha_cdn(GITHUB_REPO_OWNER, GITHUB_REPO_NAME, GITHUB_REPO_BRANCH) {
+            Ok(s) => return Ok(s),
+            Err(e) => {
+                if let Some(delay) = HEAD_FETCH_BACKOFF.get(attempt) {
+                    log::warn!(
+                        "[sync] HEAD fetch attempt {} failed ({e:#}); retrying in {}s...",
+                        attempt + 1, delay.as_secs()
+                    );
+                    std::thread::sleep(*delay);
+                }
+                last_err = Some(e);
+            }
+        }
+    }
+    Err(last_err.unwrap_or_else(|| anyhow!("HEAD fetch failed (no error captured)")))
 }
 
 // =============================================================================
@@ -256,7 +437,9 @@ fn diff_sync(
     // half-applied state with no way to retry.
     if errors == 0 {
         write_sha(&cfg.last_sha(), remote_sha)?;
+        set_sync_status(SyncStatus::Updated);
     } else {
+        set_sync_status(SyncStatus::PartialFailure);
         log::warn!(
             "[sync] {} file(s) failed -- NOT writing SHA marker, next run will retry",
             errors
@@ -318,16 +501,39 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
     // and BEFORE the extract dir is removed (repairs source from `src`). Closes
     // the strand-on-delete gap (repo deletions left orphaned files on disk after
     // a full-zip overlay forever -- the diff path already handles `removed`).
-    // Mirrors phase0_sync.ps1 `Invoke-ExpectedStatePass`; dry-run by default in
-    // this first shipped version (flip EXPECTED_STATE_DRY / ICRAFT_EXPECTED_STATE_DRY=0
-    // to go live). Soft-fails: never aborts the sync.
+    // Mirrors phase0_sync.ps1 `Invoke-ExpectedStatePass`. Soft-fails: never
+    // aborts the sync.
+    //
+    // This is the ONE path that can repair from a freshly-extracted source.
+    // serve() ALSO runs a (delete-only) verify_expected_state on every launch
+    // regardless of sync path, so the gap is closed on the diff + short-circuit
+    // paths too -- but here we still run it with the extract source so a
+    // lock-failed overlay copy can be repaired in place rather than deferred.
     expected_state_pass(&cfg.server_dir, Some(&src), "[sync] ");
 
     write_sha(&cfg.last_sha(), remote_sha)?;
+    set_sync_status(SyncStatus::Updated);
     let _ = fs::remove_file(&zip_path);
     let _ = fs::remove_dir_all(&extract_dir);
     log::info!("[sync] full sync to {}", short_sha(remote_sha));
     Ok(())
+}
+
+// =============================================================================
+// Public entry point for the every-launch expected-state verify (item: run the
+// drift verify even when the marker == HEAD, on the diff path, not only on
+// full-zip). Called by serve() as an explicit phase so it runs regardless of
+// which sync path github_diff took (or whether it short-circuited / failed
+// open). `extract_src` is None here: there's no fresh zip to repair from, so
+// repairs degrade to "fetch-needed" (logged; the next real sync overlays them),
+// while DELETIONS of repo-dropped files still apply (when live). See
+// `expected_state_pass` for the dry-run / live gating + safety notes.
+// =============================================================================
+
+/// Run the expected-state verify/repair pass against the live install, with no
+/// extract source (delete + report; repairs become fetch-needed). Soft-fails.
+pub fn verify_expected_state(cfg: &ServerConfig) {
+    expected_state_pass(&cfg.server_dir, None, "[verify] ");
 }
 
 // =============================================================================
@@ -355,12 +561,25 @@ fn full_zip_sync(cfg: &ServerConfig, remote_sha: &str) -> Result<()> {
 //                                                 config at runtime)
 //
 // FAIL-KEEP: manifest missing/unparseable/empty -> delete NOTHING, warn loudly.
-// DRY-RUN: defaults to dry-run in this first shipped version (report-only). Going
-// live = flip EXPECTED_STATE_DRY to false (or set ICRAFT_EXPECTED_STATE_DRY=0),
-// AFTER the operator compares the report to the 2026-06-06 census.
+//
+// DRY-RUN (default) — STILL DRY, deliberately. Item 1 wired this pass to run on
+// EVERY serve()/Cycle (not just the rare full-zip), so the would-delete report
+// is now produced every launch. But DELETION stays report-only until the
+// operator signs off, for a concrete safety reason confirmed 2026-06-19:
+// `expected_state.json` lags HEAD by the regen two-step (on disk it was at
+// generated_from=09a7706a while HEAD had moved to 338bbb76, with three
+// mods/.index `.pw.toml` already hash-drifted). A stale manifest that is MISSING
+// a file added since its generated_from would flag that (legitimately-synced)
+// file as "delete". So: review one Cycle's `would-delete` lines, confirm they're
+// all genuine repo-deletions (not new content), THEN set ICRAFT_EXPECTED_STATE_DRY=0
+// (or flip the const) to go live. REPAIRS are already safe on the serve() path:
+// extract_src=None there, so a hash-mismatch becomes "fetch-needed" (logged, NOT
+// applied), which is why a stale manifest can't revert the drifted `.pw.toml`.
 
-/// Dry-run default for this first shipped version. Going live = flip to `false`
-/// (or pass `ICRAFT_EXPECTED_STATE_DRY=0` in the environment). Mirrors
+/// Dry-run default. Deletions are report-only until an operator confirms the
+/// `would-delete` report (see the block comment above for why this is NOT yet
+/// auto-live). Going live: set `ICRAFT_EXPECTED_STATE_DRY=0` in the environment
+/// (preferred — no rebuild) or flip this to `false`. Mirrors
 /// `$ExpectedStateDryRun = $true` in phase0_sync.ps1.
 const EXPECTED_STATE_DRY: bool = true;
 
@@ -662,6 +881,19 @@ fn sha256_file(p: &Path) -> std::io::Result<String> {
         hex.push_str(&format!("{b:02x}"));
     }
     Ok(hex)
+}
+
+/// Lowercase hex SHA-256 of an in-memory byte buffer (used to validate a
+/// re-fetched custom jar against the manifest before committing it to disk).
+fn sha256_bytes(bytes: &[u8]) -> String {
+    use sha2::{Digest, Sha256};
+    let mut hasher = Sha256::new();
+    hasher.update(bytes);
+    let mut hex = String::with_capacity(64);
+    for b in hasher.finalize() {
+        hex.push_str(&format!("{b:02x}"));
+    }
+    hex
 }
 
 /// Mirror the zip's `server_distribution/` into the install dir. Three

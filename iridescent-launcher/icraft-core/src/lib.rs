@@ -51,6 +51,15 @@ pub struct ServeOptions {
     /// output streams into the in-app log pane; the CLI leaves it
     /// off so operators see plain Forge output in their terminal.
     pub pipe_output: bool,
+    /// Run Phase 0.5 (apply staged `.new` self-update files, then re-exec
+    /// `<exe> serve` if any applied). Correct for the CLI: `icraft serve`
+    /// re-execs cleanly and continues serving. WRONG for the GUI: re-execing
+    /// `icraft-gui.exe serve` just opens a fresh IDLE window (the GUI ignores
+    /// argv) and the server never starts — and the GUI can't overwrite its own
+    /// running exe anyway. The GUI manages its own binary self-update (the
+    /// "Update Launcher" button / Cycle step 2 via `apply_and_relaunch_gui`),
+    /// so it sets this `false`. Defaults to `true` (CLI behavior).
+    pub apply_self_update: bool,
 }
 
 impl Default for ServeOptions {
@@ -60,6 +69,7 @@ impl Default for ServeOptions {
             headless: false,
             watchdog: run::WatchdogOptions::default(),
             pipe_output: false,
+            apply_self_update: true,
         }
     }
 }
@@ -79,8 +89,12 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
         log::warn!("[sync] GitHub diff sync failed: {e}");
     }
 
-    // Phase 0.5: apply staged self-update if any
-    if self_update::apply_staged(cfg)? {
+    // Phase 0.5: apply staged self-update if any (CLI only — see
+    // ServeOptions::apply_self_update). For the GUI this is skipped: re-execing
+    // `icraft-gui.exe serve` opens an idle window instead of serving, so the GUI
+    // applies its own binary update out-of-band (Cycle step 2 / Update Launcher)
+    // and leaves this off.
+    if opts.apply_self_update && self_update::apply_staged(cfg)? {
         log::info!("[self-update] Relaunching with new binary...");
         return self_update::relaunch(cfg);
     }
@@ -92,10 +106,24 @@ pub fn serve(cfg: &config::ServerConfig, opts: ServeOptions) -> Result<i32> {
     install::ensure_forge(cfg)?;
     install::ensure_mods(cfg)?;
 
-    // Phase 2.6 / 2.7 / 2.8: mod folder hygiene
+    // Phase 2.6 / 2.7 / 2.8: mod folder hygiene. cleanup_stale_jars is now
+    // manifest-aware (SHA-256 hash-verify against custom_jars_manifest.json), so
+    // it catches same-filename custom-jar content drift on EVERY launch —
+    // including when github_diff short-circuited on a current marker. This is
+    // the "always run the jar verify even when marker == HEAD" half of the
+    // Cycle-reliability fix.
     mods::strip_client_mods(cfg)?;
     mods::update_mods(cfg)?;
     mods::cleanup_stale_jars(cfg)?;
+
+    // Phase 2.9: expected-state verify. The other "always run, independent of
+    // the git SHA" check: walk the managed roots (kubejs/config/mods/.index)
+    // against expected_state.json and report/remove repo-deleted files that a
+    // non-deleting overlay would otherwise strand. Runs on every serve()
+    // regardless of which sync path ran (or whether it short-circuited / failed
+    // open) — github_diff no longer owns this. Deletions are dry-run by default
+    // (see sync::EXPECTED_STATE_DRY); the report is produced every launch.
+    sync::verify_expected_state(cfg);
 
     // Phase 3: EULA
     eula::accept(cfg)?;

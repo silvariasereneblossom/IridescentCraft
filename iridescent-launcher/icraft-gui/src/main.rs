@@ -190,6 +190,13 @@ struct IcraftApp {
     /// fresh "serve" task to bring the server back up. Cleared on
     /// pickup so a second cycle requires another button press.
     pending_restart: bool,
+    /// Set in `new()` when the Cycle-resume sentinel is found on startup
+    /// (the previous instance relaunched itself mid-Cycle to apply a
+    /// newer launcher binary). On the first update() tick this auto-spawns
+    /// the cycle-restart worker so the server still ends up started after
+    /// the self-update — i.e. the post-relaunch path completes the Cycle.
+    /// One-shot: cleared on pickup.
+    resume_cycle_pending: bool,
     /// Wall-clock of the last *successful* remote-HEAD fetch, stamped by
     /// the background thread. Drives the "(stale)" badge state: a remote
     /// SHA we haven't re-confirmed recently must NOT render green
@@ -240,6 +247,11 @@ impl IcraftApp {
         let server_dir = persisted.server_dir
             .map(PathBuf::from)
             .unwrap_or_else(|| std::env::current_dir().unwrap_or_else(|_| PathBuf::from(".")));
+        // If the previous instance relaunched itself mid-Cycle to apply a newer
+        // launcher binary, it left the resume sentinel next to the install.
+        // Consume it now so the first update() tick continues the Cycle.
+        let resume_cycle_pending =
+            icraft_core::self_update::take_cycle_resume(&ServerConfig::from_path(&server_dir));
         let mut app = Self {
             server_dir_text: server_dir.display().to_string(),
             server_dir,
@@ -253,6 +265,7 @@ impl IcraftApp {
             remote_fetching: Arc::new(AtomicBool::new(false)),
             last_status_refresh: None,
             pending_restart: false,
+            resume_cycle_pending,
             remote_fetched_at: Arc::new(Mutex::new(None)),
             last_remote_poll: None,
         };
@@ -358,6 +371,68 @@ impl IcraftApp {
         self.running_task = Some(h);
     }
 
+    /// Spawn the Cycle "restart" worker: step (2) self-update the launcher +
+    /// FULLY sync content, then step (3) start the server. Shared by the Cycle
+    /// button's no-server-running branch, the task-finished handler (after a
+    /// stop), and the resume-on-start path (after a self-update relaunch) so all
+    /// three take the identical, reliable sequence.
+    ///
+    /// Step 1 (stop the running server) is handled by the caller: the
+    /// task-finished path only fires AFTER the prior serve worker returned,
+    /// i.e. the JVM has fully exited.
+    fn spawn_cycle_restart(&mut self) {
+        self.spawn("cycle-restart", move |c| {
+            // === Cycle step 2: self-update launcher + FULLY sync content ===
+            log::info!("[cycle] step 2: self-update launcher + sync content");
+            // 2a. Content sync. Stages icraft-gui.exe.new if the repo's launcher
+            //     advanced, and brings kubejs/config/mods current. github_diff
+            //     now fails LOUD (visible Sync badge) instead of proceeding
+            //     stale silently, and never blind-trusts the marker for the
+            //     drift verifies that serve() runs below.
+            if let Err(e) = icraft_core::sync::github_diff(&c, false) {
+                log::warn!("[cycle] content sync error: {e:#} (continuing -- on-disk verifies still run)");
+            }
+            // 2b. If a newer launcher exe got staged, apply it via the GUI
+            //     rename-dance and relaunch. Arm the resume sentinel FIRST so
+            //     the spawned new instance continues this very Cycle (sync +
+            //     start) rather than coming up idle.
+            if icraft_core::self_update::gui_update_staged(&c) {
+                log::info!("[cycle] newer launcher staged -- applying + relaunching; the new instance resumes the Cycle");
+                icraft_core::self_update::set_cycle_resume(&c);
+                match icraft_core::self_update::apply_and_relaunch_gui(&c) {
+                    Ok(true) => {
+                        log::info!("[cycle] new GUI spawned -- exiting current process to release the exe lock");
+                        std::thread::sleep(std::time::Duration::from_millis(500));
+                        std::process::exit(0);
+                    }
+                    Ok(false) => {
+                        // Nothing actually swapped (race / .new vanished).
+                        let _ = icraft_core::self_update::take_cycle_resume(&c);
+                        log::warn!("[cycle] launcher apply found nothing to swap -- continuing without relaunch");
+                    }
+                    Err(e) => {
+                        let _ = icraft_core::self_update::take_cycle_resume(&c);
+                        log::warn!("[cycle] launcher self-update failed: {e:#} -- continuing with the current binary");
+                    }
+                }
+            }
+            // === Cycle step 3: start the server ===
+            // serve() re-runs github_diff (now a fast short-circuit), the
+            // manifest-aware jar hash-verify + the expected-state verify, then
+            // launches the JVM and blocks until it exits.
+            log::info!("[cycle] step 3: starting server");
+            let opts = icraft_core::ServeOptions {
+                pipe_output: true,
+                apply_self_update: false, // GUI self-updated in step 2 already
+                ..Default::default()
+            };
+            let r = icraft_core::serve(&c, opts).map(|_| ());
+            icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
+            log::info!("[cycle] *** all post-exit hooks complete -- ready ***");
+            r
+        });
+    }
+
     fn pick_dir(&mut self) {
         #[cfg(windows)]
         {
@@ -392,22 +467,13 @@ impl eframe::App for IcraftApp {
                 self.last_status_refresh = None;
                 self.refresh_status();
                 self.kick_remote_refresh();
-                // If a Cycle was queued while this task ran (typically
-                // the previous task was a Serve that we just stopped),
-                // boot a fresh serve now that the slot is free.
+                // If a Cycle was queued while this task ran (the prior task was
+                // the Serve we just stopped — the JVM has now fully exited),
+                // run the cycle-restart sequence: self-update + sync + start.
                 if self.pending_restart {
                     self.pending_restart = false;
-                    log::info!("[cycle] previous task done -- starting fresh serve");
-                    self.spawn("cycle-restart", move |c| {
-                        let opts = icraft_core::ServeOptions {
-                            pipe_output: true,
-                            ..Default::default()
-                        };
-                        let r = icraft_core::serve(&c, opts).map(|_| ());
-                        icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
-                        log::info!("[cycle] *** all post-exit hooks complete -- ready ***");
-                        r
-                    });
+                    log::info!("[cycle] previous task done (JVM exited) -- self-update + sync + restart");
+                    self.spawn_cycle_restart();
                 }
             } else {
                 // Periodically refresh status while a task is running so
@@ -447,6 +513,17 @@ impl eframe::App for IcraftApp {
                 ctx.request_repaint_after(Duration::from_millis(2000));
             }
         }
+
+        // Resume-after-self-update: the previous instance relaunched mid-Cycle
+        // to apply a newer launcher binary and left the resume sentinel (taken
+        // in new()). Now that we're up and idle, continue the Cycle so the
+        // server still ends up started. One-shot.
+        if self.resume_cycle_pending && !self.task_running() {
+            self.resume_cycle_pending = false;
+            log::info!("[cycle] resuming Cycle after launcher self-update -- sync + start");
+            self.spawn_cycle_restart();
+        }
+
         // Tick faster while a remote-sha fetch is in flight so the
         // (checking...) -> (in sync)/(behind) transition shows up
         // promptly. Cheap because the state only lasts ~1 s.
@@ -553,6 +630,19 @@ impl IcraftApp {
                 .unwrap_or_else(|| "(none)".to_string());
             badge(ui, "Last sync", self.status.last_sha.is_some(), &sha_label);
 
+            // Sync status: surfaces the github_diff outcome so a fail-open /
+            // proceed-stale can't hide in the log scrollback. Red on the
+            // not-ok states (API unreachable, partial write failure).
+            let (sync_label, sync_ok) = match icraft_core::sync::sync_status() {
+                icraft_core::sync::SyncStatus::Idle           => ("idle",                       true),
+                icraft_core::sync::SyncStatus::Checking       => ("checking...",                true),
+                icraft_core::sync::SyncStatus::Current        => ("current",                    true),
+                icraft_core::sync::SyncStatus::Updated        => ("synced",                     true),
+                icraft_core::sync::SyncStatus::ApiUnreachable => ("API UNREACHABLE -- STALE!",  false),
+                icraft_core::sync::SyncStatus::PartialFailure => ("partial -- will retry",      false),
+            };
+            badge(ui, "Sync", sync_ok, sync_label);
+
             // Repo HEAD: shows the latest GitHub SHA + tells you if your
             // local last_sync is up to date. Three states:
             //   - matches local       -> green, "<sha> (in sync)"
@@ -612,6 +702,7 @@ impl IcraftApp {
                 self.spawn("serve", move |c| {
                     let opts = icraft_core::ServeOptions {
                         pipe_output: true, // -> server log streams into GUI
+                        apply_self_update: false, // GUI self-updates out-of-band
                         ..Default::default()
                     };
                     let r = icraft_core::serve(&c, opts).map(|_| ());
@@ -669,31 +760,22 @@ impl IcraftApp {
                     log::warn!("[lifecycle] force kill failed: {e}");
                 }
             }
-            // Cycle = full stop + restart, single click. When a server task
-            // is running we sequence: stop_with_escalation (Stop's 30s
-            // grace + 10s force-kill watchdog), set pending_restart, and
-            // let update()'s task-finished handler spawn a fresh serve
-            // once the slot frees up. When no task is running we just
-            // boot a fresh serve immediately.
+            // Cycle = full stop -> self-update + sync -> start, single click.
+            // When a server task is running we sequence: stop_with_escalation
+            // (Stop's 30s grace + 10s force-kill watchdog), set pending_restart,
+            // and let update()'s task-finished handler run spawn_cycle_restart
+            // once the JVM has fully exited. When no task is running we run the
+            // same self-update + sync + start sequence immediately.
             if ui.add(egui::Button::new("Cycle").min_size(egui::vec2(140.0, 28.0))).clicked() {
                 if self.task_running() {
-                    log::info!("[cycle] stop + restart queued (escalates after 30s)");
+                    log::info!("[cycle] step 1: stop server (escalates after 30s), then self-update + sync + start");
                     if let Err(e) = icraft_core::run::stop_with_escalation(30, 10) {
                         log::warn!("[cycle] stop failed: {e}");
                     }
                     self.pending_restart = true;
                 } else {
-                    log::info!("[cycle] no server running -- booting fresh serve");
-                    self.spawn("cycle-restart", move |c| {
-                        let opts = icraft_core::ServeOptions {
-                            pipe_output: true,
-                            ..Default::default()
-                        };
-                        let r = icraft_core::serve(&c, opts).map(|_| ());
-                        icraft_core::run::set_server_state(icraft_core::run::ServerState::Idle);
-                        log::info!("[cycle] *** all post-exit hooks complete -- ready ***");
-                        r
-                    });
+                    log::info!("[cycle] no server running -- self-update + sync + start");
+                    self.spawn_cycle_restart();
                 }
             }
             if action_btn(ui, "Accept EULA", busy).clicked() {

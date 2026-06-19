@@ -243,6 +243,112 @@ fn spawn_update_stub_windows(live: &std::path::Path, staged: &std::path::Path) -
     Ok(())
 }
 
+// =============================================================================
+// Cycle integration — launcher self-update WITHOUT a separate "Update Launcher"
+// click, sequenced so the server still ends up started after a relaunch.
+// =============================================================================
+
+/// True if a GUI binary self-update (`<exe>.new`) is staged AND its content
+/// actually differs from the running binary — i.e. applying it is a real
+/// upgrade, not a no-op relaunch. The Cycle flow uses this to decide whether to
+/// take the relaunch path without applying anything.
+///
+/// The differs-check matters: `github_diff` re-lists `icraft-gui.exe` in its
+/// changed-files set whenever the marker is behind HEAD, even if the on-disk
+/// exe already matches HEAD. If some *unrelated* file persistently fails to
+/// write, the marker never advances, so the exe would be re-staged every Cycle.
+/// Without the content compare, that would relaunch into a byte-identical
+/// binary forever. When the staged copy is identical we drop it and report
+/// false, so the Cycle proceeds straight to starting the server.
+pub fn gui_update_staged(cfg: &ServerConfig) -> bool {
+    let Some(staged) = staged_gui_new(cfg) else { return false };
+    let Ok(exe) = std::env::current_exe() else { return false };
+    match exe_differs(&staged, &exe) {
+        Ok(true) => true,
+        Ok(false) => {
+            // Redundant stage (identical to the running exe) — drop it so we
+            // never relaunch into the same binary in a loop.
+            log::info!(
+                "[cycle] staged {} is byte-identical to the running binary -- discarding (no relaunch needed)",
+                staged.display()
+            );
+            let _ = fs::remove_file(&staged);
+            false
+        }
+        // Can't compare (read error) -> assume a real update; apply_and_relaunch
+        // will make the final call.
+        Err(_) => true,
+    }
+}
+
+/// Locate a staged `<exe>.new` for the running GUI binary, checking both
+/// candidate locations: next to the running exe, and inside `cfg.server_dir`
+/// (where `github_diff`'s diff/full-zip staging drops it). Mirrors the
+/// detection inside [`apply_and_relaunch_gui`].
+fn staged_gui_new(cfg: &ServerConfig) -> Option<PathBuf> {
+    let exe = std::env::current_exe().ok()?;
+    let exe_name = exe.file_name().and_then(|n| n.to_str()).map(str::to_owned)?;
+    let here = exe.with_file_name(format!("{exe_name}.new"));
+    if here.exists() {
+        return Some(here);
+    }
+    let there = cfg.server_dir.join(format!("{exe_name}.new"));
+    if there.exists() && there != exe.with_file_name(&exe_name) {
+        return Some(there);
+    }
+    None
+}
+
+/// True if files `a` and `b` differ. Cheap length check first (skips the read
+/// entirely on a size mismatch), then a full-content compare. The GUI binaries
+/// are ~15 MB, so the transient read is negligible for a one-shot Cycle check.
+/// A missing `b` (the running exe should always exist, but be safe) counts as
+/// "differs".
+fn exe_differs(a: &Path, b: &Path) -> std::io::Result<bool> {
+    let len_a = fs::metadata(a)?.len();
+    let len_b = match fs::metadata(b) {
+        Ok(m) => m.len(),
+        Err(_) => return Ok(true),
+    };
+    if len_a != len_b {
+        return Ok(true);
+    }
+    Ok(fs::read(a)? != fs::read(b)?)
+}
+
+/// Path of the Cycle-resume sentinel. Written right before a launcher
+/// self-update relaunch so the freshly-spawned GUI knows to CONTINUE the Cycle
+/// (sync + start the server) instead of coming up idle. The relaunch spawns the
+/// new exe with no args — and the stub-script fallback can't pass args either —
+/// so a file sentinel next to the install is the only spawn-mechanism-agnostic
+/// signal that survives the swap.
+fn cycle_resume_marker(cfg: &ServerConfig) -> PathBuf {
+    cfg.server_dir.join(".icraft_cycle_resume")
+}
+
+/// Arm the Cycle-resume sentinel (call right before relaunching for a launcher
+/// self-update mid-Cycle).
+pub fn set_cycle_resume(cfg: &ServerConfig) {
+    let p = cycle_resume_marker(cfg);
+    if let Err(e) = fs::write(&p, b"1") {
+        log::warn!("[cycle] could not write resume sentinel {}: {e}", p.display());
+    }
+}
+
+/// Consume the Cycle-resume sentinel: returns true (and deletes it) if present.
+/// Called on GUI startup to decide whether to auto-resume the Cycle after a
+/// self-update relaunch.
+pub fn take_cycle_resume(cfg: &ServerConfig) -> bool {
+    let p = cycle_resume_marker(cfg);
+    if p.exists() {
+        let _ = fs::remove_file(&p);
+        log::info!("[cycle] resume sentinel found -- continuing the Cycle (sync + start) after self-update");
+        true
+    } else {
+        false
+    }
+}
+
 /// One-button sync: auto-route between the dev path (pull source +
 /// rebuild + push binary + apply) and the server path (pull binary
 /// from repo + apply). Detection: presence of `cargo` on PATH or in
