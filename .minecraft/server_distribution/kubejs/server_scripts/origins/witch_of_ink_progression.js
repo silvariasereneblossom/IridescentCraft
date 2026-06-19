@@ -10,11 +10,15 @@
 //   - +0.1% TOTAL damage per counter (multiplicative on final damage)
 //   - Caps at +20% (=1.20x) at 200 counters
 //
-// Per-counter passive defense:
-//   - +0.1 armor_toughness ADD_VALUE per counter, cap +20 at 200
-//     (vanilla toughness is flat-additive; no "damage_reduction" attribute
-//     exists. Prior versions tracked a "reduction" stat that never landed
-//     as a modifier -- intent was preserved here via the toughness path.)
+// Per-counter passive defense (flat % incoming-damage reduction):
+//   - -0.1% incoming damage per counter, cap -20% at 200
+//   - Applied jar-side in WitchOfInkDamageHandler (victim branch of Forge's
+//     LivingHurtEvent) -- the same place the outgoing multiplier lives, since
+//     KubeJS can't set hurt damage. Restores the ORIGINAL "% reduction" intent
+//     (a prior version tracked a reduction stat that never landed as a
+//     modifier; an interim build used +armor_toughness instead). A flat
+//     multiplicative cut is independent of the ApothicAttributes armor curve
+//     (armor/(armor+10)) that now devalues raw toughness.
 //
 // Capstone (Blessing of Penthesilea) at counter = 200:
 //   - +15% max_health (MULTIPLY_BASE)
@@ -109,30 +113,32 @@ EntityEvents.death(event => {
     data.putBoolean('icraft_witch_penthesilea', true)
   }
 
-  applyWitchToughness(player)
   applyPenthesileaHP(player)
 })
 
-// ── Damage multiplier moved to Java (iridescent_tetra_expansion mod) ─────
+// ── Damage in + out are applied in Java (iridescent_tetra_expansion mod) ──
 // KubeJS's EntityEvents.hurt wrapper exposes getDamage() but no settable
 // damage -- `event.damage = X` throws EvaluatorException at runtime on
-// this KubeJS version. The Witch's per-counter + Penthesilea total-damage
-// multiplier is now applied by `WitchOfInkDamageHandler` in the mod jar,
-// subscribed directly to Forge's LivingHurtEvent (which has setAmount).
-// Same NBT keys (icraft_witch_ink_counter / icraft_witch_penthesilea)
-// drive both sides; this JS file just writes them.
+// this KubeJS version. BOTH the Witch's outgoing total-damage multiplier
+// (+0.1%/counter + Penthesilea) AND the incoming % damage reduction
+// (-0.1%/counter, cap -20%) are applied by `WitchOfInkDamageHandler` in the
+// mod jar, subscribed directly to Forge's LivingHurtEvent (which has
+// setAmount). Same NBT keys (icraft_witch_ink_counter /
+// icraft_witch_penthesilea) drive both sides; this JS file just writes them.
 
-// ── Defense scaling: armor_toughness, capstone HP ────────────────────────
-function applyWitchToughness(player) {
-  let data = player.persistentData
-  let count = data.getInt('icraft_witch_ink_counter') || 0
-  // KubeJS modifyAttribute, NOT /attribute commands: the prior version used
-  // 1.21 command syntax (single id, add_value op) which 1.20.1's command
-  // parser rejects -- runCommandSilent swallowed the error, so this modifier
-  // NEVER applied (confirmed in-game 2026-06-13 via /icraft armormods).
-  // +0.1 addition per counter, cap +20 at 200.
-  player.modifyAttribute('minecraft:generic.armor_toughness',
-    'icraft_witch_ink_toughness', count * 0.1, 'addition')
+// ── Capstone HP + one-time legacy-toughness cleanup ──────────────────────
+// Defense is now a flat % incoming-damage reduction applied jar-side
+// (WitchOfInkDamageHandler victim branch), NOT an armor_toughness attribute.
+// Existing Witches still carry the old `icraft_witch_ink_toughness` addition
+// modifier (the interim build re-applied it on login / boss kill). Strip it
+// on login so they drop the stale toughness. removeAttribute is idempotent
+// (no-op once gone / for never-Witches), so it self-extinguishes after the
+// first clean login -- "one-time" in effect, no guard flag needed.
+function clearLegacyWitchToughness(player) {
+  try {
+    player.removeAttribute('minecraft:generic.armor_toughness',
+      'icraft_witch_ink_toughness')
+  } catch (e) {}
 }
 
 function applyPenthesileaHP(player) {
@@ -160,13 +166,13 @@ global.registerServerTick('tick_witchOfInkBuffs', 2200, 100)
 // ── Login + initial state ────────────────────────────────────────────────
 PlayerEvents.loggedIn(event => {
   if (!isWitchOfInk(event.player)) return
-  applyWitchToughness(event.player)
+  clearLegacyWitchToughness(event.player)
   applyPenthesileaHP(event.player)
 })
 
 console.log('[IridescentCraft] Witch of Ink progression loaded')
 console.log('  - Boss kill counter (Apotheosis/Champions +1, dimensional +10, cap 200)')
-console.log('  - LivingHurtEvent: +0.1% total damage per counter (cap +20% at 200)')
-console.log('  - Toughness: +0.1 addition per counter (cap +20 at 200)')
+console.log('  - Damage out: +0.1% per counter (cap +20% at 200, jar LivingHurtEvent)')
+console.log('  - Damage in:  -0.1% per counter (cap -20% at 200, jar LivingHurtEvent)')
 console.log('  - Penthesilea (at 200): +10% additive damage, +15% SP-to-AD conv,')
 console.log('    +15% HP, permanent Haste I + Resistance I + Fire Resist + Regen I')

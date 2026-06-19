@@ -45,7 +45,7 @@
   "icraft.origin.void_summoner.name": "Void Summoner",
   "icraft.origin.wanderer.description": "A jack of all trades and master of none — but better than a master of one. Wanderers gain modest bonuses to everything and learn faster than anyone. Switching between weapon types in combat rewards their versatility with even greater damage.",
   "icraft.origin.wanderer.name": "Wanderer",
-  "icraft.origin.witch_of_ink.description": "A living canvas of ink and will. Half food, -20% HP, fire weakness. Boss kills scale damage, reduction, and toughness (max 200). At 200: Blessing of Penthesilea doubles defenses and grants Haste.",
+  "icraft.origin.witch_of_ink.description": "A living canvas of ink and will. Half food, -20% HP, fire weakness. Boss kills scale damage dealt and incoming damage reduction (max 200). At 200: Blessing of Penthesilea grants bonus HP, Resistance, and Haste.",
   "icraft.origin.witch_of_ink.name": "Witch of Ink",
   "icraft.origin.witherborn.description": "Born of decay, the Witherborn wields the Wither itself as a weapon. Melee attacks inflict Wither on targets — even bosses normally immune. But hunger saps their strength: up to -50% damage when starving. Food provides only 25% nourishment and drains 50% faster. Keep eating or wither away.",
   "icraft.origin.witherborn.name": "Witherborn",

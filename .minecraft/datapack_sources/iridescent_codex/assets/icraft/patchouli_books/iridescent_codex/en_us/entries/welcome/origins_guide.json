@@ -27,7 +27,7 @@
     {
       "type": "patchouli:text",
       "title": "Witch of Ink — Tracker",
-      "text": "$(bold)Counter$() (max 200):$(br)  $(item)Apotheosis/Champions boss$() — +1$(br)  $(item)Dimensional boss$() — +10 (Wither, Dragon, Naga, Lich, etc.)$(br2)$(bold)Per counter:$()$(br)  +0.1% TOTAL damage (cap +20%)$(br)  +0.1 armor toughness (cap +20)$(br2)Run $(thing)/icraft witch_status$() to see your live counter, current bonuses, and capstone payout."
+      "text": "$(bold)Counter$() (max 200):$(br)  $(item)Apotheosis/Champions boss$() — +1$(br)  $(item)Dimensional boss$() — +10 (Wither, Dragon, Naga, Lich, etc.)$(br2)$(bold)Per counter:$()$(br)  +0.1% TOTAL damage dealt (cap +20%)$(br)  -0.1% incoming damage (cap -20%)$(br2)Run $(thing)/icraft witch_status$() to see your live counter, current bonuses, and capstone payout."
     },
     {
       "type": "patchouli:text",

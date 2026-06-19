@@ -7,7 +7,7 @@
 //
 // Witch of Ink:
 //   - Current boss counter (max 200)
-//   - Current per-counter bonuses (damage %, toughness)
+//   - Current per-counter bonuses (damage %, incoming damage reduction %)
 //   - Penthesilea capstone state + capstone bonus values
 //
 // Artificial Construct:
@@ -46,7 +46,7 @@ try {
 
     let pct = Math.min(0.20, count * 0.001)
     sp.tell('§7Per-counter damage bonus: §a+' + Math.round(pct * 1000) / 10 + '%§7 (cap +20%)')
-    sp.tell('§7Per-counter toughness: §a+' + (count * 0.1).toFixed(1) + '§7 (cap +20)')
+    sp.tell('§7Per-counter damage reduction: §a-' + Math.round(pct * 1000) / 10 + '%§7 (cap -20%)')
 
     if (hasPenthesilea) {
       sp.tell('§6§lBlessing of Penthesilea§r §a(active)')

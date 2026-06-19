@@ -12,7 +12,8 @@ import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 
 /**
- * Witch of Ink total-damage multiplier.
+ * Witch of Ink damage handler: outgoing total-damage multiplier (attacker)
+ * AND incoming % damage reduction (victim).
  *
  * Replaces the prior {@code witch_of_ink_progression.js} KubeJS handler:
  * KubeJS's {@code EntityEvents.hurt} wrapper exposes {@code getDamage()}
@@ -20,12 +21,13 @@ import net.minecraftforge.fml.common.Mod;
  * EvaluatorException at runtime. Forge's {@code LivingHurtEvent} has
  * {@code setAmount(float)} and is the canonical mutable-damage hook.
  *
- * Logic:
+ * Both sides read the same persistent NBT KubeJS writes:
+ * {@code icraft_witch_ink_counter} (int, 0-200) and
+ * {@code icraft_witch_penthesilea} (boolean).
+ *
+ * Outgoing -- {@link #onLivingHurt}, attacker is a Witch:
  * <ul>
- *   <li>Reads the attacker's persistent NBT (same path KubeJS uses):
- *       {@code icraft_witch_ink_counter} (int, 0-200) and
- *       {@code icraft_witch_penthesilea} (boolean).</li>
- *   <li>Per-counter scaling: 0.1% TOTAL damage per counter, cap +20% at 200.</li>
+ *   <li>Per-counter scaling: +0.1% TOTAL damage per counter, cap +20% at 200.</li>
  *   <li>Penthesilea capstone (at counter=200):
  *       <ul>
  *         <li>+10% additive damage (so cap+capstone = 1.30x).</li>
@@ -36,8 +38,23 @@ import net.minecraftforge.fml.common.Mod;
  *       ISS spells, Ars spells -- whatever passes through LivingHurtEvent.</li>
  * </ul>
  *
- * Non-Witch players have no NBT keys set; the multiplier resolves to 0
- * and the event passes through unmodified.
+ * Incoming -- {@link #onWitchHurt}, victim is a Witch:
+ * <ul>
+ *   <li>Per-counter scaling: -0.1% incoming damage per counter, cap -20% at 200.
+ *       A flat multiplicative cut: the "% protection" defense, mirroring the
+ *       outgoing side (PROVISIONAL magnitude, flagged for a feel-pass).</li>
+ *   <li>Restores the ORIGINAL intent. A prior version tracked a "reduction"
+ *       stat that never landed as a modifier; the interim build instead gave
+ *       +armor_toughness, which the ApothicAttributes {@code armor/(armor+10)}
+ *       curve devalues. A flat % cut is independent of that curve.</li>
+ *   <li>Applied at the LivingHurtEvent stage (before armor / Protection /
+ *       Resistance absorb), so it composes multiplicatively with armor, the
+ *       vanilla Protection enchant, and the Penthesilea Resistance I. Reduces
+ *       all incoming damage, like the generic Protection enchant.</li>
+ * </ul>
+ *
+ * Non-Witch entities have counter=0 / no flag set; both handlers resolve to
+ * a no-op and the event passes through unmodified.
  */
 @Mod.EventBusSubscriber(modid = IridescentReforging.MODID, bus = Mod.EventBusSubscriber.Bus.FORGE)
 public final class WitchOfInkDamageHandler {
@@ -80,6 +97,39 @@ public final class WitchOfInkDamageHandler {
         if (originalAmount <= 0f) return;
 
         event.setAmount(originalAmount * (1f + pct));
+    }
+
+    /**
+     * Incoming % damage reduction for a Witch-of-Ink victim (the "% protection"
+     * defense). Mirrors the outgoing side: -0.1% per counter, cap -20% at 200.
+     * Reuses {@link #PER_COUNTER_PCT} / {@link #CAP_PCT} -- same magnitude.
+     *
+     * A flat multiplicative cut applied here, before the armor / Protection /
+     * Resistance absorb steps, so it stacks multiplicatively with all of them
+     * and is independent of the armor/toughness curve. No Penthesilea term:
+     * the reduction is already at its cap by counter=200, and the capstone's
+     * Resistance I composes on top.
+     */
+    @SubscribeEvent
+    public static void onWitchHurt(LivingHurtEvent event) {
+        if (!(event.getEntity() instanceof Player victim)) return;
+
+        CompoundTag pdata;
+        try {
+            pdata = victim.getPersistentData();
+        } catch (Throwable t) { return; }
+        if (pdata == null) return;
+
+        int counter = pdata.getInt(KEY_COUNTER);
+        if (counter <= 0) return;  // non-Witch (or fresh-counter Witch) -> no reduction
+
+        float reduction = Math.min(CAP_PCT, counter * PER_COUNTER_PCT);
+        if (reduction <= 0f) return;
+
+        float amount = event.getAmount();
+        if (amount <= 0f) return;
+
+        event.setAmount(amount * (1f - reduction));
     }
 
     /** Capstone SP-to-AD conversion: 15% of (spell_power - 1.0) added to the multiplier. */
