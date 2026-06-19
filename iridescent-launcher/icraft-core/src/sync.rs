@@ -299,16 +299,31 @@ fn verify_custom_jars(cfg: &ServerConfig, remote_sha: &str) {
                     );
                     continue;
                 }
-                // delete-then-write to dodge intermittent AV locks on patched jars.
-                let _ = fs::remove_file(&target);
-                match fs::write(&target, &body) {
+                // Write to a temp sibling, then atomic-rename over the target.
+                // NEVER delete-then-write: if the write failed after the delete,
+                // the jar would be left MISSING, and a missing jar with marker
+                // == HEAD is invisible to this verify next Cycle (we only repair
+                // PRESENT-drifted). Tmp-then-rename means a failed repair leaves
+                // the original drifted jar in place -> cleanup_stale_jars removes
+                // it + clears the marker -> the next sync re-adds it. No
+                // permanently-missing window.
+                let tmp = target.with_file_name(format!("{name}.icrafttmp"));
+                let _ = fs::remove_file(&tmp);
+                if let Err(e) = fs::write(&tmp, &body) {
+                    failed += 1;
+                    log::error!("[sync] custom jar {name}: temp write failed: {e} (drifted copy left for cleanup)");
+                    let _ = fs::remove_file(&tmp);
+                    continue;
+                }
+                match fs::rename(&tmp, &target) {
                     Ok(()) => {
                         repaired += 1;
                         log::info!("[sync] custom jar {name}: repaired in place ({} bytes)", body.len());
                     }
                     Err(e) => {
                         failed += 1;
-                        log::error!("[sync] custom jar {name}: write failed: {e}");
+                        let _ = fs::remove_file(&tmp);
+                        log::error!("[sync] custom jar {name}: rename into place failed: {e} (drifted copy left for cleanup)");
                     }
                 }
             }
