@@ -53,7 +53,7 @@
   "icraft.power.class.archmage.arcane_power.name": "Arcane Supremacy",
   "icraft.power.class.archmage.frail_melee.description": "-50% melee damage. Mages weren't built to swing axes.",
   "icraft.power.class.archmage.frail_melee.name": "Frail Melee",
-  "icraft.power.class.archmage.glass_frame.description": "-20% armor, -20% armor toughness.",
+  "icraft.power.class.archmage.glass_frame.description": "-28.6% armor, -20% armor toughness — a full robe set nets ~50% armor.",
   "icraft.power.class.archmage.glass_frame.name": "Frail Frame",
   "icraft.power.class.archmage.hp_modifier.description": "Significantly reduced max HP (-20%). Equipment HP halved.",
   "icraft.power.class.archmage.hp_modifier.name": "Archmage Vitality",

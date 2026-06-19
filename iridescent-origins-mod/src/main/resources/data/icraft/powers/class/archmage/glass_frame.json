@@ -6,7 +6,7 @@
     {
       "attribute": "minecraft:generic.armor",
       "operation": "multiply_total",
-      "value": -0.2
+      "value": -0.286
     },
     {
       "attribute": "minecraft:generic.armor_toughness",
