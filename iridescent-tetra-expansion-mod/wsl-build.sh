@@ -116,6 +116,7 @@ stage_lib geckolib-forge.jar    'geckolib-forge-1.20.1-*.jar'
 # but compilation does need the target classes on the classpath.
 stage_lib ApothicAttributes.jar 'ApothicAttributes-1.20.1-*.jar'
 stage_lib cofh_core.jar         'cofh_core-1.20.1-*.jar'
+stage_lib ensorcellation.jar    'ensorcellation-1.20.1-*.jar'
 
 # --- preprocessor python scripts ---------------------------------------------
 echo "[wsl-build] Running data preprocessors..."

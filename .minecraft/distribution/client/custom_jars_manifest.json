@@ -1,5 +1,5 @@
 {
-    "generated_at":  "2026-06-19T15:26:19Z",
+    "generated_at":  "2026-06-19T15:38:51Z",
     "generated_by":  "regen_custom_jars_manifest.ps1 on SILVSARHH-1 by silvariazemaitis",
     "algorithm":  "SHA-256",
     "jars":  {
@@ -40,8 +40,8 @@
                                                      "size":  52079
                                                  },
                  "iridescent_tetra_expansion-1.0.0.jar":  {
-                                                              "sha256":  "596d3906359923316884624674ea2e9bb8fc56713271342df1ea59d458dca05b",
-                                                              "size":  1582968
+                                                              "sha256":  "8ac47428450282a80db0bb321302e226233679a767912a2a6ae8dcf3f61100e5",
+                                                              "size":  1588777
                                                           },
                  "justlevelingfork-1.2.1-iridescent.1.jar":  {
                                                                  "sha256":  "f0b9e84bc849db0070994f8e4e938b14c54ac75fbc6fe91fbc40fea475b81936",

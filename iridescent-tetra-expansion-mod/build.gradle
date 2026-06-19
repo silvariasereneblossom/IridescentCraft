@@ -67,6 +67,10 @@ dependencies {
     //    to return 0 instead of -1 so Thermal Cultivation crops
     //    auto-replant on right-click harvest instead of destroying)
     compileOnly fg.deobf("blank:cofh_core:1.20.1-11.0.2.56")
+
+    // ── Ensorcellation (mixin target — halve Magic Protection's EPF on
+    //    cofh.ensorcellation.common.enchantment.ProtectionEnchantmentMagic)
+    compileOnly fg.deobf("blank:ensorcellation:1.20.1-5.0.2.24")
 }
 
 jar {

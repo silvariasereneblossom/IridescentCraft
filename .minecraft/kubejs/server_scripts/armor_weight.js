@@ -39,6 +39,7 @@ const UUID_ARMOR            = 'icraft_armor_weight_armor'
 const UUID_LIGHT_TOUGHNESS  = 'icraft_armor_weight_toughness'
 const UUID_FAEFOLK_TOUGHNESS = 'icraft_faefolk_armor_weakness'
 const UUID_ROBE_SET_BONUS   = 'icraft_armor_weight_robe_set'
+const UUID_PROTECTION_ARMOR = 'icraft_protection_flat_armor'
 
 // Per-piece coefficients indexed by tier.
 // armor/toughness use MULTIPLY_BASE; mana_regen uses ADDITION; speed uses MULTIPLY_BASE.
@@ -53,6 +54,15 @@ const COEF_TOUGHNESS = { robe: -0.10,  light: -0.075, medium: 0, heavy:  0     }
 const COEF_MANA      = { robe:  0.10,  light:  0.05,  medium: 0, heavy: -0.05  }
 const COEF_SPEED     = { robe:  0.015, light:  0.05,  medium: 0, heavy: -0.05  }
 const ROBE_SET_BONUS_MANA = 0.5  // ADDITION on irons_spellbooks:mana_regen at 4/4 robe
+
+// Reworked Protection enchant (2026-06-19): minecraft:protection no longer
+// grants % damage reduction — its EPF is zeroed by ProtectionFlatArmorMixin in
+// iridescent_tetra_expansion. Instead each worn Protection LEVEL grants flat
+// generic.armor here, so it feeds the diminishing armor curve (attributeslib
+// "Armor Formula") instead of stacking multiplicatively toward immunity.
+// +0.75 armor/level. NOTE Protection max level is 10 here (Apotheosis-raised),
+// so a full Protection X set = +30 flat armor.
+const COEF_PROTECTION_ARMOR = 0.75
 
 // Faefolk armor toughness penalty (Ethereal Form): -50% multiply_base.
 // Applied only when player is Faefolk AND not wearing 4/4 light armor.
@@ -83,6 +93,26 @@ function _getItemModularArmorClass() {
     }
   }
   return _itemModularArmorClass || null
+}
+
+// Lazy-resolve the vanilla minecraft:protection Enchantment + EnchantmentHelper.
+// Vanilla is always registered, but resolve defensively for script load order
+// (mirrors the lazy class-load pattern above + the EnchantmentHelper idiom in
+// magic_crit_hook.js / icraft_magic_enchants.js).
+var EnchantmentHelper_mc = null
+var _protectionEnch = null
+var _protResolveTried = false
+function getProtectionEnchant() {
+  if (!_protResolveTried) {
+    _protResolveTried = true
+    try {
+      EnchantmentHelper_mc = Java.loadClass('net.minecraft.world.item.enchantment.EnchantmentHelper')
+      var ForgeRegistries_mc = Java.loadClass('net.minecraftforge.registries.ForgeRegistries')
+      var ResourceLocation_mc = Java.loadClass('net.minecraft.resources.ResourceLocation')
+      _protectionEnch = ForgeRegistries_mc.ENCHANTMENTS.getValue(ResourceLocation_mc.tryParse('minecraft:protection'))
+    } catch (e) { _protectionEnch = null }
+  }
+  return _protectionEnch
 }
 
 // Classify a single equipped slot. Returns the tier-name string used
@@ -124,10 +154,19 @@ function classifyArmor(stack) {
 // per-attribute totals + the per-tier counts.
 function aggregateArmor(player) {
   var counts = { robe: 0, light: 0, medium: 0, heavy: 0 }
+  var protLevels = 0
+  var protEnch = getProtectionEnchant()
   ARMOR_SLOTS.forEach(function(slot) {
     var item = player.getEquipment(slot)
     var tier = classifyArmor(item)
     if (tier && counts.hasOwnProperty(tier)) counts[tier]++
+    // Sum minecraft:protection levels across worn pieces (reworked -> flat armor).
+    if (protEnch && EnchantmentHelper_mc && item && !item.isEmpty()) {
+      try {
+        var lvl = EnchantmentHelper_mc.getItemEnchantmentLevel(protEnch, item.getInternal())
+        if (lvl > 0) protLevels += lvl
+      } catch (e) {}
+    }
   })
   return {
     counts: counts,
@@ -135,7 +174,8 @@ function aggregateArmor(player) {
     toughness: counts.robe * COEF_TOUGHNESS.robe + counts.light * COEF_TOUGHNESS.light + counts.heavy * COEF_TOUGHNESS.heavy,
     mana:      counts.robe * COEF_MANA.robe      + counts.light * COEF_MANA.light      + counts.heavy * COEF_MANA.heavy,
     speed:     counts.robe * COEF_SPEED.robe     + counts.light * COEF_SPEED.light     + counts.heavy * COEF_SPEED.heavy,
-    robeSetBonus: counts.robe === 4 ? ROBE_SET_BONUS_MANA : 0
+    robeSetBonus: counts.robe === 4 ? ROBE_SET_BONUS_MANA : 0,
+    protectionArmor: protLevels * COEF_PROTECTION_ARMOR
   }
 }
 
@@ -162,6 +202,11 @@ function applyArmorMods(player, agg) {
   // 4-piece robe set bonus: extra mana regen on top of the per-piece total.
   player.modifyAttribute('irons_spellbooks:mana_regen',
     UUID_ROBE_SET_BONUS, agg.robeSetBonus, 'addition')
+  // Reworked Protection: flat armor per Protection level (ADDITION -> adds to
+  // base armor before the weight multiply_base above; the % EPF is zeroed by
+  // ProtectionFlatArmorMixin so this is Protection's only defensive effect now).
+  player.modifyAttribute('minecraft:generic.armor',
+    UUID_PROTECTION_ARMOR, agg.protectionArmor, 'addition')
 }
 
 global.tick_armorWeight = function(event) {
@@ -175,6 +220,7 @@ global.tick_armorWeight = function(event) {
           player.modifyAttribute('irons_spellbooks:mana_regen', UUID_ROBE_SET_BONUS, 0, 'addition')
           player.modifyAttribute('minecraft:generic.movement_speed', UUID_MOVE_SPEED, 0, 'multiply_base')
           player.modifyAttribute('minecraft:generic.armor', UUID_ARMOR, 0, 'multiply_base')
+          player.modifyAttribute('minecraft:generic.armor', UUID_PROTECTION_ARMOR, 0, 'addition')
           player.modifyAttribute('minecraft:generic.armor_toughness', UUID_LIGHT_TOUGHNESS, 0, 'multiply_base')
         } catch (e) {}
         return
@@ -220,3 +266,4 @@ console.log('  robe   +0.10 mana regen, +1.5% speed, -7.5% armor, -10% toughness
 console.log('  light  +0.05 mana regen, +5% speed, -5% armor, -7.5% toughness (per piece)')
 console.log('  medium no effect (default for untagged armor)')
 console.log('  heavy  -0.05 mana regen, -5% speed, +5% armor (per piece)')
+console.log('  + minecraft:protection -> +0.75 flat armor/level (addition; vanilla % EPF zeroed by ProtectionFlatArmorMixin)')

@@ -6,7 +6,9 @@
   "refmap": "iridescent_tetra_expansion.refmap.json",
   "mixins": [
     "CropBlockCoFHReplantMixin",
-    "ArsManaCapMixin"
+    "ArsManaCapMixin",
+    "ProtectionFlatArmorMixin",
+    "MagicProtectionHalveMixin"
   ],
   "client": [
     "GuiModuleSlotSubheadingMixin",
