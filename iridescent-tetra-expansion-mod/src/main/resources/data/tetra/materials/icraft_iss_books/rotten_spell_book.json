@@ -29,6 +29,6 @@
     }
   ],
   "attributes": {
-    "*irons_spellbooks:spell_power": 0.15
+    "**irons_spellbooks:spell_power": 0.15
   }
 }

@@ -25,10 +25,13 @@ import net.minecraftforge.registries.RegistryObject;
  * keeps the iteration loop tight: tuning values lives in KubeJS where
  * no rebuild is needed, while the registry side stays in Java.
  *
- * <p>The custom {@link MagicWeaponCategory} uses the
- * {@code #icraft:magic_weapon} item tag, which is the same membership
- * set the Apoth LootCategory predicate uses. Stays in sync with the
- * KubeJS startup script that registers the runtime LootCategory.
+ * <p>The custom {@link MagicWeaponCategory} gates membership on a hardcoded
+ * 26-id wand/staff set (regenerated from {@code #icraft:magic_weapon}),
+ * the same membership the Apoth LootCategory predicate uses. The tag itself
+ * is no longer load-bearing for enchant applicability because the
+ * {@code stack.is(tag)} test mis-resolves for most of these items (see
+ * MagicWeaponCategory) — it mirrors the proven hardcoded-set workaround in
+ * the KubeJS startup script that registers the runtime LootCategory.
  *
  * Roster:
  * <ul>

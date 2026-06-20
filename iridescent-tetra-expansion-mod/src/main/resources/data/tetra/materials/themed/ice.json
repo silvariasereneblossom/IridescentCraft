@@ -19,6 +19,6 @@
     ]
   },
   "attributes": {
-    "*irons_spellbooks:ice_spell_power": 0.1
+    "**irons_spellbooks:ice_spell_power": 0.1
   }
 }

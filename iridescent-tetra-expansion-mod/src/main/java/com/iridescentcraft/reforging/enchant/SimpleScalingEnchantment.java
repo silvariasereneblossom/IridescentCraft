@@ -1,6 +1,7 @@
 package com.iridescentcraft.reforging.enchant;
 
 import net.minecraft.world.entity.EquipmentSlot;
+import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.Enchantment;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 
@@ -56,5 +57,20 @@ public class SimpleScalingEnchantment extends Enchantment {
     @Override
     public int getMaxCost(int level) {
         return getMinCost(level) + 30;
+    }
+
+    /**
+     * Belt-and-suspenders membership re-assertion. The enchant's
+     * {@link EnchantmentCategory} (MagicWeaponCategory) already gates
+     * applicability, but we re-check the hardcoded magic-weapon ID set
+     * directly here so the enchant lands consistently across the enchanting
+     * table, anvil, and {@code /enchant} — independent of any
+     * tag-resolution or category-dispatch timing. Mirrors the
+     * {@code canEnchant} override on
+     * {@code ModEnchantmentRegistry.ModularBookEnchantment}.
+     */
+    @Override
+    public boolean canEnchant(ItemStack stack) {
+        return MagicWeaponCategory.isMagicWeapon(stack);
     }
 }

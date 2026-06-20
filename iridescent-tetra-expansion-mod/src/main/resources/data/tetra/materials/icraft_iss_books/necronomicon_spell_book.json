@@ -29,9 +29,9 @@
     }
   ],
   "attributes": {
-    "*irons_spellbooks:blood_spell_power": 0.3,
-    "*irons_spellbooks:eldritch_spell_power": 0.3,
-    "*irons_spellbooks:cooldown_reduction": 0.1,
-    "*irons_spellbooks:spell_power": 0.05
+    "**irons_spellbooks:blood_spell_power": 0.3,
+    "**irons_spellbooks:eldritch_spell_power": 0.3,
+    "**irons_spellbooks:cooldown_reduction": 0.1,
+    "**irons_spellbooks:spell_power": 0.05
   }
 }

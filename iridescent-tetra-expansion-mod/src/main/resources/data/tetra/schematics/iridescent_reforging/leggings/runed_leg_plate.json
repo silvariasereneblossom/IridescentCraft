@@ -19,7 +19,8 @@
       "materials": [
         "tetra:fabric/",
         "tetra:skin/",
-        "tetra:fibre/"
+        "tetra:fibre/",
+        "tetra:themed/"
       ],
       "countFactor": 1,
       "moduleKey": "leggings/runed_leg_plate",

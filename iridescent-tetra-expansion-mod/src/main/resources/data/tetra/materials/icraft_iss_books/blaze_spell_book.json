@@ -29,8 +29,8 @@
     }
   ],
   "attributes": {
-    "*irons_spellbooks:fire_spell_power": 0.25,
+    "**irons_spellbooks:fire_spell_power": 0.25,
     "irons_spellbooks:max_mana": 50,
-    "*irons_spellbooks:spell_power": 0.05
+    "**irons_spellbooks:spell_power": 0.05
   }
 }
