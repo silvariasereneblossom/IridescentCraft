@@ -29,7 +29,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -57,7 +57,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -85,7 +85,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -113,7 +113,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -141,7 +141,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -169,7 +169,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -197,7 +197,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -225,7 +225,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1.0
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -253,7 +253,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -281,7 +281,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -309,7 +309,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -337,7 +337,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -365,7 +365,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -393,7 +393,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -421,7 +421,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -449,7 +449,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -477,7 +477,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -505,7 +505,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -533,7 +533,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -561,7 +561,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -589,7 +589,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -617,7 +617,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -645,7 +645,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -673,7 +673,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -701,7 +701,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -729,7 +729,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -757,7 +757,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -785,7 +785,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -813,7 +813,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -841,7 +841,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -869,7 +869,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -897,7 +897,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -925,7 +925,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -953,7 +953,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -981,7 +981,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1009,7 +1009,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1037,7 +1037,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1065,7 +1065,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1093,7 +1093,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1121,7 +1121,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1149,7 +1149,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1177,7 +1177,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1205,7 +1205,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1233,7 +1233,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1261,7 +1261,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1289,7 +1289,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1317,7 +1317,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1345,7 +1345,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1373,7 +1373,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1401,7 +1401,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1429,7 +1429,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1457,7 +1457,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1485,7 +1485,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1513,7 +1513,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1541,7 +1541,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1569,7 +1569,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1597,7 +1597,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1625,7 +1625,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1653,7 +1653,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 3
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1681,7 +1681,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1709,7 +1709,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 3
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1737,7 +1737,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1765,7 +1765,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1793,7 +1793,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1821,7 +1821,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1849,7 +1849,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1877,7 +1877,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 3
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1905,7 +1905,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1933,7 +1933,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1961,7 +1961,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -1989,7 +1989,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2017,7 +2017,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2045,7 +2045,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2073,7 +2073,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2101,7 +2101,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2129,7 +2129,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2157,7 +2157,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2185,7 +2185,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2213,7 +2213,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2241,7 +2241,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2269,7 +2269,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2297,7 +2297,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2325,7 +2325,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2353,7 +2353,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2381,7 +2381,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2409,7 +2409,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2437,7 +2437,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2465,7 +2465,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2493,7 +2493,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2521,7 +2521,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2549,7 +2549,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2577,7 +2577,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2605,7 +2605,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2633,7 +2633,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2661,7 +2661,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2689,7 +2689,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2717,7 +2717,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2745,7 +2745,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2773,7 +2773,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2801,7 +2801,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2829,7 +2829,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2857,7 +2857,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2885,7 +2885,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 2
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2913,7 +2913,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 3
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2941,7 +2941,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2969,7 +2969,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -2997,7 +2997,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3025,7 +3025,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3053,7 +3053,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3081,7 +3081,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3109,7 +3109,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3137,7 +3137,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3165,7 +3165,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3193,7 +3193,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3221,7 +3221,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3249,7 +3249,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3277,7 +3277,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
@@ -3305,7 +3305,7 @@
           "default"
         ],
         "models": [],
-        "magicCapacity": 100
+        "magicCapacity": 1
       },
       "aspects": {
         "icraft_magic_weapon": 2
