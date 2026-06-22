@@ -297,6 +297,7 @@ function showTargetMenu(player) {
     }
 
     player.tell(Text.aqua("═══ Boss Compass — choose a target (Tier " + tier + " and below) ═══"))
+    player.tell(Text.darkGray("‹ click a boss name to track it ›"))
     let lastTier = 0
     for (const id of eligible) {
         const meta = arenas[id]
@@ -304,18 +305,23 @@ function showTargetMenu(player) {
             player.tell(Text.darkGray("── Tier " + meta.tier + " ──"))
             lastTier = meta.tier
         }
+        const isSummon = meta.locator === "summon"
         const anchor = meta.structure || meta.signatureBlock
-        const verb = meta.locator === "summon" ? "» summon info" : "» track"
-        const hover = meta.locator === "summon"
+        const verb = isSummon ? "» summon info" : "» track"
+        const hover = isSummon
             ? Text.gray(meta.display + " — no compass anchor; click for the summon route")
             : Text.gray("Locate " + meta.display + "'s arena ("
                 + (anchor || "?") + ")")
-        const line = Text.white("  [")
-            .append(Text.gold(meta.display).bold(true))
-            .append(Text.white("] "))
-            .append(Text.gray(verb)
-                .clickRunCommand("/icraft_compass select " + id)
-                .hover(hover))
+        // The whole [Boss Name] is the click target, styled as an underlined link so it
+        // reads as a button: aqua = track-by-compass, gold = summon-route arena.
+        const label = "[" + meta.display + "]"
+        const link = (isSummon ? Text.gold(label) : Text.aqua(label))
+            .underlined(true)
+            .clickRunCommand("/icraft_compass select " + id)
+            .hover(hover)
+        const line = Text.white("  ")
+            .append(link)
+            .append(Text.darkGray("  " + verb))
         player.tell(line)
     }
     player.tell(Text.darkGray("Shift-right-click the compass to clear the current target."))
