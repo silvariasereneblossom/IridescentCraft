@@ -5,6 +5,7 @@
   "compatibilityLevel": "JAVA_17",
   "refmap": "iridescent_tetra_expansion.refmap.json",
   "mixins": [
+    "AbstractSpellManaCostMixin",
     "CropBlockCoFHReplantMixin",
     "ArsManaCapMixin",
     "ProtectionFlatArmorMixin",

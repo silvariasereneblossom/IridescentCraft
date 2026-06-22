@@ -5,7 +5,6 @@ import java.util.UUID;
 import java.util.concurrent.ConcurrentHashMap;
 
 import net.minecraft.nbt.CompoundTag;
-import net.minecraft.network.chat.Component;
 import net.minecraft.resources.ResourceLocation;
 import net.minecraft.world.effect.MobEffectInstance;
 import net.minecraft.world.effect.MobEffects;
@@ -21,18 +20,14 @@ import net.minecraftforge.event.entity.living.LivingDeathEvent;
 import net.minecraftforge.event.entity.living.MobEffectEvent;
 import net.minecraftforge.event.entity.player.PlayerEvent;
 import net.minecraftforge.eventbus.api.Event;
-import net.minecraftforge.eventbus.api.EventPriority;
 import net.minecraftforge.eventbus.api.SubscribeEvent;
 import net.minecraftforge.fml.common.Mod;
 import net.minecraftforge.registries.ForgeRegistries;
 
 import io.redspace.ironsspellbooks.api.events.SpellDamageEvent;
 import io.redspace.ironsspellbooks.api.events.SpellOnCastEvent;
-import io.redspace.ironsspellbooks.api.events.SpellPreCastEvent;
-import io.redspace.ironsspellbooks.api.magic.MagicData;
 import io.redspace.ironsspellbooks.api.registry.AttributeRegistry;
 import io.redspace.ironsspellbooks.api.registry.SchoolRegistry;
-import io.redspace.ironsspellbooks.api.registry.SpellRegistry;
 import io.redspace.ironsspellbooks.api.spells.AbstractSpell;
 import io.redspace.ironsspellbooks.damage.SpellDamageSource;
 import io.redspace.ironsspellbooks.registries.MobEffectRegistry;
@@ -53,14 +48,14 @@ import org.apache.logging.log4j.Logger;
  *   <li><b>Change 1 — mana inflation.</b> Every mana-consuming ISS cast costs
  *       {@code 5x} its base mana at spell level 1, ramping linearly to
  *       {@code 15x} at level 10+. The config {@code mana_cost_multiplier} is
- *       flat (can't scale by level), so we scale in {@link SpellOnCastEvent}.
- *       ISS's affordability gate ({@code canBeCastedBy}) only checks the
- *       <i>base</i> cost and fires BEFORE the event, so raising the deduction
- *       alone would let a player start a cast they can't pay for (negative mana
- *       on deduction). We therefore add a {@link SpellPreCastEvent} gate that
- *       cancels the cast when current mana &lt; the scaled cost. Runs at
- *       {@code HIGH} priority so {@link ProcEnchantHandler}'s NORMAL-priority
- *       Spell Echo can still zero the (scaled) cost after us — a free cast
+ *       flat (can't scale by level), so {@code AbstractSpellManaCostMixin}
+ *       scales the return of ISS's {@code AbstractSpell.getManaCost(level)} —
+ *       the single point ISS reads the cost from. That keeps the spellbook /
+ *       inscription / spell-wheel TOOLTIPS, ISS's own {@code canBeCastedBy}
+ *       affordability gate (so no separate pre-cast gate is needed), the
+ *       instant-cast deduction AND the continuous-cast per-tick drain all
+ *       consistent. {@link ProcEnchantHandler}'s Spell Echo still zeroes the
+ *       (already-scaled) deduction in {@link SpellOnCastEvent} — a free cast
  *       still wins.</li>
  *   <li><b>Change 2 — Angel Wings becomes a combat ascension.</b> The native
  *       {@code irons_spellbooks:angel_wing} flight effect is suppressed
@@ -86,11 +81,15 @@ public final class IssRebalanceHandler {
 
     // ── Change 1: mana cost scaling 5x (L1) .. 15x (L10+) ────────────────────
     // PROVISIONAL ramp. cost = base * (5 + (clamp(level,1..10)-1) * 10/9).
+    // Applied at ISS's getManaCost SOURCE via AbstractSpellManaCostMixin so the
+    // spell TOOLTIP, ISS's native canBeCastedBy affordability gate, the
+    // instant-cast deduction AND the continuous-cast per-tick drain all read the
+    // scaled cost from one place (the mixin calls this helper).
     private static final double MANA_MULT_L1   = 5.0;
     private static final double MANA_MULT_TOP  = 15.0;
     private static final int    MANA_TOP_LEVEL = 10;
 
-    static int scaledManaCost(int baseCost, int level) {
+    public static int scaledManaCost(int baseCost, int level) {
         if (baseCost <= 0) return baseCost;
         int lv = Math.max(1, Math.min(level, MANA_TOP_LEVEL));
         double mult = MANA_MULT_L1 + (lv - 1) * (MANA_MULT_TOP - MANA_MULT_L1) / (MANA_TOP_LEVEL - 1);
@@ -121,46 +120,19 @@ public final class IssRebalanceHandler {
     private static final long CURSE_DURATION_MS = 86_400_000L;  // 24 real hours
     private static final float HOLY_CURSE_MULT = 0.5f;
 
-    // ── Change 1: scale the mana deduction (HIGH, before Spell Echo) ──────────
-    @SubscribeEvent(priority = EventPriority.HIGH)
+    // ── Change 2: grant the Angel Wings combat bundle on cast ────────────────
+    // Change 1's mana scaling now lives in AbstractSpellManaCostMixin (at ISS's
+    // getManaCost source), so there is nothing to do here for cost. Spell Echo
+    // still zeroes the deduction in its own SpellOnCastEvent handler, and the
+    // value it zeroes is already the mixin-scaled cost — free-cast still wins.
+    @SubscribeEvent
     public static void onSpellCast(SpellOnCastEvent event) {
         Player player = event.getEntity();
         if (player == null || player.level().isClientSide) return;
-
-        // Mana inflation — only when the cast actually consumes mana (skips
-        // scrolls / mob / command casts). Use getOriginalManaCost() so we scale
-        // the pristine ISS-computed cost regardless of other handlers.
-        if (event.getCastSource().consumesMana()) {
-            event.setManaCost(scaledManaCost(event.getOriginalManaCost(), event.getSpellLevel()));
-        }
-
-        // Change 2: Angel Wings -> combat buff. Flight itself is suppressed in
-        // onEffectApplicable; here we grant the replacement bundle to the caster.
+        // Flight itself is suppressed in onEffectApplicable; here we grant the
+        // replacement bundle to the caster.
         if (ANGEL_WING_ID.equals(event.getSpellId())) {
             applyAngelWingsBuff(player);
-        }
-    }
-
-    // ── Change 1: gate the cast on the SCALED cost ───────────────────────────
-    @SubscribeEvent
-    public static void onSpellPreCast(SpellPreCastEvent event) {
-        Player player = event.getEntity();
-        if (player == null || player.level().isClientSide) return;
-        if (player.isCreative() || player.isSpectator()) return;
-        if (!event.getCastSource().consumesMana()) return;
-
-        AbstractSpell spell = SpellRegistry.getSpell(event.getSpellId());
-        if (spell == null) return;
-        int level = event.getSpellLevel();
-        int baseCost = spell.getManaCost(level);          // == SpellOnCastEvent#getOriginalManaCost
-        if (baseCost <= 0) return;                          // free / NoneSpell — nothing to gate
-
-        int newCost = scaledManaCost(baseCost, level);
-        MagicData md = MagicData.getPlayerMagicData(player);
-        if (md == null) return;
-        if (md.getMana() < newCost) {
-            event.setCanceled(true);
-            player.displayClientMessage(Component.literal("Not enough mana for that spell."), true);
         }
     }
 
