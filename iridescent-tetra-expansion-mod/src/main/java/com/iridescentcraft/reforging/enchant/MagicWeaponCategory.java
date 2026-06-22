@@ -6,6 +6,8 @@ import net.minecraft.world.item.ItemStack;
 import net.minecraft.world.item.enchantment.EnchantmentCategory;
 import net.minecraftforge.common.util.Lazy;
 import net.minecraftforge.registries.ForgeRegistries;
+import se.mickelus.tetra.aspect.ItemAspect;
+import se.mickelus.tetra.aspect.TetraEnchantmentHelper;
 
 import java.util.Set;
 import java.util.function.Predicate;
@@ -106,6 +108,45 @@ public final class MagicWeaponCategory {
 
     public static EnchantmentCategory get() {
         return CATEGORY.get();
+    }
+
+    /** The Tetra {@link ItemAspect} key carried by modules that may receive
+     *  the magic-weapon enchants at the Tetra workbench (the modular wand,
+     *  mage armor, and spell books — declared in their variant data). */
+    public static final String ASPECT_KEY = "icraft_magic_weapon";
+
+    /**
+     * Wire the magic-weapon enchants into Tetra's <b>workbench</b> enchant
+     * system (the {@code BookEnchantSchematic}), which is wholly separate
+     * from the vanilla anvil/table path gated by {@link #get()} /
+     * {@code canEnchant}. Tetra's gate
+     * ({@code ItemModuleMajor.acceptsEnchantment} ->
+     * {@code TetraEnchantmentHelper.isApplicableForAspects}) matches an
+     * enchant to a module by <b>category identity</b> against the rules
+     * registered for each aspect the module carries. By mapping our
+     * {@code icraft_magic_weapon} aspect to {@link #get()}, every enchant
+     * whose category is our magic-weapon category becomes applicable on any
+     * module that declares the aspect — independent of the item (no
+     * {@code canEnchant} call), so it covers armor + books, not just the
+     * wand. Capacity to actually hold the enchant still comes from the
+     * module's {@code magicCapacity} (Tetra's natural per-item cap).
+     *
+     * <p>Call from common setup AFTER Tetra's init (the mod already orders
+     * itself {@code AFTER tetra} and defers via {@code enqueueWork}).
+     * Defensive: a Tetra API move degrades to "workbench enchant absent",
+     * the anvil/table path still works.
+     */
+    public static void registerTetraAspect() {
+        try {
+            ItemAspect aspect = ItemAspect.get(ASPECT_KEY);
+            TetraEnchantmentHelper.registerMapping(
+                    aspect, get(),
+                    "additions/" + ASPECT_KEY,
+                    "exclusions/" + ASPECT_KEY);
+        } catch (Throwable t) {
+            // Tetra enchant API unavailable/moved — vanilla anvil path is
+            // unaffected. Don't crash setup over a cosmetic-ish workbench gate.
+        }
     }
 
     private MagicWeaponCategory() {}

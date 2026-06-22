@@ -75,6 +75,14 @@ public class IridescentReforging {
         // and would otherwise have empty registries, breaking client-side
         // Tetra getReplacement enrichment.
         event.enqueueWork(com.iridescentcraft.reforging.replacement.BundledDataLoader::loadAll);
+        // Wire the magic-weapon enchants into Tetra's WORKBENCH enchant system
+        // (BookEnchantSchematic), separate from the vanilla anvil/table path.
+        // Registers the icraft_magic_weapon aspect -> MagicWeaponCategory
+        // mapping; modules that declare the aspect (modular wand, mage armor,
+        // spell books) then accept these enchants at the bench. Must run after
+        // Tetra's TetraEnchantmentHelper init — same 'AFTER tetra' + enqueueWork
+        // ordering the replacement hook above relies on.
+        event.enqueueWork(com.iridescentcraft.reforging.enchant.MagicWeaponCategory::registerTetraAspect);
     }
 
     private static void onClientSetup(FMLClientSetupEvent event) {
