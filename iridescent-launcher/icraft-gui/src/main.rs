@@ -929,7 +929,7 @@ impl IcraftApp {
         ui.add_space(8.0);
         ui.heading("GitHub auth");
         ui.label(egui::RichText::new(
-            "PAT used by 'Push crash logs' + Apply Self-Update binary push. Stored in .icraft_token next to the running exe (gitignored). Token needs Contents:write on the IridescentCraft repo."
+            "PAT used by 'Push crash logs', Apply Self-Update, AND the repo sync (Cycle/Serve) -- saving one lifts the sync API off the 60/hr unauth limit (5000/hr), which prevents the intermittent 'API unreachable -> starts on old content' Cycle failure. Stored in %LOCALAPPDATA%\\icraft-launcher\\.icraft_token (gitignored). Needs Contents:write on the IridescentCraft repo."
         ).small().weak());
         ui.add_space(2.0);
 

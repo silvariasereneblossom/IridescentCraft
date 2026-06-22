@@ -171,7 +171,9 @@ pub fn github_diff(cfg: &ServerConfig, force: bool) -> Result<()> {
             log::error!("[sync] !!! PROCEEDING STALE (last resort) -- server will start with the files currently on disk.");
             log::error!("[sync] !!! These may NOT match origin/main. The 'Repo HEAD' badge is now unverifiable.");
             log::error!("[sync] !!! Most common cause: GitHub unauth rate limit (60/hr per IP).");
-            log::error!("[sync] !!! Set GITHUB_TOKEN env var to lift the limit to 5000/hr, then Cycle again.");
+            log::error!("[sync] !!! FIX: save a GitHub PAT in the launcher (GitHub auth -> Token -> Save) -- it now");
+            log::error!("[sync] !!!      authenticates the SYNC too (5000/hr), not just pushes. Or set GITHUB_TOKEN.");
+            log::error!("[sync] !!!      Then Cycle again.");
             // Soft-return so serve()'s later phases (jar hash-verify,
             // expected-state) still run against on-disk state; the badge +
             // error banner carry the warning.

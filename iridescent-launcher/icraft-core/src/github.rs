@@ -23,13 +23,27 @@ use std::time::Duration;
 
 const USER_AGENT: &str = "IridescentCraft-Server/icraft";
 
-/// Read `GITHUB_TOKEN`, fall back to `GH_TOKEN`. Both are common
-/// conventions (gh CLI uses GH_TOKEN; many CI tools set GITHUB_TOKEN).
+/// Resolve a bearer token for api.github.com calls. Order:
+///   1. `GITHUB_TOKEN`, then `GH_TOKEN` (CI / gh-CLI conventions).
+///   2. The launcher's own saved PAT — `ICRAFT_GH_TOKEN` env or the
+///      `.icraft_token` file the GUI "Save" button writes (via
+///      [`crate::crash::resolve_pat_cfgless`]).
+///
+/// Step 2 is the important one: before it, a PAT saved in the GUI only
+/// authenticated git PUSHES (crash logs / self-update), while the SYNC API
+/// (head_sha fallback + the per-sync `compare` call) stayed UNAUTHENTICATED at
+/// 60 req/hr per IP. That bucket drains intermittently (worse behind CGNAT /
+/// the FRP egress IP), the head fetch then fails, and Cycle proceeds-stale on
+/// behind content. Sharing the saved PAT lifts the sync to 5000/hr — the
+/// durable fix for the "Sync: API UNREACHABLE -> old content" symptom. A
+/// Contents:write push token also satisfies the read-only API; the repo is
+/// public so even a fine-grained read token works.
 fn auth_token() -> Option<String> {
     std::env::var("GITHUB_TOKEN")
         .ok()
         .or_else(|| std::env::var("GH_TOKEN").ok())
         .filter(|s| !s.is_empty())
+        .or_else(crate::crash::resolve_pat_cfgless)
 }
 
 /// 300 is the documented cap on the GitHub compare API's `files` array.

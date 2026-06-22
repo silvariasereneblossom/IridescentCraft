@@ -195,6 +195,21 @@ pub fn push_logs(cfg: &ServerConfig) -> Result<()> {
 ///      go here)
 /// Returns None if none of the above yields a non-empty token.
 pub fn read_pat(cfg: &ServerConfig) -> Option<String> {
+    // Cfg-independent sources first (env + canonical/legacy files), then the
+    // server_dir legacy fallback which needs `cfg`.
+    resolve_pat_cfgless()
+        .or_else(|| read_token_file(&cfg.server_dir.join(".icraft_token")))
+}
+
+/// The `cfg`-independent half of [`read_pat`]: `ICRAFT_GH_TOKEN` env, then the
+/// canonical `%LOCALAPPDATA%\icraft-launcher\.icraft_token`, then the legacy
+/// next-to-exe file. Shared with `github::auth_token` so a PAT saved via the
+/// GUI authenticates the SYNC API (head/compare), not just git pushes —
+/// otherwise the sync stays on the 60/hr unauthenticated bucket and Cycle
+/// intermittently fails open / proceeds-stale. (The server_dir fallback is
+/// `read_pat`-only because it needs the install dir, which the low-level GitHub
+/// client doesn't carry.)
+pub(crate) fn resolve_pat_cfgless() -> Option<String> {
     if let Ok(t) = std::env::var("ICRAFT_GH_TOKEN") {
         let t = t.trim().to_string();
         if !t.is_empty() { return Some(t); }
@@ -209,7 +224,7 @@ pub fn read_pat(cfg: &ServerConfig) -> Option<String> {
             }
         }
     }
-    read_token_file(&cfg.server_dir.join(".icraft_token"))
+    None
 }
 
 /// Canonical PAT save location: `%LOCALAPPDATA%\icraft-launcher\
