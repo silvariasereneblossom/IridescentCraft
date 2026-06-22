@@ -268,19 +268,55 @@ def main():
                     f'{sch_path} slots={sch_slots} != {mk} slots={mod_slots}'
                 )
 
-    # CHECK 7: improvement families on iridescent_reforging modules have at
-    # least one matching schematic (so honing has somewhere to land)
+    # CHECK 7 (soft): every improvement a module declares (its `improvements`
+    # FILE refs, e.g. tetra:iridescent_reforging/armor_mage_hone_chestplate) must
+    # have a landing path -- a schematic OUTCOME that applies its key. Resolve
+    # each ref to the improvement's key(s) and check them against the set of keys
+    # any schematic outcome applies.
+    #
+    # Was a FALSE-CLEAN: the old code did `ns, path = ref.split(':')` then
+    # `if ns != 'iridescent_reforging': continue` -- but the refs are
+    # `tetra:iridescent_reforging/...` so ns is ALWAYS 'tetra' and the loop
+    # skipped EVERY reforging improvement (never validated honing wiring). It
+    # also matched improvement PATHS against schematic file PATHS, not the keys a
+    # schematic actually applies. Soft because 'settled' improvements land via
+    # progression (settle), not a schematic outcome -- so a hit here means "no
+    # schematic applies this key", which the author reads + judges.
+    applied_keys = set()
+    for sch in schematics.values():
+        for oc in sch.get('outcomes', []):
+            applied_keys |= set((oc.get('improvements') or {}).keys())
+    imp_key_cache = {}
+
+    def improvement_keys(ref):
+        if ref in imp_key_cache:
+            return imp_key_cache[ref]
+        keys = set()
+        if ':' in ref:
+            rel = ref.split(':', 1)[1].rstrip('/')
+            fp = os.path.join(MODULES_DIR.replace('/modules', '/improvements'), rel + '.json')
+            try:
+                with open(fp) as f:
+                    data = json.load(f)
+                if isinstance(data, dict):
+                    data = [data]
+                keys = {e.get('key') for e in data if e.get('key')}
+            except (json.JSONDecodeError, IOError):
+                pass
+        imp_key_cache[ref] = keys
+        return keys
+
     for mod_key, mod in modules.items():
-        for imp_pattern in mod.get('improvements', []):
-            if ':' not in imp_pattern:
+        for imp_ref in mod.get('improvements', []):
+            keys = improvement_keys(imp_ref)
+            if not keys:
                 continue
-            ns, path_part = imp_pattern.split(':', 1)
-            path_part = path_part.rstrip('/')
-            if ns != 'iridescent_reforging':
+            # 'settled' improvements are applied by progression, not a schematic.
+            if all('settle' in k for k in keys):
                 continue
-            if not any(path_part in sp for sp in schematics):
+            if not (keys & applied_keys):
                 issues['no_improvement_schematic'].append(
-                    f'{mod_key} -> improvement {imp_pattern} has no matching schematic'
+                    f'{mod_key} -> {imp_ref} (key {sorted(keys)}) applied by no schematic'
                 )
 
     # CHECK 8: orphan modules (not targeted by any schematic).
@@ -294,7 +330,7 @@ def main():
         print(f'Clean. Scanned {len(modules)} modules + {len(schematics)} schematics.')
         return 0
 
-    SOFT = {'unreachable_variant_soft', 'schematic_category_empty'}
+    SOFT = {'unreachable_variant_soft', 'schematic_category_empty', 'no_improvement_schematic'}
     hard_hit = False
     for cat, items in issues.items():
         tag = ' [soft]' if cat in SOFT else ''

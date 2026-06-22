@@ -226,6 +226,10 @@ def generate_front_cover_variant(book_kind, mat):
     return {
         "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
         "key": "front_cover/",  # wildcard trailing slash; see armor variant comment
+        # Magic-weapon aspect: lets the MagicWeaponCategory enchants (incl. Arcane
+        # Edge) apply on the book cover at the Tetra workbench. See
+        # apply_magic_weapon_aspect.py + MagicWeaponCategory.registerTetraAspect.
+        "aspects": {"icraft_magic_weapon": 2},
         "extract": _book_extract({attr_key: sp}, extra_magic),
     }
 
@@ -280,6 +284,8 @@ def generate_back_cover_variant(book_kind, mat):
     return {
         "materials": [mat["__ref__"]],  # file-path resource location (see load_materials), NOT tetra:<cat>/<key>
         "key": "back_cover/",  # wildcard trailing slash; see armor variant comment
+        # Magic-weapon aspect: see generate_front_cover_variant.
+        "aspects": {"icraft_magic_weapon": 2},
         "extract": extract,
     }
 

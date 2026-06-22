@@ -3,7 +3,7 @@
     "key": "armor/upgrade/streamlined",
     "level": 1,
     "attributes": {
-      "*minecraft:generic.movement_speed": 0.05,
+      "**minecraft:generic.movement_speed": 0.05,
       "minecraft:generic.attack_speed": 0.03
     },
     "integrity": -1
