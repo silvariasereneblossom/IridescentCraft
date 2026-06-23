@@ -53,6 +53,20 @@ function getAttrCore(player, attr, fallback) {
   }
 }
 
+// --- Helper: read the icraft_mana_regen scoreboard (Puffish skill investment) ---
+// This file now OWNS the consolidated mana_regen -> ISS attribute mapping, so it
+// reads the skill scoreboard directly (skill_effects.js no longer writes it -- the
+// two used to clobber each other on the same modifier key). Server access via
+// player.server mirrors equipment_hp_halving.js / boss_bonfire_system.js.
+function readManaRegenScore(player) {
+  try {
+    var sb = player.server.scoreboard
+    var obj = sb.getObjective('icraft_mana_regen')
+    if (!obj) return 0
+    return sb.getOrCreatePlayerScore(player.username, obj).score
+  } catch (e) { return 0 }
+}
+
 // --- Default attribute values ---
 var ATTR_DEFAULTS = {
   'spell_power':       1.0,
@@ -316,14 +330,34 @@ global.tick_attributeSync = function(event) {
   var player = event.player
   var name = player.username
 
-  // Sync mana_regen to ISB mana regen attribute if available
-  // modifyAttribute, not /attribute commands (old 1.21-syntax commands never
-  // parsed on 1.20.1 -- this sync was a silent no-op). Always apply the
-  // computed value: 0 clears when the stat returns to baseline.
-  var manaRegen = getAttr(player, 'mana_regen', 1.0)
+  // Sync mana_regen to the ISS attribute, REBALANCED (IridescentCraft regen pass).
+  // modifyAttribute, not /attribute commands (old 1.21-syntax commands never parsed
+  // on 1.20.1 -- the sync was a silent no-op). Always apply the computed value.
+  //
+  // Consolidates the TWO investment dimensions that used to clobber each other on
+  // this same modifier key: the persistentData stat (class/gear/book, via getAttr)
+  // and the Puffish skill scoreboard (icraft_mana_regen, /100). skill_effects.js no
+  // longer writes mana_regen -- this is now the single owner.
+  //
+  // Curve maps total investment -> the ISS mana_regen attribute (1.0 == ISS default,
+  // ~50s empty->full; attr X => ~50/X s). A hard FLOOR for the uninvested (mana
+  // matters with zero investment) + a gentle SLOPE so investment climbs back toward,
+  // and a CAP so a very-high investment ceiling can't blow past, the old rate:
+  //   FLOOR 0.35 (~143s uninvested) | SLOPE 0.6 (climb) | CAP 1.30 (~38s max).
+  // PROVISIONAL -- tune the three constants to feel.
+  // NOTE: the iridescent_reforging:mana_regen ENCHANT (+3%/lvl, L7 = +0.21) adds its
+  // own multiply_base modifier directly to the ISS attribute, so it stacks ON TOP of
+  // the CAP (a maxed enchant reaches ~33s). Lower MANA_REGEN_PER_LEVEL or fold the
+  // enchant in here if that ceiling also needs reining in.
+  var MR_FLOOR = 0.35, MR_SLOPE = 0.6, MR_CAP = 1.30
+  var statRegen = getAttr(player, 'mana_regen', 1.0)              // class/gear/book stat (base 1.0)
+  var rawDelta = (statRegen - 1.0) + (readManaRegenScore(player) / 100.0)  // total investment above baseline
+  if (rawDelta < 0) { rawDelta = 0 }                             // never below the floor here
+  var effRegen = MR_FLOOR + rawDelta * MR_SLOPE
+  if (effRegen > MR_CAP) { effRegen = MR_CAP }
   try {
     player.modifyAttribute('irons_spellbooks:mana_regen',
-      'icraft_mana_regen_sync', manaRegen - 1.0, 'multiply_base')
+      'icraft_mana_regen_sync', effRegen - 1.0, 'multiply_base')
   } catch (e) {}
 
   // Sync cooldown_reduction to ISB cooldown attribute if available

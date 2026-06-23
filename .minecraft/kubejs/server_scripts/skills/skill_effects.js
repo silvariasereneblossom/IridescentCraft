@@ -447,12 +447,12 @@ global.tick_skillEffects = (event) => {
           player.modifyAttribute('puffish_attributes:ranged_damage',
             'icraft_accuracy_sync', acc / 100, 'multiply_base')
         }
-        // Mana Regen -> Iron's Spells attribute
-        let mr = getScore(event.server, name, 'icraft_mana_regen')
-        if (mr > 0) {
-          player.modifyAttribute('irons_spellbooks:mana_regen',
-            'icraft_mana_regen_sync', mr / 100, 'multiply_base')
-        }
+        // Mana Regen: NO LONGER synced here. attribute_sync.js (tick_attributeSync)
+        // now owns the consolidated mana_regen -> ISS attribute mapping -- it reads
+        // BOTH this scoreboard AND the persistentData stat and applies the rebalanced
+        // floor/slope/cap curve as a single 'icraft_mana_regen_sync' modifier. Writing
+        // it here too would clobber that (same key) on alternating ticks. (Scoreboard
+        // increments from skill nodes still happen; only the attribute write moved.)
         // Cast Speed -> cooldown reduction
         let cs = getScore(event.server, name, 'icraft_cast_speed')
         if (cs > 0) {
