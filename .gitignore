@@ -94,6 +94,15 @@ yungs_*/
 .icraft_token
 **/.icraft_token
 
+# CurseForge API key for packwiz-installer (CF mod downloads). Never commit --
+# the modpack repo is PUBLIC. Same pattern as .icraft_token (gitignored secret).
+.icraft_cf_token
+**/.icraft_cf_token
+
+# Dev-only downloaded tooling (packwiz CLI, packwiz-installer jars). The
+# bootstrap jar that ships to testers lives under distribution/client/, NOT here.
+.minecraft/dev/bin/
+
 # Per-launch sync sentinel written by prism_prelaunch.bat (H2/F2) + its
 # scratch temp. Local launch state only; `reset --hard` must not fight it.
 .minecraft/.icraft_sync_status.json

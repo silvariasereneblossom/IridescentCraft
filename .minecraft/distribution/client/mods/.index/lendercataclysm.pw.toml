@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'L_Enders_Cataclysm-3.26-laserfix.jar'
 hash = '4ad5af4fa8973d25636107619eb8274ab174dc87'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7849424

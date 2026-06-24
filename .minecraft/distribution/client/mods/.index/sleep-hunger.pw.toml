@@ -7,9 +7,10 @@ x-prismlauncher-release-type = 'release'
 x-prismlauncher-version-number = 'sleep_hunger-1.0.4-forge-1.20.1.jar'
 
 [download]
+hash = 'b92b077ed99feabdb9b6e08019e881ee2f1bddcb'
 hash-format = 'sha1'
-mode = 'metadata:curseforge'
-url = ''
+mode = 'url'
+url = 'https://edge.forgecdn.net/files/7232/891/sleep_hunger-1.0.4-forge-1.20.1.jar'
 
 [update.curseforge]
 file-id = 7232891

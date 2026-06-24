@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'domum_ornamentum-1.20.1-1.0.300-snapshot-unive
 hash = '3189a16050253c21e91b1fc1143656d6153c9f35'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7812429

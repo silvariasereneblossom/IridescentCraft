@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'offlineskins-1.20.1-v1.jar'
 hash = 'ee0166b3ec3878963dec8d840dc86e3faf53f11a'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 4592954

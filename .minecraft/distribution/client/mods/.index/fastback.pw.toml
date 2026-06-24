@@ -3,6 +3,7 @@ name = 'FastBack'
 side = 'both'
 
 [download]
+hash = 'd6d901100ac1dbdbd508d1dd33fdf1aa4d8d8cfb342f49b2628644e4cd086ccce8297ae041310fdd277810c9716825206383b5a72cdbbfcda8309cea204dd713'
 hash-format = 'sha512'
 mode = 'url'
 url = 'https://cdn.modrinth.com/data/ZHKrK8Rp/versions/sCxHMib4/fastback-0.15.6%2B1.20.1-forge.jar'

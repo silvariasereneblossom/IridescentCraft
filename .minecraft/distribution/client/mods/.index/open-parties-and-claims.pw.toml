@@ -3,6 +3,7 @@ name = 'Open Parties and Claims'
 side = 'both'
 
 [download]
+hash = 'f38be94dba195d5e3d48db40f07bfa83e4b19dcf18070871040d93b92c2c2eee6b0fabb710975d9b1dfc589f643d17082e60982837f088396766597ebe99348c'
 hash-format = 'sha512'
 mode = 'url'
 url = 'https://cdn.modrinth.com/data/gF3BGWvG/versions/39DoAVhA/open-parties-and-claims-forge-1.20.1-0.25.10.jar'

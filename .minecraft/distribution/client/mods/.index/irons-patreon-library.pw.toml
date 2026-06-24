@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'irons_patreon_lib-1.20.1-1.0.1.jar'
 hash = '45cad3a72d84a8d0a6db31cee590ed7066d77060'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7830104

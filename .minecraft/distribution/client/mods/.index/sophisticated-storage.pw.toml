@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'sophisticatedstorage-1.20.1-1.4.31.1558.jar'
 hash = 'c321c76aad6c694382927f4b3a8d81e32956880c'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7855239

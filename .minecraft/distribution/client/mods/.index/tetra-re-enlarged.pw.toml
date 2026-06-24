@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'tetra_re_enlarged-1.3.0.jar'
 hash = '35b0afebb501809f0f84f0c6200195e13bfb417d'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7821320

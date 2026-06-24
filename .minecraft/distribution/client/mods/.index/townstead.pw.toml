@@ -10,7 +10,6 @@ x-prismlauncher-version-number = '0.4.3 - Optimizations & Bug Fixes (Forge 1.20.
 hash = 'a56ccc621ae6048bf84599fa3d5e2b45960ccf73'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7842928

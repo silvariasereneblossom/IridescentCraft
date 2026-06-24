@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'CraftTweaker-forge-1.20.1-14.0.60.jar'
 hash = '79ddddd3f14f8d4992ba90a7a8980918ed1b9ff8'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7772873

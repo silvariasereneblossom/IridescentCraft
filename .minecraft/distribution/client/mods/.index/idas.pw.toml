@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'idas_forge-1.13.0+1.20.1.jar'
 hash = '84386b55c1729e8fb62f91211d046fb6d7ef23d2'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7787515

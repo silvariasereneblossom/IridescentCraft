@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'celestial_core-1.5.7.jar'
 hash = 'dd431a7dccac87eaf4f9e80def6d1e4188a09c2f'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7695718

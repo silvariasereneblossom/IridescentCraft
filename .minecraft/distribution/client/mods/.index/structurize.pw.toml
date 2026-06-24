@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'structurize-1.20.1-1.0.809-snapshot.jar'
 hash = '2daad913ccb44d86cd0209f73cb0a8f0e0d8e7b0'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7822253

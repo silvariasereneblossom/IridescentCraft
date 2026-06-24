@@ -10,7 +10,6 @@ x-prismlauncher-version-number = 'integrated_api-1.7.2+1.20.1-forge.jar'
 hash = 'f66701b7753e28b16c3c8060654b6627caa48064'
 hash-format = 'sha1'
 mode = 'metadata:curseforge'
-url = ''
 
 [update.curseforge]
 file-id = 7846108

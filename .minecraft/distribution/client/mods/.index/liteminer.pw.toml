@@ -3,6 +3,7 @@ name = 'LiteMiner'
 side = 'both'
 
 [download]
+hash = '8c2705dd7ff8860a2d97192dcda65bb84702b60e574d22256a5f3f439b63285aa775ecd1b97d49bb79a670beaa74ae6380e5e69c7f9e92e6c0fbd99ad46df419'
 hash-format = 'sha512'
 mode = 'url'
 url = 'https://cdn.modrinth.com/data/VTnHoofC/versions/us0xTiLi/liteminer-forge-1.20.1-1.0.0%2B1.20.1.jar'
