@@ -448,7 +448,8 @@ if ($useDiff) {
         'distribution/client/download_mods.ps1',
         'distribution/client/cleanup_stale_jars.ps1',
         'distribution/client/gen_pwpack.ps1',
-        'distribution/client/packwiz-installer-bootstrap.jar'
+        'distribution/client/packwiz-installer-bootstrap.jar',
+        'distribution/client/packwiz-installer.jar'
     )
     $rawBase = "https://raw.githubusercontent.com/$owner/$repo/$remoteSha"
     $synced = 0; $removed = 0; $staged = 0; $errors = 0
@@ -648,7 +649,7 @@ if ($useDiff) {
     # phase0_sync.ps1 + iridescentserver.bat.
     $srcClientDir = Join-Path $srcRoot '.minecraft\distribution\client'
     if (Test-Path $srcClientDir) {
-        foreach ($scriptName in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1', 'gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar')) {
+        foreach ($scriptName in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1', 'gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar', 'packwiz-installer.jar')) {
             $srcScript = Join-Path $srcClientDir $scriptName
             $destScript = Join-Path $instanceMC $scriptName
             if (Test-Path $srcScript) {
@@ -762,8 +763,13 @@ if ((Test-Path $indexDir) -and (Test-Path $modsDir)) {
     $cfKey     = Get-CFApiKey -InstanceMC $instanceMC -InstDir $instDir
     $genScript = Join-Path $instanceMC 'gen_pwpack.ps1'
     $bootstrap = Join-Path $instanceMC 'packwiz-installer-bootstrap.jar'
+    # We SHIP packwiz-installer.jar (the inner jar) + run with --bootstrap-no-update so the
+    # bootstrap does NOT download/auto-update it at runtime. The auto-update path is fragile
+    # (network + cross-JVM launch) and surfaced as a "must be run through bootstrap" popup on
+    # a tester's box (2026-06-24); pinning the validated jar is deterministic + faster + offline.
+    $innerJar  = Join-Path $instanceMC 'packwiz-installer.jar'
     $packToml  = Join-Path $instanceMC 'pack.toml'
-    $usePackwiz = $java -and $cfKey -and (Test-Path $genScript) -and (Test-Path $bootstrap) -and (Test-Path $packToml)
+    $usePackwiz = $java -and $cfKey -and (Test-Path $genScript) -and (Test-Path $bootstrap) -and (Test-Path $innerJar) -and (Test-Path $packToml)
 
     if ($usePackwiz) {
         Write-Host "[IridescentCraft Sync] Fetching mods via packwiz-installer..." -ForegroundColor Cyan
@@ -775,7 +781,9 @@ if ((Test-Path $indexDir) -and (Test-Path $modsDir)) {
             $cachePack = Join-Path $pwcache 'pack.toml'
             # -Xss64m is REQUIRED: packwiz-installer's tomlj/ANTLR parser StackOverflows
             # on the default ForkJoin-worker thread stack otherwise (0 mods, cryptic trace).
-            & $java '-Xss64m' '-jar' $bootstrap '-g' '-s' 'client' '--pack-folder' $instanceMC $cachePack 2>&1 |
+            # --bootstrap-no-update + --bootstrap-main-jar pin the shipped inner jar (no runtime
+            # download). --pack-folder puts jars in mods/ (packwiz installs in the metafile's dir).
+            & $java '-Xss64m' '-jar' $bootstrap '--bootstrap-no-update' '--bootstrap-main-jar' $innerJar '-g' '-s' 'client' '--pack-folder' $instanceMC $cachePack 2>&1 |
                 ForEach-Object { Write-Host $_ }
             $pwExit = $LASTEXITCODE
             if ($null -ne $pwExit -and $pwExit -ne 0) {
@@ -797,6 +805,7 @@ if ((Test-Path $indexDir) -and (Test-Path $modsDir)) {
         if (-not $cfKey) { $why += 'no-CF-key' }
         if (-not (Test-Path $genScript)) { $why += 'no-gen_pwpack' }
         if (-not (Test-Path $bootstrap)) { $why += 'no-bootstrap-jar' }
+        if (-not (Test-Path $innerJar))  { $why += 'no-installer-jar' }
         Write-Host "[IridescentCraft Sync] packwiz-installer unavailable ($($why -join ',')); using download_mods.ps1 fallback." -ForegroundColor Yellow
         Write-SyncSentinel -Ok $false -Reason "packwiz-fallback:$($why -join ';')" -Behind 0 -McDir $instanceMC
         $downloadScript = Join-Path $instanceMC 'download_mods.ps1'

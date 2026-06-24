@@ -37,7 +37,7 @@ REM .bat is missing, the user must re-run install.ps1.
 REM gen_pwpack.ps1 + packwiz-installer-bootstrap.jar were added 2026-06-24 when the
 REM mod-fetch step switched from download_mods.ps1 to packwiz-installer (docket #109);
 REM without them sync_client.ps1 step 4b silently falls back to the legacy downloader.
-for %%S in (sync_client.ps1 download_mods.ps1 cleanup_stale_jars.ps1 gen_pwpack.ps1 packwiz-installer-bootstrap.jar) do (
+for %%S in (sync_client.ps1 download_mods.ps1 cleanup_stale_jars.ps1 gen_pwpack.ps1 packwiz-installer-bootstrap.jar packwiz-installer.jar) do (
     if not exist "%SCRIPT_DIR%\%%S" (
         echo   [SELF-HEAL] %%S missing, fetching from main HEAD...
         powershell -ExecutionPolicy Bypass -Command ^
@@ -63,7 +63,7 @@ REM which case the running shell is reading the OLD bat. We move-replace
 REM it anyway and the new content takes effect on the *next* invocation —
 REM not the current one. Acceptable: at most one launch's lag for bat
 REM updates.
-for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars.ps1 gen_pwpack.ps1 packwiz-installer-bootstrap.jar) do (
+for %%F in (sync_client.ps1 sync_client.bat download_mods.ps1 cleanup_stale_jars.ps1 gen_pwpack.ps1 packwiz-installer-bootstrap.jar packwiz-installer.jar) do (
     if exist "%SCRIPT_DIR%\%%F.new" (
         echo   [STAGE] Applying staged update: %%F
         move /y "%SCRIPT_DIR%\%%F.new" "%SCRIPT_DIR%\%%F" >nul
