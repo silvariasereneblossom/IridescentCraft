@@ -18,6 +18,7 @@
       "materials": [
         "tetra:metal/",
         "tetra:gem/",
+        "tetra:bone/tf_naga",
         "tetra:themed/"
       ],
       "countFactor": 1,
