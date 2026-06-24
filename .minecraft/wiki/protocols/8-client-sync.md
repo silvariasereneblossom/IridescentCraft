@@ -38,11 +38,20 @@ For testers using `distribution/client/install.ps1` — their instance is **not*
 1. Hits the GitHub API for the latest main commit SHA
 2. Compares against `.icraft_last_sha` in the instance root
 3. If they match, prints "Up to date" and exits fast (~200ms API call, no download)
-4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and invokes `download_mods.ps1` for any new JARs (that script skips existing JARs by filename)
+4. If they differ, downloads the repo zip, overlays `config/ kubejs/ global_packs/ datapack_sources/ defaultconfigs/ patchouli_books/ resourcepacks/ shaderpacks/` onto the instance, mirrors `mods/.index/`, writes the new SHA, and fetches/verifies the mod JARs (see *Mod fetching* below)
 
-**Install location:** `install.ps1` already copies `sync_client.ps1` and `sync_client.bat` into `$INST_MC_DIR` during initial install. Users set the pre-launch command once.
+**Install location:** `install.ps1` already copies `sync_client.ps1`, `sync_client.bat`, `gen_pwpack.ps1`, and `packwiz-installer-bootstrap.jar` into `$INST_MC_DIR` during initial install. Users set the pre-launch command once.
 
 Like Mode A, the zip-path sync now records a sync status that the diagnostic and the in-game warning can read, so a failed update is **visible** rather than silent (see *Failure handling*).
+
+### Mod fetching — packwiz-installer (CurseForge API key required)
+
+The mod-fetch step uses the official **packwiz-installer** (it reads the same `mods/.index/` metadata the pack already ships). CurseForge mods download through the **authenticated CurseForge API** instead of the old hand-shaped, unauthenticated `forgecdn` URLs that caused the recurring fresh-install "missing mods" flake. Two per-host prerequisites:
+
+- **CurseForge API key.** Get a free key at [console.curseforge.com](https://console.curseforge.com/) → **API Keys**, then save just the key (one line) to **`$INST_MC_DIR/.icraft_cf_token`** (gitignored — the public repo never carries it; same pattern as the GitHub PAT). Set `CF_API_KEY` in the environment instead if you prefer.
+- **Java.** packwiz-installer is a Java program; the sync auto-detects PrismLauncher's bundled/configured Java (or system `java`).
+
+If **either** is missing, the sync **falls back to the legacy `download_mods.ps1`** so a tester is never bricked — but that's the flakier path, so place the key. The bootstrap jar is fed a flat pack generated from `mods/.index/` (`gen_pwpack.ps1`) each run, so the mod index can never drift, and jars install to `mods/` via `--pack-folder`. A path-independent **completeness gate** then verifies every indexed jar is on disk and re-flags any gap.
 
 **PrismLauncher pre-launch command (Windows):**
 

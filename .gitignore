@@ -88,6 +88,9 @@ yungs_*/
 !.minecraft/mods/class-artifacts-forge-*.jar
 !.minecraft/server_distribution/mods/class-artifacts-forge-*.jar
 !.minecraft/distribution/client/mods/class-artifacts-forge-*.jar
+# packwiz-installer bootstrap jar (the official Java mod-fetcher, shipped to the
+# client instance) -- re-exempt from the blanket *.jar ignore so it commits.
+!.minecraft/distribution/client/packwiz-installer-bootstrap.jar
 .claude/worktrees/
 
 # Per-host PAT for the auto log-push flow. Never commit.

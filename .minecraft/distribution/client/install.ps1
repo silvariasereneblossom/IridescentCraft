@@ -227,7 +227,7 @@ foreach ($dir in @('config', 'defaultconfigs', 'kubejs')) {
 # Copy sync_client scripts into the instance so PrismLauncher's pre-launch
 # command can find them via $INST_MC_DIR. Users set the pre-launch command
 # in PrismLauncher manually — see wiki/protocols/8-client-sync.md
-foreach ($syncFile in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1')) {
+foreach ($syncFile in @('sync_client.ps1', 'sync_client.bat', 'download_mods.ps1', 'cleanup_stale_jars.ps1', 'gen_pwpack.ps1', 'packwiz-installer-bootstrap.jar')) {
     if (Test-Path "$distDir\$syncFile") {
         Copy-Item "$distDir\$syncFile" "$mcDir\$syncFile" -Force
         Write-Host "    $syncFile... OK"
@@ -367,6 +367,23 @@ Write-Host ""
 
 # -- Phase 5: Launch --
 Write-Host "  [5/5] Ready!" -ForegroundColor Green
+Write-Host ""
+
+# -- IMPORTANT: CurseForge API key for the robust pre-launch sync --
+# The pre-launch sync (sync_client.ps1) now fetches mods with packwiz-installer,
+# which resolves CurseForge mods via the AUTHENTICATED CurseForge API. That needs
+# a (free) API key, kept in a gitignored per-host token file -- the PUBLIC repo
+# never carries it. Without a key (or without Java) the sync falls back to the
+# old hand-shaped-forgecdn downloader (the flakier leg this change replaces).
+Write-Host "  ----------------------------------------------------------------" -ForegroundColor Cyan
+Write-Host "  ACTION NEEDED for reliable mod updates: CurseForge API key" -ForegroundColor Cyan
+Write-Host "    1. Get a free key at https://console.curseforge.com/  (-> API Keys)" -ForegroundColor White
+Write-Host "    2. Save JUST the key (one line) to:" -ForegroundColor White
+Write-Host "         $mcDir\.icraft_cf_token" -ForegroundColor Yellow
+Write-Host "    (Java is also required for the sync -- PrismLauncher supplies it.)" -ForegroundColor DarkGray
+Write-Host "    The FIRST launch runs the full packwiz sync + a completeness check;" -ForegroundColor DarkGray
+Write-Host "    it may take a few minutes and will report any still-missing mods." -ForegroundColor DarkGray
+Write-Host "  ----------------------------------------------------------------" -ForegroundColor Cyan
 Write-Host ""
 
 if ($prismExe) {
