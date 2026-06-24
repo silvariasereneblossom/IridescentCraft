@@ -13,14 +13,15 @@ import net.minecraftforge.registries.ForgeRegistries;
 import net.minecraftforge.registries.RegistryObject;
 
 /**
- * Custom enchantments for the modular spell book line. Three are
- * BOOK-EXCLUSIVE -- canEnchant checks the stack's class against our two
- * modular item types ({@link ModularSpellBookItem} for ISS variants,
- * {@link ModularArsSpellBookItem} for Ars variants). The fourth,
- * {@code magic_crit_chance} ("Arcane Edge"), is ALSO a magic-weapon enchant
- * (MagicWeaponCategory) so it reaches the modular wand + mage gear via the
- * Tetra workbench aspect path; its effect ({@code magic_crit_hook.js}) reads
- * the held main-hand item generically, so it fires on a wand the same as a book.
+ * Custom enchantments for the modular spell book line. All four now carry
+ * {@code magicWeapon=true} -> MagicWeaponCategory + a canEnchant that accepts
+ * both our modular books ({@link ModularSpellBookItem}/{@link
+ * ModularArsSpellBookItem}) AND magic weapons (wands/staves), so they reach the
+ * modular wand + mage gear via the Tetra workbench aspect path as well as books:
+ * "anything that goes on a book goes on a wand" (operator, 2026-06-22). Effects
+ * fire on a wand the same as a book -- the crit pair reads the held main-hand
+ * item ({@code magic_crit_hook.js}); the mana pair (mana_capacity/mana_flow) is
+ * summed by {@code AttributeApplier}, which scans held magic weapons too.
  *
  * <p>Bonuses are applied at attribute-aggregation time by
  * {@code AttributeApplier} (sum: slot materials + enchant levels).
@@ -42,20 +43,23 @@ public class ModEnchantmentRegistry {
     public static final RegistryObject<Enchantment> MANA_CAPACITY =
             ENCHANTMENTS.register("mana_capacity",
                     () -> new ModularBookEnchantment(
-                            Enchantment.Rarity.UNCOMMON, 5, 1));
+                            Enchantment.Rarity.UNCOMMON, 5, 1,
+                            MagicWeaponCategory.get(), true));
 
     public static final RegistryObject<Enchantment> MANA_FLOW =
             ENCHANTMENTS.register("mana_flow",
                     () -> new ModularBookEnchantment(
-                            Enchantment.Rarity.UNCOMMON, 3, 5));
+                            Enchantment.Rarity.UNCOMMON, 3, 5,
+                            MagicWeaponCategory.get(), true));
 
-    // "Arcane Edge" -- the spell-crit-CHANCE enchant. Unlike the other three
-    // book enchants, this one is also a MAGIC-WEAPON enchant: it carries
-    // MagicWeaponCategory so it's applicable on the modular wand (+ mage gear)
-    // via the Tetra workbench aspect path, and its canEnchant accepts magic
-    // weapons too (anvil). vorpal_arcane remains the crit-DAMAGE half on wands;
-    // magic_crit_damage stays book-only. The effect (magic_crit_hook.js) reads
-    // the held main-hand item generically, so it already fires on a wand.
+    // "Arcane Edge" (crit chance) + "Arcane Devastation" (crit damage). Like all
+    // four book enchants now, both are MAGIC-WEAPON enchants (MagicWeaponCategory
+    // + magicWeapon canEnchant), so they apply on the modular wand + mage gear via
+    // the Tetra workbench aspect path AND books -- "anything that goes on a book
+    // goes on a wand" (operator, 2026-06-22). Their effect (magic_crit_hook.js)
+    // reads the held main-hand item generically, so it fires on a wand unchanged.
+    // NOTE: magic_crit_damage now overlaps vorpal_arcane (both crit-damage on
+    // wands) -- flagged to the operator to retire one if desired.
     public static final RegistryObject<Enchantment> MAGIC_CRIT_CHANCE =
             ENCHANTMENTS.register("magic_crit_chance",
                     () -> new ModularBookEnchantment(
@@ -65,7 +69,8 @@ public class ModEnchantmentRegistry {
     public static final RegistryObject<Enchantment> MAGIC_CRIT_DAMAGE =
             ENCHANTMENTS.register("magic_crit_damage",
                     () -> new ModularBookEnchantment(
-                            Enchantment.Rarity.RARE, 3, 8));
+                            Enchantment.Rarity.RARE, 3, 8,
+                            MagicWeaponCategory.get(), true));
 
     /**
      * Read the enchantment level from a stack's NBT. Used by

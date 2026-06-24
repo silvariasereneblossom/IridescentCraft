@@ -3,6 +3,7 @@ package com.iridescentcraft.modspells.event;
 import com.google.common.collect.Multimap;
 import com.iridescentcraft.modspells.IridescentModularSpells;
 import com.iridescentcraft.modspells.enchant.ModEnchantmentRegistry;
+import com.iridescentcraft.reforging.enchant.MagicWeaponCategory;
 import com.iridescentcraft.modspells.item.ModularArsSpellBookItem;
 import com.iridescentcraft.modspells.item.ModularSpellBookItem;
 import net.minecraft.core.registries.Registries;
@@ -193,14 +194,20 @@ public class AttributeApplier {
                 double v = ModularArsSpellBookItem.getTotalBonus(stack, key);
                 if (v != 0.0) totals.merge(key, v, Double::sum);
             }
-        } else {
-            return; // not a modular book; skip enchant scan
+        } else if (!MagicWeaponCategory.isMagicWeapon(stack)) {
+            return; // not a modular book NOR a magic weapon (wand/staff) -> skip
         }
+        // Magic weapons (wands/staves) fall through here: no book-slot bonuses,
+        // but they DO get the enchant-driven bonuses below, so mana_capacity /
+        // mana_flow on a wand actually do something -- "anything that goes on a
+        // book goes on a wand" (operator, 2026-06-22). Otherwise the enchant
+        // would apply at the bench but be inert (the classic silent no-op).
 
-        // Phase 4: enchant-driven bonuses (in addition to slot-material bonuses).
-        // Each level adds 5% to the relevant attribute. Crit-chance/damage
-        // enchants are NOT applied to the attribute system here -- they're
-        // read directly at LivingHurtEvent time by the magic-crit hook.
+        // Phase 4: enchant-driven bonuses (in addition to any slot-material
+        // bonuses above). Each level adds 5% to the relevant attribute.
+        // Crit-chance/damage enchants are NOT applied to the attribute system
+        // here -- they're read directly at LivingHurtEvent time by the magic-crit
+        // hook (which already reads the held main-hand item, wand or book).
         int manaCap = ModEnchantmentRegistry.getLevel(stack, ModEnchantmentRegistry.MANA_CAPACITY);
         if (manaCap > 0) {
             totals.merge(ModularSpellBookItem.AttributeKey.MAX_MANA,
